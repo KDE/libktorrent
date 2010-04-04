@@ -22,7 +22,7 @@
 #define BTCACHEFACTORY_H
 
 #include <QString>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -34,7 +34,7 @@ namespace bt
 	 * and implement the create method to create your own custom Caches.
 	 * @author Joris Guisson
 	*/
-	class BTCORE_EXPORT CacheFactory
+	class KTORRENT_EXPORT CacheFactory
 	{
 	public:
 		CacheFactory();

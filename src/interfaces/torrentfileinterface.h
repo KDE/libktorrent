@@ -22,7 +22,7 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 class QTextCodec;
@@ -36,7 +36,7 @@ namespace bt
 	 *
 	 * This class is the interface for a file in a multifile torrent.
 	*/
-	class BTCORE_EXPORT TorrentFileInterface : public QObject
+	class KTORRENT_EXPORT TorrentFileInterface : public QObject
 	{
 		Q_OBJECT
 	public:

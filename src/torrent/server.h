@@ -22,7 +22,7 @@
 
 #include <qlist.h>
 #include <qobject.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <interfaces/serverinterface.h>
 #include "globals.h"
 
@@ -50,7 +50,7 @@ namespace bt
 	 * All PeerManager's should register with this class when they
 	 * are created and should unregister when they are destroyed.
 	 */
-	class BTCORE_EXPORT Server : public ServerInterface
+	class KTORRENT_EXPORT Server : public ServerInterface
 	{
 		Q_OBJECT
 

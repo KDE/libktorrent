@@ -22,7 +22,7 @@
 
 #include <stdio.h>
 #include <qstring.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "constants.h"
 
 namespace bt
@@ -34,7 +34,7 @@ namespace bt
 	 *
 	 * Wrapper class for stdio's FILE.
 	 */
-	class BTCORE_EXPORT File
+	class KTORRENT_EXPORT File
 	{
 		FILE* fptr;
 		QString file;

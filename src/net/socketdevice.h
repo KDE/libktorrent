@@ -21,7 +21,7 @@
 #ifndef NET_SOCKETDEVICE_H
 #define NET_SOCKETDEVICE_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 #include <net/poll.h>
 #include <net/address.h>

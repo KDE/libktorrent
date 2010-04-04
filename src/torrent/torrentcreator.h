@@ -23,7 +23,7 @@
 #include <QThread>
 #include <QStringList>
 #include <util/sha1hash.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "torrent.h"
 
 namespace bt
@@ -39,7 +39,7 @@ namespace bt
 	 * It also allows to create a TorrentControl object, so
 	 * that we immediately can start to share the torrent.
 	 */
-	class BTCORE_EXPORT TorrentCreator : public QThread
+	class KTORRENT_EXPORT TorrentCreator : public QThread
 	{
 		Q_OBJECT
 		

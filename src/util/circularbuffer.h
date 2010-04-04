@@ -21,7 +21,7 @@
 #ifndef BT_CIRCULARBUFFER_H
 #define BT_CIRCULARBUFFER_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 #include <utility>
 
@@ -31,7 +31,7 @@ namespace bt
 	/**
 		Circular buffer class
 	*/
-	class BTCORE_EXPORT CircularBuffer
+	class KTORRENT_EXPORT CircularBuffer
 	{
 	public:
 		CircularBuffer(bt::Uint32 cap = 64 * 1024);

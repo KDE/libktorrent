@@ -22,13 +22,13 @@
 #define UTP_UTPSERVERTHREAD_H
 
 #include <QThread>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace utp
 {
 	class UTPServer;
 
-	class BTCORE_EXPORT UTPServerThread : public QThread
+	class KTORRENT_EXPORT UTPServerThread : public QThread
 	{
 		Q_OBJECT
 	public:

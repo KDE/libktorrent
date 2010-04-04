@@ -21,7 +21,7 @@
 #define BTTORRENTINTERFACE_H
 
 #include <qobject.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 #include <interfaces/trackerslist.h>
 #include <torrent/torrentstats.h>
@@ -83,7 +83,7 @@ namespace bt
 	 * This class is the interface for an object which controls the
 	 * up- and download of one torrent.
 	*/
-	class BTCORE_EXPORT TorrentInterface : public QObject
+	class KTORRENT_EXPORT TorrentInterface : public QObject
 	{
 		Q_OBJECT
 	public:

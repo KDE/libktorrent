@@ -26,7 +26,7 @@
 #include <interfaces/peerinterface.h>
 #include <util/bitset.h>
 #include <util/ptrmap.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "peerid.h"
 #include "peerprotocolextension.h"
 
@@ -62,7 +62,7 @@ namespace bt
 	 * It provides functions for sending packets. Packets it receives
 	 * get relayed to the outside world using a bunch of signals.
 	*/
-	class BTCORE_EXPORT Peer : public QObject, public PeerInterface
+	class KTORRENT_EXPORT Peer : public QObject, public PeerInterface
 	{
 		Q_OBJECT
 	public:

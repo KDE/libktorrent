@@ -23,7 +23,7 @@
 #include <qobject.h>
 #include <util/ptrmap.h>
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "download/webseed.h"
 #include "download/chunkdownload.h"
 #include "peer/peermanager.h"
@@ -64,7 +64,7 @@ namespace bt
 	 * This class manages the downloading of the file. It should
 	 * regurarly be updated.
 	*/
-	class BTCORE_EXPORT Downloader : public QObject,public PieceHandler
+	class KTORRENT_EXPORT Downloader : public QObject,public PieceHandler
 	{
 		Q_OBJECT
 		

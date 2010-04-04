@@ -24,7 +24,7 @@
 #include <QVariant>
 #include <QStringList>
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "value.h"
 
 
@@ -39,7 +39,7 @@ namespace bt
 	 * There are 3 possible pieces of data in b-encoded piece of data.
 	 * This is the base class for all those 3 things.
 	*/
-	class BTCORE_EXPORT BNode
+	class KTORRENT_EXPORT BNode
 	{
 	public:
 		enum Type
@@ -81,7 +81,7 @@ namespace bt
 	 *
 	 * @todo Use QVariant
 	 */
-	class BTCORE_EXPORT BValueNode : public BNode
+	class KTORRENT_EXPORT BValueNode : public BNode
 	{
 		Value value;
 	public:
@@ -97,7 +97,7 @@ namespace bt
 	 * @brief Represents a dictionary in bencoded data
 	 *
 	 */
-	class BTCORE_EXPORT BDictNode : public BNode
+	class KTORRENT_EXPORT BDictNode : public BNode
 	{
 		struct DictEntry
 		{
@@ -174,7 +174,7 @@ namespace bt
 	 * @brief Represents a list in bencoded data
 	 *
 	 */
-	class BTCORE_EXPORT BListNode : public BNode
+	class KTORRENT_EXPORT BListNode : public BNode
 	{
 		QList<BNode*> children;
 	public:

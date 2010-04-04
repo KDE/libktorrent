@@ -38,7 +38,7 @@ namespace bt
 	 * File in a multi file torrent. Keeps track of the path of the file,
 	 * it's size, offset into the cache and between which chunks it lies.
 	 */
-	class BTCORE_EXPORT TorrentFile : public TorrentFileInterface
+	class KTORRENT_EXPORT TorrentFile : public TorrentFileInterface
 	{
 		Q_OBJECT
 

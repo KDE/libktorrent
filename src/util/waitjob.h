@@ -24,7 +24,7 @@
 #include <qlist.h>
 #include <interfaces/exitoperation.h>
 #include "constants.h"
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -35,7 +35,7 @@ namespace bt
 	 * Job to wait for a certain amount of time or until one or more ExitOperation's have
 	 * finished.
 	 */
-	class BTCORE_EXPORT WaitJob : public KIO::Job
+	class KTORRENT_EXPORT WaitJob : public KIO::Job
 	{
 		Q_OBJECT
 	public:
@@ -68,7 +68,7 @@ namespace bt
 		QList<ExitOperation*> exit_ops;
 	};
 	
-	BTCORE_EXPORT void SynchronousWait(Uint32 millis);
+	KTORRENT_EXPORT void SynchronousWait(Uint32 millis);
 	
 	
 

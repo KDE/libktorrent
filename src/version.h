@@ -21,7 +21,7 @@
 #ifndef BTVERSION_H
 #define BTVERSION_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 class QString;
@@ -43,18 +43,18 @@ namespace bt
 	 * @param type Which version 
 	 * @param peer_id_code Peer ID code (2 letters identifying the client, KT for KTorrent)
 	 */
-	BTCORE_EXPORT void SetClientInfo(const QString & name,int major,int minor,int release,VersionType type,const QString & peer_id_code);
+	KTORRENT_EXPORT void SetClientInfo(const QString & name,int major,int minor,int release,VersionType type,const QString & peer_id_code);
 
 	/**
 	 * Get the PeerID prefix set by SetClientInfo
 	 * @return The PeerID prefix
 	 */
-	BTCORE_EXPORT QString PeerIDPrefix();
+	KTORRENT_EXPORT QString PeerIDPrefix();
 	
 	/**
 	 * Get the current client version string
 	 */
-	BTCORE_EXPORT QString GetVersionString();
+	KTORRENT_EXPORT QString GetVersionString();
 	
 	
 	/// Major version number of the BTCore library

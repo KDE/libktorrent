@@ -21,7 +21,7 @@
 #ifndef BTPIECEDATA_H
 #define BTPIECEDATA_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 #include <diskio/cachefile.h>
 
@@ -34,7 +34,7 @@ namespace bt
 		Class which holds the data of a piece of a chunk.
 		It has a reference counter.
 	*/
-	class BTCORE_EXPORT PieceData : public MMappeable
+	class KTORRENT_EXPORT PieceData : public MMappeable
 	{
 	public:
 		PieceData(Chunk* chunk,Uint32 off,Uint32 len,Uint8* ptr,CacheFile* file);
@@ -86,7 +86,7 @@ namespace bt
 		friend class PieceDataPtr;
 	};
 	
-	class BTCORE_EXPORT PieceDataPtr
+	class KTORRENT_EXPORT PieceDataPtr
 	{
 	public:
 		PieceDataPtr(PieceData* pdata = 0);

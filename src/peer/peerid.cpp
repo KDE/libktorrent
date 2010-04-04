@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <qmap.h>
 #include <klocale.h>
-#include "btversion.h"
+#include "version.h"
 
 namespace bt
 {

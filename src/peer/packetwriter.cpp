@@ -24,7 +24,7 @@
 #include <util/file.h>
 #include <util/functions.h>
 #include <net/socketmonitor.h>
-#include "btversion.h"
+#include "version.h"
 #include "peer.h"
 #include <download/request.h>
 #include <diskio/chunk.h>

@@ -22,7 +22,7 @@
 #define BT_PEERCONNECTOR_H
 
 #include <QSet>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 
@@ -34,7 +34,7 @@ namespace bt
 	/**
 		Class which connects to a peer.
 	*/
-	class BTCORE_EXPORT PeerConnector : public QObject
+	class KTORRENT_EXPORT PeerConnector : public QObject
 	{
 		Q_OBJECT
 	public:

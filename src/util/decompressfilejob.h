@@ -23,7 +23,7 @@
 
 #include <QThread>
 #include <kio/job.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -31,7 +31,7 @@ namespace bt
 	/**
 	* Thread which decompresses a single file
 	*/
-	class BTCORE_EXPORT DecompressThread : public QThread
+	class KTORRENT_EXPORT DecompressThread : public QThread
 	{
 	public:
 		DecompressThread(const QString & file,const QString & dest_file);
@@ -56,7 +56,7 @@ namespace bt
 	/**
 		Decompress a file and remove it when completed successfully.
 	*/
-	class BTCORE_EXPORT DecompressFileJob : public KIO::Job
+	class KTORRENT_EXPORT DecompressFileJob : public KIO::Job
 	{
 		Q_OBJECT
 	public:

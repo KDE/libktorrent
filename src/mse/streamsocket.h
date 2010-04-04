@@ -23,7 +23,7 @@
 #include <qobject.h>
 #include <util/constants.h>
 #include <net/bufferedsocket.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 class QString;
 
@@ -51,7 +51,7 @@ namespace mse
 	 * not be used anymore, a SocketReader and SocketWriter should be provided,
 	 * so that reading and writing is controlled from the monitor thread.
 	*/
-	class BTCORE_EXPORT StreamSocket : public QObject,public net::SocketReader,public net::SocketWriter
+	class KTORRENT_EXPORT StreamSocket : public QObject,public net::SocketReader,public net::SocketWriter
 	{
 		Q_OBJECT
 	public:

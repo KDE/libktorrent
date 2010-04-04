@@ -28,7 +28,7 @@
 #include <util/timer.h>
 #include <interfaces/torrentinterface.h>
 #include <interfaces/trackerslist.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "torrent.h"
 #include "globals.h"
 
@@ -64,7 +64,7 @@ namespace bt
 	 * This class controls the uploading, downloading, choking,
 	 * updating the tracker and chunk management.
 	 */
-	class BTCORE_EXPORT TorrentControl : public TorrentInterface, public FilePriorityListener
+	class KTORRENT_EXPORT TorrentControl : public TorrentInterface, public FilePriorityListener
 	{
 		Q_OBJECT
 	public:

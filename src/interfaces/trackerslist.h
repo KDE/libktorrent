@@ -21,7 +21,7 @@
 #define BTTRACKERSLIST_H
 
 #include <kurl.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -33,7 +33,7 @@ namespace bt
 	 * 
 	 * This interface is used to provide access to AnnounceList object which holds a list of available trackers for a torrent.
 	*/
-	class BTCORE_EXPORT TrackersList
+	class KTORRENT_EXPORT TrackersList
 	{
 	public:
 		TrackersList();

@@ -24,7 +24,7 @@
 #include <qmap.h>
 #include <qbytearray.h>
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 #ifdef ERROR
 #undef ERROR
@@ -43,7 +43,7 @@ namespace bt
 	 *
 	 * Class which handles communication with one or more UDP trackers.
 	*/
-	class BTCORE_EXPORT UDPTrackerSocket : public QObject
+	class KTORRENT_EXPORT UDPTrackerSocket : public QObject
 	{
 		Q_OBJECT
 	public:

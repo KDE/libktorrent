@@ -24,7 +24,7 @@
 #include <QObject>
 #include <QMap>
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -32,7 +32,7 @@ namespace bt
 	/**
 		Keeps track of all logging system ID's
 	*/
-	class BTCORE_EXPORT LogSystemManager : public QObject
+	class KTORRENT_EXPORT LogSystemManager : public QObject
 	{
 		Q_OBJECT
 		

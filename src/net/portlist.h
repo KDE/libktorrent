@@ -22,7 +22,7 @@
 
 #include <QList>
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace net
 {
@@ -32,7 +32,7 @@ namespace net
 		UDP
 	};
 	
-	struct BTCORE_EXPORT Port
+	struct KTORRENT_EXPORT Port
 	{
 		bt::Uint16 number;
 		Protocol proto;
@@ -48,7 +48,7 @@ namespace net
 	/**
 	 * Listener class for the PortList. 
 	 */
-	class BTCORE_EXPORT PortListener
+	class KTORRENT_EXPORT PortListener
 	{
 	public:
 		virtual ~PortListener() {}
@@ -72,7 +72,7 @@ namespace net
 	 * List of ports which are currently being used.
 	 * 
 	*/
-	class BTCORE_EXPORT PortList : public QList<Port>
+	class KTORRENT_EXPORT PortList : public QList<Port>
 	{
 		PortListener* lst;
 	public:

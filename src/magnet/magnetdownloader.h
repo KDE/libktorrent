@@ -22,7 +22,7 @@
 #define BT_MAGNETDOWNLOADER_H
 
 #include <QObject>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <torrent/torrent.h>
 #include <tracker/tracker.h>
 #include "magnetlink.h"
@@ -44,7 +44,7 @@ namespace bt
 		It basically has a Tracker (optional), a DHTPeerSource and a PeerManager.
 		With these it tries to find peers, connect to them and download the metadata.
 	*/
-	class BTCORE_EXPORT MagnetDownloader : public QObject, public TrackerDataSource
+	class KTORRENT_EXPORT MagnetDownloader : public QObject, public TrackerDataSource
 	{
 		Q_OBJECT
 	public:

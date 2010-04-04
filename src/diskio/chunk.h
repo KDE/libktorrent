@@ -20,7 +20,7 @@
 #ifndef BTCHUNK_H
 #define BTCHUNK_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 namespace bt
@@ -42,7 +42,7 @@ namespace bt
 	 * - ON_DISK : On disk
 	 * - NOT_DOWNLOADED : It hasn't been dowloaded yet, and there is no buffer allocated
 	 */
-	class BTCORE_EXPORT Chunk
+	class KTORRENT_EXPORT Chunk
 	{
 	public:
 		Chunk(Uint32 index,Uint32 size,Cache* cache);

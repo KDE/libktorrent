@@ -42,7 +42,7 @@ namespace dht
 	/**
 		@author Joris Guisson <joris.guisson@gmail.com>
 	*/
-	class BTCORE_EXPORT DHTPeerSource : public bt::PeerSource
+	class KTORRENT_EXPORT DHTPeerSource : public bt::PeerSource
 	{
 		Q_OBJECT
 	public:

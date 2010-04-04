@@ -42,7 +42,7 @@ THE SOFTWARE.
 
 #include <io.h>
 #include <wchar.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 /* Pull in winsock.h for (almost) berkeley sockets. */
 #ifdef FD_SETSIZE
 #undef FD_SETSIZE
@@ -78,7 +78,7 @@ THE SOFTWARE.
 #define POLLHUP     0x0010    /* Hung up */
 #define POLLNVAL    0x0020    /* Invalid request: fd not open */
 
-struct BTCORE_EXPORT pollfd {
+struct KTORRENT_EXPORT pollfd {
     SOCKET fd;        /* file descriptor */
     short events;     /* requested events */
     short revents;    /* returned events */
@@ -116,7 +116,7 @@ struct BTCORE_EXPORT pollfd {
 // unsigned int mingw_sleep(unsigned int);
 // int     mingw_inet_aton(const char *, struct in_addr *);
 // int     mingw_gettimeofday(struct timeval *, char *);
-BTCORE_EXPORT int     mingw_poll(struct pollfd *, unsigned int, int);
+KTORRENT_EXPORT int     mingw_poll(struct pollfd *, unsigned int, int);
 // SOCKET  mingw_socket(int, int, int);
 // int     mingw_connect(SOCKET, struct sockaddr*, socklen_t);
 // SOCKET  mingw_accept(SOCKET, struct sockaddr*, socklen_t *);
@@ -136,7 +136,7 @@ BTCORE_EXPORT int     mingw_poll(struct pollfd *, unsigned int, int);
 // int mingw_stat(const char*, struct stat*);
 #define strerror(e) mingw_strerror(e)
 
-BTCORE_EXPORT char *mingw_strerror(int error);
+KTORRENT_EXPORT char *mingw_strerror(int error);
 
 #if 0
 #ifdef POLLRDNORM
@@ -177,7 +177,7 @@ typedef unsigned int nfds_t;
 #define POLLWRBAND (POLLOUT | POLLPRI)
 // POLLERR, POLLNVAL not defined
 
-BTCORE_EXPORT int poll(struct pollfd *fds, nfds_t nfds, int timeout);
+KTORRENT_EXPORT int poll(struct pollfd *fds, nfds_t nfds, int timeout);
 
 #define mingw_poll(a, b, c) poll(a, b, c)
 #endif

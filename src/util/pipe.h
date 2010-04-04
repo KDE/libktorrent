@@ -21,7 +21,7 @@
 #ifndef BT_PIPE_H
 #define BT_PIPE_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 namespace bt
@@ -30,7 +30,7 @@ namespace bt
 	/**
 		Cross platform pipe implementation, uses socketpair on unix and a TCP connection over the localhost in windows.
 	*/
-	class BTCORE_EXPORT Pipe
+	class KTORRENT_EXPORT Pipe
 	{
 	public:
 		Pipe();

@@ -23,7 +23,7 @@
 
 #include <QList>
 #include <net/address.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -37,7 +37,7 @@ namespace bt
 		It uses blocklists to do this. Blocklists should register with this class.
 		By default it has one blocklist, the banned peers list.
 	*/
-	class BTCORE_EXPORT AccessManager
+	class KTORRENT_EXPORT AccessManager
 	{
 		AccessManager();
 	public:

@@ -20,7 +20,7 @@
 #ifndef BTARRAY_H
 #define BTARRAY_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "constants.h"
 
 namespace bt
@@ -33,7 +33,7 @@ namespace bt
 	 * and safer.
 	 */
 	template<class T>
-	class BTCORE_EXPORT Array
+	class KTORRENT_EXPORT Array
 	{
 		Uint32 num;
 		T* data;

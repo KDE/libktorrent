@@ -22,7 +22,7 @@
 #define BT_EXTRACTFILEJOB_H
 
 #include <kio/jobclasses.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <karchive.h>
 
 
@@ -33,7 +33,7 @@ namespace bt
 	/**
 		Job which extracts a single file out of an archive
 	*/
-	class BTCORE_EXPORT ExtractFileJob : public KIO::Job
+	class KTORRENT_EXPORT ExtractFileJob : public KIO::Job
 	{
 		Q_OBJECT
 	public:

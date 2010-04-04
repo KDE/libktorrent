@@ -23,7 +23,7 @@
 #define BT_MAGNETLINK_H
 
 #include <QString>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/sha1hash.h>
 
 namespace bt
@@ -33,7 +33,7 @@ namespace bt
 		magnet links have the format: 
 		magnet:?xt=urn:btih:info_hash&dn=name&tr=tracker-url
 	*/
-	class BTCORE_EXPORT MagnetLink
+	class KTORRENT_EXPORT MagnetLink
 	{
 	public:
 		MagnetLink();

@@ -21,7 +21,7 @@
 #define BTDATACHECKERLISTENER_H
 
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -29,7 +29,7 @@ namespace bt
 	/**
 		@author Joris Guisson <joris.guisson@gmail.com>
 	*/
-	class BTCORE_EXPORT DataCheckerListener
+	class KTORRENT_EXPORT DataCheckerListener
 	{
 	public:
 		DataCheckerListener(bool auto_import);

@@ -23,13 +23,13 @@
 #include <qobject.h>
 #include <qlist.h>
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 		
 namespace bt
 {
 	class WaitJob;
 
-	struct BTCORE_EXPORT PotentialPeer
+	struct KTORRENT_EXPORT PotentialPeer
 	{
 		QString ip;
 		bt::Uint16 port;
@@ -45,7 +45,7 @@ namespace bt
 	 * for torrents. PeerSources should work independently and should emit a signal when they
 	 * have peers ready.
 	*/
-	class BTCORE_EXPORT PeerSource : public QObject
+	class KTORRENT_EXPORT PeerSource : public QObject
 	{
 		Q_OBJECT
 	public:

@@ -22,7 +22,7 @@
 
 #include <qstring.h>
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -38,7 +38,7 @@ namespace bt
 	 *
 	 * Class to decode b-encoded data.
 	 */
-	class BTCORE_EXPORT BDecoder
+	class KTORRENT_EXPORT BDecoder
 	{
 		const QByteArray & data;
 		Uint32 pos;

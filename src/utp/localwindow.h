@@ -22,7 +22,7 @@
 #ifndef UTP_LOCALWINDOW_H
 #define UTP_LOCALWINDOW_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 #include <util/circularbuffer.h>
 #include <QLinkedList>
@@ -48,7 +48,7 @@ namespace utp
 		Manages the local window of a UTP connection.
 		This is a circular buffer.
 	*/
-	class BTCORE_EXPORT LocalWindow : public bt::CircularBuffer
+	class KTORRENT_EXPORT LocalWindow : public bt::CircularBuffer
 	{
 	public:
 		LocalWindow(bt::Uint32 cap = DEFAULT_CAPACITY);

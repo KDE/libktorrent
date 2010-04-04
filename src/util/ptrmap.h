@@ -21,7 +21,7 @@
 #define BTPTRMAP_H
 
 #include <map>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {

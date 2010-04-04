@@ -31,7 +31,7 @@ namespace utp
 {
 	const bt::Uint32 MAX_DELAY = 0xFFFFFFFF;
 
-	class BTCORE_EXPORT DelayWindow
+	class KTORRENT_EXPORT DelayWindow
 	{
 	public:
 		DelayWindow();

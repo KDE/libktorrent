@@ -20,7 +20,7 @@
 #include "peer.h"
 
 #include <math.h>
-#include <btversion.h>
+#include <version.h>
 #include <util/log.h>
 #include <util/functions.h>
 #include <net/address.h>

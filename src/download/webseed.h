@@ -23,7 +23,7 @@
 
 #include <QObject>
 #include <kurl.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 #include <interfaces/webseedinterface.h>
 #include <interfaces/chunkdownloadinterface.h>
@@ -43,7 +43,7 @@ namespace bt
 		@author Joris Guisson
 		Class which handles downloading from a webseed
 	*/
-	class BTCORE_EXPORT WebSeed : public QObject,public WebSeedInterface
+	class KTORRENT_EXPORT WebSeed : public QObject,public WebSeedInterface
 	{
 		Q_OBJECT
 	public:

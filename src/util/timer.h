@@ -22,7 +22,7 @@
 
 #include <util/log.h>
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "constants.h"
 
 namespace bt
@@ -31,7 +31,7 @@ namespace bt
 	/**
 	@author Joris Guisson
 	*/
-	class BTCORE_EXPORT Timer
+	class KTORRENT_EXPORT Timer
 	{
 		TimeStamp last;
 		TimeStamp elapsed;

@@ -24,7 +24,7 @@
 #include <QList>
 #include <QByteArray>
 #include <QMutex>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 #include <utp/timevalue.h>
 
@@ -48,7 +48,7 @@ namespace utp
 	/**
 		The Retransmitter provides is an interface class to retransmit packets
 	*/
-	class BTCORE_EXPORT Retransmitter
+	class KTORRENT_EXPORT Retransmitter
 	{
 	public:
 		virtual ~Retransmitter() {}
@@ -66,7 +66,7 @@ namespace utp
 	/**
 		Keeps track of the remote sides window including all packets inflight.
 	*/
-	class BTCORE_EXPORT RemoteWindow
+	class KTORRENT_EXPORT RemoteWindow
 	{
 	public:
 		RemoteWindow();

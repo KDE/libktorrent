@@ -23,7 +23,7 @@
 #include <klocale.h>
 #include <time.h>
 #include <util/error.h>
-#include <btversion.h>
+#include <version.h>
 #include <bcodec/bencoder.h>
 #include <util/file.h>
 #include <util/sha1hash.h>

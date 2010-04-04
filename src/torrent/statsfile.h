@@ -22,7 +22,7 @@
 
 
 #include <KSharedConfig>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 
@@ -33,7 +33,7 @@ namespace bt
 	 * @brief This class is used for loading/storing torrent stats in a file.
 	 * @author Ivan Vasic <ivasic@gmail.com>
 	*/
-	class BTCORE_EXPORT StatsFile 
+	class KTORRENT_EXPORT StatsFile 
 	{
 	public:
 		/**

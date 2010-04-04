@@ -21,7 +21,7 @@
 #define BTGLOBALS_H
 
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace utp
 {
@@ -44,7 +44,7 @@ namespace bt
 
 	
 
-	class BTCORE_EXPORT Globals
+	class KTORRENT_EXPORT Globals
 	{
 	public:
 		virtual ~Globals();

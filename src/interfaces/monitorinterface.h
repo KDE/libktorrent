@@ -20,7 +20,7 @@
 #ifndef BTMONITORINTERFACE_H
 #define BTMONITORINTERFACE_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -35,7 +35,7 @@ namespace bt
 	 * Classes who want to keep track of all peers currently connected for a given
 	 * torrent and all chunks who are currently downloading can implement this interface.
 	 */
-	class BTCORE_EXPORT MonitorInterface
+	class KTORRENT_EXPORT MonitorInterface
 	{
 	public:
 		MonitorInterface();

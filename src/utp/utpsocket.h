@@ -21,7 +21,7 @@
 #ifndef UTP_UTPSOCKET_H
 #define UTP_UTPSOCKET_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 #include <net/socketdevice.h>
 
@@ -32,7 +32,7 @@ namespace utp
 	/**
 		UTPSocket class serves as an interface for the networking code.
 	*/
-	class BTCORE_EXPORT UTPSocket : public net::SocketDevice
+	class KTORRENT_EXPORT UTPSocket : public net::SocketDevice
 	{
 	public:
 		UTPSocket();

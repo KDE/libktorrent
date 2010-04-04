@@ -23,7 +23,7 @@
 
 #include <k3resolver.h>
 #include <net/address.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace mse
 {
@@ -52,7 +52,7 @@ namespace net
 	 * 
 	 * Class which handles the SOCKSv5 protocol
 	*/
-	class BTCORE_EXPORT Socks
+	class KTORRENT_EXPORT Socks
 	{
 	public:
 		enum State

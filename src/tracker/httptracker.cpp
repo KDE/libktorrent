@@ -39,7 +39,7 @@
 #include <peer/peermanager.h>
 #include <torrent/server.h>
 #include <torrent/globals.h>
-#include "btversion.h"
+#include "version.h"
 #include "httpannouncejob.h"
 #include "kioannouncejob.h"
 

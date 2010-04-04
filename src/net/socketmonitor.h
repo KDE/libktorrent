@@ -24,7 +24,7 @@
 #include <list>
 #include <qmutex.h>
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 
 namespace net
@@ -41,7 +41,7 @@ namespace net
 	 * Monitors all sockets for upload and download traffic.
 	 * It uses two threads to do this.
 	*/
-	class BTCORE_EXPORT SocketMonitor 
+	class KTORRENT_EXPORT SocketMonitor 
 	{
 		static SocketMonitor self;
 

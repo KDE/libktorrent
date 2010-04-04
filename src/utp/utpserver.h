@@ -29,7 +29,7 @@
 #include <net/wakeuppipe.h>
 #include <util/ptrmap.h>
 #include <interfaces/serverinterface.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "connection.h"
 #include "pollpipe.h"
 
@@ -39,7 +39,7 @@ namespace utp
 	class UTPServerThread;
 	class UTPSocket;
 
-	class BTCORE_EXPORT UTPServer : public bt::ServerInterface,public Transmitter
+	class KTORRENT_EXPORT UTPServer : public bt::ServerInterface,public Transmitter
 	{
 		Q_OBJECT
 	public:

@@ -1,37 +1,10 @@
-#XFS prealloc
-CHECK_INCLUDE_FILES(xfs/xfs.h HAVE_XFS_XFS_H)
-IF(HAVE_XFS_XFS_H)
-	SET(CMAKE_EXTRA_INCLUDE_FILES xfs/xfs.h)
-	CHECK_TYPE_SIZE(__u64 HAVE___U64)
-	CHECK_TYPE_SIZE(__s64 HAVE___S64)
-	SET(CMAKE_EXTRA_INCLUDE_FILES)
-ENDIF(HAVE_XFS_XFS_H)
-
-# check for 64 bit file I/O functions
-check_function_exists(fopen64 HAVE_FOPEN64)
-check_function_exists(fseeko64 HAVE_FSEEKO64)
-check_function_exists(fseeko HAVE_FSEEKO)
-check_function_exists(ftello64 HAVE_FTELLO64)
-check_function_exists(ftello HAVE_FTELLO)
-check_function_exists(fstat64 HAVE_FSTAT64)
-check_function_exists(stat64 HAVE_STAT64)
-check_function_exists(ftruncate64 HAVE_FTRUNCATE64)
-check_function_exists(lseek64 HAVE_LSEEK64)
-check_function_exists(mmap64 HAVE_MMAP64)
-check_function_exists(munmap64 HAVE_MUNMAP64)
-check_function_exists(posix_fallocate64 HAVE_POSIX_FALLOCATE64)
-check_function_exists(posix_fallocate HAVE_POSIX_FALLOCATE)
-check_function_exists(statvfs HAVE_STATVFS)
-check_function_exists(statvfs64 HAVE_STATVFS64)
-
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-btcore.h.cmake ${CMAKE_BINARY_DIR}/config-btcore.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-ktorrent.h.cmake ${CMAKE_BINARY_DIR}/config-ktorrent.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${QCA2_INCLUDE_DIR})
 
-
-set(libbtcore_SRC 
+set(libktorrent_SRC 
 	util/bitset.cpp
 	util/timer.cpp
 	util/urlencoder.cpp
@@ -207,25 +180,25 @@ set(libbtcore_SRC
 	utp/pollpipe.cpp
 	utp/delaywindow.cpp
 	
-	btversion.cpp
+	version.cpp
 )
 
 if(WIN32)
 # Compile stuff for windows
-set(libbtcore_SRC ${libbtcore_SRC} util/win32.cpp)
+set(libktorrent_SRC ${libktorrent_SRC} util/win32.cpp)
 endif(WIN32)
 
 
-# kde4_add_ui_files(libbtcore_SRC ${libbtcore_UI})
-# kde4_add_kcfg_files(libbtcore_SRC settings.kcfgc)
-kde4_add_library(btcore SHARED ${libbtcore_SRC})
+# kde4_add_ui_files(libktorrent_SRC ${libktorrent_UI})
+# kde4_add_kcfg_files(libktorrent_SRC settings.kcfgc)
+kde4_add_library(btcore SHARED ${libktorrent_SRC})
 
 
 target_link_libraries(btcore ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${QCA2_LIBRARIES})
 if(WIN32)
 target_link_libraries(btcore ws2_32)
 endif(WIN32)
-set_target_properties(btcore PROPERTIES VERSION 13.0.0 SOVERSION 13 )
+set_target_properties(btcore PROPERTIES VERSION 1.0.0 SOVERSION 1)
 install(TARGETS btcore  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
@@ -290,8 +263,8 @@ set (download_HDR
 )
 
 set (btcore_HDR 
-	btcore_export.h
-	btversion.h
+	ktorrent_export.h
+	version.h
 )
 	
 set (bcodec_HDR
@@ -364,17 +337,17 @@ set (migrate_HDR
 
 
 
-install(FILES ${tracker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore/tracker COMPONENT Devel)
-install(FILES ${diskio_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore/diskio COMPONENT Devel)
-install(FILES ${bcodec_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore/bcodec COMPONENT Devel)
-install(FILES ${mse_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore/mse COMPONENT Devel)
-install(FILES ${interfaces_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore/interfaces COMPONENT Devel)
-install(FILES ${peer_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore/peer COMPONENT Devel)
-install(FILES ${datachecker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore/datachecker COMPONENT Devel)
-install(FILES ${dht_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore/dht COMPONENT Devel)
-install(FILES ${migrate_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore/migrate COMPONENT Devel)
-install(FILES ${download_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore/download COMPONENT Devel)
-install(FILES ${btcore_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore COMPONENT Devel)
+install(FILES ${tracker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/tracker COMPONENT Devel)
+install(FILES ${diskio_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/diskio COMPONENT Devel)
+install(FILES ${bcodec_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/bcodec COMPONENT Devel)
+install(FILES ${mse_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/mse COMPONENT Devel)
+install(FILES ${interfaces_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/interfaces COMPONENT Devel)
+install(FILES ${peer_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/peer COMPONENT Devel)
+install(FILES ${datachecker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/datachecker COMPONENT Devel)
+install(FILES ${dht_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/dht COMPONENT Devel)
+install(FILES ${migrate_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/migrate COMPONENT Devel)
+install(FILES ${download_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/download COMPONENT Devel)
+install(FILES ${btcore_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent COMPONENT Devel)
 
 add_subdirectory(torrent)
 add_subdirectory(net)

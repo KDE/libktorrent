@@ -20,7 +20,7 @@
 #ifndef KTWAKEUPPIPE_H
 #define KTWAKEUPPIPE_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/pipe.h>
 #include <net/poll.h>
 #include <QMutex>
@@ -34,7 +34,7 @@ namespace net
 		One end needs to be part of the poll or select, and the other end will send dummy data to it.
 		Waking up the select or poll call.
 	*/
-	class BTCORE_EXPORT WakeUpPipe : public bt::Pipe, public PollClient
+	class KTORRENT_EXPORT WakeUpPipe : public bt::Pipe, public PollClient
 	{
 	public:
 		WakeUpPipe();

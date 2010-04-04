@@ -20,7 +20,7 @@
 #ifndef BTTIMEESTIMATOR_H
 #define BTTIMEESTIMATOR_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 namespace bt
@@ -73,7 +73,7 @@ namespace bt
 	 * ETA estimator class. It will use different algorithms for different download phases.	
 	 * @author Ivan Vasic <ivasic@gmail.com>
 	*/
-	class BTCORE_EXPORT TimeEstimator
+	class KTORRENT_EXPORT TimeEstimator
 	{
 		public:
 			

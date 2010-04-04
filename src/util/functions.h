@@ -21,7 +21,7 @@
 #define BTFUNCTIONS_H
 
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <QString>
 #include "constants.h"
 
@@ -30,62 +30,62 @@ namespace bt
 {
 	struct TorrentStats;
 	
-	BTCORE_EXPORT double Percentage(const TorrentStats & s);
+	KTORRENT_EXPORT double Percentage(const TorrentStats & s);
 
-	BTCORE_EXPORT void WriteUint64(Uint8* buf,Uint32 off,Uint64 val);
-	BTCORE_EXPORT Uint64 ReadUint64(const Uint8* buf,Uint64 off);
+	KTORRENT_EXPORT void WriteUint64(Uint8* buf,Uint32 off,Uint64 val);
+	KTORRENT_EXPORT Uint64 ReadUint64(const Uint8* buf,Uint64 off);
 	
-	BTCORE_EXPORT void WriteUint32(Uint8* buf,Uint32 off,Uint32 val);
-	BTCORE_EXPORT Uint32 ReadUint32(const Uint8* buf,Uint32 off);
+	KTORRENT_EXPORT void WriteUint32(Uint8* buf,Uint32 off,Uint32 val);
+	KTORRENT_EXPORT Uint32 ReadUint32(const Uint8* buf,Uint32 off);
 	
-	BTCORE_EXPORT void WriteUint16(Uint8* buf,Uint32 off,Uint16 val);
-	BTCORE_EXPORT Uint16 ReadUint16(const Uint8* buf,Uint32 off);
+	KTORRENT_EXPORT void WriteUint16(Uint8* buf,Uint32 off,Uint16 val);
+	KTORRENT_EXPORT Uint16 ReadUint16(const Uint8* buf,Uint32 off);
 
 	
-	BTCORE_EXPORT void WriteInt64(Uint8* buf,Uint32 off,Int64 val);
-	BTCORE_EXPORT Int64 ReadInt64(const Uint8* buf,Uint32 off);
+	KTORRENT_EXPORT void WriteInt64(Uint8* buf,Uint32 off,Int64 val);
+	KTORRENT_EXPORT Int64 ReadInt64(const Uint8* buf,Uint32 off);
 	
-	BTCORE_EXPORT void WriteInt32(Uint8* buf,Uint32 off,Int32 val);
-	BTCORE_EXPORT Int32 ReadInt32(const Uint8* buf,Uint32 off);
+	KTORRENT_EXPORT void WriteInt32(Uint8* buf,Uint32 off,Int32 val);
+	KTORRENT_EXPORT Int32 ReadInt32(const Uint8* buf,Uint32 off);
 	
-	BTCORE_EXPORT void WriteInt16(Uint8* buf,Uint32 off,Int16 val);
-	BTCORE_EXPORT Int16 ReadInt16(const Uint8* buf,Uint32 off);
+	KTORRENT_EXPORT void WriteInt16(Uint8* buf,Uint32 off,Int16 val);
+	KTORRENT_EXPORT Int16 ReadInt16(const Uint8* buf,Uint32 off);
 	
-	BTCORE_EXPORT void UpdateCurrentTime();
+	KTORRENT_EXPORT void UpdateCurrentTime();
 	
-	BTCORE_EXPORT extern TimeStamp global_time_stamp;
+	KTORRENT_EXPORT extern TimeStamp global_time_stamp;
 	
 	inline TimeStamp CurrentTime() {return global_time_stamp;}
 	
-	BTCORE_EXPORT TimeStamp Now();
+	KTORRENT_EXPORT TimeStamp Now();
 	
-	BTCORE_EXPORT QString DirSeparator();
-	BTCORE_EXPORT bool IsMultimediaFile(const QString & filename);
+	KTORRENT_EXPORT QString DirSeparator();
+	KTORRENT_EXPORT bool IsMultimediaFile(const QString & filename);
 
 	/**
 	 * Maximize the file and memory limits using setrlimit.
 	 */
-	BTCORE_EXPORT bool MaximizeLimits();
+	KTORRENT_EXPORT bool MaximizeLimits();
 	
 	/// Get the maximum number of open files
-	BTCORE_EXPORT Uint32 MaxOpenFiles();
+	KTORRENT_EXPORT Uint32 MaxOpenFiles();
 	
 	/// Set the network interface to use (null means all interfaces)
-	BTCORE_EXPORT void SetNetworkInterface(const QString & iface);
+	KTORRENT_EXPORT void SetNetworkInterface(const QString & iface);
 	
 	/// Get the network interface which needs to be used (this will return the name e.g. eth0, wlan0 ...)
-	BTCORE_EXPORT QString NetworkInterface(); 
+	KTORRENT_EXPORT QString NetworkInterface(); 
 
 	/// Get the IP address of the network interface
-	BTCORE_EXPORT QString NetworkInterfaceIPAddress(const QString & iface);
+	KTORRENT_EXPORT QString NetworkInterfaceIPAddress(const QString & iface);
 	
 	const double TO_KB = 1024.0;
 	const double TO_MEG = (1024.0 * 1024.0);
 	const double TO_GIG = (1024.0 * 1024.0 * 1024.0);
 	
-	BTCORE_EXPORT QString BytesToString(bt::Uint64 bytes);
-	BTCORE_EXPORT QString BytesPerSecToString(double speed);
-	BTCORE_EXPORT QString DurationToString(bt::Uint32 nsecs);
+	KTORRENT_EXPORT QString BytesToString(bt::Uint64 bytes);
+	KTORRENT_EXPORT QString BytesPerSecToString(double speed);
+	KTORRENT_EXPORT QString DurationToString(bt::Uint32 nsecs);
 	
 	template<class T> int CompareVal(T a,T b)
 	{
@@ -103,7 +103,7 @@ namespace bt
 	}
 
 #ifdef Q_WS_WIN
-	BTCORE_EXPORT bool InitWindowsSocketsAPI();
+	KTORRENT_EXPORT bool InitWindowsSocketsAPI();
 #endif
 }
 

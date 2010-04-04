@@ -22,7 +22,7 @@
 
 #include <qobject.h>
 #include <kio/job.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -36,7 +36,7 @@ namespace bt
 	 * ExitOperation's can be used in combination with a WaitJob, to wait for a certain amount of time
 	 * to give several ExitOperation's the time time to finish up.
 	*/
-	class BTCORE_EXPORT ExitOperation : public QObject
+	class KTORRENT_EXPORT ExitOperation : public QObject
 	{
 		Q_OBJECT
 	public:

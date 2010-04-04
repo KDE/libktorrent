@@ -29,7 +29,7 @@
 #include <torrent/torrent.h>
 #include <torrent/globals.h>
 #include <download/chunkdownload.h>
-#include "btversion.h"
+#include "version.h"
 
 namespace bt
 {

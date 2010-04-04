@@ -23,7 +23,7 @@
 
 #include <QtGlobal>
 #include <QString>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 
@@ -46,7 +46,7 @@ namespace utp
 	+---------------+---------------+---------------+---------------+
 	*/
 	
-	struct BTCORE_EXPORT Header
+	struct KTORRENT_EXPORT Header
 	{
 		unsigned int version:4;
 		unsigned int type:4;
@@ -93,7 +93,7 @@ namespace utp
 	const bt::Uint8 ST_RESET = 3;
 	const bt::Uint8 ST_SYN = 4;
 	
-	BTCORE_EXPORT QString TypeToString(bt::Uint8 type);
+	KTORRENT_EXPORT QString TypeToString(bt::Uint8 type);
 	
 	enum ConnectionState
 	{
@@ -117,15 +117,15 @@ namespace utp
 	const bt::Uint32 IP_AND_UDP_OVERHEAD = 28;
 	
 	// Test if a bit is acked
-	BTCORE_EXPORT bool Acked(const SelectiveAck* sack,bt::Uint16 bit);
+	KTORRENT_EXPORT bool Acked(const SelectiveAck* sack,bt::Uint16 bit);
 	
 	// Turn on a bit in the SelectiveAck
-	BTCORE_EXPORT void Ack(SelectiveAck* sack,bt::Uint16 bit);
+	KTORRENT_EXPORT void Ack(SelectiveAck* sack,bt::Uint16 bit);
 	
 	/**
 		Helper class to parse packets
 	*/
-	class BTCORE_EXPORT PacketParser
+	class KTORRENT_EXPORT PacketParser
 	{
 	public:
 		PacketParser(const QByteArray & packet);

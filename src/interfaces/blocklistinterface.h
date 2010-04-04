@@ -22,7 +22,7 @@
 #ifndef IPBLOCKINGINTERFACE_H
 #define IPBLOCKINGINTERFACE_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace net
 {
@@ -36,7 +36,7 @@ namespace bt
 	 * @author Ivan Vasic
 	 * @brief Base class for BlockLists
 	*/
-	class BTCORE_EXPORT BlockListInterface 
+	class KTORRENT_EXPORT BlockListInterface 
 	{	
 	public:
 		BlockListInterface();

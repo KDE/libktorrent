@@ -23,7 +23,7 @@
 
 #include <QString>
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <qdatetime.h>
 
 #if defined ERROR
@@ -50,7 +50,7 @@ namespace bt
 		INVALID_STATUS
 	};
 
-	struct BTCORE_EXPORT TorrentStats
+	struct KTORRENT_EXPORT TorrentStats
 	{
 		/// The number of bytes imported (igore these for average speed)
 		Uint64 imported_bytes;

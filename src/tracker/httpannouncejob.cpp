@@ -17,7 +17,7 @@
 */
 
 #include "httpannouncejob.h"
-#include <btversion.h>
+#include <version.h>
 #include <KLocalizedString>
 #include <util/log.h>
 #include <QTimer>

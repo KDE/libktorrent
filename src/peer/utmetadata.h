@@ -33,7 +33,7 @@ namespace bt
 	/**
 		Handles ut_metadata extension
 	*/
-	class BTCORE_EXPORT UTMetaData : public PeerProtocolExtension
+	class KTORRENT_EXPORT UTMetaData : public PeerProtocolExtension
 	{
 	public:
 		UTMetaData(const Torrent & tor,bt::Uint32 id,Peer* peer);

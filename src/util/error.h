@@ -21,7 +21,7 @@
 #define BTERROR_H
 
 #include <qstring.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -29,7 +29,7 @@ namespace bt
 	/**
 		@author Joris Guisson
 	*/
-	class BTCORE_EXPORT Error
+	class KTORRENT_EXPORT Error
 	{
 		QString msg;
 	public:
@@ -39,7 +39,7 @@ namespace bt
 		QString toString() const {return msg;}
 	};
 
-	class BTCORE_EXPORT Warning
+	class KTORRENT_EXPORT Warning
 	{
 		QString msg;
 	public:

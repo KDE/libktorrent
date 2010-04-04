@@ -21,7 +21,7 @@
 #ifndef BTQUEUEMANAGERINTERFACE_H
 #define BTQUEUEMANAGERINTERFACE_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -31,7 +31,7 @@ namespace bt
 	/**
 		@author
 	*/
-	class BTCORE_EXPORT QueueManagerInterface
+	class KTORRENT_EXPORT QueueManagerInterface
 	{
 		static bool qm_enabled;
 	public:

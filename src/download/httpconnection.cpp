@@ -27,7 +27,7 @@
 #include <util/log.h>
 #include <util/functions.h>
 
-#include "btversion.h"
+#include "version.h"
 
 namespace bt
 {

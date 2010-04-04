@@ -28,7 +28,7 @@ namespace bt
 	class PreallocationThread;
 	class ChunkManager;
 
-	class BTCORE_EXPORT PreallocationJob : public bt::Job
+	class KTORRENT_EXPORT PreallocationJob : public bt::Job
 	{
 		Q_OBJECT
 	public:

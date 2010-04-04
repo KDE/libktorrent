@@ -22,7 +22,7 @@
 #define BTWEBSEEDINTERFACE_H
 
 #include <kurl.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 namespace bt
@@ -31,7 +31,7 @@ namespace bt
 	/**
 		Interface for WebSeeds
 	*/
-	class BTCORE_EXPORT WebSeedInterface 
+	class KTORRENT_EXPORT WebSeedInterface 
 	{
 	public:
 		WebSeedInterface(const KUrl & url,bool user);

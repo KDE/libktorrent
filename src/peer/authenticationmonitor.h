@@ -22,7 +22,7 @@
 
 #include <list>
 #include <vector>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <net/poll.h>
 
 
@@ -35,7 +35,7 @@ namespace bt
 	
 		Monitors ongoing authentication attempts. This class is a singleton.
 	*/
-	class BTCORE_EXPORT AuthenticationMonitor : public net::Poll
+	class KTORRENT_EXPORT AuthenticationMonitor : public net::Poll
 	{
 		std::list<AuthenticateBase*> auths;
 		

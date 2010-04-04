@@ -28,7 +28,7 @@ namespace bt
 	class DataCheckerListener;
 	
 	/// Job which runs a DataChecker
-	class BTCORE_EXPORT DataCheckerJob : public bt::Job
+	class KTORRENT_EXPORT DataCheckerJob : public bt::Job
 	{
 		Q_OBJECT
 	public:

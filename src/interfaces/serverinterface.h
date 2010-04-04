@@ -23,7 +23,7 @@
 
 #include <QObject>
 #include <QStringList>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 namespace mse
@@ -39,7 +39,7 @@ namespace bt
 	/**
 		Base class for all servers which accept connections.
 	*/
-	class BTCORE_EXPORT ServerInterface : public QObject
+	class KTORRENT_EXPORT ServerInterface : public QObject
 	{
 		Q_OBJECT
 	public:

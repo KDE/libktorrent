@@ -25,7 +25,7 @@
 #include <QThread>
 #include <QMutex>
 #include <QWaitCondition>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <net/address.h>
 
 

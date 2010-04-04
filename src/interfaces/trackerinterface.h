@@ -22,7 +22,7 @@
 
 #include <QDateTime>
 #include <kurl.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 namespace bt 
@@ -35,7 +35,7 @@ namespace bt
 	/**
 		Interface class for trackers to be used in plugins
 	 */
-	class BTCORE_EXPORT TrackerInterface
+	class KTORRENT_EXPORT TrackerInterface
 	{
 	public:
 		TrackerInterface(const KUrl & url);

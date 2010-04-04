@@ -22,7 +22,7 @@
 #define BT_JOB_H
 
 #include <kio/job.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "torrentstats.h"
 
 namespace bt 
@@ -32,7 +32,7 @@ namespace bt
 	/**
 		A Job is a KIO::Job which runs on a torrent
 	*/
-	class BTCORE_EXPORT Job : public KIO::Job
+	class KTORRENT_EXPORT Job : public KIO::Job
 	{
 		Q_OBJECT
 	public:

@@ -40,7 +40,7 @@
 #include <peer/packetwriter.h>
 #include <peer/accessmanager.h>
 #include "chunkselector.h"
-#include "btversion.h"
+#include "version.h"
 #include "webseed.h"
 
 

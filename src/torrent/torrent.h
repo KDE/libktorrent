@@ -28,7 +28,7 @@
 #include <util/constants.h>
 #include <interfaces/torrentinterface.h>
 #include <peer/peerid.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "torrentfile.h"
 
 class QTextCodec;
@@ -60,7 +60,7 @@ namespace bt
 	 *
 	 * Listener base class, to get notified when the priority of a file changes.
 	 */
-	class BTCORE_EXPORT FilePriorityListener 
+	class KTORRENT_EXPORT FilePriorityListener 
 	{
 	public:
 		virtual ~FilePriorityListener() {}
@@ -76,7 +76,7 @@ namespace bt
 	 * Loads a torrent file and calculates some miscelanious other data,
 	 * like the info_hash and the peer_id.
 	 */
-	class BTCORE_EXPORT Torrent
+	class KTORRENT_EXPORT Torrent
 	{
 	public:
 		Torrent();

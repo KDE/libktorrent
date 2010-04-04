@@ -21,7 +21,7 @@
 #define BTHTTPTRACKER_H
 
 #include <QTimer>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "tracker.h"
 
 
@@ -42,7 +42,7 @@ namespace bt
 	 *
 	 * This class uses the HTTP protocol to communicate with the tracker.
 	 */
-	class BTCORE_EXPORT HTTPTracker : public Tracker
+	class KTORRENT_EXPORT HTTPTracker : public Tracker
 	{
 		Q_OBJECT
 	public:

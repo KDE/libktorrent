@@ -21,14 +21,14 @@
 #ifndef BT_KIOANNOUNCEJOB_H
 #define BT_KIOANNOUNCEJOB_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <kio/jobclasses.h>
 
 
 namespace bt
 {
 
-	class BTCORE_EXPORT KIOAnnounceJob : public KIO::Job
+	class KTORRENT_EXPORT KIOAnnounceJob : public KIO::Job
 	{
 		Q_OBJECT
 	public:

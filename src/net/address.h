@@ -23,7 +23,7 @@
 #include <qstring.h>
 #include <util/constants.h>
 #include <k3socketaddress.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace net
 {
@@ -36,7 +36,7 @@ namespace net
 	 * Network address, contains an IP address and a port number. 
 	 * This supports both IPv4 and IPv6 addresses.
 	*/
-	class BTCORE_EXPORT Address : public KNetwork::KInetSocketAddress
+	class KTORRENT_EXPORT Address : public KNetwork::KInetSocketAddress
 	{
 	public:
 		Address();	

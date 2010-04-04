@@ -20,7 +20,7 @@
 #ifndef BTCACHE_H
 #define BTCACHE_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 #include <torrent/torrent.h>
 #include <QString>
@@ -46,7 +46,7 @@ namespace bt
 	 * Interface for a class which manages downloaded data.
 	 * Subclasses should implement the load and save methods.
 	 */
-	class BTCORE_EXPORT Cache
+	class KTORRENT_EXPORT Cache
 	{
 	protected:
 		Torrent & tor;

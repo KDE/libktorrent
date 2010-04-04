@@ -22,7 +22,7 @@
 #define BTCHUNKSELECTORINTERFACE_H
 
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -37,7 +37,7 @@ namespace bt
 	* 
 	* Interface class for selecting chunks to download.
 	*/
-	class BTCORE_EXPORT ChunkSelectorInterface
+	class KTORRENT_EXPORT ChunkSelectorInterface
 	{
 	protected:
 		ChunkManager & cman;
@@ -90,7 +90,7 @@ namespace bt
 	/**
 	 * Factory to create ChunkSelector's
 	*/
-	class BTCORE_EXPORT ChunkSelectorFactoryInterface
+	class KTORRENT_EXPORT ChunkSelectorFactoryInterface
 	{
 	public:
 		ChunkSelectorFactoryInterface();

@@ -21,7 +21,7 @@
 #define BTPEERID_H
 
 #include <qstring.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -29,7 +29,7 @@ namespace bt
 	/**
 	@author Joris Guisson
 	*/
-	class BTCORE_EXPORT PeerID
+	class KTORRENT_EXPORT PeerID
 	{
 		char id[20];
 		QString client_name;

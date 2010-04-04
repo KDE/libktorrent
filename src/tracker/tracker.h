@@ -25,7 +25,7 @@
 #include <interfaces/peersource.h>
 #include <interfaces/trackerinterface.h>
 #include <peer/peerid.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <QTimer>
 
 class KUrl;
@@ -36,7 +36,7 @@ namespace bt
 		Interface used by the Tracker to obtain the data it needs to know
 		when announcing.
 	*/
-	class BTCORE_EXPORT TrackerDataSource
+	class KTORRENT_EXPORT TrackerDataSource
 	{
 	public:
 		virtual ~TrackerDataSource() {}
@@ -50,7 +50,7 @@ namespace bt
 	/**
 	 * Base class for all tracker classes.
 	*/
-	class BTCORE_EXPORT Tracker : public PeerSource,public TrackerInterface
+	class KTORRENT_EXPORT Tracker : public PeerSource,public TrackerInterface
 	{
 		Q_OBJECT
 	public:

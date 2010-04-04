@@ -28,7 +28,7 @@
 #include <peer/peerid.h>
 #include <util/bitset.h>
 #include <interfaces/peersource.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace mse
 {
@@ -58,7 +58,7 @@ namespace bt
 	const Uint32 MAX_SIMULTANIOUS_AUTHS = 20;
 	
 	/// Base class for handling pieces
-	class BTCORE_EXPORT PieceHandler
+	class KTORRENT_EXPORT PieceHandler
 	{
 	public:
 		virtual ~PieceHandler() {}
@@ -73,7 +73,7 @@ namespace bt
 	 * This class manages all Peer objects.
 	 * It can also open connections to other peers.
 	 */
-	class BTCORE_EXPORT PeerManager : public QObject
+	class KTORRENT_EXPORT PeerManager : public QObject
 	{
 		Q_OBJECT
 	public:

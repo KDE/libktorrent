@@ -25,7 +25,7 @@
 #include <QMutex>
 #include <QWaitCondition>
 #include <QBasicTimer>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <net/address.h>
 #include <utp/utpprotocol.h>
 #include <util/circularbuffer.h>
@@ -45,7 +45,7 @@ namespace utp
 	/**
 		Interface class for transmitting packets
 	*/
-	class BTCORE_EXPORT Transmitter
+	class KTORRENT_EXPORT Transmitter
 	{
 	public:
 		virtual ~Transmitter() {}
@@ -57,7 +57,7 @@ namespace utp
 	/**
 		Keeps track of a single UTP connection
 	*/
-	class BTCORE_EXPORT Connection : public QObject, public Retransmitter
+	class KTORRENT_EXPORT Connection : public QObject, public Retransmitter
 	{
 		Q_OBJECT
 	public:

@@ -27,7 +27,7 @@
 #include <vector> 
 #include <util/bitset.h>
 #include <torrent/torrent.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "chunk.h"
 
 
@@ -58,7 +58,7 @@ namespace bt
 	 * The chunks are stored in the cache file in the correct order. Eliminating
 	 * the need for a file reconstruction algorithm for single files.
 	 */
-	class BTCORE_EXPORT ChunkManager : public QObject
+	class KTORRENT_EXPORT ChunkManager : public QObject
 	{
 		Q_OBJECT
 				

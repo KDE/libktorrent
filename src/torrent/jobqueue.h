@@ -22,7 +22,7 @@
 #define BT_JOBQUEUE_H
 
 #include <QObject>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <torrent/job.h>
 
 namespace bt 
@@ -32,7 +32,7 @@ namespace bt
 	/**
 		A job queue handles all jobs running on a torrent in a sequential order
 	*/
-	class BTCORE_EXPORT JobQueue : public QObject
+	class KTORRENT_EXPORT JobQueue : public QObject
 	{
 		Q_OBJECT
 	public:

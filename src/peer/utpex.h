@@ -21,7 +21,7 @@
 #define BTUTPEX_H
 		
 #include <map>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <net/address.h>
 #include <util/constants.h>
 #include "peerprotocolextension.h"
@@ -37,7 +37,7 @@ namespace bt
 	 * 
 	 * Class which handles µTorrent's peer exchange
 	*/
-	class BTCORE_EXPORT UTPex : public PeerProtocolExtension
+	class KTORRENT_EXPORT UTPex : public PeerProtocolExtension
 	{
 	public:
 		UTPex(Peer* peer,Uint32 id);

@@ -17,26 +17,26 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef BTCORE_EXPORT_H
-#define BTCORE_EXPORT_H
+#ifndef KTORRENT_EXPORT_H
+#define KTORRENT_EXPORT_H
 
 /* needed for KDE_EXPORT and KDE_IMPORT macros */
 #include <kdemacros.h>
 
-#ifndef BTCORE_EXPORT
-# if defined(MAKE_BTCORE_LIB) || defined(MAKE_KGET_BITTORRENTFACTORY_LIB)
+#ifndef KTORRENT_EXPORT
+# if defined(MAKE_KTORRENT_LIB) || defined(MAKE_KGET_BITTORRENTFACTORY_LIB)
    /* We are building this library */ 
-#  define BTCORE_EXPORT KDE_EXPORT
+#  define KTORRENT_EXPORT KDE_EXPORT
 # else
    /* We are using this library */ 
-#  define BTCORE_EXPORT KDE_IMPORT
+#  define KTORRENT_EXPORT KDE_IMPORT
 # endif
 
-# ifndef BTCORE_EXPORT_DEPRECATED
-#  define BTCORE_EXPORT_DEPRECATED KDE_DEPRECATED BTCORE_EXPORT
+# ifndef KTORRENT_EXPORT_DEPRECATED
+#  define KTORRENT_EXPORT_DEPRECATED KDE_DEPRECATED KTORRENT_EXPORT
 # endif
 #endif
 
-//#define BTCORE_EXPORT KDE_EXPORT
+//#define KTORRENT_EXPORT KDE_EXPORT
 
 #endif

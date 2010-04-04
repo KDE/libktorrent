@@ -20,7 +20,7 @@
 #ifndef NETSOCKET_H
 #define NETSOCKET_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <net/socketdevice.h>
 #include "address.h"
 
@@ -32,7 +32,7 @@ namespace net
 	/**
 		@author Joris Guisson <joris.guisson@gmail.com>
 	*/
-	class BTCORE_EXPORT Socket : public SocketDevice
+	class KTORRENT_EXPORT Socket : public SocketDevice
 	{
 	public:
 		explicit Socket(int fd,int ip_version);

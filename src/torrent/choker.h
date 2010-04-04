@@ -23,7 +23,7 @@
 #include <qlist.h>
 #include <util/constants.h>
 #include <peer/peer.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 
 namespace bt
@@ -74,7 +74,7 @@ namespace bt
 	 * This class handles the choking and unchoking of Peer's.
 	 * This class needs to be updated every 10 seconds.
 	*/
-	class BTCORE_EXPORT Choker
+	class KTORRENT_EXPORT Choker
 	{
 		ChokeAlgorithm* choke;
 		PeerManager & pman;

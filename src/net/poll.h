@@ -22,7 +22,7 @@
 #define NET_POLL_H
 
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <vector>
 #include <util/ptrmap.h>
 
@@ -34,7 +34,7 @@ namespace net
 	/**
 		Client for a Poll
 	*/
-	class BTCORE_EXPORT PollClient
+	class KTORRENT_EXPORT PollClient
 	{
 	public:
 		PollClient() {}
@@ -53,7 +53,7 @@ namespace net
 	/**
 		Class which does polling of sockets
 	*/
-	class BTCORE_EXPORT Poll
+	class KTORRENT_EXPORT Poll
 	{
 	public:
 		Poll();

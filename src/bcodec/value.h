@@ -22,7 +22,7 @@
 
 #include <qstring.h>
 #include <util/constants.h>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -30,7 +30,7 @@ namespace bt
 	/**
 	@author Joris Guisson
 	*/
-	class BTCORE_EXPORT Value
+	class KTORRENT_EXPORT Value
 	{
 	public:
 		enum Type

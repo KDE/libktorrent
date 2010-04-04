@@ -20,7 +20,7 @@
 #ifndef BTLOGMONITORINTERFACE_H
 #define BTLOGMONITORINTERFACE_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 
 class QString;
 
@@ -34,7 +34,7 @@ namespace bt
 	 * This class is an interface for all classes which want to know,
 	 * what is written to the log.
 	*/
-	class BTCORE_EXPORT LogMonitorInterface
+	class KTORRENT_EXPORT LogMonitorInterface
 	{
 	public:
 		LogMonitorInterface();

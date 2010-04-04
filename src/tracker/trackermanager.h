@@ -23,7 +23,7 @@
 
 #include <QTimer>
 #include <QDateTime>
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/ptrmap.h>
 #include <util/constants.h>
 #include <tracker/tracker.h>
@@ -39,7 +39,7 @@ namespace bt
 	/**
 	 * Manages all trackers
 	 */
-	class BTCORE_EXPORT TrackerManager : public QObject,public bt::TrackersList,public TrackerDataSource
+	class KTORRENT_EXPORT TrackerManager : public QObject,public bt::TrackersList,public TrackerDataSource
 	{
 		Q_OBJECT
 	public:

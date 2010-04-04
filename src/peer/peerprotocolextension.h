@@ -21,7 +21,7 @@
 #ifndef BT_PEERPROTOCOLEXTENSION_H
 #define BT_PEERPROTOCOLEXTENSION_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 namespace bt
@@ -34,7 +34,7 @@ namespace bt
 	/**
 		Base class for protocol extensions
 	*/
-	class BTCORE_EXPORT PeerProtocolExtension
+	class KTORRENT_EXPORT PeerProtocolExtension
 	{
 	public:
 		PeerProtocolExtension(bt::Uint32 id,Peer* peer);

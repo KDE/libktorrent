@@ -20,7 +20,7 @@
 #ifndef BTSHA1HASHGEN_H
 #define BTSHA1HASHGEN_H
 
-#include <btcore_export.h>
+#include <ktorrent_export.h>
 #include "constants.h"
 #include "sha1hash.h"
 
@@ -42,7 +42,7 @@ namespace bt
 	 * 
 	 * Mixing the 2, is not a good idea
 	*/
-	class BTCORE_EXPORT SHA1HashGen
+	class KTORRENT_EXPORT SHA1HashGen
 	{
 		Uint32 h0;
 		Uint32 h1;
