@@ -25,4 +25,4 @@ set (util_HDR
 	circularbuffer.h
 )
 
-install(FILES ${util_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore/util COMPONENT Devel)
+install(FILES ${util_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/util COMPONENT Devel)

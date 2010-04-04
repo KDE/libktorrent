@@ -191,15 +191,15 @@ endif(WIN32)
 
 # kde4_add_ui_files(libktorrent_SRC ${libktorrent_UI})
 # kde4_add_kcfg_files(libktorrent_SRC settings.kcfgc)
-kde4_add_library(btcore SHARED ${libktorrent_SRC})
+kde4_add_library(ktorrent SHARED ${libktorrent_SRC})
 
 
-target_link_libraries(btcore ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${QCA2_LIBRARIES})
+target_link_libraries(ktorrent ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${QCA2_LIBRARIES})
 if(WIN32)
-target_link_libraries(btcore ws2_32)
+target_link_libraries(ktorrent ws2_32)
 endif(WIN32)
-set_target_properties(btcore PROPERTIES VERSION 1.0.0 SOVERSION 1)
-install(TARGETS btcore  ${INSTALL_TARGETS_DEFAULT_ARGS} )
+set_target_properties(ktorrent PROPERTIES VERSION 1.0.0 SOVERSION 1)
+install(TARGETS ktorrent  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
 set (mse_HDR 
@@ -262,7 +262,7 @@ set (download_HDR
 	./download/chunkselector.h
 )
 
-set (btcore_HDR 
+set (ktorrent_HDR 
 	ktorrent_export.h
 	version.h
 )
@@ -347,7 +347,7 @@ install(FILES ${datachecker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/
 install(FILES ${dht_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/dht COMPONENT Devel)
 install(FILES ${migrate_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/migrate COMPONENT Devel)
 install(FILES ${download_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/download COMPONENT Devel)
-install(FILES ${btcore_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent COMPONENT Devel)
+install(FILES ${ktorrent_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent COMPONENT Devel)
 
 add_subdirectory(torrent)
 add_subdirectory(net)

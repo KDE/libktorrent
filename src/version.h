@@ -57,13 +57,13 @@ namespace bt
 	KTORRENT_EXPORT QString GetVersionString();
 	
 	
-	/// Major version number of the BTCore library
+	/// Major version number of the ktorrent library
 	const Uint32 MAJOR = 4;
-	/// Minor version number of the BTCore library
+	/// Minor version number of the ktorrent library
 	const Uint32 MINOR = 0;
-	/// Version type of the BTCore library
+	/// Version type of the ktorrent library
 	const VersionType VERSION_TYPE = BETA;
-	/// Release version number of the BTCore library
+	/// Release version number of the ktorrent library
 	const Uint32 RELEASE = 2;
 }
 

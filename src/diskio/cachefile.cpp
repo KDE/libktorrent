@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "cachefile.h"
 
-#include <config-btcore.h>
+#include <config-ktorrent.h>
 
 #include <kdebug.h>
 #include <fcntl.h>

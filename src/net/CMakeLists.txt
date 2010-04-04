@@ -18,5 +18,5 @@ set(net_HDR
 	poll.h
 )
 
-install(FILES ${net_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libbtcore/net COMPONENT Devel)
+install(FILES ${net_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/net COMPONENT Devel)
 
