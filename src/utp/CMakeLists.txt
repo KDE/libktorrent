@@ -5,6 +5,7 @@ set (utp_HDR
 	utpsocket.h
 	connection.h
 	localwindow.h
+	remotewindow.h
 	timevalue.h
 	pollpipe.h
 	delaywindow.h

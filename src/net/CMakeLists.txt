@@ -16,6 +16,7 @@ set(net_HDR
 	reverseresolver.h
 	socketdevice.h
 	poll.h
+	wakeuppipe.h
 )
 
 install(FILES ${net_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/net COMPONENT Devel)

@@ -260,6 +260,7 @@ set (download_HDR
 	./download/piece.h
 	./download/packet.h
 	./download/chunkselector.h
+	./download/webseed.h
 )
 
 set (ktorrent_HDR 
