@@ -1927,9 +1927,14 @@ namespace bt
 		if (cman)
 			cman->downloadPriorityChanged(tf,newpriority,oldpriority);
 		
-		// If a file has been reenabled, preallocate it
+		// If a file has been reenabled, preallocate it and update stats
 		if (oldpriority == EXCLUDED)
+		{
 			prealloc = true;
+			stats.completed = false;
+			updateStatus();
+			updateStats();
+		}
 	}
 
 }
