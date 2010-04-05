@@ -368,16 +368,16 @@ namespace bt
 	}
 
 	void TorrentControl::start()
-	{	
-		if(stats.running && stats.paused)
+	{
+		// do not start running torrents or when there is a job running
+		if (stats.running || job_queue->runningJobs())
+			return;
+		
+		if (stats.running && stats.paused)
 		{
 			unpause();
 			return;
 		}
-		
-		// do not start running torrents or when there is a job running
-		if (stats.running || job_queue->runningJobs())
-			return;
 
 		stats.paused = false;
 		stats.stopped_by_error = false;
