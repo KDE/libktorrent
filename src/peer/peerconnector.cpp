@@ -32,6 +32,20 @@ namespace bt
 	PeerConnector::PeerConnector(const QString & ip,Uint16 port,bool local,PeerManager* pman) 
 		: QObject(pman),ip(ip),port(port),local(local),pman(pman),auth(0),stopping(false)
 	{
+	}
+
+	PeerConnector::~PeerConnector()
+	{
+		if (auth)
+		{
+			stopping = true;
+			auth->stop();
+			stopping = false;
+		}
+	}
+	
+	void PeerConnector::start()
+	{
 		bool encryption = ServerInterface::isEncryptionEnabled();
 		bool utp = ServerInterface::isUtpEnabled();
 		
@@ -51,15 +65,6 @@ namespace bt
 		}
 	}
 
-	PeerConnector::~PeerConnector()
-	{
-		if (auth)
-		{
-			stopping = true;
-			auth->stop();
-			stopping = false;
-		}
-	}
 
 	void PeerConnector::authenticationFinished(Authenticate* auth, bool ok)
 	{

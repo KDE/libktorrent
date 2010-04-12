@@ -431,6 +431,7 @@ namespace bt
 				connectors.insert(pcon);
 				num_pending++;
 				total_connections++;
+				pcon->start();
 			}
 			potential_peers.erase(itr);
 		}

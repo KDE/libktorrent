@@ -52,6 +52,9 @@ namespace bt
 		/// Called when an authentication attempt is finished
 		void authenticationFinished(bt::Authenticate* auth, bool ok);
 		
+		/// Start connecting
+		void start();
+		
 	private:
 		void start(Method method);
 		
