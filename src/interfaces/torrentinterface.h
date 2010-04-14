@@ -423,6 +423,14 @@ namespace bt
 		
 		/// After some network down time, the network is back up
 		virtual void networkUp() = 0;
+
+        /**
+		 * set the move upon completion directory. 
+		 * @param dir the directory an empty url disables this feature
+		 */
+		virtual void setMoveWhenCompletedDir(const KUrl & dir) = 0;
+
+
 	signals:
 		/**
 		 * Emitted when we have finished downloading.

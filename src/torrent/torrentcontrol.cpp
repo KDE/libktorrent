@@ -72,7 +72,6 @@
 
 namespace bt
 {
-	KUrl TorrentControl::completed_dir;
 	bool TorrentControl::completed_datacheck = false;
 	Uint32 TorrentControl::min_diskspace = 100;
 	bool TorrentControl::auto_recheck = true;
@@ -87,6 +86,7 @@ namespace bt
 		istats.session_bytes_uploaded = 0;
 		old_tordir = QString();
 		stats_file = 0;
+		loading_stats = false;
 		
 		istats.running_time_dl = istats.running_time_ul = 0;
 		istats.prev_bytes_dl = 0;
@@ -1004,11 +1004,15 @@ namespace bt
 
 	void TorrentControl::saveStats()
 	{
+		if (loading_stats) // don't save while we are loading
+			return;
+		
 		if (!stats_file)
 			stats_file = new StatsFile(tordir + "stats");
-
-		stats_file->write("OUTPUTDIR", cman->getDataDir());			
 		
+		stats_file->write("OUTPUTDIR", cman->getDataDir());			
+		stats_file->write("COMPLETEDDIR", completed_dir.path());
+
 		if (cman->getDataDir() != outputdir)
 			outputdir = cman->getDataDir();
 		
@@ -1056,6 +1060,8 @@ namespace bt
 
 		stats_file->sync();
 	}
+	
+
 
 	void TorrentControl::loadStats()
 	{
@@ -1066,6 +1072,7 @@ namespace bt
 			return;
 		}
 		
+		RecursiveEntryGuard guard(&loading_stats);
 		if (!stats_file)
 			stats_file = new StatsFile(tordir + "stats");
 		
@@ -1088,7 +1095,12 @@ namespace bt
 		{
 			istats.custom_output_name = true;
 		}
-		
+
+		if (stats_file->hasKey("COMPLETEDDIR"))
+			completed_dir = KUrl(stats_file->readString("COMPLETEDDIR"));
+		else
+			completed_dir = KUrl(outputdir);
+
 		if (stats_file->hasKey("USER_MODIFIED_NAME"))
 			user_modified_name = stats_file->readString("USER_MODIFIED_NAME");
 		
@@ -1133,8 +1145,7 @@ namespace bt
 		setUploadProps(up,aup);
 		pman->setGroupIDs(upload_gid,download_gid);
 		
-		if (!url.isValid())
-			url = KUrl(stats_file->readString("URL"));
+		url = KUrl(stats_file->readString("URL"));
 
 		if (stats_file->hasKey("TIME_ADDED"))
 			stats.time_added.setTime_t(stats_file->readULong("TIME_ADDED"));

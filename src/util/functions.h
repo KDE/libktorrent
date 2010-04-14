@@ -101,6 +101,21 @@ namespace bt
 	{
 		return QString("0x%1").arg(val,0,16);
 	}
+	
+	struct KTORRENT_EXPORT RecursiveEntryGuard
+	{
+		bool* guard;
+		
+		RecursiveEntryGuard(bool* g) : guard(g)
+		{
+			*guard = true;
+		}
+		
+		~RecursiveEntryGuard()
+		{
+			*guard = false;
+		}
+	};
 
 #ifdef Q_WS_WIN
 	KTORRENT_EXPORT bool InitWindowsSocketsAPI();

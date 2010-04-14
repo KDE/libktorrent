@@ -2,3 +2,5 @@ Changes in 1.0rc1:
 - Add support for base32 magnet links
 - Update torrent status properly when torrent is in seeding complete state and a new file is selected for downloading (232278)
 - Fix crash in PeerConnector destruction (233775)
+- Make move on completion a per torrent feature
+- Make sure that during loading of the stats, they are not saved again

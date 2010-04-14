@@ -173,6 +173,7 @@ namespace bt
 		virtual const SHA1Hash & getInfoHash() const;
 		virtual void setUserModifiedFileName(const QString & n);
 		virtual int getETA();
+		virtual void setMoveWhenCompletedDir(const KUrl & dir) {completed_dir = dir;}
 		
 		/// Create all the necessary files
 		void createFiles();
@@ -228,12 +229,6 @@ namespace bt
 		 * A scrape has finished on the tracker.
 		 * */
 		void trackerScrapeDone();
-		
-		/**
-		 * Set the move upon completion directory. 
-		 * @param dir The directory an empty url disables this feature
-		 */
-		static void setMoveWhenCompletedDir(const KUrl & dir) {completed_dir = dir;}
 		
 		/**
 		 * Enable or disable data check upon completion
@@ -325,8 +320,10 @@ namespace bt
 		QString old_tordir;
 		QString outputdir;
 		QString error_msg;
+		KUrl completed_dir;
 		bool prealloc;
 		TimeStamp last_diskspace_check;
+		bool loading_stats;
 		
 		struct InternalStats
 		{
@@ -356,7 +353,6 @@ namespace bt
 		InternalStats istats;
 		StatsFile* stats_file;
 		
-		static KUrl completed_dir;
 		static bool completed_datacheck;
 		static Uint32 min_diskspace;
 		static bool auto_recheck;
