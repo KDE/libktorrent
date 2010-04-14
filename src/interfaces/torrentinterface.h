@@ -425,11 +425,15 @@ namespace bt
 		virtual void networkUp() = 0;
 
         /**
-		 * set the move upon completion directory. 
+		 * Get the move upon completion directory. 
 		 * @param dir the directory an empty url disables this feature
 		 */
 		virtual void setMoveWhenCompletedDir(const KUrl & dir) = 0;
 
+		/**
+		 * Get the move upon completion directory. 
+		 */
+		virtual KUrl getMoveWhenCompletedDir() const = 0;
 
 	signals:
 		/**

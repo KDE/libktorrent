@@ -174,6 +174,7 @@ namespace bt
 		virtual void setUserModifiedFileName(const QString & n);
 		virtual int getETA();
 		virtual void setMoveWhenCompletedDir(const KUrl & dir) {completed_dir = dir;}
+		virtual KUrl getMoveWhenCompletedDir() const {return completed_dir;}
 		
 		/// Create all the necessary files
 		void createFiles();
