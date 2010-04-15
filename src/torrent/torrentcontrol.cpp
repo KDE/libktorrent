@@ -1098,8 +1098,6 @@ namespace bt
 
 		if (stats_file->hasKey("COMPLETEDDIR"))
 			completed_dir = KUrl(stats_file->readString("COMPLETEDDIR"));
-		else
-			completed_dir = KUrl(outputdir);
 
 		if (stats_file->hasKey("USER_MODIFIED_NAME"))
 			user_modified_name = stats_file->readString("USER_MODIFIED_NAME");
