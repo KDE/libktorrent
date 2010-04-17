@@ -173,7 +173,7 @@ namespace bt
 		virtual const SHA1Hash & getInfoHash() const;
 		virtual void setUserModifiedFileName(const QString & n);
 		virtual int getETA();
-		virtual void setMoveWhenCompletedDir(const KUrl & dir) {completed_dir = dir;}
+		virtual void setMoveWhenCompletedDir(const KUrl & dir) {completed_dir = dir; saveStats();}
 		virtual KUrl getMoveWhenCompletedDir() const {return completed_dir;}
 		
 		/// Create all the necessary files
