@@ -21,7 +21,9 @@
 #include "utpserver.h"
 #include <QEvent>
 #include <stdlib.h>
+#ifndef Q_CC_MSVC
 #include <sys/select.h>
+#endif
 #include <time.h>
 #include <util/log.h>
 #include <util/constants.h>

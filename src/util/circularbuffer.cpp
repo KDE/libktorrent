@@ -103,7 +103,7 @@ namespace bt
 		if (start + buf_size > buf_capacity)
 			return Range(data,buf_size - (buf_capacity - start));
 		else
-			return Range(0,0);
+			return Range((bt::Uint8*)0,0);
 	}
 
 }

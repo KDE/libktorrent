@@ -181,4 +181,8 @@ KTORRENT_EXPORT int poll(struct pollfd *fds, nfds_t nfds, int timeout);
 
 #define mingw_poll(a, b, c) poll(a, b, c)
 #endif
+
+#undef ERROR
+#undef CopyFile
+
 #endif
