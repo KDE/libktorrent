@@ -32,38 +32,38 @@ class WakeUpPipeTest : public QEventLoop
 {
 	Q_OBJECT
 public:
-	
+
 public slots:
 
-	
+
 private slots:
 	void initTestCase()
 	{
 		bt::InitLog("wakeuppipetest.log");
 	}
-	
+
 	void cleanupTestCase()
 	{
 	}
-	
+
 	void testWakeUp()
 	{
 		Poll poll;
-		WakeUpPipe p;
-		p.wakeUp();
-		
-		poll.add(&p);
+		WakeUpPipe::Ptr p;
+		p->wakeUp();
+
+		poll.add(p);
 		QVERIFY(poll.poll() > 0);
 	}
-	
+
 	void testEmptyWakeUp()
 	{
-		WakeUpPipe p;
+		WakeUpPipe::Ptr p;
 		Poll poll;
-		poll.add(&p);
+		poll.add(p);
 		QVERIFY(poll.poll(100) == 0);
 	}
-	
+
 private:
 };
 
