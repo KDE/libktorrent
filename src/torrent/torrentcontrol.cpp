@@ -1798,6 +1798,8 @@ namespace bt
 	
 	void TorrentControl::setChunkSelectorFactory(ChunkSelectorFactoryInterface* csfi)
 	{
+		if (custom_selector_factory)
+			delete custom_selector_factory;
 		custom_selector_factory = csfi;
 	}
 	

@@ -52,7 +52,7 @@ namespace net
 		int waitForSocketReady();
 		
 	private:
-		WakeUpPipe wake_up;
+		WakeUpPipe::Ptr wake_up;
 		
 		static bt::Uint32 dcap;
 		static bt::Uint32 sleep_time;

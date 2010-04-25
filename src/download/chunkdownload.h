@@ -87,7 +87,7 @@ namespace bt
 	 * 
 	 * This class handles the download of one Chunk.
 	*/
-	class ChunkDownload : public QObject,public ChunkDownloadInterface 
+	class KTORRENT_EXPORT ChunkDownload : public QObject,public ChunkDownloadInterface 
 	{
 		Q_OBJECT
 	public:

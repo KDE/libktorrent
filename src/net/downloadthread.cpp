@@ -34,7 +34,7 @@ namespace net
 	Uint32 DownloadThread::dcap = 0;
 	Uint32 DownloadThread::sleep_time = 50;
 
-	DownloadThread::DownloadThread(SocketMonitor* sm) : NetworkThread(sm)
+	DownloadThread::DownloadThread(SocketMonitor* sm) : NetworkThread(sm),wake_up(new WakeUpPipe())
 	{
 	}
 
@@ -111,7 +111,7 @@ namespace net
 		
 		reset();
 		// Add the wake up pipe
-		add(&wake_up);
+		add(qSharedPointerCast<PollClient>(wake_up));
 	
 		// fill the poll vector with all sockets
 		SocketMonitor::Itr itr = sm->begin();
@@ -130,6 +130,6 @@ namespace net
 	
 	void DownloadThread::wakeUp()
 	{
-		wake_up.wakeUp();
+		wake_up->wakeUp();
 	}
 }

@@ -4,3 +4,4 @@ Changes in 1.0rc1:
 - Fix crash in PeerConnector destruction (233775)
 - Make move on completion a per torrent feature
 - Make sure that during loading of the stats, they are not saved again
+- Fix crash caused by dangling pointer to PollPipe

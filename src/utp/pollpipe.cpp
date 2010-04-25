@@ -35,12 +35,12 @@ namespace utp
 	{
 	}
 
-	void PollPipe::prepare(net::Poll* p, bt::Uint16 conn_id)
+	void PollPipe::prepare(net::Poll* p, bt::Uint16 conn_id,PollPipe::Ptr self)
 	{
 		QMutexLocker lock(&mutex);
 		conn_ids.insert(conn_id);
 		if (poll_index < 0)
-			poll_index = p->add(this);
+			poll_index = p->add(qSharedPointerCast<PollClient>(self));
 	}
 
 

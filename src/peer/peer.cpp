@@ -94,6 +94,8 @@ namespace bt
 		stats.encrypted = sock->encrypted();
 		stats.local = local;
 		stats.max_request_queue = 0;
+		bytes_downloaded_since_unchoke = 0;
+		
 		if (stats.ip_address == "0.0.0.0")
 		{
 			Out(SYS_CON|LOG_DEBUG) << "No more 0.0.0.0" << endl;
@@ -169,7 +171,11 @@ namespace bt
 				}
 				
 				if (stats.choked)
+				{
 					time_unchoked = CurrentTime();
+					bytes_downloaded_since_unchoke = 0;
+				}
+				
 				stats.choked = false;
 				break;
 			case INTERESTED:
@@ -269,6 +275,7 @@ namespace bt
 				
 				{
 					stats.bytes_downloaded += (len - 9);
+					bytes_downloaded_since_unchoke += (len - 9);
 					Piece p(ReadUint32(tmp_buf,1),
 							ReadUint32(tmp_buf,5),
 							len - 9,downloader,tmp_buf+9);
@@ -729,6 +736,19 @@ namespace bt
 		bs.andBitSet(wanted_chunks);
 		return bs.numOnBits() > 0;
 	}
+	
+	Uint32 Peer::averageDownloadSpeed() const
+	{
+		if (stats.choked)
+			return 0;
+		
+		TimeStamp now = CurrentTime();
+		if (now >= getUnchokeTime())
+			return 0;
+		else
+			return bytes_downloaded_since_unchoke / (getUnchokeTime() - now);
+	}
+
 
 }
 

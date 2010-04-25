@@ -38,7 +38,7 @@ namespace net
 		static bt::Uint32 ucap;
 		static bt::Uint32 sleep_time;
 		
-		WakeUpPipe wake_up;
+		WakeUpPipe::Ptr wake_up;
 	public:
 		UploadThread(SocketMonitor* sm);
 		virtual ~UploadThread();

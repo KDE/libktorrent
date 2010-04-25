@@ -49,6 +49,8 @@ namespace net
 		virtual int fd() const {return readerSocket();}
 		
 		virtual void reset();
+		
+		typedef QSharedPointer<WakeUpPipe> Ptr;
 	protected:
 		mutable QMutex mutex;
 		bool woken_up;

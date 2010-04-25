@@ -21,10 +21,11 @@
 #ifndef NET_POLL_H
 #define NET_POLL_H
 
+#include <map>
+#include <vector>
+#include <QSharedPointer>
 #include <util/constants.h>
 #include <ktorrent_export.h>
-#include <vector>
-#include <util/ptrmap.h>
 
 #ifdef Q_WS_WIN
 #include <util/win32.h>
@@ -52,6 +53,8 @@ namespace net
 		
 		/// Reset the client called after poll finishes
 		virtual void reset() = 0;
+		
+		typedef QSharedPointer<PollClient> Ptr;
 	};
 	
 	/**
@@ -72,7 +75,7 @@ namespace net
 		int add(int fd,Mode mode);
 		
 		/// Add a poll client
-		int add(PollClient* pc);
+		int add(PollClient::Ptr pc);
 		
 		/// Poll all sockets
 		int poll(int timeout = -1);
@@ -86,7 +89,7 @@ namespace net
 	private:
 		std::vector<struct pollfd> fd_vec;
 		bt::Uint32 num_sockets;
-		bt::PtrMap<int,PollClient> poll_clients;
+		std::map<int,PollClient::Ptr> poll_clients;
 	};
 
 }

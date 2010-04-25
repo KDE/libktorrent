@@ -68,10 +68,10 @@ namespace net
 	}
 	
 	
-	int Poll::add(PollClient* pc)
+	int Poll::add(PollClient::Ptr pc)
 	{
 		int idx = add(pc->fd(),INPUT);
-		poll_clients.insert(idx,pc);
+		poll_clients[idx] = pc;
 		return idx;
 	}
 
@@ -101,7 +101,7 @@ namespace net
 		ret = ::mingw_poll(&fd_vec[0],num_sockets,timeout);
 #endif
 		
-		bt::PtrMap<int,PollClient>::iterator itr = poll_clients.begin();
+		std::map<int,PollClient::Ptr>::iterator itr = poll_clients.begin();
 		while (itr != poll_clients.end())
 		{
 			if (ret > 0 && ready(itr->first,INPUT))

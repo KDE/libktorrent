@@ -31,8 +31,9 @@ namespace net
 	Uint32 UploadThread::ucap = 0;
 	Uint32 UploadThread::sleep_time = 50;
 	
-	UploadThread::UploadThread(SocketMonitor* sm) : NetworkThread(sm)
-	{}
+	UploadThread::UploadThread(SocketMonitor* sm) : NetworkThread(sm),wake_up(new WakeUpPipe())
+	{
+	}
 
 
 	UploadThread::~UploadThread()
@@ -92,7 +93,7 @@ namespace net
 	
 	void UploadThread::signalDataReady()
 	{
-		wake_up.wakeUp();
+		wake_up->wakeUp();
 	}
 	
 	void UploadThread::setSleepTime(Uint32 stime)
@@ -111,7 +112,7 @@ namespace net
 		sm->lock();
 		reset();
 		// Add the wake up pipe
-		add(&wake_up);
+		add(qSharedPointerCast<PollClient>(wake_up));
 		
 		// fill the poll vector with all sockets
 		SocketMonitor::Itr itr = sm->begin();

@@ -93,6 +93,11 @@ namespace bt
 		virtual const Stats & getStats() const = 0;
 		
 		virtual void kill() = 0;
+		
+		/** 
+			Get the average download speed since the last unchoke in bytes/sec
+		 */
+		virtual bt::Uint32 averageDownloadSpeed() const = 0;
 	};
 
 }

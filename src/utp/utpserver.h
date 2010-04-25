@@ -101,8 +101,8 @@ namespace utp
 		
 		struct PollPipePair
 		{
-			PollPipe read_pipe;
-			PollPipe write_pipe;
+			PollPipe::Ptr read_pipe;
+			PollPipe::Ptr write_pipe;
 			
 			PollPipePair();
 			

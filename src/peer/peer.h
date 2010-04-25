@@ -216,6 +216,7 @@ namespace bt
 		
 		/// Get the stats of the peer
 		virtual const Stats & getStats() const;
+		virtual bt::Uint32 averageDownloadSpeed() const;
 		
 		/// Choke the peer
 		void choke();
@@ -289,6 +290,7 @@ namespace bt
 		PtrMap<Uint32,PeerProtocolExtension> extensions;
 		Uint32 ut_pex_id;
 		bool paused;
+		Uint64 bytes_downloaded_since_unchoke;
 		
 		static bool resolve_hostname;
 

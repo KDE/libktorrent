@@ -404,6 +404,8 @@ namespace utp
 			delete utp_thread;
 			utp_thread = 0;
 		}
+		
+		timer.stop();
 	
 		// Cleanup all connections
 		QList<UTPSocket*> sockets;
@@ -457,12 +459,12 @@ namespace utp
 		for (PollPipePairItr p = poll_pipes.begin();p != poll_pipes.end();p++)
 		{
 			PollPipePair* pp = p->second;
-			if (pp->read_pipe.polling())
+			if (pp->read_pipe->polling())
 				p->second->testRead(connections.begin(),connections.end());
-			if (pp->write_pipe.polling())
+			if (pp->write_pipe->polling())
 				p->second->testWrite(connections.begin(),connections.end());
 			
-			restart_timer = restart_timer || pp->read_pipe.polling() || pp->write_pipe.polling();
+			restart_timer = restart_timer || pp->read_pipe->polling() || pp->write_pipe->polling();
 		}
 		
 		if (restart_timer)
@@ -482,11 +484,11 @@ namespace utp
 		
 		if (mode == net::Poll::INPUT)
 		{
-			pair->read_pipe.prepare(p,conn->receiveConnectionID());
+			pair->read_pipe->prepare(p,conn->receiveConnectionID(),pair->read_pipe);
 		}
 		else
 		{
-			pair->write_pipe.prepare(p,conn->receiveConnectionID());
+			pair->write_pipe->prepare(p,conn->receiveConnectionID(),pair->write_pipe);
 		}
 		
 		if (!timer.isActive())
@@ -499,7 +501,9 @@ namespace utp
 			newConnection(new mse::StreamSocket(new UTPSocket(conn)));
 	}
 	
-	UTPServer::PollPipePair::PollPipePair() : read_pipe(net::Poll::INPUT),write_pipe(net::Poll::OUTPUT)
+	UTPServer::PollPipePair::PollPipePair() 
+		: read_pipe(new PollPipe(net::Poll::INPUT)),
+		write_pipe(new PollPipe(net::Poll::OUTPUT))
 	{
 		
 	}
@@ -508,9 +512,9 @@ namespace utp
 	{
 		for (utp::UTPServer::ConItr i = b;i != e;i++)
 		{
-			if (read_pipe.readyToWakeUp(i->second))
+			if (read_pipe->readyToWakeUp(i->second))
 			{
-				read_pipe.wakeUp();
+				read_pipe->wakeUp();
 				break;
 			}
 		}
@@ -520,9 +524,9 @@ namespace utp
 	{
 		for (utp::UTPServer::ConItr i = b;i != e;i++)
 		{
-			if (write_pipe.readyToWakeUp(i->second))
+			if (write_pipe->readyToWakeUp(i->second))
 			{
-				write_pipe.wakeUp();
+				write_pipe->wakeUp();
 				break;
 			}
 		}

@@ -39,11 +39,13 @@ namespace utp
 		PollPipe(net::Poll::Mode mode);
 		virtual ~PollPipe();
 		
+		typedef QSharedPointer<PollPipe> Ptr;
+		
 		/// Is the pipe being polled
 		bool polling() const {return poll_index >= 0;}
 		
 		/// Prepare the poll
-		void prepare(net::Poll* p,bt::Uint16 conn_id);
+		void prepare(net::Poll* p,bt::Uint16 conn_id,PollPipe::Ptr self);
 		
 		/// Is this connection ready to wake up
 		bool readyToWakeUp(Connection* conn) const;
@@ -53,7 +55,6 @@ namespace utp
 		
 		/// Polling mode
 		net::Poll::Mode pollingMode() const {return mode;}
-		
 	private:
 		net::Poll::Mode mode;
 		int poll_index;
