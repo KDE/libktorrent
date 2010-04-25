@@ -49,7 +49,7 @@ private slots:
 	void testWakeUp()
 	{
 		Poll poll;
-		WakeUpPipe::Ptr p;
+		WakeUpPipe::Ptr p(new WakeUpPipe);
 		p->wakeUp();
 
 		poll.add(p);
@@ -58,7 +58,7 @@ private slots:
 
 	void testEmptyWakeUp()
 	{
-		WakeUpPipe::Ptr p;
+		WakeUpPipe::Ptr p(new WakeUpPipe);
 		Poll poll;
 		poll.add(p);
 		QVERIFY(poll.poll(100) == 0);
