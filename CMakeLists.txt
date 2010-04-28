@@ -25,6 +25,7 @@ add_definitions( ${KDE4_DEFINITIONS} )
 
 include_directories(${KDE4_INCLUDES} ${LIBKTORRENT_BINARY_DIR}	${LIBKTORRENT_SOURCE_DIR} ${GMP_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 
+set(LIBKTORRENT_VERSION "1.0rc1")
 
 #XFS prealloc
 CHECK_INCLUDE_FILES(xfs/xfs.h HAVE_XFS_XFS_H)
@@ -55,3 +56,4 @@ check_function_exists(statvfs64 HAVE_STATVFS64)
 
 add_subdirectory(src)
 add_subdirectory(cmake)
+add_subdirectory(doc)

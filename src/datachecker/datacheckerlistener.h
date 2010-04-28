@@ -37,6 +37,7 @@ namespace bt
 
 		/**
 		 * Called when a chunk has  been proccessed.
+		 * This will be called from the scanning thread.
 		 * @param num The number processed
 		 * @param total The total number of pieces to process
 		*/
@@ -44,6 +45,7 @@ namespace bt
 	
 		/**
 		 * Called when a failed or dowloaded chunk is found.
+		 * This will be called from the scanning thread.
 		 * @param num_failed The number of failed chunks
 		 * @param num_found The number of found chunks
 		 * @param num_downloaded Number of downloaded chunks
@@ -53,8 +55,16 @@ namespace bt
 		
 		/**
 		 * Data check has been finished.
+		 * This will be called from the application thread.
 		 */
 		virtual void finished() = 0;
+		
+		/**
+		 * An error occurred during the datacheck.
+		 * This will be called from the application thread.
+		 * @param err Error message
+		 */
+		virtual void error(const QString & err) = 0;
 		
 		/**
 		 * Test if we need to stop.

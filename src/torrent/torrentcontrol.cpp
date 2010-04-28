@@ -23,7 +23,6 @@
 #include <qfile.h>
 #include <QTextCodec>
 #include <klocale.h>
-#include <kmessagebox.h>
 #include <kfiledialog.h>
 #include <qtextstream.h>
 #include <qdatetime.h>
@@ -1395,9 +1394,8 @@ namespace bt
 		bool err = !error.isNull();
 		if (err)
 		{
-			// show a queued error message when an error has occurred
-			KMessageBox::queuedMessageBox(0,KMessageBox::Error,error);
 			lst->stop();
+			lst->error(error);
 		}
 		
 		bool completed = stats.completed;

@@ -6,3 +6,5 @@ Changes in 1.0rc1:
 - Make sure that during loading of the stats, they are not saved again
 - Fix crash caused by dangling pointer to PollPipe
 - Add method to calculate the average download speed since the last unchoke of a peer
+- Add doxygen api docs generation with cmake
+- Remove all KMessageBox's, the client application needs to handle these errors

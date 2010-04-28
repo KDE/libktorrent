@@ -26,7 +26,6 @@
 #include <util/log.h>
 #include <util/functions.h>
 #include <klocale.h>
-#include <kmessagebox.h>
 #include <k3socketdevice.h>
 #include <k3datagramsocket.h>
 #include <k3socketaddress.h>
@@ -62,8 +61,7 @@ namespace bt
 
 		if (!bound)
  		{
-  			KMessageBox::error(0,
-  				i18n("Cannot bind to udp port %1 or the 10 following ports.",port));
+			Out(SYS_TRK|LOG_IMPORTANT) << QString("Cannot bind to udp port %1 or the 10 following ports.").arg(port) << endl;
  		}
  		else
  		{
