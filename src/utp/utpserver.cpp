@@ -163,27 +163,34 @@ namespace utp
 	{
 		QMutexLocker lock(&mutex);
 		
-		// Keep sending until the output queue is empty or the socket 
-		// can't handle the data anymore
-		while (!output_queue.empty())
+		try
 		{
-			OutputQueueEntry & packet = output_queue.front();
-			const QByteArray & data = packet.get<0>();
-			const net::Address & addr = packet.get<1>();
-			int ret = sock->sendTo((const bt::Uint8*)data.data(),data.size(),addr);
-			if (ret == net::SEND_WOULD_BLOCK)
-				break;
-			else if (ret == net::SEND_FAILURE)
+			// Keep sending until the output queue is empty or the socket 
+			// can't handle the data anymore
+			while (!output_queue.empty())
 			{
-				// Kill the connection of this packet
-				Connection* conn = find(packet.get<2>());
-				if (conn)
-					conn->close();
-				
-				output_queue.pop_front();
+				OutputQueueEntry & packet = output_queue.front();
+				const QByteArray & data = packet.get<0>();
+				const net::Address & addr = packet.get<1>();
+				int ret = sock->sendTo((const bt::Uint8*)data.data(),data.size(),addr);
+				if (ret == net::SEND_WOULD_BLOCK)
+					break;
+				else if (ret == net::SEND_FAILURE)
+				{
+					// Kill the connection of this packet
+					Connection* conn = find(packet.get<2>());
+					if (conn)
+						conn->close();
+					
+					output_queue.pop_front();
+				}
+				else
+					output_queue.pop_front();
 			}
-			else
-				output_queue.pop_front();
+		}
+		catch (Connection::TransmissionError & err)
+		{
+			Out(SYS_UTP|LOG_NOTICE) << "UTP: " << err.location << endl;
 		}
 		
 		write_notifier->setEnabled(!output_queue.empty());
