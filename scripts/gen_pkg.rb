@@ -13,7 +13,6 @@ end
 
 egmodule   = "network"
 name       = "libktorrent"
-docs       = "no"
 addDocs    = []
 addPo      = []
 remove     = ""
@@ -46,7 +45,6 @@ Dir.chdir( folder )
 # Do the main checkouts.
 `svn co #{svntags}/#{version} #{name}-tmp`
 Dir.chdir( name + "-tmp" )
-`svn co #{svnroot}/#{svnextragear}/#{egmodule}/doc/#{name} doc`
 
 # Move them to the toplevel
 `/bin/mv * ..`
@@ -56,9 +54,6 @@ Dir.chdir( ".." )
 
 puts "done\n"
 
-puts "\n"
-puts "Fetching l10n docs for #{egmodule}/#{name}...\n"
-puts "\n"
 
 i18nlangs = `svn cat #{svnroot}/l10n-kde4/subdirs`
 i18nlangsCleaned = []
@@ -72,30 +67,6 @@ i18nlangs = i18nlangsCleaned
 
 Dir.mkdir( "l10n" )
 Dir.chdir( "l10n" )
-
-# docs
-for lang in i18nlangs
-  lang.chomp!
-
-  for dg in addDocs
-    dg.chomp!
-    `rm -rf #{dg}`
-    docdirname = "l10n-kde4/#{lang}/docs/extragear-#{egmodule}/#{dg}"
-    if ( docs != "no")
-        puts "Checking if #{dg} has translated documentation...\n"
-        `svn co -q #{svnroot}/#{docdirname} > /dev/null 2>&1`
-    end
-    next unless FileTest.exists?( dg )
-    print "Copying #{lang}'s #{dg} documentation over...  "
-    `cp -R #{dg}/ ../doc/#{lang}_#{dg}`
-
-    makefile = File.new( "../doc/#{lang}_#{dg}/CMakeLists.txt", File::CREAT | File::RDWR | File::TRUNC )
-    makefile << "KDE4_CREATE_HANDBOOK(#{lang})\n"
-    makefile.close()
-
-    puts( "done.\n" )
-  end
-end
 
 puts "\n"
 puts "Fetching l10n po for #{egmodule}/#{name}...\n"
@@ -139,12 +110,9 @@ topmakefile.close()
 puts "\n"
 
 # add l10n to compilation.
-`echo "find_package(Msgfmt REQUIRED)" >> CMakeLists.txt`
+`echo "\nfind_package(Msgfmt REQUIRED)" >> CMakeLists.txt`
 `echo "find_package(Gettext REQUIRED)" >> CMakeLists.txt`
 `echo "add_subdirectory( po )" >> CMakeLists.txt`
-if FileTest.exist?( "doc" )
-   `echo "add_subdirectory( doc )" >> CMakeLists.txt`
-end
 
 # Remove cruft 
 `find -name ".svn" | xargs rm -rf`
