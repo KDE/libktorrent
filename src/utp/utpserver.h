@@ -30,6 +30,7 @@
 #include <util/ptrmap.h>
 #include <interfaces/serverinterface.h>
 #include <ktorrent_export.h>
+#include "utpsocket.h"
 #include "connection.h"
 #include "pollpipe.h"
 
@@ -37,7 +38,6 @@
 namespace utp
 {
 	class UTPServerThread;
-	class UTPSocket;
 
 	class KTORRENT_EXPORT UTPServer : public bt::ServerInterface,public Transmitter
 	{
