@@ -543,7 +543,7 @@ namespace bt
 		started = false;
 		ServerInterface::removePeerManager(this);
 		foreach (PeerConnector* pcon,connectors)
-			pcon->deleteLater();
+			delete pcon;
 		connectors.clear();
 		stopped();
 		num_pending = 0;
