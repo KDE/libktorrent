@@ -256,8 +256,6 @@ namespace utp
 					Connection* c = find(hdr->connection_id);
 					if (c)
 						c->handlePacket(parser,packet);
-					else
-						Out(SYS_UTP|LOG_NOTICE) << "UTP: unkown connection " << hdr->connection_id << endl;
 				}
 				catch (Connection::TransmissionError & err)
 				{
@@ -305,7 +303,6 @@ namespace utp
 		connections.insert(recv_conn_id,conn);
 		try
 		{
-			Out(SYS_UTP|LOG_NOTICE) << "UTP: connecting to " << addr.toString() << endl;
 			conn->startConnecting();
 			return conn;
 		}
