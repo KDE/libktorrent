@@ -80,7 +80,6 @@ namespace utp
 		
 		connect(this,SIGNAL(doDelayedStartTimer()),this,SLOT(delayedStartTimer()),Qt::QueuedConnection);
 		startTimer();
-		Out(SYS_UTP|LOG_NOTICE) << "UTP: Connection " << recv_connection_id << "|" << stats.send_connection_id << endl;
 	}
 
 	Connection::~Connection()
@@ -595,7 +594,6 @@ namespace utp
 
 	void Connection::handleTimeout()
 	{
-		Out(SYS_UTP|LOG_DEBUG) << "Connection " << stats.recv_connection_id << "|" << stats.send_connection_id << " timeout " << endl;
 		QMutexLocker lock(&mutex);
 		switch (stats.state)
 		{
