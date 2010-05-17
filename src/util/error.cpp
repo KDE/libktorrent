@@ -17,18 +17,23 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
+#include <util/log.h>
 #include "error.h"
 
 namespace bt
 {
 	Error::Error(const QString & msg) : msg(msg)
-	{}
+	{
+		Out(SYS_GEN|LOG_DEBUG) << "Error thrown: " << msg << endl;
+	}
 
 	Error::~Error()
 	{}
 
 	Warning::Warning(const QString& msg) : msg(msg)
-	{}
+	{
+		Out(SYS_GEN|LOG_DEBUG) << "Warning thrown: " << msg << endl;
+	}
 
 	Warning::~Warning()
 	{}

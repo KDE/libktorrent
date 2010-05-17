@@ -1,6 +1,7 @@
 Changes in 1.0:
 - Fix crash at shutdown in when UTP is running (236741)
 - Remove some logging messages in UTP code
+- Log errors being thrown to better debug uncaught exception bugs
 
 Changes in 1.0rc1:
 - Add support for base32 magnet links
