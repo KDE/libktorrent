@@ -177,6 +177,9 @@ namespace bt
 	
 	/// Calculate the amount of space a file is taking up (this is not the filesize!)
 	KTORRENT_EXPORT Uint64 DiskUsage(int fd);
+	
+	/// Get the mount point of a path
+	KTORRENT_EXPORT QString MountPoint(const QString & path);
 }
 
 #endif

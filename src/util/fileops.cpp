@@ -28,6 +28,8 @@
 #include <kio/job.h> 
 #include <kio/netaccess.h>
 #include <kio/copyjob.h> 
+#include <solid/device.h>
+#include <solid/storageaccess.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
@@ -585,6 +587,24 @@ namespace bt
 		ret = (info.nFileSizeHigh * MAXDWORD) + info.nFileSizeLow;
 #endif
 		return ret;
+	}
+	
+	QString MountPoint(const QString& path)
+	{
+		QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
+		QString mountpoint;
+		
+		foreach (Solid::Device dev,devs)
+		{
+			Solid::StorageAccess* sa = dev.as<Solid::StorageAccess>();
+			if (path.startsWith(sa->filePath()))
+			{
+				if (mountpoint.isEmpty() || sa->filePath().startsWith(mountpoint))
+					mountpoint = sa->filePath();
+			}
+		}
+		
+		return mountpoint;
 	}
 
 }

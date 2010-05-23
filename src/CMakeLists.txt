@@ -194,11 +194,11 @@ endif(WIN32)
 # kde4_add_kcfg_files(libktorrent_SRC settings.kcfgc)
 kde4_add_library(ktorrent SHARED ${libktorrent_SRC})
 
-target_link_libraries(ktorrent ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${QCA2_LIBRARIES})
+target_link_libraries(ktorrent ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${QCA2_LIBRARIES} ${KDE4_SOLID_LIBS})
 if(WIN32)
 target_link_libraries(ktorrent ws2_32)
 endif(WIN32)
-set_target_properties(ktorrent PROPERTIES VERSION 1.0.0 SOVERSION 1)
+set_target_properties(ktorrent PROPERTIES VERSION 2.0.0 SOVERSION 2)
 install(TARGETS ktorrent  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
