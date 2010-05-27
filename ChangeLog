@@ -1,5 +1,6 @@
 Changes in 1.0.1:
 - Make sure that KT binds correctly on systems with net.ipv6.bindv6only set to 1 (238688)
+- Fix bug causing seeding of readonly files to fail with no free disk space errors (239023)
 
 Changes in 1.0:
 - Fix crash at shutdown in when UTP is running (236741)
