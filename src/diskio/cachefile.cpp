@@ -127,7 +127,7 @@ namespace bt
 			throw Error(i18n("Attempting to write beyond the maximum size of %1",path));
 		}
 		
-		if (!allocateBytes(off,size))
+		if (!read_only && !allocateBytes(off,size))
 			throw Error(i18n("Not enough free disk space for %1",path));
 		
 		int mmap_flag = 0;
