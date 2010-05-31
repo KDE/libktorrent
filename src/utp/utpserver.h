@@ -38,7 +38,33 @@ namespace utp
 {
 	class UTPServerThread;
 	class UTPSocket;
+	class UTPServer;
+	
+	/**
+		Utility class used by UTPServer to make sure that ServerInterface::newConnection is called
+		from the main thread and not from UTP thread (which is dangerous).
+	*/
+	class KTORRENT_EXPORT MainThreadCall : public QObject
+	{
+		Q_OBJECT
+	public:
+		MainThreadCall(UTPServer* server);
+		virtual ~MainThreadCall();
+		
+	public slots:
+		/**
+			Calls UTPServer::handlePendingConnections, this should be executed in 
+			the main thread.
+		*/
+		void handlePendingConnections();
+		
+	private:
+		UTPServer* server;
+	};
 
+	/**
+		Implements the UTP server. It listens for UTP packets and manages all connections.
+	*/
 	class KTORRENT_EXPORT UTPServer : public bt::ServerInterface,public Transmitter
 	{
 		Q_OBJECT
@@ -78,6 +104,12 @@ namespace utp
 		/// Thread has been started
 		void threadStarted();
 		
+		/**
+			Handle newly connected sockets, it starts authentication on them.
+			This needs to be called from the main thread.
+		*/
+		void handlePendingConnections();
+		
 	protected:
 		bool bind(const net::Address & addr);
 		virtual void handlePacket(const QByteArray & packet,const net::Address & addr);
@@ -89,6 +121,7 @@ namespace utp
 		virtual void timerEvent(QTimerEvent* event);
 		
 	signals:
+		void handlePendingConnectionsDelayed();
 		void accepted(Connection* conn);
 		
 	private slots:
@@ -128,6 +161,8 @@ namespace utp
 		QSocketNotifier* read_notifier;
 		QSocketNotifier* write_notifier;
 		QBasicTimer timer;
+		QList<mse::StreamSocket*> pending;
+		MainThreadCall* mtc;
 	};
 
 }
