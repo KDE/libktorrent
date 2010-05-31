@@ -45,6 +45,20 @@ using namespace bt;
 
 namespace utp
 {
+	MainThreadCall::MainThreadCall(UTPServer* server) : server(server)
+	{
+	}
+	
+	MainThreadCall::~MainThreadCall()
+	{
+	}
+	
+	void MainThreadCall::handlePendingConnections()
+	{
+		server->handlePendingConnections();
+	}
+
+	///////////////////////////////////////////////////////////
 
 	UTPServer::UTPServer(QObject* parent) 
 		: ServerInterface(parent),
@@ -55,10 +69,13 @@ namespace utp
 		create_sockets(true),
 		tos(0),
 		read_notifier(0),
-		write_notifier(0)
+		write_notifier(0),
+		mtc(new MainThreadCall(this))
 	{
 		qsrand(time(0));
-		connect(this,SIGNAL(accepted(Connection*)),this,SLOT(onAccepted(Connection*)),Qt::QueuedConnection);
+		connect(this,SIGNAL(handlePendingConnectionsDelayed()),
+				mtc,SLOT(handlePendingConnections()),Qt::QueuedConnection);
+		connect(this,SIGNAL(accepted(Connection*)),this,SLOT(onAccepted(Connection*)));
 		poll_pipes.setAutoDelete(true);
 	}
 
@@ -66,8 +83,25 @@ namespace utp
 	{
 		if (running)
 			stop();
+		
+		qDeleteAll(pending);
+		pending.clear();
+		
+		delete mtc;
 	}
 	
+	void UTPServer::handlePendingConnections()
+	{
+		// This should be called from the main thread
+		QMutexLocker lock(&mutex);
+		foreach (mse::StreamSocket* s,pending)
+		{
+			newConnection(s);
+		}
+		
+		pending.clear();
+	}
+
 	
 	bool UTPServer::changePort(bt::Uint16 p)
 	{
@@ -502,7 +536,10 @@ namespace utp
 	void UTPServer::onAccepted(Connection* conn)
 	{
 		if (create_sockets)
-			newConnection(new mse::StreamSocket(new UTPSocket(conn)));
+		{
+			pending.append(new mse::StreamSocket(new UTPSocket(conn)));
+			handlePendingConnectionsDelayed();
+		}
 	}
 	
 	UTPServer::PollPipePair::PollPipePair() 
