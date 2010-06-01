@@ -31,6 +31,7 @@
 #include "kclosestnodessearch.h"
 #include "dht.h"
 #include "nodelookup.h"
+#include <util/error.h>
 
 using namespace bt;
 using namespace KNetwork;
@@ -236,13 +237,20 @@ namespace dht
 			return;
 		}
 		
-		for (Uint32 i = 0;i < 160;i++)
+		try
 		{
-			KBucket* b = bucket[i];
-			if (b)
+			for (Uint32 i = 0;i < 160;i++) 
 			{
-				b->save(fptr);
+				KBucket* b = bucket[i];
+				if (b)
+				{
+					b->save(fptr);
+				}
 			}
+		}
+		catch (bt::Error & err)
+		{
+			Out(SYS_DHT|LOG_IMPORTANT) << "DHT: Failed to save table to " << file << " : " << err.toString() << endl;
 		}
 	}
 		
@@ -267,8 +275,16 @@ namespace dht
 		while (!fptr.eof())
 		{
 			BucketHeader hdr;
-			if (fptr.read(&hdr,sizeof(BucketHeader)) != sizeof(BucketHeader))
+			try
+			{
+				if (fptr.read(&hdr,sizeof(BucketHeader)) != sizeof(BucketHeader))
+					return;
+			}
+			catch (bt::Error & err)
+			{
+				Out(SYS_DHT|LOG_IMPORTANT) << "DHT: Failed to load table from " << file << " : " << err.toString() << endl;
 				return;
+			}
 			
 			// new IPv6 capable format uses the old magic number + 1
 			if (hdr.magic != dht::BUCKET_MAGIC_NUMBER+1 || hdr.num_entries > dht::K || hdr.index > 160)
