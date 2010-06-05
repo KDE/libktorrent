@@ -50,6 +50,7 @@ check_function_exists(mmap64 HAVE_MMAP64)
 check_function_exists(munmap64 HAVE_MUNMAP64)
 check_function_exists(posix_fallocate64 HAVE_POSIX_FALLOCATE64)
 check_function_exists(posix_fallocate HAVE_POSIX_FALLOCATE)
+check_function_exists(fallocate HAVE_FALLOCATE)
 check_function_exists(statvfs HAVE_STATVFS)
 check_function_exists(statvfs64 HAVE_STATVFS64)
 

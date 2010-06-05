@@ -8,6 +8,7 @@
 #cmakedefine HAVE_FTELLO 1
 #cmakedefine HAVE_FSTAT64 1
 #cmakedefine HAVE_FTRUNCATE64 1
+#cmakedefine HAVE_FALLOCATE 1
 #cmakedefine HAVE_LSEEK64 1
 #cmakedefine HAVE_STAT64 1
 #cmakedefine HAVE_MMAP64 1
