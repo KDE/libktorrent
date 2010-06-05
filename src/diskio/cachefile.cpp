@@ -127,7 +127,7 @@ namespace bt
 			throw Error(i18n("Attempting to write beyond the maximum size of %1",path));
 		}
 		
-		if (!read_only && !allocateBytes(off,size))
+		if (!read_only && (mode == WRITE || mode == RW) && !allocateBytes(off,size))
 			throw Error(i18n("Not enough free disk space for %1",path));
 		
 		int mmap_flag = 0;
@@ -539,9 +539,9 @@ namespace bt
 	bool CacheFile::allocateBytes(Uint64 off, Uint64 size)
 	{
 #ifdef HAVE_POSIX_FALLOCATE64
-		return posix_fallocate64(fptr->handle(),off,size) == 0;
+		return posix_fallocate64(fptr->handle(),off,size) != ENOSPC;
 #elif HAVE_POSIX_FALLOCATE
-		return posix_fallocate(fptr->handle(),off,size) == 0;
+		return posix_fallocate(fptr->handle(),off,size) != ENOSPC;
 #else
 		return true;
 #endif
