@@ -576,7 +576,11 @@ namespace bt
 
 	Uint64 TrackerManager::bytesDownloaded() const
 	{
-		return tor->getStats().bytes_downloaded;
+		const TorrentStats & s = tor->getStats();
+		if (s.imported_bytes > s.bytes_downloaded)
+			return 0;
+		else
+			return s.bytes_downloaded - s.imported_bytes;
 	}
 
 	Uint64 TrackerManager::bytesUploaded() const
