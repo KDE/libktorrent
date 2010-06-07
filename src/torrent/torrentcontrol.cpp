@@ -1421,7 +1421,8 @@ namespace bt
 				stats.completed = cman->completed();
 			}
 		}
-			
+		
+		saveStats();
 		updateStats();
 		Out(SYS_GEN|LOG_NOTICE) << "Data check finished" << endl;
 		updateStatus();

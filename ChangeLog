@@ -4,6 +4,7 @@ Changes in 1.0.1:
 - Fix crashes caused by ServerInterface::newConnection being called in µTP thread (240003, 239944)
 - Fix crash caused by uncaught exception when saving DHT table (240294)
 - Fix bug causing lots of diskspace activity on ext3 due to the SIGBUS prevention feature
+- Fix bug causing imported bytes to be counted as downloaded bytes in tracker announces
 
 Changes in 1.0:
 - Fix crash at shutdown in when UTP is running (236741)
