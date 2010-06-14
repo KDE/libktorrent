@@ -20,6 +20,7 @@
  ***************************************************************************/
 #include "version.h"
 #include <QString>
+#include "util/signalcatcher.h"
 
 namespace bt 
 {
@@ -38,6 +39,9 @@ namespace bt
 		g_release = release;
 		g_vtype = type;
 		g_peer_id = peer_id;
+		
+		// Install SIGBUS handler
+		InstallBusHandler();
 	}
 	
 	QString PeerIDPrefix()

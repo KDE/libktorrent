@@ -6,6 +6,7 @@ include_directories(${QCA2_INCLUDE_DIR})
 remove_definitions(-DQT_NO_HTTP)
 
 set(libktorrent_SRC 
+	util/signalcatcher.cpp 
 	util/bitset.cpp
 	util/timer.cpp
 	util/urlencoder.cpp

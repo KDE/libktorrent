@@ -23,6 +23,7 @@ set (util_HDR
 	extractfilejob.h
 	pipe.h
 	circularbuffer.h
+	signalcatcher.h
 )
 
 install(FILES ${util_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/util COMPONENT Devel)

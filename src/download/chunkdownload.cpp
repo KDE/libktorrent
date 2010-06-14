@@ -23,6 +23,7 @@
 #include <util/file.h>
 #include <util/log.h>
 #include <util/array.h>
+#include <util/error.h>
 #include <diskio/chunk.h>
 #include <diskio/piecedata.h>
 #include <download/piece.h>
@@ -112,10 +113,12 @@ namespace bt
 		
 		PieceDataPtr buf = chunk->getPiece(p.getOffset(),p.getLength(),false);
 		if (buf)
-		{ 
+		{
+			if (!buf->write(p.getData(),p.getLength()))
+				throw Error(i18n("Not enough diskspace"));
+				
 			piece_data[pp] = buf;
 			ok = true;
-			memcpy(buf->data(),p.getData(),p.getLength());	
 			pieces.set(pp,true);
 			piece_providers.insert(p.getPieceDownloader());
 			num_downloaded++;
@@ -552,6 +555,7 @@ namespace bt
 			piece_data[i] = 0;
 			if (piece)
 			{
+				BUS_ERROR_RPROTECT();
 				hash_gen.update(piece->data(),len);
 				chunk->savePiece(piece);
 			}

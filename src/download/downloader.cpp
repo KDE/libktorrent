@@ -778,7 +778,7 @@ namespace bt
 			return;
 		}
 		
-
+		BUS_ERROR_RPROTECT();
 		SHA1Hash h = SHA1Hash::generate(piece->data(),c->getSize());
 		if (tor.verifyHash(h,c->getIndex()))
 		{

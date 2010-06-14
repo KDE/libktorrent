@@ -19,12 +19,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include <util/log.h>
+#include <util/signalcatcher.h>
 #include "piecedata.h"
 #include "cachefile.h"
 #include "chunk.h"
 
 namespace bt
 {
+
 
 	PieceData::PieceData(Chunk* chunk,Uint32 off,Uint32 len,Uint8* ptr,CacheFile* file) 
 		: chunk(chunk),off(off),len(len),ptr(ptr),file(file),ref_count(0)
@@ -49,6 +51,17 @@ namespace bt
 			file->unmap(ptr,len);
 		ptr = 0;
 	}
+	
+	Uint32 PieceData::write(const bt::Uint8* buf, Uint32 buf_size,Uint32 off) throw (BusError)
+	{
+		if (off + buf_size > len)
+			return 0;
+		
+		BUS_ERROR_WPROTECT();
+		memcpy(ptr + off,buf,buf_size);
+		return true;
+	}
+
 
 	void PieceData::unmapped()
 	{

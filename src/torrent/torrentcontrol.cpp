@@ -295,6 +295,14 @@ namespace bt
 			if (moveCompleted)
 				moveToCompletedDir();
 		}
+		catch (BusError & e)
+		{
+			Out(SYS_DIO|LOG_IMPORTANT) << "Caught SIGBUS " << endl;
+			if (!e.write_operation)
+				onIOError(e.toString());
+			else
+				onIOError(i18n("Error writing to disk, do you have enough diskspace ?"));
+		}
 		catch (Error & e)
 		{
 			onIOError(e.toString());

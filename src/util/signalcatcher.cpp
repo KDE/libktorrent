@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
+ *   Copyright (C) 2010 by Joris Guisson                                   *
  *   joris.guisson@gmail.com                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,62 +15,54 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
+#include <KLocale>
+#include "signalcatcher.h"
+#include "log.h"
 
-#include <util/sha1hash.h>
-#include "chunk.h"
-#include "cache.h"
-#include "piecedata.h"
-#include <util/signalcatcher.h>
 
 namespace bt
 {
-
-	Chunk::Chunk(Uint32 index,Uint32 size,Cache* cache)
-	: status(Chunk::NOT_DOWNLOADED),index(index),size(size),priority(NORMAL_PRIORITY),cache(cache)
+	sigjmp_buf sigbus_env;
+	
+	static void signal_handler(int sig, siginfo_t *siginfo, void *ptr)
 	{
+		Q_UNUSED(siginfo);
+		Q_UNUSED(ptr);
+		Q_UNUSED(sig);
+		// Jump to error handling code
+		siglongjmp(sigbus_env, 1);
 	}
-
-
-	Chunk::~Chunk()
+	
+	bool InstallBusHandler()
 	{
-	}
+		struct sigaction act;
 		
-	bool Chunk::readPiece(Uint32 off,Uint32 len,Uint8* data)
-	{
-		PieceDataPtr d = cache->loadPiece(this,off,len);
-		if (d)
+		memset(&act, 0, sizeof(act));
+		act.sa_sigaction = signal_handler;
+		act.sa_flags = SA_SIGINFO;
+		
+		if (sigaction(SIGBUS, &act, 0) == -1) 
 		{
-			BUS_ERROR_RPROTECT();
-			memcpy(data,d->data(),len);
+			Out(SYS_GEN|LOG_IMPORTANT) << "Failed to set SIGBUS handler" << endl;
+			return false;
 		}
-		return d != 0;
-	}
-				
-	bool Chunk::checkHash(const SHA1Hash & h)
-	{
-		if (status == NOT_DOWNLOADED)
-			return false;
 		
-		PieceDataPtr d = getPiece(0,size,true);
-		if (!d)
-			return false;
-		
-		BUS_ERROR_RPROTECT();
-		return SHA1Hash::generate(d->data(),size) == h;
+		return true;
 	}
 	
-	PieceDataPtr Chunk::getPiece(Uint32 off,Uint32 len,bool read_only)
+	BusError::BusError(bool write_operation) 
+		: Error(write_operation ? i18n("Error when writing to disk") : i18n("Error when reading from disk")),
+		write_operation(write_operation)
 	{
-		if (read_only)
-			return cache->loadPiece(this,off,len);
-		else
-			return cache->preparePiece(this,off,len);
+
 	}
-	
-	void Chunk::savePiece(PieceDataPtr piece)
+	BusError::~BusError()
 	{
-		cache->savePiece(piece);
+
 	}
+
+
 }
+

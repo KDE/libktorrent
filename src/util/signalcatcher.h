@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
+ *   Copyright (C) 2010 by Joris Guisson                                   *
  *   joris.guisson@gmail.com                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,62 +15,46 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <util/sha1hash.h>
-#include "chunk.h"
-#include "cache.h"
-#include "piecedata.h"
-#include <util/signalcatcher.h>
+#ifndef BT_SIGNALCATCHER_H
+#define BT_SIGNALCATCHER_H
 
-namespace bt
+#include <ktorrent_export.h>
+#include <signal.h>
+#include <setjmp.h>
+#include <util/error.h>
+
+namespace bt 
 {
+	/**
+		Variable used to jump from the SIGBUS handler back to the place which triggered the SIGBUS.
+	*/
+	extern KTORRENT_EXPORT sigjmp_buf sigbus_env;
 
-	Chunk::Chunk(Uint32 index,Uint32 size,Cache* cache)
-	: status(Chunk::NOT_DOWNLOADED),index(index),size(size),priority(NORMAL_PRIORITY),cache(cache)
-	{
-	}
-
-
-	Chunk::~Chunk()
-	{
-	}
-		
-	bool Chunk::readPiece(Uint32 off,Uint32 len,Uint8* data)
-	{
-		PieceDataPtr d = cache->loadPiece(this,off,len);
-		if (d)
-		{
-			BUS_ERROR_RPROTECT();
-			memcpy(data,d->data(),len);
-		}
-		return d != 0;
-	}
-				
-	bool Chunk::checkHash(const SHA1Hash & h)
-	{
-		if (status == NOT_DOWNLOADED)
-			return false;
-		
-		PieceDataPtr d = getPiece(0,size,true);
-		if (!d)
-			return false;
-		
-		BUS_ERROR_RPROTECT();
-		return SHA1Hash::generate(d->data(),size) == h;
-	}
+	/**
+		Install the SIGBUS signal handler. 
+	*/
+	KTORRENT_EXPORT bool InstallBusHandler();
 	
-	PieceDataPtr Chunk::getPiece(Uint32 off,Uint32 len,bool read_only)
+	/**
+		Exception throw when a SIGBUS is caught.
+	*/
+	class KTORRENT_EXPORT BusError : public bt::Error
 	{
-		if (read_only)
-			return cache->loadPiece(this,off,len);
-		else
-			return cache->preparePiece(this,off,len);
-	}
-	
-	void Chunk::savePiece(PieceDataPtr piece)
-	{
-		cache->savePiece(piece);
-	}
+	public:
+		BusError(bool write_operation);
+		virtual ~BusError();
+		
+		/// Wether or not the SIGBUS was triggered by a write operation
+		bool write_operation;
+	};
 }
+
+/// Before writing to memory mapped data, call this macro to ensure that SIGBUS signals are caught and properly dealt with
+#define BUS_ERROR_WPROTECT() if (sigsetjmp(bt::sigbus_env, 1)) throw bt::BusError(true)
+/// Before reading from memory mapped data, call this macro to ensure that SIGBUS signals are caught and properly dealt with
+#define BUS_ERROR_RPROTECT() if (sigsetjmp(bt::sigbus_env, 1)) throw bt::BusError(false)
+
+#endif // BT_SIGNALCATCHER_H

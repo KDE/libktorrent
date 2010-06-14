@@ -23,6 +23,7 @@
 
 #include <ktorrent_export.h>
 #include <util/constants.h>
+#include <util/signalcatcher.h>
 #include <diskio/cachefile.h>
 
 
@@ -39,8 +40,6 @@ namespace bt
 	public:
 		PieceData(Chunk* chunk,Uint32 off,Uint32 len,Uint8* ptr,CacheFile* file);
 		virtual ~PieceData();
-		
-		
 		
 		/// Is this in use (i.e. can we unload it
 		bool inUse() const {return ref_count > 0;}
@@ -65,6 +64,17 @@ namespace bt
 
 		/// Get the parent chunk of the piece
 		Chunk* parentChunk() {return chunk;}
+		
+		/**
+			Write data into the PieceData. This function should always be used 
+			for writing into a PieceData object, as it protects against bus errors.
+			@param buf The buffer to write
+			@param size Size of the buffer
+			@param off Offset to write
+			@return The number of bytes written
+			@throw BusError When writing results in a SIGBUS
+		*/
+		Uint32 write(const Uint8* buf,Uint32 buf_size,Uint32 off = 0) throw (BusError);
 
 	private:
 		virtual void unmapped();
