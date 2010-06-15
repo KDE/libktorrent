@@ -142,9 +142,6 @@ puts "\n"
 `echo "find_package(Msgfmt REQUIRED)" >> CMakeLists.txt`
 `echo "find_package(Gettext REQUIRED)" >> CMakeLists.txt`
 `echo "add_subdirectory( po )" >> CMakeLists.txt`
-if FileTest.exist?( "doc" )
-   `echo "add_subdirectory( doc )" >> CMakeLists.txt`
-end
 
 # Remove cruft 
 `find -name ".svn" | xargs rm -rf`
