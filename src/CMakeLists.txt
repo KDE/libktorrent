@@ -182,6 +182,12 @@ set(libktorrent_SRC
 	utp/pollpipe.cpp
 	utp/delaywindow.cpp
 	
+	upnp/soap.cpp
+	upnp/upnpmcastsocket.cpp
+	upnp/upnprouter.cpp
+	upnp/upnpdescriptionparser.cpp
+	upnp/httprequest.cpp
+	
 	version.cpp
 )
 
@@ -199,7 +205,7 @@ target_link_libraries(ktorrent ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${QCA2_LIBRARIE
 if(WIN32)
 target_link_libraries(ktorrent ws2_32)
 endif(WIN32)
-set_target_properties(ktorrent PROPERTIES VERSION 2.0.0 SOVERSION 2)
+set_target_properties(ktorrent PROPERTIES VERSION 3.0.0 SOVERSION 3)
 install(TARGETS ktorrent  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
@@ -356,3 +362,4 @@ add_subdirectory(net)
 add_subdirectory(magnet)
 add_subdirectory(util)
 add_subdirectory(utp)
+add_subdirectory(upnp)
