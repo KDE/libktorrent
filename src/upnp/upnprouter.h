@@ -181,7 +181,7 @@ namespace bt
 			Visit all forwardings
 			@param visitor The Visitor
 		*/
-		void visit(Visitor* visitor);
+		void visit(Visitor* visitor) const;
 	
 		
 	private slots:

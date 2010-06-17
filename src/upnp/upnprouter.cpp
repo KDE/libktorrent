@@ -350,7 +350,7 @@ namespace bt
 		return d->error;
 	}
 
-	void UPnPRouter::visit(UPnPRouter::Visitor* visitor)
+	void UPnPRouter::visit(UPnPRouter::Visitor* visitor) const
 	{
 		foreach (const Forwarding & fwd,d->fwds)
 		{
