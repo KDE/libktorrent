@@ -19,7 +19,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include <util/log.h>
+#ifndef Q_CC_MSVC
 #include <util/signalcatcher.h>
+#endif
 #include "piecedata.h"
 #include "cachefile.h"
 #include "chunk.h"
@@ -51,13 +53,19 @@ namespace bt
 			file->unmap(ptr,len);
 		ptr = 0;
 	}
-	
+
+#ifndef Q_CC_MSVC
 	Uint32 PieceData::write(const bt::Uint8* buf, Uint32 buf_size,Uint32 off) throw (BusError)
+#else
+	Uint32 PieceData::write(const bt::Uint8* buf, Uint32 buf_size,Uint32 off)
+#endif
 	{
 		if (off + buf_size > len)
 			return 0;
-		
+
+#ifndef Q_CC_MSVC	
 		BUS_ERROR_WPROTECT();
+#endif
 		memcpy(ptr + off,buf,buf_size);
 		return true;
 	}

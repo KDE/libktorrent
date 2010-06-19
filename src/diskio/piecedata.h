@@ -23,7 +23,9 @@
 
 #include <ktorrent_export.h>
 #include <util/constants.h>
+#ifndef Q_CC_MSVC
 #include <util/signalcatcher.h>
+#endif
 #include <diskio/cachefile.h>
 
 
@@ -74,7 +76,11 @@ namespace bt
 			@return The number of bytes written
 			@throw BusError When writing results in a SIGBUS
 		*/
+#ifndef Q_CC_MSVC
 		Uint32 write(const Uint8* buf,Uint32 buf_size,Uint32 off = 0) throw (BusError);
+#else
+		Uint32 write(const Uint8* buf,Uint32 buf_size,Uint32 off = 0);
+#endif
 
 	private:
 		virtual void unmapped();

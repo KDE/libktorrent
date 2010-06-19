@@ -22,7 +22,9 @@
 #include "chunk.h"
 #include "cache.h"
 #include "piecedata.h"
+#ifndef Q_CC_MSVC
 #include <util/signalcatcher.h>
+#endif
 
 namespace bt
 {
@@ -42,7 +44,9 @@ namespace bt
 		PieceDataPtr d = cache->loadPiece(this,off,len);
 		if (d)
 		{
+#ifndef Q_CC_MSVC
 			BUS_ERROR_RPROTECT();
+#endif
 			memcpy(data,d->data(),len);
 		}
 		return d != 0;
@@ -57,7 +61,9 @@ namespace bt
 		if (!d)
 			return false;
 		
+#ifndef Q_CC_MSVC
 		BUS_ERROR_RPROTECT();
+#endif
 		return SHA1Hash::generate(d->data(),size) == h;
 	}
 	

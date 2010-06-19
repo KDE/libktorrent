@@ -555,7 +555,9 @@ namespace bt
 			piece_data[i] = 0;
 			if (piece)
 			{
+#ifndef Q_CC_MSVC
 				BUS_ERROR_RPROTECT();
+#endif
 				hash_gen.update(piece->data(),len);
 				chunk->savePiece(piece);
 			}

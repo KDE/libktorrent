@@ -6,7 +6,6 @@ include_directories(${QCA2_INCLUDE_DIR})
 remove_definitions(-DQT_NO_HTTP)
 
 set(libktorrent_SRC 
-	util/signalcatcher.cpp 
 	util/bitset.cpp
 	util/timer.cpp
 	util/urlencoder.cpp
@@ -190,6 +189,11 @@ set(libktorrent_SRC
 	
 	version.cpp
 )
+
+if(NOT MSVC)
+# Add signalcatcher.cpp for all builds except MSVC
+set(libktorrent_SRC ${libktorrent_SRC} util/signalcatcher.cpp)
+endif(NOT MSVC)
 
 if(WIN32)
 # Compile stuff for windows

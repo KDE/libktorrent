@@ -777,8 +777,10 @@ namespace bt
 			chunk_selector->reinsert(c->getIndex());
 			return;
 		}
-		
+	
+#ifndef Q_CC_MSVC
 		BUS_ERROR_RPROTECT();
+#endif
 		SHA1Hash h = SHA1Hash::generate(piece->data(),c->getSize());
 		if (tor.verifyHash(h,c->getIndex()))
 		{
