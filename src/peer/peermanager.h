@@ -142,8 +142,9 @@ namespace bt
 		
 		/**
 		 * Start listening to incoming requests.
+		 * @param superseed Set to true to get superseeding
 		 */
-		void start();
+		void start(bool superseed);
 		
 		/**
 		 * Stop listening to incoming requests.
@@ -266,6 +267,10 @@ namespace bt
 		
 		/// Set the piece handler
 		void setPieceHandler(PieceHandler* ph);
+		
+		/// Enable or disable super seeding
+		void setSuperSeeding(bool on,const BitSet & chunks);
+		
 	public slots:
 		/**
 		 * A PeerSource, has new potential peers.
@@ -301,6 +306,7 @@ namespace bt
 		PieceHandler* piece_handler;
 		bool paused;
 		QSet<PeerConnector*> connectors;
+		bool superseeding;
 		
 		static Uint32 max_connections;
 		static Uint32 max_total_connections;

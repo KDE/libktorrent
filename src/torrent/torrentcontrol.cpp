@@ -213,6 +213,8 @@ namespace bt
 				istats.time_started_dl = QDateTime::currentDateTime();
 				// Tell QM to redo queue
 				updateQueue();
+				if (stats.superseeding)
+					pman->setSuperSeeding(false,cman->getBitSet());
 			}
 			updateStatus();
 
@@ -430,7 +432,7 @@ namespace bt
 	void TorrentControl::continueStart()
 	{
 		// continues start after the prealloc_thread has finished preallocation	
-		pman->start();
+		pman->start(stats.completed && stats.superseeding);
 		pman->loadPeerList(tordir + "peer_list");
 		try
 		{
@@ -744,19 +746,23 @@ namespace bt
 
 	void TorrentControl::onNewPeer(Peer* p)
 	{
-		if (p->getStats().fast_extensions)
+		if (!stats.superseeding)
 		{
-			const BitSet & bs = cman->getBitSet();
-			if (bs.allOn())
-				p->getPacketWriter().sendHaveAll();
-			else if (bs.numOnBits() == 0)
-				p->getPacketWriter().sendHaveNone();
+			// Only send which chunks we have when we are not superseeding
+			if (p->getStats().fast_extensions)
+			{
+				const BitSet & bs = cman->getBitSet();
+				if (bs.allOn())
+					p->getPacketWriter().sendHaveAll();
+				else if (bs.numOnBits() == 0)
+					p->getPacketWriter().sendHaveNone();
+				else
+					p->getPacketWriter().sendBitSet(bs);
+			}
 			else
-				p->getPacketWriter().sendBitSet(bs);
-		}
-		else
-		{
-			p->getPacketWriter().sendBitSet(cman->getBitSet());
+			{
+				p->getPacketWriter().sendBitSet(cman->getBitSet());
+			}
 		}
 		
 		if (!stats.completed && !stats.paused)
@@ -970,7 +976,7 @@ namespace bt
 		else if (stats.running && stats.paused)
 			stats.status = PAUSED;
 		else if (stats.running && stats.completed)
-			stats.status = SEEDING;
+			stats.status = stats.superseeding ? SUPERSEEDING : SEEDING;
 		else if (stats.running) 
 			// protocol messages are also included in speed calculation, so lets not compare with 0
 			stats.status = downloader->downloadRate() > 100 ? DOWNLOADING : STALLED;
@@ -1066,6 +1072,7 @@ namespace bt
 		stats_file->write("URL",url.prettyUrl());
 
 		stats_file->write("TIME_ADDED", QString("%1").arg(stats.time_added.toTime_t()));
+		stats_file->write("SUPERSEEDING", stats.superseeding ? "1" : "0");
 
 		stats_file->sync();
 	}
@@ -1162,6 +1169,9 @@ namespace bt
 			stats.time_added.setTime_t(stats_file->readULong("TIME_ADDED"));
 		else
 			stats.time_added = QDateTime::currentDateTime();
+		
+		bool ss = stats_file->hasKey("SUPERSEEDING") && stats_file->readBoolean("SUPERSEEDING");
+		setSuperSeeding(ss);
 	}
 
 	void TorrentControl::loadOutputDir()
@@ -1960,6 +1970,26 @@ namespace bt
 			updateStats();
 		}
 	}
+	
+	void TorrentControl::setSuperSeeding(bool on)
+	{
+		if (stats.superseeding == on)
+			return;
+		
+		stats.superseeding = on;
+		if (on)
+		{
+			if (stats.running && stats.completed)
+				pman->setSuperSeeding(true,cman->getBitSet());
+		}
+		else
+		{
+			pman->setSuperSeeding(false,cman->getBitSet());
+		}
+		
+		saveStats();
+	}
+
 
 }
 

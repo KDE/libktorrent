@@ -434,6 +434,11 @@ namespace bt
 		 * Get the move upon completion directory. 
 		 */
 		virtual KUrl getMoveWhenCompletedDir() const = 0;
+		
+		/**
+		 * Enable or disable superseeding mode, does nothing if the torrent is not finished.
+		 */
+		virtual void setSuperSeeding(bool on) = 0;
 
 	signals:
 		/**

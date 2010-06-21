@@ -43,6 +43,7 @@ namespace bt
 		num_corrupted_chunks = 0;
 		qm_can_start = false;
 		paused = false;
+		superseeding = false;
 	}
 	
 	
@@ -93,6 +94,8 @@ namespace bt
 				return i18n("Stopped. No space left on device.");
 			case PAUSED:
 				return i18n("Paused");
+			case SUPERSEEDING:
+				return i18n("Superseeding");
 			default:
 				return QString();
 		}

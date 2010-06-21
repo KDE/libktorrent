@@ -47,6 +47,7 @@ namespace bt
 		CHECKING_DATA,
 		NO_SPACE_LEFT,
 		PAUSED,
+		SUPERSEEDING,
 		INVALID_STATUS
 	};
 
@@ -136,6 +137,8 @@ namespace bt
 		QString error_msg;
 		/// QDateTime when the torrent was added
 		QDateTime time_added;
+		/// Set to true if superseeding is enabled
+		bool superseeding;
 		
 		TorrentStats();
 		

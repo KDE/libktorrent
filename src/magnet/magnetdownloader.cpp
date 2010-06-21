@@ -71,7 +71,7 @@ namespace bt
 			dht_ps->start();
 		}
 		
-		pman->start();
+		pman->start(false);
 	}
 
 	void MagnetDownloader::stop()

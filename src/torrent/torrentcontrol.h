@@ -175,6 +175,7 @@ namespace bt
 		virtual int getETA();
 		virtual void setMoveWhenCompletedDir(const KUrl & dir) {completed_dir = dir; saveStats();}
 		virtual KUrl getMoveWhenCompletedDir() const {return completed_dir;}
+		virtual void setSuperSeeding(bool on);
 		
 		/// Create all the necessary files
 		void createFiles();

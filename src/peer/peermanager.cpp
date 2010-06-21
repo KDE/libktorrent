@@ -62,6 +62,7 @@ namespace bt
 		pex_on = !tor.isPrivate();
 		piece_handler = 0;
 		paused = false;
+		superseeding = false;
 	}
 
 
@@ -278,6 +279,8 @@ namespace bt
 			p->getPacketWriter().sendInterested();
 		available_chunks.set(index,true);
 		cnt->inc(index);
+		if (superseeding)
+			;
 	}
 
 	void PeerManager::bitSetReceived(Peer* p, const BitSet & bs)
@@ -293,8 +296,12 @@ namespace bt
 				cnt->inc(i);
 			}
 		}
+		
 		if (interested && !paused)
 			p->getPacketWriter().sendInterested();
+		
+		if (superseeding)
+			;
 	}
 	
 
@@ -528,9 +535,10 @@ namespace bt
 		}
 	}
 	
-	void PeerManager::start()
+	void PeerManager::start(bool superseed)
 	{
 		started = true;
+		superseeding = superseed;
 		unpause();
 		ServerInterface::addPeerManager(this);
 	}
@@ -682,6 +690,38 @@ namespace bt
 		{
 			if (p->getDownloadRate() == 0 && p->getUploadRate() == 0)
 				p->kill();
+		}
+	}
+	
+	void PeerManager::setSuperSeeding(bool on,const BitSet & chunks)
+	{
+		if (superseeding == on)
+			return;
+		
+		superseeding = on;
+		if (on)
+		{
+			// When entering superseeding mode kill all peers for now, 
+			// but first add the current list to the potential_peers list
+			foreach(Peer* p,peer_list)
+			{
+				const net::Address & addr = p->getAddress();
+				PotentialPeer pp;
+				pp.ip = addr.ipAddress().toString();
+				pp.port = addr.port();
+				pp.local = false;
+				potential_peers.insert(std::make_pair(pp.ip,pp));
+			}
+			
+			closeAllConnections();
+		}
+		else
+		{
+			// Tell each peer which chunks we have
+			foreach (Peer* p,peer_list)
+			{
+				p->getPacketWriter().sendBitSet(chunks);
+			}
 		}
 	}
 
