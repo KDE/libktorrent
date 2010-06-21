@@ -57,11 +57,11 @@ namespace bt
 	{
 	public:
 		/**
-			Constructor, The ChunkCounter is needed, to determine the initial set of missing chunks.
-			@param chunk_counter The ChunkCounter
+			Constructor.
+			@param num_chunks The number of chunks
 			@param client The SuperSeederClient
 		*/
-		SuperSeeder(ChunkCounter* chunk_counter, SuperSeederClient* client);
+		SuperSeeder(Uint32 num_chunks, SuperSeederClient* client);
 		virtual ~SuperSeeder();
 		
 		/**
@@ -95,15 +95,23 @@ namespace bt
 		*/
 		void peerRemoved(PeerInterface* peer);
 		
+		/**
+			Dump the status of the SuperSeeder for debugging purposes.
+		*/
+		void dump();
+		
 	private:
 		void sendChunk(PeerInterface* peer);
 		
 	private:
-		ChunkCounter* chunk_counter;
 		SuperSeederClient* client;
-		QMap<bt::Uint32,bt::PeerInterface*> active_chunks;
+		ChunkCounter* chunk_counter;
+		QMultiMap<bt::Uint32,bt::PeerInterface*> active_chunks;
 		QMap<bt::PeerInterface*,bt::Uint32> active_peers;
-		QSet<bt::Uint32> potential_chunks;
+		Uint32 num_seeders;
+		
+		typedef QMultiMap<bt::Uint32,bt::PeerInterface*>::iterator ActiveChunkItr;
+		typedef QMap<bt::PeerInterface*,bt::Uint32>::iterator ActivePeerItr;
 	};
 
 }

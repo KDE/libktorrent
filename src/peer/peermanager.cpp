@@ -546,7 +546,7 @@ namespace bt
 	{
 		started = true;
 		if (superseed && !superseeder)
-			superseeder = new SuperSeeder(cnt,this);
+			superseeder = new SuperSeeder(cnt->getNumChunks(),this);
 		
 		unpause();
 		ServerInterface::addPeerManager(this);
@@ -714,32 +714,27 @@ namespace bt
 		
 		if (on)
 		{
-			superseeder = new SuperSeeder(cnt,this);
-			// When entering superseeding mode kill all peers for now, 
-			// but first add the current list to the potential_peers list
-			foreach(Peer* p,peer_list)
-			{
-				const net::Address & addr = p->getAddress();
-				PotentialPeer pp;
-				pp.ip = addr.ipAddress().toString();
-				pp.port = addr.port();
-				pp.local = false;
-				potential_peers.insert(std::make_pair(pp.ip,pp));
-			}
-			
-			closeAllConnections();
+			superseeder = new SuperSeeder(cnt->getNumChunks(),this);
 		}
 		else
 		{
 			delete superseeder;
 			superseeder = 0;
-			
-			// Tell each peer which chunks we have
-			foreach (Peer* p,peer_list)
-			{
-				p->getPacketWriter().sendBitSet(chunks);
-			}
 		}
+		
+		// When entering or exiting superseeding mode kill all peers 
+		// but first add the current list to the potential_peers list, so we can reconnect later.
+		foreach(Peer* p,peer_list)
+		{
+			const net::Address & addr = p->getAddress();
+			PotentialPeer pp;
+			pp.ip = addr.ipAddress().toString();
+			pp.port = addr.port();
+			pp.local = false;
+			potential_peers.insert(std::make_pair(pp.ip,pp));
+		}
+		
+		closeAllConnections();
 	}
 	
 	void PeerManager::allowChunk(PeerInterface* peer, Uint32 chunk)

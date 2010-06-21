@@ -20,6 +20,7 @@
 
 #include <QtTest>
 #include <QObject>
+#include <time.h>
 #include <util/log.h>
 #include <peer/superseeder.h>
 #include <interfaces/peerinterface.h>
@@ -28,16 +29,20 @@
 using namespace bt;
 
 #define NUM_CHUNKS 10
+#define INVALID_CHUNK 0xFFFFFFFF
+
+static int peer_cnt = 0;
 
 class DummyPeer : public PeerInterface
 {
 public:
-	DummyPeer(const char* n) : PeerInterface(PeerID(),NUM_CHUNKS)
+	DummyPeer() : PeerInterface(PeerID(),NUM_CHUNKS)
 	{
-		QString name = n;
+		QString name = QString("%1").arg(peer_cnt++);
 		if (name.size() < 20)
-			name = name.leftJustified(20,'x');
+			name = name.leftJustified(20,' ');
 		peer_id = PeerID(name.toAscii());
+		allowed_chunk = INVALID_CHUNK;
 	}
 	
 	virtual ~DummyPeer()
@@ -46,6 +51,7 @@ public:
 	void reset()
 	{
 		pieces.setAll(false);
+		allowed_chunk = INVALID_CHUNK;
 	}
 	
 	void have(Uint32 chunk)
@@ -53,30 +59,47 @@ public:
 		pieces.set(chunk,true);
 	}
 	
-	virtual void kill() {}
+	void haveAll()
+	{
+		pieces.setAll(true);
+	}
+	
+	virtual void kill() 
+	{
+		killed = true;
+	}
+	
+	void allow(Uint32 chunk)
+	{
+		allowed_chunk = chunk;
+	}
+	
 	virtual Uint32 averageDownloadSpeed() const {return 0;}
+
+	Uint32 allowed_chunk;
 };
+
 
 class SuperSeedTest : public QObject, public SuperSeederClient
 {
 	Q_OBJECT
 public:
-	SuperSeedTest(QObject* parent = 0) : QObject(parent),a("a"),b("b"),c("c")
+	SuperSeedTest(QObject* parent = 0) : QObject(parent)
 	{}
 	
     virtual void allowChunk(PeerInterface* peer, Uint32 chunk)
     {
 		Out(SYS_GEN|LOG_DEBUG) << "Allow called on " << peer->getPeerID().toString() << " " << chunk << endl;
 		allow_called = true;
-		allowed_chunks.append(chunk);
-		target = peer;
+		((DummyPeer*)peer)->allow(chunk);
+		target.insert(peer);
 	}
 	
 	bool allowCalled(PeerInterface* peer) 
 	{
 		bool ret = allow_called;
 		allow_called = false;
-		return ret && target == peer;
+		return ret && target.contains(peer);
 	}
 	
 private Q_SLOTS:
@@ -84,6 +107,7 @@ private Q_SLOTS:
 	{
 		bt::InitLog("superseedtest.log");
 		allow_called = false;
+		qsrand(time(0));
 	}
 	
 	void cleanupTestCase()
@@ -92,51 +116,133 @@ private Q_SLOTS:
 	
 	void testSuperSeeding()
 	{
-		ChunkCounter cnt(NUM_CHUNKS);
-		SuperSeeder ss(&cnt,this);
-		a.reset();
-		b.reset();
-		c.reset();
-		
+		Out(SYS_GEN|LOG_DEBUG) << "testSuperSeeding" << endl;
+		SuperSeeder ss(NUM_CHUNKS,this);
 		// First test, all tree should get a chunk
-		ss.peerAdded(&a);
-		QVERIFY(allowCalled(&a));
-		QVERIFY(allowed_chunks.count() == 1);
-		ss.peerAdded(&b);
-		QVERIFY(allowCalled(&b));
-		QVERIFY(allowed_chunks.count() == 2);
-		ss.peerAdded(&c);
-		QVERIFY(allowCalled(&c));
-		QVERIFY(allowed_chunks.count() == 3);
+		for (int i = 0;i < 3;i++)
+		{
+			DummyPeer* p = &peer[i];
+			ss.peerAdded(p);
+			QVERIFY(allowCalled(p));
+			QVERIFY(p->allowed_chunk != INVALID_CHUNK);
+			target.clear();
+		}
 		
-		DummyPeer* uploader = &a;
-		DummyPeer* downloader = &b;
-		DummyPeer* next = &c;
+		ss.dump();
+		
+		DummyPeer* uploader = &peer[0];
+		DummyPeer* downloader = &peer[1];
+		DummyPeer* next = &peer[2];
 		// Simulate normal superseeding operation
 		for (int i = 0;i < 4;i++)
 		{
-			int nallowed = allowed_chunks.count();
+			Out(SYS_GEN|LOG_DEBUG) << "======================================" << endl;
+			Uint32 prev_chunk = uploader->allowed_chunk;
 			// Now simulate b downloaded the first chunk from a
-			Uint32 chunk = allowed_chunks.at(i);
-			uploader->have(chunk);
-			downloader->have(chunk);
-			ss.have(downloader,chunk);
-			QVERIFY(allowCalled(uploader)); // allow should be called again on the uploader
-			QVERIFY(allowed_chunks.count() == nallowed + 1);
+			Uint32 chunk = prev_chunk;
+			
+			Out(SYS_GEN|LOG_DEBUG) << "uploader = " << uploader->getPeerID().toString() << endl;
+			Out(SYS_GEN|LOG_DEBUG) << "downloader = " << downloader->getPeerID().toString() << endl;
+			Out(SYS_GEN|LOG_DEBUG) << "chunk = " << chunk << endl;
+			
+			if (uploader->allowed_chunk == downloader->allowed_chunk)
+			{
+				uploader->have(chunk);
+				downloader->have(chunk);
+				ss.have(downloader,chunk);
+				QVERIFY(allowCalled(uploader));
+				QVERIFY(!allowCalled(downloader));
+				Out(SYS_GEN|LOG_DEBUG) << "prev_chunk = " << chunk << ", uploader->allowed_chunk = " << uploader->allowed_chunk << endl;
+				QVERIFY(uploader->allowed_chunk != prev_chunk && uploader->allowed_chunk != INVALID_CHUNK);
+			}
+			else
+			{
+				uploader->have(chunk);
+				downloader->have(chunk);
+				ss.have(downloader,chunk);
+				QVERIFY(allowCalled(uploader)); // allow should be called again on the uploader
+				Out(SYS_GEN|LOG_DEBUG) << "prev_chunk = " << chunk << ", uploader->allowed_chunk = " << uploader->allowed_chunk << endl;
+				QVERIFY(uploader->allowed_chunk != prev_chunk && uploader->allowed_chunk != INVALID_CHUNK);
+			}
+			
+			
+			target.clear();
 			
 			// Cycle through peers
 			DummyPeer* n = uploader;
 			uploader = downloader;
 			downloader = next;
 			next = n;
+			
+			ss.dump();
 		}
 	}
-
+	#if 0
+	void testSeed()
+	{
+		Out(SYS_GEN|LOG_DEBUG) << "testSeed" << endl;
+		SuperSeeder ss(NUM_CHUNKS,this);
+		
+		for (int i = 0;i < 4;i++)
+			peer[i].reset();
+		
+		// First test, all tree should get a chunk
+		for (int i = 0;i < 3;i++)
+		{
+			DummyPeer* p = &peer[i];
+			ss.peerAdded(p);
+			QVERIFY(allowCalled(p));
+			QVERIFY(p->allowed_chunk != INVALID_CHUNK);
+			target.clear();
+		}
+		
+		ss.dump();
+		
+		// Now simulate a seed sending a have all message
+		peer[3].haveAll();
+		ss.haveAll(&peer[3]);
+		QVERIFY(allow_called == false);
+		target.clear();
+		
+		// Continue superseeding
+		DummyPeer* uploader = &peer[0];
+		DummyPeer* downloader = &peer[1];
+		DummyPeer* next = &peer[2];
+		for (int i = 0;i < 4;i++)
+		{
+			Out(SYS_GEN|LOG_DEBUG) << "======================================" << endl;
+			Uint32 prev_chunk = uploader->allowed_chunk;
+			// Now simulate b downloaded the first chunk from a
+			Uint32 chunk = prev_chunk;
+			
+			Out(SYS_GEN|LOG_DEBUG) << "uploader = " << uploader->getPeerID().toString() << endl;
+			Out(SYS_GEN|LOG_DEBUG) << "downloader = " << downloader->getPeerID().toString() << endl;
+			Out(SYS_GEN|LOG_DEBUG) << "chunk = " << chunk << endl;
+			
+			uploader->have(chunk);
+			downloader->have(chunk);
+			ss.have(downloader,chunk);
+			QVERIFY(allowCalled(uploader)); // allow should be called again on the uploader
+			
+			Out(SYS_GEN|LOG_DEBUG) << "prev_chunk = " << chunk << ", uploader->allowed_chunk = " << uploader->allowed_chunk << endl;
+			QVERIFY(uploader->allowed_chunk != prev_chunk && uploader->allowed_chunk != INVALID_CHUNK);
+			target.clear();
+			
+			// Cycle through peers
+			DummyPeer* n = uploader;
+			uploader = downloader;
+			downloader = next;
+			next = n;
+			
+			ss.dump();
+		}
+		
+	}
+#endif
 private:
-	DummyPeer a,b,c;
+	DummyPeer peer[4];
 	bool allow_called;
-	QList<Uint32> allowed_chunks;
-	PeerInterface* target;
+	QSet<PeerInterface*> target;
 };
 
 QTEST_MAIN(SuperSeedTest)
