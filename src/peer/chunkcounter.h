@@ -76,6 +76,9 @@ namespace bt
 		 * Reset all values to 0
 		 */
 		void reset();
+		
+		/// Get the number of chunks there are
+		Uint32 getNumChunks() const {return cnt.size();}
 	};
 
 }

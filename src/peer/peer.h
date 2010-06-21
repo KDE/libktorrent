@@ -100,25 +100,10 @@ namespace bt
 		
 		/// See if the peer is stalled.
 		bool isStalled() const;
-		
-		/// See if the peer has been killed.
-		bool isKilled() const {return killed;}
 
 		/// Get the PacketWriter
 		PacketWriter & getPacketWriter() {return *pwriter;}
 		
-		/// Is the Peer choked
-		bool isChoked() const {return stats.choked;}
-
-		/// Is the Peer interested
-		bool isInterested() const {return stats.interested;}
-
-		/// Are we interested in the Peer
-		bool areWeInterested() const {return stats.am_interested;}
-
-		/// Are we choked for the Peer
-		bool areWeChoked() const {return !stats.has_upload_slot || paused;}
-
 		/// Are we being snubbed by the Peer
 		bool isSnubbed() const;
 		
@@ -127,12 +112,6 @@ namespace bt
 
 		/// Get the download rate in bytes per sec
 		Uint32 getDownloadRate() const;
-
-		/// Get the Peer's BitSet
-		const BitSet & getBitSet() const {return pieces;}
-
-		/// Get the Peer's ID
-		const PeerID & getPeerID() const {return peer_id;}
 
 		/// Update the up- and down- speed and handle incoming packets
 		void update();
@@ -182,21 +161,6 @@ namespace bt
 		 */
 		void kill();
 
-		/**
-		 * Get the time when this Peer was choked.
-		 */
-		TimeStamp getChokeTime() const {return time_choked;}
-		
-		/**
-		 * Get the time when this Peer was unchoked.
-		 */
-		TimeStamp getUnchokeTime() const {return time_unchoked;}
-
-		/**
-		 * See if the peer is a seeder.
-		 */
-		bool isSeeder() const;
-
 		/// Get the time in milliseconds since the last time a piece was received.
 		Uint32 getTimeSinceLastPiece() const;
 
@@ -207,9 +171,6 @@ namespace bt
 		 * Get the percentual amount of data available from peer.
 		 */
 		float percentAvailable() const;
-
-		/// See if the peer supports DHT
-		bool isDHTSupported() const {return stats.dht_support;}
 		
 		/// Set the ACA score
 		void setACAScore(double s);
@@ -271,25 +232,23 @@ namespace bt
 
 	private:
 		mse::StreamSocket* sock;
-		bool killed;
+		
 		Timer stalled_timer;
-		TimeStamp time_choked;
-		TimeStamp time_unchoked;
+		
 		Uint32 id;
-		BitSet pieces;
-		PeerID peer_id;
+		
 		Timer snub_timer;
 		PacketReader* preader;
 		PacketWriter* pwriter;
 		PeerDownloader* downloader;
 		PeerUploader* uploader;
-		mutable PeerInterface::Stats stats;
+		
 		QTime connect_time;
 		bool pex_allowed;
 		PeerManager* pman;
 		PtrMap<Uint32,PeerProtocolExtension> extensions;
 		Uint32 ut_pex_id;
-		bool paused;
+		
 		Uint64 bytes_downloaded_since_unchoke;
 		
 		static bool resolve_hostname;

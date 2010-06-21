@@ -26,6 +26,7 @@
 #include <util/ptrmap.h>
 #include <peer/peer.h>
 #include <peer/peerid.h>
+#include <peer/superseeder.h>
 #include <util/bitset.h>
 #include <interfaces/peersource.h>
 #include <ktorrent_export.h>
@@ -73,7 +74,7 @@ namespace bt
 	 * This class manages all Peer objects.
 	 * It can also open connections to other peers.
 	 */
-	class KTORRENT_EXPORT PeerManager : public QObject
+	class KTORRENT_EXPORT PeerManager : public QObject, public SuperSeederClient
 	{
 		Q_OBJECT
 	public:
@@ -283,6 +284,7 @@ namespace bt
 		bool killBadPeer();
 		void createPeer(mse::StreamSocket* sock,const PeerID & peer_id,Uint32 support,bool local);
 		bool connectedTo(const QString & ip,Uint16 port) const;
+		virtual void allowChunk(PeerInterface* peer, Uint32 chunk);
 
 	private slots:
 		void onResolverResults(KNetwork::KResolverResults res);
@@ -306,7 +308,7 @@ namespace bt
 		PieceHandler* piece_handler;
 		bool paused;
 		QSet<PeerConnector*> connectors;
-		bool superseeding;
+		SuperSeeder* superseeder;
 		
 		static Uint32 max_connections;
 		static Uint32 max_total_connections;

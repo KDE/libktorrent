@@ -20,8 +20,11 @@
 #ifndef BTPEERINTERFACE_H
 #define BTPEERINTERFACE_H
 
-#include <qstring.h>
+#include <ktorrent_export.h>
 #include <util/constants.h>
+#include <util/bitset.h>
+#include <peer/peerid.h>
+
 
 namespace bt
 {
@@ -31,12 +34,17 @@ namespace bt
 	 * @brief Interface for a Peer
 	 *
 	 * This is the interface for a Peer, it allows other classes to
-	 * get statistics about a Peer.
+	 * get statistics about a Peer, and provides some basic funtionality provided by a Peer.
 	*/
-	class PeerInterface
+	class KTORRENT_EXPORT PeerInterface
 	{
 	public:
-		PeerInterface();
+		/**
+			Constructor, initialize the PeerID and the number of chunks
+			@param peer_id The PeerID
+			@param num_chunks The number of chunks
+		*/
+		PeerInterface(const PeerID & peer_id, Uint32 num_chunks);
 		virtual ~PeerInterface();
 
 		struct Stats
@@ -85,19 +93,68 @@ namespace bt
 			bool extension_protocol;
 			/// Max number of outstanding requests (reqq in extended protocol handshake)
 			bt::Uint32 max_request_queue;
+			/// Time the peer choked us
+			TimeStamp time_choked;
+			/// Time the peer unchoked us
+			TimeStamp time_unchoked;
 			
 			/// Get the address of the peer (hostname if it is valid, IP otherwise)
 			QString address() const {return hostname.isEmpty() ? ip_address : hostname;}
 		};
 
-		virtual const Stats & getStats() const = 0;
+		/// Get the Peer's statistics
+		virtual const Stats & getStats() const {return stats;}
 		
+		/** 
+			Kill the Peer, will ensure the PeerManager closes the connection, and cleans things up.
+		*/
 		virtual void kill() = 0;
+		
+		/// See if the peer has been killed.
+		bool isKilled() const {return killed;}
 		
 		/** 
 			Get the average download speed since the last unchoke in bytes/sec
 		 */
 		virtual bt::Uint32 averageDownloadSpeed() const = 0;
+		
+		/// Get the Peer's BitSet
+		const BitSet & getBitSet() const {return pieces;}
+		
+		/// Get the Peer's ID
+		const PeerID & getPeerID() const {return peer_id;}
+		
+		/// Is the Peer choked
+		bool isChoked() const {return stats.choked;}
+		
+		/// Is the Peer interested
+		bool isInterested() const {return stats.interested;}
+		
+		/// Are we interested in the Peer
+		bool areWeInterested() const {return stats.am_interested;}
+		
+		/// Are we choked for the Peer
+		bool areWeChoked() const {return !stats.has_upload_slot || paused;}
+		
+		/// See if the peer supports DHT
+		bool isDHTSupported() const {return stats.dht_support;}
+		
+		/// Get the time when this Peer choked us
+		TimeStamp getChokeTime() const {return stats.time_choked;}
+		
+		/// Get the time when this Peer unchoked us
+		TimeStamp getUnchokeTime() const {return stats.time_unchoked;}
+		
+		/// See if the peer is a seeder.
+		bool isSeeder() const {return pieces.allOn();}
+		
+		
+	protected:
+		mutable PeerInterface::Stats stats;
+		bool paused;
+		bool killed;
+		PeerID peer_id;
+		BitSet pieces;
 	};
 
 }

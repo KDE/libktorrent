@@ -62,7 +62,7 @@ namespace bt
 		pex_on = !tor.isPrivate();
 		piece_handler = 0;
 		paused = false;
-		superseeding = false;
+		superseeder = 0;
 	}
 
 
@@ -78,6 +78,8 @@ namespace bt
 		
 		qDeleteAll(peer_list.begin(),peer_list.end());
 		peer_list.clear();
+		
+		delete superseeder;
 	}
 
 	void PeerManager::pause()
@@ -137,6 +139,8 @@ namespace bt
 				if (total_connections > 0)
 					total_connections--;
 				peerKilled(p);
+				if (superseeder)
+					superseeder->peerRemoved(p);
 			}
 			else
 			{
@@ -279,8 +283,8 @@ namespace bt
 			p->getPacketWriter().sendInterested();
 		available_chunks.set(index,true);
 		cnt->inc(index);
-		if (superseeding)
-			;
+		if (superseeder)
+			superseeder->have(p,index);
 	}
 
 	void PeerManager::bitSetReceived(Peer* p, const BitSet & bs)
@@ -300,8 +304,8 @@ namespace bt
 		if (interested && !paused)
 			p->getPacketWriter().sendInterested();
 		
-		if (superseeding)
-			;
+		if (superseeder)
+			superseeder->bitset(p,bs);
 	}
 	
 
@@ -356,6 +360,9 @@ namespace bt
 		// send extension protocol handshake
 		bt::Uint16 port = ServerInterface::getPort();
 		peer->sendExtProtHandshake(port,tor.getMetaData().size());
+		
+		if (superseeder)
+			superseeder->peerAdded(peer);
 	}
 		
 	bool PeerManager::connectedTo(const PeerID & peer_id)
@@ -538,7 +545,9 @@ namespace bt
 	void PeerManager::start(bool superseed)
 	{
 		started = true;
-		superseeding = superseed;
+		if (superseed && !superseeder)
+			superseeder = new SuperSeeder(cnt,this);
+		
 		unpause();
 		ServerInterface::addPeerManager(this);
 	}
@@ -555,6 +564,11 @@ namespace bt
 		connectors.clear();
 		stopped();
 		num_pending = 0;
+		if (superseeder)
+		{
+			delete superseeder;
+			superseeder = 0;
+		}
 	}
 
 	Peer* PeerManager::findPeer(Uint32 peer_id)
@@ -695,12 +709,12 @@ namespace bt
 	
 	void PeerManager::setSuperSeeding(bool on,const BitSet & chunks)
 	{
-		if (superseeding == on)
+		if ((superseeder && on) || (!superseeder && !on))
 			return;
 		
-		superseeding = on;
 		if (on)
 		{
+			superseeder = new SuperSeeder(cnt,this);
 			// When entering superseeding mode kill all peers for now, 
 			// but first add the current list to the potential_peers list
 			foreach(Peer* p,peer_list)
@@ -717,12 +731,22 @@ namespace bt
 		}
 		else
 		{
+			delete superseeder;
+			superseeder = 0;
+			
 			// Tell each peer which chunks we have
 			foreach (Peer* p,peer_list)
 			{
 				p->getPacketWriter().sendBitSet(chunks);
 			}
 		}
+	}
+	
+	void PeerManager::allowChunk(PeerInterface* peer, Uint32 chunk)
+	{
+		Peer* p = dynamic_cast<Peer*>(peer);
+		if (p)
+			p->getPacketWriter().sendHave(chunk);
 	}
 
 }

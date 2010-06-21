@@ -73,6 +73,7 @@ set(libktorrent_SRC
 	peer/accessmanager.cpp
 	peer/badpeerslist.cpp
 	peer/peerconnector.cpp
+	peer/superseeder.cpp
 
 	download/piece.cpp
 	download/request.cpp
@@ -242,25 +243,7 @@ set (interfaces_HDR
 	./interfaces/serverinterface.h
 )
 
-set (peer_HDR
-	./peer/peeruploader.h
-	./peer/packetwriter.h
-	./peer/peer.h
-	./peer/peermanager.h
-	./peer/authenticatebase.h
-	./peer/authenticate.h
-	./peer/peerprotocolextension.h
-	./peer/utpex.h
-	./peer/utmetadata.h
-	./peer/packetreader.h
-	./peer/authenticationmonitor.h
-	./peer/peerid.h
-	./peer/peerdownloader.h
-	./peer/chunkcounter.h
-	./peer/serverauthenticate.h
-	./peer/accessmanager.h
-	./peer/peerconnector.h
-)
+
 	
 
 	
@@ -354,7 +337,6 @@ install(FILES ${diskio_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/diski
 install(FILES ${bcodec_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/bcodec COMPONENT Devel)
 install(FILES ${mse_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/mse COMPONENT Devel)
 install(FILES ${interfaces_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/interfaces COMPONENT Devel)
-install(FILES ${peer_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/peer COMPONENT Devel)
 install(FILES ${datachecker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/datachecker COMPONENT Devel)
 install(FILES ${dht_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/dht COMPONENT Devel)
 install(FILES ${migrate_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/migrate COMPONENT Devel)
@@ -362,6 +344,7 @@ install(FILES ${download_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/dow
 install(FILES ${ktorrent_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent COMPONENT Devel)
 
 add_subdirectory(torrent)
+add_subdirectory(peer)
 add_subdirectory(net)
 add_subdirectory(magnet)
 add_subdirectory(util)
