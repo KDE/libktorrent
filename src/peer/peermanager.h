@@ -272,6 +272,9 @@ namespace bt
 		/// Enable or disable super seeding
 		void setSuperSeeding(bool on,const BitSet & chunks);
 		
+		/// Send a have message to all peers
+		void sendHave(Uint32 index);
+		
 	public slots:
 		/**
 		 * A PeerSource, has new potential peers.

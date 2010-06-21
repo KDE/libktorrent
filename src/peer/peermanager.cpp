@@ -743,6 +743,18 @@ namespace bt
 		if (p)
 			p->getPacketWriter().sendHave(chunk);
 	}
+	
+	void PeerManager::sendHave(Uint32 index)
+	{
+		if (superseeder)
+			return;
+		
+		foreach (Peer* peer, peer_list)
+		{
+			peer->getPacketWriter().sendHave(index);
+		}
+	}
+
 
 }
 

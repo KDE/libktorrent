@@ -452,12 +452,7 @@ namespace bt
 				
 				cman.chunkDownloaded(c->getIndex());
 				Out(SYS_GEN|LOG_IMPORTANT) << "Chunk " << c->getIndex() << " downloaded " << endl;
-				// tell everybody we have the Chunk
-				for (Uint32 i = 0;i < pman.getNumConnectedPeers();i++)
-				{
-					pman.getPeer(i)->getPacketWriter().sendHave(c->getIndex());
-				}
-				
+				pman.sendHave(c->getIndex());
 				emit chunkDownloaded(c->getIndex());
 			}
 			catch (Error & e)
@@ -809,10 +804,7 @@ namespace bt
 			
 				Out(SYS_GEN|LOG_IMPORTANT) << "Chunk " << c->getIndex() << " downloaded via webseed ! " << endl;
 				// tell everybody we have the Chunk
-				for (Uint32 i = 0;i < pman.getNumConnectedPeers();i++)
-				{
-					pman.getPeer(i)->getPacketWriter().sendHave(c->getIndex());
-				}
+				pman.sendHave(c->getIndex());
 			}
 			catch (Error & e)
 			{
