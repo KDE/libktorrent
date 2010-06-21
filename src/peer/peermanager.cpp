@@ -739,6 +739,7 @@ namespace bt
 	
 	void PeerManager::allowChunk(PeerInterface* peer, Uint32 chunk)
 	{
+		Out(SYS_CON|LOG_DEBUG) << "Peer " << peer->getPeerID().toString() << " is allowed to download " << chunk << endl;
 		Peer* p = dynamic_cast<Peer*>(peer);
 		if (p)
 			p->getPacketWriter().sendHave(chunk);

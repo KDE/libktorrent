@@ -2,7 +2,8 @@ Changes in 1.1:
 - Use UTF-8 as default codec in bt::Value::toString
 - Make sure that SIGBUS signals caused by failed mmapped IO are dealt with properly (241598)
 - Move UPnP library from ktorrent/libktupnp to libktorrent
-- Add support for superseeding
+- Add support for superseeding (171661)
+- Add command line example ktcli showing how to use libktorrent
 
 Changes in 1.0.2:
 - Fix subtle bug causing some connections to be dropped prematurely

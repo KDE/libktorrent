@@ -268,9 +268,10 @@ namespace bt
 		return *global_log;
 	}
 
-	void InitLog(const QString & file,bool rotate,bool handle_qt_messages)
+	void InitLog(const QString & file,bool rotate,bool handle_qt_messages,bool to_stdout)
 	{
 		global_log->setOutputFile(file,rotate,handle_qt_messages);
+		global_log->setOutputToConsole(to_stdout);
 	}
 
 	void AddLogMonitor(LogMonitorInterface* m)

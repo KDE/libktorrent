@@ -56,5 +56,6 @@ check_function_exists(statvfs64 HAVE_STATVFS64)
 
 
 add_subdirectory(src)
+add_subdirectory(examples)
 add_subdirectory(cmake)
 add_subdirectory(doc)

@@ -202,8 +202,12 @@ namespace bt
 
 	/**
 	 * Initialize the global log.
+	 * @param file The log file
+	 * @param rotate_logs Set to true if the logs need to be rotated
+	 * @param handle_qt_messages Set to true if Qt messages need to be logged
+	 * @param to_stdout Set to true if output to standard output is required
 	 * */
-	KTORRENT_EXPORT void InitLog(const QString & file,bool rotate_logs = false,bool handle_qt_messages = true);
+	KTORRENT_EXPORT void InitLog(const QString & file,bool rotate_logs = false,bool handle_qt_messages = true,bool to_stdout = false);
 
 	/// Add a monitor to the global log
 	KTORRENT_EXPORT void AddLogMonitor(LogMonitorInterface* m);
