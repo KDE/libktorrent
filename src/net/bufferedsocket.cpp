@@ -98,10 +98,11 @@ namespace net
 		Uint32 ba = sock->bytesAvailable();
 		if (ba == 0)
 		{
-			sock->close();
-			return 0;
+			// For some strange reason, sometimes bytesAvailable returns 0, while there are 
+			// bytes to read, so give ba the maximum value it can be
+			ba = max_bytes_to_read > 0 ? max_bytes_to_read : OUTPUT_BUFFER_SIZE;
 		}
-			
+		
 		while ((br < max_bytes_to_read || no_limit)  && ba > 0)
 		{
 			Uint32 tr = ba;
@@ -119,6 +120,7 @@ namespace net
 				if (rdr)
 					rdr->onDataReady(input_buffer,ret);
 				br += ret;
+				ba -= ret;
 			}
 			else if (ret < 0)
 			{
