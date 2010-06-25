@@ -333,29 +333,24 @@ namespace bt
 		{
 			// no list, it might however be a compact response
 			vn = dict->getValue("peers");
-			if (!vn)
+			if (vn && vn->data().getType() == Value::STRING)
 			{
-				delete n;
-				failures++;
-				failed(i18n("Invalid response from tracker"));
-				return false;
-			}
+				QByteArray arr = vn->data().toByteArray();
+				for (int i = 0;i < arr.size();i+=6)
+				{
+					Uint8 buf[6];
+					for (int j = 0;j < 6;j++)
+						buf[j] = arr[i + j];
 
-			QByteArray arr = vn->data().toByteArray();
-			for (int i = 0;i < arr.size();i+=6)
-			{
-				Uint8 buf[6];
-				for (int j = 0;j < 6;j++)
-					buf[j] = arr[i + j];
+					Uint32 ip = ReadUint32(buf,0);
+					QString ip_str = QString("%1.%2.%3.%4")
+						.arg((ip & 0xFF000000) >> 24)
+						.arg((ip & 0x00FF0000) >> 16)
+						.arg((ip & 0x0000FF00) >> 8)
+						.arg(ip & 0x000000FF);
 
-				Uint32 ip = ReadUint32(buf,0);
-				QString ip_str = QString("%1.%2.%3.%4")
-					.arg((ip & 0xFF000000) >> 24)
-					.arg((ip & 0x00FF0000) >> 16)
-					.arg((ip & 0x0000FF00) >> 8)
-					.arg(ip & 0x000000FF);
-
-				addPeer(ip_str,ReadUint16(buf,4));
+					addPeer(ip_str,ReadUint16(buf,4));
+				}
 			}
 		}
 		else

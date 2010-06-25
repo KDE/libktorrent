@@ -7,6 +7,7 @@ Changes in 1.1:
 
 Changes in 1.0.2:
 - Fix subtle bug causing some connections to be dropped prematurely
+- Fix bug causing tracker replies with only IPv6 addresses to be misinterpreted as an invalid reply
 
 Changes in 1.0.1:
 - Make sure that KT binds correctly on systems with net.ipv6.bindv6only set to 1 (238688)
