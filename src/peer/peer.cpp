@@ -77,6 +77,7 @@ namespace bt
 		stats.extension_protocol = support & EXT_PROT_SUPPORT;
 		stats.encrypted = sock->encrypted();
 		stats.local = local;
+		stats.transport_protocol = sock->socketDevice()->transportProtocol();
 		
 		if (stats.ip_address == "0.0.0.0")
 		{

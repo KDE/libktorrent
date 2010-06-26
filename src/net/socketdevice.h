@@ -31,7 +31,7 @@ namespace net
 	class SocketDevice
 	{
 	public:
-		SocketDevice();
+		SocketDevice(bt::TransportProtocol proto);
 		virtual ~SocketDevice();
 		
 		enum State
@@ -57,6 +57,10 @@ namespace net
 		virtual const Address & getPeerName() const = 0;
 		virtual Address getSockName() const = 0;
 		
+		
+		/// Get the used transport protocol for this SocketDevice
+		bt::TransportProtocol transportProtocol() const {return transport_protocol;}
+		
 		/**
 		* Set the remote address, used by Socks to set the actual address.
 		* @param addr The address
@@ -78,6 +82,7 @@ namespace net
 		State m_state;
 		Address addr;
 		bool remote_addr_override;
+		bt::TransportProtocol transport_protocol;
 	};
 
 }

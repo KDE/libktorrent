@@ -97,6 +97,8 @@ namespace bt
 			TimeStamp time_choked;
 			/// Time the peer unchoked us
 			TimeStamp time_unchoked;
+			/// The transport protocol used by the peer
+			bt::TransportProtocol transport_protocol;
 			
 			/// Get the address of the peer (hostname if it is valid, IP otherwise)
 			QString address() const {return hostname.isEmpty() ? ip_address : hostname;}

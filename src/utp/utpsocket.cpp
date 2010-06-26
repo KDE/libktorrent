@@ -26,11 +26,13 @@
 namespace utp
 {
 	
-	UTPSocket::UTPSocket() : conn(0),blocking(true),polled_for_reading(false),polled_for_writing(false)
+	UTPSocket::UTPSocket() 
+		: net::SocketDevice(bt::UTP),conn(0),blocking(true),polled_for_reading(false),polled_for_writing(false)
 	{
 	}
 	
-	UTPSocket::UTPSocket(Connection* conn) : conn(conn),blocking(true),polled_for_reading(false),polled_for_writing(false)
+	UTPSocket::UTPSocket(Connection* conn) 
+		: net::SocketDevice(bt::UTP),conn(conn),blocking(true),polled_for_reading(false),polled_for_writing(false)
 	{
 		UTPServer & srv = bt::Globals::instance().getUTPServer();
 		srv.attach(this,conn);
