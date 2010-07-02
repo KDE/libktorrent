@@ -24,7 +24,7 @@
 
 #include <QPair>
 #include <utp/utpprotocol.h>
-#include <deque>
+#include <list>
 
 
 namespace utp 
@@ -39,12 +39,6 @@ namespace utp
 		
 		/// Update the window with a new packet, returns the base delay
 		bt::Uint32 update(const Header* hdr,bt::TimeStamp receive_time);
-		
-		/// Get the current base delay
-		bt::Uint32 baseDelay() const 
-		{
-			return lowest ? lowest->timestamp_difference_microseconds : MAX_DELAY;
-		}
 		
 	private:
 		struct DelayEntry
@@ -61,13 +55,10 @@ namespace utp
 			bool operator < (const DelayEntry & e) const {return receive_time < e.receive_time;}
 		};
 		
-		typedef std::deque<DelayEntry>::iterator DelayEntryItr;
-		
-		DelayEntry* findBaseDelay();
+		typedef std::list<DelayEntry>::iterator DelayEntryItr;
 		
 	private:
-		std::deque<DelayEntry> delay_window;
-		DelayEntry* lowest;
+		std::list<DelayEntry> delay_window;
 	};
 
 }

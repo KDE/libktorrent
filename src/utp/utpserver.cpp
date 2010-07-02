@@ -192,8 +192,6 @@ namespace utp
 				Out(SYS_UTP|LOG_NOTICE) << "UTP: " << err.location << endl;
 			}
 		}
-		
-		clearDeadConnections();
 	}
 	
 	void UTPServer::writePacket(int)
@@ -409,7 +407,7 @@ namespace utp
 				i++;
 		}
 	}
-
+	
 	void UTPServer::attach(UTPSocket* socket, Connection* conn)
 	{
 		QMutexLocker lock(&mutex);
@@ -461,9 +459,11 @@ namespace utp
 			s->reset();
 		
 		alive_connections.clear();
+		clearDeadConnections();
+		
+		connections.setAutoDelete(true);
 		connections.clear();
-		qDeleteAll(dead_connections);
-		dead_connections.clear();
+		connections.setAutoDelete(false);
 		
 		// Close the socket
 		if (sock)
@@ -540,7 +540,9 @@ namespace utp
 	{
 		if (create_sockets)
 		{
-			pending.append(new mse::StreamSocket(new UTPSocket(conn)));
+			UTPSocket* utps = new UTPSocket(conn);
+			mse::StreamSocket* ss = new mse::StreamSocket(utps);
+			pending.append(ss);
 			handlePendingConnectionsDelayed();
 		}
 	}
@@ -575,4 +577,10 @@ namespace utp
 			}
 		}
 	}
+		
+	void UTPServer::cleanup()
+	{
+		clearDeadConnections();
+	}
+
 }
