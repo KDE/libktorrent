@@ -181,16 +181,18 @@ namespace utp
 					// push data into local window
 					int s = packet.size() - data_off;
 					local_wnd->packetReceived(hdr,(const bt::Uint8*)packet.data() + data_off,s);
-					if (local_wnd->size() > 0)
-						data_ready.wakeAll();
 					
 					// send back an ACK 
 					sendStateOrData();
+					if (local_wnd->size() > 0)
+						data_ready.wakeAll();
 				}
 				else if (hdr->type == ST_STATE)
 				{
 					// try to send more data packets
 					sendPackets();
+					if (local_wnd->size() > 0)
+						data_ready.wakeAll();
 				}
 				else if (hdr->type == ST_FIN)
 				{
@@ -199,6 +201,8 @@ namespace utp
 					stats.state = CS_FINISHED; // state becomes finished
 					sendPackets();
 					checkIfClosed();
+					if (local_wnd->size() > 0)
+						data_ready.wakeAll();
 				}
 				else
 				{
@@ -215,8 +219,6 @@ namespace utp
 						// push data into local window
 						int s = packet.size() - data_off;
 						local_wnd->packetReceived(hdr,(const bt::Uint8*)packet.data() + data_off,s);
-						if (local_wnd->size() > 0)
-							data_ready.wakeAll();
 					}
 					
 					// send back an ACK 
@@ -227,18 +229,24 @@ namespace utp
 						fin_sent = true;
 					}
 					checkIfClosed();
+					if (local_wnd->size() > 0)
+						data_ready.wakeAll();
 				}
 				else if (hdr->type == ST_STATE)
 				{
 					// try to send more data packets
 					sendPackets();
 					checkIfClosed();
+					if (local_wnd->size() > 0)
+						data_ready.wakeAll();
 				}
 				else if (hdr->type == ST_FIN)
 				{
 					stats.eof_seq_nr = hdr->seq_nr;
 					sendPackets();
 					checkIfClosed();
+					if (local_wnd->size() > 0)
+						data_ready.wakeAll();
 				}
 				else
 				{
@@ -311,7 +319,7 @@ namespace utp
 			local_wnd->fillSelectiveAck(&sack);
 		}
 		
-		
+	
 		if (!transmitter->sendTo(ba,stats.remote,receiveConnectionID()))
 			throw TransmissionError(__FILE__,__LINE__);
 		
@@ -642,6 +650,7 @@ namespace utp
 		Out(SYS_UTP|LOG_DEBUG) << "packets_sent     = " << stats.packets_sent << endl;
 		Out(SYS_UTP|LOG_DEBUG) << "bytes_lost       = " << stats.bytes_lost << endl;
 		Out(SYS_UTP|LOG_DEBUG) << "packets_lost     = " << stats.packets_lost << endl;
+		Out(SYS_UTP|LOG_DEBUG) << "local_window     = " << local_wnd->size() << endl;
 	}
 
 	bool Connection::allDataSent() const
