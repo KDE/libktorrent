@@ -67,7 +67,7 @@ namespace utp
 		while (itr != future_packets.end())
 		{
 			FuturePacket* pkt = *itr;
-			if (pkt->seq_nr == last_seq_nr + 1)
+			if (pkt->seq_nr == (bt::Uint16)(last_seq_nr + 1))
 			{
 				last_seq_nr = pkt->seq_nr;
 				if (write((const bt::Uint8*)pkt->data.data(),pkt->data.size()) != pkt->data.size())
@@ -80,21 +80,24 @@ namespace utp
 		}
 	}
 
-	
 	bool LocalWindow::packetReceived(const utp::Header* hdr,const bt::Uint8* data,bt::Uint32 size)
 	{
 		// Drop duplicate data packets
-		if (hdr->seq_nr <= last_seq_nr) 
+		// Make sure we take into account wrapping around
+		if (SeqNrCmpSE(hdr->seq_nr,last_seq_nr)) 
+		{
 			return true;
+		}
 		
-		if (hdr->seq_nr != last_seq_nr + 1)
+		bt::Uint16 next_seq_nr = last_seq_nr + 1;
+		if (hdr->seq_nr != next_seq_nr)
 		{
 			// insert the packet into the future_packets list
 			QLinkedList<FuturePacket*>::iterator itr = future_packets.begin();
 			while (itr != future_packets.end())
 			{
 				FuturePacket* pkt = *itr;
-				if (pkt->seq_nr < hdr->seq_nr)
+				if (SeqNrCmpS(pkt->seq_nr,hdr->seq_nr))
 				{
 					itr++;
 				}
@@ -114,7 +117,9 @@ namespace utp
 			
 			// at the end and not inserted yet, so just append
 			if (itr == future_packets.end())
+			{
 				future_packets.append(new FuturePacket(hdr->seq_nr,data,size));
+			}
 			
 			window_space -= size;
 			checkFuturePackets();
@@ -143,7 +148,7 @@ namespace utp
 		if (future_packets.isEmpty())
 			return 0;
 		else
-			return future_packets.last()->seq_nr - last_seq_nr - 1;
+			return SeqNrDiff(last_seq_nr,future_packets.last()->seq_nr) - 1;
 	}
 
 
@@ -155,7 +160,7 @@ namespace utp
 		QLinkedList<FuturePacket*>::iterator itr = future_packets.begin();
 		while (itr != future_packets.end())
 		{
-			Ack(sack,(*itr)->seq_nr - last_seq_nr);
+			Ack(sack,SeqNrDiff(last_seq_nr,(*itr)->seq_nr));
 			itr++;
 		}
 	}

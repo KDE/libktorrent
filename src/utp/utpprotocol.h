@@ -149,6 +149,35 @@ namespace utp
 		bt::Uint32 data_off;
 		bt::Uint32 data_size;
 	};
+	
+	/// <= for sequence numbers (taking into account wrapping around)
+	inline bool SeqNrCmpSE(bt::Uint16 a,bt::Uint16 b)
+	{
+		if (qAbs(b - a) < 32768)
+			return a <= b;
+		else
+			return a > b;
+	}
+	
+	/// < for sequence numbers (taking into account wrapping around)
+	inline bool SeqNrCmpS(bt::Uint16 a,bt::Uint16 b)
+	{
+		if (qAbs(b - a) < 32768)
+			return a < b;
+		else
+			return a > b;
+	}
+	
+	/// Calculates difference between two sequence numbers (taking into account wrapping around)
+	inline bt::Uint16 SeqNrDiff(bt::Uint16 a,bt::Uint16 b)
+	{
+		if (qAbs(b - a) < 32768)
+			return b - a;
+		else if (b > a)
+			return a + (65536 - b);
+		else
+			return b + (65536 - a);
+	}
 }
 
 #endif // UTP_UTPPROTOCOL_H
