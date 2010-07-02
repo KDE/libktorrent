@@ -173,16 +173,19 @@ namespace utp
 	{
 		QMutexLocker lock(&mutex);
 		
-		int ba = sock->bytesAvailable();
-		QByteArray packet(ba,0);
+		static bt::Uint8 packet_buf[MAX_PACKET_SIZE];
 		net::Address addr;
-		if (sock->recvFrom((bt::Uint8*)packet.data(),ba,addr) > 0)
+		int ret = sock->recvFrom(packet_buf,MAX_PACKET_SIZE,addr);
+		if (ret > 0)
 		{
 			//Out(SYS_UTP|LOG_NOTICE) << "UTP: received " << ba << " bytes packet from " << addr.toString() << endl;
+			
 			try
 			{
-				if (ba >= utp::Header::size()) // discard packets which are to small
-					handlePacket(packet,addr);
+				if (ret >= (int)utp::Header::size()) // discard packets which are to small
+				{
+					handlePacket(QByteArray::fromRawData((const char*)packet_buf,ret),addr);
+				}
 			}
 			catch (utp::Connection::TransmissionError & err)
 			{

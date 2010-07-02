@@ -106,15 +106,18 @@ namespace dht
 		void handlePacket(net::Socket::Ptr socket)
 		{
 			QMutexLocker lock(&msg_mutex);
-			QByteArray data(socket->bytesAvailable(),0);
+			static bt::Uint8 packet_buf[2048];
+			
 			net::Address addr;
-			if (socket->recvFrom((bt::Uint8*)data.data(),data.size(),addr) <= 0)
+			int ret = socket->recvFrom(packet_buf,2048,addr);
+			if (ret <= 0)
 				return;
 			
 			
 			BNode* n = 0;
 			try
 			{
+				QByteArray data = QByteArray::fromRawData((const char*)packet_buf,ret);
 				// read and decode the packet
 				BDecoder bdec(data,false);
 				n = bdec.decode();
