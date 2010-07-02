@@ -129,6 +129,9 @@ namespace utp
 		void readPacket(int fd);
 		void writePacket(int fd);
 		
+	public slots:
+		void cleanup();
+		
 	private:
 		typedef bt::PtrMap<quint16,Connection>::iterator ConItr;
 		

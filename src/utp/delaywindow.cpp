@@ -21,6 +21,9 @@
 #include "delaywindow.h"
 #include <algorithm>
 #include <util/functions.h>
+#include <util/log.h>
+
+using namespace bt;
 
 namespace utp
 {
@@ -37,32 +40,33 @@ namespace utp
 	bt::Uint32 DelayWindow::update(const utp::Header* hdr,bt::TimeStamp receive_time)
 	{
 		bt::TimeStamp now = receive_time;
-		
-		// drop everything older then 2 minutes
+		bool added = false;
 		DelayEntryItr itr = delay_window.begin();
 		while (itr != delay_window.end())
 		{
+			// drop everything older then 2 minutes
 			if (now - itr->receive_time > DELAY_WINDOW_SIZE)
 			{
-				if (lowest == &(*itr))
-					lowest = 0;
-				
+				// Old entry, can remove it
 				itr = delay_window.erase(itr);
 			}
-			else
+			else if (itr->timestamp_difference_microseconds > hdr->timestamp_difference_microseconds)
+			{
+				// We have encountered an entry with a higher delay then the packet, 
+				// so everything from this entry onwards can be removed
+				delay_window.erase(itr,delay_window.end());
+				delay_window.push_back(DelayEntry(hdr->timestamp_difference_microseconds,now));
+				added = true;
 				break;
+			}
+			else 
+				itr++;
 		}
 		
-		if (!lowest)
-			lowest = findBaseDelay();
+		if (!added)
+			delay_window.push_back(DelayEntry(hdr->timestamp_difference_microseconds,now));
 		
-		// Add the new entry and check if it updates base delay
-		DelayEntry entry(hdr->timestamp_difference_microseconds,now);
-		delay_window.push_back(entry);
-		if (!lowest || entry.timestamp_difference_microseconds < lowest->timestamp_difference_microseconds)
-			lowest = &delay_window.back();
-		
-		return lowest->timestamp_difference_microseconds;
+		return delay_window.front().timestamp_difference_microseconds;
 	}
 	
 	DelayWindow::DelayEntry* DelayWindow::findBaseDelay()
