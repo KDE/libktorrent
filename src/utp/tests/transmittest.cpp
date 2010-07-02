@@ -31,7 +31,7 @@
 #include <util/sha1hash.h>
 #include <util/sha1hashgen.h>
 
-#define BYTES_TO_SEND 1024*1024
+#define BYTES_TO_SEND 100*1024*1024
 
 using namespace utp;
 using namespace bt;
@@ -94,19 +94,19 @@ public:
 		QByteArray data = Generate(step);
 		bt::SHA1HashGen hgen;
 		
-		int sent = 0;
+		bt::Int64 sent = 0;
 		int off = 0;
 		while (sent < BYTES_TO_SEND)
 		{
 			int to_send = step - off;
 			int ret = outgoing->send((const bt::Uint8*)data.data() + off,to_send);
-			Out(SYS_UTP|LOG_DEBUG) << "Transmitted " << ret << endl;
 			if (ret > 0)
 			{
 				hgen.update((const bt::Uint8*)data.data() + off,ret);
 				sent += ret;
 				off += ret;
 				off = off % step;
+				Out(SYS_UTP|LOG_DEBUG) << "Transmitted " << sent << endl;
 			}
 			else if (ret == 0)
 			{
@@ -121,6 +121,7 @@ public:
 		sleep(2);
 		Out(SYS_UTP|LOG_DEBUG) << "Transmitted " << sent << endl;
 		outgoing->dumpStats();
+		outgoing->close();
 		sent_hash = hgen.get();
 	}
 	
@@ -151,7 +152,7 @@ public slots:
 private slots:
 	void initTestCase()
 	{
-		bt::InitLog("transmittest.log",false,true);
+		bt::InitLog("transmittest.log",false,true,false);
 		
 		incoming = outgoing = 0;
 		port = 50000;
@@ -198,12 +199,11 @@ private slots:
 		
 		SendThread st(outgoing);
 		st.start(); // The thread will start sending a whole bunch of data
-		int received = 0;
+		bt::Int64 received = 0;
 		int failures = 0;
 		while (received < BYTES_TO_SEND)
 		{
 			bt::Uint32 ba = incoming->bytesAvailable();
-			Out(SYS_UTP|LOG_DEBUG) << "Available " << ba << endl;
 			if (ba > 0)
 			{
 				failures = 0;
@@ -215,17 +215,15 @@ private slots:
 				{
 					hgen.update((bt::Uint8*)data.data(),ret);
 					received += ret;
+					Out(SYS_UTP|LOG_DEBUG) << "Received " << received << endl;
 				}
 			}
 			else
 			{
-				usleep(100000);
-				if (st.isFinished())
+				if (incoming->connectionState() == utp::CS_CLOSED)
 					break;
 				
-				failures++;
-				if (failures > 22)
-					break;
+				incoming->waitForData();
 			}
 		}
 		
