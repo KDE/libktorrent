@@ -15,68 +15,119 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "udptrackersocket.h"
 #include <time.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <QHostAddress>
+#include <KLocale>
 #include <util/array.h>
 #include <net/portlist.h>
 #include <util/log.h>
 #include <util/functions.h>
-#include <klocale.h>
-#include <k3socketdevice.h>
-#include <k3datagramsocket.h>
-#include <k3socketaddress.h>
+#include <net/socket.h>
+#include <net/serversocket.h>
 #include <torrent/globals.h>
 		
 #ifdef ERROR
 #undef ERROR
 #endif
-using namespace KNetwork;
 
-using namespace KNetwork;
+
 
 namespace bt
 {
 	Uint16 UDPTrackerSocket::port = 4444;
-
-	UDPTrackerSocket::UDPTrackerSocket() 
+	
+	class UDPTrackerSocket::Private : public net::ServerSocket::DataHandler
 	{
-		sock = new KDatagramSocket(this);
-		sock->setAddressReuseable(true);
- 		connect(sock,SIGNAL(readyRead()),this,SLOT(dataReceived()));
-		int i = 0;
+	public:
+		Private(UDPTrackerSocket* p) : p(p)
+		{
+		}
+		
+		~Private()
+		{
+		}
+		
+		void listen(const QString & ip,Uint16 port)
+		{
+			net::ServerSocket::Ptr sock(new net::ServerSocket(this));
+			if (sock->bind(ip,port))
+				sockets.append(sock);
+		}
+		
+		bool send(const Uint8* buf,int size,const net::Address & addr)
+		{
+			foreach (net::ServerSocket::Ptr sock,sockets)
+				if (sock->sendTo(buf,size,addr) == size)
+					return true;
+				
+			return false;
+		}
+		
+		virtual void dataReceived(const QByteArray& packet, const net::Address& addr)
+		{
+			Uint32 type = ReadUint32((Uint8*)packet.data(),0);
+			switch (type)
+			{
+				case CONNECT:
+					p->handleConnect(packet.data());
+					break;
+				case ANNOUNCE:
+					p->handleAnnounce(packet.data());
+					break;
+				case ERROR:
+					p->handleError(packet.data());
+					break;
+				case SCRAPE:
+					p->handleScrape(packet.data());
+					break;
+			}
+		}
+		
+		
+		QList<net::ServerSocket::Ptr> sockets;
+		QMap<Int32,Action> transactions;
+		UDPTrackerSocket* p;
+	};
+
+	UDPTrackerSocket::UDPTrackerSocket() : d(new Private(this))
+	{
 		if (port == 0)
 			port = 4444;
 		
-		bool bound = false;
-		while (!(bound = sock->bind(QString(),QString::number(port + i))) && i < 10)
+		QStringList ips = NetworkInterfaceIPAddresses(NetworkInterface());
+		foreach (const QString & ip,ips)
+			d->listen(ip,port);
+		
+		if (d->sockets.count() == 0)
 		{
-			Out(SYS_TRK|LOG_DEBUG) << "Failed to bind socket to port " << (port+i) << endl;
-			i++;
+			// Try all addresses if the previous listen calls all failed
+			d->listen(QHostAddress(QHostAddress::AnyIPv6).toString(),port);
+			d->listen(QHostAddress(QHostAddress::Any).toString(),port);
 		}
 		
-
-		if (!bound)
- 		{
-			Out(SYS_TRK|LOG_IMPORTANT) << QString("Cannot bind to udp port %1 or the 10 following ports.").arg(port) << endl;
- 		}
- 		else
- 		{
- 			port = port + i;
-  			Globals::instance().getPortList().addNewPort(port,net::UDP,true);
- 		}
+		if (d->sockets.count() == 0)
+		{
+			Out(SYS_TRK|LOG_IMPORTANT) << QString("Cannot bind to udp port %1").arg(port) << endl;
+		}
+		else
+		{
+			Globals::instance().getPortList().addNewPort(port,net::UDP,true);
+		}
 	}
 	
 	
 	UDPTrackerSocket::~UDPTrackerSocket()
 	{
 		Globals::instance().getPortList().removePort(port,net::UDP);
+		delete d;
 	}
 
-	void UDPTrackerSocket::sendConnect(Int32 tid,const KNetwork::KSocketAddress & addr)
+	void UDPTrackerSocket::sendConnect(Int32 tid,const net::Address & addr)
 	{
 		Int64 cid = 0x41727101980LL;
 		Uint8 buf[16];
@@ -85,36 +136,34 @@ namespace bt
 		WriteInt32(buf,8,CONNECT);
 		WriteInt32(buf,12,tid);
 		
-		sock->send(KDatagramPacket((char*)buf,16,addr));
-		transactions.insert(tid,CONNECT);
+		d->send(buf,16,addr);
+		d->transactions.insert(tid,CONNECT);
 	}
 
-	void UDPTrackerSocket::sendAnnounce(Int32 tid,const Uint8* data,const KNetwork::KSocketAddress & addr)
+	void UDPTrackerSocket::sendAnnounce(Int32 tid,const Uint8* data,const net::Address & addr)
 	{
-		KDatagramPacket packet((const char*)data,98,addr);
-		sock->send(packet);
-		transactions.insert(tid,ANNOUNCE);
+		d->send(data,98,addr);
+		d->transactions.insert(tid,ANNOUNCE);
 	}
 
-	void UDPTrackerSocket::sendScrape(Int32 tid, const bt::Uint8* data, const KNetwork::KSocketAddress& addr)
+	void UDPTrackerSocket::sendScrape(Int32 tid, const bt::Uint8* data, const net::Address& addr)
 	{
-		KDatagramPacket packet((const char*)data,36,addr);
-		sock->send(packet);
-		transactions.insert(tid,SCRAPE);
+		d->send(data,36,addr);
+		d->transactions.insert(tid,SCRAPE);
 	}
 
 	void UDPTrackerSocket::cancelTransaction(Int32 tid)
 	{
-		transactions.remove(tid);
+		d->transactions.remove(tid);
 	}
 
 	void UDPTrackerSocket::handleConnect(const QByteArray & buf)
 	{	
 		// Read the transaction_id and check it
 		Int32 tid = ReadInt32((Uint8*)buf.data(),4);
-		QMap<Int32,Action>::iterator i = transactions.find(tid);
+		QMap<Int32,Action>::iterator i = d->transactions.find(tid);
 		// if we can't find the transaction, just return
-		if (i == transactions.end())
+		if (i == d->transactions.end())
 		{
 			return;
 		}
@@ -122,13 +171,13 @@ namespace bt
 		// check whether the transaction is a CONNECT
 		if (i.value() != CONNECT)
 		{
-			transactions.erase(i);
+			d->transactions.erase(i);
 			error(tid,QString());
 			return;
 		}
 
 		// everything ok, emit signal
-		transactions.erase(i);
+		d->transactions.erase(i);
 		connectReceived(tid,ReadInt64((Uint8*)buf.data(),8));
 	}
 
@@ -136,21 +185,21 @@ namespace bt
 	{
 		// Read the transaction_id and check it
 		Int32 tid = ReadInt32((Uint8*)buf.data(),4);
-		QMap<Int32,Action>::iterator i = transactions.find(tid);
+		QMap<Int32,Action>::iterator i = d->transactions.find(tid);
 		// if we can't find the transaction, just return
-		if (i == transactions.end())
+		if (i == d->transactions.end())
 			return;
 
 		// check whether the transaction is a ANNOUNCE
 		if (i.value() != ANNOUNCE)
 		{
-			transactions.erase(i);
+			d->transactions.erase(i);
 			error(tid,QString());
 			return;
 		}
 
 		// everything ok, emit signal
-		transactions.erase(i);
+		d->transactions.erase(i);
 		announceReceived(tid,buf);
 	}
 	
@@ -158,13 +207,13 @@ namespace bt
 	{
 		// Read the transaction_id and check it
 		Int32 tid = ReadInt32((Uint8*)buf.data(),4);
-		QMap<Int32,Action>::iterator it = transactions.find(tid);
+		QMap<Int32,Action>::iterator it = d->transactions.find(tid);
 		// if we can't find the transaction, just return
-		if (it == transactions.end())
+		if (it == d->transactions.end())
 			return;
 
 		// extract error message
-		transactions.erase(it);
+		d->transactions.erase(it);
 		QString msg;
 		for (int i = 8;i < buf.size();i++)
 			msg += (char)buf[i];
@@ -177,61 +226,28 @@ namespace bt
 	{
 		// Read the transaction_id and check it
 		Int32 tid = ReadInt32((Uint8*)buf.data(),4);
-		QMap<Int32,Action>::iterator i = transactions.find(tid);
+		QMap<Int32,Action>::iterator i = d->transactions.find(tid);
 		// if we can't find the transaction, just return
-		if (i == transactions.end())
+		if (i == d->transactions.end())
 			return;
 		
 		// check whether the transaction is a SCRAPE
 		if (i.value() != SCRAPE)
 		{
-			transactions.erase(i);
+			d->transactions.erase(i);
 			error(tid,QString());
 			return;
 		}
 		
 		// everything ok, emit signal
-		transactions.erase(i);
+		d->transactions.erase(i);
 		scrapeReceived(tid,buf);
-	}
-
-	void UDPTrackerSocket::dataReceived()
-	{
-		if (sock->bytesAvailable() == 0)
-		{
-			Out(SYS_TRK|LOG_NOTICE) << "0 byte UDP packet " << endl;
-			// KDatagramSocket wrongly handles UDP packets with no payload
-			// so we need to deal with it oursleves
-			int fd = sock->socketDevice()->socket();
-			char tmp;
-			read(fd,&tmp,1);
-			return;
-		}
-		
-		KDatagramPacket packet = sock->receive();
-		
-		Uint32 type = ReadUint32((Uint8*)packet.data().data(),0);
-		switch (type)
-		{
-			case CONNECT:
-				handleConnect(packet.data());
-				break;
-			case ANNOUNCE:
-				handleAnnounce(packet.data());
-				break;
-			case ERROR:
-				handleError(packet.data());
-				break;
-			case SCRAPE:
-				handleScrape(packet.data());
-				break;
-		}
 	}
 
 	Int32 UDPTrackerSocket::newTransactionID()
 	{
 		Int32 transaction_id = rand() * time(0);
-		while (transactions.contains(transaction_id))
+		while (d->transactions.contains(transaction_id))
 			transaction_id++;
 		return transaction_id;
 	}

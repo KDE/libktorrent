@@ -35,88 +35,89 @@
 
 #include "globals.h"
 #include "torrent.h"
-
-
+#include <net/serversocket.h>
 
 
 namespace bt
 {
+	typedef QSharedPointer<net::ServerSocket> ServerSocketPtr;
 
-	
+	class Server::Private : public net::ServerSocket::ConnectionHandler
+	{
+	public:
+		Private(Server* p) : p(p)
+		{
+		}
+		
+		~Private()
+		{
+		}
+		
+		void reset()
+		{
+			sockets.clear();
+		}
+		
+		virtual void newConnection(int fd,const net::Address & addr)
+		{
+			p->newConnection(new mse::StreamSocket(fd,addr.ipVersion()));
+		}
+		
+		void add(const QString & ip,bt::Uint16 port)
+		{
+			ServerSocketPtr sock(new net::ServerSocket(this));
+			if (sock->bind(ip,port))
+			{
+				sockets.append(sock);
+			}
+		}
+		
+		
+		Server* p;
+		QList<ServerSocketPtr> sockets;
+	};
 
-	Server::Server() : sock(0),sn(0)
+	Server::Server() : d(new Private(this))
 	{
 	}
 
 
 	Server::~Server()
 	{
-		delete sn;
-		delete sock;
+		Globals::instance().getPortList().removePort(port,net::TCP);
+		delete d;
 	}
 	
 	bool Server::changePort(Uint16 p)
 	{
-		if (sock && p == port)
+		if (d->sockets.count() > 0 && p == port)
 			return true;
 
-		if (sock && sock->ok())
-			Globals::instance().getPortList().removePort(port,net::TCP);
-		
-		delete sock;
-		sock = 0;
-		delete sn; 
-		sn = 0;
+		Globals::instance().getPortList().removePort(port,net::TCP);
+		d->reset();
 		
 		QStringList possible = bindAddresses();
 		foreach (const QString & addr,possible)
 		{
-			if (addr.contains(":")) // IPv6
-				sock = new net::Socket(true,6);
-			else
-				sock = new net::Socket(true,4);
-			
-			if (sock->bind(addr,p,true))
-			{
-				Out(SYS_GEN|LOG_NOTICE) << "Bound to " << addr << ":" << p << endl;
-				break;
-			}
-			
-			delete sock;
-			sock = 0;
+			d->add(addr,p);
 		}
 		
-		if (sock)
+		if (d->sockets.count() == 0)
 		{
-			sock->setBlocking(false);
-			sn = new QSocketNotifier(sock->fd(),QSocketNotifier::Read,this);
-			connect(sn,SIGNAL(activated(int)),this,SLOT(readyToAccept(int)));
+			// Try any addresses if previous binds failed
+			d->add(QHostAddress(QHostAddress::AnyIPv6).toString(),p);
+			d->add(QHostAddress(QHostAddress::Any).toString(),p);
+		}
+		
+		if (d->sockets.count())
+		{
 			Globals::instance().getPortList().addNewPort(p,net::TCP,true);
 			return true;
 		}
-		
-		return false;
-	}
-
-	void Server::readyToAccept(int )
-	{
-		if (!sock)
-			return;
-
-		net::Address addr;
-		int fd = sock->accept(addr);
-		if (fd > 0)
-			newConnection(new mse::StreamSocket(fd,sock->isIPv4() ? 4 : 6));
+		else
+			return false;
 	}
 	
-	void Server::close()
-	{
-		delete sock;
-		sock = 0;
-		delete sn;
-		sn = 0;
-		Globals::instance().getPortList().removePort(port,net::TCP);
-	}
 }
 
 #include "server.moc"

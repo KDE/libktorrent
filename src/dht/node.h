@@ -56,7 +56,7 @@ namespace dht
 		 * @param msg The message
 		 * @param srv The RPCServer to send a ping if necessary
 		 */
-		void received(DHT* dh_table,const MsgBase* msg);
+		void received(DHT* dh_table,MsgBase::Ptr msg);
 		
 		/// Get our own ID
 		const dht::Key & getOurID() const {return our_id;}
@@ -71,7 +71,7 @@ namespace dht
 		/**
 		 * Increase the failed queries count of the bucket entry we sent the message to
 		*/
-		void onTimeout(const MsgBase* msg);
+		void onTimeout(MsgBase::Ptr msg);
 		
 		/// Check if a buckets needs to be refreshed, and refresh if necesarry
 		void refreshBuckets(DHT* dh_table);

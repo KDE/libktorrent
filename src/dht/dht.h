@@ -27,6 +27,7 @@
 #include <util/timer.h>
 #include "key.h"
 #include "dhtbase.h"
+#include "rpcmsg.h"
 
 namespace bt
 {
@@ -42,13 +43,6 @@ namespace dht
 {
 	class Node;
 	class RPCServer;
-	class PingReq;
-	class FindNodeReq;
-	class GetPeersReq;
-	class MsgBase;
-	class ErrMsg;
-	class MsgBase;
-	class AnnounceReq;
 	class Database;
 	class TaskManager;
 	class Task;
@@ -66,13 +60,13 @@ namespace dht
 		DHT();
 		virtual ~DHT();
 		
-		void ping(PingReq* r);
-		void findNode(FindNodeReq* r);
-		void response(MsgBase* r);
-		void getPeers(GetPeersReq* r);
-		void announce(AnnounceReq* r);
-		void error(ErrMsg* r);
-		void timeout(const MsgBase* r);
+		void ping(PingReq::Ptr r);
+		void findNode(FindNodeReq::Ptr r);
+		void response(MsgBase::Ptr r);
+		void getPeers(GetPeersReq::Ptr r);
+		void announce(AnnounceReq::Ptr r);
+		void error(ErrMsg::Ptr r);
+		void timeout(MsgBase::Ptr r);
 		
 		/**
 		 * A Peer has received a PORT message, and uses this function to alert the DHT of it.

@@ -128,7 +128,7 @@ namespace dht
 		return bit_on;
 	}
 
-	void Node::received(DHT* dh_table,const MsgBase* msg)
+	void Node::received(DHT* dh_table,MsgBase::Ptr msg)
 	{
 		Uint8 bit_on = findBucket(msg->getID());
 		
@@ -169,7 +169,7 @@ namespace dht
 		}
 	}
 	
-	void Node::onTimeout(const MsgBase* msg)
+	void Node::onTimeout(MsgBase::Ptr msg)
 	{
 		for (Uint32 i = 0;i < 160;i++)
 		{

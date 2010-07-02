@@ -78,7 +78,6 @@ namespace bt
 	{
 		if (tcp_server)
 		{
-			tcp_server->close();
 			delete tcp_server;
 			tcp_server = 0;
 		}

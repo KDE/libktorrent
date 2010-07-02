@@ -23,13 +23,13 @@
 #include <kurl.h>
 #include <qtimer.h>
 #include <qbytearray.h>
-#include <k3socketaddress.h>
+#include <net/address.h>
 #include "tracker.h"
 
 namespace KNetwork
- {
- 	class KResolverResults;
- }
+{
+	class KResolverResults;
+}
 
 namespace bt
 {
@@ -91,7 +91,7 @@ namespace bt
 		};
 
 	private:
-		KNetwork::KSocketAddress address;
+		net::Address address;
 		Int32 transaction_id;
 		Int64 connection_id;
 		Int32 scrape_transaction_id;

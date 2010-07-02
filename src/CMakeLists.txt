@@ -47,6 +47,7 @@ set(libktorrent_SRC
 	net/reverseresolver.cpp
 	net/socketdevice.cpp
 	net/poll.cpp
+	net/serversocket.cpp
 	
 	mse/bigint.cpp  
 	mse/functions.cpp  

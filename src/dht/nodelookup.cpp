@@ -40,7 +40,7 @@ namespace dht
 	{}
 
 
-	void NodeLookup::callFinished(RPCCall* ,MsgBase* rsp)
+	void NodeLookup::callFinished(RPCCall* ,MsgBase::Ptr rsp)
 	{
 		//Out(SYS_DHT|LOG_DEBUG) << "NodeLookup::callFinished" << endl;
 		if (isFinished())
@@ -49,7 +49,10 @@ namespace dht
 		// check the response and see if it is a good one
 		if (rsp->getMethod() == dht::FIND_NODE && rsp->getType() == dht::RSP_MSG)
 		{
-			FindNodeRsp* fnr = (FindNodeRsp*)rsp;
+			FindNodeRsp::Ptr fnr = rsp.dynamicCast<FindNodeRsp>();
+			if (!fnr)
+				return;
+			
 			const QByteArray & nodes = fnr->getNodes();
 			Uint32 nnodes = nodes.size() / 26;
 			for (Uint32 j = 0;j < nnodes;j++)
@@ -104,7 +107,7 @@ namespace dht
 			if (!visited.contains(*itr))
 			{
 				// send a findNode to the node
-				FindNodeReq* fnr = new FindNodeReq(node->getOurID(),node_id);
+				MsgBase::Ptr fnr(new FindNodeReq(node->getOurID(),node_id));
 				fnr->setOrigin(itr->getAddress());
 				rpcCall(fnr);
 				visited.insert(*itr);

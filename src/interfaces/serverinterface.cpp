@@ -111,14 +111,14 @@ namespace bt
 	QStringList ServerInterface::bindAddresses()
 	{
 		QString iface = NetworkInterface();
-		QString ip = NetworkInterfaceIPAddress(iface);
-		QStringList possible;
-		if (!ip.isEmpty())
-			possible << ip;
+		QStringList ips = NetworkInterfaceIPAddresses(iface);
+		if (ips.count() == 0)
+		{
+			// Interface does not exist, so add any adresses
+			ips << QHostAddress(QHostAddress::AnyIPv6).toString() << QHostAddress(QHostAddress::Any).toString();
+		}
 		
-		// If the first address doesn't work try AnyIPv6 and Any
-		possible << QHostAddress(QHostAddress::AnyIPv6).toString() << QHostAddress(QHostAddress::Any).toString();
-		return possible;
+		return ips;
 	}
 	
 	

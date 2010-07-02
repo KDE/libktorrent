@@ -45,21 +45,67 @@ using namespace bt;
 
 namespace dht
 {
-	class RPCServerThread : public QThread
+	
+	class RPCServer::Private : public QThread
 	{
 	public:
-		RPCServerThread(net::Socket* socket,RPCServer* rpc) : running(false),socket(socket),rpc(rpc)
+		Private(RPCServer* p,DHT* dh_table,Uint16 port) 
+			: p(p),dh_table(dh_table),next_mtid(0),port(port),running(false)
+		{}
+		
+		~Private()
 		{
+			bt::Globals::instance().getPortList().removePort(port,net::UDP);
+			calls.setAutoDelete(true);
+			calls.clear();
+			qDeleteAll(call_queue);
+			call_queue.clear();
 		}
 		
-		virtual ~RPCServerThread()
+		void reset()
 		{
-			qDeleteAll(incoming);
+			sockets.clear();
 		}
 		
-		void handlePacket()
+		void listen(const QString & ip)
 		{
-			QMutexLocker lock(&mutex);
+			net::Address addr(ip,port);
+			net::Socket::Ptr sock(new net::Socket(false,addr.ipVersion()));
+			if (!sock->bind(addr,false))
+			{
+				Out(SYS_DHT|LOG_IMPORTANT) << "DHT: Failed to bind to " << addr.toString() << endl;
+			}
+			else
+			{
+				Out(SYS_DHT|LOG_NOTICE) << "DHT: Bound to " << addr.toString() << endl;
+				sockets.append(sock);
+			}
+		}
+		
+		virtual void run()
+		{
+			net::Poll poller;
+			running = true;
+			while (running)
+			{
+				foreach (net::Socket::Ptr sock,sockets)
+					sock->prepare(&poller,net::Poll::INPUT);
+				
+				
+				if (poller.poll(500) > 0)
+				{
+					foreach (net::Socket::Ptr sock,sockets)
+					{
+						if (sock->ready(&poller,net::Poll::INPUT))
+							handlePacket(sock);
+					}
+				}
+			}
+		}
+		
+		void handlePacket(net::Socket::Ptr socket)
+		{
+			QMutexLocker lock(&msg_mutex);
 			QByteArray data(socket->bytesAvailable(),0);
 			net::Address addr;
 			if (socket->recvFrom((bt::Uint8*)data.data(),data.size(),addr) <= 0)
@@ -80,7 +126,7 @@ namespace dht
 				}
 				
 				// try to make a RPCMsg of it
-				MsgBase* msg = MakeRPCMsg((BDictNode*)n,rpc);
+				MsgBase::Ptr msg = MakeRPCMsg((BDictNode*)n,p);
 				if (msg)
 				{
 					msg->setOrigin(addr);
@@ -94,115 +140,152 @@ namespace dht
 			delete n;
 		}
 		
-		virtual void run()
-		{
-			running = true;
-			fd_set fds;
-			FD_ZERO(&fds);
-			while (running)
-			{
-				int fd = socket->fd();
-				FD_SET(fd,&fds);
-				struct timeval tv = {0,500000};
-				if (select(fd + 1,&fds,0,0,&tv) > 0)
-				{
-					handlePacket();
-				}
-			}
-		}
-		
 		void stop()
 		{
 			running = false;
 		}
 		
-		MsgBase* nextMessage()
+		
+		MsgBase::Ptr nextMessage()
 		{
 			if (incoming.isEmpty())
-				return 0;
+				return MsgBase::Ptr(0);
 			
-			MsgBase* msg = incoming.first();
+			MsgBase::Ptr msg = incoming.first();
 			incoming.pop_front();
 			return msg;
 		}
 		
-		QList<MsgBase*> incoming;
+		void send(const net::Address & addr,const QByteArray & msg)
+		{
+			foreach (net::Socket::Ptr sock,sockets)
+			{
+				if (sock->sendTo((const bt::Uint8*)msg.data(),msg.size(),addr) == msg.size())
+					break;
+			}
+		}
+		
+		void doQueuedCalls()
+		{
+			while (call_queue.count() > 0 && calls.count() < 256)
+			{
+				RPCCall* c = call_queue.first();
+				call_queue.removeFirst();
+				
+				while (calls.contains(next_mtid))
+					next_mtid++;
+				
+				MsgBase::Ptr msg = c->getRequest();
+				msg->setMTID(next_mtid++);
+				sendMsg(msg);
+				calls.insert(msg->getMTID(),c);
+				c->start();
+			}
+		}
+		
+		RPCCall* doCall(MsgBase::Ptr msg)
+		{
+			QMutexLocker lock(&mutex);
+			Uint8 start = next_mtid;
+			while (calls.contains(next_mtid))
+			{
+				next_mtid++;
+				if (next_mtid == start) // if this happens we cannot do any calls
+				{
+					// so queue the call
+					RPCCall* c = new RPCCall(p,msg,true);
+					call_queue.append(c);
+					Out(SYS_DHT|LOG_NOTICE) << "Queueing RPC call, no slots available at the moment" << endl;
+					return c; 
+				}
+			}
+			
+			msg->setMTID(next_mtid++);
+			sendMsg(msg);
+			RPCCall* c = new RPCCall(p,msg,false);
+			calls.insert(msg->getMTID(),c);
+			return c;
+		}
+		
+		void sendMsg(MsgBase::Ptr msg)
+		{
+			QByteArray data;
+			msg->encode(data);
+			send(msg->getDestination(),data);
+			//	PrintRawData(data);
+		}
+		
+		void timedOut(Uint8 mtid)
+		{
+			QMutexLocker lock(&mutex);
+			// delete the call
+			RPCCall* c = calls.find(mtid);
+			if (c)
+			{
+				dh_table->timeout(c->getRequest());
+				calls.erase(mtid);
+				c->deleteLater();
+			}
+			doQueuedCalls();	
+		}
+	
+		RPCServer* p;
+		QList<net::Socket::Ptr> sockets;
+		DHT* dh_table;
+		bt::PtrMap<bt::Uint8,RPCCall> calls;
+		QList<RPCCall*> call_queue;
+		bt::Uint8 next_mtid;
+		bt::Uint16 port;
 		QMutex mutex;
+		QMutex msg_mutex;
 		bool running;
-		net::Socket* socket;
-		RPCServer* rpc;
+		QList<MsgBase::Ptr> incoming;
 	};
 	
 
 
-	RPCServer::RPCServer(DHT* dh_table,Uint16 port,QObject *parent) : QObject(parent),dh_table(dh_table),next_mtid(0),port(port)
+	RPCServer::RPCServer(DHT* dh_table,Uint16 port,QObject *parent)
+		: QObject(parent),d(new Private(this,dh_table,port))
 	{
-		sock = 0;
-		listener_thread = 0;
 	}
 
 
 	RPCServer::~RPCServer()
 	{
-		bt::Globals::instance().getPortList().removePort(port,net::UDP);
-		calls.setAutoDelete(true);
-		calls.clear();
-		qDeleteAll(call_queue);
-		call_queue.clear();
+		delete d;
 	}
 	
 	void RPCServer::start()
 	{
-		QString ip = NetworkInterfaceIPAddress(NetworkInterface());
+		d->reset();
 		
-		QStringList possible;
-		if (!ip.isEmpty())
-			possible << ip;
-		
-		// If the first address doesn't work try AnyIPv6 and Any
-		possible << QHostAddress(QHostAddress::AnyIPv6).toString() << QHostAddress(QHostAddress::Any).toString();
-		
-		foreach (const QString & addr,possible)
+		QStringList ips = NetworkInterfaceIPAddresses(NetworkInterface());
+		foreach (const QString & addr,ips)
 		{
-			net::Address address(addr,port);
-			sock = new net::Socket(false,address.ipVersion());
-			if (!sock->bind(addr,port,false))
-			{
-				Out(SYS_DHT|LOG_IMPORTANT) << "DHT: Failed to bind to " << addr << ":" << port << endl;
-				delete sock;
-				sock = 0;
-			}
-			else
-			{
-				Out(SYS_DHT|LOG_NOTICE) << "DHT: Bound to " << addr << ":" << port << endl;
-				bt::Globals::instance().getPortList().addNewPort(port,net::UDP,true);
-				break;
-			}
+			d->listen(addr);
 		}
 		
-		if (sock)
+		if (d->sockets.count() == 0)
 		{
-			listener_thread = new RPCServerThread(sock,this);
-			listener_thread->start(QThread::IdlePriority);
+			// Try all addresses if the previous listen calls all failed
+			d->listen(QHostAddress(QHostAddress::AnyIPv6).toString());
+			d->listen(QHostAddress(QHostAddress::Any).toString());
+		}
+		
+		if (d->sockets.count() > 0)
+		{
+			bt::Globals::instance().getPortList().addNewPort(d->port,net::UDP,true);
+			d->start(QThread::IdlePriority);
 		}
 	}
 		
 	void RPCServer::stop()
 	{
-		bt::Globals::instance().getPortList().removePort(port,net::UDP);
-		if (listener_thread)
+		bt::Globals::instance().getPortList().removePort(d->port,net::UDP);
+		if (d->running)
 		{
-			listener_thread->stop();
-			listener_thread->wait();
-			delete listener_thread;
-			listener_thread = 0;
-		}
-		
-		if (sock)
-		{
-			sock->close();
-			delete sock;
-			sock = 0;
+			d->stop();
+			d->wait();
 		}
 	}
 	
@@ -225,106 +308,53 @@ namespace dht
 
 	void RPCServer::handlePackets()
 	{
-		if (!listener_thread)
-			return; 
-		
 		// lock the thread
-		QMutexLocker lock(&listener_thread->mutex);
+		QMutexLocker lock(&d->msg_mutex);
 		
-		MsgBase* msg = 0;
-		while ((msg = listener_thread->nextMessage()) != 0)
+		MsgBase::Ptr msg(0);
+		while ((msg = d->nextMessage()) != 0)
 		{
-			msg->apply(dh_table);
+			msg->apply(d->dh_table,msg);
 			// erase an existing call
-			if (msg->getType() == RSP_MSG && calls.contains(msg->getMTID()))
+			if (msg->getType() == RSP_MSG && d->calls.contains(msg->getMTID()))
 			{
 				// delete the call, but first notify it off the response
-				RPCCall* c = calls.find(msg->getMTID());
+				RPCCall* c = d->calls.find(msg->getMTID());
 				c->response(msg);
-				calls.erase(msg->getMTID());
+				d->calls.erase(msg->getMTID());
 				c->deleteLater();
-				doQueuedCalls();
-			}
-			delete msg;
-		}
-	}
-	
-	
-	void RPCServer::send(const net::Address & addr,const QByteArray & msg)
-	{
-		if (sock)
-			sock->sendTo((const bt::Uint8*)msg.data(),msg.size(),addr);
-	}
-	
-	RPCCall* RPCServer::doCall(MsgBase* msg)
-	{
-		QMutexLocker lock(&mutex);
-		Uint8 start = next_mtid;
-		while (calls.contains(next_mtid))
-		{
-			next_mtid++;
-			if (next_mtid == start) // if this happens we cannot do any calls
-			{
-				// so queue the call
-				RPCCall* c = new RPCCall(this,msg,true);
-				call_queue.append(c);
-				Out(SYS_DHT|LOG_NOTICE) << "Queueing RPC call, no slots available at the moment" << endl;
-				return c; 
+				d->doQueuedCalls();
 			}
 		}
-		
-		msg->setMTID(next_mtid++);
-		sendMsg(msg);
-		RPCCall* c = new RPCCall(this,msg,false);
-		calls.insert(msg->getMTID(),c);
-		return c;
 	}
 	
-	void RPCServer::sendMsg(MsgBase* msg)
+	RPCCall* RPCServer::doCall(MsgBase::Ptr msg)
+	{
+		return d->doCall(msg);
+	}
+	
+	void RPCServer::sendMsg(MsgBase::Ptr msg)
+	{
+		d->sendMsg(msg);
+	}
+	
+	void RPCServer::sendMsg(const dht::MsgBase& msg)
 	{
 		QByteArray data;
-		msg->encode(data);
-		send(msg->getDestination(),data);
-		
-	//	PrintRawData(data);
+		msg.encode(data);
+		d->send(msg.getDestination(),data);
 	}
+
 	
 	void RPCServer::timedOut(Uint8 mtid)
 	{
-		QMutexLocker lock(&mutex);
-		// delete the call
-		RPCCall* c = calls.find(mtid);
-		if (c)
-		{
-			dh_table->timeout(c->getRequest());
-			calls.erase(mtid);
-			c->deleteLater();
-		}
-		doQueuedCalls();	
-	}
-	
-	void RPCServer::doQueuedCalls()
-	{
-		while (call_queue.count() > 0 && calls.count() < 256)
-		{
-			RPCCall* c = call_queue.first();
-			call_queue.removeFirst();
-			
-			while (calls.contains(next_mtid))
-				next_mtid++;
-			
-			MsgBase* msg = c->getRequest();
-			msg->setMTID(next_mtid++);
-			sendMsg(msg);
-			calls.insert(msg->getMTID(),c);
-			c->start();
-		}
+		d->timedOut(mtid);
 	}
 	
 	Method RPCServer::findMethod(Uint8 mtid)
 	{
-		QMutexLocker lock(&mutex);
-		const RPCCall* call = calls.find(mtid);
+		QMutexLocker lock(&d->mutex);
+		const RPCCall* call = d->calls.find(mtid);
 		if (call)
 			return call->getMsgMethod();
 		else
@@ -334,10 +364,16 @@ namespace dht
 	void RPCServer::ping(const dht::Key & our_id,const net::Address & addr)
 	{
 		Out(SYS_DHT|LOG_NOTICE) << "DHT: pinging " << addr.nodeName() << endl;
-		PingReq* pr = new PingReq(our_id);
+		MsgBase::Ptr pr(new PingReq(our_id));
 		pr->setOrigin(addr);
 		doCall(pr);
 	}
+	
+	Uint32 RPCServer::getNumActiveRPCCalls() const
+	{
+		return d->calls.count();
+	}
+
 	
 
 }

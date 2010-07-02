@@ -102,7 +102,7 @@ namespace dht
 		delete srv; srv = 0;
 	}
 
-	void DHT::ping(PingReq* r)
+	void DHT::ping(PingReq::Ptr r)
 	{
 		if (!running)
 			return;
@@ -114,13 +114,13 @@ namespace dht
 		Out(SYS_DHT|LOG_NOTICE) << "DHT: Sending ping response" << endl;
 		PingRsp rsp(r->getMTID(),node->getOurID());
 		rsp.setOrigin(r->getOrigin());
-		srv->sendMsg(&rsp);
+		srv->sendMsg(rsp);
 		node->received(this,r);
 	}
 	
 	
 	
-	void DHT::findNode(FindNodeReq* r)
+	void DHT::findNode(FindNodeReq::Ptr r)
 	{
 		if (!running)
 			return;
@@ -140,7 +140,7 @@ namespace dht
 		// pack the found nodes in a byte array
 		kns.pack(&fnr);
 		fnr.setOrigin(r->getOrigin());
-		srv->sendMsg(&fnr);
+		srv->sendMsg(fnr);
 	}
 
 	NodeLookup* DHT::findOwnNode()
@@ -161,7 +161,7 @@ namespace dht
 	}
 
 	
-	void DHT::announce(AnnounceReq* r)
+	void DHT::announce(AnnounceReq::Ptr r)
 	{
 		if (!running)
 			return;
@@ -182,12 +182,12 @@ namespace dht
 		// send a proper response to indicate everything is OK
 		AnnounceRsp rsp(r->getMTID(),node->getOurID());
 		rsp.setOrigin(r->getOrigin());
-		srv->sendMsg(&rsp);
+		srv->sendMsg(rsp);
 	}
 	
 	
 	
-	void DHT::getPeers(GetPeersReq* r)
+	void DHT::getPeers(GetPeersReq::Ptr r)
 	{
 		if (!running)
 			return;
@@ -215,18 +215,18 @@ namespace dht
 			GetPeersRsp fnr(r->getMTID(),node->getOurID(),token);
 			kns.pack(&fnr);
 			fnr.setOrigin(r->getOrigin());
-			srv->sendMsg(&fnr);
+			srv->sendMsg(fnr);
 		}
 		else
 		{			
 			// send a get peers response
 			GetPeersRsp fvr(r->getMTID(),node->getOurID(),dbl,token);
 			fvr.setOrigin(r->getOrigin());
-			srv->sendMsg(&fvr);
+			srv->sendMsg(fvr);
 		}
 	}
 	
-	void DHT::response(MsgBase* r)
+	void DHT::response(MsgBase::Ptr r)
 	{
 		if (!running)
 			return;
@@ -234,7 +234,7 @@ namespace dht
 		node->received(this,r);
 	}
 	
-	void DHT::error(ErrMsg* )
+	void DHT::error(ErrMsg::Ptr )
 	{}
 	
 
@@ -244,7 +244,7 @@ namespace dht
 			return;
 		
 		Out(SYS_DHT|LOG_DEBUG) << "Sending ping request to " << ip << ":" << port << endl;
-		PingReq* r = new PingReq(node->getOurID());
+		MsgBase::Ptr r(new PingReq(node->getOurID()));
 		r->setOrigin(KInetSocketAddress(ip,port));
 		srv->doCall(r);
 	}
@@ -346,7 +346,7 @@ namespace dht
 		}
 	}
 	
-	void DHT::timeout(const MsgBase* r)
+	void DHT::timeout(MsgBase::Ptr r)
 	{
 		node->onTimeout(r);
 	}

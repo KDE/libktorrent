@@ -22,6 +22,7 @@
 
 #include <k3socketaddress.h>
 #include <QString>
+#include <QSharedPointer>
 #include <util/constants.h>
 #include "key.h"
 #include "database.h"
@@ -65,14 +66,17 @@ namespace dht
 	public:
 		MsgBase(Uint8 mtid,Method m,Type type,const Key & id);
 		virtual ~MsgBase();
+		
+		typedef QSharedPointer<MsgBase> Ptr;
 			
 		
 		/**
 		 * When this message arrives this function will be called upon the DHT.
 		 * The message should then call the appropriate DHT function (double dispatch)
 		 * @param dh_table Pointer to DHT
+		 * @param self Shared pointer to self
 		 */
-		virtual void apply(DHT* dh_table) = 0;
+		virtual void apply(DHT* dh_table,MsgBase::Ptr self) = 0;
 		
 		/**
 		 * Print the message for debugging purposes.
@@ -83,7 +87,7 @@ namespace dht
 		 * BEncode the message.
 		 * @param arr Data array
 		 */
-		virtual void encode(QByteArray & arr) = 0;
+		virtual void encode(QByteArray & arr) const = 0;
 		
 		/// Set the origin (i.e. where the message came from)
 		void setOrigin(const KNetwork::KSocketAddress & o) {origin = o;}
@@ -126,9 +130,9 @@ namespace dht
 	 * @param srv The RPCServer
 	 * @return A newly created message or 0 upon error
 	 */
-	MsgBase* MakeRPCMsg(bt::BDictNode* dict,RPCServer* srv);
+	MsgBase::Ptr MakeRPCMsg(bt::BDictNode* dict,RPCServer* srv);
 	
-	MsgBase* MakeRPCMsgTest(bt::BDictNode* dict,dht::Method req_method);
+	MsgBase::Ptr MakeRPCMsgTest(bt::BDictNode* dict,dht::Method req_method);
 	
 	class ErrMsg : public MsgBase
 	{
@@ -136,9 +140,11 @@ namespace dht
 		ErrMsg(Uint8 mtid,const Key & id,const QString & msg);
 		virtual ~ErrMsg();
 		
-		virtual void apply(DHT* dh_table);
+		virtual void apply(DHT* dh_table,MsgBase::Ptr self);
 		virtual void print();
-		virtual void encode(QByteArray & arr);
+		virtual void encode(QByteArray & arr) const;
+		
+		typedef QSharedPointer<ErrMsg> Ptr;
 	private:
 		QString msg;
 	};
@@ -149,9 +155,11 @@ namespace dht
 		PingReq(const Key & id);
 		virtual ~PingReq();
 		
-		virtual void apply(DHT* dh_table);
+		virtual void apply(DHT* dh_table,MsgBase::Ptr self);
 		virtual void print();
-		virtual void encode(QByteArray & arr);
+		virtual void encode(QByteArray & arr) const;
+		
+		typedef QSharedPointer<PingReq> Ptr;
 	};
 	
 	class FindNodeReq : public MsgBase
@@ -160,11 +168,13 @@ namespace dht
 		FindNodeReq(const Key & id,const Key & target);
 		virtual ~FindNodeReq();
 		
-		virtual void apply(DHT* dh_table);
+		virtual void apply(DHT* dh_table,MsgBase::Ptr self);
 		virtual void print();
-		virtual void encode(QByteArray & arr);
+		virtual void encode(QByteArray & arr) const;
 		
 		const Key & getTarget() const {return target;}
+		
+		typedef QSharedPointer<FindNodeReq> Ptr;
 		
 	private:
 		Key target;
@@ -177,9 +187,11 @@ namespace dht
 		virtual ~GetPeersReq();
 		
 		const Key & getInfoHash() const {return info_hash;}
-		virtual void apply(DHT* dh_table);
+		virtual void apply(DHT* dh_table,MsgBase::Ptr self);
 		virtual void print();
-		virtual void encode(QByteArray & arr);
+		virtual void encode(QByteArray & arr) const;
+		
+		typedef QSharedPointer<GetPeersReq> Ptr;
 	protected:
 		Key info_hash;
 	};
@@ -190,12 +202,14 @@ namespace dht
 		AnnounceReq(const Key & id,const Key & info_hash,bt::Uint16 port,const Key & token);
 		virtual ~AnnounceReq();
 		
-		virtual void apply(DHT* dh_table);
+		virtual void apply(DHT* dh_table,MsgBase::Ptr self);
 		virtual void print();
-		virtual void encode(QByteArray & arr);
+		virtual void encode(QByteArray & arr) const;
 		
 		const Key & getToken() const {return token;}
 		bt::Uint16 getPort() const {return port;}
+		
+		typedef QSharedPointer<AnnounceReq> Ptr;
 	private:
 		bt::Uint16 port;
 		Key token;
@@ -207,9 +221,11 @@ namespace dht
 		PingRsp(Uint8 mtid,const Key & id);
 		virtual ~PingRsp();
 		
-		virtual void apply(DHT* dh_table);
+		virtual void apply(DHT* dh_table,MsgBase::Ptr self);
 		virtual void print();
-		virtual void encode(QByteArray & arr);
+		virtual void encode(QByteArray & arr) const;
+		
+		typedef QSharedPointer<PingRsp> Ptr;
 	};
 	
 	class PackedNodeContainer
@@ -239,9 +255,11 @@ namespace dht
 		FindNodeRsp(Uint8 mtid,const Key & id);
 		virtual ~FindNodeRsp();
 		
-		virtual void apply(DHT* dh_table);
+		virtual void apply(DHT* dh_table,MsgBase::Ptr self);
 		virtual void print();
-		virtual void encode(QByteArray & arr);
+		virtual void encode(QByteArray & arr) const;
+		
+		typedef QSharedPointer<FindNodeRsp> Ptr;
 	};
 	
 	class GetPeersRsp : public MsgBase,public PackedNodeContainer
@@ -251,14 +269,16 @@ namespace dht
 		GetPeersRsp(Uint8 mtid,const Key & id,const DBItemList & values,const Key & token);
 		virtual ~GetPeersRsp();
 		
-		virtual void apply(DHT* dh_table);
+		virtual void apply(DHT* dh_table,MsgBase::Ptr self);
 		virtual void print();
-		virtual void encode(QByteArray & arr);
+		virtual void encode(QByteArray & arr) const;
 		
 		const DBItemList & getItemList() const {return items;}
 		const Key & getToken() const {return token;}
 		bool containsNodes() const {return nodes.size() > 0 || nodes2.count() > 0;}
 		bool containsValues() const {return nodes.size() == 0;}
+		
+		typedef QSharedPointer<GetPeersRsp> Ptr;
 	private:
 		Key token;
 		DBItemList items;
@@ -271,9 +291,11 @@ namespace dht
 		AnnounceRsp(Uint8 mtid,const Key & id);
 		virtual ~AnnounceRsp();
 	
-		virtual void apply(DHT* dh_table);
+		virtual void apply(DHT* dh_table,MsgBase::Ptr self);
 		virtual void print();
-		virtual void encode(QByteArray & arr);
+		virtual void encode(QByteArray & arr) const;
+		
+		typedef QSharedPointer<AnnounceRsp> Ptr;
 	};
 	
 	

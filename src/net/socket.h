@@ -21,6 +21,7 @@
 #define NETSOCKET_H
 
 #include <ktorrent_export.h>
+#include <QSharedPointer>
 #include <net/socketdevice.h>
 #include "address.h"
 
@@ -66,10 +67,10 @@ namespace net
 		bool isIPv4() const {return m_ip_version == 4;}
 		bool isIPv6() const {return m_ip_version == 6;}
 
-		
-
 		/// Take the filedescriptor from the socket
 		int take();
+		
+		typedef QSharedPointer<Socket> Ptr;
 		
 	private:
 		void cacheAddress();

@@ -31,7 +31,7 @@ namespace dht
 	{
 	}
 
-	RPCCall::RPCCall(RPCServer* rpc,MsgBase* msg,bool queued) : msg(msg),rpc(rpc),queued(queued)
+	RPCCall::RPCCall(RPCServer* rpc,MsgBase::Ptr msg,bool queued) : msg(msg),rpc(rpc),queued(queued)
 	{
 		timer.setSingleShot(true);
 		connect(&timer,SIGNAL(timeout()),this,SLOT(onTimeout()));
@@ -42,7 +42,6 @@ namespace dht
 
 	RPCCall::~RPCCall()
 	{
-		delete msg;
 	}
 	
 	void RPCCall::start()
@@ -57,7 +56,7 @@ namespace dht
 		rpc->timedOut(msg->getMTID());
 	}
 	
-	void RPCCall::response(MsgBase* rsp)
+	void RPCCall::response(MsgBase::Ptr rsp)
 	{
 		onCallResponse(this,rsp);
 	}
@@ -72,7 +71,7 @@ namespace dht
 	
 	void RPCCall::addListener(RPCCallListener* cl)
 	{
-		connect(this,SIGNAL(onCallResponse( RPCCall*, MsgBase* )),cl,SLOT(onResponse( RPCCall*, MsgBase* )));
+		connect(this,SIGNAL(onCallResponse( RPCCall*, MsgBase::Ptr )),cl,SLOT(onResponse( RPCCall*, MsgBase::Ptr )));
 		connect(this,SIGNAL(onCallTimeout( RPCCall* )),cl,SLOT(onTimeout( RPCCall* )));
 	}
 

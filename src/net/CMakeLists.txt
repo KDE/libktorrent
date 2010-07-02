@@ -17,6 +17,7 @@ set(net_HDR
 	socketdevice.h
 	poll.h
 	wakeuppipe.h
+	serversocket.h
 )
 
 install(FILES ${net_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/net COMPONENT Devel)

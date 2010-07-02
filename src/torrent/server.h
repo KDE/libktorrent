@@ -27,13 +27,6 @@
 #include "globals.h"
 
 
-class QSocketNotifier;
-
-namespace net
-{
-	class Socket;
-}
-
 namespace bt
 {
 	class PeerManager;
@@ -53,20 +46,14 @@ namespace bt
 	class KTORRENT_EXPORT Server : public ServerInterface
 	{
 		Q_OBJECT
-
-		net::Socket* sock;
-		QSocketNotifier* sn;
-
 	public:
 		Server();
 		virtual ~Server();
 		
 		virtual bool changePort(Uint16 port);
-		
-		void close();
-
-	private slots:
-		void readyToAccept(int fd);
+	private:
+		class Private;
+		Private* d;
 	};
 
 }

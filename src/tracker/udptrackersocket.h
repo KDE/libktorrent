@@ -20,19 +20,18 @@
 #ifndef BTUDPTRACKERSOCKET_H
 #define BTUDPTRACKERSOCKET_H
 
-#include <qobject.h>
-#include <qmap.h>
-#include <qbytearray.h>
+#include <QObject>
+#include <QByteArray>
 #include <util/constants.h>
 #include <ktorrent_export.h>
 
 #ifdef ERROR
 #undef ERROR
 #endif
-namespace KNetwork
+
+namespace net
 {
-	class KDatagramSocket;
-	class KSocketAddress;
+	class Address;
 }
 
 namespace bt
@@ -65,7 +64,7 @@ namespace bt
 		 * @param tid The transaction_id 
 		 * @param addr The address to send to
 		 */
-		void sendConnect(Int32 tid,const KNetwork::KSocketAddress & addr);
+		void sendConnect(Int32 tid,const net::Address & addr);
 
 		/**
 		 * Send an announce message. As a response to this, the announceReceived
@@ -75,7 +74,7 @@ namespace bt
 		 * @param data The data to send (connect input structure, in UDP Tracker specifaction)
 		 * @param addr The address to send to
 		 */
-		void sendAnnounce(Int32 tid,const Uint8* data,const KNetwork::KSocketAddress & addr);
+		void sendAnnounce(Int32 tid,const Uint8* data,const net::Address & addr);
 		
 		/**
 		* Send a scrape message. As a response to this, the scrapeReceived
@@ -85,7 +84,7 @@ namespace bt
 		* @param data The data to send (connect input structure, in UDP Tracker specifaction)
 		* @param addr The address to send to
 		*/
-		void sendScrape(Int32 tid,const Uint8* data,const KNetwork::KSocketAddress & addr);
+		void sendScrape(Int32 tid,const Uint8* data,const net::Address & addr);
 
 		/**
 		 * If a transaction times out, this should be used to cancel it.
@@ -107,9 +106,7 @@ namespace bt
 		static void setPort(Uint16 p);
 		
 		/// Get the port in use.
-		static Uint16 getPort();
-	private slots:
-		void dataReceived();
+		static Uint16 getPort();;
 
 	signals:
 		/**
@@ -147,9 +144,9 @@ namespace bt
 		void handleScrape(const QByteArray & buf);
 		
 	private:
-		Uint16 udp_port;
-		KNetwork::KDatagramSocket* sock;
-		QMap<Int32,Action> transactions;
+		class Private;
+		Private* d;
+		
 		static Uint16 port;
 	};
 }

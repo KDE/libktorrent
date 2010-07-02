@@ -58,7 +58,7 @@ namespace dht
 	}
 
 
-	void Task::onResponse(RPCCall* c, MsgBase* rsp)
+	void Task::onResponse(dht::RPCCall* c, dht::MsgBase::Ptr rsp)
 	{
 		if (outstanding_reqs > 0)
 			outstanding_reqs--;
@@ -86,7 +86,7 @@ namespace dht
 		}
 	}
 	
-	bool Task::rpcCall(MsgBase* req)
+	bool Task::rpcCall(dht::MsgBase::Ptr req)
 	{
 		if (!canDoRequest())
 			return false;

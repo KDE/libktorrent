@@ -45,7 +45,7 @@ namespace dht
 		 * @param c The call
 		 * @param rsp The response
 		 */
-		virtual void onResponse(RPCCall* c,MsgBase* rsp) = 0;
+		virtual void onResponse(RPCCall* c,MsgBase::Ptr rsp) = 0;
 		
 		/**
 		 * The call has timed out.
@@ -62,7 +62,7 @@ namespace dht
 	{
 		Q_OBJECT
 	public:
-		RPCCall(RPCServer* rpc,MsgBase* msg,bool queued);
+		RPCCall(RPCServer* rpc,MsgBase::Ptr msg,bool queued);
 		virtual ~RPCCall();
 		
 		/**
@@ -74,7 +74,7 @@ namespace dht
 		 * Called by the server if a response is received.
 		 * @param rsp 
 		 */
-		void response(MsgBase* rsp);
+		void response(MsgBase::Ptr rsp);
 		
 		/**
 		 * Add a listener for this call
@@ -86,20 +86,20 @@ namespace dht
 		Method getMsgMethod() const;
 		
 		/// Get the request sent
-		const MsgBase* getRequest() const {return msg;}
+		const MsgBase::Ptr getRequest() const {return msg;}
 		
 		/// Get the request sent
-		MsgBase* getRequest() {return msg;}
+		MsgBase::Ptr getRequest() {return msg;}
 		
 	private slots:
 		void onTimeout();
 		
 	signals:
-		void onCallResponse(RPCCall* c,MsgBase* rsp);
+		void onCallResponse(RPCCall* c,MsgBase::Ptr rsp);
 		void onCallTimeout(RPCCall* c);
 
 	private:
-		MsgBase* msg;
+		MsgBase::Ptr msg;
 		QTimer timer; 
 		RPCServer* rpc;
 		bool queued;

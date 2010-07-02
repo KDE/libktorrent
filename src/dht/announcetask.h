@@ -49,7 +49,7 @@ namespace dht
 		AnnounceTask(Database* db,RPCServer* rpc, Node* node,const dht::Key & info_hash,bt::Uint16 port);
 		virtual ~AnnounceTask();
 
-		virtual void callFinished(RPCCall* c, MsgBase* rsp);
+		virtual void callFinished(RPCCall* c, MsgBase::Ptr rsp);
 		virtual void callTimeout(RPCCall* c);
 		virtual void update();
 		

@@ -248,7 +248,23 @@ namespace bt
 			return QString();
 		else
 			return addr_list.front().ip().toString();
-	}	
+	}
+	
+	QStringList NetworkInterfaceIPAddresses(const QString& iface)
+	{
+		QNetworkInterface ni = QNetworkInterface::interfaceFromName(iface);
+		if (!ni.isValid())
+			return QStringList();
+		
+		QStringList ips;
+		QList<QNetworkAddressEntry> addr_list = ni.addressEntries();
+		foreach (const QNetworkAddressEntry & entry,addr_list)
+		{
+			ips << entry.ip().toString();
+		}
+		
+		return ips;
+	}
 
 		
 	QString BytesToString(Uint64 bytes)

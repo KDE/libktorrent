@@ -24,14 +24,11 @@
 #include <QObject>
 #include <dht/rpcmsg.h>
 #include <net/address.h>
+#include <net/socket.h>
 #include <util/constants.h>
 #include <util/ptrmap.h>
 #include <QMutex>
 
-namespace net
-{
-	class Socket;
-}
 
 using bt::Uint32;
 using bt::Uint16;
@@ -67,15 +64,21 @@ namespace dht
 		 * @param msg The message to send
 		 * @return The call object
 		 */
-		RPCCall* doCall(MsgBase* msg);
+		RPCCall* doCall(MsgBase::Ptr msg);
 		
 		/**
 		 * Send a message, this only sends the message, it does not keep any call
 		 * information. This should be used for replies.
 		 * @param msg The message to send
 		 */
-		void sendMsg(MsgBase* msg);
+		void sendMsg(MsgBase::Ptr msg);
 		
+		/**
+		 * Send a message, this only sends the message, it does not keep any call
+		 * information. This should be used for replies.
+		 * @param msg The message to send
+		 */
+		void sendMsg(const MsgBase & msg);
 		
 		/**
 		 * A call was timed out.
@@ -90,27 +93,16 @@ namespace dht
 		void ping(const dht::Key & our_id,const net::Address & addr);
 		
 		/// Get the number of active calls
-		Uint32 getNumActiveRPCCalls() const {return calls.count();}
+		Uint32 getNumActiveRPCCalls() const;
 	
 		/// Handle all incoming packets
 		void handlePackets();
 		
 		/// Find the method given an mtid
 		Method findMethod(Uint8 mtid);
-		
 	private:
-		void send(const net::Address & addr,const QByteArray & msg);
-		void doQueuedCalls();
-			
-	private:
-		RPCServerThread* listener_thread;
-		net::Socket* sock;
-		DHT* dh_table;
-		bt::PtrMap<bt::Uint8,RPCCall> calls;
-		QList<RPCCall*> call_queue;
-		bt::Uint8 next_mtid;
-		bt::Uint16 port;
-		QMutex mutex;
+		class Private;
+		Private* d;
 	};
 
 }

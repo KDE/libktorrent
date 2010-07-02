@@ -38,7 +38,7 @@ namespace dht
 	{}
 
 
-	void AnnounceTask::callFinished(RPCCall* c, MsgBase* rsp)
+	void AnnounceTask::callFinished(RPCCall* c, MsgBase::Ptr rsp)
 	{
 		//Out(SYS_DHT|LOG_DEBUG) << "AnnounceTask::callFinished" << endl;
 		// if we do not have a get peers response, return
@@ -47,7 +47,7 @@ namespace dht
 			return;
 		
 		// it is either a GetPeersNodesRsp or a GetPeersValuesRsp
-		GetPeersRsp* gpr = dynamic_cast<GetPeersRsp*>(rsp);
+		GetPeersRsp::Ptr gpr = rsp.dynamicCast<GetPeersRsp>();
 		if (!gpr)
 			return;
 		
@@ -130,7 +130,7 @@ namespace dht
 			std::set<KBucketEntryAndToken>::iterator itr = answered.begin();
 			if (!answered_visited.contains(*itr))
 			{
-				AnnounceReq* anr = new AnnounceReq(node->getOurID(),info_hash,port,itr->getToken());
+				MsgBase::Ptr anr(new AnnounceReq(node->getOurID(),info_hash,port,itr->getToken()));
 				anr->setOrigin(itr->getAddress());
 		//		Out(SYS_DHT|LOG_DEBUG) << "DHT: Announcing to " << e.getAddress().toString() << endl;
 				rpcCall(anr);
@@ -149,7 +149,7 @@ namespace dht
 			{
 				// send a findNode to the node
 		//		Out(SYS_DHT|LOG_DEBUG) << "DHT: Sending GetPeers to " << e.getAddress().toString() << endl;
-				GetPeersReq* gpr = new GetPeersReq(node->getOurID(),info_hash);
+				MsgBase::Ptr gpr(new GetPeersReq(node->getOurID(),info_hash));
 				gpr->setOrigin(itr->getAddress());
 				rpcCall(gpr);
 				visited.insert(*itr);

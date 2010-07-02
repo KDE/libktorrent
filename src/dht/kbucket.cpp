@@ -153,7 +153,7 @@ namespace dht
 		}
 	}
 	
-	void KBucket::onResponse(RPCCall* c,MsgBase* rsp)
+	void KBucket::onResponse(RPCCall* c,MsgBase::Ptr rsp)
 	{
 		Q_UNUSED(rsp);
 		last_modified = bt::CurrentTime();
@@ -220,7 +220,7 @@ namespace dht
 			if (e.isQuestionable())
 			{
 				Out(SYS_DHT|LOG_DEBUG) << "Pinging questionable node : " << e.getAddress().toString() << endl;
-				PingReq* p = new PingReq(node->getOurID());
+				MsgBase::Ptr p(new PingReq(node->getOurID()));
 				p->setDestination(e.getAddress());
 				RPCCall* c = srv->doCall(p);
 				if (c)

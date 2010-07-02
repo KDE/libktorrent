@@ -39,52 +39,52 @@ namespace dht
 	const QString ERR_DHT = "e";
 
 	
-	MsgBase* MakeMsg(bt::BDictNode* dict);
+	MsgBase::Ptr MakeMsg(bt::BDictNode* dict);
 	
 	
-	MsgBase* ParseReq(bt::BDictNode* dict)
+	MsgBase::Ptr ParseReq(bt::BDictNode* dict)
 	{
 		BValueNode* vn = dict->getValue(REQ);
 		BDictNode*	args = dict->getDict(ARG);
 		if (!vn || !args)
-			return 0;
+			return MsgBase::Ptr();
 		
 		if (!args->getValue("id"))
-			return 0;
+			return MsgBase::Ptr();
 		
 		if (!dict->getValue(TID))
-			return 0;
+			return MsgBase::Ptr();
 			
 		Key id = Key(args->getValue("id")->data().toByteArray());
 		QByteArray mtid_d = dict->getValue(TID)->data().toByteArray();
 		if (mtid_d.size() == 0)
-			return 0;
+			return MsgBase::Ptr();
 		Uint8 mtid = (Uint8)mtid_d.at(0);
-		MsgBase* msg = 0;
+		MsgBase::Ptr msg;
 		
 		QString str = vn->data().toString();
 		if (str == "ping")
-		{	
-			msg = new PingReq(id);
+		{
+			msg = MsgBase::Ptr(new PingReq(id));
 		}
 		else if (str == "find_node")
 		{
 			if (args->getValue("target"))
-				msg = new FindNodeReq(id,Key(args->getValue("target")->data().toByteArray()));
+				msg = MsgBase::Ptr(new FindNodeReq(id,Key(args->getValue("target")->data().toByteArray())));
 		}
 		else if (str == "get_peers")
 		{
 			if (args->getValue("info_hash"))
-				msg = new GetPeersReq(id,Key(args->getValue("info_hash")->data().toByteArray()));
+				msg = MsgBase::Ptr(new GetPeersReq(id,Key(args->getValue("info_hash")->data().toByteArray())));
 		}
 		else if (str == "announce_peer")
 		{
 			if (args->getValue("info_hash") && args->getValue("port") && args->getValue("token"))
 			{
-				msg = new AnnounceReq(id,
+				msg = MsgBase::Ptr(new AnnounceReq(id,
 						Key(args->getValue("info_hash")->data().toByteArray()),
 						args->getValue("port")->data().toInt(),
-						Key(args->getValue("token")->data().toByteArray()));
+						Key(args->getValue("token")->data().toByteArray())));
 			}
 		}
 		
@@ -94,21 +94,21 @@ namespace dht
 		return msg;
 	}
 	
-	MsgBase* ParseRsp(bt::BDictNode* dict,dht::Method req_method,Uint8 mtid)
+	MsgBase::Ptr ParseRsp(bt::BDictNode* dict,dht::Method req_method,Uint8 mtid)
 	{
 		BDictNode* args = dict->getDict(RSP);
 		if (!args || !args->getValue("id"))
-			return 0;
+			return MsgBase::Ptr();
 		
 		Key id = Key(args->getValue("id")->data().toByteArray());
 		
 		switch (req_method)
 		{
 			case PING : 
-				return new PingRsp(mtid,id);
+				return MsgBase::Ptr(new PingRsp(mtid,id));
 			case FIND_NODE :
 				if (!args->getValue("nodes") && !args->getList("nodes2"))
-					return 0;
+					return MsgBase::Ptr();
 				else
 				{
 					QByteArray nodes;
@@ -116,7 +116,7 @@ namespace dht
 					if (v)
 						nodes = v->data().toByteArray();
 					
-					FindNodeRsp* rsp = new FindNodeRsp(mtid,id);
+					FindNodeRsp::Ptr rsp(new FindNodeRsp(mtid,id));
 					rsp->setNodes(nodes);
 					
 					BListNode* l = args->getList("nodes2");
@@ -152,7 +152,7 @@ namespace dht
 								dbl.append(DBItem(addr));
 							}
 						}
-						return new GetPeersRsp(mtid,id,dbl,token);
+						return MsgBase::Ptr(new GetPeersRsp(mtid,id,dbl,token));
 					}
 					else if (args->getValue("nodes") || args->getList("nodes2"))
 					{
@@ -160,7 +160,7 @@ namespace dht
 						if (v)
 							data = v->data().toByteArray();
 						
-						GetPeersRsp* rsp = new GetPeersRsp(mtid,id,token);
+						GetPeersRsp::Ptr rsp(new GetPeersRsp(mtid,id,token));
 						rsp->setNodes(data);
 						BListNode* l = args->getList("nodes2");
 						if (l)
@@ -174,7 +174,7 @@ namespace dht
 					else
 					{
 						Out(SYS_DHT|LOG_DEBUG) << "No nodes or values in get_peers response" << endl;
-						return 0;
+						return MsgBase::Ptr();
 					}
 				}
 				else
@@ -183,61 +183,61 @@ namespace dht
 				}
 				break;
 			case ANNOUNCE_PEER :
-				return new AnnounceRsp(mtid,id);
+				return MsgBase::Ptr(new AnnounceRsp(mtid,id));
 			default:
-				return 0;
+				return MsgBase::Ptr();
 		}
-		return 0;
+		return MsgBase::Ptr();
 	}
 
-	MsgBase* ParseRsp(bt::BDictNode* dict,RPCServer* srv)
+	MsgBase::Ptr ParseRsp(bt::BDictNode* dict,RPCServer* srv)
 	{
 		BDictNode*	args = dict->getDict(RSP);
 		if (!args || !dict->getValue(TID))
 		{
 			Out(SYS_DHT|LOG_DEBUG) << "ParseRsp : args || !args->getValue(id) || !dict->getValue(TID)" << endl;
-			return 0;
+			return MsgBase::Ptr();
 		}
 			
 		
 		QByteArray ba = dict->getValue(TID)->data().toByteArray();
 		// check for empty byte arrays should prevent 144416
 		if (ba.size() == 0)
-			return 0;
+			return MsgBase::Ptr();
 		
 		Uint8 mtid = (Uint8)ba.at(0);
 		// find the call
 		Method method = srv->findMethod(mtid);
 		if (method == NONE)
-			return 0;
+			return MsgBase::Ptr();
 		else
 			return ParseRsp(dict,method,mtid);
 	}
 	
-	MsgBase* ParseErr(bt::BDictNode* dict)
+	MsgBase::Ptr ParseErr(bt::BDictNode* dict)
 	{
 		BValueNode* vn = dict->getValue(RSP);
 		BDictNode*	args = dict->getDict(ARG);
 		if (!vn || !args || !args->getValue("id") || !dict->getValue(TID))
-			return 0;
+			return MsgBase::Ptr();
 			
 		Key id = Key(args->getValue("id")->data().toByteArray());
 		QString mt_id = dict->getValue(TID)->data().toString();
 		if (mt_id.length() == 0)
-			return 0;
+			return MsgBase::Ptr();
 
 		Uint8 mtid = (char)mt_id.at(0).toLatin1();
 		QString str = vn->data().toString();
 		
-		return new ErrMsg(mtid,id,str);
+		return MsgBase::Ptr(new ErrMsg(mtid,id,str));
 	}
 	
 	
-	MsgBase* MakeRPCMsg(bt::BDictNode* dict,RPCServer* srv)
+	MsgBase::Ptr MakeRPCMsg(bt::BDictNode* dict,RPCServer* srv)
 	{
 		BValueNode* vn = dict->getValue(TYP);
 		if (!vn)
-			return 0;
+			return MsgBase::Ptr();
 		
 		if (vn->data().toString() == REQ)
 		{
@@ -252,14 +252,14 @@ namespace dht
 			return ParseErr(dict);
 		}
 		
-		return 0;
+		return MsgBase::Ptr();
 	}
 	
-	MsgBase* MakeRPCMsgTest(bt::BDictNode* dict,dht::Method req_method)
+	MsgBase::Ptr MakeRPCMsgTest(bt::BDictNode* dict,dht::Method req_method)
 	{
 		BValueNode* vn = dict->getValue(TYP);
 		if (!vn)
-			return 0;
+			return MsgBase::Ptr();
 		
 		if (vn->data().toString() == REQ)
 		{
@@ -274,7 +274,7 @@ namespace dht
 			return ParseErr(dict);
 		}
 		
-		return 0;
+		return MsgBase::Ptr();
 	}
 	
 	MsgBase::MsgBase(Uint8 mtid,Method m,Type type,const Key & id)
@@ -293,9 +293,9 @@ namespace dht
 	PingReq::~PingReq()
 	{}
 		
-	void PingReq::apply(DHT* dh_table)
+	void PingReq::apply(DHT* dh_table,MsgBase::Ptr self)
 	{
-		dh_table->ping(this);
+		dh_table->ping(self.dynamicCast<PingReq>());
 	}
 	
 	void PingReq::print()
@@ -303,7 +303,7 @@ namespace dht
 		Out(SYS_DHT|LOG_DEBUG) << QString("REQ: %1 %2 : ping").arg(mtid).arg(id.toString()) << endl;
 	}
 	
-	void PingReq::encode(QByteArray & arr)
+	void PingReq::encode(QByteArray & arr) const
 	{
 		BEncoder enc(new BEncoderBufferOutput(arr));
 		enc.beginDict();
@@ -329,9 +329,9 @@ namespace dht
 	FindNodeReq::~FindNodeReq()
 	{}
 		
-	void FindNodeReq::apply(DHT* dh_table)
+	void FindNodeReq::apply(DHT* dh_table,MsgBase::Ptr self)
 	{
-		dh_table->findNode(this);
+		dh_table->findNode(self.dynamicCast<FindNodeReq>());
 	}
 	
 	void FindNodeReq::print()
@@ -340,7 +340,7 @@ namespace dht
 				.arg(mtid).arg(id.toString()).arg(target.toString()) << endl;
 	}
 	
-	void FindNodeReq::encode(QByteArray & arr)
+	void FindNodeReq::encode(QByteArray & arr) const
 	{
 		BEncoder enc(new BEncoderBufferOutput(arr));
 		enc.beginDict();
@@ -368,9 +368,9 @@ namespace dht
 	GetPeersReq::~GetPeersReq()
 	{}
 		
-	void GetPeersReq::apply(DHT* dh_table)
+	void GetPeersReq::apply(DHT* dh_table,MsgBase::Ptr self)
 	{
-		dh_table->getPeers(this);
+		dh_table->getPeers(self.dynamicCast<GetPeersReq>());
 	}
 	
 	void GetPeersReq::print()
@@ -379,7 +379,7 @@ namespace dht
 				.arg(mtid).arg(id.toString()).arg(info_hash.toString()) << endl;
 	}
 	
-	void GetPeersReq::encode(QByteArray & arr)
+	void GetPeersReq::encode(QByteArray & arr) const
 	{
 		BEncoder enc(new BEncoderBufferOutput(arr));
 		enc.beginDict();
@@ -407,9 +407,9 @@ namespace dht
 	
 	AnnounceReq::~AnnounceReq() {}
 		
-	void AnnounceReq::apply(DHT* dh_table)
+	void AnnounceReq::apply(DHT* dh_table,MsgBase::Ptr self)
 	{
-		dh_table->announce(this);
+		dh_table->announce(self.dynamicCast<AnnounceReq>());
 	}
 	
 	void AnnounceReq::print()
@@ -419,7 +419,7 @@ namespace dht
 				.arg(port).arg(token.toString()) << endl;
 	}
 	
-	void AnnounceReq::encode(QByteArray & arr)
+	void AnnounceReq::encode(QByteArray & arr) const
 	{
 		BEncoder enc(new BEncoderBufferOutput(arr));
 		enc.beginDict();
@@ -447,9 +447,9 @@ namespace dht
 	
 	PingRsp::~PingRsp() {}
 		
-	void PingRsp::apply(DHT* dh_table) 
+	void PingRsp::apply(DHT* dh_table,MsgBase::Ptr self) 
 	{
-		dh_table->response(this);
+		dh_table->response(self.dynamicCast<PingRsp>());
 	}
 	
 	void PingRsp::print()
@@ -458,7 +458,7 @@ namespace dht
 					.arg(mtid).arg(id.toString()) << endl;
 	}
 	
-	void PingRsp::encode(QByteArray & arr)
+	void PingRsp::encode(QByteArray & arr) const
 	{
 		BEncoder enc(new BEncoderBufferOutput(arr));
 		enc.beginDict();
@@ -495,9 +495,9 @@ namespace dht
 	
 	FindNodeRsp::~FindNodeRsp() {}
 		
-	void FindNodeRsp::apply(DHT* dh_table) 
+	void FindNodeRsp::apply(DHT* dh_table,MsgBase::Ptr self) 
 	{
-		dh_table->response(this);
+		dh_table->response(self.dynamicCast<FindNodeRsp>());
 	}
 	
 	void FindNodeRsp::print()
@@ -506,7 +506,7 @@ namespace dht
 				.arg(mtid).arg(id.toString()) << endl;
 	}
 	
-	void FindNodeRsp::encode(QByteArray & arr)
+	void FindNodeRsp::encode(QByteArray & arr) const
 	{
 		BEncoder enc(new BEncoderBufferOutput(arr));
 		enc.beginDict();
@@ -548,9 +548,9 @@ namespace dht
 	GetPeersRsp::~GetPeersRsp()
 	{}
 		
-	void GetPeersRsp::apply(DHT* dh_table) 
+	void GetPeersRsp::apply(DHT* dh_table,MsgBase::Ptr self) 
 	{
-		dh_table->response(this);
+		dh_table->response(self.dynamicCast<GetPeersRsp>());
 	}
 	void GetPeersRsp::print()
 	{
@@ -558,7 +558,7 @@ namespace dht
 				.arg(mtid).arg(id.toString()).arg(nodes.size() > 0 ? "nodes" : "values") << endl;
 	}
 
-	void GetPeersRsp::encode(QByteArray & arr)
+	void GetPeersRsp::encode(QByteArray & arr) const
 	{
 		BEncoder enc(new BEncoderBufferOutput(arr));
 		enc.beginDict();
@@ -586,7 +586,7 @@ namespace dht
 				{
 					enc.write(QString("token")); enc.write(token.getData(),20);
 					enc.write(QString("values")); enc.beginList();
-					DBItemList::iterator i = items.begin();
+					DBItemList::const_iterator i = items.begin();
 					while (i != items.end())
 					{
 						const DBItem & item = *i;
@@ -614,9 +614,9 @@ namespace dht
 	
 	AnnounceRsp::~AnnounceRsp(){}
 	
-	void AnnounceRsp::apply(DHT* dh_table)
+	void AnnounceRsp::apply(DHT* dh_table,MsgBase::Ptr self)
 	{
-		dh_table->response(this);
+		dh_table->response(self.dynamicCast<AnnounceRsp>());
 	}
 	
 	void AnnounceRsp::print()
@@ -625,7 +625,7 @@ namespace dht
 				.arg(mtid).arg(id.toString()) << endl;
 	}
 	
-	void AnnounceRsp::encode(QByteArray & arr)
+	void AnnounceRsp::encode(QByteArray & arr) const
 	{
 		BEncoder enc(new BEncoderBufferOutput(arr));
 		enc.beginDict();
@@ -651,9 +651,9 @@ namespace dht
 	ErrMsg::~ErrMsg()
 	{}
 		
-	void ErrMsg::apply(DHT* dh_table)
+	void ErrMsg::apply(DHT* dh_table,MsgBase::Ptr self)
 	{
-		dh_table->error(this);
+		dh_table->error(self.dynamicCast<ErrMsg>());
 	}
 	
 	void ErrMsg::print()
@@ -661,6 +661,6 @@ namespace dht
 		Out(SYS_DHT|LOG_NOTICE) << "ERR: " << mtid << " " << msg << endl;
 	}
 	
-	void ErrMsg::encode(QByteArray & )
+	void ErrMsg::encode(QByteArray & ) const
 	{}
 }
