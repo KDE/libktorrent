@@ -79,6 +79,11 @@ private slots:
 	void cleanupTestCase()
 	{
 		bt::Globals::instance().shutdownUTPServer();
+		for (int i = 0;i < NUM_SOCKETS;i++)
+		{
+			delete outgoing[i];
+			delete incoming[i];
+		}
 	}
 	
 	void testPollConnect()
