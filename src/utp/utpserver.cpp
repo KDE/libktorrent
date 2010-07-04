@@ -90,10 +90,14 @@ namespace utp
 		delete mtc;
 	}
 	
+	// HACK: to avoid binary incompatibilities, 
+	// relies on the fact that there will only be one  UTPServer instance
+	static QMutex pending_mutex;
+	
 	void UTPServer::handlePendingConnections()
 	{
 		// This should be called from the main thread
-		QMutexLocker lock(&mutex);
+		QMutexLocker lock(&pending_mutex);
 		foreach (mse::StreamSocket* s,pending)
 		{
 			newConnection(s);
@@ -539,7 +543,10 @@ namespace utp
 		{
 			UTPSocket* utps = new UTPSocket(conn);
 			mse::StreamSocket* ss = new mse::StreamSocket(utps);
-			pending.append(ss);
+			{
+				QMutexLocker lock(&pending_mutex);
+				pending.append(ss);
+			}
 			handlePendingConnectionsDelayed();
 		}
 	}
