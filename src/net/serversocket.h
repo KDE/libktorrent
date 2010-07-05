@@ -41,6 +41,8 @@ namespace net
 	{
 		Q_OBJECT
 	public:
+		typedef QSharedPointer<ServerSocket> Ptr;
+		
 		/**
 			Interface class to handle new connections
 			from a ServerSocket.
@@ -72,6 +74,12 @@ namespace net
 				@param addr The address from which it was received
 			*/
 			virtual void dataReceived(const QByteArray & data,const net::Address & addr) = 0;
+			
+			/**
+				Socket has become writeable
+				@param sock The socket 
+			*/
+			virtual void readyToWrite(net::ServerSocket* sock) = 0;
 		};
 		
 		/**
@@ -97,6 +105,13 @@ namespace net
 		bool bind(const QString & ip,bt::Uint16 port);
 		
 		/**
+			Bind the socket to an address
+			@param addr The address
+			@return true upon success, false otherwise
+		*/
+		bool bind(const net::Address & addr);
+		
+		/**
 			Method to send data with the socket. Only use this when 
 			the socket is a UDP socket. It will fail for TCP server sockets.
 			@param data The data to send
@@ -115,11 +130,29 @@ namespace net
 		*/
 		int sendTo(const bt::Uint8* buf,int size,const net::Address & addr);
 		
-		typedef QSharedPointer<ServerSocket> Ptr;
+		/**
+			Enable write notifications.
+			@param on On or not
+		*/
+		void setWriteNotificationsEnabled(bool on);
+		
+		/**
+			Enable read notifications.
+			@param on On or not
+		*/
+		void setReadNotificationsEnabled(bool on);
+		
+		/**
+			Set the TOS byte of the socket
+			@param type_of_service Value to set
+			@return true upon success, false otherwise
+		*/
+		bool setTOS(unsigned char type_of_service);
 		
 	private slots:
 		void readyToAccept(int fd);
 		void readyToRead(int fd);
+		void readyToWrite(int fd);
 		
 	private:
 		class Private;

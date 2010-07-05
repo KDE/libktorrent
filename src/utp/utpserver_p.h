@@ -26,6 +26,7 @@
 #include <boost/tuple/tuple.hpp>
 #include <net/socket.h>
 #include <net/poll.h>
+#include <net/serversocket.h>
 #include <net/wakeuppipe.h>
 #include <util/ptrmap.h>
 #include <ktorrent_export.h>
@@ -33,6 +34,7 @@
 #include "connection.h"
 #include "pollpipe.h"
 #include "utpserver.h"
+
 
 namespace utp
 {
@@ -76,7 +78,7 @@ namespace utp
 	typedef bt::PtrMap<net::Poll*,PollPipePair>::iterator PollPipePairItr;
 	typedef boost::tuple<QByteArray,net::Address,quint16> OutputQueueEntry;
 	
-	class UTPServer::Private
+	class UTPServer::Private : public net::ServerSocket::DataHandler
 	{
 	public:
 		Private(UTPServer* p);
@@ -89,13 +91,18 @@ namespace utp
 		void clearDeadConnections();
 		void wakeUpPollPipes();
 		Connection* find(quint16 conn_id);
-		void sendOutputQueue();
+		void sendOutputQueue(net::ServerSocket* sock);
 		void stop();
+		virtual void dataReceived(const QByteArray& data, const net::Address& addr);
+		virtual void readyToWrite(net::ServerSocket* sock);
+		int sendTo(const QByteArray& data, const net::Address& addr);
+		void enableWriteNotifications();
 		
 		
 	public:
 		UTPServer* p;
-		net::Socket* sock;
+		QList<net::ServerSocket::Ptr> sockets;
+		QList<net::ServerSocket::Ptr> busy_sockets;
 		bool running;
 		bt::PtrMap<quint16,Connection> connections;
 		QList<Connection*> dead_connections;
@@ -106,10 +113,9 @@ namespace utp
 		bool create_sockets;
 		bt::Uint8 tos;
 		QList<OutputQueueEntry> output_queue;
-		QSocketNotifier* read_notifier;
-		QSocketNotifier* write_notifier;
 		QBasicTimer timer;
 		QList<mse::StreamSocket*> pending;
+		QMutex pending_mutex;
 		MainThreadCall* mtc;
 	};
 }

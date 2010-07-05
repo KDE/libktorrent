@@ -90,8 +90,6 @@ namespace utp
 		
 	private slots:
 		void onAccepted(Connection* conn);
-		void readPacket(int fd);
-		void writePacket(int fd);
 		
 	public slots:
 		void cleanup();
