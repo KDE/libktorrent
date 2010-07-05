@@ -100,6 +100,8 @@ namespace dht
 							handlePacket(sock);
 					}
 				}
+				
+				poller.reset();
 			}
 		}
 		
