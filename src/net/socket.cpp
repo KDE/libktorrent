@@ -223,14 +223,6 @@ namespace net
 		{
 			Out(SYS_CON|LOG_NOTICE) << QString("Failed to set the reuseaddr option : %1").arg(strerror(errno)) << endl;
 		}
-		// Bind this socket to IPv4 as well. This is a workaround for systems
-		// which support IPv4-mapped addresses but have them disabled by
-		// default (e.g. net.ipv6.bindv6only=1 on Debian Linux).
-#ifndef Q_WS_WIN 
-		setsockopt(m_fd,SOL_IPV6,IPV6_V6ONLY,&no,sizeof(no));
-#else
-		setsockopt(m_fd,SOL_IPV6,IPV6_V6ONLY,(char *)&no,sizeof(no));
-#endif		
 
 		if (::bind(m_fd,addr.address(),addr.length()) != 0)
 		{
