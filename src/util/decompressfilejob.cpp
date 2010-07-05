@@ -65,7 +65,7 @@ namespace bt
 		while (!canceled && !dev->atEnd())
 		{
 			int len = dev->read(buf,4096);
-			if (len == 0)
+			if (len <= 0 || len > 4096)
 				break;
 			
 			out.write(buf,len);
