@@ -88,6 +88,11 @@ namespace bt
 			}
 		}
 		
+		virtual void readyToWrite(net::ServerSocket* sock)
+		{
+			Q_UNUSED(sock);
+		}
+		
 		
 		QList<net::ServerSocket::Ptr> sockets;
 		QMap<Int32,Action> transactions;
