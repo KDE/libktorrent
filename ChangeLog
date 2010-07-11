@@ -10,6 +10,7 @@ Changes in 1.1:
 
 Changes in 1.0.3:
 - Fix crash in HTTPAnnounceJob due to abort call (244198)
+- Show KDE progress dialogs when moving files (244023)
 
 Changes in 1.0.2:
 - Fix subtle bug causing some connections to be dropped prematurely
