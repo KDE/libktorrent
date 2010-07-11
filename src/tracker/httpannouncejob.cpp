@@ -115,7 +115,7 @@ namespace bt
 		{
 			// If the reply is larger then a mega byte, the server
 			// has probably gone bonkers
-			abort();
+			http->abort();
 			Out(SYS_TRK|LOG_DEBUG) << "Tracker sending back to much data in announce reply, aborting ..." << endl;
 		}
 		else

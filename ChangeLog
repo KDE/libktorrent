@@ -8,6 +8,9 @@ Changes in 1.1:
 - Fix crash due to missing reset of Poll object in DHT listening thread (243603)
 - Ensure that libktorrent works properly with bindv6only flag on (238688)
 
+Changes in 1.0.3:
+- Fix crash in HTTPAnnounceJob due to abort call (244198)
+
 Changes in 1.0.2:
 - Fix subtle bug causing some connections to be dropped prematurely
 - Fix bug causing tracker replies with only IPv6 addresses to be misinterpreted as an invalid reply
