@@ -124,13 +124,14 @@ namespace bt
 		}
 			
 		QMap<QString,QString>::iterator i = todo.begin();	
-		active_job = KIO::file_move(KUrl(i.key()),KUrl(i.value()),-1,KIO::HideProgressInfo);
+		active_job = KIO::file_move(KUrl(i.key()),KUrl(i.value()),-1/*,KIO::HideProgressInfo*/);
 		active_src = i.key();
 		active_dst = i.value();
 		Out(SYS_GEN|LOG_DEBUG) << "Moving " << active_src << " -> " << active_dst << endl;
 		connect(active_job,SIGNAL(result(KJob*)),this,SLOT(onJobDone(KJob*)));
 		connect(active_job,SIGNAL(canceled(KJob*)),this,SLOT(onCanceled(KJob*)));
 		todo.erase(i);
+		addSubjob(active_job);
 	}
 	
 	void MoveDataFilesJob::recover(bool delete_active)
