@@ -126,6 +126,32 @@ namespace bt
 			ctmp += bt::DirSeparator();
 		}
 	}
+	
+	void MakeFilePath(const QString & file,bool nothrow)
+	{
+		QStringList sl = file.split(bt::DirSeparator());
+		QString ctmp;
+#ifndef Q_WS_WIN
+		ctmp += bt::DirSeparator();
+#endif
+		
+		for (int i = 0;i < sl.count() - 1;i++)
+		{
+			ctmp += sl[i];
+			if (!bt::Exists(ctmp)) try
+			{
+				MakeDir(ctmp,false);
+			}
+			catch (...)
+			{
+				if (!nothrow)
+					throw;
+				return;
+			}
+			
+			ctmp += bt::DirSeparator();
+		}
+	}
 
 	void SymLink(const QString & link_to,const QString & link_url,bool nothrow)
 	{
@@ -259,6 +285,7 @@ namespace bt
 		if (Exists(url))
 			return;
 
+		
 		File fptr;
 		if (!fptr.open(url,"wb"))
 		{

@@ -7,6 +7,7 @@ Changes in 1.1:
 - Add TransportProtocol field to Peer::Stats
 - Fix crash due to missing reset of Poll object in DHT listening thread (243603)
 - Ensure that libktorrent works properly with bindv6only flag on (238688)
+- Ensure that torrent names are not interpreted as directories (244418)
 
 Changes in 1.0.3:
 - Fix crash in HTTPAnnounceJob due to abort call (244198)

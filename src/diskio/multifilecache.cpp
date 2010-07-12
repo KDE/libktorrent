@@ -50,23 +50,7 @@ namespace bt
 	static Uint64 FileOffset(Uint32 cindex,const TorrentFile & f,Uint64 chunk_size);
 	static void DeleteEmptyDirs(const QString & output_dir,const QString & fpath);
 	
-	static void MakeFilePath(const QString & file)
-	{
-		QStringList sl = file.split(bt::DirSeparator());
-		QString ctmp;
-#ifndef Q_WS_WIN
-		ctmp += bt::DirSeparator();
-#endif
-		
-		for (int i = 0;i < sl.count() - 1;i++)
-		{
-			ctmp += sl[i];
-			if (!bt::Exists(ctmp))
-				MakeDir(ctmp);
-			
-			ctmp += bt::DirSeparator();
-		}
-	}
+
 	
 
 	MultiFileCache::MultiFileCache(Torrent& tor,const QString & tmpdir,const QString & datadir,bool custom_output_name) : Cache(tor, tmpdir,datadir)

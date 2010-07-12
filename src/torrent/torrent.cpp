@@ -39,21 +39,29 @@ namespace bt
 {
 	static QString SanityzeName(const QString & name)
 	{
-#ifdef Q_WS_WIN
 		QString ret = name;
+#ifdef Q_WS_WIN
 		char invalid[] = {'<','>',':','"','/','\\','|','?','*'};
 		for (int i = 0;i < 9;i++)
 		{
 			if (ret.contains(invalid[i]))
 				ret = ret.replace(invalid[i],'_');
 		}
+#else
+		if (ret.endsWith("/"))
+			ret = ret.left(ret.length() - 1);
+		if (ret.startsWith("/"))
+			ret = ret.mid(1);
+#endif
+		// Don't allow directory traversal things in names
+		if (ret.contains("/") || ret.contains(".."))
+		{
+			QStringList sl = ret.split(bt::DirSeparator());
+			sl.removeAll("..");
+			ret = sl.join("_");
+		}
 		
 		return ret;
-#else
-		if (name.endsWith("/"))
-			return name.left(name.length() - 1);
-		return name;
-#endif
 	}
 
 	Torrent::Torrent() : chunk_size(0),total_size(0),priv_torrent(false),pos_cache_chunk(0),pos_cache_file(0),tmon(0)

@@ -208,8 +208,12 @@ namespace bt
 		if (FileNameToLong(output_file))
 			output_file = ShortenFileName(output_file);
 			
+		
 		if (!bt::Exists(output_file))
+		{
+			MakeFilePath(output_file);
 			bt::Touch(output_file);
+		}
 		else
 			preexisting_files = true;
 		saveFileMap();
