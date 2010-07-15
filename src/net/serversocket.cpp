@@ -109,7 +109,7 @@ namespace net
 		else
 			d->reset();
 		
-		return true;
+		return false;
 	}
 	
 	void ServerSocket::readyToAccept(int)
