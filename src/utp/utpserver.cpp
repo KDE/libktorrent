@@ -481,6 +481,9 @@ namespace utp
 
 	Connection* UTPServer::connectTo(const net::Address& addr)
 	{
+		if (d->sockets.isEmpty())
+			return 0;
+		
 		QMutexLocker lock(&d->mutex);
 		quint16 recv_conn_id = qrand() % 32535;
 		while (d->connections.contains(recv_conn_id))
