@@ -14,6 +14,7 @@ Changes in 1.0.3:
 - Fix crash in HTTPAnnounceJob due to abort call (244198)
 - Show KDE progress dialogs when moving files (244023)
 - Fix crash when µTP binding fails (244935)
+- Backport PeerConnector crash fixes (245796)
 
 Changes in 1.0.2:
 - Fix subtle bug causing some connections to be dropped prematurely
