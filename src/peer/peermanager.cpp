@@ -77,6 +77,8 @@ namespace bt
 		
 		qDeleteAll(peer_list.begin(),peer_list.end());
 		peer_list.clear();
+		
+		qDeleteAll(connectors);
 	}
 
 	void PeerManager::pause()
@@ -542,10 +544,11 @@ namespace bt
 		available_chunks.clear();
 		started = false;
 		ServerInterface::removePeerManager(this);
-		foreach (PeerConnector* pcon,connectors)
-			delete pcon;
-		connectors.clear();
-		stopped();
+		// Use copy so that connectors can be safely emptied
+		QSet<PeerConnector*> connectors_copy = connectors;
+		foreach (PeerConnector* pcon,connectors_copy)
+			pcon->stop();
+		
 		num_pending = 0;
 	}
 
