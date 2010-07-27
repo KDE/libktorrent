@@ -8,6 +8,7 @@ Changes in 1.1:
 - Fix crash due to missing reset of Poll object in DHT listening thread (243603)
 - Ensure that libktorrent works properly with bindv6only flag on (238688)
 - Ensure that torrent names are not interpreted as directories (244418)
+- Fix crash when cleaning up PeerConnectors (245796)
 
 Changes in 1.0.3:
 - Fix crash in HTTPAnnounceJob due to abort call (244198)
