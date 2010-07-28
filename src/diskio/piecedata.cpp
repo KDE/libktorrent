@@ -107,6 +107,14 @@ namespace bt
 		return *this;
 	}
 
+	void PieceDataPtr::reset()
+	{
+		if (pdata)
+			pdata->unref();
+		
+		pdata = 0;
+	}
+
 
 
 

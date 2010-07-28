@@ -14,6 +14,7 @@ set (torrent_HDR
 	torrentstats.h
 	job.h
 	jobqueue.h
+	torrentfilestream.h
 )
 
 install(FILES ${torrent_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/torrent COMPONENT Devel)

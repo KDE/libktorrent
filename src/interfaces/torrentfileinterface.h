@@ -78,6 +78,12 @@ namespace bt
 				
 		/// Get the last chunk of the file
 		Uint32 getLastChunk() const {return last_chunk;}
+		
+		/// Get the offset at which the file starts in the first chunk
+		Uint64 getFirstChunkOffset() const {return first_chunk_off;}
+		
+		/// Get how many bytes the files takes up of the last chunk
+		Uint64 getLastChunkSize() const {return last_chunk_size;}
 
 		/// See if the TorrentFile is null.
 		bool isNull() const {return path.isNull();}
@@ -135,6 +141,8 @@ namespace bt
 		bool emit_status_changed;
 		bool preview;
 		QList<QByteArray> unencoded_path;
+		Uint64 first_chunk_off;
+		Uint64 last_chunk_size;
 	};
 
 }

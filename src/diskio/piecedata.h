@@ -102,6 +102,9 @@ namespace bt
 		friend class PieceDataPtr;
 	};
 	
+	/**
+		Smart pointer class for PieceData
+	*/
 	class KTORRENT_EXPORT PieceDataPtr
 	{
 	public:
@@ -113,6 +116,7 @@ namespace bt
 		PieceData* operator -> () const {return pdata;}
 		PieceDataPtr & operator = (const PieceDataPtr & pdata);
 		operator bool () const {return pdata != 0;}
+		void reset();
 		
 	private:
 		PieceData* pdata;

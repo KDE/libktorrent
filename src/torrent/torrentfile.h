@@ -44,8 +44,6 @@ namespace bt
 
 		Torrent* tor;
 		Uint64 cache_offset;
-		Uint64 first_chunk_off;
-		Uint64 last_chunk_size;
 		Priority priority;
 		Priority old_priority;
 		bool missing;

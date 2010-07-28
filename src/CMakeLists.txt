@@ -118,6 +118,7 @@ set(libktorrent_SRC
 	torrent/torrentstats.cpp
 	torrent/jobqueue.cpp
 	torrent/job.cpp
+	torrent/torrentfilestream.cpp 
 
 	dht/announcetask.cpp  
 	dht/dht.cpp                

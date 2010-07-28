@@ -130,6 +130,7 @@ namespace bt
 		virtual bool moveTorrentFiles(const QMap<TorrentFileInterface*,QString> & files);
 		virtual void recreateMissingFiles();
 		virtual void dndMissingFiles();
+		virtual TorrentFileStream* createTorrentFileStream(Uint32 index = 0, QObject* parent = 0);
 		virtual void addPeerSource(PeerSource* ps);
 		virtual void removePeerSource(PeerSource* ps);
 		virtual const QTextCodec* getTextCodec() const;

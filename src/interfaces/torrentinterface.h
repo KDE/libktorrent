@@ -44,6 +44,7 @@ namespace bt
 	class WebSeedInterface;
 	class JobQueue;
 	class ChunkSelectorInterface;
+	class TorrentFileStream;
 
 	
 	enum TorrentStartResponse
@@ -242,6 +243,15 @@ namespace bt
 		 * @return true upon success
 		 */
 		virtual bool moveTorrentFiles(const QMap<TorrentFileInterface*,QString> & files) = 0;
+		
+		/**
+			Create a TorrentFileStream object. If the torrent is destroyed this object must also be 
+			destroyed.
+			@param index Index of the file (in case of a single file torrent, this does not matter)
+			@param parent Parent of the TorrentFileStream
+			@return A TorrentFileStream or 0 if index is not valid
+		*/
+		virtual TorrentFileStream* createTorrentFileStream(bt::Uint32 index = 0,QObject* parent = 0) = 0;
 		
 		///Get a pointer to TrackersList object
 		virtual TrackersList* getTrackersList() = 0;

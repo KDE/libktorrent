@@ -66,6 +66,7 @@
 #include "statsfile.h"
 #include "timeestimator.h"
 #include "jobqueue.h"
+#include "torrentfilestream.h"
 
 
 
@@ -1989,6 +1990,20 @@ namespace bt
 		
 		saveStats();
 	}
+	
+	TorrentFileStream* TorrentControl::createTorrentFileStream(Uint32 index, QObject* parent)
+	{
+		if (stats.multi_file_torrent)
+		{
+			if (index < tor->getNumFiles())
+				return new TorrentFileStream(this,index,cman,parent);
+			else
+				return 0;
+		}
+		else
+			return new TorrentFileStream(this,cman,parent);
+	}
+
 
 
 }
