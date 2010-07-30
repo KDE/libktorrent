@@ -129,6 +129,9 @@ namespace bt
 	
 	void HTTPRequest::onTimeout()
 	{
+		if (finished)
+			return;
+
 		Out(SYS_PNP|LOG_DEBUG) << "HTTPRequest timeout" << endl;
 		error(this,i18n("Timeout occurred"));
 		sock->close();
