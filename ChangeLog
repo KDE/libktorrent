@@ -9,6 +9,7 @@ Changes in 1.1:
 - Ensure that libktorrent works properly with bindv6only flag on (238688)
 - Ensure that torrent names are not interpreted as directories (244418)
 - Fix crash when cleaning up PeerConnectors (245796)
+- Fix crash on exit when cleaning up UPnP requests
 
 Changes in 1.0.3:
 - Fix crash in HTTPAnnounceJob due to abort call (244198)
@@ -16,7 +17,6 @@ Changes in 1.0.3:
 - Fix crash when µTP binding fails (244935)
 - Backport PeerConnector crash fixes (245796)
 - Decrease authentication timeout to 5 seconds
-- Fix crash on exit when cleaning up UPnP requests
 
 Changes in 1.0.2:
 - Fix subtle bug causing some connections to be dropped prematurely
