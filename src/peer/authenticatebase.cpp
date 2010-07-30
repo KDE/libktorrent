@@ -34,7 +34,7 @@ namespace bt
 	{
 		connect(&timer,SIGNAL(timeout()),this,SLOT(onTimeout()));
 		timer.setSingleShot(true);
-		timer.start(20000);
+		timer.start(5000);
 		memset(handshake,0x00,68);
 		bytes_of_handshake_received = 0;
 		ext_support = 0;
