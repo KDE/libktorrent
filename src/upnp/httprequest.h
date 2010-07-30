@@ -56,6 +56,11 @@ namespace bt
 		 */
 		void start();
 		
+		/**
+			Cancel the request, no result signal will be emitted.
+		*/
+		void cancel();
+		
 	signals:
 		/**
 		 * An OK reply was sent.

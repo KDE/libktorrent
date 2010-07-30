@@ -42,7 +42,6 @@ namespace bt
 	HTTPRequest::~HTTPRequest()
 	{
 		sock->close();
-		delete sock;
 	}
 	
 	void HTTPRequest::start()
@@ -51,8 +50,17 @@ namespace bt
 		QTimer::singleShot(30000,this,SLOT(onTimeout()));
 	}
 	
+	void HTTPRequest::cancel()
+	{
+		finished = true;
+		sock->close();
+	}
+	
 	void HTTPRequest::onConnect()
 	{
+		if (finished)
+			return;
+		
 		payload = payload.replace("$LOCAL_IP",sock->localAddress().toString());
 		hdr = hdr.replace("$CONTENT_LENGTH",QString::number(payload.length()));
 			
@@ -72,6 +80,9 @@ namespace bt
 	
 	void HTTPRequest::onReadyRead()
 	{
+		if (finished)
+			return;
+		
 		Uint32 ba = sock->bytesAvailable();
 		if (ba == 0)
 		{
@@ -103,16 +114,17 @@ namespace bt
 		}
 		finished = true;
 		operationFinished(this);
-		deleteLater();
 	}
 	
 	void HTTPRequest::onError(QAbstractSocket::SocketError err)
 	{
+		if (finished)
+			return;
+		
 		Out(SYS_PNP|LOG_DEBUG) << "HTTPRequest error : " << sock->errorString() << endl;
 		error(this,sock->errorString());
 		sock->close();
 		operationFinished(this);
-		deleteLater();
 	}
 	
 	void HTTPRequest::onTimeout()
@@ -121,7 +133,6 @@ namespace bt
 		error(this,i18n("Timeout occurred"));
 		sock->close();
 		operationFinished(this);
-		deleteLater();
 	}
 
 

@@ -368,7 +368,11 @@ namespace bt
 	
 	UPnPRouter::UPnPRouterPrivate::~UPnPRouterPrivate()
 	{
-		qDeleteAll(active_reqs);
+		foreach (HTTPRequest* r,active_reqs)
+		{
+			r->cancel();
+			r->deleteLater();
+		}
 	}
 
 	HTTPRequest* UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString & query,const QString & soapact,const QString & controlurl,bool at_exit)
@@ -388,15 +392,19 @@ namespace bt
 				"\r\n").arg(controlurl).arg(location.host()).arg(location.port()).arg(soapact).arg(bt::GetVersionString());
 		
 		HTTPRequest* r = new HTTPRequest(http_hdr,query,location.host(),location.port(),verbose);
-		connect(r,SIGNAL(replyError(HTTPRequest* ,const QString& )),
-				parent,SLOT(onReplyError(HTTPRequest* ,const QString& )));
-		connect(r,SIGNAL(replyOK(HTTPRequest* ,const QString& )),
-				parent,SLOT(onReplyOK(HTTPRequest* ,const QString& )));
-		connect(r,SIGNAL(error(HTTPRequest*, const QString & )),
-				parent,SLOT(onError(HTTPRequest*, const QString & )));
-		r->start();
 		if (!at_exit)
+		{
+			// Only listen for results when we are not exiting
+			connect(r,SIGNAL(replyError(HTTPRequest* ,const QString& )),
+					parent,SLOT(onReplyError(HTTPRequest* ,const QString& )));
+			connect(r,SIGNAL(replyOK(HTTPRequest* ,const QString& )),
+					parent,SLOT(onReplyOK(HTTPRequest* ,const QString& )));
+			connect(r,SIGNAL(error(HTTPRequest*, const QString & )),
+					parent,SLOT(onError(HTTPRequest*, const QString & )));
 			active_reqs.append(r);
+		}
+		
+		r->start();
 		return r;
 	}
 	
@@ -504,6 +512,7 @@ namespace bt
 		}
 		
 		active_reqs.removeAll(r);
+		r->deleteLater();
 	}
 }
 
