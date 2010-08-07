@@ -47,7 +47,7 @@ namespace utp
 
 	RemoteWindow::~RemoteWindow()
 	{
-		qDeleteAll(unacked_packets);
+		clear();
 	}
 
 	void RemoteWindow::packetReceived(const utp::Header* hdr,const SelectiveAck* sack,Retransmitter* conn)
@@ -198,11 +198,11 @@ namespace utp
 		//if (scaled_gain > 1000)
 		//	Out(SYS_UTP|LOG_DEBUG) << "RemoteWindow::updateWindowSize " << scaled_gain << " " << max_window << endl;
 	}
-
+	
 	void RemoteWindow::clear()
 	{
 		qDeleteAll(unacked_packets);
+		unacked_packets.clear();
 	}
-
 }
 

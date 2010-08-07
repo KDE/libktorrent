@@ -4,6 +4,7 @@ Changes in 1.0.3:
 - Fix crash when µTP binding fails (244935)
 - Backport PeerConnector crash fixes (245796)
 - Decrease authentication timeout to 5 seconds
+- Fix crash due to double delete in µTP code
 
 Changes in 1.0.2:
 - Fix subtle bug causing some connections to be dropped prematurely
