@@ -24,6 +24,7 @@
 #include <QTcpSocket>
 #include <interfaces/exitoperation.h>
 #include <util/constants.h>
+#include <QHttpResponseHeader>
 
 
 namespace bt
@@ -61,33 +62,38 @@ namespace bt
 		*/
 		void cancel();
 		
+		/**
+			Get the reply data
+		*/
+		QByteArray replyData() const {return reply;}
+		
+		/**
+			Did the request succeed
+		*/
+		bool succeeded() const {return success;}
+		
+		/**
+			In case of failure this function will return an error string
+		*/
+		QString errorString() const {return error;}
+		
 	signals:
 		/**
 		 * An OK reply was sent.
 		 * @param r The sender of the request
 		 * @param data The data of the reply
 		 */
-		void replyOK(HTTPRequest* r,const QString & data);
+		void result(HTTPRequest* r);
 		
-		/**
-		 * Anything else but an 200 OK was sent.
-		 * @param r The sender of the request
-		 * @param data The data of the reply
-		 */
-		void replyError(HTTPRequest* r,const QString & data);
-		
-		/**
-		 * No reply was sent or an error occurred
-		 * @param r The sender of the request
-		 * @param msg The error message
-		 */
-		void error(HTTPRequest* r,const QString & msg);
 		
 	private slots:
 		void onReadyRead();
 		void onError(QAbstractSocket::SocketError err);
 		void onTimeout();
 		void onConnect();
+	
+	private:
+		void parseReply(int eoh);
 		
 	private:
 		QTcpSocket* sock;
@@ -96,6 +102,10 @@ namespace bt
 		QString host;
 		bt::Uint16 port;
 		bool finished;
+		QHttpResponseHeader reply_header;
+		QByteArray reply;
+		bool success;
+		QString error;
 	};
 
 }

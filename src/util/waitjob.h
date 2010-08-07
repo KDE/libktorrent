@@ -50,6 +50,12 @@ namespace bt
 		 */
 		void addExitOperation(ExitOperation* op);
 		
+		/**
+		 * Add a KIO::Job to wait on;
+		 * @param job The job
+		 */
+		void addExitOperation(KIO::Job* job);
+		
 		
 		/**
 		 * Execute a WaitJob

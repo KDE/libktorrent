@@ -122,6 +122,9 @@ namespace bt
 		/// Get the current error (null string if there is none)
 		QString getError() const;
 		
+		/// Get the router's external IP
+		QString getExternalIP() const;
+		
 		/**
 		 * Download the XML File of the router.
 		 */
@@ -139,11 +142,6 @@ namespace bt
 		 * @param port The Port
 		 */
 		void isPortForwarded(const net::Port & port);	
-		
-		/**
-		 * Get the external IP address.
-		 */
-		void getExternalIP();
 #endif
 		
 		/**
@@ -185,9 +183,9 @@ namespace bt
 	
 		
 	private slots:
-		void onReplyOK(HTTPRequest* r,const QString &);
-		void onReplyError(HTTPRequest* r,const QString &);
-		void onError(HTTPRequest* r,const QString & msg);
+		void forwardResult(HTTPRequest* r);
+		void undoForwardResult(HTTPRequest* r);
+		void getExternalIPResult(HTTPRequest* r);
 		void downloadFinished(KJob* j);
 		
 	signals:

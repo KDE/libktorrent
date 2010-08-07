@@ -55,6 +55,12 @@ namespace bt
 				this,SLOT(operationFinished( ExitOperation* )));
 	}
 	
+	void WaitJob::addExitOperation(KIO::Job* job)
+	{
+		addExitOperation(new ExitJobOperation(job));
+	}
+
+	
 	void WaitJob::operationFinished(ExitOperation* op)
 	{
 		if (exit_ops.count() > 0)

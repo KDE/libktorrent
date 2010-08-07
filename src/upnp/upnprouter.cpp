@@ -37,6 +37,7 @@
 #include "upnpdescriptionparser.h"
 #include "soap.h"
 #include "httprequest.h"
+#include <QDomElement>
 
 using namespace net;
 
@@ -59,6 +60,7 @@ namespace bt
 		void forward(const UPnPService* srv,const net::Port & port);
 		void undoForward(const UPnPService* srv,const net::Port & port,bt::WaitJob* waitjob);
 		void httpRequestDone(HTTPRequest* r,bool erase_fwd);
+		void getExternalIP();
 		
 	public:
 		QString server;
@@ -70,6 +72,7 @@ namespace bt
 		QString error;
 		bool verbose;
 		UPnPRouter* parent;
+		QString external_ip;
 	};
 	
 	////////////////////////////////////
@@ -176,6 +179,7 @@ namespace bt
 		}
 	
 		xmlFileDownloaded(this,ret);
+		d->getExternalIP();
 	}
 	
 	void UPnPRouter::downloadXMLFile()
@@ -241,52 +245,66 @@ namespace bt
 		stateChanged();
 	}
 	
-
-	
-	void UPnPRouter::onReplyOK(HTTPRequest* r,const QString &)
+	void UPnPRouter::forwardResult(HTTPRequest* r)
 	{
-		if (d->verbose)
-			Out(SYS_PNP|LOG_NOTICE) << "UPnPRouter : OK" << endl;
-		
-		if (!d->error.isEmpty())
-			d->error = QString();
-		
-		d->httpRequestDone(r,false);
-	}
-	
-	void UPnPRouter::onReplyError(HTTPRequest* r,const QString &)
-	{
-		if (d->verbose)
-			Out(SYS_PNP|LOG_IMPORTANT) << "UPnPRouter : Error" << endl;
-		
-		d->httpRequestDone(r,true);
-		
-	}
-	
-	void UPnPRouter::onError(HTTPRequest* r,const QString & err)
-	{
-		d->httpRequestDone(r,true);
-		if (d->fwds.count() == 0)
+		if (r->succeeded())
 		{
-			d->error = err;
-			stateChanged();
+			d->httpRequestDone(r,false);
+		}
+		else
+		{
+			d->httpRequestDone(r,true);
+			if (d->fwds.count() == 0)
+			{
+				d->error = r->errorString();
+				stateChanged();
+			}
 		}
 	}
 	
-#if 0
-
-	void UPnPRouter::getExternalIP()
+	void UPnPRouter::undoForwardResult(HTTPRequest* r)
 	{
-		// first find the right service
-		QList<UPnPService>::iterator i = findPortForwardingService();
-		if (i == services.end())
-			throw Error(i18n("Cannot find port forwarding service in the device's description."));
-		
-		UPnPService & s = *i;
-		QString action = "GetExternalIPAddress";
-		QString comm = SOAP::createCommand(action,s.servicetype);
-		sendSoapQuery(comm,s.servicetype + "#" + action,s.controlurl);
+		d->active_reqs.removeAll(r);
+		r->deleteLater();
 	}
+	
+	void UPnPRouter::getExternalIPResult(HTTPRequest* r)
+	{
+		d->active_reqs.removeAll(r);
+		if (r->succeeded())
+		{
+			QDomDocument doc;
+			if (!doc.setContent(r->replyData()))
+			{
+				Out(SYS_PNP|LOG_DEBUG) << "UPnP: GetExternalIP failed: invalid reply" << endl;
+			}
+			else
+			{
+				QDomNodeList nodes = doc.elementsByTagName("NewExternalIPAddress");
+				if (nodes.count() > 0)
+				{
+					d->external_ip = nodes.item(0).firstChild().nodeValue();
+					Out(SYS_PNP|LOG_DEBUG) << "UPnP: External IP: " << d->external_ip << endl;
+				}
+				else
+					Out(SYS_PNP|LOG_DEBUG) << "UPnP: GetExternalIP failed: no IP address returned" << endl;
+			}
+		}
+		else
+		{
+			Out(SYS_PNP|LOG_DEBUG) << "UPnP: GetExternalIP failed: " << r->errorString() << endl;
+		}
+		
+		r->deleteLater();
+	}
+
+	QString UPnPRouter::getExternalIP() const
+	{
+		return d->external_ip;
+	}
+
+	
+#if 0
 	
 	void UPnPRouter::isPortForwarded(const net::Port & port)
 	{
@@ -395,12 +413,6 @@ namespace bt
 		if (!at_exit)
 		{
 			// Only listen for results when we are not exiting
-			connect(r,SIGNAL(replyError(HTTPRequest* ,const QString& )),
-					parent,SLOT(onReplyError(HTTPRequest* ,const QString& )));
-			connect(r,SIGNAL(replyOK(HTTPRequest* ,const QString& )),
-					parent,SLOT(onReplyOK(HTTPRequest* ,const QString& )));
-			connect(r,SIGNAL(error(HTTPRequest*, const QString & )),
-					parent,SLOT(onError(HTTPRequest*, const QString & )));
 			active_reqs.append(r);
 		}
 		
@@ -465,6 +477,7 @@ namespace bt
 		}
 		
 		fw.pending_req = sendSoapQuery(comm,srv->servicetype + "#" + action,srv->controlurl);
+		connect(fw.pending_req,SIGNAL(result(HTTPRequest*)),parent,SLOT(forwardResult(HTTPRequest*)));
 		fwds.append(fw);
 	}
 	
@@ -493,6 +506,23 @@ namespace bt
 		
 		if (waitjob)
 			waitjob->addExitOperation(r);
+		else
+			connect(r,SIGNAL(result(HTTPRequest*)),parent,SLOT(undoForwardResult(HTTPRequest*)));
+	}
+	
+	void UPnPRouter::UPnPRouterPrivate::getExternalIP()
+	{
+		foreach (const UPnPService & s,services)
+		{
+			if (s.servicetype.contains("WANIPConnection") || s.servicetype.contains("WANPPPConnection"))
+			{
+				QString action = "GetExternalIPAddress";
+				QString comm = SOAP::createCommand(action,s.servicetype);
+				HTTPRequest* r = sendSoapQuery(comm,s.servicetype + "#" + action,s.controlurl);
+				connect(r,SIGNAL(result(HTTPRequest*)),parent,SLOT(getExternalIPResult(HTTPRequest*)));
+				break;
+			}
+		}
 	}
 	
 	void UPnPRouter::UPnPRouterPrivate::httpRequestDone(HTTPRequest* r,bool erase_fwd)

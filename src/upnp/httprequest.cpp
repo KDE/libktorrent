@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include <QTimer>
 #include <QHostAddress>
+#include <QHttpResponseHeader>
 #include <QStringList>
 #include <klocale.h>
 #include <util/log.h>
@@ -26,11 +27,12 @@
 
 
 
+
 namespace bt
 {
 
 	HTTPRequest::HTTPRequest(const QString & hdr,const QString & payload,const QString & host,Uint16 port,bool verbose) 
-		: hdr(hdr),payload(payload),verbose(verbose),host(host),port(port),finished(false)
+		: hdr(hdr),payload(payload),verbose(verbose),host(host),port(port),finished(false),success(false)
 	{
 		sock = new QTcpSocket(this);
 		connect(sock,SIGNAL(readyRead()),this,SLOT(onReadyRead()));
@@ -46,6 +48,9 @@ namespace bt
 	
 	void HTTPRequest::start()
 	{
+		success = false;
+		finished = false;
+		reply.clear();
 		sock->connectToHost(host,port);
 		QTimer::singleShot(30000,this,SLOT(onTimeout()));
 	}
@@ -87,43 +92,54 @@ namespace bt
 		if (ba == 0)
 		{
 			if (!finished)
-				error(this,i18n("Connection closed unexpectedly."));
+			{
+				error = i18n("Connection closed unexpectedly");
+				success = false;
+				finished = true;
+				result(this);
+				operationFinished(this);
+			}
 			sock->close();
 			return;
 		}
-			
-		QString data = QString::fromAscii(sock->read(ba));
-		QStringList sl = data.split("\r\n");	
 		
-		if (verbose)
+		reply.append(sock->read(ba));
+		int eoh = reply.indexOf("\r\n\r\n");
+		if (eoh != -1)
 		{
-			Out(SYS_PNP|LOG_DEBUG) << "Got reply : " << endl;
-			foreach (const QString &line,sl)
-				Out(SYS_PNP|LOG_DEBUG) << line << endl;
-		}
-		
-		if (sl.first().contains("HTTP") && sl.first().contains("200"))
-		{
-			// emit reply OK
-			replyOK(this,sl.last());
+			reply_header = QHttpResponseHeader(QString::fromAscii(reply.mid(0,eoh + 4)));
+			if (reply_header.contentLength() > 0 && reply.size() < eoh + 4 + reply_header.contentLength())
+			{
+				// Haven't got full content yet, so return and wait for more
+				return;
+			}
+			else
+			{
+				reply = reply.mid(eoh + 4);
+				success = reply_header.statusCode() == 200;
+				if (!success)
+					error = reply_header.reasonPhrase();
+				finished = true;
+				result(this);
+				operationFinished(this);
+			}
 		}
 		else
-		{
-			// emit reply error
-			replyError(this,sl.last());
-		}
-		finished = true;
-		operationFinished(this);
+			return;
 	}
 	
 	void HTTPRequest::onError(QAbstractSocket::SocketError err)
 	{
+		Q_UNUSED(err);
 		if (finished)
 			return;
 		
 		Out(SYS_PNP|LOG_DEBUG) << "HTTPRequest error : " << sock->errorString() << endl;
-		error(this,sock->errorString());
+		success = false;
+		finished = true;
 		sock->close();
+		error = sock->errorString();
+		result(this);
 		operationFinished(this);
 	}
 	
@@ -133,8 +149,11 @@ namespace bt
 			return;
 
 		Out(SYS_PNP|LOG_DEBUG) << "HTTPRequest timeout" << endl;
-		error(this,i18n("Timeout occurred"));
+		success = false;
+		finished = true;
 		sock->close();
+		error = i18n("Operation timed out");
+		result(this);
 		operationFinished(this);
 	}
 

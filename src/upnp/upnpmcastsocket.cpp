@@ -63,7 +63,7 @@ namespace bt
 				Out(SYS_PNP|LOG_IMPORTANT) << "Cannot bind to UDP port 1900 : " << errorString() << endl;
 			else
 				break;
-		}	
+		}
 		
 		d->joinUPnPMCastGroup(socketDescriptor());
 	}
