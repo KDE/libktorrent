@@ -39,6 +39,7 @@ namespace bt
 		Uint32 lastChunkSize();
 		qint64 readData(char* data, qint64 maxlen);
 		qint64 readCurrentChunk(char* data, qint64 maxlen);
+		bool seek(qint64 pos);
 		
 	public:
 		TorrentInterface* tc;
@@ -120,13 +121,8 @@ namespace bt
 
 	bool TorrentFileStream::seek(qint64 pos)
 	{
-		if (pos < (qint64)d->current_limit)
-		{
-			d->current_byte_offset = pos;
-			return true;
-		}
-		
-		return false;
+		d->update();
+		return d->seek(pos);
 	}
 
 	bool TorrentFileStream::atEnd() const
@@ -148,6 +144,18 @@ namespace bt
 		return d->current_limit - d->current_byte_offset;
 	}
 	
+	QString TorrentFileStream::path() const
+	{
+		if (d->tc->getStats().multi_file_torrent)
+		{
+			return d->tc->getTorrentFile(d->file_index).getPathOnDisk();
+		}
+		else
+		{
+			return d->tc->getStats().output_path;
+		}
+	}
+	
 	//////////////////////////////////////////////////
 	TorrentFileStream::Private::Private(TorrentInterface* tc, ChunkManager* cman, TorrentFileStream* p) 
 		: tc(tc),file_index(0),cman(cman),p(p),
@@ -166,6 +174,7 @@ namespace bt
 		current_chunk_offset(0)
 	{
 		current_chunk = firstChunk();
+		current_chunk_offset = firstChunkOffset();
 	}
 	
 	void TorrentFileStream::Private::reset()
@@ -173,13 +182,16 @@ namespace bt
 		current_byte_offset = 0;
 		current_limit = 0;
 		current_chunk = firstChunk();
-		current_chunk_offset = 0;
+		current_chunk_offset = firstChunkOffset();
 		current_chunk_data.reset();
 		cman->checkMemoryUsage();
 	}
 	
 	void TorrentFileStream::Private::update()
 	{
+		if (current_limit == p->size())
+			return;
+		
 		const BitSet & chunks = cman->getBitSet();
 		// Update the current limit
 		bt::Uint32 first = firstChunk();
@@ -254,6 +266,31 @@ namespace bt
 			return cman->getChunk(lastChunk())->getSize();
 	}
 	
+	bool TorrentFileStream::Private::seek(qint64 pos)
+	{
+		if (pos >= (qint64)current_limit || pos < 0)
+			return false;
+		
+		current_byte_offset = pos;
+		current_chunk_offset = 0;
+		current_chunk_data.reset();
+		if (tc->getStats().multi_file_torrent)
+		{
+			bt::Uint64 tor_byte_offset = firstChunk() * tc->getStats().chunk_size;
+			tor_byte_offset += firstChunkOffset() + pos;
+			current_chunk = tor_byte_offset / tc->getStats().chunk_size;
+			current_chunk_offset = tor_byte_offset % tc->getStats().chunk_size;
+		}
+		else
+		{
+			current_chunk = current_byte_offset / tc->getStats().chunk_size;
+			current_chunk_offset = current_byte_offset % tc->getStats().chunk_size;
+		}
+		
+		return true;
+	}
+
+	
 	qint64 TorrentFileStream::Private::readData(char* data, qint64 maxlen)
 	{
 		// First update so we now until how far we can go
@@ -271,28 +308,30 @@ namespace bt
 			bytes_read += ret;
 		}
 		
-		timer.update();
 		// Make sure we do not cache to much during streaming
-		if (timer.getElapsed() > 10000)
+		if (timer.getElapsedSinceUpdate() > 10000)
+		{
 			cman->checkMemoryUsage();
+			timer.update();
+		}
+		
 		return bytes_read;
 	}
 	
 	qint64 TorrentFileStream::Private::readCurrentChunk(char* data, qint64 maxlen)
 	{
+		//Out(SYS_GEN|LOG_DEBUG) << "readCurrentChunk s " << current_chunk << " " << current_chunk_offset << endl;
 		Chunk* c = cman->getChunk(current_chunk);
 		// First make sure we have the chunk
 		if (!current_chunk_data)
-		{
-			current_chunk_offset = 0;
-			current_chunk_offset = current_chunk == firstChunk() ? firstChunkOffset() : 0;
 			current_chunk_data = c->getPiece(0,c->getSize(),true);
-		}
 		
 		// Calculate how much we can read
 		qint64 allowed = c->getSize() - current_chunk_offset;
 		if (allowed > maxlen)
 			allowed = maxlen;
+		
+		//Out(SYS_GEN|LOG_DEBUG) << "readCurrentChunk r " << allowed << endl;
 		
 		// Copy data
 		memcpy(data,current_chunk_data->data() + current_chunk_offset,allowed);
@@ -307,10 +346,7 @@ namespace bt
 			current_chunk_offset = 0;
 		}
 		
+		//Out(SYS_GEN|LOG_DEBUG) << "readCurrentChunk f " << current_chunk << " " << current_chunk_offset << endl;
 		return allowed;
 	}
-
-
-
-
 }

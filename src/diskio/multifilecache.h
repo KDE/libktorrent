@@ -42,6 +42,7 @@ namespace bt
 		PtrMap<Uint32,CacheFile> files;
 		PtrMap<Uint32,DNDFile> dnd_files;
 		QString new_output_dir;
+		bool opened;
 	public:
 		MultiFileCache(Torrent& tor,const QString & tmpdir,const QString & datadir,bool custom_output_name);
 		virtual ~MultiFileCache();

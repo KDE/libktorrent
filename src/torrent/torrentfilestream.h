@@ -72,7 +72,7 @@ namespace bt
 		virtual bool isSequential() const {return false;}
 		
 		/// Get the path of the file
-		const QString & path() const;
+		QString path() const;
 		
 	protected:
 		virtual qint64 writeData(const char* data, qint64 len);

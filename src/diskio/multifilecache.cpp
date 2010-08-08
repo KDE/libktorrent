@@ -53,7 +53,7 @@ namespace bt
 
 	
 
-	MultiFileCache::MultiFileCache(Torrent& tor,const QString & tmpdir,const QString & datadir,bool custom_output_name) : Cache(tor, tmpdir,datadir)
+	MultiFileCache::MultiFileCache(Torrent& tor,const QString & tmpdir,const QString & datadir,bool custom_output_name) : Cache(tor, tmpdir,datadir),opened(false)
 	{
 		cache_dir = tmpdir + "cache" + bt::DirSeparator();
 		
@@ -144,10 +144,15 @@ namespace bt
 	{
 		clearPieceCache();
 		files.clear();
+		opened = false;
 	}
 	
 	void MultiFileCache::open()
 	{
+		// Check if the cache is not yet open
+		if (opened)
+			return;
+		
 		QString dnd_dir = tmpdir + "dnd" + bt::DirSeparator();
 		// open all files
 		for (Uint32 i = 0;i < tor.getNumFiles();i++)
@@ -193,6 +198,8 @@ namespace bt
 				throw;
 			}
 		}
+		
+		opened = true;
 	}
 
 	void MultiFileCache::changeTmpDir(const QString& ndir)
@@ -398,6 +405,8 @@ namespace bt
 	
 	PieceData* MultiFileCache::createPiece(Chunk* c,Uint32 off,Uint32 length,bool read_only)
 	{
+		open();
+		
 		PieceData* piece = 0;
 		QList<Uint32> tflist;
 		tor.calcChunkPos(c->getIndex(),tflist);
@@ -480,6 +489,8 @@ namespace bt
 
 	PieceDataPtr MultiFileCache::loadPiece(Chunk* c,Uint32 off,Uint32 length)
 	{
+		open();
+		
 		PieceDataPtr piece = findPiece(c,off,length);
 		if (piece)
 			return piece;
@@ -570,6 +581,8 @@ namespace bt
 
 	void MultiFileCache::savePiece(PieceDataPtr piece)
 	{
+		open();
+		
 		// in mapped mode unload the piece if not in use
 		if (piece->mapped())
 			return;
