@@ -111,8 +111,10 @@ namespace bt
 			if (!fptr->open(QIODevice::WriteOnly))
 			{
 				QString err = fptr->errorString();
+				std::cout << "Failed to open log file " << file.toLocal8Bit().constData() << ": " 
+						  << err.toLocal8Bit().constData() << std::endl;
 				cleanup();
-				throw Error(i18n("Cannot open log file %1 : %2",file,err));
+				return;
 			}
 
 			out = new QTextStream(fptr);
@@ -125,30 +127,31 @@ namespace bt
 		
 		void finishLine()
 		{
+			QString final = QDateTime::currentDateTime().toString() + ": " + tmp;
+			
 			// only add stuff when we are not rotating the logs
 			// this could result in the loss of some messages
 			if (!rotate_job && fptr != 0)
 			{
-				QString final = QDateTime::currentDateTime().toString() + ": " + tmp;
 				if (out)
 					*out << final << ::endl;
 				
 				fptr->flush();
 				if (to_cout)
 					std::cout << final.toLocal8Bit().constData() << std::endl;;
-				
-				if (monitors.count() > 0)
+			}
+			
+			if (monitors.count() > 0)
+			{
+				QList<LogMonitorInterface *>::iterator i = monitors.begin();
+				while (i != monitors.end())
 				{
-					QList<LogMonitorInterface *>::iterator i = monitors.begin();
-					while (i != monitors.end())
-					{
-						LogMonitorInterface* lmi = *i;
-						lmi->message(final,m_filter);
-						i++;
-					}
+					LogMonitorInterface* lmi = *i;
+					lmi->message(final,m_filter);
+					i++;
 				}
 			}
-			tmp = "";
+			tmp.clear();
 		}
 
 		void endline()
