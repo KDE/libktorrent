@@ -19,6 +19,7 @@ Changes in 1.0.3:
 - Backport PeerConnector crash fixes (245796)
 - Decrease authentication timeout to 5 seconds
 - Fix crash due to double delete in µTP code
+- Don't throw error when log file cannot be opened, prevents crash (246757)
 
 Changes in 1.0.2:
 - Fix subtle bug causing some connections to be dropped prematurely
