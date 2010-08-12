@@ -1037,7 +1037,10 @@ namespace bt
 		if (stats.running)
 		{
 			QDateTime now = QDateTime::currentDateTime();
-			stats_file->write("RUNNING_TIME_DL",QString("%1").arg(istats.running_time_dl + istats.time_started_dl.secsTo(now)));
+			if (!stats.completed)
+				stats_file->write("RUNNING_TIME_DL",QString("%1").arg(istats.running_time_dl + istats.time_started_dl.secsTo(now)));
+			else
+				stats_file->write("RUNNING_TIME_DL", QString("%1").arg(istats.running_time_dl));
 			stats_file->write("RUNNING_TIME_UL",QString("%1").arg(istats.running_time_ul + istats.time_started_ul.secsTo(now)));
 		}
 		else
