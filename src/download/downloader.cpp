@@ -799,6 +799,8 @@ namespace bt
 				{
 					// A ChunkDownload is ongoing for this chunk so kill it, we have the chunk
 					cd->cancelAll();
+					if (tmon)
+						tmon->downloadRemoved(cd);
 					current_chunks.erase(c->getIndex());
 				}
 				
