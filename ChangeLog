@@ -11,6 +11,7 @@ Changes in 1.1:
 - Fix crash when cleaning up PeerConnectors (245796)
 - Fix crash on exit when cleaning up UPnP requests
 - UPnPRouter now retrieves the external IP of the router
+- Fix bug causing error message not to show rich text (247680)
 
 Changes in 1.0.3:
 - Fix crash in HTTPAnnounceJob due to abort call (244198)

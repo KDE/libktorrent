@@ -573,9 +573,8 @@ namespace bt
 			Out(SYS_GEN|LOG_NOTICE) << "Failed to load torrent: " << err.toString() << endl;
 			delete tor;
 			tor = 0;
-			throw Error(i18n("An error occurred while loading the torrent:<br/>"
-				"<b>%1</b><br/>"
-				"The torrent is probably corrupt or is not a valid torrent file.",err.toString()));
+			throw Error(i18n("An error occurred while loading <b>%1</b>:<br/><b>%2</b>",
+				loadUrl().prettyUrl(),err.toString()));
 		}
 		
 		initInternal(qman,tmpdir,ddir);
