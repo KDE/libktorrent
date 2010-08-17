@@ -21,6 +21,7 @@
 #include <KLocalizedString>
 #include <util/log.h>
 #include <QTimer>
+#include <QSslError>
 
 namespace bt
 {
@@ -30,6 +31,7 @@ namespace bt
 		http = new QHttp(this);
 		connect(http,SIGNAL(requestFinished(int,bool)),this,SLOT(requestFinished(int,bool)));
 		connect(http,SIGNAL(readyRead(QHttpResponseHeader)),this,SLOT(readData(QHttpResponseHeader)));
+		connect(http,SIGNAL(sslErrors(QList<QSslError>)),this,SLOT(sslErrors(QList<QSslError>)));
 	}
 	
 	HTTPAnnounceJob::~HTTPAnnounceJob()
@@ -148,4 +150,16 @@ namespace bt
 			sendRequest();
 		}
 	}
+	
+	void HTTPAnnounceJob::sslErrors(const QList<QSslError>& errors)
+	{
+		KUrl u = url;
+		u.setQuery(QString());
+		Out(SYS_TRK|LOG_NOTICE) << "SSL errors detected when announcing to " << u.prettyUrl() << ":" << endl;
+		foreach (const QSslError & err,errors)
+			Out(SYS_TRK|LOG_NOTICE) << err.errorString() << endl;
+		Out(SYS_TRK|LOG_NOTICE) << "Errors will be ignored " << endl;
+		http->ignoreSslErrors();
+	}
+
 }

@@ -3,6 +3,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-ktorrent.h.cmake ${CMAKE_BINAR
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${QCA2_INCLUDE_DIR})
+include_directories(${OPENSSL_INCLUDE_DIR})
 remove_definitions(-DQT_NO_HTTP)
 
 set(libktorrent_SRC 
@@ -208,22 +209,13 @@ endif(WIN32)
 # kde4_add_kcfg_files(libktorrent_SRC settings.kcfgc)
 kde4_add_library(ktorrent SHARED ${libktorrent_SRC})
 
-target_link_libraries(ktorrent ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${QCA2_LIBRARIES} ${KDE4_SOLID_LIBS})
+target_link_libraries(ktorrent ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${KDE4_SOLID_LIBS} crypto)
 if(WIN32)
 target_link_libraries(ktorrent ws2_32)
 endif(WIN32)
 set_target_properties(ktorrent PROPERTIES VERSION 3.0.0 SOVERSION 3)
 install(TARGETS ktorrent  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
-
-set (mse_HDR 
-	./mse/encryptedserverauthenticate.h
-	./mse/functions.h
-	./mse/rc4encryptor.h
-	./mse/encryptedauthenticate.h
-	./mse/bigint.h
-	./mse/streamsocket.h
-)
 
 set (interfaces_HDR
 	./interfaces/peerinterface.h
@@ -337,7 +329,6 @@ set (migrate_HDR
 install(FILES ${tracker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/tracker COMPONENT Devel)
 install(FILES ${diskio_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/diskio COMPONENT Devel)
 install(FILES ${bcodec_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/bcodec COMPONENT Devel)
-install(FILES ${mse_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/mse COMPONENT Devel)
 install(FILES ${interfaces_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/interfaces COMPONENT Devel)
 install(FILES ${datachecker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/datachecker COMPONENT Devel)
 install(FILES ${dht_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/dht COMPONENT Devel)
@@ -348,6 +339,7 @@ install(FILES ${ktorrent_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent COM
 add_subdirectory(torrent)
 add_subdirectory(peer)
 add_subdirectory(net)
+add_subdirectory(mse)
 add_subdirectory(magnet)
 add_subdirectory(util)
 add_subdirectory(utp)

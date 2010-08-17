@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
+ *   Copyright (C) 2010 by Joris Guisson                                   *
  *   joris.guisson@gmail.com                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,56 +15,64 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include "sha1hashgen.h"
-#include <stdio.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include "functions.h"
+
+#include <QtTest>
+#include <QObject>
+#include <dht/key.h>
+#include <time.h>
+#include <mse/rc4encryptor.h>
 
 
-
-namespace bt
+class RC4EncryptorTest : public QObject
 {
+	Q_OBJECT
+public:
 	
-
-	SHA1HashGen::SHA1HashGen()
+	bt::SHA1Hash randomKey()
 	{
-		memset(result,9,20);
-	}
-
-
-	SHA1HashGen::~SHA1HashGen()
-	{
-		
-	}
-
-	SHA1Hash SHA1HashGen::generate(const Uint8* data,Uint32 len)
-	{
-		SHA1(data,len,result);
-		return SHA1Hash(result);
+		bt::Uint8 hash[20];
+		for (int i = 0;i < 20;i++)
+		{
+			hash[i] = (Uint8)rand() % 0xFF;
+		}
+		return bt::SHA1Hash(hash);
 	}
 	
-	void SHA1HashGen::start()
+private slots:
+	void initTestCase()
 	{
-		SHA1_Init(&ctx);
+		qsrand(time(0));
 	}
-		
-	void SHA1HashGen::update(const Uint8* data,Uint32 len)
+	
+	void cleanupTestCase()
 	{
-		SHA1_Update(&ctx,data,len);
 	}
-		
-	 
-	void SHA1HashGen::end()
+	
+	void testRC4()
 	{
-		SHA1_Final(result,&ctx);
-	}
+		bt::SHA1Hash dkey = randomKey();
+		bt::SHA1Hash ekey = randomKey();
+		mse::RC4Encryptor a(dkey,ekey);
+		mse::RC4Encryptor b(ekey,dkey);
 		
+		bt::Uint8 tmp[1024];
+		for (int i = 0;i < 1000;i++)
+		{
+			memset(tmp,0,1024);
+			bt::Uint8 data[1024];
+			for (int j = 0;j < 1024;j++)
+				data[j] = qrand() % 0xFF;
+			
+			memcpy(tmp,data,1024);
+			a.encryptReplace(data,1024);
+			b.decrypt(data,1024);
+			QVERIFY(memcmp(tmp,data,1024) == 0);
+		}
+	}
+};
 
-	SHA1Hash SHA1HashGen::get() const
-	{
-		return SHA1Hash(result);
-	}
-}
+QTEST_MAIN(RC4EncryptorTest)
+
+#include "rc4encryptortest.moc"

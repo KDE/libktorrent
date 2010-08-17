@@ -12,6 +12,7 @@ Changes in 1.1:
 - Fix crash on exit when cleaning up UPnP requests
 - UPnPRouter now retrieves the external IP of the router
 - Fix bug causing error message not to show rich text (247680)
+- Dump QCA2 in favor of libcrypto from OpenSSL
 
 Changes in 1.0.3:
 - Fix crash in HTTPAnnounceJob due to abort call (244198)

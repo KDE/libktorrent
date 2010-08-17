@@ -57,6 +57,7 @@ namespace bt
 		void requestFinished(int id,bool err);
 		void readData(const QHttpResponseHeader & hdr);
 		void sendRequest();
+		void sslErrors(const QList<QSslError> & errors);
 		
 	private:
 		void handleRedirect(const QHttpResponseHeader & hdr);

@@ -20,28 +20,16 @@
 #ifndef MSERC4ENCRYPTOR_H
 #define MSERC4ENCRYPTOR_H
 
+#include <openssl/rc4.h>
 #include <util/sha1hash.h>
 #include <util/constants.h>
+#include <ktorrent_export.h>
 
 using bt::Uint8;
 using bt::Uint32;
 
 namespace mse
 {
-	/**
-	 * Helper class to do the actual encryption / decryption
-	*/
-	class RC4
-	{
-		Uint8 i,j;
-		Uint8 s[256];
-	public:
-		RC4(const Uint8* key,Uint32 size);
-		virtual ~RC4();
-		
-		void process(const Uint8* in,Uint8* out,Uint32 size);
-		Uint8 process(Uint8 b);
-	};
 
 	/**
 	 * @author Joris Guisson <joris.guisson@gmail.com>
@@ -50,9 +38,8 @@ namespace mse
 	 * This class has a static encryption buffer, which makes it not thread safe
 	 * because the buffer is not protected by mutexes.
 	*/
-	class RC4Encryptor
+	class KTORRENT_EXPORT RC4Encryptor
 	{
-		RC4 enc,dec;
 	public:
 		RC4Encryptor(const bt::SHA1Hash & dkey,const bt::SHA1Hash & ekey);
 		virtual ~RC4Encryptor();
@@ -82,13 +69,10 @@ namespace mse
 		 * @param len The length of the data
 		 */
 		void encryptReplace(Uint8* data,Uint32 len);
-		
-		/**
-		 * Encrypts one byte.
-		 * @param b The byte to encrypt
-		 * @return The encrypted byte
-		 */
-		Uint8 encrypt(Uint8 b) {return enc.process(b);}
+
+	private:
+		RC4_KEY enc_key;
+		RC4_KEY dec_key;
 	};
 
 }

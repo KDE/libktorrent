@@ -21,59 +21,18 @@
 
 namespace mse
 {
-	static void swap(Uint8 & a,Uint8 & b)
-	{
-		Uint8 tmp = a;
-		a = b;
-		b = tmp;
-	}
+
 	
 	static Uint8 rc4_enc_buffer[bt::MAX_MSGLEN];
 	
-	RC4::RC4(const Uint8* key,Uint32 size) : i(0),j(0)
-	{
-		// initialize state
-		for (Uint32 t = 0;t < 256;t++)
-			s[t] = t;
-		
-		j = 0;
-		for (Uint32 t=0;t < 256;t++)
-		{
-			j = (j + s[t] + key[t % size]) & 0xff;
-			swap(s[t],s[j]);
-		}
-		
-		i = j = 0;
-	}
-	
-	RC4::~RC4()
-	{
-	}
-		
-	void RC4::process(const Uint8* in,Uint8* out,Uint32 size)
-	{
-		for (Uint32 k = 0;k < size;k++)
-		{
-			out[k] = process(in[k]);
-		}
-	}
-	
-	Uint8 RC4::process(Uint8 b)
-	{
-		i = (i + 1) & 0xff;
-		j = (j + s[i]) & 0xff;
-		swap(s[i],s[j]);
-		Uint8 tmp = s[ (s[i] + s[j]) & 0xff];
-		return tmp ^ b;
-	}
-	
-
 	RC4Encryptor::RC4Encryptor(const bt::SHA1Hash & dk,const bt::SHA1Hash & ek) 
-	: enc(ek.getData(),20),dec(dk.getData(),20)
 	{
+		RC4_set_key(&enc_key,20,ek.getData());
+		RC4_set_key(&dec_key,20,dk.getData());
+		
 		Uint8 tmp[1024];
-		enc.process(tmp,tmp,1024);
-		dec.process(tmp,tmp,1024);
+		RC4(&enc_key,1024,tmp,tmp);
+		RC4(&dec_key,1024,tmp,tmp);
 	}
 
 
@@ -83,18 +42,18 @@ namespace mse
 
 	void RC4Encryptor::decrypt(Uint8* data,Uint32 len)
 	{
-		dec.process(data,data,len);
+		RC4(&dec_key,len,data,data);
 	}
 
 	const Uint8* RC4Encryptor::encrypt(const Uint8* data,Uint32 len)
 	{
-		enc.process(data,rc4_enc_buffer,len);
+		RC4(&enc_key,len,data,rc4_enc_buffer);
 		return rc4_enc_buffer;
 	}
 	
 	void RC4Encryptor::encryptReplace(Uint8* data,Uint32 len)
 	{
-		enc.process(data,data,len);
+		RC4(&enc_key,len,data,data);
 	}
 	
 }
