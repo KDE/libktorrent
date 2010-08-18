@@ -169,6 +169,20 @@ namespace bt
 		return true;
 	}
 	
+	void ChunkDownload::release(PieceDownloader* pd)
+	{
+		if (!pdown.contains(pd))
+			return;
+		
+		pd->release();
+		sendCancels(pd);
+		disconnect(pd,SIGNAL(timedout(const bt::Request& )),this,SLOT(onTimeout(const bt::Request& )));
+		disconnect(pd,SIGNAL(rejected( const bt::Request& )),this,SLOT(onRejected( const bt::Request& )));
+		dstatus.erase(pd);
+		pdown.removeAll(pd);
+	}
+
+	
 	void ChunkDownload::notDownloaded(const Request & r,bool reject)
 	{
 		// find the peer 

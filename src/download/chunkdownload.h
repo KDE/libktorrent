@@ -140,6 +140,12 @@ namespace bt
 		 * @return true if the peer was asigned, false if not
 		 */
 		bool assign(PieceDownloader* pd);
+		
+		/**
+		 * Release a downloader
+		 * @param pd The downloader
+		 */
+		void release(PieceDownloader* pd);
 
 		/**
 		 * A PieceDownloader has been killed. We need to remove it.
