@@ -13,6 +13,7 @@ Changes in 1.1:
 - UPnPRouter now retrieves the external IP of the router
 - Fix bug causing error message not to show rich text (247680)
 - Dump QCA2 in favor of libcrypto from OpenSSL
+- Use smart pointers for mse::StreamSocket (246693)
 
 Changes in 1.0.3:
 - Fix crash in HTTPAnnounceJob due to abort call (244198)

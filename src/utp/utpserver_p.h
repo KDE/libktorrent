@@ -114,7 +114,7 @@ namespace utp
 		bt::Uint8 tos;
 		QList<OutputQueueEntry> output_queue;
 		QBasicTimer timer;
-		QList<mse::StreamSocket*> pending;
+		QList<mse::StreamSocket::Ptr> pending;
 		QMutex pending_mutex;
 		MainThreadCall* mtc;
 	};

@@ -31,7 +31,7 @@ using namespace bt;
 
 namespace mse
 {
-	EncryptedServerAuthenticate::EncryptedServerAuthenticate(mse::StreamSocket* sock): bt::ServerAuthenticate(sock)
+	EncryptedServerAuthenticate::EncryptedServerAuthenticate(mse::StreamSocket::Ptr sock): bt::ServerAuthenticate(sock)
 	{
 		mse::GeneratePublicPrivateKey(xb,yb);
 		state = WAITING_FOR_YA;

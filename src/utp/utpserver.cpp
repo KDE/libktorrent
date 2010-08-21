@@ -83,7 +83,6 @@ namespace utp
 		if (running)
 			stop();
 		
-		qDeleteAll(pending);
 		pending.clear();
 		delete mtc;
 	}
@@ -327,7 +326,7 @@ namespace utp
 	{
 		// This should be called from the main thread
 		QMutexLocker lock(&d->pending_mutex);
-		foreach (mse::StreamSocket* s,d->pending)
+		foreach (mse::StreamSocket::Ptr s,d->pending)
 		{
 			newConnection(s);
 		}
@@ -584,7 +583,7 @@ namespace utp
 		if (d->create_sockets)
 		{
 			UTPSocket* utps = new UTPSocket(conn);
-			mse::StreamSocket* ss = new mse::StreamSocket(utps);
+			mse::StreamSocket::Ptr ss(new mse::StreamSocket(utps));
 			{
 				QMutexLocker lock(&d->pending_mutex);
 				d->pending.append(ss);

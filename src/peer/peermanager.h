@@ -186,7 +186,7 @@ namespace bt
 		 * @param peer_id The Peer's ID
 		 * @param support What extensions the peer supports
 		 */
-		void newConnection(mse::StreamSocket* sock,const PeerID & peer_id,Uint32 support);
+		void newConnection(mse::StreamSocket::Ptr sock,const PeerID & peer_id,Uint32 support);
 
 		/**
 		 * Add a potential peer
@@ -285,7 +285,7 @@ namespace bt
 	private:
 		void updateAvailableChunks();
 		bool killBadPeer();
-		void createPeer(mse::StreamSocket* sock,const PeerID & peer_id,Uint32 support,bool local);
+		void createPeer(mse::StreamSocket::Ptr sock,const PeerID & peer_id,Uint32 support,bool local);
 		bool connectedTo(const QString & ip,Uint16 port) const;
 		virtual void allowChunk(PeerInterface* peer, Uint32 chunk);
 

@@ -62,14 +62,6 @@ namespace bt
 					 PeerConnector* pcon);
 		
 		virtual ~Authenticate();
-
-		/**
-		 * Get a pointer to the socket, and set it internally
-		 * to NULL. After a succesfull authentication, this is used
-		 * to transfer ownership to a Peer object.
-		 * @return The socket
-		 */
-		mse::StreamSocket* takeSocket();
 		
 		const PeerID & getPeerID() const {return peer_id;}
 

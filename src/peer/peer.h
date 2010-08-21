@@ -26,6 +26,7 @@
 #include <interfaces/peerinterface.h>
 #include <util/bitset.h>
 #include <util/ptrmap.h>
+#include <mse/streamsocket.h>
 #include <ktorrent_export.h>
 #include "peerid.h"
 #include "peerprotocolextension.h"
@@ -33,12 +34,6 @@
 namespace net
 {
 	class Address;
-}
-
-
-namespace mse
-{
-	class StreamSocket;
 }
 
 namespace bt
@@ -76,7 +71,7 @@ namespace bt
 		 * @param support Which extensions the peer supports
 		 * @param local Whether or not it is a local peer
 		 */
-		Peer(mse::StreamSocket* sock,
+		Peer(mse::StreamSocket::Ptr sock,
 			 const PeerID & peer_id,
 			 Uint32 num_chunks,
 			 Uint32 chunk_size,
@@ -231,7 +226,7 @@ namespace bt
 		void metadataDownloaded(const QByteArray & data);
 
 	private:
-		mse::StreamSocket* sock;
+		mse::StreamSocket::Ptr sock;
 		
 		Timer stalled_timer;
 		

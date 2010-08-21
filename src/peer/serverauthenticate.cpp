@@ -34,7 +34,7 @@ namespace bt
 	bool ServerAuthenticate::s_firewalled = true;
 
 
-	ServerAuthenticate::ServerAuthenticate(mse::StreamSocket* sock) : AuthenticateBase(sock)
+	ServerAuthenticate::ServerAuthenticate(mse::StreamSocket::Ptr sock) : AuthenticateBase(sock)
 	{
 	}
 
@@ -52,10 +52,7 @@ namespace bt
 		setFirewalled(false);
 		
 		if (!succes)
-		{
-			sock->deleteLater();
-			sock = 0;
-		}
+			sock.clear();
 		
 		timer.stop();
 	}
@@ -110,7 +107,6 @@ namespace bt
 			onFinish(true);
 			// hand over connection
 			pman->newConnection(sock,peer_id,supportedExtensions());
-			sock = 0;
 		}
 		else
 		{

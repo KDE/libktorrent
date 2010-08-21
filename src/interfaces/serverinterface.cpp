@@ -122,19 +122,17 @@ namespace bt
 	}
 	
 	
-	void ServerInterface::newConnection(mse::StreamSocket* s)
+	void ServerInterface::newConnection(mse::StreamSocket::Ptr s)
 	{
 		if (peer_managers.count() == 0)
 		{
 			s->close();
-			delete s;
 		}
 		else
 		{
 			if (!AccessManager::instance().allowed(s->getRemoteAddress()))
 			{
 				Out(SYS_CON|LOG_DEBUG) << "A client with a blocked IP address ("<< s->getRemoteIPAddress() << ") tried to connect !" << endl;
-				delete s;
 				return;
 			}
 			

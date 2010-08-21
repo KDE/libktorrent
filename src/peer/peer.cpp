@@ -52,7 +52,7 @@ namespace bt
 	bool Peer::resolve_hostname = true;
 	
 	
-	Peer::Peer(mse::StreamSocket* sock,const PeerID & peer_id,
+	Peer::Peer(mse::StreamSocket::Ptr sock,const PeerID & peer_id,
 			   Uint32 num_chunks,Uint32 chunk_size,Uint32 support,bool local,PeerManager* pman)
 	: PeerInterface(peer_id,num_chunks),sock(sock),pman(pman)
 	{
@@ -105,7 +105,6 @@ namespace bt
 	{
 		delete uploader;
 		delete downloader;
-		delete sock;
 		delete pwriter;
 		delete preader;
 	}

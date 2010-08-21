@@ -35,9 +35,9 @@ namespace bt
 		finished = succes = false;
 		net::Address addr(ip,port);
 		if (proto == TCP)
-			sock = new mse::StreamSocket(addr.ipVersion());
+			sock = mse::StreamSocket::Ptr(new mse::StreamSocket(addr.ipVersion()));
 		else
-			sock = new mse::StreamSocket(new utp::UTPSocket());
+			sock = mse::StreamSocket::Ptr(new mse::StreamSocket(new utp::UTPSocket()));
 		
 		host = ip;
 		this->port = port;
@@ -158,10 +158,8 @@ namespace bt
 		this->succes = succes;
 		
 		if (!succes)
-		{
-			sock->deleteLater();
-			sock = 0;
-		}
+			sock.clear();
+		
 		timer.stop();
 		if (pcon)
 			pcon->authenticationFinished(this,succes);
@@ -202,14 +200,6 @@ namespace bt
 			// only finish when the handshake was fully received
 			onFinish(true);
 		}
-	}
-
-
-	mse::StreamSocket* Authenticate::takeSocket()
-	{
-		mse::StreamSocket* s = sock;
-		sock = 0;
-		return s;
 	}
 	
 	void Authenticate::stop()

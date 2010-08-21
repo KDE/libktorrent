@@ -344,5 +344,3 @@ namespace mse
 		sock->updateSpeeds(bt::CurrentTime());
 	}
 }
-
-#include "streamsocket.moc"

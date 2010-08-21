@@ -83,7 +83,7 @@ namespace bt
 			}
 			else
 			{
-				mse::StreamSocket* socket = ab->getSocket();
+				mse::StreamSocket::Ptr socket = ab->getSocket();
 				if (socket)
 				{
 					net::SocketDevice* dev = socket->socketDevice();
@@ -117,7 +117,7 @@ namespace bt
 			}
 			else
 			{
-				mse::StreamSocket* socket = ab->getSocket();
+				mse::StreamSocket::Ptr socket = ab->getSocket();
 				if (socket)
 				{
 					net::SocketDevice* dev = socket->socketDevice();

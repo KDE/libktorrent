@@ -28,9 +28,18 @@
 namespace bt
 {
 	
-	
+	AuthenticateBase::AuthenticateBase() : finished(false),local(false)
+	{
+		connect(&timer,SIGNAL(timeout()),this,SLOT(onTimeout()));
+		timer.setSingleShot(true);
+		timer.start(5000);
+		memset(handshake,0x00,68);
+		bytes_of_handshake_received = 0;
+		ext_support = 0;
+	}
 
-	AuthenticateBase::AuthenticateBase(mse::StreamSocket*  s) : sock(s),finished(false),local(false)
+
+	AuthenticateBase::AuthenticateBase(mse::StreamSocket::Ptr  s) : sock(s),finished(false),local(false)
 	{
 		connect(&timer,SIGNAL(timeout()),this,SLOT(onTimeout()));
 		timer.setSingleShot(true);
@@ -43,8 +52,6 @@ namespace bt
 
 	AuthenticateBase::~AuthenticateBase()
 	{
-		if (sock)
-			sock->deleteLater();
 	}
 
 	void AuthenticateBase::sendHandshake(const SHA1Hash & info_hash,const PeerID & our_peer_id)

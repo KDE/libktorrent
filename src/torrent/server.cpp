@@ -60,7 +60,8 @@ namespace bt
 		
 		virtual void newConnection(int fd,const net::Address & addr)
 		{
-			p->newConnection(new mse::StreamSocket(fd,addr.ipVersion()));
+			mse::StreamSocket::Ptr s(new mse::StreamSocket(fd,addr.ipVersion()));
+			p->newConnection(s);
 		}
 		
 		void add(const QString & ip,bt::Uint16 port)

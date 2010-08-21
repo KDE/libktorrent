@@ -43,7 +43,7 @@ namespace net
 	static Address socks_server_addr_v6;
 	static bool socks_server_addr_resolved = false;
 
-	Socks::Socks(mse::StreamSocket* sock,const Address & dest) : sock(sock),dest(dest),state(IDLE),internal_state(NONE)
+	Socks::Socks(mse::StreamSocket::Ptr sock,const Address & dest) : sock(sock),dest(dest),state(IDLE),internal_state(NONE)
 	{
 		version = socks_version; // copy version in case it changes
 	}

@@ -311,7 +311,7 @@ namespace bt
 	}
 	
 
-	void PeerManager::newConnection(mse::StreamSocket* sock,const PeerID & peer_id,Uint32 support)
+	void PeerManager::newConnection(mse::StreamSocket::Ptr sock,const PeerID & peer_id,Uint32 support)
 	{
 		Uint32 total = peer_list.count() + num_pending;
 		bool local_not_ok = (max_connections > 0 && total >= max_connections);
@@ -323,7 +323,6 @@ namespace bt
 			if (!killBadPeer())
 			{
 				// we failed to find a bad peer, so just delete this one
-				delete sock;
 				return;
 			}
 		}
@@ -345,13 +344,13 @@ namespace bt
 		
 		num_pending--;
 		if (ok && !connectedTo(auth->getPeerID()))
-			createPeer(auth->takeSocket(),auth->getPeerID(),auth->supportedExtensions(),auth->isLocal());
+			createPeer(auth->getSocket(),auth->getPeerID(),auth->supportedExtensions(),auth->isLocal());
 		
 		connectors.remove(pcon);
 		pcon->deleteLater();
 	}
 	
-	void PeerManager::createPeer(mse::StreamSocket* sock,const PeerID & peer_id,Uint32 support,bool local)
+	void PeerManager::createPeer(mse::StreamSocket::Ptr sock,const PeerID & peer_id,Uint32 support,bool local)
 	{
 		Peer* peer = new Peer(sock,peer_id,tor.getNumChunks(),tor.getChunkSize(),support,local,this);
 		peer_list.append(peer);

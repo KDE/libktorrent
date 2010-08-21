@@ -25,11 +25,8 @@
 #include <QStringList>
 #include <ktorrent_export.h>
 #include <util/constants.h>
+#include <mse/streamsocket.h>
 
-namespace mse
-{
-	class StreamSocket;
-}
 
 namespace bt
 {
@@ -114,7 +111,7 @@ namespace bt
 		static TransportProtocol primaryTransportProtocol() {return primary_transport_protocol;}
 		
 	protected:
-		void newConnection(mse::StreamSocket* sock);
+		void newConnection(mse::StreamSocket::Ptr sock);
 		
 	protected:
 		static Uint16 port;

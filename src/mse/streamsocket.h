@@ -20,7 +20,6 @@
 #ifndef MSESTREAMSOCKET_H
 #define MSESTREAMSOCKET_H
 
-#include <qobject.h>
 #include <util/constants.h>
 #include <net/bufferedsocket.h>
 #include <ktorrent_export.h>
@@ -51,9 +50,8 @@ namespace mse
 	 * not be used anymore, a SocketReader and SocketWriter should be provided,
 	 * so that reading and writing is controlled from the monitor thread.
 	*/
-	class KTORRENT_EXPORT StreamSocket : public QObject,public net::SocketReader,public net::SocketWriter
+	class KTORRENT_EXPORT StreamSocket : public net::SocketReader,public net::SocketWriter
 	{
-		Q_OBJECT
 	public:
 		StreamSocket(int ip_version);
 		StreamSocket(int fd,int ip_version);
@@ -173,6 +171,9 @@ namespace mse
 		 * @param addr The address
 		 */
 		void setRemoteAddress(const net::Address & addr);
+		
+		typedef QSharedPointer<StreamSocket> Ptr;
+		
 	private:
 		virtual void onDataReady(Uint8* buf,Uint32 size);
 		virtual Uint32 onReadyToWrite(Uint8* data,Uint32 max_to_write);

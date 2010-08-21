@@ -24,11 +24,7 @@
 #include <k3resolver.h>
 #include <net/address.h>
 #include <ktorrent_export.h>
-
-namespace mse
-{
-	class StreamSocket;
-}
+#include <mse/streamsocket.h>
 
 namespace net 
 {
@@ -71,7 +67,7 @@ namespace net
 			USERNAME_AND_PASSWORD_SENT,
 			CONNECT_REQUEST_SENT
 		};
-		Socks(mse::StreamSocket* sock,const Address & dest);
+		Socks(mse::StreamSocket::Ptr sock,const Address & dest);
 		virtual ~Socks();
 		
 		/// Setup a socks connection, return the current state
@@ -116,7 +112,7 @@ namespace net
 		State handleConnectReply();
 			
 	private:
-		mse::StreamSocket* sock;
+		mse::StreamSocket::Ptr sock;
 		Address dest;
 		State state;
 		SetupState internal_state;

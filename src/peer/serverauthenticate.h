@@ -36,7 +36,7 @@ namespace bt
 	{
 		Q_OBJECT
 	public:
-		ServerAuthenticate(mse::StreamSocket* sock);
+		ServerAuthenticate(mse::StreamSocket::Ptr sock);
 		virtual ~ServerAuthenticate();
 
 		static bool isFirewalled();
