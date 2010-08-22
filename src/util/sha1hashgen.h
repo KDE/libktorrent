@@ -21,7 +21,7 @@
 #define BTSHA1HASHGEN_H
 
 #include <ktorrent_export.h>
-#include <openssl/sha.h>
+#include <gcrypt.h>
 #include "constants.h"
 #include "sha1hash.h"
 
@@ -77,7 +77,7 @@ namespace bt
 		SHA1Hash get() const;
 		
 	private:
-		SHA_CTX ctx;
+		gcry_md_hd_t handle;
 		Uint8 result[20];
 	};
 

@@ -119,10 +119,11 @@ namespace bt
 			*guard = false;
 		}
 	};
-
-#ifdef Q_WS_WIN
-	KTORRENT_EXPORT bool InitWindowsSocketsAPI();
-#endif
+	
+	/**
+		Global initialization function, should be called, in the applications main function.
+	 */
+	KTORRENT_EXPORT bool InitLibKTorrent();
 }
 
 #endif

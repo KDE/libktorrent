@@ -32,34 +32,36 @@ namespace bt
 	SHA1HashGen::SHA1HashGen()
 	{
 		memset(result,9,20);
+		gcry_md_open(&handle,GCRY_MD_SHA1,0);
 	}
 
 
 	SHA1HashGen::~SHA1HashGen()
 	{
-		
+		gcry_md_close(handle);
 	}
 
 	SHA1Hash SHA1HashGen::generate(const Uint8* data,Uint32 len)
 	{
-		SHA1(data,len,result);
+		gcry_md_write(handle,data,len);
+		bt::Uint8* result = gcry_md_read(handle,GCRY_MD_SHA1);
 		return SHA1Hash(result);
 	}
 	
 	void SHA1HashGen::start()
 	{
-		SHA1_Init(&ctx);
+		gcry_md_reset(handle);
 	}
 		
 	void SHA1HashGen::update(const Uint8* data,Uint32 len)
 	{
-		SHA1_Update(&ctx,data,len);
+		gcry_md_write(handle,data,len);
 	}
 		
 	 
 	void SHA1HashGen::end()
 	{
-		SHA1_Final(result,&ctx);
+		memcpy(result,gcry_md_read(handle,GCRY_MD_SHA1),20);
 	}
 		
 

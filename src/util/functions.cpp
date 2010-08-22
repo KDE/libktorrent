@@ -27,7 +27,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
-
+#include <gcrypt.h>
 #include <qdatetime.h>
 #include <QNetworkInterface>
 #include <kio/netaccess.h>
@@ -320,7 +320,7 @@ namespace bt
 	}
 
 #ifdef Q_WS_WIN
-	bool InitWindowsSocketsAPI()
+	static bool InitWindowsSocketsAPI()
 	{
 		static bool initialized = false;
 		if (initialized)
@@ -336,4 +336,39 @@ namespace bt
 		return true;
 	}
 #endif
+
+	static bool InitGCrypt()
+	{
+		static bool initialized = false;
+		if (initialized)
+			return true;
+		
+		// If already initialized, don't do anything
+		if (gcry_control(GCRYCTL_INITIALIZATION_FINISHED_P))
+		{
+			initialized = true;
+			return true;
+		}
+		
+		if (!gcry_check_version(GCRYPT_VERSION))
+		{
+			Out(SYS_GEN|LOG_NOTICE) << "Failed to initialize libgcrypt" << endl;
+			return false;
+		}
+		/* Disable secure memory. */
+		gcry_control (GCRYCTL_DISABLE_SECMEM, 0);
+		gcry_control (GCRYCTL_INITIALIZATION_FINISHED, 0);
+		initialized = true;
+		return true;
+	}
+	
+	bool InitLibKTorrent()
+	{
+		bool ret = InitGCrypt();
+#ifdef Q_WS_WIN
+		ret = InitWindowsSocketsAPI() && ret;
+#endif
+		return ret;
+	}
+
 }

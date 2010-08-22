@@ -17,43 +17,51 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
+#include <util/log.h>
+#include <util/functions.h>
 #include "rc4encryptor.h"
+
+using namespace bt;
 
 namespace mse
 {
 
-	
 	static Uint8 rc4_enc_buffer[bt::MAX_MSGLEN];
 	
 	RC4Encryptor::RC4Encryptor(const bt::SHA1Hash & dk,const bt::SHA1Hash & ek) 
 	{
-		RC4_set_key(&enc_key,20,ek.getData());
-		RC4_set_key(&dec_key,20,dk.getData());
+		gcry_cipher_open(&enc,GCRY_CIPHER_ARCFOUR,GCRY_CIPHER_MODE_STREAM,0);
+		gcry_cipher_setkey(enc,ek.getData(),20);
+		gcry_cipher_open(&dec,GCRY_CIPHER_ARCFOUR,GCRY_CIPHER_MODE_STREAM,0);
+		gcry_cipher_setkey(dec,dk.getData(),20);
 		
 		Uint8 tmp[1024];
-		RC4(&enc_key,1024,tmp,tmp);
-		RC4(&dec_key,1024,tmp,tmp);
+		gcry_cipher_encrypt(enc,tmp,1024,tmp,1024);
+		gcry_cipher_decrypt(dec,tmp,1024,tmp,1024);
 	}
 
 
 	RC4Encryptor::~RC4Encryptor()
-	{}
+	{
+		gcry_cipher_close(enc);
+		gcry_cipher_close(dec);
+	}
 
 
 	void RC4Encryptor::decrypt(Uint8* data,Uint32 len)
 	{
-		RC4(&dec_key,len,data,data);
+		gcry_cipher_decrypt(dec,data,len,data,len);
 	}
 
 	const Uint8* RC4Encryptor::encrypt(const Uint8* data,Uint32 len)
 	{
-		RC4(&enc_key,len,data,rc4_enc_buffer);
+		gcry_cipher_encrypt(enc,rc4_enc_buffer,len,data,len);
 		return rc4_enc_buffer;
 	}
 	
 	void RC4Encryptor::encryptReplace(Uint8* data,Uint32 len)
 	{
-		RC4(&enc_key,len,data,data);
+		gcry_cipher_encrypt(enc,data,len,data,len);
 	}
 	
 }

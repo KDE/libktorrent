@@ -34,9 +34,6 @@ namespace bt
 #ifdef Q_WS_WIN
 	int socketpair(int sockets[2])
 	{
-		if (!InitWindowsSocketsAPI())
-			return -1;
-		
 		sockets[0] = sockets[1] = -1;
 		
 		net::Socket sock(true,4);

@@ -1,9 +1,12 @@
 project(LIBKTORRENT)
+
 find_package(KDE4 REQUIRED)
 find_package(KDE4Internal REQUIRED)
 find_package(GMP REQUIRED)
 find_package(Boost REQUIRED)
-find_package(OpenSSL REQUIRED)
+
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules;${CMAKE_MODULE_PATH}")
+find_package(LibGcrypt REQUIRED)
 
 # set some default settings
 include(KDE4Defaults)

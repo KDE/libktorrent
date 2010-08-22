@@ -20,7 +20,7 @@
 #ifndef MSERC4ENCRYPTOR_H
 #define MSERC4ENCRYPTOR_H
 
-#include <openssl/rc4.h>
+#include <gcrypt.h>
 #include <util/sha1hash.h>
 #include <util/constants.h>
 #include <ktorrent_export.h>
@@ -71,8 +71,8 @@ namespace mse
 		void encryptReplace(Uint8* data,Uint32 len);
 
 	private:
-		RC4_KEY enc_key;
-		RC4_KEY dec_key;
+		gcry_cipher_hd_t enc;
+		gcry_cipher_hd_t dec;
 	};
 
 }

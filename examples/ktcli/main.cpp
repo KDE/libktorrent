@@ -36,6 +36,12 @@ int main(int argc, char** argv)
 	QCoreApplication app(argc,argv);
 	try
 	{
+		if (!bt::InitLibKTorrent())
+		{
+			fprintf(stderr,"Failed to initialize libktorrent\n");
+			return -1;
+		}
+		
 		KCmdLineOptions options;
 		options.add("+Url", ki18n("Torrent to open"));
 		options.add("port <port>", ki18n("Port to use"), "6881");
