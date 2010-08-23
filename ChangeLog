@@ -25,6 +25,7 @@ Changes in 1.0.3:
 - Don't throw error when log file cannot be opened, prevents crash (246757)
 - Fix bug causing wrong download running time to be saved when a torrent is running (247384)
 - Fix crash due to monitor not being notified of a chunk download being removed (246483)
+- Fix potential dangling pointer problem in µTP code
 
 Changes in 1.0.2:
 - Fix subtle bug causing some connections to be dropped prematurely
