@@ -375,6 +375,7 @@ namespace utp
 			catch (Connection::TransmissionError & err)
 			{
 				Out(SYS_UTP|LOG_NOTICE) << "UTP: " << err.location << endl;
+				connections.erase(recv_conn_id);
 				delete conn;
 			}
 		}
