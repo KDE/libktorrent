@@ -47,7 +47,7 @@ namespace mse
 	Uint32 StreamSocket::num_connecting = 0;
 	Uint32 StreamSocket::max_connecting = 50;
 
-	StreamSocket::StreamSocket(int ip_version) : sock(0),enc(0),monitored(false)
+	StreamSocket::StreamSocket(int ip_version) : sock(0),enc(0),monitored(false),rdr(0),wrt(0)
 	{
 		sock = new BufferedSocket(true,ip_version);
 		sock->socketDevice()->setBlocking(false);
@@ -55,10 +55,9 @@ namespace mse
 		reinserted_data = 0;
 		reinserted_data_size = 0;
 		reinserted_data_read = 0;
-		
 	}
 
-	StreamSocket::StreamSocket(int fd,int ip_version) : sock(0),enc(0),monitored(false)
+	StreamSocket::StreamSocket(int fd,int ip_version) : sock(0),enc(0),monitored(false),rdr(0),wrt(0)
 	{
 		sock = new BufferedSocket(fd,ip_version);
 		sock->socketDevice()->setBlocking(false);
@@ -68,7 +67,7 @@ namespace mse
 		reinserted_data_read = 0;
 	}
 
-	StreamSocket::StreamSocket(net::SocketDevice* sd)  : sock(0),enc(0),monitored(false)
+	StreamSocket::StreamSocket(net::SocketDevice* sd)  : sock(0),enc(0),monitored(false),rdr(0),wrt(0)
 	{
 		sock = new BufferedSocket(sd);
 		sd->setBlocking(false);
@@ -84,7 +83,9 @@ namespace mse
 		if (connecting() && num_connecting > 0)
 			num_connecting--;
 		
-		SocketMonitor::instance().remove(sock);
+		if (monitored)
+			stopMonitoring();
+		
 		delete [] reinserted_data;
 		delete enc;
 		delete sock;
@@ -112,6 +113,13 @@ namespace mse
 		}
 	}
 	
+	void StreamSocket::stopMonitoring()
+	{
+		rdr = 0;
+		wrt = 0;
+		SocketMonitor::instance().remove(sock);
+		monitored = false;
+	}
 		
 	Uint32 StreamSocket::sendData(const Uint8* data,Uint32 len)
 	{

@@ -130,6 +130,9 @@ namespace mse
 		/// Start monitoring of this socket by the monitor thread
 		void startMonitoring(net::SocketReader* rdr,net::SocketWriter* wrt);
 		
+		/// Stop monitoring this socket
+		void stopMonitoring();
+		
 		/// Is this socket connecting to a remote host
 		bool connecting() const;
 		

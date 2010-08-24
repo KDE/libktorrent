@@ -103,6 +103,10 @@ namespace bt
 
 	Peer::~Peer()
 	{
+		// Seeing that we are going to delete the pwriter and preader object,
+		// call stopMonitoring, in some situations it is possible that the socket
+		// is only deleted later because the authenticate object still has a reference to it
+		sock->stopMonitoring();
 		delete uploader;
 		delete downloader;
 		delete pwriter;
