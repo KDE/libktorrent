@@ -22,6 +22,7 @@
 #include "utpserver_p.h"
 #include <QEvent>
 #include <QHostAddress>
+#include <QCoreApplication>
 #include <stdlib.h>
 #ifndef Q_CC_MSVC
 #include <sys/select.h>
@@ -44,10 +45,12 @@
 
 
 
+
 using namespace bt;
 
 namespace utp
 {
+	
 	MainThreadCall::MainThreadCall(UTPServer* server) : server(server)
 	{
 	}
@@ -76,6 +79,7 @@ namespace utp
 				mtc,SLOT(handlePendingConnections()),Qt::QueuedConnection);
 	
 		poll_pipes.setAutoDelete(true);
+		start_timer_event_type = QEvent::registerEventType();
 	}
 		
 	UTPServer::Private::~Private()
@@ -575,9 +579,20 @@ namespace utp
 			pair->write_pipe->prepare(p,conn->receiveConnectionID(),pair->write_pipe);
 		}
 		
+		// Use thread safe event mechanism to start timer
 		if (!d->timer.isActive())
-			d->timer.start(10,this);
+			QCoreApplication::postEvent(this,new QEvent((QEvent::Type)d->start_timer_event_type));
 	}
+	
+	void UTPServer::customEvent(QEvent* event)
+	{
+		if (event->type() == d->start_timer_event_type)
+		{
+			d->timer.start(10,this);
+			event->accept();
+		}
+	}
+
 	
 	void UTPServer::onAccepted(Connection* conn)
 	{

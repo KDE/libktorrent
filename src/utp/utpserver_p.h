@@ -117,6 +117,7 @@ namespace utp
 		QList<mse::StreamSocket::Ptr> pending;
 		QMutex pending_mutex;
 		MainThreadCall* mtc;
+		int start_timer_event_type;
 	};
 }
 
