@@ -119,6 +119,7 @@ namespace utp
 		void wakeUpPollPipes();
 		Connection* find(quint16 conn_id);
 		virtual void timerEvent(QTimerEvent* event);
+		virtual void customEvent(QEvent* event);
 		
 	signals:
 		void handlePendingConnectionsDelayed();

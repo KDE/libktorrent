@@ -20,6 +20,7 @@
 
 #include "utpserver.h"
 #include <QEvent>
+#include <QCoreApplication>
 #include <stdlib.h>
 #ifndef Q_CC_MSVC
 #include <sys/select.h>
@@ -41,10 +42,12 @@
 
 
 
+
 using namespace bt;
 
 namespace utp
 {
+	
 	MainThreadCall::MainThreadCall(UTPServer* server) : server(server)
 	{
 	}
@@ -57,6 +60,8 @@ namespace utp
 	{
 		server->handlePendingConnections();
 	}
+
+	static int start_timer_event_type = 0;
 
 	///////////////////////////////////////////////////////////
 
@@ -77,6 +82,7 @@ namespace utp
 				mtc,SLOT(handlePendingConnections()),Qt::QueuedConnection);
 		connect(this,SIGNAL(accepted(Connection*)),this,SLOT(onAccepted(Connection*)));
 		poll_pipes.setAutoDelete(true);
+		start_timer_event_type = QEvent::registerEventType();
 	}
 
 	UTPServer::~UTPServer()
@@ -537,9 +543,20 @@ namespace utp
 			pair->write_pipe->prepare(p,conn->receiveConnectionID(),pair->write_pipe);
 		}
 		
+		// Use thread safe event mechanism to start timer
 		if (!timer.isActive())
-			timer.start(10,this);
+			QCoreApplication::postEvent(this,new QEvent((QEvent::Type)start_timer_event_type));
 	}
+	
+	void UTPServer::customEvent(QEvent* event)
+	{
+		if (event->type() == start_timer_event_type)
+		{
+			timer.start(10,this);
+			event->accept();
+		}
+	}
+
 	
 	void UTPServer::onAccepted(Connection* conn)
 	{

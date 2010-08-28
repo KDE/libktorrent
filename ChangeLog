@@ -9,6 +9,7 @@ Changes in 1.0.3:
 - Fix bug causing wrong download running time to be saved when a torrent is running (247384)
 - Fix crash due to monitor not being notified of a chunk download being removed (246483)
 - Fix potential dangling pointer problem in µTP code
+- Fix bug causing timer to be started from wrong thread in µTP code
 
 Changes in 1.0.2:
 - Fix subtle bug causing some connections to be dropped prematurely
