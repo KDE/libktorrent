@@ -30,6 +30,8 @@
 #include <util/error.h>
 #include <util/functions.h>
 #include <peer/authenticationmonitor.h>
+#include <interfaces/serverinterface.h>
+#include <peer/utpex.h>
 
 
 using namespace bt;
@@ -53,6 +55,20 @@ bool KTCLI::start()
 	quint16 port = args->getOption("port").toInt(&ok);
 	if (!ok)
 		port = qrand();
+	
+	
+
+	if (args->isSet("encryption"))
+	{
+		Out(SYS_GEN|LOG_NOTICE) << "Enabled encryption" << endl;
+		ServerInterface::enableEncryption(false);
+	}
+	
+	if (args->isSet("pex"))
+	{
+		Out(SYS_GEN|LOG_NOTICE) << "Enabled PEX" << endl;
+		UTPex::setEnabled(true);
+	}
 	
 	if (!bt::Globals::instance().initTCPServer(port))
 	{
