@@ -58,7 +58,7 @@ namespace bt
 	bool TorrentStats::overMaxRatio() const
 	{
 		if (completed && max_share_ratio > 0)
-			return shareRatio() >= max_share_ratio;
+			return shareRatio() - max_share_ratio > 0.00001;
 		else
 			return false;
 	}

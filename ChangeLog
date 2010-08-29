@@ -10,6 +10,7 @@ Changes in 1.0.3:
 - Fix crash due to monitor not being notified of a chunk download being removed (246483)
 - Fix potential dangling pointer problem in µTP code
 - Fix bug causing timer to be started from wrong thread in µTP code
+- Fix floating point inaccuracy bug causing seeding to hit the max share ratio a little bit to soon
 
 Changes in 1.0.2:
 - Fix subtle bug causing some connections to be dropped prematurely
