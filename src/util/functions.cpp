@@ -254,13 +254,13 @@ namespace bt
 	QString BytesToString(Uint64 bytes)
 	{
 		KLocale* loc = KGlobal::locale();
-		return loc->formatByteSize(bytes);
+		return loc->formatByteSize(bytes,2);
 	}
 
 	QString BytesPerSecToString(double speed)
 	{
 		KLocale* loc = KGlobal::locale();
-		return i18n("%1/s",loc->formatByteSize(speed));
+		return i18n("%1/s",loc->formatByteSize(speed,2));
 	}
 
 	QString DurationToString(Uint32 nsecs)
