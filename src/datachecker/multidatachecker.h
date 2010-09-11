@@ -21,6 +21,8 @@
 #define BTMULTIDATACHECKER_H
 
 #include <QString>
+#include <QVector>
+#include <util/file.h>
 #include "datachecker.h"
 
 namespace bt
@@ -43,6 +45,7 @@ namespace bt
 		QString cache;
 		QString dnd_dir;
 		Uint8* buf;
+		QVector<File::Ptr> files;
 	};
 
 }

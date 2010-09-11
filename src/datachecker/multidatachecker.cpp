@@ -45,6 +45,29 @@ namespace bt
 	
 	void MultiDataChecker::check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & status)
 	{
+		// First open all files
+		files.reserve(tor.getNumFiles());
+		for (Uint32 i = 0;i < tor.getNumFiles();i++)
+		{
+			const TorrentFile & tf = tor.getFile(i);
+			if (tf.doNotDownload() || !bt::Exists(tf.getPathOnDisk()))
+			{
+				files.append(File::Ptr());
+			}
+			else
+			{
+				File::Ptr fptr(new File());
+				if (!fptr->open(tf.getPathOnDisk(), "rb"))
+				{
+					QString err = i18n("Cannot open file %1 : %2", tf.getPathOnDisk(), fptr->errorString());
+					Out(SYS_GEN|LOG_DEBUG) << err << endl;
+					throw Error(err);
+				}
+				else
+					files.append(fptr);
+			}
+		}
+		
 		Uint32 num_chunks = tor.getNumChunks();
 		// initialize the bitset
 		result = BitSet(num_chunks);
@@ -68,6 +91,7 @@ namespace bt
 				cs = chunk_size;
 			if (!loadChunk(cur_chunk,cs,tor))
 			{
+				Out(SYS_GEN|LOG_DEBUG) << "Failed to load chunk " << cur_chunk << endl;
 				if (status.get(cur_chunk))
 					failed++;
 				else
@@ -96,23 +120,6 @@ namespace bt
 		}	
 	}
 	
-	static Uint32 ReadFullChunk(Uint32 chunk,Uint32 cs,
-								const TorrentFile & tf,
-								const Torrent & tor,
-								Uint8* buf)
-	{
-		File fptr;
-		if (!fptr.open(tf.getPathOnDisk(), "rb"))
-		{
-			Out(SYS_GEN|LOG_DEBUG) << QString("Warning : Cannot open %1 : %2").arg(tf.getPathOnDisk()).arg(fptr.errorString()) << endl;
-			return 0;
-		}
-		
-		Uint64 off = tf.fileOffset(chunk,tor.getChunkSize());
-		fptr.seek(File::BEGIN,off);
-		return fptr.read(buf,cs);
-	}
-	
 	bool MultiDataChecker::loadChunk(Uint32 ci,Uint32 cs,const Torrent & tor)
 	{
 		QList<Uint32> tflist;
@@ -124,8 +131,12 @@ namespace bt
 			const TorrentFile & f = tor.getFile(tflist.first());
 			if (!f.doNotDownload())
 			{
-				ReadFullChunk(ci,cs,f,tor,buf);
-				return true;
+				File::Ptr fptr = files[tflist.first()];
+				Uint64 off = f.fileOffset(ci,tor.getChunkSize());
+				if (fptr->seek(File::BEGIN,off) != off)
+					return false;
+				
+				return fptr->read(buf,cs) == cs;
 			}
 			return false;
 		}
@@ -174,20 +185,22 @@ namespace bt
 			}
 			else
 			{
-				if (!bt::Exists(f.getPathOnDisk()) || bt::FileSize(f.getPathOnDisk()) < off)
-					return false;
-				
-				File fptr;
-				if (!fptr.open(f.getPathOnDisk(), "rb"))
+				try
 				{
-					Out(SYS_GEN|LOG_DEBUG) << QString("Warning : Cannot open %1 : %2").arg(f.getPathOnDisk()).arg(fptr.errorString()) << endl;
-					return false;
+					if (!bt::Exists(f.getPathOnDisk()) || bt::FileSize(f.getPathOnDisk()) < off || !files[tflist[i]])
+						return false;
+					
+					File::Ptr fptr = files[tflist[i]];
+					if (fptr->seek(File::BEGIN,off) != off)
+						return false;
+					
+					if (fptr->read(buf+read,to_read) != to_read)
+						return false;
 				}
-				else
+				catch (bt::Error & err)
 				{
-					fptr.seek(File::BEGIN,off);
-					if (fptr.read(buf+read,to_read) != to_read)
-						Out(SYS_GEN|LOG_DEBUG) << "Warning : MultiDataChecker::load ret != to_read" << endl;
+					Out(SYS_GEN|LOG_NOTICE) << err.toString() << endl;
+					return false;
 				}
 			}
 			read += to_read;

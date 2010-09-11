@@ -21,7 +21,7 @@
 #define BTFILE_H
 
 #include <stdio.h>
-#include <qstring.h>
+#include <QSharedPointer>
 #include <ktorrent_export.h>
 #include "constants.h"
 
@@ -108,6 +108,8 @@ namespace bt
 
 		/// Get the error string.
 		QString errorString() const;
+		
+		typedef QSharedPointer<File> Ptr;
 	};
 
 }

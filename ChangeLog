@@ -14,6 +14,7 @@ Changes in 1.1:
 - Fix bug causing error message not to show rich text (247680)
 - Dump QCA2 in favor of libgcrypt
 - Use smart pointers for mse::StreamSocket (246693)
+- Make sure that data checking fails if files cannot be opened when the maximum file limit is reached
 
 Changes in 1.0.3:
 - Fix crash in HTTPAnnounceJob due to abort call (244198)

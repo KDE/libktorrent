@@ -289,15 +289,6 @@ set (tracker_HDR
 	./tracker/kioannouncejob.h
 )
 
-set (datachecker_HDR
-	./datachecker/datacheckerthread.h
-	./datachecker/datachecker.h
-	./datachecker/singledatachecker.h
-	./datachecker/datacheckerlistener.h
-	./datachecker/multidatachecker.h
-	./datachecker/datacheckerjob.h
-)
-
 set (dht_HDR
 	./dht/dhtbase.h
 	./dht/rpcserver.h
@@ -329,13 +320,13 @@ install(FILES ${tracker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/trac
 install(FILES ${diskio_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/diskio COMPONENT Devel)
 install(FILES ${bcodec_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/bcodec COMPONENT Devel)
 install(FILES ${interfaces_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/interfaces COMPONENT Devel)
-install(FILES ${datachecker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/datachecker COMPONENT Devel)
 install(FILES ${dht_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/dht COMPONENT Devel)
 install(FILES ${migrate_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/migrate COMPONENT Devel)
 install(FILES ${download_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/download COMPONENT Devel)
 install(FILES ${ktorrent_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent COMPONENT Devel)
 
 add_subdirectory(torrent)
+add_subdirectory(datachecker)
 add_subdirectory(peer)
 add_subdirectory(net)
 add_subdirectory(mse)
