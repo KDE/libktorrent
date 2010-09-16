@@ -16,6 +16,9 @@ Changes in 1.1:
 - Use smart pointers for mse::StreamSocket (246693)
 - Make sure that data checking fails if files cannot be opened when the maximum file limit is reached
 
+Changes in 1.0.4:
+- Fix race condition causing timers not to be removed in the µTP code, resulting in a crash (251117)
+
 Changes in 1.0.3:
 - Fix crash in HTTPAnnounceJob due to abort call (244198)
 - Show KDE progress dialogs when moving files (244023)

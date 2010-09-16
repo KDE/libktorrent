@@ -32,7 +32,6 @@
 #include "delaywindow.h"
 
 
-
 using namespace bt;
 
 namespace utp
@@ -80,7 +79,8 @@ namespace utp
 		stats.packets_lost = 0;
 		
 		connect(this,SIGNAL(doDelayedStartTimer()),this,SLOT(delayedStartTimer()),Qt::QueuedConnection);
-		startTimer();
+		if (type == INCOMING)
+			startTimer();
 	}
 
 	Connection::~Connection()
@@ -93,7 +93,10 @@ namespace utp
 	void Connection::startConnecting()
 	{
 		if (stats.type == OUTGOING)
+		{
 			sendSYN();
+			startTimer();
+		}
 	}
 
 #if 0

@@ -111,16 +111,23 @@ namespace utp
 	{
 		bt::TimeStamp now = bt::Now();
 		bool lost_packets = false;
+		
 		QList<UnackedPacket*>::iterator itr = unacked_packets.begin();
 		UnackedPacket* first_unacked = *itr;
-		if (last_ack_receive_count >= 3 && first_unacked->seq_nr == hdr->ack_nr + 1)
+		if (last_ack_receive_count >= 3 && first_unacked->seq_nr == hdr->ack_nr + 1) 
 		{
 			// packet has been lost
 			if (!first_unacked->retransmitted || now - first_unacked->send_time > conn->currentTimeout())
 			{
-				conn->retransmit(first_unacked->data,first_unacked->seq_nr);
-				first_unacked->send_time = now;
-				first_unacked->retransmitted = true;
+				try
+				{
+					conn->retransmit(first_unacked->data,first_unacked->seq_nr);
+					first_unacked->send_time = now;
+					first_unacked->retransmitted = true;
+				}
+				catch (utp::Connection::TransmissionError & )
+				{
+				}
 				lost_packets = true;
 			}
 			
@@ -135,9 +142,15 @@ namespace utp
 				if ((*itr)->seq_nr - hdr->ack_nr < lost_index && 
 					(!(*itr)->retransmitted || now - (*itr)->send_time > conn->currentTimeout()))
 				{
-					conn->retransmit((*itr)->data,(*itr)->seq_nr);
-					(*itr)->send_time = now;
-					first_unacked->retransmitted = true;
+					try
+					{
+						conn->retransmit((*itr)->data,(*itr)->seq_nr);
+						(*itr)->send_time = now;
+						first_unacked->retransmitted = true;
+					}
+					catch (utp::Connection::TransmissionError & )
+					{
+					}
 					lost_packets = true;
 				}
 				itr++;
@@ -173,17 +186,23 @@ namespace utp
 
 	void RemoteWindow::timeout(Retransmitter* conn)
 	{
-		max_window = MIN_PACKET_SIZE;
-		bt::TimeStamp now = bt::Now();
-		// When a timeout occurs retransmit packets which are lost longer then the current timeout
-		foreach (UnackedPacket* pkt,unacked_packets)
+		try
 		{
-			if (!pkt->retransmitted || now - pkt->send_time > conn->currentTimeout())
+			max_window = MIN_PACKET_SIZE;
+			bt::TimeStamp now = bt::Now();
+			// When a timeout occurs retransmit packets which are lost longer then the current timeout
+			foreach (UnackedPacket* pkt,unacked_packets)
 			{
-				conn->retransmit(pkt->data,pkt->seq_nr);
-				pkt->send_time = bt::Now();
-				pkt->retransmitted = true;
+				if (!pkt->retransmitted || now - pkt->send_time > conn->currentTimeout())
+				{
+					conn->retransmit(pkt->data,pkt->seq_nr);
+					pkt->send_time = bt::Now();
+					pkt->retransmitted = true;
+				}
 			}
+		}
+		catch (utp::Connection::TransmissionError & )
+		{
 		}
 	}
 
