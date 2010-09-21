@@ -92,10 +92,22 @@ namespace net
 		DownloadThread::setCap(bytes_per_sec);
 	}
 	
+	Uint32 SocketMonitor::getDownloadCap()
+	{
+		return DownloadThread::cap();
+	}
+
+	
 	void SocketMonitor::setUploadCap(Uint32 bytes_per_sec)
 	{
 		UploadThread::setCap(bytes_per_sec);
 	}
+	
+	Uint32 SocketMonitor::getUploadCap()
+	{
+		return UploadThread::cap();
+	}
+
 	
 	void SocketMonitor::setSleepTime(Uint32 sleep_time)
 	{

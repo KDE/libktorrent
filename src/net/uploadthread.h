@@ -49,6 +49,9 @@ namespace net
 		/// Set the upload cap
 		static void setCap(bt::Uint32 uc) {ucap = uc;}
 		
+		/// Get the upload cap
+		static Uint32 cap() {return ucap;}
+		
 		/// Set the sleep time when using upload caps
 		static void setSleepTime(bt::Uint32 stime);
 	private: 

@@ -44,6 +44,9 @@ namespace net
 		/// Set the download cap
 		static void setCap(bt::Uint32 cap) {dcap = cap;}
 		
+		/// Get the download cap
+		static Uint32 cap() {return dcap;}
+		
 		/// Set the sleep time when using download caps
 		static void setSleepTime(bt::Uint32 stime);
 	private:	

@@ -123,7 +123,9 @@ namespace net
  		void removeGroup(GroupType type,Uint32 gid);	
 		
 		static void setDownloadCap(Uint32 bytes_per_sec);
+		static Uint32 getDownloadCap();
 		static void setUploadCap(Uint32 bytes_per_sec);
+		static Uint32 getUploadCap();
 		static void setSleepTime(Uint32 sleep_time);
 		static SocketMonitor & instance() {return self;}
 	};
