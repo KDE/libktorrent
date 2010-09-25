@@ -330,13 +330,18 @@ namespace utp
 	void UTPServer::handlePendingConnections()
 	{
 		// This should be called from the main thread
-		QMutexLocker lock(&d->pending_mutex);
-		foreach (mse::StreamSocket::Ptr s,d->pending)
+		QList<mse::StreamSocket::Ptr> p;
+		{
+			QMutexLocker lock(&d->pending_mutex);
+			// Copy the pending list and clear it before using it's contents to avoid a deadlock
+			p = d->pending;
+			d->pending.clear();
+		}
+		
+		foreach (mse::StreamSocket::Ptr s,p)
 		{
 			newConnection(s);
 		}
-		
-		d->pending.clear();
 	}
 
 	
