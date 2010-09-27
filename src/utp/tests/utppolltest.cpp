@@ -49,6 +49,16 @@ public slots:
 			exit();
 	}
 	
+	void doConnect()
+	{
+		for (int i = 0;i < NUM_SOCKETS;i++)
+		{
+			outgoing[i] = new UTPSocket(); 
+			outgoing[i]->setBlocking(false);
+			outgoing[i]->connectTo(net::Address("127.0.0.1",port));
+		}
+	}
+	
 	void endEventLoop()
 	{
 		exit();
@@ -103,16 +113,10 @@ private slots:
 	void testConnect()
 	{
 		Out(SYS_UTP|LOG_DEBUG) << "testConnect " << endl;
-		for (int i = 0;i < NUM_SOCKETS;i++)
-		{
-			outgoing[i] = new UTPSocket(); 
-			outgoing[i]->setBlocking(false);
-			outgoing[i]->connectTo(net::Address("127.0.0.1",port));
-		}
-		
 		utp::UTPServer & srv = bt::Globals::instance().getUTPServer();
 		connect(&srv,SIGNAL(accepted(Connection*)),this,SLOT(accepted(Connection*)),Qt::QueuedConnection);
 		
+		QTimer::singleShot(0,this,SLOT(doConnect())); 
 		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
 		exec();
 		QVERIFY(num_accepted == NUM_SOCKETS);
