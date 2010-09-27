@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
+ *   Copyright (C) 2010 by Joris Guisson                                   *
  *   joris.guisson@gmail.com                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,73 +15,59 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#ifndef BTCHUNKSELECTOR_H
-#define BTCHUNKSELECTOR_H
 
-#include <list>
-#include <util/timer.h>
-#include <interfaces/chunkselectorinterface.h>
+#ifndef BT_STREAMINGCHUNKSELECTOR_H
+#define BT_STREAMINGCHUNKSELECTOR_H
+
+#include <ktorrent_export.h>
+#include <download/chunkselector.h>
 
 
-
-namespace bt
+namespace bt 
 {
-	class BitSet;
-	class ChunkManager;
-	class Downloader;
-	class PeerManager;
-	class PieceDownloader;
-
 	/**
-	 * @author Joris Guisson
-	 *
-	 * Selects which Chunks to download. 
-	*/
-	class ChunkSelector : public ChunkSelectorInterface
+		ChunkSelector which supports streaming mode.
+		It has a range of chunks which are to be downloaded sequentially. And it has a cursor, to support jumping around
+		in the stream.
+	 */
+	class KTORRENT_EXPORT StreamingChunkSelector : public bt::ChunkSelector
 	{
-		std::list<Uint32> chunks;
-		Timer sort_timer;
 	public:
-		ChunkSelector();
-		virtual ~ChunkSelector();
+		StreamingChunkSelector();
+		virtual ~StreamingChunkSelector();
 		
 		virtual void init(ChunkManager* cman, Downloader* downer, PeerManager* pman);
-
-		/**
-		 * Select which chunk to download for a PieceDownloader.
-		 * @param pd The PieceDownloader
-		 * @param chunk Index of chunk gets stored here
-		 * @return true upon succes, false otherwise
-		 */
-		bool select(PieceDownloader* pd,Uint32 & chunk);
+		virtual bool select(bt::PieceDownloader* pd, bt::Uint32& chunk);
+		virtual void dataChecked(const bt::BitSet& ok_chunks);
+		virtual void reincluded(bt::Uint32 from, bt::Uint32 to);
+		virtual void reinsert(bt::Uint32 chunk);
+		virtual bool selectRange(bt::Uint32& from, bt::Uint32& to, bt::Uint32 max_len);
 		
 		/**
-		 * Data has been checked, and these chunks are OK.
-		 * @param ok_chunks The ok_chunks
+			Set the range to be downloaded sequentially.
+			The cursor will be initialized to the first of the range.
+			@param from Start of range
+			@param to End of range
 		 */
-		void dataChecked(const BitSet & ok_chunks);
+		void setSequentialRange(bt::Uint32 from, bt::Uint32 to);
 		
-		/**
-		 * A range of chunks has been reincluded.
-		 * @param from The first chunk
-		 * @param to The last chunk
-		 */
-		void reincluded(Uint32 from, Uint32 to);
+		/// Set the cursor location
+		void setCursor(bt::Uint32 chunk);
 		
-		/**
-		 * Reinsert a chunk.
-		 * @param chunk The chunk
-		 */
-		void reinsert(Uint32 chunk);
-		
-		virtual bool selectRange(Uint32 & from,Uint32 & to,Uint32 max_len);
 	private:
-		Uint32 leastPeers(const std::list<Uint32> & lp,Uint32 alternative,Uint32 max_peers_per_chunk);
+		void updateRange();
+		void initRange();
+		
+	private:
+		bt::Uint32 range_start;
+		bt::Uint32 range_end;
+		bt::Uint32 cursor;
+		bt::Uint32 critical_window_size;
+		std::list<Uint32> range;
 	};
 
 }
 
-#endif
-
+#endif // BT_STREAMINGCHUNKSELECTOR_H

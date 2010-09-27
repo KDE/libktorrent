@@ -184,7 +184,10 @@ namespace bt
 		/// Get the PeerManager
 		const PeerManager * getPeerMgr() const;
 		
-		/// Set a custom chunk selector factory (needs to be done for init is called)
+		/**
+		 * Set a custom chunk selector factory (needs to be done for init is called)
+		 * Note: TorrentControl does not take ownership
+		 */
 		void setChunkSelectorFactory(ChunkSelectorFactoryInterface* csfi);
 		
 		/// Set a custom Cache factory
@@ -312,7 +315,6 @@ namespace bt
 		Choker* choke;
 		TimeEstimator* m_eta;
 		MonitorInterface* tmon;
-		ChunkSelectorFactoryInterface* custom_selector_factory;
 		CacheFactory* cache_factory;
 		QString move_data_files_destination_path;
 		Timer choker_update_timer;

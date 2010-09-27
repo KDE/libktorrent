@@ -84,6 +84,7 @@ set(libktorrent_SRC
 	download/chunkselector.cpp
 	download/downloader.cpp
 	download/httpconnection.cpp
+	download/streamingchunkselector.cpp
 
 	interfaces/piecedownloader.cpp
 	interfaces/peerinterface.cpp
@@ -236,20 +237,6 @@ set (interfaces_HDR
 	./interfaces/serverinterface.h
 )
 
-
-	
-
-	
-set (download_HDR
-	./download/chunkdownload.h
-	./download/downloader.h
-	./download/request.h
-	./download/piece.h
-	./download/packet.h
-	./download/chunkselector.h
-	./download/webseed.h
-)
-
 set (ktorrent_HDR 
 	ktorrent_export.h
 	version.h
@@ -322,11 +309,11 @@ install(FILES ${bcodec_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/bcode
 install(FILES ${interfaces_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/interfaces COMPONENT Devel)
 install(FILES ${dht_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/dht COMPONENT Devel)
 install(FILES ${migrate_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/migrate COMPONENT Devel)
-install(FILES ${download_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/download COMPONENT Devel)
 install(FILES ${ktorrent_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent COMPONENT Devel)
 
 add_subdirectory(torrent)
 add_subdirectory(datachecker)
+add_subdirectory(download)
 add_subdirectory(peer)
 add_subdirectory(net)
 add_subdirectory(mse)

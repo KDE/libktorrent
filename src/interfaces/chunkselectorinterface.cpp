@@ -19,12 +19,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "chunkselectorinterface.h"
+#include <boost/concept_check.hpp>
+#include <boost/concept_check.hpp>
 
 namespace bt
 {
 
-	ChunkSelectorInterface::ChunkSelectorInterface(ChunkManager & cman,Downloader & downer,PeerManager & pman)
-	: cman(cman),downer(downer),pman(pman)
+	ChunkSelectorInterface::ChunkSelectorInterface() : cman(0),downer(0),pman(0)
 	{
 	}
 
@@ -33,18 +34,20 @@ namespace bt
 	{
 	}
 	
+	void ChunkSelectorInterface::init(bt::ChunkManager* cman, bt::Downloader* downer, bt::PeerManager* pman)
+	{
+		this->cman = cman;
+		this->downer = downer;
+		this->pman = pman;
+	}
+
+	
 	bool ChunkSelectorInterface::selectRange(Uint32 & from,Uint32 & to,Uint32 max_len)
 	{
+		Q_UNUSED(from);
+		Q_UNUSED(to);
+		Q_UNUSED(max_len);
 		return false;
 	}
-
-	ChunkSelectorFactoryInterface::ChunkSelectorFactoryInterface()
-	{
-	}
-
-	ChunkSelectorFactoryInterface::~ChunkSelectorFactoryInterface()
-	{
-	}
-
 	
 }

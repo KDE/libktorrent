@@ -36,19 +36,19 @@ namespace bt
 {
 	struct RareCmp
 	{
-		ChunkManager & cman;
+		ChunkManager* cman;
 		ChunkCounter & cc;
 		bool warmup;
 		
-		RareCmp(ChunkManager & cman,ChunkCounter & cc,bool warmup) : cman(cman),cc(cc),warmup(warmup) {}
+		RareCmp(ChunkManager* cman,ChunkCounter & cc,bool warmup) : cman(cman),cc(cc),warmup(warmup) {}
 		
 		bool operator()(Uint32 a,Uint32 b)
 		{
-			if (a >= cman.getNumChunks() || b >= cman.getNumChunks())
+			if (a >= cman->getNumChunks() || b >= cman->getNumChunks())
 				return false;
 			// the sorting is done on two criteria, priority and rareness
-			Priority pa = cman.getChunk(a)->getPriority();
-			Priority pb = cman.getChunk(b)->getPriority();
+			Priority pa = cman->getChunk(a)->getPriority();
+			Priority pb = cman->getChunk(b)->getPriority();
 			if (pa == pb)
 				return normalCmp(a,b); // if both have same priority compare on rareness
 			else if (pa > pb) // pa has priority over pb, so select pa
@@ -67,13 +67,21 @@ namespace bt
 		}
 	};
 
-	ChunkSelector::ChunkSelector(ChunkManager & cman,Downloader & downer,PeerManager & pman)
-	: ChunkSelectorInterface(cman,downer,pman)
-	{	
+	ChunkSelector::ChunkSelector()
+	{
+	}
+
+
+	ChunkSelector::~ChunkSelector()
+	{}
+	
+	void ChunkSelector::init(ChunkManager* cman, Downloader* downer, PeerManager* pman)
+	{
+		bt::ChunkSelectorInterface::init(cman, downer, pman);
 		std::vector<Uint32> tmp;
-		for (Uint32 i = 0;i < cman.getNumChunks();i++)
+		for (Uint32 i = 0;i < cman->getNumChunks();i++)
 		{
-			if (!cman.getBitSet().get(i))
+			if (!cman->getBitSet().get(i))
 			{
 				tmp.push_back(i);
 			}
@@ -85,19 +93,16 @@ namespace bt
 		sort_timer.update();
 	}
 
-
-	ChunkSelector::~ChunkSelector()
-	{}
 	
 	Uint32 ChunkSelector::leastPeers(const std::list<Uint32> & lp,Uint32 alternative,Uint32 max_peers_per_chunk)
 	{
-		bool endgame = downer.endgameMode();
+		bool endgame = downer->endgameMode();
 		
 		Uint32 sel = lp.front();
-		Uint32 cnt = downer.numDownloadersForChunk(sel);
+		Uint32 cnt = downer->numDownloadersForChunk(sel);
 		for (std::list<Uint32>::const_iterator i = lp.begin();i != lp.end();i++)
 		{
-			Uint32 cnt_i = downer.numDownloadersForChunk(*i);
+			Uint32 cnt_i = downer->numDownloadersForChunk(*i);
 			if (cnt_i < cnt)
 			{
 				sel = *i;
@@ -105,9 +110,9 @@ namespace bt
 			}
 		}
 		
-		if (!endgame && downer.numDownloadersForChunk(sel) >= max_peers_per_chunk)
+		if (!endgame && downer->numDownloadersForChunk(sel) >= max_peers_per_chunk)
 		{
-			ChunkDownload* cd = downer.getDownload(sel);
+			ChunkDownload* cd = downer->download(sel);
 			if (!cd)
 				return alternative;
 			
@@ -124,18 +129,18 @@ namespace bt
 
 	bool ChunkSelector::select(PieceDownloader* pd,Uint32 & chunk)
 	{		
-		const BitSet & bs = cman.getBitSet();
+		const BitSet & bs = cman->getBitSet();
 		
 		std::list<Uint32> preview;
 		std::list<Uint32> normal;
 		std::list<Uint32> first;
-		Uint32 sel = cman.getNumChunks() + 1;
+		Uint32 sel = cman->getNumChunks() + 1;
 		
 		// sort the chunks every 2 seconds
 		if (sort_timer.getElapsedSinceUpdate() > 2000)
 		{
-			bool warmup = cman.getNumChunks() - cman.chunksLeft() <= 4;
-			chunks.sort(RareCmp(cman,pman.getChunkCounter(),warmup));
+			bool warmup = cman->getNumChunks() - cman->chunksLeft() <= 4;
+			chunks.sort(RareCmp(cman,pman->getChunkCounter(),warmup));
 			sort_timer.update();
 		}
 	
@@ -143,7 +148,7 @@ namespace bt
 		while (itr != chunks.end())
 		{
 			Uint32 i = *itr;
-			Chunk* c = cman.getChunk(*itr);
+			Chunk* c = cman->getChunk(*itr);
 			
 			// if we have the chunk remove it from the list
 			if (bs.get(i))
@@ -157,14 +162,14 @@ namespace bt
 				// pd has to have the selected chunk and it needs to be not excluded
 				if (pd->hasChunk(i) && !c->isExcluded() && !c->isExcludedForDownloading())
 				{
-					if (!downer.areWeDownloading(i))
+					if (!downer->downloading(i))
 					{ 
 						// we have a chunk
 						sel = i;
 						break;
 					}
 					
-					switch (cman.getChunk(i)->getPriority())
+					switch (cman->getChunk(i)->getPriority())
 					{
 						case PREVIEW_PRIORITY:
 							preview.push_back(i);
@@ -184,11 +189,11 @@ namespace bt
 			}
 		}
 		
-		if (sel >= cman.getNumChunks())
+		if (sel >= cman->getNumChunks())
 			return false;
 		
 		// we have found one, now try to see if we cannot assign this PieceDownloader to a higher priority chunk
-		switch (cman.getChunk(sel)->getPriority())
+		switch (cman->getChunk(sel)->getPriority())
 		{
 			case PREVIEW_PRIORITY:
 				chunk = sel;
@@ -273,7 +278,7 @@ namespace bt
 	void ChunkSelector::reincluded(Uint32 from, Uint32 to)
 	{
 		// lets do a safety check first
-		if (from >= cman.getNumChunks() || to >= cman.getNumChunks())
+		if (from >= cman->getNumChunks() || to >= cman->getNumChunks())
 		{
 			Out(SYS_DIO|LOG_NOTICE) << "Internal error in chunkselector" << endl;
 			return;
@@ -282,7 +287,7 @@ namespace bt
 		for (Uint32 i = from;i <= to;i++)
 		{
 			bool in_chunks = std::find(chunks.begin(),chunks.end(),i) != chunks.end();
-			if (!in_chunks && cman.getChunk(i)->getStatus() != Chunk::ON_DISK)
+			if (!in_chunks && cman->getChunk(i)->getStatus() != Chunk::ON_DISK)
 			{
 			//	Out(SYS_DIO|LOG_DEBUG) << "ChunkSelector::reIncluded " << i << endl;
 				chunks.push_back(i);
@@ -309,14 +314,14 @@ namespace bt
 	{
 		Uint32 max_range_len = max_len;
 		
-		const BitSet & bs = cman.getBitSet();
-		Uint32 num_chunks = cman.getNumChunks();
+		const BitSet & bs = cman->getBitSet();
+		Uint32 num_chunks = cman->getNumChunks();
 		ChunkRange curr = {0,0};
 		ChunkRange best = {0,0};
 		
 		for (Uint32 i = 0;i < num_chunks;i++)
 		{
-			if (!bs.get(i) && downer.canDownloadFromWebSeed(i))
+			if (!bs.get(i) && downer->canDownloadFromWebSeed(i))
 			{
 				if (curr.start == 0 && curr.len == 0) // we have a new current range
 				{

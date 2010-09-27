@@ -28,10 +28,12 @@
 
 namespace bt 
 {
-
 	class ChunkManager;
+	class TorrentControl;
 	class TorrentInterface;
-
+	class ChunkSelectorDataProvider;
+	
+	
 	/**
 		QIODevice which streams a file of a torrent or the whole torrent (for single file torrents)
 		This object should not be manually constructed.
@@ -40,8 +42,8 @@ namespace bt
 	{
 		Q_OBJECT
 	public:
-		TorrentFileStream(TorrentInterface* tc,ChunkManager* cman,QObject* parent);
-		TorrentFileStream(TorrentInterface* tc,Uint32 file_index,ChunkManager* cman,QObject* parent);
+		TorrentFileStream(TorrentControl* tc,ChunkManager* cman,QObject* parent);
+		TorrentFileStream(TorrentControl* tc,Uint32 file_index,ChunkManager* cman,QObject* parent);
 		virtual ~TorrentFileStream();
 		
 		/// Open the device (only readonly access will be allowed)

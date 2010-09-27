@@ -22,14 +22,19 @@
 #include <diskio/chunkmanager.h>
 #include <diskio/piecedata.h>
 #include <util/timer.h>
+#include <download/streamingchunkselector.h>
+#include "torrentcontrol.h"
 
 namespace bt
 {
+	
+	
 	class TorrentFileStream::Private
 	{
 	public:
-		Private(TorrentInterface* tc,ChunkManager* cman,TorrentFileStream* p);
-		Private(TorrentInterface* tc,Uint32 file_index,ChunkManager* cman,TorrentFileStream* p);
+		Private(TorrentControl* tc,ChunkManager* cman,TorrentFileStream* p);
+		Private(TorrentControl* tc,Uint32 file_index,ChunkManager* cman,TorrentFileStream* p);
+		~Private();
 		
 		void reset();
 		void update();
@@ -42,7 +47,7 @@ namespace bt
 		bool seek(qint64 pos);
 		
 	public:
-		TorrentInterface* tc;
+		TorrentControl* tc;
 		Uint32 file_index;
 		ChunkManager* cman;
 		TorrentFileStream* p;
@@ -54,15 +59,16 @@ namespace bt
 		Uint32 current_chunk;
 		Uint32 current_chunk_offset;
 		bt::Timer timer;
+		StreamingChunkSelector* csel;
 	};
 	
 	
-	TorrentFileStream::TorrentFileStream(TorrentInterface* tc, ChunkManager* cman,QObject* parent)
+	TorrentFileStream::TorrentFileStream(TorrentControl* tc, ChunkManager* cman,QObject* parent)
 		: QIODevice(parent),d(new Private(tc,cman,this))
 	{
 	}
 	
-	TorrentFileStream::TorrentFileStream(TorrentInterface* tc, Uint32 file_index, ChunkManager* cman,QObject* parent)
+	TorrentFileStream::TorrentFileStream(TorrentControl* tc, Uint32 file_index, ChunkManager* cman,QObject* parent)
 		: QIODevice(parent),d(new Private(tc,file_index,cman,this))
 	{
 	}
@@ -173,26 +179,39 @@ namespace bt
 
 	
 	//////////////////////////////////////////////////
-	TorrentFileStream::Private::Private(TorrentInterface* tc, ChunkManager* cman, TorrentFileStream* p) 
+	TorrentFileStream::Private::Private(TorrentControl* tc, ChunkManager* cman, TorrentFileStream* p) 
 		: tc(tc),file_index(0),cman(cman),p(p),
 		current_byte_offset(0),current_limit(0),opened(false),
-		current_chunk_offset(0)
+		current_chunk_offset(0),csel(0)
 	{
 		current_chunk = firstChunk();
 		connect(tc,SIGNAL(chunkDownloaded(bt::TorrentInterface*,bt::Uint32)),
 				p,SLOT(chunkDownloaded(TorrentInterface*,Uint32)));
+		
+		csel = new StreamingChunkSelector();
+		tc->setChunkSelector(csel);
+		csel->setSequentialRange(firstChunk(),lastChunk());
 	}
 	
-	TorrentFileStream::Private::Private(TorrentInterface* tc, 
+	TorrentFileStream::Private::Private(TorrentControl* tc, 
 										Uint32 file_index, 
-										ChunkManager* cman, 
+										ChunkManager* cman,
 										TorrentFileStream* p)
 		: tc(tc),file_index(file_index),cman(cman),p(p),
 		current_byte_offset(0),current_limit(0),opened(false),
-		current_chunk_offset(0)
+		current_chunk_offset(0),csel(0)
 	{
 		current_chunk = firstChunk();
 		current_chunk_offset = firstChunkOffset();
+		
+		csel = new StreamingChunkSelector();
+		tc->setChunkSelector(csel); 
+		csel->setSequentialRange(firstChunk(),lastChunk());
+	}
+	
+	TorrentFileStream::Private::~Private()
+	{
+		tc->setChunkSelector(0); // Force creation of new chunk selector
 	}
 	
 	void TorrentFileStream::Private::reset()
@@ -207,7 +226,7 @@ namespace bt
 	
 	void TorrentFileStream::Private::update()
 	{
-		if (current_limit == p->size())
+		if (current_limit == (Uint64)p->size())
 			return;
 		
 		const BitSet & chunks = cman->getBitSet();
@@ -222,7 +241,7 @@ namespace bt
 			else
 				current_limit = 0;
 			
-			if (current_limit == p->size())
+			if (current_limit == (Uint64)p->size())
 				p->emitReadChannelFinished();
 			return;
 		}
@@ -254,7 +273,7 @@ namespace bt
 			}
 		}
 		
-		if (current_limit == p->size())
+		if (current_limit == (Uint64)p->size())
 			p->emitReadChannelFinished();
 	}
 	
@@ -311,6 +330,7 @@ namespace bt
 			current_chunk_offset = current_byte_offset % tc->getStats().chunk_size;
 		}
 		
+		csel->setCursor(current_chunk);
 		return true;
 	}
 
@@ -368,9 +388,11 @@ namespace bt
 			current_chunk++;
 			current_chunk_data.reset();
 			current_chunk_offset = 0;
+			csel->setCursor(current_chunk);
 		}
 		
 		//Out(SYS_GEN|LOG_DEBUG) << "readCurrentChunk f " << current_chunk << " " << current_chunk_offset << endl;
 		return allowed;
 	}
+
 }

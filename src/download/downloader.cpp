@@ -39,9 +39,11 @@
 #include <interfaces/monitorinterface.h>
 #include <peer/packetwriter.h>
 #include <peer/accessmanager.h>
+#include <peer/chunkcounter.h>
 #include "chunkselector.h"
 #include "version.h"
 #include "webseed.h"
+
 
 
 namespace bt
@@ -50,20 +52,19 @@ namespace bt
 	bool Downloader::use_webseeds = true;
 	
 	Downloader::Downloader(Torrent & tor,PeerManager & pman,ChunkManager & cman) 
-	: tor(tor),pman(pman),cman(cman),downloaded(0),tmon(0),chunk_selector(0),webseed_endgame_mode(false)
+	: tor(tor),pman(pman),cman(cman),bytes_downloaded(0),tmon(0),chunk_selector(0),webseed_endgame_mode(false)
 	{
 		webseeds_on = use_webseeds;
 		pman.setPieceHandler(this);
-		chunk_selector = new ChunkSelector(cman,*this,pman);
+		chunk_selector = new ChunkSelector();
+		chunk_selector->init(&cman,this,&pman);
 		
 		Uint64 total = tor.getTotalSize();
-		downloaded = (total - cman.bytesLeft());
+		bytes_downloaded = (total - cman.bytesLeft());
 		curr_chunks_downloaded = 0;
 		unnecessary_data = 0;
 	
 		current_chunks.setAutoDelete(true);
-		connect(&pman,SIGNAL(newPeer(Peer* )),this,SLOT(onNewPeer(Peer* )));
-		connect(&pman,SIGNAL(peerKilled(Peer* )),this,SLOT(onPeerKilled(Peer*)));
 		
 		active_webseed_downloads = 0;
 		const KUrl::List & urls = tor.getWebSeeds();
@@ -110,9 +111,11 @@ namespace bt
 			delete chunk_selector;
 		
 		if (!csel) // check if a custom one was provided, if not create a default one
-			chunk_selector = new ChunkSelector(cman,*this,pman);
+			chunk_selector = new ChunkSelector();
 		else
 			chunk_selector = csel;
+		
+		chunk_selector->init(&cman,this,&pman);
 	}
 
 	
@@ -137,15 +140,15 @@ namespace bt
 				tmon->downloadRemoved(cd);
 				
 			if (ok)
-				downloaded += p.getLength();
+				bytes_downloaded += p.getLength();
 			
 			if (!finished(cd))
 			{
 				// if the chunk fails don't count the bytes downloaded
-				if (cd->getChunk()->getSize() > downloaded)
-					downloaded = 0;
+				if (cd->getChunk()->getSize() > bytes_downloaded)
+					bytes_downloaded = 0;
 				else
-					downloaded -= cd->getChunk()->getSize();
+					bytes_downloaded -= cd->getChunk()->getSize();
 				current_chunks.erase(p.getIndex());
 			}
 			else
@@ -161,7 +164,7 @@ namespace bt
 		else
 		{
 			if (ok)
-				downloaded += p.getLength();
+				bytes_downloaded += p.getLength();
 		}
 			
 		if (!ok)
@@ -384,7 +387,7 @@ namespace bt
 	}
 	
 
-	bool Downloader::areWeDownloading(Uint32 chunk) const
+	bool Downloader::downloading(Uint32 chunk) const
 	{
 		return current_chunks.find(chunk) != 0;
 	}
@@ -400,7 +403,7 @@ namespace bt
 				return false;
 		}
 		
-		return !areWeDownloading(chunk);
+		return !downloading(chunk);
 	}
 	
 	Uint32 Downloader::numDownloadersForChunk(Uint32 chunk) const
@@ -412,24 +415,19 @@ namespace bt
 		return cd->getNumDownloaders();
 	}
 	
-	void Downloader::onNewPeer(Peer* peer)
-	{		
-		PieceDownloader* pd = peer->getPeerDownloader();
-		piece_downloaders.append(pd);
+	void Downloader::addPieceDownloader(PieceDownloader* peer)
+	{
+		piece_downloaders.append(peer);
 	}
 
-	void Downloader::onPeerKilled(Peer* peer)
+	void Downloader::removePieceDownloader(PieceDownloader* peer)
 	{
-		PieceDownloader* pd = peer->getPeerDownloader();
-		if (pd)
+		for (CurChunkItr i = current_chunks.begin();i != current_chunks.end();++i)
 		{
-			for (CurChunkItr i = current_chunks.begin();i != current_chunks.end();++i)
-			{
-				ChunkDownload* cd = i->second;
-				cd->killed(pd);
-			}
-			piece_downloaders.removeAll(pd);
+			ChunkDownload* cd = i->second;
+			cd->killed(peer);
 		}
+		piece_downloaders.removeAll(peer);
 	}
 	
 	bool Downloader::finished(ChunkDownload* cd)
@@ -600,7 +598,7 @@ namespace bt
 			return;
 
 		// recalculate downloaded bytes
-		downloaded = (tor.getTotalSize() - cman.bytesLeft());
+		bytes_downloaded = (tor.getTotalSize() - cman.bytesLeft());
 
 		CurrentChunksHeader chdr;
 		fptr.read(&chdr,sizeof(CurrentChunksHeader));
@@ -648,7 +646,7 @@ namespace bt
 			else
 			{
 				current_chunks.insert(hdr.index,cd);
-				downloaded += cd->bytesDownloaded();
+				bytes_downloaded += cd->bytesDownloaded();
 		
 				if (tmon)
 					tmon->downloadStarted(cd);
@@ -755,7 +753,7 @@ namespace bt
 	void Downloader::recalcDownloaded()
 	{
 		Uint64 total = tor.getTotalSize();
-		downloaded = (total - cman.bytesLeft());
+		bytes_downloaded = (total - cman.bytesLeft());
 	}
 	
 	void Downloader::onChunkReady(Chunk* c)
@@ -782,7 +780,7 @@ namespace bt
 			// hash ok so save it
 			try
 			{
-				downloaded += c->getSize();
+				bytes_downloaded += c->getSize();
 				
 				foreach (WebSeed* ws,webseeds)
 				{
@@ -972,7 +970,12 @@ namespace bt
 		}
 	}
 	
-	ChunkDownload* Downloader::getDownload(Uint32 chunk)
+	ChunkDownload* Downloader::download(Uint32 chunk)
+	{
+		return current_chunks.find(chunk);
+	}
+	
+	const bt::ChunkDownload* Downloader::download(Uint32 chunk) const
 	{
 		return current_chunks.find(chunk);
 	}
@@ -981,7 +984,6 @@ namespace bt
 	{
 		use_webseeds = on;
 	}
-
 }
 
 #include "downloader.moc"

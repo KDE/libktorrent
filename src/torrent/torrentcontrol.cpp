@@ -55,6 +55,7 @@
 #include <peer/peer.h>
 #include <peer/peermanager.h>
 #include <peer/packetwriter.h>
+#include <peer/peerdownloader.h>
 #include <net/socketmonitor.h>
 #include "torrentfile.h"
 #include "torrent.h"
@@ -81,7 +82,6 @@ namespace bt
 	: tor(0),psman(0),cman(0),pman(0),downloader(0),uploader(0),choke(0),tmon(0),prealloc(false)
 	{
 		job_queue = new JobQueue(this);
-		custom_selector_factory = 0;
 		cache_factory = 0;
 		istats.session_bytes_uploaded = 0;
 		old_tordir = QString();
@@ -128,7 +128,6 @@ namespace bt
 		delete psman;
 		delete tor;
 		delete m_eta;
-		delete custom_selector_factory;
 		delete cache_factory;
 		delete stats_file;
 	}
@@ -670,9 +669,6 @@ namespace bt
 
 		// create downloader,uploader and choker
 		downloader = new Downloader(*tor,*pman,*cman);
-		if (custom_selector_factory)
-			downloader->setChunkSelector(custom_selector_factory->createChunkSelector(*cman,*downloader,*pman));
-		
 		downloader->loadWebSeeds(tordir + "webseeds");
 		connect(downloader,SIGNAL(ioError(const QString& )),this,SLOT(onIOError(const QString& )));
 		connect(downloader,SIGNAL(chunkDownloaded(Uint32)),this,SLOT(downloaded(Uint32)));
@@ -781,13 +777,14 @@ namespace bt
 		
 		// set group ID's for traffic shaping
 		p->setGroupIDs(upload_gid,download_gid);
-		
+		downloader->addPieceDownloader(p->getPeerDownloader());
 		if (tmon)
 			tmon->peerAdded(p);
 	}
 
 	void TorrentControl::onPeerRemoved(Peer* p)
 	{
+		downloader->removePieceDownloader(p->getPeerDownloader());
 		if (tmon)
 			tmon->peerRemoved(p);
 	}
@@ -1818,13 +1815,6 @@ namespace bt
 		}
 	}
 	
-	void TorrentControl::setChunkSelectorFactory(ChunkSelectorFactoryInterface* csfi)
-	{
-		if (custom_selector_factory)
-			delete custom_selector_factory;
-		custom_selector_factory = csfi;
-	}
-	
 	void TorrentControl::setCacheFactory(CacheFactory* cf)
 	{
 		cache_factory = cf;
@@ -1928,8 +1918,6 @@ namespace bt
 		
 		if (csel)
 			downloader->setChunkSelector(csel);
-		else if (custom_selector_factory)
-			downloader->setChunkSelector(custom_selector_factory->createChunkSelector(*cman,*downloader,*pman));
 		else
 			downloader->setChunkSelector(0);
 	}

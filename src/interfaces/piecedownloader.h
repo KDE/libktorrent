@@ -22,6 +22,7 @@
 #define BTPIECEDOWNLOADER_H
 
 #include <QObject>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 
 namespace bt
@@ -33,7 +34,7 @@ namespace bt
 	 * Interface for all things which want to download pieces from something.
 	 * @author Joris Guisson
 	*/
-	class PieceDownloader : public QObject
+	class KTORRENT_EXPORT PieceDownloader : public QObject
 	{
 		Q_OBJECT
 	public:

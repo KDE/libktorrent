@@ -39,14 +39,20 @@ namespace bt
 	*/
 	class KTORRENT_EXPORT ChunkSelectorInterface
 	{
-	protected:
-		ChunkManager & cman;
-		Downloader & downer;
-		PeerManager & pman;
+	
 		
 	public:
-		ChunkSelectorInterface(ChunkManager & cman,Downloader & downer,PeerManager & pman);
+		ChunkSelectorInterface();
 		virtual ~ChunkSelectorInterface();
+		
+		/**
+		 * Initialize the chunk selector, will be called automatically when
+		 * the ChunkSelector is set.
+		 * @param cman The ChunkManager
+		 * @param downer The Downloader
+		 * @param pman The PeerManager
+		 */
+		virtual void init(ChunkManager* cman,Downloader* downer,PeerManager* pman);
 		
 		/**
 		 * Select which chunk to download for a PieceDownloader.
@@ -85,25 +91,11 @@ namespace bt
 		 * @param chunk The chunk
 		 */
 		virtual void reinsert(Uint32 chunk) = 0;
-	};
-
-	/**
-	 * Factory to create ChunkSelector's
-	*/
-	class KTORRENT_EXPORT ChunkSelectorFactoryInterface
-	{
-	public:
-		ChunkSelectorFactoryInterface();
-		virtual ~ChunkSelectorFactoryInterface();
 		
-		/**
-		 * Create a ChunkSelector
-		 * @param cman The ChunkManager
-		 * @param downer The Downloader
-		 * @param pman The PeerManager
-		 * @return A newly created ChunkSelector
-		 */
-		virtual ChunkSelectorInterface* createChunkSelector(ChunkManager & cman,Downloader & downer,PeerManager & pman) = 0;
+	protected:
+		ChunkManager* cman;
+		Downloader* downer;
+		PeerManager* pman;
 	};
 }
 

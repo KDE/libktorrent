@@ -110,7 +110,7 @@ namespace bt
 		void loadWebSeeds(const QString & file);
 		
 		/// Get the number of bytes we have downloaded
-		Uint64 bytesDownloaded() const {return downloaded + curr_chunks_downloaded;}
+		Uint64 bytesDownloaded() const {return bytes_downloaded + curr_chunks_downloaded;}
 
 		/// Get the current dowload rate
 		Uint32 downloadRate() const;
@@ -140,14 +140,21 @@ namespace bt
 		 * @param chunk The chunk
 		 * @return The ChunkDownload, or 0 if no download is found
 		 */
-		ChunkDownload* getDownload(Uint32 chunk);
+		ChunkDownload* download(Uint32 chunk);
+		
+		/**
+		 * Get a download for a chunk (const version)
+		 * @param chunk The chunk
+		 * @return The ChunkDownload, or 0 if no download is found
+		 */
+		const ChunkDownload* download(Uint32 chunk) const;
 
 		/**
 		 * See if we are downloading a Chunk
 		 * @param chunk ID of Chunk
 		 * @return true if we are, false if not
 		 */
-		bool areWeDownloading(Uint32 chunk) const;
+		bool downloading(Uint32 chunk) const;
 		
 		/**
 		 * Can we download a chunk from a webseed.
@@ -194,6 +201,18 @@ namespace bt
 		/// Set the ChunkSelector, 0 means KT will reset to the default selector
 		void setChunkSelector(ChunkSelectorInterface* csel);
 		
+		/**
+		 * We got a new connection.
+		 * @param peer The PieceDownloader
+		 */
+		void addPieceDownloader(PieceDownloader* peer);
+		
+		/**
+		 * Remove a piece downloader.
+		 * @param peer The PieceDownloader
+		 */
+		void removePieceDownloader(PieceDownloader* peer);
+		
 		/// Enable or disable the use of webseeds
 		static void setUseWebSeeds(bool on);
 	public slots:
@@ -201,18 +220,6 @@ namespace bt
 		 * Update the downloader.
 		 */
 		void update();
-		
-		/**
-		 * We got a new connection.
-		 * @param peer The Peer
-		 */
-		void onNewPeer(Peer* peer);
-		
-		/**
-		 * A Peer has disconnected.
-		 * @param peer The Peer
-		 */
-		void onPeerKilled(Peer* peer);
 		
 		/**
 		 * Set the TorrentMonitor.
@@ -283,7 +290,7 @@ namespace bt
 		Torrent & tor;
 		PeerManager & pman;
 		ChunkManager & cman;
-		Uint64 downloaded;
+		Uint64 bytes_downloaded;
 		Uint64 curr_chunks_downloaded;
 		Uint64 unnecessary_data;
 		PtrMap<Uint32,ChunkDownload> current_chunks;
