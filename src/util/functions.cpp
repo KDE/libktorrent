@@ -364,6 +364,7 @@ namespace bt
 	
 	bool InitLibKTorrent()
 	{
+		MaximizeLimits();
 		bool ret = InitGCrypt();
 #ifdef Q_WS_WIN
 		ret = InitWindowsSocketsAPI() && ret;

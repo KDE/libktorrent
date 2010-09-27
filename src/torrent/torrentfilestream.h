@@ -77,6 +77,10 @@ namespace bt
 	protected:
 		virtual qint64 writeData(const char* data, qint64 len);
 		virtual qint64 readData(char* data, qint64 maxlen);
+		void emitReadChannelFinished();
+		
+	private slots:
+		void chunkDownloaded(TorrentInterface* tc, Uint32 chunk);
 		
 	private:
 		class Private;

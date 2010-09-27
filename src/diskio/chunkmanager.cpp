@@ -44,6 +44,48 @@ namespace bt
 	Uint32 ChunkManager::preview_size_audio = 256 * 1024; // 256 KB for audio files
 	Uint32 ChunkManager::preview_size_video = 2048 * 1024; // 2 MB for videos
 	
+	class ChunkManager::Private
+	{
+	public:
+		Private(ChunkManager* p,
+				Torrent & tor,
+				const QString & tmpdir,
+				const QString & datadir,
+				bool custom_output_name,
+				CacheFactory* fac);
+		~Private();
+		
+		void saveIndexFile();
+		void writeIndexFileEntry(Chunk* c);
+		void saveFileInfo();
+		void loadFileInfo();
+		void savePriorityInfo();
+		void loadPriorityInfo();
+		void doPreviewPriority(TorrentFile & tf);
+		bool allFilesExistOfChunk(Uint32 idx);
+		bool isBorderChunk(Uint32 idx) const {return border_chunks.contains(idx);}
+		void setBorderChunkPriority(Uint32 idx,Priority prio);
+		bool resetBorderChunk(Uint32 idx,TorrentFile* tf);
+		void createBorderChunkSet();
+		void dumpPriority(TorrentFile* tf);
+		void downloadStatusChanged(TorrentFile* tf,bool download);
+		void loadIndexFile();
+		void setupPriorities();
+		
+	public:
+		ChunkManager* p;
+		QString index_file,file_info_file,file_priority_file;
+		std::vector<Chunk*> chunks;
+		Cache* cache;
+		BitSet todo;
+		mutable Uint32 chunks_left;
+		mutable bool recalc_chunks_left;
+		Uint32 corrupted_count;
+		Uint32 recheck_counter;
+		bool during_load;	
+		QSet<Uint32> border_chunks;
+	};
+	
 
 	ChunkManager::ChunkManager(
 			Torrent & tor,
@@ -51,186 +93,71 @@ namespace bt
 			const QString & datadir,
 			bool custom_output_name,
 			CacheFactory* fac)
-	: tor(tor),chunks(tor.getNumChunks()),
-	bitset(tor.getNumChunks()),excluded_chunks(tor.getNumChunks()),only_seed_chunks(tor.getNumChunks()),todo(tor.getNumChunks())
+		: d(0),tor(tor),
+		bitset(tor.getNumChunks()),
+		excluded_chunks(tor.getNumChunks()),
+		only_seed_chunks(tor.getNumChunks())
 	{
-		during_load = false;
-		only_seed_chunks.setAll(false);
-		todo.setAll(true);
-		
-		if (!fac)
-		{
-			if (tor.isMultiFile())
-				cache = new MultiFileCache(tor,tmpdir,datadir,custom_output_name);
-			else
-				cache = new SingleFileCache(tor,tmpdir,datadir);
-		}
-		else
-			cache = fac->create(tor,tmpdir,datadir);
-		
-		cache->loadFileMap();
-		index_file = tmpdir + "index";
-		file_info_file = tmpdir + "file_info";
-		file_priority_file = tmpdir + "file_priority";
-		Uint64 tsize = tor.getTotalSize();	// total size
-		Uint64 csize = tor.getChunkSize();	// chunk size
-		Uint64 lsize = tsize - (csize * (tor.getNumChunks() - 1)); // size of last chunk
-		
-		for (Uint32 i = 0;i < tor.getNumChunks();i++)
-		{
-			if (i + 1 < tor.getNumChunks())
-				chunks[i] = new Chunk(i,csize,cache);
-			else
-				chunks[i] = new Chunk(i,lsize,cache);
-		}
-		
-		chunks_left = 0;
-		recalc_chunks_left = true;
-		corrupted_count = recheck_counter = 0;
-
-		if (tor.isMultiFile())
-			createBorderChunkSet();
-		
-		if (tor.isMultiFile())
-		{
-			Uint32 nfiles = tor.getNumFiles();
-			for (Uint32 i = 0;i < nfiles;i++)
-			{
-				TorrentFile & tf = tor.getFile(i);
-				if (tf.isMultimedia())
-					doPreviewPriority(tf);
-			}
-		}
-		else if (tor.isMultimedia())
-		{
-			Uint32 nchunks = previewChunkRangeSize();
-
-			prioritise(0,nchunks,PREVIEW_PRIORITY);
-			if (tor.getNumChunks() > nchunks)
-			{
-				prioritise(tor.getNumChunks() - nchunks, tor.getNumChunks() - 1,PREVIEW_PRIORITY);
-			}
-		}
+		d = new Private(this,tor,tmpdir,datadir,custom_output_name,fac);
+		d->setupPriorities();
 	}
 
 
 	ChunkManager::~ChunkManager()
 	{
-		for (Uint32 i = 0;i < (Uint32)chunks.size();i++)
-		{
-			Chunk* c = chunks[i];
-			delete c;
-		}
-
-		delete cache;
+		delete d;
 	}
 	
 	QString ChunkManager::getDataDir() const
 	{
-		return cache->getDataDir();
+		return d->cache->getDataDir();
 	}
 
 	void ChunkManager::changeDataDir(const QString & data_dir)
 	{
-		cache->changeTmpDir(data_dir);
-		index_file = data_dir + "index";
-		file_info_file = data_dir + "file_info";
-		file_priority_file = data_dir + "file_priority";
+		d->cache->changeTmpDir(data_dir);
+		d->index_file = data_dir + "index";
+		d->file_info_file = data_dir + "file_info";
+		d->file_priority_file = data_dir + "file_priority";
 	}
 	
 	void ChunkManager::changeOutputPath(const QString & output_path)
 	{
-		cache->changeOutputPath(output_path);
+		d->cache->changeOutputPath(output_path);
 	}
 	
 	Job* ChunkManager::moveDataFiles(const QString & ndir)
 	{
-		return cache->moveDataFiles(ndir);
+		return d->cache->moveDataFiles(ndir);
 	}
 	
 	void ChunkManager::moveDataFilesFinished(Job* job)
 	{
-		cache->moveDataFilesFinished(job);
+		d->cache->moveDataFilesFinished(job);
 	}
 	
 	Job* ChunkManager::moveDataFiles(const QMap<TorrentFileInterface*,QString> & files)
 	{
-		return cache->moveDataFiles(files);
+		return d->cache->moveDataFiles(files);
 	}
 	
 	void ChunkManager::moveDataFilesFinished(const QMap<TorrentFileInterface*,QString> & files,Job* job)
 	{
-		cache->moveDataFilesFinished(files,job);
+		d->cache->moveDataFilesFinished(files,job);
 	}
 	
-	void ChunkManager::loadIndexFile()
-	{
-		during_load = true;
-		loadPriorityInfo();
-		
-		File fptr;
-		if (!fptr.open(index_file,"rb"))
-		{
-			// no index file, so assume it's empty
-			bt::Touch(index_file,true);
-			Out(SYS_DIO|LOG_IMPORTANT) << "Can not open index file : " << fptr.errorString() << endl;
-			during_load = false;
-			return;
-		}
-
-		if (fptr.seek(File::END,0) != 0)
-		{
-			fptr.seek(File::BEGIN,0);
-			
-			while (!fptr.eof())
-			{
-				NewChunkHeader hdr;
-				fptr.read(&hdr,sizeof(NewChunkHeader));
-				Chunk* c = getChunk(hdr.index);
-				if (c)
-				{
-					c->setStatus(Chunk::ON_DISK);
-					bitset.set(hdr.index,true);
-					todo.set(hdr.index,false);
-					recalc_chunks_left = true;
-				}
-			}
-		}
-		tor.updateFilePercentage(*this);
-		during_load = false;
-	}
-	
-	void ChunkManager::saveIndexFile()
-	{
-		File fptr;
-		if (!fptr.open(index_file,"wb"))
-			throw Error(i18n("Cannot open index file %1 : %2",index_file,fptr.errorString()));
-		
-		for (unsigned int i = 0;i < tor.getNumChunks();i++)
-		{
-			Chunk* c = getChunk(i);
-			if (c->getStatus() != Chunk::NOT_DOWNLOADED)
-			{
-				NewChunkHeader hdr;
-				hdr.index = i;
-				fptr.write(&hdr,sizeof(NewChunkHeader));
-			}
-		}
-		savePriorityInfo();
-	}
-
 	void ChunkManager::createFiles(bool check_priority)
 	{
-		if (!bt::Exists(index_file))
+		if (!bt::Exists(d->index_file))
 		{
 			File fptr;
-			fptr.open(index_file,"wb");
+			fptr.open(d->index_file,"wb");
 		}
-		cache->create();
+		d->cache->create();
 
 		if (check_priority)
 		{
-			during_load = true; // for performance reasons
+			d->during_load = true; // for performance reasons
 			for (Uint32 i = 0;i < tor.getNumFiles();i++)
 			{
 				TorrentFile & tf = tor.getFile(i);				
@@ -239,66 +166,66 @@ namespace bt
 					downloadPriorityChanged(&tf,tf.getPriority(),tf.getOldPriority());
 				}
 			}
-			during_load = false;
-			savePriorityInfo();
+			d->during_load = false;
+			d->savePriorityInfo();
 		}
 	}
 	
 	bool ChunkManager::hasMissingFiles(QStringList & sl)
 	{
-		return cache->hasMissingFiles(sl);
+		return d->cache->hasMissingFiles(sl);
 	}
 
 	Chunk* ChunkManager::getChunk(unsigned int i)
 	{
-		if (i >= (Uint32)chunks.size())
+		if (i >= (Uint32)d->chunks.size())
 			return 0;
 		else
-			return chunks[i];
+			return d->chunks[i];
 	}
 	
 	void ChunkManager::start()
 	{
-		cache->open();
+		d->cache->open();
 	}
 		
 	void ChunkManager::stop()
 	{
-		cache->close();
+		d->cache->close();
 	}
 	
 	void ChunkManager::resetChunk(unsigned int i)
 	{
-		if (i >= (Uint32)chunks.size() || during_load)
+		if (i >= (Uint32)d->chunks.size() || d->during_load)
 			return;
 		
-		Chunk* c = chunks[i];
-		cache->clearPieces(c);
+		Chunk* c = d->chunks[i];
+		d->cache->clearPieces(c);
 		c->setStatus(Chunk::NOT_DOWNLOADED);
 		bitset.set(i,false);
-		todo.set(i,!excluded_chunks.get(i) && !only_seed_chunks.get(i));
+		d->todo.set(i,!excluded_chunks.get(i) && !only_seed_chunks.get(i));
 		tor.updateFilePercentage(i,*this);
 		Out(SYS_DIO|LOG_DEBUG) << QString("Resetted chunk %1").arg(i) << endl;
 	}
 	
 	void ChunkManager::checkMemoryUsage()
 	{
-		cache->checkMemoryUsage();
+		d->cache->checkMemoryUsage();
 	}
 	
 	void ChunkManager::chunkDownloaded(unsigned int i)
 	{
-		if (i >= (Uint32)chunks.size())
+		if (i >= (Uint32)d->chunks.size())
 			return;
 
-		Chunk* c = chunks[i];
+		Chunk* c = d->chunks[i];
 		if (!c->isExcluded())
 		{
 			// update the index file
 			bitset.set(i,true);
-			todo.set(i,false);
-			recalc_chunks_left = true;
-			writeIndexFileEntry(c);
+			d->todo.set(i,false);
+			d->recalc_chunks_left = true;
+			d->writeIndexFileEntry(c);
 			c->setStatus(Chunk::ON_DISK);
 			tor.updateFilePercentage(i,*this);
 		}
@@ -308,27 +235,6 @@ namespace bt
 		}
 	}
 
-	void ChunkManager::writeIndexFileEntry(Chunk* c)
-	{
-		File fptr; 
-		if (!fptr.open(index_file,"r+b"))
-		{
-			// no index file, so assume it's empty
-			bt::Touch(index_file,true);
-			Out(SYS_DIO|LOG_IMPORTANT) << "Can not open index file : " << fptr.errorString() << endl;
-			// try again
-			if (!fptr.open(index_file,"r+b"))
-				// panick if it failes
-				throw Error(i18n("Cannot open index file %1 : %2",index_file,fptr.errorString()));
-		}
-
-		
-		fptr.seek(File::END,0);
-		NewChunkHeader hdr;
-		hdr.index = c->getIndex();
-		fptr.write(&hdr,sizeof(NewChunkHeader));
-	}
-	
 	Uint32 ChunkManager::onlySeedChunks() const
 	{
 		return only_seed_chunks.numOnBits();
@@ -336,16 +242,16 @@ namespace bt
 	
 	bool ChunkManager::completed() const
 	{
-		return todo.numOnBits() == 0 && bitset.numOnBits() > 0;
+		return d->todo.numOnBits() == 0 && bitset.numOnBits() > 0;
 	}
 	
 	Uint64 ChunkManager::bytesLeft() const
 	{
 		Uint32 num_left = bitset.getNumBits() - bitset.numOnBits();
-		Uint32 last = chunks.size() - 1;
-		if (last < (Uint32)chunks.size() && !bitset.get(last))
+		Uint32 last = d->chunks.size() - 1;
+		if (last < (Uint32)d->chunks.size() && !bitset.get(last))
 		{
-			Chunk* c = chunks[last];
+			Chunk* c = d->chunks[last];
 			if (c)
 				return (num_left - 1)*tor.getChunkSize() + c->getSize();
 			else
@@ -359,11 +265,11 @@ namespace bt
 	
 	Uint64 ChunkManager::bytesLeftToDownload() const
 	{
-		Uint32 num_left = todo.numOnBits();
-		Uint32 last = chunks.size() - 1;
-		if (last < (Uint32)chunks.size() && todo.get(last))
+		Uint32 num_left = d->todo.numOnBits();
+		Uint32 last = d->chunks.size() - 1;
+		if (last < (Uint32)d->chunks.size() && d->todo.get(last))
 		{
-			Chunk* c = chunks[last];
+			Chunk* c = d->chunks[last];
 			if (c)
 				return (num_left - 1)*tor.getChunkSize() + c->getSize();
 			else
@@ -377,19 +283,19 @@ namespace bt
 	
 	Uint32 ChunkManager::chunksLeft() const
 	{
-		if (!recalc_chunks_left)
-			return chunks_left;
+		if (!d->recalc_chunks_left)
+			return d->chunks_left;
 		
 		Uint32 num = 0;
-		Uint32 tot = chunks.size();
+		Uint32 tot = d->chunks.size();
 		for (Uint32 i = 0;i < tot;i++)
 		{
-			const Chunk* c = chunks[i];
+			const Chunk* c = d->chunks[i];
 			if (c && !bitset.get(i) && !c->isExcluded())
 				num++;
 		}
-		chunks_left = num;
-		recalc_chunks_left = false;
+		d->chunks_left = num;
+		d->recalc_chunks_left = false;
 		return num;
 	}
 	
@@ -403,7 +309,7 @@ namespace bt
 		Uint64 excl = 0;
 		if (excluded_chunks.get(tor.getNumChunks() - 1))
 		{
-			Chunk* c = chunks[tor.getNumChunks() - 1];
+			Chunk* c = d->chunks[tor.getNumChunks() - 1];
 			Uint32 num = excluded_chunks.numOnBits() - 1;
 			excl = tor.getChunkSize() * num + c->getSize();
 		}
@@ -414,7 +320,7 @@ namespace bt
 		
 		if (only_seed_chunks.get(tor.getNumChunks() - 1))
 		{
-			Chunk* c = chunks[tor.getNumChunks() - 1];
+			Chunk* c = d->chunks[tor.getNumChunks() - 1];
 			Uint32 num = only_seed_chunks.numOnBits() - 1;
 			excl += tor.getChunkSize() * num + c->getSize();
 		}
@@ -446,25 +352,25 @@ namespace bt
 			std::swap(from,to);
 
 		Uint32 i = from;
-		while (i <= to && i < (Uint32)chunks.size())
+		while (i <= to && i < (Uint32)d->chunks.size())
 		{
-			Chunk* c = chunks[i];
+			Chunk* c = d->chunks[i];
 			c->setPriority(priority);
 			
 			if (priority == ONLY_SEED_PRIORITY)
 			{
 				only_seed_chunks.set(i,true);
-				todo.set(i,false);
+				d->todo.set(i,false);
 			}
 			else if (priority == EXCLUDED)
 			{
 				only_seed_chunks.set(i,false);
-				todo.set(i,false);
+				d->todo.set(i,false);
 			}
 			else
 			{
 				only_seed_chunks.set(i,false);
-				todo.set(i,!bitset.get(i));
+				d->todo.set(i,!bitset.get(i));
 			}
 			
 			i++;
@@ -478,17 +384,17 @@ namespace bt
 			std::swap(from,to);
 
 		Uint32 i = from;
-		while (i <= to && i < (Uint32)chunks.size())
+		while (i <= to && i < (Uint32)d->chunks.size())
 		{
-			Chunk* c = chunks[i];
+			Chunk* c = d->chunks[i];
 			c->setExclude(true);
 			excluded_chunks.set(i,true);
 			only_seed_chunks.set(i,false);
-			todo.set(i,false);
+			d->todo.set(i,false);
 			bitset.set(i,false);
 			i++;
 		}
-		recalc_chunks_left = true;
+		d->recalc_chunks_left = true;
 		excluded(from,to);
 		updateStats();
 	}
@@ -499,87 +405,22 @@ namespace bt
 			std::swap(from,to);
 
 		Uint32 i = from;
-		while (i <= to && i < (Uint32)chunks.size())
+		while (i <= to && i < (Uint32)d->chunks.size())
 		{
-			Chunk* c = chunks[i];
+			Chunk* c = d->chunks[i];
 			c->setExclude(false);
 			excluded_chunks.set(i,false);
 			if (!bitset.get(i))
-				todo.set(i,true);
+				d->todo.set(i,true);
 			i++;
 		}
-		recalc_chunks_left = true;
+		d->recalc_chunks_left = true;
 		updateStats();
 		included(from,to);
 	}
 
-	void ChunkManager::saveFileInfo()
-	{
-		if (during_load)
-			return;
-		
-		// saves which TorrentFiles do not need to be downloaded
-		File fptr;
-		if (!fptr.open(file_info_file,"wb"))
-		{
-			Out(SYS_DIO|LOG_IMPORTANT) << "Warning : Can not save chunk_info file : " << fptr.errorString() << endl;
-			return;
-		}
 
-		QList<Uint32> dnd;
-		
-		Uint32 i = 0;
-		while (i < tor.getNumFiles())
-		{
-			if (tor.getFile(i).doNotDownload())
-				dnd.append(i);
-			i++;
-		}
-
-		// first write the number of excluded ones
-		Uint32 tmp = dnd.count();
-		fptr.write(&tmp,sizeof(Uint32));
-		// then all the excluded ones
-		for (i = 0;i < (Uint32)dnd.count();i++)
-		{
-			tmp = dnd[i];
-			fptr.write(&tmp,sizeof(Uint32));
-		}
-		fptr.flush();
-	}
-	
-	void ChunkManager::loadFileInfo()
-	{
-		File fptr;
-		if (!fptr.open(file_info_file,"rb"))
-			return;
-
-		Uint32 num = 0,tmp = 0;
-		// first read the number of dnd files
-		if (fptr.read(&num,sizeof(Uint32)) != sizeof(Uint32))
-		{
-			Out(SYS_DIO|LOG_IMPORTANT) << "Warning : error reading chunk_info file" << endl;
-			return;
-		}
-
-		for (Uint32 i = 0;i < num;i++)
-		{
-			if (fptr.read(&tmp,sizeof(Uint32)) != sizeof(Uint32))
-			{
-				Out(SYS_DIO|LOG_IMPORTANT) << "Warning : error reading chunk_info file" << endl;
-				return;
-			}
-
-			bt::TorrentFile & tf = tor.getFile(tmp);
-			if (!tf.isNull())
-			{
-				Out(SYS_DIO|LOG_DEBUG) << "Excluding : " << tf.getPath() << endl;
-				tf.setDoNotDownload(true);
-			}
-		}
-	}
-
-	void ChunkManager::savePriorityInfo()
+	void ChunkManager::Private::savePriorityInfo()
 	{
 		if (during_load)
 			return;
@@ -596,7 +437,7 @@ namespace bt
 		try
 		{
 			QList<Uint32> dnd;
-			
+			Torrent & tor = p->tor;
 			Uint32 i = 0;
 			for ( ; i < tor.getNumFiles(); i++)
 			{
@@ -624,7 +465,7 @@ namespace bt
 		}
 	}
 	
-	void ChunkManager::loadPriorityInfo()
+	void ChunkManager::Private::loadPriorityInfo()
 	{ 
 		//load priority info and if that fails load file info
 		File fptr;
@@ -633,6 +474,8 @@ namespace bt
 			loadFileInfo();
 			return;
 		}
+		
+		Torrent & tor = p->tor;
 
 		Uint32 num = 0;
 		// first read the number of lines
@@ -695,98 +538,29 @@ namespace bt
 		}
 	}
 
-	void ChunkManager::downloadStatusChanged(TorrentFile* tf,bool download)
-	{
-		Uint32 first = tf->getFirstChunk();
-		Uint32 last = tf->getLastChunk();
-		if (download)
-		{
-			// include the chunks 
-			include(first,last);
-			
-			// if it is a multimedia file, prioritise first and last chunks of file
-			if (tf->isMultimedia())
-			{
-				doPreviewPriority(*tf);
-			}
-		}
-		else
-		{
-			// check for exceptional case which causes very long loops
-			// check for exceptional case which causes very long loops
-			if (first == last)
-			{
-				if (!isBorderChunk(first))
-				{
-					resetChunk(first);
-					exclude(first,first);
-				}
-				else
-				{
-					if (resetBorderChunk(last,tf)) // try resetting it
-						exclude(first,last);
-				}
-				cache->downloadStatusChanged(tf,download);
-				savePriorityInfo();
-				if (!during_load)
-					tor.updateFilePercentage(*this);
-				return;
-			}
-			
-			// go over all chunks from first to last and mark them as not downloaded 
-			// (first and last not included)
-			for (Uint32 i = first + 1;i < last;i++)
-				resetChunk(i);
-			
-			// if the first chunk only lies in one file, reset it
-			if (!isBorderChunk(first)) 
-				resetChunk(first);
-			else if (!resetBorderChunk(first,tf))
-				// try to reset if it lies in multiple files
-				first++;
-			
-			if (last != first)
-			{
-				// if the last chunk only lies in one file reset it
-				if (!isBorderChunk(last))
-					resetChunk(last);
-				else if (!resetBorderChunk(last,tf))
-					last--;
-			}
-		
-			if (first <= last)
-				exclude(first,last);
-		}
-	
-		cache->downloadStatusChanged(tf,download);
-		savePriorityInfo();
-		if (!during_load)
-			tor.updateFilePercentage(*this);
-	}
-
 	void ChunkManager::downloadPriorityChanged(TorrentFile* tf,Priority newpriority,Priority oldpriority)
 	{
 		if (newpriority == EXCLUDED)
 		{
-			downloadStatusChanged(tf, false);
+			d->downloadStatusChanged(tf, false);
 		//	dumpPriority(tf);
 			return;
 		}
 		
 		if (oldpriority == EXCLUDED)
 		{
-			downloadStatusChanged(tf, true);
+			d->downloadStatusChanged(tf, true);
 		}
 
-		savePriorityInfo();
+		d->savePriorityInfo();
 		
 		Uint32 first = tf->getFirstChunk();
 		Uint32 last = tf->getLastChunk();
 		
 		if (first == last)
 		{
-			if (isBorderChunk(first))
-				setBorderChunkPriority(first,newpriority);
+			if (d->isBorderChunk(first))
+				d->setBorderChunkPriority(first,newpriority);
 			else
 				prioritise(first,first,newpriority);
 			
@@ -796,16 +570,16 @@ namespace bt
 		else
 		{
 			// if the first one is a border chunk use setBorderChunkPriority and make the range smaller
-			if (isBorderChunk(first))
+			if (d->isBorderChunk(first))
 			{
-				setBorderChunkPriority(first,newpriority);
+				d->setBorderChunkPriority(first,newpriority);
 				first++;
 			}
 			
 			// if the last one is a border chunk use setBorderChunkPriority and make the range smaller
-			if (isBorderChunk(last))
+			if (d->isBorderChunk(last))
 			{
-				setBorderChunkPriority(last,newpriority);
+				d->setBorderChunkPriority(last,newpriority);
 				last--;
 			}
 			
@@ -821,92 +595,32 @@ namespace bt
 		// if it is a multimedia file, make sure we haven't overridden preview priority
 		if (tf->isMultimedia())
 		{
-			doPreviewPriority(*tf);
+			d->doPreviewPriority(*tf);
 		}
 		//dumpPriority(tf);
 	}
 	
-	bool ChunkManager::isBorderChunk(Uint32 idx) const
-	{
-		return border_chunks.contains(idx);
-	}
-	
-	void ChunkManager::setBorderChunkPriority(Uint32 idx,Priority prio)
-	{
-		QList<Uint32> files;
-
-		Priority highest = prio;
-		// get list of files where first chunk lies in
-		tor.calcChunkPos(idx,files);
-		foreach (Uint32 file,files)
-		{
-			Priority np = tor.getFile(file).getPriority();
-			if (np > highest)
-				highest = np;
-		}
-		prioritise(idx,idx,highest);
-		if (highest == ONLY_SEED_PRIORITY)
-			excluded(idx,idx);
-	}
-	
-	bool ChunkManager::resetBorderChunk(Uint32 idx,TorrentFile* tf)
-	{
-		QList<Uint32> files;
-		tor.calcChunkPos(idx,files);
-		foreach (Uint32 file,files)
-		{
-			const TorrentFile & other = tor.getFile(file);
-			if (file == tf->getIndex())
-				continue;
-			
-			// This file needs to be downloaded, so we can't reset the chunk
-			if (!other.doNotDownload())
-			{
-				// Priority might need to be modified, so set it's priority 
-				// to the maximum of all the files who still need it
-				setBorderChunkPriority(idx,other.getPriority());
-				return false;
-			}
-		}
-		
-		// we can reset safely
-		resetChunk(idx);
-		return true;
-	}
-	
-	void ChunkManager::createBorderChunkSet()
-	{
-		// figure out border chunks
-		for (Uint32 i = 0;i < tor.getNumFiles() - 1;i++)
-		{
-			TorrentFile & a = tor.getFile(i);
-			TorrentFile & b = tor.getFile(i+1);
-			if (a.getLastChunk() == b.getFirstChunk())
-				border_chunks.insert(a.getLastChunk());
-		}
-	}
-	
 	QString ChunkManager::getOutputPath() const
 	{
-		return cache->getOutputPath();
+		return d->cache->getOutputPath();
 	}
 	
 	void ChunkManager::preallocateDiskSpace(PreallocationThread* prealloc)
 	{
-		cache->preallocateDiskSpace(prealloc);
+		d->cache->preallocateDiskSpace(prealloc);
 	}
 	
 	void ChunkManager::dataChecked(const BitSet & ok_chunks)
 	{
 		// go over all chunks at check each of them
-		for (Uint32 i = 0;i < (Uint32)chunks.size();i++)
+		for (Uint32 i = 0;i < (Uint32)d->chunks.size();i++)
 		{
-			Chunk* c = chunks[i];
+			Chunk* c = d->chunks[i];
 			if (ok_chunks.get(i) && !bitset.get(i))
 			{
 				// We think we do not have a chunk, but we do have it
 				bitset.set(i,true);
-				todo.set(i,false);
+				d->todo.set(i,false);
 				// the chunk must be on disk
 				c->setStatus(Chunk::ON_DISK);
 				tor.updateFilePercentage(i,*this); 
@@ -916,7 +630,7 @@ namespace bt
 				Out(SYS_DIO|LOG_IMPORTANT) << "Previously OK chunk " << i << " is corrupt !!!!!" << endl;
 				// We think we have a chunk, but we don't
 				bitset.set(i,false);
-				todo.set(i,!only_seed_chunks.get(i) && !excluded_chunks.get(i));
+				d->todo.set(i,!only_seed_chunks.get(i) && !excluded_chunks.get(i));
 				if (c->getStatus() == Chunk::ON_DISK)
 				{
 					c->setStatus(Chunk::NOT_DOWNLOADED);
@@ -928,10 +642,10 @@ namespace bt
 				}
 			}
 		}
-		recalc_chunks_left = true;
+		d->recalc_chunks_left = true;
 		try
 		{
-			saveIndexFile();
+			d->saveIndexFile();
 		}
 		catch (bt::Error & err)
 		{
@@ -942,25 +656,12 @@ namespace bt
 			Out(SYS_DIO|LOG_DEBUG) << "Failed to save index file : unknown exception" << endl;
 		}
 		chunksLeft();
-		corrupted_count = 0;
+		d->corrupted_count = 0;
 	}
 	
 	bool ChunkManager::hasExistingFiles() const
 	{
-		return cache->hasExistingFiles();
-	}
-	
-	bool ChunkManager::allFilesExistOfChunk(Uint32 idx)
-	{
-		QList<Uint32> files;
-		tor.calcChunkPos(idx,files);
-		foreach (Uint32 fidx,files)
-		{
-			TorrentFile & tf = tor.getFile(fidx);
-			if (!tf.isPreExistingFile())
-				return false;
-		}
-		return true;
+		return d->cache->hasExistingFiles();
 	}
 	
 	void ChunkManager::markExistingFilesAsDownloaded()
@@ -978,52 +679,52 @@ namespace bt
 				// all the chunks in the middle of the file are OK
 				for (Uint32 j = tf.getFirstChunk() + 1;j < tf.getLastChunk();j++)
 				{
-					Chunk* c = chunks[j];
+					Chunk* c = d->chunks[j];
 					c->setStatus(Chunk::ON_DISK);
 					bitset.set(j,true);
-					todo.set(j,false);
+					d->todo.set(j,false);
 					tor.updateFilePercentage(j,*this); 
 				}
 				
 				// all files of the first chunk must be preexisting
-				if (allFilesExistOfChunk(tf.getFirstChunk()))
+				if (d->allFilesExistOfChunk(tf.getFirstChunk()))
 				{
 					Uint32 idx = tf.getFirstChunk();
-					Chunk* c = chunks[idx];
+					Chunk* c = d->chunks[idx];
 					c->setStatus(Chunk::ON_DISK);
 					bitset.set(idx,true);
-					todo.set(idx,false);
+					d->todo.set(idx,false);
 					tor.updateFilePercentage(idx,*this); 
 				}
 				
 				// all files of the last chunk must be preexisting
-				if (allFilesExistOfChunk(tf.getLastChunk()))
+				if (d->allFilesExistOfChunk(tf.getLastChunk()))
 				{
 					Uint32 idx = tf.getLastChunk();
-					Chunk* c = chunks[idx];
+					Chunk* c = d->chunks[idx];
 					c->setStatus(Chunk::ON_DISK);
 					bitset.set(idx,true);
-					todo.set(idx,false);
+					d->todo.set(idx,false);
 					tor.updateFilePercentage(idx,*this); 
 				}
 			}
 		}
-		else if (cache->hasExistingFiles())
+		else if (d->cache->hasExistingFiles())
 		{
-			for (Uint32 i = 0;i < chunks.size();i++)
+			for (Uint32 i = 0;i < d->chunks.size();i++)
 			{
-				Chunk* c = chunks[i];
+				Chunk* c = d->chunks[i];
 				c->setStatus(Chunk::ON_DISK);
 				bitset.set(i,true);
-				todo.set(i,false);
+				d->todo.set(i,false);
 				tor.updateFilePercentage(i,*this); 
 			}
 		}
 		
-		recalc_chunks_left = true;
+		d->recalc_chunks_left = true;
 		try
 		{
-			saveIndexFile();
+			d->saveIndexFile();
 		}
 		catch (bt::Error & err)
 		{
@@ -1034,7 +735,7 @@ namespace bt
 			Out(SYS_DIO|LOG_DEBUG) << "Failed to save index file : unknown exception" << endl;
 		}
 		chunksLeft();
-		corrupted_count = 0;
+		d->corrupted_count = 0;
 	}
 	
 	void ChunkManager::recreateMissingFiles()
@@ -1061,8 +762,8 @@ namespace bt
 			for (Uint32 j = 0; j < tor.getNumChunks();j++)
 				resetChunk(j);
 		}
-		saveIndexFile();
-		recalc_chunks_left = true;
+		d->saveIndexFile();
+		d->recalc_chunks_left = true;
 		chunksLeft();
 	}
 	
@@ -1082,20 +783,20 @@ namespace bt
 			tf.setMissing(false);
 			tf.setDoNotDownload(true); // set do not download
 		}
-		savePriorityInfo();
-		saveIndexFile();
-		recalc_chunks_left = true;
+		d->savePriorityInfo();
+		d->saveIndexFile();
+		d->recalc_chunks_left = true;
 		chunksLeft();
 	}
 	
 	Job* ChunkManager::deleteDataFiles()
 	{
-		return cache->deleteDataFiles();
+		return d->cache->deleteDataFiles();
 	}
 
 	Uint64 ChunkManager::diskUsage()
 	{
-		return cache->diskUsage();
+		return d->cache->diskUsage();
 	}
 	
 	Uint32 ChunkManager::previewChunkRangeSize(const TorrentFile & file) const
@@ -1135,7 +836,240 @@ namespace bt
 		return nchunks;
 	}
 	
-	void ChunkManager::doPreviewPriority(TorrentFile & file)
+	void ChunkManager::setPreviewSizes(Uint32 audio,Uint32 video)
+	{
+		preview_size_audio = audio;
+		preview_size_video = video;
+	}
+	
+	void ChunkManager::loadIndexFile()
+	{
+		d->loadIndexFile();
+	}
+
+	
+	/////////////////////////////////////////////////////////////////////
+	
+	ChunkManager::Private::Private(ChunkManager* p,
+								   Torrent& tor,
+								   const QString & tmpdir,
+								   const QString & datadir,
+								   bool custom_output_name,
+								   CacheFactory* fac)
+	: p(p),chunks(tor.getNumChunks()),todo(tor.getNumChunks())
+	{
+		during_load = false;
+		todo.setAll(true);
+		
+		if (!fac)
+		{
+			if (tor.isMultiFile())
+				cache = new MultiFileCache(tor,tmpdir,datadir,custom_output_name);
+			else
+				cache = new SingleFileCache(tor,tmpdir,datadir);
+		}
+		else
+			cache = fac->create(tor,tmpdir,datadir);
+		
+		cache->loadFileMap();
+		index_file = tmpdir + "index";
+		file_info_file = tmpdir + "file_info";
+		file_priority_file = tmpdir + "file_priority";
+		Uint64 tsize = tor.getTotalSize();	// total size
+		Uint64 csize = tor.getChunkSize();	// chunk size
+		Uint64 lsize = tsize - (csize * (tor.getNumChunks() - 1)); // size of last chunk
+		
+		for (Uint32 i = 0;i < tor.getNumChunks();i++)
+		{
+			if (i + 1 < tor.getNumChunks())
+				chunks[i] = new Chunk(i,csize,cache);
+			else
+				chunks[i] = new Chunk(i,lsize,cache);
+		}
+		
+		chunks_left = 0;
+		recalc_chunks_left = true;
+		corrupted_count = recheck_counter = 0;
+	}
+	
+	ChunkManager::Private::~Private()
+	{
+		qDeleteAll(chunks.begin(),chunks.end());
+		delete cache;
+	}
+	
+	void ChunkManager::Private::setupPriorities()
+	{
+		Torrent & tor = p->tor;
+		if (tor.isMultiFile())
+			createBorderChunkSet();
+		
+		if (tor.isMultiFile())
+		{
+			Uint32 nfiles = tor.getNumFiles();
+			for (Uint32 i = 0;i < nfiles;i++)
+			{
+				TorrentFile & tf = tor.getFile(i);
+				if (tf.isMultimedia())
+					doPreviewPriority(tf);
+			}
+		}
+		else if (tor.isMultimedia())
+		{
+			Uint32 nchunks = p->previewChunkRangeSize();
+			
+			p->prioritise(0,nchunks,PREVIEW_PRIORITY);
+			if (tor.getNumChunks() > nchunks)
+			{
+				p->prioritise(tor.getNumChunks() - nchunks, tor.getNumChunks() - 1,PREVIEW_PRIORITY);
+			}
+		}
+	}
+
+	void ChunkManager::Private::saveIndexFile()
+	{
+		File fptr;
+		if (!fptr.open(index_file,"wb"))
+			throw Error(i18n("Cannot open index file %1 : %2",index_file,fptr.errorString()));
+		
+		for (unsigned int i = 0;i < p->getNumChunks();i++)
+		{
+			Chunk* c = p->getChunk(i);
+			if (c->getStatus() != Chunk::NOT_DOWNLOADED)
+			{
+				NewChunkHeader hdr;
+				hdr.index = i;
+				fptr.write(&hdr,sizeof(NewChunkHeader));
+			}
+		}
+		savePriorityInfo();
+	}
+	
+	void ChunkManager::Private::writeIndexFileEntry(Chunk* c)
+	{
+		File fptr; 
+		if (!fptr.open(index_file,"r+b"))
+		{
+			// no index file, so assume it's empty
+			bt::Touch(index_file,true);
+			Out(SYS_DIO|LOG_IMPORTANT) << "Can not open index file : " << fptr.errorString() << endl;
+			// try again
+			if (!fptr.open(index_file,"r+b"))
+				// panick if it failes
+			throw Error(i18n("Cannot open index file %1 : %2",index_file,fptr.errorString()));
+		}
+		
+		
+		fptr.seek(File::END,0);
+		NewChunkHeader hdr;
+		hdr.index = c->getIndex();
+		fptr.write(&hdr,sizeof(NewChunkHeader));
+	}
+	
+	void ChunkManager::Private::loadIndexFile()
+	{
+		during_load = true;
+		loadPriorityInfo();
+		
+		File fptr;
+		if (!fptr.open(index_file,"rb"))
+		{
+			// no index file, so assume it's empty
+			bt::Touch(index_file,true);
+			Out(SYS_DIO|LOG_IMPORTANT) << "Can not open index file : " << fptr.errorString() << endl;
+			during_load = false;
+			return;
+		}
+		
+		if (fptr.seek(File::END,0) != 0)
+		{
+			fptr.seek(File::BEGIN,0);
+			
+			while (!fptr.eof())
+			{
+				NewChunkHeader hdr;
+				fptr.read(&hdr,sizeof(NewChunkHeader));
+				Chunk* c = p->getChunk(hdr.index);
+				if (c)
+				{
+					c->setStatus(Chunk::ON_DISK);
+					p->bitset.set(hdr.index,true);
+					todo.set(hdr.index,false);
+					recalc_chunks_left = true;
+				}
+			}
+		}
+		p->tor.updateFilePercentage(*p);
+		during_load = false;
+	}
+	
+	void ChunkManager::Private::saveFileInfo()
+	{
+		if (during_load)
+			return;
+		
+		// saves which TorrentFiles do not need to be downloaded
+		File fptr;
+		if (!fptr.open(file_info_file,"wb"))
+		{
+			Out(SYS_DIO|LOG_IMPORTANT) << "Warning : Can not save chunk_info file : " << fptr.errorString() << endl;
+			return;
+		}
+		
+		QList<Uint32> dnd;
+		Torrent & tor = p->tor;
+		Uint32 i = 0;
+		while (i < tor.getNumFiles())
+		{
+			if (tor.getFile(i).doNotDownload())
+				dnd.append(i);
+			i++;
+		}
+		
+		// first write the number of excluded ones
+		Uint32 tmp = dnd.count();
+		fptr.write(&tmp,sizeof(Uint32));
+		// then all the excluded ones
+		for (i = 0;i < (Uint32)dnd.count();i++)
+		{
+			tmp = dnd[i];
+			fptr.write(&tmp,sizeof(Uint32));
+		}
+		fptr.flush();
+	}
+	
+	void ChunkManager::Private::loadFileInfo()
+	{
+		File fptr;
+		if (!fptr.open(file_info_file,"rb"))
+			return;
+		
+		Uint32 num = 0,tmp = 0;
+		// first read the number of dnd files
+		if (fptr.read(&num,sizeof(Uint32)) != sizeof(Uint32))
+		{
+			Out(SYS_DIO|LOG_IMPORTANT) << "Warning : error reading chunk_info file" << endl;
+			return;
+		}
+		
+		for (Uint32 i = 0;i < num;i++)
+		{
+			if (fptr.read(&tmp,sizeof(Uint32)) != sizeof(Uint32))
+			{
+				Out(SYS_DIO|LOG_IMPORTANT) << "Warning : error reading chunk_info file" << endl;
+				return;
+			}
+			
+			bt::TorrentFile & tf = p->tor.getFile(tmp);
+			if (!tf.isNull())
+			{
+				Out(SYS_DIO|LOG_DEBUG) << "Excluding : " << tf.getPath() << endl;
+				tf.setDoNotDownload(true);
+			}
+		}
+	}
+	
+	void ChunkManager::Private::doPreviewPriority(TorrentFile & file)
 	{
 		if (file.getPriority() == EXCLUDED || file.getPriority() == ONLY_SEED_PRIORITY)
 			return;
@@ -1143,28 +1077,36 @@ namespace bt
 		if (file.getFirstChunk() == file.getLastChunk())
 		{
 			// prioritise whole file 
-			prioritise(file.getFirstChunk(),file.getLastChunk(),PREVIEW_PRIORITY);
+			p->prioritise(file.getFirstChunk(),file.getLastChunk(),PREVIEW_PRIORITY);
 			return;
 		}
 		
-		Uint32 nchunks = previewChunkRangeSize(file);
+		Uint32 nchunks = p->previewChunkRangeSize(file);
 		if (!nchunks)
 			return;
 		
-		prioritise(file.getFirstChunk(), file.getFirstChunk()+nchunks, PREVIEW_PRIORITY);
+		p->prioritise(file.getFirstChunk(), file.getFirstChunk()+nchunks, PREVIEW_PRIORITY);
 		if (file.getLastChunk() - file.getFirstChunk() > nchunks)
 		{
-			prioritise(file.getLastChunk() - nchunks, file.getLastChunk(), PREVIEW_PRIORITY);
+			p->prioritise(file.getLastChunk() - nchunks, file.getLastChunk(), PREVIEW_PRIORITY);
 		}	
 	}
 	
-	void ChunkManager::setPreviewSizes(Uint32 audio,Uint32 video)
+	bool ChunkManager::Private::allFilesExistOfChunk(Uint32 idx)
 	{
-		preview_size_audio = audio;
-		preview_size_video = video;
+		QList<Uint32> files;
+		Torrent & tor = p->tor;
+		tor.calcChunkPos(idx,files);
+		foreach (Uint32 fidx,files)
+		{
+			TorrentFile & tf = tor.getFile(fidx);
+			if (!tf.isPreExistingFile())
+				return false;
+		}
+		return true;
 	}
 	
-	void ChunkManager::dumpPriority(TorrentFile* tf)
+	void ChunkManager::Private::dumpPriority(TorrentFile* tf)
 	{
 		Uint32 first = tf->getFirstChunk();
 		Uint32 last = tf->getLastChunk();
@@ -1180,11 +1122,138 @@ namespace bt
 				case EXCLUDED:  prio = "Excluded"; break;
 				case PREVIEW_PRIORITY:  prio = "Preview"; break;
 				default:  prio = "Normal"; break;
-					
+				
 			}
 			Out(SYS_DIO|LOG_DEBUG) << i << " prio " << prio << endl;
 		}
 	}
+	
+	void ChunkManager::Private::setBorderChunkPriority(Uint32 idx,Priority prio)
+	{
+		QList<Uint32> files;
+		Torrent & tor = p->tor;
+		Priority highest = prio;
+		// get list of files where first chunk lies in
+		tor.calcChunkPos(idx,files);
+		foreach (Uint32 file,files)
+		{
+			Priority np = tor.getFile(file).getPriority();
+			if (np > highest)
+				highest = np;
+		}
+		p->prioritise(idx,idx,highest);
+		if (highest == ONLY_SEED_PRIORITY)
+			p->excluded(idx,idx);
+	}
+	
+	bool ChunkManager::Private::resetBorderChunk(Uint32 idx,TorrentFile* tf)
+	{
+		QList<Uint32> files;
+		Torrent & tor = p->tor;
+		tor.calcChunkPos(idx,files);
+		foreach (Uint32 file,files)
+		{
+			const TorrentFile & other = tor.getFile(file);
+			if (file == tf->getIndex())
+				continue;
+			
+			// This file needs to be downloaded, so we can't reset the chunk
+				if (!other.doNotDownload())
+				{
+					// Priority might need to be modified, so set it's priority 
+					// to the maximum of all the files who still need it
+					setBorderChunkPriority(idx,other.getPriority());
+					return false;
+				}
+		}
+		
+		// we can reset safely
+		p->resetChunk(idx);
+		return true;
+	}
+	
+	void ChunkManager::Private::createBorderChunkSet()
+	{
+		Torrent & tor = p->tor;
+		// figure out border chunks
+		for (Uint32 i = 0;i < tor.getNumFiles() - 1;i++)
+		{
+			TorrentFile & a = tor.getFile(i);
+			TorrentFile & b = tor.getFile(i+1);
+			if (a.getLastChunk() == b.getFirstChunk())
+				border_chunks.insert(a.getLastChunk());
+		}
+	}
+	
+	void ChunkManager::Private::downloadStatusChanged(TorrentFile* tf,bool download)
+	{
+		Uint32 first = tf->getFirstChunk();
+		Uint32 last = tf->getLastChunk();
+		if (download)
+		{
+			// include the chunks 
+			p->include(first,last);
+			
+			// if it is a multimedia file, prioritise first and last chunks of file
+			if (tf->isMultimedia())
+			{
+				doPreviewPriority(*tf);
+			}
+		}
+		else
+		{
+			// check for exceptional case which causes very long loops
+			// check for exceptional case which causes very long loops
+			if (first == last)
+			{
+				if (!isBorderChunk(first))
+				{
+					p->resetChunk(first);
+					p->exclude(first,first);
+				}
+				else
+				{
+					if (resetBorderChunk(last,tf)) // try resetting it
+						p->exclude(first,last);
+				}
+				cache->downloadStatusChanged(tf,download);
+				savePriorityInfo();
+				if (!during_load)
+					p->tor.updateFilePercentage(*p);
+				return;
+			}
+			
+			// go over all chunks from first to last and mark them as not downloaded 
+			// (first and last not included)
+			for (Uint32 i = first + 1;i < last;i++)
+				p->resetChunk(i);
+			
+			// if the first chunk only lies in one file, reset it
+			if (!isBorderChunk(first)) 
+				p->resetChunk(first);
+			else if (!resetBorderChunk(first,tf))
+				// try to reset if it lies in multiple files
+				first++;
+			
+			if (last != first)
+			{
+				// if the last chunk only lies in one file reset it
+				if (!isBorderChunk(last))
+					p->resetChunk(last);
+				else if (!resetBorderChunk(last,tf))
+					last--;
+			}
+			
+			if (first <= last)
+				p->exclude(first,last);
+		}
+		
+		cache->downloadStatusChanged(tf,download);
+		savePriorityInfo();
+		if (!during_load)
+			p->tor.updateFilePercentage(*p);
+	}
+	
 }
 
 #include "chunkmanager.moc"

@@ -35,7 +35,6 @@ class QStringList;
 
 namespace bt
 {
-	class Cache;
 	class TorrentFile;
 	class PreallocationThread;
 	class TorrentFileInterface;
@@ -61,21 +60,6 @@ namespace bt
 	class KTORRENT_EXPORT ChunkManager : public QObject
 	{
 		Q_OBJECT
-				
-		Torrent & tor;
-		QString index_file,file_info_file,file_priority_file;
-		std::vector<Chunk*> chunks;
-		Cache* cache;
-		BitSet bitset;
-		BitSet excluded_chunks;
-		BitSet only_seed_chunks;
-		BitSet todo;
-		mutable Uint32 chunks_left;
-		mutable bool recalc_chunks_left;
-		Uint32 corrupted_count;
-		Uint32 recheck_counter;
-		bool during_load;	
-		QSet<Uint32> border_chunks;
 	public:
 		ChunkManager(Torrent & tor,
 					 const QString & tmpdir,
@@ -249,7 +233,7 @@ namespace bt
 		const BitSet & getOnlySeedBitSet() const {return only_seed_chunks;}
 
 		/// Get the number of chunks into the file.
-		Uint32 getNumChunks() const {return chunks.size();}
+		Uint32 getNumChunks() const {return tor.getNumChunks();}
 
 		/// Print memory usage to log file
 		void debugPrintMemUsage();
@@ -351,26 +335,17 @@ namespace bt
 		void corrupted(Uint32 chunk);
 		
 	private:
-		void saveIndexFile();
-		void writeIndexFileEntry(Chunk* c);
-		void saveFileInfo();
-		void loadFileInfo();
-		void savePriorityInfo();
-		void loadPriorityInfo();
-		void doPreviewPriority(TorrentFile & tf);
-		bool allFilesExistOfChunk(Uint32 idx);
-		bool isBorderChunk(Uint32 idx) const;
-		void setBorderChunkPriority(Uint32 idx,Priority prio);
-		bool resetBorderChunk(Uint32 idx,TorrentFile* tf);
-		void createBorderChunkSet();
-		void dumpPriority(TorrentFile* tf);
-		void downloadStatusChanged(TorrentFile* tf,bool download);
-		
-	private:
 		static bool do_data_check;
 		static Uint32 max_chunk_size_for_data_check;
 		static Uint32 preview_size_audio;
 		static Uint32 preview_size_video;
+		
+		class Private;
+		Private* d;
+		Torrent & tor;
+		BitSet bitset;
+		BitSet excluded_chunks;
+		BitSet only_seed_chunks;
 	};
 
 }

@@ -156,6 +156,22 @@ namespace bt
 		}
 	}
 	
+	void TorrentFileStream::chunkDownloaded(TorrentInterface* tc, Uint32 chunk)
+	{
+		Q_UNUSED(tc);
+		if (d->current_byte_offset == d->current_limit && chunk == d->current_chunk)
+		{
+			d->update();
+			emit readyRead();
+		}
+	}
+	
+	void TorrentFileStream::emitReadChannelFinished()
+	{
+		emit readChannelFinished();
+	}
+
+	
 	//////////////////////////////////////////////////
 	TorrentFileStream::Private::Private(TorrentInterface* tc, ChunkManager* cman, TorrentFileStream* p) 
 		: tc(tc),file_index(0),cman(cman),p(p),
@@ -163,6 +179,8 @@ namespace bt
 		current_chunk_offset(0)
 	{
 		current_chunk = firstChunk();
+		connect(tc,SIGNAL(chunkDownloaded(bt::TorrentInterface*,bt::Uint32)),
+				p,SLOT(chunkDownloaded(TorrentInterface*,Uint32)));
 	}
 	
 	TorrentFileStream::Private::Private(TorrentInterface* tc, 
@@ -203,6 +221,9 @@ namespace bt
 				current_limit = p->size();
 			else
 				current_limit = 0;
+			
+			if (current_limit == p->size())
+				p->emitReadChannelFinished();
 			return;
 		}
 		
@@ -232,6 +253,9 @@ namespace bt
 				current_limit += (i - first - 1) * chunk_size;
 			}
 		}
+		
+		if (current_limit == p->size())
+			p->emitReadChannelFinished();
 	}
 	
 	Uint32 TorrentFileStream::Private::firstChunk()
