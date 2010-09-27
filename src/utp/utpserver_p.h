@@ -71,8 +71,8 @@ namespace utp
 		
 		PollPipePair();
 		
-		void testRead(ConItr b,ConItr e);
-		void testWrite(ConItr b,ConItr e);
+		bool testRead(ConItr b,ConItr e);
+		bool testWrite(ConItr b,ConItr e);
 	};
 	
 	typedef bt::PtrMap<net::Poll*,PollPipePair>::iterator PollPipePairItr;
@@ -89,7 +89,7 @@ namespace utp
 		void syn(const PacketParser & parser,const QByteArray & data,const net::Address & addr);
 		void reset(const Header* hdr);
 		void clearDeadConnections();
-		void wakeUpPollPipes();
+		void wakeUpPollPipes(Connection* conn,bool readable,bool writeable);
 		Connection* find(quint16 conn_id);
 		void sendOutputQueue(net::ServerSocket* sock);
 		void stop();
@@ -113,11 +113,9 @@ namespace utp
 		bool create_sockets;
 		bt::Uint8 tos;
 		QList<OutputQueueEntry> output_queue;
-		QBasicTimer timer;
 		QList<mse::StreamSocket::Ptr> pending;
 		QMutex pending_mutex;
 		MainThreadCall* mtc;
-		int start_timer_event_type;
 	};
 }
 

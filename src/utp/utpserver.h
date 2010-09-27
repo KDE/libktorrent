@@ -82,8 +82,7 @@ namespace utp
 		
 	protected:
 		virtual void handlePacket(const QByteArray & packet,const net::Address & addr);
-		virtual void timerEvent(QTimerEvent* event);
-		virtual void customEvent(QEvent* event);
+		virtual void stateChanged(Connection* conn, bool readable, bool writeable);
 		
 	signals:
 		void handlePendingConnectionsDelayed();

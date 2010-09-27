@@ -41,8 +41,8 @@ namespace net
 		if (woken_up)
 			return;
 		
-		char dummy[] = "dummy";
-		if (bt::Pipe::write((const bt::Uint8*)dummy,5) != 5)
+		char data[] = "d";
+		if (bt::Pipe::write((const bt::Uint8*)data,1) != 1)
 			Out(SYS_GEN|LOG_DEBUG) << "WakeUpPipe: wake up failed " << endl;
 		else
 			woken_up = true;

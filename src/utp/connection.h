@@ -31,6 +31,7 @@
 #include <util/circularbuffer.h>
 #include <util/timer.h>
 #include <utp/remotewindow.h>
+#include <boost/concept_check.hpp>
 
 
 
@@ -43,7 +44,7 @@ namespace utp
 	
 	
 	/**
-		Interface class for transmitting packets
+		Interface class for transmitting packets and notifying if a connection becomes readable or writeable
 	*/
 	class KTORRENT_EXPORT Transmitter
 	{
@@ -52,7 +53,11 @@ namespace utp
 		
 		/// Send a packet to some host
 		virtual bool sendTo(const QByteArray & data,const net::Address & addr,quint16 conn_id) = 0;
+		
+		/// Connection has become readable, writeable or both
+		virtual void stateChanged(Connection* conn,bool readable,bool writeable) = 0;
 	};
+	
 
 	/**
 		Keeps track of a single UTP connection
@@ -98,6 +103,9 @@ namespace utp
 			bt::Uint32 packets_sent;
 			bt::Uint64 bytes_lost;
 			bt::Uint32 packets_lost;
+			
+			bool readable;
+			bool writeable;
 		};
 		
 		Connection(bt::Uint16 recv_connection_id,Type type,const net::Address & remote,Transmitter* transmitter);
@@ -177,6 +185,7 @@ namespace utp
 		virtual void timerEvent(QTimerEvent* event);
 		void handleTimeout();
 		void startTimer();
+		void checkState();
 		
 	private slots:
 		void delayedStartTimer();

@@ -43,6 +43,13 @@ public:
 		return true;
 	}
 	
+    virtual void stateChanged(Connection* conn, bool readable, bool writeable)
+	{
+		Q_UNUSED(conn);
+		Q_UNUSED(readable);
+		Q_UNUSED(writeable);
+	}
+	
 	QByteArray buildPacket(bt::Uint32 type,bt::Uint32 recv_conn_id,bt::Uint32 send_conn_id,bt::Uint16 seq_nr,bt::Uint16 ack_nr)
 	{
 		TimeValue tv;

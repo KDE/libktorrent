@@ -42,10 +42,6 @@
 #endif
 
 
-
-
-
-
 using namespace bt;
 
 namespace utp
@@ -79,7 +75,6 @@ namespace utp
 				mtc,SLOT(handlePendingConnections()),Qt::QueuedConnection);
 	
 		poll_pipes.setAutoDelete(true);
-		start_timer_event_type = QEvent::registerEventType();
 	}
 		
 	UTPServer::Private::~Private()
@@ -138,8 +133,6 @@ namespace utp
 			delete utp_thread;
 			utp_thread = 0;
 		}
-		
-		timer.stop();
 		
 		// Cleanup all connections
 		QList<UTPSocket*> attached;
@@ -243,24 +236,19 @@ namespace utp
 		}
 	}
 	
-	void UTPServer::Private::wakeUpPollPipes()
+	void UTPServer::Private::wakeUpPollPipes(utp::Connection* conn, bool readable, bool writeable)
 	{
-		bool restart_timer = false;
 		QMutexLocker lock(&mutex);
 		for (PollPipePairItr itr = poll_pipes.begin();itr != poll_pipes.end();itr++)
 		{
 			PollPipePair* pp = itr->second;
-			if (pp->read_pipe->polling())
-				itr->second->testRead(connections.begin(),connections.end());
-			if (pp->write_pipe->polling())
-				itr->second->testWrite(connections.begin(),connections.end());
-			
-			restart_timer = restart_timer || pp->read_pipe->polling() || pp->write_pipe->polling();
+			if (readable && pp->read_pipe->polling(conn->receiveConnectionID()))
+				itr->second->read_pipe->wakeUp();
+			if (writeable && pp->write_pipe->polling(conn->receiveConnectionID()))
+				itr->second->write_pipe->wakeUp();
 		}
-		
-		if (restart_timer)
-			timer.start(10,p);
 	}
+	
 	
 	void UTPServer::Private::dataReceived(const QByteArray& data, const net::Address& addr)
 	{
@@ -557,14 +545,6 @@ namespace utp
 		}
 	}
 	
-	void UTPServer::timerEvent(QTimerEvent* event)
-	{
-		if (event->timerId() == d->timer.timerId())
-			d->wakeUpPollPipes();
-		else
-			QObject::timerEvent(event);
-	}
-
 	void UTPServer::preparePolling(net::Poll* p, net::Poll::Mode mode,Connection* conn)
 	{
 		QMutexLocker lock(&d->mutex);
@@ -577,27 +557,22 @@ namespace utp
 		
 		if (mode == net::Poll::INPUT)
 		{
+			if (conn->bytesAvailable() > 0 || conn->connectionState() == CS_CLOSED)
+				pair->read_pipe->wakeUp();
 			pair->read_pipe->prepare(p,conn->receiveConnectionID(),pair->read_pipe);
 		}
 		else
 		{
+			if (conn->isWriteable())
+				pair->write_pipe->wakeUp();
 			pair->write_pipe->prepare(p,conn->receiveConnectionID(),pair->write_pipe);
 		}
-		
-		// Use thread safe event mechanism to start timer
-		if (!d->timer.isActive())
-			QCoreApplication::postEvent(this,new QEvent((QEvent::Type)d->start_timer_event_type));
 	}
 	
-	void UTPServer::customEvent(QEvent* event)
+	void UTPServer::stateChanged(Connection* conn, bool readable, bool writeable)
 	{
-		if (event->type() == d->start_timer_event_type)
-		{
-			d->timer.start(10,this);
-			event->accept();
-		}
+		d->wakeUpPollPipes(conn,readable,writeable);
 	}
-
 	
 	void UTPServer::onAccepted(Connection* conn)
 	{
@@ -622,30 +597,34 @@ namespace utp
 		
 	}
 		
-	void PollPipePair::testRead(utp::ConItr b, utp::ConItr e)
+	bool PollPipePair::testRead(utp::ConItr b, utp::ConItr e)
 	{
 		for (utp::ConItr i = b;i != e;i++)
 		{
 			if (read_pipe->readyToWakeUp(i->second))
 			{
 				read_pipe->wakeUp();
-				break;
+				return true;
 			}
 		}
+		
+		return false;
 	}
 
-	void PollPipePair::testWrite(utp::ConItr b, utp::ConItr e)
+	bool PollPipePair::testWrite(utp::ConItr b, utp::ConItr e)
 	{
 		for (utp::ConItr i = b;i != e;i++)
 		{
 			if (write_pipe->readyToWakeUp(i->second))
 			{
 				write_pipe->wakeUp();
-				break;
+				return true;
 			}
 		}
-	}
 		
+		return false;
+	}
+	
 	void UTPServer::cleanup()
 	{
 		d->clearDeadConnections();

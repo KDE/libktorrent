@@ -50,6 +50,12 @@ namespace utp
 		/// Is this connection ready to wake up
 		bool readyToWakeUp(Connection* conn) const;
 		
+		/// Are we polling a connection
+		bool polling(bt::Uint16 conn) const
+		{
+			return poll_index >= 0 && conn_ids.contains(conn);
+		}
+		
 		/// Reset the poll_index
 		virtual void reset();
 		

@@ -77,6 +77,7 @@ namespace utp
 		stats.packets_sent = 0;
 		stats.bytes_lost = 0;
 		stats.packets_lost = 0;
+		stats.readable = stats.writeable = false;
 		
 		connect(this,SIGNAL(doDelayedStartTimer()),this,SLOT(delayedStartTimer()),Qt::QueuedConnection);
 		if (type == INCOMING)
@@ -262,9 +263,24 @@ namespace utp
 				break;
 		}
 		
+		checkState();
 		startTimer();
 		return stats.state;
 	}
+	
+	void Connection::checkState()
+	{
+		// Check if we have become readable or writeable, and notify if necessary
+		bool r = local_wnd->size() > 0 || stats.state == CS_CLOSED;
+		bool w = remote_wnd->availableSpace() > 0 && stats.state == CS_CONNECTED;
+		bool r_changed = !stats.readable && r;
+		bool w_changed = !stats.writeable && w;
+		if (r_changed || w_changed)
+			transmitter->stateChanged(this,r_changed,w_changed);
+		stats.readable = r;
+		stats.writeable = w;
+	}
+
 	
 	void Connection::checkIfClosed()
 	{
@@ -642,6 +658,8 @@ namespace utp
 				startTimer();
 				break;
 		}
+		
+		checkState();
 	}
 
 	void Connection::dumpStats()
