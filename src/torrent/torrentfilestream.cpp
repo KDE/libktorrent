@@ -32,8 +32,8 @@ namespace bt
 	class TorrentFileStream::Private
 	{
 	public:
-		Private(TorrentControl* tc,ChunkManager* cman,TorrentFileStream* p);
-		Private(TorrentControl* tc,Uint32 file_index,ChunkManager* cman,TorrentFileStream* p);
+		Private(TorrentControl* tc,ChunkManager* cman,bool streaming_mode,TorrentFileStream* p);
+		Private(TorrentControl* tc,Uint32 file_index,ChunkManager* cman,bool streaming_mode,TorrentFileStream* p);
 		~Private();
 		
 		void reset();
@@ -63,13 +63,13 @@ namespace bt
 	};
 	
 	
-	TorrentFileStream::TorrentFileStream(TorrentControl* tc, ChunkManager* cman,QObject* parent)
-		: QIODevice(parent),d(new Private(tc,cman,this))
+	TorrentFileStream::TorrentFileStream(TorrentControl* tc, ChunkManager* cman,bool streaming_mode,QObject* parent)
+		: QIODevice(parent),d(new Private(tc,cman,streaming_mode,this))
 	{
 	}
 	
-	TorrentFileStream::TorrentFileStream(TorrentControl* tc, Uint32 file_index, ChunkManager* cman,QObject* parent)
-		: QIODevice(parent),d(new Private(tc,file_index,cman,this))
+	TorrentFileStream::TorrentFileStream(TorrentControl* tc, Uint32 file_index, ChunkManager* cman,bool streaming_mode,QObject* parent)
+		: QIODevice(parent),d(new Private(tc,file_index,cman,streaming_mode,this))
 	{
 	}
 
@@ -96,6 +96,9 @@ namespace bt
 	{
 		if (mode != QIODevice::ReadOnly)
 			return false;
+		
+		if (d->opened)
+			return true;
 	
 		QIODevice::open(mode|QIODevice::Unbuffered);
 		d->opened = true;
@@ -179,7 +182,10 @@ namespace bt
 
 	
 	//////////////////////////////////////////////////
-	TorrentFileStream::Private::Private(TorrentControl* tc, ChunkManager* cman, TorrentFileStream* p) 
+	TorrentFileStream::Private::Private(TorrentControl* tc, 
+										ChunkManager* cman, 
+										bool streaming_mode,
+										TorrentFileStream* p) 
 		: tc(tc),file_index(0),cman(cman),p(p),
 		current_byte_offset(0),current_limit(0),opened(false),
 		current_chunk_offset(0),csel(0)
@@ -188,14 +194,18 @@ namespace bt
 		connect(tc,SIGNAL(chunkDownloaded(bt::TorrentInterface*,bt::Uint32)),
 				p,SLOT(chunkDownloaded(bt::TorrentInterface*,bt::Uint32)));
 		
-		csel = new StreamingChunkSelector();
-		tc->setChunkSelector(csel);
-		csel->setSequentialRange(firstChunk(),lastChunk());
+		if (streaming_mode)
+		{
+			csel = new StreamingChunkSelector();
+			tc->setChunkSelector(csel);
+			csel->setSequentialRange(firstChunk(),lastChunk());
+		}
 	}
 	
 	TorrentFileStream::Private::Private(TorrentControl* tc, 
 										Uint32 file_index, 
 										ChunkManager* cman,
+										bool streaming_mode,
 										TorrentFileStream* p)
 		: tc(tc),file_index(file_index),cman(cman),p(p),
 		current_byte_offset(0),current_limit(0),opened(false),
@@ -204,14 +214,18 @@ namespace bt
 		current_chunk = firstChunk();
 		current_chunk_offset = firstChunkOffset();
 		
-		csel = new StreamingChunkSelector();
-		tc->setChunkSelector(csel); 
-		csel->setSequentialRange(firstChunk(),lastChunk());
+		if (streaming_mode)
+		{
+			csel = new StreamingChunkSelector();
+			tc->setChunkSelector(csel); 
+			csel->setSequentialRange(firstChunk(),lastChunk());
+		}
 	}
 	
 	TorrentFileStream::Private::~Private()
 	{
-		tc->setChunkSelector(0); // Force creation of new chunk selector
+		if (csel)
+			tc->setChunkSelector(0); // Force creation of new chunk selector
 	}
 	
 	void TorrentFileStream::Private::reset()
@@ -330,7 +344,8 @@ namespace bt
 			current_chunk_offset = current_byte_offset % tc->getStats().chunk_size;
 		}
 		
-		csel->setCursor(current_chunk);
+		if (csel)
+			csel->setCursor(current_chunk);
 		return true;
 	}
 
@@ -388,7 +403,8 @@ namespace bt
 			current_chunk++;
 			current_chunk_data.reset();
 			current_chunk_offset = 0;
-			csel->setCursor(current_chunk);
+			if (csel)
+				csel->setCursor(current_chunk);
 		}
 		
 		//Out(SYS_GEN|LOG_DEBUG) << "readCurrentChunk f " << current_chunk << " " << current_chunk_offset << endl;

@@ -14,6 +14,7 @@
 #include <torrent/torrentfilestream.h>
 #include <interfaces/queuemanagerinterface.h>
 #include <datachecker/datacheckerlistener.h>
+#include <boost/concept_check.hpp>
 
 
 
@@ -103,7 +104,7 @@ private slots:
 	void testSimple()
 	{
 		Out(SYS_GEN|LOG_DEBUG) << "Begin: testSimple() " << endl;
-		bt::TorrentFileStream* stream = tc.createTorrentFileStream(0,this);
+		bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(0,false,this);
 		QVERIFY(stream);
 		QVERIFY(!stream->open(QIODevice::ReadWrite));
 		QVERIFY(stream->open(QIODevice::ReadOnly));
@@ -124,14 +125,13 @@ private slots:
 		}
 		
 		stream->close();
-		delete stream;
 		Out(SYS_GEN|LOG_DEBUG) << "End: testSimple() " << endl;
 	}
 	
 	void testSeek()
 	{
 		Out(SYS_GEN|LOG_DEBUG) << "Begin: testSeek() " << endl;
-		bt::TorrentFileStream* stream = tc.createTorrentFileStream(0,this);
+		bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(0,false,this);
 		QVERIFY(stream);
 		QVERIFY(!stream->open(QIODevice::ReadWrite));
 		QVERIFY(stream->open(QIODevice::ReadOnly));
@@ -172,15 +172,13 @@ private slots:
 		}
 		
 		stream->close();
-		delete stream;
-		
 		Out(SYS_GEN|LOG_DEBUG) << "End: testSeek() " << endl;
 	}
 	
 	void testRandomAccess()
 	{
 		Out(SYS_GEN|LOG_DEBUG) << "Begin: testRandomAccess() " << endl;
-		bt::TorrentFileStream* stream = tc.createTorrentFileStream(0,this);
+		bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(0,false,this);
 		QVERIFY(stream);
 		QVERIFY(!stream->open(QIODevice::ReadWrite));
 		QVERIFY(stream->open(QIODevice::ReadOnly));
@@ -241,15 +239,13 @@ private slots:
 		}
 		
 		stream->close();
-		delete stream;
-		
 		Out(SYS_GEN|LOG_DEBUG) << "End: testRandomAccess() " << endl;
 	}
 	
 	void testMultiSeek()
 	{
 		Out(SYS_GEN|LOG_DEBUG) << "Begin: testMultiSeek() " << endl;
-		bt::TorrentFileStream* stream = tc.createTorrentFileStream(0,this);
+		bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(0,false,this);
 		QVERIFY(stream);
 		QVERIFY(!stream->open(QIODevice::ReadWrite));
 		QVERIFY(stream->open(QIODevice::ReadOnly));
@@ -272,9 +268,18 @@ private slots:
 		}
 		
 		stream->close();
-		delete stream;
-		
 		Out(SYS_GEN|LOG_DEBUG) << "End: testMultiSeek() " << endl;
+	}
+	
+	void testStreamingCreate()
+	{
+		bt::TorrentFileStream::Ptr a = tc.createTorrentFileStream(0,true,this);
+		QVERIFY(a);
+		bt::TorrentFileStream::Ptr b = tc.createTorrentFileStream(0,true,this);
+		QVERIFY(!b);
+		a.clear();
+		b = tc.createTorrentFileStream(0,true,this);
+		QVERIFY(b);
 	}
 	
 private:

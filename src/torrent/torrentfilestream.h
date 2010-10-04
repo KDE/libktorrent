@@ -44,8 +44,8 @@ namespace bt
 	{
 		Q_OBJECT
 	public:
-		TorrentFileStream(TorrentControl* tc,ChunkManager* cman,QObject* parent);
-		TorrentFileStream(TorrentControl* tc,Uint32 file_index,ChunkManager* cman,QObject* parent);
+		TorrentFileStream(TorrentControl* tc,ChunkManager* cman,bool streaming_mode,QObject* parent);
+		TorrentFileStream(TorrentControl* tc,Uint32 file_index,ChunkManager* cman,bool streaming_mode,QObject* parent);
 		virtual ~TorrentFileStream();
 		
 		/// Open the device (only readonly access will be allowed)

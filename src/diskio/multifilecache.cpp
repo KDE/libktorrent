@@ -143,7 +143,8 @@ namespace bt
 	void MultiFileCache::close()
 	{
 		clearPieceCache();
-		files.clear();
+		if (piece_cache.isEmpty())
+			files.clear();
 		opened = false;
 	}
 	

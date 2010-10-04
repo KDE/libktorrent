@@ -117,7 +117,7 @@ private slots:
 		// Simple test read each file and check if they are the same on disk
 		for (bt::Uint32 i = 0;i < tc.getNumFiles();i++)
 		{
-			bt::TorrentFileStream* stream = tc.createTorrentFileStream(i,this);
+			bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(i,false,this);
 			QVERIFY(stream);
 			QVERIFY(!stream->open(QIODevice::ReadWrite));
 			QVERIFY(stream->open(QIODevice::ReadOnly));
@@ -141,7 +141,6 @@ private slots:
 			}
 			
 			stream->close();
-			delete stream;
 		}
 		Out(SYS_GEN|LOG_DEBUG) << "End: testSimple() " << endl;
 	}
@@ -153,7 +152,7 @@ private slots:
 		// In each file take a couple of random samples and compare them with the actual file
 		for (bt::Uint32 i = 0;i < tc.getNumFiles();i++)
 		{
-			bt::TorrentFileStream* stream = tc.createTorrentFileStream(i,this);
+			bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(i,false,this);
 			QVERIFY(stream);
 			QVERIFY(!stream->open(QIODevice::ReadWrite));
 			QVERIFY(stream->open(QIODevice::ReadOnly));
@@ -176,7 +175,6 @@ private slots:
 				QVERIFY(sdata == fdata);
 			}
 			stream->close();
-			delete stream;
 		}
 		
 		Out(SYS_GEN|LOG_DEBUG) << "End: testSeek() " << endl;

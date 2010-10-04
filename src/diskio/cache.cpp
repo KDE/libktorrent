@@ -46,7 +46,13 @@ namespace bt
 
 	Cache::~Cache()
 	{
-		clearPieceCache();
+		QMultiMap<Chunk*,PieceData*>::iterator i = piece_cache.begin();
+		while (i != piece_cache.end())
+		{
+			PieceData* cp = i.value();
+			delete cp;
+			i = piece_cache.erase(i);
+		}
 	}
 
 
@@ -112,10 +118,14 @@ namespace bt
 		while (i != piece_cache.end())
 		{
 			PieceData* cp = i.value();
-			delete cp;
-			i++;
+			if (!cp->inUse())
+			{
+				delete cp;
+				i = piece_cache.erase(i);
+			}
+			else
+				i++;
 		}
-		piece_cache.clear();
 	}
 
 	void Cache::clearPiece(PieceData* p)

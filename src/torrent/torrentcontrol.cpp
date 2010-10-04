@@ -1981,17 +1981,28 @@ namespace bt
 		saveStats();
 	}
 	
-	TorrentFileStream* TorrentControl::createTorrentFileStream(Uint32 index, QObject* parent)
+	TorrentFileStream::Ptr TorrentControl::createTorrentFileStream(Uint32 index, bool streaming_mode, QObject* parent)
 	{
+		if (streaming_mode && !stream.toStrongRef().isNull())
+			return TorrentFileStream::Ptr(0);
+		
 		if (stats.multi_file_torrent)
 		{
-			if (index < tor->getNumFiles())
-				return new TorrentFileStream(this,index,cman,parent);
-			else
-				return 0;
+			if (index >= tor->getNumFiles())
+				return TorrentFileStream::Ptr(0);
+			
+			TorrentFileStream::Ptr ptr(new TorrentFileStream(this,index,cman,streaming_mode,parent));
+			if (streaming_mode)
+				stream = ptr;
+			return ptr;
 		}
 		else
-			return new TorrentFileStream(this,cman,parent);
+		{
+			TorrentFileStream::Ptr ptr(new TorrentFileStream(this,cman,streaming_mode,parent));
+			if (streaming_mode)
+				stream = ptr;
+			return ptr;
+		}
 	}
 
 

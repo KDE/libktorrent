@@ -25,6 +25,7 @@
 #include <util/constants.h>
 #include <interfaces/trackerslist.h>
 #include <torrent/torrentstats.h>
+#include <torrent/torrentfilestream.h>
 #include <kurl.h>
 
 #ifdef ERROR
@@ -44,7 +45,6 @@ namespace bt
 	class WebSeedInterface;
 	class JobQueue;
 	class ChunkSelectorInterface;
-	class TorrentFileStream;
 
 	
 	enum TorrentStartResponse
@@ -248,10 +248,12 @@ namespace bt
 			Create a TorrentFileStream object. If the torrent is destroyed this object must also be 
 			destroyed.
 			@param index Index of the file (in case of a single file torrent, this does not matter)
+			@param streaming_mode Set to true if this needs to be streamed 
+				(note that only one streaming_mode per torrent is allowed)
 			@param parent Parent of the TorrentFileStream
 			@return A TorrentFileStream or 0 if index is not valid
 		*/
-		virtual TorrentFileStream* createTorrentFileStream(bt::Uint32 index = 0,QObject* parent = 0) = 0;
+		virtual TorrentFileStream::Ptr createTorrentFileStream(bt::Uint32 index,bool streaming_mode,QObject* parent) = 0;
 		
 		///Get a pointer to TrackersList object
 		virtual TrackersList* getTrackersList() = 0;

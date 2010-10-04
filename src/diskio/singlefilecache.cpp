@@ -56,7 +56,13 @@ namespace bt
 
 
 	SingleFileCache::~SingleFileCache()
-	{}
+	{
+		if (fd)
+		{
+			fd->close();
+			delete fd;
+		}
+	}
 	
 	void SingleFileCache::loadFileMap()
 	{
@@ -222,7 +228,7 @@ namespace bt
 	void SingleFileCache::close()
 	{
 		clearPieceCache();
-		if (fd)
+		if (fd && piece_cache.isEmpty())
 		{
 			fd->close();
 			delete fd;
