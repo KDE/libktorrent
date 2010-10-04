@@ -22,6 +22,8 @@
 #define BT_TORRENTFILESTREAM_H
 
 #include <QIODevice>
+#include <QWeakPointer>
+#include <QSharedPointer>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
@@ -76,13 +78,16 @@ namespace bt
 		/// Get the path of the file
 		QString path() const;
 		
+		typedef QSharedPointer<TorrentFileStream> Ptr;
+		typedef QWeakPointer<TorrentFileStream> WPtr;
+		
 	protected:
 		virtual qint64 writeData(const char* data, qint64 len);
 		virtual qint64 readData(char* data, qint64 maxlen);
 		void emitReadChannelFinished();
 		
 	private slots:
-		void chunkDownloaded(TorrentInterface* tc, Uint32 chunk);
+		void chunkDownloaded(bt::TorrentInterface* tc, bt::Uint32 chunk);
 		
 	private:
 		class Private;

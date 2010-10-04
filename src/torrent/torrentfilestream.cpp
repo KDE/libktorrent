@@ -186,7 +186,7 @@ namespace bt
 	{
 		current_chunk = firstChunk();
 		connect(tc,SIGNAL(chunkDownloaded(bt::TorrentInterface*,bt::Uint32)),
-				p,SLOT(chunkDownloaded(TorrentInterface*,Uint32)));
+				p,SLOT(chunkDownloaded(bt::TorrentInterface*,bt::Uint32)));
 		
 		csel = new StreamingChunkSelector();
 		tc->setChunkSelector(csel);

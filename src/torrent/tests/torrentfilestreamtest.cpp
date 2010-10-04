@@ -271,6 +271,9 @@ private slots:
 			QVERIFY(tmp == tmp2);
 		}
 		
+		stream->close();
+		delete stream;
+		
 		Out(SYS_GEN|LOG_DEBUG) << "End: testMultiSeek() " << endl;
 	}
 	
