@@ -25,6 +25,7 @@
 #include <QWeakPointer>
 #include <QSharedPointer>
 #include <ktorrent_export.h>
+#include <util/bitset.h>
 #include <util/constants.h>
 
 
@@ -77,6 +78,12 @@ namespace bt
 		
 		/// Get the path of the file
 		QString path() const;
+		
+		/// Get a BitSet of all the chunks of this TorrentFileStream
+		const BitSet & chunksBitSet() const;
+		
+		/// Get the current chunk relative to the first chunk of the file
+		Uint32 currentChunk() const;
 		
 		typedef QSharedPointer<TorrentFileStream> Ptr;
 		typedef QWeakPointer<TorrentFileStream> WPtr;

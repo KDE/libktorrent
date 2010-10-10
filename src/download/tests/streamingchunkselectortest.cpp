@@ -143,32 +143,13 @@ private slots:
 			downer->addPieceDownloader(&dd[i]);
 		}
 		
-		// There should now be 16 ChunkDownload's each for one of the criticial chunks
+		// The critical chunk should now have 16 piece downloaders
 		downer->update();
+		QVERIFY(downer->downloading(0));
+		QVERIFY(downer->download(0)->getNumDownloaders() == 16);
 		for (Uint32 i = 0;i < 16;i++)
 		{
 			QVERIFY(dd[i].getNumGrabbed() == 1);
-			QVERIFY(downer->downloading(i));
-			QVERIFY(downer->download(i)->getNumDownloaders() == 1);
-		}
-		
-		// Add the second batch
-		for (Uint32 i = 16;i < 32;i++)
-		{
-			downer->addPieceDownloader(&dd[i]);
-		}
-		
-		downer->update();
-		
-		for (Uint32 i = 0;i < 32;i++)
-		{
-			QVERIFY(dd[i].getNumGrabbed() == 1);
-			if (i < 16)
-			{
-				QVERIFY(downer->downloading(i));
-				// There should now be two downloaders per chunk
-				QVERIFY(downer->download(i)->getNumDownloaders() == 2);
-			}
 		}
 		
 		for (Uint32 i = 0;i < 32;i++)

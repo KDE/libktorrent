@@ -27,7 +27,7 @@
 
 namespace bt
 {
-	
+	const Uint32 INVALID_CHUNK = 0xFFFFFFFF;
 	
 	class TorrentFileStream::Private
 	{
@@ -60,6 +60,8 @@ namespace bt
 		Uint32 current_chunk_offset;
 		bt::Timer timer;
 		StreamingChunkSelector* csel;
+		
+		BitSet bitset;
 	};
 	
 	
@@ -79,7 +81,16 @@ namespace bt
 		delete d;
 	}
 
+	const bt::BitSet& TorrentFileStream::chunksBitSet() const
+	{
+		return d->bitset;
+	}
 
+	Uint32 TorrentFileStream::currentChunk() const
+	{
+		return d->current_chunk - d->firstChunk();
+	}
+	
 	qint64 TorrentFileStream::writeData(const char* data, qint64 len)
 	{
 		Q_UNUSED(data);
@@ -168,11 +179,8 @@ namespace bt
 	void TorrentFileStream::chunkDownloaded(TorrentInterface* tc, Uint32 chunk)
 	{
 		Q_UNUSED(tc);
-		if (d->current_byte_offset == d->current_limit && chunk == d->current_chunk)
-		{
-			d->update();
-			emit readyRead();
-		}
+		d->update();
+		emit readyRead();
 	}
 	
 	void TorrentFileStream::emitReadChannelFinished()
@@ -188,7 +196,7 @@ namespace bt
 										TorrentFileStream* p) 
 		: tc(tc),file_index(0),cman(cman),p(p),
 		current_byte_offset(0),current_limit(0),opened(false),
-		current_chunk_offset(0),csel(0)
+		current_chunk_offset(0),csel(0),bitset(cman->getNumChunks())
 	{
 		current_chunk = firstChunk();
 		connect(tc,SIGNAL(chunkDownloaded(bt::TorrentInterface*,bt::Uint32)),
@@ -213,6 +221,7 @@ namespace bt
 	{
 		current_chunk = firstChunk();
 		current_chunk_offset = firstChunkOffset();
+		bitset = BitSet(lastChunk() - firstChunk() + 1);
 		
 		if (streaming_mode)
 		{
@@ -236,6 +245,7 @@ namespace bt
 		current_chunk_offset = firstChunkOffset();
 		current_chunk_data.reset();
 		cman->checkMemoryUsage();
+		update();
 	}
 	
 	void TorrentFileStream::Private::update()
@@ -251,9 +261,15 @@ namespace bt
 		{
 			// Special case
 			if (chunks.get(first))
+			{
+				bitset.set(0,true);
 				current_limit = p->size();
+			}
 			else
+			{
+				bitset.set(0,false);
 				current_limit = 0;
+			}
 			
 			if (current_limit == (Uint64)p->size())
 				p->emitReadChannelFinished();
@@ -261,21 +277,22 @@ namespace bt
 		}
 		
 		// Loop until the end or a chunk we don't have
-		Uint32 i = 0;
-		for (i = first;i <= last;i++)
+		Uint32 first_missing_chunk = INVALID_CHUNK;
+		for (Uint32 i = first;i <= last;i++)
 		{
-			if (!chunks.get(i))
-				break;
+			bitset.set(i - first,chunks.get(i));
+			if (!chunks.get(i) && first_missing_chunk == INVALID_CHUNK)
+				first_missing_chunk = i;
 		}
 		
-		if (i == first)
+		if (first_missing_chunk == first)
 		{
 			current_limit = 0;
 		}
 		else
 		{
 			Uint64 chunk_size = tc->getStats().chunk_size;
-			if (i == last + 1)
+			if (first_missing_chunk == INVALID_CHUNK)
 			{
 				// we have the entire file
 				current_limit = p->size();
@@ -283,7 +300,7 @@ namespace bt
 			else
 			{
 				current_limit = (chunk_size - firstChunkOffset());
-				current_limit += (i - first - 1) * chunk_size;
+				current_limit += (first_missing_chunk - first - 1) * chunk_size;
 			}
 		}
 		

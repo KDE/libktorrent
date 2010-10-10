@@ -31,12 +31,12 @@ namespace bt
 {
 	TorrentFile TorrentFile::null(0);
 
-	TorrentFile::TorrentFile(Torrent* tor) : TorrentFileInterface(0,QString(),0),tor(tor),missing(false),filetype(UNKNOWN)
+	TorrentFile::TorrentFile(Torrent* tor) : TorrentFileInterface(0,QString(),0),tor(tor),missing(false)
 	{}
 
 	TorrentFile::TorrentFile(Torrent* tor,Uint32 index,const QString & path,
 							 Uint64 off,Uint64 size,Uint64 chunk_size)
-	: TorrentFileInterface(index,path,size),tor(tor),cache_offset(off),missing(false),filetype(UNKNOWN)
+	: TorrentFileInterface(index,path,size),tor(tor),cache_offset(off),missing(false)
 	{
 		first_chunk = off / chunk_size;
 		first_chunk_off = off % chunk_size;

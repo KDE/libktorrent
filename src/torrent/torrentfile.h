@@ -47,14 +47,7 @@ namespace bt
 		Priority priority;
 		Priority old_priority;
 		bool missing;
-		enum FileType
-		{
-			UNKNOWN,
-			AUDIO,
-			VIDEO,
-			NORMAL
-		};
-		mutable FileType filetype;
+	
 	public:
 		/**
 		 * Default constructor. Creates a null TorrentFile.
@@ -96,12 +89,6 @@ namespace bt
 		
 		/// Checks if this file is multimedial
 		bool isMultimedia() const;
-		
-		/// Is this a video
-		bool isVideo() const {return filetype == VIDEO;}
-		
-		/// Is this an audio file
-		bool isAudio() const {return filetype == AUDIO;}
 
 		/// Gets the priority of the file
 		Priority getPriority() const {return priority;}

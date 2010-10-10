@@ -48,6 +48,14 @@ namespace bt
 		 */
 		TorrentFileInterface(Uint32 index,const QString & path,Uint64 size);
 		virtual ~TorrentFileInterface();
+		
+		enum FileType
+		{
+			UNKNOWN,
+			AUDIO,
+			VIDEO,
+			NORMAL
+		};
 
 		/// Get the index of the file
 		Uint32 getIndex() const {return index;}
@@ -127,6 +135,12 @@ namespace bt
 		/// Change the text codec
 		void changeTextCodec(QTextCodec* codec);
 		
+		/// Is this a video
+		bool isVideo() const {return filetype == VIDEO;}
+		
+		/// Is this an audio file
+		bool isAudio() const {return filetype == AUDIO;}
+		
 	protected:
 		Uint32 index;
 		QString path;
@@ -143,6 +157,7 @@ namespace bt
 		QList<QByteArray> unencoded_path;
 		Uint64 first_chunk_off;
 		Uint64 last_chunk_size;
+		mutable FileType filetype;
 	};
 
 }

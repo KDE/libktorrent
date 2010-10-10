@@ -25,14 +25,12 @@
 
 namespace bt
 {
-	const Uint32 CRITICAL_WINDOW_IN_BYTES = 4*1024*1024;
 	const Uint32 INVALID_CHUNK = 0xFFFFFFFF;
-	
+	const Uint32 CRITICAL_WINDOW_SIZE = 2 * 1024 * 1024;
 	
 	StreamingChunkSelector::StreamingChunkSelector()
-		: range_start(0), range_end(0), cursor(0)
+		: range_start(0), range_end(0), cursor(0), critical_window_size(1)
 	{
-		
 	}
 	
 	StreamingChunkSelector::~StreamingChunkSelector()
@@ -43,8 +41,10 @@ namespace bt
 	void StreamingChunkSelector::init(ChunkManager* cman, Downloader* downer, PeerManager* pman)
 	{
 		bt::ChunkSelector::init(cman, downer, pman);
-		critical_window_size = CRITICAL_WINDOW_IN_BYTES / cman->getTorrent().getChunkSize();
 		range_end = cman->getNumChunks() - 1;
+		critical_window_size = CRITICAL_WINDOW_SIZE / cman->getTorrent().getChunkSize();
+		if (critical_window_size == 0)
+			critical_window_size = 1;
 	}
 
 	
