@@ -275,10 +275,14 @@ namespace utp
 		bool w = remote_wnd->availableSpace() > 0 && stats.state == CS_CONNECTED;
 		bool r_changed = !stats.readable && r;
 		bool w_changed = !stats.writeable && w;
-		if (r_changed || w_changed)
-			transmitter->stateChanged(this,r_changed,w_changed);
 		stats.readable = r;
 		stats.writeable = w;
+		
+		mutex.unlock();
+		// Temporary unlock the mutex to avoid a deadlock
+		if (r_changed || w_changed)
+			transmitter->stateChanged(this,r_changed,w_changed);
+		mutex.lock();
 	}
 
 	
