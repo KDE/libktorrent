@@ -46,8 +46,8 @@ int main(int argc, char** argv)
 		options.add("+Url", ki18n("Torrent to open"));
 		options.add("port <port>", ki18n("Port to use"), "6881");
 		options.add("tmpdir <tmpdir>", ki18n("Port to use"), QDir::tempPath().toLocal8Bit());
-		options.add("encryption", ki18n("Wether or not to enable encryption"));
-		options.add("pex", ki18n("Wether or not to enable peer exchange"));
+		options.add("encryption", ki18n("Whether or not to enable encryption"));
+		options.add("pex", ki18n("Whether or not to enable peer exchange"));
 		KCmdLineArgs::addCmdLineOptions(options);
 		KCmdLineArgs::init(argc,argv,"ktcli","ktorrent",ki18n("ktcli"),bt::GetVersionString().toAscii());
 		
