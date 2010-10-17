@@ -64,7 +64,7 @@ namespace bt
 	/// Version type of the ktorrent library
 	const VersionType VERSION_TYPE = NORMAL;
 	/// Release version number of the ktorrent library
-	const Uint32 RELEASE = 3;
+	const Uint32 RELEASE = 4;
 }
 
 #endif
