@@ -75,7 +75,7 @@ namespace bt
 		
 		QFile fptr(file_map);
 		if (!fptr.open(QIODevice::ReadOnly))
-			throw Error(i18n("Failed to open %1 : %2",file_map,fptr.errorString()));
+			throw Error(i18n("Failed to open %1: %2",file_map,fptr.errorString()));
 		
 		output_file = QString::fromLocal8Bit(fptr.readLine().trimmed());
 		
@@ -86,7 +86,7 @@ namespace bt
 		QString file_map = tmpdir + "file_map";
 		QFile fptr(file_map);
 		if (!fptr.open(QIODevice::WriteOnly))
-			throw Error(i18n("Failed to create %1 : %2",file_map,fptr.errorString()));
+			throw Error(i18n("Failed to create %1: %2",file_map,fptr.errorString()));
 		
 		QTextStream out(&fptr);
 		out << output_file << ::endl;

@@ -164,7 +164,7 @@ namespace bt
 	{
 		if (j->error())
 		{
-			d->error = i18n("Failed to download %1 : %2",d->location.prettyUrl(),j->errorString());
+			d->error = i18n("Failed to download %1: %2",d->location.prettyUrl(),j->errorString());
 			Out(SYS_PNP|LOG_IMPORTANT) << d->error << endl;
 			return;
 		}
@@ -213,7 +213,7 @@ namespace bt
 		
 		if (!found)
 		{
-			d->error = i18n("Forwarding failed: \nDevice does not have a WANIPConnection or WANPPPConnection.");
+			d->error = i18n("Forwarding failed:\nDevice does not have a WANIPConnection or WANPPPConnection.");
 			Out(SYS_PNP|LOG_IMPORTANT) << d->error << endl;
 			stateChanged();
 		}

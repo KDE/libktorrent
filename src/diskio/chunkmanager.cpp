@@ -930,7 +930,7 @@ namespace bt
 	{
 		File fptr;
 		if (!fptr.open(index_file,"wb"))
-			throw Error(i18n("Cannot open index file %1 : %2",index_file,fptr.errorString()));
+			throw Error(i18n("Cannot open index file %1: %2",index_file,fptr.errorString()));
 		
 		for (unsigned int i = 0;i < p->getNumChunks();i++)
 		{
@@ -956,7 +956,7 @@ namespace bt
 			// try again
 			if (!fptr.open(index_file,"r+b"))
 				// panick if it failes
-			throw Error(i18n("Cannot open index file %1 : %2",index_file,fptr.errorString()));
+			throw Error(i18n("Cannot open index file %1: %2",index_file,fptr.errorString()));
 		}
 		
 		

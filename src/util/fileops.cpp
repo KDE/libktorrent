@@ -324,7 +324,7 @@ namespace bt
 		ret = fstat(fd,&sb);
 #endif
 		if (ret < 0)
-			throw Error(i18n("Cannot calculate the filesize : %1",strerror(errno)));
+			throw Error(i18n("Cannot calculate the filesize: %1",strerror(errno)));
 
 		return (Uint64)sb.st_size;
 	}
@@ -351,7 +351,7 @@ namespace bt
 	{
 		int fd = ::open(QFile::encodeName(path), O_RDWR | O_LARGEFILE);
 		if (fd < 0)
-			throw Error(i18n("Cannot open %1 : %2",path,strerror(errno)));
+			throw Error(i18n("Cannot open %1: %2",path,strerror(errno)));
 
 		bool ret = XfsPreallocate(fd,size);
 		close(fd);
@@ -393,7 +393,7 @@ namespace bt
 	{
 		int fd = ::open(QFile::encodeName(path),O_RDWR | O_LARGEFILE);
 		if (fd < 0)
-			throw Error(i18n("Cannot open %1 : %2",path,strerror(errno)));
+			throw Error(i18n("Cannot open %1: %2",path,strerror(errno)));
 
 		try
 		{
@@ -414,7 +414,7 @@ namespace bt
 #else
 		if (lseek(fd,off,whence) == -1)
 #endif
-			throw Error(i18n("Cannot seek in file : %1",strerror(errno)));
+			throw Error(i18n("Cannot seek in file: %1",strerror(errno)));
 	}
 
 	bool FreeDiskSpace(const QString & path,Uint64 & bytes_free)

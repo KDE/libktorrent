@@ -91,7 +91,7 @@ namespace bt
 		{
 			delete fptr;
 			fptr = 0;
-			throw Error(i18n("Cannot open %1 : %2",path,strerror(errno)));
+			throw Error(i18n("Cannot open %1: %2",path,strerror(errno)));
 		}
 		
 		file_size = fptr->size();
@@ -117,7 +117,7 @@ namespace bt
 		
 		if (read_only && mode != READ)
 		{
-			throw Error(i18n("Cannot open %1 for writing : readonly filesystem",path));
+			throw Error(i18n("Cannot open %1 for writing: readonly filesystem",path));
 		}
 		
 		if (off + size > max_size)
@@ -245,18 +245,18 @@ namespace bt
 		}
 		
 		if (read_only)
-			throw Error(i18n("Cannot open %1 for writing : readonly filesystem",path));
+			throw Error(i18n("Cannot open %1 for writing: readonly filesystem",path));
 		
 		
 		if (file_size + to_write > max_size)
 		{
 			Out(SYS_DIO|LOG_DEBUG) << "Warning : writing past the end of " << path << endl;
 			Out(SYS_DIO|LOG_DEBUG) << (file_size + to_write) << " " << max_size << endl;
-			throw Error(i18n("Cannot expand file %1 : attempting to grow the file beyond the maximum size",path));
+			throw Error(i18n("Cannot expand file %1: attempting to grow the file beyond the maximum size",path));
 		}
 		
 		if (!fptr->resize(file_size + to_write))
-			throw Error(i18n("Cannot expand file %1 : %2",path,fptr->errorString()));
+			throw Error(i18n("Cannot expand file %1: %2",path,fptr->errorString()));
 		
 		file_size = fptr->size();
 	}
@@ -398,12 +398,12 @@ namespace bt
 		
 		if (off >= file_size || off >= max_size)
 		{
-			throw Error(i18n("Error : Reading past the end of the file %1",path));
+			throw Error(i18n("Error: Reading past the end of the file %1",path));
 		}
 		
 		// jump to right position
 		if (!fptr->seek(off))
-			throw Error(i18n("Failed to seek file %1 : %2",path,fptr->errorString()));
+			throw Error(i18n("Failed to seek file %1: %2",path,fptr->errorString()));
 		
 		Uint32 sz = 0;
 		if ((sz = fptr->read((char*)buf,size)) != size)
@@ -432,7 +432,7 @@ namespace bt
 		}
 		
 		if (read_only)
-			throw Error(i18n("Cannot open %1 for writing : readonly filesystem",path));
+			throw Error(i18n("Cannot open %1 for writing: readonly filesystem",path));
 		
 		if (off + size > max_size)
 		{
@@ -450,11 +450,11 @@ namespace bt
 		
 		// jump to right position
 		if (!fptr->seek(off))
-			throw Error(i18n("Failed to seek file %1 : %2",path,fptr->errorString()));
+			throw Error(i18n("Failed to seek file %1: %2",path,fptr->errorString()));
 		
 		if (fptr->write((const char*)buf,size) != size)
 		{
-			throw Error(i18n("Failed to write to file %1 : %2",path,fptr->errorString()));
+			throw Error(i18n("Failed to write to file %1: %2",path,fptr->errorString()));
 		}
 		
 		if (close_again)
@@ -500,7 +500,7 @@ namespace bt
 			if (close_again)
 				closeTemporary();
 			
-			throw Error(i18n("Cannot open %1 for writing : readonly filesystem",path));
+			throw Error(i18n("Cannot open %1 for writing: readonly filesystem",path));
 		}
 
 		try
@@ -521,7 +521,7 @@ namespace bt
 		}
 		catch (bt::Error & e)
 		{
-			throw Error(i18n("Cannot preallocate diskspace : %1",strerror(errno)));
+			throw Error(i18n("Cannot preallocate diskspace: %1",strerror(errno)));
 		}
 
 		file_size = FileSize(fd);

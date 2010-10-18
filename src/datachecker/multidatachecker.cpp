@@ -59,7 +59,7 @@ namespace bt
 				File::Ptr fptr(new File());
 				if (!fptr->open(tf.getPathOnDisk(), "rb"))
 				{
-					QString err = i18n("Cannot open file %1 : %2", tf.getPathOnDisk(), fptr->errorString());
+					QString err = i18n("Cannot open file %1: %2", tf.getPathOnDisk(), fptr->errorString());
 					Out(SYS_GEN|LOG_DEBUG) << err << endl;
 					throw Error(err);
 				}

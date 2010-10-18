@@ -304,7 +304,7 @@ namespace bt
 			if (!e.write_operation)
 				onIOError(e.toString());
 			else
-				onIOError(i18n("Error writing to disk, do you have enough diskspace ?"));
+				onIOError(i18n("Error writing to disk, do you have enough diskspace?"));
 		}
 #endif
 		catch (Error & e)
@@ -582,7 +582,7 @@ namespace bt
 		QString tor_copy = tordir + "torrent";
 		QFile fptr(tor_copy);
 		if (!fptr.open(QIODevice::WriteOnly))
-			throw Error(i18n("Unable to create %1 : %2",tor_copy,fptr.errorString()));
+			throw Error(i18n("Unable to create %1: %2",tor_copy,fptr.errorString()));
 	
 		fptr.write(data.data(),data.size());
 	}

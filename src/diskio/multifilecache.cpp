@@ -88,7 +88,7 @@ namespace bt
 		{
 			QFile fptr(tmpdir + "file_map");
 			if (!fptr.open(QIODevice::ReadOnly))
-				throw Error(i18n("Failed to open %1 : %2",file_map,fptr.errorString()));
+				throw Error(i18n("Failed to open %1: %2",file_map,fptr.errorString()));
 			
 			Uint32 idx = 0;
 			while (!fptr.atEnd() && idx < tor.getNumFiles())
@@ -115,7 +115,7 @@ namespace bt
 		QString file_map = tmpdir + "file_map";
 		QFile fptr(file_map);
 		if (!fptr.open(QIODevice::WriteOnly))
-			throw Error(i18n("Failed to create %1 : %2",file_map,fptr.errorString()));
+			throw Error(i18n("Failed to create %1: %2",file_map,fptr.errorString()));
 			
 		QTextStream out(&fptr);
 		// file map doesn't exist, so create it based upon the output_dir
@@ -720,7 +720,7 @@ namespace bt
 		DNDFile out(dst_file,tf,tor.getChunkSize());
 		File fptr;
 		if (!fptr.open(src_file,"rb"))
-			throw Error(i18n("Cannot open file %1 : %2",src_file,fptr.errorString()));
+			throw Error(i18n("Cannot open file %1: %2",src_file,fptr.errorString()));
 		
 		Uint32 cs = (tf->getFirstChunk() == tor.getNumChunks() - 1) ? tor.getLastChunkSize() : tor.getChunkSize();
 		
@@ -759,7 +759,7 @@ namespace bt
 		
 		File fptr;
 		if (!fptr.open(output_file,"r+b"))
-			throw Error(i18n("Cannot open file %1 : %2",output_file,fptr.errorString()));
+			throw Error(i18n("Cannot open file %1: %2",output_file,fptr.errorString()));
 			
 		
 		Uint32 ts = cs - tf->getFirstChunkOffset() > tf->getLastChunkSize() ? 
