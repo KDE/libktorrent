@@ -283,7 +283,8 @@ namespace bt
 	
 	bool PacketWriter::hasBytesToWrite() const
 	{
-		return getNumPacketsToWrite() > 0;
+		QMutexLocker lock(&mutex);
+		return !data_packets.empty() || !control_packets.empty();
 	}
 	
 	Uint32 PacketWriter::getUploadedDataBytes() const
