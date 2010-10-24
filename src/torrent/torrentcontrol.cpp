@@ -103,6 +103,7 @@ namespace bt
 		upload_gid = download_gid = 0;
 		upload_limit = download_limit = 0;
 		assured_upload_speed = assured_download_speed = 0;
+		last_diskspace_check = bt::CurrentTime();
 	}
 
 	TorrentControl::~TorrentControl()

@@ -55,6 +55,7 @@ private:
 public slots:
 	void update();
 	void finished(bt::TorrentInterface* tor);
+	void shutdown();
 	
 private:
 	QTimer timer;

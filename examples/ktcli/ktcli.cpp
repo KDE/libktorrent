@@ -42,6 +42,7 @@ KTCLI::KTCLI() : tc(new TorrentControl())
 	bt::SetClientInfo("ktcli",bt::MAJOR,bt::MINOR,bt::RELEASE,bt::NORMAL,"KT");
 	bt::InitLog("ktcli.log",false,true,false);
 	connect(tc.get(),SIGNAL(finished(bt::TorrentInterface*)),this,SLOT(finished(bt::TorrentInterface*)));
+	connect(this,SIGNAL(aboutToQuit()),this,SLOT(shutdown()));
 }
 
 KTCLI::~KTCLI()
@@ -219,5 +220,15 @@ void KTCLI::finished(bt::TorrentInterface* tor)
 {
 	Q_UNUSED(tor);
 	Out(SYS_GEN|LOG_NOTICE) << "Torrent fully downloaded" << endl;
+	QTimer::singleShot(0,this,SLOT(shutdown()));
+}
+
+void KTCLI::shutdown()
+{
+	tc->stop();
+	AuthenticationMonitor::instance().clear();
+	Globals::instance().shutdownTCPServer();
+	Globals::instance().shutdownUTPServer();
 	quit();
 }
+
