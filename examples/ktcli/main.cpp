@@ -48,6 +48,7 @@ int main(int argc, char** argv)
 		options.add("tmpdir <tmpdir>", ki18n("Port to use"), QDir::tempPath().toLocal8Bit());
 		options.add("encryption", ki18n("Whether or not to enable encryption"));
 		options.add("pex", ki18n("Whether or not to enable peer exchange"));
+		options.add("utp", ki18n("Whether or not to use utp"));
 		KCmdLineArgs::addCmdLineOptions(options);
 		KCmdLineArgs::init(argc,argv,"ktcli","ktorrent",ki18n("ktcli"),bt::GetVersionString().toAscii());
 		

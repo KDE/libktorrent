@@ -21,47 +21,46 @@
 #include <stdio.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <QtCrypto>
 #include "functions.h"
 
 
 
 namespace bt
 {
-	
+	static QCA::Initializer qca_init;
 
-	SHA1HashGen::SHA1HashGen()
+	SHA1HashGen::SHA1HashGen() : h(new QCA::Hash("sha1"))
 	{
 		memset(result,9,20);
-		gcry_md_open(&handle,GCRY_MD_SHA1,0);
 	}
 
 
 	SHA1HashGen::~SHA1HashGen()
 	{
-		gcry_md_close(handle);
+		delete h;
 	}
 
 	SHA1Hash SHA1HashGen::generate(const Uint8* data,Uint32 len)
 	{
-		gcry_md_write(handle,data,len);
-		bt::Uint8* result = gcry_md_read(handle,GCRY_MD_SHA1);
-		return SHA1Hash(result);
+		h->update((const char*)data,len);
+		return SHA1Hash((const bt::Uint8*)h->final().constData());
 	}
 	
 	void SHA1HashGen::start()
 	{
-		gcry_md_reset(handle);
+		h->clear();
 	}
 		
 	void SHA1HashGen::update(const Uint8* data,Uint32 len)
 	{
-		gcry_md_write(handle,data,len);
+		h->update((const char*)data,len);
 	}
 		
 	 
 	void SHA1HashGen::end()
 	{
-		memcpy(result,gcry_md_read(handle,GCRY_MD_SHA1),20);
+		memcpy(result,h->final().constData(),20);
 	}
 		
 

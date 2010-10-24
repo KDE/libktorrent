@@ -12,7 +12,7 @@ Changes in 1.1:
 - Fix crash on exit when cleaning up UPnP requests
 - UPnPRouter now retrieves the external IP of the router
 - Fix bug causing error message not to show rich text (247680)
-- Dump QCA2 in favor of libgcrypt
+- Use libgcrypt for RC4 implementation
 - Use smart pointers for mse::StreamSocket (246693)
 - Make sure that data checking fails if files cannot be opened when the maximum file limit is reached
 - Add methods to get the current upload and download rate limit

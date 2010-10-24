@@ -21,9 +21,13 @@
 #define BTSHA1HASHGEN_H
 
 #include <ktorrent_export.h>
-#include <gcrypt.h>
 #include "constants.h"
 #include "sha1hash.h"
+
+namespace QCA
+{
+	class Hash;
+}
 
 namespace bt
 {
@@ -77,7 +81,7 @@ namespace bt
 		SHA1Hash get() const;
 		
 	private:
-		gcry_md_hd_t handle;
+		QCA::Hash* h;
 		Uint8 result[20];
 	};
 

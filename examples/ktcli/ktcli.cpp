@@ -40,7 +40,7 @@ KTCLI::KTCLI() : tc(new TorrentControl())
 {
 	qsrand(time(0));
 	bt::SetClientInfo("ktcli",bt::MAJOR,bt::MINOR,bt::RELEASE,bt::NORMAL,"KT");
-	bt::InitLog("ktcli.log",false,true,true);
+	bt::InitLog("ktcli.log",false,true,false);
 	connect(tc.get(),SIGNAL(finished(bt::TorrentInterface*)),this,SLOT(finished(bt::TorrentInterface*)));
 }
 
@@ -70,10 +70,26 @@ bool KTCLI::start()
 		UTPex::setEnabled(true);
 	}
 	
-	if (!bt::Globals::instance().initTCPServer(port))
+	if (args->isSet("utp"))
 	{
-		Out(SYS_GEN|LOG_NOTICE) << "Failed to listen on port " << port << endl;
-		return false;
+		Out(SYS_GEN|LOG_NOTICE) << "Enabled UTP" << endl;
+		if (!bt::Globals::instance().initUTPServer(port))
+		{
+			Out(SYS_GEN|LOG_NOTICE) << "Failed to listen on port " << port << endl;
+			return false;
+		}
+		
+		ServerInterface::setPort(port);
+		ServerInterface::setUtpEnabled(true,true);
+		ServerInterface::setPrimaryTransportProtocol(UTP);
+	}
+	else 
+	{
+		if (!bt::Globals::instance().initTCPServer(port))
+		{
+			Out(SYS_GEN|LOG_NOTICE) << "Failed to listen on port " << port << endl;
+			return false;
+		}
 	}
 	
 	return load(KCmdLineArgs::parsedArgs()->url(args->count() - 1));

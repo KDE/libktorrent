@@ -124,11 +124,7 @@ namespace bt
 		if (!peer)
 			return;
 		
-		if (wait_queue.contains(req))
-		{
-			wait_queue.removeAll(req);
-		}
-		else if (reqs.contains(req))
+		if (!wait_queue.removeAll(req))
 		{
 			reqs.removeAll(req);
 			peer->getPacketWriter().sendCancel(req);
@@ -140,11 +136,8 @@ namespace bt
 		if (!peer)
 			return;
 
-		if (reqs.contains(req))
-		{
-			reqs.removeAll(req);
+		if (reqs.removeAll(req))
 			rejected(req);
-		}
 	}
 	
 	void PeerDownloader::cancelAll()
@@ -167,9 +160,7 @@ namespace bt
 	void PeerDownloader::piece(const Piece & p)
 	{
 		Request r(p);
-		if (wait_queue.contains(r))
-			wait_queue.removeAll(r);
-		else if (reqs.contains(r))
+		if (!wait_queue.removeAll(r))
 			reqs.removeAll(r);
 	}
 	
