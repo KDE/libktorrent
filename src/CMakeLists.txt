@@ -209,7 +209,7 @@ endif(WIN32)
 # kde4_add_kcfg_files(libktorrent_SRC settings.kcfgc)
 kde4_add_library(ktorrent SHARED ${libktorrent_SRC})
 
-target_link_libraries(ktorrent ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${KDE4_SOLID_LIBS} ${LIBGCRYPT_LIBRARIES} qca)
+target_link_libraries(ktorrent ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${KDE4_SOLID_LIBS} ${LIBGCRYPT_LIBRARIES} ${QCA2_LIBRARIES})
 if(WIN32)
 target_link_libraries(ktorrent ws2_32)
 endif(WIN32)
