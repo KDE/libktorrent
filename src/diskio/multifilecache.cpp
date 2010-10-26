@@ -687,7 +687,8 @@ namespace bt
 					saveFirstAndLastChunk(tf,tf->getPathOnDisk(),dnd_file);
 				
 				// delete data file
-				bt::Delete(tf->getPathOnDisk(),true);
+				if (bt::Exists(tf->getPathOnDisk()))
+					bt::Delete(tf->getPathOnDisk(),true);
 				
 				files.erase(tf->getIndex());
 				dfd = new DNDFile(dnd_file,tf,tor.getChunkSize());
