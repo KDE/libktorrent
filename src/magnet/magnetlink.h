@@ -22,19 +22,24 @@
 #ifndef BT_MAGNETLINK_H
 #define BT_MAGNETLINK_H
 
-#include <QString>
 #include <ktorrent_export.h>
 #include <util/sha1hash.h>
+#include <KUrl>
 
 namespace bt
 {
 	/**
 		MagnetLink class
 		magnet links have the format: 
-		magnet:?xt=urn:btih:info_hash&dn=name&tr=tracker-url
+		magnet:?xt=urn:btih:info_hash&dn=name&tr=tracker-url[,tracker-url...]
+		note: a comma-seperated list will not work with other clients likely
+		optional parameters are
+		to=torrent-file-url (need not be valid)
+		pt=path-to-download-in-torrent
 	*/
 	class KTORRENT_EXPORT MagnetLink
 	{
+	friend class MagnetDownloader;
 	public:
 		MagnetLink();
 		MagnetLink(const MagnetLink & mlink);
@@ -56,8 +61,14 @@ namespace bt
 		/// Get the display name (can be empty)
 		QString displayName() const {return name;}
 		
-		/// Get the tracker URL (can be empty)
-		QString tracker() const {return tracker_url;}
+		/// Get the path of addressed file(s) inside the torrent 
+		QString subPath() const {return path;}
+		
+		/// Get the torrent URL (can be empty)
+		QString torrent() const {return torrent_url;}
+		
+		/// Get all possible trackers (can be empty)
+		KUrl::List trackers() const {return tracker_urls;}
 		
 		/// Get the info hash
 		const SHA1Hash & infoHash() const {return info_hash;}
@@ -70,7 +81,9 @@ namespace bt
 	private:
 		QString magnet_string;
 		SHA1Hash info_hash;
-		QString tracker_url;
+		QString torrent_url;
+		KUrl::List tracker_urls;
+		QString path;
 		QString name;
 	};
 

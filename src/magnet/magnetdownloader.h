@@ -22,17 +22,17 @@
 #define BT_MAGNETDOWNLOADER_H
 
 #include <QObject>
+#include <kio/job.h>
+#include <kio/http.h>
 #include <ktorrent_export.h>
 #include <torrent/torrent.h>
 #include <tracker/tracker.h>
 #include "magnetlink.h"
 
-
 namespace dht
 {
 	class DHTPeerSource;
 }
-
 
 namespace bt
 {
@@ -85,6 +85,7 @@ namespace bt
 	private slots:
 		void onNewPeer(Peer* p);
 		void onMetadataDownloaded(const QByteArray & data);
+		void onTorrentDownloaded(KJob*);
 		void dhtStarted();
 		void dhtStopped();
 		
@@ -96,7 +97,7 @@ namespace bt
 		
 	private:
 		MagnetLink mlink;
-		Tracker* tracker;
+		QList<Tracker*> trackers;
 		PeerManager* pman;
 		dht::DHTPeerSource* dht_ps;
 		QByteArray metadata;

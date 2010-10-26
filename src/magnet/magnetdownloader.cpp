@@ -25,12 +25,18 @@
 #include <torrent/globals.h>
 #include <dht/dhtbase.h>
 #include <dht/dhtpeersource.h>
+#include <kio/jobclasses.h>
+
+#include "bcodec/bdecoder.h"
+#include "bcodec/bnode.h"
+#include "util/error.h"
+#include <boost/concept_check.hpp>
 
 namespace bt
 {
 	
 	MagnetDownloader::MagnetDownloader(const bt::MagnetLink& mlink, QObject* parent)
-		: QObject(parent),mlink(mlink),tracker(0),pman(0),dht_ps(0),tor(mlink.infoHash()),found(false)
+		: QObject(parent),mlink(mlink),pman(0),dht_ps(0),tor(mlink.infoHash()),found(false)
 	{
 		dht::DHTBase & dht_table = Globals::instance().getDHT();
 		connect(&dht_table,SIGNAL(started()),this,SLOT(dhtStarted()));
@@ -47,21 +53,29 @@ namespace bt
 	{
 		if (running())
 			return;
+
+                
+		if (!mlink.torrent().isEmpty()) 
+		{
+			KIO::StoredTransferJob *job = KIO::storedGet( mlink.torrent(), KIO::NoReload, KIO::HideProgressInfo );
+			connect(job,SIGNAL(result(KJob*)),this,SLOT(onTorrentDownloaded(KJob*)));
+		}
 		
 		pman = new PeerManager(tor);
 		connect(pman,SIGNAL(newPeer(Peer*)),this,SLOT(onNewPeer(Peer*)));
 		
-		if (!mlink.tracker().isEmpty())
+		foreach (const KUrl & url,mlink.trackers())
 		{
-			KUrl url(mlink.tracker());
+			Tracker* tracker;
 			if (url.protocol() == "udp")
 				tracker = new UDPTracker(url,this,tor.getPeerID(),0);
 			else
 				tracker = new HTTPTracker(url,this,tor.getPeerID(),0);
+			trackers << tracker;
 			connect(tracker,SIGNAL(peersReady(PeerSource*)),pman,SLOT(peerSourceReady(PeerSource*)));
 			tracker->start();
 		}
-		
+	
 		dht::DHTBase & dht_table = Globals::instance().getDHT();
 		if (dht_table.isRunning())
 		{
@@ -79,12 +93,12 @@ namespace bt
 		if (!running())
 			return;
 		
-		if (tracker)
+		foreach (Tracker* tracker,trackers)
 		{
 			tracker->stop();
 			delete tracker;
-			tracker = 0;
 		}
+		trackers.clear();
 		
 		if (dht_ps)
 		{
@@ -149,6 +163,37 @@ namespace bt
 	const bt::SHA1Hash& MagnetDownloader::infoHash() const
 	{
 		return mlink.infoHash();
+	}
+
+	void MagnetDownloader::onTorrentDownloaded(KJob* job)
+	{
+		if (!job) 
+			return;
+		
+		KIO::StoredTransferJob* stj = qobject_cast<KIO::StoredTransferJob*>(job);
+		if (job->error())
+		{
+			Out(SYS_GEN|LOG_DEBUG) << "Failed to download " << stj->url() << ": " << stj->errorString() << endl;
+			return;
+		}
+		
+		QByteArray data = stj->data();
+		try
+		{
+			Torrent tor;
+			tor.load(data,false);
+			const TrackerTier* tier = tor.getTrackerList();
+			while (tier)
+			{
+				mlink.tracker_urls.append(tier->urls);
+				tier = tier->next;
+			}
+			onMetadataDownloaded(tor.getMetaData());
+		} 
+		catch (...) 
+		{
+			Out(SYS_GEN|LOG_NOTICE) << "Invalid torrent file from " << mlink.torrent() << endl;
+		}
 	}
 
 	void MagnetDownloader::onMetadataDownloaded(const QByteArray& data)

@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "magnetlink.h"
-#include <KUrl>
+#include <QStringList>
 #include <util/log.h>
 #include <util/error.h>
 
@@ -34,7 +34,9 @@ namespace bt
 	{
 		magnet_string = mlink.magnet_string;
 		info_hash = mlink.info_hash;
-		tracker_url = mlink.tracker_url;
+		tracker_urls = mlink.tracker_urls;
+		torrent_url = mlink.torrent_url;
+		path = mlink.path;
 		name = mlink.name;
 	}
 
@@ -51,7 +53,9 @@ namespace bt
 	{
 		magnet_string = mlink.magnet_string;
 		info_hash = mlink.info_hash;
-		tracker_url = mlink.tracker_url;
+		tracker_urls = mlink.tracker_urls;
+		torrent_url = mlink.torrent_url;
+		path = mlink.path;
 		name = mlink.name;
 		return *this;
 	}
@@ -70,6 +74,9 @@ namespace bt
 			return;
 		}
 		
+		torrent_url = url.queryItem("to");
+		path = url.queryItem("pt");
+
 		QString xt = url.queryItem("xt");
 		if (!xt.startsWith("urn:btih:"))
 		{
@@ -99,7 +106,7 @@ namespace bt
 			}
 			
 			info_hash = SHA1Hash(hash);
-			tracker_url = url.queryItem("tr");
+			tracker_urls = url.queryItem("tr").split(",");
 			name = url.queryItem("dn");
 			magnet_string = mlink;
 		}
