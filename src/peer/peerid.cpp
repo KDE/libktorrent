@@ -122,6 +122,7 @@ namespace bt
 			//AZUREUS STYLE
 			Map["AG"] = "Ares";
 			Map["A~"] = "Ares";
+			Map["AT"] = "Artemis";
 			Map["AV"] = "Avicora";
 			Map["AX"] = "BitPump";
 			Map["AR"] = "Arctic";
@@ -130,41 +131,55 @@ namespace bt
 			Map["BC"] = "BitComet";
 			Map["BF"] = "Bitflu";
 			Map["BG"] = "BTGetit";
+			Map["BL"] = "BitBlinder";
 			Map["BM"] = "BitMagnet";
 			Map["BO"] = "BitsOnWheels";
+			Map["BP"] = "BitTorrent Pro";
 			Map["BR"] = "BitRocket";
-			Map["BS"] = "BTSlave"; 
+			Map["BS"] = "BTSlave";
+			Map["BW"] = "BitWombat";
 			Map["BX"] = "BitTorrent X";
 			Map["CD"] = "Enhanced CTorrent";
+			Map["CS"] = "SpywareTerminator";
 			Map["CT"] = "CTorrent";
 			Map["DE"] = "DelugeTorrent";
 			Map["DP"] = "Propagate Data Client";
 			Map["EB"] = "EBit";
 			Map["ES"] = "electric sheep";
+			Map["FC"] = "FileCroc";
 			Map["FT"] = "FoxTorrent";
 			Map["GS"] = "GSTorrent";
 			Map["G3"] = "G3 Torrent";
+			Map["HK"] = "Hekate";
 			Map["HL"] = "Halite";
 			Map["HN"] = "Hydranode";
 			Map["KG"] = "KGet";
 			Map["KT"] = "KTorrent"; // lets not forget our own client
+			Map["LC"] = "LeechCraft";
 			Map["LH"] = "LH-ABC";
 			Map["lt"] = "libTorrent";
 			Map["LT"] = "libtorrent";
 			Map["LP"] = "Lphant";
 			Map["LW"] = "LimeWire";
+			Map["MK"] = "Meerkat";
 			Map["ML"] = "MLDonkey";
 			Map["MO"] = "MonoTorrent";
 			Map["MP"] = "MooPolice";
 			Map["MT"] = "MoonLight";
+			Map["NE"] = "BT Next Evolution";
+			Map["NX"] = "Net Transport";
+			Map["OS"] = "OneSwarm";
+			Map["OT"] = "OmegaTorrent";
 			Map["PD"] = "Pando";
 			Map["qB"] = "qBittorrent";
 			Map["QD"] = "QQDownload";
 			Map["QT"] = "Qt 4 Torrent example";
-			Map["RS"] = "Rufus";
 			Map["RT"] = "Retriever";
+			Map["RZ"] = "RezTorrent";
 			Map["S~"] = "Shareaza alpha/beta";
 			Map["SB"] = "Swiftbit";
+			Map["SD"] = "Thunder";
+			Map["SM"] = "SoMud";
 			Map["SS"] = "SwarmScope";
 			Map["ST"] = "SymTorrent";
 			Map["st"] = "sharktorrent";
@@ -174,10 +189,13 @@ namespace bt
 			Map["TS"] = "Torrent Storm";
 			Map["TT"] = "TuoTu";
 			Map["UL"] = "uLeecher!";
+			Map["UM"] = QString("%1Torrent for Mac").arg(QChar(0x00B5)); // µTorrent, 0x00B5 is unicode for µ
 			Map["UT"] = QString("%1Torrent").arg(QChar(0x00B5)); // µTorrent, 0x00B5 is unicode for µ
+			Map["VG"] = "Vagaa";
 			Map["WT"] = "BitLet";
 			Map["WY"] = "FireTorrent";
 			Map["XL"] = "Xunlei";
+			Map["XS"] = "XSwifter";
 			Map["XT"] = "Xan Torrent";
 			Map["XX"] = "Xtorrent";
 			Map["ZT"] = "Zip Torrent";
@@ -197,6 +215,13 @@ namespace bt
 			Map["M"] = "BitTorrent";
 			Map["exbc"] = "BitComet";
 			Map["Mbrst"] = "Burst!";
+			Map["XBT"] = "XBT Client";
+			Map["SP"] = "BitSpirit";
+			Map["FG"] = "FlashGet";
+			Map["RS"] = "Rufus";
+			Map["Q1"] = "Queen Bee";
+			Map["AP"] = "AllPeers";
+			Map["QVOD"] = "Qvod";
 			first = false;
 		}
 
@@ -231,21 +256,51 @@ namespace bt
 		{
 			name = Map["OP"];
 		}
-		else if ( peer_id.startsWith("exbc") )
+		else if (peer_id.startsWith("exbc"))
 		{
 			name = Map["exbc"];
 		}
-		else if ( peer_id.mid(1,3) == "BOW")
+		else if (peer_id.mid(1,3) == "BOW")
 		{
 			name = Map["BOW"];
 		}
-		else if ( peer_id.startsWith("Plus"))
+		else if (peer_id.startsWith("Plus"))
 		{
 			name = Map["Plus"];
 		}
-		else if ( peer_id.startsWith("Mbrst"))
+		else if (peer_id.startsWith("Mbrst"))
 		{
 			name = Map["Mbrst"] + ' ' + peer_id.at(5) + '.' + peer_id.at(7);
+		}
+		else if (peer_id.startsWith("XBT"))
+		{
+			name = Map["XBT"] + ' ' + peer_id.at(3) + '.' + peer_id.at(4) + '.' + peer_id.at(5);
+		}
+		else if (peer_id.startsWith("SP"))
+		{
+			name = Map["SP"] + ' ' + peer_id.at(2) + '.' + peer_id.at(3) + '.'
+				+ peer_id.at(4) + '.' + peer_id.at(5);
+		}
+		else if (peer_id.startsWith("FG"))
+		{
+			name = Map["FG"] + ' ' + peer_id.at(2) + '.' + peer_id.at(3) + '.'
+				+ peer_id.at(4) + '.' + peer_id.at(5);
+		}
+		else if (peer_id.mid(2,2) == "RS")
+		{
+			name = Map["RS"];
+		}
+		else if (peer_id.startsWith("Q1"))
+		{
+			name = Map["Q1"];
+		}
+		else if (peer_id.startsWith("AP"))
+		{
+			name = Map["AP"];
+		}
+		else if (peer_id.startsWith("QVOD"))
+		{
+			name = Map["QVOD"];
 		}
 			
 		return name;

@@ -1,3 +1,6 @@
+Changes in 1.0.5:
+- Update PeerID client identifications
+
 Changes in 1.0.4:
 - Fix race condition causing timers not to be removed in the µTP code, resulting in a crash (251117)
 - Fix deadlock in µTP code caused by keeping a mutex lock longer then necessary
