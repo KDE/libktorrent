@@ -19,6 +19,8 @@
  ***************************************************************************/
 #include "movedatafilesjob.h"
 #include <QFileInfo>
+#include <KLocale>
+#include <kjobtrackerinterface.h>
 #include <kio/jobuidelegate.h>
 #include <util/log.h>
 #include <util/fileops.h>
@@ -28,12 +30,26 @@
 namespace bt
 {
 
-	MoveDataFilesJob::MoveDataFilesJob() : Job(true,0),err(false),active_job(0),running_recovery_jobs(0)
-	{}
+	MoveDataFilesJob::MoveDataFilesJob() 
+		: Job(true,0),
+		err(false),
+		active_job(0),
+		running_recovery_jobs(0),
+		bytes_moved(0),
+		total_bytes(0),
+		bytes_moved_current_file(0)
+	{
+	}
 
 	
 	MoveDataFilesJob::MoveDataFilesJob(const QMap< TorrentFileInterface*, QString >& fmap) 
-		: Job(true,0),err(false),active_job(0),running_recovery_jobs(0)
+		: Job(true,0),
+		err(false),
+		active_job(0),
+		running_recovery_jobs(0),
+		bytes_moved(0),
+		total_bytes(0),
+		bytes_moved_current_file(0)
 	{
 		file_map = fmap;
 		QMap<TorrentFileInterface*,QString>::const_iterator i = file_map.constBegin();
@@ -86,6 +102,8 @@ namespace bt
 		}
 		else
 		{
+			bytes_moved += bytes_moved_current_file;
+			bytes_moved_current_file = 0;
 			success.insert(active_src,active_dst);
 			active_src = active_dst = QString();
 			active_job = 0;
@@ -104,6 +122,15 @@ namespace bt
 	
 	void MoveDataFilesJob::start()
 	{
+		KIO::getJobTracker()->registerJob(this);
+		QMap<QString,QString>::iterator i = todo.begin();
+		while (i != todo.end())
+		{
+			QFileInfo fi(i.key());
+			total_bytes += fi.size();
+			i++;
+		}
+		setTotalAmount(KJob::Bytes,total_bytes);
 		startMoving();
 	}
 	
@@ -123,14 +150,22 @@ namespace bt
 			return;
 		}
 			
-		QMap<QString,QString>::iterator i = todo.begin();	
-		active_job = KIO::file_move(KUrl(i.key()),KUrl(i.value()),-1/*,KIO::HideProgressInfo*/);
+		QMap<QString,QString>::iterator i = todo.begin();
+		active_job = KIO::file_move(KUrl(i.key()),KUrl(i.value()),-1,KIO::HideProgressInfo);
 		active_src = i.key();
 		active_dst = i.value();
 		Out(SYS_GEN|LOG_DEBUG) << "Moving " << active_src << " -> " << active_dst << endl;
 		connect(active_job,SIGNAL(result(KJob*)),this,SLOT(onJobDone(KJob*)));
 		connect(active_job,SIGNAL(canceled(KJob*)),this,SLOT(onCanceled(KJob*)));
+		connect(active_job,SIGNAL(processedAmount(KJob*,KJob::Unit,qulonglong)),
+				this,SLOT(onTransferred(KJob*,KJob::Unit,qulonglong)));
+		connect(active_job,SIGNAL(speed(KJob*, unsigned long)),
+				this,SLOT(onSpeed(KJob*,unsigned long)));
 		todo.erase(i);
+		
+		description(this, i18nc("@title job","Moving"),
+					qMakePair(i18nc("The source of a file operation", "Source"), active_src),
+					qMakePair(i18nc("The destination of a file operation", "Destination"), active_dst));
 		addSubjob(active_job);
 	}
 	
@@ -164,5 +199,23 @@ namespace bt
 		if (running_recovery_jobs <= 0)
 			emitResult();
 	}
+	
+	void MoveDataFilesJob::onTransferred(KJob *job, KJob::Unit unit, qulonglong amount)
+	{
+		Q_UNUSED(job);
+		if (unit == KJob::Bytes)
+		{
+			bytes_moved_current_file = amount;
+			setProcessedAmount(unit, bytes_moved + bytes_moved_current_file);
+		}
+	}
+	
+	void MoveDataFilesJob::onSpeed(KJob* job, unsigned long speed)
+	{
+		Q_UNUSED(job);
+		emitSpeed(speed);
+	}
+
+
 }
 #include "movedatafilesjob.moc"

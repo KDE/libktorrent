@@ -60,6 +60,8 @@ namespace bt
 		void onJobDone(KJob* j);
 		void onCanceled(KJob* j);
 		void onRecoveryJobDone(KJob* j);
+		void onTransferred(KJob *job, KJob::Unit unit, qulonglong amount);
+		void onSpeed(KJob* job, unsigned long speed);
 		
 	private:
 		void recover(bool delete_active);
@@ -73,6 +75,10 @@ namespace bt
 		QMap<QString,QString> success;
 		int running_recovery_jobs;	
 		QMap<TorrentFileInterface*,QString> file_map;
+		
+		bt::Uint64 bytes_moved;
+		bt::Uint64 total_bytes;
+		bt::Uint64 bytes_moved_current_file;
 	};
 
 }
