@@ -67,7 +67,9 @@ namespace bt
 
 
 	MultiFileCache::~MultiFileCache()
-	{}
+	{
+		cleanupPieceCache();
+	}
 	
 	void MultiFileCache::loadFileMap()
 	{
@@ -404,11 +406,10 @@ namespace bt
 		}
 	}
 	
-	PieceData* MultiFileCache::createPiece(Chunk* c,Uint32 off,Uint32 length,bool read_only)
+	PieceData::Ptr MultiFileCache::createPiece(Chunk* c,Uint32 off,Uint32 length,bool read_only)
 	{
 		open();
 		
-		PieceData* piece = 0;
 		QList<Uint32> tflist;
 		tor.calcChunkPos(c->getIndex(),tflist);
 		
@@ -418,13 +419,13 @@ namespace bt
 			const TorrentFile & f = tor.getFile(tflist.first());
 			CacheFile* fd = files.find(tflist.first());
 			if (!fd)
-				return 0;
+				return PieceData::Ptr();
 			
 			if (Cache::mappedModeAllowed() && mmap_failures < 3)
 			{
 				Uint64 offset = FileOffset(c,f,tor.getChunkSize()) + off;
-				piece = new PieceData(c,off,length,0,fd);
-				Uint8* buf = (Uint8*)fd->map(piece,offset,length,read_only ? CacheFile::READ : CacheFile::RW);
+				PieceData::Ptr piece(new PieceData(c,off,length,0,fd,read_only));
+				Uint8* buf = (Uint8*)fd->map(piece.data(),offset,length,read_only ? CacheFile::READ : CacheFile::RW);
 				if (buf)
 				{
 					piece->setData(buf);
@@ -435,22 +436,19 @@ namespace bt
 				{
 					mmap_failures++;
 				}
-
-				delete piece;
-				piece = 0;
 			}
 		}
 			
 		// mmap failed or there are multiple files, so just do buffered
 		Uint8* buf = new Uint8[length];
-		piece = new PieceData(c,off,length,buf,0);
+		PieceData::Ptr piece(new PieceData(c,off,length,buf,0,read_only));
 		insertPiece(c,piece);
 		return piece;
 	}
 	
-	PieceDataPtr MultiFileCache::preparePiece(Chunk* c,Uint32 off,Uint32 length)
+	PieceData::Ptr MultiFileCache::preparePiece(Chunk* c,Uint32 off,Uint32 length)
 	{
-		PieceDataPtr piece = findPiece(c,off,length);
+		PieceData::Ptr piece = findPiece(c,off,length,false);
 		if (piece)
 			return piece;
 		
@@ -488,11 +486,11 @@ namespace bt
 		}
 	}
 
-	PieceDataPtr MultiFileCache::loadPiece(Chunk* c,Uint32 off,Uint32 length)
+	PieceData::Ptr MultiFileCache::loadPiece(Chunk* c,Uint32 off,Uint32 length)
 	{
 		open();
 		
-		PieceDataPtr piece = findPiece(c,off,length);
+		PieceData::Ptr piece = findPiece(c,off,length,true);
 		if (piece)
 			return piece;
 
@@ -580,7 +578,7 @@ namespace bt
 		return piece;
 	}
 
-	void MultiFileCache::savePiece(PieceDataPtr piece)
+	void MultiFileCache::savePiece(PieceData::Ptr piece)
 	{
 		open();
 		

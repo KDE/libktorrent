@@ -35,6 +35,7 @@
 #include <kmimetype.h>
 #include <kglobal.h>
 #include <interfaces/torrentinterface.h>
+#include <util/signalcatcher.h>
 #include "error.h"
 #include "log.h"
 
@@ -368,6 +369,10 @@ namespace bt
 		bool ret = InitGCrypt();
 #ifdef Q_WS_WIN
 		ret = InitWindowsSocketsAPI() && ret;
+#endif
+#ifndef Q_CC_MSVC
+		// Install SIGBUS handler
+		InstallBusHandler();
 #endif
 		return ret;
 	}

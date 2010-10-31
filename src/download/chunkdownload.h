@@ -28,6 +28,7 @@
 #include <util/sha1hashgen.h>
 #include <interfaces/chunkdownloadinterface.h>
 #include <util/bitset.h>
+#include <diskio/piecedata.h>
 
 
 namespace bt
@@ -39,8 +40,6 @@ namespace bt
 	class Peer;
 	class Request;
 	class PieceDownloader;
-	class PieceData;
-	class PieceDataPtr;
 	
 	struct ChunkDownloadHeader
 	{
@@ -223,7 +222,7 @@ namespace bt
 		QList<PieceDownloader*> pdown;
 		PtrMap<PieceDownloader*,DownloadStatus> dstatus;
 		QSet<PieceDownloader*> piece_providers;
-		PieceDataPtr* piece_data;
+		PieceData::Ptr* piece_data;
 		SHA1HashGen hash_gen;
 		Uint32 num_pieces_in_hash;
 

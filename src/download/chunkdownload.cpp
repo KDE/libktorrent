@@ -79,12 +79,7 @@ namespace bt
 		
 		pieces = BitSet(num);
 		pieces.clear();
-		piece_data = new PieceDataPtr[num]; // array of pointers to the piece data
-		
-		for (Uint32 i = 0;i < num;i++)
-		{
-			piece_data[i] = 0;
-		}
+		piece_data = new PieceData::Ptr[num]; // array of pointers to the piece data
 		
 		dstatus.setAutoDelete(true);
 
@@ -111,12 +106,9 @@ namespace bt
 		if (ds)
 			ds->remove(pp);
 		
-		PieceDataPtr buf = chunk->getPiece(p.getOffset(),p.getLength(),false);
-		if (buf)
+		PieceData::Ptr buf = chunk->getPiece(p.getOffset(),p.getLength(),false);
+		if (buf && buf->write(p.getData(),p.getLength()) == p.getLength())
 		{
-			if (!buf->write(p.getData(),p.getLength()))
-				throw Error(i18n("Not enough diskspace"));
-				
 			piece_data[pp] = buf;
 			ok = true;
 			pieces.set(pp,true);
@@ -416,7 +408,7 @@ namespace bt
 		// save how many PieceHeader structs are to be written
 		Uint32 num_pieces_to_follow = 0;
 		for (Uint32 i = 0;i < hdr.num_bits;i++)
-			if (piece_data[i])
+			if (piece_data[i] && piece_data[i]->ok())
 				num_pieces_to_follow++;
 		
 		file.write(&num_pieces_to_follow,sizeof(Uint32));
@@ -424,10 +416,10 @@ namespace bt
 		// save all buffered pieces
 		for (Uint32 i = 0;i < hdr.num_bits;i++)
 		{
-			if (!piece_data[i])
+			if (!piece_data[i] || !piece_data[i]->ok())
 				continue;
 			
-			PieceDataPtr pd = piece_data[i];
+			PieceData::Ptr pd = piece_data[i];
 			PieceHeader phdr;
 			phdr.piece = i;
 			phdr.size = pd->length();
@@ -435,7 +427,7 @@ namespace bt
 			file.write(&phdr,sizeof(PieceHeader));
 			if (!pd->mapped()) // buffered pieces need to be saved
 			{
-				file.write(pd->data(),pd->length());
+				pd->writeToFile(file,pd->length());
 			}
 		}
 	}
@@ -464,13 +456,13 @@ namespace bt
 			if (phdr.piece >= num)
 				return false;
 			
-			PieceDataPtr p = chunk->getPiece(phdr.piece * MAX_PIECE_LEN,phdr.size,false);
+			PieceData::Ptr p = chunk->getPiece(phdr.piece * MAX_PIECE_LEN,phdr.size,false);
 			if (!p)
 				return false;
 			
 			if (!phdr.mapped)
 			{
-				if (file.read(p->data(),p->length()) != p->length())
+				if (p->readFromFile(file,p->length()) != p->length())
 				{
 					return false;
 				}
@@ -561,18 +553,14 @@ namespace bt
 		
 		for (Uint32 i = num_pieces_in_hash;i < nn;i++)
 		{
-			PieceDataPtr piece = piece_data[i];
+			PieceData::Ptr piece = piece_data[i];
 			Uint32 len = i == num - 1 ? last_size : MAX_PIECE_LEN;
 			if (!piece)
 				piece = chunk->getPiece(i*MAX_PIECE_LEN,len,true);
 			
-			piece_data[i] = 0;
-			if (piece)
+			if (piece && piece->ok())
 			{
-#ifndef Q_CC_MSVC
-				BUS_ERROR_RPROTECT();
-#endif
-				hash_gen.update(piece->data(),len);
+				piece->updateHash(hash_gen);
 				chunk->savePiece(piece);
 			}
 		}

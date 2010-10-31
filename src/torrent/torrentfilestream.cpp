@@ -55,7 +55,7 @@ namespace bt
 		Uint64 current_limit;
 		bool opened;
 		
-		PieceDataPtr current_chunk_data;
+		PieceData::Ptr current_chunk_data;
 		Uint32 current_chunk;
 		Uint32 current_chunk_offset;
 		bt::Timer timer;
@@ -179,6 +179,7 @@ namespace bt
 	void TorrentFileStream::chunkDownloaded(TorrentInterface* tc, Uint32 chunk)
 	{
 		Q_UNUSED(tc);
+		Q_UNUSED(chunk);
 		d->update();
 		emit readyRead();
 	}
@@ -243,7 +244,7 @@ namespace bt
 		current_limit = 0;
 		current_chunk = firstChunk();
 		current_chunk_offset = firstChunkOffset();
-		current_chunk_data.reset();
+		current_chunk_data = PieceData::Ptr();
 		cman->checkMemoryUsage();
 		update();
 	}
@@ -347,7 +348,7 @@ namespace bt
 		
 		current_byte_offset = pos;
 		current_chunk_offset = 0;
-		current_chunk_data.reset();
+		current_chunk_data = PieceData::Ptr();
 		if (tc->getStats().multi_file_torrent)
 		{
 			bt::Uint64 tor_byte_offset = firstChunk() * tc->getStats().chunk_size;
@@ -382,6 +383,8 @@ namespace bt
 			qint64 allowed = qMin((qint64)(current_limit - current_byte_offset),maxlen - bytes_read);
 			qint64 ret = readCurrentChunk(data + bytes_read,allowed);
 			bytes_read += ret;
+			if (ret == 0)
+				break;
 		}
 		
 		// Make sure we do not cache to much during streaming
@@ -402,6 +405,9 @@ namespace bt
 		if (!current_chunk_data)
 			current_chunk_data = c->getPiece(0,c->getSize(),true);
 		
+		if (!current_chunk_data || !current_chunk_data->ok())
+			return 0;
+		
 		// Calculate how much we can read
 		qint64 allowed = c->getSize() - current_chunk_offset;
 		if (allowed > maxlen)
@@ -410,7 +416,8 @@ namespace bt
 		//Out(SYS_GEN|LOG_DEBUG) << "readCurrentChunk r " << allowed << endl;
 		
 		// Copy data
-		memcpy(data,current_chunk_data->data() + current_chunk_offset,allowed);
+		current_chunk_data->read((bt::Uint8*)data,allowed,current_chunk_offset);
+
 		// Update internal state
 		current_byte_offset += allowed;
 		current_chunk_offset += allowed;
@@ -418,7 +425,7 @@ namespace bt
 		{
 			// The whole chunk was read, so go to the next chunk
 			current_chunk++;
-			current_chunk_data.reset();
+			current_chunk_data = PieceData::Ptr();
 			current_chunk_offset = 0;
 			if (csel)
 				csel->setCursor(current_chunk);

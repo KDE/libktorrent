@@ -21,6 +21,7 @@
 #include "signalcatcher.h"
 #include "log.h"
 
+#ifndef Q_CC_MSVC
 
 namespace bt
 {
@@ -66,3 +67,4 @@ namespace bt
 
 }
 
+#endif

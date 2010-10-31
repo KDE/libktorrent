@@ -46,13 +46,18 @@ namespace bt
 
 	Cache::~Cache()
 	{
-		QMultiMap<Chunk*,PieceData*>::iterator i = piece_cache.begin();
+		cleanupPieceCache();
+	}
+
+	void Cache::cleanupPieceCache()
+	{
+		PieceCache::iterator i = piece_cache.begin();
 		while (i != piece_cache.end())
 		{
-			PieceData* cp = i.value();
-			delete cp;
-			i = piece_cache.erase(i);
+			i.value()->unload();
+			i++;
 		}
+		piece_cache.clear();
 	}
 
 
@@ -82,66 +87,43 @@ namespace bt
 		Q_UNUSED(job);
 	}
 	
-	PieceDataPtr Cache::findPiece(Chunk* c,Uint32 off,Uint32 len)
+	PieceData::Ptr Cache::findPiece(Chunk* c,Uint32 off,Uint32 len,bool read_only)
 	{
-		QMultiMap<Chunk*,PieceData*>::iterator i = piece_cache.find(c);
+		PieceCache::iterator i = piece_cache.find(c);
 		while (i != piece_cache.end() && i.key() == c)
 		{
-			PieceData* cp = i.value();
-			if (cp->offset() == off && cp->length() == len)
-				return PieceDataPtr(cp);
+			PieceData::Ptr cp = i.value();
+			if (cp->offset() == off && cp->length() == len && !(!cp->writeable() && !read_only))
+				return PieceData::Ptr(cp);
 			i++;
 		}
 		
-		return 0;
+		return PieceData::Ptr();
 	}
 	
-	void Cache::insertPiece(Chunk* c,PieceData* p)
+	void Cache::insertPiece(Chunk* c,PieceData::Ptr p)
 	{
 		piece_cache.insert(c,p);
 	}
 	
 	void Cache::clearPieces(Chunk* c)
 	{
-		QMultiMap<Chunk*,PieceData*>::iterator i = piece_cache.find(c);
+		PieceCache::iterator i = piece_cache.find(c);
 		while (i != piece_cache.end() && i.key() == c)
 		{
-			PieceData* cp = i.value();
-			delete cp;
 			i = piece_cache.erase(i);
 		}
 	}
 	
 	void Cache::clearPieceCache()
 	{
-		QMultiMap<Chunk*,PieceData*>::iterator i = piece_cache.begin();
+		PieceCache::iterator i = piece_cache.begin();
 		while (i != piece_cache.end())
 		{
-			PieceData* cp = i.value();
-			if (!cp->inUse())
-			{
-				delete cp;
+			if (!i.value()->inUse())
 				i = piece_cache.erase(i);
-			}
 			else
 				i++;
-		}
-	}
-
-	void Cache::clearPiece(PieceData* p)
-	{
-		Chunk* c = p->parentChunk();
-		QMultiMap<Chunk*,PieceData*>::iterator i = piece_cache.find(p->parentChunk());
-		while (i != piece_cache.end() && i.key() == c)
-		{
-			if (i.value() == p)
-			{
-				PieceData* cp = i.value();
-				delete cp;
-				piece_cache.erase(i);
-				break;
-			}
-			i++;
 		}
 	}
 	
@@ -149,20 +131,17 @@ namespace bt
 	{
 		Uint64 mem = 0;
 		Uint64 freed = 0;
-		QMultiMap<Chunk*,PieceData*>::iterator i = piece_cache.begin();
+		PieceCache::iterator i = piece_cache.begin();
 		while (i != piece_cache.end())
 		{
-			PieceData* cp = i.value();
-			if (!cp->inUse())
+			if (!i.value()->inUse())
 			{
-				freed += cp->length();
-				delete cp;
+				freed += i.value()->length();
 				i = piece_cache.erase(i);
 			}
 			else
 			{
-			//	Out(SYS_GEN|LOG_DEBUG) << "PieceCache: " << i.key()->getIndex() << " " << cp->offset() << " " << cp->length() << " " << cp->ref_count <<  endl;
-				mem += cp->length();
+				mem += i.value()->length();
 				i++;
 			}
 		}

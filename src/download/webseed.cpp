@@ -164,7 +164,7 @@ namespace bt
 			return;
 		}
 		
-		cur_piece = PieceDataPtr(0);
+		cur_piece = PieceData::Ptr(0);
 		first_chunk = first;
 		last_chunk = last;
 		cur_chunk = first;
@@ -424,7 +424,7 @@ namespace bt
 				}
 				
 				chunkStopped();
-				cur_piece = PieceDataPtr(0);
+				cur_piece = PieceData::Ptr(0);
 				if (cur_chunk <= last_chunk)
 				{
 					c = cman.getChunk(cur_chunk);

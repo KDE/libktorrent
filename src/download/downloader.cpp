@@ -758,24 +758,9 @@ namespace bt
 	
 	void Downloader::onChunkReady(Chunk* c)
 	{
-		PieceDataPtr piece = c->getPiece(0,c->getSize(),false);
-		
 		webseeds_chunks.erase(c->getIndex());
-		if (!piece)
-		{
-			// reset chunk but only when no other peer is downloading it
-			if (!current_chunks.find(c->getIndex()))
-				cman.resetChunk(c->getIndex());
-			
-			chunk_selector->reinsert(c->getIndex());
-			return;
-		}
-	
-#ifndef Q_CC_MSVC
-		BUS_ERROR_RPROTECT();
-#endif
-		SHA1Hash h = SHA1Hash::generate(piece->data(),c->getSize());
-		if (tor.verifyHash(h,c->getIndex()))
+		PieceData::Ptr piece = c->getPiece(0,c->getSize(),true);
+		if (piece && c->checkHash(tor.getHash(c->getIndex())))
 		{
 			// hash ok so save it
 			try
@@ -815,9 +800,6 @@ namespace bt
 		else
 		{
 			Out(SYS_GEN|LOG_IMPORTANT) << "Hash verification error on chunk "  << c->getIndex() << endl;
-			Out(SYS_GEN|LOG_IMPORTANT) << "Is        : " << h << endl;
-			Out(SYS_GEN|LOG_IMPORTANT) << "Should be : " << tor.getHash(c->getIndex()) << endl;
-		
 			// reset chunk but only when no other peer is downloading it
 			if (!current_chunks.find(c->getIndex()))
 				cman.resetChunk(c->getIndex());

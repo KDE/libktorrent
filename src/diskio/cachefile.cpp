@@ -286,34 +286,17 @@ namespace bt
 		{
 			CacheFile::Entry & e = mappings[ptr];
 #ifdef HAVE_MUNMAP64
-			if (e.diff > 0)
-				ret = munmap64((char*)ptr - e.diff,e.size);
-			else
-				ret = munmap64(ptr,e.size);
+			ret = munmap64(e.ptr,e.size);
 #else
-			if (e.diff > 0)
-				ret = munmap((char*)ptr - e.diff,e.size);
-			else
-				ret = munmap(ptr,e.size);
+			ret = munmap(e.ptr,e.size);
 #endif
+			if (ret < 0)
+				Out(SYS_DIO|LOG_IMPORTANT) << QString("Munmap failed with error %1 : %2").arg(errno).arg(strerror(errno)) << endl;
 			
 			mappings.remove(ptr);
 			// no mappings, close temporary
 			if (mappings.count() == 0)
 				closeTemporary();
-		}
-		else
-		{
-#ifdef HAVE_MUNMAP64
-			ret = munmap64(ptr,size);
-#else
-			ret = munmap(ptr,size);
-#endif
-		}
-		
-		if (ret < 0)
-		{
-			Out(SYS_DIO|LOG_IMPORTANT) << QString("Munmap failed with error %1 : %2").arg(errno).arg(strerror(errno)) << endl;
 		}
 #endif
 	}
@@ -345,15 +328,9 @@ namespace bt
 			fptr->unmap((uchar*)e.ptr);
 #else
 #ifdef HAVE_MUNMAP64
-			if (e.diff > 0)
-				ret = munmap64((char*)e.ptr - e.diff,e.size);
-			else
-				ret = munmap64(e.ptr,e.size);
+			ret = munmap64(e.ptr,e.size);
 #else
-			if (e.diff > 0)
-				ret = munmap((char*)e.ptr - e.diff,e.size);
-			else
-				ret = munmap(e.ptr,e.size);
+			ret = munmap(e.ptr,e.size);
 #endif // HAVE_MUNMAP64
 #endif // Q_OS_WIN
 			e.thing->unmapped();
@@ -364,7 +341,7 @@ namespace bt
 			if (ret < 0)
 			{
 				Out(SYS_DIO|LOG_IMPORTANT) << QString("Munmap failed with error %1 : %2").arg(errno).arg(strerror(errno)) << endl;
-			}	
+			}
 		}	
 	}
 		

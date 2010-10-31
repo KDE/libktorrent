@@ -138,16 +138,20 @@ private slots:
 		// Check that critical chunks are spread over multiple peers
 		csel->setSequentialRange(0,50);
 		DummyDownloader dd[32];
-		for (Uint32 i = 0;i < 16;i++)
+		for (Uint32 i = 0;i < 32;i++)
 		{
 			downer->addPieceDownloader(&dd[i]);
 		}
 		
-		// The critical chunk should now have 16 piece downloaders
+		// Check the spread of the downloaders
 		downer->update();
-		QVERIFY(downer->downloading(0));
-		QVERIFY(downer->download(0)->getNumDownloaders() == 16);
-		for (Uint32 i = 0;i < 16;i++)
+		for (Uint32 i = 0;i < csel->criticialWindowSize();i++)
+		{
+			QVERIFY(downer->downloading(i));
+			QVERIFY(downer->download(i)->getNumDownloaders() == 32 / csel->criticialWindowSize());
+		}
+		
+		for (Uint32 i = 0;i < 32;i++)
 		{
 			QVERIFY(dd[i].getNumGrabbed() == 1);
 		}

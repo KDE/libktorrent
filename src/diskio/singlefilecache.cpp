@@ -57,6 +57,7 @@ namespace bt
 
 	SingleFileCache::~SingleFileCache()
 	{
+		cleanupPieceCache();
 		if (fd)
 		{
 			fd->close();
@@ -132,7 +133,7 @@ namespace bt
 		move_data_files_dst = QString();
 	}
 	
-	PieceDataPtr SingleFileCache::createPiece(Chunk* c,Uint64 off,Uint32 length,bool read_only)
+	PieceData::Ptr SingleFileCache::createPiece(Chunk* c,Uint64 off,Uint32 length,bool read_only)
 	{
 		if (!fd)
 			open();
@@ -142,14 +143,14 @@ namespace bt
 		if (mmap_failures >= 3)
 		{	
 			buf = new Uint8[length];
-			PieceData* cp = new PieceData(c,off,length,buf,0);
+			PieceData::Ptr cp(new PieceData(c,off,length,buf,0,read_only));
 			insertPiece(c,cp);
-			return PieceDataPtr(cp);
+			return cp;
 		}
 		else
 		{
-			PieceData* cp = new PieceData(c,off,length,0,fd);
-			buf = (Uint8*)fd->map(cp,piece_off,length,read_only ? CacheFile::READ : CacheFile::RW);
+			PieceData::Ptr cp(new PieceData(c,off,length,0,fd,read_only));
+			buf = (Uint8*)fd->map(cp.data(),piece_off,length,read_only ? CacheFile::READ : CacheFile::RW);
 			if (buf)
 			{
 				cp->setData(buf);
@@ -159,18 +160,17 @@ namespace bt
 				if (mmap_failures < 3)
 					mmap_failures++;
 				
-				delete cp;
 				buf = new Uint8[length];
-				cp = new PieceData(c,off,length,buf,0);
+				cp = PieceData::Ptr(new PieceData(c,off,length,buf,0,read_only));
 			}
 			insertPiece(c,cp);
-			return PieceDataPtr(cp);
+			return cp;
 		}
 	}
 	
-	PieceDataPtr SingleFileCache::loadPiece(Chunk* c,Uint32 off,Uint32 length)
+	PieceData::Ptr SingleFileCache::loadPiece(Chunk* c,Uint32 off,Uint32 length)
 	{
-		PieceDataPtr cp = findPiece(c,off,length);
+		PieceData::Ptr cp = findPiece(c,off,length,true);
 		if (cp)
 			return cp;
 		
@@ -185,16 +185,16 @@ namespace bt
 		return cp;
 	}
 	
-	PieceDataPtr SingleFileCache::preparePiece(Chunk* c,Uint32 off,Uint32 length)
+	PieceData::Ptr SingleFileCache::preparePiece(Chunk* c,Uint32 off,Uint32 length)
 	{
-		PieceDataPtr cp = findPiece(c,off,length);
+		PieceData::Ptr cp = findPiece(c,off,length,false);
 		if (cp)
 			return cp;
 		
 		return createPiece(c,off,length,false);
 	}
 	
-	void SingleFileCache::savePiece(PieceDataPtr piece)
+	void SingleFileCache::savePiece(PieceData::Ptr piece)
 	{
 		if (!fd)
 			open();
@@ -203,7 +203,7 @@ namespace bt
 		if (!piece->mapped())
 		{
 			Uint64 off = piece->parentChunk()->getIndex() * tor.getChunkSize() + piece->offset();
-			if (piece->data())
+			if (piece->ok())
 				fd->write(piece->data(),piece->length(),off);
 		}
 	}

@@ -49,9 +49,9 @@ namespace bt
 
 		virtual void changeTmpDir(const QString& ndir);
 		virtual void create();
-		virtual PieceDataPtr loadPiece(Chunk* c,Uint32 off,Uint32 length);
-		virtual PieceDataPtr preparePiece(Chunk* c,Uint32 off,Uint32 length);
-		virtual void savePiece(PieceDataPtr piece);
+		virtual PieceData::Ptr loadPiece(Chunk* c,Uint32 off,Uint32 length);
+		virtual PieceData::Ptr preparePiece(Chunk* c,Uint32 off,Uint32 length);
+		virtual void savePiece(PieceData::Ptr piece);
 		virtual void close();
 		virtual void open();
 		virtual Job* moveDataFiles(const QString & ndir);
@@ -73,7 +73,7 @@ namespace bt
 	//	QString guessDataDir();
 		void saveFirstAndLastChunk(TorrentFile* tf,const QString & src_file,const QString & dst_file);
 		void recreateFile(TorrentFile* tf,const QString & dnd_file,const QString & output_file);
-		PieceData* createPiece(Chunk* c,Uint32 off,Uint32 length,bool read_only);
+		PieceData::Ptr createPiece(Chunk* c,Uint32 off,Uint32 length,bool read_only);
 		void calculateOffsetAndLength(Uint32 piece_off,Uint32 piece_len,Uint64 file_off,Uint32 chunk_off,Uint32 chunk_len,Uint64 & off,Uint32 & len);
 	};
 

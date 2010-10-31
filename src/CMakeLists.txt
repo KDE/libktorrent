@@ -249,23 +249,6 @@ set (bcodec_HDR
 	./bcodec/value.h
 )
 	
-set (diskio_HDR  
-	./diskio/cache.h
-	./diskio/cachefile.h
-	./diskio/singlefilecache.h
-	./diskio/preallocationthread.h
-	./diskio/preallocationjob.h
-	./diskio/movedatafilesjob.h
-	./diskio/deletedatafilesjob.h
-	./diskio/chunkmanager.h
-	./diskio/dndfile.h
-	./diskio/chunk.h
-	./diskio/multifilecache.h
-	./diskio/piecedata.h
-)
-	
-
-	
 set (tracker_HDR
 	./tracker/tracker.h
 	./tracker/udptracker.h
@@ -304,7 +287,6 @@ set (migrate_HDR
 
 
 install(FILES ${tracker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/tracker COMPONENT Devel)
-install(FILES ${diskio_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/diskio COMPONENT Devel)
 install(FILES ${bcodec_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/bcodec COMPONENT Devel)
 install(FILES ${interfaces_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/interfaces COMPONENT Devel)
 install(FILES ${dht_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/dht COMPONENT Devel)
@@ -314,6 +296,7 @@ install(FILES ${ktorrent_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent COM
 add_subdirectory(torrent)
 add_subdirectory(datachecker)
 add_subdirectory(download)
+add_subdirectory(diskio)
 add_subdirectory(peer)
 add_subdirectory(net)
 add_subdirectory(mse)

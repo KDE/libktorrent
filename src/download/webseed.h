@@ -187,7 +187,7 @@ namespace bt
 		Uint32 up_gid,down_gid;
 		QList<Range> range_queue;
 		KUrl redirected_url;
-		PieceDataPtr cur_piece;
+		PieceData::Ptr cur_piece;
 		
 		static QString proxy_host;
 		static Uint16 proxy_port;

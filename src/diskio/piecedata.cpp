@@ -18,6 +18,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
+#include <KLocale>
 #include <util/log.h>
 #ifndef Q_CC_MSVC
 #include <util/signalcatcher.h>
@@ -25,26 +26,26 @@
 #include "piecedata.h"
 #include "cachefile.h"
 #include "chunk.h"
+#include <util/file.h>
+#include <util/sha1hashgen.h>
 
 namespace bt
 {
 
 
-	PieceData::PieceData(Chunk* chunk,Uint32 off,Uint32 len,Uint8* ptr,CacheFile* file) 
-		: chunk(chunk),off(off),len(len),ptr(ptr),file(file),ref_count(0)
+	PieceData::PieceData(Chunk* chunk,Uint32 off,Uint32 len,Uint8* ptr,CacheFile* file,bool read_only) 
+		: chunk(chunk),off(off),len(len),ptr(ptr),file(file),read_only(read_only)
 	{
 	}
 
 	PieceData::~PieceData()
 	{
-		ref_count = 0;
-		if (ptr)
-			unload();
+		unload();
 	}
 
 	void PieceData::unload()
 	{
-		if (ref_count > 0)
+		if (!ptr)
 			return;
 		
 		if (!file)
@@ -54,68 +55,85 @@ namespace bt
 		ptr = 0;
 	}
 
-#ifndef Q_CC_MSVC
-	Uint32 PieceData::write(const bt::Uint8* buf, Uint32 buf_size,Uint32 off) throw (BusError)
-#else
 	Uint32 PieceData::write(const bt::Uint8* buf, Uint32 buf_size,Uint32 off)
-#endif
 	{
-		if (off + buf_size > len)
+		if (off + buf_size > len || !ptr)
 			return 0;
+		
+		if (read_only)
+			throw bt::Error(i18n("Unable to write to a piece mapped read only"));
 
 #ifndef Q_CC_MSVC	
 		BUS_ERROR_WPROTECT();
 #endif
 		memcpy(ptr + off,buf,buf_size);
-		return true;
+		return buf_size;
 	}
+	
+
+	Uint32 PieceData::read(Uint8* buf, Uint32 to_read, Uint32 off)
+	{
+		if (off + to_read > len || !ptr)
+			return 0;
+		
+#ifndef Q_CC_MSVC	
+		BUS_ERROR_RPROTECT();
+#endif
+		memcpy(buf,ptr + off,to_read);
+		return to_read;
+	}
+	
+	Uint32 PieceData::writeToFile(File& file, Uint32 size, Uint32 off)
+	{
+		if (off + size > len || !ptr)
+			return 0;
+		
+#ifndef Q_CC_MSVC	
+		BUS_ERROR_RPROTECT();
+#endif
+		return file.write(ptr + off,size);
+	}
+
+	Uint32 PieceData::readFromFile(File& file, Uint32 size, Uint32 off)
+	{
+		if (off + size > len || !ptr)
+			return 0;
+		
+		if (read_only)
+			throw bt::Error(i18n("Unable to write to a piece mapped read only"));
+		
+#ifndef Q_CC_MSVC	
+		BUS_ERROR_WPROTECT();
+#endif
+		return file.read(ptr + off,size);
+	}
+	
+	void PieceData::updateHash(SHA1HashGen& hg)
+	{
+		if (!ptr)
+			return;
+		
+#ifndef Q_CC_MSVC	
+		BUS_ERROR_RPROTECT();
+#endif
+		hg.update(ptr,len);
+	}
+	
+	SHA1Hash PieceData::generateHash() const
+	{
+		if (!ptr)
+			return SHA1Hash();
+		
+#ifndef Q_CC_MSVC	
+		BUS_ERROR_RPROTECT();
+#endif
+		return SHA1Hash::generate(ptr,len);
+	}
+
 
 
 	void PieceData::unmapped()
 	{
 		ptr = 0;
-		Out(SYS_DIO|LOG_DEBUG) << QString("Piece %1 %2 %3 unmapped").arg(chunk->getIndex()).arg(off).arg(len) << endl;
 	}
-	
-	PieceDataPtr::PieceDataPtr(PieceData* pdata) : pdata(pdata)
-	{
-		if (pdata)
-			pdata->ref();
-	}
-
-	PieceDataPtr::PieceDataPtr(const bt::PieceDataPtr& other) : pdata(other.pdata)
-	{
-		if (pdata)
-			pdata->ref();
-	}
-
-	PieceDataPtr::~PieceDataPtr()
-	{
-		if (pdata)
-			pdata->unref();
-	}
-
-	PieceDataPtr& PieceDataPtr::operator=(const bt::PieceDataPtr& other)
-	{
-		if (pdata)
-			pdata->unref();
-		
-		pdata = other.pdata;
-		if (pdata)
-			pdata->ref();
-		
-		return *this;
-	}
-
-	void PieceDataPtr::reset()
-	{
-		if (pdata)
-			pdata->unref();
-		
-		pdata = 0;
-	}
-
-
-
-
 }

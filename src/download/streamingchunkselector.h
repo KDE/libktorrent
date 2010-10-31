@@ -45,6 +45,9 @@ namespace bt
 		virtual void reinsert(bt::Uint32 chunk);
 		virtual bool selectRange(bt::Uint32& from, bt::Uint32& to, bt::Uint32 max_len);
 		
+		/// Get the critical window size in chunks
+		Uint32 criticialWindowSize() const {return critical_window_size;}
+		
 		/**
 			Set the range to be downloaded sequentially.
 			The cursor will be initialized to the first of the range.

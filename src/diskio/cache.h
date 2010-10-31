@@ -23,9 +23,10 @@
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <torrent/torrent.h>
+#include <diskio/piecedata.h>
 #include <QString>
-#include <QMap>
 #include <QMultiMap>
+
 
 class QStringList;
 
@@ -35,8 +36,6 @@ namespace bt
 	class Chunk;
 	class PreallocationThread;
 	class TorrentFileInterface;
-	class PieceData;
-	class PieceDataPtr;
 	class Job;
 
 	/**
@@ -48,14 +47,6 @@ namespace bt
 	 */
 	class KTORRENT_EXPORT Cache
 	{
-	protected:
-		Torrent & tor;
-		QString tmpdir;
-		QString datadir;
-		bool preexisting_files;
-		Uint32 mmap_failures;
-		
-		QMultiMap<Chunk*,PieceData*> piece_cache;
 	public:
 		Cache(Torrent & tor,const QString & tmpdir,const QString & datadir);
 		virtual ~Cache();
@@ -115,7 +106,7 @@ namespace bt
 		 * @param length The length of the piece
 		 * @return Pointer to the data
 		 */
-		virtual PieceDataPtr loadPiece(Chunk* c,Uint32 off,Uint32 length) = 0;
+		virtual PieceData::Ptr loadPiece(Chunk* c,Uint32 off,Uint32 length) = 0;
 		
 		/**
 		 * Prepare a piece for writing. If something goes wrong,
@@ -125,13 +116,13 @@ namespace bt
 		 * @param length The length of the piece
 		 * @return Pointer to the data
 		 */
-		virtual PieceDataPtr preparePiece(Chunk* c,Uint32 off,Uint32 length) = 0;
+		virtual PieceData::Ptr preparePiece(Chunk* c,Uint32 off,Uint32 length) = 0;
 		
 		/**
 		 * Save a piece to disk, will only actually save in buffered mode
 		 * @param piece The piece
 		 */
-		virtual void savePiece(PieceDataPtr piece) = 0;
+		virtual void savePiece(PieceData::Ptr piece) = 0;
 		
 		/**
 		 * Create all the data files to store the data.
@@ -232,11 +223,22 @@ namespace bt
 		 * @param c The chunk
 		 * */
 		void clearPieces(Chunk* c);
+		
 	protected:
-		PieceDataPtr findPiece(Chunk* c,Uint32 off,Uint32 len);
-		void insertPiece(Chunk* c,PieceData* p);
+		PieceData::Ptr findPiece(Chunk* c,Uint32 off,Uint32 len,bool read_only);
+		void insertPiece(Chunk* c,PieceData::Ptr p);
 		void clearPieceCache();
-		void clearPiece(PieceData* p);
+		void cleanupPieceCache();
+		
+	protected:
+		Torrent & tor;
+		QString tmpdir;
+		QString datadir;
+		bool preexisting_files;
+		Uint32 mmap_failures;
+		
+		typedef QMultiMap<Chunk*,PieceData::Ptr> PieceCache;
+		PieceCache piece_cache;
 		
 	private:
 		static bool preallocate_files;

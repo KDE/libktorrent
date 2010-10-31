@@ -22,13 +22,13 @@
 
 #include <ktorrent_export.h>
 #include <util/constants.h>
+#include <diskio/piecedata.h>
 
 namespace bt
 {
 	class SHA1Hash;
 	class Cache;
 	class PieceData;
-	class PieceDataPtr;
 
 	/**
 	 * @author Joris Guisson
@@ -70,14 +70,14 @@ namespace bt
 		 * @param read_only Is this for reading the piece or for writing
 		 * @return Pointer to the PieceData
 		 */
-		PieceDataPtr getPiece(Uint32 off,Uint32 len,bool read_only);
+		PieceData::Ptr getPiece(Uint32 off,Uint32 len,bool read_only);
 		
 		/**
 		 * Save a piece
 		 * @param off Offset of the piece
 		 * @param len Length of the piece
 		 */
-		void savePiece(PieceDataPtr piece);
+		void savePiece(PieceData::Ptr piece);
 
 		/// Get the chunks status.
 		Status getStatus() const {return status;}
