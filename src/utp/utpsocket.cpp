@@ -81,6 +81,9 @@ namespace utp
 
 	bool UTPSocket::connectTo(const net::Address& addr)
 	{
+		if (!bt::Globals::instance().isUTPEnabled())
+			return false;
+		
 		UTPServer & srv = bt::Globals::instance().getUTPServer();
 		reset();
 		
