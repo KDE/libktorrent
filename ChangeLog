@@ -1,5 +1,7 @@
 Changes in 1.0.5:
 - Update PeerID client identifications
+- Backport fix for bug which causes some chunks not to get unmapped properly
+- Make sure UTPServer is running when setting up a connection with a UTPSocket (254334)
 
 Changes in 1.0.4:
 - Fix race condition causing timers not to be removed in the µTP code, resulting in a crash (251117)
