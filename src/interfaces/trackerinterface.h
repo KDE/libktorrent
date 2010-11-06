@@ -93,6 +93,7 @@ namespace bt
 		TrackerStatus status;
 		QDateTime request_time;
 		QString error;
+		QString warning;
 		bool started;
 	};
 

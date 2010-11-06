@@ -55,7 +55,7 @@ namespace bt
 	{
 		switch (status)
 		{
-			case TRACKER_OK: return i18n("OK");
+			case TRACKER_OK: return warning.isEmpty() ? i18n("OK") : i18n("Warning: %1", warning);
 			case TRACKER_ANNOUNCING: return i18n("Announcing");
 			case TRACKER_ERROR: return i18n("Error: %1",error);
 			case TRACKER_IDLE:

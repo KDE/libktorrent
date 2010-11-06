@@ -19,6 +19,7 @@ Changes in 1.1:
 - Fix deadlock in µTP code caused by interlocking mutexes
 - Make sure MoveDataFilesJob properly emits signals so KIO can show a progress dialog (255369)
 - Revamp PieceData management, fixes a crash (247984)
+- Add support for warning message parameter in tracker replies
 
 Changes in 1.0.5:
 - Update PeerID client identifications

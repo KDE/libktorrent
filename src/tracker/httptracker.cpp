@@ -311,6 +311,14 @@ namespace bt
 			failed(error);
 			return false;
 		}
+		
+		if (dict->getData("warning message"))
+		{
+			BValueNode* vn = dict->getValue("warning message");
+			warning = vn->data().toString();
+		}
+		else
+			warning.clear();
 			
 		BValueNode* vn = dict->getValue("interval");
 			
