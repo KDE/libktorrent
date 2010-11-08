@@ -17,7 +17,7 @@ Changes in 1.1:
 - Make sure that data checking fails if files cannot be opened when the maximum file limit is reached
 - Add methods to get the current upload and download rate limit
 - Fix deadlock in µTP code caused by interlocking mutexes
-- Make sure MoveDataFilesJob properly emits signals so KIO can show a progress dialog (255369)
+- Make sure MoveDataFilesJob properly emits signals so ktorrent can show a progress dialog (255369)
 - Revamp PieceData management, fixes a crash (247984)
 - Add support for warning message parameter in tracker replies
 
