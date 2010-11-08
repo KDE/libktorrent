@@ -162,7 +162,6 @@ set(libktorrent_SRC
 	datachecker/datachecker.cpp          
 	datachecker/datacheckerthread.cpp  
 	datachecker/singledatachecker.cpp
-	datachecker/datacheckerlistener.cpp  
 	datachecker/multidatachecker.cpp
 	datachecker/datacheckerjob.cpp
 	

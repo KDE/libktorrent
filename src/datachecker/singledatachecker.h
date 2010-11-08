@@ -36,7 +36,7 @@ namespace bt
 		SingleDataChecker();
 		virtual ~SingleDataChecker();
 
-		virtual void check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & status);
+		virtual void check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & current_status);
 	};
 
 }

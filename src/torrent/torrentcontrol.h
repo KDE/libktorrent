@@ -55,6 +55,7 @@ namespace bt
 	class ChunkSelectorFactoryInterface;
 	class CacheFactory;
 	class JobQueue;
+	class DataCheckerJob;
 	
 	/**
 	 * @author Joris Guisson
@@ -156,7 +157,7 @@ namespace bt
 		virtual void setChunkSelector(ChunkSelectorInterface* csel);
 		virtual void networkUp();
 		virtual bool announceAllowed();
-		virtual void startDataCheck(bt::DataCheckerListener* lst);
+		virtual Job* startDataCheck(bool auto_import);
 		virtual bool hasMissingFiles(QStringList & sl);
 		virtual Uint32 getNumDHTNodes() const;
 		virtual const DHTNode & getDHTNode(Uint32 i) const;
@@ -262,7 +263,7 @@ namespace bt
 		
 	protected:
 		/// Called when a data check is finished by DataCheckerJob
-		void afterDataCheck(DataCheckerListener* lst,const BitSet & result,const QString & error);
+		void afterDataCheck(DataCheckerJob* job,const BitSet & result);
 		void beforeDataCheck();
 		void preallocFinished(const QString & error,bool completed);
 		void allJobsDone();

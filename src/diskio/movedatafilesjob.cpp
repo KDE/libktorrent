@@ -122,7 +122,7 @@ namespace bt
 	
 	void MoveDataFilesJob::start()
 	{
-		KIO::getJobTracker()->registerJob(this);
+		registerWithTracker();
 		QMap<QString,QString>::iterator i = todo.begin();
 		while (i != todo.end())
 		{

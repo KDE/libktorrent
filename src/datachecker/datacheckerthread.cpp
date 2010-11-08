@@ -34,6 +34,7 @@ namespace bt
 		: dc(dc),path(path),tor(tor),dnddir(dnddir),status(status)
 	{
 		running = true;
+		dc->moveToThread(this);
 	}
 
 

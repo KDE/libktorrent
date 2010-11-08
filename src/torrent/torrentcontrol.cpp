@@ -39,7 +39,6 @@
 #include <interfaces/chunkselectorinterface.h>
 #include <datachecker/singledatachecker.h>
 #include <datachecker/multidatachecker.h>
-#include <datachecker/datacheckerlistener.h>
 #include <datachecker/datacheckerthread.h>
 #include <migrate/ccmigrate.h>
 #include <migrate/cachemigrate.h>
@@ -864,6 +863,7 @@ namespace bt
 				
 				if (j)
 				{
+					j->setTorrent(this);
 					connect(j,SIGNAL(result(KJob*)),this,SLOT(moveDataFilesFinished(KJob*)));
 					job_queue->enqueue(j);
 					return true;
@@ -1397,9 +1397,11 @@ namespace bt
 		return psman;
 	}
 	
-	void TorrentControl::startDataCheck(bt::DataCheckerListener* lst)
+	Job* TorrentControl::startDataCheck(bool auto_import)
 	{
-		job_queue->enqueue(new DataCheckerJob(lst,this));
+		Job* j = new DataCheckerJob(auto_import,this);
+		job_queue->enqueue(j);
+		return j;
 	}
 	
 	void TorrentControl::beforeDataCheck()
@@ -1410,22 +1412,15 @@ namespace bt
 	}
 
 	
-	void TorrentControl::afterDataCheck(DataCheckerListener* lst,const BitSet & result,const QString & error)
+	void TorrentControl::afterDataCheck(DataCheckerJob* job,const BitSet & result)
 	{
-		bool err = !error.isNull();
-		if (err)
-		{
-			lst->stop();
-			lst->error(error);
-		}
-		
 		bool completed = stats.completed;
-		if (lst && !lst->isStopped())
+		if (job && !job->isStopped())
 		{
 			downloader->dataChecked(result);
 			// update chunk manager
 			cman->dataChecked(result);
-			if (lst->isAutoImport())
+			if (job->isAutoImport())
 			{
 				downloader->recalcDownloaded();
 				stats.imported_bytes = downloader->bytesDownloaded();
@@ -1447,9 +1442,6 @@ namespace bt
 		updateStats();
 		Out(SYS_GEN|LOG_NOTICE) << "Data check finished" << endl;
 		updateStatus();
-		if (lst)
-			lst->finished();
-		
 		dataCheckFinished();
 	
 		if (stats.completed != completed)

@@ -43,7 +43,7 @@ namespace bt
 		delete [] buf;
 	}
 	
-	void MultiDataChecker::check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & status)
+	void MultiDataChecker::check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & current_status)
 	{
 		// First open all files
 		files.reserve(tor.getNumFiles());
@@ -84,7 +84,8 @@ namespace bt
 		Uint32 cur_chunk = 0;
 		buf = new Uint8[chunk_size];
 		
-		for (cur_chunk = 0;cur_chunk < num_chunks;cur_chunk++)
+		TimeStamp last_emitted = bt::Now();
+		for (cur_chunk = 0;cur_chunk < num_chunks && !need_to_stop;cur_chunk++)
 		{
 			Uint32 cs = (cur_chunk == num_chunks - 1) ? tor.getLastChunkSize() : chunk_size;
 			if (cs == 0)
@@ -92,7 +93,7 @@ namespace bt
 			if (!loadChunk(cur_chunk,cs,tor))
 			{
 				Out(SYS_GEN|LOG_DEBUG) << "Failed to load chunk " << cur_chunk << endl;
-				if (status.get(cur_chunk))
+				if (current_status.get(cur_chunk))
 					failed++;
 				else
 					not_downloaded++;
@@ -101,23 +102,23 @@ namespace bt
 			
 			bool ok = (SHA1Hash::generate(buf,cs) == tor.getHash(cur_chunk));
 			result.set(cur_chunk,ok);
-			if (ok && status.get(cur_chunk))
+			if (ok && current_status.get(cur_chunk))
 				downloaded++;
-			else if (!ok && status.get(cur_chunk))
+			else if (!ok && current_status.get(cur_chunk))
 				failed++;
-			else if (!ok && !status.get(cur_chunk))
+			else if (!ok && !current_status.get(cur_chunk))
 				not_downloaded++;
-			else if (ok && !status.get(cur_chunk))
+			else if (ok && !current_status.get(cur_chunk))
 				found++;
 			
-			if (listener)
+			TimeStamp now = Now();
+			if (now - last_emitted > 1000 || cur_chunk == num_chunks - 1) // Emit signals once every second
 			{
-				listener->status(failed,found,downloaded,not_downloaded);
-				listener->progress(cur_chunk,num_chunks);
-				if (listener->needToStop())
-					return;
+				status(failed,found,downloaded,not_downloaded);
+				progress(cur_chunk,num_chunks);
+				last_emitted = now;
 			}
-		}	
+		}
 	}
 	
 	bool MultiDataChecker::loadChunk(Uint32 ci,Uint32 cs,const Torrent & tor)

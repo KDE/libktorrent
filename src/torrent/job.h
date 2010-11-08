@@ -25,6 +25,8 @@
 #include <ktorrent_export.h>
 #include "torrentstats.h"
 
+class KJobTrackerInterface;
+
 namespace bt 
 {
 	class TorrentControl;
@@ -48,10 +50,24 @@ namespace bt
 		/// Return the status of the torrent during the job (default implementation returns INVALID_STATUS)
 		virtual TorrentStatus torrentStatus() const;
 		
+		/// Get the torrent associated with this job
 		TorrentControl* torrent() {return tc;}
+		
+		/// Set the torrent associated with this job
+		void setTorrent(TorrentControl* t) {tc = t;}
+		
+		/// Set the job tracker 
+		static void setJobTracker(KJobTrackerInterface* trk);
+		
+	protected:
+		/// Register the job with the tracker
+		void registerWithTracker();
+		
 	private:
 		TorrentControl* tc;
 		bool stop_torrent;
+		
+		static KJobTrackerInterface* tracker;
 	};
 
 }

@@ -37,7 +37,7 @@ namespace bt
 		MultiDataChecker();
 		virtual ~MultiDataChecker();
 
-		virtual void check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & status);
+		virtual void check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & current_status);
 	private:
 		bool loadChunk(Uint32 ci,Uint32 cs,const Torrent & to);
 		

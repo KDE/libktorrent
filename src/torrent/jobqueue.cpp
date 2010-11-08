@@ -72,7 +72,7 @@ namespace bt
 
 	void JobQueue::jobDone(KJob* job)
 	{
-		if (queue.front() != job)
+		if (queue.isEmpty() || queue.front() != job)
 			return;
 		
 		// remove the job and start the next

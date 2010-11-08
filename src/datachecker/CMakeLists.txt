@@ -4,7 +4,6 @@ set (datachecker_HDR
 	./datacheckerthread.h
 	./datachecker.h
 	./singledatachecker.h
-	./datacheckerlistener.h
 	./multidatachecker.h
 	./datacheckerjob.h
 )

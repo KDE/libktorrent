@@ -19,17 +19,17 @@
  ***************************************************************************/
 
 #include "datacheckerjob.h"
-#include "datacheckerlistener.h"
 #include "datacheckerthread.h"
 #include "multidatachecker.h"
 #include "singledatachecker.h"
 #include <torrent/torrentcontrol.h>
 #include <util/functions.h>
+#include <KLocale>
 
 namespace bt
 {
 	
-	DataCheckerJob::DataCheckerJob(bt::DataCheckerListener* lst, bt::TorrentControl* tc): Job(true,tc),listener(lst)
+	DataCheckerJob::DataCheckerJob(bool auto_import,bt::TorrentControl* tc): Job(true,tc),auto_import(auto_import)
 	{
 		dcheck_thread = 0;
 		killed = false;
@@ -42,6 +42,7 @@ namespace bt
 
 	void DataCheckerJob::start()
 	{
+		registerWithTracker();
 		DataChecker* dc = 0;
 		const TorrentStats & stats = torrent()->getStats();
 		if (stats.multi_file_torrent)
@@ -49,18 +50,23 @@ namespace bt
 		else
 			dc = new SingleDataChecker();
 		
-		dc->setListener(listener);
+		connect(dc,SIGNAL(progress(quint32,quint32)),
+				this,SLOT(progress(quint32,quint32)),Qt::QueuedConnection);
+		connect(dc,SIGNAL(status(quint32,quint32,quint32,quint32)),
+				this,SLOT(status(quint32,quint32,quint32,quint32)),Qt::QueuedConnection);
+		
 		TorrentControl* tor = torrent();
 		dcheck_thread = new DataCheckerThread(
 				dc,tor->downloadedChunksBitSet(),
 				stats.output_path,tor->getTorrent(),
 				tor->getTorDir() + "dnd" + bt::DirSeparator());
 				
-		connect(dcheck_thread,SIGNAL(finished()),this,SLOT(finished()),Qt::QueuedConnection);
+		connect(dcheck_thread,SIGNAL(finished()),this,SLOT(threadFinished()),Qt::QueuedConnection);
 		
 		torrent()->beforeDataCheck();
 		
-		// dc->check(stats.output_path,*tor,tordir + "dnd" + bt::DirSeparator());
+		description(this,i18n("Checking Data"));
+		setTotalAmount(Bytes,stats.total_chunks);
 		dcheck_thread->start(QThread::IdlePriority);
 	}
 
@@ -69,7 +75,7 @@ namespace bt
 		killed = true;
 		if (dcheck_thread && dcheck_thread->isRunning())
 		{
-			listener->stop();
+			dcheck_thread->getDataChecker()->stop();
 			dcheck_thread->wait();
 			dcheck_thread->deleteLater();
 			dcheck_thread = 0;
@@ -78,18 +84,39 @@ namespace bt
 	}
 	
 	
-	void DataCheckerJob::finished()
+	void DataCheckerJob::threadFinished()
 	{
 		if (!killed)
 		{
 			DataChecker* dc = dcheck_thread->getDataChecker();
-			torrent()->afterDataCheck(listener,dc->getResult(),dcheck_thread->getError());
+			torrent()->afterDataCheck(this,dc->getResult());
+			if (!dcheck_thread->getError().isEmpty())
+			{
+				setErrorText(dcheck_thread->getError());
+				setError(KIO::ERR_UNKNOWN);
+			}
+			else
+				setError(0);
 		}
+		else
+			setError(0);
+		
 		dcheck_thread->deleteLater();
 		dcheck_thread = 0;
-		setError(0);
-		emitResult();
+		if (!killed) // Job::kill already emitted the result
+			emitResult();
 	}
-
-
+	
+	void DataCheckerJob::progress(quint32 num, quint32 total)
+	{
+		Q_UNUSED(total);
+		setProcessedAmount(Bytes,num);
+	}
+	
+	void DataCheckerJob::status(quint32 num_failed, quint32 num_found, quint32 num_downloaded, quint32 num_not_downloaded)
+	{
+		QPair<QString,QString> field1 = qMakePair(QString::number(num_failed),QString::number(num_found));
+		QPair<QString,QString> field2 = qMakePair(QString::number(num_downloaded),QString::number(num_not_downloaded));
+		description(this,i18n("Checking Data"),field1,field2);
+	}
 }

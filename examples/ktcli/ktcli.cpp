@@ -32,6 +32,7 @@
 #include <peer/authenticationmonitor.h>
 #include <interfaces/serverinterface.h>
 #include <peer/utpex.h>
+#include <util/waitjob.h>
 
 
 using namespace bt;
@@ -225,7 +226,11 @@ void KTCLI::finished(bt::TorrentInterface* tor)
 
 void KTCLI::shutdown()
 {
-	tc->stop();
+	WaitJob* j = new WaitJob(2000);
+	tc->stop(j);
+	if (j->needToWait())
+		j->exec();
+	j->deleteLater();
 	AuthenticationMonitor::instance().clear();
 	Globals::instance().shutdownTCPServer();
 	Globals::instance().shutdownUTPServer();

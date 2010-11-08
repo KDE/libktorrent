@@ -13,7 +13,6 @@
 #include <torrent/torrentcontrol.h>
 #include <torrent/torrentfilestream.h>
 #include <interfaces/queuemanagerinterface.h>
-#include <datachecker/datacheckerlistener.h>
 
 
 
@@ -28,11 +27,11 @@ bt::Uint64 RandomSize(bt::Uint64 min_size,bt::Uint64 max_size)
 	return min_size + qrand() % r;
 }
 
-class TorrentFileStreamMultiTest : public QEventLoop, public bt::QueueManagerInterface,public bt::DataCheckerListener
+class TorrentFileStreamMultiTest : public QEventLoop, public bt::QueueManagerInterface
 {
 	Q_OBJECT
 public:
-	TorrentFileStreamMultiTest(QObject* parent = 0) : QEventLoop(parent),bt::DataCheckerListener(false)
+	TorrentFileStreamMultiTest(QObject* parent = 0) : QEventLoop(parent)
 	{
 	}
 	
@@ -48,28 +47,6 @@ public:
 		Q_UNUSED(trk);
 	}
 	
-	virtual void error(const QString& err)
-	{
-		Out(SYS_GEN|LOG_DEBUG) << "DataCheck error: " << err << endl;
-	}
-	
-	virtual void finished()
-	{
-		Out(SYS_GEN|LOG_DEBUG) << "DataCheck finished " << endl;
-	}
-	
-	virtual void progress(Uint32 num, Uint32 total)
-	{
-		Out(SYS_GEN|LOG_DEBUG) << "DataCheck progress " << num << "/" << total << endl;
-	}
-	
-	virtual void status(Uint32 num_failed, Uint32 num_found, Uint32 num_downloaded, Uint32 num_not_downloaded)
-	{
-		Q_UNUSED(num_failed);
-		Q_UNUSED(num_found);
-		Q_UNUSED(num_downloaded);
-		Q_UNUSED(num_not_downloaded);
-	}
 	
 private slots:
 	void initTestCase()
@@ -89,11 +66,10 @@ private slots:
 			tc.init(this,creator.torrentPath(),creator.tempPath() + "tor0",creator.tempPath() + "data/");
 			tc.createFiles();
 			QVERIFY(tc.hasExistingFiles());
-			tc.startDataCheck(this);
+			tc.startDataCheck(false);
 			do
 			{
-				sleep(1);
-				processEvents();
+				processEvents(AllEvents,1000);
 			}
 			while (tc.getStats().status == bt::CHECKING_DATA);
 			QVERIFY(tc.getStats().completed);

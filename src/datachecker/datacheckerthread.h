@@ -21,6 +21,7 @@
 #define BTDATACHECKERTHREAD_H
 
 #include <qthread.h>
+#include <ktorrent_export.h>
 #include <util/bitset.h>
 
 namespace bt
@@ -33,7 +34,7 @@ namespace bt
 	
 		Thread which runs the data check.
 	*/
-	class DataCheckerThread : public QThread
+	class KTORRENT_EXPORT DataCheckerThread : public QThread
 	{
 		DataChecker* dc;
 		QString path;

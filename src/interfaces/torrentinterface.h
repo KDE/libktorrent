@@ -33,8 +33,8 @@
 #endif
 namespace bt
 {
+	class Job;
 	class BitSet;
-	class DataCheckerListener;
 	class SHA1Hash;
 	class WaitJob;
 	class PeerID;
@@ -297,9 +297,8 @@ namespace bt
 		
 		/**
 		 * Verify the correctness of all data.
-		 * @param lst The listener
 		 */
-		virtual void startDataCheck(bt::DataCheckerListener* lst) = 0;
+		virtual Job* startDataCheck(bool auto_import) = 0;
 		
 		/**
 		 * Test all files and see if they are not missing.
