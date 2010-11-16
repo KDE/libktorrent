@@ -180,7 +180,7 @@ namespace bt
 		if (packet_length == 0)
 			return am_of_len_read;
 		
-		if (packet_length > 2*MAX_PIECE_LEN) // twice the piece length should be big enough for now
+		if (packet_length > 10*MAX_PIECE_LEN) // 10 times the piece length should be big enough for now
 		{
 			Out(SYS_CON|LOG_DEBUG) << " packet_length too large " << packet_length << endl;
 
