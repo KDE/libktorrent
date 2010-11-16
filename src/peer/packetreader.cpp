@@ -102,8 +102,8 @@ namespace bt
 		delete [] data;
 	}
 	
-	PacketReader::PacketReader(Peer* peer) 
-		: peer(peer),error(false)
+	PacketReader::PacketReader(Peer* peer,Uint32 max_packet_size) 
+		: peer(peer),error(false),max_packet_size(max_packet_size)
 	{
 		len_received = -1;
 	}
@@ -180,10 +180,9 @@ namespace bt
 		if (packet_length == 0)
 			return am_of_len_read;
 		
-		if (packet_length > 2*MAX_PIECE_LEN) // twice the piece length should be big enough for now
+		if (packet_length > max_packet_size)
 		{
 			Out(SYS_CON|LOG_DEBUG) << " packet_length too large " << packet_length << endl;
-
 			error = true;
 			return size;
 		}

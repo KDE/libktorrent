@@ -39,27 +39,38 @@ namespace bt
 	};
 
 	/**
-	@author Joris Guisson
+	 * Chops up the raw byte stream from a socket into bittorrent packets
+	 * @author Joris Guisson
 	*/
 	class PacketReader : public net::SocketReader
 	{
+		
+	public:
+		PacketReader(Peer* peer,Uint32 max_packet_size);
+		virtual ~PacketReader();
+		
+		/**
+		 * Push packets to Peer (runs in main thread)
+		 */
+		void update();
+		
+		/// Did an error occur
+		bool ok() const {return !error;}
+		
+	private:
+		Uint32 newPacket(Uint8* buf,Uint32 size);
+		Uint32 readPacket(Uint8* buf,Uint32 size);
+		virtual void onDataReady(Uint8* buf,Uint32 size);
+		IncomingPacket* dequeuePacket();
+		
+	private:
 		Peer* peer;
 		bool error;
 		QList<IncomingPacket*> packet_queue;
 		QMutex mutex;
 		Uint8 len[4];
 		int len_received;
-	public:
-		PacketReader(Peer* peer);
-		virtual ~PacketReader();
-		
-		void update();
-		bool ok() const {return !error;}
-	private:
-		Uint32 newPacket(Uint8* buf,Uint32 size);
-		Uint32 readPacket(Uint8* buf,Uint32 size);
-		virtual void onDataReady(Uint8* buf,Uint32 size);
-		IncomingPacket* dequeuePacket();
+		Uint32 max_packet_size;
 	};
 
 }

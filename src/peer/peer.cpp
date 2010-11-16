@@ -60,8 +60,14 @@ namespace bt
 		peer_id_counter++;
 		ut_pex_id = 0;
 		
+		Uint32 max_packet_len = 9 + MAX_PIECE_LEN; // size of piece packet
+		Uint32 bitfield_length = num_chunks / 8 + 1 + (num_chunks % 8 == 0 ? 0 : 1);
+		if (bitfield_length > max_packet_len) // bitfield can be longer
+			max_packet_len = bitfield_length;
 		
-		preader = new PacketReader(this);
+		// to be future proof use 10 times the max packet length, 
+		// in case some extension message comes along which is larger
+		preader = new PacketReader(this,10*max_packet_len);
 		downloader = new PeerDownloader(this,chunk_size);
 		uploader = new PeerUploader(this);
 		pwriter = new PacketWriter(this);
