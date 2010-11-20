@@ -28,9 +28,12 @@
 
 namespace bt
 {
+	static ResourceManager half_open_connections(50);
 	
 	PeerConnector::PeerConnector(const QString & ip,Uint16 port,bool local,PeerManager* pman) 
-		: QObject(pman),ip(ip),port(port),local(local),pman(pman),auth(0),stopping(false)
+		: QObject(pman),
+		Resource(&half_open_connections,pman->getTorrent().getInfoHash().toString()),
+		ip(ip),port(port),local(local),pman(pman),auth(0),stopping(false),do_not_start(false)
 	{
 	}
 
@@ -44,8 +47,26 @@ namespace bt
 		}
 	}
 	
+	void PeerConnector::setMaxActive(Uint32 mc)
+	{
+		half_open_connections.setMaxActive(mc);
+	}
+	
 	void PeerConnector::start()
 	{
+		half_open_connections.add(this);
+	}
+
+	void PeerConnector::doNotStart()
+	{
+		do_not_start = true;
+	}
+	
+	void PeerConnector::acquired()
+	{
+		if (do_not_start)
+			return;
+		
 		bool encryption = ServerInterface::isEncryptionEnabled();
 		bool utp = ServerInterface::isUtpEnabled();
 		
@@ -76,6 +97,7 @@ namespace bt
 			tried_methods.insert(TCP_WITHOUT_ENCRYPTION);
 			auth->stop();
 		}
+		release();
 	}
 
 

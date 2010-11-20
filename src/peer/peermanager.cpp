@@ -81,6 +81,9 @@ namespace bt
 		
 		delete superseeder;
 		
+		// Tell all PeerConnector's that they should not start from now on
+		foreach (PeerConnector* pcon,connectors)
+			pcon->doNotStart();
 		qDeleteAll(connectors);
 	}
 
@@ -335,6 +338,7 @@ namespace bt
 		if (!started)
 		{
 			connectors.remove(pcon);
+			pcon->release();
 			pcon->deleteLater();
 			return;
 		}
@@ -347,6 +351,7 @@ namespace bt
 			createPeer(auth->getSocket(),auth->getPeerID(),auth->supportedExtensions(),auth->isLocal());
 		
 		connectors.remove(pcon);
+		pcon->release();
 		pcon->deleteLater();
 	}
 	
@@ -411,9 +416,6 @@ namespace bt
 		
 		if (num_pending > MAX_SIMULTANIOUS_AUTHS)
 			return;
-		
-		if (!mse::StreamSocket::canInitiateNewConnection())
-			return; // to many sockets in SYN_SENT state
 		
 		Uint32 num = 0;
 		if (max_connections > 0)
@@ -560,6 +562,11 @@ namespace bt
 		available_chunks.clear();
 		started = false;
 		ServerInterface::removePeerManager(this);
+		
+		// Tell all PeerConnector's that they should not start from now on
+		foreach (PeerConnector* pcon,connectors)
+			pcon->doNotStart();
+		
 		// Use copy so that connectors can be safely emptied
 		QSet<PeerConnector*> connectors_copy = connectors;
 		foreach (PeerConnector* pcon,connectors_copy)

@@ -44,8 +44,6 @@ namespace mse
 {
 	
 	Uint8 StreamSocket::tos = IPTOS_THROUGHPUT;
-	Uint32 StreamSocket::num_connecting = 0;
-	Uint32 StreamSocket::max_connecting = 50;
 
 	StreamSocket::StreamSocket(int ip_version) : sock(0),enc(0),monitored(false),rdr(0),wrt(0)
 	{
@@ -79,10 +77,6 @@ namespace mse
 
 	StreamSocket::~StreamSocket()
 	{
-		// make sure the number of connecting sockets is updated
-		if (connecting() && num_connecting > 0)
-			num_connecting--;
-		
 		if (monitored)
 			stopMonitoring();
 		
@@ -216,13 +210,7 @@ namespace mse
 		sock->socketDevice()->setBlocking(false);
 		sock->socketDevice()->setTOS(tos);
 		if (sock->socketDevice()->connectTo(addr))
-		{
 			return true;
-		}
-		else if (connecting())
-		{
-			num_connecting++;
-		}
 		
 		return false;
 	}
@@ -329,11 +317,7 @@ namespace mse
 	
 	bool StreamSocket::connectSuccesFull() const 
 	{
-		bool ret = sock->socketDevice()->connectSuccesFull();
-		if (num_connecting > 0)
-			num_connecting--;
-		
-		return ret;
+		return sock->socketDevice()->connectSuccesFull();
 	}
 	
 	void StreamSocket::setGroupIDs(Uint32 up,Uint32 down)

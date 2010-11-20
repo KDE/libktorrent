@@ -18,74 +18,84 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#ifndef BT_PEERCONNECTOR_H
-#define BT_PEERCONNECTOR_H
+
+#ifndef BT_TICKETMANAGER_H
+#define BT_TICKETMANAGER_H
 
 #include <QSet>
+#include <QList>
+#include <QMap>
 #include <ktorrent_export.h>
-#include <util/constants.h>
-#include <util/resourcemanager.h>
+#include "constants.h"
 
-
-namespace bt
+namespace bt 
 {
-	class Authenticate;
-	class PeerManager;
-
-	/**
-		Class which connects to a peer.
-	*/
-	class KTORRENT_EXPORT PeerConnector : public QObject,public Resource
-	{
-		Q_OBJECT
-	public:
-		enum Method
-		{
-			TCP_WITH_ENCRYPTION,
-			TCP_WITHOUT_ENCRYPTION,
-			UTP_WITH_ENCRYPTION,
-			UTP_WITHOUT_ENCRYPTION
-		};
-		
-		PeerConnector(const QString & ip,Uint16 port,bool local,PeerManager* pman);
-		virtual ~PeerConnector();
+	class ResourceManager;
 	
-		/// Called when an authentication attempt is finished
-		void authenticationFinished(bt::Authenticate* auth, bool ok);
+	/**
+		Represents a scarce resource which must be acquired from a ResouceManager.
+		The ResourceManager will notify the Resource when it has been acquired.
+	 */
+	class KTORRENT_EXPORT Resource
+	{
+	public:
+		Resource(ResourceManager* rman, const QString & group);
+		virtual ~Resource();
 		
-		/// Start connecting
-		void start();
+		/// Get the name of the group the resource is part of
+		QString groupName() const {return group;}
 		
-		/// Stop connecting
-		void stop();
+		/// Called when the resource has been acquired
+		virtual void acquired() = 0;
 		
-		/**
-			Called when all PeerConnector's of a torrent are being removed.
-			The PeerConnector should not attempt to start after this call.
-		 */
-		void doNotStart();
+		/// Release the Resource
+		void release();
 		
-		/**
-		 * Set the maximum number of active PeerConnectors allowed
-		 */
-		static void setMaxActive(Uint32 mc); 
-		
-	private:
-		void start(Method method);
-		virtual void acquired();
+		typedef QSet<Resource*> Set;
+		typedef QList<Resource*> List;
 		
 	private:
-		QSet<Method> tried_methods;
-		Method current_method;
-		QString ip;
-		Uint16 port;
-		bool local;
-		PeerManager* pman;
-		Authenticate* auth;
-		bool stopping;
-		bool do_not_start;
+		ResourceManager* rman;
+		QString group;
+	};
+	
+	/**
+		Class which distributes resources equally over several groups.
+		Ensuring that each group gets it's fair share.
+	 */
+	class KTORRENT_EXPORT ResourceManager
+	{
+	public:
+		ResourceManager(Uint32 max_active_resources);
+		virtual ~ResourceManager();
+		
+		/**
+			Set max active resources
+		 */
+		void setMaxActive(Uint32 m) {max_active_resources = m;}
+		
+		/**
+			Add a Resource 
+			@param r The Resource
+		 */
+		void add(Resource* r);
+		
+		/**
+			Remove a resource.
+			@param r The Resource
+		 */
+		void remove(Resource* r);
+		
+	private:
+		void update();
+		
+	private:
+		Uint32 max_active_resources;
+		Resource::Set active;
+		QMap<QString,Resource::List> pending;
+		QString current;
 	};
 
 }
 
-#endif // BT_PEERCONNECTOR_H
+#endif // BT_TICKETMANAGER_H

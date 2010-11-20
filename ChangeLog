@@ -20,6 +20,7 @@ Changes in 1.1:
 - Make sure MoveDataFilesJob properly emits signals so ktorrent can show a progress dialog (255369)
 - Revamp PieceData management, fixes a crash (247984)
 - Add support for warning message parameter in tracker replies
+- Make sure connection setup slots are distributed fairly to avoid starvation
 
 Changes in 1.0.5:
 - Update PeerID client identifications

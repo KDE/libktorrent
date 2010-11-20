@@ -23,6 +23,7 @@ set (util_HDR
 	extractfilejob.h
 	pipe.h
 	circularbuffer.h
+	resourcemanager.h
 )
 if(NOT MSVC)
 set (util_HDR ${util_HDR}

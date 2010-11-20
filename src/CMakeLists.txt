@@ -26,6 +26,7 @@ set(libktorrent_SRC
 	util/logsystemmanager.cpp
 	util/pipe.cpp
 	util/circularbuffer.cpp
+	util/resourcemanager.cpp
 	
 	bcodec/bdecoder.cpp  
 	bcodec/bencoder.cpp  

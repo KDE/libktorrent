@@ -159,16 +159,6 @@ namespace mse
 		void setGroupIDs(Uint32 up,Uint32 down);
 		
 		/**
-		 * Check if we are allowed to initiate another outgoing connection.
-		 */
-		static bool canInitiateNewConnection() {return num_connecting < max_connecting;}
-		
-		/**
-		 * Set the maximum number of connecting sockets we are allowed to have.
-		 */
-		static void setMaxConnecting(Uint32 mc) {max_connecting = mc;}
-		
-		/**
 		 * Set the remote address of the socket. Used by Socks to set the actual
 		 * address of the connection.
 		 * @param addr The address
@@ -193,8 +183,6 @@ namespace mse
 		net::SocketWriter* wrt;
 		
 		static Uint8 tos;
-		static Uint32 num_connecting; // the number of connections we have in SYN_SENT state
-		static Uint32 max_connecting;
 	};
 
 }
