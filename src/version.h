@@ -67,4 +67,6 @@ namespace bt
 	const Uint32 RELEASE = 4;
 }
 
+#define LIBKTORRENT_VERSION ((bt::MAJOR << 16) | ((bt::MINOR << 8) | bt::RELEASE)
+
 #endif
