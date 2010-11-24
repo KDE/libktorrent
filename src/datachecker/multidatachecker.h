@@ -21,7 +21,7 @@
 #define BTMULTIDATACHECKER_H
 
 #include <QString>
-#include <QVector>
+#include <QMap>
 #include <util/file.h>
 #include "datachecker.h"
 
@@ -40,12 +40,14 @@ namespace bt
 		virtual void check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & current_status);
 	private:
 		bool loadChunk(Uint32 ci,Uint32 cs,const Torrent & to);
+		File::Ptr open(const Torrent & tor,Uint32 idx);
+		void closePastFiles(Uint32 min_idx);
 		
 	private:
 		QString cache;
 		QString dnd_dir;
 		Uint8* buf;
-		QVector<File::Ptr> files;
+		QMap<Uint32,File::Ptr> files;
 	};
 
 }

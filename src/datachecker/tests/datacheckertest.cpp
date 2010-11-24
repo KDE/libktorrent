@@ -42,6 +42,7 @@ private slots:
 	
 	void testSingleFile()
 	{
+		Out(SYS_GEN|LOG_DEBUG) << "testSingleFile" << endl;
 		DummyTorrentCreator creator;
 		bt::TorrentControl tc;
 		QVERIFY(creator.createSingleFileTorrent(TEST_FILE_SIZE,"test.avi"));
@@ -74,6 +75,7 @@ private slots:
 	
 	void testMultiFile()
 	{
+		Out(SYS_GEN|LOG_DEBUG) << "testMultiFile" << endl;
 		QMap<QString,bt::Uint64> files;
 		
 		files["aaa.avi"] = RandomSize(TEST_FILE_SIZE / 2,TEST_FILE_SIZE);

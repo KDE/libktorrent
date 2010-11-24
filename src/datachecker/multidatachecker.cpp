@@ -45,29 +45,6 @@ namespace bt
 	
 	void MultiDataChecker::check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & current_status)
 	{
-		// First open all files
-		files.reserve(tor.getNumFiles());
-		for (Uint32 i = 0;i < tor.getNumFiles();i++)
-		{
-			const TorrentFile & tf = tor.getFile(i);
-			if (tf.doNotDownload() || !bt::Exists(tf.getPathOnDisk()))
-			{
-				files.append(File::Ptr());
-			}
-			else
-			{
-				File::Ptr fptr(new File());
-				if (!fptr->open(tf.getPathOnDisk(), "rb"))
-				{
-					QString err = i18n("Cannot open file %1: %2", tf.getPathOnDisk(), fptr->errorString());
-					Out(SYS_GEN|LOG_DEBUG) << err << endl;
-					throw Error(err);
-				}
-				else
-					files.append(fptr);
-			}
-		}
-		
 		Uint32 num_chunks = tor.getNumChunks();
 		// initialize the bitset
 		result = BitSet(num_chunks);
@@ -126,13 +103,15 @@ namespace bt
 		QList<Uint32> tflist;
 		tor.calcChunkPos(ci,tflist);
 		
+		closePastFiles(tflist.first());
+		
 		// one file is simple
 		if (tflist.count() == 1)
 		{
 			const TorrentFile & f = tor.getFile(tflist.first());
 			if (!f.doNotDownload())
 			{
-				File::Ptr fptr = files[tflist.first()];
+				File::Ptr fptr = open(tor,tflist.first());
 				Uint64 off = f.fileOffset(ci,tor.getChunkSize());
 				if (fptr->seek(File::BEGIN,off) != off)
 					return false;
@@ -188,10 +167,10 @@ namespace bt
 			{
 				try
 				{
-					if (!bt::Exists(f.getPathOnDisk()) || bt::FileSize(f.getPathOnDisk()) < off || !files[tflist[i]])
+					if (!bt::Exists(f.getPathOnDisk()) || bt::FileSize(f.getPathOnDisk()) < off)
 						return false;
 					
-					File::Ptr fptr = files[tflist[i]];
+					File::Ptr fptr = open(tor,tflist.at(i));
 					if (fptr->seek(File::BEGIN,off) != off)
 						return false;
 					
@@ -208,4 +187,39 @@ namespace bt
 		}
 		return true;
 	}
+	
+	File::Ptr MultiDataChecker::open(const bt::Torrent& tor, Uint32 idx)
+	{
+		QMap<Uint32,File::Ptr>::iterator i = files.find(idx);
+		if (i != files.end())
+			return i.value();
+		
+		const TorrentFile & tf = tor.getFile(idx);
+		File::Ptr fptr(new File());
+		if (!fptr->open(tf.getPathOnDisk(), "rb"))
+		{
+			QString err = i18n("Cannot open file %1: %2", tf.getPathOnDisk(), fptr->errorString());
+			Out(SYS_GEN|LOG_DEBUG) << err << endl;
+			throw Error(err);
+		}
+		else
+		{
+			files.insert(idx,fptr);
+			return fptr;
+		}
+	}
+	
+	void MultiDataChecker::closePastFiles(Uint32 min_idx)
+	{
+		QMap<Uint32,File::Ptr>::iterator i = files.begin();
+		while (i != files.end())
+		{
+			if (i.key() < min_idx)
+				i = files.erase(i);
+			else
+				i++;
+		}
+	}
+
+
 }
