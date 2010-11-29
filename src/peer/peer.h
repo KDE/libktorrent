@@ -118,10 +118,10 @@ namespace bt
 		void unpause();
 
 		/// Get the PeerDownloader.
-		PeerDownloader* getPeerDownloader() {return downloader;}
+		PeerDownloader* getPeerDownloader() const {return downloader;}
 
 		/// Get the PeerUploader.
-		PeerUploader* getPeerUploader() {return uploader;}
+		PeerUploader* getPeerUploader() const {return uploader;}
 		
 		/// Get the PeerManager
 		PeerManager* getPeerManager() {return pman;}

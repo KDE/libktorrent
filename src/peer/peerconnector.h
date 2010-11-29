@@ -21,7 +21,7 @@
 #ifndef BT_PEERCONNECTOR_H
 #define BT_PEERCONNECTOR_H
 
-#include <QSet>
+#include <QSharedPointer>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <util/resourcemanager.h>
@@ -70,20 +70,13 @@ namespace bt
 		 */
 		static void setMaxActive(Uint32 mc); 
 		
+		typedef QSharedPointer<PeerConnector> Ptr;
 	private:
-		void start(Method method);
 		virtual void acquired();
 		
 	private:
-		QSet<Method> tried_methods;
-		Method current_method;
-		QString ip;
-		Uint16 port;
-		bool local;
-		PeerManager* pman;
-		Authenticate* auth;
-		bool stopping;
-		bool do_not_start;
+		class Private;
+		Private* d;
 	};
 
 }

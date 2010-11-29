@@ -57,7 +57,7 @@ namespace bt
 		peer->getPacketWriter().doNotSendPiece(r,peer->getStats().fast_extensions);
 	}
 	
-	Uint32 PeerUploader::update(ChunkManager & cman,Uint32 opt_unchoked)
+	Uint32 PeerUploader::update(ChunkManager & cman)
 	{
 		Uint32 ret = uploaded;
 		uploaded = 0;
@@ -67,11 +67,6 @@ namespace bt
 		// if we have choked the peer do not upload
 		if (peer->areWeChoked())
 			return ret;
-				
-		if (peer->isSnubbed() && !peer->areWeChoked() &&
-			!cman.completed() && peer->getID() != opt_unchoked)
-			return ret;
-		
 		
 		while (requests.count() > 0)
 		{	

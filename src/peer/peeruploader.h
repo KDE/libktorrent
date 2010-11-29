@@ -70,10 +70,9 @@ namespace bt
 		 * Update the PeerUploader. This will check if there are Request, and
 		 * will try to handle them.
 		 * @param cman The ChunkManager
-		 * @param opt_unchoked ID of optimisticly unchoked peer
 		 * @return The number of bytes uploaded
 		 */
-		Uint32 update(ChunkManager & cman,Uint32 opt_unchoked);
+		Uint32 update(bt::ChunkManager& cman);
 		
 		/// Get the number of requests
 		Uint32 getNumRequests() const;

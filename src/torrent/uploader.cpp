@@ -30,7 +30,7 @@ namespace bt
 {
 
 	Uploader::Uploader(ChunkManager & cman,PeerManager & pman) 
-	: cman(cman),pman(pman),uploaded(0)
+	: cman(cman),pman(pman),uploaded(0),opt_unchoked(0)
 	{}
 
 
@@ -39,26 +39,22 @@ namespace bt
 	}
 
 	
-		
-	void Uploader::update(Uint32 opt_unchoked)
+	void Uploader::visit(const bt::Peer* p)
 	{
-		for (Uint32 i = 0;i < pman.getNumConnectedPeers();++i)
-		{
-			PeerUploader* p = pman.getPeer(i)->getPeerUploader();
-			uploaded += p->update(cman,opt_unchoked);
-		}
+		PeerUploader* pu = p->getPeerUploader();
+		uploaded += pu->update(cman);
+	}
+
+	
+	void Uploader::update()
+	{
+		pman.visit(*this);
 	}
 	
 
 	Uint32 Uploader::uploadRate() const
 	{
-		Uint32 rate = 0;
-		for (Uint32 i = 0;i < pman.getNumConnectedPeers();++i)
-		{
-			const Peer* p = pman.getPeer(i);
-			rate += p->getUploadRate();
-		}
-		return rate;
+		return pman.uploadRate();
 	}
 	
 

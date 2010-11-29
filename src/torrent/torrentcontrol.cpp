@@ -170,7 +170,7 @@ namespace bt
 			pman->connectToPeers();
 
 			// then the downloader and uploader
-			uploader->update(choke->getOptimisticlyUnchokedPeerID());			
+			uploader->update();
 			downloader->update();
 
 			//helper var, check if needed to move completed files somewhere
@@ -517,8 +517,9 @@ namespace bt
 		downloader->setMonitor(tmon);
 		if (tmon)
 		{
-			for (Uint32 i = 0;i < pman->getNumConnectedPeers();i++)
-				tmon->peerAdded(pman->getPeer(i));
+			QList<Peer*> ppl = pman->getPeers();
+			foreach (Peer* peer,ppl)
+				tmon->peerAdded(peer);
 		}
 		
 		tor->setMonitor(tmon);
@@ -1272,9 +1273,10 @@ namespace bt
 		if (!pman || !psman)
 			return;
 
-		for (Uint32 i = 0;i < pman->getNumConnectedPeers();i++)
+		QList<Peer*> ppl = pman->getPeers();
+		foreach (Peer* peer, ppl)
 		{
-			if (pman->getPeer(i)->isSeeder())
+			if (peer->isSeeder())
 				connected_to++;
 		}
 		total = psman->getNumSeeders();
@@ -1289,9 +1291,10 @@ namespace bt
 		if (!pman || !psman)
 			return;
 
-		for (Uint32 i = 0;i < pman->getNumConnectedPeers();i++)
+		QList<Peer*> ppl = pman->getPeers();
+		foreach (Peer* peer, ppl)
 		{
-			if (!pman->getPeer(i)->isSeeder())
+			if (!peer->isSeeder())
 				connected_to++;
 		}
 		total = psman->getNumLeechers();

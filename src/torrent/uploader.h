@@ -20,14 +20,13 @@
 #ifndef BTUPLOADER_H
 #define BTUPLOADER_H
 
-#include <qobject.h>
+#include <peer/peermanager.h>
 #include "globals.h"
 
 namespace bt
 {
 	class Peer;
 	class ChunkManager;
-	class PeerManager;
 	
 
 	/**
@@ -36,7 +35,7 @@ namespace bt
 	 * Class which manages the uploading of data. It has a PeerUploader for
 	 * each Peer.
 	 */
-	class Uploader : public QObject
+	class Uploader : public QObject, public PeerManager::PeerVisitor
 	{
 		Q_OBJECT
 	public:
@@ -55,17 +54,21 @@ namespace bt
 
 		/// Set the number of bytes which have been uploaded.
 		void setBytesUploaded(Uint64 b) {uploaded = b;}
-	public slots:		
+		
+	public slots:
 		/**
 		 * Update every PeerUploader.
-		 * @param opt_unchoked ID of optimisticly unchoked peer
 		 */
-		void update(Uint32 opt_unchoked);
+		void update();
+		
+	private:
+		virtual void visit(const bt::Peer* p);
 		
 	private:
 		ChunkManager & cman;
 		PeerManager & pman;
 		Uint64 uploaded;
+		Uint32 opt_unchoked;
 	};
 
 }

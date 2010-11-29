@@ -24,12 +24,12 @@
 #include <ktorrent_export.h>
 #include <net/address.h>
 #include <util/constants.h>
+#include <peer/peermanager.h>
 #include "peerprotocolextension.h"
 
 namespace bt
 {
 	class Peer;
-	class PeerManager;
 	class BEncoder;
 
 	/**
@@ -37,7 +37,7 @@ namespace bt
 	 * 
 	 * Class which handles µTorrent's peer exchange
 	*/
-	class KTORRENT_EXPORT UTPex : public PeerProtocolExtension
+	class KTORRENT_EXPORT UTPex : public PeerProtocolExtension, public PeerManager::PeerVisitor
 	{
 	public:
 		UTPex(Peer* peer,Uint32 id);
@@ -67,11 +67,16 @@ namespace bt
 	private:
 		void encode(BEncoder & enc,const std::map<Uint32,net::Address> & ps);
 		void encodeFlags(BEncoder & enc,const std::map<Uint32,Uint8> & flags);
+		virtual void visit(const bt::Peer* p);
 		
 	private:
 		std::map<Uint32,net::Address> peers; 
 		TimeStamp last_updated;
 		static bool pex_enabled;
+		
+		std::map<Uint32,net::Address> added;
+		std::map<Uint32,Uint8> flags;
+		std::map<Uint32,net::Address> npeers;
 	};
 
 }

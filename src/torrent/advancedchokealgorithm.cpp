@@ -124,20 +124,18 @@ namespace bt
 
 	void AdvancedChokeAlgorithm::doChokingLeechingState(PeerManager & pman,ChunkManager & cman,const TorrentStats & stats)
 	{
-		QList<Peer*> ppl;
-		Uint32 np = pman.getNumConnectedPeers();
-		// add all non seeders
-		for (Uint32 i = 0;i < np;i++)
+		QList<Peer*> ppl = pman.getPeers();
+		for (QList<Peer*>::iterator i = ppl.begin();i != ppl.end();)
 		{
-			Peer* p = pman.getPeer(i);
-			if (p)
+			Peer* p = *i;
+			if (!calcACAScore(p,cman,stats))
 			{
-				if (calcACAScore(p,cman,stats))
-					ppl.append(p);
-				else
-					// choke seeders they do not want to download from us anyway
-					p->choke();
+				// choke seeders they do not want to download from us anyway
+				p->choke();
+				i = ppl.erase(i);
 			}
+			else
+				i++;
 		}
 		
 		// sort list by ACA score
@@ -180,22 +178,20 @@ namespace bt
 
 	void AdvancedChokeAlgorithm::doChokingSeedingState(PeerManager & pman,ChunkManager & cman,const TorrentStats & stats)
 	{
-		QList<Peer*> ppl;
-		Uint32 np = pman.getNumConnectedPeers();
-		// add all non seeders
-		for (Uint32 i = 0;i < np;i++)
+		QList<Peer*> ppl = pman.getPeers();
+		for (QList<Peer*>::iterator i = ppl.begin();i != ppl.end();)
 		{
-			Peer* p = pman.getPeer(i);
-			if (p)
+			Peer* p = *i;
+			if (!calcACAScore(p,cman,stats))
 			{
-				// update the ACA score in the process
-				if (calcACAScore(p,cman,stats))
-					ppl.append(p);
-				else
-					// choke seeders they do not want to download from us anyway
-					p->choke();  
+				// choke seeders they do not want to download from us anyway
+				p->choke();
+				i = ppl.erase(i);
 			}
+			else
+				i++;
 		}
+		
 		qSort(ppl.begin(), ppl.end(),UploadRateGreaterThan);
 		
 		doUnchoking(ppl,updateOptimisticPeer(pman,ppl));
@@ -203,16 +199,16 @@ namespace bt
 	
 	static Uint32 FindPlannedOptimisticUnchokedPeer(PeerManager& pman,const QList<Peer*> & ppl)
 	{
-		Uint32 num_peers = pman.getNumConnectedPeers();
+		Uint32 num_peers = ppl.size();
 		if (num_peers == 0)
 			return UNDEFINED_ID;
-			
+		
 		// find a random peer that is choked and interested
 		Uint32 start = KRandom::random() % num_peers;
 		Uint32 i = (start + 1) % num_peers;
 		while (i != start)
 		{
-			Peer* p = pman.getPeer(i);
+			Peer* p = ppl.at(i);
 			if (p && p->isChoked() && p->isInterested() && !p->isSeeder() && ppl.contains(p))
 				return p->getID();
 			i = (i + 1) % num_peers;

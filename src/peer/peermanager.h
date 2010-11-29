@@ -21,30 +21,20 @@
 #define BTPEERMANAGER_H
 
 
-#include <QList>
-#include <QSet>
-#include <util/ptrmap.h>
-#include <peer/peer.h>
-#include <peer/peerid.h>
-#include <peer/superseeder.h>
-#include <util/bitset.h>
 #include <interfaces/peersource.h>
 #include <ktorrent_export.h>
-
-namespace mse
-{
-	class StreamSocket;
-}
-
+#include <peer/superseeder.h>
+#include <mse/streamsocket.h>
 
 namespace KNetwork
 {
 	class KResolverResults;
 }
 
-
 namespace bt
 {
+	class Peer;
+	class PeerID;
 	class PeerConnector;
 	class Piece;
 	class Torrent;
@@ -53,8 +43,6 @@ namespace bt
 	class PieceDownloader;
 
 	using KNetwork::KResolverResults;
-
-
 	
 	const Uint32 MAX_SIMULTANIOUS_AUTHS = 20;
 	
@@ -109,11 +97,10 @@ namespace bt
 		Uint32 clearDeadPeers();
 
 		/**
-		 * Get the i'th Peer.
-		 * @param index 
-		 * @return Peer or 0 if out of range
+		 * Get a list of all peers.
+		 * @return A QList of Peer's
 		 */
-		Peer* getPeer(Uint32 index) {return peer_list.at(index);}
+		QList<Peer*> getPeers() const;
 
 		/**
 		 * Find a Peer based on it's ID
@@ -151,20 +138,17 @@ namespace bt
 		 * Stop listening to incoming requests.
 		 */
 		void stop();
-
-		/**
-		 * Kill all peers who have been choked longer then @a older_then time.
-		 * @param older_then Time in milliseconds
-		 */
-		void killChokedPeers(Uint32 older_then);
 		
 		/**
 		 * Kill all peers who appear to be stale
 		 */
 		void killStalePeers();
 		
-		Uint32 getNumConnectedPeers() const {return peer_list.count();}
-		Uint32 getNumPending() const {return num_pending;}
+		/// Get the number of connected peers
+		Uint32 getNumConnectedPeers() const;
+		
+		/// Get the number of pending peers we are attempting to connect to
+		Uint32 getNumPending() const;
 		
 		static void setMaxConnections(Uint32 max);
 		static Uint32 getMaxConnections() {return max_connections;}
@@ -175,10 +159,13 @@ namespace bt
 		static Uint32 getTotalConnections() {return total_connections;}
 		
 		/// Is the peer manager started
-		bool isStarted() const {return started;}
+		bool isStarted() const;
 
 		/// Get the Torrent
-		Torrent & getTorrent() {return tor;}
+		const Torrent & getTorrent() const;
+		
+		/// Get the combined upload rate of all peers in bytes per sec
+		Uint32 uploadRate() const;
 
 		/**
 		 * A new connection is ready for this PeerManager.
@@ -208,10 +195,10 @@ namespace bt
 		void killUninterested();
 
 		/// Get a BitSet of all available chunks
-		const BitSet & getAvailableChunksBitSet() const {return available_chunks;}
+		const BitSet & getAvailableChunksBitSet() const;
 		
 		/// Get the chunk counter.
-		ChunkCounter & getChunkCounter() {return *cnt;};
+		ChunkCounter & getChunkCounter();
 	
 		/// Are we connected to a Peer given it's PeerID ?
 		bool connectedTo(const PeerID & peer_id);	
@@ -234,13 +221,20 @@ namespace bt
 		 */
 		void loadPeerList(const QString & file);
 		
-		typedef QList<Peer*>::const_iterator CItr;
+		class PeerVisitor
+		{
+		public:
+			virtual ~PeerVisitor() {}
+			
+			/// Called for each Peer
+			virtual void visit(const Peer* p) = 0;
+		};
 		
-		CItr beginPeerList() const {return peer_list.begin();}
-		CItr endPeerList() const {return peer_list.end();}
+		/// Visit all peers
+		void visit(PeerVisitor & visitor);
 		
 		/// Is PEX eanbled
-		bool isPexEnabled() const {return pex_on;}
+		bool isPexEnabled() const;
 		
 		/// Enable or disable PEX
 		void setPexEnabled(bool on);
@@ -283,10 +277,6 @@ namespace bt
 		void peerSourceReady(PeerSource* ps);
 		
 	private:
-		void updateAvailableChunks();
-		bool killBadPeer();
-		void createPeer(mse::StreamSocket::Ptr sock,const PeerID & peer_id,Uint32 support,bool local);
-		bool connectedTo(const QString & ip,Uint16 port) const;
 		virtual void allowChunk(PeerInterface* peer, Uint32 chunk);
 
 	private slots:
@@ -297,28 +287,12 @@ namespace bt
 		void peerKilled(Peer* p);
 		
 	private:
-		PtrMap<Uint32,Peer> peer_map;
-		QList<Peer*> peer_list;
-		QList<Peer*> killed;
-		Torrent & tor;
-		bool started;
-		BitSet available_chunks, wanted_chunks;
-		ChunkCounter* cnt;
-		Uint32 num_pending;
-		bool pex_on;
-		bool wanted_changed;
-		PieceHandler* piece_handler;
-		bool paused;
-		QSet<PeerConnector*> connectors;
-		SuperSeeder* superseeder;
+		class Private;
+		Private* d;
 		
 		static Uint32 max_connections;
 		static Uint32 max_total_connections;
 		static Uint32 total_connections;
-		
-		std::multimap<QString,PotentialPeer> potential_peers;
-		
-		typedef std::multimap<QString,PotentialPeer>::iterator PPItr;
 	};
 
 }

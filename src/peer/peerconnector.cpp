@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "peerconnector.h"
+#include <QSet>
 #include <interfaces/serverinterface.h>
 #include <mse/encryptedauthenticate.h>
 #include <torrent/torrent.h>
@@ -30,21 +31,51 @@ namespace bt
 {
 	static ResourceManager half_open_connections(50);
 	
+	class PeerConnector::Private
+	{
+	public:
+		Private(PeerConnector* p,const QString & ip,Uint16 port,bool local,PeerManager* pman)
+		: p(p),ip(ip),port(port),local(local),pman(pman),auth(0),stopping(false),do_not_start(false)
+		{
+		}
+		
+		~Private()
+		{
+			if (auth)
+			{
+				stopping = true;
+				auth->stop();
+				stopping = false;
+			}
+		}
+		
+		void start(Method method);
+		void stop();
+		void authenticationFinished(Authenticate* auth, bool ok);
+		
+	public:
+		PeerConnector* p;
+		QSet<Method> tried_methods;
+		Method current_method;
+		QString ip;
+		Uint16 port;
+		bool local;
+		PeerManager* pman;
+		Authenticate* auth;
+		bool stopping;
+		bool do_not_start;
+	};
+	
 	PeerConnector::PeerConnector(const QString & ip,Uint16 port,bool local,PeerManager* pman) 
 		: QObject(pman),
 		Resource(&half_open_connections,pman->getTorrent().getInfoHash().toString()),
-		ip(ip),port(port),local(local),pman(pman),auth(0),stopping(false),do_not_start(false)
+		d(new Private(this,ip,port,local,pman))
 	{
 	}
 
 	PeerConnector::~PeerConnector()
 	{
-		if (auth)
-		{
-			stopping = true;
-			auth->stop();
-			stopping = false;
-		}
+		delete d;
 	}
 	
 	void PeerConnector::setMaxActive(Uint32 mc)
@@ -59,12 +90,12 @@ namespace bt
 
 	void PeerConnector::doNotStart()
 	{
-		do_not_start = true;
+		d->do_not_start = true;
 	}
 	
 	void PeerConnector::acquired()
 	{
-		if (do_not_start)
+		if (d->do_not_start)
 			return;
 		
 		bool encryption = ServerInterface::isEncryptionEnabled();
@@ -73,20 +104,20 @@ namespace bt
 		if (encryption)
 		{
 			if (utp)
-				start(UTP_WITH_ENCRYPTION);
+				d->start(UTP_WITH_ENCRYPTION);
 			else
-				start(TCP_WITH_ENCRYPTION);
+				d->start(TCP_WITH_ENCRYPTION);
 		}
 		else
 		{
 			if (utp)
-				start(UTP_WITHOUT_ENCRYPTION);
+				d->start(UTP_WITHOUT_ENCRYPTION);
 			else
-				start(TCP_WITHOUT_ENCRYPTION);
+				d->start(TCP_WITHOUT_ENCRYPTION);
 		}
 	}
 	
-	void PeerConnector::stop()
+	void PeerConnector::Private::stop()
 	{
 		if (auth)
 		{
@@ -97,6 +128,11 @@ namespace bt
 			tried_methods.insert(TCP_WITHOUT_ENCRYPTION);
 			auth->stop();
 		}
+	}
+	
+	void PeerConnector::stop()
+	{
+		d->stop();
 		release();
 	}
 
@@ -104,13 +140,18 @@ namespace bt
 
 	void PeerConnector::authenticationFinished(Authenticate* auth, bool ok)
 	{
+		d->authenticationFinished(auth,ok);
+	}
+	
+	void PeerConnector::Private::authenticationFinished(Authenticate* auth, bool ok)
+	{
 		this->auth = 0;
 		if (stopping)
 			return;
 		
 		if (ok)
 		{
-			pman->peerAuthenticated(auth,this,ok);
+			pman->peerAuthenticated(auth,p,ok);
 			return;
 		}
 		
@@ -136,20 +177,20 @@ namespace bt
 			allowed.removeAll(m);
 		
 		if (allowed.isEmpty())
-			pman->peerAuthenticated(auth,this,false);
+			pman->peerAuthenticated(auth,p,false);
 		else
 			start(allowed.front());
 	}
 
-	void PeerConnector::start(PeerConnector::Method method)
+	void PeerConnector::Private::start(PeerConnector::Method method)
 	{
 		current_method = method;
-		Torrent & tor = pman->getTorrent();
+		const Torrent & tor = pman->getTorrent();
 		TransportProtocol proto = (method == TCP_WITH_ENCRYPTION || method == TCP_WITHOUT_ENCRYPTION) ? TCP : UTP;
 		if (method == TCP_WITH_ENCRYPTION || method == UTP_WITH_ENCRYPTION)
-			auth = new mse::EncryptedAuthenticate(ip,port,proto,tor.getInfoHash(),tor.getPeerID(),this);
+			auth = new mse::EncryptedAuthenticate(ip,port,proto,tor.getInfoHash(),tor.getPeerID(),p);
 		else
-			auth = new Authenticate(ip,port,proto,tor.getInfoHash(),tor.getPeerID(),this);
+			auth = new Authenticate(ip,port,proto,tor.getInfoHash(),tor.getPeerID(),p);
 		
 		if (local)
 			auth->setLocal(true);

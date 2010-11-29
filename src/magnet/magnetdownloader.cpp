@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "magnetdownloader.h"
+#include <peer/peer.h>
 #include <peer/peermanager.h>
 #include <tracker/udptracker.h>
 #include <tracker/httptracker.h>

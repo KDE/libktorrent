@@ -78,45 +78,41 @@ namespace bt
 		return bt::CurrentTime() - last_updated >= 60*1000;
 	}
 	
+	void UTPex::visit(const bt::Peer* p)
+	{
+		if (p != peer)
+		{
+			npeers.insert(std::make_pair(p->getID(),p->getAddress()));
+			if (peers.count(p->getID()) == 0)
+			{
+				// new one, add to added
+				added.insert(std::make_pair(p->getID(),p->getAddress()));
+				
+				if (p->getAddress().ipVersion() == 4)
+				{
+					Uint8 flag = 0;
+					if (p->isSeeder())
+						flag |= 0x02;
+					if (p->getStats().fast_extensions)
+						flag |= 0x01;
+					flags.insert(std::make_pair(p->getID(),flag));
+				}
+			}
+			else
+			{
+				// erase from old list, so only the dropped ones are left
+				peers.erase(p->getID());
+			}
+		}
+	}
+
+	
 	void UTPex::update()
 	{
 		PeerManager* pman = peer->getPeerManager();
 		last_updated = bt::CurrentTime();
 		
-		std::map<Uint32,net::Address> added;
-		std::map<Uint32,Uint8> flags;
-		std::map<Uint32,net::Address> npeers;
-		
-		PeerManager::CItr itr = pman->beginPeerList();
-		while (itr != pman->endPeerList())
-		{
-			const Peer* p = *itr;
-			if (p != peer)
-			{
-				npeers.insert(std::make_pair(p->getID(),p->getAddress()));
-				if (peers.count(p->getID()) == 0)
-				{
-					// new one, add to added
-					added.insert(std::make_pair(p->getID(),p->getAddress()));
-					
-					if (p->getAddress().ipVersion() == 4)
-					{
-						Uint8 flag = 0;
-						if (p->isSeeder())
-							flag |= 0x02;
-						if (p->getStats().fast_extensions)
-							flag |= 0x01;
-						flags.insert(std::make_pair(p->getID(),flag));
-					}
-				}
-				else
-				{
-					// erase from old list, so only the dropped ones are left
-					peers.erase(p->getID());
-				}
-			}
-			itr++;
-		}
+		pman->visit(*this);
 		
 		if (!(peers.size() == 0 && added.size() == 0))
 		{
@@ -143,7 +139,10 @@ namespace bt
 		}
 
 		peers = npeers;
-	}	
+		added.clear();
+		flags.clear();
+		npeers.clear();
+	}
 	
 	void UTPex::encode(BEncoder & enc,const std::map<Uint32,net::Address> & ps)
 	{
