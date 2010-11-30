@@ -90,7 +90,7 @@ namespace bt
 		QString host;
 		Uint16 port;
 		bool succes;
-		PeerConnector* pcon;
+		QWeakPointer<PeerConnector> pcon;
 		net::Socks* socks;
 	};
 }

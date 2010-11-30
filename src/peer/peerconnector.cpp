@@ -60,13 +60,13 @@ namespace bt
 		QString ip;
 		Uint16 port;
 		bool local;
-		PeerManager* pman;
+		QWeakPointer<PeerManager> pman;
 		Authenticate* auth;
 		bool stopping;
 		bool do_not_start;
 	};
 	
-	PeerConnector::PeerConnector(const QString & ip,Uint16 port,bool local,PeerManager* pman) 
+	PeerConnector::PeerConnector(const QString& ip, Uint16 port, bool local, bt::PeerManager* pman) 
 		: QObject(pman),
 		Resource(&half_open_connections,pman->getTorrent().getInfoHash().toString()),
 		d(new Private(this,ip,port,local,pman))
@@ -87,15 +87,11 @@ namespace bt
 	{
 		half_open_connections.add(this);
 	}
-
-	void PeerConnector::doNotStart()
-	{
-		d->do_not_start = true;
-	}
 	
 	void PeerConnector::acquired()
 	{
-		if (d->do_not_start)
+		PeerManager* pm = d->pman.data();
+		if (!pm || !pm->isStarted())
 			return;
 		
 		bool encryption = ServerInterface::isEncryptionEnabled();
@@ -149,9 +145,13 @@ namespace bt
 		if (stopping)
 			return;
 		
+		PeerManager* pm = pman.data();
+		if (!pm)
+			return;
+		
 		if (ok)
 		{
-			pman->peerAuthenticated(auth,p,ok);
+			pm->peerAuthenticated(auth,p,ok);
 			return;
 		}
 		
@@ -177,15 +177,19 @@ namespace bt
 			allowed.removeAll(m);
 		
 		if (allowed.isEmpty())
-			pman->peerAuthenticated(auth,p,false);
+			pm->peerAuthenticated(auth,p,false);
 		else
 			start(allowed.front());
 	}
 
 	void PeerConnector::Private::start(PeerConnector::Method method)
 	{
+		PeerManager* pm = pman.data();
+		if (!pm)
+			return;
+		
 		current_method = method;
-		const Torrent & tor = pman->getTorrent();
+		const Torrent & tor = pm->getTorrent();
 		TransportProtocol proto = (method == TCP_WITH_ENCRYPTION || method == TCP_WITHOUT_ENCRYPTION) ? TCP : UTP;
 		if (method == TCP_WITH_ENCRYPTION || method == UTP_WITH_ENCRYPTION)
 			auth = new mse::EncryptedAuthenticate(ip,port,proto,tor.getInfoHash(),tor.getPeerID(),p);

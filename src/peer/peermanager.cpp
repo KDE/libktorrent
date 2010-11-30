@@ -429,15 +429,7 @@ namespace bt
 		d->available_chunks.clear();
 		d->started = false;
 		ServerInterface::removePeerManager(this);
-		
-		// Tell all PeerConnector's that they should not start from now on
-		foreach (PeerConnector* pcon,d->connectors)
-			pcon->doNotStart();
-		
-		// Use copy so that connectors can be safely emptied
-		QSet<PeerConnector*> connectors_copy = d->connectors;
-		foreach (PeerConnector* pcon,connectors_copy)
-			pcon->stop();
+		d->connectors.clear();
 		
 		if (d->superseeder)
 		{
@@ -694,10 +686,8 @@ namespace bt
 		
 		delete superseeder;
 		
-		// Tell all PeerConnector's that they should not start from now on
-		foreach (PeerConnector* pcon,connectors)
-			pcon->doNotStart();
-		qDeleteAll(connectors);
+		started = false;
+		connectors.clear();
 	}
 
 	void PeerManager::Private::update()

@@ -161,8 +161,9 @@ namespace bt
 			sock.clear();
 		
 		timer.stop();
-		if (pcon)
-			pcon->authenticationFinished(this,succes);
+		PeerConnector* pc = pcon.data();
+		if (pc)
+			pc->authenticationFinished(this,succes);
 	}
 	
 	void Authenticate::handshakeReceived(bool full)

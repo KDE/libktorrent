@@ -60,17 +60,10 @@ namespace bt
 		void stop();
 		
 		/**
-			Called when all PeerConnector's of a torrent are being removed.
-			The PeerConnector should not attempt to start after this call.
-		 */
-		void doNotStart();
-		
-		/**
 		 * Set the maximum number of active PeerConnectors allowed
 		 */
 		static void setMaxActive(Uint32 mc); 
 		
-		typedef QSharedPointer<PeerConnector> Ptr;
 	private:
 		virtual void acquired();
 		
