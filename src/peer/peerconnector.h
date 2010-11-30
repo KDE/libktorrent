@@ -56,9 +56,6 @@ namespace bt
 		/// Start connecting
 		void start();
 		
-		/// Stop connecting
-		void stop();
-		
 		/**
 		 * Set the maximum number of active PeerConnectors allowed
 		 */

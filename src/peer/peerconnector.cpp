@@ -50,7 +50,6 @@ namespace bt
 		}
 		
 		void start(Method method);
-		void stop();
 		void authenticationFinished(Authenticate* auth, bool ok);
 		
 	public:
@@ -112,27 +111,6 @@ namespace bt
 				d->start(TCP_WITHOUT_ENCRYPTION);
 		}
 	}
-	
-	void PeerConnector::Private::stop()
-	{
-		if (auth)
-		{
-			// Add all methods to the tried_methods set, so the authentication will stop
-			tried_methods.insert(UTP_WITH_ENCRYPTION);
-			tried_methods.insert(TCP_WITH_ENCRYPTION);
-			tried_methods.insert(UTP_WITHOUT_ENCRYPTION);
-			tried_methods.insert(TCP_WITHOUT_ENCRYPTION);
-			auth->stop();
-		}
-	}
-	
-	void PeerConnector::stop()
-	{
-		d->stop();
-		release();
-	}
-
-
 
 	void PeerConnector::authenticationFinished(Authenticate* auth, bool ok)
 	{

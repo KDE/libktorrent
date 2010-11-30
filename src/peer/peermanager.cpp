@@ -429,6 +429,7 @@ namespace bt
 		d->available_chunks.clear();
 		d->started = false;
 		ServerInterface::removePeerManager(this);
+		qDeleteAll(d->connectors);
 		d->connectors.clear();
 		
 		if (d->superseeder)
