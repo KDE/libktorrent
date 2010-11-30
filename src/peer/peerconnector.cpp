@@ -69,12 +69,9 @@ namespace bt
 	{
 		if (auth)
 		{
-			// Add all methods to the tried_methods set, so the authentication will stop
-			tried_methods.insert(UTP_WITH_ENCRYPTION);
-			tried_methods.insert(TCP_WITH_ENCRYPTION);
-			tried_methods.insert(UTP_WITHOUT_ENCRYPTION);
-			tried_methods.insert(TCP_WITHOUT_ENCRYPTION);
+			stopping = true;
 			auth->stop();
+			stopping = false;
 		}
 	}
 
