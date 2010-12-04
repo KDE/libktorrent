@@ -24,13 +24,22 @@
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
+#define LIBKTORRENT_MAJOR 1
+#define LIBKTORRENT_MINOR 1
+#define LIBKTORRENT_RELEASE 0
+#define LIBKTORRENT_VERSION ((LIBKTORRENT_MAJOR << 16) | (LIBKTORRENT_MINOR << 8) | LIBKTORRENT_RELEASE)
+
 class QString;
 
 namespace bt 
 {
 	enum VersionType
 	{
-		NORMAL,ALPHA,BETA,RELEASE_CANDIDATE,DEVEL
+		ALPHA,
+		BETA,
+		RELEASE_CANDIDATE,
+		DEVEL,
+		NORMAL
 	};
 	
 	/**
@@ -58,15 +67,13 @@ namespace bt
 	
 	
 	/// Major version number of the ktorrent library
-	const Uint32 MAJOR = 1;
+	const Uint32 MAJOR = LIBKTORRENT_MAJOR;
 	/// Minor version number of the ktorrent library
-	const Uint32 MINOR = 1;
+	const Uint32 MINOR = LIBKTORRENT_MINOR;
 	/// Version type of the ktorrent library
 	const VersionType VERSION_TYPE = DEVEL;
 	/// Release version number of the ktorrent library
-	const Uint32 RELEASE = 0;
+	const Uint32 RELEASE = LIBKTORRENT_RELEASE;
 }
-
-#define LIBKTORRENT_VERSION ((bt::MAJOR << 16) | ((bt::MINOR << 8) | bt::RELEASE)
 
 #endif
