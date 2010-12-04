@@ -78,8 +78,8 @@ namespace bt
 			
 			priority = EXCLUDED;
 			
-			if(emit_status_changed)
-				tor->downloadPriorityChanged(this,priority,old_priority);	
+			if (emit_status_changed)
+				tor->downloadPriorityChanged(this,priority,old_priority);
 		}
 		if (priority == EXCLUDED && (!dnd))
 		{
@@ -88,7 +88,7 @@ namespace bt
 			
 			priority = NORMAL_PRIORITY;
 			
-			if(emit_status_changed)
+			if (emit_status_changed)
 				tor->downloadPriorityChanged(this,priority,old_priority);
 		}
 	}

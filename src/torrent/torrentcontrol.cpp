@@ -565,6 +565,7 @@ namespace bt
 				"The torrent is probably corrupt or is not a valid torrent file.",err.toString()));
 		}
 		
+		tor->setFilePriorityListener(this);
 		initInternal(qman,tmpdir,ddir);
 
 		// copy data into torrent file
