@@ -577,6 +577,7 @@ namespace bt
 				loadUrl().prettyUrl(),err.toString()));
 		}
 		
+		tor->setFilePriorityListener(this);
 		initInternal(qman,tmpdir,ddir);
 
 		// copy data into torrent file
