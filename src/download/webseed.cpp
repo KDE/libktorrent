@@ -38,6 +38,8 @@ namespace bt
 	QString WebSeed::proxy_host;
 	Uint16 WebSeed::proxy_port = 8080;
 	bool WebSeed::proxy_enabled = false;
+	
+	const Uint32 RETRY_INTERVAL = 30;
 
 	WebSeed::WebSeed(const KUrl & url,bool user,const Torrent & tor,ChunkManager & cman) : WebSeedInterface(url,user),tor(tor),cman(cman)
 	{
@@ -49,6 +51,8 @@ namespace bt
 		status = i18n("Not connected");
 		up_gid = down_gid = 0;
 		cur_chunk = -1;
+		connect(&retry_timer,SIGNAL(timeout()),this,SLOT(reset()));
+		retry_timer.setSingleShot(true);
 	}
 
 
@@ -79,6 +83,7 @@ namespace bt
 	
 	void WebSeed::reset()
 	{
+		retry_timer.stop();
 		if (current)
 			chunkStopped();
 		
@@ -298,15 +303,16 @@ namespace bt
 			status = conn->getStatusString();
 			if (conn->responseCode() == 404)
 			{
-				// if not found then retire this webseed
-				num_failures = 3;
-				status = i18n("Not in use");
+				// if not found then retire this webseed for now
+				retryLater();
 			}
 			delete conn;
 			conn = 0;
 			chunkStopped();
 			first_chunk = last_chunk = cur_chunk = tor.getNumChunks() + 1;
 			num_failures++;
+			if (num_failures == 3)
+				retryLater();
 			return 0;
 		}
 		else if (conn->closed())
@@ -513,11 +519,18 @@ namespace bt
 		}
 		else
 		{
-			num_failures = 3;
-			status = i18n("Not in use");
+			retryLater();
 			cur_chunk = last_chunk = first_chunk = tor.getNumChunks() + 1;
 		}
 	}
+	
+	void WebSeed::retryLater()
+	{
+		num_failures = 3;
+		status = i18n("Unused for %1 seconds (Too many connection failures)", RETRY_INTERVAL);
+		retry_timer.start(RETRY_INTERVAL * 1000);
+	}
+
 
 	
 	////////////////////////////////////////////

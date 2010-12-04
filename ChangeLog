@@ -22,6 +22,7 @@ Changes in 1.1:
 - Add support for warning message parameter in tracker replies
 - Make sure connection setup slots are distributed fairly to avoid starvation
 - Use weak pointers in PeerConnector and Authenticate (257126)
+- When a webseed has 3 connection failures, wait 30 seconds and try again instead of not using it anymore (258210)
 
 Changes in 1.0.5:
 - Update PeerID client identifications
