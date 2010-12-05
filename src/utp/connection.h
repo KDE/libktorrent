@@ -38,7 +38,7 @@
 
 namespace utp
 {
-	class DelayWindow;;
+	class DelayWindow;
 	class LocalWindow;
 	
 	
