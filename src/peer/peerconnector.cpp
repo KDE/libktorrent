@@ -63,11 +63,11 @@ namespace bt
 		Authenticate* auth;
 		bool stopping;
 		bool do_not_start;
+		PeerConnector::WPtr self;
 	};
 	
 	PeerConnector::PeerConnector(const QString& ip, Uint16 port, bool local, bt::PeerManager* pman) 
-		: QObject(pman),
-		Resource(&half_open_connections,pman->getTorrent().getInfoHash().toString()),
+		: Resource(&half_open_connections,pman->getTorrent().getInfoHash().toString()),
 		d(new Private(this,ip,port,local,pman))
 	{
 	}
@@ -76,6 +76,12 @@ namespace bt
 	{
 		delete d;
 	}
+	
+	void PeerConnector::setWeakPointer(PeerConnector::WPtr ptr)
+	{
+		d->self = ptr;
+	}
+
 	
 	void PeerConnector::setMaxActive(Uint32 mc)
 	{
@@ -129,7 +135,7 @@ namespace bt
 		
 		if (ok)
 		{
-			pm->peerAuthenticated(auth,p,ok);
+			pm->peerAuthenticated(auth,self,ok);
 			return;
 		}
 		
@@ -155,7 +161,7 @@ namespace bt
 			allowed.removeAll(m);
 		
 		if (allowed.isEmpty())
-			pm->peerAuthenticated(auth,p,false);
+			pm->peerAuthenticated(auth,self,false);
 		else
 			start(allowed.front());
 	}
@@ -170,9 +176,9 @@ namespace bt
 		const Torrent & tor = pm->getTorrent();
 		TransportProtocol proto = (method == TCP_WITH_ENCRYPTION || method == TCP_WITHOUT_ENCRYPTION) ? TCP : UTP;
 		if (method == TCP_WITH_ENCRYPTION || method == UTP_WITH_ENCRYPTION)
-			auth = new mse::EncryptedAuthenticate(ip,port,proto,tor.getInfoHash(),tor.getPeerID(),p);
+			auth = new mse::EncryptedAuthenticate(ip,port,proto,tor.getInfoHash(),tor.getPeerID(),self);
 		else
-			auth = new Authenticate(ip,port,proto,tor.getInfoHash(),tor.getPeerID(),p);
+			auth = new Authenticate(ip,port,proto,tor.getInfoHash(),tor.getPeerID(),self);
 		
 		if (local)
 			auth->setLocal(true);

@@ -88,7 +88,7 @@ namespace bt
 		bool wanted_changed;
 		PieceHandler* piece_handler;
 		bool paused;
-		QSet<PeerConnector*> connectors;
+		QSet<PeerConnector::Ptr> connectors;
 		SuperSeeder* superseeder;
 		std::multimap<QString,PotentialPeer> potential_peers;
 	};
@@ -280,25 +280,19 @@ namespace bt
 		d->createPeer(sock,peer_id,support,false);
 	}
 	
-	void PeerManager::peerAuthenticated(Authenticate* auth,PeerConnector* pcon,bool ok)
+	void PeerManager::peerAuthenticated(Authenticate* auth,PeerConnector::WPtr pcon,bool ok)
 	{
-		if (!d->started)
+		if (d->started)
 		{
-			d->connectors.remove(pcon);
-			pcon->release();
-			pcon->deleteLater();
-			return;
+			if (total_connections > 0)
+				total_connections--;
+			
+			if (ok && !connectedTo(auth->getPeerID()))
+				d->createPeer(auth->getSocket(),auth->getPeerID(),auth->supportedExtensions(),auth->isLocal());
 		}
 		
-		if (total_connections > 0)
-			total_connections--;
-		
-		if (ok && !connectedTo(auth->getPeerID()))
-			d->createPeer(auth->getSocket(),auth->getPeerID(),auth->supportedExtensions(),auth->isLocal());
-		
-		d->connectors.remove(pcon);
-		pcon->release();
-		pcon->deleteLater();
+		PeerConnector::Ptr ptr = pcon.toStrongRef();
+		d->connectors.remove(ptr);
 	}
 	
 
@@ -429,7 +423,6 @@ namespace bt
 		d->available_chunks.clear();
 		d->started = false;
 		ServerInterface::removePeerManager(this);
-		qDeleteAll(d->connectors);
 		d->connectors.clear();
 		
 		if (d->superseeder)
@@ -853,7 +846,8 @@ namespace bt
 			if (aman.allowed(itr->first) && !connectedTo(itr->first,itr->second.port))
 			{
 				const PotentialPeer & pp = itr->second;
-				PeerConnector* pcon = new PeerConnector(pp.ip,pp.port,pp.local,p);
+				PeerConnector::Ptr pcon(new PeerConnector(pp.ip,pp.port,pp.local,p));
+				pcon->setWeakPointer(PeerConnector::WPtr(pcon));
 				connectors.insert(pcon);
 				total_connections++;
 				pcon->start();

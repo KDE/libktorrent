@@ -35,9 +35,8 @@ namespace bt
 	/**
 		Class which connects to a peer.
 	*/
-	class KTORRENT_EXPORT PeerConnector : public QObject,public Resource
+	class KTORRENT_EXPORT PeerConnector : public Resource
 	{
-		Q_OBJECT
 	public:
 		enum Method
 		{
@@ -60,6 +59,13 @@ namespace bt
 		 * Set the maximum number of active PeerConnectors allowed
 		 */
 		static void setMaxActive(Uint32 mc); 
+		
+		typedef QSharedPointer<PeerConnector> Ptr;
+		typedef QWeakPointer<PeerConnector> WPtr;
+		
+		/// Set a weak pointer to this object
+		void setWeakPointer(WPtr ptr);
+		
 		
 	private:
 		virtual void acquired();

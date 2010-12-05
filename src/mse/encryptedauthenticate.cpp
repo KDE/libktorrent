@@ -42,7 +42,7 @@ namespace mse
 			TransportProtocol proto,
 			const SHA1Hash& info_hash, 
 			const PeerID& peer_id, 
-			PeerConnector* pcon)
+			PeerConnector::WPtr pcon)
 	: Authenticate(ip, port, proto, info_hash, peer_id, pcon)
 	{
 		mse::GeneratePublicPrivateKey(xa,ya);

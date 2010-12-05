@@ -23,7 +23,9 @@
 
 #include <util/sha1hash.h>
 #include <peer/peerid.h>
+#include <peer/peerconnector.h>
 #include "authenticatebase.h"
+
 
 namespace net
 {
@@ -32,9 +34,6 @@ namespace net
 
 namespace bt
 {
-
-	
-	class PeerConnector;
 
 
 	/**
@@ -59,7 +58,7 @@ namespace bt
 		 */
 		Authenticate(const QString & ip,Uint16 port,TransportProtocol proto,
 					 const SHA1Hash & info_hash,const PeerID & peer_id,
-					 PeerConnector* pcon);
+					 PeerConnector::WPtr pcon);
 		
 		virtual ~Authenticate();
 		
@@ -90,7 +89,7 @@ namespace bt
 		QString host;
 		Uint16 port;
 		bool succes;
-		QWeakPointer<PeerConnector> pcon;
+		PeerConnector::WPtr pcon;
 		net::Socks* socks;
 	};
 }

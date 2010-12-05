@@ -29,7 +29,7 @@ namespace bt
 {
 
 	Authenticate::Authenticate(const QString & ip,Uint16 port,TransportProtocol proto,
-							   const SHA1Hash & info_hash,const PeerID & peer_id,PeerConnector* pcon) 
+							   const SHA1Hash & info_hash,const PeerID & peer_id,PeerConnector::WPtr pcon) 
 	: info_hash(info_hash),our_peer_id(peer_id),pcon(pcon),socks(0)
 	{
 		finished = succes = false;
@@ -161,7 +161,7 @@ namespace bt
 			sock.clear();
 		
 		timer.stop();
-		PeerConnector* pc = pcon.data();
+		PeerConnector::Ptr pc = pcon.toStrongRef();
 		if (pc)
 			pc->authenticationFinished(this,succes);
 	}

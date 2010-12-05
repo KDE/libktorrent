@@ -24,6 +24,7 @@
 #include <interfaces/peersource.h>
 #include <ktorrent_export.h>
 #include <peer/superseeder.h>
+#include <peer/peerconnector.h>
 #include <mse/streamsocket.h>
 
 namespace KNetwork
@@ -35,7 +36,6 @@ namespace bt
 {
 	class Peer;
 	class PeerID;
-	class PeerConnector;
 	class Piece;
 	class Torrent;
 	class Authenticate;
@@ -209,7 +209,7 @@ namespace bt
 		 * @param pcon The PeerConnector
 		 * @param ok Whether or not the attempt was succesfull
 		 */
-		void peerAuthenticated(Authenticate* auth,PeerConnector* pcon,bool ok);
+		void peerAuthenticated(Authenticate* auth,PeerConnector::WPtr pcon,bool ok);
 		
 		/**
 		 * Save the IP's and port numbers of all peers.
