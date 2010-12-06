@@ -81,6 +81,14 @@ namespace bt
 		void add(Resource* r);
 		
 		/**
+		 * Try to have a Resource acquired. If it succeeds, it will be added and
+		 * true will be returned. If it fails nothing will happen and false is returned.
+		 * @param r The Resource
+		 * @return true upon success, false otherwise
+		 */
+		bool acquire(Resource* r);
+		
+		/**
 			Remove a resource.
 			@param r The Resource
 		 */

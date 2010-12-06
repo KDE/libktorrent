@@ -63,6 +63,18 @@ namespace bt
 		update();
 	}
 	
+	bool ResourceManager::acquire(Resource* r)
+	{
+		if (active.size() < max_active_resources && pending.isEmpty())
+		{
+			add(r);
+			return true;
+		}
+		else
+			return false;
+	}
+
+	
 	void ResourceManager::remove(Resource* r)
 	{
 		if (active.remove(r))

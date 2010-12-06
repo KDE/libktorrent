@@ -28,11 +28,16 @@
 
 namespace bt
 {
+	static ResourceManager data_checker_slot(1);
 	
-	DataCheckerJob::DataCheckerJob(bool auto_import,bt::TorrentControl* tc): Job(true,tc),auto_import(auto_import)
+	DataCheckerJob::DataCheckerJob(bool auto_import,bt::TorrentControl* tc)
+		: Job(true,tc),
+		Resource(&data_checker_slot,tc->getInfoHash().toString()),
+		dcheck_thread(0),
+		killed(false),
+		auto_import(auto_import),
+		started(false)
 	{
-		dcheck_thread = 0;
-		killed = false;
 	}
 	
 	
@@ -65,8 +70,16 @@ namespace bt
 		
 		torrent()->beforeDataCheck();
 		
-		description(this,i18n("Checking Data"));
 		setTotalAmount(Bytes,stats.total_chunks);
+		data_checker_slot.add(this);
+		if (!started)
+			infoMessage(this,i18n("Waiting for other data checks to finish"));
+	}
+	
+	void DataCheckerJob::acquired()
+	{
+		started = true;
+		description(this,i18n("Checking data"));
 		dcheck_thread->start(QThread::IdlePriority);
 	}
 
@@ -105,6 +118,8 @@ namespace bt
 		dcheck_thread = 0;
 		if (!killed) // Job::kill already emitted the result
 			emitResult();
+		
+		release();
 	}
 	
 	void DataCheckerJob::progress(quint32 num, quint32 total)

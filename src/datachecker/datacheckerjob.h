@@ -21,6 +21,7 @@
 #define BT_DATACHECKERJOB_H
 
 #include <torrent/job.h>
+#include <util/resourcemanager.h>
 
 namespace bt 
 {
@@ -28,7 +29,7 @@ namespace bt
 
 	
 	/// Job which runs a DataChecker
-	class KTORRENT_EXPORT DataCheckerJob : public bt::Job
+	class KTORRENT_EXPORT DataCheckerJob : public bt::Job, public Resource
 	{
 		Q_OBJECT
 	public:
@@ -51,9 +52,13 @@ namespace bt
 		void status(quint32 num_failed, quint32 num_found, quint32 num_downloaded, quint32 num_not_downloaded);
 		
 	private:
+		virtual void acquired();
+		
+	private:
 		DataCheckerThread* dcheck_thread;
 		bool killed;
 		bool auto_import;
+		bool started;
 	};
 
 }
