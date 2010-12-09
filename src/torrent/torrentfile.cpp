@@ -106,6 +106,12 @@ namespace bt
 		if (filetype == UNKNOWN)
 		{
 			KMimeType::Ptr ptr = KMimeType::findByPath(getPath());
+			if (!ptr)
+			{
+				filetype = NORMAL;
+				return false;
+			}
+			
 			QString name = ptr->name();
 			if (name.startsWith("audio") ||  name == "application/ogg")
 				filetype = AUDIO;

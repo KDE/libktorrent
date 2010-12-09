@@ -33,6 +33,7 @@ Changes in 1.0.5:
 - Increase maximum packet size to fix a bug causing peers to be dropped when they shouldn't (255264)
 - Simplify PeerConnector cleanup code
 - Fix bug causing file selecting to fail after a torrent was loaded from data (258138)
+- Fix crash due to not checking for 0 pointer in multimedia file check (258967)
 
 Changes in 1.0.4:
 - Fix race condition causing timers not to be removed in the µTP code, resulting in a crash (251117)
