@@ -541,10 +541,14 @@ namespace utp
 		
 		if (mode == net::Poll::INPUT)
 		{
+			if (conn->bytesAvailable() > 0 || conn->connectionState() == CS_CLOSED)
+				pair->read_pipe->wakeUp();
 			pair->read_pipe->prepare(p,conn->receiveConnectionID(),pair->read_pipe);
 		}
 		else
 		{
+			if (conn->isWriteable())
+				pair->write_pipe->wakeUp();
 			pair->write_pipe->prepare(p,conn->receiveConnectionID(),pair->write_pipe);
 		}
 		

@@ -306,6 +306,42 @@ private slots:
 		QVERIFY(update_rtt_called);
 		QVERIFY(retransmit_ok);
 	}
+
+	void testWrapAround()
+	{
+		bt::Out(SYS_UTP|LOG_NOTICE) << "testWrapAround " << bt::endl;
+		reset();
+		QByteArray pkt(200,0);
+			
+		RemoteWindow wnd;
+		bt::Uint16 seq_nr = 65530;
+		for (bt::Uint32 i = 0;i < 10;i++)
+		{
+			wnd.addPacket(pkt,seq_nr + i,bt::Now());
+			QVERIFY(!wnd.allPacketsAcked());
+			QVERIFY(wnd.numUnackedPackets() == i + 1);
+		}
+				
+		// Selectively ack 3 random packets
+		bt::Uint8 sack_data[6];
+		memset(sack_data,0,6);
+		SelectiveAck sack;
+		sack.length = 4;
+		sack.extension = 0;
+		sack.bitmask = sack_data + 2;
+		Ack(&sack,3); 
+		Ack(&sack,6);
+		Ack(&sack,10); 
+		Header hdr;
+		hdr.ack_nr = seq_nr - 1;
+		hdr.wnd_size = 5000;
+		for (int i = 0;i < 2;i++)
+			retransmit_seq_nr.insert(seq_nr + i);
+		wnd.packetReceived(&hdr,&sack,this);
+		QVERIFY(wnd.numUnackedPackets() == 7);
+		QVERIFY(update_rtt_called);
+		QVERIFY(retransmit_ok);
+	}
 };
 
 QTEST_MAIN(RemoteWindowTest)

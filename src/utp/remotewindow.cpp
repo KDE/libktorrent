@@ -70,7 +70,7 @@ namespace utp
 		while (i != unacked_packets.end())
 		{
 			UnackedPacket* up = *i;
-			if (up->seq_nr <= hdr->ack_nr)
+			if (SeqNrCmpSE(up->seq_nr,hdr->ack_nr))
 			{
 				// everything up until the ack_nr in the header is acked
 				conn->updateRTT(hdr,now - up->send_time,up->data.size());
@@ -139,14 +139,15 @@ namespace utp
 			bt::Uint16 lost_index = lost(sack);
 			while (lost_index > 0 && itr != unacked_packets.end())
 			{
-				if ((*itr)->seq_nr - hdr->ack_nr < lost_index && 
+				bt::Uint16 d = (*itr)->seq_nr - hdr->ack_nr;
+				if (d < lost_index && 
 					(!(*itr)->retransmitted || now - (*itr)->send_time > conn->currentTimeout()))
 				{
 					try
 					{
 						conn->retransmit((*itr)->data,(*itr)->seq_nr);
 						(*itr)->send_time = now;
-						first_unacked->retransmitted = true;
+						(*itr)->retransmitted = true;
 					}
 					catch (utp::Connection::TransmissionError & )
 					{

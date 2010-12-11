@@ -217,7 +217,7 @@ namespace utp
 			case CS_FINISHED:
 				if (hdr->type == ST_DATA)
 				{
-					if (hdr->seq_nr <= stats.eof_seq_nr)
+					if (SeqNrCmpSE(hdr->seq_nr,stats.eof_seq_nr))
 					{
 						// push data into local window
 						int s = packet.size() - data_off;
