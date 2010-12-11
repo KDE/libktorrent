@@ -26,13 +26,27 @@
 #include <util/functions.h>
 #include "ktcli.h"
 
+#ifndef Q_WS_WIN
+#include <signal.h>
 
+void signalhandler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		qApp->quit();
+	}
+}
+
+#endif
 
 
 using namespace bt;
 
 int main(int argc, char** argv)
 {
+#ifndef Q_WS_WIN
+	signal(SIGINT, signalhandler);
+#endif
 	QCoreApplication app(argc,argv);
 	try
 	{

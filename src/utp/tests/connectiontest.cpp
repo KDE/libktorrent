@@ -35,19 +35,23 @@ public:
 	{
 	}
 	
-	virtual bool sendTo(const QByteArray & data,const net::Address & addr,quint16 conn_id)
+	virtual bool sendTo(Connection::Ptr conn, const QByteArray & data)
 	{
 		sent_packets.append(data);
-		Q_UNUSED(addr);
-		Q_UNUSED(conn_id);
+		Q_UNUSED(conn);
 		return true;
 	}
 	
-    virtual void stateChanged(Connection* conn, bool readable, bool writeable)
+    virtual void stateChanged(Connection::Ptr conn, bool readable, bool writeable)
 	{
 		Q_UNUSED(conn);
 		Q_UNUSED(readable);
 		Q_UNUSED(writeable);
+	}
+	
+    virtual void closed(Connection::Ptr conn)
+	{
+		Q_UNUSED(conn);
 	}
 	
 	QByteArray buildPacket(bt::Uint32 type,bt::Uint32 recv_conn_id,bt::Uint32 send_conn_id,bt::Uint16 seq_nr,bt::Uint16 ack_nr)

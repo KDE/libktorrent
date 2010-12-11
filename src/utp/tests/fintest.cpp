@@ -32,9 +32,9 @@ class FinTest : public QEventLoop
 public:
 	
 public slots:
-	void accepted(Connection* conn)
+	void accepted()
 	{
-		incoming = conn;
+		incoming = srv.acceptedConnection().toStrongRef();
 		exit();
 	}
 	
@@ -48,7 +48,6 @@ private slots:
 	{
 		bt::InitLog("fintest.log");
 		
-		incoming = outgoing = 0;
 		port = 50000;
 		while (port < 60000)
 		{
@@ -70,12 +69,12 @@ private slots:
 	void testConnect()
 	{
 		net::Address addr("127.0.0.1",port);
-		connect(&srv,SIGNAL(accepted(Connection*)),this,SLOT(accepted(Connection*)),Qt::QueuedConnection);
-		outgoing = srv.connectTo(addr);
-		QVERIFY(outgoing != 0);
+		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
+		outgoing = srv.connectTo(addr).toStrongRef();
+		QVERIFY(outgoing);
 		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
 		exec();
-		QVERIFY(incoming != 0);
+		QVERIFY(incoming);
 	}
 	
 	void testFin()
@@ -113,8 +112,8 @@ private slots:
 private:
 	utp::UTPServer srv;
 	int port;
-	Connection* incoming;
-	Connection* outgoing;
+	Connection::Ptr incoming;
+	Connection::Ptr outgoing;
 };
 
 QTEST_MAIN(FinTest)

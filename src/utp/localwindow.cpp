@@ -44,7 +44,6 @@ namespace utp
 
 	LocalWindow::~LocalWindow()
 	{
-		qDeleteAll(future_packets);
 	}
 	
 	
@@ -63,16 +62,15 @@ namespace utp
 
 	void LocalWindow::checkFuturePackets()
 	{
-		QLinkedList<FuturePacket*>::iterator itr = future_packets.begin();
+		QLinkedList<FuturePacket::Ptr>::iterator itr = future_packets.begin();
 		while (itr != future_packets.end())
 		{
-			FuturePacket* pkt = *itr;
+			FuturePacket::Ptr pkt = *itr;
 			if (pkt->seq_nr == (bt::Uint16)(last_seq_nr + 1))
 			{
 				last_seq_nr = pkt->seq_nr;
 				if (write((const bt::Uint8*)pkt->data.data(),pkt->data.size()) != pkt->data.size())
 					Out(SYS_UTP|LOG_DEBUG) << "LocalWindow::packetReceived write failed " << endl;
-				delete pkt;
 				itr = future_packets.erase(itr);
 			}
 			else
@@ -93,10 +91,10 @@ namespace utp
 		if (hdr->seq_nr != next_seq_nr)
 		{
 			// insert the packet into the future_packets list
-			QLinkedList<FuturePacket*>::iterator itr = future_packets.begin();
+			QLinkedList<FuturePacket::Ptr>::iterator itr = future_packets.begin();
 			while (itr != future_packets.end())
 			{
-				FuturePacket* pkt = *itr;
+				FuturePacket::Ptr pkt = *itr;
 				if (SeqNrCmpS(pkt->seq_nr,hdr->seq_nr))
 				{
 					itr++;
@@ -110,7 +108,8 @@ namespace utp
 				{
 					// we have found a packet with a higher sequence number
 					// so insert
-					future_packets.insert(itr,new FuturePacket(hdr->seq_nr,data,size));
+					FuturePacket::Ptr fp(new FuturePacket(hdr->seq_nr,data,size));
+					future_packets.insert(itr,fp);
 					break;
 				}
 			}
@@ -118,7 +117,8 @@ namespace utp
 			// at the end and not inserted yet, so just append
 			if (itr == future_packets.end())
 			{
-				future_packets.append(new FuturePacket(hdr->seq_nr,data,size));
+				FuturePacket::Ptr fp(new FuturePacket(hdr->seq_nr,data,size));
+				future_packets.append(fp);
 			}
 			
 			window_space -= size;
@@ -157,7 +157,7 @@ namespace utp
 		// First turn off all bits
 		memset(sack->bitmask,0,sack->length);
 		
-		QLinkedList<FuturePacket*>::iterator itr = future_packets.begin();
+		QLinkedList<FuturePacket::Ptr>::iterator itr = future_packets.begin();
 		while (itr != future_packets.end())
 		{
 			Ack(sack,SeqNrDiff(last_seq_nr,(*itr)->seq_nr));

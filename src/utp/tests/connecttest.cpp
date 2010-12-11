@@ -32,9 +32,9 @@ class ConnectTest : public QEventLoop
 public:
 	
 public slots:
-	void accepted(Connection* conn)
+	void accepted()
 	{
-		accepted_conn = conn;
+		accepted_conn = srv.acceptedConnection().toStrongRef();
 		exit();
 	}
 	
@@ -55,7 +55,6 @@ private slots:
 	{
 		bt::InitLog("connecttest.log");
 		
-		accepted_conn = 0;
 		port = 50000;
 		while (port < 60000)
 		{
@@ -77,7 +76,7 @@ private slots:
 	
 	void testConnect()
 	{
-		connect(&srv,SIGNAL(accepted(Connection*)),this,SLOT(accepted(Connection*)),Qt::QueuedConnection);
+		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
 		QTimer::singleShot(0,this,SLOT(startConnect()));
 		exec();
 		QVERIFY(accepted_conn != 0);
@@ -86,7 +85,7 @@ private slots:
 private:
 	utp::UTPServer srv;
 	int port;
-	utp::Connection* accepted_conn;
+	utp::Connection::Ptr accepted_conn;
 };
 
 QTEST_MAIN(ConnectTest)

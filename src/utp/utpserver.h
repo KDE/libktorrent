@@ -48,16 +48,13 @@ namespace utp
 		virtual bool changePort(bt::Uint16 port);
 		
 		/// Send a packet to some host
-		virtual bool sendTo(const QByteArray & data,const net::Address & addr,quint16 conn_id);
+		virtual bool sendTo(Connection::Ptr conn,const QByteArray & data);
 		
 		/// Setup a connection to a remote address
-		Connection* connectTo(const net::Address & addr);
+		Connection::WPtr connectTo(const net::Address & addr);
 		
-		/// Attach a socket to a Connection
-		void attach(UTPSocket* socket,Connection* conn);
-		
-		/// Detach a socket to a Connection
-		void detach(UTPSocket* socket,Connection* conn);
+		/// Get the last accepted connection (Note: for unittest purposes)
+		Connection::WPtr acceptedConnection();
 		
 		/// Start the UTP server
 		void start();
@@ -66,7 +63,7 @@ namespace utp
 		void stop();
 		
 		/// Prepare the server for polling
-		void preparePolling(net::Poll* p,net::Poll::Mode mode,Connection* conn);
+		void preparePolling(net::Poll* p,net::Poll::Mode mode,Connection::Ptr conn);
 		
 		/// Set the TOS byte
 		void setTOS(bt::Uint8 type_of_service);
@@ -82,18 +79,17 @@ namespace utp
 		
 	protected:
 		virtual void handlePacket(const QByteArray & packet,const net::Address & addr);
-		virtual void stateChanged(Connection* conn, bool readable, bool writeable);
+		virtual void stateChanged(Connection::Ptr conn, bool readable, bool writeable);
+		virtual void closed(Connection::Ptr conn);
 		
 	signals:
 		void handlePendingConnectionsDelayed();
-		void accepted(Connection* conn);
+		/// Emitted when a connection is accepted if creating sockets is disabled
+		void accepted();
 		
 	private slots:
-		void onAccepted(Connection* conn);
-		
-	public slots:
 		void cleanup();
-		
+
 	private:
 		class Private;
 		Private* d;

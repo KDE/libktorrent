@@ -25,6 +25,7 @@ Changes in 1.1:
 - When a webseed has 3 connection failures, wait 30 seconds and try again instead of not using it anymore (258210)
 - Fix crash in PeerConnector cleanup (258878)
 - Queue data checks so that they run one after the other (215711)
+- Revamp UTP code with smart pointers
 
 Changes in 1.0.5:
 - Update PeerID client identifications
@@ -34,6 +35,7 @@ Changes in 1.0.5:
 - Simplify PeerConnector cleanup code
 - Fix bug causing file selecting to fail after a torrent was loaded from data (258138)
 - Fix crash due to not checking for 0 pointer in multimedia file check (258967)
+- Fix a bug with sequence number wrap around being handled badly in UTP
 
 Changes in 1.0.4:
 - Fix race condition causing timers not to be removed in the µTP code, resulting in a crash (251117)

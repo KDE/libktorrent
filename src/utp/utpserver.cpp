@@ -21,6 +21,7 @@
 #include "utpserver.h"
 #include "utpserver_p.h"
 #include <QEvent>
+#include <QTimer>
 #include <QHostAddress>
 #include <QCoreApplication>
 #include <stdlib.h>
@@ -46,7 +47,7 @@ using namespace bt;
 
 namespace utp
 {
-	
+
 	MainThreadCall::MainThreadCall(UTPServer* server) : server(server)
 	{
 	}
@@ -97,18 +98,20 @@ namespace utp
 			while (!output_queue.empty())
 			{
 				OutputQueueEntry & packet = output_queue.front();
-				const QByteArray & data = packet.get<0>();
-				const net::Address & addr = packet.get<1>();
-				int ret = sock->sendTo(data,addr);
+				Connection::Ptr conn = packet.conn.toStrongRef();
+				if (!conn)
+				{
+					output_queue.pop_front();
+					continue;
+				}
+				
+				int ret = sock->sendTo(packet.data,conn->remoteAddress());
 				if (ret == net::SEND_WOULD_BLOCK)
 					break;
 				else if (ret == net::SEND_FAILURE)
 				{
 					// Kill the connection of this packet
-					Connection* conn = find(packet.get<2>());
-					if (conn)
-						conn->close();
-					
+					conn->close();
 					output_queue.pop_front();
 				}
 				else
@@ -134,24 +137,7 @@ namespace utp
 			utp_thread = 0;
 		}
 		
-		// Cleanup all connections
-		QList<UTPSocket*> attached;
-		bt::PtrMap<Connection*,UTPSocket>::iterator i = alive_connections.begin();
-		while (i != alive_connections.end())
-		{
-			attached.append(i->second);
-			i++;
-		}
-		
-		foreach (UTPSocket* s,attached)
-			s->reset();
-		
-		alive_connections.clear();
-		clearDeadConnections();
-		
-		connections.setAutoDelete(true);
 		connections.clear();
-		connections.setAutoDelete(false);
 		
 		// Close the socket
 		sockets.clear();
@@ -180,63 +166,64 @@ namespace utp
 	{
 		const Header* hdr = parser.header();
 		quint16 recv_conn_id = hdr->connection_id + 1;
-		if (connections.find(recv_conn_id))
+		if (connections.contains(recv_conn_id))
 		{
 			// Send a reset packet if the ID is in use
-			Connection conn(recv_conn_id,Connection::INCOMING,addr,p);
-			conn.sendReset();
+			Connection::Ptr conn(new Connection(recv_conn_id,Connection::INCOMING,addr,p));
+			conn->setWeakPointer(conn);
+			conn->sendReset();
 		}
 		else
 		{
-			Connection* conn = new Connection(recv_conn_id,Connection::INCOMING,addr,p);
+			Connection::Ptr conn(new Connection(recv_conn_id,Connection::INCOMING,addr,p));
 			try
 			{
+				conn->setWeakPointer(conn);
 				conn->handlePacket(parser,data);
 				connections.insert(recv_conn_id,conn);
-				p->accepted(conn);
+				if (create_sockets)
+				{
+					UTPSocket* utps = new UTPSocket(conn);
+					mse::StreamSocket::Ptr ss(new mse::StreamSocket(utps));
+					{
+						QMutexLocker lock(&pending_mutex);
+						pending.append(ss);
+					}
+					p->handlePendingConnectionsDelayed();
+				}
+				else
+				{
+					last_accepted.append(conn);
+					p->accepted();
+				}
 			}
 			catch (Connection::TransmissionError & err)
 			{
 				Out(SYS_UTP|LOG_NOTICE) << "UTP: " << err.location << endl;
-				connections.erase(recv_conn_id);
-				delete conn;
+				connections.remove(recv_conn_id);
 			}
 		}
 	}
 	
 	void UTPServer::Private::reset(const utp::Header* hdr)
 	{
-		Connection* c = find(hdr->connection_id);
+		Connection::Ptr c = find(hdr->connection_id);
 		if (c)
 		{
 			c->reset();
 		}
 	}
 	
-	Connection* UTPServer::Private::find(quint16 conn_id)
+	Connection::Ptr UTPServer::Private::find(quint16 conn_id)
 	{
-		return connections.find(conn_id);
+		ConnectionMapItr i = connections.find(conn_id);
+		if (i != connections.end())
+			return i.value();
+		else
+			return Connection::Ptr();
 	}
 	
-	void UTPServer::Private::clearDeadConnections()
-	{
-		QMutexLocker lock(&mutex);
-		QList<Connection*>::iterator i = dead_connections.begin();
-		while (i != dead_connections.end())
-		{
-			Connection* conn = *i;
-			if (conn->connectionState() == CS_CLOSED)
-			{
-				connections.erase(conn->receiveConnectionID());
-				delete conn;
-				i = dead_connections.erase(i);
-			}
-			else
-				i++;
-		}
-	}
-	
-	void UTPServer::Private::wakeUpPollPipes(utp::Connection* conn, bool readable, bool writeable)
+	void UTPServer::Private::wakeUpPollPipes(utp::Connection::Ptr conn, bool readable, bool writeable)
 	{
 		QMutexLocker lock(&mutex);
 		for (PollPipePairItr itr = poll_pipes.begin();itr != poll_pipes.end();itr++)
@@ -307,14 +294,13 @@ namespace utp
 		
 	{
 		qsrand(time(0));
-		connect(this,SIGNAL(accepted(Connection*)),this,SLOT(onAccepted(Connection*)));
 	}
 
 	UTPServer::~UTPServer()
 	{
 		delete d;
 	}
-	
+
 	void UTPServer::handlePendingConnections()
 	{
 		// This should be called from the main thread
@@ -427,7 +413,7 @@ namespace utp
 		const Header* hdr = parser.header();
 		//Dump(packet,addr);
 		//DumpPacket(*hdr);
-		Connection* c = 0;
+		Connection::Ptr c;
 		switch (hdr->type)
 		{
 			case ST_DATA:
@@ -436,13 +422,14 @@ namespace utp
 				try
 				{
 					c = d->find(hdr->connection_id);
-					if (c)
-						c->handlePacket(parser,packet);
+					if (c && c->handlePacket(parser,packet) == CS_CLOSED)
+						d->connections.remove(c->receiveConnectionID());
 				}
 				catch (Connection::TransmissionError & err)
 				{
 					Out(SYS_UTP|LOG_NOTICE) << "UTP: " << err.location << endl;
-					c->close();
+					if (c)
+						c->close();
 				}
 				break;
 			case ST_RESET:
@@ -455,38 +442,39 @@ namespace utp
 	}
 
 
-	bool UTPServer::sendTo(const QByteArray& data, const net::Address& addr,quint16 conn_id)
+	bool UTPServer::sendTo(utp::Connection::Ptr conn, const QByteArray& data)
 	{
 		// if output_queue is not empty append to it, so that packet order is OK
 		// (when they are being sent anyway)
 		if (d->output_queue.empty())
 		{
-			int ret = d->sendTo(data,addr);
+			int ret = d->sendTo(data,conn->remoteAddress());
 			if (ret == net::SEND_WOULD_BLOCK)
 			{
-				d->output_queue.append(OutputQueueEntry(data,addr,conn_id));
+				d->output_queue.append(OutputQueueEntry(data,conn));
 				d->enableWriteNotifications();
 			}
 			else if (ret == net::SEND_FAILURE)
 				return false;
 		}
 		else
-			d->output_queue.append(OutputQueueEntry(data,addr,conn_id));
+			d->output_queue.append(OutputQueueEntry(data,conn));
 		
 		return true;
 	}
 
-	Connection* UTPServer::connectTo(const net::Address& addr)
+	Connection::WPtr UTPServer::connectTo(const net::Address& addr)
 	{
 		if (d->sockets.isEmpty())
-			return 0;
+			return Connection::WPtr();
 		
 		QMutexLocker lock(&d->mutex);
 		quint16 recv_conn_id = qrand() % 32535;
 		while (d->connections.contains(recv_conn_id))
 			recv_conn_id = qrand() % 32535;
 		
-		Connection* conn = new Connection(recv_conn_id,Connection::OUTGOING,addr,this);
+		Connection::Ptr conn(new Connection(recv_conn_id,Connection::OUTGOING,addr,this));
+		conn->setWeakPointer(conn);
 		conn->moveToThread(d->utp_thread);
 		d->connections.insert(recv_conn_id,conn);
 		try
@@ -496,36 +484,8 @@ namespace utp
 		}
 		catch (Connection::TransmissionError & err)
 		{
-			d->connections.erase(recv_conn_id);
-			delete conn;
-			return 0;
-		}
-	}
-
-	
-	
-	void UTPServer::attach(UTPSocket* socket, Connection* conn)
-	{
-		QMutexLocker lock(&d->mutex);
-		d->alive_connections.insert(conn,socket);
-	}
-
-	void UTPServer::detach(UTPSocket* socket, Connection* conn)
-	{
-		QMutexLocker lock(&d->mutex);
-		UTPSocket* sock = d->alive_connections.find(conn);
-		if (sock == socket)
-		{
-			// given the fact that the socket is gone, we can close it
-			try
-			{
-				conn->close();
-			}
-			catch (Connection::TransmissionError)
-			{
-			}
-			d->alive_connections.erase(conn);
-			d->dead_connections.append(conn);
+			d->connections.remove(recv_conn_id);
+			return Connection::WPtr();
 		}
 	}
 
@@ -545,7 +505,7 @@ namespace utp
 		}
 	}
 	
-	void UTPServer::preparePolling(net::Poll* p, net::Poll::Mode mode,Connection* conn)
+	void UTPServer::preparePolling(net::Poll* p, net::Poll::Mode mode, utp::Connection::Ptr conn)
 	{
 		QMutexLocker lock(&d->mutex);
 		PollPipePair* pair = d->poll_pipes.find(p);
@@ -569,23 +529,9 @@ namespace utp
 		}
 	}
 	
-	void UTPServer::stateChanged(Connection* conn, bool readable, bool writeable)
+	void UTPServer::stateChanged(utp::Connection::Ptr conn, bool readable, bool writeable)
 	{
 		d->wakeUpPollPipes(conn,readable,writeable);
-	}
-	
-	void UTPServer::onAccepted(Connection* conn)
-	{
-		if (d->create_sockets)
-		{
-			UTPSocket* utps = new UTPSocket(conn);
-			mse::StreamSocket::Ptr ss(new mse::StreamSocket(utps));
-			{
-				QMutexLocker lock(&d->pending_mutex);
-				d->pending.append(ss);
-			}
-			handlePendingConnectionsDelayed();
-		}
 	}
 	
 	///////////////////////////////////////////////////////
@@ -624,16 +570,37 @@ namespace utp
 		
 		return false;
 	}
-	
-	void UTPServer::cleanup()
-	{
-		d->clearDeadConnections();
-	}
-	
+
 	void UTPServer::setCreateSockets(bool on)
 	{
 		d->create_sockets = on;
 	}
 
+	Connection::WPtr UTPServer::acceptedConnection()
+	{
+		if (d->last_accepted.isEmpty())
+			return Connection::WPtr();
+		else
+			return d->last_accepted.takeFirst();
+	}
+	
+	void UTPServer::closed(Connection::Ptr conn)
+	{
+		Q_UNUSED(conn);
+		QTimer::singleShot(0,this,SLOT(cleanup()));
+	}
+	
+	void UTPServer::cleanup()
+	{
+		QMutexLocker lock(&d->mutex);
+		QMap<quint16,Connection::Ptr>::iterator i = d->connections.begin(); 
+		while (i != d->connections.end())
+		{
+			if (i.value()->connectionState() == CS_CLOSED)
+				i = d->connections.erase(i);
+			else
+				i++;
+		}
+	}
 
 }

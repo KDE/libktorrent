@@ -38,9 +38,6 @@ namespace utp
 	void UTPServerThread::run()
 	{
 		srv->threadStarted();
-		QTimer timer;
-		connect(&timer,SIGNAL(timeout()),srv,SLOT(cleanup()));
-		timer.start(2000);
 		exec();
 	}
 

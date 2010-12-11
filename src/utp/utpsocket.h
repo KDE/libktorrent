@@ -24,10 +24,10 @@
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <net/socketdevice.h>
+#include <utp/connection.h>
 
 namespace utp
 {
-	class Connection;
 	
 	/**
 		UTPSocket class serves as an interface for the networking code.
@@ -36,7 +36,7 @@ namespace utp
 	{
 	public:
 		UTPSocket();
-		UTPSocket(Connection* conn);
+		UTPSocket(Connection::WPtr conn);
 		virtual ~UTPSocket();
 		
 		virtual int fd() const;
@@ -56,7 +56,7 @@ namespace utp
 		virtual bool ready(const net::Poll* p, net::Poll::Mode mode) const;
 		
 	private:
-		Connection* conn;
+		Connection::WPtr conn;
 		bool blocking;
 		mutable bool polled_for_reading;
 		mutable bool polled_for_writing;

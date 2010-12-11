@@ -27,6 +27,7 @@
 #include <util/circularbuffer.h>
 #include <QLinkedList>
 #include <QByteArray>
+#include <QSharedPointer>
 
 namespace utp
 {
@@ -42,6 +43,8 @@ namespace utp
 		
 		bt::Uint16 seq_nr;
 		QByteArray data;
+		
+		typedef QSharedPointer<FuturePacket> Ptr;
 	};
 	
 	/**
@@ -87,7 +90,7 @@ namespace utp
 		bt::Uint16 last_seq_nr;
 		// all the packets which have been received but we can yet write to the output buffer
 		// due to missing packets
-		QLinkedList<FuturePacket*> future_packets;
+		QLinkedList<FuturePacket::Ptr> future_packets;
 		bt::Uint32 window_space;
 	};
 

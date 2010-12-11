@@ -22,6 +22,7 @@
 #define UTP_UTPSERVER_P_H
 
 #include <QObject>
+#include <QMap>
 #include <QSocketNotifier>
 #include <boost/tuple/tuple.hpp>
 #include <net/socket.h>
@@ -75,8 +76,18 @@ namespace utp
 		bool testWrite(ConItr b,ConItr e);
 	};
 	
+	struct OutputQueueEntry
+	{
+		QByteArray data;
+		Connection::WPtr conn;
+		
+		OutputQueueEntry(const QByteArray & data, Connection::WPtr conn)
+			: data(data),conn(conn)
+		{}
+	};
+	
 	typedef bt::PtrMap<net::Poll*,PollPipePair>::iterator PollPipePairItr;
-	typedef boost::tuple<QByteArray,net::Address,quint16> OutputQueueEntry;
+	typedef QMap<quint16,Connection::Ptr>::iterator ConnectionMapItr;
 	
 	class UTPServer::Private : public net::ServerSocket::DataHandler
 	{
@@ -88,9 +99,8 @@ namespace utp
 		bool bind(const net::Address & addr);
 		void syn(const PacketParser & parser,const QByteArray & data,const net::Address & addr);
 		void reset(const Header* hdr);
-		void clearDeadConnections();
-		void wakeUpPollPipes(Connection* conn,bool readable,bool writeable);
-		Connection* find(quint16 conn_id);
+		void wakeUpPollPipes(Connection::Ptr conn,bool readable,bool writeable);
+		Connection::Ptr find(quint16 conn_id);
 		void sendOutputQueue(net::ServerSocket* sock);
 		void stop();
 		virtual void dataReceived(const QByteArray& data, const net::Address& addr);
@@ -98,15 +108,12 @@ namespace utp
 		int sendTo(const QByteArray& data, const net::Address& addr);
 		void enableWriteNotifications();
 		
-		
 	public:
 		UTPServer* p;
 		QList<net::ServerSocket::Ptr> sockets;
 		QList<net::ServerSocket::Ptr> busy_sockets;
 		bool running;
-		bt::PtrMap<quint16,Connection> connections;
-		QList<Connection*> dead_connections;
-		bt::PtrMap<Connection*,UTPSocket> alive_connections;
+		QMap<quint16,Connection::Ptr> connections;
 		UTPServerThread* utp_thread;
 		QMutex mutex;
 		bt::PtrMap<net::Poll*,PollPipePair> poll_pipes;
@@ -116,6 +123,7 @@ namespace utp
 		QList<mse::StreamSocket::Ptr> pending;
 		QMutex pending_mutex;
 		MainThreadCall* mtc;
+		QList<Connection::WPtr> last_accepted;
 	};
 }
 

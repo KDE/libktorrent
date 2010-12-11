@@ -23,10 +23,12 @@
 
 #include <QList>
 #include <QByteArray>
+#include <QSharedPointer>
 #include <QMutex>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <utp/timevalue.h>
+
 
 namespace utp
 {
@@ -43,6 +45,8 @@ namespace utp
 		bt::Uint16 seq_nr;
 		bt::TimeStamp send_time;
 		bool retransmitted;
+		
+		typedef QSharedPointer<UnackedPacket> Ptr;
 	};
 	
 	/**
@@ -124,7 +128,7 @@ namespace utp
 		bt::Uint32 cur_window;
 		bt::Uint32 max_window;
 		bt::Uint32 wnd_size; // advertised window size from the other side
-		QList<UnackedPacket*> unacked_packets;
+		QList<UnackedPacket::Ptr> unacked_packets;
 		bt::Uint16 last_ack_nr;
 		bt::Uint32 last_ack_receive_count;
 	};

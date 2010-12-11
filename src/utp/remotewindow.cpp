@@ -66,25 +66,23 @@ namespace utp
 		wnd_size = hdr->wnd_size;
 		
 		bt::TimeStamp now = bt::Now();
-		QList<UnackedPacket*>::iterator i = unacked_packets.begin();
+		QList<UnackedPacket::Ptr>::iterator i = unacked_packets.begin();
 		while (i != unacked_packets.end())
 		{
-			UnackedPacket* up = *i;
-			if (up->seq_nr <= hdr->ack_nr)
+			UnackedPacket::Ptr up = *i;
+			if (SeqNrCmpSE(up->seq_nr,hdr->ack_nr))
 			{
 				// everything up until the ack_nr in the header is acked
 				conn->updateRTT(hdr,now - up->send_time,up->data.size());
 				cur_window -= up->data.size();
-				delete up;
 				i = unacked_packets.erase(i);
 			}
 			else if (sack)
 			{
-				if (Acked(sack,up->seq_nr - hdr->ack_nr))
+				if (Acked(sack, up->seq_nr - hdr->ack_nr))
 				{
 					conn->updateRTT(hdr,now - up->send_time,up->data.size());
 					cur_window -= up->data.size();
-					delete up;
 					i = unacked_packets.erase(i);
 				}
 				else
@@ -104,7 +102,8 @@ namespace utp
 	{
 		cur_window += data.size();
 		wnd_size -= data.size();
-		unacked_packets.append(new UnackedPacket(data,seq_nr,send_time));
+		UnackedPacket::Ptr packet(new UnackedPacket(data,seq_nr,send_time));
+		unacked_packets.append(packet);
 	}
 
 	void RemoteWindow::checkLostPackets(const utp::Header* hdr, const utp::SelectiveAck* sack,Retransmitter* conn)
@@ -112,8 +111,8 @@ namespace utp
 		bt::TimeStamp now = bt::Now();
 		bool lost_packets = false;
 		
-		QList<UnackedPacket*>::iterator itr = unacked_packets.begin();
-		UnackedPacket* first_unacked = *itr;
+		QList<UnackedPacket::Ptr>::iterator itr = unacked_packets.begin();
+		UnackedPacket::Ptr first_unacked = *itr;
 		if (last_ack_receive_count >= 3 && first_unacked->seq_nr == hdr->ack_nr + 1) 
 		{
 			// packet has been lost
@@ -139,14 +138,15 @@ namespace utp
 			bt::Uint16 lost_index = lost(sack);
 			while (lost_index > 0 && itr != unacked_packets.end())
 			{
-				if ((*itr)->seq_nr - hdr->ack_nr < lost_index && 
+				bt::Uint16 d = (*itr)->seq_nr - hdr->ack_nr;
+				if (d < lost_index && 
 					(!(*itr)->retransmitted || now - (*itr)->send_time > conn->currentTimeout()))
 				{
 					try
 					{
 						conn->retransmit((*itr)->data,(*itr)->seq_nr);
 						(*itr)->send_time = now;
-						first_unacked->retransmitted = true;
+						(*itr)->retransmitted = true;
 					}
 					catch (utp::Connection::TransmissionError & )
 					{
@@ -191,7 +191,7 @@ namespace utp
 			max_window = MIN_PACKET_SIZE;
 			bt::TimeStamp now = bt::Now();
 			// When a timeout occurs retransmit packets which are lost longer then the current timeout
-			foreach (UnackedPacket* pkt,unacked_packets)
+			foreach (UnackedPacket::Ptr pkt,unacked_packets)
 			{
 				if (!pkt->retransmitted || now - pkt->send_time > conn->currentTimeout())
 				{
@@ -220,7 +220,6 @@ namespace utp
 	
 	void RemoteWindow::clear()
 	{
-		qDeleteAll(unacked_packets);
 		unacked_packets.clear();
 	}
 }

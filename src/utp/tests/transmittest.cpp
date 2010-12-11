@@ -85,7 +85,7 @@ class SendThread : public QThread
 	Q_OBJECT
 public:
 	
-	SendThread(Connection* outgoing,QObject* parent = 0) : QThread(parent),outgoing(outgoing)
+	SendThread(Connection::Ptr outgoing,QObject* parent = 0) : QThread(parent),outgoing(outgoing)
 	{}
 	
 	virtual void run()
@@ -96,7 +96,7 @@ public:
 		
 		bt::Int64 sent = 0;
 		int off = 0;
-		while (sent < BYTES_TO_SEND)
+		while (sent < BYTES_TO_SEND && outgoing->connectionState() != CS_CLOSED)
 		{
 			int to_send = step - off;
 			int ret = outgoing->send((const bt::Uint8*)data.data() + off,to_send);
@@ -125,7 +125,7 @@ public:
 		sent_hash = hgen.get();
 	}
 	
-	Connection* outgoing;
+	Connection::Ptr outgoing;
 	bt::SHA1Hash sent_hash;
 };
 
@@ -138,10 +138,16 @@ public:
 	}
 	
 public slots:
-	void accepted(Connection* conn)
+	void accepted()
 	{
-		incoming = conn;
+		incoming = srv.acceptedConnection().toStrongRef();
 		exit();
+	}
+	
+	void startConnect()
+	{
+		net::Address addr("127.0.0.1",port);
+		outgoing = srv.connectTo(addr);
 	}
 	
 	void endEventLoop()
@@ -154,7 +160,6 @@ private slots:
 	{
 		bt::InitLog("transmittest.log",false,true,false);
 		
-		incoming = outgoing = 0;
 		port = 50000;
 		while (port < 60000)
 		{
@@ -175,13 +180,16 @@ private slots:
 	
 	void testConnect()
 	{
-		net::Address addr("127.0.0.1",port);
-		connect(&srv,SIGNAL(accepted(Connection*)),this,SLOT(accepted(Connection*)),Qt::QueuedConnection);
-		outgoing = srv.connectTo(addr);
-		QVERIFY(outgoing != 0);
+		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
+		QTimer::singleShot(0,this,SLOT(startConnect())); 
 		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
 		exec();
-		QVERIFY(incoming != 0);
+		QVERIFY(outgoing);
+		QVERIFY(incoming);
+		QVERIFY(incoming->connectionState() == CS_CONNECTED);
+		if (outgoing->connectionState() != CS_CONNECTED)
+			QVERIFY(outgoing->waitUntilConnected());
+		QVERIFY(outgoing->connectionState() == CS_CONNECTED);
 	}
 	
 	
@@ -201,7 +209,8 @@ private slots:
 		st.start(); // The thread will start sending a whole bunch of data
 		bt::Int64 received = 0;
 		int failures = 0;
-		while (received < BYTES_TO_SEND)
+		net::Poll poller;
+		while (received < BYTES_TO_SEND && incoming->connectionState() != CS_CLOSED)
 		{
 			bt::Uint32 ba = incoming->bytesAvailable();
 			if (ba > 0)
@@ -218,12 +227,9 @@ private slots:
 					Out(SYS_UTP|LOG_DEBUG) << "Received " << received << endl;
 				}
 			}
-			else
+			else if (incoming->connectionState() != CS_CLOSED)
 			{
-				if (incoming->connectionState() == utp::CS_CLOSED)
-					break;
-				
-				incoming->waitForData();
+				incoming->waitForData(1000);
 			}
 		}
 		
@@ -245,8 +251,8 @@ private:
 	
 	
 private:
-	Connection* incoming;
-	Connection* outgoing;
+	Connection::Ptr incoming;
+	Connection::Ptr outgoing;
 	utp::UTPServer srv;
 	int port;
 };

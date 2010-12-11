@@ -85,7 +85,7 @@ class SendThread : public QThread
 	Q_OBJECT
 public:
 	
-	SendThread(Connection* outgoing,QObject* parent = 0) : QThread(parent),outgoing(outgoing)
+	SendThread(Connection::Ptr outgoing,QObject* parent = 0) : QThread(parent),outgoing(outgoing)
 	{}
 	
 	virtual void run()
@@ -110,7 +110,7 @@ public:
 		outgoing->dumpStats();
 	}
 	
-	Connection* outgoing;
+	Connection::Ptr outgoing;
 };
 
 class PacketLoss : public QEventLoop
@@ -122,9 +122,9 @@ public:
 	}
 	
 public slots:
-	void accepted(Connection* conn)
+	void accepted()
 	{
-		incoming = conn;
+		incoming = srv.acceptedConnection().toStrongRef();
 		exit();
 	}
 	
@@ -138,7 +138,6 @@ private slots:
 	{
 		bt::InitLog("packetlosstest.log");
 		
-		incoming = outgoing = 0;
 		port = 50000;
 		while (port < 60000)
 		{
@@ -159,12 +158,12 @@ private slots:
 	void testConnect()
 	{
 		net::Address addr("127.0.0.1",port);
-		connect(&srv,SIGNAL(accepted(Connection*)),this,SLOT(accepted(Connection*)),Qt::QueuedConnection);
-		outgoing = srv.connectTo(addr);
-		QVERIFY(outgoing != 0);
+		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
+		outgoing = srv.connectTo(addr).toStrongRef();
+		QVERIFY(outgoing);
 		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
 		exec();
-		QVERIFY(incoming != 0);
+		QVERIFY(incoming);
 	}
 	
 	void testPacketLoss()
@@ -218,8 +217,8 @@ private:
 	
 	
 private:
-	Connection* incoming;
-	Connection* outgoing;
+	Connection::Ptr incoming;
+	Connection::Ptr outgoing;
 	PacketLossServer srv;
 	int port;
 };

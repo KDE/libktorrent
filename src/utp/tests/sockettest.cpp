@@ -34,9 +34,9 @@ class SocketTest : public QEventLoop
 public:
 	
 public slots:
-	void accepted(Connection* conn)
+	void accepted()
 	{
-		incoming = new UTPSocket(conn);
+		incoming = new UTPSocket(bt::Globals::instance().getUTPServer().acceptedConnection());
 		exit();
 	}
 	
@@ -74,7 +74,7 @@ private slots:
 	{
 		UTPServer & srv = bt::Globals::instance().getUTPServer();
 		net::Address addr("127.0.0.1",port);
-		connect(&srv,SIGNAL(accepted(Connection*)),this,SLOT(accepted(Connection*)),Qt::QueuedConnection);
+		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
 		outgoing = new UTPSocket();
 		outgoing->connectTo(addr);
 		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout

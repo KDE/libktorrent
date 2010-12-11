@@ -41,8 +41,9 @@ public:
 	
 	
 public slots:
-	void accepted(Connection* conn)
+	void accepted()
 	{
+		utp::Connection::Ptr conn = bt::Globals::instance().getUTPServer().acceptedConnection();
 		incoming[num_accepted++] = new UTPSocket(conn);
 		Out(SYS_UTP|LOG_DEBUG) << "Accepted " << num_accepted << endl;
 		if (num_accepted >= NUM_SOCKETS)
@@ -108,18 +109,27 @@ private slots:
 		QVERIFY(s.ready(&poller,Poll::OUTPUT));
 		QVERIFY(s.connectSuccesFull());
 		poller.reset();
+		
+		// Purge accepted connection
+		utp::UTPServer & srv = bt::Globals::instance().getUTPServer();
+		srv.acceptedConnection();
 	}
 
 	void testConnect()
 	{
 		Out(SYS_UTP|LOG_DEBUG) << "testConnect " << endl;
 		utp::UTPServer & srv = bt::Globals::instance().getUTPServer();
-		connect(&srv,SIGNAL(accepted(Connection*)),this,SLOT(accepted(Connection*)),Qt::QueuedConnection);
+		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
 		
 		QTimer::singleShot(0,this,SLOT(doConnect())); 
 		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
 		exec();
 		QVERIFY(num_accepted == NUM_SOCKETS);
+		for (int i = 0; i < num_accepted; i++)
+		{
+			Out(SYS_UTP|LOG_DEBUG) << "Check OK incoming " << i << endl;
+			QVERIFY(incoming[i]->ok());
+		}
 	}
 	
 	void testPollInput()

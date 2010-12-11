@@ -32,9 +32,9 @@ class SendTest : public QEventLoop
 	public:
 		
 public slots:
-	void accepted(Connection* conn)
+	void accepted()
 	{
-		incoming = new UTPSocket(conn);
+		incoming = new UTPSocket(bt::Globals::instance().getUTPServer().acceptedConnection());
 		exit();
 	}
 	
@@ -74,7 +74,7 @@ private slots:
 		
 		net::Address addr("127.0.0.1",port);
 		utp::UTPServer & srv = bt::Globals::instance().getUTPServer();
-		connect(&srv,SIGNAL(accepted(Connection*)),this,SLOT(accepted(Connection*)),Qt::QueuedConnection);
+		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
 		outgoing = new utp::UTPSocket();
 		outgoing->setBlocking(false);
 		outgoing->connectTo(addr);

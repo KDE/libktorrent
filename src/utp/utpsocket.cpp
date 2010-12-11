@@ -27,17 +27,19 @@ namespace utp
 {
 	
 	UTPSocket::UTPSocket() 
-		: net::SocketDevice(bt::UTP),conn(0),blocking(true),polled_for_reading(false),polled_for_writing(false)
+		: net::SocketDevice(bt::UTP),blocking(true),polled_for_reading(false),polled_for_writing(false)
 	{
 	}
 	
-	UTPSocket::UTPSocket(Connection* conn) 
+	UTPSocket::UTPSocket(Connection::WPtr conn) 
 		: net::SocketDevice(bt::UTP),conn(conn),blocking(true),polled_for_reading(false),polled_for_writing(false)
 	{
-		UTPServer & srv = bt::Globals::instance().getUTPServer();
-		srv.attach(this,conn);
-		setRemoteAddress(conn->remoteAddress());
-		m_state = CONNECTED;
+		Connection::Ptr ptr = conn.toStrongRef();
+		if (ptr)
+		{
+			setRemoteAddress(ptr->remoteAddress());
+			m_state = CONNECTED;
+		}
 	}
 
 	UTPSocket::~UTPSocket()
@@ -49,16 +51,21 @@ namespace utp
 	
 	bt::Uint32 UTPSocket::bytesAvailable() const
 	{
-		return conn->bytesAvailable();
+		Connection::Ptr ptr = conn.toStrongRef();
+		if (ptr)
+			return ptr->bytesAvailable();
+		else
+			return 0;
 	}
 
 	void UTPSocket::close()
 	{
-		if (conn)
+		Connection::Ptr ptr = conn.toStrongRef();
+		if (ptr)
 		{
 			try
 			{
-				conn->close();
+				ptr->close();
 			}
 			catch (Connection::TransmissionError)
 			{
@@ -69,14 +76,15 @@ namespace utp
 
 	bool UTPSocket::connectSuccesFull()
 	{
-		bool ret = conn->connectionState() == CS_CONNECTED;
-		if (ret)
+		Connection::Ptr ptr = conn.toStrongRef();
+		if (ptr && ptr->connectionState() == CS_CONNECTED)
 		{
-			setRemoteAddress(conn->remoteAddress());
+			setRemoteAddress(ptr->remoteAddress());
 			m_state = CONNECTED;
+			return true;
 		}
-			
-		return ret;
+		else
+			return false;
 	}
 
 	bool UTPSocket::connectTo(const net::Address& addr)
@@ -88,21 +96,21 @@ namespace utp
 		reset();
 		
 		conn = srv.connectTo(addr);
-		if (!conn)
+		Connection::Ptr ptr = conn.toStrongRef();
+		if (!ptr)
 			return false;
 		
-		srv.attach(this,conn);
 		m_state = CONNECTING;
 		if (blocking)
 		{
-			bool ret = conn->waitUntilConnected();
+			bool ret = ptr->waitUntilConnected();
 			if (ret)
 				m_state = CONNECTED;
 		
 			return ret;
 		}
 		
-		return conn->connectionState() == CS_CONNECTED;
+		return ptr->connectionState() == CS_CONNECTED;
 	}
 
 	int UTPSocket::fd() const
@@ -112,10 +120,11 @@ namespace utp
 
 	const net::Address& UTPSocket::getPeerName() const
 	{
+		Connection::Ptr ptr = conn.toStrongRef();
 		if (remote_addr_override)
 			return addr;
-		else if (conn)
-			return conn->remoteAddress();
+		else if (ptr)
+			return ptr->remoteAddress();
 		else
 			return net::Address::null;
 	}
@@ -127,22 +136,24 @@ namespace utp
 
 	bool UTPSocket::ok() const
 	{
-		return conn != 0 && conn->connectionState() != CS_CLOSED;
+		Connection::Ptr ptr = conn.toStrongRef();
+		return ptr && ptr->connectionState() != CS_CLOSED;
 	}
 
 	int UTPSocket::recv(bt::Uint8* buf, int max_len)
 	{
-		if (!conn || conn->connectionState() == CS_CLOSED)
+		Connection::Ptr ptr = conn.toStrongRef();
+		if (!ptr || ptr->connectionState() == CS_CLOSED)
 			return 0;
 		
 		try
 		{
-			if (conn->bytesAvailable() == 0)
+			if (ptr->bytesAvailable() == 0)
 			{
 				if (blocking)
 				{
-					if (conn->waitForData())
-						return conn->recv(buf,max_len);
+					if (ptr->waitForData())
+						return ptr->recv(buf,max_len);
 					else
 						return 0; // connection should be closed now
 				}
@@ -150,7 +161,7 @@ namespace utp
 					return -1; // No data ready and not blocking so return -1
 			}
 			else
-				return conn->recv(buf,max_len);
+				return ptr->recv(buf,max_len);
 		}
 		catch (Connection::TransmissionError & err)
 		{
@@ -161,22 +172,18 @@ namespace utp
 
 	void UTPSocket::reset()
 	{
-		if (conn)
-		{
-			UTPServer & srv = bt::Globals::instance().getUTPServer();
-			srv.detach(this,conn);
-			conn = 0;
-		}
+		conn.clear();
 	}
 
 	int UTPSocket::send(const bt::Uint8* buf, int len)
 	{
-		if (!conn)
+		Connection::Ptr ptr = conn.toStrongRef();
+		if (!ptr)
 			return -1;
 		
 		try
 		{
-			return conn->send(buf,len);
+			return ptr->send(buf,len);
 		}
 		catch (Connection::TransmissionError & err)
 		{
@@ -198,10 +205,11 @@ namespace utp
 
 	void UTPSocket::prepare(net::Poll* p, net::Poll::Mode mode)
 	{
-		if (conn)
+		Connection::Ptr ptr = conn.toStrongRef();
+		if (ptr)
 		{
 			UTPServer & srv = bt::Globals::instance().getUTPServer();
-			srv.preparePolling(p,mode,conn);
+			srv.preparePolling(p,mode,ptr);
 			if (mode == net::Poll::OUTPUT)
 				polled_for_writing = true;
 			else
@@ -212,7 +220,8 @@ namespace utp
 	bool UTPSocket::ready(const net::Poll* p, net::Poll::Mode mode) const
 	{
 		Q_UNUSED(p);
-		if (!conn)
+		Connection::Ptr ptr = conn.toStrongRef();
+		if (!ptr)
 			return false;
 		
 		if (mode == net::Poll::OUTPUT)
@@ -220,7 +229,7 @@ namespace utp
 			if (polled_for_writing) 
 			{
 				polled_for_writing = false;
-				return conn->isWriteable();
+				return ptr->isWriteable();
 			}
 		}
 		else
@@ -228,7 +237,7 @@ namespace utp
 			if (polled_for_reading)
 			{
 				polled_for_reading = false;
-				return bytesAvailable() > 0 || conn->connectionState() == CS_CLOSED;
+				return bytesAvailable() > 0 || ptr->connectionState() == CS_CLOSED;
 			}
 		}
 		
