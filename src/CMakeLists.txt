@@ -184,6 +184,7 @@ set(libktorrent_SRC
 	utp/utpprotocol.cpp
 	utp/pollpipe.cpp
 	utp/delaywindow.cpp
+	utp/outputqueue.cpp 
 	
 	upnp/soap.cpp
 	upnp/upnpmcastsocket.cpp

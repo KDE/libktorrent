@@ -133,13 +133,13 @@ namespace net
 	
 	void ServerSocket::setWriteNotificationsEnabled(bool on)
 	{
-		if (d->wsn)
+		if (d->wsn && d->wsn->isEnabled() != on)
 			d->wsn->setEnabled(on);
 	}
 	
 	void ServerSocket::setReadNotificationsEnabled(bool on)
 	{
-		if (d->rsn)
+		if (d->rsn && d->rsn->isEnabled() != on)
 			d->rsn->setEnabled(on);
 	}
 

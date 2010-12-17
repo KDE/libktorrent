@@ -24,7 +24,6 @@
 #include <QObject>
 #include <QMap>
 #include <QSocketNotifier>
-#include <boost/tuple/tuple.hpp>
 #include <net/socket.h>
 #include <net/poll.h>
 #include <net/serversocket.h>
@@ -35,6 +34,7 @@
 #include "connection.h"
 #include "pollpipe.h"
 #include "utpserver.h"
+#include "outputqueue.h"
 
 
 namespace utp
@@ -76,15 +76,7 @@ namespace utp
 		bool testWrite(ConItr b,ConItr e);
 	};
 	
-	struct OutputQueueEntry
-	{
-		QByteArray data;
-		Connection::WPtr conn;
-		
-		OutputQueueEntry(const QByteArray & data, Connection::WPtr conn)
-			: data(data),conn(conn)
-		{}
-	};
+	
 	
 	typedef bt::PtrMap<net::Poll*,PollPipePair>::iterator PollPipePairItr;
 	typedef QMap<quint16,Connection::Ptr>::iterator ConnectionMapItr;
@@ -101,17 +93,13 @@ namespace utp
 		void reset(const Header* hdr);
 		void wakeUpPollPipes(Connection::Ptr conn,bool readable,bool writeable);
 		Connection::Ptr find(quint16 conn_id);
-		void sendOutputQueue(net::ServerSocket* sock);
 		void stop();
 		virtual void dataReceived(const QByteArray& data, const net::Address& addr);
 		virtual void readyToWrite(net::ServerSocket* sock);
-		int sendTo(const QByteArray& data, const net::Address& addr);
-		void enableWriteNotifications();
 		
 	public:
 		UTPServer* p;
 		QList<net::ServerSocket::Ptr> sockets;
-		QList<net::ServerSocket::Ptr> busy_sockets;
 		bool running;
 		QMap<quint16,Connection::Ptr> connections;
 		UTPServerThread* utp_thread;
@@ -119,7 +107,7 @@ namespace utp
 		bt::PtrMap<net::Poll*,PollPipePair> poll_pipes;
 		bool create_sockets;
 		bt::Uint8 tos;
-		QList<OutputQueueEntry> output_queue;
+		OutputQueue output_queue;
 		QList<mse::StreamSocket::Ptr> pending;
 		QMutex pending_mutex;
 		MainThreadCall* mtc;

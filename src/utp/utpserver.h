@@ -81,6 +81,7 @@ namespace utp
 		virtual void handlePacket(const QByteArray & packet,const net::Address & addr);
 		virtual void stateChanged(Connection::Ptr conn, bool readable, bool writeable);
 		virtual void closed(Connection::Ptr conn);
+		virtual void customEvent(QEvent* ev);
 		
 	signals:
 		void handlePendingConnectionsDelayed();

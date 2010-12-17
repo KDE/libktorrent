@@ -86,45 +86,6 @@ namespace utp
 		pending.clear();
 		delete mtc;
 	}
-
-	void UTPServer::Private::sendOutputQueue(net::ServerSocket* sock)
-	{
-		QMutexLocker lock(&mutex);
-		
-		try
-		{
-			// Keep sending until the output queue is empty or the socket 
-			// can't handle the data anymore
-			while (!output_queue.empty())
-			{
-				OutputQueueEntry & packet = output_queue.front();
-				Connection::Ptr conn = packet.conn.toStrongRef();
-				if (!conn)
-				{
-					output_queue.pop_front();
-					continue;
-				}
-				
-				int ret = sock->sendTo(packet.data,conn->remoteAddress());
-				if (ret == net::SEND_WOULD_BLOCK)
-					break;
-				else if (ret == net::SEND_FAILURE)
-				{
-					// Kill the connection of this packet
-					conn->close();
-					output_queue.pop_front();
-				}
-				else
-					output_queue.pop_front();
-			}
-		}
-		catch (Connection::TransmissionError & err)
-		{
-			Out(SYS_UTP|LOG_NOTICE) << "UTP: " << err.location << endl;
-		}
-		
-		sock->setWriteNotificationsEnabled(!output_queue.empty());
-	}
 	
 	void UTPServer::Private::stop()
 	{
@@ -256,35 +217,7 @@ namespace utp
 	
 	void UTPServer::Private::readyToWrite(net::ServerSocket* sock)
 	{
-		sendOutputQueue(sock);
-	}
-
-	int UTPServer::Private::sendTo(const QByteArray& data, const net::Address& addr)
-	{
-		busy_sockets.clear();
-		foreach (net::ServerSocket::Ptr sock,sockets)
-		{
-			int ret = sock->sendTo(data,addr);
-			if (ret == net::SEND_WOULD_BLOCK)
-				busy_sockets.append(sock);
-			else if (ret == net::SEND_FAILURE)
-				continue;
-			else
-				return ret;
-		}
-		
-		if (busy_sockets.count() > 0)
-			return net::SEND_WOULD_BLOCK;
-		else
-			return net::SEND_FAILURE;
-	}
-	
-	void UTPServer::Private::enableWriteNotifications()
-	{
-		foreach (net::ServerSocket::Ptr sock,busy_sockets)
-		{
-			sock->setWriteNotificationsEnabled(true);
-		}
+		output_queue.send(sock);
 	}
 	
 	///////////////////////////////////////////////////////////
@@ -444,28 +377,37 @@ namespace utp
 
 	bool UTPServer::sendTo(utp::Connection::Ptr conn, const QByteArray& data)
 	{
-		// if output_queue is not empty append to it, so that packet order is OK
-		// (when they are being sent anyway)
-		if (d->output_queue.empty())
+		if (d->output_queue.add(data,conn) == 1)
 		{
-			int ret = d->sendTo(data,conn->remoteAddress());
-			if (ret == net::SEND_WOULD_BLOCK)
+			// If there is only one packet queued, 
+			// We need to enable the write notifiers, use the event queue to do this
+			// if we are not in the utp thread
+			if (QThread::currentThread() != d->utp_thread)
 			{
-				d->output_queue.append(OutputQueueEntry(data,conn));
-				d->enableWriteNotifications();
+				QCoreApplication::postEvent(this, new QEvent(QEvent::User));
 			}
-			else if (ret == net::SEND_FAILURE)
-				return false;
+			else
+			{
+				foreach (net::ServerSocket::Ptr sock, d->sockets)
+					sock->setWriteNotificationsEnabled(true);
+			}
 		}
-		else
-			d->output_queue.append(OutputQueueEntry(data,conn));
-		
 		return true;
 	}
+	
+	void UTPServer::customEvent(QEvent* ev)
+	{
+		if (ev->type() == QEvent::User)
+		{
+			foreach (net::ServerSocket::Ptr sock, d->sockets)
+				sock->setWriteNotificationsEnabled(true);
+		}
+	}
+
 
 	Connection::WPtr UTPServer::connectTo(const net::Address& addr)
 	{
-		if (d->sockets.isEmpty())
+		if (d->sockets.isEmpty() || addr.port() == 0)
 			return Connection::WPtr();
 		
 		QMutexLocker lock(&d->mutex);
