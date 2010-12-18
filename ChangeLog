@@ -7,6 +7,7 @@ Changes in 1.0.5:
 - Fix bug causing file selecting to fail after a torrent was loaded from data (258138)
 - Fix crash due to not checking for 0 pointer in multimedia file check (258967)
 - Fix a bug with sequence number wrap around being handled badly in UTP
+- Make sure that UTP write notifiers are only accessed in µTP thread
 
 Changes in 1.0.4:
 - Fix race condition causing timers not to be removed in the µTP code, resulting in a crash (251117)
