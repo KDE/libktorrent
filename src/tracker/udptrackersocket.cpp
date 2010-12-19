@@ -70,20 +70,21 @@ namespace bt
 		
 		virtual void dataReceived(const QByteArray& packet, const net::Address& addr)
 		{
+			Q_UNUSED(addr);
 			Uint32 type = ReadUint32((Uint8*)packet.data(),0);
 			switch (type)
 			{
 				case CONNECT:
-					p->handleConnect(packet.data());
+					p->handleConnect(packet);
 					break;
 				case ANNOUNCE:
-					p->handleAnnounce(packet.data());
+					p->handleAnnounce(packet);
 					break;
 				case ERROR:
-					p->handleError(packet.data());
+					p->handleError(packet);
 					break;
 				case SCRAPE:
-					p->handleScrape(packet.data());
+					p->handleScrape(packet);
 					break;
 			}
 		}
@@ -169,9 +170,7 @@ namespace bt
 		QMap<Int32,Action>::iterator i = d->transactions.find(tid);
 		// if we can't find the transaction, just return
 		if (i == d->transactions.end())
-		{
 			return;
-		}
 
 		// check whether the transaction is a CONNECT
 		if (i.value() != CONNECT)
