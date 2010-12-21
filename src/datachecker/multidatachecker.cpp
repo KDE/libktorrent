@@ -69,7 +69,7 @@ namespace bt
 				cs = chunk_size;
 			if (!loadChunk(cur_chunk,cs,tor))
 			{
-				Out(SYS_GEN|LOG_DEBUG) << "Failed to load chunk " << cur_chunk << endl;
+				//Out(SYS_GEN|LOG_DEBUG) << "Failed to load chunk " << cur_chunk << endl;
 				if (current_status.get(cur_chunk))
 					failed++;
 				else
