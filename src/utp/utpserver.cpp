@@ -101,7 +101,7 @@ namespace utp
 	// HACK: to avoid binary incompatibilities, 
 	// relies on the fact that there will only be one  UTPServer instance
 	static QMutex pending_mutex;
-	static QMutex output_queue_mutex;
+	static QMutex output_queue_mutex(QMutex::Recursive);
 	
 	void UTPServer::handlePendingConnections()
 	{
