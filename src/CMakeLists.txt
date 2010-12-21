@@ -250,15 +250,7 @@ set (bcodec_HDR
 	./bcodec/value.h
 )
 	
-set (tracker_HDR
-	./tracker/tracker.h
-	./tracker/udptracker.h
-	./tracker/udptrackersocket.h
-	./tracker/httptracker.h
-	./tracker/trackermanager.h
-	./tracker/httpannouncejob.h
-	./tracker/kioannouncejob.h
-)
+
 
 set (dht_HDR
 	./dht/dhtbase.h
@@ -287,7 +279,6 @@ set (migrate_HDR
 
 
 
-install(FILES ${tracker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/tracker COMPONENT Devel)
 install(FILES ${bcodec_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/bcodec COMPONENT Devel)
 install(FILES ${interfaces_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/interfaces COMPONENT Devel)
 install(FILES ${dht_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/dht COMPONENT Devel)
@@ -305,3 +296,4 @@ add_subdirectory(magnet)
 add_subdirectory(util)
 add_subdirectory(utp)
 add_subdirectory(upnp)
+add_subdirectory(tracker)
