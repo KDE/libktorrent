@@ -124,8 +124,8 @@ namespace net
 	{
 		net::Address addr;
 		static bt::Uint8 tmp_buf[2048];
-		int ret = d->sock->recvFrom(tmp_buf,2048,addr);
-		if (ret > 0)
+		int ret = 0;
+		while ((ret = d->sock->recvFrom(tmp_buf,2048,addr)) > 0)
 		{
 			d->dhandler->dataReceived(QByteArray::fromRawData((const char*)tmp_buf,ret),addr);
 		}
