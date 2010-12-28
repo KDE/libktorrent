@@ -28,6 +28,7 @@ else
 end
 svntags    = "#{svnbase}/tags/#{name}"
 
+
 #----------------------------------------------------------------
 
 folder     = name + "-" + version
@@ -43,8 +44,10 @@ Dir.mkdir( folder )
 Dir.chdir( folder )
 
 # Do the main checkouts.
-`svn co #{svntags}/#{version} #{name}-tmp`
+Dir.mkdir( name + "-tmp" )
 Dir.chdir( name + "-tmp" )
+`git archive --format=tar -o tmp.tar --remote=git@git.kde.org:libktorrent v#{version}`
+`tar -xvf tmp.tar && rm tmp.tar`
 
 # Move them to the toplevel
 `/bin/mv * ..`
