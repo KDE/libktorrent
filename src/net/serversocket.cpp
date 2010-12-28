@@ -128,6 +128,8 @@ namespace net
 		while ((ret = d->sock->recvFrom(tmp_buf,2048,addr)) > 0)
 		{
 			d->dhandler->dataReceived(QByteArray::fromRawData((const char*)tmp_buf,ret),addr);
+			if (d->sock->bytesAvailable() == 0)
+				break;
 		}
 	}
 	

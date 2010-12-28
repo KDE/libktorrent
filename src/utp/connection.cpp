@@ -427,6 +427,7 @@ namespace utp
 		// first put data in the output buffer then send packets
 		bt::Uint32 ret = output_buffer.write(data,len);
 		sendPackets();
+		stats.writeable = !output_buffer.full();
 		return ret;
 	}
 	
@@ -546,6 +547,7 @@ namespace utp
 			sendState();
 		
 		stats.bytes_received += ret;
+		stats.readable = local_wnd->size() > 0;
 		return ret;
 	}
 
