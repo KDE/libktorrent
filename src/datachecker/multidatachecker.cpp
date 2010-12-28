@@ -96,6 +96,8 @@ namespace bt
 				last_emitted = now;
 			}
 		}
+		
+		status(failed,found,downloaded,not_downloaded);
 	}
 	
 	bool MultiDataChecker::loadChunk(Uint32 ci,Uint32 cs,const Torrent & tor)

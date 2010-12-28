@@ -94,6 +94,8 @@ namespace bt
 				last_emitted = now;
 			}
 		}
+		
+		status(failed,found,downloaded,not_downloaded);
 	}
 
 }
