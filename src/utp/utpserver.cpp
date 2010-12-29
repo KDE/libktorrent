@@ -225,14 +225,6 @@ namespace utp
 				int ret = sock->sendTo((const bt::Uint8*)data.data(),data.size(),addr);
 				if (ret == net::SEND_WOULD_BLOCK)
 					break;
-				else if (ret == net::SEND_FAILURE)
-				{
-					QMutexLocker lock(&mutex);
-					// Kill the connection of this packet
-					Connection* conn = find(packet.get<2>());
-					if (conn)
-						conn->close();
-				}
 				
 				output_queue.pop_front();
 			}
