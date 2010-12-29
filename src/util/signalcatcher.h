@@ -21,7 +21,7 @@
 #ifndef BT_SIGNALCATCHER_H
 #define BT_SIGNALCATCHER_H
 
-#ifndef Q_CC_MSVC
+#ifndef Q_WS_WIN
 
 #include <ktorrent_export.h>
 #include <signal.h>

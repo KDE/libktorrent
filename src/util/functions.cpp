@@ -370,7 +370,7 @@ namespace bt
 #ifdef Q_WS_WIN
 		ret = InitWindowsSocketsAPI() && ret;
 #endif
-#ifndef Q_CC_MSVC
+#ifndef Q_WS_WIN
 		// Install SIGBUS handler
 		InstallBusHandler();
 #endif

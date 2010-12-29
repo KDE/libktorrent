@@ -195,10 +195,10 @@ set(libktorrent_SRC
 	version.cpp
 )
 
-if(NOT MSVC)
-# Add signalcatcher.cpp for all builds except MSVC
+if(NOT WIN32)
+# Add signalcatcher.cpp for all builds except WIN32
 set(libktorrent_SRC ${libktorrent_SRC} util/signalcatcher.cpp)
-endif(NOT MSVC)
+endif(NOT WIN32)
 
 if(WIN32)
 # Compile stuff for windows

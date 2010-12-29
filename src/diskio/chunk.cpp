@@ -22,7 +22,7 @@
 #include "chunk.h"
 #include "cache.h"
 #include "piecedata.h"
-#ifndef Q_CC_MSVC
+#ifndef Q_WS_WIN
 #include <util/signalcatcher.h>
 #endif
 
