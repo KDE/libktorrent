@@ -25,10 +25,10 @@ set (util_HDR
 	circularbuffer.h
 	resourcemanager.h
 )
-if(NOT MSVC)
+if(NOT WIN32)
 set (util_HDR ${util_HDR}
 	signalcatcher.h
 )
-endif(NOT MSVC)
+endif(NOT WIN32)
 
 install(FILES ${util_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/util COMPONENT Devel)

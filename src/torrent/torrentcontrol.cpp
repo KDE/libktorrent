@@ -297,7 +297,7 @@ namespace bt
 			if (moveCompleted)
 				moveToCompletedDir();
 		}
-#ifndef Q_CC_MSVC
+#ifndef Q_WS_WIN
 		catch (BusError & e)
 		{
 			Out(SYS_DIO|LOG_IMPORTANT) << "Caught SIGBUS " << endl;
