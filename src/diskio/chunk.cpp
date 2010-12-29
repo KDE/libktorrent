@@ -50,9 +50,6 @@ namespace bt
 				
 	bool Chunk::checkHash(const SHA1Hash & h)
 	{
-		if (status == NOT_DOWNLOADED)
-			return false;
-		
 		PieceData::Ptr d = getPiece(0,size,true);
 		if (!d || !d->ok())
 			return false;
