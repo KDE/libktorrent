@@ -21,6 +21,7 @@
 
 #include <QFile>
 #include <QTextStream>
+#include <KLocale>
 #include <util/file.h>
 #include <util/log.h>
 #include <diskio/chunkmanager.h>
@@ -758,6 +759,7 @@ namespace bt
 	
 	void Downloader::onChunkReady(Chunk* c)
 	{
+		WebSeed* ws = webseeds_chunks.find(c->getIndex());
 		webseeds_chunks.erase(c->getIndex());
 		PieceData::Ptr piece = c->getPiece(0,c->getSize(),true);
 		if (piece && c->checkHash(tor.getHash(c->getIndex())))
@@ -805,6 +807,7 @@ namespace bt
 				cman.resetChunk(c->getIndex());
 			
 			chunk_selector->reinsert(c->getIndex());
+			ws->disable(i18n("Disabled because webseed does not match torrent"));
 		}
 	}
 	

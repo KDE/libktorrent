@@ -103,6 +103,13 @@ namespace bt
 		reset();
 	}
 
+	void WebSeed::disable(const QString& reason)
+	{
+		setEnabled(false);
+		status = reason;
+		Out(SYS_CON|LOG_IMPORTANT) << "Auto disabled webseed " << url.prettyUrl() << endl;
+	}
+
 
 	bool WebSeed::busy() const
 	{
@@ -218,7 +225,6 @@ namespace bt
 		if (path.endsWith('/') && !isUserCreated())
 			path += tor.getNameSuggestion();
 		
-		//Out(SYS_GEN|LOG_DEBUG) << "WebSeed: continuing current chunk " << cur_chunk << " " << bytes_of_cur_chunk << endl;
 		first_chunk = cur_chunk;
 		if (tor.isMultiFile())
 		{
@@ -292,82 +298,88 @@ namespace bt
 		
 	Uint32 WebSeed::update()
 	{
-		if (!conn || !busy())
-			return 0;
-		
-		if (!conn->ok())
+		try
 		{
-			readData();
-			Out(SYS_CON|LOG_DEBUG) << "WebSeed: connection not OK" << endl;
-			// shit happened delete connection
-			status = conn->getStatusString();
-			if (conn->responseCode() == 404)
+			if (!conn || !busy())
+				return 0;
+			
+			if (!conn->ok())
 			{
-				// if not found then retire this webseed for now
-				retryLater();
+				readData();
+				
+				Out(SYS_CON|LOG_DEBUG) << "WebSeed: connection not OK" << endl;
+				// shit happened delete connection
+				status = conn->getStatusString();
+				if (conn->responseCode() == 404)
+				{
+					// if not found then retire this webseed for now
+					retryLater();
+				}
+				delete conn;
+				conn = 0;
+				chunkStopped();
+				first_chunk = last_chunk = cur_chunk = tor.getNumChunks() + 1;
+				num_failures++;
+				if (num_failures == 3)
+					retryLater();
+				return 0;
 			}
-			delete conn;
-			conn = 0;
-			chunkStopped();
-			first_chunk = last_chunk = cur_chunk = tor.getNumChunks() + 1;
-			num_failures++;
-			if (num_failures == 3)
-				retryLater();
-			return 0;
-		}
-		else if (conn->closed())
-		{
-			// Make sure we handle all data
-			readData();
-			
-			Out(SYS_CON|LOG_DEBUG) << "WebSeed: connection closed" << endl;
-			delete conn;
-			conn = 0;
-			
-			status = i18n("Connection closed");
-			chunkStopped();
-			if (last_chunk < tor.getNumChunks())
+			else if (conn->closed())
 			{
-				// lets try this again if we have not yet got the full range
-				download(cur_chunk,last_chunk);
+				// Make sure we handle all data
+				readData();
+				
+				Out(SYS_CON|LOG_DEBUG) << "WebSeed: connection closed" << endl;
+				delete conn;
+				conn = 0;
+				
+				status = i18n("Connection closed");
+				chunkStopped();
+				if (last_chunk < tor.getNumChunks())
+				{
+					// lets try this again if we have not yet got the full range
+					download(cur_chunk,last_chunk);
+					status = conn->getStatusString();
+				}
+			}
+			else if (conn->isRedirected())
+			{
+				// Make sure we handle all data
+				readData();
+				redirected(conn->redirectedUrl());
+			}
+			else 
+			{
+				readData();
+				if (range_queue.count() > 0 && conn->ready())
+				{
+					if (conn->closed())
+					{
+						// after a redirect it is possible that the connection is closed
+						// so we need to reconnect to the old url
+						conn->deleteLater();
+						conn = new HttpConnection();
+						conn->setGroupIDs(up_gid,down_gid);
+						connectToServer();
+					}
+					
+					QString path = url.path();
+					if (path.endsWith('/'))
+						path += tor.getNameSuggestion();
+					
+					// ask for the next range
+					Range r = range_queue[0];
+					range_queue.pop_front();
+					const TorrentFile & tf = tor.getFile(r.file);
+					QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
+					conn->get(host,path + '/' + tf.getPath(),r.off,r.len);
+				}
 				status = conn->getStatusString();
 			}
 		}
-		else if (conn->isRedirected())
+		catch (AutoDisabled &)
 		{
-			// Make sure we handle all data
-			readData();
-			redirected(conn->redirectedUrl());
 		}
-		else 
-		{
-			readData();
-			if (range_queue.count() > 0 && conn->ready())
-			{
-				if (conn->closed())
-				{
-					// after a redirect it is possible that the connection is closed
-					// so we need to reconnect to the old url
-					conn->deleteLater();
-					conn = new HttpConnection();
-					conn->setGroupIDs(up_gid,down_gid);
-					connectToServer();
-				}
-				
-				QString path = url.path();
-				if (path.endsWith('/'))
-					path += tor.getNameSuggestion();
-				
-				// ask for the next range
-				Range r = range_queue[0];
-				range_queue.pop_front();
-				const TorrentFile & tf = tor.getFile(r.file);
-				QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
-				conn->get(host,path + '/' + tf.getPath(),r.off,r.len);
-			}
-			status = conn->getStatusString();
-		}
-		
 		Uint32 ret = downloaded;
 		downloaded = 0;
 		total_downloaded += ret;
@@ -397,7 +409,6 @@ namespace bt
 	
 	void WebSeed::handleData(const QByteArray & tmp)
 	{
-//		Out(SYS_GEN|LOG_DEBUG) << "Handling data: " << tmp.length() << " bytes" << endl;
 		Uint32 off = 0;
 		while (off < (Uint32)tmp.size() && cur_chunk <= last_chunk)
 		{
@@ -427,6 +438,9 @@ namespace bt
 				if (c->getStatus() != Chunk::ON_DISK)
 				{
 					chunkReady(c);
+					// It is possible that the webseed has been disabled due receiving a bad chunk
+					if (!isEnabled())
+						throw AutoDisabled();
 				}
 				
 				chunkStopped();

@@ -119,6 +119,9 @@ namespace bt
 		
 		virtual void setEnabled(bool on);
 		
+		/// Disable the webseed 
+		void disable(const QString & reason);
+		
 		/// Get the number of failed attempts
 		Uint32 failedAttempts() const {return num_failures;}
 		
@@ -164,6 +167,8 @@ namespace bt
 			Uint64 off;
 			Uint64 len;
 		};
+		
+		class AutoDisabled {}; // Exception
 		
 		void fillRangeList(Uint32 chunk);
 		void handleData(const QByteArray & data);
