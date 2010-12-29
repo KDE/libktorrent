@@ -24,7 +24,9 @@
 #include <ktorrent_export.h>
 #include <QSharedDataPointer>
 #include <util/constants.h>
+#ifndef Q_WS_WIN
 #include <util/signalcatcher.h>
+#endif
 #include <diskio/cachefile.h>
 
 
