@@ -1,4 +1,4 @@
-Changes in 1.1:
+Changes in 1.1beta1:
 - Use UTF-8 as default codec in bt::Value::toString
 - Make sure that SIGBUS signals caused by failed mmapped IO are dealt with properly (241598)
 - Move UPnP library from ktorrent/libktupnp to libktorrent
