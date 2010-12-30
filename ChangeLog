@@ -27,6 +27,7 @@ Changes in 1.1:
 - Queue data checks so that they run one after the other (215711)
 - Revamp UTP code with smart pointers
 - Disable webseeds if they send data which does not match (261449)
+- Fix uninitialized value bug in UDP tracker
 
 Changes in 1.0.5:
 - Update PeerID client identifications

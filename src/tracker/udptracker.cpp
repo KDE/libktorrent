@@ -52,6 +52,7 @@ namespace bt
 		interval = 0;
 		scrape_transaction_id = 0;
 		todo = NOTHING;
+		failures = 0;
 		
 		conn_timer.setSingleShot(true);
 		connect(&conn_timer,SIGNAL(timeout()),this,SLOT(onConnTimeout()));
