@@ -56,7 +56,7 @@ namespace bt
 		UPnPRouterPrivate(const QString & server,const KUrl & location,bool verbose,UPnPRouter* parent); 
 		~UPnPRouterPrivate();
 		
-		HTTPRequest* sendSoapQuery(const QString & query,const QString & soapact,const QString & controlurl,bool at_exit = false);
+		HTTPRequest* sendSoapQuery(const QString& query, const QString& soapact, const KUrl& controlurl, bool at_exit = false);
 		void forward(const UPnPService* srv,const net::Port & port);
 		void undoForward(const UPnPService* srv,const net::Port & port,bt::WaitJob* waitjob);
 		void httpRequestDone(HTTPRequest* r,bool erase_fwd);
@@ -393,7 +393,7 @@ namespace bt
 		}
 	}
 
-	HTTPRequest* UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString & query,const QString & soapact,const QString & controlurl,bool at_exit)
+	HTTPRequest* UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString & query,const QString & soapact,const KUrl & controlurl,bool at_exit)
 	{
 		// if port is not set, 0 will be returned 
 		// thanks to Diego R. Brogna for spotting this bug
@@ -407,9 +407,9 @@ namespace bt
 				"Content-length: $CONTENT_LENGTH\r\n"
 				"Content-Type: text/xml\r\n"
 				"SOAPAction: \"%4\"\r\n"
-				"\r\n").arg(controlurl).arg(location.host()).arg(location.port()).arg(soapact).arg(bt::GetVersionString());
+				"\r\n").arg(controlurl.encodedPathAndQuery()).arg(location.host()).arg(location.port()).arg(soapact).arg(bt::GetVersionString());
 		
-		HTTPRequest* r = new HTTPRequest(http_hdr,query,location.host(),location.port(),verbose);
+		HTTPRequest* r = new HTTPRequest(http_hdr,query,controlurl.host(),controlurl.port(),verbose);
 		if (!at_exit)
 		{
 			// Only listen for results when we are not exiting
