@@ -34,7 +34,7 @@
 namespace bt
 {
 
-	MultiDataChecker::MultiDataChecker(): DataChecker(),buf(0)
+	MultiDataChecker::MultiDataChecker(bt::Uint32 from, bt::Uint32 to): DataChecker(from, to),buf(0)
 	{}
 
 
@@ -49,6 +49,12 @@ namespace bt
 		// initialize the bitset
 		result = BitSet(num_chunks);
 		
+		if (from >= tor.getNumChunks())
+			from = 0;
+		if (to >= tor.getNumChunks())
+			to = tor.getNumChunks() - 1;
+			
+		
 		cache = path;
 		if (!cache.endsWith(bt::DirSeparator()))
 			cache += bt::DirSeparator();
@@ -62,7 +68,7 @@ namespace bt
 		buf = new Uint8[chunk_size];
 		
 		TimeStamp last_emitted = bt::Now();
-		for (cur_chunk = 0;cur_chunk < num_chunks && !need_to_stop;cur_chunk++)
+		for (cur_chunk = from;cur_chunk <= to && !need_to_stop;cur_chunk++)
 		{
 			Uint32 cs = (cur_chunk == num_chunks - 1) ? tor.getLastChunkSize() : chunk_size;
 			if (cs == 0)

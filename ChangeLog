@@ -1,3 +1,6 @@
+Changes in 1.2:
+- Make it possible to check data on chunk ranges instead of the entire torrent
+
 Changes in 1.1rc1:
 - Fix bug in UPnP so that it works properly with D-Link DIR 635 routers
 

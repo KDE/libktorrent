@@ -1401,9 +1401,9 @@ namespace bt
 		return psman;
 	}
 	
-	Job* TorrentControl::startDataCheck(bool auto_import)
+	Job* TorrentControl::startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to)
 	{
-		Job* j = new DataCheckerJob(auto_import,this);
+		Job* j = new DataCheckerJob(auto_import, this, from, to);
 		job_queue->enqueue(j);
 		return j;
 	}

@@ -53,7 +53,7 @@ private slots:
 			tc.init(this,creator.torrentPath(),creator.tempPath() + "tor0",creator.tempPath() + "data/");
 			tc.createFiles();
 			QVERIFY(tc.hasExistingFiles());
-			tc.startDataCheck(false);
+			tc.startDataCheck(false,0,tc.getStats().total_chunks);
 			do
 			{
 				processEvents(AllEvents,1000);

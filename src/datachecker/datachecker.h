@@ -42,7 +42,7 @@ namespace bt
 	{
 		Q_OBJECT
 	public:
-		DataChecker();
+		DataChecker(bt::Uint32 from, bt::Uint32 to);
 		virtual ~DataChecker();
 		
 		/**
@@ -86,6 +86,8 @@ namespace bt
 		BitSet result;
 		Uint32 failed,found,downloaded,not_downloaded;
 		bool need_to_stop;
+		bt::Uint32 from;
+		bt::Uint32 to;
 	};
 
 }

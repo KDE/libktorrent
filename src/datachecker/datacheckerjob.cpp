@@ -30,13 +30,15 @@ namespace bt
 {
 	static ResourceManager data_checker_slot(1);
 	
-	DataCheckerJob::DataCheckerJob(bool auto_import,bt::TorrentControl* tc)
+	DataCheckerJob::DataCheckerJob(bool auto_import, bt::TorrentControl* tc, bt::Uint32 from, bt::Uint32 to)
 		: Job(true,tc),
 		Resource(&data_checker_slot,tc->getInfoHash().toString()),
 		dcheck_thread(0),
 		killed(false),
 		auto_import(auto_import),
-		started(false)
+		started(false),
+		from(from),
+		to(to)
 	{
 	}
 	
@@ -51,9 +53,9 @@ namespace bt
 		DataChecker* dc = 0;
 		const TorrentStats & stats = torrent()->getStats();
 		if (stats.multi_file_torrent)
-			dc = new MultiDataChecker();
+			dc = new MultiDataChecker(from, to);
 		else
-			dc = new SingleDataChecker();
+			dc = new SingleDataChecker(from, to);
 		
 		connect(dc,SIGNAL(progress(quint32,quint32)),
 				this,SLOT(progress(quint32,quint32)),Qt::QueuedConnection);

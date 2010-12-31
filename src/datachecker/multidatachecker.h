@@ -34,7 +34,7 @@ namespace bt
 	class KTORRENT_EXPORT MultiDataChecker : public DataChecker
 	{
 	public:
-		MultiDataChecker();
+		MultiDataChecker(bt::Uint32 from, bt::Uint32 to);
 		virtual ~MultiDataChecker();
 
 		virtual void check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & current_status);

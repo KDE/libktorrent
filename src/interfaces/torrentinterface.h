@@ -296,9 +296,13 @@ namespace bt
 		virtual int getETA() = 0;
 		
 		/**
-		 * Verify the correctness of all data.
+		 * Verify the correctness of all data. If from and to are not a valid range, the
+		 * entire torrent will be checked.
+		 * @param auto_import Is this an automatic import
+		 * @param from Chunk to start from
+		 * @param to Chunk to end with
 		 */
-		virtual Job* startDataCheck(bool auto_import) = 0;
+		virtual Job* startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to) = 0;
 		
 		/**
 		 * Test all files and see if they are not missing.

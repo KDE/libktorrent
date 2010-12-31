@@ -13,6 +13,7 @@
 #include <datachecker/singledatachecker.h>
 #include <datachecker/multidatachecker.h>
 #include <testlib/dummytorrentcreator.h>
+#include <boost/concept_check.hpp>
 
 
 using namespace bt;
@@ -59,7 +60,7 @@ private slots:
 			QFAIL("Torrent load failure");
 		}
 		
-		SingleDataChecker dc;
+		SingleDataChecker dc(0,tc.getStats().total_chunks);
 		try
 		{
 			QString dnd = tc.getTorDir() + "dnd" + bt::DirSeparator();
@@ -98,7 +99,7 @@ private slots:
 			QFAIL("Torrent load failure");
 		}
 		
-		MultiDataChecker dc;
+		MultiDataChecker dc(0, tc.getStats().total_chunks);
 		try
 		{
 			QString dnd = tc.getTorDir() + "dnd" + bt::DirSeparator();
@@ -109,6 +110,50 @@ private slots:
 		{
 			Out(SYS_GEN|LOG_DEBUG) << "Datacheck failed: " << err.toString() << endl;
 			QFAIL("Torrent check failure");
+		}
+	}
+	
+	void testPartial()
+	{
+		QMap<QString,bt::Uint64> files;
+		
+		files["aaa.avi"] = RandomSize(TEST_FILE_SIZE / 2,TEST_FILE_SIZE);
+		files["bbb.avi"] = RandomSize(TEST_FILE_SIZE / 2,TEST_FILE_SIZE);
+		files["ccc.avi"] = RandomSize(TEST_FILE_SIZE / 2,TEST_FILE_SIZE);
+		files["ddd.avi"] = RandomSize(TEST_FILE_SIZE / 2,TEST_FILE_SIZE);
+		
+		DummyTorrentCreator creator;
+		bt::TorrentControl tc;
+		QVERIFY(creator.createMultiFileTorrent(files,"movies"));
+		
+		Out(SYS_GEN|LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
+		try
+		{
+			tc.init(0,creator.torrentPath(),creator.tempPath() + "tor0",creator.tempPath() + "data/");
+			tc.createFiles();
+		}
+		catch (bt::Error & err)
+		{
+			Out(SYS_GEN|LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
+			QFAIL("Torrent load failure");
+		}
+		
+		for (Uint32 file = 0;file < tc.getNumFiles();file++)
+		{
+			const bt::TorrentFileInterface & fi = tc.getTorrentFile(file);
+			MultiDataChecker dc(fi.getFirstChunk(),fi.getLastChunk());
+			try
+			{
+				QString dnd = tc.getTorDir() + "dnd" + bt::DirSeparator();
+				dc.check(tc.getStats().output_path,tc.getTorrent(),dnd,tc.downloadedChunksBitSet());
+				for (Uint32 i = 0;i < tc.getStats().total_chunks;i++)
+					QVERIFY(dc.getResult().get(i) == (i >= fi.getFirstChunk() && i <= fi.getLastChunk()));
+			}
+			catch (bt::Error & err)
+			{
+				Out(SYS_GEN|LOG_DEBUG) << "Datacheck failed: " << err.toString() << endl;
+				QFAIL("Torrent check failure");
+			}
 		}
 	}
 	

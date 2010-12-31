@@ -33,7 +33,7 @@ namespace bt
 	class KTORRENT_EXPORT SingleDataChecker : public DataChecker
 	{
 	public:
-		SingleDataChecker();
+		SingleDataChecker(bt::Uint32 from, bt::Uint32 to);
 		virtual ~SingleDataChecker();
 
 		virtual void check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & current_status);

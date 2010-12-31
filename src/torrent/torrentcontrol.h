@@ -157,7 +157,7 @@ namespace bt
 		virtual void setChunkSelector(ChunkSelectorInterface* csel);
 		virtual void networkUp();
 		virtual bool announceAllowed();
-		virtual Job* startDataCheck(bool auto_import);
+		virtual Job* startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to);
 		virtual bool hasMissingFiles(QStringList & sl);
 		virtual Uint32 getNumDHTNodes() const;
 		virtual const DHTNode & getDHTNode(Uint32 i) const;

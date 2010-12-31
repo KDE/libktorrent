@@ -33,7 +33,7 @@ namespace bt
 	{
 		Q_OBJECT
 	public:
-		DataCheckerJob(bool auto_import,TorrentControl* tc);
+		DataCheckerJob(bool auto_import,TorrentControl* tc, bt::Uint32 from, bt::Uint32 to);
 		virtual ~DataCheckerJob();
 		
 		virtual void start();
@@ -59,6 +59,8 @@ namespace bt
 		bool killed;
 		bool auto_import;
 		bool started;
+		bt::Uint32 from;
+		bt::Uint32 to;
 	};
 
 }
