@@ -1421,9 +1421,9 @@ namespace bt
 		bool completed = stats.completed;
 		if (job && !job->isStopped())
 		{
-			downloader->dataChecked(result);
+			downloader->dataChecked(result, job->firstChunk(), job->lastChunk());
 			// update chunk manager
-			cman->dataChecked(result);
+			cman->dataChecked(result, job->firstChunk(), job->lastChunk());
 			if (job->isAutoImport())
 			{
 				downloader->recalcDownloaded();
@@ -1485,7 +1485,7 @@ namespace bt
 		{
 			cman->recreateMissingFiles();
 			prealloc = true; // set prealloc to true so files will be truncated again
-			downloader->dataChecked(cman->getBitSet()); // update chunk selector
+			downloader->dataChecked(cman->getBitSet(), 0, tor->getNumChunks() - 1); // update chunk selector
 		}
 		catch (Error & err)
 		{
@@ -1501,7 +1501,7 @@ namespace bt
 			cman->dndMissingFiles();
 			prealloc = true; // set prealloc to true so files will be truncated again
 			missingFilesMarkedDND(this);
-			downloader->dataChecked(cman->getBitSet()); // update chunk selector
+			downloader->dataChecked(cman->getBitSet(), 0, tor->getNumChunks() - 1); // update chunk selector
 		}
 		catch (Error & err)
 		{

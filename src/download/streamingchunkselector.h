@@ -40,7 +40,7 @@ namespace bt
 		
 		virtual void init(ChunkManager* cman, Downloader* downer, PeerManager* pman);
 		virtual bool select(bt::PieceDownloader* pd, bt::Uint32& chunk);
-		virtual void dataChecked(const bt::BitSet& ok_chunks);
+		virtual void dataChecked(const bt::BitSet& ok_chunks, Uint32 from, Uint32 to);
 		virtual void reincluded(bt::Uint32 from, bt::Uint32 to);
 		virtual void reinsert(bt::Uint32 chunk);
 		virtual bool selectRange(bt::Uint32& from, bt::Uint32& to, bt::Uint32 max_len);

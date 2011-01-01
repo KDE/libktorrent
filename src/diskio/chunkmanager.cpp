@@ -610,10 +610,10 @@ namespace bt
 		d->cache->preallocateDiskSpace(prealloc);
 	}
 	
-	void ChunkManager::dataChecked(const BitSet & ok_chunks)
+	void ChunkManager::dataChecked(const bt::BitSet& ok_chunks, bt::Uint32 from, bt::Uint32 to)
 	{
 		// go over all chunks at check each of them
-		for (Uint32 i = 0;i < (Uint32)d->chunks.size();i++)
+		for (Uint32 i = from;i < (Uint32)d->chunks.size() && i <= to;i++)
 		{
 			Chunk* c = d->chunks[i];
 			if (ok_chunks.get(i) && !bitset.get(i))

@@ -257,9 +257,9 @@ namespace bt
 		return false;
 	}
 
-	void ChunkSelector::dataChecked(const BitSet & ok_chunks)
+	void ChunkSelector::dataChecked(const BitSet & ok_chunks, Uint32 from, Uint32 to)
 	{
-		for (Uint32 i = 0;i < ok_chunks.getNumBits();i++)
+		for (Uint32 i = from;i < ok_chunks.getNumBits() && i <= to;i++)
 		{
 			bool in_chunks = std::find(chunks.begin(),chunks.end(),i) != chunks.end();
 			if (in_chunks && ok_chunks.get(i))

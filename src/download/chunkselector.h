@@ -61,7 +61,7 @@ namespace bt
 		 * Data has been checked, and these chunks are OK.
 		 * @param ok_chunks The ok_chunks
 		 */
-		void dataChecked(const BitSet & ok_chunks);
+		void dataChecked(const bt::BitSet& ok_chunks, bt::Uint32 from, bt::Uint32 to);
 		
 		/**
 		 * A range of chunks has been reincluded.

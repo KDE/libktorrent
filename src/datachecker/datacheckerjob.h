@@ -46,6 +46,12 @@ namespace bt
 		/// Was the job stopped
 		bool isStopped() const {return killed;}
 		
+		/// Get the first chunk the datacheck was started from
+		bt::Uint32 firstChunk() const {return from;}
+		
+		/// Get the last chunk of the datacheck
+		bt::Uint32 lastChunk() const {return to;}
+		
 	private slots:
 		void threadFinished();
 		void progress(quint32 num, quint32 total);

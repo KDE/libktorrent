@@ -40,6 +40,10 @@ namespace bt
 		from(from),
 		to(to)
 	{
+		if (this->from >= tc->getStats().total_chunks)
+			this->from = 0;
+		if (this->to >= tc->getStats().total_chunks)
+			this->to = tc->getStats().total_chunks - 1;
 	}
 	
 	
@@ -72,7 +76,7 @@ namespace bt
 		
 		torrent()->beforeDataCheck();
 		
-		setTotalAmount(Bytes,stats.total_chunks);
+		setTotalAmount(Bytes,to - from + 1);
 		data_checker_slot.add(this);
 		if (!started)
 			infoMessage(this,i18n("Waiting for other data checks to finish"));

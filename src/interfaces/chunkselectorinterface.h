@@ -39,8 +39,6 @@ namespace bt
 	*/
 	class KTORRENT_EXPORT ChunkSelectorInterface
 	{
-	
-		
 	public:
 		ChunkSelectorInterface();
 		virtual ~ChunkSelectorInterface();
@@ -74,8 +72,10 @@ namespace bt
 		/**
 		 * Data has been checked, and these chunks are OK.
 		 * @param ok_chunks The ok_chunks
+		 * @param from First chunk of check
+		 * @param to Last chunk of check
 		 */
-		virtual void dataChecked(const BitSet & ok_chunks) = 0;
+		virtual void dataChecked(const BitSet & ok_chunks, Uint32 from, Uint32 to) = 0;
 		
 		/**
 		 * A range of chunks has been reincluded. This is called when a user 

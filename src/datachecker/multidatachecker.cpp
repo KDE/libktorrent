@@ -98,7 +98,7 @@ namespace bt
 			if (now - last_emitted > 1000 || cur_chunk == num_chunks - 1) // Emit signals once every second
 			{
 				status(failed,found,downloaded,not_downloaded);
-				progress(cur_chunk,num_chunks);
+				progress(cur_chunk - from,from - to + 1);
 				last_emitted = now;
 			}
 		}

@@ -230,8 +230,10 @@ namespace bt
 		/**
 		 * Data has been checked, and these chunks are OK.
 		 * @param ok_chunks The ok_chunks
+		 * @param from First chunk of the check
+		 * @param to Last chunk of the check
 		 */
-		void dataChecked(const BitSet & ok_chunks);
+		void dataChecked(const BitSet & ok_chunks, bt::Uint32 from, bt::Uint32 to);
 		
 		/**
 		 * Recalculate the number of bytes downloaded.

@@ -265,8 +265,10 @@ namespace bt
 		 * Data has been checked, and these chunks are OK.
 		 * The ChunkManager will update it's internal structures
 		 * @param ok_chunks The ok_chunks
+		 * @param from First chunk of the check
+		 * @param to Last chunk of the check
 		 */
-		void dataChecked(const BitSet & ok_chunks);
+		void dataChecked(const BitSet & ok_chunks, Uint32 from, Uint32 to);
 		
 		/// Test if the torrent has existing files, only works the first time a torrent is loaded
 		bool hasExistingFiles() const;

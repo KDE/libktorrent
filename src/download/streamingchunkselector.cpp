@@ -157,9 +157,9 @@ namespace bt
 		}
 	}
 
-	void StreamingChunkSelector::dataChecked(const bt::BitSet& ok_chunks)
+	void StreamingChunkSelector::dataChecked(const bt::BitSet& ok_chunks, Uint32 from, Uint32 to)
 	{
-		bt::ChunkSelector::dataChecked(ok_chunks);
+		bt::ChunkSelector::dataChecked(ok_chunks, from, to);
 		updateRange();
 	}
 
