@@ -160,6 +160,11 @@ namespace bt
 		void hostResolved(KNetwork::KResolverResults res);
 		void connectTimeout();
 		void replyTimeout();
+		
+	signals:
+		void startReplyTimer(int timeout);
+		void stopReplyTimer();
+		void stopConnectTimer();
 	};
 }
 

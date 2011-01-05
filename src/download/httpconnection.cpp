@@ -37,8 +37,12 @@ namespace bt
 		status = i18n("Not connected");
 		connect(&reply_timer,SIGNAL(timeout()),this,SLOT(replyTimeout()));
 		connect(&connect_timer,SIGNAL(timeout()),this,SLOT(connectTimeout()));
+		connect(this,SIGNAL(startReplyTimer(int)),&reply_timer,SLOT(start(int)),Qt::QueuedConnection);
+		connect(this,SIGNAL(stopReplyTimer()),&reply_timer,SLOT(stop()),Qt::QueuedConnection);
+		connect(this,SIGNAL(stopConnectTimer()),&connect_timer,SLOT(stop()),Qt::QueuedConnection);
 		up_gid = down_gid = 0;
 		close_when_finished = false;
+		redirected = false;
 	}
 
 
@@ -133,7 +137,7 @@ namespace bt
 					response_code = request->response_code;
 				}
 				else if (request->response_header_received)
-					reply_timer.stop();
+					stopReplyTimer();
 			}
 		}
 	}
@@ -154,7 +158,7 @@ namespace bt
 				state = ERROR;
 				status = i18n("Error: Failed to connect to webseed");
 			}
-			connect_timer.stop();
+			stopConnectTimer();
 		}
 		else if (state == ACTIVE && request)
 		{
@@ -173,7 +177,7 @@ namespace bt
 				g->buffer.clear();
 				g->request_sent = true;
 				// wait 60 seconds for a reply
-				reply_timer.start(60 * 1000);
+				startReplyTimer(60 * 1000);
 			}
 			return len;
 		}
@@ -324,9 +328,12 @@ namespace bt
 	void HttpConnection::replyTimeout()
 	{
 		QMutexLocker locker(&mutex);
-		status = i18n("Error: request timed out");
-		state = ERROR;
-		reply_timer.stop();
+		if (!request || !request->response_header_received)
+		{
+			status = i18n("Error: request timed out");
+			state = ERROR;
+			reply_timer.stop();
+		}
 	}
 	
 	////////////////////////////////////////////
