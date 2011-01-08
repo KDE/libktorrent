@@ -36,6 +36,19 @@
 
 namespace bt
 {
+	static bool UrlCompare(const KUrl & a, const KUrl & b)
+	{
+		if (a == b)
+			return true;
+		
+		return 
+			a.protocol() == b.protocol() && 
+			a.host() == b.host() &&
+			a.pass() == b.pass() &&
+			a.port(80) == b.port(80) &&
+			a.encodedPathAndQuery() == b.encodedPathAndQuery();
+	}
+	
 	class UPnPMCastSocket::UPnPMCastSocketPrivate
 	{
 	public:
@@ -46,8 +59,9 @@ namespace bt
 		void joinUPnPMCastGroup(int fd);
 		void leaveUPnPMCastGroup(int fd);
 		void onXmlFileDownloaded(UPnPRouter* r,bool success);
+		UPnPRouter* findDevice(const KUrl & location);
 		
-		bt::PtrMap<QString,UPnPRouter> routers;
+		QSet<UPnPRouter*> routers;
 		QSet<UPnPRouter*> pending_routers; // routers which we are downloading the XML file from
 		bool verbose;
 	};
@@ -108,15 +122,15 @@ namespace bt
 		else
 		{
 			// add it to the list and emit the signal
-			QString location = r->getLocation().prettyUrl();
-			if (!d->routers.contains(location))
+			KUrl location = r->getLocation();
+			if (d->findDevice(location))
 			{
-				d->routers.insert(location,r);
-				discovered(r);
+				r->deleteLater();
 			}
 			else
 			{
-				r->deleteLater();
+				d->routers.insert(r);
+				discovered(r);
 			}
 		}
 	}
@@ -176,13 +190,10 @@ namespace bt
 		// file format is simple : 2 lines per router, 
 		// one containing the server, the other the location
 		QTextStream fout(&fptr);
-		bt::PtrMap<QString,UPnPRouter>::iterator i = d->routers.begin();
-		while (i != d->routers.end())
+		foreach (UPnPRouter* r,d->routers)
 		{
-			UPnPRouter* r = i->second;
 			fout << r->getServer() << ::endl;
 			fout << r->getLocation().prettyUrl() << ::endl;
-			i++;
 		}
 	}
 	
@@ -204,14 +215,12 @@ namespace bt
 			QString server, location;
 			server = fin.readLine();
 			location = fin.readLine();
-			if (!d->routers.contains(KUrl(location).prettyUrl()))
-			{
-				UPnPRouter* r = new UPnPRouter(server,location);
-				// download it's xml file
-				QObject::connect(r,SIGNAL(xmlFileDownloaded( UPnPRouter*, bool )),this,SLOT(onXmlFileDownloaded( UPnPRouter*, bool )));
-				r->downloadXMLFile();
-				d->pending_routers.insert(r);
-			}
+				
+			UPnPRouter* r = new UPnPRouter(server,location);
+			// download it's xml file
+			QObject::connect(r,SIGNAL(xmlFileDownloaded( UPnPRouter*, bool )),this,SLOT(onXmlFileDownloaded( UPnPRouter*, bool )));
+			r->downloadXMLFile();
+			d->pending_routers.insert(r);
 		}
 	}
 	
@@ -222,7 +231,8 @@ namespace bt
 	
 	UPnPRouter* UPnPMCastSocket::findDevice(const QString & name) 
 	{
-		return d->routers.find(name);
+		KUrl location(name);
+		return d->findDevice(location);
 	}
 	
 	void UPnPMCastSocket::setVerbose(bool v) 
@@ -234,12 +244,12 @@ namespace bt
 	
 	UPnPMCastSocket::UPnPMCastSocketPrivate::UPnPMCastSocketPrivate(bool verbose) : verbose(verbose)
 	{
-		routers.setAutoDelete(true);
 	}
 	
 	UPnPMCastSocket::UPnPMCastSocketPrivate::~UPnPMCastSocketPrivate()
 	{
 		qDeleteAll(pending_routers);
+		qDeleteAll(routers);
 	}
 	
 	void UPnPMCastSocket::UPnPMCastSocketPrivate::joinUPnPMCastGroup(int fd)
@@ -336,7 +346,7 @@ namespace bt
 			}
 		}
 		
-		if (routers.contains(location.prettyUrl()))
+		if (findDevice(location))
 		{
 			return 0;
 		}
@@ -347,6 +357,18 @@ namespace bt
 			return new UPnPRouter(server,location,verbose); 
 		}
 	}
+	
+	UPnPRouter* UPnPMCastSocket::UPnPMCastSocketPrivate::findDevice(const KUrl& location)
+	{
+		foreach (UPnPRouter* r, routers)
+		{
+			if (UrlCompare(r->getLocation(),location))
+				return r;
+		}
+		
+		return 0;
+	}
+
 
 }
 

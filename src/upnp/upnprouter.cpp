@@ -408,8 +408,11 @@ namespace bt
 				"Content-Type: text/xml\r\n"
 				"SOAPAction: \"%4\"\r\n"
 				"\r\n").arg(controlurl.encodedPathAndQuery()).arg(location.host()).arg(location.port()).arg(soapact).arg(bt::GetVersionString());
+				
+		QString host = controlurl.hasHost() ? controlurl.host() : location.host();
+		bt::Uint16 port = controlurl.hasHost() ? controlurl.port(80) : location.port(80);
 		
-		HTTPRequest* r = new HTTPRequest(http_hdr,query,controlurl.host(),controlurl.port(),verbose);
+		HTTPRequest* r = new HTTPRequest(http_hdr,query,host,port,verbose);
 		if (!at_exit)
 		{
 			// Only listen for results when we are not exiting
