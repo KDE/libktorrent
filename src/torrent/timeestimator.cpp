@@ -205,10 +205,8 @@ namespace bt
 		}
 
 	//since it's full I'll just replace the oldest value with new one and update all variables.
-		m_end = (++m_end) % m_size;
-
-		m_start = (++m_start) % m_size;
-
+		m_end = (m_end + 1) % m_size;
+		m_start = (m_start + 1) % m_size;
 		m_samples[m_end] = sample;
 	}
 

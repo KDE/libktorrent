@@ -1,6 +1,7 @@
 Changes in 1.1rc1:
 - Fix bug in UPnP so that it works properly with D-Link DIR 635 routers
 - Fix crash due to manipulating timers in the wrong thread (261903)
+- Fix compiler warning in TimeEstimator (262618)
 
 Changes in 1.1beta1:
 - Use UTF-8 as default codec in bt::Value::toString
