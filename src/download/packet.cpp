@@ -108,7 +108,7 @@ namespace bt
 			if (ReadUint32(data,9) != req.getOffset())
 				return false; 
 			
-			if (ReadUint32(data,13) != req.getLength())
+			if (size - 13 != req.getLength())
 				return false;
 			
 			return true;

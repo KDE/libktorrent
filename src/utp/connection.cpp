@@ -44,7 +44,7 @@ namespace utp
 	}
 	
 	Connection::Connection(bt::Uint16 recv_connection_id, Type type, const net::Address& remote, Transmitter* transmitter) 
-		: transmitter(transmitter)
+		: transmitter(transmitter),timer_id(-1)
 	{
 		stats.type = type;
 		stats.remote = remote;
@@ -668,19 +668,14 @@ namespace utp
 		if (QThread::currentThread() != thread())
 			emit doDelayedStartTimer();
 		else
-			timer.start(stats.timeout,this);
+			delayedStartTimer();
 	}
 	
 	void Connection::delayedStartTimer()
 	{
-		timer.start(stats.timeout,this);
+		if (timer_id != -1)
+			transmitter->cancelTimer(timer_id);
+		timer_id = transmitter->scheduleTimer(self.toStrongRef(),stats.timeout);
 	}
-
-	void Connection::timerEvent(QTimerEvent* event)
-	{
-		Q_UNUSED(event);
-		handleTimeout();
-	}
-
 }
 
