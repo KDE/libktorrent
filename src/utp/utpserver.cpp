@@ -544,5 +544,37 @@ namespace utp
 				i++;
 		}
 	}
+	
+	int UTPServer::scheduleTimer(Connection::Ptr conn, Uint32 timeout)
+	{
+		int timer_id = startTimer(timeout);
+		d->active_timers.insert(timer_id, Connection::WPtr(conn));
+		return timer_id;
+	}
+	
+	void UTPServer::cancelTimer(int timer_id)
+	{
+		killTimer(timer_id);
+		d->active_timers.remove(timer_id);
+	}
+
+
+	void UTPServer::timerEvent(QTimerEvent* ev)
+	{
+		int timer_id = ev->timerId();
+		killTimer(timer_id);
+		
+		QMap<int,Connection::WPtr>::iterator i = d->active_timers.find(timer_id);
+		if (i != d->active_timers.end())
+		{
+			Connection::Ptr conn = i.value().toStrongRef();
+			if (conn)
+				conn->handleTimeout();
+			
+			d->active_timers.erase(i);
+		}
+		
+		ev->accept();
+	}
 
 }

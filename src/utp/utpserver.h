@@ -82,6 +82,9 @@ namespace utp
 		virtual void stateChanged(Connection::Ptr conn, bool readable, bool writeable);
 		virtual void closed(Connection::Ptr conn);
 		virtual void customEvent(QEvent* ev);
+		virtual void timerEvent(QTimerEvent* ev);
+		virtual int scheduleTimer(Connection::Ptr conn, Uint32 timeout);
+		virtual void cancelTimer(int timer_id);
 		
 	signals:
 		void handlePendingConnectionsDelayed();

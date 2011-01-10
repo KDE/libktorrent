@@ -161,6 +161,9 @@ namespace utp
 		/// Set a weak pointer to self
 		void setWeakPointer(WPtr ptr) {self = ptr;}
 		
+		/// Handle a timeout
+		void handleTimeout();
+		
 	private:
 		void sendSYN();
 		void sendState();
@@ -173,8 +176,6 @@ namespace utp
 		void checkIfClosed();
 		void sendDataPacket(const QByteArray & packet);
 		void sendDataPacket(const QByteArray & packet, bt::Uint16 seq_nr, const TimeValue & now);
-		virtual void timerEvent(QTimerEvent* event);
-		void handleTimeout();
 		void startTimer();
 		void checkState();
 		
@@ -197,8 +198,8 @@ namespace utp
 		bool fin_sent;
 		TimeValue last_packet_sent;
 		DelayWindow* delay_window;
-		QBasicTimer timer;
 		Connection::WPtr self;
+		int timer_id;
 		
 		friend class UTPServer;
 	};
@@ -219,6 +220,12 @@ namespace utp
 		
 		/// Called when the connection is closed
 		virtual void closed(Connection::Ptr conn) = 0;
+		
+		/// Schedule a timer for a connection
+		virtual int scheduleTimer(Connection::Ptr conn,bt::Uint32 timeout) = 0;
+		
+		/// Kill a previously started timer
+		virtual void cancelTimer(int timer_id) = 0;
 	};
 	
 }
