@@ -430,6 +430,8 @@ namespace bt
 			delete d->superseeder;
 			d->superseeder = 0;
 		}
+		
+		closeAllConnections();
 	}
 
 	Peer* PeerManager::findPeer(Uint32 peer_id)
@@ -548,6 +550,7 @@ namespace bt
 	
 	void PeerManager::setSuperSeeding(bool on,const BitSet & chunks)
 	{
+		Q_UNUSED(chunks);
 		if ((d->superseeder && on) || (!d->superseeder && !on))
 			return;
 		
@@ -571,9 +574,8 @@ namespace bt
 			pp.port = addr.port();
 			pp.local = false;
 			d->potential_peers.insert(std::make_pair(pp.ip,pp));
+			p->kill();
 		}
-		
-		closeAllConnections();
 	}
 	
 	void PeerManager::allowChunk(PeerInterface* peer, Uint32 chunk)
