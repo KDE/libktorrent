@@ -496,8 +496,6 @@ namespace bt
 		
 		pman->savePeerList(tordir + "peer_list");
 		pman->stop();
-		pman->closeAllConnections();
-		pman->clearDeadPeers();
 		cman->stop();
 		
 		stats.running = false;
