@@ -67,6 +67,7 @@
 #include "timeestimator.h"
 #include "jobqueue.h"
 #include "torrentfilestream.h"
+#include <kio/copyjob.h>
 
 
 
@@ -553,7 +554,7 @@ namespace bt
 		QString tor_copy = tordir + "torrent";
 		if (tor_copy != torrent)
 		{
-			bt::CopyFile(torrent,tor_copy);
+			QFile::copy(torrent, tor_copy);
 		}
 	}
 	
