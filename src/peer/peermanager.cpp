@@ -51,6 +51,15 @@
 #include "authenticate.h"
 #include "peerconnector.h"
 
+
+#if (QT_VERSION <= QT_VERSION_CHECK(4, 6, 0))
+template <class T>
+uint qHash(const QSharedPointer<T> &ptr)
+{
+	return qHash<T>(ptr.data());
+}
+#endif
+
 using namespace KNetwork;
 
 namespace bt
@@ -60,6 +69,8 @@ namespace bt
 	Uint32 PeerManager::total_connections = 0;
 	
 	typedef std::multimap<QString,PotentialPeer>::iterator PPItr;
+	
+
 	
 	class PeerManager::Private
 	{
