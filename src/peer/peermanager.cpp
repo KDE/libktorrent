@@ -52,14 +52,6 @@
 #include "peerconnector.h"
 
 
-#if (QT_VERSION <= QT_VERSION_CHECK(4, 6, 0))
-template <class T>
-uint qHash(const QSharedPointer<T> &ptr)
-{
-	return qHash<T>(ptr.data());
-}
-#endif
-
 using namespace KNetwork;
 
 namespace bt
