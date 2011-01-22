@@ -94,6 +94,11 @@ namespace bt
 		 */
 		void remove(Resource* r);
 		
+		/**
+		 * Shutdown the resource manager, no more resources will be handed out.
+		 */
+		void shutdown();
+		
 	private:
 		void update();
 		

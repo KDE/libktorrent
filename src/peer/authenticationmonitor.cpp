@@ -25,6 +25,7 @@
 #include <mse/streamsocket.h>
 #include "authenticatebase.h"
 #include <kdebug.h>
+#include "peerconnector.h"
 
 
 namespace bt
@@ -51,6 +52,14 @@ namespace bt
 		}
 		auths.clear();
 	}
+	
+	void AuthenticationMonitor::shutdown()
+	{
+		// No more active PeerConnector's allowed
+		PeerConnector::setMaxActive(0);
+		clear();
+	}
+
 
 
 	void AuthenticationMonitor::add(AuthenticateBase* s)

@@ -226,12 +226,14 @@ void KTCLI::finished(bt::TorrentInterface* tor)
 
 void KTCLI::shutdown()
 {
+	AuthenticationMonitor::instance().shutdown();
+	
 	WaitJob* j = new WaitJob(2000);
 	tc->stop(j);
 	if (j->needToWait())
 		j->exec();
 	j->deleteLater();
-	AuthenticationMonitor::instance().clear();
+	
 	Globals::instance().shutdownTCPServer();
 	Globals::instance().shutdownUTPServer();
 	quit();
