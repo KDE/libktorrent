@@ -554,8 +554,12 @@ namespace utp
 	
 	void UTPServer::cancelTimer(int timer_id)
 	{
-		killTimer(timer_id);
-		d->active_timers.remove(timer_id);
+		QMap<int,Connection::WPtr>::iterator i = d->active_timers.find(timer_id);
+		if (i != d->active_timers.end())
+		{
+			killTimer(timer_id);
+			d->active_timers.erase(i);
+		}
 	}
 
 
@@ -568,10 +572,9 @@ namespace utp
 		if (i != d->active_timers.end())
 		{
 			Connection::Ptr conn = i.value().toStrongRef();
+			d->active_timers.erase(i);
 			if (conn)
 				conn->handleTimeout();
-			
-			d->active_timers.erase(i);
 		}
 		
 		ev->accept();
