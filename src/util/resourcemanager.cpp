@@ -125,5 +125,9 @@ namespace bt
 		current = i.key();
 	}
 
+	void ResourceManager::shutdown()
+	{
+		max_active_resources = 0;
+	}
 
 }

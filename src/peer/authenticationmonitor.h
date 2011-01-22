@@ -69,6 +69,11 @@ namespace bt
 		 */
 		void clear();
 		
+		/**
+		 * Shutdown the authentication manager
+		 */
+		void shutdown();
+		
 		static AuthenticationMonitor & instance() {return self;}
 	private:
 		void handleData();
