@@ -43,15 +43,7 @@ namespace net
 	*/
 	class KTORRENT_EXPORT SocketMonitor 
 	{
-		static SocketMonitor self;
-
-		QMutex mutex;
-		UploadThread* ut;
-		DownloadThread* dt;
-		std::list<BufferedSocket*> smap;
-		Uint32 next_group_id;
-			
-		SocketMonitor();	
+		SocketMonitor();
 	public:
 		virtual ~SocketMonitor();
 		
@@ -64,10 +56,10 @@ namespace net
 		typedef std::list<BufferedSocket*>::iterator Itr;
 		
 		/// Get the begin of the list of sockets
-		Itr begin() {return smap.begin();}
+		Itr begin() {return sockets.begin();}
 		
 		/// Get the end of the list of sockets
-		Itr end() {return smap.end();}
+		Itr end() {return sockets.end();}
 		
 		/// lock the monitor
 		void lock();
@@ -128,6 +120,12 @@ namespace net
 		static Uint32 getUploadCap();
 		static void setSleepTime(Uint32 sleep_time);
 		static SocketMonitor & instance() {return self;}
+		
+	private:
+		class Private;
+		Private* d;
+		std::list<BufferedSocket*> sockets;
+		static SocketMonitor self;
 	};
 
 }
