@@ -32,20 +32,46 @@ using namespace bt;
 namespace net
 {
 	SocketMonitor SocketMonitor::self;
-
-	SocketMonitor::SocketMonitor() : mutex(QMutex::Recursive),ut(0),dt(0),next_group_id(1)
+	
+	class SocketMonitor::Private
 	{
-		dt = new DownloadThread(this);
-		ut = new UploadThread(this);
+	public:
+		Private(SocketMonitor* p) : mutex(QMutex::Recursive),ut(0),dt(0),next_group_id(1)
+		{
+			dt = new DownloadThread(p);
+			ut = new UploadThread(p);
+		}
+		
+		~Private()
+		{
+			shutdown();
+		}
+		
+		void shutdown();
+		
+		QMutex mutex;
+		UploadThread* ut;
+		DownloadThread* dt;
+		Uint32 next_group_id;
+	};
+
+	SocketMonitor::SocketMonitor() : d(new Private(this))
+	{
+		
 	}
 
 
 	SocketMonitor::~SocketMonitor()
 	{
-		shutdown();
+		delete d;
 	}
 	
 	void SocketMonitor::shutdown()
+	{
+		d->shutdown();
+	}
+	
+	void SocketMonitor::Private::shutdown()
 	{
 		if (ut && ut->isRunning())
 		{
@@ -79,12 +105,12 @@ namespace net
 	
 	void SocketMonitor::lock()
 	{
-		mutex.lock();
+		d->mutex.lock();
 	}
 	
 	void SocketMonitor::unlock()
 	{
-		mutex.unlock();
+		d->mutex.unlock();
 	}
 	
 	void SocketMonitor::setDownloadCap(Uint32 bytes_per_sec)
@@ -117,79 +143,91 @@ namespace net
 	
 	void SocketMonitor::add(BufferedSocket* sock)
 	{
-		QMutexLocker lock(&mutex);
+		QMutexLocker lock(&d->mutex);
 		
-		bool start_threads = smap.size() == 0;
-		smap.push_back(sock);
+		if (!d->dt || !d->ut)
+			return;
+		
+		bool start_threads = sockets.size() == 0;
+		sockets.push_back(sock);
 		
 		if (start_threads)
 		{
 			Out(SYS_CON|LOG_DEBUG) << "Starting socketmonitor threads" << endl;
 				
-			if (!dt->isRunning())
-				dt->start(QThread::IdlePriority);
-			if (!ut->isRunning())
-				ut->start(QThread::IdlePriority);
+			if (!d->dt->isRunning())
+				d->dt->start(QThread::IdlePriority);
+			if (!d->ut->isRunning())
+				d->ut->start(QThread::IdlePriority);
 		}
 		// wake up download thread so that it can start polling the new socket
-		dt->wakeUp();
+		d->dt->wakeUp();
 	}
 	
 	void SocketMonitor::remove(BufferedSocket* sock)
 	{
-		QMutexLocker lock(&mutex);
-		if (smap.size() == 0)
+		QMutexLocker lock(&d->mutex);
+		if (sockets.size() == 0)
 			return;
 		
-		smap.remove(sock);
+		sockets.remove(sock);
 	}
 	
 	void SocketMonitor::signalPacketReady()
 	{
-		if (ut)
-			ut->signalDataReady();
+		if (d->ut)
+			d->ut->signalDataReady();
 	}
 	
 	Uint32 SocketMonitor::newGroup(GroupType type,Uint32 limit,Uint32 assured_rate)
 	{
-		lock();
-		Uint32 gid = next_group_id++;
+		QMutexLocker lock(&d->mutex);
+		if (!d->dt || !d->ut)
+			return 0;
+		
+		Uint32 gid = d->next_group_id++;
 		if (type == UPLOAD_GROUP)
-			ut->addGroup(gid,limit,assured_rate);
+			d->ut->addGroup(gid,limit,assured_rate);
 		else
-			dt->addGroup(gid,limit,assured_rate);
-		unlock();
+			d->dt->addGroup(gid,limit,assured_rate);
+		
 		return gid;
 	}
 		
 	void SocketMonitor::setGroupLimit(GroupType type,Uint32 gid,Uint32 limit)
 	{
-		lock();
+		QMutexLocker lock(&d->mutex);
+		if (!d->dt || !d->ut)
+			return;
+		
 		if (type == UPLOAD_GROUP)
-			ut->setGroupLimit(gid,limit);
+			d->ut->setGroupLimit(gid,limit);
 		else
-			dt->setGroupLimit(gid,limit);
-		unlock();
+			d->dt->setGroupLimit(gid,limit);
 	}
 	
 	void SocketMonitor::setGroupAssuredRate(GroupType type,Uint32 gid,Uint32 as)
 	{
-		lock();
+		QMutexLocker lock(&d->mutex);
+		if (!d->dt || !d->ut)
+			return;
+		
 		if (type == UPLOAD_GROUP)
-			ut->setGroupAssuredRate(gid,as);
+			d->ut->setGroupAssuredRate(gid,as);
 		else
-			dt->setGroupAssuredRate(gid,as);
-		unlock();
+			d->dt->setGroupAssuredRate(gid,as);
 	}
 		
 	void SocketMonitor::removeGroup(GroupType type,Uint32 gid)
 	{
-		lock();
+		QMutexLocker lock(&d->mutex);
+		if (!d->dt || !d->ut)
+			return;
+		
 		if (type == UPLOAD_GROUP)
-			ut->removeGroup(gid);
+			d->ut->removeGroup(gid);
 		else
-			dt->removeGroup(gid);
-		unlock();
+			d->dt->removeGroup(gid);
 	}
 
 }

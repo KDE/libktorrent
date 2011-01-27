@@ -8,6 +8,7 @@ Changes in 1.1rc1:
 - Fix crash due to cleaning up timer in the wrong thread (260712)
 - Fix crash due to not properly cleaning up Peers and everything related when switching to superseeding mode (261529)
 - Fix invalid read in utp timer cleanup code (263800)
+- Fix crashes at exit (264378, 256639)
 
 Changes in 1.1beta1:
 - Use UTF-8 as default codec in bt::Value::toString
