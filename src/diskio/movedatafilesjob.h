@@ -21,6 +21,7 @@
 #define BTMOVEDATAFILESJOB_H
 
 #include <torrent/job.h>
+#include <util/resourcemanager.h>
 
 namespace bt
 {
@@ -30,7 +31,7 @@ namespace bt
 	 * @author Joris Guisson <joris.guisson@gmail.com>
 	 * KIO::Job to move all the files of a torrent.
 	*/
-	class MoveDataFilesJob : public Job
+	class MoveDataFilesJob : public Job, public Resource
 	{
 		Q_OBJECT
 	public:
@@ -66,6 +67,7 @@ namespace bt
 	private:
 		void recover(bool delete_active);
 		void startMoving();
+		virtual void acquired();
 
 	private:
 		bool err;

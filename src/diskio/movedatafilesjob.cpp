@@ -29,9 +29,11 @@
 
 namespace bt
 {
+	static ResourceManager move_data_files_slot(1);
 
 	MoveDataFilesJob::MoveDataFilesJob() 
 		: Job(true,0),
+		Resource(&move_data_files_slot,"MoveDataFilesJob"),
 		err(false),
 		active_job(0),
 		running_recovery_jobs(0),
@@ -44,6 +46,7 @@ namespace bt
 	
 	MoveDataFilesJob::MoveDataFilesJob(const QMap< TorrentFileInterface*, QString >& fmap) 
 		: Job(true,0),
+		Resource(&move_data_files_slot,"MoveDataFilesJob"),
 		err(false),
 		active_job(0),
 		running_recovery_jobs(0),
@@ -131,9 +134,20 @@ namespace bt
 			i++;
 		}
 		setTotalAmount(KJob::Bytes,total_bytes);
-		startMoving();
+		move_data_files_slot.add(this);
+		if (!active_job)
+		{
+			description(this, i18n("Waiting for other move jobs to finish"),
+				qMakePair(i18nc("The source of a file operation", "Source"), active_src),
+				qMakePair(i18nc("The destination of a file operation", "Destination"), active_dst));
+			emitSpeed(0);
+		}
 	}
 	
+	void MoveDataFilesJob::acquired()
+	{
+		startMoving();
+	}
 	
 	void MoveDataFilesJob::kill(bool quietly)
 	{
