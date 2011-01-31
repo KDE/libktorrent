@@ -71,7 +71,7 @@ namespace bt
 	/// Minor version number of the ktorrent library
 	const Uint32 MINOR = LIBKTORRENT_MINOR;
 	/// Version type of the ktorrent library
-	const VersionType VERSION_TYPE = BETA;
+	const VersionType VERSION_TYPE = RELEASE_CANDIDATE;
 	/// Release version number only applicable for betas, alphas and rc's of libktorrent
 	const Uint32 BETA_ALPHA_RC_RELEASE = 1;
 	/// Release version number of the ktorrent library (only for normal releases)
