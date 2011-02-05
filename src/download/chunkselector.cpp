@@ -151,42 +151,42 @@ namespace bt
 			Chunk* c = cman->getChunk(*itr);
 			
 			// if we have the chunk remove it from the list
-			if (bs.get(i))
+			if (c->isExcludedForDownloading() || c->isExcluded() || bs.get(i))
 			{
 				std::list<Uint32>::iterator tmp = itr;
 				itr++;
 				chunks.erase(tmp);
 			}
-			else
+			else if (pd->hasChunk(i))
 			{
 				// pd has to have the selected chunk and it needs to be not excluded
-				if (pd->hasChunk(i) && !c->isExcluded() && !c->isExcludedForDownloading())
-				{
-					if (!downer->downloading(i))
-					{ 
-						// we have a chunk
-						sel = i;
-						break;
-					}
-					
-					switch (cman->getChunk(i)->getPriority())
-					{
-						case PREVIEW_PRIORITY:
-							preview.push_back(i);
-							break;
-						case FIRST_PRIORITY:
-							first.push_back(i);
-							break;
-						case NORMAL_PRIORITY:
-							normal.push_back(i);
-							break;
-						default:
-							break;
-					}
-					
+				if (!downer->downloading(i))
+				{ 
+					// we have a chunk
+					sel = i;
+					break;
 				}
+				
+				switch (cman->getChunk(i)->getPriority())
+				{
+					case PREVIEW_PRIORITY:
+						preview.push_back(i);
+						break;
+					case FIRST_PRIORITY:
+						first.push_back(i);
+						break;
+					case NORMAL_PRIORITY:
+						normal.push_back(i);
+						break;
+					default:
+						break;
+				}
+					
+				
 				itr++;
 			}
+			else
+				itr++;
 		}
 		
 		if (sel >= cman->getNumChunks())
