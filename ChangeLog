@@ -2,6 +2,9 @@ Changes in 1.2:
 - Make it possible to check data on chunk ranges instead of the entire torrent
 - Move data file jobs are now done one after the other (212614)
 
+Changes in 1.1:
+- Improve performance of chunk selection code when there are many chunks
+
 Changes in 1.1rc1:
 - Fix bug in UPnP so that it works properly with D-Link DIR 635 routers
 - Fix crash due to manipulating timers in the wrong thread (261903)
