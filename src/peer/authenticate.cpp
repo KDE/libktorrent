@@ -50,7 +50,9 @@ namespace bt
 			{
 				case net::Socks::FAILED:
 					Out(SYS_CON|LOG_NOTICE) << "Failed to connect to " << host << " via socks server " << endl;
-					onFinish(false);
+					// Don't call onFinish here, will lead to problems
+					// Instead change the interval of timeout timer, to force a failure
+					timer.setInterval(1);
 					break;
 				case net::Socks::CONNECTED:
 					delete socks;
@@ -73,7 +75,9 @@ namespace bt
 			}
 			else
 			{
-				onFinish(false);
+				// Don't call onFinish here, will lead to problems
+				// Instead change the interval of timeout timer, to force a failure
+				timer.setInterval(1);
 			}
 		}
 	}
