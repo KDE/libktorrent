@@ -289,7 +289,7 @@ namespace net
 		{
 			if (dest.ipVersion() != 4)
 			{
-				Out(SYS_CON|LOG_IMPORTANT) << "SOCKSV4 does not suport IPv6" << endl;
+				Out(SYS_CON|LOG_IMPORTANT) << "SOCKSV4 does not support IPv6" << endl;
 				state = FAILED;
 				return state;
 			}
