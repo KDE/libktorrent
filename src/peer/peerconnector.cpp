@@ -35,16 +35,16 @@ namespace bt
 	{
 	public:
 		Private(PeerConnector* p,const QString & ip,Uint16 port,bool local,PeerManager* pman)
-		: p(p),ip(ip),port(port),local(local),pman(pman),auth(0),stopping(false),do_not_start(false)
+		: p(p),ip(ip),port(port),local(local),pman(pman),stopping(false),do_not_start(false)
 		{
 		}
 		
 		~Private()
 		{
-			if (auth)
+			if (auth.data())
 			{
 				stopping = true;
-				auth->stop();
+				auth.data()->stop();
 				stopping = false;
 			}
 		}
@@ -60,7 +60,7 @@ namespace bt
 		Uint16 port;
 		bool local;
 		QWeakPointer<PeerManager> pman;
-		Authenticate* auth;
+		QWeakPointer<Authenticate> auth;
 		bool stopping;
 		bool do_not_start;
 		PeerConnector::WPtr self;
@@ -125,7 +125,7 @@ namespace bt
 	
 	void PeerConnector::Private::authenticationFinished(Authenticate* auth, bool ok)
 	{
-		this->auth = 0;
+		this->auth.clear();
 		if (stopping)
 			return;
 		
@@ -181,9 +181,9 @@ namespace bt
 			auth = new Authenticate(ip,port,proto,tor.getInfoHash(),tor.getPeerID(),self);
 		
 		if (local)
-			auth->setLocal(true);
+			auth.data()->setLocal(true);
 		
-		AuthenticationMonitor::instance().add(auth);
+		AuthenticationMonitor::instance().add(auth.data());
 	}
 
 }
