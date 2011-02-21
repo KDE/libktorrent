@@ -41,6 +41,11 @@ namespace bt
 		struct sigaction act;
 		
 		memset(&act, 0, sizeof(act));
+		
+		if (sigaction(SIGBUS, 0, &act) != -1 && act.sa_sigaction == signal_handler)
+			return true;
+		
+		
 		act.sa_sigaction = signal_handler;
 		act.sa_flags = SA_SIGINFO;
 		
