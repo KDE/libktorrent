@@ -55,9 +55,10 @@ namespace bt
 }
 
 /// Before writing to memory mapped data, call this macro to ensure that SIGBUS signals are caught and properly dealt with
-#define BUS_ERROR_WPROTECT() if (sigsetjmp(bt::sigbus_env, 1)) throw bt::BusError(true)
+#define BUS_ERROR_WPROTECT() InstallBusHandler(); if (sigsetjmp(bt::sigbus_env, 1)) throw bt::BusError(true)
+	
 /// Before reading from memory mapped data, call this macro to ensure that SIGBUS signals are caught and properly dealt with
-#define BUS_ERROR_RPROTECT() if (sigsetjmp(bt::sigbus_env, 1)) throw bt::BusError(false)
+#define BUS_ERROR_RPROTECT() InstallBusHandler(); if (sigsetjmp(bt::sigbus_env, 1)) throw bt::BusError(false)
 
 #endif
 
