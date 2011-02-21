@@ -196,7 +196,7 @@ namespace bt
 		void emitMetadataDownloaded(const QByteArray & data);
 		
 		/// Send an extended protocol handshake
-		void sendExtProtHandshake(Uint16 port,Uint32 metadata_size);
+		void sendExtProtHandshake(Uint16 port,Uint32 metadata_size,bool partial_seed);
 		
 		/**
 		 * Set the peer's group IDs for traffic 

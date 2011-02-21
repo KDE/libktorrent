@@ -598,5 +598,10 @@ namespace bt
 		return tor->getInfoHash();
 	}
 
+	bool TrackerManager::isPartialSeed() const
+	{
+		return pman->isPartialSeed();
+	}
+
 
 }

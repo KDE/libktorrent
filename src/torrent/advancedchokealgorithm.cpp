@@ -50,7 +50,7 @@ namespace bt
 	bool AdvancedChokeAlgorithm::calcACAScore(Peer* p,ChunkManager & cman,const TorrentStats & stats)
 	{
 		const PeerInterface::Stats & s = p->getStats();
-		if (p->isSeeder())
+		if (p->isSeeder() || s.partial_seed)
 		{
 			/*
 			double bd = 0;

@@ -1,6 +1,7 @@
 Changes in 1.2:
 - Make it possible to check data on chunk ranges instead of the entire torrent
 - Move data file jobs are now done one after the other (212614)
+- Implement partial seeding extension (256263)
 
 Changes in 1.1:
 - Improve performance of chunk selection code when there are many chunks

@@ -462,6 +462,11 @@ namespace bt
 			{
 				stats.max_request_queue = val->data().toInt();
 			}
+			
+			if ((val = dict->getValue("upload_only")))
+			{
+				stats.partial_seed = val->data().toInt() == 1;
+			}
 		}
 		catch (...)
 		{
@@ -665,7 +670,7 @@ namespace bt
 		pex_allowed = on;
 	}
 	
-	void Peer::sendExtProtHandshake(Uint16 port, Uint32 metadata_size)
+	void Peer::sendExtProtHandshake(Uint16 port, Uint32 metadata_size, bool partial_seed)
 	{
 		if (!stats.extension_protocol)
 			return;
@@ -692,6 +697,7 @@ namespace bt
 			enc.write(metadata_size);
 		}
 		
+		enc.write("upload_only", partial_seed ? "1" : "0");
 		enc.write(QString("v")); enc.write(bt::GetVersionString());
 		enc.end();
 		pwriter->sendExtProtMsg(0,arr);

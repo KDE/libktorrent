@@ -46,6 +46,7 @@ namespace bt
 		stats.max_request_queue = 0;
 		stats.time_choked = CurrentTime();
 		stats.time_unchoked = 0;
+		stats.partial_seed = false;
 		killed = false;
 		paused = false;
 	}

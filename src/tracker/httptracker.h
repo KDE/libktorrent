@@ -82,6 +82,7 @@ namespace bt
 		Uint32 failures;
 		QTimer timer;
 		QString error;
+		bool supports_partial_seed_extension;
 		
 		
 		static bool proxy_on;

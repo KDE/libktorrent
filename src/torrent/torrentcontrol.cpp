@@ -191,6 +191,7 @@ namespace bt
 				// only sent completed to tracker when we have all chunks (so no excluded chunks)
 				if (cman->haveAllChunks())
 					psman->completed();
+				pman->setPartialSeed(!cman->haveAllChunks() && cman->chunksLeft() == 0);
 				
 				finished(this);
 
@@ -219,7 +220,7 @@ namespace bt
 			}
 			updateStatus();
 
-			if(wanted_update_timer.getElapsedSinceUpdate() >= 60*1000)
+			if (wanted_update_timer.getElapsedSinceUpdate() >= 60*1000)
 			{
 				// Get a list of the chunks I have...
 				BitSet wanted_chunks = cman->getBitSet();
@@ -458,6 +459,7 @@ namespace bt
 		stalled_timer.update();
 		psman->start();
 		stalled_timer.update();
+		pman->setPartialSeed(!cman->haveAllChunks() && cman->chunksLeft() == 0);
 	}
 		
 
@@ -1438,6 +1440,7 @@ namespace bt
 					stats.imported_bytes = stats.bytes_downloaded - downloaded;
 				 
 				stats.completed = cman->completed();
+				pman->setPartialSeed(!cman->haveAllChunks() && cman->chunksLeft() == 0);
 			}
 		}
 		

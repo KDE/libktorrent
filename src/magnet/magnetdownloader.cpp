@@ -160,6 +160,12 @@ namespace bt
 	{
 		return 0;
 	}
+	
+	bool MagnetDownloader::isPartialSeed() const
+	{
+		return false;
+	}
+
 
 	const bt::SHA1Hash& MagnetDownloader::infoHash() const
 	{

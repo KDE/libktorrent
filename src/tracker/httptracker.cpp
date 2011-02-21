@@ -52,14 +52,14 @@ namespace bt
 	bool HTTPTracker::use_qhttp = false;
 
 	HTTPTracker::HTTPTracker(const KUrl & url,TrackerDataSource* tds,const PeerID & id,int tier)
-		: Tracker(url,tds,id,tier)
+		: Tracker(url,tds,id,tier),
+		supports_partial_seed_extension(false)
 	{
 		active_job = 0;
 		
 		interval = 5 * 60; // default interval 5 minutes
 		failures = 0;
 		connect(&timer,SIGNAL(timeout()),this,SLOT(onTimeout()));
-		
 	}
 
 	HTTPTracker::~HTTPTracker()
@@ -184,6 +184,7 @@ namespace bt
 						seeders = d->getInt("complete");
 						leechers = d->getInt("incomplete");
 						total_downloaded = d->getInt("downloaded");
+						supports_partial_seed_extension = d->getValue("downloaders") != 0;
 						Out(SYS_TRK|LOG_DEBUG) << "Scrape : leechers = " << leechers 
 							<< ", seeders = " << seeders << ", downloaded = " << total_downloaded << endl;
 					}
@@ -235,7 +236,10 @@ namespace bt
 		if (!cip.isNull())
 			u.addQueryItem("ip",cip);
 
-		if (event != QString())
+		if (event.isEmpty() && supports_partial_seed_extension && tds->isPartialSeed())
+			event = "paused";
+		
+		if (!event.isEmpty())
 			u.addQueryItem("event",event);
 		QString epq = u.encodedPathAndQuery();
 		const SHA1Hash & info_hash = tds->infoHash();

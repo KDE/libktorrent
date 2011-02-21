@@ -269,6 +269,12 @@ namespace bt
 		/// Send a have message to all peers
 		void sendHave(Uint32 index);
 		
+		/// Set if we are a partial seed or not
+		void setPartialSeed(bool partial_seed);
+		
+		/// Are we a partial seed
+		bool isPartialSeed() const;
+		
 	public slots:
 		/**
 		 * A PeerSource, has new potential peers.

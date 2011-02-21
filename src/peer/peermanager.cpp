@@ -94,6 +94,7 @@ namespace bt
 		QSet<PeerConnector::Ptr> connectors;
 		SuperSeeder* superseeder;
 		std::multimap<QString,PotentialPeer> potential_peers;
+		bool partial_seed;
 	};
 
 	PeerManager::PeerManager(Torrent & tor)
@@ -510,7 +511,7 @@ namespace bt
 			{
 				p->setPexEnabled(on);
 				bt::Uint16 port = ServerInterface::getPort();
-				p->sendExtProtHandshake(port,d->tor.getMetaData().size());
+				p->sendExtProtHandshake(port,d->tor.getMetaData().size(),d->partial_seed);
 			}
 		}
 		d->pex_on = on;
@@ -653,12 +654,34 @@ namespace bt
 	{
 		return d->peer_list;
 	}
+	
+	void PeerManager::setPartialSeed(bool partial_seed)
+	{
+		if (d->partial_seed != partial_seed)
+		{
+			d->partial_seed = partial_seed;
+			
+			// If partial seeding status changes, update all peers
+			bt::Uint16 port = ServerInterface::getPort();
+			foreach (Peer* peer,d->peer_list)
+				peer->sendExtProtHandshake(port,d->tor.getMetaData().size(),d->partial_seed);
+		}
+	}
+	
+	bool PeerManager::isPartialSeed() const
+	{
+		return d->partial_seed;
+	}
 
 
 	//////////////////////////////////////////////////
 	
 	PeerManager::Private::Private(PeerManager* p, Torrent& tor)
-		: p(p),tor(tor),available_chunks(tor.getNumChunks()),wanted_chunks(tor.getNumChunks())
+		: p(p),
+		tor(tor),
+		available_chunks(tor.getNumChunks()),
+		wanted_chunks(tor.getNumChunks()),
+		partial_seed(false)
 	{
 		started = false;
 		wanted_chunks.setAll(true);
@@ -787,7 +810,7 @@ namespace bt
 		peer->setPexEnabled(pex_on);
 		// send extension protocol handshake
 		bt::Uint16 port = ServerInterface::getPort();
-		peer->sendExtProtHandshake(port,tor.getMetaData().size());
+		peer->sendExtProtHandshake(port,tor.getMetaData().size(),partial_seed);
 		
 		if (superseeder)
 			superseeder->peerAdded(peer);

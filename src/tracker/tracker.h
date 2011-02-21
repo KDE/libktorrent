@@ -45,6 +45,7 @@ namespace bt
 		virtual Uint64 bytesUploaded() const = 0;
 		virtual Uint64 bytesLeft() const = 0;
 		virtual const SHA1Hash & infoHash() const = 0;
+		virtual bool isPartialSeed() const = 0;
 	};
 	
 	/**

@@ -103,6 +103,7 @@ namespace bt
 		virtual Uint64 bytesUploaded() const;
 		virtual Uint64 bytesLeft() const;
 		virtual const SHA1Hash & infoHash() const;
+		virtual bool isPartialSeed() const;
 		
 	private slots:
 		/**
