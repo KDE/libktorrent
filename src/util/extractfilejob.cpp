@@ -105,6 +105,7 @@ namespace bt
 				QFile* out_dev = new QFile(dest);
 				if (!out_dev->open(QIODevice::WriteOnly))
 				{
+					delete out_dev;
 					setError(KIO::ERR_CANNOT_OPEN_FOR_WRITING);
 					emitResult();
 					return;
