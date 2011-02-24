@@ -95,8 +95,7 @@ namespace dht
 		for (int i = 0;i < 160;i++)
 		{
 			KBucket* b = bucket[i];
-			if (b)
-				delete b;
+		        delete b;
 		}
 	}
 	
