@@ -76,11 +76,8 @@ namespace bt
 	
 	void Globals::shutdownTCPServer()
 	{
-		if (tcp_server)
-		{
-			delete tcp_server;
-			tcp_server = 0;
-		}
+		delete tcp_server;
+		tcp_server = 0;
 	}
 
 	bool Globals::initUTPServer(Uint16 port)

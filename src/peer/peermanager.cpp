@@ -429,11 +429,8 @@ namespace bt
 		ServerInterface::removePeerManager(this);
 		d->connectors.clear();
 		
-		if (d->superseeder)
-		{
-			delete d->superseeder;
-			d->superseeder = 0;
-		}
+		delete d->superseeder;
+		d->superseeder = 0;
 		
 		closeAllConnections();
 	}
