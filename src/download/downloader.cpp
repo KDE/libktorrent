@@ -108,8 +108,7 @@ namespace bt
 	
 	void Downloader::setChunkSelector(ChunkSelectorInterface* csel)
 	{
-		if (chunk_selector)
-			delete chunk_selector;
+		delete chunk_selector;
 		
 		if (!csel) // check if a custom one was provided, if not create a default one
 			chunk_selector = new ChunkSelector();
