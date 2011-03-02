@@ -88,7 +88,8 @@ namespace bt
 		     || !xt.startsWith("urn:btih:") ) {
 			QRegExp btihHash("([^\\.]+).btih");
 			if ( btihHash.indexIn(url.host()) != -1 ) {
-				xt = "urn:btih:"+btihHash.cap(1);
+				QString primaryHash = btihHash.cap(1).split("-")[0];
+				xt = "urn:btih:"+primaryHash;
 			} else {
 				Out(SYS_GEN|LOG_NOTICE) << "Invalid magnet link " << mlink << endl;
 				return;
