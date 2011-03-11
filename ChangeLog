@@ -2,6 +2,7 @@ Changes in 1.1:
 - Improve performance of chunk selection code when there are many chunks
 - Fix crash in peer authentication cleanup (266622)
 - Fix crash due to SIGBUS handler being overwritten by KDE's crash dialog system (266842)
+- Be more lenient towards torrents with wrong announce-list field (268145)
 
 Changes in 1.1rc1:
 - Fix bug in UPnP so that it works properly with D-Link DIR 635 routers

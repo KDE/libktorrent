@@ -291,16 +291,16 @@ namespace bt
 		for (Uint32 i = 0;i < ml->getNumChildren();i++)
 		{
 			BListNode* url_list = ml->getList(i);
-			if (!url_list)
-				throw Error(i18n("Parse Error"));
-			
-			for (Uint32 j = 0;j < url_list->getNumChildren();j++)
+			if (url_list)
 			{
-				KUrl url(url_list->getString(j,0));
-				tier->urls.append(url);
+				for (Uint32 j = 0;j < url_list->getNumChildren();j++)
+				{
+					KUrl url(url_list->getString(j,0));
+					tier->urls.append(url);
+				}
+				tier->next = new TrackerTier();
+				tier = tier->next;
 			}
-			tier->next = new TrackerTier();
-			tier = tier->next;
 		}
 	}
 	
