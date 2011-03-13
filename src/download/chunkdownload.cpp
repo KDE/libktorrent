@@ -98,7 +98,8 @@ namespace bt
 		timer.update();
 			
 		Uint32 pp = p.getOffset() / MAX_PIECE_LEN;
-		if (pieces.get(pp))
+		Uint32 len = pp == num - 1 ? last_size : MAX_PIECE_LEN;
+		if (pp >= num || pieces.get(pp) || p.getLength() != len)
 			return false;
 
 	
