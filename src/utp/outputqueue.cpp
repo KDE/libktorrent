@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "outputqueue.h"
+#include <QSet>
 #include <util/log.h>
 #include <net/socket.h>
 
@@ -44,6 +45,7 @@ namespace utp
 	
 	void OutputQueue::send(net::ServerSocket* sock)
 	{
+		QList<Connection::WPtr> to_close;
 		QMutexLocker lock(&mutex);
 		try
 		{
@@ -65,7 +67,7 @@ namespace utp
 				else if (ret == net::SEND_FAILURE)
 				{
 					// Kill the connection of this packet
-					conn->close();
+					to_close.append(packet.conn);
 					queue.pop_front();
 				}
 				else
@@ -77,6 +79,14 @@ namespace utp
 			Out(SYS_UTP|LOG_NOTICE) << "UTP: " << err.location << endl;
 		}
 		sock->setWriteNotificationsEnabled(!queue.isEmpty());
+		lock.unlock(); // unlock, so we can't get deadlocked in any subsequent close calls
+		
+		foreach (utp::Connection::WPtr conn,to_close)
+		{
+			Connection::Ptr c = conn.toStrongRef();
+			if (c)
+				c->close();
+		}
 	}
 
 
