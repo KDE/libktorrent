@@ -3,6 +3,9 @@ Changes in 1.2:
 - Move data file jobs are now done one after the other (212614)
 - Implement partial seeding extension (256263)
 
+Changes in 1.1.1:
+- Fix deadlock in utp::OutputQueue when packet sending fails
+
 Changes in 1.1:
 - Improve performance of chunk selection code when there are many chunks
 - Fix crash in peer authentication cleanup (266622)
