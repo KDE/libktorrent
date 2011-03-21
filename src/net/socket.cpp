@@ -362,11 +362,17 @@ namespace net
 		}
 		else
 		{
-#ifdef __GNUC__
-#warning "Find way to set IPv6 traffic class"
+#if defined(IPV6_TCLASS)
+			int c = type_of_service;
+			if (setsockopt(m_fd,IPPROTO_IPV6,IPV6_TCLASS,&c,sizeof(c)) < 0)
+			{
+				Out(SYS_CON|LOG_NOTICE) << QString("Failed to set traffic class to %1 : %2")
+						.arg((int)type_of_service).arg(strerror(errno)) << endl;
+				return false;
+			}
 #endif
-			return true;
 		}
+		
 		return true;
 	}
 	
