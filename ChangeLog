@@ -3,6 +3,7 @@ Changes in 1.2:
 - Move data file jobs are now done one after the other (212614)
 - Implement partial seeding extension (256263)
 - Add support for IPv6 traffic class field
+- Make sure a torrent is restarted when it was auto stopped and more files are selected for downloading (179945)
 
 Changes in 1.1.1:
 - Fix deadlock in utp::OutputQueue when packet sending fails

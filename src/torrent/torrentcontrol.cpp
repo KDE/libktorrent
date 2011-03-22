@@ -281,7 +281,8 @@ namespace bt
 			
 			if (stats.completed && (overMaxRatio() || overMaxSeedTime()))
 			{
-				stop(); 
+				stats.auto_stopped = true;
+				stop();
 				emit seedingAutoStopped(this, overMaxRatio() ? MAX_RATIO_REACHED : MAX_SEED_TIME_REACHED);
 			}
 
@@ -1057,6 +1058,7 @@ namespace bt
 		stats_file->write("MAX_RATIO", QString("%1").arg(stats.max_share_ratio,0,'f',2));
 		stats_file->write("MAX_SEED_TIME",QString::number(stats.max_seed_time));
 		stats_file->write("RESTART_DISK_PREALLOCATION",prealloc ? "1" : "0");
+		stats_file->write("AUTO_STOPPED", stats.auto_stopped ? "1" : "0");
 		
 		if(!stats.priv_torrent)
 		{
@@ -1135,6 +1137,7 @@ namespace bt
 		stats.max_share_ratio = stats_file->readFloat("MAX_RATIO");
 		stats.max_seed_time = stats_file->readFloat("MAX_SEED_TIME");
 		stats.qm_can_start = stats_file->readBoolean("QM_CAN_START");
+		stats.auto_stopped = stats_file->readBoolean("AUTO_STOPPED");
 
 		if (stats_file->hasKey("RESTART_DISK_PREALLOCATION"))
 			prealloc = stats_file->readString("RESTART_DISK_PREALLOCATION") == "1";
@@ -1958,6 +1961,8 @@ namespace bt
 			stats.completed = false;
 			updateStatus();
 			updateStats();
+			// Trigger an update of the queue, so it can be restarted again, if it was auto stopped
+			updateQueue();
 		}
 	}
 	

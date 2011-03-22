@@ -139,6 +139,8 @@ namespace bt
 		QDateTime time_added;
 		/// Set to true if superseeding is enabled
 		bool superseeding;
+		/// Set to true if torrent was stopped due to reaching max share ration or max seed time
+		bool auto_stopped;
 		
 		TorrentStats();
 		

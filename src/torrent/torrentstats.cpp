@@ -44,6 +44,7 @@ namespace bt
 		qm_can_start = false;
 		paused = false;
 		superseeding = false;
+		auto_stopped = false;
 	}
 	
 	
