@@ -449,11 +449,11 @@ namespace bt
 						peersReady(this);
 						request_time = QDateTime::currentDateTime();
 						status = TRACKER_OK;
-						requestOK();
 						if (url.queryItem("event") == "started")
 							started = true;
 						if (started)
 							reannounce_timer.start(interval * 1000);
+						requestOK();
 					}
 				}
 				catch (bt::Error & err)
