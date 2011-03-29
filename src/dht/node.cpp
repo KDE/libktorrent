@@ -171,6 +171,12 @@ namespace dht
 	
 	void Node::onTimeout(MsgBase::Ptr msg)
 	{
+		// Check for invalid addresses,
+		// operator == of KInetSocketAddress crashes when comparing with an invalid entry
+		KInetSocketAddress addr = msg->getDestination();
+		if (!addr.address())
+			return;
+		
 		for (Uint32 i = 0;i < 160;i++)
 		{
 			if (bucket[i] && bucket[i]->onTimeout(msg->getDestination()))

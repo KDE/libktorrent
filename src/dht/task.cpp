@@ -88,7 +88,7 @@ namespace dht
 	
 	bool Task::rpcCall(dht::MsgBase::Ptr req)
 	{
-		if (!canDoRequest())
+		if (!canDoRequest() || !req->getDestination().length())
 			return false;
 		
 		RPCCall* c = rpc->doCall(req);

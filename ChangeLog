@@ -1,6 +1,7 @@
 Changes in 1.1.1:
 - Fix deadlock in utp::OutputQueue when packet sending fails
 - Fix bug causing scrape not to be done after first announce 
+- Fix crash in DHT code caused by invalid addresses (269657)
 
 Changes in 1.1:
 - Improve performance of chunk selection code when there are many chunks
