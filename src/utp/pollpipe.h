@@ -53,6 +53,7 @@ namespace utp
 		/// Are we polling a connection
 		bool polling(bt::Uint16 conn) const
 		{
+			QMutexLocker lock(&mutex);
 			return poll_index >= 0 && conn_ids.contains(conn);
 		}
 		
