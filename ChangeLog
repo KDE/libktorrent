@@ -3,6 +3,7 @@ Changes in 1.1.1:
 - Fix bug causing scrape not to be done after first announce 
 - Fix crash in DHT code caused by invalid addresses (269657)
 - Fix crash in DHT code caused by unsynchronized access to a QSet (270127)
+- Fix bug causing running time to be wrong when pausing torrents (271521)
 
 Changes in 1.1:
 - Improve performance of chunk selection code when there are many chunks
