@@ -301,6 +301,7 @@ namespace bt
 		void setUploadProps(Uint32 limit,Uint32 rate);
 		void setDownloadProps(Uint32 limit,Uint32 rate);
 		virtual void downloadPriorityChanged(TorrentFile* tf, Priority newpriority, Priority oldpriority);
+		void updateRunningTimes();
 		
 	signals:
 		void dataCheckFinished();

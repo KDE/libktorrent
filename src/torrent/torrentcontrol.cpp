@@ -349,6 +349,7 @@ namespace bt
 		downloader->removeAllWebSeeds();
 		cman->stop();
 		stats.paused = true;
+		updateRunningTimes();
 		saveStats();
 		statusChanged(this);
 		
@@ -376,6 +377,7 @@ namespace bt
 		downloader->loadWebSeeds(tordir + "webseeds");
 		pman->unpause();
 		loadStats();
+		istats.time_started_ul = istats.time_started_dl = QDateTime::currentDateTime();
 		stats.paused = false;
 		statusChanged(this);
 		Out(SYS_GEN|LOG_NOTICE) << "Unpaused " << tor->getNameSuggestion() << endl;
@@ -462,15 +464,21 @@ namespace bt
 		stalled_timer.update();
 		pman->setPartialSeed(!cman->haveAllChunks() && cman->chunksLeft() == 0);
 	}
-		
-
-	void TorrentControl::stop(WaitJob* wjob)
+	
+	void TorrentControl::updateRunningTimes()
 	{
 		QDateTime now = QDateTime::currentDateTime();
 		if(!stats.completed)
 			istats.running_time_dl += istats.time_started_dl.secsTo(now);
 		istats.running_time_ul += istats.time_started_ul.secsTo(now);
 		istats.time_started_ul = istats.time_started_dl = now;
+	}
+
+
+	void TorrentControl::stop(WaitJob* wjob)
+	{
+		if (!stats.paused)
+			updateRunningTimes();
 		
 		// stop preallocation
 		if (job_queue->currentJob() && job_queue->currentJob()->torrentStatus() == ALLOCATING_DISKSPACE)
@@ -1309,7 +1317,7 @@ namespace bt
 
 	Uint32 TorrentControl::getRunningTimeDL() const
 	{
-		if (!stats.running || stats.completed)
+		if (!stats.running || stats.completed || stats.paused)
 			return istats.running_time_dl;
 		else
 			return istats.running_time_dl + istats.time_started_dl.secsTo(QDateTime::currentDateTime());
@@ -1317,7 +1325,7 @@ namespace bt
 
 	Uint32 TorrentControl::getRunningTimeUL() const
 	{
-		if (!stats.running)
+		if (!stats.running || stats.paused)
 			return istats.running_time_ul;
 		else
 			return istats.running_time_ul + istats.time_started_ul.secsTo(QDateTime::currentDateTime());
