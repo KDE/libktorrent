@@ -66,6 +66,12 @@ namespace bt
 		/// Get the path of a file on disk
 		QString getPathOnDisk() const {return path_on_disk;}
 		
+		/// Get the mount point of the file on disk
+		QString getMountPoint() const;
+		
+		/// Set the mount point
+		void setMountPoint(const QString & path) {mount_point = path;}
+		
 		/**
 		 * Set the actual path of the file on disk. 
 		 * @param p The path
@@ -146,6 +152,7 @@ namespace bt
 		QString path;
 		QString path_on_disk;
 		QString user_modified_path;
+		mutable QString mount_point;
 		Uint64 size;
 		Uint32 first_chunk;
 		Uint32 last_chunk;

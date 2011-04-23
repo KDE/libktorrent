@@ -20,6 +20,7 @@
 #include "torrentfileinterface.h"
 #include <QTextCodec>
 #include <util/functions.h>
+#include <util/fileops.h>
 
 namespace bt
 {
@@ -58,6 +59,18 @@ namespace bt
 			idx++;
 		}
 	}
+	
+	QString TorrentFileInterface::getMountPoint() const
+	{
+		if (!bt::Exists(path_on_disk))
+			return QString();
+		
+		if (mount_point.isEmpty())
+			mount_point = bt::MountPoint(path_on_disk);
+			
+		return mount_point;
+	}
+
 }
 
 #include "torrentfileinterface.moc"
