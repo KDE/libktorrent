@@ -5,6 +5,9 @@ Changes in 1.2:
 - Add support for IPv6 traffic class field
 - Make sure a torrent is restarted when it was auto stopped and more files are selected for downloading (179945)
 
+Changes in 1.1.2:
+- Fix bug causing time left calculation to return something when a torrent is paused (272182)
+
 Changes in 1.1.1:
 - Fix deadlock in utp::OutputQueue when packet sending fails
 - Fix bug causing scrape not to be done after first announce 
