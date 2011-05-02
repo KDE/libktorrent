@@ -1,3 +1,6 @@
+Changes in 1.1.2:
+- Fix bug causing time left calculation to return something when a torrent is paused (272182)
+
 Changes in 1.1.1:
 - Fix deadlock in utp::OutputQueue when packet sending fails
 - Fix bug causing scrape not to be done after first announce 

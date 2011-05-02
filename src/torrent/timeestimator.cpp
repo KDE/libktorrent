@@ -83,7 +83,7 @@ namespace bt
 		const TorrentStats& s = m_tc->getStats();
 
 		// only estimate when we are running
-		if (!s.running)
+		if (!s.running || s.paused)
 			return -1;
 		
 		// in seeding mode check if we still need to seed
