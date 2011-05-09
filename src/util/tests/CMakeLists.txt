@@ -14,4 +14,4 @@ target_link_libraries( resourcemanagertest ${KDE4_KDECORE_LIBS} ${QT_QTTEST_LIBR
 
 set(fileopstest_SRCS fileopstest.cpp)
 kde4_add_unit_test(fileopstest TESTNAME fileopstest ${fileopstest_SRCS})
-target_link_libraries( fileopstest ${KDE4_KDECORE_LIBS} ${QT_QTTEST_LIBRARY} ktorrent)
+target_link_libraries( fileopstest ${KDE4_KDECORE_LIBS} ${KDE4_SOLID_LIBS} ${QT_QTTEST_LIBRARY} ktorrent)
