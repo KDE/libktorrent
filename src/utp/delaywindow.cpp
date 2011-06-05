@@ -39,34 +39,41 @@ namespace utp
 	
 	bt::Uint32 DelayWindow::update(const utp::Header* hdr,bt::TimeStamp receive_time)
 	{
-		bt::TimeStamp now = receive_time;
-		bool added = false;
+		// First cleanup old values at the beginning
 		DelayEntryItr itr = delay_window.begin();
 		while (itr != delay_window.end())
 		{
 			// drop everything older then 2 minutes
-			if (now - itr->receive_time > DELAY_WINDOW_SIZE)
+			if (receive_time - itr->receive_time > DELAY_WINDOW_SIZE)
 			{
 				// Old entry, can remove it
 				itr = delay_window.erase(itr);
 			}
-			else if (itr->timestamp_difference_microseconds > hdr->timestamp_difference_microseconds)
-			{
-				// We have encountered an entry with a higher delay then the packet, 
-				// so everything from this entry onwards can be removed
-				delay_window.erase(itr,delay_window.end());
-				delay_window.push_back(DelayEntry(hdr->timestamp_difference_microseconds,now));
-				added = true;
+			else
 				break;
-			}
-			else 
-				itr++;
 		}
 		
-		if (!added)
-			delay_window.push_back(DelayEntry(hdr->timestamp_difference_microseconds,now));
+		// If we are on the end or the new value has a lower delay, clear the list and insert at front
+		if (itr == delay_window.end() || hdr->timestamp_difference_microseconds < itr->timestamp_difference_microseconds)
+		{
+			delay_window.clear();
+			delay_window.push_back(DelayEntry(hdr->timestamp_difference_microseconds, receive_time));
+			return hdr->timestamp_difference_microseconds;
+		}
+		
+		// Use binary search to find the position where we need to insert
+		DelayEntry entry(hdr->timestamp_difference_microseconds, receive_time);
+		itr = std::lower_bound(delay_window.begin(), delay_window.end(), entry);
+		// Everything until the end has a higher delay then the new sample and is older.
+		// So they can all be dropped, because they can never be the minimum delay again.
+		if (itr != delay_window.end()) 
+			delay_window.erase(itr, delay_window.end());
+			
+		delay_window.push_back(entry);
 
+		//Out(SYS_GEN|LOG_DEBUG) << "Delay window: " << delay_window.size() << endl;
 		return delay_window.front().timestamp_difference_microseconds;
 	}
+
 }
 
