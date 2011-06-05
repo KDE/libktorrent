@@ -22,10 +22,8 @@
 #ifndef UTP_DELAYWINDOW_H
 #define UTP_DELAYWINDOW_H
 
-#include <QPair>
-#include <utp/utpprotocol.h>
 #include <list>
-
+#include <utp/utpprotocol.h>
 
 namespace utp 
 {
@@ -52,7 +50,10 @@ namespace utp
 			DelayEntry(bt::Uint32 tdm,bt::TimeStamp rt) : timestamp_difference_microseconds(tdm),receive_time(rt)
 			{}
 			
-			bool operator < (const DelayEntry & e) const {return receive_time < e.receive_time;}
+			bool operator < (const DelayEntry & e) const 
+			{
+				return timestamp_difference_microseconds < e.timestamp_difference_microseconds;
+			}
 		};
 		
 		typedef std::list<DelayEntry>::iterator DelayEntryItr;
