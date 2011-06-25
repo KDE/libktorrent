@@ -93,6 +93,7 @@ private slots:
 		// Simple test read each file and check if they are the same on disk
 		for (bt::Uint32 i = 0;i < tc.getNumFiles();i++)
 		{
+			Out(SYS_GEN|LOG_DEBUG) << "Doing file " << i << endl;
 			bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(i,false,this);
 			QVERIFY(stream);
 			QVERIFY(!stream->open(QIODevice::ReadWrite));
@@ -105,6 +106,7 @@ private slots:
 			while (written < stream->size())
 			{
 				qint64 ret = stream->read(tmp.data(),stream->size());
+				Out(SYS_GEN|LOG_DEBUG) << "Returned " << ret << endl;
 				QVERIFY(ret == stream->size());
 				written += ret;
 				

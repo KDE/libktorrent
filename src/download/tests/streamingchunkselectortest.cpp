@@ -115,7 +115,7 @@ private slots:
 	{
 		DummyTorrentCreator creator;
 		bt::TorrentControl tc;
-		QVERIFY(creator.createSingleFileTorrent(TEST_FILE_SIZE,"test2.avi"));
+		QVERIFY(creator.createSingleFileTorrent(2*TEST_FILE_SIZE,"test2.avi"));
 		
 		Out(SYS_GEN|LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
 		try
@@ -136,7 +136,7 @@ private slots:
 		QVERIFY(downer != 0);
 		
 		// Check that critical chunks are spread over multiple peers
-		csel->setSequentialRange(0,50);
+		csel->setSequentialRange(20,60);
 		DummyDownloader dd[32];
 		for (Uint32 i = 0;i < 32;i++)
 		{
@@ -145,7 +145,7 @@ private slots:
 		
 		// Check the spread of the downloaders
 		downer->update();
-		for (Uint32 i = 0;i < csel->criticialWindowSize();i++)
+		for (Uint32 i = 20;i < csel->criticialWindowSize();i++)
 		{
 			QVERIFY(downer->downloading(i));
 			QVERIFY(downer->download(i)->getNumDownloaders() == 32 / csel->criticialWindowSize());

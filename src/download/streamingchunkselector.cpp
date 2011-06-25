@@ -45,13 +45,21 @@ namespace bt
 		critical_window_size = CRITICAL_WINDOW_SIZE / cman->getTorrent().getChunkSize();
 		if (critical_window_size == 0)
 			critical_window_size = 1;
+		
+		preview_chunks.clear();
+		for (Uint32 i = 0;i <= range_end;i++)
+			if (cman->getChunk(i)->getPriority() == bt::PREVIEW_PRIORITY)
+				preview_chunks.insert(i);
 	}
 
 	
 	void StreamingChunkSelector::setCursor(Uint32 chunk)
 	{
-		cursor = chunk;
-		updateRange();
+		if (cursor != chunk)
+		{
+			cursor = chunk;
+			updateRange();
+		}
 	}
 	
 	void StreamingChunkSelector::setSequentialRange(Uint32 from, Uint32 to)
@@ -78,6 +86,9 @@ namespace bt
 	void StreamingChunkSelector::updateRange()
 	{
 		const BitSet & bs = cman->getBitSet();
+		if (range.empty() || cursor < range.front())
+			initRange(); // Reinitialize range
+		
 		std::list<Uint32>::iterator itr = range.begin();
 		while (itr != range.end())
 		{
@@ -93,10 +104,49 @@ namespace bt
 				itr++;
 		}
 	}
+	
+	bool StreamingChunkSelector::selectFromPreview(PieceDownloader* pd, Uint32& chunk)
+	{
+		const BitSet & bs = cman->getBitSet();
+		
+		std::list<Uint32> candidates;
+		// Gather all preview chunks which lie inside the range
+		// and are not yet downloaded
+		std::set<Uint32>::iterator i = preview_chunks.begin();
+		while (i != preview_chunks.end())
+		{
+			if (bs.get(*i))
+			{
+				std::set<Uint32>::iterator j = i;
+				i++;
+				preview_chunks.erase(j);
+			}
+			else if (pd->hasChunk(*i) && *i >= range_start && *i <= range_end)
+			{
+				candidates.push_back(*i);
+				i++;
+			}
+			else
+				i++;
+		}
+		
+		if (!candidates.empty())
+		{
+			chunk = leastPeers(candidates, INVALID_CHUNK, 3);
+			return chunk != INVALID_CHUNK;
+		}
+		else
+			return false;
+	}
+
 
 
 	bool StreamingChunkSelector::select(bt::PieceDownloader* pd, bt::Uint32& chunk)
 	{
+		// Always give precendence to preview chunks
+		if (selectFromPreview(pd, chunk))
+			return true;
+		
 		const BitSet & bs = cman->getBitSet();
 		Uint32 critical_chunk = INVALID_CHUNK;
 		Uint32 critical_chunk_downloaders = INVALID_CHUNK;
@@ -167,10 +217,17 @@ namespace bt
 	{
 		bt::ChunkSelector::reincluded(from, to);
 		initRange();
+		
+		for (Uint32 chunk = from;chunk <= to;chunk++)
+			if (cman->getChunk(chunk)->getPriority() == bt::PREVIEW_PRIORITY)
+				preview_chunks.insert(chunk);
 	}
 
 	void StreamingChunkSelector::reinsert(bt::Uint32 chunk)
 	{
+		if (cman->getChunk(chunk)->getPriority() == bt::PREVIEW_PRIORITY)
+			preview_chunks.insert(chunk);
+		
 		bt::ChunkSelector::reinsert(chunk);
 		if (chunk >= cursor && chunk <= range_end)
 		{

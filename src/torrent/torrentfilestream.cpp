@@ -53,7 +53,7 @@ namespace bt
 		ChunkManager* cman;
 		TorrentFileStream* p;
 		Uint64 current_byte_offset;
-		Uint64 current_limit;
+		Uint64 bytes_readable;
 		bool opened;
 		
 		PieceData::Ptr current_chunk_data;
@@ -165,7 +165,7 @@ namespace bt
 
 	qint64 TorrentFileStream::bytesAvailable() const
 	{
-		return d->current_limit - d->current_byte_offset;
+		return d->bytes_readable;
 	}
 	
 	QString TorrentFileStream::path() const
@@ -203,7 +203,7 @@ namespace bt
 										bool streaming_mode,
 										TorrentFileStream* p) 
 		: tc(tc),file_index(0),cman(cman),p(p),
-		current_byte_offset(0),current_limit(0),opened(false),
+		current_byte_offset(0),bytes_readable(0),opened(false),
 		current_chunk_offset(0),csel(0),bitset(cman->getNumChunks())
 	{
 		current_chunk = firstChunk();
@@ -224,7 +224,7 @@ namespace bt
 										bool streaming_mode,
 										TorrentFileStream* p)
 		: tc(tc),file_index(file_index),cman(cman),p(p),
-		current_byte_offset(0),current_limit(0),opened(false),
+		current_byte_offset(0),bytes_readable(0),opened(false),
 		current_chunk_offset(0),csel(0)
 	{
 		current_chunk = firstChunk();
@@ -248,7 +248,7 @@ namespace bt
 	void TorrentFileStream::Private::reset()
 	{
 		current_byte_offset = 0;
-		current_limit = 0;
+		bytes_readable = 0;
 		current_chunk = firstChunk();
 		current_chunk_offset = firstChunkOffset();
 		current_chunk_data = PieceData::Ptr();
@@ -258,9 +258,6 @@ namespace bt
 	
 	void TorrentFileStream::Private::update()
 	{
-		if (current_limit == (Uint64)p->size() || !tc)
-			return;
-		
 		const BitSet & chunks = cman->getBitSet();
 		// Update the current limit
 		bt::Uint32 first = firstChunk();
@@ -271,49 +268,42 @@ namespace bt
 			if (chunks.get(first))
 			{
 				bitset.set(0,true);
-				current_limit = p->size();
+				bytes_readable = p->size() - current_byte_offset;
 			}
 			else
 			{
 				bitset.set(0,false);
-				current_limit = 0;
+				bytes_readable = 0;
 			}
-			
-			if (current_limit == (Uint64)p->size())
-				p->emitReadChannelFinished();
 			return;
 		}
 		
-		// Loop until the end or a chunk we don't have
-		Uint32 first_missing_chunk = INVALID_CHUNK;
+		// Update the bitset
 		for (Uint32 i = first;i <= last;i++)
-		{
 			bitset.set(i - first,chunks.get(i));
-			if (!chunks.get(i) && first_missing_chunk == INVALID_CHUNK)
-				first_missing_chunk = i;
-		}
 		
-		if (first_missing_chunk == first)
+		bytes_readable = 0;
+		if (!bitset.get(current_chunk - first)) // If we don't have the current chunk, we can't read anything
+			return;
+		
+		// Add all chunks past the current one
+		for (Uint32 i = current_chunk + 1;i <= last;i++)
 		{
-			current_limit = 0;
-		}
-		else
-		{
-			Uint64 chunk_size = tc->getStats().chunk_size;
-			if (first_missing_chunk == INVALID_CHUNK)
-			{
-				// we have the entire file
-				current_limit = p->size();
-			}
+			// If we don't have the chunk we cannot read it, so break out of loop
+			if (!bitset.get(i - first))
+				break;
+			
+			if (i != last)
+				bytes_readable += cman->getChunk(i)->getSize();
 			else
-			{
-				current_limit = (chunk_size - firstChunkOffset());
-				current_limit += (first_missing_chunk - first - 1) * chunk_size;
-			}
+				bytes_readable += lastChunkSize();
 		}
-		
-		if (current_limit == (Uint64)p->size())
-			p->emitReadChannelFinished();
+
+		// Finally add the bytes from the first chunk
+		if (current_chunk == last)
+			bytes_readable += lastChunkSize() - current_chunk_offset;
+		else
+			bytes_readable += cman->getChunk(current_chunk)->getSize() - current_chunk_offset;
 	}
 	
 	Uint32 TorrentFileStream::Private::firstChunk()
@@ -354,7 +344,7 @@ namespace bt
 	
 	bool TorrentFileStream::Private::seek(qint64 pos)
 	{
-		if (pos >= (qint64)current_limit || pos < 0 || !tc)
+		if (pos < 0 || !tc)
 			return false;
 		
 		current_byte_offset = pos;
@@ -388,18 +378,20 @@ namespace bt
 		update();
 		
 		// Check if there is something to read
-		if (current_byte_offset == current_limit)
+		if (bytes_readable == 0)
 			return 0;
 		
 		qint64 bytes_read = 0;
-		while (bytes_read < maxlen && current_byte_offset < current_limit)
+		while (bytes_read < maxlen && bytes_read < (qint64)bytes_readable)
 		{
-			qint64 allowed = qMin((qint64)(current_limit - current_byte_offset),maxlen - bytes_read);
+			qint64 allowed = qMin((qint64)bytes_readable - bytes_read,maxlen - bytes_read);
 			qint64 ret = readCurrentChunk(data + bytes_read,allowed);
 			bytes_read += ret;
 			if (ret == 0)
 				break;
 		}
+		
+		bytes_readable -= bytes_read;
 		
 		// Make sure we do not cache to much during streaming
 		if (timer.getElapsedSinceUpdate() > 10000)

@@ -46,8 +46,10 @@ private slots:
 		KGlobal::setLocale(new KLocale("main"));
 		bt::InitLog("torrentfilestreamtest.log",false,false);
 		QVERIFY(creator.createSingleFileTorrent(TEST_FILE_SIZE,"test.avi"));
+		QVERIFY(creator2.createSingleFileTorrent(TEST_FILE_SIZE,"test2.avi"));
 
 		Out(SYS_GEN|LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
+		Out(SYS_GEN|LOG_DEBUG) << "Created " << creator2.torrentPath() << endl;
 		try
 		{
 			tc.init(this,creator.torrentPath(),creator.tempPath() + "tor0",creator.tempPath() + "data/");
@@ -60,6 +62,9 @@ private slots:
 			}
 			while (tc.getStats().status == bt::CHECKING_DATA);
 			QVERIFY(tc.getStats().completed);
+			
+			incomplete_tc.init(this,creator2.torrentPath(),creator2.tempPath() + "tor0",creator2.tempPath() + "data/");
+			incomplete_tc.createFiles();
 		}
 		catch (bt::Error & err)
 		{
@@ -255,9 +260,19 @@ private slots:
 		QVERIFY(b);
 	}
 	
+	void testSeekToUndownloadedSection()
+	{
+		bt::TorrentFileStream::Ptr a = incomplete_tc.createTorrentFileStream(0,true,this);
+		QVERIFY(incomplete_tc.getStats().completed == false);
+		QVERIFY(a->seek(TEST_FILE_SIZE / 2));
+		QVERIFY(a->bytesAvailable() == 0);
+	}
+	
 private:
 	DummyTorrentCreator creator;
+	DummyTorrentCreator creator2;
 	bt::TorrentControl tc;
+	bt::TorrentControl incomplete_tc;
 };
 
 QTEST_MAIN(TorrentFileStreamTest)

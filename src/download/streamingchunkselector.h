@@ -22,6 +22,7 @@
 #define BT_STREAMINGCHUNKSELECTOR_H
 
 #include <ktorrent_export.h>
+#include <set>
 #include <download/chunkselector.h>
 
 
@@ -62,6 +63,7 @@ namespace bt
 	private:
 		void updateRange();
 		void initRange();
+		bool selectFromPreview(bt::PieceDownloader* pd, bt::Uint32& chunk);
 		
 	private:
 		bt::Uint32 range_start;
@@ -69,6 +71,7 @@ namespace bt
 		bt::Uint32 cursor;
 		bt::Uint32 critical_window_size;
 		std::list<Uint32> range;
+		std::set<Uint32> preview_chunks;
 	};
 
 }

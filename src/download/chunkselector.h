@@ -77,7 +77,7 @@ namespace bt
 		void reinsert(Uint32 chunk);
 		
 		virtual bool selectRange(Uint32 & from,Uint32 & to,Uint32 max_len);
-	private:
+	protected:
 		Uint32 leastPeers(const std::list<Uint32> & lp,Uint32 alternative,Uint32 max_peers_per_chunk);
 	};
 
