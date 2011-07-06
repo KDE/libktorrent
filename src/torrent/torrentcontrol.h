@@ -281,6 +281,7 @@ namespace bt
 		void moveDataFilesWithMapFinished(KJob* j);
 		void downloaded(Uint32 chunk);
 		void moveToCompletedDir();
+		void emitFinished();
 		
 	private:	
 		void updateTracker(const QString & ev,bool last_succes = true);

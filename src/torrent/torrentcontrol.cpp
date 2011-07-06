@@ -112,7 +112,7 @@ namespace bt
 		{
 			// block all signals to prevent crash at exit
 			blockSignals(true);
-			stop(false);
+			stop(0);
 		}
 		
 		if (tmon)
@@ -141,7 +141,7 @@ namespace bt
 		
 		if (istats.io_error)
 		{
-			stop(false);
+			stop();
 			emit stoppedByError(this, stats.error_msg);
 			return;
 		}
@@ -1463,13 +1463,21 @@ namespace bt
 	
 		if (stats.completed != completed)
 		{
-			// Tell QM to redo queue 
+			// Tell QM to redo queue and emit finished signal
 			// seeder might have become downloader, so 
 			// queue might need to be redone
 			// use QTimer because we need to ensure this is run after the JobQueue removes the job
 			QTimer::singleShot(0,this,SIGNAL(updateQueue()));
+			if (stats.completed) 
+				QTimer::singleShot(0,this,SLOT(emitFinished()));
 		}
 	}
+	
+	void TorrentControl::emitFinished()
+	{
+		finished(this);
+	}
+
 	
 	void TorrentControl::markExistingFilesAsDownloaded()
 	{

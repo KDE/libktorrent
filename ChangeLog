@@ -4,6 +4,7 @@ Changes in 1.2:
 - Implement partial seeding extension (256263)
 - Add support for IPv6 traffic class field
 - Make sure a torrent is restarted when it was auto stopped and more files are selected for downloading (179945)
+- Emit finished signal when torrent is found completely downloaded in data check
 
 Changes in 1.1.2:
 - Fix bug causing time left calculation to return something when a torrent is paused (272182)
