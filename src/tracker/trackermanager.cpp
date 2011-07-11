@@ -520,12 +520,12 @@ namespace bt
 			return curr && curr->getNumSeeders() > 0 ? curr->getNumSeeders() : 0;
 		}
 		
-		Uint32 r = 0;
+		int r = 0;
 		for (PtrMap<KUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();i++)
 		{
 			int v = i->second->getNumSeeders();
-			if (v > 0)
-				r += v;
+			if (v > r) 
+				r = v;
 		}
 		
 		return r;
@@ -536,12 +536,12 @@ namespace bt
 		if (tor->getStats().priv_torrent)
 			return curr && curr->getNumLeechers() > 0 ? curr->getNumLeechers() : 0;
 		
-		Uint32 r = 0;
+		int r = 0;
 		for (PtrMap<KUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();i++)
 		{
 			int v = i->second->getNumLeechers();
-			if (v > 0)
-				r += v;
+			if (v > r)
+				r = v;
 		}
 		
 		return r;
