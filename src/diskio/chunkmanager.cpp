@@ -557,6 +557,9 @@ namespace bt
 		Uint32 first = tf->getFirstChunk();
 		Uint32 last = tf->getLastChunk();
 		
+		if (oldpriority == ONLY_SEED_PRIORITY)
+			include(first,last);
+		
 		if (first == last)
 		{
 			if (d->isBorderChunk(first))

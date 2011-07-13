@@ -109,10 +109,10 @@ namespace mse
 	
 	void StreamSocket::stopMonitoring()
 	{
-		rdr = 0;
-		wrt = 0;
 		SocketMonitor::instance().remove(sock);
 		monitored = false;
+		rdr = 0;
+		wrt = 0;
 	}
 		
 	Uint32 StreamSocket::sendData(const Uint8* data,Uint32 len)
