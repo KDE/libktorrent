@@ -226,3 +226,4 @@ private:
 QTEST_MAIN(PacketLoss)
 
 #include "packetlosstest.moc"
+

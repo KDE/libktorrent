@@ -96,8 +96,8 @@ namespace dht
 			foreach (const bt::DHTNode & n,nodes)
 				curr_task->addDHTNode(n.ip,n.port);
 
-			connect(curr_task,SIGNAL(dataReady( Task* )),this,SLOT(onDataReady( Task* )));
-			connect(curr_task,SIGNAL(finished( Task* )),this,SLOT(onFinished( Task* )));
+			connect(curr_task,SIGNAL(dataReady(Task*)),this,SLOT(onDataReady(Task*)));
+			connect(curr_task,SIGNAL(finished(Task*)),this,SLOT(onFinished(Task*)));
 			return true;
 		}
 		

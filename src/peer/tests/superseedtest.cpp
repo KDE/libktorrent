@@ -248,3 +248,4 @@ private:
 QTEST_MAIN(SuperSeedTest)
 
 #include "superseedtest.moc"
+

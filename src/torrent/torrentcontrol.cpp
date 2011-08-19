@@ -682,16 +682,16 @@ namespace bt
 		// create downloader,uploader and choker
 		downloader = new Downloader(*tor,*pman,*cman);
 		downloader->loadWebSeeds(tordir + "webseeds");
-		connect(downloader,SIGNAL(ioError(const QString& )),this,SLOT(onIOError(const QString& )));
+		connect(downloader,SIGNAL(ioError(QString)),this,SLOT(onIOError(QString)));
 		connect(downloader,SIGNAL(chunkDownloaded(Uint32)),this,SLOT(downloaded(Uint32)));
 		uploader = new Uploader(*cman,*pman);
 		choke = new Choker(*pman,*cman);
 
-		connect(pman,SIGNAL(newPeer(Peer* )),this,SLOT(onNewPeer(Peer* )));
-		connect(pman,SIGNAL(peerKilled(Peer* )),this,SLOT(onPeerRemoved(Peer* )));
-		connect(cman,SIGNAL(excluded(Uint32, Uint32 )),downloader,SLOT(onExcluded(Uint32, Uint32 )));
-		connect(cman,SIGNAL(included( Uint32, Uint32 )),downloader,SLOT(onIncluded( Uint32, Uint32 )));
-		connect(cman,SIGNAL(corrupted( Uint32 )),this,SLOT(corrupted( Uint32 )));
+		connect(pman,SIGNAL(newPeer(Peer*)),this,SLOT(onNewPeer(Peer*)));
+		connect(pman,SIGNAL(peerKilled(Peer*)),this,SLOT(onPeerRemoved(Peer*)));
+		connect(cman,SIGNAL(excluded(Uint32,Uint32)),downloader,SLOT(onExcluded(Uint32,Uint32)));
+		connect(cman,SIGNAL(included(Uint32,Uint32)),downloader,SLOT(onIncluded(Uint32,Uint32)));
+		connect(cman,SIGNAL(corrupted(Uint32)),this,SLOT(corrupted(Uint32)));
 	}
 	
 	void TorrentControl::initInternal(QueueManagerInterface* qman,const QString & tmpdir,const QString & ddir)

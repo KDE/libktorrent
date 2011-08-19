@@ -51,8 +51,8 @@ namespace bt
 	void WaitJob::addExitOperation(ExitOperation* op)
 	{
 		exit_ops.append(op);
-		connect(op,SIGNAL(operationFinished( ExitOperation* )),
-				this,SLOT(operationFinished( ExitOperation* )));
+		connect(op,SIGNAL(operationFinished(ExitOperation*)),
+				this,SLOT(operationFinished(ExitOperation*)));
 	}
 	
 	void WaitJob::addExitOperation(KIO::Job* job)

@@ -59,14 +59,14 @@ namespace bt
 	void PeerSourceManager::addPeerSource(PeerSource* ps)
 	{
 		additional.append(ps);
-		connect(ps,SIGNAL(peersReady( PeerSource* )),
-				pman,SLOT(peerSourceReady( PeerSource* )));
+		connect(ps,SIGNAL(peersReady(PeerSource*)),
+				pman,SLOT(peerSourceReady(PeerSource*)));
 	}
 	
 	void PeerSourceManager::removePeerSource(PeerSource* ps)
 	{
-		disconnect(ps,SIGNAL(peersReady( PeerSource* )),
-				pman,SLOT(peerSourceReady( PeerSource* )));
+		disconnect(ps,SIGNAL(peersReady(PeerSource*)),
+				pman,SLOT(peerSourceReady(PeerSource*)));
 		additional.removeAll(ps);
 	}
 

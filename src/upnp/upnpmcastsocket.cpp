@@ -69,7 +69,7 @@ namespace bt
 	UPnPMCastSocket::UPnPMCastSocket(bool verbose) : d(new UPnPMCastSocketPrivate(verbose))
 	{
 		QObject::connect(this,SIGNAL(readyRead()),this,SLOT(onReadyRead()));
-		QObject::connect(this,SIGNAL(error(QAbstractSocket::SocketError )),this,SLOT(error(QAbstractSocket::SocketError )));
+		QObject::connect(this,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(error(QAbstractSocket::SocketError)));
 	
 		for (Uint32 i = 0;i < 10;i++)
 		{
@@ -162,8 +162,8 @@ namespace bt
 		UPnPRouter* r = d->parseResponse(data);
 		if (r)
 		{
-			QObject::connect(r,SIGNAL(xmlFileDownloaded( UPnPRouter*, bool )),
-					this,SLOT(onXmlFileDownloaded( UPnPRouter*, bool )));
+			QObject::connect(r,SIGNAL(xmlFileDownloaded(UPnPRouter*,bool)),
+					this,SLOT(onXmlFileDownloaded(UPnPRouter*,bool)));
 			
 			// download it's xml file
 			r->downloadXMLFile();
@@ -218,7 +218,7 @@ namespace bt
 				
 			UPnPRouter* r = new UPnPRouter(server,location);
 			// download it's xml file
-			QObject::connect(r,SIGNAL(xmlFileDownloaded( UPnPRouter*, bool )),this,SLOT(onXmlFileDownloaded( UPnPRouter*, bool )));
+			QObject::connect(r,SIGNAL(xmlFileDownloaded(UPnPRouter*,bool)),this,SLOT(onXmlFileDownloaded(UPnPRouter*,bool)));
 			r->downloadXMLFile();
 			d->pending_routers.insert(r);
 		}

@@ -228,3 +228,4 @@ private:
 QTEST_MAIN(UTPPollTest)
 
 #include "utppolltest.moc"
+

@@ -173,8 +173,8 @@ namespace bt
 		connect(active_job,SIGNAL(canceled(KJob*)),this,SLOT(onCanceled(KJob*)));
 		connect(active_job,SIGNAL(processedAmount(KJob*,KJob::Unit,qulonglong)),
 				this,SLOT(onTransferred(KJob*,KJob::Unit,qulonglong)));
-		connect(active_job,SIGNAL(speed(KJob*, unsigned long)),
-				this,SLOT(onSpeed(KJob*,unsigned long)));
+		connect(active_job,SIGNAL(speed(KJob*,ulong)),
+				this,SLOT(onSpeed(KJob*,ulong)));
 		todo.erase(i);
 		
 		description(this, i18nc("@title job","Moving"),

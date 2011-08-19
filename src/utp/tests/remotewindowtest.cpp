@@ -348,3 +348,4 @@ private slots:
 QTEST_MAIN(RemoteWindowTest)
 
 #include "remotewindowtest.moc"
+

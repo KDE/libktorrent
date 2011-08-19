@@ -119,3 +119,4 @@ private:
 QTEST_MAIN(FinTest)
 
 #include "fintest.moc"
+

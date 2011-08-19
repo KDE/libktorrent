@@ -188,7 +188,7 @@ namespace bt
 		// downlaod XML description into a temporary file in /tmp
 		Out(SYS_PNP|LOG_DEBUG) << "Downloading XML file " << d->location << endl;
 		KIO::Job* job = KIO::storedGet(d->location,KIO::NoReload, KIO::Overwrite | KIO::HideProgressInfo);
-		connect(job,SIGNAL(result(KJob *)),this,SLOT(downloadFinished( KJob* )));
+		connect(job,SIGNAL(result(KJob*)),this,SLOT(downloadFinished(KJob*)));
 	}
 
 	void UPnPRouter::forward(const net::Port & port)

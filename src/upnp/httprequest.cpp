@@ -36,7 +36,7 @@ namespace bt
 	{
 		sock = new QTcpSocket(this);
 		connect(sock,SIGNAL(readyRead()),this,SLOT(onReadyRead()));
-		connect(sock,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(onError(QAbstractSocket::SocketError )));
+		connect(sock,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(onError(QAbstractSocket::SocketError)));
 		connect(sock,SIGNAL(connected()),this, SLOT(onConnect()));
 	}
 	
