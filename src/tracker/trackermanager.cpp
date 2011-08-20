@@ -148,8 +148,10 @@ namespace bt
 		Tracker* trk = 0;
 		if (url.protocol() == "udp")
 			trk = new UDPTracker(url,this,tor->getTorrent().getPeerID(),tier);
-		else
+		else if (url.protocol() == "http" || url.protocol() == "https")
 			trk = new HTTPTracker(url,this,tor->getTorrent().getPeerID(),tier);
+		else
+			return 0;
 		
 		addTracker(trk);
 		if (custom)
