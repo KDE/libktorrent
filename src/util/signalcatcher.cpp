@@ -26,17 +26,20 @@
 namespace bt
 {
 	sigjmp_buf sigbus_env;
+	static bool siglongjmp_safe = false;
 	
 	static void signal_handler(int sig, siginfo_t *siginfo, void *ptr)
 	{
 		Q_UNUSED(siginfo);
 		Q_UNUSED(ptr);
 		Q_UNUSED(sig);
-		// Jump to error handling code
-		siglongjmp(sigbus_env, 1);
+		// Jump to error handling code,
+		// ignore signal if we are not safe to jump
+		if (siglongjmp_safe)
+			siglongjmp(sigbus_env, 1);
 	}
 	
-	bool InstallBusHandler()
+	static bool InstallBusHandler()
 	{
 		struct sigaction act;
 		
@@ -57,6 +60,19 @@ namespace bt
 		
 		return true;
 	}
+	
+	BusErrorGuard::BusErrorGuard()
+	{
+		InstallBusHandler();
+		siglongjmp_safe = true;
+	}
+	
+	BusErrorGuard::~BusErrorGuard()
+	{
+		siglongjmp_safe = false;
+	}
+
+
 	
 	BusError::BusError(bool write_operation) 
 		: Error(write_operation ? i18n("Error when writing to disk") : i18n("Error when reading from disk")),

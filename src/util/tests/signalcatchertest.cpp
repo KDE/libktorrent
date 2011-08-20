@@ -74,7 +74,6 @@ private slots:
 	void initTestCase()
 	{
 		bt::InitLog("signalcatchertest.log");
-		QVERIFY(InstallBusHandler());
 	}
 	
 	void cleanupTestCase()

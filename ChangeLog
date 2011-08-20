@@ -7,6 +7,7 @@ Changes in 1.2:
 - Emit finished signal when torrent is found completely downloaded in data check
 - Seeders and leechers shown in view is now the maximum of all trackers and not the sum
 - Do not add trackers with unsupported protocols (278352)
+- Improve SIGBUS handling, fixes a crash (276777)
 
 Changes in 1.1.2:
 - Fix bug causing time left calculation to return something when a torrent is paused (272182)

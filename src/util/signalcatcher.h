@@ -36,9 +36,14 @@ namespace bt
 	extern KTORRENT_EXPORT sigjmp_buf sigbus_env;
 
 	/**
-		Install the SIGBUS signal handler. 
-	*/
-	KTORRENT_EXPORT bool InstallBusHandler();
+	 * Protects against SIGBUS errors when doing mmapped IO
+	 **/
+	class KTORRENT_EXPORT BusErrorGuard
+	{
+	public:
+		BusErrorGuard();
+		virtual ~BusErrorGuard();
+	};
 	
 	/**
 		Exception throw when a SIGBUS is caught.
@@ -55,10 +60,10 @@ namespace bt
 }
 
 /// Before writing to memory mapped data, call this macro to ensure that SIGBUS signals are caught and properly dealt with
-#define BUS_ERROR_WPROTECT() InstallBusHandler(); if (sigsetjmp(bt::sigbus_env, 1)) throw bt::BusError(true)
+#define BUS_ERROR_WPROTECT() BusErrorGuard bus_error_guard; if (sigsetjmp(bt::sigbus_env, 1)) throw bt::BusError(true)
 	
 /// Before reading from memory mapped data, call this macro to ensure that SIGBUS signals are caught and properly dealt with
-#define BUS_ERROR_RPROTECT() InstallBusHandler(); if (sigsetjmp(bt::sigbus_env, 1)) throw bt::BusError(false)
+#define BUS_ERROR_RPROTECT() BusErrorGuard bus_error_guard; if (sigsetjmp(bt::sigbus_env, 1)) throw bt::BusError(false)
 
 #endif
 
