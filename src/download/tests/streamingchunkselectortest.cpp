@@ -168,3 +168,4 @@ private slots:
 QTEST_MAIN(StreamingChunkSelectorTest)
 
 #include "streamingchunkselectortest.moc"
+

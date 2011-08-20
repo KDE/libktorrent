@@ -71,8 +71,8 @@ namespace dht
 	
 	void RPCCall::addListener(RPCCallListener* cl)
 	{
-		connect(this,SIGNAL(onCallResponse( RPCCall*, MsgBase::Ptr )),cl,SLOT(onResponse( RPCCall*, MsgBase::Ptr )));
-		connect(this,SIGNAL(onCallTimeout( RPCCall* )),cl,SLOT(onTimeout( RPCCall* )));
+		connect(this,SIGNAL(onCallResponse(RPCCall*,MsgBase::Ptr)),cl,SLOT(onResponse(RPCCall*,MsgBase::Ptr)));
+		connect(this,SIGNAL(onCallTimeout(RPCCall*)),cl,SLOT(onTimeout(RPCCall*)));
 	}
 
 }

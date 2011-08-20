@@ -141,8 +141,8 @@ namespace bt
 		{
 			pd->release();
 			sendCancels(pd);
-			disconnect(pd,SIGNAL(timedout(const bt::Request& )),this,SLOT(onTimeout(const bt::Request& )));
-			disconnect(pd,SIGNAL(rejected( const bt::Request& )),this,SLOT(onRejected( const bt::Request& )));
+			disconnect(pd,SIGNAL(timedout(bt::Request)),this,SLOT(onTimeout(bt::Request)));
+			disconnect(pd,SIGNAL(rejected(bt::Request)),this,SLOT(onRejected(bt::Request)));
 		}
 		dstatus.clear();
 		pdown.clear();
@@ -156,8 +156,8 @@ namespace bt
 		pd->grab();
 		pdown.append(pd);
 		dstatus.insert(pd,new DownloadStatus());
-		connect(pd,SIGNAL(timedout(const bt::Request& )),this,SLOT(onTimeout(const bt::Request& )));
-		connect(pd,SIGNAL(rejected( const bt::Request& )),this,SLOT(onRejected( const bt::Request& )));
+		connect(pd,SIGNAL(timedout(bt::Request)),this,SLOT(onTimeout(bt::Request)));
+		connect(pd,SIGNAL(rejected(bt::Request)),this,SLOT(onRejected(bt::Request)));
 		sendRequests();
 		return true;
 	}
@@ -169,8 +169,8 @@ namespace bt
 		
 		pd->release();
 		sendCancels(pd);
-		disconnect(pd,SIGNAL(timedout(const bt::Request& )),this,SLOT(onTimeout(const bt::Request& )));
-		disconnect(pd,SIGNAL(rejected( const bt::Request& )),this,SLOT(onRejected( const bt::Request& )));
+		disconnect(pd,SIGNAL(timedout(bt::Request)),this,SLOT(onTimeout(bt::Request)));
+		disconnect(pd,SIGNAL(rejected(bt::Request)),this,SLOT(onRejected(bt::Request)));
 		dstatus.erase(pd);
 		pdown.removeAll(pd);
 	}
@@ -359,8 +359,8 @@ namespace bt
 
 		dstatus.erase(pd);
 		pdown.removeAll(pd);
-		disconnect(pd,SIGNAL(timedout(const bt::Request& )),this,SLOT(onTimeout(const bt::Request& )));
-		disconnect(pd,SIGNAL(rejected( const bt::Request& )),this,SLOT(onRejected( const bt::Request& )));
+		disconnect(pd,SIGNAL(timedout(bt::Request)),this,SLOT(onTimeout(bt::Request)));
+		disconnect(pd,SIGNAL(rejected(bt::Request)),this,SLOT(onRejected(bt::Request)));
 	}
 	
 	Uint32 ChunkDownload::getChunkIndex() const

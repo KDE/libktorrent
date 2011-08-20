@@ -392,3 +392,4 @@ private:
 QTEST_MAIN(LocalWindowTest)
 
 #include "localwindowtest.moc"
+

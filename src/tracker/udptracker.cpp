@@ -56,12 +56,12 @@ namespace bt
 		
 		conn_timer.setSingleShot(true);
 		connect(&conn_timer,SIGNAL(timeout()),this,SLOT(onConnTimeout()));
-		connect(socket,SIGNAL(announceReceived(Int32, const QByteArray & )),
-				this,SLOT(announceReceived(Int32, const QByteArray & )));
-		connect(socket,SIGNAL(connectReceived(Int32, Int64 )),
-				this,SLOT(connectReceived(Int32, Int64 )));
-		connect(socket,SIGNAL(error(Int32, const QString& )),
-				this,SLOT(onError(Int32, const QString& )));
+		connect(socket,SIGNAL(announceReceived(Int32,QByteArray)),
+				this,SLOT(announceReceived(Int32,QByteArray)));
+		connect(socket,SIGNAL(connectReceived(Int32,Int64)),
+				this,SLOT(connectReceived(Int32,Int64)));
+		connect(socket,SIGNAL(error(Int32,QString)),
+				this,SLOT(onError(Int32,QString)));
 		connect(socket,SIGNAL(scrapeReceived(Int32,QByteArray)),
 				this,SLOT(scrapeReceived(Int32,QByteArray)));
 		
@@ -210,7 +210,7 @@ namespace bt
 		if (!resolved)
 		{
 			todo |= ANNOUNCE_REQUEST;
-			KResolver::resolveAsync(this,SLOT(onResolverResults(KNetwork::KResolverResults )),
+			KResolver::resolveAsync(this,SLOT(onResolverResults(KNetwork::KResolverResults)),
 									url.host(),QString::number(url.port(80)));
 		}
 		else if (connection_id == 0)
@@ -235,7 +235,7 @@ namespace bt
 		if (!resolved)
 		{
 			todo |= SCRAPE_REQUEST;
-			KResolver::resolveAsync(this,SLOT(onResolverResults(KNetwork::KResolverResults )),
+			KResolver::resolveAsync(this,SLOT(onResolverResults(KNetwork::KResolverResults)),
 									url.host(),QString::number(url.port(80)));
 		}
 		else if (connection_id == 0)

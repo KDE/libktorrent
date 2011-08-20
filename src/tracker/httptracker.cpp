@@ -145,7 +145,7 @@ namespace bt
 		j->setMetaData(md);
 		KIO::Scheduler::scheduleJob(j);
 		
-		connect(j,SIGNAL(result(KJob* )),this,SLOT(onScrapeResult( KJob* )));
+		connect(j,SIGNAL(result(KJob*)),this,SLOT(onScrapeResult(KJob*)));
 	}
 	
 	void HTTPTracker::onScrapeResult(KJob* j)
@@ -525,13 +525,13 @@ namespace bt
 			KIO::MetaData md;
 			setupMetaData(md);
 			KIOAnnounceJob* j = new KIOAnnounceJob(u,md);
-			connect(j,SIGNAL(result(KJob* )),this,SLOT(onKIOAnnounceResult( KJob* )));
+			connect(j,SIGNAL(result(KJob*)),this,SLOT(onKIOAnnounceResult(KJob*)));
 			active_job = j;
 		}
 		else
 		{
 			HTTPAnnounceJob* j = new HTTPAnnounceJob(u);
-			connect(j,SIGNAL(result(KJob* )),this,SLOT(onQHttpAnnounceResult(KJob*)));
+			connect(j,SIGNAL(result(KJob*)),this,SLOT(onQHttpAnnounceResult(KJob*)));
 			if (!proxy_on)
 			{
 				QString proxy = KProtocolManager::proxyForUrl(u); // Use KDE settings

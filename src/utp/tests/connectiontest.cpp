@@ -171,3 +171,4 @@ private:
 QTEST_MAIN(ConnectionTest)
 
 #include "connectiontest.moc"
+

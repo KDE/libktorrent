@@ -155,3 +155,4 @@ private slots:
 QTEST_MAIN(ResourceManagerTest)
 
 #include "resourcemanagertest.moc"
+

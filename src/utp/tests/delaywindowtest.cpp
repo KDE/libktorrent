@@ -117,3 +117,4 @@ private:
 QTEST_MAIN(DelayWindowTest)
 
 #include "delaywindowtest.moc"
+

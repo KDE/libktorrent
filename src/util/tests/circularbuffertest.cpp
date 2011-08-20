@@ -125,3 +125,4 @@ private:
 QTEST_MAIN(CircularBufferTest)
 
 #include "circularbuffertest.moc"
+

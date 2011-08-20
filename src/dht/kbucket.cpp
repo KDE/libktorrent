@@ -383,8 +383,8 @@ namespace dht
 		refresh_task = t;
 		if (refresh_task)
 		{
-			connect(refresh_task,SIGNAL(finished( Task* )),
-					this,SLOT(onFinished( Task* )));
+			connect(refresh_task,SIGNAL(finished(Task*)),
+					this,SLOT(onFinished(Task*)));
 		}
 	}
 	

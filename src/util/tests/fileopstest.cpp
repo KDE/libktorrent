@@ -68,3 +68,4 @@ private slots:
 QTEST_MAIN(FileOpsTest)
 
 #include "fileopstest.moc"
+

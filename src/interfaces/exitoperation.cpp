@@ -31,7 +31,7 @@ namespace bt
 
 	ExitJobOperation::ExitJobOperation(KJob* j)
 	{
-		connect(j,SIGNAL(result(KJob*)),this,SLOT(onResult( KJob* )));
+		connect(j,SIGNAL(result(KJob*)),this,SLOT(onResult(KJob*)));
 	}
 	
 	ExitJobOperation::~ExitJobOperation()
