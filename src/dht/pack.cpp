@@ -23,14 +23,13 @@
 #include <util/functions.h>
 
 using namespace bt;
-using namespace KNetwork;
 
 namespace dht
 {
 
 	void PackBucketEntry(const KBucketEntry & e,QByteArray & ba,Uint32 off)
 	{
-		const KInetSocketAddress & addr = e.getAddress();
+		const net::Address & addr = e.getAddress();
 		Uint8* data = (Uint8*)ba.data();
 		Uint8* ptr = data + off;
 		
@@ -42,7 +41,7 @@ namespace dht
 			
 			// copy ID, IP address and port into the buffer
 			memcpy(ptr,e.getID().getData(),20);
-			bt::WriteUint32(ptr,20,ntohl(addr.ipAddress().IPv4Addr()));
+			bt::WriteUint32(ptr,20,addr.toIPv4Address());
 			bt::WriteUint16(ptr,24,addr.port());
 		}
 		else
@@ -53,7 +52,7 @@ namespace dht
 			
 			// copy ID, IP address and port into the buffer
 			memcpy(ptr,e.getID().getData(),20);
-			memcpy(ptr + 20,addr.ipAddress().addr(),16);
+			memcpy(ptr + 20,addr.toIPv6Address().c,16);
 			bt::WriteUint16(ptr,36,addr.port());
 		}
 	}
@@ -70,10 +69,11 @@ namespace dht
 			
 			// get the port, ip and key);
 			Uint16 port = bt::ReadUint16(ptr,24);
+			Uint32 ip = bt::ReadUint32(ptr,20);
 			Uint8 key[20];
 			memcpy(key,ptr,20);
 			
-			return KBucketEntry(KInetSocketAddress(KIpAddress(ptr+20,4),port),dht::Key(key));
+			return KBucketEntry(net::Address(ip,port),dht::Key(key));
 		}
 		else
 		{
@@ -88,7 +88,7 @@ namespace dht
 			Uint8 key[20];
 			memcpy(key,ptr,20);
 			
-			return KBucketEntry(KInetSocketAddress(KIpAddress(ptr+20,6),port),dht::Key(key));
+			return KBucketEntry(net::Address((quint8*)ptr + 20,port),dht::Key(key));
 		}
 	}
 

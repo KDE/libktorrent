@@ -24,19 +24,12 @@
 #include <qlist.h>
 #include <util/constants.h>
 #include <ktorrent_export.h>
+#include <net/address.h>
 		
 namespace bt
 {
 	class WaitJob;
 
-	struct KTORRENT_EXPORT PotentialPeer
-	{
-		QString ip;
-		bt::Uint16 port;
-		bool local;
-		
-		PotentialPeer() : port(0),local(false) {}
-	};
 
 	/**
 	 * @author Joris Guisson <joris.guisson@gmail.com>
@@ -55,20 +48,21 @@ namespace bt
 
 		
 		/**
-		 * Take the first PotentialPeer from the list. The item
+		 * Take the first peer from the list. The item
 		 * is removed from the list.
-		 * @param pp PotentialPeer struct to fill
+		 * @param addr The address of the peer
+		 * @param local Is this is a peer on the local network
 		 * @return true If there was one available, false if not
 		 */
-		bool takePotentialPeer(PotentialPeer & pp);
+		bool takePeer(net::Address & addr, bool & local);
 		
 		/**
 		 * Add a peer to the list of peers.
-		 * @param ip The ip
+		 * @param addr The address of the peer
 		 * @param port The port
 		 * @param local Whether or not the peer is on the local network
 		 */
-		void addPeer(const QString & ip,bt::Uint16 port,bool local = false);
+		void addPeer(const net::Address & addr,bool local = false);
 		
 	public slots:
 		/**
@@ -108,7 +102,7 @@ namespace bt
 	
 	private:
 		/// List to keep the potential peers in.
-		QList<PotentialPeer> peers;	
+		QList<QPair<net::Address, bool> > peers;	
 	};
 
 }

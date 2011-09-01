@@ -159,7 +159,10 @@ namespace net
 		
 	bool Socket::connectTo(const Address & a)
 	{
-		if (::connect(m_fd,a.address(),a.length()) < 0)
+		int len = 0;
+		struct sockaddr_storage ss;
+		a.toSocketAddress(&ss, len);
+		if (::connect(m_fd,(struct sockaddr*)&ss,len) < 0)
 		{
 #ifndef Q_WS_WIN
 			if (errno == EINPROGRESS)
@@ -185,6 +188,11 @@ namespace net
 	
 	bool Socket::bind(const QString & ip,Uint16 port,bool also_listen)
 	{
+		return bind(net::Address(ip, port), also_listen);
+	}
+	
+	bool Socket::bind(const net::Address& addr, bool also_listen)
+	{
 		int val = 1;
 #ifndef Q_WS_WIN
 		if (setsockopt(m_fd,SOL_SOCKET,SO_REUSEADDR,&val,sizeof(int)) < 0)
@@ -195,44 +203,24 @@ namespace net
 			Out(SYS_CON|LOG_NOTICE) << QString("Failed to set the reuseaddr option : %1").arg(strerror(errno)) << endl;
 		}
 
-		net::Address addr(ip,port);
-		if (::bind(m_fd,addr.address(),addr.length()) != 0)
+		int len = 0;
+		struct sockaddr_storage ss;
+		addr.toSocketAddress(&ss, len);
+		if (::bind(m_fd, (struct sockaddr*)&ss, len) != 0)
 		{
-			Out(SYS_CON|LOG_IMPORTANT) << QString("Cannot bind to port %1:%2 : %3").arg(ip).arg(port).arg(strerror(errno)) << endl;
+			Out(SYS_CON|LOG_IMPORTANT) << QString("Cannot bind to port %1:%2 : %3")
+				.arg(addr.toString())
+				.arg(addr.port())
+				.arg(strerror(errno)) << endl;
 			return false;
 		}
 
 		if (also_listen && listen(m_fd,SOMAXCONN) < 0)
 		{
-			Out(SYS_CON|LOG_IMPORTANT) << QString("Cannot listen to port %1:%2 : %3").arg(ip).arg(port).arg(strerror(errno)) << endl;
-			return false;
-		}
-
-		m_state = BOUND;
-		return true;
-	}
-	
-	bool Socket::bind(const net::Address& addr, bool also_listen)
-	{
-		int val = 1, no = 0;
-#ifndef Q_WS_WIN
-		if (setsockopt(m_fd,SOL_SOCKET,SO_REUSEADDR,&val,sizeof(int)) < 0)
-#else
-		if (setsockopt(m_fd,SOL_SOCKET,SO_REUSEADDR,(char *)&val,sizeof(int)) < 0)
-#endif 
-		{
-			Out(SYS_CON|LOG_NOTICE) << QString("Failed to set the reuseaddr option : %1").arg(strerror(errno)) << endl;
-		}
-
-		if (::bind(m_fd,addr.address(),addr.length()) != 0)
-		{
-			Out(SYS_CON|LOG_IMPORTANT) << QString("Cannot bind to port %1:%2 : %3").arg(addr.ipAddress().toString()).arg(addr.port()).arg(strerror(errno)) << endl;
-			return false;
-		}
-		
-		if (also_listen && listen(m_fd,5) < 0)
-		{
-			Out(SYS_CON|LOG_IMPORTANT) << QString("Cannot listen to port %1:%2 : %3").arg(addr.ipAddress().toString()).arg(addr.port()).arg(strerror(errno)) << endl;
+			Out(SYS_CON|LOG_IMPORTANT) << QString("Cannot listen to port %1:%2 : %3")
+				.arg(addr.toString())
+				.arg(addr.port())
+				.arg(strerror(errno)) << endl;
 			return false;
 		}
 		
@@ -288,7 +276,10 @@ namespace net
 	
 	int Socket::sendTo(const bt::Uint8* buf,int len,const Address & a)
 	{
-		int ret = ::sendto(m_fd,(char*)buf,len,0,a.address(),a.length());
+		int alen = 0;
+		struct sockaddr_storage ss;
+		a.toSocketAddress(&ss, alen);
+		int ret = ::sendto(m_fd,(char*)buf,len,0,(struct sockaddr*)&ss,alen);
 		if (ret < 0)
 		{
 			if (errno == EAGAIN || errno == EWOULDBLOCK)
@@ -315,7 +306,7 @@ namespace net
 			Out(SYS_CON|LOG_DEBUG) << "Receive error : " << QString(strerror(errno)) << endl;
 			return 0;
 		}
-		a = KNetwork::KInetSocketAddress((const struct sockaddr*) &ss,slen);
+		a = net::Address(&ss);
 		return ret;
 	}
 	
@@ -330,7 +321,7 @@ namespace net
 			Out(SYS_CON|LOG_DEBUG) << "Accept error : " << QString(strerror(errno)) << endl;
 			return -1;
 		}
-		a = KNetwork::KInetSocketAddress((const struct sockaddr*) &ss,slen);
+		a =  net::Address(&ss);
 		
 		Out(SYS_CON|LOG_DEBUG) << "Accepted connection from " << a.toString() << endl;
 		return sfd;
@@ -419,11 +410,7 @@ namespace net
 		
 		if (getpeername(m_fd,(struct sockaddr*)&ss,&sslen) == 0)
 		{
-			// If it is a IPv6 mapped address convert to IPv4
-			KNetwork::KInetSocketAddress tmp((struct sockaddr*)&ss,sslen);
-			if (tmp.ipVersion() == 6 && tmp.ipAddress().isV4Mapped())
-				tmp.setHost(KNetwork::KIpAddress(tmp.ipAddress().IPv4Addr(true)));
-			addr = tmp;
+			addr = net::Address(&ss);
 		}
 	}
 
@@ -433,15 +420,9 @@ namespace net
 		socklen_t sslen = sizeof(ss);
 		
 		if (getsockname(m_fd,(struct sockaddr*)&ss,&sslen) == 0)
-		{
-			// If it is a IPv6 mapped address convert to IPv4
-			KNetwork::KInetSocketAddress tmp((struct sockaddr*)&ss,sslen);
-			if (tmp.ipVersion() == 6 && tmp.ipAddress().isV4Mapped())
-				tmp.setHost(KNetwork::KIpAddress(tmp.ipAddress().IPv4Addr(true)));
-			return tmp;
-		}
-
-		return Address();
+			return net::Address(&ss);
+		else
+			return Address();
 	}
 
 	int Socket::take()

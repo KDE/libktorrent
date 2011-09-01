@@ -29,10 +29,17 @@
 
 #include "version.h"
 
+
 namespace bt
 {
 
-	HttpConnection::HttpConnection() : sock(0),state(IDLE),mutex(QMutex::Recursive),request(0),using_proxy(false),response_code(0)
+	HttpConnection::HttpConnection() :
+		sock(0),
+		state(IDLE),
+		mutex(QMutex::Recursive),
+		request(0),
+		using_proxy(false),
+		response_code(0)
 	{
 		status = i18n("Not connected");
 		connect(&reply_timer,SIGNAL(timeout()),this,SLOT(replyTimeout()));
@@ -101,8 +108,7 @@ namespace bt
 	void HttpConnection::connectToProxy(const QString & proxy,Uint16 proxy_port)
 	{
 		using_proxy = true;
-		KNetwork::KResolver::resolveAsync(this, SLOT(hostResolved(KNetwork::KResolverResults)), 
-										  proxy, QString::number(proxy_port == 0 ? 8080 : proxy_port));
+		new net::AddressResolver(proxy, proxy_port, this, SLOT(hostResolved(net::AddressResolver*)));
 		state = RESOLVING;
 		status = i18n("Resolving proxy %1:%2",proxy,proxy_port);
 	}
@@ -110,8 +116,8 @@ namespace bt
 	void HttpConnection::connectTo(const KUrl & url)
 	{
 		using_proxy = false;
-		KNetwork::KResolver::resolveAsync(this, SLOT(hostResolved(KNetwork::KResolverResults)), 
-										url.host(), QString::number(url.port() <= 0 ? 80 : url.port()));
+		new net::AddressResolver(url.host(), url.port() <= 0 ? 80 : url.port(), 
+								 this, SLOT(hostResolved(net::AddressResolver*)));
 		state = RESOLVING;
 		status = i18n("Resolving hostname %1",url.host());
 	}
@@ -197,11 +203,11 @@ namespace bt
 		return !request->request_sent;
 	}
 
-	void HttpConnection::hostResolved(KNetwork::KResolverResults res)
+	void HttpConnection::hostResolved(net::AddressResolver* ar)
 	{
-		if (res.count() > 0)
+		if (ar->succeeded())
 		{
-			KNetwork::KInetSocketAddress addr = res.front().address();
+			net::Address addr = ar->address();
 			if (!sock)
 			{
 				sock = new net::BufferedSocket(true,addr.ipVersion());

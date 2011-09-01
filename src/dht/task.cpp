@@ -18,11 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "task.h"
-#include <k3resolver.h>
+#include <net/addressresolver.h>
 #include "kclosestnodessearch.h"
 #include "rpcserver.h"
 
-using namespace KNetwork;
+
 
 namespace dht
 {
@@ -88,7 +88,7 @@ namespace dht
 	
 	bool Task::rpcCall(dht::MsgBase::Ptr req)
 	{
-		if (!canDoRequest() || !req->getDestination().length())
+		if (!canDoRequest())
 			return false;
 		
 		RPCCall* c = rpc->doCall(req);
@@ -116,18 +116,25 @@ namespace dht
 	
 	void Task::addDHTNode(const QString & ip,bt::Uint16 port)
 	{
-		KResolver::resolveAsync(this,SLOT(onResolverResults(KNetwork::KResolverResults)),
-								ip,QString::number(port));
+		net::Address addr;
+		if (addr.setAddress(ip))
+		{
+			addr.setPort(port);
+			todo.insert(KBucketEntry(addr, dht::Key()));
+		}
+		else
+			net::AddressResolver::resolve(ip, port, this, SLOT(onResolverResults(net::AddressResolver*)));
 	}
 	
-	void Task::onResolverResults(KResolverResults res)
+	void Task::onResolverResults(net::AddressResolver* ar)
 	{
-		if (res.count() == 0)
+		if (!ar->succeeded())
 			return;
 		
-		todo.insert(KBucketEntry(res.front().address(),dht::Key()));
+		todo.insert(KBucketEntry(ar->address(),dht::Key()));
 	}
 
 }
 
 #include "task.moc"
+

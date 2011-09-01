@@ -37,10 +37,6 @@
 #include "dht.h"
 #include <net/socket.h>
 
-
-
-
-using namespace KNetwork;
 using namespace bt;
 
 namespace dht
@@ -368,7 +364,7 @@ namespace dht
 	
 	void RPCServer::ping(const dht::Key & our_id,const net::Address & addr)
 	{
-		Out(SYS_DHT|LOG_NOTICE) << "DHT: pinging " << addr.nodeName() << endl;
+		Out(SYS_DHT|LOG_NOTICE) << "DHT: pinging " << addr.toString() << endl;
 		MsgBase::Ptr pr(new PingReq(our_id));
 		pr->setOrigin(addr);
 		doCall(pr);

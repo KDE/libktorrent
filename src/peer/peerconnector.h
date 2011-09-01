@@ -25,6 +25,7 @@
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <util/resourcemanager.h>
+#include <net/address.h>
 
 #if (QT_VERSION < QT_VERSION_CHECK(4, 7, 0))
 template <class T>
@@ -54,7 +55,7 @@ namespace bt
 			UTP_WITHOUT_ENCRYPTION
 		};
 		
-		PeerConnector(const QString & ip,Uint16 port,bool local,PeerManager* pman);
+		PeerConnector(const net::Address & addr,bool local,PeerManager* pman);
 		virtual ~PeerConnector();
 	
 		/// Called when an authentication attempt is finished

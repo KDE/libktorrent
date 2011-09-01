@@ -21,35 +21,21 @@
 #ifndef NETSOCKS_H
 #define NETSOCKS_H
 
-#include <k3resolver.h>
 #include <net/address.h>
+#include <net/addressresolver.h>
 #include <ktorrent_export.h>
 #include <mse/streamsocket.h>
 
 namespace net 
 {
 	/**
-	 * Throw away object which resolves the socks server hostname
-	 * This will commit suicide when it is done
-	*/
-	class SocksResolver : public QObject
-	{
-		Q_OBJECT
-	public:
-		SocksResolver(const QString & host,bt::Uint16 port);
-		virtual ~SocksResolver();
-		
-	private slots:
-		void hostResolved(KNetwork::KResolverResults res);
-	};
-
-	/**
 	 * @author Joris Guisson
 	 * 
 	 * Class which handles the SOCKSv5 protocol
 	*/
-	class KTORRENT_EXPORT Socks
+	class KTORRENT_EXPORT Socks : public QObject
 	{
+		Q_OBJECT
 	public:
 		enum State
 		{
@@ -103,6 +89,7 @@ namespace net
 		 * @param password The password
 		 */
 		static void setSocksAuthentication(const QString & username,const QString & password);
+		
 	private:
 		State sendAuthRequest();
 		void sendConnectRequest();
@@ -110,6 +97,9 @@ namespace net
 		State handleAuthReply();
 		State handleUsernamePasswordReply();
 		State handleConnectReply();
+		
+	private slots:
+		void resolved(net::AddressResolver* ar);
 			
 	private:
 		mse::StreamSocket::Ptr sock;
@@ -118,6 +108,8 @@ namespace net
 		SetupState internal_state;
 		int version;
 		
+		static net::Address socks_server_addr;
+		static bool socks_server_addr_resolved;
 		static QString socks_server_host;
 		static bt::Uint16 socks_server_port;
 		static bool socks_enabled;

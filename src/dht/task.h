@@ -23,9 +23,9 @@
 #include "rpccall.h"
 #include "kbucket.h"
 
-namespace KNetwork
+namespace net 
 {
-	class KResolverResults;
+	class AddressResolver;
 }
 
 namespace dht
@@ -35,8 +35,6 @@ namespace dht
 	class KClosestNodesSearch;
 	
 	const Uint32 MAX_CONCURRENT_REQS = 16;
-
-	using KNetwork::KResolverResults;
 
 	/**
 	 * @author Joris Guisson <joris.guisson@gmail.com>
@@ -152,7 +150,7 @@ namespace dht
 		void done();
 		
 	protected slots:
-		void onResolverResults(KNetwork::KResolverResults res);
+		void onResolverResults(net::AddressResolver* res);
 				
 	protected:	
 		dht::KBucketEntrySet visited; // nodes visited

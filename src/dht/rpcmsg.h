@@ -20,7 +20,6 @@
 #ifndef DHTRPCMSG_H
 #define DHTRPCMSG_H
 
-#include <k3socketaddress.h>
 #include <QString>
 #include <QSharedPointer>
 #include <util/constants.h>
@@ -90,16 +89,16 @@ namespace dht
 		virtual void encode(QByteArray & arr) const = 0;
 		
 		/// Set the origin (i.e. where the message came from)
-		void setOrigin(const KNetwork::KSocketAddress & o) {origin = o;}
+		void setOrigin(const net::Address & o) {origin = o;}
 		
 		/// Get the origin
-		const KNetwork::KInetSocketAddress & getOrigin() const {return origin;}
+		const net::Address & getOrigin() const {return origin;}
 		
 		/// Set the origin (i.e. where the message came from)
-		void setDestination(const KNetwork::KSocketAddress & o) {origin = o;}
+		void setDestination(const net::Address & o) {origin = o;}
 		
 		/// Get the origin
-		const KNetwork::KInetSocketAddress & getDestination() const {return origin;}
+		const net::Address & getDestination() const {return origin;}
 		
 		/// Get the MTID
 		Uint8 getMTID() const {return mtid;}
@@ -121,7 +120,7 @@ namespace dht
 		Method method;
 		Type type;
 		Key id;
-		KNetwork::KInetSocketAddress origin;
+		net::Address origin;
 	};
 	
 	/**

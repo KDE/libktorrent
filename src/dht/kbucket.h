@@ -23,14 +23,13 @@
 #include <set>
 #include <QList>
 #include <util/constants.h>
-#include <k3socketaddress.h>
+#include <net/address.h>
 #include "key.h"
 #include "rpccall.h"
 
 using bt::Uint32;
 using bt::Uint16;
 using bt::Uint8;
-using KNetwork::KInetSocketAddress;
 
 namespace bt
 {
@@ -64,7 +63,7 @@ namespace dht
 	 */
 	class KBucketEntry
 	{
-		KInetSocketAddress addr;
+		net::Address addr;
 		Key node_id;
 		bt::TimeStamp last_responded;
 		Uint32 failed_queries;
@@ -81,7 +80,7 @@ namespace dht
 		 * @param addr socket address
 		 * @param id ID of node
 		 */
-		KBucketEntry(const KInetSocketAddress & addr,const Key & id);
+		KBucketEntry(const net::Address & addr,const Key & id);
 		
 		/**
 		 * Copy constructor.
@@ -104,7 +103,7 @@ namespace dht
 		bool operator == (const KBucketEntry & entry) const;
 		
 		/// Get the socket address of the node
-		const KInetSocketAddress & getAddress() const {return addr;}
+		const net::Address & getAddress() const {return addr;}
 		
 		/// Get it's ID
 		const Key & getID() const {return node_id;}
@@ -196,7 +195,7 @@ namespace dht
 		 * A peer failed to respond
 		 * @param addr Address of the peer
 		 */
-		bool onTimeout(const KInetSocketAddress & addr);
+		bool onTimeout(const net::Address & addr);
 		
 		/// Check if the bucket needs to be refreshed
 		bool needsToBeRefreshed() const;

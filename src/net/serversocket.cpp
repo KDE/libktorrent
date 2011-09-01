@@ -87,7 +87,7 @@ namespace net
 	{
 		d->reset();
 		
-		d->sock = new net::Socket(d->isTCP(),addr.ipVersion());
+		d->sock = new net::Socket(d->isTCP(),addr.protocol() == QAbstractSocket::IPv4Protocol ? 4 : 6);
 		if (d->sock->bind(addr,d->isTCP()))
 		{
 			Out(SYS_GEN|LOG_NOTICE) << "Bound to " << addr.toString() << endl;

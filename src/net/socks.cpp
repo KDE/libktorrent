@@ -38,12 +38,15 @@ namespace net
 	bt::Uint16 Socks::socks_server_port = 1080;
 	QString Socks::socks_username;
 	QString Socks::socks_password;
-	
-	static Address socks_server_addr_v4;
-	static Address socks_server_addr_v6;
-	static bool socks_server_addr_resolved = false;
+	bool Socks::socks_server_addr_resolved = false;
+	net::Address Socks::socks_server_addr;
 
-	Socks::Socks(mse::StreamSocket::Ptr sock,const Address & dest) : sock(sock),dest(dest),state(IDLE),internal_state(NONE)
+
+	Socks::Socks(mse::StreamSocket::Ptr sock,const Address & dest) :
+		sock(sock),
+		dest(dest),
+		state(IDLE),
+		internal_state(NONE)
 	{
 		version = socks_version; // copy version in case it changes
 	}
@@ -59,51 +62,39 @@ namespace net
 		socks_password = password;
 	}
 	
-	SocksResolver::SocksResolver(const QString & host,bt::Uint16 port)
-	{
-		KNetwork::KResolver::resolveAsync(this, SLOT(hostResolved(KNetwork::KResolverResults)),host, QString::number(port));
-	}
-	
-	SocksResolver::~SocksResolver()
-	{}
-		
-	void SocksResolver::hostResolved(KNetwork::KResolverResults res)
-	{
-		if (res.count() > 0)
-		{
-			foreach (const KNetwork::KResolverEntry &e,res)
-			{
-				net::Address addr = net::Address(e.address().asInet());
-				if (addr.ipVersion() == 4)
-					socks_server_addr_v4 = addr;
-				else if (addr.ipVersion() == 6)
-					socks_server_addr_v6 = addr;
-			}
-			socks_server_addr_resolved = true;
-			//Out(SYS_CON|LOG_DEBUG) << "SocksResolver::hostResolved addr = " << socks_server_addr_v4.toString() << endl;
-		}
-		deleteLater(); // commit suicide
-	}
-	
 	void Socks::setSocksServerAddress(const QString & host,bt::Uint16 port)
 	{
 		socks_server_addr_resolved = false;
 		socks_server_host = host;
 		socks_server_port = port;
-		// resolve the address
-		new SocksResolver(host,port);
-		
 	}
+	
+	void Socks::resolved(net::AddressResolver* ar)
+	{
+		if (!ar->succeeded())
+		{
+			state = FAILED;
+			return;
+		}
+		
+		socks_server_addr = ar->address();
+		socks_server_addr_resolved = true;
+		if (state == CONNECTING_TO_SERVER)
+			setup();
+	}
+
 
 	Socks::State Socks::setup()
 	{
 		state = CONNECTING_TO_SERVER;
 		if (!socks_server_addr_resolved)
 		{
-			state = FAILED;
+			// resolve the address
+			net::AddressResolver::resolve(socks_server_host, socks_server_port, 
+										  this, SLOT(resolved(net::AddressResolver*)));
 			return state;
 		}
-		else if (sock->connectTo(dest.ipVersion() == 4 ? socks_server_addr_v4 : socks_server_addr_v6))
+		else if (sock->connectTo(socks_server_addr))
 		{
 			state = CONNECTING_TO_HOST;
 			sock->setRemoteAddress(dest);
@@ -287,7 +278,7 @@ namespace net
 		}
 		else
 		{
-			if (dest.ipVersion() != 4)
+			if (dest.protocol() == QAbstractSocket::IPv6Protocol)
 			{
 				Out(SYS_CON|LOG_IMPORTANT) << "SOCKSV4 does not support IPv6" << endl;
 				state = FAILED;
@@ -300,8 +291,8 @@ namespace net
 			req.version = SOCKS_VERSION_4;
 			req.cmd = SOCKS_CMD_CONNECT;
 			req.port = htons(dest.port());
-			struct sockaddr_in* a = (struct sockaddr_in*)dest.address();
-			memcpy(req.ip,&a->sin_addr,4);
+			quint32 ip = htonl(dest.toIPv4Address());
+			memcpy(req.ip,&ip,4);
 			strcpy(req.user_id,"KTorrent");
 			sock->sendData((const Uint8*)&req,req.size());
 			internal_state = CONNECT_REQUEST_SENT;
@@ -389,20 +380,21 @@ namespace net
 		memset(&req,0,sizeof(SocksConnectRequest));
 		req.version = SOCKS_VERSION_5;
 		req.cmd = SOCKS_CMD_CONNECT;
-		req.address_type = dest.ipVersion() == 4 ? SOCKS_ADDR_TYPE_IPV4 : SOCKS_ADDR_TYPE_IPV6;
-		if (dest.ipVersion() == 4)
+		if (dest.protocol() == QAbstractSocket::IPv4Protocol)
 		{
-			struct sockaddr_in* a = (struct sockaddr_in*)dest.address();
-			memcpy(req.ipv4.ip,&a->sin_addr,4);
-			req.ipv4.port = a->sin_port;
+			quint32 ip = htonl(dest.toIPv4Address());
+			memcpy(req.ipv4.ip,&ip,4);
+			req.ipv4.port = htons(dest.port());
 			len += 4;
+			req.address_type = SOCKS_ADDR_TYPE_IPV4;
 		}
 		else
 		{
-			struct sockaddr_in6* a = (struct sockaddr_in6*)dest.address();
-			memcpy(req.ipv6.ip,&a->sin6_addr,16);
-			req.ipv6.port = a->sin6_port;
+			Q_IPV6ADDR ip = dest.toIPv6Address();
+			memcpy(req.ipv6.ip,ip.c,16);
+			req.ipv6.port = htons(dest.port());
 			len += 16;
+			req.address_type = SOCKS_ADDR_TYPE_IPV6;
 		}
 		sock->sendData((const Uint8*)&req,len);
 		internal_state = CONNECT_REQUEST_SENT;

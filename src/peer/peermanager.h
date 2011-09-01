@@ -177,9 +177,11 @@ namespace bt
 
 		/**
 		 * Add a potential peer
-		 * @param pp The PotentialPeer
-		 */
-		void addPotentialPeer(const PotentialPeer & pp);
+		 * @param addr The peers' address
+		 * @param local Is it a peer on the local network
+		 * @return void
+		 **/
+		void addPotentialPeer(const net::Address & addr, bool local);
 		
 		/**
 		 * Kills all connections to seeders. 
@@ -285,9 +287,6 @@ namespace bt
 	private:
 		virtual void allowChunk(PeerInterface* peer, Uint32 chunk);
 
-	private slots:
-		void onResolverResults(KNetwork::KResolverResults res);
-		
 	signals:
 		void newPeer(Peer* p);
 		void peerKilled(Peer* p);

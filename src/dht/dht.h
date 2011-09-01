@@ -29,14 +29,15 @@
 #include "dhtbase.h"
 #include "rpcmsg.h"
 
+
+namespace net
+{
+	class AddressResolver;
+}
+
 namespace bt
 {
 	class SHA1Hash;
-}
-
-namespace KNetwork
-{
-	class KResolverResults;
 }
 
 namespace dht
@@ -115,7 +116,7 @@ namespace dht
 		
 	private slots:
 		void update();
-		void onResolverResults(KNetwork::KResolverResults res);
+		void onResolverResults(net::AddressResolver* ar);
 		void ownNodeLookupFinished(Task* t);
 		
 	private:

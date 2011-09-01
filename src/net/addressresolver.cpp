@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
+ *   Copyright (C) 2011 by Joris Guisson                                   *
  *   joris.guisson@gmail.com                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,43 +17,60 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include "peersource.h"
 
-namespace bt
+
+#include "addressresolver.h"
+
+namespace net
 {
 
-	PeerSource::PeerSource() 
-	{}
-
-
-	PeerSource::~PeerSource()
-	{}
-	
-	void PeerSource::completed()
-	{}
-	
-	void PeerSource::manualUpdate()
-	{}
-	
-	void PeerSource::aboutToBeDestroyed()
-	{}
-	
-	void PeerSource::addPeer(const net::Address & addr, bool local)
+	AddressResolver::AddressResolver(const QString & host, bt::Uint16 port, QObject* parent, const char* slot) :
+		QObject(parent),
+		lookup_id(-1),
+		succesfull(false)
 	{
-		peers.append(qMakePair(addr, local));
+		result.setPort(port);
+		lookup_id = QHostInfo::lookupHost(host, this, SLOT(hostResolved(QHostInfo)));
+		ongoing = true;
+		connect(this, SIGNAL(resolved(net::AddressResolver*)), parent, slot);
+	}
+
+	AddressResolver::~AddressResolver()
+	{
+		if (ongoing)
+			QHostInfo::abortHostLookup(lookup_id);
 	}
 	
-	bool PeerSource::takePeer(net::Address& addr, bool& local)
+	void AddressResolver::hostResolved(const QHostInfo& res)
 	{
-		if (peers.count() > 0)
+		ongoing = false;
+		succesfull = res.error() == QHostInfo::NoError && res.addresses().count() > 0;
+		if (!succesfull)
 		{
-			addr = peers.front().first;
-			local = peers.front().second;
-			peers.pop_front();
-			return true;
+			resolved(this);
 		}
-		return false;
+		else
+		{
+			result = net::Address(res.addresses().first(), result.port());
+			resolved(this);
+		}
+		
+		deleteLater();
 	}
+	
+	void AddressResolver::resolve(const QString& host, Uint16 port, QObject* parent, const char* slot)
+	{
+		new AddressResolver(host, port, parent, slot);
+	}
+
+	Address AddressResolver::resolve(const QString& host, Uint16 port)
+	{
+		QHostInfo info = QHostInfo::fromName(host);
+		if (info.error() == QHostInfo::NoError && info.addresses().size() > 0)
+			return net::Address(info.addresses().first(), port);
+		else
+			return net::Address();
+	}
+
 
 }
-#include "peersource.moc"

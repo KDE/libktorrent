@@ -49,14 +49,13 @@ namespace bt
 	public:
 		/**
 		 * Connect to a remote host first and authenicate it.
-		 * @param ip IP-address of host
-		 * @param port Port of host
+		 * @param addr Address to connect to
 		 * @param proto Transport protocol to use
 		 * @param info_hash Info hash
 		 * @param peer_id Peer ID
 		 * @param pman PeerManager
 		 */
-		Authenticate(const QString & ip,Uint16 port,TransportProtocol proto,
+		Authenticate(const net::Address & addr,TransportProtocol proto,
 					 const SHA1Hash & info_hash,const PeerID & peer_id,
 					 PeerConnector::WPtr pcon);
 		
@@ -66,9 +65,6 @@ namespace bt
 
 		/// See if the authentication is succesfull
 		bool isSuccesfull() const {return succes;}
-		
-		const QString & getIP() const {return host;}
-		Uint16 getPort() const {return port;}
 		
 	public slots:
 		/// Stop the authentication
@@ -86,8 +82,7 @@ namespace bt
 	protected:
 		SHA1Hash info_hash;
 		PeerID our_peer_id,peer_id;
-		QString host;
-		Uint16 port;
+		net::Address addr;
 		bool succes;
 		PeerConnector::WPtr pcon;
 		net::Socks* socks;

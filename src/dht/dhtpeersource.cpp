@@ -122,11 +122,11 @@ namespace dht
 			DBItem item;
 			while (curr_task->takeItem(item))
 			{
-				const KNetwork::KInetSocketAddress & addr = item.getAddress();
+				const net::Address & addr = item.getAddress();
 			/*	Out(SYS_DHT|LOG_NOTICE) << 
 						QString("DHT: Got potential peer %1 for torrent %2")
 						.arg(addr.toString()).arg(tor->getStats().torrent_name) << endl;*/
-				addPeer(addr.ipAddress().toString(),addr.port());
+				addPeer(addr, false);
 				cnt++;
 			}
 			

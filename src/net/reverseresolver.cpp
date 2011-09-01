@@ -54,14 +54,15 @@ namespace net
 
 	QString ReverseResolver::resolve(const net::Address& addr)
 	{
-		if (!addr.address())
-			return QString();
+		struct sockaddr_storage ss;
+		int slen = 0;
+		addr.toSocketAddress(&ss, slen);
 		
 		char host[200];
 		char service[200];
 		memset(host,0,200);
 		memset(service,0,200);
-		if (getnameinfo(addr.address(),addr.length(),host,199,service,199,NI_NAMEREQD) == 0)
+		if (getnameinfo((struct sockaddr*)&ss,slen,host,199,service,199,NI_NAMEREQD) == 0)
 			return QString(host);
 		else
 			return QString();

@@ -126,12 +126,15 @@ namespace utp
 		else if (ptr)
 			return ptr->remoteAddress();
 		else
-			return net::Address::null;
+		{
+			static net::Address null;
+			return null;
+		}
 	}
 
 	net::Address UTPSocket::getSockName() const
 	{
-		return net::Address::null;
+		return net::Address();
 	}
 
 	bool UTPSocket::ok() const

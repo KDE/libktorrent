@@ -27,7 +27,6 @@
 #include "dht.h"
 
 using namespace bt;
-using namespace KNetwork;
 
 namespace dht
 {
@@ -142,13 +141,16 @@ namespace dht
 							if (d.length() == 6) // IPv4
 							{
 								Uint16 port = bt::ReadUint16((const Uint8*)d.data(),4);
-								KNetwork::KInetSocketAddress addr(KIpAddress(d.data(),4),port);
+								Uint32 ip = bt::ReadUint32((const Uint8*)d.data(),0);
+								net::Address addr(QHostAddress(ip),port);
 								dbl.append(DBItem(addr));
 							}
 							else if (d.length() == 18)// IPv6
 							{
 								Uint16 port = bt::ReadUint16((const Uint8*)d.data(),16);
-								KNetwork::KInetSocketAddress addr(KIpAddress(d.data(),6),port);
+								Q_IPV6ADDR ip;
+								memcpy(ip.c, d.data(), 16);
+								net::Address addr(QHostAddress(ip), port);
 								dbl.append(DBItem(addr));
 							}
 						}

@@ -22,11 +22,12 @@
 
 #include <qmap.h>
 #include <qlist.h>
-#include <k3socketaddress.h>
+#include <net/address.h>
 #include <util/ptrmap.h>
 #include <util/constants.h>
 #include <util/array.h>
 #include "key.h"
+
 
 
 namespace dht
@@ -42,11 +43,11 @@ namespace dht
 	 */
 	class DBItem
 	{
-		KNetwork::KInetSocketAddress addr;
+		net::Address addr;
 		bt::TimeStamp time_stamp;
 	public:
 		DBItem();
-		DBItem(const KNetwork::KInetSocketAddress & addr);
+		DBItem(const net::Address & addr);
 		DBItem(const DBItem & item);
 		virtual ~DBItem();
 		
@@ -54,7 +55,7 @@ namespace dht
 		bool expired(bt::TimeStamp now) const;
 		
 		/// Get the address of an item
-		const KNetwork::KInetSocketAddress & getAddress() const {return addr;}
+		const net::Address & getAddress() const {return addr;}
 		
 		/**
 		 * Pack this item into a buffer, the buffer needs to big enough to handle IPv6 addresses (so 16 + 2 (for the port))
@@ -113,7 +114,7 @@ namespace dht
 		 * @param addr The address of the peer
 		 * @return A Key
 		 */
-		dht::Key genToken(const KNetwork::KInetSocketAddress & addr);
+		dht::Key genToken(const net::Address & addr);
 		
 		/**
 		 * Check if a received token is OK.
@@ -121,7 +122,7 @@ namespace dht
 		 * @param addr The address of the peer
 		 * @return true if the token was given to this peer, false other wise
 		 */
-		bool checkToken(const dht::Key & token,const KNetwork::KInetSocketAddress & addr);
+		bool checkToken(const dht::Key & token,const net::Address & addr);
 		
 		/// Test whether or not the DB contains a key
 		bool contains(const dht::Key & key) const;

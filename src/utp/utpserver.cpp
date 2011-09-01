@@ -192,6 +192,7 @@ namespace utp
 			PollPipePair* pp = itr->second;
 			if (readable && pp->read_pipe->polling(conn->receiveConnectionID()))
 				itr->second->read_pipe->wakeUp();
+			
 			if (writeable && pp->write_pipe->polling(conn->receiveConnectionID()))
 				itr->second->write_pipe->wakeUp();
 		}

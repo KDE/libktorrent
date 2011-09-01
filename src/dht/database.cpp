@@ -19,7 +19,6 @@
  ***************************************************************************/
 #include "database.h"
 #include <arpa/inet.h>
-#include <k3socketaddress.h>
 #include <util/functions.h>
 #include <util/log.h>
 #include <torrent/globals.h>
@@ -33,7 +32,7 @@ namespace dht
 		time_stamp = bt::CurrentTime();
 	}
 	
-	DBItem::DBItem(const KNetwork::KInetSocketAddress & addr) : addr(addr)
+	DBItem::DBItem(const net::Address & addr) : addr(addr)
 	{
 		time_stamp = bt::CurrentTime();
 	}
@@ -63,14 +62,14 @@ namespace dht
 	{
 		if (addr.ipVersion() == 4)
 		{
-			memcpy(buf,addr.ipAddress().addr(),4);
-			WriteUint16(buf,4,addr.port());
+			WriteUint32(buf, 0, addr.toIPv4Address());
+			WriteUint16(buf, 4, addr.port());
 			return 6;
 		}
 		else
 		{
-			memcpy(buf,addr.ipAddress().addr(),16);
-			WriteUint16(buf,16,addr.port());
+			memcpy(buf, addr.toIPv6Address().c, 16);
+			WriteUint16(buf, 16, addr.port());
 			return 18;
 		}
 	}
@@ -141,7 +140,7 @@ namespace dht
 		}
 	}
 	
-	dht::Key Database::genToken(const KNetwork::KInetSocketAddress & addr)
+	dht::Key Database::genToken(const net::Address & addr)
 	{
 		if (addr.ipVersion() == 4)
 		{
@@ -149,7 +148,7 @@ namespace dht
 			TimeStamp now = bt::CurrentTime();
 			// generate a hash of the ip port and the current time
 			// should prevent anybody from crapping things up
-			bt::WriteUint32(tdata,0,ntohl(addr.ipAddress().IPv4Addr()));
+			bt::WriteUint32(tdata,0,addr.toIPv4Address());
 			bt::WriteUint16(tdata,4,addr.port());
 			bt::WriteUint64(tdata,6,now);
 				
@@ -164,7 +163,7 @@ namespace dht
 			TimeStamp now = bt::CurrentTime();
 			// generate a hash of the ip port and the current time
 			// should prevent anybody from crapping things up
-			memcpy(tdata,addr.ipAddress().addr(),16);
+			memcpy(tdata,addr.toIPv6Address().c,16);
 			bt::WriteUint16(tdata,16,addr.port());
 			bt::WriteUint64(tdata,18,now);
 				
@@ -175,7 +174,7 @@ namespace dht
 		}
 	}
 	
-	bool Database::checkToken(const dht::Key & token,const KNetwork::KInetSocketAddress & addr)
+	bool Database::checkToken(const dht::Key & token,const net::Address & addr)
 	{
 		// the token must be in the map
 		if (!tokens.contains(token))
@@ -191,7 +190,7 @@ namespace dht
 		if (addr.ipVersion() == 4)
 		{
 			Uint8 tdata[14];
-			bt::WriteUint32(tdata,0,ntohl(addr.ipAddress().IPv4Addr()));
+			bt::WriteUint32(tdata,0,addr.toIPv4Address());
 			bt::WriteUint16(tdata,4,addr.port());
 			bt::WriteUint64(tdata,6,ts);
 			dht::Key ct = SHA1Hash::generate(tdata,14);
@@ -207,7 +206,7 @@ namespace dht
 		{
 			Uint8 tdata[26];
 		
-			memcpy(tdata,addr.ipAddress().addr(),16);
+			memcpy(tdata,addr.toIPv6Address().c,16);
 			bt::WriteUint16(tdata,16,addr.port());
 			bt::WriteUint64(tdata,18,ts);
 				

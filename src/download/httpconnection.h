@@ -24,9 +24,9 @@
 #include <QMutex>
 #include <QTimer>
 #include <QHttpRequestHeader>
-#include <k3resolver.h>
 #include <kurl.h>
 #include <net/bufferedsocket.h>
+#include <net/addressresolver.h>
 
 class KUrl;
 
@@ -42,50 +42,6 @@ namespace bt
 	class HttpConnection : public QObject,public net::SocketReader,public net::SocketWriter
 	{
 		Q_OBJECT
-	private:
-		enum State
-		{
-			IDLE,RESOLVING,CONNECTING,ACTIVE,ERROR,CLOSED
-		};
-		
-		struct HttpGet
-		{
-			QString host;
-			QString path;
-			bt::Uint64 start;
-			bt::Uint64 len;
-			bt::Uint64 data_received;
-			QByteArray buffer;
-			bt::Uint32 bytes_sent;
-			QByteArray piece_data;
-			bool response_header_received;
-			bool request_sent;
-			QString failure_reason;
-			bool redirected;
-			KUrl redirected_to;
-			bt::Uint64 content_length;
-			int response_code;
-			
-			HttpGet(const QString & host,const QString & path,bt::Uint64 start,bt::Uint64 len,bool using_proxy);
-			virtual ~HttpGet();
-			
-			bool onDataReady(Uint8* buf,Uint32 size);
-			bool finished() const {return data_received >= len;}
-		};
-		
-		net::BufferedSocket* sock;
-		State state;
-		mutable QMutex mutex;
-		HttpGet* request;
-		bool using_proxy;
-		QString status;
-		QTimer connect_timer;
-		QTimer reply_timer;
-		Uint32 up_gid,down_gid;
-		bool close_when_finished;
-		bool redirected;
-		KUrl redirected_url;
-		int response_code;
 	public:
 		HttpConnection();
 		virtual ~HttpConnection();
@@ -157,7 +113,7 @@ namespace bt
 		const QString getStatusString() const;
 		
 	private slots:
-		void hostResolved(KNetwork::KResolverResults res);
+		void hostResolved(net::AddressResolver* ar);
 		void connectTimeout();
 		void replyTimeout();
 		
@@ -165,6 +121,51 @@ namespace bt
 		void startReplyTimer(int timeout);
 		void stopReplyTimer();
 		void stopConnectTimer();
+		
+	private:
+		enum State
+		{
+			IDLE,RESOLVING,CONNECTING,ACTIVE,ERROR,CLOSED
+		};
+		
+		struct HttpGet
+		{
+			QString host;
+			QString path;
+			bt::Uint64 start;
+			bt::Uint64 len;
+			bt::Uint64 data_received;
+			QByteArray buffer;
+			bt::Uint32 bytes_sent;
+			QByteArray piece_data;
+			bool response_header_received;
+			bool request_sent;
+			QString failure_reason;
+			bool redirected;
+			KUrl redirected_to;
+			bt::Uint64 content_length;
+			int response_code;
+			
+			HttpGet(const QString & host,const QString & path,bt::Uint64 start,bt::Uint64 len,bool using_proxy);
+			virtual ~HttpGet();
+			
+			bool onDataReady(Uint8* buf,Uint32 size);
+			bool finished() const {return data_received >= len;}
+		};
+		
+		net::BufferedSocket* sock;
+		State state;
+		mutable QMutex mutex;
+		HttpGet* request;
+		bool using_proxy;
+		QString status;
+		QTimer connect_timer;
+		QTimer reply_timer;
+		Uint32 up_gid,down_gid;
+		bool close_when_finished;
+		bool redirected;
+		KUrl redirected_url;
+		int response_code;
 	};
 }
 

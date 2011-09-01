@@ -235,7 +235,7 @@ namespace mse
 
 	QString StreamSocket::getRemoteIPAddress() const
 	{
-		return sock->socketDevice()->getPeerName().ipAddress().toString();
+		return sock->socketDevice()->getPeerName().toString();
 	}
 	
 	bt::Uint16 StreamSocket::getRemotePort() const

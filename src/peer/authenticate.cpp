@@ -28,28 +28,24 @@
 namespace bt
 {
 
-	Authenticate::Authenticate(const QString & ip,Uint16 port,TransportProtocol proto,
+	Authenticate::Authenticate(const net::Address & addr,TransportProtocol proto,
 							   const SHA1Hash & info_hash,const PeerID & peer_id,PeerConnector::WPtr pcon) 
-	: info_hash(info_hash),our_peer_id(peer_id),pcon(pcon),socks(0)
+	: info_hash(info_hash),our_peer_id(peer_id),addr(addr),pcon(pcon),socks(0)
 	{
 		finished = succes = false;
-		net::Address addr(ip,port);
 		if (proto == TCP)
 			sock = mse::StreamSocket::Ptr(new mse::StreamSocket(addr.ipVersion()));
 		else
 			sock = mse::StreamSocket::Ptr(new mse::StreamSocket(new utp::UTPSocket()));
 		
-		host = ip;
-		this->port = port;
-
-		Out(SYS_CON|LOG_NOTICE) << "Initiating connection to " << host << " via (" << (proto == TCP ? "TCP" : "UTP") << ")" << endl;
+		Out(SYS_CON|LOG_NOTICE) << "Initiating connection to " << addr.toString() << " via (" << (proto == TCP ? "TCP" : "UTP") << ")" << endl;
 		if (net::Socks::enabled())
 		{
 			socks = new net::Socks(sock,addr);
 			switch (socks->setup())
 			{
 				case net::Socks::FAILED:
-					Out(SYS_CON|LOG_NOTICE) << "Failed to connect to " << host << " via socks server " << endl;
+					Out(SYS_CON|LOG_NOTICE) << "Failed to connect to " << addr.toString() << " via socks server " << endl;
 					// Don't call onFinish here, will lead to problems
 					// Instead change the interval of timeout timer, to force a failure
 					timer.setInterval(1);
@@ -157,7 +153,7 @@ namespace bt
 
 	void Authenticate::onFinish(bool succes)
 	{
-		Out(SYS_CON|LOG_NOTICE) << "Authentication to " << host << " : " << (succes ? "ok" : "failure") << endl;
+		Out(SYS_CON|LOG_NOTICE) << "Authentication to " << addr.toString() << " : " << (succes ? "ok" : "failure") << endl;
 		finished = true;
 		this->succes = succes;
 		
@@ -173,9 +169,9 @@ namespace bt
 	void Authenticate::handshakeReceived(bool full)
 	{
 		const Uint8* hs = handshake;
-		if (!AccessManager::instance().allowed(host))
+		if (!AccessManager::instance().allowed(addr))
 		{
-			Out(SYS_CON|LOG_DEBUG) << "The IP address " << host << " is blocked " << endl;
+			Out(SYS_CON|LOG_DEBUG) << "The IP address " << addr.toString() << " is blocked " << endl;
 			onFinish(false);
 			return;
 		}

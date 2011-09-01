@@ -23,15 +23,14 @@
 #include <klocale.h>
 #include <util/functions.h>
 #include <util/log.h>
-#include <k3socketaddress.h>
-#include <k3resolver.h>
+#include <net/addressresolver.h>
 #include <peer/peermanager.h>
 #include <interfaces/torrentinterface.h>
 #include <torrent/globals.h>
 #include <torrent/server.h>
 #include "udptrackersocket.h"
 
-using namespace KNetwork;
+
 
 namespace bt
 {
@@ -164,12 +163,7 @@ namespace bt
 		for (int i = 20;i < b.size() && j < nip;i+=6,j++)
 		{
 			Uint32 ip = ReadUint32(buf,i);
-			QString ip_str = QString("%1.%2.%3.%4")
-				.arg((ip & 0xFF000000) >> 24)
-				.arg((ip & 0x00FF0000) >> 16)
-				.arg((ip & 0x0000FF00) >> 8)
-				.arg(ip & 0x000000FF);
-			addPeer(ip_str,ReadUint16(buf,i+4));
+			addPeer(net::Address(ip, ReadUint16(buf,i+4)), false);
 		}
 		
 		peersReady(this);
@@ -210,8 +204,8 @@ namespace bt
 		if (!resolved)
 		{
 			todo |= ANNOUNCE_REQUEST;
-			KResolver::resolveAsync(this,SLOT(onResolverResults(KNetwork::KResolverResults)),
-									url.host(),QString::number(url.port(80)));
+			net::AddressResolver::resolve(url.host(), url.port(80), 
+										  this, SLOT(onResolverResults(net::AddressResolver*)));
 		}
 		else if (connection_id == 0)
 		{
@@ -235,8 +229,8 @@ namespace bt
 		if (!resolved)
 		{
 			todo |= SCRAPE_REQUEST;
-			KResolver::resolveAsync(this,SLOT(onResolverResults(KNetwork::KResolverResults)),
-									url.host(),QString::number(url.port(80)));
+			net::AddressResolver::resolve(url.host(), url.port(80), 
+										  this, SLOT(onResolverResults(net::AddressResolver*)));
 		}
 		else if (connection_id == 0)
 		{
@@ -326,8 +320,8 @@ namespace bt
 		}
 		else
 		{
-			KNetwork::KIpAddress addr(cip);
-			WriteUint32(buf,84,ntohl(addr.IPv4Addr(true)));
+			net::Address addr(cip, 999);
+			WriteUint32(buf,84,addr.toIPv4Address());
 		}
 		WriteUint32(buf,88,key);
 		if (ev != STOPPED)
@@ -383,11 +377,11 @@ namespace bt
 		}
 	}
 
-	void UDPTracker::onResolverResults(KResolverResults res)
+	void UDPTracker::onResolverResults(net::AddressResolver* ar)
 	{
-		if (res.count() > 0)
+		if (ar->succeeded())
 		{
-			address = res.front().address().asInet();
+			address = ar->address();
 			resolved = true;
 			// continue doing request
 			if (connection_id == 0)
@@ -411,4 +405,3 @@ namespace bt
 	}
 	
 }
-#include "udptracker.moc"

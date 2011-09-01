@@ -6,6 +6,7 @@ set(net_HDR
 	bufferedsocket.h
 	downloadthread.h
 	address.h
+	addressresolver.h
 	socketgroup.h
 	portlist.h
 	networkthread.h

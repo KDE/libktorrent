@@ -18,14 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "dht.h"
-#include <qmap.h>
-#include <k3resolver.h>
+#include <QMap>
+#include <net/addressresolver.h>
 #include <util/log.h>
 #include <util/array.h>
 #include <util/error.h>
 #include <util/functions.h>
 #include <bcodec/bnode.h>
-#include <k3socketaddress.h>
 #include "announcetask.h"
 #include "node.h"
 #include "rpcserver.h"
@@ -37,7 +36,6 @@
 
 
 using namespace bt;
-using namespace KNetwork;
 
 namespace dht
 {
@@ -245,7 +243,7 @@ namespace dht
 		
 		Out(SYS_DHT|LOG_DEBUG) << "Sending ping request to " << ip << ":" << port << endl;
 		MsgBase::Ptr r(new PingReq(node->getOurID()));
-		r->setOrigin(KInetSocketAddress(ip,port));
+		r->setOrigin(net::Address(ip,port));
 		srv->doCall(r);
 	}
 	
@@ -356,17 +354,24 @@ namespace dht
 		if (!running)
 			return;
 		
-		KResolver::resolveAsync(this,SLOT(onResolverResults(KNetwork::KResolverResults)),host,QString::number(hport));
+		net::Address addr;
+		if (addr.setAddress(host))
+		{
+			addr.setPort(hport);
+			srv->ping(node->getOurID(), addr);
+		}
+		else
+			net::AddressResolver::resolve(host, hport, this, SLOT(hostResolved(net::AddressResolver*)));
 	}
 	
-	void DHT::onResolverResults(KNetwork::KResolverResults res)
+	void DHT::onResolverResults(net::AddressResolver* res)
 	{
 		if (!running)
 			return;
 		
-		if (res.count() > 0)
+		if (res->succeeded())
 		{
-			srv->ping(node->getOurID(),net::Address(res.front().address()));
+			srv->ping(node->getOurID(),res->address());
 		}
 	}
 	
@@ -389,9 +394,9 @@ namespace dht
 			if(!e.isGood())
 				continue;
 			
-			KInetSocketAddress a = e.getAddress();
+			const net::Address & a = e.getAddress();
 			
-			map.insert(a.ipAddress().toString(), a.port());
+			map.insert(a.toString(), a.port());
 			if(++max >= maxNodes)
 				break;
 		}

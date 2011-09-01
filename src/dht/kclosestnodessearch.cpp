@@ -22,7 +22,6 @@
 #include "pack.h"
 
 using namespace bt;
-using namespace KNetwork;
 
 namespace dht
 {

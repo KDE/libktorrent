@@ -41,7 +41,11 @@ namespace mse
 	{
 		Q_OBJECT
 	public:
-		EncryptedAuthenticate(const QString& ip, Uint16 port, bt::TransportProtocol proto, const bt::SHA1Hash& info_hash, const bt::PeerID& peer_id, bt::PeerConnector::WPtr pcon);
+		EncryptedAuthenticate(const net::Address & addr, 
+							  bt::TransportProtocol proto, 
+							  const bt::SHA1Hash& info_hash, 
+							  const bt::PeerID& peer_id, 
+							  bt::PeerConnector::WPtr pcon);
 		virtual ~EncryptedAuthenticate();
 		
 	private slots:

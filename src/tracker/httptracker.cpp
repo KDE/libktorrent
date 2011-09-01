@@ -22,7 +22,6 @@
  
 #include <kurl.h>
 #include <klocale.h>
-#include <k3socketaddress.h>
 #include <qhostaddress.h>
 #include <util/log.h>
 #include <util/functions.h>
@@ -355,13 +354,7 @@ namespace bt
 						buf[j] = arr[i + j];
 
 					Uint32 ip = ReadUint32(buf,0);
-					QString ip_str = QString("%1.%2.%3.%4")
-						.arg((ip & 0xFF000000) >> 24)
-						.arg((ip & 0x00FF0000) >> 16)
-						.arg((ip & 0x0000FF00) >> 8)
-						.arg(ip & 0x000000FF);
-
-					addPeer(ip_str,ReadUint16(buf,4));
+					addPeer(net::Address(ip, ReadUint16(buf,4)), false);
 				}
 			}
 		}
@@ -380,7 +373,8 @@ namespace bt
 				if (!ip_node || !port_node)
 					continue;
 				
-				addPeer(ip_node->data().toString(),port_node->data().toInt());
+				net::Address addr(ip_node->data().toString(),port_node->data().toInt());
+				addPeer(addr, false);
 			}
 		}
 		
@@ -391,12 +385,11 @@ namespace bt
 			QByteArray arr = vn->data().toByteArray();
 			for (int i = 0;i < arr.size();i+=18)
 			{
-				Uint8 buf[18];
-				for (int j = 0;j < 18;j++)
-					buf[j] = arr[i + j];
-
-				KNetwork::KIpAddress ip(buf,6);
-				addPeer(ip.toString(),ReadUint16(buf,16));
+				Q_IPV6ADDR ip;
+				memcpy(ip.c, arr.data() + i, 16);
+				quint16 port = ReadUint16((const Uint8*)arr.data() + i,16);
+				
+				addPeer(net::Address(ip, port), false);
 			}
 		}
 		

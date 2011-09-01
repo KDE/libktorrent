@@ -36,7 +36,7 @@ namespace bt
 
 	bool BadPeersList::isBlockedIP(const net::Address & addr)
 	{
-		return bad_peers.contains(addr.ipAddress().toString());
+		return bad_peers.contains(addr.toString());
 	}
 
 	bool BadPeersList::isBlockedIP(const QString & addr)

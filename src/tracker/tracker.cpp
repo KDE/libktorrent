@@ -21,15 +21,15 @@
 #include <stdlib.h>
 #include <time.h>
 #include <kurl.h>
-#include <k3resolver.h>
 #include <util/functions.h>
 #include <util/log.h>
 #include <torrent/globals.h>
 #include <torrent/server.h>
+#include <net/addressresolver.h>
 #include "udptracker.h"
 #include "httptracker.h"
 
-using namespace KNetwork;
+
 
 namespace bt
 {
@@ -65,16 +65,11 @@ namespace bt
 		if (ip.isNull())
 			return;
 		
-		KResolverResults res = KResolver::resolve(ip,QString());
-		if (res.error() || res.empty())
-		{
-			custom_ip = custom_ip_resolved = QString();
-		}
+		net::Address addr;
+		if (addr.setAddress(ip))
+			custom_ip_resolved = custom_ip;
 		else
-		{
-			custom_ip_resolved = res.first().address().nodeName();
-			Out(SYS_TRK|LOG_NOTICE) << "custom_ip_resolved = " << custom_ip_resolved << endl;
-		}
+			custom_ip_resolved = net::AddressResolver::resolve(custom_ip, 7777).toString();
 	}
 	
 	QString Tracker::getCustomIP()

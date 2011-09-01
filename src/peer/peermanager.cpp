@@ -25,7 +25,6 @@
 #include <QSet>
 #include <QTextStream>
 #include <QDateTime>
-#include <k3resolver.h>
 #include <klocale.h>
 
 #include <util/ptrmap.h>
@@ -60,7 +59,7 @@ namespace bt
 	Uint32 PeerManager::max_total_connections = 0;
 	Uint32 PeerManager::total_connections = 0;
 	
-	typedef std::multimap<QString,PotentialPeer>::iterator PPItr;
+	typedef std::map<net::Address, bool>::iterator PPItr;
 	
 
 	
@@ -73,7 +72,7 @@ namespace bt
 		void updateAvailableChunks();
 		bool killBadPeer();
 		void createPeer(mse::StreamSocket::Ptr sock,const PeerID & peer_id,Uint32 support,bool local);
-		bool connectedTo(const QString & ip,Uint16 port) const;
+		bool connectedTo(const net::Address & addr) const;
 		void update();
 		void have(Peer* peer,Uint32 index);
 		void connectToPeers();
@@ -93,7 +92,7 @@ namespace bt
 		bool paused;
 		QSet<PeerConnector::Ptr> connectors;
 		SuperSeeder* superseeder;
-		std::multimap<QString,PotentialPeer> potential_peers;
+		std::map<net::Address, bool> potential_peers;
 		bool partial_seed;
 	};
 
@@ -162,53 +161,12 @@ namespace bt
 		d->wanted_changed = true;
 	}
 	
-	void PeerManager::addPotentialPeer(const PotentialPeer & pp)
+	void PeerManager::addPotentialPeer(const net::Address & addr, bool local)
 	{
-		if (d->potential_peers.size() > 500)
-			return;
-		
-		KIpAddress addr;
-		if (addr.setAddress(pp.ip))
+		if (d->potential_peers.size() < 500 && d->potential_peers.find(addr) == d->potential_peers.end())
 		{
-			// avoid duplicates in the potential_peers map
-			std::pair<PPItr,PPItr> r = d->potential_peers.equal_range(pp.ip);
-			for (PPItr i = r.first;i != r.second;i++)
-			{
-				if (i->second.port == pp.port) // port and IP are the same so return
-					return;
-			}
-		
-			d->potential_peers.insert(std::make_pair(pp.ip,pp));
+			d->potential_peers.insert(std::make_pair(addr, local));
 		}
-		else
-		{
-			// must be a hostname, so resolve it
-			KResolver::resolveAsync(this,SLOT(onResolverResults(KNetwork::KResolverResults)),
-					pp.ip,QString::number(pp.port));
-		}
-	}
-	
-	void PeerManager::onResolverResults(KResolverResults res)
-	{
-		if (res.count() == 0)
-			return;
-		
-		net::Address addr = res.front().address().asInet();
-		
-		PotentialPeer pp;
-		pp.ip = addr.ipAddress().toString();
-		pp.port = addr.port();
-		pp.local = false;
-		
-		// avoid duplicates in the potential_peers map
-		std::pair<PPItr,PPItr> r = d->potential_peers.equal_range(pp.ip);
-		for (PPItr i = r.first;i != r.second;i++)
-		{
-			if (i->second.port == pp.port) // port and IP are the same so return
-				return;
-		}
-		
-		d->potential_peers.insert(std::make_pair(pp.ip,pp));
 	}
 
 	void PeerManager::killSeeders()
@@ -362,14 +320,14 @@ namespace bt
 			foreach(Peer* p,d->peer_list)
 			{
 				const net::Address & addr = p->getAddress();
-				out << addr.ipAddress().toString() << " " << (unsigned short)addr.port() << ::endl;
+				out << addr.toString() << " " << (unsigned short)addr.port() << ::endl;
 			}
 			
 			// now the potential_peers
 			PPItr i = d->potential_peers.begin();
 			while (i != d->potential_peers.end())
 			{
-				out << i->first << " " <<  i->second.port << ::endl;
+				out << i->first.toString() << " " <<  i->first.port() << ::endl;
 				i++;
 			}
 		}
@@ -397,11 +355,9 @@ namespace bt
 					continue;
 				
 				bool ok = false;
-				PotentialPeer pp;
-				pp.ip = sl[0];
-				pp.port = sl[1].toInt(&ok);
+				net::Address addr(sl[0], sl[1].toInt(&ok));
 				if (ok)
-					addPotentialPeer(pp);
+					addPotentialPeer(addr, false);
 			}
 		}
 		catch (bt::Error & err)
@@ -462,9 +418,10 @@ namespace bt
 	
 	void PeerManager::peerSourceReady(PeerSource* ps)
 	{
-		PotentialPeer pp;
-		while (ps->takePotentialPeer(pp))
-			addPotentialPeer(pp);
+		net::Address addr;
+		bool local = false;
+		while (ps->takePeer(addr, local))
+			addPotentialPeer(addr, local);
 	}
 	
 	
@@ -477,19 +434,8 @@ namespace bt
 		Out(SYS_CON|LOG_NOTICE) << "PEX: found " << (arr.size() / 6) << " peers"  << endl;
 		for (int i = 0;i+6 <= arr.size();i+=6)
 		{
-			Uint8 tmp[6];
-			memcpy(tmp,arr.data() + i,6);
-			PotentialPeer pp;
-			pp.port = ReadUint16(tmp,4);
-			Uint32 ip = ReadUint32(tmp,0);
-			pp.ip = QString("%1.%2.%3.%4")
-						.arg((ip & 0xFF000000) >> 24)
-						.arg((ip & 0x00FF0000) >> 16)
-						.arg((ip & 0x0000FF00) >> 8)
-						.arg( ip & 0x000000FF);
-			pp.local = false;
-			
-			addPotentialPeer(pp);
+			const Uint8* tmp = (const Uint8*)arr.data() + i;
+			addPotentialPeer(net::Address(ReadUint32(tmp,0), ReadUint16(tmp,4)), false);
 		}
 	}
 	
@@ -570,11 +516,7 @@ namespace bt
 		foreach(Peer* p,d->peer_list)
 		{
 			const net::Address & addr = p->getAddress();
-			PotentialPeer pp;
-			pp.ip = addr.ipAddress().toString();
-			pp.port = addr.port();
-			pp.local = false;
-			d->potential_peers.insert(std::make_pair(pp.ip,pp));
+			addPotentialPeer(addr, false);
 			p->kill();
 		}
 	}
@@ -722,13 +664,8 @@ namespace bt
 			Peer* peer = *i;
 			if (!peer->isKilled() && peer->isStalled())
 			{
-				PotentialPeer pp;
-				pp.port = peer->getPort();
-				pp.local = peer->getStats().local;
-				pp.ip = peer->getIPAddresss();
+				p->addPotentialPeer(peer->getAddress(), peer->getStats().local);
 				peer->kill();
-				p->addPotentialPeer(pp);
-				Out(SYS_CON|LOG_NOTICE) << QString("Killed stalled peer %1").arg(pp.ip) << endl;
 			}
 			
 			if (peer->isKilled())
@@ -814,13 +751,13 @@ namespace bt
 	}
 	
 	
-	bool PeerManager::Private::connectedTo(const QString & ip,Uint16 port) const
+	bool PeerManager::Private::connectedTo(const net::Address & addr) const
 	{
 		PtrMap<Uint32,Peer>::const_iterator i = peer_map.begin();
 		while (i != peer_map.end())
 		{
 			const Peer* peer = i->second;
-			if (peer->getPort() == port && peer->getStats().ip_address == ip)
+			if (peer->getAddress() == addr)
 				return true;
 			i++;
 		}
@@ -868,10 +805,9 @@ namespace bt
 			
 			AccessManager & aman = AccessManager::instance();
 			
-			if (aman.allowed(itr->first) && !connectedTo(itr->first,itr->second.port))
+			if (aman.allowed(itr->first) && !connectedTo(itr->first))
 			{
-				const PotentialPeer & pp = itr->second;
-				PeerConnector::Ptr pcon(new PeerConnector(pp.ip,pp.port,pp.local,p));
+				PeerConnector::Ptr pcon(new PeerConnector(itr->first,itr->second,p));
 				pcon->setWeakPointer(PeerConnector::WPtr(pcon));
 				connectors.insert(pcon);
 				total_connections++;

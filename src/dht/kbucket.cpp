@@ -20,7 +20,6 @@
 #include "kbucket.h"
 #include <QtAlgorithms>
 #include <QHash>
-#include <k3socketaddress.h>
 #include <util/file.h>
 #include <util/log.h>
 #include <util/functions.h>
@@ -30,7 +29,7 @@
 #include "node.h"
 #include "task.h"
 
-using namespace KNetwork;
+
 using namespace bt;
 
 namespace dht
@@ -42,7 +41,7 @@ namespace dht
 		questionable_pings = 0;
 	}
 	
-	KBucketEntry::KBucketEntry(const KInetSocketAddress & addr,const Key & id)
+	KBucketEntry::KBucketEntry(const net::Address & addr,const Key & id)
 	: addr(addr),node_id(id)
 	{
 		last_responded = bt::CurrentTime();
@@ -50,9 +49,12 @@ namespace dht
 		questionable_pings = 0;
 	}
 		
-	KBucketEntry::KBucketEntry(const KBucketEntry & other)
-	: addr(other.addr),node_id(other.node_id),
-	last_responded(other.last_responded),failed_queries(other.failed_queries),questionable_pings(other.questionable_pings)
+	KBucketEntry::KBucketEntry(const KBucketEntry & other) : 
+		addr(other.addr),
+		node_id(other.node_id),
+		last_responded(other.last_responded),
+		failed_queries(other.failed_queries),
+		questionable_pings(other.questionable_pings)
 	{}
 
 		
@@ -268,7 +270,7 @@ namespace dht
 		}
 	}
 	
-	bool KBucket::onTimeout(const KInetSocketAddress & addr)
+	bool KBucket::onTimeout(const net::Address & addr)
 	{
 		QList<KBucketEntry>::iterator i;
 		
@@ -315,13 +317,11 @@ namespace dht
 		for (i = entries.begin();i != entries.end();i++)
 		{
 			KBucketEntry & e = *i;
-			const KIpAddress & ip = e.getAddress().ipAddress();
-			
-			if (ip.version() == 4)
+			if (e.getAddress().ipVersion() == 4)
 			{
 				Uint8 tmp[27];
 				tmp[0] = 0x04;
-				bt::WriteUint32(tmp,1,ip.IPv4Addr());
+				bt::WriteUint32(tmp,1,e.getAddress().toIPv4Address());
 				bt::WriteUint16(tmp,5,e.getAddress().port());
 				memcpy(tmp+7,e.getID().getData(),20);
 				fptr.write(tmp,27);
@@ -330,7 +330,7 @@ namespace dht
 			{
 				Uint8 tmp[39];
 				tmp[0] = 0x06;
-				memcpy(tmp+1,ip.addr(),16);
+				memcpy(tmp+1,e.getAddress().toIPv6Address().c,16);
 				bt::WriteUint16(tmp,17,e.getAddress().port());
 				memcpy(tmp+19,e.getID().getData(),20);
 				fptr.write(tmp,39);
@@ -355,18 +355,16 @@ namespace dht
 			
 			if (tmp[0] == 0x06)
 			{
+				Q_IPV6ADDR ip;
+				memcpy(ip.c, tmp + 1, 16);
 				entries.append(KBucketEntry(
-					KInetSocketAddress(
-						KIpAddress(tmp+1,6),
-						bt::ReadUint16(tmp,17)),
+					net::Address(ip, bt::ReadUint16(tmp,17)), 
 					dht::Key(tmp+19)));
 			}
 			else
 			{
 				entries.append(KBucketEntry(
-					KInetSocketAddress(
-						KIpAddress(bt::ReadUint32(tmp,1)),
-						bt::ReadUint16(tmp,5)),
+					net::Address(bt::ReadUint32(tmp,1), bt::ReadUint16(tmp,5)),
 					dht::Key(tmp+7)));
 			}
 		}
