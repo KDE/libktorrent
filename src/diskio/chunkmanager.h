@@ -288,12 +288,6 @@ namespace bt
 		/// Are all not deselected chunks downloaded.
 		bool completed() const;
 		
-		/// Set the maximum chunk size for a data check, 0 means there is no limit
-		static void setMaxChunkSizeForDataCheck(Uint32 mcs) {max_chunk_size_for_data_check = mcs;}
-
-		/// Enabled or disable data checking during upload
-		static void setUploadDataCheckingEnabled(bool on) {do_data_check = on;}
-		
 		/// Set the preview sizes for audio and video files
 		static void setPreviewSizes(Uint32 audio,Uint32 video);
 
@@ -337,8 +331,6 @@ namespace bt
 		void corrupted(Uint32 chunk);
 		
 	private:
-		static bool do_data_check;
-		static Uint32 max_chunk_size_for_data_check;
 		static Uint32 preview_size_audio;
 		static Uint32 preview_size_video;
 		

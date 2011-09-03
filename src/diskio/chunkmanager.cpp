@@ -38,9 +38,6 @@
 
 namespace bt
 {
-	
-	Uint32 ChunkManager::max_chunk_size_for_data_check = 512 * 1024;
-	bool ChunkManager::do_data_check = true;
 	Uint32 ChunkManager::preview_size_audio = 256 * 1024; // 256 KB for audio files
 	Uint32 ChunkManager::preview_size_video = 2048 * 1024; // 2 MB for videos
 	
@@ -80,8 +77,6 @@ namespace bt
 		BitSet todo;
 		mutable Uint32 chunks_left;
 		mutable bool recalc_chunks_left;
-		Uint32 corrupted_count;
-		Uint32 recheck_counter;
 		bool during_load;	
 		QSet<Uint32> border_chunks;
 	};
@@ -659,7 +654,6 @@ namespace bt
 			Out(SYS_DIO|LOG_DEBUG) << "Failed to save index file : unknown exception" << endl;
 		}
 		chunksLeft();
-		d->corrupted_count = 0;
 	}
 	
 	bool ChunkManager::hasExistingFiles() const
@@ -738,7 +732,6 @@ namespace bt
 			Out(SYS_DIO|LOG_DEBUG) << "Failed to save index file : unknown exception" << endl;
 		}
 		chunksLeft();
-		d->corrupted_count = 0;
 	}
 	
 	void ChunkManager::recreateMissingFiles()
@@ -892,7 +885,6 @@ namespace bt
 		
 		chunks_left = 0;
 		recalc_chunks_left = true;
-		corrupted_count = recheck_counter = 0;
 	}
 	
 	ChunkManager::Private::~Private()

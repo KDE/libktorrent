@@ -249,18 +249,6 @@ namespace bt
 		 */
 		static void setMinimumDiskSpace(Uint32 m) {min_diskspace = m;}
 		
-		/**
-		 * Enable or disable automatic datachecking when to many corrupted chunks have been found on disk.
-		 * @param on 
-		 */
-		static void setAutoRecheck(bool on) {auto_recheck = on;}
-		
-		/**
-		 * Set the number of corrupted chunks for a before we start an automatic recheck.
-		 * @param m 
-		 */
-		static void setNumCorruptedForRecheck(Uint32 m) {num_corrupted_for_recheck = m;}
-		
 	protected:
 		/// Called when a data check is finished by DataCheckerJob
 		void afterDataCheck(DataCheckerJob* job,const BitSet & result);
@@ -365,8 +353,6 @@ namespace bt
 		
 		static bool completed_datacheck;
 		static Uint32 min_diskspace;
-		static bool auto_recheck;
-		static Uint32 num_corrupted_for_recheck;
 		
 		friend class DataCheckerJob;
 		friend class PreallocationJob;

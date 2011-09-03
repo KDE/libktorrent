@@ -75,8 +75,6 @@ namespace bt
 {
 	bool TorrentControl::completed_datacheck = false;
 	Uint32 TorrentControl::min_diskspace = 100;
-	bool TorrentControl::auto_recheck = true;
-	Uint32 TorrentControl::num_corrupted_for_recheck = 3;
 
 	TorrentControl::TorrentControl()
 	: tor(0),psman(0),cman(0),pman(0),downloader(0),uploader(0),choke(0),tmon(0),prealloc(false)
@@ -293,7 +291,7 @@ namespace bt
 			}
 
 			// Emit the needDataCheck signal if needed
-			if (checkOnCompletion || (auto_recheck && stats.num_corrupted_chunks >= num_corrupted_for_recheck))
+			if (checkOnCompletion)
 				needDataCheck(this);
 			
 			// Move completed files if needed:

@@ -9,6 +9,7 @@ Changes in 1.2:
 - Do not add trackers with unsupported protocols (278352)
 - Improve SIGBUS handling, fixes a crash (276777)
 - Remove usage of several deprecated KDE3 networking classes
+- Remove obsolete functions of data check during upload
 
 Changes in 1.1.2:
 - Fix bug causing time left calculation to return something when a torrent is paused (272182)
