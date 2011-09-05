@@ -47,15 +47,7 @@ namespace bt
 		 * @return TRUE if IP should be blocked. FALSE otherwise
 		 * @arg addr Address of the peer
 		 */
-		virtual bool isBlockedIP(const net::Address & addr) = 0;
-			
-		
-		/**
-		 * Same as above, accept this takes a string as parameter
-		 * @param addr The IP address represented as a string
-		 * @return TRUE if IP should be blocked. FALSE otherwise
-		 */
-		virtual bool isBlockedIP(const QString & addr) = 0;
+		virtual bool blocked(const net::Address & addr) const = 0;
 	};
 }
 #endif

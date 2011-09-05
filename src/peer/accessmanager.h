@@ -53,10 +53,7 @@ namespace bt
 		void removeBlockList(BlockListInterface* bl);
 		
 		/// Are we allowed to have a connection with a peer 
-		bool allowed(const net::Address & addr);
-			
-		/// Are we allowed to have a connection with a peer
-		bool allowed(const QString & addr);
+		bool allowed(const net::Address & addr) const;
 		
 		/// Ban a peer (i.e. add it to the banned list)
 		void banPeer(const QString & addr);

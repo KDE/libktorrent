@@ -36,8 +36,7 @@ namespace bt
 		BadPeersList();
 		virtual ~BadPeersList();
 
-		virtual bool isBlockedIP(const net::Address & addr);
-		virtual bool isBlockedIP(const QString & addr);
+		virtual bool blocked(const net::Address & addr) const;
 		
 		/// Add a bad peer to the list
 		void addBadPeer(const QString & ip);

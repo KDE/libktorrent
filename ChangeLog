@@ -10,6 +10,7 @@ Changes in 1.2:
 - Improve SIGBUS handling, fixes a crash (276777)
 - Remove usage of several deprecated KDE3 networking classes
 - Remove obsolete functions of data check during upload
+- Simplify blocklist interface
 
 Changes in 1.1.3:
 - Fix bug causing UPnP not to work properly if there is a question mark in the controlurl

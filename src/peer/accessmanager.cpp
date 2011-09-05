@@ -54,21 +54,11 @@ namespace bt
 		blocklists.removeAll(bl);
 	}
 
-	bool AccessManager::allowed(const net::Address & addr)
+	bool AccessManager::allowed(const net::Address & addr) const
 	{
-		foreach (BlockListInterface* bl,blocklists)
+		foreach (const BlockListInterface* bl,blocklists)
 		{
-			if (bl->isBlockedIP(addr))
-				return false;
-		}
-		return true;
-	}
-
-	bool AccessManager::allowed(const QString & addr)
-	{
-		foreach (BlockListInterface* bl,blocklists)
-		{
-			if (bl->isBlockedIP(addr))
+			if (bl->blocked(addr))
 				return false;
 		}
 		return true;

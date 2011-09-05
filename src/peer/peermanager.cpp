@@ -163,9 +163,9 @@ namespace bt
 	
 	void PeerManager::addPotentialPeer(const net::Address & addr, bool local)
 	{
-		if (d->potential_peers.size() < 500 && d->potential_peers.find(addr) == d->potential_peers.end())
+		if (d->potential_peers.size() < 500)
 		{
-			d->potential_peers.insert(std::make_pair(addr, local));
+			d->potential_peers[addr] = local;
 		}
 	}
 
