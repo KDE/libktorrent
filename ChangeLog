@@ -1,3 +1,6 @@
+Changes in 1.1.3:
+- Fix crash in webseed code (281605)
+
 Changes in 1.1.2:
 - Fix bug causing time left calculation to return something when a torrent is paused (272182)
 - Improve performance of UTP delay window algorithm
