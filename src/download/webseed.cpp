@@ -423,7 +423,8 @@ namespace bt
 				if (!cur_piece || cur_piece->parentChunk() != c)
 					cur_piece = c->getPiece(0,c->getSize(),false);
 
-				cur_piece->write((const Uint8*)tmp.data() + off,bl,bytes_of_cur_chunk);
+				if (cur_piece)
+					cur_piece->write((const Uint8*)tmp.data() + off,bl,bytes_of_cur_chunk);
 				downloaded += bl;
 			}
 			off += bl;
