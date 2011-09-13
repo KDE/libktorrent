@@ -24,7 +24,7 @@
 #include <util/log.h>
 #include "socketgroup.h"
 #include "socketmonitor.h"
-#include "bufferedsocket.h"
+#include "trafficshapedsocket.h"
 #include "wakeuppipe.h"
 		
 using namespace bt;
@@ -55,7 +55,7 @@ namespace net
 			SocketMonitor::Itr itr = sm->begin();
 			while (itr != sm->end())
 			{
-				BufferedSocket* s = *itr;
+				TrafficShapedSocket* s = *itr;
 				if (!s->socketDevice() || !s->socketDevice()->ok())
 				{
 					itr++;
@@ -117,7 +117,7 @@ namespace net
 		SocketMonitor::Itr itr = sm->begin();
 		while (itr != sm->end())
 		{
-			BufferedSocket* s = *itr;
+			TrafficShapedSocket* s = *itr;
 			if (s && s->socketDevice()->ok())
 			{
 				s->socketDevice()->prepare(this,Poll::INPUT);

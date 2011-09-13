@@ -23,7 +23,6 @@
 #include <diskio/chunkmanager.h>
 #include <peer/peer.h>
 #include <peer/peermanager.h>
-#include <peer/packetwriter.h>
 #include <krandom.h>
 
 
@@ -155,12 +154,12 @@ namespace bt
 			Peer* p = ppl.at(i);
 			if (!poup && num_unchoked < num_slots)
 			{
-				p->getPacketWriter().sendUnchoke();
+				p->sendUnchoke();
 				num_unchoked++;
 			}
 			else if (num_unchoked < num_slots -1 || p == poup)
 			{
-				p->getPacketWriter().sendUnchoke();
+				p->sendUnchoke();
 				if (p != poup)
 					num_unchoked++;
 			}

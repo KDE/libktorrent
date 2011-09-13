@@ -25,7 +25,7 @@
 #include <QTimer>
 #include <QHttpRequestHeader>
 #include <kurl.h>
-#include <net/bufferedsocket.h>
+#include <net/packetsocket.h>
 #include <net/addressresolver.h>
 
 class KUrl;
@@ -39,7 +39,7 @@ namespace bt
 		HTTP connection for webseeding. We do not use KIO here, because we want to be able to apply 
 		the maximum upload and download rate to webseeds;
 	*/
-	class HttpConnection : public QObject,public net::SocketReader,public net::SocketWriter
+	class HttpConnection : public QObject,public net::SocketReader
 	{
 		Q_OBJECT
 	public:
@@ -153,7 +153,7 @@ namespace bt
 			bool finished() const {return data_received >= len;}
 		};
 		
-		net::BufferedSocket* sock;
+		net::PacketSocket* sock;
 		State state;
 		mutable QMutex mutex;
 		HttpGet* request;

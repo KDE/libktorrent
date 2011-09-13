@@ -210,10 +210,9 @@ namespace bt
 			net::Address addr = ar->address();
 			if (!sock)
 			{
-				sock = new net::BufferedSocket(true,addr.ipVersion());
+				sock = new net::PacketSocket(true,addr.ipVersion());
 				sock->socketDevice()->setBlocking(false);
 				sock->setReader(this);
-				sock->setWriter(this);
 				sock->setGroupID(up_gid,true);
 				sock->setGroupID(down_gid,false);
 			}

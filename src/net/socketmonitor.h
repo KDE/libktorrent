@@ -31,9 +31,11 @@ namespace net
 {
 	using bt::Uint32;
 	
-	class BufferedSocket;
+	class TrafficShapedSocket;
 	class UploadThread;
 	class DownloadThread;
+	
+	
 
 	/**
 	 * @author Joris Guisson <joris.guisson@gmail.com>
@@ -48,12 +50,12 @@ namespace net
 		virtual ~SocketMonitor();
 		
 		/// Add a new socket, will start the threads if necessary
-		void add(BufferedSocket* sock);
+		void add(TrafficShapedSocket* sock);
 		
 		/// Remove a socket, will stop threads if no more sockets are left
-		void remove(BufferedSocket* sock);
+		void remove(TrafficShapedSocket* sock);
 		
-		typedef std::list<BufferedSocket*>::iterator Itr;
+		typedef std::list<TrafficShapedSocket*>::iterator Itr;
 		
 		/// Get the begin of the list of sockets
 		Itr begin() {return sockets.begin();}
@@ -124,7 +126,7 @@ namespace net
 	private:
 		class Private;
 		Private* d;
-		std::list<BufferedSocket*> sockets;
+		std::list<TrafficShapedSocket*> sockets;
 		static SocketMonitor self;
 	};
 

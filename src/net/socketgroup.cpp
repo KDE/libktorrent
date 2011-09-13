@@ -21,7 +21,7 @@
 #include <math.h>
 #include <util/log.h>
 #include <util/functions.h>
-#include "bufferedsocket.h"
+#include "trafficshapedsocket.h"
 		
 using namespace bt;
 
@@ -41,16 +41,16 @@ namespace net
 
 	void SocketGroup::processUnlimited(bool up,bt::TimeStamp now)
 	{
-		std::list<BufferedSocket*>::iterator i = sockets.begin();
+		std::list<TrafficShapedSocket*>::iterator i = sockets.begin();
 		while (i != sockets.end())
 		{
-			BufferedSocket* s = *i;
+			TrafficShapedSocket* s = *i;
 			if (s)
 			{
 				if (up)
-					s->writeBuffered(0,now);
+					s->write(0,now);
 				else
-					s->readBuffered(0,now);
+					s->read(0,now);
 			}
 			i++;
 		}
@@ -60,7 +60,7 @@ namespace net
 	{
 		Uint32 bslot = allowance / sockets.size() + 1;
 	
-		std::list<BufferedSocket*>::iterator itr = sockets.begin();
+		std::list<TrafficShapedSocket*>::iterator itr = sockets.begin();
 		
 		// while we can send and there are sockets left to send
 		while (sockets.size() > 0 && allowance > 0)
@@ -69,14 +69,14 @@ namespace net
 			if (as > allowance)
 				as = allowance;
 			
-			BufferedSocket* s = *itr;
+			TrafficShapedSocket* s = *itr;
 			if (s)
 			{
 				Uint32 ret = 0;
 				if (up)
-					ret = s->writeBuffered(as,now);
+					ret = s->write(as,now);
 				else
-					ret = s->readBuffered(as,now);
+					ret = s->read(as,now);
 				
 				// if this socket did what it was supposed to do, 
 				// it can have another go if stuff is leftover

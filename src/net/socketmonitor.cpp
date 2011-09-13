@@ -23,7 +23,7 @@
 #include <util/functions.h>
 #include <util/log.h>
 #include <torrent/globals.h>
-#include "bufferedsocket.h"
+#include "trafficshapedsocket.h"
 #include "uploadthread.h"
 #include "downloadthread.h"
 
@@ -141,7 +141,7 @@ namespace net
 		UploadThread::setSleepTime(sleep_time);
 	}
 	
-	void SocketMonitor::add(BufferedSocket* sock)
+	void SocketMonitor::add(TrafficShapedSocket* sock)
 	{
 		QMutexLocker lock(&d->mutex);
 		
@@ -164,7 +164,7 @@ namespace net
 		d->dt->wakeUp();
 	}
 	
-	void SocketMonitor::remove(BufferedSocket* sock)
+	void SocketMonitor::remove(TrafficShapedSocket* sock)
 	{
 		QMutexLocker lock(&d->mutex);
 		if (sockets.size() == 0)

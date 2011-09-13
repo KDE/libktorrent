@@ -22,7 +22,7 @@
 #include <QHostAddress>
 #include <qsocketnotifier.h>
 #include <net/socket.h>
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 #include <util/sha1hash.h>
 #include <util/log.h>
 #include <util/functions.h>
@@ -60,7 +60,7 @@ namespace bt
 		
 		virtual void newConnection(int fd,const net::Address & addr)
 		{
-			mse::StreamSocket::Ptr s(new mse::StreamSocket(fd,addr.ipVersion()));
+			mse::EncryptedPacketSocket::Ptr s(new mse::EncryptedPacketSocket(fd,addr.ipVersion()));
 			p->newConnection(s);
 		}
 		

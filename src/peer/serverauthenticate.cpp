@@ -18,7 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "serverauthenticate.h"
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 #include <util/sha1hash.h>
 #include <util/log.h>
 #include <torrent/globals.h>
@@ -34,7 +34,7 @@ namespace bt
 	bool ServerAuthenticate::s_firewalled = true;
 
 
-	ServerAuthenticate::ServerAuthenticate(mse::StreamSocket::Ptr sock) : AuthenticateBase(sock)
+	ServerAuthenticate::ServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock) : AuthenticateBase(sock)
 	{
 	}
 

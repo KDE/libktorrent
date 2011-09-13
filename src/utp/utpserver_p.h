@@ -109,7 +109,7 @@ namespace utp
 		bool create_sockets;
 		bt::Uint8 tos;
 		OutputQueue output_queue;
-		QList<mse::StreamSocket::Ptr> pending;
+		QList<mse::EncryptedPacketSocket::Ptr> pending;
 		QMutex pending_mutex;
 		MainThreadCall* mtc;
 		QList<Connection::WPtr> last_accepted;

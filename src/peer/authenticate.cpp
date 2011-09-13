@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "authenticate.h"
 #include <util/log.h>
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 #include <peer/accessmanager.h>
 #include <net/socks.h>
 #include <utp/utpsocket.h>
@@ -34,9 +34,9 @@ namespace bt
 	{
 		finished = succes = false;
 		if (proto == TCP)
-			sock = mse::StreamSocket::Ptr(new mse::StreamSocket(addr.ipVersion()));
+			sock = mse::EncryptedPacketSocket::Ptr(new mse::EncryptedPacketSocket(addr.ipVersion()));
 		else
-			sock = mse::StreamSocket::Ptr(new mse::StreamSocket(new utp::UTPSocket()));
+			sock = mse::EncryptedPacketSocket::Ptr(new mse::EncryptedPacketSocket(new utp::UTPSocket()));
 		
 		Out(SYS_CON|LOG_NOTICE) << "Initiating connection to " << addr.toString() << " via (" << (proto == TCP ? "TCP" : "UTP") << ")" << endl;
 		if (net::Socks::enabled())

@@ -23,7 +23,7 @@
 #include <qobject.h>
 #include <qtimer.h>
 #include <util/constants.h>
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 
 
 namespace bt
@@ -44,7 +44,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		AuthenticateBase();
-		AuthenticateBase(mse::StreamSocket::Ptr s);
+		AuthenticateBase(mse::EncryptedPacketSocket::Ptr s);
 		virtual ~AuthenticateBase();
 
 		/// Set whether this is a local peer
@@ -60,7 +60,7 @@ namespace bt
 		Uint32 supportedExtensions() const {return ext_support;}
 		
 		/// get the socket
-		mse::StreamSocket::Ptr getSocket() const {return sock;}
+		mse::EncryptedPacketSocket::Ptr getSocket() const {return sock;}
 		
 		/// We can read from the socket
 		virtual void onReadyRead();
@@ -102,7 +102,7 @@ namespace bt
 		void onError(int err);
 		
 	protected:
-		mse::StreamSocket::Ptr sock;
+		mse::EncryptedPacketSocket::Ptr sock;
 		QTimer timer;
 		bool finished;
 		Uint8 handshake[68];

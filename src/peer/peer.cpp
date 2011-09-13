@@ -24,7 +24,7 @@
 #include <util/log.h>
 #include <util/functions.h>
 #include <net/address.h>
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 #include <diskio/chunk.h>
 #include <download/piece.h>
 #include <download/request.h>
@@ -34,7 +34,6 @@
 #include <torrent/server.h>
 #include <torrent/torrent.h>
 #include "packetreader.h"
-#include "packetwriter.h"
 #include "peerdownloader.h"
 #include "peeruploader.h"
 #include "utpex.h"
@@ -52,7 +51,7 @@ namespace bt
 	bool Peer::resolve_hostname = true;
 	
 	
-	Peer::Peer(mse::StreamSocket::Ptr sock,const PeerID & peer_id,
+	Peer::Peer(mse::EncryptedPacketSocket::Ptr sock,const PeerID & peer_id,
 			   Uint32 num_chunks,Uint32 chunk_size,Uint32 support,bool local,PeerManager* pman)
 	: PeerInterface(peer_id,num_chunks),sock(sock),pman(pman)
 	{
@@ -70,7 +69,6 @@ namespace bt
 		preader = new PacketReader(this,10*max_packet_len);
 		downloader = new PeerDownloader(this,chunk_size);
 		uploader = new PeerUploader(this);
-		pwriter = new PacketWriter(this);
 		
 		stalled_timer.update();
 		
@@ -92,7 +90,7 @@ namespace bt
 		}
 		else
 		{
-			sock->startMonitoring(preader,pwriter);
+			sock->startMonitoring(preader);
 		}
 		
 		pex_allowed = stats.extension_protocol;
@@ -109,13 +107,12 @@ namespace bt
 
 	Peer::~Peer()
 	{
-		// Seeing that we are going to delete the pwriter and preader object,
+		// Seeing that we are going to delete the preader object,
 		// call stopMonitoring, in some situations it is possible that the socket
 		// is only deleted later because the authenticate object still has a reference to it
 		sock->stopMonitoring();
 		delete uploader;
 		delete downloader;
-		delete pwriter;
 		delete preader;
 	}
 	
@@ -250,7 +247,7 @@ namespace bt
 					if (stats.has_upload_slot)
 						uploader->addRequest(r);
 					else if (stats.fast_extensions)
-						pwriter->sendReject(r);
+						sendReject(r);
 				//	Out(SYS_CON|LOG_DEBUG) << "REQUEST " << r.getIndex() << " " << r.getOffset() << endl;
 				}
 				break;
@@ -291,6 +288,7 @@ namespace bt
 							  ReadUint32(tmp_buf,9),
 							  downloader);
 					uploader->removeRequest(r);
+					sock->doNotSendPiece(r, stats.fast_extensions);
 				}
 				break;
 			case REJECT_REQUEST:
@@ -363,7 +361,7 @@ namespace bt
 		downloader->cancelAll();
 		// choke the peer and tell it we are not interested
 		choke();
-		pwriter->sendNotInterested();
+		sendNotInterested();
 		paused = true;
 	}
 	
@@ -532,10 +530,10 @@ namespace bt
 			return;
 		}
 		
-		sock->updateSpeeds();
+		sock->updateSpeeds(bt::CurrentTime());
 		preader->update();
 		
-		Uint32 data_bytes = pwriter->getUploadedDataBytes();
+		Uint32 data_bytes = sock->dataBytesUploaded();
 		
 		if (data_bytes > 0)
 		{
@@ -557,7 +555,7 @@ namespace bt
 		// if no data is being sent or recieved, and there are pending requests
 		// increment the connection stalled timer
 		if (getUploadRate() > 100 || getDownloadRate() > 100 || 
-		   (uploader->getNumRequests() == 0 && downloader->getNumRequests() == 0) )
+		   (uploader->getNumRequests() == 0 && sock->numPendingPieceUploads() == 0 && downloader->getNumRequests() == 0) )
 			stalled_timer.update();
 	}
 	
@@ -622,7 +620,7 @@ namespace bt
 		stats.upload_rate = this->getUploadRate();
 		stats.perc_of_file = this->percentAvailable();
 		stats.snubbed = this->isSnubbed();
-		stats.num_up_requests = uploader->getNumRequests();
+		stats.num_up_requests = uploader->getNumRequests() + sock->numPendingPieceUploads();
 		stats.num_down_requests = downloader->getNumRequests();
 		return stats;
 	}
@@ -637,7 +635,7 @@ namespace bt
 		if (!stats.has_upload_slot)
 			return;
 		
-		pwriter->sendChoke();
+		sendChoke();
 		uploader->clearAllRequests();
 	}
 	
@@ -700,13 +698,14 @@ namespace bt
 		enc.write("upload_only", partial_seed ? "1" : "0");
 		enc.write(QString("v")); enc.write(bt::GetVersionString());
 		enc.end();
-		pwriter->sendExtProtMsg(0,arr);
+		sendExtProtMsg(0,arr);
 	}
 
 	
 	void Peer::setGroupIDs(Uint32 up_gid,Uint32 down_gid)
 	{
-		sock->setGroupIDs(up_gid,down_gid);
+		sock->setGroupID(up_gid, true);
+		sock->setGroupID(down_gid, true);
 	}
 		
 	void Peer::resolved(const QString & hinfo)
@@ -744,6 +743,133 @@ namespace bt
 	}
 
 
-}
+	void Peer::sendChoke()
+	{
+		if (!stats.has_upload_slot)
+			return;
+		
+		sock->addPacket(Packet::Ptr(new Packet(CHOKE)));
+		stats.has_upload_slot = false;
+	}
 
-#include "peer.moc"
+	void Peer::sendUnchoke()
+	{
+		if (stats.has_upload_slot)
+			return;
+		
+		sock->addPacket(Packet::Ptr(new Packet(UNCHOKE)));
+		stats.has_upload_slot = true;
+	}
+
+	void Peer::sendEvilUnchoke()
+	{
+		sock->addPacket(Packet::Ptr(new Packet(UNCHOKE)));
+		stats.has_upload_slot = false;
+	}
+
+	void Peer::sendInterested()
+	{
+		if (stats.am_interested == true)
+			return;
+		
+		sock->addPacket(Packet::Ptr(new Packet(INTERESTED)));
+		stats.am_interested = true;
+	}
+
+	void Peer::sendNotInterested()
+	{
+		if (stats.am_interested == false)
+			return;
+		
+		sock->addPacket(Packet::Ptr(new Packet(NOT_INTERESTED)));
+		stats.am_interested = false;
+	}
+
+	void Peer::sendRequest(const Request & r)
+	{
+		sock->addPacket(Packet::Ptr(new Packet(r,bt::REQUEST)));
+	}
+
+	void Peer::sendCancel(const Request & r)
+	{
+		sock->addPacket(Packet::Ptr(new Packet(r,bt::CANCEL)));
+	}
+
+	void Peer::sendReject(const Request & r)
+	{
+		sock->addPacket(Packet::Ptr(new Packet(r,bt::REJECT_REQUEST)));
+	}
+
+	void Peer::sendHave(Uint32 index)
+	{
+		sock->addPacket(Packet::Ptr(new Packet(index,bt::HAVE)));
+	}
+
+	void Peer::sendPort(Uint16 port)
+	{
+		sock->addPacket(Packet::Ptr(new Packet(port)));
+	}
+
+	void Peer::sendBitSet(const BitSet & bs)
+	{
+		sock->addPacket(Packet::Ptr(new Packet(bs)));
+	}
+
+	void Peer::sendHaveAll()
+	{
+		sock->addPacket(Packet::Ptr(new Packet(bt::HAVE_ALL)));
+	}
+
+	void Peer::sendHaveNone()
+	{
+		sock->addPacket(Packet::Ptr(new Packet(bt::HAVE_NONE)));
+	}
+
+	void Peer::sendSuggestPiece(Uint32 index)
+	{
+		sock->addPacket(Packet::Ptr(new Packet(index,bt::SUGGEST_PIECE)));
+	}
+
+	void Peer::sendAllowedFast(Uint32 index)
+	{
+		sock->addPacket(Packet::Ptr(new Packet(index,bt::ALLOWED_FAST)));
+	}
+
+	bool Peer::sendChunk(Uint32 index,Uint32 begin,Uint32 len,Chunk * ch)
+	{
+		//		Out() << "sendChunk " << index << " " << begin << " " << len << endl;
+		if (begin >= ch->getSize() || begin + len > ch->getSize())
+		{
+			Out(SYS_CON|LOG_NOTICE) << "Warning : Illegal piece request" << endl;
+			Out(SYS_CON|LOG_NOTICE) << "\tChunk : index " << index << " size = " << ch->getSize() << endl;
+			Out(SYS_CON|LOG_NOTICE) << "\tPiece : begin = " << begin << " len = " << len << endl;
+			return false;
+		}
+		else if (!ch)
+		{
+			Out(SYS_CON|LOG_NOTICE) << "Warning : attempted to upload an invalid chunk" << endl;
+			return false;
+		}
+		else
+		{
+			/*		Out(SYS_CON|LOG_DEBUG) << QString("Uploading %1 %2 %3 %4 %5")
+			*			.arg(index).arg(begin).arg(len).arg((quint64)ch,0,16).arg((quint64)ch->getData(),0,16) 
+			*			<< endl;;
+			*/
+			sock->addPacket(Packet::Ptr(new Packet(index,begin,len,ch)));
+			return true;
+		}
+	}
+
+	void Peer::sendExtProtMsg(Uint8 id,const QByteArray & data)
+	{
+		sock->addPacket(Packet::Ptr(new Packet(id,data)));
+	}
+	
+	void Peer::clearPendingPieceUploads()
+	{
+		sock->clearPieces(stats.fast_extensions);
+	}
+
+
+}

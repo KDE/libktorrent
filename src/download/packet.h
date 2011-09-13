@@ -20,7 +20,12 @@
 #ifndef BTPACKET_H
 #define BTPACKET_H
 
+#include <QSharedPointer>
 #include <util/constants.h>
+
+namespace net {
+class SocketDevice;
+}
 
 
 namespace bt
@@ -37,9 +42,6 @@ namespace bt
 	*/
 	class Packet
 	{
-		Uint8* data;
-		Uint32 size;
-		Uint32 written;
 	public:
 		Packet(Uint8 type);
 		Packet(Uint16 port);
@@ -50,13 +52,16 @@ namespace bt
 		Packet(Uint8 ext_id,const QByteArray & ext_data); // extension protocol packet
 		virtual ~Packet();
 
-		Uint8 getType() const {return data ? data[4] : 0;}
+		/// Get the packet type
+		Uint8 getType() const {return type;}
 		
 		bool isOK() const;
 		
 		const Uint8* getData() const {return data;}
+		Uint8* getData() {return data;}
 		Uint32 getDataLength() const {return size;}
 
+		/// Is the packet sent ?
 		Uint32 isSent() const {return written == size;}
 		
 		/**
@@ -76,13 +81,20 @@ namespace bt
 		bool isPiece(const Request & req) const;
 		
 		/**
-		 * Put the packet in an output buffer.
-		 * @param buf The buffer
-		 * @param max_to_put Maximum bytes to put
-		 * @param piece Set to true if this is a piece 
-		 * @return The number of bytes put in the buffer
-		 */
-		Uint32 putInOutputBuffer(Uint8* buf,Uint32 max_to_put,bool & piece);
+		 * Send the packet over a SocketDevice
+		 * @param sock The socket
+		 * @param max_to_send Max bytes to send
+		 * @return int Return value of send call from SocketDevice
+		 **/
+		int send(net::SocketDevice* sock, Uint32 max_to_send);
+		
+		typedef QSharedPointer<Packet> Ptr;
+		
+	private:
+		Uint8 type;
+		Uint8* data;
+		Uint32 size;
+		Uint32 written;
 	};
 
 }

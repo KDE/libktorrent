@@ -3,7 +3,8 @@ add_subdirectory(tests)
 
 set(net_HDR  
 	socks.h
-	bufferedsocket.h
+	packetsocket.h
+	trafficshapedsocket.h
 	downloadthread.h
 	address.h
 	addressresolver.h

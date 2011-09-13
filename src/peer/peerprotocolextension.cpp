@@ -20,7 +20,6 @@
 
 #include <stdio.h>
 #include "peerprotocolextension.h"
-#include "packetwriter.h"
 #include "peer.h"
 
 namespace bt
@@ -37,7 +36,7 @@ namespace bt
 
 	void PeerProtocolExtension::sendPacket(const QByteArray& data)
 	{
-		peer->getPacketWriter().sendExtProtMsg(id,data);
+		peer->sendExtProtMsg(id,data);
 	}
 
 	void PeerProtocolExtension::update()

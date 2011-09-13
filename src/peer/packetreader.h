@@ -22,7 +22,7 @@
 
 #include <qmutex.h>
 #include <qlist.h>
-#include <net/bufferedsocket.h>
+#include <net/trafficshapedsocket.h>
 
 namespace bt
 {

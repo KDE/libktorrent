@@ -28,7 +28,6 @@
 #include <bcodec/bencoder.h>
 #include <magnet/metadatadownload.h>
 #include "peer.h"
-#include "packetwriter.h"
 
 
 namespace bt

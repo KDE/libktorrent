@@ -34,7 +34,7 @@ set(libktorrent_SRC
 	bcodec/value.cpp
 
 	net/address.cpp  
-	net/bufferedsocket.cpp  
+	net/packetsocket.cpp  
 	net/portlist.cpp  
 	net/socket.cpp  
 	net/socketmonitor.cpp  
@@ -50,11 +50,12 @@ set(libktorrent_SRC
 	net/poll.cpp
 	net/serversocket.cpp
 	net/addressresolver.cpp
+	net/trafficshapedsocket.cpp
 	
 	mse/bigint.cpp  
 	mse/functions.cpp  
 	mse/rc4encryptor.cpp  
-	mse/streamsocket.cpp
+	mse/encryptedpacketsocket.cpp
 	mse/encryptedauthenticate.cpp
 	mse/encryptedserverauthenticate.cpp
 	
@@ -68,7 +69,6 @@ set(libktorrent_SRC
 	peer/peermanager.cpp
 	peer/peerdownloader.cpp
 	peer/peeruploader.cpp
-	peer/packetwriter.cpp
 	peer/packetreader.cpp
 	peer/peerprotocolextension.cpp
 	peer/utpex.cpp

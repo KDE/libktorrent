@@ -20,12 +20,13 @@
 #include "packet.h"
 #include <qstring.h>
 #include <string.h>
+#include <net/socketdevice.h>
 #include <util/log.h>
 #include <util/bitset.h>
 #include <util/functions.h>
-#include "request.h"
 #include <diskio/chunk.h>
 #include <peer/peer.h>
+#include "request.h"
 
 namespace bt
 {
@@ -39,13 +40,13 @@ namespace bt
 	}
 
 
-	Packet::Packet(Uint8 type) : data(0),size(0),written(0)
+	Packet::Packet(Uint8 type) : type(type),data(0),size(0),written(0)
 	{
 		size = 5;
 		data = AllocPacket(size,type);
 	}
 	
-	Packet::Packet(Uint16 port) : data(0),size(0),written(0)
+	Packet::Packet(Uint16 port) : type(PORT),data(0),size(0),written(0)
 	{
 		size = 7;
 		data = AllocPacket(size,PORT);
@@ -53,21 +54,21 @@ namespace bt
 		
 	}
 	
-	Packet::Packet(Uint32 chunk,Uint8 type) : data(0),size(0),written(0)
+	Packet::Packet(Uint32 chunk,Uint8 type) : type(type),data(0),size(0),written(0)
 	{
 		size = 9;
 		data = AllocPacket(size,type);
 		WriteUint32(data,5,chunk);
 	}
 	
-	Packet::Packet(const BitSet & bs) : data(0),size(0),written(0)
+	Packet::Packet(const BitSet & bs) : type(BITFIELD),data(0),size(0),written(0)
 	{
 		size = 5 + bs.getNumBytes();
 		data = AllocPacket(size,BITFIELD);
 		memcpy(data+5,bs.getData(),bs.getNumBytes());
 	}
 	
-	Packet::Packet(const Request & r,Uint8 type) : data(0),size(0),written(0)
+	Packet::Packet(const Request & r,Uint8 type) : type(type),data(0),size(0),written(0)
 	{
 		size = 17;
 		data = AllocPacket(size,type);
@@ -76,7 +77,7 @@ namespace bt
 		WriteUint32(data,13,r.getLength());
 	}
 	
-	Packet::Packet(Uint32 index,Uint32 begin,Uint32 len,Chunk* ch) : data(0),size(0),written(0)
+	Packet::Packet(Uint32 index,Uint32 begin,Uint32 len,Chunk* ch) : type(PIECE),data(0),size(0),written(0)
 	{
 		size = 13 + len;
 		data = AllocPacket(size,PIECE);
@@ -85,7 +86,7 @@ namespace bt
 		ch->readPiece(begin,len,data + 13);
 	}
 
-	Packet::Packet(Uint8 ext_id,const QByteArray & ext_data) : data(0),size(0),written(0)
+	Packet::Packet(Uint8 ext_id,const QByteArray & ext_data) :  type(EXTENDED),data(0),size(0),written(0)
 	{
 		size = 6 + ext_data.size();
 		data = AllocPacket(size,EXTENDED);
@@ -158,17 +159,18 @@ namespace bt
 		return true;
 	}
 
-	Uint32 Packet::putInOutputBuffer(Uint8* buf,Uint32 max_to_put,bool & piece)
+	int Packet::send(net::SocketDevice* sock, Uint32 max_to_send)
 	{
-		piece = data[4] == PIECE;
 		Uint32 bw = size - written;
 		if (!bw) // nothing to write
 			return 0;
 		
-		if (bw > max_to_put)
-			bw = max_to_put;
-		memcpy(buf,data + written,bw);
-		written += bw;
-		return bw;
+		if (bw > max_to_send)
+			bw = max_to_send;
+		int ret = sock->send(data + written, bw);
+		if (ret > 0)
+			written += ret;
+		return ret;
 	}
+
 }

@@ -27,7 +27,7 @@ namespace net
 {
 	using bt::Uint32;
 	
-	class BufferedSocket;
+	class TrafficShapedSocket;
 
 	/**
 		@author Joris Guisson <joris.guisson@gmail.com>
@@ -36,7 +36,7 @@ namespace net
 	{
 		Uint32 limit;
 		Uint32 assured_rate;
-		std::list<BufferedSocket*> sockets;
+		std::list<TrafficShapedSocket*> sockets;
 		bt::TimeStamp prev_run_time;
 		Uint32 group_allowance;
 		Uint32 group_assured;
@@ -48,7 +48,7 @@ namespace net
 		void clear() {sockets.clear();}
 		
 		/// Add a socket for processing
-		void add(BufferedSocket* s) {sockets.push_back(s);}
+		void add(TrafficShapedSocket* s) {sockets.push_back(s);}
 
 		/** 
 			Process all the sockets in the vector for download.

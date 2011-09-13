@@ -31,7 +31,7 @@
 #include <time.h>
 #include <util/log.h>
 #include <util/constants.h>
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 #include <torrent/globals.h>
 #include <net/portlist.h>
 #include "utpprotocol.h"
@@ -145,7 +145,7 @@ namespace utp
 				if (create_sockets)
 				{
 					UTPSocket* utps = new UTPSocket(conn);
-					mse::StreamSocket::Ptr ss(new mse::StreamSocket(utps));
+					mse::EncryptedPacketSocket::Ptr ss(new mse::EncryptedPacketSocket(utps));
 					{
 						QMutexLocker lock(&pending_mutex);
 						pending.append(ss);
@@ -238,7 +238,7 @@ namespace utp
 	void UTPServer::handlePendingConnections()
 	{
 		// This should be called from the main thread
-		QList<mse::StreamSocket::Ptr> p;
+		QList<mse::EncryptedPacketSocket::Ptr> p;
 		{
 			QMutexLocker lock(&d->pending_mutex);
 			// Copy the pending list and clear it before using it's contents to avoid a deadlock
@@ -246,7 +246,7 @@ namespace utp
 			d->pending.clear();
 		}
 		
-		foreach (mse::StreamSocket::Ptr s,p)
+		foreach (mse::EncryptedPacketSocket::Ptr s,p)
 		{
 			newConnection(s);
 		}

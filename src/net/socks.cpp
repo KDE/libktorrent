@@ -25,7 +25,7 @@
 
 #include <util/log.h>
 #include <util/constants.h>
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 
 using namespace bt;
 
@@ -42,7 +42,7 @@ namespace net
 	net::Address Socks::socks_server_addr;
 
 
-	Socks::Socks(mse::StreamSocket::Ptr sock,const Address & dest) :
+	Socks::Socks(mse::EncryptedPacketSocket::Ptr sock,const Address & dest) :
 		sock(sock),
 		dest(dest),
 		state(IDLE),
