@@ -1,6 +1,5 @@
 set (peer_HDR
 	peeruploader.h
-	packetwriter.h
 	peer.h
 	peermanager.h
 	authenticatebase.h

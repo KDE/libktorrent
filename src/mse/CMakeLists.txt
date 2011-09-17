@@ -6,7 +6,7 @@ set (mse_HDR
 	./rc4encryptor.h
 	./encryptedauthenticate.h
 	./bigint.h
-	./streamsocket.h
+	./encryptedpacketsocket.h
 )
 
 install(FILES ${mse_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/mse COMPONENT Devel)

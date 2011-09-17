@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
+ *   Copyright (C) 2011 by Joris Guisson                                   *
  *   joris.guisson@gmail.com                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,55 +17,60 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include "bufferedsocket.h"
-#include <util/log.h>
+
+
+#include "trafficshapedsocket.h"
 #include "speed.h"
+#include "socket.h"
+
+#define OUTPUT_BUFFER_SIZE 16393
 
 using namespace bt;
 
 namespace net
 {
-#define OUTPUT_BUFFER_SIZE 16393
 
-	BufferedSocket::BufferedSocket(SocketDevice* sock) : rdr(0),wrt(0),up_gid(0),down_gid(0),sock(sock)
+	TrafficShapedSocket::TrafficShapedSocket(SocketDevice* sock) :
+		rdr(0),
+		up_gid(0),
+		down_gid(0),
+		sock(sock),
+		mutex(QMutex::Recursive)
 	{
-		bytes_in_output_buffer = 0;
-		bytes_sent = 0;
 		down_speed = new Speed();
 		up_speed = new Speed();
-		output_buffer = new Uint8[OUTPUT_BUFFER_SIZE];
 	}
 
-	BufferedSocket::BufferedSocket(int fd,int ip_version) : rdr(0),wrt(0),up_gid(0),down_gid(0)
+	TrafficShapedSocket::TrafficShapedSocket(int fd, int ip_version) :
+		rdr(0),
+		up_gid(0),
+		down_gid(0),
+		mutex(QMutex::Recursive)
 	{
-		sock = new Socket(fd,ip_version);
-		bytes_in_output_buffer = 0;
-		bytes_sent = 0;
+		sock = new Socket(fd, ip_version);
 		down_speed = new Speed();
 		up_speed = new Speed();
-		output_buffer = new Uint8[OUTPUT_BUFFER_SIZE];
+	}
+
+	TrafficShapedSocket::TrafficShapedSocket(bool tcp, int ip_version) :
+		rdr(0),
+		up_gid(0),
+		down_gid(0),
+		mutex(QMutex::Recursive)
+	{
+		sock = new Socket(tcp, ip_version);
+		down_speed = new Speed();
+		up_speed = new Speed();
 	}
 	
-	BufferedSocket::BufferedSocket(bool tcp,int ip_version) : rdr(0),wrt(0),up_gid(0),down_gid(0)
+	TrafficShapedSocket::~TrafficShapedSocket()
 	{
-		sock = new Socket(tcp,ip_version);
-		bytes_in_output_buffer = 0;
-		bytes_sent = 0;
-		down_speed = new Speed();
-		up_speed = new Speed();
-		output_buffer = new Uint8[OUTPUT_BUFFER_SIZE];
-	}
-
-
-	BufferedSocket::~BufferedSocket()
-	{
-		delete [] output_buffer;
 		delete up_speed;
 		delete down_speed;
 		delete sock;
 	}
 	
-	void BufferedSocket::setGroupID(Uint32 gid,bool upload)
+	void TrafficShapedSocket::setGroupID(Uint32 gid,bool upload)
 	{
 		if (upload)
 			up_gid = gid;
@@ -73,7 +78,7 @@ namespace net
 			down_gid = gid;
 	}
 	
-	float BufferedSocket::getDownloadRate() const
+	float TrafficShapedSocket::getDownloadRate() const
 	{
 		mutex.lock();
 		float ret = down_speed->getRate();
@@ -81,17 +86,25 @@ namespace net
 		return ret;
 	}
 	
-	float BufferedSocket::getUploadRate() const
+	float TrafficShapedSocket::getUploadRate() const
 	{
 		mutex.lock();
 		float ret = up_speed->getRate();
 		mutex.unlock();
 		return ret;
 	}
-
-	static Uint8 input_buffer[OUTPUT_BUFFER_SIZE];
-
-	Uint32 BufferedSocket::readBuffered(Uint32 max_bytes_to_read,bt::TimeStamp now)
+	
+	void TrafficShapedSocket::updateSpeeds(bt::TimeStamp now)
+	{
+		mutex.lock();
+		up_speed->update(now);
+		down_speed->update(now);
+		mutex.unlock();
+	}
+	
+	static bt::Uint8 input_buffer[OUTPUT_BUFFER_SIZE];
+	
+	Uint32 TrafficShapedSocket::read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now)
 	{
 		Uint32 br = 0;
 		bool no_limit = (max_bytes_to_read == 0);
@@ -118,7 +131,10 @@ namespace net
 				down_speed->onData(ret,now);
 				mutex.unlock();
 				if (rdr)
+				{
+					postProcess(input_buffer, ret);
 					rdr->onDataReady(input_buffer,ret);
+				}
 				br += ret;
 				ba -= ret;
 			}
@@ -134,89 +150,11 @@ namespace net
 		}
 		return br;
 	}
-	
-	Uint32 BufferedSocket::sendOutputBuffer(Uint32 max,bt::TimeStamp now)
+
+
+	void TrafficShapedSocket::postProcess(Uint8* data, Uint32 size)
 	{
-		if (bytes_in_output_buffer == 0)
-			return 0;
-		
-		Uint32 bw = 0;
-		Uint32 off = 0;
-		if (max == 0 || bytes_in_output_buffer <= max)
-		{
-			// try to send everything
-			bw = bytes_in_output_buffer;
-			off = bytes_sent;
-		}
-		else 
-		{
-			bw = max;
-			off = bytes_sent;
-		}
-		
-		Uint32 ret = sock->send(output_buffer + off,bw);
-		if (ret > 0)
-		{
-			mutex.lock();
-			up_speed->onData(ret,now);
-			mutex.unlock();
-			bytes_in_output_buffer -= ret;
-			bytes_sent += ret;
-			if (bytes_sent == bytes_in_output_buffer)
-				bytes_in_output_buffer = bytes_sent = 0;
-			return ret;
-		}
-		else
-		{
-			return 0;
-		}
-	}
-	
-	Uint32 BufferedSocket::writeBuffered(Uint32 max,bt::TimeStamp now)
-	{
-		if (!wrt)
-			return 0;
-		
-		Uint32 bw = 0;
-		bool no_limit = max == 0;
-		if (bytes_in_output_buffer > 0)
-		{
-			Uint32 ret = sendOutputBuffer(max,now);
-			if (bytes_in_output_buffer > 0)
-			{
-				// haven't sent it fully so return
-				return ret; 
-			}
-			
-			bw += ret;
-		}
-		
-		// run as long as we do not hit the limit and we can send everything
-		while ((no_limit || bw < max) && bytes_in_output_buffer == 0)
-		{
-			// fill output buffer
-			bytes_in_output_buffer = wrt->onReadyToWrite(output_buffer,OUTPUT_BUFFER_SIZE);
-			bytes_sent = 0;
-			if (bytes_in_output_buffer > 0)
-			{
-				// try to send 
-				bw += sendOutputBuffer(max - bw,now);
-			}
-			else
-			{
-				// no bytes available in output buffer so break
-				break;
-			}
-		}
-		
-		return bw;
-	}
-	
-	void BufferedSocket::updateSpeeds(bt::TimeStamp now)
-	{
-		mutex.lock();
-		up_speed->update(now);
-		down_speed->update(now);
-		mutex.unlock();
+		Q_UNUSED(data);
+		Q_UNUSED(size);
 	}
 }

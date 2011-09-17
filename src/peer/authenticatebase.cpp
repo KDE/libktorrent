@@ -18,7 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "authenticatebase.h"
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 #include <util/sha1hash.h>
 #include <util/log.h>
 #include <dht/dhtbase.h>
@@ -39,7 +39,7 @@ namespace bt
 	}
 
 
-	AuthenticateBase::AuthenticateBase(mse::StreamSocket::Ptr  s) : sock(s),finished(false),local(false)
+	AuthenticateBase::AuthenticateBase(mse::EncryptedPacketSocket::Ptr  s) : sock(s),finished(false),local(false)
 	{
 		connect(&timer,SIGNAL(timeout()),this,SLOT(onTimeout()));
 		timer.setSingleShot(true);

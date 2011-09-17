@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
+ *   Copyright (C) 2011 by Joris Guisson                                   *
  *   joris.guisson@gmail.com                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,66 +15,58 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#ifndef MSEENCRYPTEDSERVERAUTHENTICATE_H
-#define MSEENCRYPTEDSERVERAUTHENTICATE_H
 
-#include <util/sha1hash.h>
-#include <peer/serverauthenticate.h>
-#include "bigint.h"
 
-namespace mse
+#ifndef NET_STREAMSOCKET_H
+#define NET_STREAMSOCKET_H
+
+#include <QByteArray>
+#include <net/trafficshapedsocket.h>
+
+
+namespace net 
 {
-	class RC4Encryptor;
-	
-
-	const Uint32 MAX_SEA_BUF_SIZE = 608 + 20 + 20 + 8 + 4 + 2 + 512 + 2 + 68;
-	/**
-		@author Joris Guisson <joris.guisson@gmail.com>
-	*/
-	class EncryptedServerAuthenticate : public bt::ServerAuthenticate
+	class StreamSocketListener
 	{
-		Q_OBJECT
 	public:
-		EncryptedServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock);
-		virtual ~EncryptedServerAuthenticate();
-
-	private slots:
-		virtual void onReadyRead();
+		virtual ~StreamSocketListener() {}
+		
+		/**
+		 * Called when a StreamSocket gets connected.
+		 */
+		virtual void connectFinished(bool succeeded) = 0;
+		
+		/**
+		 * Called when all data has been sent.
+		 */
+		virtual void dataSent() = 0;
+	};
+	/**
+	 * TrafficShapedSocket which provides a simple buffer as outbound data queue. 
+	 * And a callback interface (StreamSocketListener) for notification of events.
+	 */
+	class StreamSocket : public net::TrafficShapedSocket
+	{
+	public:
+		StreamSocket(bool tcp, int ip_version, StreamSocketListener* listener);
+		virtual ~StreamSocket();
+		
+		virtual bool bytesReadyToWrite() const;
+		virtual bt::Uint32 write(bt::Uint32 max, bt::TimeStamp now);
+		
+		/**
+		 * Add data to send
+		 * @param data The QByteArray
+		 */
+		void addData(const QByteArray & data);
 		
 	private:
-		void handleYA();
-		void sendYB();
-		void findReq1();
-		void calculateSKey();
-		void processVC();
-		void handlePadC();
-		void handleIA();
-		
-	private:
-		enum State
-		{
-			WAITING_FOR_YA,
-			WAITING_FOR_REQ1,
-			FOUND_REQ1,
-			FOUND_INFO_HASH,
-			WAIT_FOR_PAD_C,
-			WAIT_FOR_IA,
-			NON_ENCRYPTED_HANDSHAKE
-		};
-		BigInt xb,yb,s,ya;
-		bt::SHA1Hash skey,info_hash;
-		State state;
-		Uint8 buf[MAX_SEA_BUF_SIZE];
-		Uint32 buf_size;
-		Uint32 req1_off;
-		Uint32 crypto_provide,crypto_select;
-		Uint16 pad_C_len;
-		Uint16 ia_len;
-		RC4Encryptor* our_rc4;
+		StreamSocketListener* listener;
+		QByteArray buffer;
 	};
 
 }
 
-#endif
+#endif // NET_STREAMSOCKET_H

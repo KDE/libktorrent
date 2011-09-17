@@ -22,7 +22,7 @@
 #include <unistd.h>
 #include <util/functions.h>
 #include <util/log.h>
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 #include "authenticatebase.h"
 #include <kdebug.h>
 #include "peerconnector.h"
@@ -92,7 +92,7 @@ namespace bt
 			}
 			else
 			{
-				mse::StreamSocket::Ptr socket = ab->getSocket();
+				mse::EncryptedPacketSocket::Ptr socket = ab->getSocket();
 				if (socket)
 				{
 					net::SocketDevice* dev = socket->socketDevice();
@@ -126,7 +126,7 @@ namespace bt
 			}
 			else
 			{
-				mse::StreamSocket::Ptr socket = ab->getSocket();
+				mse::EncryptedPacketSocket::Ptr socket = ab->getSocket();
 				if (socket)
 				{
 					net::SocketDevice* dev = socket->socketDevice();

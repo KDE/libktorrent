@@ -21,7 +21,7 @@
 #define MSESTREAMSOCKET_H
 
 #include <util/constants.h>
-#include <net/bufferedsocket.h>
+#include <net/packetsocket.h>
 #include <ktorrent_export.h>
 
 class QString;
@@ -46,20 +46,14 @@ namespace mse
 	 * @author Joris Guisson <joris.guisson@gmail.com>
 	 * 
 	 * Wrapper around a TCP socket which handles RC4 encryption.
-	 * Once authentication is done, the sendData and readData interfaces should
-	 * not be used anymore, a SocketReader and SocketWriter should be provided,
-	 * so that reading and writing is controlled from the monitor thread.
 	*/
-	class KTORRENT_EXPORT StreamSocket : public net::SocketReader,public net::SocketWriter
+	class KTORRENT_EXPORT EncryptedPacketSocket : public net::PacketSocket
 	{
 	public:
-		StreamSocket(int ip_version);
-		StreamSocket(int fd,int ip_version);
-		StreamSocket(net::SocketDevice* sock);
-		virtual ~StreamSocket();
-		
-		/// Recalculate upload and download speed
-		void updateSpeeds();
+		EncryptedPacketSocket(int ip_version);
+		EncryptedPacketSocket(int fd,int ip_version);
+		EncryptedPacketSocket(net::SocketDevice* sock);
+		virtual ~EncryptedPacketSocket();
 		
 		/**
 		 * Send a chunk of data. (Does not encrypt the data)
@@ -124,11 +118,8 @@ namespace mse
 		/// see if the socket is still OK
 		bool ok() const;
 		
-		/// Get the file descriptor
-		net::SocketDevice* socketDevice() {return sock ? sock->socketDevice() : 0;}
-		
 		/// Start monitoring of this socket by the monitor thread
-		void startMonitoring(net::SocketReader* rdr,net::SocketWriter* wrt);
+		void startMonitoring(net::SocketReader* rdr);
 		
 		/// Stop monitoring this socket
 		void stopMonitoring();
@@ -139,24 +130,11 @@ namespace mse
 		/// See if a connect was success full
 		bool connectSuccesFull() const;
 		
-		/// Get the current download rate
-		float getDownloadRate() const;
-		
-		/// Get the current download rate
-		float getUploadRate() const;
-		
 		/**
 		 * Set the TOS byte for new sockets.
 		 * @param t TOS value
 		 */
 		static void setTOS(Uint8 t) {tos = t;}
-		
-		/**
-		 * Set the download and upload group ID's
-		 * @param up Upload group ID
-		 * @param down Download group ID
-		 */
-		void setGroupIDs(Uint32 up,Uint32 down);
 		
 		/**
 		 * Set the remote address of the socket. Used by Socks to set the actual
@@ -165,22 +143,18 @@ namespace mse
 		 */
 		void setRemoteAddress(const net::Address & addr);
 		
-		typedef QSharedPointer<StreamSocket> Ptr;
+		typedef QSharedPointer<EncryptedPacketSocket> Ptr;
 		
 	private:
-		virtual void onDataReady(Uint8* buf,Uint32 size);
-		virtual Uint32 onReadyToWrite(Uint8* data,Uint32 max_to_write);
-		virtual bool hasBytesToWrite() const;
+		virtual void preProcess(bt::Packet::Ptr packet);
+		virtual void postProcess(Uint8* data, Uint32 size);
 		
 	private:
-		net::BufferedSocket* sock;
 		RC4Encryptor* enc;
 		Uint8* reinserted_data;
 		Uint32 reinserted_data_size;
 		Uint32 reinserted_data_read;
 		bool monitored;
-		net::SocketReader* rdr;
-		net::SocketWriter* wrt;
 		
 		static Uint8 tos;
 	};

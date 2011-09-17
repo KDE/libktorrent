@@ -26,7 +26,7 @@
 #include <interfaces/peerinterface.h>
 #include <util/bitset.h>
 #include <util/ptrmap.h>
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 #include <ktorrent_export.h>
 #include "peerid.h"
 #include "peerprotocolextension.h"
@@ -41,7 +41,6 @@ namespace bt
 	class Peer;
 	class Piece;
 	class PacketReader;
-	class PacketWriter;
 	class PeerDownloader;
 	class PeerUploader;
 	class PeerManager;
@@ -71,7 +70,7 @@ namespace bt
 		 * @param support Which extensions the peer supports
 		 * @param local Whether or not it is a local peer
 		 */
-		Peer(mse::StreamSocket::Ptr sock,
+		Peer(mse::EncryptedPacketSocket::Ptr sock,
 			 const PeerID & peer_id,
 			 Uint32 num_chunks,
 			 Uint32 chunk_size,
@@ -95,9 +94,6 @@ namespace bt
 		
 		/// See if the peer is stalled.
 		bool isStalled() const;
-
-		/// Get the PacketWriter
-		PacketWriter & getPacketWriter() {return *pwriter;}
 		
 		/// Are we being snubbed by the Peer
 		bool isSnubbed() const;
@@ -211,6 +207,105 @@ namespace bt
 		/// Check if the peer has wanted chunks
 		bool hasWantedChunks(const BitSet & wanted_chunks) const;
 		
+		/**
+		 * Send a choke packet.
+		 */
+		void sendChoke();
+		
+		/**
+		 * Send an unchoke packet.
+		 */
+		void sendUnchoke();
+		
+		/**
+		 * Sends an unchoke message but doesn't update the am_choked field so KT still thinks
+		 * it is choked (and will not upload to it), this is to punish snubbers.
+		 */
+		void sendEvilUnchoke();
+		
+		/**
+		 * Send an interested packet.
+		 */
+		void sendInterested();
+		
+		/**
+		 * Send a not interested packet.
+		 */
+		void sendNotInterested();
+		
+		/**
+		 * Send a request for data.
+		 * @param req The Request
+		 */
+		void sendRequest(const Request & r);
+		
+		/**
+		 * Cancel a request.
+		 * @param req The Request
+		 */
+		void sendCancel(const Request & r);
+		
+		
+		/**
+		 * Send a reject for a request
+		 * @param req The Request
+		 */
+		void sendReject(const Request & r);
+		
+		/**
+		 * Send a have packet.
+		 * @param index
+		 */
+		void sendHave(Uint32 index);
+		
+		/**
+		 * Send an allowed fast packet
+		 * @param index
+		 */
+		void sendAllowedFast(Uint32 index);
+		
+		/**
+		 * Send a chunk of data.
+		 * @param index Index of chunk
+		 * @param begin Offset into chunk
+		 * @param len Length of data
+		 * @param ch The Chunk
+		 * @return true If we satisfy the request, false otherwise
+		 */
+		bool sendChunk(Uint32 index,Uint32 begin,Uint32 len,Chunk * ch);
+		
+		/**
+		 * Send a BitSet. The BitSet indicates which chunks we have.
+		 * @param bs The BitSet
+		 */
+		void sendBitSet(const BitSet & bs);
+		
+		/**
+		 * Send a port message
+		 * @param port The port
+		 */
+		void sendPort(Uint16 port);
+		
+		/// Send a have all message
+		void sendHaveAll();
+		
+		/// Send a have none message
+		void sendHaveNone();
+		
+		/**
+		 * Send a suggest piece packet
+		 * @param index Index of the chunk
+		 */
+		void sendSuggestPiece(Uint32 index);
+		
+		/// Send an extended protocol message
+		void sendExtProtMsg(Uint8 id,const QByteArray & data);
+		
+		/**
+		 * Clear all pending piece uploads we are not in the progress of sending.
+		 */
+		void clearPendingPieceUploads();
+		
 	private slots:
 		void resolved(const QString & hinfo);
 		
@@ -226,7 +321,7 @@ namespace bt
 		void metadataDownloaded(const QByteArray & data);
 
 	private:
-		mse::StreamSocket::Ptr sock;
+		mse::EncryptedPacketSocket::Ptr sock;
 		
 		Timer stalled_timer;
 		
@@ -234,7 +329,6 @@ namespace bt
 		
 		Timer snub_timer;
 		PacketReader* preader;
-		PacketWriter* pwriter;
 		PeerDownloader* downloader;
 		PeerUploader* uploader;
 		
@@ -248,7 +342,6 @@ namespace bt
 		
 		static bool resolve_hostname;
 
-		friend class PacketWriter;
 		friend class PacketReader;
 		friend class PeerDownloader;
 	};

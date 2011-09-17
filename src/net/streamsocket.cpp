@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2009 by Joris Guisson                                   *
+ *   Copyright (C) 2011 by Joris Guisson                                   *
  *   joris.guisson@gmail.com                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,35 +18,70 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <stdio.h>
-#include "peerprotocolextension.h"
-#include "peer.h"
 
-namespace bt
+#include "streamsocket.h"
+#include "socketmonitor.h"
+
+namespace net
 {
+	StreamSocket::StreamSocket(bool tcp, int ip_version, StreamSocketListener* listener)
+		: TrafficShapedSocket(tcp, ip_version), 
+		listener(listener)
+	{
+	}
 	
-	PeerProtocolExtension::PeerProtocolExtension(Uint32 id, Peer* peer) : id(id),peer(peer)
+	StreamSocket::~StreamSocket()
 	{
+	}
+	
+	void StreamSocket::addData(const QByteArray& data)
+	{
+		QMutexLocker lock(&mutex);
+		buffer.append(data);
+		net::SocketMonitor::instance().signalPacketReady();
 	}
 
 
-	PeerProtocolExtension::~PeerProtocolExtension()
+	bool StreamSocket::bytesReadyToWrite() const
 	{
+		QMutexLocker lock(&mutex);
+		return !buffer.isEmpty() || sock->state() == net::SocketDevice::CONNECTING;
 	}
 
-	void PeerProtocolExtension::sendPacket(const QByteArray& data)
+	bt::Uint32 StreamSocket::write(bt::Uint32 max, bt::TimeStamp now)
 	{
-		peer->sendExtProtMsg(id,data);
+		Q_UNUSED(now);
+		
+		QMutexLocker lock(&mutex);
+		if (sock->state() == net::SocketDevice::CONNECTING)
+		{
+			bool ok = sock->connectSuccesFull();
+			if (listener)
+				listener->connectFinished(ok);
+			if (!ok)
+				return 0;
+		}
+		
+		if (buffer.isEmpty())
+			return 0;
+		
+		int to_send = qMin<int>(buffer.size(), max);
+		int ret = sock->send((const bt::Uint8*)buffer.data(), to_send);
+		if (ret == to_send)
+		{
+			buffer.clear();
+			if (listener)
+				listener->dataSent();
+			return ret;
+		}
+		else if (ret > 0)
+		{
+			buffer = buffer.mid(ret);
+			return ret;
+		}
+		else 
+		{
+			return 0;
+		}
 	}
-
-	void PeerProtocolExtension::update()
-	{
-	}
-
-	void PeerProtocolExtension::changeID(Uint32 id)
-	{
-		this->id = id;
-	}
-
 }
-

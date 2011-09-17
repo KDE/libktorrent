@@ -37,13 +37,12 @@
 #include <net/address.h>
 #include <torrent/torrent.h>
 #include <util/functions.h>
-#include <mse/streamsocket.h> 
+#include <mse/encryptedpacketsocket.h> 
 #include <mse/encryptedauthenticate.h>
 #include <peer/accessmanager.h>
 #include <torrent/globals.h>
 #include <torrent/server.h>
 #include <dht/dhtbase.h>
-#include "packetwriter.h"
 #include "chunkcounter.h"
 #include "authenticationmonitor.h"
 #include "peer.h"
@@ -71,7 +70,7 @@ namespace bt
 		
 		void updateAvailableChunks();
 		bool killBadPeer();
-		void createPeer(mse::StreamSocket::Ptr sock,const PeerID & peer_id,Uint32 support,bool local);
+		void createPeer(mse::EncryptedPacketSocket::Ptr sock,const PeerID & peer_id,Uint32 support,bool local);
 		bool connectedTo(const net::Address & addr) const;
 		void update();
 		void have(Peer* peer,Uint32 index);
@@ -128,7 +127,7 @@ namespace bt
 		{
 			p->unpause();
 			if (p->hasWantedChunks(d->wanted_chunks)) // send interested when it has wanted chunks
-				p->getPacketWriter().sendInterested();
+				p->sendInterested();
 		}
 		d->paused = false;
 	}
@@ -213,14 +212,14 @@ namespace bt
 		}
 		
 		if (interested && !d->paused)
-			p->getPacketWriter().sendInterested();
+			p->sendInterested();
 		
 		if (d->superseeder)
 			d->superseeder->bitset(p,bs);
 	}
 	
 
-	void PeerManager::newConnection(mse::StreamSocket::Ptr sock,const PeerID & peer_id,Uint32 support)
+	void PeerManager::newConnection(mse::EncryptedPacketSocket::Ptr sock,const PeerID & peer_id,Uint32 support)
 	{
 		if (!d->started)
 			return;
@@ -526,7 +525,7 @@ namespace bt
 		Out(SYS_CON|LOG_DEBUG) << "Peer " << peer->getPeerID().toString() << " is allowed to download " << chunk << endl;
 		Peer* p = dynamic_cast<Peer*>(peer);
 		if (p)
-			p->getPacketWriter().sendHave(chunk);
+			p->sendHave(chunk);
 	}
 	
 	void PeerManager::sendHave(Uint32 index)
@@ -536,7 +535,7 @@ namespace bt
 		
 		foreach (Peer* peer, d->peer_list)
 		{
-			peer->getPacketWriter().sendHave(index);
+			peer->sendHave(index);
 		}
 	}
 	
@@ -692,9 +691,9 @@ namespace bt
 			foreach (Peer* peer,peer_list)
 			{
 				if (peer->hasWantedChunks(wanted_chunks))
-					peer->getPacketWriter().sendInterested();
+					peer->sendInterested();
 				else
-					peer->getPacketWriter().sendNotInterested();
+					peer->sendNotInterested();
 				i++;
 			}
 			wanted_changed = false;
@@ -704,7 +703,7 @@ namespace bt
 	void PeerManager::Private::have(Peer* peer, Uint32 index)
 	{
 		if (wanted_chunks.get(index) && !paused)
-			peer->getPacketWriter().sendInterested();
+			peer->sendInterested();
 		available_chunks.set(index,true);
 		cnt->inc(index);
 		if (superseeder)
@@ -734,7 +733,7 @@ namespace bt
 		return false;
 	}
 	
-	void PeerManager::Private::createPeer(mse::StreamSocket::Ptr sock,const PeerID & peer_id,Uint32 support,bool local)
+	void PeerManager::Private::createPeer(mse::EncryptedPacketSocket::Ptr sock,const PeerID & peer_id,Uint32 support,bool local)
 	{
 		Peer* peer = new Peer(sock,peer_id,tor.getNumChunks(),tor.getChunkSize(),support,local,p);
 		peer_list.append(peer);
@@ -772,7 +771,7 @@ namespace bt
 		if (potential_peers.size() == 0)
 			return;
 		
-		if (peer_list.count() + connectors.size() >= max_connections && max_connections > 0)
+		if (peer_list.count() + connectors.size() >= (int)max_connections && max_connections > 0)
 			return;
 		
 		if (total_connections >= max_total_connections && max_total_connections > 0)

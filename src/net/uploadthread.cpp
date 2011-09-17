@@ -21,7 +21,7 @@
 #include <math.h>
 #include <util/functions.h>
 #include "socketmonitor.h"
-#include "bufferedsocket.h"
+#include "trafficshapedsocket.h"
 #include "socketgroup.h"
 		
 using namespace bt;
@@ -53,7 +53,7 @@ namespace net
 		SocketMonitor::Itr itr = sm->begin();
 		while (itr != sm->end())
 		{
-			BufferedSocket* s = *itr;
+			TrafficShapedSocket* s = *itr;
 			if (!s->socketDevice() || !s->socketDevice()->ok())
 			{
 				itr++;
@@ -118,7 +118,7 @@ namespace net
 		SocketMonitor::Itr itr = sm->begin();
 		while (itr != sm->end())
 		{
-			BufferedSocket* s = *itr;
+			TrafficShapedSocket* s = *itr;
 			if (s && s->socketDevice()->ok() && s->bytesReadyToWrite())
 			{
 				s->socketDevice()->prepare(this,Poll::OUTPUT);

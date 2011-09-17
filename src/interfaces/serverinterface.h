@@ -25,7 +25,7 @@
 #include <QStringList>
 #include <ktorrent_export.h>
 #include <util/constants.h>
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 
 
 namespace bt
@@ -111,7 +111,7 @@ namespace bt
 		static TransportProtocol primaryTransportProtocol() {return primary_transport_protocol;}
 		
 	protected:
-		void newConnection(mse::StreamSocket::Ptr sock);
+		void newConnection(mse::EncryptedPacketSocket::Ptr sock);
 		
 	protected:
 		static Uint16 port;

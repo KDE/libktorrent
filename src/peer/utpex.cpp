@@ -18,15 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "utpex.h"
+
 #include <net/address.h>
 #include <util/functions.h>
 #include <util/log.h>
-#include "peer.h"
-#include "packetwriter.h"
 #include <bcodec/bdecoder.h>
 #include <bcodec/bencoder.h>
 #include <bcodec/bnode.h>
 #include "peermanager.h"
+#include "peer.h"
 
 
 namespace bt
@@ -135,7 +135,7 @@ namespace bt
 			encode(enc,peers);
 			enc.end();
 			
-			peer->getPacketWriter().sendExtProtMsg(id,data);
+			peer->sendExtProtMsg(id,data);
 		}
 
 		peers = npeers;

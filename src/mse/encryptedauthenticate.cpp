@@ -26,7 +26,7 @@
 #include <torrent/server.h>
 #include <net/socks.h>
 #include "rc4encryptor.h"
-#include "streamsocket.h"
+#include "encryptedpacketsocket.h"
 #include "functions.h"
 
 using namespace bt;

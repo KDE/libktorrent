@@ -25,7 +25,7 @@
 #include <QTimer>
 #include <QHttpRequestHeader>
 #include <kurl.h>
-#include <net/bufferedsocket.h>
+#include <net/streamsocket.h>
 #include <net/addressresolver.h>
 
 class KUrl;
@@ -39,7 +39,7 @@ namespace bt
 		HTTP connection for webseeding. We do not use KIO here, because we want to be able to apply 
 		the maximum upload and download rate to webseeds;
 	*/
-	class HttpConnection : public QObject,public net::SocketReader,public net::SocketWriter
+	class HttpConnection : public QObject, public net::SocketReader, public net::StreamSocketListener
 	{
 		Q_OBJECT
 	public:
@@ -96,8 +96,8 @@ namespace bt
 		bool get(const QString & host,const QString & path,bt::Uint64 start,bt::Uint64 len);
 
 		virtual void onDataReady(Uint8* buf,Uint32 size);
-		virtual Uint32 onReadyToWrite(Uint8* data,Uint32 max_to_write);	
-		virtual bool hasBytesToWrite() const;
+		virtual void connectFinished(bool succeeded);
+		virtual void dataSent();
 		
 		/**
 		 * Get some part of the 
@@ -136,7 +136,6 @@ namespace bt
 			bt::Uint64 len;
 			bt::Uint64 data_received;
 			QByteArray buffer;
-			bt::Uint32 bytes_sent;
 			QByteArray piece_data;
 			bool response_header_received;
 			bool request_sent;
@@ -153,7 +152,7 @@ namespace bt
 			bool finished() const {return data_received >= len;}
 		};
 		
-		net::BufferedSocket* sock;
+		net::StreamSocket* sock;
 		State state;
 		mutable QMutex mutex;
 		HttpGet* request;

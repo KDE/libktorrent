@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
-#include "streamsocket.h"
+#include "encryptedpacketsocket.h"
 #include <errno.h>
 #include <util/sha1hash.h>
 #include <util/log.h>
@@ -43,31 +43,37 @@ using namespace net;
 namespace mse
 {
 	
-	Uint8 StreamSocket::tos = IPTOS_THROUGHPUT;
+	Uint8 EncryptedPacketSocket::tos = IPTOS_THROUGHPUT;
 
-	StreamSocket::StreamSocket(int ip_version) : sock(0),enc(0),monitored(false),rdr(0),wrt(0)
+	EncryptedPacketSocket::EncryptedPacketSocket(int ip_version) : 
+		net::PacketSocket(true, ip_version),
+		enc(0),
+		monitored(false)
 	{
-		sock = new BufferedSocket(true,ip_version);
-		sock->socketDevice()->setBlocking(false);
-		sock->socketDevice()->setTOS(tos);
+		sock->setBlocking(false);
+		sock->setTOS(tos);
 		reinserted_data = 0;
 		reinserted_data_size = 0;
 		reinserted_data_read = 0;
 	}
 
-	StreamSocket::StreamSocket(int fd,int ip_version) : sock(0),enc(0),monitored(false),rdr(0),wrt(0)
+	EncryptedPacketSocket::EncryptedPacketSocket(int fd,int ip_version) : 
+		net::PacketSocket(fd, ip_version),
+		enc(0),
+		monitored(false)
 	{
-		sock = new BufferedSocket(fd,ip_version);
-		sock->socketDevice()->setBlocking(false);
-		sock->socketDevice()->setTOS(tos);
+		sock->setBlocking(false);
+		sock->setTOS(tos);
 		reinserted_data = 0;
 		reinserted_data_size = 0;
 		reinserted_data_read = 0;
 	}
 
-	StreamSocket::StreamSocket(net::SocketDevice* sd)  : sock(0),enc(0),monitored(false),rdr(0),wrt(0)
+	EncryptedPacketSocket::EncryptedPacketSocket(net::SocketDevice* sd) : 
+		net::PacketSocket(sd),
+		enc(0),
+		monitored(false)
 	{
-		sock = new BufferedSocket(sd);
 		sd->setBlocking(false);
 		sd->setTOS(tos);
 		reinserted_data = 0;
@@ -75,23 +81,19 @@ namespace mse
 		reinserted_data_read = 0;
 	}
 
-	StreamSocket::~StreamSocket()
+	EncryptedPacketSocket::~EncryptedPacketSocket()
 	{
 		if (monitored)
 			stopMonitoring();
 		
 		delete [] reinserted_data;
 		delete enc;
-		delete sock;
 	}
 	
-	void StreamSocket::startMonitoring(net::SocketReader* rdr,net::SocketWriter* wrt)
+	void EncryptedPacketSocket::startMonitoring(net::SocketReader* rdr)
 	{
-		this->rdr = rdr;
-		this->wrt = wrt;
-		sock->setReader(this);
-		sock->setWriter(this);
-		SocketMonitor::instance().add(sock);
+		setReader(rdr);
+		SocketMonitor::instance().add(this);
 		monitored = true;
 		if (reinserted_data)
 		{
@@ -107,24 +109,23 @@ namespace mse
 		}
 	}
 	
-	void StreamSocket::stopMonitoring()
+	void EncryptedPacketSocket::stopMonitoring()
 	{
-		SocketMonitor::instance().remove(sock);
+		SocketMonitor::instance().remove(this);
 		monitored = false;
 		rdr = 0;
-		wrt = 0;
 	}
 		
-	Uint32 StreamSocket::sendData(const Uint8* data,Uint32 len)
+	Uint32 EncryptedPacketSocket::sendData(const Uint8* data,Uint32 len)
 	{
 		if (enc)
 		{
 			// we need to make sure all data is sent because of the encryption
 			Uint32 ds = 0;
 			const Uint8* ed = enc->encrypt(data,len);
-			while (sock->socketDevice()->ok() && ds < len)
+			while (sock->ok() && ds < len)
 			{
-				Uint32 ret = sock->socketDevice()->send(ed + ds,len - ds);
+				Uint32 ret = sock->send(ed + ds,len - ds);
 				ds += ret;
 				if (ret == 0)
 				{
@@ -137,14 +138,14 @@ namespace mse
 		}
 		else
 		{
-			Uint32 ret = sock->socketDevice()->send(data,len);
+			Uint32 ret = sock->send(data,len);
 			if (ret != len)
 				Out(SYS_CON|LOG_DEBUG) << "ret != len" << endl;
 			return ret;
 		}
 	}
 		
-	Uint32 StreamSocket::readData(Uint8* buf,Uint32 len)
+	Uint32 EncryptedPacketSocket::readData(Uint8* buf,Uint32 len)
 	{
 		Uint32 ret2 = 0;
 		if (reinserted_data)
@@ -174,28 +175,28 @@ namespace mse
 		if (len == ret2)
 			return ret2;
 		
-		Uint32 ret = sock->socketDevice()->recv(buf + ret2,len - ret2);
+		Uint32 ret = sock->recv(buf + ret2,len - ret2);
 		if (ret + ret2 > 0 && enc)
 			enc->decrypt(buf,ret + ret2);
 		
 		return ret;
 	}
 		
-	Uint32 StreamSocket::bytesAvailable() const
+	Uint32 EncryptedPacketSocket::bytesAvailable() const
 	{
-		Uint32 ba = sock->socketDevice()->bytesAvailable();
+		Uint32 ba = sock->bytesAvailable();
 		if (reinserted_data_size - reinserted_data_read > 0)
 			return  ba + (reinserted_data_size - reinserted_data_read);
 		else
 			return ba;
 	}
 	
-	void StreamSocket::close()
+	void EncryptedPacketSocket::close()
 	{
-		sock->socketDevice()->close();
+		sock->close();
 	}
 	
-	bool StreamSocket::connectTo(const QString & ip,Uint16 port)
+	bool EncryptedPacketSocket::connectTo(const QString & ip,Uint16 port)
 	{
 		// do a safety check
 		if (ip.isNull() || ip.length() == 0)
@@ -204,58 +205,56 @@ namespace mse
 		return connectTo(net::Address(ip,port));
 	}
 	
-	bool StreamSocket::connectTo(const net::Address & addr)
+	bool EncryptedPacketSocket::connectTo(const net::Address & addr)
 	{
 		// we don't wanna block the current thread so set non blocking
-		sock->socketDevice()->setBlocking(false);
-		sock->socketDevice()->setTOS(tos);
-		if (sock->socketDevice()->connectTo(addr))
+		sock->setBlocking(false);
+		sock->setTOS(tos);
+		if (sock->connectTo(addr))
 			return true;
 		
 		return false;
 	}
 			
-	void StreamSocket::initCrypt(const bt::SHA1Hash & dkey,const bt::SHA1Hash & ekey)
+	void EncryptedPacketSocket::initCrypt(const bt::SHA1Hash & dkey,const bt::SHA1Hash & ekey)
 	{
 		delete enc;
-		
 		enc = new RC4Encryptor(dkey,ekey);
 	}
 		
-	void StreamSocket::disableCrypt()
+	void EncryptedPacketSocket::disableCrypt()
 	{
 		delete enc;
 		enc = 0;
 	}
 	
-	bool StreamSocket::ok() const
+	bool EncryptedPacketSocket::ok() const
 	{
-		return sock->socketDevice()->ok();
+		return sock->ok();
 	}
 
-	QString StreamSocket::getRemoteIPAddress() const
+	QString EncryptedPacketSocket::getRemoteIPAddress() const
 	{
-		return sock->socketDevice()->getPeerName().toString();
+		return sock->getPeerName().toString();
 	}
 	
-	bt::Uint16 StreamSocket::getRemotePort() const
+	bt::Uint16 EncryptedPacketSocket::getRemotePort() const
 	{
-		return sock->socketDevice()->getPeerName().port();
+		return sock->getPeerName().port();
 	}
 	
-	net::Address StreamSocket::getRemoteAddress() const
+	net::Address EncryptedPacketSocket::getRemoteAddress() const
 	{
-		return sock->socketDevice()->getPeerName();
+		return sock->getPeerName();
 	}
 	
-	void StreamSocket::setRC4Encryptor(RC4Encryptor* e)
+	void EncryptedPacketSocket::setRC4Encryptor(RC4Encryptor* e)
 	{
 		delete enc;
-		
 		enc = e;
 	}
 	
-	void StreamSocket::reinsert(const Uint8* d,Uint32 size)
+	void EncryptedPacketSocket::reinsert(const Uint8* d,Uint32 size)
 	{
 //		Out() << "Reinsert : " << size << endl;
 		Uint32 off = 0;
@@ -273,66 +272,31 @@ namespace mse
 		memcpy(reinserted_data + off,d,size);
 	}
 	
-	bool StreamSocket::connecting() const
+	bool EncryptedPacketSocket::connecting() const
 	{
-		return sock->socketDevice()->state() == net::SocketDevice::CONNECTING;
+		return sock->state() == net::SocketDevice::CONNECTING;
+	}
+
+	bool EncryptedPacketSocket::connectSuccesFull() const 
+	{
+		return sock->connectSuccesFull();
 	}
 	
-	void StreamSocket::onDataReady(Uint8* buf,Uint32 size)
+	void EncryptedPacketSocket::setRemoteAddress(const net::Address & addr)
+	{
+		sock->setRemoteAddress(addr);
+	}
+	
+	void EncryptedPacketSocket::preProcess(Packet::Ptr packet)
 	{
 		if (enc)
-			enc->decrypt(buf,size);
-		
-		if (rdr)
-			rdr->onDataReady(buf,size);
+			enc->encryptReplace(packet->getData(), packet->getDataLength());
 	}
 	
-	Uint32 StreamSocket::onReadyToWrite(Uint8* data,Uint32 max_to_write)
+	void EncryptedPacketSocket::postProcess(Uint8* data, Uint32 size)
 	{
-		if (!wrt)
-			return 0;
-		
-		Uint32 ret = wrt->onReadyToWrite(data,max_to_write);
-		if (enc && ret > 0) // do encryption if necessary
-			enc->encryptReplace(data,ret);
-		
-		
-		return ret;
+		if (enc)
+			enc->decrypt(data, size);
 	}
 	
-	bool StreamSocket::hasBytesToWrite() const
-	{
-		return wrt ? wrt->hasBytesToWrite() : false;
-	}
-	
-	float StreamSocket::getDownloadRate() const
-	{
-		return sock ? sock->getDownloadRate() : 0.0f;
-	}
-	
-	float StreamSocket::getUploadRate() const
-	{
-		return sock ? sock->getUploadRate() : 0.0f;
-	}
-	
-	bool StreamSocket::connectSuccesFull() const 
-	{
-		return sock->socketDevice()->connectSuccesFull();
-	}
-	
-	void StreamSocket::setGroupIDs(Uint32 up,Uint32 down)
-	{
-		sock->setGroupID(up,true);
-		sock->setGroupID(down,false);
-	}
-	
-	void StreamSocket::setRemoteAddress(const net::Address & addr)
-	{
-		sock->socketDevice()->setRemoteAddress(addr);
-	}
-	
-	void StreamSocket::updateSpeeds()
-	{
-		sock->updateSpeeds(bt::CurrentTime());
-	}
 }

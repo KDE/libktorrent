@@ -24,7 +24,7 @@
 #include <net/address.h>
 #include <net/addressresolver.h>
 #include <ktorrent_export.h>
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 
 namespace net 
 {
@@ -53,7 +53,7 @@ namespace net
 			USERNAME_AND_PASSWORD_SENT,
 			CONNECT_REQUEST_SENT
 		};
-		Socks(mse::StreamSocket::Ptr sock,const Address & dest);
+		Socks(mse::EncryptedPacketSocket::Ptr sock,const Address & dest);
 		virtual ~Socks();
 		
 		/// Setup a socks connection, return the current state
@@ -102,7 +102,7 @@ namespace net
 		void resolved(net::AddressResolver* ar);
 			
 	private:
-		mse::StreamSocket::Ptr sock;
+		mse::EncryptedPacketSocket::Ptr sock;
 		Address dest;
 		State state;
 		SetupState internal_state;

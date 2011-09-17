@@ -25,7 +25,7 @@
 #include <ktorrent_export.h>
 #include <peer/superseeder.h>
 #include <peer/peerconnector.h>
-#include <mse/streamsocket.h>
+#include <mse/encryptedpacketsocket.h>
 
 namespace KNetwork
 {
@@ -173,7 +173,7 @@ namespace bt
 		 * @param peer_id The Peer's ID
 		 * @param support What extensions the peer supports
 		 */
-		void newConnection(mse::StreamSocket::Ptr sock,const PeerID & peer_id,Uint32 support);
+		void newConnection(mse::EncryptedPacketSocket::Ptr sock,const PeerID & peer_id,Uint32 support);
 
 		/**
 		 * Add a potential peer

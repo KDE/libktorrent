@@ -53,7 +53,6 @@
 #include <datachecker/datacheckerjob.h>
 #include <peer/peer.h>
 #include <peer/peermanager.h>
-#include <peer/packetwriter.h>
 #include <peer/peerdownloader.h>
 #include <net/socketmonitor.h>
 #include "torrentfile.h"
@@ -759,25 +758,25 @@ namespace bt
 			{
 				const BitSet & bs = cman->getBitSet();
 				if (bs.allOn())
-					p->getPacketWriter().sendHaveAll();
+					p->sendHaveAll();
 				else if (bs.numOnBits() == 0)
-					p->getPacketWriter().sendHaveNone();
+					p->sendHaveNone();
 				else
-					p->getPacketWriter().sendBitSet(bs);
+					p->sendBitSet(bs);
 			}
 			else
 			{
-				p->getPacketWriter().sendBitSet(cman->getBitSet());
+				p->sendBitSet(cman->getBitSet());
 			}
 		}
 		
 		if (!stats.completed && !stats.paused)
-			p->getPacketWriter().sendInterested();
+			p->sendInterested();
 		
 		if (!stats.priv_torrent)
 		{
 			if (p->isDHTSupported())
-				p->getPacketWriter().sendPort(Globals::instance().getDHT().getPort());
+				p->sendPort(Globals::instance().getDHT().getPort());
 			else
 				// WORKAROUND so we can contact µTorrent's DHT
 				// They do not properly support the standard and do not turn on

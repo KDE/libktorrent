@@ -38,7 +38,6 @@
 #include <peer/badpeerslist.h>
 #include <util/functions.h>
 #include <interfaces/monitorinterface.h>
-#include <peer/packetwriter.h>
 #include <peer/accessmanager.h>
 #include <peer/chunkcounter.h>
 #include "chunkselector.h"
