@@ -105,6 +105,13 @@ namespace net
 		
 		/// Get the upload group ID
 		Uint32 uploadGroupID() const {return up_gid;}
+	protected:
+		/**
+		 * Post process received data. Default implementation does nothing.
+		 * @param data The data
+		 * @param size The size of the data
+		 **/
+		virtual void postProcess(bt::Uint8* data, bt::Uint32 size);
 		
 	protected:
 		SocketReader* rdr;

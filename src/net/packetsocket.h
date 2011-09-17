@@ -86,13 +86,6 @@ namespace net
 		 * @param packet The packet
 		 **/
 		virtual void preProcess(bt::Packet::Ptr packet);
-		
-		/**
-		 * Post process received data. Default implementation does nothing.
-		 * @param data The data
-		 * @param size The size of the data
-		 **/
-		virtual void postProcess(bt::Uint8* data, bt::Uint32 size);
 
 	private:
 		bt::Packet::Ptr selectPacket();

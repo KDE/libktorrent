@@ -44,7 +44,8 @@ namespace net
 		virtual void dataSent() = 0;
 	};
 	/**
-	 * TrafficShapedSocket which uses the SocketWriter interface to write data.
+	 * TrafficShapedSocket which provides a simple buffer as outbound data queue. 
+	 * And a callback interface (StreamSocketListener) for notification of events.
 	 */
 	class StreamSocket : public net::TrafficShapedSocket
 	{

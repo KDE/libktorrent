@@ -131,7 +131,10 @@ namespace net
 				down_speed->onData(ret,now);
 				mutex.unlock();
 				if (rdr)
+				{
+					postProcess(input_buffer, ret);
 					rdr->onDataReady(input_buffer,ret);
+				}
 				br += ret;
 				ba -= ret;
 			}
@@ -148,4 +151,10 @@ namespace net
 		return br;
 	}
 
+
+	void TrafficShapedSocket::postProcess(Uint8* data, Uint32 size)
+	{
+		Q_UNUSED(data);
+		Q_UNUSED(size);
+	}
 }

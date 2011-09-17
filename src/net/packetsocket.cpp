@@ -162,12 +162,6 @@ namespace net
 		Q_UNUSED(packet);
 	}
 	
-	void PacketSocket::postProcess(Uint8* data, Uint32 size)
-	{
-		Q_UNUSED(data);
-		Q_UNUSED(size);
-	}
-	
 	Uint32 PacketSocket::dataBytesUploaded()
 	{
 		QMutexLocker locker(&mutex);
