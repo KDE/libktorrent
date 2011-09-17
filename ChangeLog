@@ -10,6 +10,7 @@ Changes in 1.2:
 - Improve SIGBUS handling, fixes a crash (276777)
 - Remove usage of several deprecated KDE3 networking classes
 - Remove obsolete functions of data check during upload
+- Revamp networking code
 
 Changes in 1.1.3:
 - Fix crash in webseed code (281605)
