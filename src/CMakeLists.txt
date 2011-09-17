@@ -51,6 +51,7 @@ set(libktorrent_SRC
 	net/serversocket.cpp
 	net/addressresolver.cpp
 	net/trafficshapedsocket.cpp
+	net/streamsocket.cpp
 	
 	mse/bigint.cpp  
 	mse/functions.cpp  

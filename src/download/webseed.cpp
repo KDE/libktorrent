@@ -183,7 +183,7 @@ namespace bt
 		bytes_of_cur_chunk = 0;
 		
 		QString path = url.path();
-		if (path.endsWith('/') && !isUserCreated())
+		if (path.endsWith('/'))
 			path += tor.getNameSuggestion();
 		
 		if (tor.isMultiFile())

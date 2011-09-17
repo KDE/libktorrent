@@ -5,6 +5,7 @@ set(net_HDR
 	socks.h
 	packetsocket.h
 	trafficshapedsocket.h
+	streamsocket.h
 	downloadthread.h
 	address.h
 	addressresolver.h

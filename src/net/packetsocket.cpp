@@ -90,6 +90,9 @@ namespace net
 	
 	Uint32 PacketSocket::write(Uint32 max, bt::TimeStamp now)
 	{
+		if (sock->state() == net::SocketDevice::CONNECTING && !sock->connectSuccesFull())
+			return 0;
+		
 		if (!curr_packet)
 			curr_packet = selectPacket();
 		

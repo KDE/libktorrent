@@ -39,7 +39,8 @@ namespace net
 	/**
 	 * @author Joris Guisson <joris.guisson@gmail.com>
 	 * 
-	 * Extends the Socket class with
+	 * Extends the TrafficShapedSocket with outbound bittorrent 
+	 * packet queues.
 	 */
 	class PacketSocket : public TrafficShapedSocket
 	{
@@ -57,8 +58,6 @@ namespace net
 		
 		
 		virtual Uint32 write(Uint32 max, bt::TimeStamp now);
-		
-		/// See if the socket has something ready to write
 		virtual bool bytesReadyToWrite() const;
 		
 		/// Get the number of data bytes uploaded
