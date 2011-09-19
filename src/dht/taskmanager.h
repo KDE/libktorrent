@@ -21,7 +21,6 @@
 #define DHTTASKMANAGER_H
 
 #include <qlist.h>
-#include <util/ptrmap.h>
 #include <util/constants.h>
 #include "task.h"
 
@@ -34,10 +33,11 @@ namespace dht
 	 * 
 	 * Manages all dht tasks.
 	*/
-	class TaskManager
+	class TaskManager : public QObject
 	{
+		Q_OBJECT
 	public:
-		TaskManager();
+		TaskManager(const DHT* dh_table);
 		virtual ~TaskManager();
 		
 		/**
@@ -45,23 +45,20 @@ namespace dht
 		 * @param task 
 		 */
 		void addTask(Task* task);
-				
-		/**
-		 * Remove all finished tasks.
-		 * @param dh_table Needed to ask permission to start a task
-		 */
-		void removeFinishedTasks(const DHT* dh_table);
 		
 		/// Get the number of running tasks
-		bt::Uint32 getNumTasks() const {return tasks.count();}
+		bt::Uint32 getNumTasks() const {return active.count();}
 		
 		/// Get the number of queued tasks
 		bt::Uint32 getNumQueuedTasks() const {return queued.count();}
+		
+	private slots:
+		void taskFinished(Task* task);
 
 	private:
-		bt::PtrMap<Uint32,Task> tasks;
+		const DHT* dh_table;
+		QList<Task*> active;
 		QList<Task*> queued;
-		bt::Uint32 next_id;
 	};
 
 }

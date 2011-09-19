@@ -27,44 +27,32 @@ using namespace bt;
 
 namespace dht
 {
-	typedef bt::PtrMap<Uint32,Task>::iterator TaskItr;
 
-	TaskManager::TaskManager() : next_id(0)
+	TaskManager::TaskManager(const DHT* dh_table) : dh_table(dh_table)
 	{
-		tasks.setAutoDelete(true);
 	}
 
 
 	TaskManager::~TaskManager()
 	{
+		qDeleteAll(active);
 		qDeleteAll(queued);
-		tasks.clear();
 	}
 
 	
 	void TaskManager::addTask(Task* task)
 	{
-		Uint32 id = next_id++;
-		task->setTaskID(id);
+		connect(task, SIGNAL(finished(Task*)), this, SLOT(taskFinished(Task*)));
 		if (task->isQueued())
 			queued.append(task);
 		else
-			tasks.insert(id,task);
+			active.append(task);
 	}
-		
-	void TaskManager::removeFinishedTasks(const DHT* dh_table)
+	
+	void TaskManager::taskFinished(Task* task)
 	{
-		QList<Uint32> rm;
-		for (TaskItr i = tasks.begin();i != tasks.end();i++)
-		{
-			if (i->second->isFinished())
-				rm.append(i->first);
-		}
-		
-		for (QList<Uint32>::iterator i = rm.begin();i != rm.end();i++)
-		{
-			tasks.erase(*i);
-		}
+		active.removeAll(task);
+		task->deleteLater();
 		
 		while (dh_table->canStartTask() && queued.count() > 0)
 		{
@@ -72,7 +60,7 @@ namespace dht
 			queued.removeFirst();
 			Out(SYS_DHT|LOG_NOTICE) << "DHT: starting queued task" << endl;
 			t->start();
-			tasks.insert(t->getTaskID(),t);
+			active.append(t);
 		}
 	}
 

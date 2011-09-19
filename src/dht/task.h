@@ -106,12 +106,6 @@ namespace dht
 		/// Is the task finished
 		bool isFinished() const {return task_finished;}
 		
-		/// Set the task ID
-		void setTaskID(bt::Uint32 tid) {task_id = tid;}
-		
-		/// Get the task ID
-		bt::Uint32 getTaskID() const {return task_id;}
-		
 		/// Get the number of outstanding requests
 		bt::Uint32 getNumOutstandingRequests() const {return outstanding_reqs;}
 		
@@ -160,7 +154,6 @@ namespace dht
 	private:
 		RPCServer* rpc;
 		bt::Uint32 outstanding_reqs;
-		bt::Uint32 task_id; 
 		bool task_finished;
 		bool queued;
 	};

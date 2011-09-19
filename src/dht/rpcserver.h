@@ -27,8 +27,6 @@
 #include <net/socket.h>
 #include <util/constants.h>
 #include <util/ptrmap.h>
-#include <QMutex>
-
 
 using bt::Uint32;
 using bt::Uint16;
@@ -94,9 +92,6 @@ namespace dht
 		
 		/// Get the number of active calls
 		Uint32 getNumActiveRPCCalls() const;
-	
-		/// Handle all incoming packets
-		void handlePackets();
 		
 		/// Find the method given an mtid
 		Method findMethod(Uint8 mtid);

@@ -45,6 +45,7 @@ namespace dht
 	DHT::DHT() : node(0),srv(0),db(0),tman(0),our_node_lookup(0)
 	{
 		connect(&update_timer,SIGNAL(timeout()),this,SLOT(update()));
+		connect(&expire_timer,SIGNAL(timeout()),this,SLOT(expireDatabaseItems()));
 	}
 
 
@@ -68,12 +69,12 @@ namespace dht
 		srv = new RPCServer(this,port);
 		node = new Node(srv,key_file);
 		db = new Database();
-		tman = new TaskManager();
-		expire_timer.update();
+		tman = new TaskManager(this);
 		running = true;
 		srv->start();
 		node->loadTable(table);
 		update_timer.start(1000);
+		expire_timer.start(5*60*1000);
 		started();
 		if (node->getNumEntriesInRoutingTable() > 0)
 		{
@@ -89,6 +90,7 @@ namespace dht
 			return;
 		
 		update_timer.stop();
+		expire_timer.stop();
 		Out(SYS_DHT|LOG_NOTICE) << "DHT: Stopping " << endl;
 		srv->stop();
 		node->saveTable(table_file);
@@ -109,7 +111,6 @@ namespace dht
 		if (r->getID() == node->getOurID())
 			return;
 		
-		Out(SYS_DHT|LOG_NOTICE) << "DHT: Sending ping response" << endl;
 		PingRsp rsp(r->getMTID(),node->getOurID());
 		rsp.setOrigin(r->getOrigin());
 		srv->sendMsg(rsp);
@@ -241,7 +242,6 @@ namespace dht
 		if (!running)
 			return;
 		
-		Out(SYS_DHT|LOG_DEBUG) << "Sending ping request to " << ip << ":" << port << endl;
 		MsgBase::Ptr r(new PingReq(node->getOurID()));
 		r->setOrigin(net::Address(ip,port));
 		srv->doCall(r);
@@ -319,6 +319,12 @@ namespace dht
 		return 0;
 	}
 	
+	void DHT::expireDatabaseItems()
+	{
+		db->expire(bt::CurrentTime());
+	}
+
+	
 	void DHT::update()
 	{
 		if (!running)
@@ -326,15 +332,7 @@ namespace dht
 		
 		try
 		{
-			if (expire_timer.getElapsedSinceUpdate() > 5*60*1000)
-			{
-				db->expire(bt::CurrentTime());
-				expire_timer.update();
-			}
-			
-			srv->handlePackets();
 			node->refreshBuckets(this);
-			tman->removeFinishedTasks(this);
 			stats.num_tasks = tman->getNumTasks() + tman->getNumQueuedTasks();
 			stats.num_peers = node->getNumEntriesInRoutingTable();
 		}

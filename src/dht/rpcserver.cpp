@@ -22,6 +22,7 @@
 #include <QThread>
 #include <unistd.h>
 #include <string.h>
+#include <boost/scoped_ptr.hpp>
 #include <net/portlist.h>
 #include <util/log.h>
 #include <util/error.h>
@@ -30,23 +31,24 @@
 #include <bcodec/bdecoder.h>
 #include <bcodec/bencoder.h>
 #include <util/functions.h>
+#include <net/serversocket.h>
 #include "rpccall.h"
 #include "rpcmsg.h"
 #include "kbucket.h"
 #include "node.h"
 #include "dht.h"
-#include <net/socket.h>
+
 
 using namespace bt;
 
 namespace dht
 {
 	
-	class RPCServer::Private : public QThread
+	class RPCServer::Private : public net::ServerSocket::DataHandler
 	{
 	public:
 		Private(RPCServer* p,DHT* dh_table,Uint16 port) 
-			: p(p),dh_table(dh_table),next_mtid(0),port(port),running(false)
+			: p(p),dh_table(dh_table),next_mtid(0),port(port)
 		{}
 		
 		~Private()
@@ -66,8 +68,8 @@ namespace dht
 		void listen(const QString & ip)
 		{
 			net::Address addr(ip,port);
-			net::Socket::Ptr sock(new net::Socket(false,addr.ipVersion()));
-			if (!sock->bind(addr,false))
+			net::ServerSocket::Ptr sock(new net::ServerSocket(this));
+			if (!sock->bind(addr))
 			{
 				Out(SYS_DHT|LOG_IMPORTANT) << "DHT: Failed to bind to " << addr.toString() << endl;
 			}
@@ -75,91 +77,53 @@ namespace dht
 			{
 				Out(SYS_DHT|LOG_NOTICE) << "DHT: Bound to " << addr.toString() << endl;
 				sockets.append(sock);
+				sock->setReadNotificationsEnabled(true);
 			}
 		}
 		
-		virtual void run()
+		virtual void dataReceived(const QByteArray& data, const net::Address& addr)
 		{
-			net::Poll poller;
-			running = true;
-			while (running)
-			{
-				foreach (net::Socket::Ptr sock,sockets)
-					sock->prepare(&poller,net::Poll::INPUT);
-				
-				
-				if (poller.poll(500) > 0)
-				{
-					foreach (net::Socket::Ptr sock,sockets)
-					{
-						if (sock->ready(&poller,net::Poll::INPUT))
-							handlePacket(sock);
-					}
-				}
-				
-				poller.reset();
-			}
-		}
-		
-		void handlePacket(net::Socket::Ptr socket)
-		{
-			QMutexLocker lock(&msg_mutex);
-			static bt::Uint8 packet_buf[2048];
-			
-			net::Address addr;
-			int ret = socket->recvFrom(packet_buf,2048,addr);
-			if (ret <= 0)
-				return;
-			
-			
-			BNode* n = 0;
 			try
 			{
-				QByteArray data = QByteArray::fromRawData((const char*)packet_buf,ret);
 				// read and decode the packet
 				BDecoder bdec(data,false);
-				n = bdec.decode();
+				boost::scoped_ptr<BNode> n(bdec.decode());
 				
 				if (!n || n->getType() != BNode::DICT)
-				{
-					delete n;
 					return;
-				}
 				
 				// try to make a RPCMsg of it
-				MsgBase::Ptr msg = MakeRPCMsg((BDictNode*)n,p);
+				MsgBase::Ptr msg = MakeRPCMsg((BDictNode*)n.get(),p);
 				if (msg)
 				{
 					msg->setOrigin(addr);
-					incoming.append(msg);
+					msg->apply(dh_table,msg);
+					// erase an existing call
+					if (msg->getType() == RSP_MSG && calls.contains(msg->getMTID()))
+					{
+						// delete the call, but first notify it off the response
+						RPCCall* c = calls.find(msg->getMTID());
+						c->response(msg);
+						calls.erase(msg->getMTID());
+						c->deleteLater();
+						doQueuedCalls();
+					}
 				}
 			}
 			catch (bt::Error & err)
 			{
 				Out(SYS_DHT|LOG_IMPORTANT) << "Error happened during parsing : " << err.toString() << endl;
 			}
-			delete n;
 		}
 		
-		void stop()
+		virtual void readyToWrite(net::ServerSocket* sock)
 		{
-			running = false;
-		}
-		
-		
-		MsgBase::Ptr nextMessage()
-		{
-			if (incoming.isEmpty())
-				return MsgBase::Ptr(0);
-			
-			MsgBase::Ptr msg = incoming.first();
-			incoming.pop_front();
-			return msg;
+			Q_UNUSED(sock);
 		}
 		
 		void send(const net::Address & addr,const QByteArray & msg)
 		{
-			foreach (net::Socket::Ptr sock,sockets)
+			foreach (net::ServerSocket::Ptr sock,sockets)
 			{
 				if (sock->sendTo((const bt::Uint8*)msg.data(),msg.size(),addr) == msg.size())
 					break;
@@ -186,7 +150,6 @@ namespace dht
 		
 		RPCCall* doCall(MsgBase::Ptr msg)
 		{
-			QMutexLocker lock(&mutex);
 			Uint8 start = next_mtid;
 			while (calls.contains(next_mtid))
 			{
@@ -218,7 +181,6 @@ namespace dht
 		
 		void timedOut(Uint8 mtid)
 		{
-			QMutexLocker lock(&mutex);
 			// delete the call
 			RPCCall* c = calls.find(mtid);
 			if (c)
@@ -231,16 +193,12 @@ namespace dht
 		}
 	
 		RPCServer* p;
-		QList<net::Socket::Ptr> sockets;
+		QList<net::ServerSocket::Ptr> sockets;
 		DHT* dh_table;
 		bt::PtrMap<bt::Uint8,RPCCall> calls;
 		QList<RPCCall*> call_queue;
 		bt::Uint8 next_mtid;
 		bt::Uint16 port;
-		QMutex mutex;
-		QMutex msg_mutex;
-		bool running;
-		QList<MsgBase::Ptr> incoming;
 	};
 	
 
@@ -274,20 +232,13 @@ namespace dht
 		}
 		
 		if (d->sockets.count() > 0)
-		{
 			bt::Globals::instance().getPortList().addNewPort(d->port,net::UDP,true);
-			d->start(QThread::IdlePriority);
-		}
 	}
 		
 	void RPCServer::stop()
 	{
 		bt::Globals::instance().getPortList().removePort(d->port,net::UDP);
-		if (d->running)
-		{
-			d->stop();
-			d->wait();
-		}
+		d->reset();
 	}
 	
 #if 0
@@ -307,28 +258,6 @@ namespace dht
 	}
 #endif
 
-	void RPCServer::handlePackets()
-	{
-		// lock the thread
-		QMutexLocker lock(&d->msg_mutex);
-		
-		MsgBase::Ptr msg(0);
-		while ((msg = d->nextMessage()) != 0)
-		{
-			msg->apply(d->dh_table,msg);
-			// erase an existing call
-			if (msg->getType() == RSP_MSG && d->calls.contains(msg->getMTID()))
-			{
-				// delete the call, but first notify it off the response
-				RPCCall* c = d->calls.find(msg->getMTID());
-				c->response(msg);
-				d->calls.erase(msg->getMTID());
-				c->deleteLater();
-				d->doQueuedCalls();
-			}
-		}
-	}
-	
 	RPCCall* RPCServer::doCall(MsgBase::Ptr msg)
 	{
 		return d->doCall(msg);
@@ -354,7 +283,6 @@ namespace dht
 	
 	Method RPCServer::findMethod(Uint8 mtid)
 	{
-		QMutexLocker lock(&d->mutex);
 		const RPCCall* call = d->calls.find(mtid);
 		if (call)
 			return call->getMsgMethod();
@@ -364,7 +292,6 @@ namespace dht
 	
 	void RPCServer::ping(const dht::Key & our_id,const net::Address & addr)
 	{
-		Out(SYS_DHT|LOG_NOTICE) << "DHT: pinging " << addr.toString() << endl;
 		MsgBase::Ptr pr(new PingReq(our_id));
 		pr->setOrigin(addr);
 		doCall(pr);
