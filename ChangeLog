@@ -1,4 +1,5 @@
 Changes in 1.1.3:
+- Fix bug causing UPnP not to work properly if there is a question mark in the controlurl
 - Fix crash in webseed code (281605)
 
 Changes in 1.1.2:

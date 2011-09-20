@@ -400,15 +400,15 @@ namespace bt
 		if (location.port()<=0)
 			location.setPort(80);
 		
-		QString http_hdr = QString(
-				"POST %1 HTTP/1.1\r\n"
-				"Host: %2:%3\r\n"
-				"User-Agent: %5\r\n"
-				"Content-length: $CONTENT_LENGTH\r\n"
-				"Content-Type: text/xml\r\n"
-				"SOAPAction: \"%4\"\r\n"
-				"\r\n").arg(controlurl.encodedPathAndQuery()).arg(location.host()).arg(location.port()).arg(soapact).arg(bt::GetVersionString());
-				
+		QString http_hdr;
+		QTextStream out(&http_hdr);
+		out << "POST " << controlurl.encodedPathAndQuery() << " HTTP/1.1\r\n";
+		out << "Host: " << location.host() << ":" << location.port() << "\r\n";
+		out << "User-Agent: " << bt::GetVersionString() << "\r\n";
+		out << "Content-length: $CONTENT_LENGTH\r\n";
+		out << "Content-Type: text/xml\r\n";
+		out << "SOAPAction: \"" << soapact << "\"\r\n\r\n";
+		
 		QString host = controlurl.hasHost() ? controlurl.host() : location.host();
 		bt::Uint16 port = controlurl.hasHost() ? controlurl.port(80) : location.port(80);
 		
