@@ -36,7 +36,7 @@ namespace dht
 	class NodeLookup : public Task
 	{
 	public:
-		NodeLookup(const dht::Key & node_id,RPCServer* rpc,Node* node);
+		NodeLookup(const dht::Key & node_id,RPCServer* rpc,Node* node,QObject* parent);
 		virtual ~NodeLookup();
 
 		virtual void update();

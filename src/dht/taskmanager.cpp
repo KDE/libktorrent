@@ -35,11 +35,9 @@ namespace dht
 
 	TaskManager::~TaskManager()
 	{
-		qDeleteAll(active);
-		qDeleteAll(queued);
 	}
 
-	
+
 	void TaskManager::addTask(Task* task)
 	{
 		connect(task, SIGNAL(finished(Task*)), this, SLOT(taskFinished(Task*)));
@@ -48,17 +46,17 @@ namespace dht
 		else
 			active.append(task);
 	}
-	
+
 	void TaskManager::taskFinished(Task* task)
 	{
 		active.removeAll(task);
 		task->deleteLater();
-		
+
 		while (dh_table->canStartTask() && queued.count() > 0)
 		{
 			Task* t = queued.first();
 			queued.removeFirst();
-			Out(SYS_DHT|LOG_NOTICE) << "DHT: starting queued task" << endl;
+			Out(SYS_DHT | LOG_NOTICE) << "DHT: starting queued task" << endl;
 			t->start();
 			active.append(t);
 		}

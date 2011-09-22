@@ -28,7 +28,7 @@ namespace dht
 {
 	class RPCServer;
 	class RPCCall;
-	
+
 	/**
 	 * Class which objects should derive from, if they want to know the result of a call.
 	*/
@@ -36,23 +36,23 @@ namespace dht
 	{
 		Q_OBJECT
 	public:
-		RPCCallListener();
+		RPCCallListener(QObject* parent);
 		virtual ~RPCCallListener();
-		
+
 	public slots:
 		/**
 		 * A response was received.
 		 * @param c The call
 		 * @param rsp The response
 		 */
-		virtual void onResponse(RPCCall* c,MsgBase::Ptr rsp) = 0;
-		
+		virtual void onResponse(RPCCall* c, MsgBase::Ptr rsp) = 0;
+
 		/**
 		 * The call has timed out.
 		 * @param c The call
 		 */
 		virtual void onTimeout(RPCCall* c) = 0;
-		
+
 	};
 
 	/**
@@ -62,45 +62,45 @@ namespace dht
 	{
 		Q_OBJECT
 	public:
-		RPCCall(RPCServer* rpc,MsgBase::Ptr msg,bool queued);
+		RPCCall(RPCServer* rpc, MsgBase::Ptr msg, bool queued);
 		virtual ~RPCCall();
-		
+
 		/**
 		 * Called when a queued call gets started. Starts the timeout timer.
 		 */
 		void start();
-		
+
 		/**
 		 * Called by the server if a response is received.
-		 * @param rsp 
+		 * @param rsp
 		 */
 		void response(MsgBase::Ptr rsp);
-		
+
 		/**
 		 * Add a listener for this call
 		 * @param cl The listener
 		 */
 		void addListener(RPCCallListener* cl);
-		
+
 		/// Get the message type
 		Method getMsgMethod() const;
-		
+
 		/// Get the request sent
 		const MsgBase::Ptr getRequest() const {return msg;}
-		
+
 		/// Get the request sent
 		MsgBase::Ptr getRequest() {return msg;}
-		
+
 	private slots:
 		void onTimeout();
-		
+
 	signals:
-		void onCallResponse(RPCCall* c,MsgBase::Ptr rsp);
+		void onCallResponse(RPCCall* c, MsgBase::Ptr rsp);
 		void onCallTimeout(RPCCall* c);
 
 	private:
 		MsgBase::Ptr msg;
-		QTimer timer; 
+		QTimer timer;
 		RPCServer* rpc;
 		bool queued;
 	};

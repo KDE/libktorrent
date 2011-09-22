@@ -39,13 +39,13 @@ using namespace bt;
 
 namespace dht
 {
-	
 
 
-	DHT::DHT() : node(0),srv(0),db(0),tman(0),our_node_lookup(0)
+
+	DHT::DHT() : node(0), srv(0), db(0), tman(0), our_node_lookup(0)
 	{
-		connect(&update_timer,SIGNAL(timeout()),this,SLOT(update()));
-		connect(&expire_timer,SIGNAL(timeout()),this,SLOT(expireDatabaseItems()));
+		connect(&update_timer, SIGNAL(timeout()), this, SLOT(update()));
+		connect(&expire_timer, SIGNAL(timeout()), this, SLOT(expireDatabaseItems()));
 	}
 
 
@@ -54,20 +54,20 @@ namespace dht
 		if (running)
 			stop();
 	}
-	
-	void DHT::start(const QString & table,const QString & key_file,bt::Uint16 port)
+
+	void DHT::start(const QString & table, const QString & key_file, bt::Uint16 port)
 	{
 		if (running)
 			return;
-		
+
 		if (port == 0)
-			port = 6881; 
-		
+			port = 6881;
+
 		table_file = table;
 		this->port = port;
-		Out(SYS_DHT|LOG_NOTICE) << "DHT: Starting on port " << port << endl;
-		srv = new RPCServer(this,port);
-		node = new Node(srv,key_file);
+		Out(SYS_DHT | LOG_NOTICE) << "DHT: Starting on port " << port << endl;
+		srv = new RPCServer(this, port);
+		node = new Node(srv, key_file);
 		db = new Database();
 		tman = new TaskManager(this);
 		running = true;
@@ -82,16 +82,16 @@ namespace dht
 			findOwnNode();
 		}
 	}
-		
-		
+
+
 	void DHT::stop()
 	{
 		if (!running)
 			return;
-		
+
 		update_timer.stop();
 		expire_timer.stop();
-		Out(SYS_DHT|LOG_NOTICE) << "DHT: Stopping " << endl;
+		Out(SYS_DHT | LOG_NOTICE) << "DHT: Stopping " << endl;
 		srv->stop();
 		node->saveTable(table_file);
 		running = false;
@@ -106,36 +106,36 @@ namespace dht
 	{
 		if (!running)
 			return;
-		
+
 		// ignore requests we get from ourself
 		if (r->getID() == node->getOurID())
 			return;
-		
-		PingRsp rsp(r->getMTID(),node->getOurID());
+
+		PingRsp rsp(r->getMTID(), node->getOurID());
 		rsp.setOrigin(r->getOrigin());
 		srv->sendMsg(rsp);
-		node->received(this,r);
+		node->received(this, r);
 	}
-	
-	
-	
+
+
+
 	void DHT::findNode(FindNodeReq::Ptr r)
 	{
 		if (!running)
 			return;
-		
+
 		// ignore requests we get from ourself
 		if (r->getID() == node->getOurID())
 			return;
-		
-		Out(SYS_DHT|LOG_DEBUG) << "DHT: got findNode request" << endl;
-		node->received(this,r);
+
+		Out(SYS_DHT | LOG_DEBUG) << "DHT: got findNode request" << endl;
+		node->received(this, r);
 		// find the K closest nodes and pack them
-		KClosestNodesSearch kns(r->getTarget(),K);
-		
+		KClosestNodesSearch kns(r->getTarget(), K);
+
 		node->findKClosestNodes(kns);
-	
-		FindNodeRsp fnr(r->getMTID(),node->getOurID());
+
+		FindNodeRsp fnr(r->getMTID(), node->getOurID());
 		// pack the found nodes in a byte array
 		kns.pack(&fnr);
 		fnr.setOrigin(r->getOrigin());
@@ -146,10 +146,10 @@ namespace dht
 	{
 		if (our_node_lookup)
 			return our_node_lookup;
-		
+
 		our_node_lookup = findNode(node->getOurID());
 		if (our_node_lookup)
-			connect(our_node_lookup,SIGNAL(finished(Task*)),this,SLOT(ownNodeLookupFinished(Task*)));
+			connect(our_node_lookup, SIGNAL(finished(Task*)), this, SLOT(ownNodeLookupFinished(Task*)));
 		return our_node_lookup;
 	}
 
@@ -159,94 +159,94 @@ namespace dht
 			our_node_lookup = 0;
 	}
 
-	
+
 	void DHT::announce(AnnounceReq::Ptr r)
 	{
 		if (!running)
 			return;
-		
+
 		// ignore requests we get from ourself
 		if (r->getID() == node->getOurID())
 			return;
-		
-		Out(SYS_DHT|LOG_DEBUG) << "DHT: got announce request" << endl;
-		node->received(this,r);
+
+		Out(SYS_DHT | LOG_DEBUG) << "DHT: got announce request" << endl;
+		node->received(this, r);
 		// first check if the token is OK
 		dht::Key token = r->getToken();
-		if (!db->checkToken(token,r->getOrigin()))
+		if (!db->checkToken(token, r->getOrigin()))
 			return;
-		
+
 		// everything OK, so store the value
-		db->store(r->getInfoHash(),DBItem(r->getOrigin()));
+		db->store(r->getInfoHash(), DBItem(r->getOrigin()));
 		// send a proper response to indicate everything is OK
-		AnnounceRsp rsp(r->getMTID(),node->getOurID());
+		AnnounceRsp rsp(r->getMTID(), node->getOurID());
 		rsp.setOrigin(r->getOrigin());
 		srv->sendMsg(rsp);
 	}
-	
-	
-	
+
+
+
 	void DHT::getPeers(GetPeersReq::Ptr r)
 	{
 		if (!running)
 			return;
-		
+
 		// ignore requests we get from ourself
 		if (r->getID() == node->getOurID())
 			return;
-		
-		Out(SYS_DHT|LOG_DEBUG) << "DHT: got getPeers request" << endl;
-		node->received(this,r);
+
+		Out(SYS_DHT | LOG_DEBUG) << "DHT: got getPeers request" << endl;
+		node->received(this, r);
 		DBItemList dbl;
-		db->sample(r->getInfoHash(),dbl,50);
-		
+		db->sample(r->getInfoHash(), dbl, 50);
+
 		// generate a token
 		dht::Key token = db->genToken(r->getOrigin());
-		
+
 		if (dbl.count() == 0)
 		{
 			// if data is null do the same as when we have a findNode request
 			// find the K closest nodes and pack them
-			KClosestNodesSearch kns(r->getInfoHash(),K);
+			KClosestNodesSearch kns(r->getInfoHash(), K);
 			node->findKClosestNodes(kns);
-			
-		
-			GetPeersRsp fnr(r->getMTID(),node->getOurID(),token);
+
+
+			GetPeersRsp fnr(r->getMTID(), node->getOurID(), token);
 			kns.pack(&fnr);
 			fnr.setOrigin(r->getOrigin());
 			srv->sendMsg(fnr);
 		}
 		else
-		{			
+		{
 			// send a get peers response
-			GetPeersRsp fvr(r->getMTID(),node->getOurID(),dbl,token);
+			GetPeersRsp fvr(r->getMTID(), node->getOurID(), dbl, token);
 			fvr.setOrigin(r->getOrigin());
 			srv->sendMsg(fvr);
 		}
 	}
-	
+
 	void DHT::response(MsgBase::Ptr r)
 	{
 		if (!running)
 			return;
-		
-		node->received(this,r);
+
+		node->received(this, r);
 	}
-	
+
 	void DHT::error(ErrMsg::Ptr )
 	{}
-	
 
-	void DHT::portReceived(const QString & ip,bt::Uint16 port)
+
+	void DHT::portReceived(const QString & ip, bt::Uint16 port)
 	{
 		if (!running)
 			return;
-		
+
 		MsgBase::Ptr r(new PingReq(node->getOurID()));
-		r->setOrigin(net::Address(ip,port));
+		r->setOrigin(net::Address(ip, port));
 		srv->doCall(r);
 	}
-	
+
 	bool DHT::canStartTask() const
 	{
 		// we can start a task if we have less then  7 runnning and
@@ -255,81 +255,81 @@ namespace dht
 			return false;
 		else if (256 - srv->getNumActiveRPCCalls() <= 16)
 			return false;
-		
-		return true;	
+
+		return true;
 	}
-	
-	AnnounceTask* DHT::announce(const bt::SHA1Hash & info_hash,bt::Uint16 port)
+
+	AnnounceTask* DHT::announce(const bt::SHA1Hash & info_hash, bt::Uint16 port)
 	{
 		if (!running)
 			return 0;
-		
-		KClosestNodesSearch kns(info_hash,K);
+
+		KClosestNodesSearch kns(info_hash, K);
 		node->findKClosestNodes(kns);
 		if (kns.getNumEntries() > 0)
 		{
-			Out(SYS_DHT|LOG_NOTICE) << "DHT: Doing announce " << endl;
-			AnnounceTask* at = new AnnounceTask(db,srv,node,info_hash,port);
-			at->start(kns,!canStartTask());
+			Out(SYS_DHT | LOG_NOTICE) << "DHT: Doing announce " << endl;
+			AnnounceTask* at = new AnnounceTask(db, srv, node, info_hash, port, tman);
+			at->start(kns, !canStartTask());
 			tman->addTask(at);
 			if (!db->contains(info_hash))
 				db->insert(info_hash);
 			return at;
 		}
-		
+
 		return 0;
 	}
-	
-	NodeLookup* DHT::refreshBucket(const dht::Key & id,KBucket & bucket)
+
+	NodeLookup* DHT::refreshBucket(const dht::Key & id, KBucket & bucket)
 	{
 		if (!running)
 			return 0;
-		
-		KClosestNodesSearch kns(id,K);
+
+		KClosestNodesSearch kns(id, K);
 		bucket.findKClosestNodes(kns);
 		bucket.updateRefreshTimer();
 		if (kns.getNumEntries() > 0)
 		{
-			Out(SYS_DHT|LOG_DEBUG) << "DHT: refreshing bucket " << endl;
-			NodeLookup* nl = new NodeLookup(id,srv,node);
-			nl->start(kns,!canStartTask());
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: refreshing bucket " << endl;
+			NodeLookup* nl = new NodeLookup(id, srv, node, tman);
+			nl->start(kns, !canStartTask());
 			tman->addTask(nl);
 			return nl;
 		}
-		
+
 		return 0;
 	}
-	
+
 	NodeLookup* DHT::findNode(const dht::Key & id)
 	{
 		if (!running)
 			return 0;
-		
-		KClosestNodesSearch kns(id,K);
+
+		KClosestNodesSearch kns(id, K);
 		node->findKClosestNodes(kns);
 		if (kns.getNumEntries() > 0)
 		{
-			Out(SYS_DHT|LOG_DEBUG) << "DHT: finding node " << endl;
-			NodeLookup* at = new NodeLookup(id,srv,node);
-			at->start(kns,!canStartTask());
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: finding node " << endl;
+			NodeLookup* at = new NodeLookup(id, srv, node, tman);
+			at->start(kns, !canStartTask());
 			tman->addTask(at);
 			return at;
 		}
-		
+
 		return 0;
 	}
-	
+
 	void DHT::expireDatabaseItems()
 	{
 		db->expire(bt::CurrentTime());
 	}
 
-	
+
 	void DHT::update()
 	{
 		if (!running)
 			return;
-		
+
 		try
 		{
 			node->refreshBuckets(this);
@@ -338,20 +338,20 @@ namespace dht
 		}
 		catch (bt::Error & e)
 		{
-			Out(SYS_DHT|LOG_IMPORTANT) << "DHT: Error: " << e.toString() << endl;
+			Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Error: " << e.toString() << endl;
 		}
 	}
-	
+
 	void DHT::timeout(MsgBase::Ptr r)
 	{
 		node->onTimeout(r);
 	}
-	
-	void DHT::addDHTNode(const QString & host,Uint16 hport)
+
+	void DHT::addDHTNode(const QString & host, Uint16 hport)
 	{
 		if (!running)
 			return;
-		
+
 		net::Address addr;
 		if (addr.setAddress(host))
 		{
@@ -361,44 +361,44 @@ namespace dht
 		else
 			net::AddressResolver::resolve(host, hport, this, SLOT(hostResolved(net::AddressResolver*)));
 	}
-	
+
 	void DHT::onResolverResults(net::AddressResolver* res)
 	{
 		if (!running)
 			return;
-		
+
 		if (res->succeeded())
 		{
-			srv->ping(node->getOurID(),res->address());
+			srv->ping(node->getOurID(), res->address());
 		}
 	}
-	
+
 	QMap<QString, int> DHT::getClosestGoodNodes(int maxNodes)
 	{
 		QMap<QString, int> map;
-		
-		if(!node)
+
+		if (!node)
 			return map;
-		
+
 		int max = 0;
 		KClosestNodesSearch kns(node->getOurID(), maxNodes*2);
 		node->findKClosestNodes(kns);
-		
+
 		KClosestNodesSearch::Itr it;
-		for(it = kns.begin(); it != kns.end(); ++it)
+		for (it = kns.begin(); it != kns.end(); ++it)
 		{
 			KBucketEntry e = it->second;
-			
-			if(!e.isGood())
+
+			if (!e.isGood())
 				continue;
-			
+
 			const net::Address & a = e.getAddress();
-			
+
 			map.insert(a.toString(), a.port());
-			if(++max >= maxNodes)
+			if (++max >= maxNodes)
 				break;
 		}
-		
+
 		return map;
 	}
 }
