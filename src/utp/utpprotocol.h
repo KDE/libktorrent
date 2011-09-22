@@ -31,7 +31,7 @@ namespace utp
 {
 	/*
 	UTP header:
-	
+
 	0       4       8               16              24              32
 	+-------+-------+---------------+---------------+---------------+
 	| ver   | type  | extension     | connection_id                 |
@@ -45,11 +45,11 @@ namespace utp
 	| seq_nr                        | ack_nr                        |
 	+---------------+---------------+---------------+---------------+
 	*/
-	
+
 	struct KTORRENT_EXPORT Header
 	{
-		unsigned int version:4;
-		unsigned int type:4;
+	unsigned int version: 4;
+	unsigned int type: 4;
 		bt::Uint8 extension;
 		bt::Uint16 connection_id;
 		bt::Uint32 timestamp_microseconds;
@@ -57,44 +57,44 @@ namespace utp
 		bt::Uint32 wnd_size;
 		bt::Uint16 seq_nr;
 		bt::Uint16 ack_nr;
-		
+
 		void read(const bt::Uint8* data);
 		void write(bt::Uint8* data);
 		static bt::Uint32 size();
 	};
-	
+
 	struct SelectiveAck
 	{
 		bt::Uint8 extension;
 		bt::Uint8 length;
 		bt::Uint8* bitmask;
 	};
-	
+
 	struct ExtensionBits
 	{
 		bt::Uint8 extension;
 		bt::Uint8 length;
 		bt::Uint8 extension_bitmask[8];
 	};
-	
+
 	struct UnknownExtension
 	{
 		bt::Uint8 extension;
 		bt::Uint8 length;
 	};
-	
+
 	const bt::Uint8 SELECTIVE_ACK_ID = 1;
 	const bt::Uint8 EXTENSION_BITS_ID = 2;
-	
+
 	// type field values
 	const bt::Uint8 ST_DATA = 0;
 	const bt::Uint8 ST_FIN = 1;
 	const bt::Uint8 ST_STATE = 2;
 	const bt::Uint8 ST_RESET = 3;
 	const bt::Uint8 ST_SYN = 4;
-	
+
 	KTORRENT_EXPORT QString TypeToString(bt::Uint8 type);
-	
+
 	enum ConnectionState
 	{
 		CS_IDLE,
@@ -103,25 +103,25 @@ namespace utp
 		CS_FINISHED,
 		CS_CLOSED
 	};
-	
+
 	const bt::Uint32 MIN_PACKET_SIZE = 150;
 	const bt::Uint32 MAX_PACKET_SIZE = 16384;
-	
+
 	const bt::Uint32 DELAY_WINDOW_SIZE = 2*60*1000; // 2 minutes
 	const bt::Uint32 CCONTROL_TARGET = 100;
 	const bt::Uint32 MAX_CWND_INCREASE_PACKETS_PER_RTT = 500;
 	const bt::Uint32 MAX_TIMEOUT = 30000;
 	const bt::Uint32 CONNECT_TIMEOUT = 30000;
 	const bt::Uint32 KEEP_ALIVE_TIMEOUT = 30000;
-	
+
 	const bt::Uint32 IP_AND_UDP_OVERHEAD = 28;
-	
+
 	// Test if a bit is acked
-	KTORRENT_EXPORT bool Acked(const SelectiveAck* sack,bt::Uint16 bit);
-	
+	KTORRENT_EXPORT bool Acked(const SelectiveAck* sack, bt::Uint16 bit);
+
 	// Turn on a bit in the SelectiveAck
-	KTORRENT_EXPORT void Ack(SelectiveAck* sack,bt::Uint16 bit);
-	
+	KTORRENT_EXPORT void Ack(SelectiveAck* sack, bt::Uint16 bit);
+
 	/**
 		Helper class to parse packets
 	*/
@@ -129,17 +129,17 @@ namespace utp
 	{
 	public:
 		PacketParser(const QByteArray & packet);
-		PacketParser(const bt::Uint8* packet,bt::Uint32 size);
+		PacketParser(const bt::Uint8* packet, bt::Uint32 size);
 		~PacketParser();
-		
+
 		/// Parses the packet, returns false on error
 		bool parse();
-		
+
 		const Header* header() const {return &hdr;}
 		const SelectiveAck* selectiveAck() const;
 		bt::Uint32 dataOffset() const {return data_off;}
 		bt::Uint32 dataSize() const {return data_size;}
-		
+
 	private:
 		const bt::Uint8* packet;
 		bt::Uint32 size;
@@ -149,27 +149,27 @@ namespace utp
 		bt::Uint32 data_off;
 		bt::Uint32 data_size;
 	};
-	
+
 	/// <= for sequence numbers (taking into account wrapping around)
-	inline bool SeqNrCmpSE(bt::Uint16 a,bt::Uint16 b)
+	inline bool SeqNrCmpSE(bt::Uint16 a, bt::Uint16 b)
 	{
 		if (qAbs(b - a) < 32768)
 			return a <= b;
 		else
 			return a > b;
 	}
-	
+
 	/// < for sequence numbers (taking into account wrapping around)
-	inline bool SeqNrCmpS(bt::Uint16 a,bt::Uint16 b)
+	inline bool SeqNrCmpS(bt::Uint16 a, bt::Uint16 b)
 	{
 		if (qAbs(b - a) < 32768)
 			return a < b;
 		else
 			return a > b;
 	}
-	
+
 	/// Calculates difference between two sequence numbers (taking into account wrapping around)
-	inline bt::Uint16 SeqNrDiff(bt::Uint16 a,bt::Uint16 b)
+	inline bt::Uint16 SeqNrDiff(bt::Uint16 a, bt::Uint16 b)
 	{
 		if (qAbs(b - a) < 32768)
 			return b - a;

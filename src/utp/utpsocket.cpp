@@ -25,14 +25,14 @@
 
 namespace utp
 {
-	
-	UTPSocket::UTPSocket() 
-		: net::SocketDevice(bt::UTP),blocking(true),polled_for_reading(false),polled_for_writing(false)
+
+	UTPSocket::UTPSocket()
+			: net::SocketDevice(bt::UTP), blocking(true), polled_for_reading(false), polled_for_writing(false)
 	{
 	}
-	
-	UTPSocket::UTPSocket(Connection::WPtr conn) 
-		: net::SocketDevice(bt::UTP),conn(conn),blocking(true),polled_for_reading(false),polled_for_writing(false)
+
+	UTPSocket::UTPSocket(Connection::WPtr conn)
+			: net::SocketDevice(bt::UTP), conn(conn), blocking(true), polled_for_reading(false), polled_for_writing(false)
 	{
 		Connection::Ptr ptr = conn.toStrongRef();
 		if (ptr)
@@ -47,8 +47,8 @@ namespace utp
 		close();
 		reset();
 	}
-	
-	
+
+
 	bt::Uint32 UTPSocket::bytesAvailable() const
 	{
 		Connection::Ptr ptr = conn.toStrongRef();
@@ -91,25 +91,25 @@ namespace utp
 	{
 		if (!bt::Globals::instance().isUTPEnabled())
 			return false;
-		
+
 		UTPServer & srv = bt::Globals::instance().getUTPServer();
 		reset();
-		
+
 		conn = srv.connectTo(addr);
 		Connection::Ptr ptr = conn.toStrongRef();
 		if (!ptr)
 			return false;
-		
+
 		m_state = CONNECTING;
 		if (blocking)
 		{
 			bool ret = ptr->waitUntilConnected();
 			if (ret)
 				m_state = CONNECTED;
-		
+
 			return ret;
 		}
-		
+
 		return ptr->connectionState() == CS_CONNECTED;
 	}
 
@@ -148,7 +148,7 @@ namespace utp
 		Connection::Ptr ptr = conn.toStrongRef();
 		if (!ptr || ptr->connectionState() == CS_CLOSED)
 			return 0;
-		
+
 		try
 		{
 			if (ptr->bytesAvailable() == 0)
@@ -156,7 +156,7 @@ namespace utp
 				if (blocking)
 				{
 					if (ptr->waitForData())
-						return ptr->recv(buf,max_len);
+						return ptr->recv(buf, max_len);
 					else
 						return 0; // connection should be closed now
 				}
@@ -164,7 +164,7 @@ namespace utp
 					return -1; // No data ready and not blocking so return -1
 			}
 			else
-				return ptr->recv(buf,max_len);
+				return ptr->recv(buf, max_len);
 		}
 		catch (Connection::TransmissionError & err)
 		{
@@ -183,10 +183,10 @@ namespace utp
 		Connection::Ptr ptr = conn.toStrongRef();
 		if (!ptr)
 			return -1;
-		
+
 		try
 		{
-			return ptr->send(buf,len);
+			return ptr->send(buf, len);
 		}
 		catch (Connection::TransmissionError & err)
 		{
@@ -212,7 +212,7 @@ namespace utp
 		if (ptr)
 		{
 			UTPServer & srv = bt::Globals::instance().getUTPServer();
-			srv.preparePolling(p,mode,ptr);
+			srv.preparePolling(p, mode, ptr);
 			if (mode == net::Poll::OUTPUT)
 				polled_for_writing = true;
 			else
@@ -226,10 +226,10 @@ namespace utp
 		Connection::Ptr ptr = conn.toStrongRef();
 		if (!ptr)
 			return false;
-		
+
 		if (mode == net::Poll::OUTPUT)
 		{
-			if (polled_for_writing) 
+			if (polled_for_writing)
 			{
 				polled_for_writing = false;
 				return ptr->isWriteable();
@@ -243,7 +243,7 @@ namespace utp
 				return bytesAvailable() > 0 || ptr->connectionState() == CS_CLOSED;
 			}
 		}
-		
+
 		return false;
 	}
 

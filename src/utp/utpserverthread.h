@@ -34,9 +34,9 @@ namespace utp
 	public:
 		UTPServerThread(UTPServer* srv);
 		virtual ~UTPServerThread();
-		
+
 		virtual void run();
-		
+
 	protected:
 		UTPServer* srv;
 	};

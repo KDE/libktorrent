@@ -29,7 +29,7 @@
 namespace utp
 {
 	class Connection;
-	
+
 	/**
 		Special wake up pipe for UTP polling
 	*/
@@ -38,28 +38,28 @@ namespace utp
 	public:
 		PollPipe(net::Poll::Mode mode);
 		virtual ~PollPipe();
-		
+
 		typedef QSharedPointer<PollPipe> Ptr;
-		
+
 		/// Is the pipe being polled
 		bool polling() const {return poll_index >= 0;}
-		
+
 		/// Prepare the poll
-		void prepare(net::Poll* p,bt::Uint16 conn_id,PollPipe::Ptr self);
-		
+		void prepare(net::Poll* p, bt::Uint16 conn_id, PollPipe::Ptr self);
+
 		/// Is this connection ready to wake up
 		bool readyToWakeUp(Connection* conn) const;
-		
+
 		/// Are we polling a connection
 		bool polling(bt::Uint16 conn) const
 		{
 			QMutexLocker lock(&mutex);
 			return poll_index >= 0 && conn_ids.contains(conn);
 		}
-		
+
 		/// Reset the poll_index
 		virtual void reset();
-		
+
 		/// Polling mode
 		net::Poll::Mode pollingMode() const {return mode;}
 	private:
