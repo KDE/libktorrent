@@ -27,12 +27,19 @@ namespace utp
 {
 
 	UTPSocket::UTPSocket()
-			: net::SocketDevice(bt::UTP), blocking(true), polled_for_reading(false), polled_for_writing(false)
+			: net::SocketDevice(bt::UTP), 
+			blocking(true), 
+			polled_for_reading(false), 
+			polled_for_writing(false)
 	{
 	}
 
 	UTPSocket::UTPSocket(Connection::WPtr conn)
-			: net::SocketDevice(bt::UTP), conn(conn), blocking(true), polled_for_reading(false), polled_for_writing(false)
+			: net::SocketDevice(bt::UTP), 
+			conn(conn), 
+			blocking(true), 
+			polled_for_reading(false), 
+			polled_for_writing(false)
 	{
 		Connection::Ptr ptr = conn.toStrongRef();
 		if (ptr)

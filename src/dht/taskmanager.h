@@ -47,7 +47,7 @@ namespace dht
 		void addTask(Task* task);
 		
 		/// Get the number of running tasks
-		bt::Uint32 getNumTasks() const {return active.count();}
+		bt::Uint32 getNumTasks() const {return num_active;}
 		
 		/// Get the number of queued tasks
 		bt::Uint32 getNumQueuedTasks() const {return queued.count();}
@@ -57,8 +57,8 @@ namespace dht
 
 	private:
 		const DHT* dh_table;
-		QList<Task*> active;
-		QList<Task*> queued;
+		QList<QWeakPointer<Task> > queued;
+		bt::Uint32 num_active;
 	};
 
 }

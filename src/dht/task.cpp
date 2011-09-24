@@ -33,7 +33,7 @@ namespace dht
 			rpc(rpc),
 			outstanding_reqs(0),
 			task_finished(false),
-			queued(queued)
+			queued(true)
 	{
 
 	}

@@ -28,7 +28,7 @@ using namespace bt;
 namespace dht
 {
 
-	TaskManager::TaskManager(const DHT* dh_table) : dh_table(dh_table)
+	TaskManager::TaskManager(const DHT* dh_table) : dh_table(dh_table),num_active(0)
 	{
 	}
 
@@ -42,23 +42,26 @@ namespace dht
 	{
 		connect(task, SIGNAL(finished(Task*)), this, SLOT(taskFinished(Task*)));
 		if (task->isQueued())
-			queued.append(task);
+			queued.append(QWeakPointer<Task>(task));
 		else
-			active.append(task);
+			num_active++;
 	}
 
 	void TaskManager::taskFinished(Task* task)
 	{
-		active.removeAll(task);
+		if (!task->isQueued() && num_active > 0)
+			num_active--;
 		task->deleteLater();
 
-		while (dh_table->canStartTask() && queued.count() > 0)
+		while (dh_table->canStartTask() && !queued.isEmpty())
 		{
-			Task* t = queued.first();
-			queued.removeFirst();
-			Out(SYS_DHT | LOG_NOTICE) << "DHT: starting queued task" << endl;
-			t->start();
-			active.append(t);
+			QWeakPointer<Task> t = queued.takeFirst();
+			if (t)
+			{
+				Out(SYS_DHT | LOG_NOTICE) << "DHT: starting queued task" << endl;
+				t.data()->start();
+				num_active++;
+			}
 		}
 	}
 
