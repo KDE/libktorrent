@@ -216,7 +216,7 @@ target_link_libraries(ktorrent ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${KDE4_SOLID_LI
 if(WIN32)
 target_link_libraries(ktorrent ws2_32)
 endif(WIN32)
-set_target_properties(ktorrent PROPERTIES VERSION 4.0.0 SOVERSION 4)
+set_target_properties(ktorrent PROPERTIES VERSION 4.0.0 SOVERSION 4 LINK_INTERFACE_LIBRARIES ${KDE4_KDEUI_LIBS})
 install(TARGETS ktorrent  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
