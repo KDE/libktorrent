@@ -34,24 +34,24 @@ namespace utp
 	public:
 		/// Default constructor, gets the current time
 		TimeValue();
-		TimeValue(bt::Uint64 secs,bt::Uint64 usecs);
+		TimeValue(bt::Uint64 secs, bt::Uint64 usecs);
 		TimeValue(const TimeValue & tv);
-		
+
 		TimeValue & operator = (const TimeValue & tv);
-		
+
 		/// Calculate the a - b in milliseconds
-		friend bt::Int64 operator - (const TimeValue & a,const TimeValue & b);
-		
+		friend bt::Int64 operator - (const TimeValue & a, const TimeValue & b);
+
 		bt::Uint32 timestampMicroSeconds() const
 		{
 			bt::Uint64 microsecs = seconds * 1000000 + microseconds;
 			//return microsecs & 0x00000000FFFFFFFF;
 			return microsecs;
 		}
-		
+
 		/// Convert to time stamp
 		bt::TimeStamp toTimeStamp() const {return seconds * 1000 + (bt::Uint64)microseconds * 0.001;}
-		
+
 	public:
 		bt::Uint64 seconds;
 		bt::Uint64 microseconds;

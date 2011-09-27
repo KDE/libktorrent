@@ -40,7 +40,7 @@
 namespace utp
 {
 	class UTPServerThread;
-	
+
 	/**
 		Utility class used by UTPServer to make sure that ServerInterface::newConnection is called
 		from the main thread and not from UTP thread (which is dangerous).
@@ -51,61 +51,61 @@ namespace utp
 	public:
 		MainThreadCall(UTPServer* server);
 		virtual ~MainThreadCall();
-		
+
 	public slots:
 		/**
-			Calls UTPServer::handlePendingConnections, this should be executed in 
+			Calls UTPServer::handlePendingConnections, this should be executed in
 			the main thread.
 		*/
 		void handlePendingConnections();
-		
+
 	private:
 		UTPServer* server;
 	};
-	
-	typedef bt::PtrMap<quint16,Connection>::iterator ConItr;
-	
+
+	typedef bt::PtrMap<quint16, Connection>::iterator ConItr;
+
 	struct PollPipePair
 	{
 		PollPipe::Ptr read_pipe;
 		PollPipe::Ptr write_pipe;
-		
+
 		PollPipePair();
-		
-		bool testRead(ConItr b,ConItr e);
-		bool testWrite(ConItr b,ConItr e);
+
+		bool testRead(ConItr b, ConItr e);
+		bool testWrite(ConItr b, ConItr e);
 	};
-	
-	
-	
-	typedef bt::PtrMap<net::Poll*,PollPipePair>::iterator PollPipePairItr;
-	typedef QMap<quint16,Connection::Ptr>::iterator ConnectionMapItr;
-	
+
+
+
+	typedef bt::PtrMap<net::Poll*, PollPipePair>::iterator PollPipePairItr;
+	typedef QMap<quint16, Connection::Ptr>::iterator ConnectionMapItr;
+
 	class UTPServer::Private : public net::ServerSocket::DataHandler
 	{
 	public:
 		Private(UTPServer* p);
 		~Private();
-		
-		
+
+
 		bool bind(const net::Address & addr);
-		void syn(const PacketParser & parser,const QByteArray & data,const net::Address & addr);
+		void syn(const PacketParser & parser, const QByteArray & data, const net::Address & addr);
 		void reset(const Header* hdr);
-		void wakeUpPollPipes(Connection::Ptr conn,bool readable,bool writeable);
+		void wakeUpPollPipes(Connection::Ptr conn, bool readable, bool writeable);
 		Connection::Ptr find(quint16 conn_id);
 		void stop();
 		virtual void dataReceived(const QByteArray& data, const net::Address& addr);
 		virtual void readyToWrite(net::ServerSocket* sock);
-		
+
 	public:
 		UTPServer* p;
 		QList<net::ServerSocket::Ptr> sockets;
 		bool running;
-		QMap<quint16,Connection::Ptr> connections;
-		QMap<int,Connection::WPtr> active_timers;
+		QMap<quint16, Connection::Ptr> connections;
+		QMap<int, Connection::WPtr> active_timers;
 		UTPServerThread* utp_thread;
 		QMutex mutex;
-		bt::PtrMap<net::Poll*,PollPipePair> poll_pipes;
+		bt::PtrMap<net::Poll*, PollPipePair> poll_pipes;
 		bool create_sockets;
 		bt::Uint8 tos;
 		OutputQueue output_queue;

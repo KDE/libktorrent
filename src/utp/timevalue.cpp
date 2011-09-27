@@ -23,20 +23,20 @@
 
 namespace utp
 {
-	
+
 	TimeValue::TimeValue()
 	{
 		struct timeval tv;
-		gettimeofday(&tv,0);
+		gettimeofday(&tv, 0);
 		seconds = tv.tv_sec;
 		microseconds = tv.tv_usec;
 	}
-	
-	TimeValue::TimeValue(bt::Uint64 secs,bt::Uint64 usecs) : seconds(secs),microseconds(usecs)
+
+	TimeValue::TimeValue(bt::Uint64 secs, bt::Uint64 usecs) : seconds(secs), microseconds(usecs)
 	{
 	}
 
-	TimeValue::TimeValue(const utp::TimeValue& tv) : seconds(tv.seconds),microseconds(tv.microseconds)
+	TimeValue::TimeValue(const utp::TimeValue& tv) : seconds(tv.seconds), microseconds(tv.microseconds)
 	{
 	}
 
@@ -52,13 +52,13 @@ namespace utp
 	{
 		bt::Int64 seconds = b.seconds - a.seconds;
 		bt::Int64 microseconds = b.microseconds - a.microseconds;
-		
+
 		while (microseconds < 0)
 		{
 			microseconds += 1000000;
 			seconds -= 1;
 		}
-		
+
 		return (1000000LL * seconds + microseconds) / 1000;
 	}
 

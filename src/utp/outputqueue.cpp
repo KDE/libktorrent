@@ -35,21 +35,21 @@ namespace utp
 	OutputQueue::~OutputQueue()
 	{
 	}
-	
+
 	int OutputQueue::add(const QByteArray& data, Connection::WPtr conn)
 	{
 		QMutexLocker lock(&mutex);
-		queue.append(Entry(data,conn));
+		queue.append(Entry(data, conn));
 		return queue.size();
 	}
-	
+
 	void OutputQueue::send(net::ServerSocket* sock)
 	{
 		QList<Connection::WPtr> to_close;
 		QMutexLocker lock(&mutex);
 		try
 		{
-			// Keep sending until the output queue is empty or the socket 
+			// Keep sending until the output queue is empty or the socket
 			// can't handle the data anymore
 			while (!queue.empty())
 			{
@@ -60,8 +60,8 @@ namespace utp
 					queue.pop_front();
 					continue;
 				}
-				
-				int ret = sock->sendTo(packet.data,conn->remoteAddress());
+
+				int ret = sock->sendTo(packet.data, conn->remoteAddress());
 				if (ret == net::SEND_WOULD_BLOCK)
 					break;
 				else if (ret == net::SEND_FAILURE)
@@ -76,12 +76,12 @@ namespace utp
 		}
 		catch (Connection::TransmissionError & err)
 		{
-			Out(SYS_UTP|LOG_NOTICE) << "UTP: " << err.location << endl;
+			Out(SYS_UTP | LOG_NOTICE) << "UTP: " << err.location << endl;
 		}
 		sock->setWriteNotificationsEnabled(!queue.isEmpty());
 		lock.unlock(); // unlock, so we can't get deadlocked in any subsequent close calls
-		
-		foreach (utp::Connection::WPtr conn,to_close)
+
+		foreach (utp::Connection::WPtr conn, to_close)
 		{
 			Connection::Ptr c = conn.toStrongRef();
 			if (c)

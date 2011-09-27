@@ -28,25 +28,25 @@ using namespace bt;
 namespace utp
 {
 
-	FuturePacket::FuturePacket(bt::Uint16 seq_nr, const bt::Uint8* data, bt::Uint32 size) 
-		: seq_nr(seq_nr),data((const char*)data,size)
+	FuturePacket::FuturePacket(bt::Uint16 seq_nr, const bt::Uint8* data, bt::Uint32 size)
+			: seq_nr(seq_nr), data((const char*)data, size)
 	{
 	}
 
 	FuturePacket::~FuturePacket()
 	{
 	}
-	
-	LocalWindow::LocalWindow(bt::Uint32 cap) : bt::CircularBuffer(cap),window_space(cap)
+
+	LocalWindow::LocalWindow(bt::Uint32 cap) : bt::CircularBuffer(cap), window_space(cap)
 	{
-		
+
 	}
 
 	LocalWindow::~LocalWindow()
 	{
 	}
-	
-	
+
+
 	void LocalWindow::setLastSeqNr(bt::Uint16 lsn)
 	{
 		last_seq_nr = lsn;
@@ -69,8 +69,8 @@ namespace utp
 			if (pkt->seq_nr == (bt::Uint16)(last_seq_nr + 1))
 			{
 				last_seq_nr = pkt->seq_nr;
-				if (write((const bt::Uint8*)pkt->data.data(),pkt->data.size()) != pkt->data.size())
-					Out(SYS_UTP|LOG_DEBUG) << "LocalWindow::packetReceived write failed " << endl;
+				if (write((const bt::Uint8*)pkt->data.data(), pkt->data.size()) != pkt->data.size())
+					Out(SYS_UTP | LOG_DEBUG) << "LocalWindow::packetReceived write failed " << endl;
 				itr = future_packets.erase(itr);
 			}
 			else
@@ -78,15 +78,15 @@ namespace utp
 		}
 	}
 
-	bool LocalWindow::packetReceived(const utp::Header* hdr,const bt::Uint8* data,bt::Uint32 size)
+	bool LocalWindow::packetReceived(const utp::Header* hdr, const bt::Uint8* data, bt::Uint32 size)
 	{
 		// Drop duplicate data packets
 		// Make sure we take into account wrapping around
-		if (SeqNrCmpSE(hdr->seq_nr,last_seq_nr)) 
+		if (SeqNrCmpSE(hdr->seq_nr, last_seq_nr))
 		{
 			return true;
 		}
-		
+
 		bt::Uint16 next_seq_nr = last_seq_nr + 1;
 		if (hdr->seq_nr != next_seq_nr)
 		{
@@ -95,7 +95,7 @@ namespace utp
 			while (itr != future_packets.end())
 			{
 				FuturePacket::Ptr pkt = *itr;
-				if (SeqNrCmpS(pkt->seq_nr,hdr->seq_nr))
+				if (SeqNrCmpS(pkt->seq_nr, hdr->seq_nr))
 				{
 					itr++;
 				}
@@ -108,19 +108,19 @@ namespace utp
 				{
 					// we have found a packet with a higher sequence number
 					// so insert
-					FuturePacket::Ptr fp(new FuturePacket(hdr->seq_nr,data,size));
-					future_packets.insert(itr,fp);
+					FuturePacket::Ptr fp(new FuturePacket(hdr->seq_nr, data, size));
+					future_packets.insert(itr, fp);
 					break;
 				}
 			}
-			
+
 			// at the end and not inserted yet, so just append
 			if (itr == future_packets.end())
 			{
-				FuturePacket::Ptr fp(new FuturePacket(hdr->seq_nr,data,size));
+				FuturePacket::Ptr fp(new FuturePacket(hdr->seq_nr, data, size));
 				future_packets.append(fp);
 			}
-			
+
 			window_space -= size;
 			checkFuturePackets();
 		}
@@ -128,39 +128,39 @@ namespace utp
 		{
 			if (availableSpace() < size)
 			{
-				Out(SYS_UTP|LOG_DEBUG) << "Not enough space in local window " << availableSpace() << " " << size << endl;
+				Out(SYS_UTP | LOG_DEBUG) << "Not enough space in local window " << availableSpace() << " " << size << endl;
 				return false;
 			}
-			
+
 			last_seq_nr = hdr->seq_nr;
-			if (write(data,size) != size)
-				Out(SYS_UTP|LOG_DEBUG) << "LocalWindow::packetReceived write failed " << endl;
+			if (write(data, size) != size)
+				Out(SYS_UTP | LOG_DEBUG) << "LocalWindow::packetReceived write failed " << endl;
 			window_space -= size;
 			checkFuturePackets();
 		}
-		
+
 		return true;
 	}
 
-	
+
 	bt::Uint32 LocalWindow::selectiveAckBits() const
 	{
 		if (future_packets.isEmpty())
 			return 0;
 		else
-			return SeqNrDiff(last_seq_nr,future_packets.last()->seq_nr) - 1;
+			return SeqNrDiff(last_seq_nr, future_packets.last()->seq_nr) - 1;
 	}
 
 
 	void LocalWindow::fillSelectiveAck(SelectiveAck* sack)
 	{
 		// First turn off all bits
-		memset(sack->bitmask,0,sack->length);
-		
+		memset(sack->bitmask, 0, sack->length);
+
 		QLinkedList<FuturePacket::Ptr>::iterator itr = future_packets.begin();
 		while (itr != future_packets.end())
 		{
-			Ack(sack,SeqNrDiff(last_seq_nr,(*itr)->seq_nr));
+			Ack(sack, SeqNrDiff(last_seq_nr, (*itr)->seq_nr));
 			itr++;
 		}
 	}

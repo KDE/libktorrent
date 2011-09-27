@@ -55,16 +55,16 @@ namespace utp
 			INCOMING,
 			OUTGOING
 		};
-		
+
 		/// Thrown when a transmission error occurs, server should kill the connection if it happens
-		class TransmissionError 
+		class TransmissionError
 		{
 		public:
-			TransmissionError(const char* file,int line);
-			
+			TransmissionError(const char* file, int line);
+
 			QString location;
 		};
-		
+
 		struct Stats
 		{
 			Type type;
@@ -80,90 +80,90 @@ namespace utp
 			int rtt_var;
 			bt::Uint32 packet_size;
 			bt::Uint32 last_window_size_transmitted;
-			
+
 			bt::Uint64 bytes_received;
 			bt::Uint64 bytes_sent;
 			bt::Uint32 packets_received;
 			bt::Uint32 packets_sent;
 			bt::Uint64 bytes_lost;
 			bt::Uint32 packets_lost;
-			
+
 			bool readable;
 			bool writeable;
 		};
-		
-		Connection(bt::Uint16 recv_connection_id,Type type,const net::Address & remote,Transmitter* transmitter);
+
+		Connection(bt::Uint16 recv_connection_id, Type type, const net::Address & remote, Transmitter* transmitter);
 		virtual ~Connection();
-		
+
 		/// Dump connection stats
 		void dumpStats();
-		
+
 		/// Start connecting (OUTGOING only)
 		void startConnecting();
-		
+
 		/// Get the connection stats
 		const Stats & connectionStats() const {return stats;}
-		
+
 		/// Handle a single packet
-		ConnectionState handlePacket(const PacketParser & parser,const QByteArray & packet);
-		
+		ConnectionState handlePacket(const PacketParser & parser, const QByteArray & packet);
+
 		/// Get the remote address
 		const net::Address & remoteAddress() const {return stats.remote;}
-		
+
 		/// Get the receive connection id
 		bt::Uint16 receiveConnectionID() const {return stats.recv_connection_id;}
-		
+
 		/// Send some data, returns the amount of bytes sent (or -1 on error)
-		int send(const bt::Uint8* data,bt::Uint32 len);
-		
+		int send(const bt::Uint8* data, bt::Uint32 len);
+
 		/// Read available data from local window, returns the amount of bytes read
-		int recv(bt::Uint8* buf,bt::Uint32 max_len);
-		
+		int recv(bt::Uint8* buf, bt::Uint32 max_len);
+
 		/// Get the connection state
 		ConnectionState connectionState() const {return stats.state;}
-		
+
 		/// Get the type of connection
 		Type connectionType() const {return stats.type;}
-		
+
 		/// Get the number of bytes available
 		bt::Uint32 bytesAvailable() const;
-		
+
 		/// Can we write to this socket
 		bool isWriteable() const;
-		
+
 		/// Wait until the connectTo call fails or succeeds
 		bool waitUntilConnected();
-		
+
 		/// Wait until there is data ready or the socket is closed or a timeout occurs
 		bool waitForData(bt::Uint32 timeout = 0);
-		
+
 		/// Close the socket
 		void close();
-		
+
 		/// Reset the connection
 		void reset();
-		
+
 		/// Update the RTT time
-		virtual void updateRTT(const Header* hdr,bt::Uint32 packet_rtt,bt::Uint32 packet_size);
-		
+		virtual void updateRTT(const Header* hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size);
+
 		/// Retransmit a packet
-		virtual void retransmit(const QByteArray & packet,bt::Uint16 p_seq_nr);
-		
+		virtual void retransmit(const QByteArray & packet, bt::Uint16 p_seq_nr);
+
 		/// Is all data sent
 		bool allDataSent() const;
-		
+
 		/// Get the current timeout
 		virtual bt::Uint32 currentTimeout() const {return stats.timeout;}
-		
+
 		typedef QSharedPointer<Connection> Ptr;
 		typedef QWeakPointer<Connection> WPtr;
-		
+
 		/// Set a weak pointer to self
 		void setWeakPointer(WPtr ptr) {self = ptr;}
-		
+
 		/// Handle a timeout
 		void handleTimeout();
-		
+
 	private:
 		void sendSYN();
 		void sendState();
@@ -172,19 +172,19 @@ namespace utp
 		void updateDelayMeasurement(const Header* hdr);
 		void sendStateOrData();
 		void sendPackets();
-		void sendPacket(bt::Uint32 type,bt::Uint16 p_ack_nr);
+		void sendPacket(bt::Uint32 type, bt::Uint16 p_ack_nr);
 		void checkIfClosed();
 		void sendDataPacket(const QByteArray & packet);
 		void sendDataPacket(const QByteArray & packet, bt::Uint16 seq_nr, const TimeValue & now);
 		void startTimer();
 		void checkState();
-		
+
 	private slots:
 		void delayedStartTimer();
-		
+
 	signals:
 		void doDelayedStartTimer();
-		
+
 	private:
 		Transmitter* transmitter;
 		LocalWindow* local_wnd;
@@ -200,10 +200,10 @@ namespace utp
 		DelayWindow* delay_window;
 		Connection::WPtr self;
 		int timer_id;
-		
+
 		friend class UTPServer;
 	};
-	
+
 	/**
 		Interface class for transmitting packets and notifying if a connection becomes readable or writeable
 	 */
@@ -211,23 +211,23 @@ namespace utp
 	{
 	public:
 		virtual ~Transmitter() {}
-		
+
 		/// Send a packet of a connection
-		virtual bool sendTo(Connection::Ptr conn,const QByteArray & data) = 0;
-		
+		virtual bool sendTo(Connection::Ptr conn, const QByteArray & data) = 0;
+
 		/// Connection has become readable, writeable or both
-		virtual void stateChanged(Connection::Ptr conn,bool readable,bool writeable) = 0;
-		
+		virtual void stateChanged(Connection::Ptr conn, bool readable, bool writeable) = 0;
+
 		/// Called when the connection is closed
 		virtual void closed(Connection::Ptr conn) = 0;
-		
+
 		/// Schedule a timer for a connection
-		virtual int scheduleTimer(Connection::Ptr conn,bt::Uint32 timeout) = 0;
-		
+		virtual int scheduleTimer(Connection::Ptr conn, bt::Uint32 timeout) = 0;
+
 		/// Kill a previously started timer
 		virtual void cancelTimer(int timer_id) = 0;
 	};
-	
+
 }
 
 #endif // UTP_CONNECTION_H

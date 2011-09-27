@@ -28,7 +28,7 @@
 #include "connection.h"
 
 
-namespace utp 
+namespace utp
 {
 	/**
 	 * Manages the send queue of all UTP server sockets
@@ -38,7 +38,7 @@ namespace utp
 	public:
 		OutputQueue();
 		virtual ~OutputQueue();
-		
+
 		/**
 		 * Add an entry to the queue.
 		 * @param data The packet
@@ -46,24 +46,24 @@ namespace utp
 		 * @return The number of queued packets
 		 */
 		int add(const QByteArray & data, Connection::WPtr conn);
-		
+
 		/**
 		 * Attempt to send the queue on a socket
 		 * @param sock The socket
 		 */
 		void send(net::ServerSocket* sock);
-		
+
 	private:
 		struct Entry
 		{
 			QByteArray data;
 			Connection::WPtr conn;
-			
+
 			Entry(const QByteArray & data, Connection::WPtr conn)
-			: data(data),conn(conn)
+					: data(data), conn(conn)
 			{}
 		};
-		
+
 		QList<Entry> queue;
 		QMutex mutex;
 	};

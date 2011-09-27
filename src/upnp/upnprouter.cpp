@@ -56,7 +56,7 @@ namespace bt
 		UPnPRouterPrivate(const QString & server,const KUrl & location,bool verbose,UPnPRouter* parent); 
 		~UPnPRouterPrivate();
 		
-		HTTPRequest* sendSoapQuery(const QString& query, const QString& soapact, const KUrl& controlurl, bool at_exit = false);
+		HTTPRequest* sendSoapQuery(const QString& query, const QString& soapact, const QString& controlurl, bool at_exit = false);
 		void forward(const UPnPService* srv,const net::Port & port);
 		void undoForward(const UPnPService* srv,const net::Port & port,bt::WaitJob* waitjob);
 		void httpRequestDone(HTTPRequest* r,bool erase_fwd);
@@ -393,24 +393,30 @@ namespace bt
 		}
 	}
 
-	HTTPRequest* UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString & query,const QString & soapact,const KUrl & controlurl,bool at_exit)
+	HTTPRequest* UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString & query,const QString & soapact,const QString & controlurl,bool at_exit)
 	{
 		// if port is not set, 0 will be returned 
 		// thanks to Diego R. Brogna for spotting this bug
 		if (location.port()<=0)
 			location.setPort(80);
 		
+
+		QUrl ctrlurl(controlurl);
+		QString host = !ctrlurl.host().isEmpty() ? ctrlurl.host() : location.host();
+		bt::Uint16 port = ctrlurl.port() != -1 ? ctrlurl.port() : location.port(80);
+		
 		QString http_hdr;
 		QTextStream out(&http_hdr);
-		out << "POST " << controlurl.encodedPathAndQuery() << " HTTP/1.1\r\n";
-		out << "Host: " << location.host() << ":" << location.port() << "\r\n";
+		QByteArray encoded_query = ctrlurl.encodedQuery();
+		if (encoded_query.isEmpty())
+			out << "POST " << ctrlurl.encodedPath() << " HTTP/1.1\r\n";
+		else
+			out << "POST " << ctrlurl.encodedPath() << "?" << encoded_query << " HTTP/1.1\r\n";
+		out << "Host: " << host << ":" << port << "\r\n";
 		out << "User-Agent: " << bt::GetVersionString() << "\r\n";
 		out << "Content-length: $CONTENT_LENGTH\r\n";
 		out << "Content-Type: text/xml\r\n";
 		out << "SOAPAction: \"" << soapact << "\"\r\n\r\n";
-		
-		QString host = controlurl.hasHost() ? controlurl.host() : location.host();
-		bt::Uint16 port = controlurl.hasHost() ? controlurl.port(80) : location.port(80);
 		
 		HTTPRequest* r = new HTTPRequest(http_hdr,query,host,port,verbose);
 		if (!at_exit)
@@ -550,3 +556,9 @@ namespace bt
 }
 
 #include "upnprouter.moc"
+
+
+
+
+
+

@@ -30,8 +30,10 @@ using namespace bt;
 namespace dht
 {
 
-	NodeLookup::NodeLookup(const dht::Key & key,RPCServer* rpc,Node* node) 
-	: Task(rpc,node),node_id(key),num_nodes_rsp(0)
+	NodeLookup::NodeLookup(const dht::Key & key,RPCServer* rpc,Node* node,QObject* parent) 
+		: Task(rpc,node,parent),
+		node_id(key),
+		num_nodes_rsp(0)
 	{
 	}
 

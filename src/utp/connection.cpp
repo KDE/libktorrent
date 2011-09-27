@@ -40,11 +40,11 @@ namespace utp
 	Connection::TransmissionError::TransmissionError(const char* file, int line)
 	{
 		location = QString("TransmissionError in %1 at line %2\n").arg(file).arg(line);
-		Out(SYS_GEN|LOG_DEBUG) << location << endl;
+		Out(SYS_GEN | LOG_DEBUG) << location << endl;
 	}
-	
-	Connection::Connection(bt::Uint16 recv_connection_id, Type type, const net::Address& remote, Transmitter* transmitter) 
-		: transmitter(transmitter),timer_id(-1)
+
+	Connection::Connection(bt::Uint16 recv_connection_id, Type type, const net::Address& remote, Transmitter* transmitter)
+			: transmitter(transmitter), timer_id(-1)
 	{
 		stats.type = type;
 		stats.remote = remote;
@@ -59,7 +59,7 @@ namespace utp
 		stats.rtt_var = 0;
 		stats.timeout = 1000;
 		stats.packet_size = 1500 - IP_AND_UDP_OVERHEAD - sizeof(utp::Header);
-		stats.last_window_size_transmitted = 128*1024;
+		stats.last_window_size_transmitted = 128 * 1024;
 		if (type == OUTGOING)
 		{
 			stats.send_connection_id = recv_connection_id + 1;
@@ -70,7 +70,7 @@ namespace utp
 			stats.state = CS_IDLE;
 			stats.seq_nr = 5;
 		}
-		
+
 		stats.bytes_received = 0;
 		stats.bytes_sent = 0;
 		stats.packets_received = 0;
@@ -78,8 +78,8 @@ namespace utp
 		stats.bytes_lost = 0;
 		stats.packets_lost = 0;
 		stats.readable = stats.writeable = false;
-		
-		connect(this,SIGNAL(doDelayedStartTimer()),this,SLOT(delayedStartTimer()),Qt::QueuedConnection);
+
+		connect(this, SIGNAL(doDelayedStartTimer()), this, SLOT(delayedStartTimer()), Qt::QueuedConnection);
 		if (type == INCOMING)
 			startTimer();
 	}
@@ -90,7 +90,7 @@ namespace utp
 		delete remote_wnd;
 		delete delay_window;
 	}
-	
+
 	void Connection::startConnecting()
 	{
 		if (stats.type == OUTGOING)
@@ -101,47 +101,47 @@ namespace utp
 	}
 
 #if 0
-	static void DumpPacket(const Header & hdr,const SelectiveAck* sack)
+	static void DumpPacket(const Header & hdr, const SelectiveAck* sack)
 	{
-		Out(SYS_UTP|LOG_NOTICE) << "==============================================" << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "UTP: Packet Header: " << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "type:                              " << TypeToString(hdr.type) << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "version:                           " << hdr.version << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "extension:                         " << hdr.extension << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "connection_id:                     " << hdr.connection_id << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "timestamp_microseconds:            " << hdr.timestamp_microseconds << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "timestamp_difference_microseconds: " << hdr.timestamp_difference_microseconds << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "wnd_size:                          " << hdr.wnd_size << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "seq_nr:                            " << hdr.seq_nr << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "ack_nr:                            " << hdr.ack_nr << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "==============================================" << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "==============================================" << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "UTP: Packet Header: " << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "type:                              " << TypeToString(hdr.type) << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "version:                           " << hdr.version << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "extension:                         " << hdr.extension << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "connection_id:                     " << hdr.connection_id << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "timestamp_microseconds:            " << hdr.timestamp_microseconds << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "timestamp_difference_microseconds: " << hdr.timestamp_difference_microseconds << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "wnd_size:                          " << hdr.wnd_size << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "seq_nr:                            " << hdr.seq_nr << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "ack_nr:                            " << hdr.ack_nr << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "==============================================" << endl;
 		if (!sack)
 			return;
-		
-		Out(SYS_UTP|LOG_NOTICE) << "SelectiveAck:                      " << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "extension:                         " << sack->extension << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "length:                            " << sack->length << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "bitmask:                           " << hex(sack->bitmask[0]) << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "bitmask:                           " << hex(sack->bitmask[1]) << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "bitmask:                           " << hex(sack->bitmask[2]) << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "bitmask:                           " << hex(sack->bitmask[3]) << endl;
-		Out(SYS_UTP|LOG_NOTICE) << "==============================================" << endl;
+
+		Out(SYS_UTP | LOG_NOTICE) << "SelectiveAck:                      " << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "extension:                         " << sack->extension << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "length:                            " << sack->length << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "bitmask:                           " << hex(sack->bitmask[0]) << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "bitmask:                           " << hex(sack->bitmask[1]) << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "bitmask:                           " << hex(sack->bitmask[2]) << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "bitmask:                           " << hex(sack->bitmask[3]) << endl;
+		Out(SYS_UTP | LOG_NOTICE) << "==============================================" << endl;
 	}
 #endif
 
-	ConnectionState Connection::handlePacket(const PacketParser & parser,const QByteArray& packet)
+	ConnectionState Connection::handlePacket(const PacketParser & parser, const QByteArray& packet)
 	{
 		QMutexLocker lock(&mutex);
 		stats.packets_received++;
-		
+
 		const Header * hdr = parser.header();
 		const SelectiveAck* sack = parser.selectiveAck();
 		int data_off = parser.dataOffset();
-		
+
 		//DumpPacket(*hdr,sack);
-		
+
 		updateDelayMeasurement(hdr);
-		remote_wnd->packetReceived(hdr,sack,this);
+		remote_wnd->packetReceived(hdr, sack, this);
 		switch (stats.state)
 		{
 			case CS_SYN_SENT:
@@ -153,7 +153,7 @@ namespace utp
 					local_wnd->setLastSeqNr(hdr->seq_nr - 1);
 					connected.wakeAll();
 					stats.timeout = 1000;
-					Out(SYS_UTP|LOG_NOTICE) << "UTP: established connection with " << stats.remote.toString() << endl;
+					Out(SYS_UTP | LOG_NOTICE) << "UTP: established connection with " << stats.remote.toString() << endl;
 				}
 				else
 				{
@@ -170,7 +170,7 @@ namespace utp
 					sendState();
 					stats.state = CS_CONNECTED;
 					stats.timeout = 1000;
-					Out(SYS_UTP|LOG_NOTICE) << "UTP: established connection with " << stats.remote.toString() << endl;
+					Out(SYS_UTP | LOG_NOTICE) << "UTP: established connection with " << stats.remote.toString() << endl;
 				}
 				else
 				{
@@ -184,9 +184,9 @@ namespace utp
 				{
 					// push data into local window
 					int s = packet.size() - data_off;
-					local_wnd->packetReceived(hdr,(const bt::Uint8*)packet.data() + data_off,s);
-					
-					// send back an ACK 
+					local_wnd->packetReceived(hdr, (const bt::Uint8*)packet.data() + data_off, s);
+
+					// send back an ACK
 					sendStateOrData();
 					if (local_wnd->size() > 0)
 						data_ready.wakeAll();
@@ -218,14 +218,14 @@ namespace utp
 			case CS_FINISHED:
 				if (hdr->type == ST_DATA)
 				{
-					if (SeqNrCmpSE(hdr->seq_nr,stats.eof_seq_nr))
+					if (SeqNrCmpSE(hdr->seq_nr, stats.eof_seq_nr))
 					{
 						// push data into local window
 						int s = packet.size() - data_off;
-						local_wnd->packetReceived(hdr,(const bt::Uint8*)packet.data() + data_off,s);
+						local_wnd->packetReceived(hdr, (const bt::Uint8*)packet.data() + data_off, s);
 					}
-					
-					// send back an ACK 
+
+					// send back an ACK
 					sendStateOrData();
 					if (stats.state == CS_FINISHED && !fin_sent && output_buffer.size() == 0)
 					{
@@ -262,12 +262,12 @@ namespace utp
 			case CS_CLOSED:
 				break;
 		}
-		
+
 		checkState();
 		startTimer();
 		return stats.state;
 	}
-	
+
 	void Connection::checkState()
 	{
 		// Check if we have become readable or writeable, and notify if necessary
@@ -277,15 +277,15 @@ namespace utp
 		bool w_changed = !stats.writeable && w;
 		stats.readable = r;
 		stats.writeable = w;
-		
+
 		mutex.unlock();
 		// Temporary unlock the mutex to avoid a deadlock
 		if (r_changed || w_changed)
-			transmitter->stateChanged(self.toStrongRef(),r_changed,w_changed);
+			transmitter->stateChanged(self.toStrongRef(), r_changed, w_changed);
 		mutex.lock();
 	}
 
-	
+
 	void Connection::checkIfClosed()
 	{
 		// Check if we need to go to the closed state
@@ -294,12 +294,12 @@ namespace utp
 		if (stats.state == CS_FINISHED && remote_wnd->allPacketsAcked() && local_wnd->isEmpty())
 		{
 			stats.state = CS_CLOSED;
-			Out(SYS_UTP|LOG_NOTICE) << "UTP: Connection " << stats.recv_connection_id << "|" << stats.send_connection_id << " closed " << endl;
+			Out(SYS_UTP | LOG_NOTICE) << "UTP: Connection " << stats.recv_connection_id << "|" << stats.send_connection_id << " closed " << endl;
 			data_ready.wakeAll();
 		}
 	}
-	
-	void Connection::updateRTT(const utp::Header* hdr,bt::Uint32 packet_rtt,bt::Uint32 packet_size)
+
+	void Connection::updateRTT(const utp::Header* hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size)
 	{
 		Q_UNUSED(hdr);
 		int delta = stats.rtt - (int)packet_rtt;
@@ -310,16 +310,16 @@ namespace utp
 		startTimer();
 	}
 
-	
-	void Connection::sendPacket(Uint32 type,Uint16 p_ack_nr)
+
+	void Connection::sendPacket(Uint32 type, Uint16 p_ack_nr)
 	{
 		bt::Uint32 extension_length = 0;
 		bt::Uint32 sack_bits = local_wnd->selectiveAckBits();
 		if (sack_bits > 0)
-			extension_length += 2 + qMax(sack_bits / 8,(bt::Uint32)4);
-	
+			extension_length += 2 + qMax(sack_bits / 8, (bt::Uint32)4);
+
 		TimeValue tv;
-		QByteArray ba(Header::size() + extension_length,0);
+		QByteArray ba(Header::size() + extension_length, 0);
 		Header hdr;
 		hdr.version = 1;
 		hdr.type = type;
@@ -331,7 +331,7 @@ namespace utp
 		hdr.seq_nr = stats.seq_nr;
 		hdr.ack_nr = p_ack_nr;
 		hdr.write((bt::Uint8*)ba.data());
-		
+
 		if (extension_length > 0)
 		{
 			bt::Uint8* ptr = (bt::Uint8*)(ba.data() + Header::size());
@@ -341,11 +341,11 @@ namespace utp
 			sack.bitmask = ptr + 2;
 			local_wnd->fillSelectiveAck(&sack);
 		}
-		
-	
-		if (!transmitter->sendTo(self.toStrongRef(),ba))
-			throw TransmissionError(__FILE__,__LINE__);
-		
+
+
+		if (!transmitter->sendTo(self.toStrongRef(), ba))
+			throw TransmissionError(__FILE__, __LINE__);
+
 		last_packet_sent = tv;
 		stats.packets_sent++;
 		startTimer();
@@ -357,24 +357,24 @@ namespace utp
 		stats.seq_nr = 1;
 		stats.state = CS_SYN_SENT;
 		stats.timeout = CONNECT_TIMEOUT;
-		sendPacket(ST_SYN,0);
+		sendPacket(ST_SYN, 0);
 		stats.seq_nr++;
 		startTimer();
 	}
-	
+
 	void Connection::sendState()
 	{
-		sendPacket(ST_STATE,local_wnd->lastSeqNr());
+		sendPacket(ST_STATE, local_wnd->lastSeqNr());
 	}
 
 	void Connection::sendFIN()
 	{
-		sendPacket(ST_FIN,local_wnd->lastSeqNr());
+		sendPacket(ST_FIN, local_wnd->lastSeqNr());
 	}
 
 	void Connection::sendReset()
 	{
-		sendPacket(ST_RESET,local_wnd->lastSeqNr());
+		sendPacket(ST_RESET, local_wnd->lastSeqNr());
 	}
 
 	void Connection::updateDelayMeasurement(const utp::Header* hdr)
@@ -385,15 +385,15 @@ namespace utp
 			stats.reply_micro = tms - hdr->timestamp_microseconds;
 		else
 			stats.reply_micro = hdr->timestamp_difference_microseconds - tms;
-		
-		bt::Uint32 base_delay = delay_window->update(hdr,now.toTimeStamp());
-		
+
+		bt::Uint32 base_delay = delay_window->update(hdr, now.toTimeStamp());
+
 		int our_delay = hdr->timestamp_difference_microseconds / 1000 - base_delay;
 		int off_target = CCONTROL_TARGET - our_delay;
 		double delay_factor = (double)off_target / (double)CCONTROL_TARGET;
 		double window_factor = remote_wnd->windowUsageFactor();
 		double scaled_gain = MAX_CWND_INCREASE_PACKETS_PER_RTT * delay_factor * window_factor;
-		
+
 		remote_wnd->updateWindowSize(scaled_gain);
 		if (remote_wnd->maxWindow() <= MIN_PACKET_SIZE)
 			stats.packet_size = MIN_PACKET_SIZE;
@@ -403,52 +403,52 @@ namespace utp
 			stats.packet_size = 1000;
 		else
 			stats.packet_size = 1500 - IP_AND_UDP_OVERHEAD - sizeof(utp::Header);
-	
+
 		/*
 		Out(SYS_UTP|LOG_DEBUG) << "base_delay " << base_delay << endl;
 		Out(SYS_UTP|LOG_DEBUG) << "our_delay " << our_delay << endl;
 		Out(SYS_UTP|LOG_DEBUG) << "off_target " << off_target << endl;
 		Out(SYS_UTP|LOG_DEBUG) << "delay_factor " << delay_factor << endl;
 		Out(SYS_UTP|LOG_DEBUG) << "window_factor " << window_factor << endl;
-		Out(SYS_UTP|LOG_DEBUG) << "scaled_gain " << scaled_gain << endl; 
+		Out(SYS_UTP|LOG_DEBUG) << "scaled_gain " << scaled_gain << endl;
 		Out(SYS_UTP|LOG_DEBUG) << "packet_size " << stats.packet_size << endl;
 		*/
 	}
-	
-	
-	
+
+
+
 
 	int Connection::send(const bt::Uint8* data, Uint32 len)
 	{
 		QMutexLocker lock(&mutex);
 		if (stats.state != CS_CONNECTED)
 			return -1;
-		
+
 		// first put data in the output buffer then send packets
-		bt::Uint32 ret = output_buffer.write(data,len);
+		bt::Uint32 ret = output_buffer.write(data, len);
 		sendPackets();
 		stats.writeable = !output_buffer.full();
 		return ret;
 	}
-	
+
 	void Connection::sendPackets()
 	{
 		// chop output_buffer data in packets and keep sending
 		// until we are no longer allowed or the buffer is empty
 		while (output_buffer.size() > 0 && remote_wnd->availableSpace() > 0)
 		{
-			bt::Uint32 to_read = qMin((bt::Uint32)output_buffer.size(),remote_wnd->availableSpace());
-			to_read = qMin(to_read,stats.packet_size);
+			bt::Uint32 to_read = qMin((bt::Uint32)output_buffer.size(), remote_wnd->availableSpace());
+			to_read = qMin(to_read, stats.packet_size);
 			if (to_read == 0)
 				break;
-			
-			QByteArray packet(to_read,0);
-			if (output_buffer.read((bt::Uint8*)packet.data(),to_read) != to_read)
-				Out(SYS_UTP|LOG_DEBUG) << "Output buffer read failed " << endl;
-		
+
+			QByteArray packet(to_read, 0);
+			if (output_buffer.read((bt::Uint8*)packet.data(), to_read) != to_read)
+				Out(SYS_UTP | LOG_DEBUG) << "Output buffer read failed " << endl;
+
 			sendDataPacket(packet);
 		}
-		
+
 		if (stats.state == CS_FINISHED && !fin_sent && output_buffer.size() == 0)
 		{
 			sendFIN();
@@ -463,15 +463,15 @@ namespace utp
 		else
 			sendState();
 	}
-	
+
 	void Connection::sendDataPacket(const QByteArray& packet, Uint16 seq_nr, const utp::TimeValue& now)
 	{
 		bt::Uint32 extension_length = 0;
 		bt::Uint32 sack_bits = local_wnd->selectiveAckBits();
 		if (sack_bits > 0)
-			extension_length += 2 + qMin(sack_bits / 8,(bt::Uint32)4);
-		
-		QByteArray ba(Header::size() + extension_length + packet.size(),0);
+			extension_length += 2 + qMin(sack_bits / 8, (bt::Uint32)4);
+
+		QByteArray ba(Header::size() + extension_length + packet.size(), 0);
 		Header hdr;
 		hdr.version = 1;
 		hdr.type = ST_DATA;
@@ -483,7 +483,7 @@ namespace utp
 		hdr.seq_nr = seq_nr;
 		hdr.ack_nr = local_wnd->lastSeqNr();
 		hdr.write((bt::Uint8*)ba.data());
-		
+
 		if (extension_length > 0)
 		{
 			bt::Uint8* ptr = (bt::Uint8*)(ba.data() + Header::size());
@@ -493,11 +493,11 @@ namespace utp
 			sack.bitmask = ptr + 2;
 			local_wnd->fillSelectiveAck(&sack);
 		}
-		
-		memcpy(ba.data() + Header::size() + extension_length,packet.data(),packet.size());
-		if (!transmitter->sendTo(self.toStrongRef(),ba))
-			throw TransmissionError(__FILE__,__LINE__);
-		
+
+		memcpy(ba.data() + Header::size() + extension_length, packet.data(), packet.size());
+		if (!transmitter->sendTo(self.toStrongRef(), ba))
+			throw TransmissionError(__FILE__, __LINE__);
+
 		last_packet_sent = now;
 		stats.packets_sent++;
 	}
@@ -506,9 +506,9 @@ namespace utp
 	void Connection::sendDataPacket(const QByteArray& packet)
 	{
 		TimeValue now;
-		sendDataPacket(packet,stats.seq_nr,now);
-		
-		remote_wnd->addPacket(packet,stats.seq_nr,bt::Now());
+		sendDataPacket(packet, stats.seq_nr, now);
+
+		remote_wnd->addPacket(packet, stats.seq_nr, bt::Now());
 		stats.seq_nr++;
 		startTimer();
 	}
@@ -537,27 +537,27 @@ namespace utp
 		QMutexLocker lock(&mutex);
 		if (stats.state == CS_FINISHED)
 			checkIfClosed();
-		
+
 		if (local_wnd->size() == 0 && stats.state == CS_CLOSED)
 			return -1;
-		
-		bt::Uint32 ret = local_wnd->read(buf,max_len);
+
+		bt::Uint32 ret = local_wnd->read(buf, max_len);
 		// Update the window if there is room again
 		if (stats.last_window_size_transmitted < 2000 && local_wnd->availableSpace() > 2000)
 			sendState();
-		
+
 		stats.bytes_received += ret;
 		stats.readable = local_wnd->size() > 0;
 		return ret;
 	}
 
-	
+
 	bool Connection::waitUntilConnected()
 	{
 		QMutexLocker lock(&mutex);
 		if (stats.state == CS_CONNECTED)
 			return true;
-		
+
 		connected.wait(&mutex);
 		return stats.state == CS_CONNECTED;
 	}
@@ -568,8 +568,8 @@ namespace utp
 		QMutexLocker lock(&mutex);
 		if (local_wnd->size() > 0)
 			return true;
-		
-		data_ready.wait(&mutex,timeout == 0 ? ULONG_MAX : timeout);
+
+		data_ready.wait(&mutex, timeout == 0 ? ULONG_MAX : timeout);
 		return local_wnd->size() > 0;
 	}
 
@@ -584,8 +584,8 @@ namespace utp
 			sendPackets();
 		}
 	}
-	
-	
+
+
 	void Connection::reset()
 	{
 		QMutexLocker lock(&mutex);
@@ -616,11 +616,11 @@ namespace utp
 				remote_wnd->timeout(this);
 				stats.packet_size = MIN_PACKET_SIZE;
 				stats.timeout *= 2;
-				
+
 				if (stats.timeout >= MAX_TIMEOUT)
 				{
 					// If we have reached the max timeout, kill the connection
-					Out(SYS_UTP|LOG_DEBUG) << "Connection " << stats.recv_connection_id << "|" << stats.send_connection_id << " max timeout reached, closing" << endl;
+					Out(SYS_UTP | LOG_DEBUG) << "Connection " << stats.recv_connection_id << "|" << stats.send_connection_id << " max timeout reached, closing" << endl;
 					stats.state = CS_FINISHED;
 				}
 				sendPackets();
@@ -637,7 +637,7 @@ namespace utp
 			case CS_CLOSED:
 				break;
 		}
-		
+
 		checkState();
 		if (stats.state == CS_CLOSED)
 			transmitter->closed(self.toStrongRef());
@@ -645,14 +645,14 @@ namespace utp
 
 	void Connection::dumpStats()
 	{
-		Out(SYS_UTP|LOG_DEBUG) << "Connection " << stats.recv_connection_id << "|" << stats.send_connection_id << " stats:" << endl;
-		Out(SYS_UTP|LOG_DEBUG) << "bytes_received   = " << stats.bytes_received << endl;
-		Out(SYS_UTP|LOG_DEBUG) << "bytes_sent       = " << stats.bytes_sent << endl;
-		Out(SYS_UTP|LOG_DEBUG) << "packets_received = " << stats.packets_received << endl;
-		Out(SYS_UTP|LOG_DEBUG) << "packets_sent     = " << stats.packets_sent << endl;
-		Out(SYS_UTP|LOG_DEBUG) << "bytes_lost       = " << stats.bytes_lost << endl;
-		Out(SYS_UTP|LOG_DEBUG) << "packets_lost     = " << stats.packets_lost << endl;
-		Out(SYS_UTP|LOG_DEBUG) << "local_window     = " << local_wnd->size() << endl;
+		Out(SYS_UTP | LOG_DEBUG) << "Connection " << stats.recv_connection_id << "|" << stats.send_connection_id << " stats:" << endl;
+		Out(SYS_UTP | LOG_DEBUG) << "bytes_received   = " << stats.bytes_received << endl;
+		Out(SYS_UTP | LOG_DEBUG) << "bytes_sent       = " << stats.bytes_sent << endl;
+		Out(SYS_UTP | LOG_DEBUG) << "packets_received = " << stats.packets_received << endl;
+		Out(SYS_UTP | LOG_DEBUG) << "packets_sent     = " << stats.packets_sent << endl;
+		Out(SYS_UTP | LOG_DEBUG) << "bytes_lost       = " << stats.bytes_lost << endl;
+		Out(SYS_UTP | LOG_DEBUG) << "packets_lost     = " << stats.packets_lost << endl;
+		Out(SYS_UTP | LOG_DEBUG) << "local_window     = " << local_wnd->size() << endl;
 	}
 
 	bool Connection::allDataSent() const
@@ -663,19 +663,19 @@ namespace utp
 
 	void Connection::startTimer()
 	{
-		// Timers can only be started from the same thread so if 
+		// Timers can only be started from the same thread so if
 		// we are being called from another use a signal
 		if (QThread::currentThread() != thread())
 			emit doDelayedStartTimer();
 		else
 			delayedStartTimer();
 	}
-	
+
 	void Connection::delayedStartTimer()
 	{
 		if (timer_id != -1)
 			transmitter->cancelTimer(timer_id);
-		timer_id = transmitter->scheduleTimer(self.toStrongRef(),stats.timeout);
+		timer_id = transmitter->scheduleTimer(self.toStrongRef(), stats.timeout);
 	}
 }
 

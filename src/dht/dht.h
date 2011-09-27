@@ -118,13 +118,14 @@ namespace dht
 		void update();
 		void onResolverResults(net::AddressResolver* ar);
 		void ownNodeLookupFinished(Task* t);
+		void expireDatabaseItems();
 		
 	private:
 		Node* node;
 		RPCServer* srv;
 		Database* db;
 		TaskManager* tman;
-		bt::Timer expire_timer;
+		QTimer expire_timer;
 		QString table_file;
 		QTimer update_timer;
 		NodeLookup* our_node_lookup;

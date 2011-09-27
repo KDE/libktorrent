@@ -24,17 +24,17 @@
 
 namespace dht
 {
-	RPCCallListener::RPCCallListener()
+	RPCCallListener::RPCCallListener(QObject* parent) : QObject(parent)
 	{}
-	
-	RPCCallListener::~RPCCallListener() 
+
+	RPCCallListener::~RPCCallListener()
 	{
 	}
 
-	RPCCall::RPCCall(RPCServer* rpc,MsgBase::Ptr msg,bool queued) : msg(msg),rpc(rpc),queued(queued)
+	RPCCall::RPCCall(RPCServer* rpc, MsgBase::Ptr msg, bool queued) : msg(msg), rpc(rpc), queued(queued)
 	{
 		timer.setSingleShot(true);
-		connect(&timer,SIGNAL(timeout()),this,SLOT(onTimeout()));
+		connect(&timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
 		if (!queued)
 			timer.start(30*1000);
 	}
@@ -43,24 +43,24 @@ namespace dht
 	RPCCall::~RPCCall()
 	{
 	}
-	
+
 	void RPCCall::start()
 	{
 		queued = false;
 		timer.start(30*1000);
 	}
-	
+
 	void RPCCall::onTimeout()
 	{
 		onCallTimeout(this);
 		rpc->timedOut(msg->getMTID());
 	}
-	
+
 	void RPCCall::response(MsgBase::Ptr rsp)
 	{
-		onCallResponse(this,rsp);
+		onCallResponse(this, rsp);
 	}
-	
+
 	Method RPCCall::getMsgMethod() const
 	{
 		if (msg)
@@ -68,11 +68,11 @@ namespace dht
 		else
 			return dht::NONE;
 	}
-	
+
 	void RPCCall::addListener(RPCCallListener* cl)
 	{
-		connect(this,SIGNAL(onCallResponse(RPCCall*,MsgBase::Ptr)),cl,SLOT(onResponse(RPCCall*,MsgBase::Ptr)));
-		connect(this,SIGNAL(onCallTimeout(RPCCall*)),cl,SLOT(onTimeout(RPCCall*)));
+		connect(this, SIGNAL(onCallResponse(RPCCall*, MsgBase::Ptr)), cl, SLOT(onResponse(RPCCall*, MsgBase::Ptr)));
+		connect(this, SIGNAL(onCallTimeout(RPCCall*)), cl, SLOT(onTimeout(RPCCall*)));
 	}
 
 }

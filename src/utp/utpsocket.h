@@ -28,7 +28,7 @@
 
 namespace utp
 {
-	
+
 	/**
 		UTPSocket class serves as an interface for the networking code.
 	*/
@@ -38,11 +38,11 @@ namespace utp
 		UTPSocket();
 		UTPSocket(Connection::WPtr conn);
 		virtual ~UTPSocket();
-		
+
 		virtual int fd() const;
 		virtual bool ok() const;
-		virtual int send(const bt::Uint8* buf,int len);
-		virtual int recv(bt::Uint8* buf,int max_len);
+		virtual int send(const bt::Uint8* buf, int len);
+		virtual int recv(bt::Uint8* buf, int max_len);
 		virtual void close();
 		virtual void setBlocking(bool on);
 		virtual bt::Uint32 bytesAvailable() const;
@@ -54,7 +54,7 @@ namespace utp
 		virtual void reset();
 		virtual void prepare(net::Poll* p, net::Poll::Mode mode);
 		virtual bool ready(const net::Poll* p, net::Poll::Mode mode) const;
-		
+
 	private:
 		Connection::WPtr conn;
 		bool blocking;

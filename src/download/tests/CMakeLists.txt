@@ -1,4 +1,4 @@
 set(streamingchunkselectortest_SRCS streamingchunkselectortest.cpp)
 
 kde4_add_unit_test(streamingchunkselectortest TESTNAME streamingchunkselectortest ${streamingchunkselectortest_SRCS})
-target_link_libraries( streamingchunkselectortest ${KDE4_KDECORE_LIBS} ${QT_QTGUI_LIBRARY} ${QT_QTTEST_LIBRARY} testlib ktorrent)
+target_link_libraries( streamingchunkselectortest ${QT_QTTEST_LIBRARY} testlib ktorrent)

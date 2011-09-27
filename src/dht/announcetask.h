@@ -27,17 +27,20 @@
 namespace dht
 {
 	class Database;
-	
+
 	class KBucketEntryAndToken : public KBucketEntry
 	{
 		Key token;
 	public:
 		KBucketEntryAndToken() {}
-		KBucketEntryAndToken(const KBucketEntry & e,const Key & token)
-			: KBucketEntry(e),token(token) {}
+		KBucketEntryAndToken(const KBucketEntry & e, const Key & token)
+				: KBucketEntry(e), token(token) {}
 		virtual ~KBucketEntryAndToken() {}
-		
-		const Key & getToken() const {return token;}
+
+		const Key & getToken() const
+		{
+			return token;
+		}
 	};
 
 	/**
@@ -46,13 +49,18 @@ namespace dht
 	class AnnounceTask : public Task
 	{
 	public:
-		AnnounceTask(Database* db,RPCServer* rpc, Node* node,const dht::Key & info_hash,bt::Uint16 port);
+		AnnounceTask(Database* db,
+		             RPCServer* rpc,
+		             Node* node,
+		             const dht::Key & info_hash,
+		             bt::Uint16 port,
+		             QObject* parent);
 		virtual ~AnnounceTask();
 
 		virtual void callFinished(RPCCall* c, MsgBase::Ptr rsp);
 		virtual void callTimeout(RPCCall* c);
 		virtual void update();
-		
+
 		/**
 		 * Take one item from the returned values.
 		 * Returns false if there is no item to take.
@@ -60,6 +68,7 @@ namespace dht
 		 * @return false if no item to take, true else
 		 */
 		bool takeItem(DBItem & item);
+		
 	private:
 		dht::Key info_hash;
 		bt::Uint16 port;
@@ -67,7 +76,6 @@ namespace dht
 		KBucketEntrySet answered_visited; // nodes which have answered with values which have been visited
 		Database* db;
 		DBItemList returned_items;
-		
 	};
 
 }

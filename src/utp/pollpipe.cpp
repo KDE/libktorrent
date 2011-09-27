@@ -26,16 +26,16 @@ using namespace bt;
 
 namespace utp
 {
-	
-	PollPipe::PollPipe(net::Poll::Mode mode) : mode(mode),poll_index(-1)
+
+	PollPipe::PollPipe(net::Poll::Mode mode) : mode(mode), poll_index(-1)
 	{
 	}
-		
+
 	PollPipe::~PollPipe()
 	{
 	}
 
-	void PollPipe::prepare(net::Poll* p, bt::Uint16 conn_id,PollPipe::Ptr self)
+	void PollPipe::prepare(net::Poll* p, bt::Uint16 conn_id, PollPipe::Ptr self)
 	{
 		QMutexLocker lock(&mutex);
 		conn_ids.insert(conn_id);
@@ -49,7 +49,7 @@ namespace utp
 		QMutexLocker lock(&mutex);
 		if (poll_index < 0 || !conn_ids.contains(conn->receiveConnectionID()))
 			return false;
-		
+
 		if (mode == net::Poll::INPUT)
 			return conn->bytesAvailable() > 0 || conn->connectionState() == CS_CLOSED;
 		else

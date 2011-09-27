@@ -12,6 +12,7 @@ Changes in 1.2:
 - Remove obsolete functions of data check during upload
 - Simplify blocklist interface
 - Revamp networking code
+- Remove thread from DHT code
 
 Changes in 1.1.3:
 - Fix bug causing UPnP not to work properly if there is a question mark in the controlurl
