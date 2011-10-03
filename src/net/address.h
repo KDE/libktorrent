@@ -71,6 +71,9 @@ namespace net
 		/// Assignment operator
 		Address & operator = (const net::Address & other);
 		
+		/// Is this a IPv4 mapped address into the IPv6 address space
+		bool isIPv4Mapped() const;
+		
 	private:
 		Uint16 port_number;
 	};

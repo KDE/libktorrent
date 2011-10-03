@@ -20,7 +20,9 @@
 
 #include "address.h"
 #include <arpa/inet.h>
+#include <util/log.h>
 
+using namespace bt;
 
 namespace net
 {
@@ -51,10 +53,18 @@ namespace net
 		else if (ss->ss_family == AF_INET6)
 		{
 			char tmp[100];
-			inet_ntop(AF_INET, &((const struct sockaddr_in6*)ss)->sin6_addr, tmp, 100);
+			inet_ntop(AF_INET6, &((const struct sockaddr_in6*)ss)->sin6_addr, tmp, 100);
 			setAddress(QString(tmp));
 			port_number = ntohs(((const struct sockaddr_in6*)ss)->sin6_port);
+			if (isIPv4Mapped())
+			{
+				Q_IPV6ADDR ipv6 = toIPv6Address();
+				quint32 ip = ipv6[12] << 24 | ipv6[13] << 16 | ipv6[14] << 8 | ipv6[15];
+				setAddress(ip);
+			}
 		}
+		else
+			Out(SYS_GEN|LOG_DEBUG) << "Unknown address family" << endl;
 	}
 
 	
@@ -87,7 +97,7 @@ namespace net
 		{
 			struct sockaddr_in6* addr = (struct sockaddr_in6*)ss;
 			memset(addr, 0, sizeof(struct sockaddr_in6));
-			addr->sin6_family = AF_INET;
+			addr->sin6_family = AF_INET6;
 			addr->sin6_port = htons(port_number);
 			inet_pton(AF_INET6, toString().toLocal8Bit().data(), &addr->sin6_addr);
 			length = sizeof(struct sockaddr_in6);
@@ -134,5 +144,16 @@ namespace net
 		port_number = other.port();
 		return *this;
 	}
+	
+	bool Address::isIPv4Mapped() const
+	{
+		Q_IPV6ADDR addr = toIPv6Address();
+		for (int i = 0; i < 10; i++)
+			if (addr[i] != 0)
+				return false;
+			
+		return addr[10] == 0xff && addr[11] == 0xff;
+	}
+
 
 }
