@@ -70,6 +70,12 @@ namespace bt
 	/// Get the maximum number of open files
 	KTORRENT_EXPORT Uint32 MaxOpenFiles();
 	
+	/// Get the current number of open files
+	KTORRENT_EXPORT Uint32 CurrentOpenFiles();
+	
+	/// Can we open another file ?
+	KTORRENT_EXPORT bool OpenFileAllowed();
+	
 	/// Set the network interface to use (null means all interfaces)
 	KTORRENT_EXPORT void SetNetworkInterface(const QString & iface);
 	

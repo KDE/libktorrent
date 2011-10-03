@@ -20,6 +20,7 @@
 #include "functions.h"
 #include <qdir.h>
 #include <errno.h>
+#include <unistd.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -179,6 +180,43 @@ namespace bt
 		struct rlimit lim;
 		getrlimit(RLIMIT_NOFILE,&lim);
 		return lim.rlim_cur;
+	}
+	
+	Uint32 CurrentOpenFiles()
+	{
+#ifdef Q_OS_LINUX
+		QString path = QString("/proc/%1/fd").arg(getpid());
+		QDir dir(path);
+		int ret = dir.count();
+		if (ret < 0)
+			return 0;
+		else
+			return ret;
+#elif !defined(Q_OS_WINDOWS)
+		Uint32 count = 0;
+		struct stat sb;
+		int max_fd_number = getdtablesize();
+		for (int i = 0; i < max_fd_number; i++)
+		{
+			fstat(i, &sb);
+			if (errno != EBADF)
+				count++;
+		}
+		
+		return count;
+#else
+		return 0;
+#endif
+	}
+	
+	bool OpenFileAllowed()
+	{
+		const Uint32 headroom = 50;
+		Uint32 max_open = MaxOpenFiles();
+		if (max_open == 0)
+			return true;
+		else
+			return max_open - CurrentOpenFiles() > headroom;
 	}
 
 	bool MaximizeLimits()

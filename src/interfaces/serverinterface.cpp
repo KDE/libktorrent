@@ -137,6 +137,10 @@ namespace bt
 				return;
 			}
 			
+			// Not enough free file descriptors
+			if (!OpenFileAllowed())
+				return;
+			
 			ServerAuthenticate* auth = 0;
 			
 			if (encryption)

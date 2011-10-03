@@ -112,6 +112,8 @@ namespace bt
 		if (!fptr)
 		{
 		//	Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
+			if (!OpenFileAllowed()) 
+				return 0; // Running out of file descriptors, force buffered mode
 			openFile(mode);
 		}
 		
