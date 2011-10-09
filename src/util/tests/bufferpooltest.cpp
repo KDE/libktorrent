@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2010 by Joris Guisson                                   *
+ *   Copyright (C) 2011 by Joris Guisson                                   *
  *   joris.guisson@gmail.com                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,51 +17,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
+#include <QtTest>
+#include <QObject>
+#include <util/log.h>
+#include <util/bufferpool.h>
 
-
-#ifndef UTP_DELAYWINDOW_H
-#define UTP_DELAYWINDOW_H
-
-#include <boost/circular_buffer.hpp>
-#include <utp/utpprotocol.h>
-
-namespace utp
+class BufferPoolTest : public QObject
 {
-	const bt::Uint32 MAX_DELAY = 0xFFFFFFFF;
+	Q_OBJECT
+public:
 
-	class KTORRENT_EXPORT DelayWindow
+private slots:
+	void initTestCase()
 	{
-	public:
-		DelayWindow();
-		virtual ~DelayWindow();
+		bt::InitLog("bufferpooltest.log");
+	}
 
-		/// Update the window with a new packet, returns the base delay
-		bt::Uint32 update(const Header* hdr, bt::TimeStamp receive_time);
+	void cleanupTestCase()
+	{
+	}
 
-	private:
-		struct DelayEntry
-		{
-			bt::Uint32 timestamp_difference_microseconds;
-			bt::TimeStamp receive_time;
 
-			DelayEntry() : timestamp_difference_microseconds(0), receive_time(0)
-			{}
+	void testPool()
+	{
+		bt::BufferPool::Ptr pool(new bt::BufferPool());
+		pool->setWeakPointer(pool.toWeakRef());
 
-			DelayEntry(bt::Uint32 tdm, bt::TimeStamp rt) : timestamp_difference_microseconds(tdm), receive_time(rt)
-			{}
+		bt::Buffer::Ptr a = pool->get(1000);
+		QVERIFY(a);
+		QVERIFY(a->size() == 1000);
+		QVERIFY(a->capacity() == 1000);
+		a.clear();
 
-			bool operator < (const DelayEntry & e) const
-			{
-				return timestamp_difference_microseconds < e.timestamp_difference_microseconds;
-			}
-		};
+		a = pool->get(500);
+		QVERIFY(a);
+		QVERIFY(a->size() == 500);
+		QVERIFY(a->capacity() == 1000);
 
-		typedef boost::circular_buffer<DelayEntry>::iterator DelayEntryItr;
+		bt::Buffer::Ptr b = pool->get(2000);
+		QVERIFY(b);
+		QVERIFY(b->size() == 2000);
+		QVERIFY(b->capacity() == 2000);
+	}
+};
 
-	private:
-		boost::circular_buffer<DelayEntry> delay_window;
-	};
+QTEST_MAIN(BufferPoolTest)
 
-}
-
-#endif // UTP_DELAYWINDOW_H
+#include "bufferpooltest.moc"

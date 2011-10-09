@@ -27,6 +27,7 @@ set(libktorrent_SRC
 	util/pipe.cpp
 	util/circularbuffer.cpp
 	util/resourcemanager.cpp
+	util/bufferpool.cpp
 	
 	bcodec/bdecoder.cpp  
 	bcodec/bencoder.cpp  
@@ -187,6 +188,7 @@ set(libktorrent_SRC
 	utp/pollpipe.cpp
 	utp/delaywindow.cpp
 	utp/outputqueue.cpp 
+	utp/packetbuffer.cpp
 	
 	upnp/soap.cpp
 	upnp/upnpmcastsocket.cpp

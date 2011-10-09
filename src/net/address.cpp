@@ -52,9 +52,7 @@ namespace net
 		}
 		else if (ss->ss_family == AF_INET6)
 		{
-			char tmp[100];
-			inet_ntop(AF_INET6, &((const struct sockaddr_in6*)ss)->sin6_addr, tmp, 100);
-			setAddress(QString(tmp));
+			setAddress((const struct sockaddr*)ss);
 			port_number = ntohs(((const struct sockaddr_in6*)ss)->sin6_port);
 			if (isIPv4Mapped())
 			{
@@ -90,7 +88,7 @@ namespace net
 			memset(addr, 0, sizeof(struct sockaddr_in));
 			addr->sin_family = AF_INET;
 			addr->sin_port = htons(port_number);
-			inet_pton(AF_INET, toString().toLocal8Bit().data(), &addr->sin_addr);
+			addr->sin_addr.s_addr = htonl(toIPv4Address());
 			length = sizeof(struct sockaddr_in);
 		}
 		else
@@ -99,7 +97,7 @@ namespace net
 			memset(addr, 0, sizeof(struct sockaddr_in6));
 			addr->sin6_family = AF_INET6;
 			addr->sin6_port = htons(port_number);
-			inet_pton(AF_INET6, toString().toLocal8Bit().data(), &addr->sin6_addr);
+			memcpy(&addr->sin6_addr, toIPv6Address().c, 16);
 			length = sizeof(struct sockaddr_in6);
 		}
 	}
@@ -145,6 +143,28 @@ namespace net
 		return *this;
 	}
 	
+	Address & Address::operator = (const struct sockaddr_storage & ss)
+	{
+		if (ss.ss_family == AF_INET)
+		{
+			setAddress((const struct sockaddr*)&ss);
+			port_number = ntohs(((const struct sockaddr_in*)&ss)->sin_port);
+		}
+		else if (ss.ss_family == AF_INET6)
+		{
+			setAddress((const struct sockaddr*)&ss);
+			port_number = ntohs(((const struct sockaddr_in6*)&ss)->sin6_port);
+			if (isIPv4Mapped())
+			{
+				Q_IPV6ADDR ipv6 = toIPv6Address();
+				quint32 ip = ipv6[12] << 24 | ipv6[13] << 16 | ipv6[14] << 8 | ipv6[15];
+				setAddress(ip);
+			}
+		}
+
+		return *this;
+	}
+
 	bool Address::isIPv4Mapped() const
 	{
 		Q_IPV6ADDR addr = toIPv6Address();

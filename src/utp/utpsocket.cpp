@@ -45,6 +45,7 @@ namespace utp
 		if (ptr)
 		{
 			setRemoteAddress(ptr->remoteAddress());
+			ptr->setBlocking(blocking);
 			m_state = CONNECTED;
 		}
 	}
@@ -108,6 +109,7 @@ namespace utp
 			return false;
 
 		m_state = CONNECTING;
+		ptr->setBlocking(blocking);
 		if (blocking)
 		{
 			bool ret = ptr->waitUntilConnected();
@@ -205,6 +207,9 @@ namespace utp
 	void UTPSocket::setBlocking(bool on)
 	{
 		blocking = on;
+		Connection::Ptr ptr = conn.toStrongRef();
+		if (ptr)
+			ptr->setBlocking(on);
 	}
 
 	bool UTPSocket::setTOS(unsigned char type_of_service)

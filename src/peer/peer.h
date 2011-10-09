@@ -166,8 +166,6 @@ namespace bt
 		/// Set the ACA score
 		void setACAScore(double s);
 		
-		/// Get the stats of the peer
-		virtual const Stats & getStats() const;
 		virtual bt::Uint32 averageDownloadSpeed() const;
 		
 		/// Choke the peer

@@ -22,13 +22,12 @@
 #define UTP_REMOTEWINDOW_H
 
 #include <QList>
-#include <QByteArray>
 #include <QSharedPointer>
 #include <QMutex>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <utp/timevalue.h>
-
+#include <utp/packetbuffer.h>
 
 namespace utp
 {
@@ -38,15 +37,13 @@ namespace utp
 
 	struct UnackedPacket
 	{
-		UnackedPacket(const QByteArray & data, bt::Uint16 seq_nr, bt::TimeStamp send_time);
+		UnackedPacket(const PacketBuffer & packet, bt::Uint16 seq_nr, bt::TimeStamp send_time);
 		~UnackedPacket();
 
-		QByteArray data;
+		PacketBuffer packet;
 		bt::Uint16 seq_nr;
 		bt::TimeStamp send_time;
 		bool retransmitted;
-
-		typedef QSharedPointer<UnackedPacket> Ptr;
 	};
 
 	/**
@@ -61,7 +58,7 @@ namespace utp
 		virtual void updateRTT(const Header* hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size) = 0;
 
 		/// Retransmit a packet
-		virtual void retransmit(const QByteArray & packet, bt::Uint16 p_seq_nr) = 0;
+		virtual void retransmit(PacketBuffer & packet, bt::Uint16 p_seq_nr) = 0;
 
 		/// Get the current timeout
 		virtual bt::Uint32 currentTimeout() const = 0;
@@ -80,7 +77,7 @@ namespace utp
 		void packetReceived(const Header* hdr, const SelectiveAck* sack, Retransmitter* conn);
 
 		/// Add a packet to the remote window (should include headers)
-		void addPacket(const QByteArray & data, bt::Uint16 seq_nr, bt::TimeStamp send_time);
+		void addPacket(const PacketBuffer & packet, bt::Uint16 seq_nr, bt::TimeStamp send_time);
 
 		/// Are we allowed to send
 		bool allowedToSend(bt::Uint32 packet_size) const
@@ -128,7 +125,7 @@ namespace utp
 		bt::Uint32 cur_window;
 		bt::Uint32 max_window;
 		bt::Uint32 wnd_size; // advertised window size from the other side
-		QList<UnackedPacket::Ptr> unacked_packets;
+		QList<UnackedPacket> unacked_packets;
 		bt::Uint16 last_ack_nr;
 		bt::Uint32 last_ack_receive_count;
 	};

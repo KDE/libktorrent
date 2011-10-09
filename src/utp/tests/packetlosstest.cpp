@@ -52,7 +52,7 @@ public:
 	{}
 	
 	
-	virtual void handlePacket(const QByteArray& packet, const net::Address& addr)
+	virtual void handlePacket(bt::Buffer::Ptr packet, const net::Address& addr)
 	{
 		if (packet_loss)
 		{

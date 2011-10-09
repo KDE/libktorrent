@@ -24,6 +24,7 @@
 #include <util/log.h>
 #include "socket.h"
 
+
 using namespace bt;
 
 namespace net
@@ -34,8 +35,10 @@ namespace net
 		Private(ConnectionHandler* chandler) : sock(0),rsn(0),wsn(0),chandler(chandler),dhandler(0)
 		{}
 		
-		Private(DataHandler* dhandler) : sock(0),rsn(0),wsn(0),chandler(0),dhandler(dhandler)
-		{}
+		Private(DataHandler* dhandler) : sock(0),rsn(0),wsn(0),chandler(0),dhandler(dhandler),pool(new BufferPool())
+		{
+			pool->setWeakPointer(pool.toWeakRef());
+		}
 		
 		~Private()
 		{
@@ -61,6 +64,7 @@ namespace net
 		QSocketNotifier* wsn;
 		ConnectionHandler* chandler;
 		DataHandler* dhandler;
+		bt::BufferPool::Ptr pool;
 	};
 	
 	ServerSocket::ServerSocket(ConnectionHandler* chandler) : d(new Private(chandler))
@@ -123,13 +127,18 @@ namespace net
 	void ServerSocket::readyToRead(int)
 	{
 		net::Address addr;
-		static bt::Uint8 tmp_buf[2048];
-		int ret = 0;
-		while ((ret = d->sock->recvFrom(tmp_buf,2048,addr)) > 0)
+		bt::Uint32 ba = 0;
+		bool first = true;
+		while ((ba = d->sock->bytesAvailable()) > 0 || first)
 		{
-			d->dhandler->dataReceived(QByteArray::fromRawData((const char*)tmp_buf,ret),addr);
-			if (d->sock->bytesAvailable() == 0)
-				break;
+			// The first packet may be 0 bytes in size
+			Buffer::Ptr buf = d->pool->get(ba < 1500 ? 1500 : ba);
+			if (d->sock->recvFrom(buf->get(), ba, addr) == (int)ba && ba > 0)
+			{
+				buf->setSize(ba);
+				d->dhandler->dataReceived(buf, addr);
+			}
+			first = false;
 		}
 	}
 	

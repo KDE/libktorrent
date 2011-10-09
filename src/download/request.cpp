@@ -45,9 +45,5 @@ namespace bt
 		pd = r.pd;
 		return *this;
 	}
-	
-	bool operator == (const Request & a,const Request & b)
-	{
-		return a.index == b.index && a.len == b.len && a.off == b.off;
-	}
+
 }

@@ -26,6 +26,7 @@
 #include <QSharedPointer>
 #include <ktorrent_export.h>
 #include <util/constants.h>
+#include <util/bufferpool.h>
 
 namespace net 
 {
@@ -73,7 +74,7 @@ namespace net
 				@param data The packet
 				@param addr The address from which it was received
 			*/
-			virtual void dataReceived(const QByteArray & data,const net::Address & addr) = 0;
+			virtual void dataReceived(bt::Buffer::Ptr buffer,const net::Address & addr) = 0;
 			
 			/**
 				Socket has become writeable

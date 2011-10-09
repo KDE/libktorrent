@@ -55,14 +55,14 @@ namespace bt
 		
 		conn_timer.setSingleShot(true);
 		connect(&conn_timer,SIGNAL(timeout()),this,SLOT(onConnTimeout()));
-		connect(socket,SIGNAL(announceReceived(Int32,QByteArray)),
-				this,SLOT(announceReceived(Int32,QByteArray)));
+		connect(socket,SIGNAL(announceReceived(Int32,const Uint8*,Uint32)),
+				this,SLOT(announceReceived(Int32,const Uint8*,Uint32)));
 		connect(socket,SIGNAL(connectReceived(Int32,Int64)),
 				this,SLOT(connectReceived(Int32,Int64)));
 		connect(socket,SIGNAL(error(Int32,QString)),
 				this,SLOT(onError(Int32,QString)));
-		connect(socket,SIGNAL(scrapeReceived(Int32,QByteArray)),
-				this,SLOT(scrapeReceived(Int32,QByteArray)));
+		connect(socket,SIGNAL(scrapeReceived(Int32,const Uint8*,Uint32)),
+				this,SLOT(scrapeReceived(Int32,const Uint8*,Uint32)));
 		
 		resolved = false;
 	}
@@ -138,12 +138,11 @@ namespace bt
 			sendScrape();
 	}
 	
-	void UDPTracker::announceReceived(Int32 tid,const QByteArray & b)
+	void UDPTracker::announceReceived(Int32 tid,const bt::Uint8* buf,bt::Uint32 size)
 	{
-		if (tid != transaction_id || b.size() < 20)
+		if (tid != transaction_id || size < 20)
 			return;
 
-		Uint8* buf = (Uint8*)b.data();
 		/*
 		0  32-bit integer  action  1
 		4  32-bit integer  transaction_id
@@ -160,7 +159,7 @@ namespace bt
 
 		Uint32 nip = leechers + seeders;
 		Uint32 j = 0;
-		for (int i = 20;i < b.size() && j < nip;i+=6,j++)
+		for (Uint32 i = 20;i < size && j < nip;i+=6,j++)
 		{
 			Uint32 ip = ReadUint32(buf,i);
 			addPeer(net::Address(ip, ReadUint16(buf,i+4)), false);
@@ -244,7 +243,7 @@ namespace bt
 		}
 	}
 
-	void UDPTracker::scrapeReceived(Int32 tid, const QByteArray& b)
+	void UDPTracker::scrapeReceived(Int32 tid, const Uint8* buf, Uint32 size)
 	{
 		/*
 		0				32-bit integer	action	2
@@ -254,10 +253,9 @@ namespace bt
 		16 + 12 * n		32-bit integer	leechers
 		8 + 12 * N 
 		*/
-		if (tid != scrape_transaction_id || b.size() < 20)
+		if (tid != scrape_transaction_id || size < 20)
 			return;
 		
-		Uint8* buf = (Uint8*)b.data();
 		seeders = ReadInt32(buf,8);
 		total_downloaded = ReadInt32(buf,12);
 		leechers = ReadInt32(buf,16);

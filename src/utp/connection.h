@@ -95,6 +95,9 @@ namespace utp
 		Connection(bt::Uint16 recv_connection_id, Type type, const net::Address & remote, Transmitter* transmitter);
 		virtual ~Connection();
 
+		/// Turn on or off blocking mode
+		void setBlocking(bool on) {blocking = on;}
+
 		/// Dump connection stats
 		void dumpStats();
 
@@ -105,7 +108,7 @@ namespace utp
 		const Stats & connectionStats() const {return stats;}
 
 		/// Handle a single packet
-		ConnectionState handlePacket(const PacketParser & parser, const QByteArray & packet);
+		ConnectionState handlePacket(const PacketParser & parser, bt::Buffer::Ptr packet);
 
 		/// Get the remote address
 		const net::Address & remoteAddress() const {return stats.remote;}
@@ -147,7 +150,7 @@ namespace utp
 		virtual void updateRTT(const Header* hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size);
 
 		/// Retransmit a packet
-		virtual void retransmit(const QByteArray & packet, bt::Uint16 p_seq_nr);
+		virtual void retransmit(PacketBuffer & packet, bt::Uint16 p_seq_nr);
 
 		/// Is all data sent
 		bool allDataSent() const;
@@ -174,10 +177,10 @@ namespace utp
 		void sendPackets();
 		void sendPacket(bt::Uint32 type, bt::Uint16 p_ack_nr);
 		void checkIfClosed();
-		void sendDataPacket(const QByteArray & packet);
-		void sendDataPacket(const QByteArray & packet, bt::Uint16 seq_nr, const TimeValue & now);
+		void sendDataPacket(PacketBuffer & packet, bt::Uint16 seq_nr, const TimeValue & now);
 		void startTimer();
 		void checkState();
+		bt::Uint32 extensionLength() const;
 
 	private slots:
 		void delayedStartTimer();
@@ -200,6 +203,7 @@ namespace utp
 		DelayWindow* delay_window;
 		Connection::WPtr self;
 		int timer_id;
+		bool blocking;
 
 		friend class UTPServer;
 	};
@@ -213,7 +217,7 @@ namespace utp
 		virtual ~Transmitter() {}
 
 		/// Send a packet of a connection
-		virtual bool sendTo(Connection::Ptr conn, const QByteArray & data) = 0;
+		virtual bool sendTo(Connection::Ptr conn, const PacketBuffer & packet) = 0;
 
 		/// Connection has become readable, writeable or both
 		virtual void stateChanged(Connection::Ptr conn, bool readable, bool writeable) = 0;

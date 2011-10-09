@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QByteArray>
 #include <util/constants.h>
+#include <util/bufferpool.h>
 #include <ktorrent_export.h>
 
 #ifdef ERROR
@@ -120,15 +121,17 @@ namespace bt
 		 * Emitted when an announce message is received.
 		 * @param tid The transaction_id
 		 * @param buf The data
+		 * @param size The data size
 		 */
-		void announceReceived(Int32 tid,const QByteArray & buf);
+		void announceReceived(Int32 tid,const Uint8* buf,Uint32 size);
 		
 		/**
 		* Emitted when a scrape message is received.
 		* @param tid The transaction_id
 		* @param buf The data
+		* @param size The data size
 		*/
-		void scrapeReceived(Int32 tid,const QByteArray & buf);
+		void scrapeReceived(Int32 tid,const Uint8* buf,Uint32 size);
 
 		/**
 		 * Signal emitted, when an error occurs during a transaction.
@@ -138,10 +141,10 @@ namespace bt
 		void error(Int32 tid,const QString & error_string);
 
 	private:
-		void handleConnect(const QByteArray & buf);
-		void handleAnnounce(const QByteArray & buf);
-		void handleError(const QByteArray & buf);
-		void handleScrape(const QByteArray & buf);
+		void handleConnect(bt::Buffer::Ptr buf);
+		void handleAnnounce(bt::Buffer::Ptr buf);
+		void handleError(bt::Buffer::Ptr buf);
+		void handleScrape(bt::Buffer::Ptr buf);
 		
 	private:
 		class Private;

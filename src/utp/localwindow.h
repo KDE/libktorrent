@@ -22,12 +22,11 @@
 #ifndef UTP_LOCALWINDOW_H
 #define UTP_LOCALWINDOW_H
 
+#include <list>
 #include <ktorrent_export.h>
 #include <util/constants.h>
-#include <util/circularbuffer.h>
-#include <QLinkedList>
-#include <QByteArray>
 #include <QSharedPointer>
+#include "packetbuffer.h"
 
 namespace utp
 {
@@ -36,22 +35,24 @@ namespace utp
 
 	const bt::Uint32 DEFAULT_CAPACITY = 64*1024;
 
-	struct FuturePacket
+	struct WindowPacket
 	{
-		FuturePacket(bt::Uint16 seq_nr, const bt::Uint8* data, bt::Uint32 size);
-		~FuturePacket();
+		WindowPacket(bt::Uint16 seq_nr, bt::Buffer::Ptr packet, bt::Uint32 data_off);
+		~WindowPacket();
+
+		bt::Uint32 read(bt::Uint8* dst, bt::Uint32 max_len);
+		bool fullyRead() const;
 
 		bt::Uint16 seq_nr;
-		QByteArray data;
-
-		typedef QSharedPointer<FuturePacket> Ptr;
+		bt::Buffer::Ptr packet;
+		bt::Uint32 bytes_read;
 	};
+
 
 	/**
 		Manages the local window of a UTP connection.
-		This is a circular buffer.
 	*/
-	class KTORRENT_EXPORT LocalWindow : public bt::CircularBuffer
+	class KTORRENT_EXPORT LocalWindow
 	{
 	public:
 		LocalWindow(bt::Uint32 cap = DEFAULT_CAPACITY);
@@ -61,10 +62,13 @@ namespace utp
 		bt::Uint32 availableSpace() const {return window_space;}
 
 		/// Get back how large the window is
-		bt::Uint32 currentWindow() const {return capacity() - window_space;}
+		bt::Uint32 currentWindow() const {return capacity - window_space;}
+
+		/// Get the window capacity
+		bt::Uint32 windowCapacity() const {return capacity;}
 
 		/// A packet was received
-		bool packetReceived(const Header* hdr, const bt::Uint8* data, bt::Uint32 size);
+		bool packetReceived(const Header* hdr, bt::Buffer::Ptr packet, bt::Uint32 data_off);
 
 		/// Set the last sequence number
 		void setLastSeqNr(bt::Uint16 lsn);
@@ -73,9 +77,16 @@ namespace utp
 		bt::Uint16 lastSeqNr() const {return last_seq_nr;}
 
 		/// Is the window empty
-		bool isEmpty() const {return future_packets.isEmpty() && empty();}
+		bool isEmpty() const {return incoming_packets.empty();}
 
-		virtual bt::Uint32 read(bt::Uint8* data, bt::Uint32 max_len);
+		/// Read from the local window
+		bt::Uint32 read(bt::Uint8* data, bt::Uint32 max_len);
+
+		/// Is there something to read ?
+		bool isReadable() const {return bytes_available > 0;}
+
+		/// The amount of bytes available
+		bt::Uint32 bytesAvailable() const {return bytes_available;}
 
 		/// Get the number of selective ack bits needed when sending a packet
 		bt::Uint32 selectiveAckBits() const;
@@ -84,14 +95,13 @@ namespace utp
 		void fillSelectiveAck(SelectiveAck* sack);
 
 	private:
-		void checkFuturePackets();
+		typedef std::list<WindowPacket> WindowPacketList;
 
-	private:
 		bt::Uint16 last_seq_nr;
-		// all the packets which have been received but we can yet write to the output buffer
-		// due to missing packets
-		QLinkedList<FuturePacket::Ptr> future_packets;
+		bt::Uint32 capacity;
+		WindowPacketList incoming_packets;
 		bt::Uint32 window_space;
+		bt::Uint32 bytes_available;
 	};
 
 }

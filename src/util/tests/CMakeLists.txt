@@ -15,3 +15,7 @@ target_link_libraries( resourcemanagertest ${QT_QTTEST_LIBRARY} ktorrent)
 set(fileopstest_SRCS fileopstest.cpp)
 kde4_add_unit_test(fileopstest TESTNAME fileopstest ${fileopstest_SRCS})
 target_link_libraries( fileopstest ${KDE4_SOLID_LIBS} ${QT_QTTEST_LIBRARY} ktorrent)
+
+set(bufferpooltest_SRCS bufferpooltest.cpp)
+kde4_add_unit_test(bufferpooltest TESTNAME bufferpooltest ${bufferpooltest_SRCS})
+target_link_libraries( bufferpooltest ${KDE4_SOLID_LIBS} ${QT_QTTEST_LIBRARY} ktorrent)

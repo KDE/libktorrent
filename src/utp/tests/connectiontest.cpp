@@ -35,9 +35,9 @@ public:
 	{
 	}
 	
-	virtual bool sendTo(Connection::Ptr conn, const QByteArray & data)
+	virtual bool sendTo(Connection::Ptr conn, const PacketBuffer & packet)
 	{
-		sent_packets.append(data);
+		sent_packets.append(packet);
 		Q_UNUSED(conn);
 		return true;
 	}
@@ -85,10 +85,10 @@ public:
 		ev->accept();
 	}
 	
-	QByteArray buildPacket(bt::Uint32 type,bt::Uint32 recv_conn_id,bt::Uint32 send_conn_id,bt::Uint16 seq_nr,bt::Uint16 ack_nr)
+	bt::Buffer::Ptr buildPacket(bt::Uint32 type,bt::Uint32 recv_conn_id,bt::Uint32 send_conn_id,bt::Uint16 seq_nr,bt::Uint16 ack_nr)
 	{
 		TimeValue tv;
-		QByteArray ba(Header::size(),0);
+		bt::Buffer::Ptr packet = pool->get(Header::size());
 		Header hdr;
 		hdr.version = 1;
 		hdr.type = type;
@@ -99,8 +99,8 @@ public:
 		hdr.wnd_size = 6666;
 		hdr.seq_nr = seq_nr;
 		hdr.ack_nr = ack_nr;
-		hdr.write((bt::Uint8*)ba.data());
-		return ba;
+		hdr.write(packet->get());
+		return packet;
 	}
 	
 public slots:
@@ -110,10 +110,13 @@ private slots:
 	void initTestCase()
 	{
 		bt::InitLog("connectiontest.log");
+		pool = bt::BufferPool::Ptr(new bt::BufferPool());
+		pool->setWeakPointer(pool.toWeakRef());
 	}
 	
 	void cleanupTestCase()
 	{
+		pool.clear();
 	}
 	
 	void init()
@@ -142,8 +145,8 @@ private slots:
 		QVERIFY(s.state == utp::CS_SYN_SENT);
 		QVERIFY(s.seq_nr == 2);
 		
-		QByteArray pkt = buildPacket(ST_STATE,conn_id,conn_id + 1,1,1);
-		PacketParser pp(pkt);
+		bt::Buffer::Ptr pkt = buildPacket(ST_STATE,conn_id,conn_id + 1,1,1);
+		PacketParser pp(pkt->get(), pkt->size());
 		QVERIFY(pp.parse());
 		conn.handlePacket(pp,pkt);
 		QVERIFY(s.state == CS_CONNECTED);
@@ -156,8 +159,8 @@ private slots:
 		Connection conn(conn_id,utp::Connection::INCOMING,remote,this);
 		const Connection::Stats & s = conn.connectionStats();
 		
-		QByteArray pkt = buildPacket(ST_SYN,conn_id - 1,conn_id,1,1);
-		PacketParser pp(pkt);
+		bt::Buffer::Ptr pkt = buildPacket(ST_SYN,conn_id - 1,conn_id,1,1);
+		PacketParser pp(pkt->get(), pkt->size());
 		conn.handlePacket(pp,pkt);
 		QVERIFY(s.state == CS_CONNECTED);
 	}
@@ -165,7 +168,8 @@ private slots:
 	
 private:
 	net::Address remote;
-	QList<QByteArray> sent_packets;
+	QList<PacketBuffer> sent_packets;
+	bt::BufferPool::Ptr pool;
 };
 
 QTEST_MAIN(ConnectionTest)

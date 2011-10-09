@@ -48,7 +48,7 @@ public:
 		update_rtt_called = true;
 	}
 	
-	virtual void retransmit(const QByteArray & packet,bt::Uint16 p_seq_nr)
+	virtual void retransmit(PacketBuffer & /*packet*/,bt::Uint16 p_seq_nr)
 	{
 		bt::Out(SYS_UTP|LOG_NOTICE) << "retransmit " << p_seq_nr << bt::endl;
 		retransmit_ok = retransmit_seq_nr.contains(p_seq_nr);
@@ -80,7 +80,8 @@ private slots:
 	
 	void testNormalUsage()
 	{
-		QByteArray pkt(200,0);
+		PacketBuffer pkt;
+		pkt.fillDummyData(200);
 		
 		RemoteWindow wnd;
 		wnd.addPacket(pkt,1,bt::Now());
@@ -115,7 +116,8 @@ private slots:
 		
 	void testMultipleAcks()
 	{
-		QByteArray pkt(200,0);
+		PacketBuffer pkt;
+		pkt.fillDummyData(200);
 		
 		RemoteWindow wnd;
 		wnd.addPacket(pkt,1,bt::Now());
@@ -138,7 +140,8 @@ private slots:
 	
 	void testSelectiveAck()
 	{
-		QByteArray pkt(200,0);
+		PacketBuffer pkt;
+		pkt.fillDummyData(200);
 		
 		RemoteWindow wnd;
 		wnd.addPacket(pkt,1,bt::Now());
@@ -180,7 +183,8 @@ private slots:
 	void testRetransmits()
 	{
 		reset();
-		QByteArray pkt(200,0);
+		PacketBuffer pkt;
+		pkt.fillDummyData(200);
 		
 		RemoteWindow wnd;
 		for (bt::Uint32 i = 0;i < 4;i++)
@@ -212,7 +216,8 @@ private slots:
 	
 	void testMultipleRetransmits()
 	{
-		QByteArray pkt(200,0);
+		PacketBuffer pkt;
+		pkt.fillDummyData(200);
 		
 		RemoteWindow wnd;
 		for (bt::Uint32 i = 0;i < 4;i++)
@@ -244,7 +249,8 @@ private slots:
 	
 	void testMultipleRetransmits2()
 	{
-		QByteArray pkt(200,0);
+		PacketBuffer pkt;
+		pkt.fillDummyData(200);
 		
 		RemoteWindow wnd;
 		for (bt::Uint32 i = 0;i < 10;i++)
@@ -277,7 +283,8 @@ private slots:
 	
 	void testMultipleRetransmits3()
 	{
-		QByteArray pkt(200,0);
+		PacketBuffer pkt;
+		pkt.fillDummyData(200);
 		
 		RemoteWindow wnd;
 		for (bt::Uint32 i = 0;i < 10;i++)
@@ -312,7 +319,8 @@ private slots:
 	{
 		bt::Out(SYS_UTP|LOG_NOTICE) << "testWrapAround " << bt::endl;
 		reset();
-		QByteArray pkt(200,0);
+		PacketBuffer pkt;
+		pkt.fillDummyData(200);
 		
 		RemoteWindow wnd;
 		bt::Uint16 seq_nr = 65530;

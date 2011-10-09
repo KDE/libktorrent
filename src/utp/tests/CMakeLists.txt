@@ -41,3 +41,7 @@ target_link_libraries( utppolltest ${QT_QTTEST_LIBRARY} ktorrent)
 set(delaywindowtest_SRCS delaywindowtest.cpp)
 kde4_add_unit_test(delaywindowtest TESTNAME delaywindowtest ${delaywindowtest_SRCS})
 target_link_libraries( delaywindowtest ${QT_QTTEST_LIBRARY} ktorrent)
+
+set(packetbuffertest_SRCS packetbuffertest.cpp)
+kde4_add_unit_test(packetbuffertest TESTNAME packetbuffertest ${packetbuffertest_SRCS})
+target_link_libraries( packetbuffertest ${QT_QTTEST_LIBRARY} ktorrent)

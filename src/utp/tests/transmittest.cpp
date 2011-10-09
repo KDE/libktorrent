@@ -53,7 +53,7 @@ static QByteArray Generate(int size)
 	}
 	return ba;
 }
-
+/*
 static void Dump(const bt::Uint8* pkt, bt::Uint32 size,const QString & file)
 {
 	QFile fptr(file);
@@ -78,14 +78,14 @@ static void Dump(const bt::Uint8* pkt, bt::Uint32 size,const QString & file)
 		out << ::endl << ::endl << ::endl;
 	}
 }
-
+*/
 
 class SendThread : public QThread
 {
 	Q_OBJECT
 public:
 	
-	SendThread(Connection::Ptr outgoing,QObject* parent = 0) : QThread(parent),outgoing(outgoing)
+	SendThread(Connection::Ptr outgoing, UTPServer & srv,QObject* parent = 0) : QThread(parent),outgoing(outgoing),srv(srv)
 	{}
 	
 	virtual void run()
@@ -96,6 +96,7 @@ public:
 		
 		bt::Int64 sent = 0;
 		int off = 0;
+		net::Poll poller;
 		while (sent < BYTES_TO_SEND && outgoing->connectionState() != CS_CLOSED)
 		{
 			int to_send = step - off;
@@ -106,11 +107,12 @@ public:
 				sent += ret;
 				off += ret;
 				off = off % step;
-				Out(SYS_UTP|LOG_DEBUG) << "Transmitted " << sent << endl;
+				//Out(SYS_UTP|LOG_DEBUG) << "Transmitted " << sent << endl;
 			}
 			else if (ret == 0)
 			{
-				msleep(50);
+				srv.preparePolling(&poller, net::Poll::OUTPUT, outgoing);
+				poller.poll(1000);
 			}
 			else
 			{
@@ -127,6 +129,7 @@ public:
 	
 	Connection::Ptr outgoing;
 	bt::SHA1Hash sent_hash;
+	UTPServer & srv;
 };
 
 class TransmitTest : public QEventLoop
@@ -141,6 +144,7 @@ public slots:
 	void accepted()
 	{
 		incoming = srv.acceptedConnection().toStrongRef();
+		incoming->setBlocking(true);
 		exit();
 	}
 	
@@ -148,6 +152,7 @@ public slots:
 	{
 		net::Address addr("127.0.0.1",port);
 		outgoing = srv.connectTo(addr);
+		outgoing->setBlocking(true);
 	}
 	
 	void endEventLoop()
@@ -205,11 +210,11 @@ private slots:
 		
 		bt::SHA1HashGen hgen;
 		
-		SendThread st(outgoing);
+		SendThread st(outgoing, srv);
 		st.start(); // The thread will start sending a whole bunch of data
 		bt::Int64 received = 0;
 		int failures = 0;
-		net::Poll poller;
+		incoming->setBlocking(true);
 		while (received < BYTES_TO_SEND && incoming->connectionState() != CS_CLOSED)
 		{
 			bt::Uint32 ba = incoming->bytesAvailable();
@@ -224,7 +229,7 @@ private slots:
 				{
 					hgen.update((bt::Uint8*)data.data(),ret);
 					received += ret;
-					Out(SYS_UTP|LOG_DEBUG) << "Received " << received << endl;
+					//Out(SYS_UTP|LOG_DEBUG) << "Received " << received << endl;
 				}
 			}
 			else if (incoming->connectionState() != CS_CLOSED)
@@ -244,7 +249,6 @@ private slots:
 		Out(SYS_UTP|LOG_DEBUG) << "Received data hash: " << rhash.toString() << endl;
 		Out(SYS_UTP|LOG_DEBUG) << "Sent data hash:     " << st.sent_hash.toString() << endl;
 		QVERIFY(rhash == st.sent_hash);
-		
 	}
 	
 private:

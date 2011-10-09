@@ -123,7 +123,7 @@ namespace utp
 		}
 	}
 
-	void UTPServer::Private::syn(const PacketParser & parser, const QByteArray& data, const net::Address & addr)
+	void UTPServer::Private::syn(const PacketParser & parser, bt::Buffer::Ptr buffer, const net::Address & addr)
 	{
 		const Header* hdr = parser.header();
 		quint16 recv_conn_id = hdr->connection_id + 1;
@@ -140,7 +140,7 @@ namespace utp
 			try
 			{
 				conn->setWeakPointer(conn);
-				conn->handlePacket(parser, data);
+				conn->handlePacket(parser, buffer);
 				connections.insert(recv_conn_id, conn);
 				if (create_sockets)
 				{
@@ -199,15 +199,15 @@ namespace utp
 	}
 
 
-	void UTPServer::Private::dataReceived(const QByteArray& data, const net::Address& addr)
+	void UTPServer::Private::dataReceived(bt::Buffer::Ptr buffer, const net::Address& addr)
 	{
 		QMutexLocker lock(&mutex);
 		//Out(SYS_UTP|LOG_NOTICE) << "UTP: received " << ba << " bytes packet from " << addr.toString() << endl;
 		try
 		{
-			if (data.size() >= (int)utp::Header::size()) // discard packets which are to small
+			if (buffer->size() >= (int)utp::Header::size()) // discard packets which are to small
 			{
-				p->handlePacket(data, addr);
+				p->handlePacket(buffer, addr);
 			}
 		}
 		catch (utp::Connection::TransmissionError & err)
@@ -338,9 +338,9 @@ namespace utp
 	}
 #endif
 
-	void UTPServer::handlePacket(const QByteArray& packet, const net::Address& addr)
+	void UTPServer::handlePacket(bt::Buffer::Ptr buffer, const net::Address& addr)
 	{
-		PacketParser parser(packet);
+		PacketParser parser(buffer->get(), buffer->size());
 		if (!parser.parse())
 			return;
 
@@ -356,7 +356,7 @@ namespace utp
 				try
 				{
 					c = d->find(hdr->connection_id);
-					if (c && c->handlePacket(parser, packet) == CS_CLOSED)
+					if (c && c->handlePacket(parser, buffer) == CS_CLOSED)
 						d->connections.remove(c->receiveConnectionID());
 				}
 				catch (Connection::TransmissionError & err)
@@ -370,15 +370,15 @@ namespace utp
 				d->reset(hdr);
 				break;
 			case ST_SYN:
-				d->syn(parser, packet, addr);
+				d->syn(parser, buffer, addr);
 				break;
 		}
 	}
 
 
-	bool UTPServer::sendTo(utp::Connection::Ptr conn, const QByteArray& data)
+	bool UTPServer::sendTo(utp::Connection::Ptr conn, const PacketBuffer & packet)
 	{
-		if (d->output_queue.add(data, conn) == 1)
+		if (d->output_queue.add(packet, conn) == 1)
 		{
 			// If there is only one packet queued,
 			// We need to enable the write notifiers, use the event queue to do this
@@ -435,6 +435,7 @@ namespace utp
 	void UTPServer::stop()
 	{
 		d->stop();
+		PacketBuffer::clearPool();
 	}
 
 	void UTPServer::start()

@@ -88,6 +88,7 @@ private slots:
 		
 		char test[] = "This is the fin test";
 		outgoing->send((const bt::Uint8*)test,strlen(test));
+		incoming->setBlocking(true);
 		if (incoming->waitForData())
 		{
 			bt::Uint8 tmp[100];

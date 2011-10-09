@@ -89,12 +89,12 @@ namespace utp
 
 
 		bool bind(const net::Address & addr);
-		void syn(const PacketParser & parser, const QByteArray & data, const net::Address & addr);
+		void syn(const PacketParser & parser, bt::Buffer::Ptr buffer, const net::Address & addr);
 		void reset(const Header* hdr);
 		void wakeUpPollPipes(Connection::Ptr conn, bool readable, bool writeable);
 		Connection::Ptr find(quint16 conn_id);
 		void stop();
-		virtual void dataReceived(const QByteArray& data, const net::Address& addr);
+		virtual void dataReceived(bt::Buffer::Ptr buffer, const net::Address& addr);
 		virtual void readyToWrite(net::ServerSocket* sock);
 
 	public:

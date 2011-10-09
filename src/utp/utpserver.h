@@ -48,7 +48,7 @@ namespace utp
 		virtual bool changePort(bt::Uint16 port);
 
 		/// Send a packet to some host
-		virtual bool sendTo(Connection::Ptr conn, const QByteArray & data);
+		virtual bool sendTo(Connection::Ptr conn, const PacketBuffer & packet);
 
 		/// Setup a connection to a remote address
 		Connection::WPtr connectTo(const net::Address & addr);
@@ -78,7 +78,7 @@ namespace utp
 		void handlePendingConnections();
 
 	protected:
-		virtual void handlePacket(const QByteArray & packet, const net::Address & addr);
+		virtual void handlePacket(bt::Buffer::Ptr buffer, const net::Address & addr);
 		virtual void stateChanged(Connection::Ptr conn, bool readable, bool writeable);
 		virtual void closed(Connection::Ptr conn);
 		virtual void customEvent(QEvent* ev);
