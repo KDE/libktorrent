@@ -151,8 +151,8 @@ namespace bt
 	void PeerDownloader::piece(const Piece & p)
 	{
 		Request r(p);
-		if (!wait_queue.removeAll(r))
-			reqs.removeAll(r);
+		if (!reqs.removeOne(r))
+			wait_queue.removeAll(r);
 	}
 	
 	void PeerDownloader::peerDestroyed()

@@ -96,7 +96,6 @@ namespace utp
 		if (stats.type == OUTGOING)
 		{
 			sendSYN();
-			startTimer();
 		}
 	}
 
@@ -377,7 +376,6 @@ namespace utp
 		stats.timeout = CONNECT_TIMEOUT;
 		sendPacket(ST_SYN, 0);
 		stats.seq_nr++;
-		startTimer();
 	}
 
 	void Connection::sendState()
@@ -466,7 +464,6 @@ namespace utp
 
 			remote_wnd->addPacket(packet, stats.seq_nr, now.toTimeStamp());
 			stats.seq_nr++;
-			startTimer();
 		}
 
 		if (stats.state == CS_FINISHED && !fin_sent && output_buffer.size() == 0)
@@ -474,6 +471,8 @@ namespace utp
 			sendFIN();
 			fin_sent = true;
 		}
+		else
+			startTimer();
 	}
 
 	void Connection::sendStateOrData()
@@ -588,7 +587,6 @@ namespace utp
 		if (stats.state == CS_CONNECTED)
 		{
 			stats.state = CS_FINISHED;
-			startTimer();
 			sendPackets();
 		}
 	}
@@ -604,6 +602,15 @@ namespace utp
 			remote_wnd->clear();
 			if (blocking)
 				data_ready.wakeAll();
+		}
+	}
+
+	void Connection::timerEvent(QTimerEvent* ev)
+	{
+		if (ev->timerId() == timer_id)
+		{
+			handleTimeout();
+			ev->accept();
 		}
 	}
 
@@ -633,13 +640,16 @@ namespace utp
 					// If we have reached the max timeout, kill the connection
 					Out(SYS_UTP | LOG_DEBUG) << "Connection " << stats.recv_connection_id << "|" << stats.send_connection_id << " max timeout reached, closing" << endl;
 					stats.state = CS_FINISHED;
+					sendReset();
 				}
-				sendPackets();
-				startTimer();
-				if (TimeValue() - last_packet_sent > KEEP_ALIVE_TIMEOUT)
+				else
 				{
-					// Keep the connection alive
-					sendState();
+					sendPackets();
+					if (TimeValue() - last_packet_sent > KEEP_ALIVE_TIMEOUT)
+					{
+						// Keep the connection alive
+						sendState();
+					}
 				}
 				break;
 			case CS_IDLE:
@@ -685,8 +695,8 @@ namespace utp
 	void Connection::delayedStartTimer()
 	{
 		if (timer_id != -1)
-			transmitter->cancelTimer(timer_id);
-		timer_id = transmitter->scheduleTimer(self.toStrongRef(), stats.timeout);
+			killTimer(timer_id);
+		timer_id = QObject::startTimer(stats.timeout);
 	}
 
 	bt::Uint32 Connection::extensionLength() const

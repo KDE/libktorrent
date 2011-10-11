@@ -181,6 +181,7 @@ namespace utp
 		void startTimer();
 		void checkState();
 		bt::Uint32 extensionLength() const;
+		virtual void timerEvent(QTimerEvent* ev);
 
 	private slots:
 		void delayedStartTimer();
@@ -224,12 +225,6 @@ namespace utp
 
 		/// Called when the connection is closed
 		virtual void closed(Connection::Ptr conn) = 0;
-
-		/// Schedule a timer for a connection
-		virtual int scheduleTimer(Connection::Ptr conn, bt::Uint32 timeout) = 0;
-
-		/// Kill a previously started timer
-		virtual void cancelTimer(int timer_id) = 0;
 	};
 
 }

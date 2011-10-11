@@ -102,7 +102,6 @@ namespace utp
 		QList<net::ServerSocket::Ptr> sockets;
 		bool running;
 		QMap<quint16, Connection::Ptr> connections;
-		QMap<int, Connection::WPtr> active_timers;
 		UTPServerThread* utp_thread;
 		QMutex mutex;
 		bt::PtrMap<net::Poll*, PollPipePair> poll_pipes;
