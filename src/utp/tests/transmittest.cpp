@@ -229,7 +229,7 @@ private slots:
 				{
 					hgen.update((bt::Uint8*)data.data(),ret);
 					received += ret;
-					//Out(SYS_UTP|LOG_DEBUG) << "Received " << received << endl;
+				//	Out(SYS_UTP|LOG_DEBUG) << "Received " << received << endl;
 				}
 			}
 			else if (incoming->connectionState() != CS_CLOSED)

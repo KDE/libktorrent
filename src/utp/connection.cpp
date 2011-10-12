@@ -79,7 +79,7 @@ namespace utp
 		stats.packets_lost = 0;
 		stats.readable = stats.writeable = false;
 
-		connect(this, SIGNAL(doDelayedStartTimer()), this, SLOT(delayedStartTimer()), Qt::QueuedConnection);
+		connect(this, SIGNAL(delayedStartTimer()), this, SLOT(doDelayedStartTimer()), Qt::QueuedConnection);
 		if (type == INCOMING)
 			startTimer();
 	}
@@ -605,11 +605,53 @@ namespace utp
 		}
 	}
 
+	void Connection::startTimer()
+	{
+		TimeValue absolute_timeout;
+		absolute_timeout.addMilliSeconds(stats.timeout);
+
+		if (timer_id == -1 || absolute_timeout < stats.absolute_timeout)
+		{
+			if (QThread::currentThread() == thread())
+			{
+				if (timer_id != -1)
+					killTimer(timer_id);
+				timer_id = QObject::startTimer(stats.timeout);
+			}
+			else
+				emit delayedStartTimer();
+		}
+
+		stats.absolute_timeout = absolute_timeout;
+	}
+
+	void Connection::doDelayedStartTimer()
+	{
+		QMutexLocker lock(&mutex);
+		if (timer_id != -1)
+		{
+			killTimer(timer_id);
+			timer_id = -1;
+		}
+
+		timer_id = QObject::startTimer(stats.timeout);
+	}
+
 	void Connection::timerEvent(QTimerEvent* ev)
 	{
 		if (ev->timerId() == timer_id)
 		{
-			handleTimeout();
+			timer_id = -1;
+			TimeValue now;
+			bt::Int64 diff = stats.absolute_timeout - now;
+			if (diff <= 0)
+			{
+				handleTimeout();
+			}
+			else // restart timer
+			{
+				timer_id = QObject::startTimer(diff);
+			}
 			ev->accept();
 		}
 	}
@@ -680,23 +722,6 @@ namespace utp
 	{
 		QMutexLocker lock(&mutex);
 		return remote_wnd->allPacketsAcked() && output_buffer.size() == 0;
-	}
-
-	void Connection::startTimer()
-	{
-		// Timers can only be started from the same thread so if
-		// we are being called from another use a signal
-		if (QThread::currentThread() != thread())
-			emit doDelayedStartTimer();
-		else
-			delayedStartTimer();
-	}
-
-	void Connection::delayedStartTimer()
-	{
-		if (timer_id != -1)
-			killTimer(timer_id);
-		timer_id = QObject::startTimer(stats.timeout);
 	}
 
 	bt::Uint32 Connection::extensionLength() const
