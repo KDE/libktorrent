@@ -27,6 +27,12 @@ using namespace bt;
 
 namespace utp
 {
+	WindowPacket::WindowPacket(bt::Uint16 seq_nr)
+			: seq_nr(seq_nr),
+			  bytes_read(0)
+	{
+
+	}
 
 	WindowPacket::WindowPacket(bt::Uint16 seq_nr, bt::Buffer::Ptr packet, bt::Uint32 data_off)
 			: seq_nr(seq_nr),
@@ -55,6 +61,12 @@ namespace utp
 		return bytes_read == packet->size();
 	}
 
+	void WindowPacket::set(bt::Buffer::Ptr packet, bt::Uint32 data_off)
+	{
+		this->packet = packet;
+		bytes_read = data_off;
+	}
+
 	bool operator < (const WindowPacket & a, const WindowPacket & b)
 	{
 		return SeqNrCmpS(a.seq_nr, b.seq_nr);
@@ -72,6 +84,7 @@ namespace utp
 
 	LocalWindow::LocalWindow(bt::Uint32 cap)
 		: last_seq_nr(0),
+		  first_seq_nr(0),
 		  capacity(cap),
 		  window_space(cap),
 		  bytes_available(0)
@@ -87,38 +100,37 @@ namespace utp
 	void LocalWindow::setLastSeqNr(bt::Uint16 lsn)
 	{
 		last_seq_nr = lsn;
+		first_seq_nr = lsn;
 	}
 
 	bt::Uint32 LocalWindow::read(bt::Uint8* data, bt::Uint32 max_len)
 	{
-		WindowPacketList::iterator i = incoming_packets.begin();
+		bt::Uint16 off = SeqNrDiff(incoming_packets.front().seq_nr, first_seq_nr);
 		bt::Uint32 written = 0;
-		while (i != incoming_packets.end() &&  SeqNrCmpSE(i->seq_nr, last_seq_nr) && written < max_len)
+		while (off < incoming_packets.size() && incoming_packets[off].packet && SeqNrCmpSE(incoming_packets[off].seq_nr, last_seq_nr) && written < max_len)
 		{
-			bt::Uint32 ret = i->read(data + written, max_len - written);
+			WindowPacket & pkt = incoming_packets[off];
+			bt::Uint32 ret = pkt.read(data + written, max_len - written);
 			written += ret;
 			window_space += ret;
 			bytes_available -= ret;
-			if (i->fullyRead())
-				i = incoming_packets.erase(i);
+			if (pkt.fullyRead())
+			{
+				pkt.packet.clear();
+				first_seq_nr++;
+				off++;
+			}
 			else
 				break;
 		}
 
+		// Erase is inefficient, so lets do it when we have a whole bunch to throw away
+		off = SeqNrDiff(incoming_packets.front().seq_nr, first_seq_nr);
+		if (off > 20)
+			incoming_packets.erase(incoming_packets.begin(), incoming_packets.begin() + off);
+
 		return written;
 	}
-
-	struct FindLowerBound
-	{
-		FindLowerBound(bt::Uint16 seq_nr) : seq_nr(seq_nr) {}
-
-		bool operator () (const WindowPacket & pkt)
-		{
-			return SeqNrCmpS(seq_nr, pkt.seq_nr);
-		}
-
-		bt::Uint16 seq_nr;
-	};
 
 	bool LocalWindow::packetReceived(const utp::Header* hdr, bt::Buffer::Ptr packet, bt::Uint32 data_off)
 	{
@@ -134,35 +146,59 @@ namespace utp
 			return false;
 		}
 
-		WindowPacketList::iterator itr = std::find_if(incoming_packets.begin(), incoming_packets.end(), FindLowerBound(hdr->seq_nr));
-		if (itr == incoming_packets.end())
+		if (incoming_packets.empty())
+		{
+			first_seq_nr = last_seq_nr + 1;
+			for (bt::Uint16 i = last_seq_nr + 1; SeqNrCmpS(i, hdr->seq_nr); i++)
+				incoming_packets.push_back(WindowPacket(i));
 			incoming_packets.push_back(WindowPacket(hdr->seq_nr, packet, data_off));
-		else if (itr->seq_nr == hdr->seq_nr) // already got this one
+		}
+		else if (SeqNrCmpS(incoming_packets.back().seq_nr, hdr->seq_nr))
+		{
+			for (bt::Uint16 i = incoming_packets.back().seq_nr + 1; SeqNrCmpS(i, hdr->seq_nr); i++)
+				incoming_packets.push_back(WindowPacket(i));
+			incoming_packets.push_back(WindowPacket(hdr->seq_nr, packet, data_off));
+		}
+		else if (incoming_packets[SeqNrDiff(incoming_packets.front().seq_nr, hdr->seq_nr)].packet)
+		{
+			// Already got this one
 			return true;
+		}
 		else
-			incoming_packets.insert(itr, WindowPacket(hdr->seq_nr, packet, data_off));
+		{
+			bt::Uint16 off = SeqNrDiff( incoming_packets.front().seq_nr, hdr->seq_nr);
+			incoming_packets[off].set(packet, data_off);
+		}
 
 		bt::Uint16 next_seq_nr = last_seq_nr + 1;
 		if (hdr->seq_nr == next_seq_nr)
 		{
 			bytes_available += data_size;
 			last_seq_nr = hdr->seq_nr;
+			next_seq_nr = last_seq_nr + 1;
 
+			bt::Uint16 off = SeqNrDiff(incoming_packets.front().seq_nr, next_seq_nr);
 			// See if we can increase the last_seq_nr some more
-			while (itr != incoming_packets.end())
+			while (off < incoming_packets.size())
 			{
-				next_seq_nr = last_seq_nr + 1;
-				if (itr->seq_nr == next_seq_nr)
+				WindowPacket & pkt = incoming_packets[off];
+				if (pkt.packet)
 				{
-					bytes_available += itr->packet->size() - itr->bytes_read;
+					bytes_available += pkt.packet->size() - pkt.bytes_read;
 					last_seq_nr = next_seq_nr;
-					itr++;
+					next_seq_nr++;
+					off++;
 				}
 				else
 					break;
 			}
 		}
 
+/*
+		Out(SYS_GEN|LOG_DEBUG) << "1 LocalWindow " << bytes_available << " " << last_seq_nr << " " << first_seq_nr << endl;
+		for (int i = 0; i < incoming_packets.size(); i++)
+			Out(SYS_GEN|LOG_DEBUG) << incoming_packets[i].seq_nr << ": " << (incoming_packets[i].packet ? "OK" : "") << endl;
+*/
 		window_space -= data_size;
 		return true;
 	}
@@ -176,27 +212,16 @@ namespace utp
 			return 0;
 	}
 
-	struct FindUpperBound
-	{
-		FindUpperBound(bt::Uint16 seq_nr) : seq_nr(seq_nr) {}
-
-		bool operator () (const WindowPacket & pkt)
-		{
-			return SeqNrCmpSE(seq_nr, pkt.seq_nr);
-		}
-
-		bt::Uint16 seq_nr;
-	};
-
 	void LocalWindow::fillSelectiveAck(SelectiveAck* sack)
 	{
 		// First turn off all bits
 		memset(sack->bitmask, 0, sack->length);
 
-		WindowPacketList::iterator itr = std::find_if(incoming_packets.begin(), incoming_packets.end(), FindUpperBound(last_seq_nr + 1));
+		WindowPacketList::iterator itr = std::upper_bound(incoming_packets.begin(), incoming_packets.end(), last_seq_nr + 1);
 		while (itr != incoming_packets.end())
 		{
-			Ack(sack, SeqNrDiff(last_seq_nr, itr->seq_nr));
+			if (itr->packet)
+				Ack(sack, SeqNrDiff(last_seq_nr, itr->seq_nr));
 			itr++;
 		}
 	}

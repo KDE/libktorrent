@@ -22,7 +22,7 @@
 #ifndef UTP_LOCALWINDOW_H
 #define UTP_LOCALWINDOW_H
 
-#include <list>
+#include <vector>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <QSharedPointer>
@@ -37,11 +37,13 @@ namespace utp
 
 	struct WindowPacket
 	{
+		WindowPacket(bt::Uint16 seq_nr);
 		WindowPacket(bt::Uint16 seq_nr, bt::Buffer::Ptr packet, bt::Uint32 data_off);
 		~WindowPacket();
 
 		bt::Uint32 read(bt::Uint8* dst, bt::Uint32 max_len);
 		bool fullyRead() const;
+		void set(bt::Buffer::Ptr packet, bt::Uint32 data_off);
 
 		bt::Uint16 seq_nr;
 		bt::Buffer::Ptr packet;
@@ -95,9 +97,10 @@ namespace utp
 		void fillSelectiveAck(SelectiveAck* sack);
 
 	private:
-		typedef std::list<WindowPacket> WindowPacketList;
+		typedef std::vector<WindowPacket> WindowPacketList;
 
 		bt::Uint16 last_seq_nr;
+		bt::Uint16 first_seq_nr;
 		bt::Uint32 capacity;
 		WindowPacketList incoming_packets;
 		bt::Uint32 window_space;
