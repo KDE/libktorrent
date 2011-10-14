@@ -76,7 +76,6 @@ namespace utp
 			bt::Uint16 seq_nr;
 			int eof_seq_nr;
 			bt::Uint32 timeout;
-			TimeValue absolute_timeout;
 			int rtt;
 			int rtt_var;
 			bt::Uint32 packet_size;
@@ -184,10 +183,10 @@ namespace utp
 		bt::Uint32 extensionLength() const;
 		virtual void timerEvent(QTimerEvent* ev);
 
-	signals:
+	private slots:
 		void delayedStartTimer();
 
-	private slots:
+	signals:
 		void doDelayedStartTimer();
 
 	private:

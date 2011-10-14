@@ -37,23 +37,10 @@ namespace utp
 		TimeValue(bt::Uint64 secs, bt::Uint64 usecs);
 		TimeValue(const TimeValue & tv);
 
-		TimeValue & operator = (const TimeValue & tv)
-		{
-			seconds = tv.seconds;
-			microseconds = tv.microseconds;
-			return *this;
-		}
+		TimeValue & operator = (const TimeValue & tv);
 
-		/// Add milliseconds to the current TimeValue
-		void addMilliSeconds(bt::Uint64 ms)
-		{
-			microseconds += ms * 1000;
-			if (microseconds > 1000000)
-			{
-				seconds += microseconds / 1000000;
-				microseconds = microseconds % 1000000;
-			}
-		}
+		/// Calculate the a - b in milliseconds
+		friend bt::Int64 operator - (const TimeValue & a, const TimeValue & b);
 
 		bt::Uint32 timestampMicroSeconds() const
 		{
@@ -65,41 +52,10 @@ namespace utp
 		/// Convert to time stamp
 		bt::TimeStamp toTimeStamp() const {return seconds * 1000 + (bt::Uint64)microseconds * 0.001;}
 
-		/// Larger then or equal operator
-		bool operator >= (const TimeValue & tv) const
-		{
-			if (seconds > tv.seconds)
-				return true;
-			else if (seconds == tv.seconds)
-				return microseconds >= tv.microseconds;
-			else
-				return false;
-		}
-
-		bool operator < (const TimeValue & tv) const
-		{
-			return !operator >= (tv);
-		}
-
 	public:
 		bt::Uint64 seconds;
 		bt::Uint64 microseconds;
 	};
-
-	/// Calculate the a - b in milliseconds
-	inline bt::Int64 operator - (const TimeValue & a, const TimeValue & b)
-	{
-		bt::Int64 seconds = a.seconds - b.seconds;
-		bt::Int64 microseconds = a.microseconds - b.microseconds;
-
-		while (microseconds < 0)
-		{
-			microseconds += 1000000;
-			seconds -= 1;
-		}
-
-		return (1000000LL * seconds + microseconds) / 1000;
-	}
 
 }
 

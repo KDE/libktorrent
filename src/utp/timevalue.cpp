@@ -39,5 +39,28 @@ namespace utp
 	TimeValue::TimeValue(const utp::TimeValue& tv) : seconds(tv.seconds), microseconds(tv.microseconds)
 	{
 	}
+
+
+	TimeValue& TimeValue::operator=(const utp::TimeValue& tv)
+	{
+		seconds = tv.seconds;
+		microseconds = tv.microseconds;
+		return *this;
+	}
+
+	bt::Int64 operator - (const utp::TimeValue& a, const utp::TimeValue& b)
+	{
+		bt::Int64 seconds = b.seconds - a.seconds;
+		bt::Int64 microseconds = b.microseconds - a.microseconds;
+
+		while (microseconds < 0)
+		{
+			microseconds += 1000000;
+			seconds -= 1;
+		}
+
+		return (1000000LL * seconds + microseconds) / 1000;
+	}
+
 }
 
