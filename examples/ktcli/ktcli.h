@@ -60,6 +60,7 @@ public slots:
 private:
 	QTimer timer;
 	TorrentControlPtr tc;
+	int updates;
 };
 
 #endif // KTCLI_H
