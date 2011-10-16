@@ -98,6 +98,7 @@ namespace utp
 			utp_thread = 0;
 		}
 
+		timer.stop();
 		connections.clear();
 
 		// Close the socket
@@ -228,6 +229,7 @@ namespace utp
 
 	{
 		qsrand(time(0));
+		connect(&d->timer, SIGNAL(timeout()), this, SLOT(checkTimeouts()));
 	}
 
 	UTPServer::~UTPServer()
@@ -292,6 +294,7 @@ namespace utp
 
 	void UTPServer::threadStarted()
 	{
+		d->timer.start(500);
 		foreach (net::ServerSocket::Ptr sock, d->sockets)
 		{
 			sock->setReadNotificationsEnabled(true);
@@ -357,7 +360,9 @@ namespace utp
 				{
 					c = d->find(hdr->connection_id);
 					if (c && c->handlePacket(parser, buffer) == CS_CLOSED)
+					{
 						d->connections.remove(c->receiveConnectionID());
+					}
 				}
 				catch (Connection::TransmissionError & err)
 				{
@@ -444,7 +449,8 @@ namespace utp
 		{
 			d->utp_thread = new UTPServerThread(this);
 			foreach (net::ServerSocket::Ptr sock, d->sockets)
-			sock->moveToThread(d->utp_thread);
+				sock->moveToThread(d->utp_thread);
+			d->timer.moveToThread(d->utp_thread);
 			d->utp_thread->start();
 		}
 	}
@@ -477,6 +483,54 @@ namespace utp
 	{
 		d->wakeUpPollPipes(conn, readable, writeable);
 	}
+
+	void UTPServer::setCreateSockets(bool on)
+	{
+		d->create_sockets = on;
+	}
+
+	Connection::WPtr UTPServer::acceptedConnection()
+	{
+		if (d->last_accepted.isEmpty())
+			return Connection::WPtr();
+		else
+			return d->last_accepted.takeFirst();
+	}
+
+	void UTPServer::closed(Connection::Ptr conn)
+	{
+		Q_UNUSED(conn);
+		QTimer::singleShot(0, this, SLOT(cleanup()));
+	}
+
+	void UTPServer::cleanup()
+	{
+		QMutexLocker lock(&d->mutex);
+		QMap<quint16, Connection::Ptr>::iterator i = d->connections.begin();
+		while (i != d->connections.end())
+		{
+			if (i.value()->connectionState() == CS_CLOSED)
+			{
+				i = d->connections.erase(i);
+			}
+			else
+				i++;
+		}
+	}
+
+	void UTPServer::checkTimeouts()
+	{
+		QMutexLocker lock(&d->mutex);
+
+		TimeValue now;
+		QMap<quint16, Connection::Ptr>::iterator itr = d->connections.begin();
+		while (itr != d->connections.end())
+		{
+			itr.value()->checkTimeout(now);
+			itr++;
+		}
+	}
+
 
 	///////////////////////////////////////////////////////
 
@@ -513,38 +567,6 @@ namespace utp
 		}
 
 		return false;
-	}
-
-	void UTPServer::setCreateSockets(bool on)
-	{
-		d->create_sockets = on;
-	}
-
-	Connection::WPtr UTPServer::acceptedConnection()
-	{
-		if (d->last_accepted.isEmpty())
-			return Connection::WPtr();
-		else
-			return d->last_accepted.takeFirst();
-	}
-
-	void UTPServer::closed(Connection::Ptr conn)
-	{
-		Q_UNUSED(conn);
-		QTimer::singleShot(0, this, SLOT(cleanup()));
-	}
-
-	void UTPServer::cleanup()
-	{
-		QMutexLocker lock(&d->mutex);
-		QMap<quint16, Connection::Ptr>::iterator i = d->connections.begin();
-		while (i != d->connections.end())
-		{
-			if (i.value()->connectionState() == CS_CLOSED)
-				i = d->connections.erase(i);
-			else
-				i++;
-		}
 	}
 }
 

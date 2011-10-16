@@ -54,37 +54,6 @@ public:
 		Q_UNUSED(conn);
 	}
 	
-	QMap<int,Connection::WPtr> timers;
-	
-    virtual int scheduleTimer(Connection::Ptr conn, Uint32 timeout)
-	{
-		int timer_id = startTimer(timeout);
-		timers.insert(timer_id,conn.toWeakRef());
-		return timer_id;
-	}
-	
-	virtual void cancelTimer(int timer_id)
-	{
-		killTimer(timer_id);
-		timers.remove(timer_id);
-	}
-	
-	virtual void timerEvent(QTimerEvent* ev)
-	{
-		int tid = ev->timerId();
-		killTimer(tid);
-		QMap<int,Connection::WPtr>::iterator i = timers.find(tid);
-		if (i != timers.end())
-		{
-			Connection::Ptr ptr = i.value().toStrongRef();
-			if (ptr)
-				ptr->handleTimeout();
-			timers.erase(i);
-		}
-		
-		ev->accept();
-	}
-	
 	bt::Buffer::Ptr buildPacket(bt::Uint32 type,bt::Uint32 recv_conn_id,bt::Uint32 send_conn_id,bt::Uint16 seq_nr,bt::Uint16 ack_nr)
 	{
 		TimeValue tv;

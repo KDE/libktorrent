@@ -51,6 +51,12 @@ private Q_SLOTS:
 		QVERIFY(b - a == 1700);
 
 		QVERIFY(b >= TimeValue(3, 200000));
+		QVERIFY(b >= TimeValue(3, 100000));
+		QVERIFY(b <= TimeValue(3, 200000));
+		QVERIFY(b <= TimeValue(3, 500000));
+
+		QVERIFY(b < TimeValue(3, 500000));
+		QVERIFY(b > TimeValue(3, 100000));
 	}
 };
 

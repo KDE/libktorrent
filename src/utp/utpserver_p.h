@@ -21,8 +21,8 @@
 #ifndef UTP_UTPSERVER_P_H
 #define UTP_UTPSERVER_P_H
 
-#include <QObject>
 #include <QMap>
+#include <QTimer>
 #include <QSocketNotifier>
 #include <net/socket.h>
 #include <net/poll.h>
@@ -112,6 +112,7 @@ namespace utp
 		QMutex pending_mutex;
 		MainThreadCall* mtc;
 		QList<Connection::WPtr> last_accepted;
+		QTimer timer;
 	};
 }
 

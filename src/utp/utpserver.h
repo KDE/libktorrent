@@ -90,6 +90,7 @@ namespace utp
 
 	private slots:
 		void cleanup();
+		void checkTimeouts();
 
 	private:
 		class Private;

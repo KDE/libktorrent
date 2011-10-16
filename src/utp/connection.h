@@ -76,6 +76,7 @@ namespace utp
 			bt::Uint16 seq_nr;
 			int eof_seq_nr;
 			bt::Uint32 timeout;
+			TimeValue absolute_timeout;
 			int rtt;
 			int rtt_var;
 			bt::Uint32 packet_size;
@@ -164,8 +165,8 @@ namespace utp
 		/// Set a weak pointer to self
 		void setWeakPointer(WPtr ptr) {self = ptr;}
 
-		/// Handle a timeout
-		void handleTimeout();
+		/// Check if we haven't hit a timeout yet
+		void checkTimeout(const TimeValue & now);
 
 	private:
 		void sendSYN();
@@ -181,13 +182,7 @@ namespace utp
 		void startTimer();
 		void checkState();
 		bt::Uint32 extensionLength() const;
-		virtual void timerEvent(QTimerEvent* ev);
-
-	private slots:
-		void delayedStartTimer();
-
-	signals:
-		void doDelayedStartTimer();
+		void handleTimeout();
 
 	private:
 		Transmitter* transmitter;
@@ -203,7 +198,6 @@ namespace utp
 		TimeValue last_packet_sent;
 		DelayWindow* delay_window;
 		Connection::WPtr self;
-		int timer_id;
 		bool blocking;
 
 		friend class UTPServer;
@@ -215,7 +209,7 @@ namespace utp
 	class KTORRENT_EXPORT Transmitter
 	{
 	public:
-		virtual ~Transmitter() {}
+		virtual ~Transmitter();
 
 		/// Send a packet of a connection
 		virtual bool sendTo(Connection::Ptr conn, const PacketBuffer & packet) = 0;

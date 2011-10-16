@@ -184,7 +184,7 @@ namespace bt
 	
 	Uint32 CurrentOpenFiles()
 	{
-#ifdef Q_OS_LINUX
+/*#ifdef Q_OS_LINUX
 		QString path = QString("/proc/%1/fd").arg(getpid());
 		QDir dir(path);
 		int ret = dir.count();
@@ -192,7 +192,8 @@ namespace bt
 			return 0;
 		else
 			return ret;
-#elif !defined(Q_OS_WINDOWS)
+#el*/
+#if !defined(Q_OS_WINDOWS)
 		Uint32 count = 0;
 		struct stat sb;
 		int max_fd_number = getdtablesize();

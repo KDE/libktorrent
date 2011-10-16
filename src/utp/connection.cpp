@@ -44,7 +44,7 @@ namespace utp
 	}
 
 	Connection::Connection(bt::Uint16 recv_connection_id, Type type, const net::Address& remote, Transmitter* transmitter)
-			: transmitter(transmitter), timer_id(-1),blocking(false)
+			: transmitter(transmitter),blocking(false)
 	{
 		stats.type = type;
 		stats.remote = remote;
@@ -78,10 +78,6 @@ namespace utp
 		stats.bytes_lost = 0;
 		stats.packets_lost = 0;
 		stats.readable = stats.writeable = false;
-
-		connect(this, SIGNAL(doDelayedStartTimer()), this, SLOT(delayedStartTimer()), Qt::QueuedConnection);
-		if (type == INCOMING)
-			startTimer();
 	}
 
 	Connection::~Connection()
@@ -605,18 +601,15 @@ namespace utp
 		}
 	}
 
-	void Connection::timerEvent(QTimerEvent* ev)
+	void Connection::checkTimeout(const TimeValue & now)
 	{
-		if (ev->timerId() == timer_id)
-		{
+		QMutexLocker lock(&mutex);
+		if (now >= stats.absolute_timeout)
 			handleTimeout();
-			ev->accept();
-		}
 	}
 
 	void Connection::handleTimeout()
 	{
-		QMutexLocker lock(&mutex);
 		switch (stats.state)
 		{
 			case CS_SYN_SENT:
@@ -684,19 +677,8 @@ namespace utp
 
 	void Connection::startTimer()
 	{
-		// Timers can only be started from the same thread so if
-		// we are being called from another use a signal
-		if (QThread::currentThread() != thread())
-			emit doDelayedStartTimer();
-		else
-			delayedStartTimer();
-	}
-
-	void Connection::delayedStartTimer()
-	{
-		if (timer_id != -1)
-			killTimer(timer_id);
-		timer_id = QObject::startTimer(stats.timeout);
+		stats.absolute_timeout = TimeValue();
+		stats.absolute_timeout.addMilliSeconds(stats.timeout);
 	}
 
 	bt::Uint32 Connection::extensionLength() const
@@ -707,5 +689,10 @@ namespace utp
 		else
 			return 0;
 	}
+
+	///////////////////////////////////////////////////////
+
+	Transmitter::~Transmitter()
+	{}
 }
 

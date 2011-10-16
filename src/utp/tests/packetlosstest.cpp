@@ -177,10 +177,12 @@ private slots:
 		
 		srv.setPacketLossSimulation(true,0.1); // Drop 10 % of all packets
 		SendThread st(outgoing);
+		incoming->setBlocking(true);
 		st.start(); // The thread will start sending a whole bunch of data
 		int received = 0;
 		QString received_data;
-		while (!st.isFinished())
+
+		while (received_data.count(TEST_DATA) < PACKETS_TO_SEND)
 		{
 			bt::Uint32 ba = incoming->bytesAvailable();
 			if (ba > 0)
@@ -200,7 +202,7 @@ private slots:
 			}
 			else
 			{
-				usleep(50000);
+				incoming->waitForData(1000);
 			}
 		}
 		
