@@ -540,33 +540,5 @@ namespace utp
 	{
 
 	}
-
-	bool PollPipePair::testRead(utp::ConItr b, utp::ConItr e)
-	{
-		for (utp::ConItr i = b;i != e;i++)
-		{
-			if (read_pipe->readyToWakeUp(i->second))
-			{
-				read_pipe->wakeUp();
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	bool PollPipePair::testWrite(utp::ConItr b, utp::ConItr e)
-	{
-		for (utp::ConItr i = b;i != e;i++)
-		{
-			if (write_pipe->readyToWakeUp(i->second))
-			{
-				write_pipe->wakeUp();
-				return true;
-			}
-		}
-
-		return false;
-	}
 }
 

@@ -29,38 +29,18 @@ namespace utp
 
 	PollPipe::PollPipe(net::Poll::Mode mode) : mode(mode), poll_index(-1)
 	{
+
 	}
 
 	PollPipe::~PollPipe()
 	{
 	}
 
-	void PollPipe::prepare(net::Poll* p, bt::Uint16 conn_id, PollPipe::Ptr self)
-	{
-		QMutexLocker lock(&mutex);
-		conn_ids.insert(conn_id);
-		if (poll_index < 0)
-			poll_index = p->add(qSharedPointerCast<PollClient>(self));
-	}
-
-
-	bool PollPipe::readyToWakeUp(Connection* conn) const
-	{
-		QMutexLocker lock(&mutex);
-		if (poll_index < 0 || !conn_ids.contains(conn->receiveConnectionID()))
-			return false;
-
-		if (mode == net::Poll::INPUT)
-			return conn->bytesAvailable() > 0 || conn->connectionState() == CS_CLOSED;
-		else
-			return conn->isWriteable();
-	}
-
 	void PollPipe::reset()
 	{
 		QMutexLocker lock(&mutex);
 		poll_index = -1;
-		conn_ids.clear();
+		conn_ids.reset();
 	}
 
 }
