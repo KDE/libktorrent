@@ -50,6 +50,9 @@ namespace net
 		
 		virtual void reset();
 		
+		/// Have we been woken up
+		bool wokenUp() const {return woken_up;}
+
 		typedef QSharedPointer<WakeUpPipe> Ptr;
 	protected:
 		mutable QMutex mutex;

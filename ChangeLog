@@ -15,6 +15,7 @@ Changes in 1.2:
 - Prevent file descriptor exhaustion from happening (251120, 282873, 274544)
 - Do not count non piece data in upload speed calculation (283170)
 - Fix IPv6 address parsing bug
+- Improve performance of µTP code
 
 Changes in 1.1.3:
 - Fix bug causing UPnP not to work properly if there is a question mark in the controlurl
