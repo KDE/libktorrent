@@ -86,7 +86,7 @@ namespace dht
 			try
 			{
 				// read and decode the packet
-				BDecoder bdec(QByteArray::fromRawData((const char*)ptr->get(), ptr->size()),false);
+				BDecoder bdec(ptr->get(), ptr->size(),false);
 				boost::scoped_ptr<BNode> n(bdec.decode());
 				
 				if (!n || n->getType() != BNode::DICT)
