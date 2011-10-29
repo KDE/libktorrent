@@ -107,19 +107,37 @@ namespace bt
 	
 	void HttpConnection::connectToProxy(const QString & proxy,Uint16 proxy_port)
 	{
-		using_proxy = true;
-		new net::AddressResolver(proxy, proxy_port, this, SLOT(hostResolved(net::AddressResolver*)));
-		state = RESOLVING;
-		status = i18n("Resolving proxy %1:%2",proxy,proxy_port);
+		if (OpenFileAllowed())
+		{
+			using_proxy = true;
+			net::AddressResolver::resolve(proxy, proxy_port, this, SLOT(hostResolved(net::AddressResolver*)));
+			state = RESOLVING;
+			status = i18n("Resolving proxy %1:%2",proxy,proxy_port);
+		}
+		else
+		{
+			Out(SYS_CON|LOG_IMPORTANT) << "HttpConnection: not enough system resources available" << endl;
+			state = ERROR;
+			status = i18n("Not enough system resources available");
+		}
 	}
 	
 	void HttpConnection::connectTo(const KUrl & url)
 	{
-		using_proxy = false;
-		net::AddressResolver::resolve(url.host(), url.port() <= 0 ? 80 : url.port(), 
-									  this, SLOT(hostResolved(net::AddressResolver*)));
-		state = RESOLVING;
-		status = i18n("Resolving hostname %1",url.host());
+		if (OpenFileAllowed())
+		{
+			using_proxy = false;
+			net::AddressResolver::resolve(url.host(), url.port() <= 0 ? 80 : url.port(), 
+										this, SLOT(hostResolved(net::AddressResolver*)));
+			state = RESOLVING;
+			status = i18n("Resolving hostname %1",url.host());
+		}
+		else
+		{
+			Out(SYS_CON|LOG_IMPORTANT) << "HttpConnection: not enough system resources available" << endl;
+			state = ERROR;
+			status = i18n("Not enough system resources available");
+		}
 	}
 
 	void HttpConnection::onDataReady(Uint8* buf,Uint32 size)

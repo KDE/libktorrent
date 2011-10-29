@@ -39,14 +39,21 @@ namespace utp
 
 		TimeValue & operator = (const TimeValue & tv);
 
-		/// Calculate the a - b in milliseconds
-		friend bt::Int64 operator - (const TimeValue & a, const TimeValue & b);
-
 		bt::Uint32 timestampMicroSeconds() const
 		{
 			bt::Uint64 microsecs = seconds * 1000000 + microseconds;
 			//return microsecs & 0x00000000FFFFFFFF;
 			return microsecs;
+		}
+
+		void addMilliSeconds(bt::Uint32 ms)
+		{
+			microseconds += ms * 1000;
+			if (microseconds > 1000000)
+			{
+				seconds += microseconds / 1000000;
+				microseconds = microseconds % 1000000;
+			}
 		}
 
 		/// Convert to time stamp
@@ -56,6 +63,62 @@ namespace utp
 		bt::Uint64 seconds;
 		bt::Uint64 microseconds;
 	};
+
+
+	/// Calculate the a - b in milliseconds
+	inline bt::Int64 operator - (const TimeValue & a, const TimeValue & b)
+	{
+		bt::Int64 seconds = a.seconds - b.seconds;
+		bt::Int64 microseconds = a.microseconds - b.microseconds;
+
+		while (microseconds < 0)
+		{
+			microseconds += 1000000;
+			seconds -= 1;
+		}
+
+		return (1000000LL * seconds + microseconds) / 1000;
+	}
+
+	inline bool operator < (const TimeValue & a, const TimeValue & b)
+	{
+		if (a.seconds < b.seconds)
+			return true;
+		else if (a.seconds == b.seconds)
+			return a.microseconds < b.microseconds;
+		else
+			return false;
+	}
+
+	inline bool operator <= (const TimeValue & a, const TimeValue & b)
+	{
+		if (a.seconds < b.seconds)
+			return true;
+		else if (a.seconds == b.seconds)
+			return a.microseconds <= b.microseconds;
+		else
+			return false;
+	}
+
+	inline bool operator > (const TimeValue & a, const TimeValue & b)
+	{
+		if (a.seconds > b.seconds)
+			return true;
+		else if (a.seconds == b.seconds)
+			return a.microseconds > b.microseconds;
+		else
+			return false;
+	}
+
+	inline bool operator >= (const TimeValue & a, const TimeValue & b)
+	{
+		if (a.seconds > b.seconds)
+			return true;
+		else if (a.seconds == b.seconds)
+			return a.microseconds >= b.microseconds;
+		else
+			return false;
+	}
 
 }
 

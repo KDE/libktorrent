@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2009 by Joris Guisson                                   *
+ *   Copyright (C) 2011 by Joris Guisson                                   *
  *   joris.guisson@gmail.com                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,48 +17,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#ifndef KTWAKEUPPIPE_H
-#define KTWAKEUPPIPE_H
+#include <QtTest>
+#include <QObject>
+#include <util/log.h>
+#include <util/bufferpool.h>
 
-#include <ktorrent_export.h>
-#include <util/pipe.h>
-#include <net/poll.h>
-#include <QMutex>
-
-namespace net
+class BufferPoolTest : public QObject
 {
+	Q_OBJECT
+public:
 
-	/**
-		A WakeUpPipe's purpose is to wakeup a select or poll call.
-		It works by using a pipe
-		One end needs to be part of the poll or select, and the other end will send dummy data to it.
-		Waking up the select or poll call.
-	*/
-	class KTORRENT_EXPORT WakeUpPipe : public bt::Pipe, public PollClient
+private slots:
+	void initTestCase()
 	{
-	public:
-		WakeUpPipe();
-		virtual ~WakeUpPipe();
-		
-		/// Wake up the other socket
-		virtual void wakeUp();
-		
-		/// Read all the dummy data
-		virtual void handleData();
-		
-		virtual int fd() const {return readerSocket();}
-		
-		virtual void reset();
-		
-		/// Have we been woken up
-		bool wokenUp() const {return woken_up;}
+		bt::InitLog("bufferpooltest.log");
+	}
 
-		typedef QSharedPointer<WakeUpPipe> Ptr;
-	protected:
-		mutable QMutex mutex;
-		bool woken_up;
-	};
+	void cleanupTestCase()
+	{
+	}
 
-}
 
-#endif
+	void testPool()
+	{
+		bt::BufferPool::Ptr pool(new bt::BufferPool());
+		pool->setWeakPointer(pool.toWeakRef());
+
+		bt::Buffer::Ptr a = pool->get(1000);
+		QVERIFY(a);
+		QVERIFY(a->size() == 1000);
+		QVERIFY(a->capacity() == 1000);
+		a.clear();
+
+		a = pool->get(500);
+		QVERIFY(a);
+		QVERIFY(a->size() == 500);
+		QVERIFY(a->capacity() == 1000);
+
+		bt::Buffer::Ptr b = pool->get(2000);
+		QVERIFY(b);
+		QVERIFY(b->size() == 2000);
+		QVERIFY(b->capacity() == 2000);
+	}
+};
+
+QTEST_MAIN(BufferPoolTest)
+
+#include "bufferpooltest.moc"

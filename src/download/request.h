@@ -85,7 +85,10 @@ namespace bt
 		 * @param b The second request
 		 * @return true if they are equal
 		 */
-		friend bool operator == (const Request & a,const Request & b);
+		friend inline bool operator == (const Request & a,const Request & b)
+		{
+			return a.index == b.index && a.len == b.len && a.off == b.off;
+		}
 	private:
 		Uint32 index,off,len;
 		PieceDownloader* pd;

@@ -20,6 +20,7 @@
 #include "functions.h"
 #include <qdir.h>
 #include <errno.h>
+#include <unistd.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -55,109 +56,6 @@ namespace bt
 		//tmp.append(QDir::separator());
 		return "/";
 	}
-
-	void WriteUint64(Uint8* buf,Uint32 off,Uint64 val)
-	{
-		buf[off + 0] = (Uint8) ((val & 0xFF00000000000000ULL) >> 56);
-		buf[off + 1] = (Uint8) ((val & 0x00FF000000000000ULL) >> 48);
-		buf[off + 2] = (Uint8) ((val & 0x0000FF0000000000ULL) >> 40);
-		buf[off + 3] = (Uint8) ((val & 0x000000FF00000000ULL) >> 32);
-		buf[off + 4] = (Uint8) ((val & 0x00000000FF000000ULL) >> 24);
-		buf[off + 5] = (Uint8) ((val & 0x0000000000FF0000ULL) >> 16);
-		buf[off + 6] = (Uint8) ((val & 0x000000000000FF00ULL) >> 8);
-		buf[off + 7] = (Uint8) ((val & 0x00000000000000FFULL) >> 0);
-	}
-	
-	Uint64 ReadUint64(const Uint8* buf,Uint64 off)
-	{
-		Uint64 tmp =
-				((Uint64)buf[off] << 56) |
-				((Uint64)buf[off+1] << 48) |
-				((Uint64)buf[off+2] << 40) |
-				((Uint64)buf[off+3] << 32) |
-				((Uint64)buf[off+4] << 24) |
-				((Uint64)buf[off+5] << 16) |
-				((Uint64)buf[off+6] << 8) |
-				((Uint64)buf[off+7] << 0);
-
-		return tmp;
-	}
-
-	void WriteUint32(Uint8* buf,Uint32 off,Uint32 val)
-	{
-		buf[off + 0] = (Uint8) ((val & 0xFF000000) >> 24);
-		buf[off + 1] = (Uint8) ((val & 0x00FF0000) >> 16);
-		buf[off + 2] = (Uint8) ((val & 0x0000FF00) >> 8);
-		buf[off + 3] = (Uint8) (val & 0x000000FF);
-	}
-	
-	Uint32 ReadUint32(const Uint8* buf,Uint32 off)
-	{
-		return (buf[off] << 24) | (buf[off+1] << 16) | (buf[off+2] << 8) | buf[off + 3];
-	}
-	
-	void WriteUint16(Uint8* buf,Uint32 off,Uint16 val)
-	{
-		buf[off + 0] = (Uint8) ((val & 0xFF00) >> 8);
-		buf[off + 1] = (Uint8) (val & 0x000FF);
-	}
-
-	Uint16 ReadUint16(const Uint8* buf,Uint32 off)
-	{
-		return (buf[off] << 8) | buf[off + 1];
-	}
-	
-	
-	void WriteInt64(Uint8* buf,Uint32 off,Int64 val)
-	{
-		buf[off + 0] = (Uint8) ((val & 0xFF00000000000000ULL) >> 56);
-		buf[off + 1] = (Uint8) ((val & 0x00FF000000000000ULL) >> 48);
-		buf[off + 2] = (Uint8) ((val & 0x0000FF0000000000ULL) >> 40);
-		buf[off + 3] = (Uint8) ((val & 0x000000FF00000000ULL) >> 32);
-		buf[off + 4] = (Uint8) ((val & 0x00000000FF000000ULL) >> 24);
-		buf[off + 5] = (Uint8) ((val & 0x0000000000FF0000ULL) >> 16);
-		buf[off + 6] = (Uint8) ((val & 0x000000000000FF00ULL) >> 8);
-		buf[off + 7] = (Uint8) ((val & 0x00000000000000FFULL) >> 0);
-	}
-	
-	Int64 ReadInt64(const Uint8* buf,Uint32 off)
-	{
-		Int64 tmp =
-				((Int64)buf[off] << 56) |
-				((Int64)buf[off+1] << 48) |
-				((Int64)buf[off+2] << 40) |
-				((Int64)buf[off+3] << 32) |
-				((Int64)buf[off+4] << 24) |
-				((Int64)buf[off+5] << 16) |
-				((Int64)buf[off+6] << 8) |
-				((Int64)buf[off+7] << 0);
-
-		return tmp;
-	}
-	
-	void WriteInt32(Uint8* buf,Uint32 off,Int32 val)
-	{
-		buf[off + 0] = (Uint8) ((val & 0xFF000000) >> 24);
-		buf[off + 1] = (Uint8) ((val & 0x00FF0000) >> 16);
-		buf[off + 2] = (Uint8) ((val & 0x0000FF00) >> 8);
-		buf[off + 3] = (Uint8) (val & 0x000000FF);
-	}
-	
-	Int32 ReadInt32(const Uint8* buf,Uint32 off)
-	{
-		return (Int32)(buf[off] << 24) | (buf[off+1] << 16) | (buf[off+2] << 8) | buf[off + 3];
-	}
-	
-	void WriteInt16(Uint8* buf,Uint32 off,Int16 val)
-	{
-		buf[off + 0] = (Uint8) ((val & 0xFF00) >> 8);
-		buf[off + 1] = (Uint8) (val & 0x000FF);
-	}
-	
-	Int16 ReadInt16(const Uint8* buf,Uint32 off)
-	{
-		return (Int16)(buf[off] << 8) | buf[off + 1];
-	}
 	
 	void UpdateCurrentTime()
 	{
@@ -179,6 +77,44 @@ namespace bt
 		struct rlimit lim;
 		getrlimit(RLIMIT_NOFILE,&lim);
 		return lim.rlim_cur;
+	}
+	
+	Uint32 CurrentOpenFiles()
+	{
+/*#ifdef Q_OS_LINUX
+		QString path = QString("/proc/%1/fd").arg(getpid());
+		QDir dir(path);
+		int ret = dir.count();
+		if (ret < 0)
+			return 0;
+		else
+			return ret;
+#el*/
+#if !defined(Q_OS_WINDOWS)
+		Uint32 count = 0;
+		struct stat sb;
+		int max_fd_number = getdtablesize();
+		for (int i = 0; i < max_fd_number; i++)
+		{
+			fstat(i, &sb);
+			if (errno != EBADF)
+				count++;
+		}
+		
+		return count;
+#else
+		return 0;
+#endif
+	}
+	
+	bool OpenFileAllowed()
+	{
+		const Uint32 headroom = 50;
+		Uint32 max_open = MaxOpenFiles();
+		if (max_open == 0)
+			return true;
+		else
+			return max_open - CurrentOpenFiles() > headroom;
 	}
 
 	bool MaximizeLimits()

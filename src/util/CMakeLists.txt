@@ -24,6 +24,7 @@ set (util_HDR
 	pipe.h
 	circularbuffer.h
 	resourcemanager.h
+	bufferpool.h
 )
 if(NOT WIN32)
 set (util_HDR ${util_HDR}

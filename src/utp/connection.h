@@ -76,6 +76,7 @@ namespace utp
 			bt::Uint16 seq_nr;
 			int eof_seq_nr;
 			bt::Uint32 timeout;
+			TimeValue absolute_timeout;
 			int rtt;
 			int rtt_var;
 			bt::Uint32 packet_size;
@@ -95,6 +96,9 @@ namespace utp
 		Connection(bt::Uint16 recv_connection_id, Type type, const net::Address & remote, Transmitter* transmitter);
 		virtual ~Connection();
 
+		/// Turn on or off blocking mode
+		void setBlocking(bool on) {blocking = on;}
+
 		/// Dump connection stats
 		void dumpStats();
 
@@ -105,7 +109,7 @@ namespace utp
 		const Stats & connectionStats() const {return stats;}
 
 		/// Handle a single packet
-		ConnectionState handlePacket(const PacketParser & parser, const QByteArray & packet);
+		ConnectionState handlePacket(const PacketParser & parser, bt::Buffer::Ptr packet);
 
 		/// Get the remote address
 		const net::Address & remoteAddress() const {return stats.remote;}
@@ -147,7 +151,7 @@ namespace utp
 		virtual void updateRTT(const Header* hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size);
 
 		/// Retransmit a packet
-		virtual void retransmit(const QByteArray & packet, bt::Uint16 p_seq_nr);
+		virtual void retransmit(PacketBuffer & packet, bt::Uint16 p_seq_nr);
 
 		/// Is all data sent
 		bool allDataSent() const;
@@ -161,8 +165,8 @@ namespace utp
 		/// Set a weak pointer to self
 		void setWeakPointer(WPtr ptr) {self = ptr;}
 
-		/// Handle a timeout
-		void handleTimeout();
+		/// Check if we haven't hit a timeout yet
+		void checkTimeout(const TimeValue & now);
 
 	private:
 		void sendSYN();
@@ -174,16 +178,11 @@ namespace utp
 		void sendPackets();
 		void sendPacket(bt::Uint32 type, bt::Uint16 p_ack_nr);
 		void checkIfClosed();
-		void sendDataPacket(const QByteArray & packet);
-		void sendDataPacket(const QByteArray & packet, bt::Uint16 seq_nr, const TimeValue & now);
+		void sendDataPacket(PacketBuffer & packet, bt::Uint16 seq_nr, const TimeValue & now);
 		void startTimer();
 		void checkState();
-
-	private slots:
-		void delayedStartTimer();
-
-	signals:
-		void doDelayedStartTimer();
+		bt::Uint32 extensionLength() const;
+		void handleTimeout();
 
 	private:
 		Transmitter* transmitter;
@@ -199,7 +198,7 @@ namespace utp
 		TimeValue last_packet_sent;
 		DelayWindow* delay_window;
 		Connection::WPtr self;
-		int timer_id;
+		bool blocking;
 
 		friend class UTPServer;
 	};
@@ -210,22 +209,16 @@ namespace utp
 	class KTORRENT_EXPORT Transmitter
 	{
 	public:
-		virtual ~Transmitter() {}
+		virtual ~Transmitter();
 
 		/// Send a packet of a connection
-		virtual bool sendTo(Connection::Ptr conn, const QByteArray & data) = 0;
+		virtual bool sendTo(Connection::Ptr conn, const PacketBuffer & packet) = 0;
 
 		/// Connection has become readable, writeable or both
 		virtual void stateChanged(Connection::Ptr conn, bool readable, bool writeable) = 0;
 
 		/// Called when the connection is closed
 		virtual void closed(Connection::Ptr conn) = 0;
-
-		/// Schedule a timer for a connection
-		virtual int scheduleTimer(Connection::Ptr conn, bt::Uint32 timeout) = 0;
-
-		/// Kill a previously started timer
-		virtual void cancelTimer(int timer_id) = 0;
 	};
 
 }

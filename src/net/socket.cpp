@@ -306,7 +306,7 @@ namespace net
 			Out(SYS_CON|LOG_DEBUG) << "Receive error : " << QString(strerror(errno)) << endl;
 			return 0;
 		}
-		a = net::Address(&ss);
+		a = ss;
 		return ret;
 	}
 	

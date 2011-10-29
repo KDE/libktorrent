@@ -37,7 +37,7 @@
 
 using namespace bt;
 
-KTCLI::KTCLI() : tc(new TorrentControl())
+KTCLI::KTCLI() : tc(new TorrentControl()),updates(0)
 {
 	qsrand(time(0));
 	bt::SetClientInfo("ktcli",bt::MAJOR,bt::MINOR,bt::RELEASE,bt::NORMAL,"KT");
@@ -215,6 +215,12 @@ void KTCLI::update()
 	bt::UpdateCurrentTime();
 	AuthenticationMonitor::instance().update();
 	tc->update();
+	updates++;
+	if (updates % 20 == 0)
+	{
+		Out(SYS_GEN|LOG_DEBUG) << "Speed down " << bt::BytesPerSecToString(tc->getStats().download_rate) << endl;
+		Out(SYS_GEN|LOG_DEBUG) << "Speed up   " << bt::BytesPerSecToString(tc->getStats().upload_rate) << endl;
+	}
 }
 
 void KTCLI::finished(bt::TorrentInterface* tor)

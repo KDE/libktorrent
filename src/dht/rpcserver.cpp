@@ -81,12 +81,12 @@ namespace dht
 			}
 		}
 		
-		virtual void dataReceived(const QByteArray& data, const net::Address& addr)
+		virtual void dataReceived(bt::Buffer::Ptr ptr, const net::Address& addr)
 		{
 			try
 			{
 				// read and decode the packet
-				BDecoder bdec(data,false);
+				BDecoder bdec(ptr->get(), ptr->size(),false);
 				boost::scoped_ptr<BNode> n(bdec.decode());
 				
 				if (!n || n->getType() != BNode::DICT)

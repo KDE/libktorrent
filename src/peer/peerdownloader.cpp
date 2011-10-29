@@ -80,14 +80,6 @@ namespace bt
 	PeerDownloader::~PeerDownloader() 
 	{
 	}
-#if 0
-	void PeerDownloader::retransmitRequests()
-	{
-		for (QValueList<Request>::iterator i = reqs.begin();i != reqs.end();i++)
-			peer->sendRequest(*i);
-			
-	}
-#endif
 	
 	QString PeerDownloader::getName() const
 	{
@@ -159,8 +151,8 @@ namespace bt
 	void PeerDownloader::piece(const Piece & p)
 	{
 		Request r(p);
-		if (!wait_queue.removeAll(r))
-			reqs.removeAll(r);
+		if (!reqs.removeOne(r))
+			wait_queue.removeAll(r);
 	}
 	
 	void PeerDownloader::peerDestroyed()

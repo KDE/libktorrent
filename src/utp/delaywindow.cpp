@@ -28,7 +28,7 @@ using namespace bt;
 namespace utp
 {
 
-	DelayWindow::DelayWindow()
+	DelayWindow::DelayWindow() : delay_window(100)
 	{
 	}
 
@@ -57,6 +57,9 @@ namespace utp
 		if (itr == delay_window.end() || hdr->timestamp_difference_microseconds < itr->timestamp_difference_microseconds)
 		{
 			delay_window.clear();
+			if (delay_window.full())
+				delay_window.set_capacity(delay_window.capacity() + 100);
+
 			delay_window.push_back(DelayEntry(hdr->timestamp_difference_microseconds, receive_time));
 			return hdr->timestamp_difference_microseconds;
 		}

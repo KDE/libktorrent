@@ -36,10 +36,10 @@ namespace utp
 	{
 	}
 
-	int OutputQueue::add(const QByteArray& data, Connection::WPtr conn)
+	int OutputQueue::add(const PacketBuffer & packet, Connection::WPtr conn)
 	{
 		QMutexLocker lock(&mutex);
-		queue.append(Entry(data, conn));
+		queue.append(Entry(packet, conn));
 		return queue.size();
 	}
 
@@ -61,7 +61,7 @@ namespace utp
 					continue;
 				}
 
-				int ret = sock->sendTo(packet.data, conn->remoteAddress());
+				int ret = sock->sendTo(packet.data.data(), packet.data.bufferSize(), conn->remoteAddress());
 				if (ret == net::SEND_WOULD_BLOCK)
 					break;
 				else if (ret == net::SEND_FAILURE)

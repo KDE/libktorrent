@@ -557,6 +557,13 @@ namespace bt
 		if (getUploadRate() > 100 || getDownloadRate() > 100 || 
 		   (uploader->getNumRequests() == 0 && sock->numPendingPieceUploads() == 0 && downloader->getNumRequests() == 0) )
 			stalled_timer.update();
+
+		stats.download_rate = this->getDownloadRate();
+		stats.upload_rate = this->getUploadRate();
+		stats.perc_of_file = this->percentAvailable();
+		stats.snubbed = this->isSnubbed();
+		stats.num_up_requests = uploader->getNumRequests() + sock->numPendingPieceUploads();
+		stats.num_down_requests = downloader->getNumRequests();
 	}
 	
 	bool Peer::isStalled() const
@@ -614,17 +621,6 @@ namespace bt
 		return (float)bytes / (float)tbytes * 100.0;
 	}
 
-	const PeerInterface::Stats & Peer::getStats() const
-	{
-		stats.download_rate = this->getDownloadRate();
-		stats.upload_rate = this->getUploadRate();
-		stats.perc_of_file = this->percentAvailable();
-		stats.snubbed = this->isSnubbed();
-		stats.num_up_requests = uploader->getNumRequests() + sock->numPendingPieceUploads();
-		stats.num_down_requests = downloader->getNumRequests();
-		return stats;
-	}
-	
 	void Peer::setACAScore(double s)
 	{
 		stats.aca_score = s;

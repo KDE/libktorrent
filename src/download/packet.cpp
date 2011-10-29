@@ -165,7 +165,7 @@ namespace bt
 		if (!bw) // nothing to write
 			return 0;
 		
-		if (bw > max_to_send)
+		if (bw > max_to_send && max_to_send > 0)
 			bw = max_to_send;
 		int ret = sock->send(data + written, bw);
 		if (ret > 0)

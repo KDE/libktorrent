@@ -25,20 +25,29 @@
 
 namespace bt
 {
+	BDecoder::BDecoder(const Uint8* ptr, Uint32 size, bool verbose, Uint32 off) :
+			data(QByteArray::fromRawData((const char*)ptr, size)),
+			pos(off),
+			verbose(verbose)
+	{
 
-	BDecoder::BDecoder(const QByteArray & data,bool verbose,Uint32 off)
-	: data(data),pos(off),verbose(verbose)
+	}
+
+	BDecoder::BDecoder(const QByteArray & data, bool verbose, Uint32 off) :
+			data(data),
+			pos(off),
+			verbose(verbose)
 	{
 		level = 0;
 	}
 
-
 	BDecoder::~BDecoder()
-	{}
+	{
+	}
 
 	BNode* BDecoder::decode()
 	{
-		if (pos >= (Uint32)data.size())
+		if (pos >= (Uint32) data.size())
 			return 0;
 
 		if (data[pos] == 'd')
@@ -59,10 +68,9 @@ namespace bt
 		}
 		else
 		{
-			throw Error(i18n("Illegal token: %1",data[pos]));
+			throw Error(i18n("Illegal token: %1", data[pos]));
 		}
 	}
-	
 	
 	BDictNode* BDecoder::decodeDict()
 	{
@@ -71,7 +79,7 @@ namespace bt
 		{
 			n = decode();
 			if (n && n->getType() == BNode::DICT)
-				return (BDictNode*)n;
+				return (BDictNode*) n;
 			
 			delete n;
 		}
@@ -91,7 +99,7 @@ namespace bt
 		{
 			n = decode();
 			if (n && n->getType() == BNode::LIST)
-				return (BListNode*)n;
+				return (BListNode*) n;
 			
 			delete n;
 		}
@@ -114,10 +122,10 @@ namespace bt
 		level++;
 		try
 		{
-			while (pos < (Uint32)data.size() && data[pos] != 'e')
+			while (pos < (Uint32) data.size() && data[pos] != 'e')
 			{
 				debugMsg(QString("Key : "));
-				BNode* kn = decode(); 
+				BNode* kn = decode();
 				BValueNode* k = dynamic_cast<BValueNode*>(kn);
 				if (!k || k->data().getType() != Value::STRING)
 				{
@@ -132,7 +140,7 @@ namespace bt
 				if (!value)
 					throw Error(i18n("Decode error"));
 				
-				curr->insert(key,value);
+				curr->insert(key, value);
 			}
 			pos++;
 		}
@@ -156,7 +164,7 @@ namespace bt
 		pos++;
 		try
 		{
-			while (pos < (Uint32)data.size() && data[pos] != 'e')
+			while (pos < (Uint32) data.size() && data[pos] != 'e')
 			{
 				BNode* n = decode();
 				if (n)
@@ -181,14 +189,14 @@ namespace bt
 		pos++;
 		QString n;
 		// look for e and add everything between i and e to n
-		while (pos < (Uint32)data.size() && data[pos] != 'e')
+		while (pos < (Uint32) data.size() && data[pos] != 'e')
 		{
 			n += data[pos];
 			pos++;
 		}
 
 		// check if we aren't at the end of the data
-		if (pos >= (Uint32)data.size())
+		if (pos >= (Uint32) data.size())
 		{
 			throw Error(i18n("Unexpected end of input"));
 		}
@@ -201,7 +209,7 @@ namespace bt
 		{
 			pos++;
 			debugMsg(QString("INT = %1").arg(val));
-			BValueNode* vn = new BValueNode(Value(val),off);
+			BValueNode* vn = new BValueNode(Value(val), off);
 			vn->setLength(pos - off);
 			return vn;
 		}
@@ -210,11 +218,11 @@ namespace bt
 			Int64 bi = 0LL;
 			bi = n.toLongLong(&ok);
 			if (!ok)
-				throw Error(i18n("Cannot convert %1 to an int",n));
+				throw Error(i18n("Cannot convert %1 to an int", n));
 
 			pos++;
 			debugMsg(QString("INT64 = %1").arg(n));
-			BValueNode* vn = new BValueNode(Value(bi),off);
+			BValueNode* vn = new BValueNode(Value(bi), off);
 			vn->setLength(pos - off);
 			return vn;
 		}
@@ -227,13 +235,13 @@ namespace bt
 
 		// first get length by looking for the :
 		QString n;
-		while (pos < (Uint32)data.size() && data[pos] != ':')
+		while (pos < (Uint32) data.size() && data[pos] != ':')
 		{
 			n += data[pos];
 			pos++;
 		}
 		// check if we aren't at the end of the data
-		if (pos >= (Uint32)data.size())
+		if (pos >= (Uint32) data.size())
 		{
 			throw Error(i18n("Unexpected end of input"));
 		}
@@ -244,19 +252,19 @@ namespace bt
 		len = n.toInt(&ok);
 		if (!ok || len < 0)
 		{
-			throw Error(i18n("Cannot convert %1 to an int",n));
+			throw Error(i18n("Cannot convert %1 to an int", n));
 		}
 		// move pos to the first part of the string
 		pos++;
-		if (pos + len > (Uint32)data.size())
+		if (pos + len > (Uint32) data.size())
 			throw Error(i18n("Torrent is incomplete."));
-			
-		QByteArray arr(data.constData() + pos,len);
+
+		QByteArray arr(data.constData() + pos, len);
 		pos += len;
 		// read the string into n
 
 		// pos should be positioned right after the string
-		BValueNode* vn = new BValueNode(Value(arr),off);
+		BValueNode* vn = new BValueNode(Value(arr), off);
 		vn->setLength(pos - off);
 		if (verbose)
 		{
@@ -268,14 +276,13 @@ namespace bt
 		return vn;
 	}
 	
-	
 	void BDecoder::debugMsg(const QString& msg)
 	{
 		if (!verbose)
 			return;
-		
-		Log & log = Out(SYS_GEN|LOG_DEBUG);
-		for (int i = 0;i < level;i++)
+
+		Log & log = Out(SYS_GEN | LOG_DEBUG);
+		for (int i = 0; i < level; i++)
 			log << "-";
 		
 		log << msg << endl;

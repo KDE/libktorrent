@@ -23,6 +23,7 @@
 #include <interfaces/serverinterface.h>
 #include <mse/encryptedauthenticate.h>
 #include <torrent/torrent.h>
+#include <util/functions.h>
 #include "peermanager.h"
 #include "authenticationmonitor.h"
 
@@ -98,19 +99,20 @@ namespace bt
 		if (!pm || !pm->isStarted())
 			return;
 		
+		bt::TransportProtocol primary = ServerInterface::primaryTransportProtocol();
 		bool encryption = ServerInterface::isEncryptionEnabled();
 		bool utp = ServerInterface::isUtpEnabled();
 		
 		if (encryption)
 		{
-			if (utp)
+			if (utp && primary == bt::UTP)
 				d->start(UTP_WITH_ENCRYPTION);
 			else
 				d->start(TCP_WITH_ENCRYPTION);
 		}
 		else
 		{
-			if (utp)
+			if (utp && primary == bt::UTP)
 				d->start(UTP_WITHOUT_ENCRYPTION);
 			else
 				d->start(TCP_WITHOUT_ENCRYPTION);
@@ -140,29 +142,41 @@ namespace bt
 		
 		tried_methods.insert(current_method);
 		
+		bt::TransportProtocol primary = ServerInterface::primaryTransportProtocol();
 		QList<Method> allowed;
 		
+		bool tcp_allowed = OpenFileAllowed();
 		bool encryption = ServerInterface::isEncryptionEnabled();
 		bool only_use_encryption = !ServerInterface::unencryptedConnectionsAllowed();
 		bool utp = ServerInterface::isUtpEnabled();
 		bool only_use_utp = ServerInterface::onlyUseUtp();
 		
-		if (utp && encryption)
-			allowed.append(UTP_WITH_ENCRYPTION);
-		if (!only_use_utp && encryption)
-			allowed.append(TCP_WITH_ENCRYPTION);
-		if (utp && !only_use_encryption)
-			allowed.append(UTP_WITHOUT_ENCRYPTION);
-		if (!only_use_utp && !only_use_encryption)
-			allowed.append(TCP_WITHOUT_ENCRYPTION);
-		
-		foreach (Method m,tried_methods)
-			allowed.removeAll(m);
-		
-		if (allowed.isEmpty())
-			pm->peerAuthenticated(auth,self,false);
-		else
-			start(allowed.front());
+		if (primary == bt::UTP)
+		{
+			if (utp && encryption && !tried_methods.contains(UTP_WITH_ENCRYPTION))
+				start(UTP_WITH_ENCRYPTION);
+			else if (utp && !only_use_encryption && !tried_methods.contains(UTP_WITHOUT_ENCRYPTION))
+				start(UTP_WITHOUT_ENCRYPTION);
+			else if (!only_use_utp && encryption && !tried_methods.contains(TCP_WITH_ENCRYPTION) && tcp_allowed)
+				start(TCP_WITH_ENCRYPTION);
+			else if (!only_use_utp && !only_use_encryption && !tried_methods.contains(TCP_WITHOUT_ENCRYPTION) && tcp_allowed)
+				start(TCP_WITHOUT_ENCRYPTION);
+			else
+				pm->peerAuthenticated(auth,self,false);
+		}
+		else // Primary is TCP
+		{
+			if (!only_use_utp && encryption && !tried_methods.contains(TCP_WITH_ENCRYPTION) && tcp_allowed)
+				start(TCP_WITH_ENCRYPTION);
+			else if (!only_use_utp && !only_use_encryption && !tried_methods.contains(TCP_WITHOUT_ENCRYPTION) && tcp_allowed)
+				start(TCP_WITHOUT_ENCRYPTION);
+			else if (utp && encryption && !tried_methods.contains(UTP_WITH_ENCRYPTION))
+				start(UTP_WITH_ENCRYPTION);
+			else if (utp && !only_use_encryption && !tried_methods.contains(UTP_WITHOUT_ENCRYPTION))
+				start(UTP_WITHOUT_ENCRYPTION);
+			else
+				pm->peerAuthenticated(auth,self,false);
+		}
 	}
 
 	void PeerConnector::Private::start(PeerConnector::Method method)

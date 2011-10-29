@@ -21,8 +21,8 @@
 #ifndef UTP_UTPSERVER_P_H
 #define UTP_UTPSERVER_P_H
 
-#include <QObject>
 #include <QMap>
+#include <QTimer>
 #include <QSocketNotifier>
 #include <net/socket.h>
 #include <net/poll.h>
@@ -89,12 +89,12 @@ namespace utp
 
 
 		bool bind(const net::Address & addr);
-		void syn(const PacketParser & parser, const QByteArray & data, const net::Address & addr);
+		void syn(const PacketParser & parser, bt::Buffer::Ptr buffer, const net::Address & addr);
 		void reset(const Header* hdr);
 		void wakeUpPollPipes(Connection::Ptr conn, bool readable, bool writeable);
 		Connection::Ptr find(quint16 conn_id);
 		void stop();
-		virtual void dataReceived(const QByteArray& data, const net::Address& addr);
+		virtual void dataReceived(bt::Buffer::Ptr buffer, const net::Address& addr);
 		virtual void readyToWrite(net::ServerSocket* sock);
 
 	public:
@@ -102,7 +102,6 @@ namespace utp
 		QList<net::ServerSocket::Ptr> sockets;
 		bool running;
 		QMap<quint16, Connection::Ptr> connections;
-		QMap<int, Connection::WPtr> active_timers;
 		UTPServerThread* utp_thread;
 		QMutex mutex;
 		bt::PtrMap<net::Poll*, PollPipePair> poll_pipes;
@@ -113,6 +112,7 @@ namespace utp
 		QMutex pending_mutex;
 		MainThreadCall* mtc;
 		QList<Connection::WPtr> last_accepted;
+		QTimer timer;
 	};
 }
 

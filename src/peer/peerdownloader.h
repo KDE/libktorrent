@@ -56,6 +56,12 @@ namespace bt
 		/// Destructor
 		~TimeStampedRequest();
 
+		/// Smaller then operator, uses timestamps to compare
+		bool operator < (const TimeStampedRequest & t) const
+		{
+			return time_stamp < t.time_stamp;
+		}
+
 		/**
 		 * Equality operator, compares requests only.
 		 * @param r The Request

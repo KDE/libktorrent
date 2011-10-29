@@ -107,7 +107,7 @@ namespace bt
 		};
 
 		/// Get the Peer's statistics
-		virtual const Stats & getStats() const {return stats;}
+		const Stats & getStats() const {return stats;}
 		
 		/** 
 			Kill the Peer, will ensure the PeerManager closes the connection, and cleans things up.

@@ -105,9 +105,11 @@ namespace net
 			{
 				written += ret;
 				QMutexLocker locker(&mutex);
-				up_speed->onData(ret, now);
 				if (curr_packet->getType() == PIECE)
+				{
+					up_speed->onData(ret, now);
 					uploaded_data_bytes += ret;
+				}
 			}
 			else
 				break; // Socket buffer full, so stop sending for now

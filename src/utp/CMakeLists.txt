@@ -9,6 +9,7 @@ set (utp_HDR
 	timevalue.h
 	pollpipe.h
 	delaywindow.h
+	packetbuffer.h
 )
 
 install(FILES ${utp_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/utp COMPONENT Devel)

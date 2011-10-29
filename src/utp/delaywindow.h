@@ -22,7 +22,7 @@
 #ifndef UTP_DELAYWINDOW_H
 #define UTP_DELAYWINDOW_H
 
-#include <list>
+#include <boost/circular_buffer.hpp>
 #include <utp/utpprotocol.h>
 
 namespace utp
@@ -56,10 +56,10 @@ namespace utp
 			}
 		};
 
-		typedef std::list<DelayEntry>::iterator DelayEntryItr;
+		typedef boost::circular_buffer<DelayEntry>::iterator DelayEntryItr;
 
 	private:
-		std::list<DelayEntry> delay_window;
+		boost::circular_buffer<DelayEntry> delay_window;
 	};
 
 }
