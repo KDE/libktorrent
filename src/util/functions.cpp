@@ -202,6 +202,32 @@ namespace bt
 		
 		return ips;
 	}
+	
+	QString CurrentIPv6Address()
+	{
+		QNetworkInterface ni = QNetworkInterface::interfaceFromName(net_iface);
+		if (!ni.isValid())
+		{
+			QList<QHostAddress> addrs = QNetworkInterface::allAddresses();
+			foreach (const QHostAddress & addr, addrs)
+			{
+				if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6)
+					return addr.toString();
+			}
+		}
+		else
+		{
+			QList<QNetworkAddressEntry> addrs = ni.addressEntries();
+			foreach (const QNetworkAddressEntry & entry,addrs)
+			{
+				QHostAddress addr = entry.ip();
+				if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6)
+					return addr.toString();
+			}
+		}
+		
+		return QString();
+	}
 
 		
 	QString BytesToString(Uint64 bytes)

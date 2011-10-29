@@ -172,6 +172,9 @@ namespace bt
 	/// Get all the IP addresses of the network interface
 	KTORRENT_EXPORT QStringList NetworkInterfaceIPAddresses(const QString & iface);
 	
+	/// Get the current IPv6 address
+	KTORRENT_EXPORT QString CurrentIPv6Address();
+	
 	const double TO_KB = 1024.0;
 	const double TO_MEG = (1024.0 * 1024.0);
 	const double TO_GIG = (1024.0 * 1024.0 * 1024.0);
