@@ -188,7 +188,7 @@ namespace bt
 		return num_on == num_bits;
 	}
 
-	bool BitSet::operator == (const BitSet & bs)
+	bool BitSet::operator == (const BitSet & bs) const
 	{
 		if (this->getNumBits() != bs.getNumBits())
 			return false;

@@ -144,12 +144,12 @@ namespace bt
 		 * @param bs BitSet to compare
 		 * @return true if equal 
 		 */
-		bool operator == (const BitSet & bs);
+		bool operator == (const BitSet & bs) const;
 		
 		/**
 		 * Opposite of operator == 
 		 */
-		bool operator != (const BitSet & bs) {return ! operator == (bs);}
+		bool operator != (const BitSet & bs) const {return ! operator == (bs);}
 		
 		/**
 		 * Update the number of on bits
