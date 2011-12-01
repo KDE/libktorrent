@@ -19,6 +19,7 @@ Changes in 1.2:
 - Improve performance of µTP code
 - Fix crash in DHT packet receive code (284627)
 - Fill ip parameter of tracker announce with current IPv6 address if not filled in by user in settings (267551)
+- Fix crash in PeerManager (287967)
 
 Changes in 1.1.3:
 - Fix bug causing UPnP not to work properly if there is a question mark in the controlurl

@@ -777,15 +777,14 @@ namespace bt
 		if (total_connections >= max_total_connections && max_total_connections > 0)
 			return;
 		
-		if (connectors.size() > MAX_SIMULTANIOUS_AUTHS)
+		if ((Uint32)connectors.size() > MAX_SIMULTANIOUS_AUTHS)
 			return;
 		
 		Uint32 num = 0;
 		if (max_connections > 0)
 		{
 			Uint32 available = max_connections - (peer_list.count() + connectors.size());
-			num = available >= potential_peers.size() ? 
-			potential_peers.size() : available;
+			num = qMin<Uint32>(available, potential_peers.size());
 		}
 		else
 		{
@@ -795,9 +794,9 @@ namespace bt
 		if (num + total_connections >= max_total_connections && max_total_connections > 0)
 			num = max_total_connections - total_connections;
 		
-		for (Uint32 i = 0;i < num;i++)
+		for (Uint32 i = 0;i < num && !potential_peers.empty();i++)
 		{
-			if (connectors.size() > MAX_SIMULTANIOUS_AUTHS)
+			if ((Uint32)connectors.size() > MAX_SIMULTANIOUS_AUTHS)
 				return;
 			
 			PPItr itr = potential_peers.begin();
