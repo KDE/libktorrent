@@ -20,7 +20,8 @@
 #ifndef BTTORRENTINTERFACE_H
 #define BTTORRENTINTERFACE_H
 
-#include <qobject.h>
+#include <QSharedPointer>
+#include <QWeakPointer>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <interfaces/trackerslist.h>
@@ -454,6 +455,9 @@ namespace bt
 		 * Enable or disable superseeding mode, does nothing if the torrent is not finished.
 		 */
 		virtual void setSuperSeeding(bool on) = 0;
+		
+		typedef QSharedPointer<TorrentInterface> Ptr;
+		typedef QWeakPointer<TorrentInterface> WPtr;
 
 	signals:
 		/**
