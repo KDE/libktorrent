@@ -65,11 +65,18 @@ namespace bt
 		if (ip.isNull())
 			return;
 		
-		net::Address addr;
-		if (addr.setAddress(ip))
+		if (custom_ip.endsWith(".i2p"))
+		{
 			custom_ip_resolved = custom_ip;
-		else
-			custom_ip_resolved = net::AddressResolver::resolve(custom_ip, 7777).toString();
+		}
+		else 
+		{
+			net::Address addr;
+			if (addr.setAddress(ip))
+				custom_ip_resolved = custom_ip;
+			else
+				custom_ip_resolved = net::AddressResolver::resolve(custom_ip, 7777).toString();
+		}
 	}
 	
 	QString Tracker::getCustomIP()
