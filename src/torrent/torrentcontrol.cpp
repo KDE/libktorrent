@@ -118,6 +118,7 @@ namespace bt
 		if (downloader)
 			downloader->saveWebSeeds(tordir + "webseeds");
 		
+		delete job_queue;
 		delete choke;
 		delete downloader;
 		delete uploader;
