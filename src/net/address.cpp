@@ -109,10 +109,10 @@ namespace net
 	
 	bool Address::operator < (const net::Address& other) const
 	{
-		if (ipVersion() == 4 && other.ipVersion() == 6)
-			return true;
-		else if (other.ipVersion() == 4 && ipVersion() == 6)
-			return false;
+		if (ipVersion() != other.ipVersion())
+		{
+			return ipVersion() < other.ipVersion();
+		}
 		else if (other.ipVersion() == 4)
 		{
 			return toIPv4Address() == other.toIPv4Address() ? 
@@ -128,9 +128,12 @@ namespace net
 				Q_IPV6ADDR a = toIPv6Address();
 				Q_IPV6ADDR b = other.toIPv6Address();
 				for (int i = 0; i < 16; i++)
+				{
 					if (a[i] < b[i])
 						return true;
-					
+					else if (a[i] > b[i])
+						return false;
+				}	
 				return false;
 			}
 		}
