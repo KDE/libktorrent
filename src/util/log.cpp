@@ -99,6 +99,8 @@ namespace bt
 
 		void setOutputFile(const QString & file,bool rotate,bool handle_qt_messages)
 		{
+			QMutexLocker lock(&mutex);
+			
 			if (handle_qt_messages)
 				qInstallMsgHandler(QtMessageOutput);
 

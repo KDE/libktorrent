@@ -22,6 +22,7 @@ Changes in 1.2:
 - Fix crash in PeerManager (287967)
 - Fix crash at exit when datachecker job is running (289153)
 - Fix crash due to bug in smaller then operator of net::Address (288444)
+- Fix crash due to race condition in logging initialization (286597)
 
 Changes in 1.1.3:
 - Fix bug causing UPnP not to work properly if there is a question mark in the controlurl
