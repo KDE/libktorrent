@@ -50,7 +50,7 @@ namespace bt
 		MagnetLink & operator = (const MagnetLink & mlink);
 		
 		/// Equality operator
-		bool operator == (const MagnetLink & mlink);
+		bool operator == (const MagnetLink & mlink) const;
 		
 		/// Is this a valid magnet link
 		bool isValid() const {return !magnet_string.isEmpty();}
