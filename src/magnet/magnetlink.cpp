@@ -60,7 +60,7 @@ namespace bt
 		return *this;
 	}
 
-	bool MagnetLink::operator==(const bt::MagnetLink& mlink)
+	bool MagnetLink::operator==(const bt::MagnetLink& mlink) const
 	{
 		return info_hash == mlink.infoHash();
 	}
