@@ -56,7 +56,7 @@ namespace net
 			while (itr != sm->end())
 			{
 				TrafficShapedSocket* s = *itr;
-				if (!s->socketDevice() || !s->socketDevice()->ok())
+				if (!s->socketDevice())
 				{
 					itr++;
 					continue;
@@ -118,7 +118,7 @@ namespace net
 		while (itr != sm->end())
 		{
 			TrafficShapedSocket* s = *itr;
-			if (s && s->socketDevice()->ok())
+			if (s && s->socketDevice())
 			{
 				s->socketDevice()->prepare(this,Poll::INPUT);
 			}

@@ -221,7 +221,7 @@ namespace utp
 	void UTPSocket::prepare(net::Poll* p, net::Poll::Mode mode)
 	{
 		Connection::Ptr ptr = conn.toStrongRef();
-		if (ptr)
+		if (ptr && ptr->connectionState() != CS_CLOSED)
 		{
 			UTPServer & srv = bt::Globals::instance().getUTPServer();
 			srv.preparePolling(p, mode, ptr);

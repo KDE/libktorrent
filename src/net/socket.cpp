@@ -435,10 +435,13 @@ namespace net
 	
 	void Socket::prepare(Poll* p,Poll::Mode mode)
 	{
-		if (mode == Poll::OUTPUT)
-			w_poll_index = p->add(m_fd,mode);
-		else
-			r_poll_index = p->add(m_fd,mode);
+		if (m_fd >= 0)
+		{
+			if (mode == Poll::OUTPUT)
+				w_poll_index = p->add(m_fd,mode);
+			else
+				r_poll_index = p->add(m_fd,mode);
+		}
 	}
 
 	bool Socket::ready(const Poll* p,Poll::Mode mode) const
