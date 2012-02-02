@@ -867,5 +867,9 @@ namespace bt
 		sock->clearPieces(stats.fast_extensions);
 	}
 
+	void Peer::chunkAllowed(Uint32 chunk)
+	{
+		sendHave(chunk);
+	}
 
 }

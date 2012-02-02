@@ -474,7 +474,7 @@ namespace bt
 			PieceDownloader* only = cd->getOnlyDownloader();
 			if (only)
 			{
-				Peer* p = pman.findPeer(only);
+				Peer::Ptr p = pman.findPeer(only);
 				if (!p)
 					return false;
 				

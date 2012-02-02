@@ -78,9 +78,9 @@ namespace bt
 		return bt::CurrentTime() - last_updated >= 60*1000;
 	}
 	
-	void UTPex::visit(const bt::Peer* p)
+	void UTPex::visit(const bt::Peer::Ptr p)
 	{
-		if (p != peer)
+		if (p.data() != peer)
 		{
 			npeers.insert(std::make_pair(p->getID(),p->getAddress()));
 			if (peers.count(p->getID()) == 0)

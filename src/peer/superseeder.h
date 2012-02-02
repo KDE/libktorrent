@@ -31,22 +31,6 @@ namespace bt
 	class ChunkCounter;
 	class PeerInterface;
 	
-	/**
-		Base class for the client of a SuperSeeder. 
-		The client handles the specifics of telling a peer it can download a chunk.
-	*/
-	class SuperSeederClient
-	{
-	public:
-		virtual ~SuperSeederClient() {}
-		
-		/**
-			Allow a peer to download a chunk
-			@param peer The Peer
-			@param chunk The chunk 
-		*/
-		virtual void allowChunk(PeerInterface* peer,bt::Uint32 chunk) = 0;
-	};
 	
 	/**
 		Class which manages superseeding. Superseeding is a way to achieve much higher seeding
@@ -59,9 +43,8 @@ namespace bt
 		/**
 			Constructor.
 			@param num_chunks The number of chunks
-			@param client The SuperSeederClient
 		*/
-		SuperSeeder(Uint32 num_chunks, SuperSeederClient* client);
+		SuperSeeder(Uint32 num_chunks);
 		virtual ~SuperSeeder();
 		
 		/**
@@ -104,7 +87,6 @@ namespace bt
 		void sendChunk(PeerInterface* peer);
 		
 	private:
-		SuperSeederClient* client;
 		ChunkCounter* chunk_counter;
 		QMultiMap<bt::Uint32,bt::PeerInterface*> active_chunks;
 		QMap<bt::PeerInterface*,bt::Uint32> active_peers;

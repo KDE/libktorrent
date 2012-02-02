@@ -20,31 +20,34 @@
 #ifndef BTADVANCEDCHOKEALGORITHM_H
 #define BTADVANCEDCHOKEALGORITHM_H
 
+#include <peer/peer.h>
 #include "choker.h"
+
 
 namespace bt
 {
-	class Peer;
 	struct TorrentStats;
-	
+
 
 	/**
 		@author Joris Guisson <joris.guisson@gmail.com>
 	*/
 	class AdvancedChokeAlgorithm : public ChokeAlgorithm
 	{
-		TimeStamp last_opt_sel_time; // last time we updated the optimistic unchoked peer
 	public:
 		AdvancedChokeAlgorithm();
 		virtual ~AdvancedChokeAlgorithm();
 
-		virtual void doChokingLeechingState(PeerManager & pman,ChunkManager & cman,const TorrentStats & stats);
-		virtual void doChokingSeedingState(PeerManager & pman,ChunkManager & cman,const TorrentStats & stats);
+		virtual void doChokingLeechingState(PeerManager & pman, ChunkManager & cman, const TorrentStats & stats);
+		virtual void doChokingSeedingState(PeerManager & pman, ChunkManager & cman, const TorrentStats & stats);
+
+	private:
+		bool calcACAScore(Peer::Ptr p, ChunkManager & cman, const TorrentStats & stats);
+		Peer::Ptr updateOptimisticPeer(PeerManager & pman, const QList<Peer::Ptr> & ppl);
+		void doUnchoking(QList<Peer::Ptr> & ppl, Peer::Ptr poup);
 		
 	private:
-		bool calcACAScore(Peer* p,ChunkManager & cman,const TorrentStats & stats);
-		Peer* updateOptimisticPeer(PeerManager & pman,const QList<Peer*> & ppl);
-		void doUnchoking(QList<Peer*> & ppl,Peer* poup);
+		TimeStamp last_opt_sel_time; // last time we updated the optimistic unchoked peer
 	};
 
 }

@@ -25,8 +25,8 @@
 
 namespace bt
 {
-	SuperSeeder::SuperSeeder(Uint32 num_chunks, SuperSeederClient* client)
-		: client(client),chunk_counter(new ChunkCounter(num_chunks)),num_seeders(0)
+	SuperSeeder::SuperSeeder(Uint32 num_chunks)
+		: chunk_counter(new ChunkCounter(num_chunks)),num_seeders(0)
 	{
 	}
 	
@@ -147,7 +147,7 @@ namespace bt
 			// keep track of alternatives, if none is found
 			if (chunk_counter->get(chunk) - num_seeders == 0)
 			{
-				client->allowChunk(peer,chunk);
+				peer->chunkAllowed(chunk);
 				active_chunks.insert(chunk,peer);
 				active_peers[peer] = chunk;
 				return;
@@ -160,7 +160,7 @@ namespace bt
 		
 		if (alternative < num_chunks)
 		{
-			client->allowChunk(peer,chunk);
+			peer->chunkAllowed(chunk);
 			active_chunks.insert(chunk,peer);
 			active_peers[peer] = chunk;
 		}

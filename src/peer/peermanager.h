@@ -23,6 +23,7 @@
 
 #include <interfaces/peersource.h>
 #include <ktorrent_export.h>
+#include <peer/peer.h>
 #include <peer/superseeder.h>
 #include <peer/peerconnector.h>
 #include <mse/encryptedpacketsocket.h>
@@ -34,7 +35,6 @@ namespace KNetwork
 
 namespace bt
 {
-	class Peer;
 	class PeerID;
 	class Piece;
 	class Torrent;
@@ -62,7 +62,7 @@ namespace bt
 	 * This class manages all Peer objects.
 	 * It can also open connections to other peers.
 	 */
-	class KTORRENT_EXPORT PeerManager : public QObject, public SuperSeederClient
+	class KTORRENT_EXPORT PeerManager : public QObject
 	{
 		Q_OBJECT
 	public:
@@ -89,39 +89,28 @@ namespace bt
 		 * Unpause the peer connections 
 		 */
 		void unpause();
-		
-		/**
-		 * Remove dead peers.
-		 * @return The number of dead ones removed
-		 */
-		Uint32 clearDeadPeers();
 
 		/**
 		 * Get a list of all peers.
 		 * @return A QList of Peer's
 		 */
-		QList<Peer*> getPeers() const;
+		QList<Peer::Ptr> getPeers() const;
 
 		/**
 		 * Find a Peer based on it's ID
 		 * @param peer_id The ID
 		 * @return A Peer or 0, if nothing could be found
 		 */
-		Peer* findPeer(Uint32 peer_id);
+		Peer::Ptr findPeer(Uint32 peer_id);
 		
 		/**
 		 * Find a Peer based on it's PieceDownloader
 		 * @param pd The PieceDownloader
 		 * @return The matching Peer or 0 if none can be found
 		 */
-		Peer* findPeer(PieceDownloader* pd);
+		Peer::Ptr findPeer(PieceDownloader* pd);
 		
 		void setWantedChunks(const BitSet & bs);
-
-		/**
-		 * Try to connect to some peers
-		 */
-		void connectToPeers();
 		
 		/**
 		 * Close all Peer connections.
@@ -146,6 +135,12 @@ namespace bt
 		
 		/// Get the number of connected peers
 		Uint32 getNumConnectedPeers() const;
+		
+		/// Get the number of connected seeders
+		Uint32 getNumConnectedSeeders() const;
+		
+		/// Get the number of connected leechers
+		Uint32 getNumConnectedLeechers() const;
 		
 		/// Get the number of pending peers we are attempting to connect to
 		Uint32 getNumPending() const;
@@ -229,7 +224,7 @@ namespace bt
 			virtual ~PeerVisitor() {}
 			
 			/// Called for each Peer
-			virtual void visit(const Peer* p) = 0;
+			virtual void visit(const Peer::Ptr p) = 0;
 		};
 		
 		/// Visit all peers
@@ -252,6 +247,9 @@ namespace bt
 		
 		/// Rerun the choker
 		void rerunChoker();
+		
+		/// Does the choker need to run again
+		bool chokerNeedsToRun() const;
 		
 		/// A PEX message was received
 		void pex(const QByteArray & arr);
@@ -283,9 +281,6 @@ namespace bt
 		 * @param ps The PeerSource
 		 */
 		void peerSourceReady(PeerSource* ps);
-		
-	private:
-		virtual void allowChunk(PeerInterface* peer, Uint32 chunk);
 
 	signals:
 		void newPeer(Peer* p);

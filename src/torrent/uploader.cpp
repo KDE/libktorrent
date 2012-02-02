@@ -39,7 +39,7 @@ namespace bt
 	}
 
 	
-	void Uploader::visit(const bt::Peer* p)
+	void Uploader::visit(const bt::Peer::Ptr p)
 	{
 		PeerUploader* pu = p->getPeerUploader();
 		uploaded += pu->update(cman);

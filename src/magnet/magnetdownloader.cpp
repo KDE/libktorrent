@@ -116,10 +116,7 @@ namespace bt
 	void MagnetDownloader::update()
 	{
 		if (pman)
-		{
-			pman->connectToPeers();
 			pman->update();
-		}
 	}
 	
 	bool MagnetDownloader::running() const

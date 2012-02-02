@@ -67,7 +67,7 @@ namespace bt
 	private:
 		void encode(BEncoder & enc,const std::map<Uint32,net::Address> & ps);
 		void encodeFlags(BEncoder & enc,const std::map<Uint32,Uint8> & flags);
-		virtual void visit(const bt::Peer* p);
+		virtual void visit(const bt::Peer::Ptr p);
 		
 	private:
 		std::map<Uint32,net::Address> peers; 

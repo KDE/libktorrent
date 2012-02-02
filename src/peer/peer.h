@@ -304,6 +304,11 @@ namespace bt
 		 */
 		void clearPendingPieceUploads();
 		
+		virtual void chunkAllowed(Uint32 chunk);
+		
+		typedef QSharedPointer<Peer> Ptr;
+		typedef QWeakPointer<Peer> WPtr;
+		
 	private slots:
 		void resolved(const QString & hinfo);
 		

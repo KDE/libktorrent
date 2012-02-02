@@ -62,7 +62,7 @@ namespace bt
 		void update();
 		
 	private:
-		virtual void visit(const bt::Peer* p);
+		virtual void visit(const bt::Peer::Ptr p);
 		
 	private:
 		ChunkManager & cman;

@@ -162,12 +162,6 @@ namespace bt
 			pman->update();
 			bool comp = stats.completed;
 
-			// get rid of dead Peers
-			Uint32 num_cleared = pman->clearDeadPeers();
-			
-			// connect to new peers
-			pman->connectToPeers();
-
 			// then the downloader and uploader
 			uploader->update();
 			downloader->update();
@@ -232,7 +226,7 @@ namespace bt
 			}
 			
 			// we may need to update the choker
-			if (choker_update_timer.getElapsedSinceUpdate() >= 10000 || num_cleared > 0)
+			if (choker_update_timer.getElapsedSinceUpdate() >= 10000 || pman->chokerNeedsToRun())
 			{
 				// also get rid of seeders & uninterested when download is finished
 				// no need to keep them around, but also no need to do this
@@ -525,9 +519,9 @@ namespace bt
 		downloader->setMonitor(tmon);
 		if (tmon)
 		{
-			QList<Peer*> ppl = pman->getPeers();
-			foreach (Peer* peer,ppl)
-				tmon->peerAdded(peer);
+			QList<Peer::Ptr> ppl = pman->getPeers();
+			foreach (Peer::Ptr peer,ppl)
+				tmon->peerAdded(peer.data());
 		}
 		
 		tor->setMonitor(tmon);
@@ -1284,12 +1278,7 @@ namespace bt
 		if (!pman || !psman)
 			return;
 
-		QList<Peer*> ppl = pman->getPeers();
-		foreach (Peer* peer, ppl)
-		{
-			if (peer->isSeeder())
-				connected_to++;
-		}
+		connected_to = pman->getNumConnectedSeeders();
 		total = psman->getNumSeeders();
 		if (total == 0)
 			total = connected_to;
@@ -1302,12 +1291,7 @@ namespace bt
 		if (!pman || !psman)
 			return;
 
-		QList<Peer*> ppl = pman->getPeers();
-		foreach (Peer* peer, ppl)
-		{
-			if (!peer->isSeeder())
-				connected_to++;
-		}
+		connected_to = pman->getNumConnectedLeechers();
 		total = psman->getNumLeechers();
 		if (total == 0)
 			total = connected_to;

@@ -152,6 +152,9 @@ namespace bt
 		/// See if the peer is a seeder.
 		bool isSeeder() const {return pieces.allOn();}
 		
+		/// Peer is allowed to download chunk (used for superseeding)
+		virtual void chunkAllowed(bt::Uint32 chunk) = 0;
+		
 		
 	protected:
 		mutable PeerInterface::Stats stats;
