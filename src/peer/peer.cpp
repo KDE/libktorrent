@@ -49,30 +49,30 @@ namespace bt
 
 	static Uint32 peer_id_counter = 1;
 	bool Peer::resolve_hostname = true;
-	
-	
-	Peer::Peer(mse::EncryptedPacketSocket::Ptr sock,const PeerID & peer_id,
-			   Uint32 num_chunks,Uint32 chunk_size,Uint32 support,bool local,PeerManager* pman)
-	: PeerInterface(peer_id,num_chunks),sock(sock),pman(pman)
+
+
+	Peer::Peer(mse::EncryptedPacketSocket::Ptr sock, const PeerID & peer_id,
+	           Uint32 num_chunks, Uint32 chunk_size, Uint32 support, bool local, PeerManager* pman)
+			: PeerInterface(peer_id, num_chunks), sock(sock), pman(pman)
 	{
 		id = peer_id_counter;
 		peer_id_counter++;
 		ut_pex_id = 0;
-		
+
 		Uint32 max_packet_len = 9 + MAX_PIECE_LEN; // size of piece packet
 		Uint32 bitfield_length = num_chunks / 8 + 1 + (num_chunks % 8 == 0 ? 0 : 1);
 		if (bitfield_length > max_packet_len) // bitfield can be longer
 			max_packet_len = bitfield_length;
-		
-		// to be future proof use 10 times the max packet length, 
+
+		// to be future proof use 10 times the max packet length,
 		// in case some extension message comes along which is larger
-		preader = new PacketReader(this,10*max_packet_len);
-		downloader = new PeerDownloader(this,chunk_size);
+		preader = new PacketReader(10*max_packet_len);
+		downloader = new PeerDownloader(this, chunk_size);
 		uploader = new PeerUploader(this);
-		
+
 		stalled_timer.update();
-		
-		
+
+
 		connect_time = QTime::currentTime();
 		stats.client = peer_id.identifyClient();
 		stats.ip_address = getIPAddresss();
@@ -82,24 +82,24 @@ namespace bt
 		stats.encrypted = sock->encrypted();
 		stats.local = local;
 		stats.transport_protocol = sock->socketDevice()->transportProtocol();
-		
+
 		if (stats.ip_address == "0.0.0.0")
 		{
-			Out(SYS_CON|LOG_DEBUG) << "No more 0.0.0.0" << endl;
+			Out(SYS_CON | LOG_DEBUG) << "No more 0.0.0.0" << endl;
 			kill();
 		}
 		else
 		{
 			sock->startMonitoring(preader);
 		}
-		
+
 		pex_allowed = stats.extension_protocol;
 		extensions.setAutoDelete(true);
-		
+
 		if (resolve_hostname)
 		{
 			net::ReverseResolver* res = new net::ReverseResolver();
-			connect(res,SIGNAL(resolved(QString)),this,SLOT(resolved(QString)),Qt::QueuedConnection);
+			connect(res, SIGNAL(resolved(QString)), this, SLOT(resolved(QString)), Qt::QueuedConnection);
 			res->resolveAsync(sock->getRemoteAddress());
 		}
 	}
@@ -115,7 +115,7 @@ namespace bt
 		delete downloader;
 		delete preader;
 	}
-	
+
 	void Peer::closeConnection()
 	{
 		sock->close();
@@ -126,280 +126,328 @@ namespace bt
 		sock->close();
 		killed = true;
 	}
-	
-	void Peer::packetReady(const Uint8* packet,Uint32 len)
+
+	void Peer::handleChoke(Uint32 len)
 	{
-		if (killed) return;
-		
-		if (len == 0)
-			return;
-		const Uint8* tmp_buf = packet;
-		Uint8 type = tmp_buf[0];
-		switch (type)
+		if (len != 1)
 		{
-			case CHOKE:
-				if (len != 1)
-				{
-					Out(SYS_CON|LOG_DEBUG) << "len err CHOKE" << endl;
-					kill();
-					return;
-				}
-				
-				if (!stats.choked)
-				{
-					stats.time_choked = CurrentTime();
-				}
-				stats.choked = true;
-				downloader->choked();
-				break;
-			case UNCHOKE:
-				if (len != 1)
-				{
-					Out(SYS_CON|LOG_DEBUG) << "len err UNCHOKE" << endl;
-					kill();
-					return;
-				}
-				
-				if (stats.choked)
-				{
-					stats.time_unchoked = CurrentTime();
-					bytes_downloaded_since_unchoke = 0;
-				}
-				
-				stats.choked = false;
-				break;
-			case INTERESTED:
-				if (len != 1)
-				{
-					Out(SYS_CON|LOG_DEBUG) << "len err INTERESTED" << endl;
-					kill();
-					return;
-				}
-				if (!stats.interested)
-				{
-					stats.interested = true;
-					pman->rerunChoker();
-				}
-				break;
-			case NOT_INTERESTED:
-				if (len != 1)
-				{
-					Out(SYS_CON|LOG_DEBUG) << "len err NOT_INTERESTED" << endl;
-					kill();
-					return;
-				}
-				if (stats.interested)
-				{
-					stats.interested = false;
-					pman->rerunChoker();
-				}
-				break;
-			case HAVE:
-				if (len != 5)
-				{
-					Out(SYS_CON|LOG_DEBUG) << "len err HAVE" << endl;
-					kill();
-				}
-				else
-				{
-					Uint32 ch = ReadUint32(tmp_buf,1);
-					if (ch < pieces.getNumBits())
-					{
-						pman->have(this,ch);
-						pieces.set(ch,true);
-					}
-					else if (pman->getTorrent().isLoaded())
-					{
-						Out(SYS_CON|LOG_NOTICE) << "Received invalid have value, kicking peer" << endl;
-						kill();
-					}
-				}
-				break;
-			case BITFIELD:
-				if (len != 1 + pieces.getNumBytes())
-				{
-					if (pman->getTorrent().isLoaded())
-					{
-						Out(SYS_CON|LOG_DEBUG) << "len err BITFIELD" << endl;
-						kill();
-					}
-					return;
-				}
-				
-				pieces = BitSet(tmp_buf+1,pieces.getNumBits());
-				pman->bitSetReceived(this,pieces);
-				break;
-			case REQUEST:
-				if (len != 13)
-				{
-					Out(SYS_CON|LOG_DEBUG) << "len err REQUEST" << endl;
-					kill();
-					return;
-				}
-				
-				{
-					Request r(
-							ReadUint32(tmp_buf,1),
-							ReadUint32(tmp_buf,5),
-							ReadUint32(tmp_buf,9),
-							downloader);
-					
-					if (stats.has_upload_slot)
-						uploader->addRequest(r);
-					else if (stats.fast_extensions)
-						sendReject(r);
-				//	Out(SYS_CON|LOG_DEBUG) << "REQUEST " << r.getIndex() << " " << r.getOffset() << endl;
-				}
-				break;
-			case PIECE:
-				if(paused)
-					return;
-				if (len < 9)
-				{
-					Out(SYS_CON|LOG_DEBUG) << "len err PIECE" << endl;
-					kill();
-					return;
-				}
-				
-				snub_timer.update();
-				
-				{
-					stats.bytes_downloaded += (len - 9);
-					bytes_downloaded_since_unchoke += (len - 9);
-					Piece p(ReadUint32(tmp_buf,1),
-							ReadUint32(tmp_buf,5),
-							len - 9,downloader,tmp_buf+9);
-					downloader->piece(p);
-					pman->pieceReceived(p);
-					downloader->update();
-				}
-				break;
-			case CANCEL:
-				if (len != 13)
-				{
-					Out(SYS_CON|LOG_DEBUG) << "len err CANCEL" << endl;
-					kill();
-					return;
-				}
-				
-				{
-					Request r(ReadUint32(tmp_buf,1),
-							  ReadUint32(tmp_buf,5),
-							  ReadUint32(tmp_buf,9),
-							  downloader);
-					uploader->removeRequest(r);
-					sock->doNotSendPiece(r, stats.fast_extensions);
-				}
-				break;
-			case REJECT_REQUEST:
-				if (len != 13)
-				{
-					Out(SYS_CON|LOG_DEBUG) << "len err REJECT_REQUEST" << endl;
-					kill();
-					return;
-				}
-				
-				{
-					Request r(ReadUint32(tmp_buf,1),
-							  ReadUint32(tmp_buf,5),
-							  ReadUint32(tmp_buf,9),
-							  downloader);
-					downloader->onRejected(r);
-				}
-				break;
-			case PORT:
-				if (len != 3)
-				{
-					Out(SYS_CON|LOG_DEBUG) << "len err PORT" << endl;
-					kill();
-					return;
-				}
-				
-				{
-					Uint16 port = ReadUint16(tmp_buf,1);
-				//	Out(SYS_CON|LOG_DEBUG) << "Got PORT packet : " << port << endl;
-					pman->portPacketReceived(getIPAddresss(),port);
-				}
-				break;
-			case HAVE_ALL:
-				if (len != 1)
-				{
-					Out(SYS_CON|LOG_DEBUG) << "len err HAVE_ALL" << endl;
-					kill();
-					return;
-				}
-				pieces.setAll(true);
-				pman->bitSetReceived(this,pieces);
-				break;
-			case HAVE_NONE:
-				if (len != 1)
-				{
-					Out(SYS_CON|LOG_DEBUG) << "len err HAVE_NONE" << endl;
-					kill();
-					return;
-				}
-				pieces.setAll(false);
-				pman->bitSetReceived(this,pieces);
-				break;
-			case SUGGEST_PIECE:
-				// ignore suggestions for the moment
-				break;
-			case ALLOWED_FAST:
-				// we no longer support this, so do nothing
-				break;
-			case EXTENDED:
-				handleExtendedPacket(packet,len);
-				break;
+			kill();
+			return;
+		}
+
+		if (!stats.choked)
+			stats.time_choked = CurrentTime();
+		stats.choked = true;
+		downloader->choked();
+	}
+
+	void Peer::handleUnchoke(Uint32 len)
+	{
+		if (len != 1)
+		{
+			Out(SYS_CON | LOG_DEBUG) << "len err UNCHOKE" << endl;
+			kill();
+			return;
+		}
+
+		if (stats.choked)
+		{
+			stats.time_unchoked = CurrentTime();
+			bytes_downloaded_since_unchoke = 0;
+		}
+
+		stats.choked = false;
+	}
+
+	void Peer::handleInterested(Uint32 len)
+	{
+		if (len != 1)
+		{
+			Out(SYS_CON | LOG_DEBUG) << "len err INTERESTED" << endl;
+			kill();
+			return;
+		}
+
+		if (!stats.interested)
+		{
+			stats.interested = true;
+			pman->rerunChoker();
+		}
+
+	}
+
+	void Peer::handleNotInterested(Uint32 len)
+	{
+		if (len != 1)
+		{
+			kill();
+			return;
+		}
+
+		if (stats.interested)
+		{
+			stats.interested = false;
+			pman->rerunChoker();
+		}
+	}
+
+	void Peer::handleHave(const bt::Uint8* packet, Uint32 len)
+	{
+		if (len != 5)
+		{
+			kill();
+		}
+		else
+		{
+			Uint32 ch = ReadUint32(packet, 1);
+			if (ch < pieces.getNumBits())
+			{
+				pman->have(this, ch);
+				pieces.set(ch, true);
+			}
+			else if (pman->getTorrent().isLoaded())
+			{
+				Out(SYS_CON | LOG_NOTICE) << "Received invalid have value, kicking peer" << endl;
+				kill();
+			}
 		}
 	}
 	
-	void Peer::pause()
+	void Peer::handleHaveAll(Uint32 len)
+	{
+		if (len != 1)
+		{
+			kill();
+		}
+		else
+		{
+			pieces.setAll(true);
+			pman->bitSetReceived(this, pieces);
+		}
+	}
+
+	void Peer::handleHaveNone(Uint32 len)
+	{
+		if (len != 1)
+		{
+			kill();
+		}
+		else
+		{
+			pieces.setAll(false);
+			pman->bitSetReceived(this, pieces);
+		}
+	}
+
+	void Peer::handleBitField(const bt::Uint8* packet, Uint32 len)
+	{
+		if (len != 1 + pieces.getNumBytes())
+		{
+			if (pman->getTorrent().isLoaded())
+				kill();
+		}
+		else
+		{
+			pieces = BitSet(packet + 1, pieces.getNumBits());
+			pman->bitSetReceived(this, pieces);
+		}
+	}
+
+	void Peer::handleRequest(const bt::Uint8* packet, Uint32 len)
+	{
+		if (len != 13)
+		{
+			kill();
+			return;
+		}
+
+		Request r(
+		    ReadUint32(packet, 1),
+		    ReadUint32(packet, 5),
+		    ReadUint32(packet, 9),
+		    downloader);
+
+		if (stats.has_upload_slot)
+			uploader->addRequest(r);
+		else if (stats.fast_extensions)
+			sendReject(r);
+	}
+
+	void Peer::handlePiece(const bt::Uint8* packet, Uint32 len)
 	{
 		if (paused)
 			return;
 		
+		if (len < 9)
+		{
+			kill();
+			return;
+		}
+
+		snub_timer.update();
+
+		stats.bytes_downloaded += (len - 9);
+		bytes_downloaded_since_unchoke += (len - 9);
+		Piece p(ReadUint32(packet, 1),
+		        ReadUint32(packet, 5),
+		        len - 9, downloader, packet + 9);
+		downloader->piece(p);
+		pman->pieceReceived(p);
+		downloader->update();
+	}
+	
+	void Peer::handleCancel(const bt::Uint8* packet, Uint32 len)
+	{
+		if (len != 13)
+		{
+			kill();
+		}
+		else
+		{
+			Request r(ReadUint32(packet, 1),
+					  ReadUint32(packet, 5),
+					  ReadUint32(packet, 9),
+					  downloader);
+			uploader->removeRequest(r);
+			sock->doNotSendPiece(r, stats.fast_extensions);
+		}
+	}
+
+	void Peer::handleReject(const bt::Uint8* packet, Uint32 len)
+	{
+		if (len != 13)
+		{
+			kill();
+		}
+		else
+		{
+			Request r(ReadUint32(packet, 1),
+					  ReadUint32(packet, 5),
+					  ReadUint32(packet, 9),
+					  downloader);
+			downloader->onRejected(r);
+		}
+	}
+
+	void Peer::handlePort(const bt::Uint8* packet, Uint32 len)
+	{
+		if (len != 3)
+		{
+			kill();
+		}
+		else
+		{
+			Uint16 port = ReadUint16(packet, 1);
+			//	Out(SYS_CON|LOG_DEBUG) << "Got PORT packet : " << port << endl;
+			pman->portPacketReceived(getIPAddresss(), port);
+		}
+	}
+	
+	void Peer::handlePacket(const bt::Uint8* packet, Uint32 size)
+	{
+		if (killed || size == 0)
+			return;
+
+		switch (packet[0])
+		{
+		case CHOKE:
+			handleChoke(size);
+			break;
+		case UNCHOKE:
+			handleUnchoke(size);
+			break;
+		case INTERESTED:
+			handleInterested(size);
+			break;
+		case NOT_INTERESTED:
+			handleNotInterested(size);
+			break;
+		case HAVE:
+			handleHave(packet, size);
+			break;
+		case BITFIELD:
+			handleBitField(packet, size);
+			break;
+		case REQUEST:
+			handleRequest(packet, size);
+			break;
+		case PIECE:
+			handlePiece(packet, size);
+			break;
+		case CANCEL:
+			handleCancel(packet, size);
+			break;
+		case REJECT_REQUEST:
+			handleReject(packet, size);
+			break;
+		case PORT:
+			handlePort(packet, size);
+			break;
+		case HAVE_ALL:
+			handleHaveAll(size);
+			break;
+		case HAVE_NONE:
+			handleHaveNone(size);
+			break;
+		case SUGGEST_PIECE:
+			// ignore suggestions for the moment
+			break;
+		case ALLOWED_FAST:
+			// we no longer support this, so do nothing
+			break;
+		case EXTENDED:
+			handleExtendedPacket(packet, size);
+			break;
+		}
+	}
+
+	void Peer::pause()
+	{
+		if (paused)
+			return;
+
 		downloader->cancelAll();
 		// choke the peer and tell it we are not interested
 		choke();
 		sendNotInterested();
 		paused = true;
 	}
-	
+
 	void Peer::unpause()
 	{
 		paused = false;
 	}
 
-	void Peer::handleExtendedPacket(const Uint8* packet,Uint32 size)
+	void Peer::handleExtendedPacket(const Uint8* packet, Uint32 size)
 	{
 		if (size <= 2)
 			return;
-		
+
 		PeerProtocolExtension* ext = extensions.find(packet[1]);
 		if (ext)
 		{
-			ext->handlePacket(packet,size);
+			ext->handlePacket(packet, size);
 		}
 		else if (packet[1] == 0)
 		{
-			handleExtendedHandshake(packet,size);
+			handleExtendedHandshake(packet, size);
 		}
 	}
-	
-	void Peer::handleExtendedHandshake(const Uint8* packet,Uint32 size)
+
+	void Peer::handleExtendedHandshake(const Uint8* packet, Uint32 size)
 	{
-		QByteArray tmp = QByteArray::fromRawData((const char*)packet,size);
+		QByteArray tmp = QByteArray::fromRawData((const char*)packet, size);
 		BNode* node = 0;
 		try
 		{
-			BDecoder dec(tmp,false,2);
+			BDecoder dec(tmp, false, 2);
 			node = dec.decode();
 			if (!node || node->getType() != BNode::DICT)
 			{
 				delete node;
 				return;
 			}
-			
+
 			BDictNode* dict = (BDictNode*)node;
 			BDictNode* mdict = dict->getDict(QString("m"));
 			if (!mdict)
@@ -407,9 +455,9 @@ namespace bt
 				delete node;
 				return;
 			}
-			
+
 			BValueNode* val = 0;
-			
+
 			if ((val = mdict->getValue("ut_pex")) && UTPex::isEnabled())
 			{
 				// ut_pex packet
@@ -424,10 +472,10 @@ namespace bt
 					if (ext)
 						ext->changeID(ut_pex_id);
 					else if (pex_allowed)
-						extensions.insert(UT_PEX_ID,new UTPex(this,ut_pex_id));
+						extensions.insert(UT_PEX_ID, new UTPex(this, ut_pex_id));
 				}
 			}
-				
+
 			if ((val = mdict->getValue("ut_metadata")))
 			{
 				// meta data
@@ -448,19 +496,19 @@ namespace bt
 						int metadata_size = 0;
 						if (dict->getValue("metadata_size"))
 							metadata_size = dict->getInt("metadata_size");
-						
-						UTMetaData* md = new UTMetaData(pman->getTorrent(),ut_metadata_id,this);
+
+						UTMetaData* md = new UTMetaData(pman->getTorrent(), ut_metadata_id, this);
 						md->setReportedMetadataSize(metadata_size);
-						extensions.insert(UT_METADATA_ID,md);
+						extensions.insert(UT_METADATA_ID, md);
 					}
 				}
 			}
-			
+
 			if ((val = dict->getValue("reqq")))
 			{
 				stats.max_request_queue = val->data().toInt();
 			}
-			
+
 			if ((val = dict->getValue("upload_only")))
 			{
 				stats.partial_seed = val->data().toInt() == 1;
@@ -469,81 +517,81 @@ namespace bt
 		catch (...)
 		{
 			// just ignore invalid packets
-			Out(SYS_CON|LOG_DEBUG) << "Invalid extended packet" << endl;
+			Out(SYS_CON | LOG_DEBUG) << "Invalid extended packet" << endl;
 		}
 		delete node;
 	}
-	
-	Uint32 Peer::sendData(const Uint8* data,Uint32 len)
+
+	Uint32 Peer::sendData(const Uint8* data, Uint32 len)
 	{
 		if (killed) return 0;
-		
-		Uint32 ret = sock->sendData(data,len);
+
+		Uint32 ret = sock->sendData(data, len);
 		if (!sock->ok())
 			kill();
-		
+
 		return ret;
 	}
-	
-	Uint32 Peer::readData(Uint8* buf,Uint32 len)
+
+	Uint32 Peer::readData(Uint8* buf, Uint32 len)
 	{
 		if (killed) return 0;
-		
-		Uint32 ret = sock->readData(buf,len);
-		
+
+		Uint32 ret = sock->readData(buf, len);
+
 		if (!sock->ok())
 			kill();
-		
+
 		return ret;
 	}
-	
+
 	Uint32 Peer::bytesAvailable() const
 	{
 		return sock->bytesAvailable();
 	}
-	
-	Uint32 Peer::getUploadRate() const 
+
+	Uint32 Peer::getUploadRate() const
 	{
 		if (sock)
 			return (Uint32)ceil(sock->getUploadRate());
 		else
 			return 0;
 	}
-	
-	Uint32 Peer::getDownloadRate() const 
+
+	Uint32 Peer::getDownloadRate() const
 	{
 		if (sock)
 			return (Uint32)ceil(sock->getDownloadRate());
 		else
 			return 0;
 	}
-	
+
 	void Peer::update()
 	{
 		if (killed)
 			return;
-		
+
 		if (!sock->ok() || !preader->ok())
 		{
-			Out(SYS_CON|LOG_DEBUG) << "Connection closed" << endl;
+			Out(SYS_CON | LOG_DEBUG) << "Connection closed" << endl;
 			kill();
 			return;
 		}
-		
+
 		sock->updateSpeeds(bt::CurrentTime());
-		preader->update();
-		
+		preader->update(*this);
+
 		Uint32 data_bytes = sock->dataBytesUploaded();
-		
+
 		if (data_bytes > 0)
 		{
 			stats.bytes_uploaded += data_bytes;
 			uploader->addUploadedBytes(data_bytes);
 		}
-		
+
 		if (!paused)
 		{
-			PtrMap<Uint32,PeerProtocolExtension>::iterator i = extensions.begin();
+			PtrMap<Uint32, PeerProtocolExtension>::iterator i = extensions.begin();
 			while (i != extensions.end())
 			{
 				if (i->second->needsUpdate())
@@ -551,11 +599,11 @@ namespace bt
 				i++;
 			}
 		}
-		
+
 		// if no data is being sent or recieved, and there are pending requests
 		// increment the connection stalled timer
-		if (getUploadRate() > 100 || getDownloadRate() > 100 || 
-		   (uploader->getNumRequests() == 0 && sock->numPendingPieceUploads() == 0 && downloader->getNumRequests() == 0) )
+		if (getUploadRate() > 100 || getDownloadRate() > 100 ||
+		        (uploader->getNumRequests() == 0 && sock->numPendingPieceUploads() == 0 && downloader->getNumRequests() == 0))
 			stalled_timer.update();
 
 		stats.download_rate = this->getDownloadRate();
@@ -565,12 +613,12 @@ namespace bt
 		stats.num_up_requests = uploader->getNumRequests() + sock->numPendingPieceUploads();
 		stats.num_down_requests = downloader->getNumRequests();
 	}
-	
+
 	bool Peer::isStalled() const
 	{
 		return stalled_timer.getElapsedSinceUpdate() >= 2*60*1000;
 	}
-	
+
 	bool Peer::isSnubbed() const
 	{
 		// 4 minutes
@@ -584,7 +632,7 @@ namespace bt
 		else
 			return QString();
 	}
-	
+
 	Uint16 Peer::getPort() const
 	{
 		if (!sock)
@@ -592,7 +640,7 @@ namespace bt
 		else
 			return sock->getRemotePort();
 	}
-	
+
 	net::Address Peer::getAddress() const
 	{
 		if (!sock)
@@ -611,12 +659,12 @@ namespace bt
 		// calculation needs to use bytes, instead of chunks, because
 		// the last chunk can have a different size
 		const Torrent & tor = pman->getTorrent();
-		Uint64 bytes = 0; 
+		Uint64 bytes = 0;
 		if (pieces.get(tor.getNumChunks() - 1))
 			bytes = tor.getChunkSize() * (pieces.numOnBits() - 1) + tor.getLastChunkSize();
 		else
 			bytes = tor.getChunkSize() * pieces.numOnBits();
-		
+
 		Uint64 tbytes = tor.getChunkSize() * (pieces.getNumBits() - 1) + tor.getLastChunkSize();
 		return (float)bytes / (float)tbytes * 100.0;
 	}
@@ -625,31 +673,31 @@ namespace bt
 	{
 		stats.aca_score = s;
 	}
-	
+
 	void Peer::choke()
 	{
 		if (!stats.has_upload_slot)
 			return;
-		
+
 		sendChoke();
 		uploader->clearAllRequests();
 	}
-	
+
 	void Peer::emitPortPacket()
 	{
-		pman->portPacketReceived(sock->getRemoteIPAddress(),sock->getRemotePort());
+		pman->portPacketReceived(sock->getRemoteIPAddress(), sock->getRemotePort());
 	}
-	
+
 	void Peer::emitPex(const QByteArray & data)
 	{
 		pman->pex(data);
 	}
-	
+
 	void Peer::setPexEnabled(bool on)
 	{
 		if (!stats.extension_protocol)
 			return;
-		
+
 		PeerProtocolExtension* ext = extensions.find(UT_PEX_ID);
 		if (ext && (!on || !UTPex::isEnabled()))
 		{
@@ -658,21 +706,21 @@ namespace bt
 		else if (!ext && on && ut_pex_id > 0 && UTPex::isEnabled())
 		{
 			// if the other side has enabled it to, create a new UTPex object
-			extensions.insert(UT_PEX_ID,new UTPex(this,ut_pex_id));
+			extensions.insert(UT_PEX_ID, new UTPex(this, ut_pex_id));
 		}
-		
+
 		pex_allowed = on;
 	}
-	
+
 	void Peer::sendExtProtHandshake(Uint16 port, Uint32 metadata_size, bool partial_seed)
 	{
 		if (!stats.extension_protocol)
 			return;
-		
+
 		QByteArray arr;
 		BEncoder enc(new BEncoderBufferOutput(arr));
 		enc.beginDict();
-		enc.write(QString("m")); 
+		enc.write(QString("m"));
 		// supported messages
 		enc.beginDict();
 		enc.write(QString("ut_pex"));enc.write((Uint32)(pex_allowed ? UT_PEX_ID : 0));
@@ -680,40 +728,40 @@ namespace bt
 		enc.end();
 		if (port > 0)
 		{
-			enc.write(QString("p")); 
+			enc.write(QString("p"));
 			enc.write((Uint32)port);
 		}
 		enc.write("reqq");
 		enc.write((bt::Uint32)250);
 		if (metadata_size)
 		{
-			enc.write(QString("metadata_size")); 
+			enc.write(QString("metadata_size"));
 			enc.write(metadata_size);
 		}
-		
+
 		enc.write("upload_only", partial_seed ? "1" : "0");
 		enc.write(QString("v")); enc.write(bt::GetVersionString());
 		enc.end();
-		sendExtProtMsg(0,arr);
+		sendExtProtMsg(0, arr);
 	}
 
-	
-	void Peer::setGroupIDs(Uint32 up_gid,Uint32 down_gid)
+
+	void Peer::setGroupIDs(Uint32 up_gid, Uint32 down_gid)
 	{
 		sock->setGroupID(up_gid, true);
 		sock->setGroupID(down_gid, true);
 	}
-		
+
 	void Peer::resolved(const QString & hinfo)
 	{
 		stats.hostname = hinfo;
 	}
-	
+
 	void Peer::setResolveHostnames(bool on)
 	{
 		resolve_hostname = on;
 	}
-	
+
 	void Peer::emitMetadataDownloaded(const QByteArray& data)
 	{
 		emit metadataDownloaded(data);
@@ -725,12 +773,12 @@ namespace bt
 		bs.andBitSet(wanted_chunks);
 		return bs.numOnBits() > 0;
 	}
-	
+
 	Uint32 Peer::averageDownloadSpeed() const
 	{
 		if (stats.choked)
 			return 0;
-		
+
 		TimeStamp now = CurrentTime();
 		if (now >= getUnchokeTime())
 			return 0;
@@ -743,7 +791,7 @@ namespace bt
 	{
 		if (!stats.has_upload_slot)
 			return;
-		
+
 		sock->addPacket(Packet::Ptr(new Packet(CHOKE)));
 		stats.has_upload_slot = false;
 	}
@@ -752,7 +800,7 @@ namespace bt
 	{
 		if (stats.has_upload_slot)
 			return;
-		
+
 		sock->addPacket(Packet::Ptr(new Packet(UNCHOKE)));
 		stats.has_upload_slot = true;
 	}
@@ -767,7 +815,7 @@ namespace bt
 	{
 		if (stats.am_interested == true)
 			return;
-		
+
 		sock->addPacket(Packet::Ptr(new Packet(INTERESTED)));
 		stats.am_interested = true;
 	}
@@ -776,29 +824,29 @@ namespace bt
 	{
 		if (stats.am_interested == false)
 			return;
-		
+
 		sock->addPacket(Packet::Ptr(new Packet(NOT_INTERESTED)));
 		stats.am_interested = false;
 	}
 
 	void Peer::sendRequest(const Request & r)
 	{
-		sock->addPacket(Packet::Ptr(new Packet(r,bt::REQUEST)));
+		sock->addPacket(Packet::Ptr(new Packet(r, bt::REQUEST)));
 	}
 
 	void Peer::sendCancel(const Request & r)
 	{
-		sock->addPacket(Packet::Ptr(new Packet(r,bt::CANCEL)));
+		sock->addPacket(Packet::Ptr(new Packet(r, bt::CANCEL)));
 	}
 
 	void Peer::sendReject(const Request & r)
 	{
-		sock->addPacket(Packet::Ptr(new Packet(r,bt::REJECT_REQUEST)));
+		sock->addPacket(Packet::Ptr(new Packet(r, bt::REJECT_REQUEST)));
 	}
 
 	void Peer::sendHave(Uint32 index)
 	{
-		sock->addPacket(Packet::Ptr(new Packet(index,bt::HAVE)));
+		sock->addPacket(Packet::Ptr(new Packet(index, bt::HAVE)));
 	}
 
 	void Peer::sendPort(Uint16 port)
@@ -823,45 +871,45 @@ namespace bt
 
 	void Peer::sendSuggestPiece(Uint32 index)
 	{
-		sock->addPacket(Packet::Ptr(new Packet(index,bt::SUGGEST_PIECE)));
+		sock->addPacket(Packet::Ptr(new Packet(index, bt::SUGGEST_PIECE)));
 	}
 
 	void Peer::sendAllowedFast(Uint32 index)
 	{
-		sock->addPacket(Packet::Ptr(new Packet(index,bt::ALLOWED_FAST)));
+		sock->addPacket(Packet::Ptr(new Packet(index, bt::ALLOWED_FAST)));
 	}
 
-	bool Peer::sendChunk(Uint32 index,Uint32 begin,Uint32 len,Chunk * ch)
+	bool Peer::sendChunk(Uint32 index, Uint32 begin, Uint32 len, Chunk * ch)
 	{
 		//		Out() << "sendChunk " << index << " " << begin << " " << len << endl;
 		if (begin >= ch->getSize() || begin + len > ch->getSize())
 		{
-			Out(SYS_CON|LOG_NOTICE) << "Warning : Illegal piece request" << endl;
-			Out(SYS_CON|LOG_NOTICE) << "\tChunk : index " << index << " size = " << ch->getSize() << endl;
-			Out(SYS_CON|LOG_NOTICE) << "\tPiece : begin = " << begin << " len = " << len << endl;
+			Out(SYS_CON | LOG_NOTICE) << "Warning : Illegal piece request" << endl;
+			Out(SYS_CON | LOG_NOTICE) << "\tChunk : index " << index << " size = " << ch->getSize() << endl;
+			Out(SYS_CON | LOG_NOTICE) << "\tPiece : begin = " << begin << " len = " << len << endl;
 			return false;
 		}
 		else if (!ch)
 		{
-			Out(SYS_CON|LOG_NOTICE) << "Warning : attempted to upload an invalid chunk" << endl;
+			Out(SYS_CON | LOG_NOTICE) << "Warning : attempted to upload an invalid chunk" << endl;
 			return false;
 		}
 		else
 		{
 			/*		Out(SYS_CON|LOG_DEBUG) << QString("Uploading %1 %2 %3 %4 %5")
-			*			.arg(index).arg(begin).arg(len).arg((quint64)ch,0,16).arg((quint64)ch->getData(),0,16) 
+			*			.arg(index).arg(begin).arg(len).arg((quint64)ch,0,16).arg((quint64)ch->getData(),0,16)
 			*			<< endl;;
 			*/
-			sock->addPacket(Packet::Ptr(new Packet(index,begin,len,ch)));
+			sock->addPacket(Packet::Ptr(new Packet(index, begin, len, ch)));
 			return true;
 		}
 	}
 
-	void Peer::sendExtProtMsg(Uint8 id,const QByteArray & data)
+	void Peer::sendExtProtMsg(Uint8 id, const QByteArray & data)
 	{
-		sock->addPacket(Packet::Ptr(new Packet(id,data)));
+		sock->addPacket(Packet::Ptr(new Packet(id, data)));
 	}
-	
+
 	void Peer::clearPendingPieceUploads()
 	{
 		sock->clearPieces(stats.fast_extensions);

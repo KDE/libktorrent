@@ -68,7 +68,6 @@ namespace bt
 		ChunkManager & cman;
 		PeerManager & pman;
 		Uint64 uploaded;
-		Uint32 opt_unchoked;
 	};
 
 }

@@ -155,6 +155,9 @@ namespace bt
 		/// Peer is allowed to download chunk (used for superseeding)
 		virtual void chunkAllowed(bt::Uint32 chunk) = 0;
 		
+		/// Handle a received packet
+		virtual void handlePacket(const bt::Uint8* packet, bt::Uint32 size) = 0;
+		
 		
 	protected:
 		mutable PeerInterface::Stats stats;

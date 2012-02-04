@@ -20,53 +20,55 @@
 #ifndef BTPACKETREADER_H
 #define BTPACKETREADER_H
 
-#include <qmutex.h>
-#include <qlist.h>
+#include <QList>
+#include <QMutex>
+#include <ktorrent_export.h>
 #include <net/trafficshapedsocket.h>
 
 namespace bt
 {
-	class Peer;
-	
+	class PeerInterface;
+
 	struct IncomingPacket
 	{
-		Uint8* data;
+		QScopedArrayPointer<Uint8> data;
 		Uint32 size;
 		Uint32 read;
-		
+
 		IncomingPacket(Uint32 size);
-		virtual ~IncomingPacket();
+		
+		typedef QSharedPointer<IncomingPacket> Ptr;
 	};
 
 	/**
 	 * Chops up the raw byte stream from a socket into bittorrent packets
 	 * @author Joris Guisson
 	*/
-	class PacketReader : public net::SocketReader
+	class KTORRENT_EXPORT PacketReader : public net::SocketReader
 	{
-		
 	public:
-		PacketReader(Peer* peer,Uint32 max_packet_size);
+		PacketReader(Uint32 max_packet_size);
 		virtual ~PacketReader();
-		
+
 		/**
 		 * Push packets to Peer (runs in main thread)
+		 * @param peer The PeerInterface which will handle the packet
 		 */
-		void update();
-		
+		void update(PeerInterface & peer);
+
 		/// Did an error occur
 		bool ok() const {return !error;}
 		
+		virtual void onDataReady(Uint8* buf, Uint32 size);
+
 	private:
-		Uint32 newPacket(Uint8* buf,Uint32 size);
-		Uint32 readPacket(Uint8* buf,Uint32 size);
-		virtual void onDataReady(Uint8* buf,Uint32 size);
-		IncomingPacket* dequeuePacket();
-		
+		Uint32 newPacket(Uint8* buf, Uint32 size);
+		Uint32 readPacket(Uint8* buf, Uint32 size);
+		IncomingPacket::Ptr dequeuePacket();
+
 	private:
-		Peer* peer;
 		bool error;
-		QList<IncomingPacket*> packet_queue;
+		QList<IncomingPacket::Ptr> packet_queue;
 		QMutex mutex;
 		Uint8 len[4];
 		int len_received;

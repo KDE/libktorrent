@@ -41,21 +41,15 @@ namespace bt
 
 	void PeerUploader::addRequest(const Request & r)
 	{
-	//	Out(SYS_CON|LOG_DEBUG) << 
-	//			QString("PeerUploader::addRequest %1 %2 %3\n").arg(r.getIndex()).arg(r.getOffset()).arg(r.getLength()) << endl;
-		
-		// allowed fast chunks go to the front of the queue
 		requests.append(r);
 	}
 	
 	void PeerUploader::removeRequest(const Request & r)
 	{
-	//	Out(SYS_CON|LOG_DEBUG) << 
-	//			QString("PeerUploader::removeRequest %1 %2 %3\n").arg(r.getIndex()).arg(r.getOffset()).arg(r.getLength()) << endl;
 		requests.removeAll(r);
 	}
 	
-	Uint32 PeerUploader::update(ChunkManager & cman)
+	Uint32 PeerUploader::handleRequests(ChunkManager & cman)
 	{
 		Uint32 ret = uploaded;
 		uploaded = 0;

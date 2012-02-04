@@ -72,7 +72,7 @@ namespace bt
 		 * @param cman The ChunkManager
 		 * @return The number of bytes uploaded
 		 */
-		Uint32 update(bt::ChunkManager& cman);
+		Uint32 handleRequests(bt::ChunkManager& cman);
 		
 		/// Get the number of requests
 		Uint32 getNumRequests() const;
