@@ -74,37 +74,29 @@ namespace bt
 	
 	Uint32 MaxOpenFiles()
 	{
-		struct rlimit lim;
-		getrlimit(RLIMIT_NOFILE,&lim);
-		return lim.rlim_cur;
+		static Uint32 max_open = 0;
+		if (max_open == 0)
+		{
+			struct rlimit lim;
+			getrlimit(RLIMIT_NOFILE,&lim);
+			max_open = lim.rlim_cur;
+		}
+		
+		return max_open;
 	}
 	
 	Uint32 CurrentOpenFiles()
 	{
-/*#ifdef Q_OS_LINUX
-		QString path = QString("/proc/%1/fd").arg(getpid());
-		QDir dir(path);
-		int ret = dir.count();
-		if (ret < 0)
-			return 0;
-		else
-			return ret;
-#el*/
-#if !defined(Q_OS_WINDOWS)
-		Uint32 count = 0;
-		struct stat sb;
-		int max_fd_number = getdtablesize();
-		for (int i = 0; i < max_fd_number; i++)
-		{
-			fstat(i, &sb);
-			if (errno != EBADF)
-				count++;
-		}
-		
-		return count;
+		return 0;
+		/*
+		//return 0;
+#ifdef Q_OS_LINUX
+		QDir dir(QString("/proc/%1/fd").arg(getpid()));
+		return dir.count();
 #else
 		return 0;
 #endif
+		*/
 	}
 	
 	bool OpenFileAllowed()

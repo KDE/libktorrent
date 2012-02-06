@@ -1,5 +1,6 @@
 Changes in 1.2:
 - Fix large file preallocation when not using quick preallocation in some cases (293279)
+- Disable current open file checking, it causes performance issues in some situations
 
 Changes in 1.2rc1:
 - Make it possible to check data on chunk ranges instead of the entire torrent
