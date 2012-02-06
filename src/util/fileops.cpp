@@ -382,6 +382,9 @@ namespace bt
 #elif HAVE_POSIX_FALLOCATE
 			if (posix_fallocate(fd,0,size) != 0)
 				throw Error(i18n("Cannot expand file: %1",strerror(errno)));
+#elif HAVE_FTRUNCATE64
+			if (ftruncate64(fd,size) == -1)
+				throw Error(i18n("Cannot expand file: %1",strerror(errno)));
 #else
 			if (ftruncate(fd,size) == -1)
 				throw Error(i18n("Cannot expand file: %1",strerror(errno)));
