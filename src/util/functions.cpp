@@ -305,14 +305,14 @@ namespace bt
 			return true;
 		}
 		
-		if (!gcry_check_version(GCRYPT_VERSION))
+		if (!gcry_check_version("1.4.5"))
 		{
 			Out(SYS_GEN|LOG_NOTICE) << "Failed to initialize libgcrypt" << endl;
 			return false;
 		}
 		/* Disable secure memory. */
-		gcry_control (GCRYCTL_DISABLE_SECMEM, 0);
-		gcry_control (GCRYCTL_INITIALIZATION_FINISHED, 0);
+		gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
+		gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
 		initialized = true;
 		return true;
 	}
