@@ -129,7 +129,8 @@ set(libktorrent_SRC
 	dht/dht.cpp                
 	dht/kclosestnodessearch.cpp  
 	dht/nodelookup.cpp  
-	dht/rpcmsg.cpp     
+	dht/rpcmsg.cpp   
+	dht/rpcmsgfactory.cpp 
 	dht/taskmanager.cpp
 	dht/database.cpp      
 	dht/dhtpeersource.cpp 
@@ -141,6 +142,16 @@ set(libktorrent_SRC
 	dht/node.cpp                 
 	dht/rpccall.cpp     
 	dht/task.cpp
+	dht/packednodecontainer.cpp 
+	dht/errmsg.cpp 
+	dht/pingreq.cpp 
+	dht/findnodereq.cpp
+	dht/getpeersreq.cpp
+	dht/announcereq.cpp 
+	dht/pingrsp.cpp 
+	dht/findnodersp.cpp
+	dht/getpeersrsp.cpp
+	dht/announcersp.cpp 
 
 	diskio/cache.cpp      
 	diskio/chunk.cpp         
@@ -253,27 +264,6 @@ set (bcodec_HDR
 	./bcodec/bdecoder.h
 	./bcodec/value.h
 )
-	
-
-
-set (dht_HDR
-	./dht/dhtbase.h
-	./dht/rpcserver.h
-	./dht/key.h
-	./dht/pack.h
-	./dht/rpcmsg.h
-	./dht/dhtpeersource.h
-	./dht/announcetask.h
-	./dht/rpccall.h
-	./dht/kclosestnodessearch.h
-	./dht/dht.h
-	./dht/node.h
-	./dht/task.h
-	./dht/nodelookup.h
-	./dht/taskmanager.h
-	./dht/kbucket.h
-	./dht/database.h
-)
 
 set (migrate_HDR
 	./migrate/ccmigrate.h
@@ -285,7 +275,6 @@ set (migrate_HDR
 
 install(FILES ${bcodec_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/bcodec COMPONENT Devel)
 install(FILES ${interfaces_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/interfaces COMPONENT Devel)
-install(FILES ${dht_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/dht COMPONENT Devel)
 install(FILES ${migrate_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/migrate COMPONENT Devel)
 install(FILES ${ktorrent_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent COMPONENT Devel)
 
@@ -301,3 +290,4 @@ add_subdirectory(util)
 add_subdirectory(utp)
 add_subdirectory(upnp)
 add_subdirectory(tracker)
+add_subdirectory(dht)

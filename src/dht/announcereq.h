@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,63 +15,42 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include "rpcmsg.h"
-#include <bcodec/bnode.h>
-#include <util/error.h>
 
-using namespace bt;
+#ifndef DHT_ANNOUNCEREQ_H
+#define DHT_ANNOUNCEREQ_H
 
+
+#include "getpeersreq.h"
 
 namespace dht
 {
-	RPCMsg::RPCMsg() :
-			mtid(0),
-			method(NONE),
-			type(INVALID)
+
+	/**
+	 * Announce request in the DHT protocol
+	 */
+	class KTORRENT_EXPORT AnnounceReq : public GetPeersReq
 	{
-	}
-
-
-	RPCMsg::RPCMsg(const QByteArray & mtid, Method m, Type type, const Key & id) :
-			mtid(mtid),
-			method(m),
-			type(type),
-			id(id)
-	{}
-
-	RPCMsg::~RPCMsg()
-	{}
-	
-	void RPCMsg::parse(bt::BDictNode* dict)
-	{
-		mtid = dict->getByteArray(TID);
-		if (mtid.isEmpty())
-			throw bt::Error("Invalid DHT transaction ID");
+	public:
+		AnnounceReq();
+		AnnounceReq(const Key & id,const Key & info_hash,bt::Uint16 port,const Key & token);
+		virtual ~AnnounceReq();
 		
-		QString t = dict->getString(TYP, 0);
-		if (t == REQ)
-		{
-			type = REQ_MSG;
-			BDictNode* args = dict->getDict(ARG);
-			if (!args)
-				return;
-			
-			id = Key(args->getByteArray("id"));
-		}
-		else if (t == RSP)
-		{
-			type = RSP_MSG;
-			BDictNode* args = dict->getDict(RSP);
-			if (!args)
-				return;
-			
-			id = Key(args->getByteArray("id"));
-		}
-		else if (t == ERR_DHT)
-			type = ERR_MSG;
-		else
-			throw bt::Error(QString("Unknown message type %1").arg(t));
-	}
+		virtual void apply(DHT* dh_table);
+		virtual void print();
+		virtual void encode(QByteArray & arr) const;
+		virtual void parse(bt::BDictNode* dict);
+		
+		const Key & getToken() const {return token;}
+		bt::Uint16 getPort() const {return port;}
+		
+		typedef QSharedPointer<AnnounceReq> Ptr;
+	private:
+		bt::Uint16 port;
+		Key token;
+	};
+
 }
+
+#endif // DHT_ANNOUNCEREQ_H

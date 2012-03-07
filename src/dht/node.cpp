@@ -127,9 +127,9 @@ namespace dht
 		return bit_on;
 	}
 
-	void Node::received(DHT* dh_table, MsgBase::Ptr msg)
+	void Node::received(dht::DHT* dh_table, const dht::RPCMsg & msg)
 	{
-		Uint8 bit_on = findBucket(msg->getID());
+		Uint8 bit_on = findBucket(msg.getID());
 
 		// return if bit_on is not good
 		if (bit_on >= 160)
@@ -141,7 +141,7 @@ namespace dht
 
 		// insert it into the bucket
 		KBucket* kb = bucket[bit_on];
-		kb->insert(KBucketEntry(msg->getOrigin(), msg->getID()));
+		kb->insert(KBucketEntry(msg.getOrigin(), msg.getID()));
 		num_receives++;
 		if (num_receives == 3)
 		{
@@ -168,7 +168,7 @@ namespace dht
 		}
 	}
 
-	void Node::onTimeout(MsgBase::Ptr msg)
+	void Node::onTimeout(RPCMsg::Ptr msg)
 	{
 		// Check for invalid addresses,
 		for (Uint32 i = 0;i < 160;i++)

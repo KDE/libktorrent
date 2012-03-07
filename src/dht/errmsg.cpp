@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
+ *   Copyright (C) 2012 by Joris Guisson                                   *
  *   joris.guisson@gmail.com                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,63 +15,52 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include "rpcmsg.h"
+
+#include "errmsg.h"
 #include <bcodec/bnode.h>
+#include <util/log.h>
 #include <util/error.h>
+#include "dht.h"
+
 
 using namespace bt;
 
-
 namespace dht
 {
-	RPCMsg::RPCMsg() :
-			mtid(0),
-			method(NONE),
-			type(INVALID)
+	ErrMsg::ErrMsg()
 	{
 	}
 
-
-	RPCMsg::RPCMsg(const QByteArray & mtid, Method m, Type type, const Key & id) :
-			mtid(mtid),
-			method(m),
-			type(type),
-			id(id)
+	ErrMsg::ErrMsg(const QByteArray & mtid, const Key & id, const QString & msg)
+			: RPCMsg(mtid, NONE, ERR_MSG, id), msg(msg)
 	{}
 
-	RPCMsg::~RPCMsg()
+	ErrMsg::~ErrMsg()
+	{}
+
+	void ErrMsg::apply(dht::DHT* dh_table)
+	{
+		dh_table->error(*this);
+	}
+
+	void ErrMsg::print()
+	{
+		Out(SYS_DHT | LOG_NOTICE) << "ERR: " << mtid[0] << " " << msg << endl;
+	}
+
+	void ErrMsg::encode(QByteArray &) const
 	{}
 	
-	void RPCMsg::parse(bt::BDictNode* dict)
+	void ErrMsg::parse(BDictNode* dict)
 	{
-		mtid = dict->getByteArray(TID);
-		if (mtid.isEmpty())
-			throw bt::Error("Invalid DHT transaction ID");
+		RPCMsg::parse(dict);
+		BListNode* ln = dict->getList(ERR_DHT);
+		if (!ln)
+			throw bt::Error("Invalid error message");
 		
-		QString t = dict->getString(TYP, 0);
-		if (t == REQ)
-		{
-			type = REQ_MSG;
-			BDictNode* args = dict->getDict(ARG);
-			if (!args)
-				return;
-			
-			id = Key(args->getByteArray("id"));
-		}
-		else if (t == RSP)
-		{
-			type = RSP_MSG;
-			BDictNode* args = dict->getDict(RSP);
-			if (!args)
-				return;
-			
-			id = Key(args->getByteArray("id"));
-		}
-		else if (t == ERR_DHT)
-			type = ERR_MSG;
-		else
-			throw bt::Error(QString("Unknown message type %1").arg(t));
+		msg = ln->getString(1, 0);
 	}
+
 }

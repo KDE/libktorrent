@@ -70,7 +70,7 @@ namespace dht
 		void start();
 
 		/// Decrements the outstanding_reqs
-		virtual void onResponse(RPCCall* c, MsgBase::Ptr rsp);
+		virtual void onResponse(RPCCall* c, RPCMsg::Ptr rsp);
 
 		/// Decrements the outstanding_reqs
 		virtual void onTimeout(RPCCall* c);
@@ -86,7 +86,7 @@ namespace dht
 		 * @param c The call
 		 * @param rsp The response
 		 */
-		virtual void callFinished(RPCCall* c, MsgBase::Ptr rsp) = 0;
+		virtual void callFinished(RPCCall* c, RPCMsg::Ptr rsp) = 0;
 
 		/**
 		 * A call timedout
@@ -99,7 +99,7 @@ namespace dht
 		 * @param req THe request to send
 		 * @return true if call was made, false if not
 		 */
-		bool rpcCall(MsgBase::Ptr req);
+		bool rpcCall(RPCMsg::Ptr req);
 
 		/// See if we can do a request
 		bool canDoRequest() const {return outstanding_reqs < MAX_CONCURRENT_REQS;}

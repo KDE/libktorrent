@@ -26,6 +26,7 @@
 
 namespace dht
 {
+	class PackedNodeContainer;
 
 	/**
 	 * @author Joris Guisson <joris.guisson@gmail.com>

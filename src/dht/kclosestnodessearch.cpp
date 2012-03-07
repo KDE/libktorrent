@@ -20,6 +20,7 @@
 #include "kclosestnodessearch.h"
 #include <util/functions.h>
 #include "pack.h"
+#include "packednodecontainer.h"
 
 using namespace bt;
 

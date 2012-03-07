@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
+ *   Copyright (C) 2012 by Joris Guisson                                   *
  *   joris.guisson@gmail.com                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,63 +15,59 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include "rpcmsg.h"
-#include <bcodec/bnode.h>
-#include <util/error.h>
+
+#include "pingreq.h"
+#include <util/log.h>
+#include <bcodec/bencoder.h>
+#include "dht.h"
 
 using namespace bt;
 
-
 namespace dht
 {
-	RPCMsg::RPCMsg() :
-			mtid(0),
-			method(NONE),
-			type(INVALID)
+	PingReq::PingReq() : RPCMsg(QByteArray(), PING, REQ_MSG, Key())
 	{
 	}
 
-
-	RPCMsg::RPCMsg(const QByteArray & mtid, Method m, Type type, const Key & id) :
-			mtid(mtid),
-			method(m),
-			type(type),
-			id(id)
-	{}
-
-	RPCMsg::~RPCMsg()
-	{}
-	
-	void RPCMsg::parse(bt::BDictNode* dict)
+	PingReq::PingReq(const Key & id) : RPCMsg(QByteArray(), PING, REQ_MSG, id)
 	{
-		mtid = dict->getByteArray(TID);
-		if (mtid.isEmpty())
-			throw bt::Error("Invalid DHT transaction ID");
-		
-		QString t = dict->getString(TYP, 0);
-		if (t == REQ)
+	}
+
+	PingReq::~PingReq()
+	{}
+
+	void PingReq::apply(dht::DHT* dh_table)
+	{
+		dh_table->ping(*this);
+	}
+
+	void PingReq::print()
+	{
+		Out(SYS_DHT | LOG_DEBUG) << QString("REQ: %1 %2 : ping").arg(mtid[0]).arg(id.toString()) << endl;
+	}
+
+	void PingReq::encode(QByteArray & arr) const
+	{
+		BEncoder enc(new BEncoderBufferOutput(arr));
+		enc.beginDict();
 		{
-			type = REQ_MSG;
-			BDictNode* args = dict->getDict(ARG);
-			if (!args)
-				return;
-			
-			id = Key(args->getByteArray("id"));
+			enc.write(ARG);
+			enc.beginDict();
+			{
+				enc.write(QString("id"));
+				enc.write(id.getData(), 20);
+			}
+			enc.end();
+			enc.write(REQ);
+			enc.write(QString("ping"));
+			enc.write(TID);
+			enc.write(mtid);
+			enc.write(TYP);
+			enc.write(REQ);
 		}
-		else if (t == RSP)
-		{
-			type = RSP_MSG;
-			BDictNode* args = dict->getDict(RSP);
-			if (!args)
-				return;
-			
-			id = Key(args->getByteArray("id"));
-		}
-		else if (t == ERR_DHT)
-			type = ERR_MSG;
-		else
-			throw bt::Error(QString("Unknown message type %1").arg(t));
+		enc.end();
 	}
 }
+

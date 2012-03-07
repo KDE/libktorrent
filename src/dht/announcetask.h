@@ -57,7 +57,7 @@ namespace dht
 		             QObject* parent);
 		virtual ~AnnounceTask();
 
-		virtual void callFinished(RPCCall* c, MsgBase::Ptr rsp);
+		virtual void callFinished(RPCCall* c, RPCMsg::Ptr rsp);
 		virtual void callTimeout(RPCCall* c);
 		virtual void update();
 

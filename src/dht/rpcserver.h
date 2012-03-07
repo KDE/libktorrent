@@ -48,53 +48,51 @@ namespace dht
 	{
 		Q_OBJECT
 	public:
-		RPCServer(DHT* dh_table,Uint16 port,QObject *parent = 0);
+		RPCServer(DHT* dh_table, Uint16 port, QObject *parent = 0);
 		virtual ~RPCServer();
-		
+
 		/// Start the server
 		void start();
-		
+
 		/// Stop the server
 		void stop();
-		
+
 		/**
 		 * Do a RPC call.
 		 * @param msg The message to send
 		 * @return The call object
 		 */
-		RPCCall* doCall(MsgBase::Ptr msg);
-		
+		RPCCall* doCall(RPCMsg::Ptr msg);
+
 		/**
 		 * Send a message, this only sends the message, it does not keep any call
 		 * information. This should be used for replies.
 		 * @param msg The message to send
 		 */
-		void sendMsg(MsgBase::Ptr msg);
-		
+		void sendMsg(RPCMsg::Ptr msg);
+
 		/**
 		 * Send a message, this only sends the message, it does not keep any call
 		 * information. This should be used for replies.
 		 * @param msg The message to send
 		 */
-		void sendMsg(const MsgBase & msg);
-		
+		void sendMsg(const RPCMsg & msg);
+
 		/**
 		 * A call was timed out.
 		 * @param mtid mtid of call
 		 */
-		void timedOut(Uint8 mtid);
-		
+		void timedOut(const QByteArray & mtid);
+
 		/**
 		 * Ping a node, we don't care about the MTID.
 		 * @param addr The address
 		 */
-		void ping(const dht::Key & our_id,const net::Address & addr);
-		
+		void ping(const dht::Key & our_id, const net::Address & addr);
+
 		/// Get the number of active calls
 		Uint32 getNumActiveRPCCalls() const;
-		
-		/// Find the method given an mtid
-		Method findMethod(Uint8 mtid);
+
 	private:
 		class Private;
 		Private* d;

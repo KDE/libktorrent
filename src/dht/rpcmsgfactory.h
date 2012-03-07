@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,63 +15,52 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
+
+#ifndef DHT_RPCMSGFACTORY_H
+#define DHT_RPCMSGFACTORY_H
+
+#include <ktorrent_export.h>
 #include "rpcmsg.h"
-#include <bcodec/bnode.h>
-#include <util/error.h>
-
-using namespace bt;
-
 
 namespace dht
 {
-	RPCMsg::RPCMsg() :
-			mtid(0),
-			method(NONE),
-			type(INVALID)
+	/**
+	 * Interface to resolve the method of an RPC call given an mtid
+	 */
+	class RPCMethodResolver
 	{
-	}
-
-
-	RPCMsg::RPCMsg(const QByteArray & mtid, Method m, Type type, const Key & id) :
-			mtid(mtid),
-			method(m),
-			type(type),
-			id(id)
-	{}
-
-	RPCMsg::~RPCMsg()
-	{}
-	
-	void RPCMsg::parse(bt::BDictNode* dict)
-	{
-		mtid = dict->getByteArray(TID);
-		if (mtid.isEmpty())
-			throw bt::Error("Invalid DHT transaction ID");
+	public:
+		virtual ~RPCMethodResolver() {}
 		
-		QString t = dict->getString(TYP, 0);
-		if (t == REQ)
-		{
-			type = REQ_MSG;
-			BDictNode* args = dict->getDict(ARG);
-			if (!args)
-				return;
-			
-			id = Key(args->getByteArray("id"));
-		}
-		else if (t == RSP)
-		{
-			type = RSP_MSG;
-			BDictNode* args = dict->getDict(RSP);
-			if (!args)
-				return;
-			
-			id = Key(args->getByteArray("id"));
-		}
-		else if (t == ERR_DHT)
-			type = ERR_MSG;
-		else
-			throw bt::Error(QString("Unknown message type %1").arg(t));
-	}
+		/// Return the method associated with an mtid
+		virtual Method findMethod(const QByteArray & mtid) = 0; 
+	};
+
+	/**
+	 * Creates RPC message objects out of a BDictNode
+	 */
+	class KTORRENT_EXPORT RPCMsgFactory
+	{
+	public:
+		RPCMsgFactory();
+		virtual ~RPCMsgFactory();
+
+		/**
+		 * Creates a message out of a BDictNode.
+		 * @param dict The BDictNode
+		 * @param srv The RPCMethodResolver
+		 * @return A newly created message 
+		 * @throw bt::Error if something goes wrong
+		 */
+		RPCMsg::Ptr build(bt::BDictNode* dict, RPCMethodResolver* method_resolver);
+		
+	private:
+		RPCMsg::Ptr buildRequest(bt::BDictNode* dict);
+		RPCMsg::Ptr buildResponse(bt::BDictNode* dict, RPCMethodResolver* method_resolver);
+	};
+
 }
+
+#endif // DHT_RPCMSGFACTORY_H

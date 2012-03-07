@@ -213,7 +213,7 @@ namespace dht
 		void setRefreshTask(Task* t);
 		
 	private:
-		virtual void onResponse(RPCCall* c,MsgBase::Ptr rsp);
+		virtual void onResponse(RPCCall* c,RPCMsg::Ptr rsp);
 		virtual void onTimeout(RPCCall* c);
 		void pingQuestionable(const KBucketEntry & replacement_entry);
 		bool replaceBadEntry(const KBucketEntry & entry);

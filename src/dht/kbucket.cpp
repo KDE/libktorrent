@@ -28,7 +28,7 @@
 #include "rpcserver.h"
 #include "node.h"
 #include "task.h"
-
+#include "pingreq.h"
 
 using namespace bt;
 
@@ -158,7 +158,7 @@ namespace dht
 		}
 	}
 
-	void KBucket::onResponse(RPCCall* c, MsgBase::Ptr rsp)
+	void KBucket::onResponse(RPCCall* c, RPCMsg::Ptr rsp)
 	{
 		Q_UNUSED(rsp);
 		last_modified = bt::CurrentTime();
@@ -225,7 +225,7 @@ namespace dht
 			if (e.isQuestionable())
 			{
 				Out(SYS_DHT | LOG_DEBUG) << "Pinging questionable node : " << e.getAddress().toString() << endl;
-				MsgBase::Ptr p(new PingReq(node->getOurID()));
+				RPCMsg::Ptr p(new PingReq(node->getOurID()));
 				p->setDestination(e.getAddress());
 				RPCCall* c = srv->doCall(p);
 				if (c)
