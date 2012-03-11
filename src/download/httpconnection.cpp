@@ -308,7 +308,6 @@ namespace bt
 	
 	float HttpConnection::getDownloadRate() const
 	{
-		QMutexLocker locker(&mutex);
 		if (sock)
 		{
 			sock->updateSpeeds(bt::CurrentTime());

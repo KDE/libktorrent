@@ -1,3 +1,6 @@
+Changes in 1.2.1:
+- Fix deadlock in webseeding code (295719)
+
 Changes in 1.2:
 - Fix large file preallocation when not using quick preallocation in some cases (293279)
 - Disable current open file checking, it causes performance issues in some situations
