@@ -34,7 +34,7 @@ namespace net
 	*/
 	class Speed
 	{
-		float rate;
+		QAtomicInt rate;
 		bt::Uint32 bytes;
 		QLinkedList<QPair<bt::Uint32,bt::TimeStamp> > dlrate;
 	public:
@@ -43,7 +43,7 @@ namespace net
 		
 		void onData(bt::Uint32 bytes,bt::TimeStamp ts);
 		void update(bt::TimeStamp now);
-		float getRate() const {return rate;}
+		int getRate() const {return rate;}
 	};
 
 }

@@ -78,20 +78,16 @@ namespace net
 			down_gid = gid;
 	}
 	
-	float TrafficShapedSocket::getDownloadRate() const
+	int TrafficShapedSocket::getDownloadRate() const
 	{
-		mutex.lock();
-		float ret = down_speed->getRate();
-		mutex.unlock();
-		return ret;
+		// getRate is atomic
+		return down_speed->getRate();
 	}
 	
-	float TrafficShapedSocket::getUploadRate() const
+	int TrafficShapedSocket::getUploadRate() const
 	{
-		mutex.lock();
-		float ret = up_speed->getRate();
-		mutex.unlock();
-		return ret;
+		// getRate is atomic
+		return up_speed->getRate();
 	}
 	
 	void TrafficShapedSocket::updateSpeeds(bt::TimeStamp now)

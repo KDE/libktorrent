@@ -107,7 +107,7 @@ namespace bt
 		bool getData(QByteArray & data);
 		
 		/// Get the current download rate
-		float getDownloadRate() const;
+		int getDownloadRate() const;
 		
 		/// Get the status string
 		const QString getStatusString() const;

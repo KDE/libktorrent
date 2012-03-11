@@ -85,10 +85,10 @@ namespace net
 		virtual bool bytesReadyToWrite() const = 0;
 		
 		/// Get the current download rate
-		float getDownloadRate() const;
+		int getDownloadRate() const;
 		
 		/// Get the current download rate
-		float getUploadRate() const;
+		int getUploadRate() const;
 		
 		/// Update up and down speed
 		void updateSpeeds(bt::TimeStamp now);

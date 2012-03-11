@@ -119,7 +119,7 @@ namespace bt
 	Uint32 WebSeed::getDownloadRate() const
 	{
 		if (conn)
-			return (Uint32)conn->getDownloadRate();
+			return conn->getDownloadRate();
 		else
 			return 0;
 	}

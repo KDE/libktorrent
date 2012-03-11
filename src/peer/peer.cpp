@@ -553,7 +553,7 @@ namespace bt
 	Uint32 Peer::getUploadRate() const
 	{
 		if (sock)
-			return (Uint32)ceil(sock->getUploadRate());
+			return sock->getUploadRate();
 		else
 			return 0;
 	}
@@ -561,7 +561,7 @@ namespace bt
 	Uint32 Peer::getDownloadRate() const
 	{
 		if (sock)
-			return (Uint32)ceil(sock->getDownloadRate());
+			return sock->getDownloadRate();
 		else
 			return 0;
 	}
