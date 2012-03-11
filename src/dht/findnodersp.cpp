@@ -61,17 +61,16 @@ namespace dht
 			enc.write(RSP); enc.beginDict();
 			{
 				enc.write(QString("id")); enc.write(id.getData(), 20);
-				enc.write(QString("nodes")); enc.write(nodes);
-
-				if (nodes2.count() > 0)
+				if (nodes.size() > 0)
 				{
-					enc.write(QString("nodes2"));
-					enc.beginList();
-					foreach(const QByteArray & item, nodes2)
-					{
-						enc.write(item);
-					}
-					enc.end();
+					enc.write(QString("nodes")); 
+					enc.write(nodes);
+				}
+				
+				if (nodes6.size() > 0)
+				{
+					enc.write(QString("nodes6")); 
+					enc.write(nodes6);
 				}
 			}
 			enc.end();
@@ -88,20 +87,17 @@ namespace dht
 		if (!args)
 			throw bt::Error("Invalid response, arguments missing");
 
-		if (!args->getValue("nodes") && !args->getList("nodes2"))
-			throw bt::Error("Missing nodes or nodes2 parameter");
+		if (!args->getValue("nodes") && !args->getList("nodes6"))
+			throw bt::Error("Missing nodes or nodes6 parameter");
 
 
 		BValueNode* v = args->getValue("nodes");
 		if (v)
-			setNodes(v->data().toByteArray());
+			nodes = v->data().toByteArray();
 
-		BListNode* l = args->getList("nodes2");
-		if (l)
-		{
-			for (Uint32 i = 0;i < l->getNumChildren();i++)
-				addNode(l->getByteArray(i));
-		}
+		v = args->getValue("nodes6");
+		if (v)
+			nodes6 = v->data().toByteArray();
 	}
 
 }

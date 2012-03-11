@@ -22,7 +22,7 @@
 
 #include <QList>
 #include <QObject>
-#include <dht/rpcmsg.h>
+#include <dht/rpcserverinterface.h>
 #include <net/address.h>
 #include <net/socket.h>
 #include <util/constants.h>
@@ -36,7 +36,6 @@ namespace dht
 {
 	class RPCServerThread;
 	class Key;
-	class RPCCall;
 	class DHT;
 
 	/**
@@ -44,7 +43,7 @@ namespace dht
 	 *
 	 * Class to handle incoming and outgoing RPC messages.
 	 */
-	class RPCServer : public QObject
+	class RPCServer : public QObject, public RPCServerInterface
 	{
 		Q_OBJECT
 	public:
@@ -62,7 +61,7 @@ namespace dht
 		 * @param msg The message to send
 		 * @return The call object
 		 */
-		RPCCall* doCall(RPCMsg::Ptr msg);
+		virtual RPCCall* doCall(RPCMsg::Ptr msg);
 
 		/**
 		 * Send a message, this only sends the message, it does not keep any call
@@ -79,12 +78,6 @@ namespace dht
 		void sendMsg(const RPCMsg & msg);
 
 		/**
-		 * A call was timed out.
-		 * @param mtid mtid of call
-		 */
-		void timedOut(const QByteArray & mtid);
-
-		/**
 		 * Ping a node, we don't care about the MTID.
 		 * @param addr The address
 		 */
@@ -92,6 +85,9 @@ namespace dht
 
 		/// Get the number of active calls
 		Uint32 getNumActiveRPCCalls() const;
+		
+	private slots:
+		void callTimeout(RPCCall* call);
 
 	private:
 		class Private;

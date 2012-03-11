@@ -32,8 +32,8 @@ namespace dht
 	 * @param ba The byte array
 	 * @param off The offset into the array
 	 */
-	void PackBucketEntry(const KBucketEntry & e,QByteArray & ba,Uint32 off);
-	
+	void PackBucketEntry(const KBucketEntry & e, QByteArray & ba, bt::Uint32 off);
+
 	/**
 	 * Unpack a KBucketEntry from a byte array.
 	 * If a full entry cannot be read an error will be thrown.
@@ -42,7 +42,7 @@ namespace dht
 	 * @param ip_version The ip version (4 or 6)
 	 * @return The entry
 	 */
-	KBucketEntry UnpackBucketEntry(const QByteArray & ba,Uint32 off,int ip_version);
+	KBucketEntry UnpackBucketEntry(const QByteArray & ba, bt::Uint32 off, int ip_version);
 
 }
 

@@ -30,7 +30,7 @@ namespace dht
 		if (a.size() == 26)
 			nodes.append(a);
 		else
-			nodes2.append(a);
+			nodes6.append(a);
 	}
 
 }

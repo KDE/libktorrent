@@ -25,8 +25,7 @@
 #include <util/functions.h>
 #include <netinet/in.h>
 #include "kclosestnodessearch.h"
-#include "rpcserver.h"
-#include "node.h"
+#include "rpcserverinterface.h"
 #include "task.h"
 #include "pingreq.h"
 
@@ -116,11 +115,11 @@ namespace dht
 
 	//////////////////////////////////////////////////////////
 
-	KBucket::KBucket(Uint32 idx, RPCServer* srv, Node* node)
+	KBucket::KBucket(Uint32 idx, dht::RPCServerInterface* srv, const dht::Key& our_id)
 			: RPCCallListener(0),
 			idx(idx),
 			srv(srv),
-			node(node)
+			our_id(our_id)
 	{
 		last_modified = bt::CurrentTime();
 		refresh_task = 0;
@@ -225,7 +224,7 @@ namespace dht
 			if (e.isQuestionable())
 			{
 				Out(SYS_DHT | LOG_DEBUG) << "Pinging questionable node : " << e.getAddress().toString() << endl;
-				RPCMsg::Ptr p(new PingReq(node->getOurID()));
+				RPCMsg::Ptr p(new PingReq(our_id));
 				p->setDestination(e.getAddress());
 				RPCCall* c = srv->doCall(p);
 				if (c)

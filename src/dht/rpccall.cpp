@@ -20,7 +20,7 @@
 #include "rpccall.h"
 #include "dht.h"
 #include "rpcmsg.h"
-#include "rpcserver.h"
+
 
 namespace dht
 {
@@ -31,7 +31,7 @@ namespace dht
 	{
 	}
 
-	RPCCall::RPCCall(RPCServer* rpc, RPCMsg::Ptr msg, bool queued) : msg(msg), rpc(rpc), queued(queued)
+	RPCCall::RPCCall(dht::RPCMsg::Ptr msg, bool queued) : msg(msg), queued(queued)
 	{
 		timer.setSingleShot(true);
 		connect(&timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
@@ -52,13 +52,12 @@ namespace dht
 
 	void RPCCall::onTimeout()
 	{
-		onCallTimeout(this);
-		rpc->timedOut(msg->getMTID());
+		timeout(this);
 	}
 
 	void RPCCall::response(RPCMsg::Ptr rsp)
 	{
-		onCallResponse(this, rsp);
+		response(this, rsp);
 	}
 
 	Method RPCCall::getMsgMethod() const
@@ -71,9 +70,8 @@ namespace dht
 
 	void RPCCall::addListener(RPCCallListener* cl)
 	{
-		connect(this, SIGNAL(onCallResponse(RPCCall*, RPCMsg::Ptr)), cl, SLOT(onResponse(RPCCall*, RPCMsg::Ptr)));
-		connect(this, SIGNAL(onCallTimeout(RPCCall*)), cl, SLOT(onTimeout(RPCCall*)));
+		connect(this, SIGNAL(response(RPCCall*, RPCMsg::Ptr)), cl, SLOT(onResponse(RPCCall*, RPCMsg::Ptr)));
+		connect(this, SIGNAL(timeout(RPCCall*)), cl, SLOT(onTimeout(RPCCall*)));
 	}
 
 }
-#include "rpccall.moc"

@@ -31,30 +31,30 @@ namespace dht
 	{
 		time_stamp = bt::CurrentTime();
 	}
-	
+
 	DBItem::DBItem(const net::Address & addr) : addr(addr)
 	{
 		time_stamp = bt::CurrentTime();
 	}
-	
+
 	DBItem::DBItem(const DBItem & it)
 	{
 		addr = it.addr;
-		time_stamp = it.time_stamp;	
+		time_stamp = it.time_stamp;
 	}
-	
+
 	DBItem::~DBItem()
 	{}
-		
+
 	bool DBItem::expired(bt::TimeStamp now) const
 	{
 		return (now - time_stamp >= MAX_ITEM_AGE);
 	}
-	
+
 	DBItem & DBItem::operator = (const DBItem & it)
 	{
 		addr = it.addr;
-		time_stamp = it.time_stamp;	
+		time_stamp = it.time_stamp;
 		return *this;
 	}
 
@@ -73,9 +73,9 @@ namespace dht
 			return 18;
 		}
 	}
-	
+
 	///////////////////////////////////////////////
-	
+
 	Database::Database()
 	{
 		items.setAutoDelete(true);
@@ -85,48 +85,35 @@ namespace dht
 	Database::~Database()
 	{}
 
-	void Database::store(const dht::Key & key,const DBItem & dbi)
+	void Database::store(const dht::Key & key, const DBItem & dbi)
 	{
 		DBItemList* dbl = items.find(key);
 		if (!dbl)
 		{
 			dbl = new DBItemList();
-			items.insert(key,dbl);
+			items.insert(key, dbl);
 		}
 		dbl->append(dbi);
 	}
-	
-	void Database::sample(const dht::Key & key,DBItemList & tdbl,bt::Uint32 max_entries)
+
+	void Database::sample(const dht::Key & key, DBItemList & tdbl, bt::Uint32 max_entries, bt::Uint32 ip_version)
 	{
 		DBItemList* dbl = items.find(key);
 		if (!dbl)
 			return;
-		
-		if (dbl->count() < (int) max_entries)
+
+		DBItemList::iterator i = dbl->begin();
+		while (i != dbl->end() && tdbl.count() < (int)max_entries)
 		{
-			DBItemList::iterator i = dbl->begin();
-			while (i != dbl->end())
-			{
+			if (ip_version == (bt::Uint32)i->getAddress().ipVersion())
 				tdbl.append(*i);
-				i++;
-			}
-		}
-		else
-		{
-			Uint32 num_added = 0;
-			DBItemList::iterator i = dbl->begin();
-			while (i != dbl->end() && num_added < max_entries)
-			{
-				tdbl.append(*i);
-				num_added++;
-				i++;
-			}
+			i++;
 		}
 	}
-	
+
 	void Database::expire(bt::TimeStamp now)
 	{
-		bt::PtrMap<dht::Key,DBItemList>::iterator itr = items.begin();
+		bt::PtrMap<dht::Key, DBItemList>::iterator itr = items.begin();
 		while (itr != items.end())
 		{
 			DBItemList* dbl = itr->second;
@@ -139,7 +126,7 @@ namespace dht
 			itr++;
 		}
 	}
-	
+
 	dht::Key Database::genToken(const net::Address & addr)
 	{
 		if (addr.ipVersion() == 4)
@@ -148,13 +135,13 @@ namespace dht
 			TimeStamp now = bt::CurrentTime();
 			// generate a hash of the ip port and the current time
 			// should prevent anybody from crapping things up
-			bt::WriteUint32(tdata,0,addr.toIPv4Address());
-			bt::WriteUint16(tdata,4,addr.port());
-			bt::WriteUint64(tdata,6,now);
-				
-			dht::Key token = SHA1Hash::generate(tdata,14);
+			bt::WriteUint32(tdata, 0, addr.toIPv4Address());
+			bt::WriteUint16(tdata, 4, addr.port());
+			bt::WriteUint64(tdata, 6, now);
+
+			dht::Key token = SHA1Hash::generate(tdata, 14);
 			// keep track of the token, tokens will expire after a while
-			tokens.insert(token,now);
+			tokens.insert(token, now);
 			return token;
 		}
 		else
@@ -163,79 +150,76 @@ namespace dht
 			TimeStamp now = bt::CurrentTime();
 			// generate a hash of the ip port and the current time
 			// should prevent anybody from crapping things up
-			memcpy(tdata,addr.toIPv6Address().c,16);
-			bt::WriteUint16(tdata,16,addr.port());
-			bt::WriteUint64(tdata,18,now);
-				
-			dht::Key token = SHA1Hash::generate(tdata,26);
+			memcpy(tdata, addr.toIPv6Address().c, 16);
+			bt::WriteUint16(tdata, 16, addr.port());
+			bt::WriteUint64(tdata, 18, now);
+
+			dht::Key token = SHA1Hash::generate(tdata, 26);
 			// keep track of the token, tokens will expire after a while
-			tokens.insert(token,now);
+			tokens.insert(token, now);
 			return token;
 		}
 	}
-	
-	bool Database::checkToken(const dht::Key & token,const net::Address & addr)
+
+	bool Database::checkToken(const dht::Key & token, const net::Address & addr)
 	{
 		// the token must be in the map
 		if (!tokens.contains(token))
-		{
-			Out(SYS_DHT|LOG_DEBUG) << "Unknown token" << endl;
 			return false;
-		}
-		
+
 		// in the map so now get the timestamp and regenerate the token
 		// using the IP and port of the sender
 		TimeStamp ts = tokens[token];
-		
+
 		if (addr.ipVersion() == 4)
 		{
 			Uint8 tdata[14];
-			bt::WriteUint32(tdata,0,addr.toIPv4Address());
-			bt::WriteUint16(tdata,4,addr.port());
-			bt::WriteUint64(tdata,6,ts);
-			dht::Key ct = SHA1Hash::generate(tdata,14);
-		
+			bt::WriteUint32(tdata, 0, addr.toIPv4Address());
+			bt::WriteUint16(tdata, 4, addr.port());
+			bt::WriteUint64(tdata, 6, ts);
+			dht::Key ct = SHA1Hash::generate(tdata, 14);
+
 			// compare the generated token to the one received
 			if (token != ct)  // not good, this peer didn't went through the proper channels
 			{
-				Out(SYS_DHT|LOG_DEBUG) << "Invalid token" << endl;
+				Out(SYS_DHT | LOG_DEBUG) << "Invalid token" << endl;
 				return false;
 			}
 		}
 		else
 		{
 			Uint8 tdata[26];
-		
-			memcpy(tdata,addr.toIPv6Address().c,16);
-			bt::WriteUint16(tdata,16,addr.port());
-			bt::WriteUint64(tdata,18,ts);
-				
-			dht::Key ct = SHA1Hash::generate(tdata,26);
+
+			memcpy(tdata, addr.toIPv6Address().c, 16);
+			bt::WriteUint16(tdata, 16, addr.port());
+			bt::WriteUint64(tdata, 18, ts);
+
+			dht::Key ct = SHA1Hash::generate(tdata, 26);
 			// compare the generated token to the one received
 			if (token != ct)  // not good, this peer didn't went through the proper channels
 			{
-				Out(SYS_DHT|LOG_DEBUG) << "Invalid token" << endl;
+				Out(SYS_DHT | LOG_DEBUG) << "Invalid token" << endl;
 				return false;
 			}
 		}
-		
+
 		// expire the token
 		tokens.remove(token);
 		return true;
 	}
-	
+
 	bool Database::contains(const dht::Key & key) const
 	{
 		return items.find(key) != 0;
 	}
-	
+
 	void Database::insert(const dht::Key & key)
 	{
 		DBItemList* dbl = items.find(key);
 		if (!dbl)
 		{
 			dbl = new DBItemList();
-			items.insert(key,dbl);
+			items.insert(key, dbl);
 		}
 	}
 }

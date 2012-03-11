@@ -27,9 +27,6 @@
 #include "key.h"
 #include "rpccall.h"
 
-using bt::Uint32;
-using bt::Uint16;
-using bt::Uint8;
 
 namespace bt
 {
@@ -38,23 +35,21 @@ namespace bt
 
 namespace dht
 {
-	class RPCServer;
+	class RPCServerInterface;
 	class KClosestNodesSearch;
-	class Node;
 	class Task;
-	
-	const Uint32 K = 20;
-	const Uint32 BUCKET_MAGIC_NUMBER = 0xB0C4B0C4;
-	const Uint32 BUCKET_REFRESH_INTERVAL = 15 * 60 * 1000;
-//	const Uint32 BUCKET_REFRESH_INTERVAL = 120 * 1000;
-	
+
+	const bt::Uint32 K = 20;
+	const bt::Uint32 BUCKET_MAGIC_NUMBER = 0xB0C4B0C4;
+	const bt::Uint32 BUCKET_REFRESH_INTERVAL = 15 * 60 * 1000;
+
 	struct BucketHeader
 	{
-		Uint32 magic;
-		Uint32 index;
-		Uint32 num_entries;
+		bt::Uint32 magic;
+		bt::Uint32 index;
+		bt::Uint32 num_entries;
 	};
-	
+
 	/**
 	 * @author Joris Guisson
 	 *
@@ -63,29 +58,24 @@ namespace dht
 	 */
 	class KBucketEntry
 	{
-		net::Address addr;
-		Key node_id;
-		bt::TimeStamp last_responded;
-		Uint32 failed_queries;
-		Uint32 questionable_pings;
 	public:
 		/**
 		 * Constructor, sets everything to 0.
-		 * @return 
+		 * @return
 		 */
 		KBucketEntry();
-		
+
 		/**
 		 * Constructor, set the ip, port and key
 		 * @param addr socket address
 		 * @param id ID of node
 		 */
-		KBucketEntry(const net::Address & addr,const Key & id);
-		
+		KBucketEntry(const net::Address & addr, const Key & id);
+
 		/**
 		 * Copy constructor.
 		 * @param other KBucketEntry to copy
-		 * @return 
+		 * @return
 		 */
 		KBucketEntry(const KBucketEntry & other);
 
@@ -98,54 +88,61 @@ namespace dht
 		 * @return this KBucketEntry
 		 */
 		KBucketEntry & operator = (const KBucketEntry & other);
-		
+
 		/// Equality operator
 		bool operator == (const KBucketEntry & entry) const;
-		
+
 		/// Get the socket address of the node
 		const net::Address & getAddress() const {return addr;}
-		
+
 		/// Get it's ID
 		const Key & getID() const {return node_id;}
-		
+
 		/// Is this node a good node
 		bool isGood() const;
-		
+
 		/// Is this node questionable (haven't heard from it in the last 15 minutes)
 		bool isQuestionable() const;
-		
+
 		/// Is it a bad node. (Hasn't responded to a query
 		bool isBad() const;
-		
+
 		/// Signal the entry that the peer has responded
 		void hasResponded();
-		
+
 		/// A request timed out
 		void requestTimeout() {failed_queries++;}
 
 		/// The entry has been pinged because it is questionable
 		void onPingQuestionable() {questionable_pings++;}
-		
+
 		/// The null entry
-		static KBucketEntry null; 
-		
+		static KBucketEntry null;
+
 		/// < operator
 		bool operator < (const KBucketEntry & entry) const;
+		
+	private:
+		net::Address addr;
+		Key node_id;
+		bt::TimeStamp last_responded;
+		bt::Uint32 failed_queries;
+		bt::Uint32 questionable_pings;
 	};
-	
+
 	class KBucketEntrySet : public std::set<KBucketEntry>
 	{
 	public:
 		KBucketEntrySet() {}
 		virtual ~KBucketEntrySet() {}
-		
-		bool contains(const KBucketEntry & entry) const 
+
+		bool contains(const KBucketEntry & entry) const
 		{
 			return find(entry) != end();
 		}
 	};
-	
-	
+
+
 	/**
 	 * @author Joris Guisson
 	 *
@@ -157,69 +154,73 @@ namespace dht
 	class KBucket : public RPCCallListener
 	{
 		Q_OBJECT
-				
-		Uint32 idx;
-		QList<KBucketEntry> entries,pending_entries;
-		RPCServer* srv;
-		Node* node;
-		QMap<RPCCall*,KBucketEntry> pending_entries_busy_pinging;
-		mutable bt::TimeStamp last_modified;
-		Task* refresh_task;
+
 	public:
-		KBucket(Uint32 idx,RPCServer* srv,Node* node);
+		KBucket(bt::Uint32 idx, RPCServerInterface* srv, const Key & our_id);
 		virtual ~KBucket();
-		
+
 		/**
-		 * Inserts an entry into the bucket. 
+		 * Inserts an entry into the bucket.
 		 * @param entry The entry to insert
 		 */
 		void insert(const KBucketEntry & entry);
-		
+
 		/// Get the least recently seen node
 		const KBucketEntry & leastRecentlySeen() const {return entries[0];}
-		
+
 		/// Get the number of entries
-		Uint32 getNumEntries() const {return entries.count();}
-	
+		bt::Uint32 getNumEntries() const {return entries.count();}
+
 		/// See if this bucket contains an entry
 		bool contains(const KBucketEntry & entry) const;
-		
+
 		/**
 		 * Find the K closest entries to a key and store them in the KClosestNodesSearch
 		 * object.
 		 * @param kns The object to storre the search results
 		 */
 		void findKClosestNodes(KClosestNodesSearch & kns);
-		
+
 		/**
 		 * A peer failed to respond
 		 * @param addr Address of the peer
 		 */
 		bool onTimeout(const net::Address & addr);
-		
+
 		/// Check if the bucket needs to be refreshed
 		bool needsToBeRefreshed() const;
-		
+
 		/// save the bucket to a file
 		void save(bt::File & fptr);
-		
+
 		/// Load the bucket from a file
-		void load(bt::File & fptr,const BucketHeader & hdr);
-		
+		void load(bt::File & fptr, const BucketHeader & hdr);
+
 		/// Update the refresh timer of the bucket
 		void updateRefreshTimer();
-		
+
 		/// Set the refresh task
 		void setRefreshTask(Task* t);
 		
+		typedef QSharedPointer<KBucket> Ptr;
+
 	private:
-		virtual void onResponse(RPCCall* c,RPCMsg::Ptr rsp);
+		virtual void onResponse(RPCCall* c, RPCMsg::Ptr rsp);
 		virtual void onTimeout(RPCCall* c);
 		void pingQuestionable(const KBucketEntry & replacement_entry);
 		bool replaceBadEntry(const KBucketEntry & entry);
-		
+
 	private slots:
 		void onFinished(Task* t);
+		
+	private:
+		bt::Uint32 idx;
+		QList<KBucketEntry> entries, pending_entries;
+		RPCServerInterface* srv;
+		Key our_id;
+		QMap<RPCCall*, KBucketEntry> pending_entries_busy_pinging;
+		mutable bt::TimeStamp last_modified;
+		Task* refresh_task;
 	};
 }
 

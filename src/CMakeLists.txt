@@ -137,8 +137,10 @@ set(libktorrent_SRC
 	dht/key.cpp                  
 	dht/pack.cpp        
 	dht/rpcserver.cpp
+	dht/rpcserverinterface.cpp
 	dht/dhtbase.cpp       
-	dht/kbucket.cpp            
+	dht/kbucket.cpp
+	dht/kbuckettable.cpp 
 	dht/node.cpp                 
 	dht/rpccall.cpp     
 	dht/task.cpp

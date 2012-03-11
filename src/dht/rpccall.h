@@ -52,7 +52,6 @@ namespace dht
 		 * @param c The call
 		 */
 		virtual void onTimeout(RPCCall* c) = 0;
-
 	};
 
 	/**
@@ -62,7 +61,7 @@ namespace dht
 	{
 		Q_OBJECT
 	public:
-		RPCCall(RPCServer* rpc, RPCMsg::Ptr msg, bool queued);
+		RPCCall(RPCMsg::Ptr msg, bool queued);
 		virtual ~RPCCall();
 
 		/**
@@ -95,13 +94,12 @@ namespace dht
 		void onTimeout();
 
 	signals:
-		void onCallResponse(RPCCall* c, RPCMsg::Ptr rsp);
-		void onCallTimeout(RPCCall* c);
+		void response(RPCCall* c, RPCMsg::Ptr rsp);
+		void timeout(RPCCall* c);
 
 	private:
 		RPCMsg::Ptr msg;
 		QTimer timer;
-		RPCServer* rpc;
 		bool queued;
 	};
 

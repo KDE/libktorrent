@@ -79,7 +79,19 @@ namespace dht
 			throw bt::Error("Invalid request, arguments missing");
 
 		info_hash = Key(args->getByteArray("info_hash"));
+		BListNode* ln = args->getList("want");
+		if (ln)
+		{
+			for (bt::Uint32 i = 0; i < ln->getNumChildren(); i++)
+				want.append(ln->getString(i, 0));
+		}
 	}
+	
+	bool GetPeersReq::wants(int ip_version) const
+	{
+		return want.contains(QString("n%1").arg(ip_version));
+	}
+
 
 }
 

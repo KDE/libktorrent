@@ -18,43 +18,17 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#ifndef DHT_GETPEERSRSP_H
-#define DHT_GETPEERSRSP_H
-
-
-#include "rpcmsg.h"
-#include "packednodecontainer.h"
+#include "rpcserverinterface.h"
 
 namespace dht
 {
-
-	/**
-	 * GetPeers response message
-	 */
-	class KTORRENT_EXPORT GetPeersRsp : public RPCMsg, public PackedNodeContainer
+	RPCServerInterface::RPCServerInterface()
 	{
-	public:
-		GetPeersRsp();
-		GetPeersRsp(const QByteArray & mtid, const Key & id, const Key & token);
-		GetPeersRsp(const QByteArray & mtid, const Key & id, const DBItemList & values, const Key & token);
-		virtual ~GetPeersRsp();
 
-		virtual void apply(DHT* dh_table);
-		virtual void print();
-		virtual void encode(QByteArray & arr) const;
-		virtual void parse(bt::BDictNode* dict);
+	}
 
-		const DBItemList & getItemList() const {return items;}
-		const Key & getToken() const {return token;}
-		bool containsNodes() const {return nodes.size() > 0 || nodes6.size() > 0;}
-		bool containsValues() const {return nodes.size() == 0;}
+	RPCServerInterface::~RPCServerInterface()
+	{
 
-		typedef QSharedPointer<GetPeersRsp> Ptr;
-	private:
-		Key token;
-		DBItemList items;
-	};
-
+	}
 }
-
-#endif // DHT_GETPEERSRSP_H

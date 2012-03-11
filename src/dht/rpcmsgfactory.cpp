@@ -81,6 +81,11 @@ namespace dht
 			msg->parse(dict);
 			return msg;
 		}
+		else if (str == "vote")
+		{
+			// Some µTorrent extension to rate torrents, just ignore
+			return msg;
+		}
 		else
 			throw bt::Error(QString("Invalid request type %1").arg(str));
 	}
@@ -121,7 +126,7 @@ namespace dht
 				break;
 			case NONE:
 			default:
-				throw bt::Error(QString("Unknown DHT rpc call (transaction id = %i)").arg(mtid[0]));
+				throw bt::Error(QString("Unknown DHT rpc call (transaction id = %1)").arg(mtid[0]));
 		}
 		
 		return msg;

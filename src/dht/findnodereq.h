@@ -21,7 +21,7 @@
 #ifndef DHT_FINDNODEREQ_H
 #define DHT_FINDNODEREQ_H
 
-
+#include <QStringList>
 #include "rpcmsg.h"
 
 namespace dht
@@ -43,11 +43,13 @@ namespace dht
 		virtual void parse(bt::BDictNode* dict);
 
 		const Key & getTarget() const {return target;}
+		bool wants(int ip_version) const;
 
 		typedef QSharedPointer<FindNodeReq> Ptr;
 
 	private:
 		Key target;
+		QStringList want;
 	};
 }
 

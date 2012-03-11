@@ -70,6 +70,9 @@ namespace dht
 		bool takeItem(DBItem & item);
 		
 	private:
+		void handleNodes(const QByteArray & nodes, int ip_version);
+		
+	private:
 		dht::Key info_hash;
 		bt::Uint16 port;
 		std::set<KBucketEntryAndToken> answered; // nodes which have answered with values

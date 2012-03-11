@@ -47,6 +47,29 @@ namespace dht
 	AnnounceTask::~AnnounceTask()
 	{}
 
+	void AnnounceTask::handleNodes(const QByteArray& nodes, int ip_version)
+	{
+		Uint32 address_size = ip_version == 4 ? 26 : 38;
+		Uint32 nval = nodes.size() / address_size;
+		for (Uint32 i = 0;i < nval;i++)
+		{
+			// add node to todo list
+			try
+			{
+				KBucketEntry e = UnpackBucketEntry(nodes, i * address_size, ip_version);
+				if (!visited.contains(e) && todo.size() < 100)
+				{
+					todo.insert(e);
+					//	Out(SYS_DHT|LOG_DEBUG) << "DHT: GetPeers returned node " << e.getAddress().toString() << endl;
+				}
+			}
+			catch (...)
+			{
+				// not enough size in buffer, just ignore the error
+			}
+		}
+	}
+
 
 	void AnnounceTask::callFinished(RPCCall* c, RPCMsg::Ptr rsp)
 	{
@@ -56,7 +79,6 @@ namespace dht
 		if (c->getMsgMethod() != dht::GET_PEERS)
 			return;
 
-		// it is either a GetPeersNodesRsp or a GetPeersValuesRsp
 		GetPeersRsp::Ptr gpr = rsp.dynamicCast<GetPeersRsp>();
 		if (!gpr)
 			return;
@@ -64,57 +86,26 @@ namespace dht
 		if (gpr->containsNodes())
 		{
 			const QByteArray & n = gpr->getNodes();
-			Uint32 nval = n.size() / 26;
-			for (Uint32 i = 0;i < nval;i++)
-			{
-				// add node to todo list
-				try
-				{
-					KBucketEntry e = UnpackBucketEntry(n, i * 26, 4);
-					if (!visited.contains(e) && todo.size() < 100)
-					{
-						todo.insert(e);
-						//	Out(SYS_DHT|LOG_DEBUG) << "DHT: GetPeers returned node " << e.getAddress().toString() << endl;
-					}
-				}
-				catch (...)
-				{
-					// not enough size in buffer, just ignore the error
-				}
-			}
+			if (n.size() > 0)
+				handleNodes(n, 4);
 
-			for (PackedNodeContainer::CItr itr = gpr->begin();itr != gpr->end();itr++)
-			{
-				const QByteArray & ba = *itr;
-				try
-				{
-					KBucketEntry e = UnpackBucketEntry(ba, 0, 6);
-					if (!visited.contains(e) && todo.size() < 100)
-					{
-						todo.insert(e);
-						//	Out(SYS_DHT|LOG_DEBUG) << "DHT: GetPeers returned node " << e.getAddress().toString() << endl;
-					}
-				}
-				catch (...)
-				{
-					// bad data, ignore
-				}
-			}
+			const QByteArray & n6 = gpr->getNodes6();
+			if (n6.size() > 0)
+				handleNodes(n6, 6);
 		}
-		else
+
+		// store the items in the database if there are any present
+		const DBItemList & items = gpr->getItemList();
+		for (DBItemList::const_iterator i = items.begin();i != items.end();i++)
 		{
-			// store the items in the database
-			const DBItemList & items = gpr->getItemList();
-			for (DBItemList::const_iterator i = items.begin();i != items.end();i++)
-			{
-				//	Out(SYS_DHT|LOG_DEBUG) << "DHT: GetPeers returned item " << i->getAddress().toString() << endl;
-				db->store(info_hash, *i);
-				// also add the items to the returned_items list
-				returned_items.append(*i);
-			}
-
-			emitDataReady();
+			//	Out(SYS_DHT|LOG_DEBUG) << "DHT: GetPeers returned item " << i->getAddress().toString() << endl;
+			db->store(info_hash, *i);
+			// also add the items to the returned_items list
+			returned_items.append(*i);
 		}
+
+		if (items.size() > 0)
+			emitDataReady();
 
 		// add the peer who responded to the answered list, so we can do an announce
 		KBucketEntry e(rsp->getOrigin(), rsp->getID());
@@ -124,7 +115,7 @@ namespace dht
 		}
 	}
 
-	void AnnounceTask::callTimeout(RPCCall* )
+	void AnnounceTask::callTimeout(RPCCall*)
 	{
 		//Out(SYS_DHT|LOG_DEBUG) << "AnnounceTask::callTimeout " << endl;
 	}

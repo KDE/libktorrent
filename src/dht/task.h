@@ -34,7 +34,7 @@ namespace dht
 	class Task;
 	class KClosestNodesSearch;
 
-	const Uint32 MAX_CONCURRENT_REQS = 16;
+	const bt::Uint32 MAX_CONCURRENT_REQS = 16;
 
 	/**
 	 * @author Joris Guisson <joris.guisson@gmail.com>

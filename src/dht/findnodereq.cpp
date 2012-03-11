@@ -30,14 +30,15 @@ using namespace bt;
 
 namespace dht
 {
-	FindNodeReq::FindNodeReq()
-			: RPCMsg(QByteArray(), FIND_NODE, REQ_MSG, Key())
+	FindNodeReq::FindNodeReq() :
+			RPCMsg(QByteArray(), FIND_NODE, REQ_MSG, Key())
 	{
 	}
 
 
-	FindNodeReq::FindNodeReq(const Key & id, const Key & target)
-			: RPCMsg(QByteArray(), FIND_NODE, REQ_MSG, id), target(target)
+	FindNodeReq::FindNodeReq(const Key & id, const Key & target) : 
+		RPCMsg(QByteArray(), FIND_NODE, REQ_MSG, id), 
+		target(target)
 	{}
 
 	FindNodeReq::~FindNodeReq()
@@ -80,7 +81,19 @@ namespace dht
 			throw bt::Error("Invalid request, arguments missing");
 
 		target = Key(args->getByteArray("target"));
+		BListNode* ln = args->getList("want");
+		if (ln)
+		{
+			for (bt::Uint32 i = 0; i < ln->getNumChildren(); i++)
+				want.append(ln->getString(i, 0));
+		}
 	}
+	
+	bool FindNodeReq::wants(int ip_version) const
+	{
+		return want.contains(QString("n%1").arg(ip_version));
+	}
+
 
 }
 

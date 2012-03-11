@@ -33,7 +33,12 @@ namespace dht
 	class RPCMsg;
 	class RPCServer;
 	class KClosestNodesSearch;
-
+	
+	
+	const bt::Uint32 WANT_IPV4 = 1;
+	const bt::Uint32 WANT_IPV6 = 2;
+	const bt::Uint32 WANT_BOTH = WANT_IPV4 | WANT_IPV6;
+	
 	/**
 	 * @author Joris Guisson
 	 *
@@ -65,8 +70,9 @@ namespace dht
 		 * Find the K closest entries to a key and store them in the KClosestNodesSearch
 		 * object.
 		 * @param kns The object to storre the search results
+		 * @param want Which protocol(s) are wanted
 		 */
-		void findKClosestNodes(KClosestNodesSearch & kns);
+		void findKClosestNodes(KClosestNodesSearch & kns, bt::Uint32 want);
 
 		/**
 		 * Increase the failed queries count of the bucket entry we sent the message to
@@ -83,19 +89,13 @@ namespace dht
 		void loadTable(const QString & file);
 
 		/// Get the number of entries in the routing table
-		Uint32 getNumEntriesInRoutingTable() const {return num_entries;}
+		bt::Uint32 getNumEntriesInRoutingTable() const {return num_entries;}
+		
 	private:
-		Uint8 findBucket(const dht::Key & id);
-
-
-
-	private:
+		class Private;
+		Private* d;
 		dht::Key our_id;
-		KBucket* bucket[160];
-		RPCServer* srv;
-		Uint32 num_receives;
-		Uint32 num_entries;
-		bool delete_table;
+		bt::Uint32 num_entries;
 	};
 
 }

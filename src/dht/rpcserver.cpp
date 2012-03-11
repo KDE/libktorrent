@@ -97,7 +97,11 @@ namespace dht
 				RPCMsg::Ptr msg = factory.build((BDictNode*)n.get(), this);
 				if (msg)
 				{
-					msg->setOrigin(addr);
+					if (addr.ipVersion() == 6 && addr.isIPv4Mapped())
+						msg->setOrigin(addr.convertIPv4Mapped());
+					else
+						msg->setOrigin(addr);
+					
 					msg->apply(dh_table);
 					// erase an existing call
 					if (msg->getType() == RSP_MSG && calls.contains(msg->getMTID()))
@@ -113,7 +117,7 @@ namespace dht
 			}
 			catch (bt::Error & err)
 			{
-				Out(SYS_DHT | LOG_IMPORTANT) << "Error happened during parsing : " << err.toString() << endl;
+				Out(SYS_DHT | LOG_DEBUG) << "Error happened during parsing : " << err.toString() << endl;
 			}
 		}
 
@@ -171,7 +175,7 @@ namespace dht
 				if (next_mtid == start) // if this happens we cannot do any calls
 				{
 					// so queue the call
-					RPCCall* c = new RPCCall(p, msg, true);
+					RPCCall* c = new RPCCall(msg, true);
 					call_queue.append(c);
 					Out(SYS_DHT | LOG_NOTICE) << "Queueing RPC call, no slots available at the moment" << endl;
 					return c;
@@ -180,7 +184,7 @@ namespace dht
 
 			msg->setMTID(mtid);
 			sendMsg(msg);
-			RPCCall* c = new RPCCall(p, msg, false);
+			RPCCall* c = new RPCCall(msg, false);
 			calls.insert(mtid, c);
 			return c;
 		}
@@ -275,7 +279,11 @@ namespace dht
 
 	RPCCall* RPCServer::doCall(RPCMsg::Ptr msg)
 	{
-		return d->doCall(msg);
+		RPCCall* c = d->doCall(msg);
+		if (c)
+			connect(c, SIGNAL(timeout(RPCCall*)), this, SLOT(callTimeout(RPCCall*)));
+		
+		return c;
 	}
 
 	void RPCServer::sendMsg(RPCMsg::Ptr msg)
@@ -289,11 +297,10 @@ namespace dht
 		msg.encode(data);
 		d->send(msg.getDestination(), data);
 	}
-
-
-	void RPCServer::timedOut(const QByteArray& mtid)
+	
+	void RPCServer::callTimeout(RPCCall* call)
 	{
-		d->timedOut(mtid);
+		d->timedOut(call->getRequest()->getMTID());
 	}
 
 	void RPCServer::ping(const dht::Key & our_id, const net::Address & addr)
@@ -307,8 +314,5 @@ namespace dht
 	{
 		return d->calls.count();
 	}
-
-
-
 }
-#include "rpcserver.moc"
+

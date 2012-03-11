@@ -29,7 +29,7 @@ namespace dht
 
 	/**
 	 * Packed node container utilitiy class.
-	 * Stores both nodes and nodes2 parameters of some DHT messages.
+	 * Stores both nodes and nodes6 parameters of some DHT messages.
 	 */
 	class PackedNodeContainer
 	{
@@ -37,22 +37,17 @@ namespace dht
 		PackedNodeContainer();
 		virtual ~PackedNodeContainer();
 		
-		typedef QList<QByteArray>::const_iterator CItr;
-		
-		CItr begin() const {return nodes2.begin();}
-		CItr end() const {return nodes2.end();}
-		
 		/// Add a single node to the nodes or nodes2 parameter depending on it's size
 		void addNode(const QByteArray & a);
 		
-		/// Set the nodes parameter
-		void setNodes(const QByteArray & n) {nodes = n;}
-		
 		/// Get the nodes parameter
 		const QByteArray & getNodes() const {return nodes;}
+		
+		/// Get the nodes6 parameter
+		const QByteArray & getNodes6() const {return nodes6;}
 	protected:
 		QByteArray nodes;
-		QList<QByteArray> nodes2;
+		QByteArray nodes6;
 	};
 	
 }

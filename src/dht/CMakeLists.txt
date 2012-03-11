@@ -1,6 +1,7 @@
 set (dht_HDR
 	dhtbase.h
 	rpcserver.h
+	rpcserverinterface.h
 	key.h
 	pack.h
 	rpcmsg.h
@@ -14,6 +15,7 @@ set (dht_HDR
 	nodelookup.h
 	taskmanager.h
 	kbucket.h
+	kbuckettable.h
 	database.h
 	announcereq.h
 	announcersp.h

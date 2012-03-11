@@ -42,6 +42,10 @@ namespace dht
 		virtual void update();
 		virtual void callFinished(RPCCall* c, RPCMsg::Ptr rsp);
 		virtual void callTimeout(RPCCall* c);
+	
+	private:
+		void handleNodes(const QByteArray & nodes, int ip_version);
+		
 	private:
 		dht::Key node_id;
 		bt::Uint32 num_nodes_rsp;

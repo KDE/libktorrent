@@ -43,6 +43,27 @@ namespace dht
 	NodeLookup::~NodeLookup()
 	{}
 
+	void NodeLookup::handleNodes(const QByteArray& nodes, int ip_version)
+	{
+		Uint32 address_size = ip_version == 4 ? 26 : 38;
+		Uint32 nnodes = nodes.size() / address_size;
+		for (Uint32 j = 0;j < nnodes;j++)
+		{
+			// unpack an entry and add it to the todo list
+			try
+			{
+				KBucketEntry e = UnpackBucketEntry(nodes, j * address_size, ip_version);
+				// lets not talk to ourself
+				if (e.getID() != node->getOurID() && !todo.contains(e) && !visited.contains(e))
+					todo.insert(e);
+			}
+			catch (...)
+			{
+				// bad data, just ignore it
+			}
+		}
+	}
+
 
 	void NodeLookup::callFinished(RPCCall* , RPCMsg::Ptr rsp)
 	{
@@ -58,37 +79,12 @@ namespace dht
 				return;
 
 			const QByteArray & nodes = fnr->getNodes();
-			Uint32 nnodes = nodes.size() / 26;
-			for (Uint32 j = 0;j < nnodes;j++)
-			{
-				// unpack an entry and add it to the todo list
-				try
-				{
-					KBucketEntry e = UnpackBucketEntry(nodes, j * 26, 4);
-					// lets not talk to ourself
-					if (e.getID() != node->getOurID() && !todo.contains(e) && !visited.contains(e))
-						todo.insert(e);
-				}
-				catch (...)
-				{
-					// bad data, just ignore it
-				}
-			}
+			if (nodes.size() > 0)
+				handleNodes(nodes, 4);
 
-			for (PackedNodeContainer::CItr i = fnr->begin();i != fnr->end();i++)
-			{
-				try
-				{
-					KBucketEntry e = UnpackBucketEntry(*i, 0, 6);
-					// lets not talk to ourself
-					if (e.getID() != node->getOurID() && !todo.contains(e) && !visited.contains(e))
-						todo.insert(e);
-				}
-				catch (...)
-				{
-					// bad data, just ignore it
-				}
-			}
+			const QByteArray & nodes6 = fnr->getNodes6();
+			if (nodes6.size() > 0)
+				handleNodes(nodes6, 6);
 			num_nodes_rsp++;
 		}
 	}

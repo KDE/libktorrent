@@ -21,7 +21,7 @@
 #ifndef DHT_GETPEERSREQ_H
 #define DHT_GETPEERSREQ_H
 
-
+#include <QStringList>
 #include "rpcmsg.h"
 
 namespace dht
@@ -38,14 +38,18 @@ namespace dht
 		virtual ~GetPeersReq();
 		
 		const Key & getInfoHash() const {return info_hash;}
+		bool wants(int ip_version) const;
+		
 		virtual void apply(DHT* dh_table);
 		virtual void print();
 		virtual void encode(QByteArray & arr) const;
 		virtual void parse(bt::BDictNode* dict);
 		
 		typedef QSharedPointer<GetPeersReq> Ptr;
+		
 	protected:
 		Key info_hash;
+		QStringList want;
 	};
 	
 }

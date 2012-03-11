@@ -124,8 +124,6 @@ namespace dht
 		node->received(this, r);
 	}
 
-
-
 	void DHT::findNode(const dht::FindNodeReq& r)
 	{
 		if (!running)
@@ -135,12 +133,17 @@ namespace dht
 		if (r.getID() == node->getOurID())
 			return;
 
-		Out(SYS_DHT | LOG_DEBUG) << "DHT: got findNode request" << endl;
 		node->received(this, r);
 		// find the K closest nodes and pack them
 		KClosestNodesSearch kns(r.getTarget(), K);
 
-		node->findKClosestNodes(kns);
+		bt::Uint32 wants = 0;
+		if (r.wants(4) || r.getOrigin().ipVersion() == 4)
+			wants |= WANT_IPV4;
+		if (r.wants(6) || r.getOrigin().ipVersion() == 6)
+			wants |= WANT_IPV6;
+
+		node->findKClosestNodes(kns, wants);
 
 		FindNodeRsp fnr(r.getMTID(), node->getOurID());
 		// pack the found nodes in a byte array
@@ -176,7 +179,6 @@ namespace dht
 		if (r.getID() == node->getOurID())
 			return;
 
-		Out(SYS_DHT | LOG_DEBUG) << "DHT: got announce request" << endl;
 		node->received(this, r);
 		// first check if the token is OK
 		dht::Key token = r.getToken();
@@ -202,34 +204,28 @@ namespace dht
 		if (r.getID() == node->getOurID())
 			return;
 
-		Out(SYS_DHT | LOG_DEBUG) << "DHT: got getPeers request" << endl;
 		node->received(this, r);
 		DBItemList dbl;
-		db->sample(r.getInfoHash(), dbl, 50);
+		db->sample(r.getInfoHash(), dbl, 50, r.getOrigin().ipVersion());
 
 		// generate a token
 		dht::Key token = db->genToken(r.getOrigin());
 
-		if (dbl.count() == 0)
-		{
-			// if data is null do the same as when we have a findNode request
-			// find the K closest nodes and pack them
-			KClosestNodesSearch kns(r.getInfoHash(), K);
-			node->findKClosestNodes(kns);
+		bt::Uint32 wants = 0;
+		if (r.wants(4) || r.getOrigin().ipVersion() == 4)
+			wants |= WANT_IPV4;
+		if (r.wants(6) || r.getOrigin().ipVersion() == 6)
+			wants |= WANT_IPV6;
 
+		// if data is null do the same as when we have a findNode request
+		// find the K closest nodes and pack them
+		KClosestNodesSearch kns(r.getInfoHash(), K);
+		node->findKClosestNodes(kns, wants);
 
-			GetPeersRsp fnr(r.getMTID(), node->getOurID(), token);
-			kns.pack(&fnr);
-			fnr.setOrigin(r.getOrigin());
-			srv->sendMsg(fnr);
-		}
-		else
-		{
-			// send a get peers response
-			GetPeersRsp fvr(r.getMTID(), node->getOurID(), dbl, token);
-			fvr.setOrigin(r.getOrigin());
-			srv->sendMsg(fvr);
-		}
+		GetPeersRsp fnr(r.getMTID(), node->getOurID(), dbl, token);
+		kns.pack(&fnr);
+		fnr.setOrigin(r.getOrigin());
+		srv->sendMsg(fnr);
 	}
 
 	void DHT::response(const RPCMsg & r)
@@ -274,7 +270,7 @@ namespace dht
 			return 0;
 
 		KClosestNodesSearch kns(info_hash, K);
-		node->findKClosestNodes(kns);
+		node->findKClosestNodes(kns, WANT_BOTH);
 		if (kns.getNumEntries() > 0)
 		{
 			Out(SYS_DHT | LOG_NOTICE) << "DHT: Doing announce " << endl;
@@ -315,7 +311,7 @@ namespace dht
 			return 0;
 
 		KClosestNodesSearch kns(id, K);
-		node->findKClosestNodes(kns);
+		node->findKClosestNodes(kns, WANT_BOTH);
 		if (kns.getNumEntries() > 0)
 		{
 			Out(SYS_DHT | LOG_DEBUG) << "DHT: finding node " << endl;
@@ -381,35 +377,34 @@ namespace dht
 			srv->ping(node->getOurID(), res->address());
 		}
 	}
-
+	
 	QMap<QString, int> DHT::getClosestGoodNodes(int maxNodes)
 	{
 		QMap<QString, int> map;
-
+		
 		if (!node)
 			return map;
-
+		
 		int max = 0;
 		KClosestNodesSearch kns(node->getOurID(), maxNodes*2);
-		node->findKClosestNodes(kns);
-
+		node->findKClosestNodes(kns, WANT_BOTH);
+		
 		KClosestNodesSearch::Itr it;
 		for (it = kns.begin(); it != kns.end(); ++it)
 		{
 			KBucketEntry e = it->second;
-
+			
 			if (!e.isGood())
 				continue;
-
+			
 			const net::Address & a = e.getAddress();
-
+			
 			map.insert(a.toString(), a.port());
 			if (++max >= maxNodes)
 				break;
 		}
-
+		
 		return map;
 	}
+	
 }
-
-#include "dht.moc"
