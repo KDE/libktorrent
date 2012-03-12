@@ -701,7 +701,7 @@ namespace bt
 	void Peer::setGroupIDs(Uint32 up_gid,Uint32 down_gid)
 	{
 		sock->setGroupID(up_gid, true);
-		sock->setGroupID(down_gid, true);
+		sock->setGroupID(down_gid, false);
 	}
 		
 	void Peer::resolved(const QString & hinfo)
