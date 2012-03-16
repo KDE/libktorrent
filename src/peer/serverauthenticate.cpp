@@ -64,7 +64,7 @@ namespace bt
 
 		if (!aman.allowed(sock->getRemoteAddress()))
 		{
-			Out(SYS_GEN|LOG_DEBUG) << "The IP address " << sock->getRemoteIPAddress() << " is blocked" << endl;
+			Out(SYS_GEN|LOG_NOTICE) << "The IP address " << sock->getRemoteIPAddress() << " is blocked" << endl;
 			onFinish(false);
 			return;
 		}
@@ -74,7 +74,6 @@ namespace bt
 		PeerManager* pman = ServerInterface::findPeerManager(rh);
 		if (!pman)
 		{
-			Out(SYS_GEN|LOG_DEBUG) << "Cannot find PeerManager for hash : " << rh.toString() << endl;
 			onFinish(false);
 			return;
 		}

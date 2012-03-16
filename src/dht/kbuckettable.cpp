@@ -19,47 +19,22 @@
  ***************************************************************************/
 
 #include "kbuckettable.h"
+#include <QFile>
 #include <util/log.h>
 #include <util/file.h>
 #include <util/error.h>
+#include <bcodec/bencoder.h>
+#include <bcodec/bdecoder.h>
+#include <bcodec/bnode.h>
 #include "nodelookup.h"
 #include "dht.h"
+
+
 
 using namespace bt;
 
 namespace dht
 {
-	/// Generate a random key which lies in a certain bucket
-	static Key RandomKeyInBucket(Uint32 b, const Key & our_id)
-	{
-		// first generate a random one
-		Key r = dht::Key::random();
-		Uint8* data = (Uint8*)r.getData();
-
-		// before we hit bit b, everything needs to be equal to our_id
-		Uint8 nb = b / 8;
-		for (Uint8 i = 0;i < nb;i++)
-			data[i] = *(our_id.getData() + i);
-
-
-		// copy all bits of ob, until we hit the bit which needs to be different
-		Uint8 ob = *(our_id.getData() + nb);
-		for (Uint8 j = 0;j < b % 8;j++)
-		{
-			if ((0x80 >> j) & ob)
-				data[nb] |= (0x80 >> j);
-			else
-				data[nb] &= ~(0x80 >> j);
-		}
-
-		// if the bit b is on turn it off else turn it on
-		if ((0x80 >> (b % 8)) & ob)
-			data[nb] &= ~(0x80 >> (b % 8));
-		else
-			data[nb] |= (0x80 >> (b % 8));
-
-		return Key(data);
-	}
 
 	KBucketTable::KBucketTable(const Key & our_id) :
 			our_id(our_id)
@@ -72,70 +47,71 @@ namespace dht
 
 	void KBucketTable::insert(const dht::KBucketEntry& entry, dht::RPCServerInterface* srv)
 	{
-		Uint8 bit_on = findBucket(entry.getID());
+		if (buckets.empty())
+		{
+			KBucket::Ptr initial(new KBucket(srv, our_id));
+			buckets.push_back(initial);
+		}
+		
+		KBucketList::iterator kb = findBucket(entry.getID());
 
-		// return if bit_on is not good
-		if (bit_on >= 160)
+		// return if we can't find a bucket, should never happen'
+		if (kb == buckets.end())
+		{
+			Out(SYS_DHT|LOG_IMPORTANT) << "Unable to find bucket !" << endl;
 			return;
-
-		// make the bucket if it doesn't exist
-		QMap<bt::Uint8, KBucket::Ptr>::iterator i = buckets.find(bit_on);
-		if (i == buckets.end())
-			i = buckets.insert(bit_on, KBucket::Ptr(new KBucket(bit_on, srv, our_id)));
+		}
 
 		// insert it into the bucket
-		KBucket::Ptr kb = i.value();
-		kb->insert(entry);
+		if ((*kb)->insert(entry))
+		{
+			// Bucket needs to be splitted
+			std::pair<KBucket::Ptr, KBucket::Ptr> result = (*kb)->split();
+			
+			/*
+			Out(SYS_GEN|LOG_DEBUG) << "Splitting bucket " << (*kb)->minKey().toString() << "-" << (*kb)->maxKey().toString() << endl;
+			Out(SYS_GEN|LOG_DEBUG) << "L: " << result.first->minKey().toString() << "-" << result.first->maxKey().toString() << endl;
+			Out(SYS_GEN|LOG_DEBUG) << "R: " << result.second->minKey().toString() << "-" << result.second->maxKey().toString() << endl;
+			*/
+			buckets.insert(kb, result.first);
+			buckets.insert(kb, result.second);
+			buckets.erase(kb);
+			insert(entry, srv);
+		}
 	}
 
 	int KBucketTable::numEntries() const
 	{
 		int count = 0;
-		for (QMap<bt::Uint8, KBucket::Ptr>::const_iterator i = buckets.begin(); i != buckets.end(); i++)
+		for (KBucketList::const_iterator i = buckets.begin(); i != buckets.end(); i++)
 		{
-			count += i.value()->getNumEntries();
+			count += (*i)->getNumEntries();
 		}
 
 		return count;
 	}
 
-	Uint8 KBucketTable::findBucket(const dht::Key& id)
+	KBucketTable::KBucketList::iterator KBucketTable::findBucket(const dht::Key& id)
 	{
-		// XOR our id and the sender's ID
-		dht::Key d = dht::Key::distance(id, our_id);
-		// now use the first on bit to determin which bucket it should go in
-
-		Uint8 bit_on = 0xFF;
-		for (Uint32 i = 0;i < 20;i++)
+		for (KBucketList::iterator i = buckets.begin(); i != buckets.end(); i++)
 		{
-			// get the byte
-			Uint8 b = *(d.getData() + i);
-			// no bit on in this byte so continue
-			if (b == 0x00)
-				continue;
-
-			for (Uint8 j = 0;j < 8;j++)
-			{
-				if (b & (0x80 >> j))
-				{
-					// we have found the bit
-					bit_on = (19 - i) * 8 + (7 - j);
-					return bit_on;
-				}
-			}
+			if ((*i)->keyInRange(id))
+				return i;
 		}
-		return bit_on;
+		
+		return buckets.end();
 	}
 
 	void KBucketTable::refreshBuckets(DHT* dh_table)
 	{
-		for (QMap<bt::Uint8, KBucket::Ptr>::iterator i = buckets.begin(); i != buckets.end(); i++)
+		for (KBucketList::iterator i = buckets.begin(); i != buckets.end(); i++)
 		{
-			KBucket::Ptr b = i.value();
+			KBucket::Ptr b = *i;
 			if (b->needsToBeRefreshed())
 			{
 				// the key needs to be the refreshed
-				NodeLookup* nl = dh_table->refreshBucket(RandomKeyInBucket(i.key(), our_id), *b);
+				dht::Key m = dht::Key::mid(b->maxKey(), b->maxKey());
+				NodeLookup* nl = dh_table->refreshBucket(m, *b);
 				if (nl)
 					b->setRefreshTask(nl);
 			}
@@ -144,9 +120,9 @@ namespace dht
 	
 	void KBucketTable::onTimeout(const net::Address& addr)
 	{
-		for (QMap<bt::Uint8, KBucket::Ptr>::iterator i = buckets.begin(); i != buckets.end(); i++)
+		for (KBucketList::iterator i = buckets.begin(); i != buckets.end(); i++)
 		{
-			KBucket::Ptr b = i.value();
+			KBucket::Ptr b = *i;
 			if (b->onTimeout(addr))
 				return;
 		}
@@ -154,38 +130,36 @@ namespace dht
 
 	void KBucketTable::loadTable(const QString& file, RPCServerInterface* srv)
 	{
-		bt::File fptr;
-		if (!fptr.open(file, "rb"))
+		QFile fptr(file);
+		if (!fptr.open(QIODevice::ReadOnly))
 		{
 			Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Cannot open file " << file << " : " << fptr.errorString() << endl;
 			return;
 		}
 		
-		while (!fptr.eof())
+		try
 		{
-			BucketHeader hdr;
-			try
-			{
-				if (fptr.read(&hdr, sizeof(BucketHeader)) != sizeof(BucketHeader))
-					return;
-			}
-			catch (bt::Error & err)
-			{
-				Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Failed to load table from " << file << " : " << err.toString() << endl;
-				return;
-			}
+			QByteArray data = fptr.readAll();
+			bt::BDecoder dec(data, false, 0);
 			
-			// new IPv6 capable format uses the old magic number + 1
-			if (hdr.magic != dht::BUCKET_MAGIC_NUMBER + 1 || hdr.num_entries > dht::K || hdr.index > 160)
+			QScopedPointer<BListNode> bucket_list(dec.decodeList());
+			if (!bucket_list)
 				return;
 			
-			if (hdr.num_entries == 0)
-				continue;
-			
-			Out(SYS_DHT | LOG_NOTICE) << "DHT: Loading bucket " << hdr.index << endl;
-			KBucket::Ptr bucket(new KBucket(hdr.index, srv, our_id));
-			bucket->load(fptr, hdr);
-			buckets[hdr.index] = bucket; 
+			for (bt::Uint32 i = 0; i < bucket_list->getNumChildren(); i++)
+			{
+				BDictNode* dict = bucket_list->getDict(i);
+				if (!dict)
+					continue;
+				
+				KBucket::Ptr bucket(new KBucket(srv, our_id));
+				bucket->load(dict);
+				buckets.push_back(bucket);
+			}
+		}
+		catch (bt::Error & e)
+		{
+			Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Failed to load bucket table: " << e.toString() << endl;
 		}
 	}
 
@@ -198,13 +172,17 @@ namespace dht
 			return;
 		}
 		
+		BEncoder enc(&fptr);
+		
 		try
 		{
-			for (QMap<bt::Uint8, KBucket::Ptr>::iterator i = buckets.begin(); i != buckets.end(); i++)
+			enc.beginList();
+			for (KBucketList::iterator i = buckets.begin(); i != buckets.end(); i++)
 			{
-				KBucket::Ptr b = i.value();
-				b->save(fptr);
+				KBucket::Ptr b = *i;
+				b->save(enc);
 			}
+			enc.end();
 		}
 		catch (bt::Error & err)
 		{
@@ -214,9 +192,9 @@ namespace dht
 	
 	void KBucketTable::findKClosestNodes(KClosestNodesSearch& kns)
 	{
-		for (QMap<bt::Uint8, KBucket::Ptr>::iterator i = buckets.begin(); i != buckets.end(); i++)
+		for (KBucketList::iterator i = buckets.begin(); i != buckets.end(); i++)
 		{
-			KBucket::Ptr b = i.value();
+			KBucket::Ptr b = *i;
 			b->findKClosestNodes(kns);
 		}
 	}

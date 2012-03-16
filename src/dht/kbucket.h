@@ -26,11 +26,12 @@
 #include <net/address.h>
 #include "key.h"
 #include "rpccall.h"
-
+#include "kbucketentry.h"
 
 namespace bt
 {
 	class File;
+	class BEncoder;
 }
 
 namespace dht
@@ -42,105 +43,6 @@ namespace dht
 	const bt::Uint32 K = 20;
 	const bt::Uint32 BUCKET_MAGIC_NUMBER = 0xB0C4B0C4;
 	const bt::Uint32 BUCKET_REFRESH_INTERVAL = 15 * 60 * 1000;
-
-	struct BucketHeader
-	{
-		bt::Uint32 magic;
-		bt::Uint32 index;
-		bt::Uint32 num_entries;
-	};
-
-	/**
-	 * @author Joris Guisson
-	 *
-	 * Entry in a KBucket, it basically contains an ip_address of a node,
-	 * the udp port of the node and a node_id.
-	 */
-	class KBucketEntry
-	{
-	public:
-		/**
-		 * Constructor, sets everything to 0.
-		 * @return
-		 */
-		KBucketEntry();
-
-		/**
-		 * Constructor, set the ip, port and key
-		 * @param addr socket address
-		 * @param id ID of node
-		 */
-		KBucketEntry(const net::Address & addr, const Key & id);
-
-		/**
-		 * Copy constructor.
-		 * @param other KBucketEntry to copy
-		 * @return
-		 */
-		KBucketEntry(const KBucketEntry & other);
-
-		/// Destructor
-		virtual ~KBucketEntry();
-
-		/**
-		 * Assignment operator.
-		 * @param other Node to copy
-		 * @return this KBucketEntry
-		 */
-		KBucketEntry & operator = (const KBucketEntry & other);
-
-		/// Equality operator
-		bool operator == (const KBucketEntry & entry) const;
-
-		/// Get the socket address of the node
-		const net::Address & getAddress() const {return addr;}
-
-		/// Get it's ID
-		const Key & getID() const {return node_id;}
-
-		/// Is this node a good node
-		bool isGood() const;
-
-		/// Is this node questionable (haven't heard from it in the last 15 minutes)
-		bool isQuestionable() const;
-
-		/// Is it a bad node. (Hasn't responded to a query
-		bool isBad() const;
-
-		/// Signal the entry that the peer has responded
-		void hasResponded();
-
-		/// A request timed out
-		void requestTimeout() {failed_queries++;}
-
-		/// The entry has been pinged because it is questionable
-		void onPingQuestionable() {questionable_pings++;}
-
-		/// The null entry
-		static KBucketEntry null;
-
-		/// < operator
-		bool operator < (const KBucketEntry & entry) const;
-		
-	private:
-		net::Address addr;
-		Key node_id;
-		bt::TimeStamp last_responded;
-		bt::Uint32 failed_queries;
-		bt::Uint32 questionable_pings;
-	};
-
-	class KBucketEntrySet : public std::set<KBucketEntry>
-	{
-	public:
-		KBucketEntrySet() {}
-		virtual ~KBucketEntrySet() {}
-
-		bool contains(const KBucketEntry & entry) const
-		{
-			return find(entry) != end();
-		}
-	};
 
 
 	/**
@@ -156,14 +58,35 @@ namespace dht
 		Q_OBJECT
 
 	public:
-		KBucket(bt::Uint32 idx, RPCServerInterface* srv, const Key & our_id);
+		KBucket(RPCServerInterface* srv, const Key & our_id);
+		KBucket(const dht::Key & min_key, const dht::Key & max_key, RPCServerInterface* srv, const Key & our_id);
 		virtual ~KBucket();
+		
+		typedef QSharedPointer<KBucket> Ptr;
+		
+		/// Get the min key
+		const dht::Key & minKey() const {return min_key;}
+		
+		/// Get the max key
+		const dht::Key & maxKey() const {return max_key;}
 
+		/// Does the key k lies in in the range of this bucket
+		bool keyInRange(const dht::Key & k) const;
+		
+		/// Are we allowed to split
+		bool splitAllowed() const {return keyInRange(our_id);}
+		
+		/**
+		 * Split the bucket in two new buckets, each containing half the range of the original one.
+		 */
+		std::pair<KBucket::Ptr, KBucket::Ptr> split();
+		
 		/**
 		 * Inserts an entry into the bucket.
 		 * @param entry The entry to insert
+		 * @return true If the bucket needs to be splitted, false otherwise
 		 */
-		void insert(const KBucketEntry & entry);
+		bool insert(const KBucketEntry & entry);
 
 		/// Get the least recently seen node
 		const KBucketEntry & leastRecentlySeen() const {return entries[0];}
@@ -191,18 +114,16 @@ namespace dht
 		bool needsToBeRefreshed() const;
 
 		/// save the bucket to a file
-		void save(bt::File & fptr);
+		void save(bt::BEncoder & enc);
 
 		/// Load the bucket from a file
-		void load(bt::File & fptr, const BucketHeader & hdr);
+		void load(bt::BDictNode* dict);
 
 		/// Update the refresh timer of the bucket
 		void updateRefreshTimer();
 
 		/// Set the refresh task
 		void setRefreshTask(Task* t);
-		
-		typedef QSharedPointer<KBucket> Ptr;
 
 	private:
 		virtual void onResponse(RPCCall* c, RPCMsg::Ptr rsp);
@@ -214,7 +135,7 @@ namespace dht
 		void onFinished(Task* t);
 		
 	private:
-		bt::Uint32 idx;
+		dht::Key min_key, max_key;
 		QList<KBucketEntry> entries, pending_entries;
 		RPCServerInterface* srv;
 		Key our_id;

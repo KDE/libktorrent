@@ -1,5 +1,6 @@
 Changes in 1.3:
 - Implement BEP 32, IPv6 DHT (295194)
+- Revamp DHT code and follow spec more closely on routing table
 
 Changes in 1.2.1:
 - Fix deadlock in webseeding code (295719)

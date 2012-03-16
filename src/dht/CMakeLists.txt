@@ -15,6 +15,7 @@ set (dht_HDR
 	nodelookup.h
 	taskmanager.h
 	kbucket.h
+	kbucketentry.h
 	kbuckettable.h
 	database.h
 	announcereq.h

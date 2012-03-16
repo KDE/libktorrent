@@ -21,7 +21,7 @@
 #ifndef DHT_KBUCKETTABLE_H
 #define DHT_KBUCKETTABLE_H
 
-#include <QMap>
+#include <list>
 #include <dht/kbucket.h>
 
 namespace dht
@@ -58,11 +58,12 @@ namespace dht
 		void findKClosestNodes(KClosestNodesSearch & kns);
 		
 	private:
-		bt::Uint8 findBucket(const dht::Key & id);
+		typedef std::list<KBucket::Ptr> KBucketList;
+		KBucketList::iterator findBucket(const dht::Key & id);
 		
 	private:
 		Key our_id;
-		QMap<bt::Uint8, KBucket::Ptr> buckets;
+		KBucketList buckets;
 	};
 
 }

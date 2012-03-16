@@ -150,7 +150,9 @@ namespace bt
 	{
 		reported_metadata_size = metadata_size;
 		if (reported_metadata_size > 0 && !tor.isLoaded() && !download)
+		{
 			download = new MetadataDownload(this,reported_metadata_size);
+		}
 	}
 
 

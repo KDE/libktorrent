@@ -140,6 +140,7 @@ set(libktorrent_SRC
 	dht/rpcserverinterface.cpp
 	dht/dhtbase.cpp       
 	dht/kbucket.cpp
+	dht/kbucketentry.cpp 
 	dht/kbuckettable.cpp 
 	dht/node.cpp                 
 	dht/rpccall.cpp     
