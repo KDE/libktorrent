@@ -28,36 +28,31 @@
 
 namespace bt
 {
-	
+
 	/**
 	 * @author Joris Guisson
 	 * @brief Cache for multi file torrents
 	 *
 	 * This class manages a multi file torrent cache. Everything gets stored in the
-	 * correct files immediately. 
+	 * correct files immediately.
 	 */
 	class MultiFileCache : public Cache
 	{
-		QString cache_dir,output_dir;
-		PtrMap<Uint32,CacheFile> files;
-		PtrMap<Uint32,DNDFile> dnd_files;
-		QString new_output_dir;
-		bool opened;
 	public:
-		MultiFileCache(Torrent& tor,const QString & tmpdir,const QString & datadir,bool custom_output_name);
+		MultiFileCache(Torrent& tor, const QString & tmpdir, const QString & datadir, bool custom_output_name);
 		virtual ~MultiFileCache();
 
 		virtual void changeTmpDir(const QString& ndir);
 		virtual void create();
-		virtual PieceData::Ptr loadPiece(Chunk* c,Uint32 off,Uint32 length);
-		virtual PieceData::Ptr preparePiece(Chunk* c,Uint32 off,Uint32 length);
+		virtual PieceData::Ptr loadPiece(Chunk* c, Uint32 off, Uint32 length);
+		virtual PieceData::Ptr preparePiece(Chunk* c, Uint32 off, Uint32 length);
 		virtual void savePiece(PieceData::Ptr piece);
 		virtual void close();
 		virtual void open();
 		virtual Job* moveDataFiles(const QString & ndir);
 		virtual void moveDataFilesFinished(Job* job);
-		virtual Job* moveDataFiles(const QMap<TorrentFileInterface*,QString> & files);
-		virtual void moveDataFilesFinished(const QMap<TorrentFileInterface*,QString> & files,Job* job);
+		virtual Job* moveDataFiles(const QMap<TorrentFileInterface*, QString> & files);
+		virtual void moveDataFilesFinished(const QMap<TorrentFileInterface*, QString> & files, Job* job);
 		virtual QString getOutputPath() const;
 		virtual void changeOutputPath(const QString & outputpath);
 		virtual void preallocateDiskSpace(PreallocationThread* prealloc);
@@ -66,15 +61,21 @@ namespace bt
 		virtual Uint64 diskUsage();
 		virtual void loadFileMap();
 		virtual void saveFileMap();
-	
+
 	private:
 		void touch(TorrentFile & tf);
 		virtual void downloadStatusChanged(TorrentFile*, bool);
-	//	QString guessDataDir();
-		void saveFirstAndLastChunk(TorrentFile* tf,const QString & src_file,const QString & dst_file);
-		void recreateFile(TorrentFile* tf,const QString & dnd_file,const QString & output_file);
-		PieceData::Ptr createPiece(Chunk* c,Uint32 off,Uint32 length,bool read_only);
-		void calculateOffsetAndLength(Uint32 piece_off,Uint32 piece_len,Uint64 file_off,Uint32 chunk_off,Uint32 chunk_len,Uint64 & off,Uint32 & len);
+		void saveFirstAndLastChunk(TorrentFile* tf, const QString & src_file, const QString & dst_file);
+		void recreateFile(TorrentFile* tf, const QString & dnd_file, const QString & output_file);
+		PieceData::Ptr createPiece(Chunk* c, Uint32 off, Uint32 length, bool read_only);
+		void calculateOffsetAndLength(Uint32 piece_off, Uint32 piece_len, Uint64 file_off, Uint32 chunk_off, Uint32 chunk_len, Uint64 & off, Uint32 & len);
+
+	private:
+		QString cache_dir, output_dir;
+		PtrMap<Uint32, CacheFile> files;
+		PtrMap<Uint32, DNDFile> dnd_files;
+		QString new_output_dir;
+		bool opened;
 	};
 
 }

@@ -20,10 +20,10 @@
 #ifndef BTCACHEFILE_H
 #define BTCACHEFILE_H
 
-#include <qmap.h>
-#include <qmutex.h>
-#include <qstring.h>
+#include <QMap>
+#include <QMutex>
 #include <QFile>
+#include <QSharedPointer>
 #include <util/constants.h>
 
 namespace bt
@@ -122,6 +122,8 @@ namespace bt
 
 		/// Get the number of bytes this cache file is taking up
 		Uint64 diskUsage();
+		
+		typedef QSharedPointer<CacheFile> Ptr;
 		
 	private:
 		void growFile(Uint64 to_write);
