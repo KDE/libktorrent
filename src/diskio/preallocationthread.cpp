@@ -37,97 +37,104 @@
 namespace bt
 {
 
-	PreallocationThread::PreallocationThread(ChunkManager* cman) : cman(cman),stopped(false),not_finished(false),done(false)
+	PreallocationThread::PreallocationThread() : 
+		stopped(false), 
+		not_finished(false), 
+		done(false),
+		bytes_written(0)
 	{
-		bytes_written = 0;
 	}
 
 
 	PreallocationThread::~PreallocationThread()
 	{}
+	
+	void PreallocationThread::add(CacheFile::Ptr cache_file)
+	{
+		todo.append(cache_file);
+	}
+
 
 	void PreallocationThread::run()
 	{
 		try
 		{
-			cman->preallocateDiskSpace(this);
+			foreach(CacheFile::Ptr cache_file, todo)
+			{
+				if(!isStopped())
+				{
+					cache_file->preallocate(this);
+				}
+				else
+				{
+					setNotFinished();
+					break;
+				}
+			}
+				
 		}
-		catch (Error & err)
+		catch(Error & err)
 		{
 			setErrorMsg(err.toString());
 		}
-		
-		mutex.lock();
+
+		QMutexLocker lock(&mutex);
 		done = true;
-		mutex.unlock();
-		Out(SYS_DIO|LOG_NOTICE) << "PreallocationThread has finished" << endl;
+		Out(SYS_DIO | LOG_NOTICE) << "PreallocationThread has finished" << endl;
 	}
-	
-	void PreallocationThread::stop() 
+
+	void PreallocationThread::stop()
 	{
-		mutex.lock();
+		QMutexLocker lock(&mutex);
 		stopped = true;
-		mutex.unlock();
 	}
-		
-	void PreallocationThread::setErrorMsg(const QString & msg) 
+
+	void PreallocationThread::setErrorMsg(const QString & msg)
 	{
-		mutex.lock();
-		error_msg = msg; stopped = true;
-		mutex.unlock();
+		QMutexLocker lock(&mutex);
+		error_msg = msg; 
+		stopped = true;
 	}
-		
-	bool PreallocationThread::isStopped() const 
+
+	bool PreallocationThread::isStopped() const
 	{
-		mutex.lock();
-		bool tmp = stopped;
-		mutex.unlock();
-		return tmp;
+		QMutexLocker lock(&mutex);
+		return stopped;
 	}
-		
-	bool PreallocationThread::errorHappened() const 
+
+	bool PreallocationThread::errorHappened() const
 	{
-		mutex.lock();
-		bool ret = !error_msg.isNull();
-		mutex.unlock();
-		return ret;
+		QMutexLocker lock(&mutex);
+		return !error_msg.isNull();
 	}
-		
-	void PreallocationThread::written(Uint64 nb) 
+
+	void PreallocationThread::written(Uint64 nb)
 	{
-		mutex.lock();
+		QMutexLocker lock(&mutex);
 		bytes_written += nb;
-		mutex.unlock();
 	}
-		
+
 	Uint64 PreallocationThread::bytesWritten()
 	{
-		mutex.lock();
-		Uint64 tmp = bytes_written;
-		mutex.unlock();
-		return tmp;
+		QMutexLocker lock(&mutex);
+		return bytes_written;
 	}
-	
+
 	bool PreallocationThread::isDone() const
 	{
-		mutex.lock();
-		bool tmp = done;
-		mutex.unlock();
-		return tmp;
+		QMutexLocker lock(&mutex);
+		return done;
 	}
-	
+
 	bool PreallocationThread::isNotFinished() const
 	{
-		mutex.lock();
-		bool tmp = not_finished;
-		mutex.unlock();
-		return tmp;
+		QMutexLocker lock(&mutex);
+		return not_finished;
 	}
-	
+
 	void PreallocationThread::setNotFinished()
 	{
-		mutex.lock();
+		QMutexLocker lock(&mutex);
 		not_finished = true;
-		mutex.unlock();
 	}
 }

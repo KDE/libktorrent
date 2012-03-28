@@ -33,12 +33,8 @@ namespace bt
 	 *
 	 * This class implements Cache for a single file torrent
 	 */
-	class SingleFileCache : public Cache
+	class KTORRENT_EXPORT SingleFileCache : public Cache
 	{
-		QString cache_file;
-		QString output_file;
-		QString move_data_files_dst;
-		CacheFile* fd;
 	public:
 		SingleFileCache(Torrent& tor,const QString & tmpdir,const QString & datadir);
 		virtual ~SingleFileCache();
@@ -56,14 +52,21 @@ namespace bt
 		virtual void moveDataFilesFinished(Job* job);
 		virtual void changeOutputPath(const QString& outputpath);
 		virtual QString getOutputPath() const {return output_file;}
-		virtual void preallocateDiskSpace(PreallocationThread* prealloc);
+		virtual void preparePreallocation(PreallocationThread* prealloc);
 		virtual bool hasMissingFiles(QStringList & sl);
 		virtual Job* deleteDataFiles();
 		virtual Uint64 diskUsage();
 		virtual void loadFileMap();
 		virtual void saveFileMap();
+		
 	private:
 		PieceData::Ptr createPiece(Chunk* c,Uint64 off,Uint32 length,bool read_only);
+		
+	private:
+		QString cache_file;
+		QString output_file;
+		QString move_data_files_dst;
+		CacheFile::Ptr fd;
 	};
 
 }

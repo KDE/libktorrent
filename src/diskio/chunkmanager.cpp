@@ -603,9 +603,9 @@ namespace bt
 		return d->cache->getOutputPath();
 	}
 	
-	void ChunkManager::preallocateDiskSpace(PreallocationThread* prealloc)
+	void ChunkManager::preparePreallocation(PreallocationThread* prealloc)
 	{
-		d->cache->preallocateDiskSpace(prealloc);
+		d->cache->preparePreallocation(prealloc);
 	}
 	
 	void ChunkManager::dataChecked(const bt::BitSet& ok_chunks, bt::Uint32 from, bt::Uint32 to)

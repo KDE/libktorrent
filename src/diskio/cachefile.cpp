@@ -454,7 +454,7 @@ namespace bt
 	
 	
 		
-	void CacheFile::preallocate(PreallocationThread* /*prealloc*/)
+	void CacheFile::preallocate(PreallocationThread* prealloc)
 	{
 		QMutexLocker lock(&mutex);
 		
@@ -504,6 +504,7 @@ namespace bt
 		}
 
 		file_size = FileSize(fd);
+		prealloc->written(file_size);
 		Out(SYS_GEN|LOG_DEBUG) << "file_size = " << file_size << endl;
 		if (close_again)
 			closeTemporary();

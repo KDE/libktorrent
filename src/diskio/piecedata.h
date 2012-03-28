@@ -42,41 +42,41 @@ namespace bt
 		Class which holds the data of a piece of a chunk.
 		It has a reference counter.
 	*/
-	class KTORRENT_EXPORT PieceData : public QSharedData,public MMappeable
+	class KTORRENT_EXPORT PieceData : public QSharedData, public MMappeable
 	{
 	public:
-		PieceData(Chunk* chunk,Uint32 off,Uint32 len,Uint8* ptr,CacheFile* file,bool read_only);
+		PieceData(Chunk* chunk, Uint32 off, Uint32 len, Uint8* ptr, CacheFile::Ptr cache_file, bool read_only);
 		virtual ~PieceData();
-		
+
 		/// Unload the piece
 		void unload();
-		
+
 		/// Is it a mapped into memory
-		bool mapped() const {return file != 0;}
-		
+		bool mapped() const {return cache_file != 0;}
+
 		/// Is this writeable
 		bool writeable() const {return !read_only;}
-		
+
 		/// Get the offset of the piece in the chunk
 		Uint32 offset() const {return off;}
-		
+
 		/// Get the length of the piece
 		Uint32 length() const {return len;}
-		
+
 		/// Get a pointer to the data
 		Uint8* data() {return ptr;}
-		
+
 		/// Check if the data pointer is OK
 		bool ok() const {return ptr != 0;}
-		
+
 		/// Set the data pointer
 		void setData(Uint8* p) {ptr = p;}
 
 		/// Get the parent chunk of the piece
 		Chunk* parentChunk() {return chunk;}
-		
+
 		/**
-			Write data into the PieceData. This function should always be used 
+			Write data into the PieceData. This function should always be used
 			for writing into a PieceData object, as it protects against bus errors.
 			@param buf The buffer to write
 			@param size Size of the buffer
@@ -84,10 +84,10 @@ namespace bt
 			@return The number of bytes written
 			@throw BusError When writing results in a SIGBUS
 		*/
-		Uint32 write(const Uint8* buf,Uint32 buf_size,Uint32 off = 0);
-		
+		Uint32 write(const Uint8* buf, Uint32 buf_size, Uint32 off = 0);
+
 		/**
-			Read data from the PieceData. This function should always be used 
+			Read data from the PieceData. This function should always be used
 			for reading from a PieceData object, as it protects against bus errors.
 			@param buf The buffer to read into
 			@param to_read Amount of bytes to read
@@ -95,8 +95,8 @@ namespace bt
 			@return The number of bytes read
 			@throw BusError When reading results in a SIGBUS
 		 */
-		Uint32 read(Uint8* buf,Uint32 to_read,Uint32 off = 0);
-		
+		Uint32 read(Uint8* buf, Uint32 to_read, Uint32 off = 0);
+
 		/**
 			Save PieceData to a File. This function protects against bus errors.
 			@param file The file to write to
@@ -105,8 +105,8 @@ namespace bt
 			@return The number of bytes written
 			@throw BusError When writing results in a SIGBUS
 		*/
-		Uint32 writeToFile(File & file,Uint32 size,Uint32 off = 0);
-		
+		Uint32 writeToFile(File & file, Uint32 size, Uint32 off = 0);
+
 		/**
 			Read PieceData from a File. This function protects against bus errors.
 			@param file The file to read from
@@ -115,24 +115,24 @@ namespace bt
 			@return The number of bytes read
 			@throw BusError When reading results in a SIGBUS
 		*/
-		Uint32 readFromFile(File & file,Uint32 size,Uint32 off = 0);
-		
+		Uint32 readFromFile(File & file, Uint32 size, Uint32 off = 0);
+
 		/**
 			Update a SHA1HashGen with this PieceData. This function protects against bus errors.
 			@param hg The SHA1HashGen to update
 			@throw BusError When reading results in a SIGBUS
 		 */
 		void updateHash(SHA1HashGen & hg);
-		
+
 		/**
 			Generate a SHA1Hash of this PieceData. This function protects against bus errors.
 			@return The SHA1 hash
 			@throw BusError When reading results in a SIGBUS
 		 */
 		SHA1Hash generateHash() const;
-		
+
 		typedef QExplicitlySharedDataPointer<PieceData> Ptr;
-		
+
 		/// Is the piece in use by somebody else then the cache
 		bool inUse() const {return ref > 1;}
 
@@ -144,11 +144,11 @@ namespace bt
 		Uint32 off;
 		Uint32 len;
 		Uint8* ptr;
-		CacheFile* file;
+		CacheFile::Ptr cache_file;
 		bool read_only;
 	};
-	
-	
+
+
 
 }
 

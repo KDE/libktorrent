@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2009 by                                                 *
+ *   Copyright (C) 2012 by                                                 *
  *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,57 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include "preallocationjob.h"
-#include "preallocationthread.h"
-#include "chunkmanager.h"
-#include <util/log.h>
-#include <torrent/torrentcontrol.h>
+#ifndef UTILS_H
+#define UTILS_H
 
-namespace bt
-{
+#include <util/constants.h>
 
-	PreallocationJob::PreallocationJob(ChunkManager* cman, TorrentControl* tc): Job(false, tc), cman(cman), prealloc_thread(0)
-	{
-	}
+/// Generate a random size between min_size and max_size
+bt::Uint64 RandomSize(bt::Uint64 min_size,bt::Uint64 max_size);
 
-	PreallocationJob::~PreallocationJob()
-	{
-	}
-
-	void PreallocationJob::start()
-	{
-		prealloc_thread = new PreallocationThread();
-		cman->preparePreallocation(prealloc_thread);
-		connect(prealloc_thread, SIGNAL(finished()), this, SLOT(finished()), Qt::QueuedConnection);
-		prealloc_thread->start(QThread::IdlePriority);
-	}
-
-	void PreallocationJob::kill(bool quietly)
-	{
-		if(prealloc_thread)
-		{
-			prealloc_thread->stop();
-			prealloc_thread->wait();
-			prealloc_thread->deleteLater();
-			prealloc_thread = 0;
-		}
-		bt::Job::kill(quietly);
-	}
-
-
-	void PreallocationJob::finished()
-	{
-		if(prealloc_thread)
-		{
-			torrent()->preallocFinished(prealloc_thread->errorMessage(), !prealloc_thread->isStopped());
-			prealloc_thread->deleteLater();
-			prealloc_thread = 0;
-		}
-		else
-			torrent()->preallocFinished(QString(), false);
-
-		setError(0);
-		emitResult();
-	}
-
-}
+#endif // UTILS_H

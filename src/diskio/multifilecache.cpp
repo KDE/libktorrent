@@ -61,8 +61,6 @@ namespace bt
 			output_dir = this->datadir + tor.getNameSuggestion() + bt::DirSeparator();
 		else
 			output_dir = this->datadir;
-		files.setAutoDelete(true);
-		dnd_files.setAutoDelete(true);
 	}
 
 
@@ -161,44 +159,31 @@ namespace bt
 		for(Uint32 i = 0; i < tor.getNumFiles(); i++)
 		{
 			TorrentFile & tf = tor.getFile(i);
-			CacheFile* fd = 0;
-			DNDFile* dfd = 0;
-			try
+			if(!tf.doNotDownload())
 			{
-				if(!tf.doNotDownload())
-				{
-					if(files.contains(i))
-						files.erase(i);
+				if(files.contains(i))
+					files.remove(i);
 
-					fd = new CacheFile();
-					fd->open(tf.getPathOnDisk(), tf.getSize());
-					files.insert(i, fd);
-				}
-				else
-				{
-					if(dnd_files.contains(i))
-						dnd_files.erase(i);
-
-					QString dnd_path = QString("file%1.dnd").arg(tf.getIndex());
-					QString dnd_file = dnd_dir + dnd_path;
-					if(bt::Exists(dnd_dir + tf.getUserModifiedPath() + ".dnd"))
-					{
-						// old style dnd dir, move the file so that we can keep working
-						// with the old file
-						bt::Move(dnd_dir + tf.getUserModifiedPath() + ".dnd", dnd_file, true, true);
-					}
-					dfd = new DNDFile(dnd_file, &tf, tor.getChunkSize());
-					dfd->checkIntegrity();
-					dnd_files.insert(i, dfd);
-				}
+				CacheFile::Ptr fd(new CacheFile());
+				fd->open(tf.getPathOnDisk(), tf.getSize());
+				files.insert(i, fd);
 			}
-			catch(...)
+			else
 			{
-				delete fd;
-				fd = 0;
-				delete dfd;
-				dfd = 0;
-				throw;
+				if(dnd_files.contains(i))
+					dnd_files.remove(i);
+
+				QString dnd_path = QString("file%1.dnd").arg(tf.getIndex());
+				QString dnd_file = dnd_dir + dnd_path;
+				if(bt::Exists(dnd_dir + tf.getUserModifiedPath() + ".dnd"))
+				{
+					// old style dnd dir, move the file so that we can keep working
+					// with the old file
+					bt::Move(dnd_dir + tf.getUserModifiedPath() + ".dnd", dnd_file, true, true);
+				}
+				DNDFile::Ptr dfd(new DNDFile(dnd_file, &tf, tor.getChunkSize()));
+				dfd->checkIntegrity();
+				dnd_files.insert(i, dfd);
 			}
 		}
 
@@ -217,7 +202,7 @@ namespace bt
 			TorrentFile & tf = tor.getFile(i);
 			if(tf.doNotDownload())
 			{
-				DNDFile* dfd = dnd_files.find(i);
+				DNDFile::Ptr dfd = dnd_files[i];
 				if(dfd)
 				{
 					QString dnd_path = QString("file%1.dnd").arg(tf.getIndex());
@@ -240,7 +225,7 @@ namespace bt
 		{
 			TorrentFile & tf = tor.getFile(i);
 			tf.setPathOnDisk(output_dir + tf.getUserModifiedPath());
-			CacheFile* cf = files.find(tf.getIndex());
+			CacheFile::Ptr cf = files[tf.getIndex()];
 			if(cf)
 				cf->changePath(tf.getPathOnDisk());
 		}
@@ -298,7 +283,7 @@ namespace bt
 		{
 			TorrentFile & tf = tor.getFile(i);
 			tf.setPathOnDisk(new_output_dir + tf.getUserModifiedPath());
-			CacheFile* cf = files.find(tf.getIndex());
+			CacheFile::Ptr cf = files[tf.getIndex()];
 			if(cf)
 				cf->changePath(tf.getPathOnDisk());
 			// check for empty directories and delete them
@@ -338,7 +323,7 @@ namespace bt
 			else
 				tf->setPathOnDisk(i.value());
 
-			CacheFile* cf = files.find(tf->getIndex());
+			CacheFile::Ptr cf = files[tf->getIndex()];
 			if(cf)
 				cf->changePath(tf->getPathOnDisk());
 			i++;
@@ -417,7 +402,7 @@ namespace bt
 		if(tflist.count() == 1)
 		{
 			const TorrentFile & f = tor.getFile(tflist.first());
-			CacheFile* fd = files.find(tflist.first());
+			CacheFile::Ptr fd = files[tflist.first()];
 			if(!fd)
 				return PieceData::Ptr();
 
@@ -441,7 +426,7 @@ namespace bt
 
 		// mmap failed or there are multiple files, so just do buffered
 		Uint8* buf = new Uint8[length];
-		PieceData::Ptr piece(new PieceData(c, off, length, buf, 0, read_only));
+		PieceData::Ptr piece(new PieceData(c, off, length, buf, CacheFile::Ptr(), read_only));
 		insertPiece(c, piece);
 		return piece;
 	}
@@ -507,7 +492,7 @@ namespace bt
 		if(tflist.count() == 1)
 		{
 			const TorrentFile & f = tor.getFile(tflist[0]);
-			CacheFile* fd = files.find(tflist[0]);
+			CacheFile::Ptr fd = files[tflist[0]];
 			Uint64 piece_off = FileOffset(c, f, tor.getChunkSize()) + off;
 
 			fd->read(piece->data(), length, piece_off);
@@ -521,8 +506,8 @@ namespace bt
 		for(int i = 0; i < tflist.count(); i++)
 		{
 			const TorrentFile & f = tor.getFile(tflist[i]);
-			CacheFile* fd = files.find(tflist[i]);
-			DNDFile* dfd = dnd_files.find(tflist[i]);
+			CacheFile::Ptr fd = files[tflist[i]];
+			DNDFile::Ptr dfd = dnd_files[tflist[i]];
 
 			// first calculate offset into file
 			// only the first file can have an offset
@@ -601,8 +586,8 @@ namespace bt
 		for(int i = 0; i < tflist.count(); i++)
 		{
 			const TorrentFile & f = tor.getFile(tflist[i]);
-			CacheFile* fd = files.find(tflist[i]);
-			DNDFile* dfd = dnd_files.find(tflist[i]);
+			CacheFile::Ptr fd = files[tflist[i]];
+			DNDFile::Ptr dfd = dnd_files[tflist[i]];
 
 			// first calculate offset into file
 			// only the first file can have an offset
@@ -673,9 +658,6 @@ namespace bt
 		if(!dnd && bt::Exists(tf->getPathOnDisk()))
 			return;
 
-
-		DNDFile* dfd = 0;
-		CacheFile* fd = 0;
 		try
 		{
 			if(dnd)
@@ -688,8 +670,8 @@ namespace bt
 				if(bt::Exists(tf->getPathOnDisk()))
 					bt::Delete(tf->getPathOnDisk(), true);
 
-				files.erase(tf->getIndex());
-				dfd = new DNDFile(dnd_file, tf, tor.getChunkSize());
+				files.remove(tf->getIndex());
+				DNDFile::Ptr dfd(new DNDFile(dnd_file, tf, tor.getChunkSize()));
 				dfd->checkIntegrity();
 				dnd_files.insert(tf->getIndex(), dfd);
 			}
@@ -698,16 +680,14 @@ namespace bt
 				// recreate the file
 				recreateFile(tf, dnd_dir + dnd_path, tf->getPathOnDisk());
 				bt::Delete(dnd_dir + dnd_path);
-				dnd_files.erase(tf->getIndex());
-				fd = new CacheFile();
+				dnd_files.remove(tf->getIndex());
+				CacheFile::Ptr fd(new CacheFile());
 				fd->open(tf->getPathOnDisk(), tf->getSize());
 				files.insert(tf->getIndex(), fd);
 			}
 		}
 		catch(bt::Error & err)
 		{
-			delete fd;
-			delete dfd;
 			Out(SYS_DIO | LOG_DEBUG) << err.toString() << endl;
 		}
 	}
@@ -793,22 +773,13 @@ namespace bt
 		}
 	}
 
-	void MultiFileCache::preallocateDiskSpace(PreallocationThread* prealloc)
+	void MultiFileCache::preparePreallocation(PreallocationThread* prealloc)
 	{
-		PtrMap<Uint32, CacheFile>::iterator i = files.begin();
+		QMap<Uint32, CacheFile::Ptr>::iterator i = files.begin();
 		while(i != files.end())
 		{
-			CacheFile* cf = i->second;
-			if(!prealloc->isStopped())
-			{
-				cf->preallocate(prealloc);
-			}
-			else
-			{
-				// we got interrupted tell the thread we are not finished and return
-				prealloc->setNotFinished();
-				return;
-			}
+			CacheFile::Ptr cf = i.value();
+			prealloc->add(cf);
 			i++;
 		}
 	}
@@ -911,7 +882,7 @@ namespace bt
 
 			try
 			{
-				CacheFile* cf = files.find(i);
+				CacheFile::Ptr cf = files[i];
 				if(cf)
 				{
 					sum += cf->diskUsage();
@@ -920,10 +891,9 @@ namespace bt
 				{
 					// doesn't exist yet, must be before open is called
 					// so create one and delete it right after
-					cf = new CacheFile();
+					CacheFile::Ptr cf(new CacheFile());
 					cf->open(tf.getPathOnDisk(), tf.getSize());
 					sum += cf->diskUsage();
-					delete cf;
 				}
 			}
 			catch(bt::Error & err)  // make sure we catch any exceptions

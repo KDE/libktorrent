@@ -21,7 +21,7 @@
 #define BTMULTIFILECACHE_H
 
 
-#include <util/ptrmap.h>
+#include <QMap>
 #include "cache.h"
 #include "cachefile.h"
 #include "dndfile.h"
@@ -36,7 +36,7 @@ namespace bt
 	 * This class manages a multi file torrent cache. Everything gets stored in the
 	 * correct files immediately.
 	 */
-	class MultiFileCache : public Cache
+	class KTORRENT_EXPORT MultiFileCache : public Cache
 	{
 	public:
 		MultiFileCache(Torrent& tor, const QString & tmpdir, const QString & datadir, bool custom_output_name);
@@ -55,7 +55,7 @@ namespace bt
 		virtual void moveDataFilesFinished(const QMap<TorrentFileInterface*, QString> & files, Job* job);
 		virtual QString getOutputPath() const;
 		virtual void changeOutputPath(const QString & outputpath);
-		virtual void preallocateDiskSpace(PreallocationThread* prealloc);
+		virtual void preparePreallocation(PreallocationThread* prealloc);
 		virtual bool hasMissingFiles(QStringList & sl);
 		virtual Job* deleteDataFiles();
 		virtual Uint64 diskUsage();
@@ -72,8 +72,8 @@ namespace bt
 
 	private:
 		QString cache_dir, output_dir;
-		PtrMap<Uint32, CacheFile> files;
-		PtrMap<Uint32, DNDFile> dnd_files;
+		QMap<Uint32, CacheFile::Ptr> files;
+		QMap<Uint32, DNDFile::Ptr> dnd_files;
 		QString new_output_dir;
 		bool opened;
 	};

@@ -26,6 +26,7 @@
 #include <torrent/torrentcontrol.h>
 #include <diskio/chunkmanager.h>
 #include <diskio/piecedata.h>
+#include <testlib/utils.h>
 #include <testlib/dummytorrentcreator.h>
 #include <util/sha1hashgen.h>
 #include <util/signalcatcher.h>
@@ -36,11 +37,7 @@ using namespace bt;
 
 const bt::Uint64 TEST_FILE_SIZE = 15*1024*1024;
 
-bt::Uint64 RandomSize(bt::Uint64 min_size,bt::Uint64 max_size)
-{
-	bt::Uint64 r = max_size - min_size;
-	return min_size + qrand() % r;
-}
+
 
 class ChunkManagerTest : public QObject
 {

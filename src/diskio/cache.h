@@ -143,10 +143,10 @@ namespace bt
 		virtual void downloadStatusChanged(TorrentFile*, bool) {};
 		
 		/**
-		 * Preallocate diskspace for all files
-		 * @param prealloc The thread doing the preallocation
+		 * Prepare disksapce preallocation
+		 * @param prealloc The thread going to do the preallocation
 		 */
-		virtual void preallocateDiskSpace(PreallocationThread* prealloc) = 0;
+		virtual void preparePreallocation(PreallocationThread* prealloc) = 0;
 		
 		/// See if the download has existing files
 		bool hasExistingFiles() const {return preexisting_files;}

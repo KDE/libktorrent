@@ -134,10 +134,10 @@ namespace bt
 		bool hasMissingFiles(QStringList & sl);
 		
 		/**
-		 * Preallocate diskspace for all files
-		 * @param prealloc The thread doing the preallocation
+		 * Prepare diskspace preallocation
+		 * @param prealloc The thread going to do the preallocation
 		 */
-		void preallocateDiskSpace(PreallocationThread* prealloc);
+		void preparePreallocation(PreallocationThread* prealloc);
 		
 		/**
 		 * Open the necessary files when the download gets started.
