@@ -26,6 +26,7 @@
 #include <util/constants.h>
 #include <util/resourcemanager.h>
 #include <net/address.h>
+#include "connectionlimit.h"
 
 #if (QT_VERSION < QT_VERSION_CHECK(4, 7, 0))
 template <class T>
@@ -55,7 +56,7 @@ namespace bt
 			UTP_WITHOUT_ENCRYPTION
 		};
 		
-		PeerConnector(const net::Address & addr,bool local,PeerManager* pman);
+		PeerConnector(const net::Address & addr,bool local,PeerManager* pman, ConnectionLimit::Token::Ptr token);
 		virtual ~PeerConnector();
 	
 		/// Called when an authentication attempt is finished

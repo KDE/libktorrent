@@ -51,9 +51,18 @@ namespace bt
 	bool Peer::resolve_hostname = true;
 
 
-	Peer::Peer(mse::EncryptedPacketSocket::Ptr sock, const PeerID & peer_id,
-	           Uint32 num_chunks, Uint32 chunk_size, Uint32 support, bool local, PeerManager* pman)
-			: PeerInterface(peer_id, num_chunks), sock(sock), pman(pman)
+	Peer::Peer(mse::EncryptedPacketSocket::Ptr sock, 
+			   const PeerID & peer_id,
+			   Uint32 num_chunks, 
+			   Uint32 chunk_size, 
+			   Uint32 support, 
+			   bool local, 
+			   ConnectionLimit::Token::Ptr token, 
+			   PeerManager* pman)
+			: PeerInterface(peer_id, num_chunks), 
+			sock(sock), 
+			token(token), 
+			pman(pman)
 	{
 		id = peer_id_counter;
 		peer_id_counter++;
@@ -125,6 +134,7 @@ namespace bt
 	{
 		sock->close();
 		killed = true;
+		token.clear();
 	}
 
 	void Peer::handleChoke(Uint32 len)

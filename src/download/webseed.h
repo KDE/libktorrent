@@ -21,14 +21,15 @@
 #ifndef BTWEBSEED_H
 #define BTWEBSEED_H
 
-#include <QObject>
+#include <QTimer>
 #include <kurl.h>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <interfaces/webseedinterface.h>
 #include <interfaces/chunkdownloadinterface.h>
 #include <diskio/piecedata.h>
-#include <QTimer>
+#include <peer/connectionlimit.h>
+
 
 
 namespace bt
@@ -196,6 +197,7 @@ namespace bt
 		KUrl redirected_url;
 		PieceData::Ptr cur_piece;
 		QTimer retry_timer;
+		ConnectionLimit::Token::Ptr token;
 		
 		static QString proxy_host;
 		static Uint16 proxy_port;

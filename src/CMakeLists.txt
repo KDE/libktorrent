@@ -5,7 +5,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${LIBGCRYPT_INCLUDE_DIR} ${QCA2_INCLUDE_DIR})
 remove_definitions(-DQT_NO_HTTP)
 
-set(libktorrent_SRC 
+set(libktorrent_SRC
 	util/bitset.cpp
 	util/timer.cpp
 	util/urlencoder.cpp
@@ -79,6 +79,7 @@ set(libktorrent_SRC
 	peer/badpeerslist.cpp
 	peer/peerconnector.cpp
 	peer/superseeder.cpp
+	peer/connectionlimit.cpp 
 
 	download/piece.cpp
 	download/request.cpp

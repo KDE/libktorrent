@@ -16,6 +16,7 @@ set (peer_HDR
 	accessmanager.h
 	peerconnector.h
 	superseeder.h
+	connectionlimit.h
 )
 
 

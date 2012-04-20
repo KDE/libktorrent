@@ -30,6 +30,7 @@
 #include <ktorrent_export.h>
 #include "peerid.h"
 #include "peerprotocolextension.h"
+#include "connectionlimit.h"
 
 namespace net
 {
@@ -69,6 +70,8 @@ namespace bt
 		 * @param chunk_size Size of each chunk 
 		 * @param support Which extensions the peer supports
 		 * @param local Whether or not it is a local peer
+		 * @param token ConnectionLimit token
+		 * @param pman The PeerManager
 		 */
 		Peer(mse::EncryptedPacketSocket::Ptr sock,
 			 const PeerID & peer_id,
@@ -76,6 +79,7 @@ namespace bt
 			 Uint32 chunk_size,
 			 Uint32 support,
 			 bool local,
+			 ConnectionLimit::Token::Ptr token,
 			 PeerManager* pman);
 		
 		virtual ~Peer();
@@ -338,6 +342,7 @@ namespace bt
 
 	private:
 		mse::EncryptedPacketSocket::Ptr sock;
+		ConnectionLimit::Token::Ptr token;
 		
 		Timer stalled_timer;
 		

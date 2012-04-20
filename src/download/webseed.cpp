@@ -29,6 +29,7 @@
 #include <diskio/chunkmanager.h>
 #include <diskio/piecedata.h>
 #include <net/socketmonitor.h>
+#include <peer/peermanager.h>
 #include "httpconnection.h"
 
 namespace bt
@@ -126,6 +127,15 @@ namespace bt
 	
 	void WebSeed::connectToServer()
 	{
+		if(!token)
+			token = PeerManager::connectionLimits().acquire(tor.getInfoHash());
+		
+		if(!token)
+		{
+			retryLater();
+			return;
+		}
+			
 		KUrl dst = url;
 		if (redirected_url.isValid())
 			dst = redirected_url;
@@ -317,6 +327,7 @@ namespace bt
 				}
 				delete conn;
 				conn = 0;
+				token.clear();
 				chunkStopped();
 				first_chunk = last_chunk = cur_chunk = tor.getNumChunks() + 1;
 				num_failures++;
@@ -332,6 +343,7 @@ namespace bt
 				Out(SYS_CON|LOG_DEBUG) << "WebSeed: connection closed" << endl;
 				delete conn;
 				conn = 0;
+				token.clear();
 				
 				status = i18n("Connection closed");
 				chunkStopped();
@@ -526,6 +538,7 @@ namespace bt
 	{
 		delete conn;
 		conn = 0;
+		token.clear();
 		if (to_url.isValid() && to_url.protocol() == "http")
 		{
 			redirected_url = to_url;

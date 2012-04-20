@@ -20,11 +20,12 @@
 #include "cache.h"
 #include <util/functions.h>
 #include <util/log.h>
+#include <peer/connectionlimit.h>
+#include <peer/peermanager.h>
 #include <torrent/torrent.h>
 #include "chunk.h"
 #include "cachefile.h"
 #include "piecedata.h"
-#include <peer/peermanager.h>
 
 namespace bt
 {
@@ -69,7 +70,7 @@ namespace bt
 	bool Cache::mappedModeAllowed()
 	{
 #ifndef Q_WS_WIN
-		return MaxOpenFiles() - bt::PeerManager::getTotalConnections() > 100;
+		return MaxOpenFiles() - bt::PeerManager::connectionLimits().totalConnections() > 100;
 #else
 		return true; //there isn't a file handle limit on windows
 #endif
