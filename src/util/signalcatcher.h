@@ -26,6 +26,8 @@
 #include <ktorrent_export.h>
 #include <signal.h>
 #include <setjmp.h>
+#include <QObject>
+#include <QSocketNotifier>
 #include <util/error.h>
 
 namespace bt 
@@ -56,6 +58,38 @@ namespace bt
 		
 		/// Wether or not the SIGBUS was triggered by a write operation
 		bool write_operation;
+	};
+	
+	/**
+	 * Class to handle UNIX signals (not Qt ones)
+	 */
+	class KTORRENT_EXPORT SignalCatcher : public QObject
+	{
+		Q_OBJECT
+	public:
+		SignalCatcher(QObject* parent = 0);
+		virtual ~SignalCatcher();
+		
+		/**
+		 * Catch a UNIX signal
+		 * @param sig SIGINT, SIGTERM or some other signal
+		 * @return true upon success, false otherwise
+		 **/
+		bool catchSignal(int sig);
+		
+	private slots:
+		void handleInput(int fd);
+		
+	private:
+		static void signalHandler(int sig, siginfo_t *siginfo, void *ptr);
+		
+	signals:
+		/// Emitted when a 
+		void triggered();
+		
+	private:
+		QSocketNotifier* notifier;
+		static int signal_received_pipe[2];
 	};
 }
 
