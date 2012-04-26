@@ -8,6 +8,7 @@ Changes in 1.3:
 Changes in 1.2.1:
 - Fix deadlock in webseeding code (295719)
 - Fix individual torrent download limit not working
+- Fix build on FreeBSD
 
 Changes in 1.2:
 - Fix large file preallocation when not using quick preallocation in some cases (293279)
