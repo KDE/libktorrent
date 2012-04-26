@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "address.h"
-#include <arpa/inet.h>
+#include <sys/socket.h>
 #include <util/log.h>
 
 using namespace bt;
