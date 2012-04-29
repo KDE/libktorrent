@@ -82,15 +82,18 @@ namespace bt
 	{
 		const TorrentStats& s = m_tc->getStats();
 
-		// only estimate when we are running
-		if(!s.running || s.paused)
-			return -1;
 
 		// in seeding mode check if we still need to seed
 		if(s.completed)
 		{
 			if(bytesLeft() == 0 || s.max_share_ratio < 0.01f)
-				return -1;
+				return ALREADY_FINISHED;
+		}
+		
+		// only estimate when we are running
+		if(!s.running || s.paused)
+		{	
+			return NEVER;
 		}
 
 
@@ -115,7 +118,7 @@ namespace bt
 			m_samples->push(sample());
 			return estimateWINX();
 		default:
-			return -1;
+			return NEVER;
 		}
 	}
 
@@ -124,7 +127,7 @@ namespace bt
 		const TorrentStats& s = m_tc->getStats();
 
 		if(s.download_rate == 0)
-			return 0;
+			return NEVER;
 
 		return (int)floor((float)bytesLeft() / (float)s.download_rate);
 	}
@@ -142,7 +145,7 @@ namespace bt
 			return (Uint32) floor((double) bytesLeft() / avg_speed);
 		}
 
-		return 0;
+		return NEVER;
 	}
 
 	int TimeEstimator::estimateWINX()
@@ -150,7 +153,7 @@ namespace bt
 		if(m_samples->sum() > 0 && m_samples->count() > 0)
 			return (Uint32) floor((double) bytesLeft() / ((double) m_samples->sum() / (double) m_samples->count()));
 
-		return 0;
+		return NEVER;
 	}
 
 	int TimeEstimator::estimateMAVG()
@@ -169,10 +172,10 @@ namespace bt
 			if(lavg > 0)
 				return (Uint32) floor((double) bytesLeft() / ((lavg + (m_samples->sum() / m_samples->count())) / 2));
 
-			return 0;
+			return NEVER;
 		}
 
-		return 0;
+		return NEVER;
 	}
 
 	SampleQueue::SampleQueue(int max)

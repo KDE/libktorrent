@@ -4,6 +4,7 @@ Changes in 1.3:
 - Revamp SingleFileCache, MultiFileCache and data preallocation
 - Webseeds now follow connection limits (184941)
 - Add new SignalCatcher class to handle UNIX signals (296835)
+- Make TimeEstimator return sortable values (298542)
 
 Changes in 1.2.1:
 - Fix deadlock in webseeding code (295719)

@@ -20,6 +20,7 @@
 #ifndef BTTIMEESTIMATOR_H
 #define BTTIMEESTIMATOR_H
 
+#include <climits>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
@@ -76,6 +77,8 @@ namespace bt
 	class KTORRENT_EXPORT TimeEstimator
 	{
 	public:
+		static const int NEVER = INT_MAX;
+		static const int ALREADY_FINISHED = 0;
 
 		enum ETAlgorithm
 		{
