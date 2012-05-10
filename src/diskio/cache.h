@@ -26,6 +26,7 @@
 #include <diskio/piecedata.h>
 #include <QString>
 #include <QMultiMap>
+#include <QSet>
 
 
 class QStringList;
@@ -190,6 +191,12 @@ namespace bt
 		virtual Uint64 diskUsage() = 0;
 		
 		/**
+		 * Determine the mount points of all the files in this torrent
+		 * @return bool True if we can, false if not
+		 **/
+		virtual bool getMountPoints(QSet<QString> & mps) = 0;
+		
+		/**
 		 * Enable or disable diskspace preallocation
 		 * @param on 
 		 */
@@ -224,11 +231,17 @@ namespace bt
 		 * */
 		void clearPieces(Chunk* c);
 		
+		/**
+		 * Load the mount points of this torrent
+		 **/
+		void loadMountPoints();
+		
 	protected:
 		PieceData::Ptr findPiece(Chunk* c,Uint32 off,Uint32 len,bool read_only);
 		void insertPiece(Chunk* c,PieceData::Ptr p);
 		void clearPieceCache();
 		void cleanupPieceCache();
+		void saveMountPoints(const QSet<QString> & mp);
 		
 	protected:
 		Torrent & tor;
@@ -240,6 +253,7 @@ namespace bt
 		typedef QMultiMap<Chunk*,PieceData::Ptr> PieceCache;
 		PieceCache piece_cache;
 		
+		QSet<QString> mount_points;
 	private:
 		static bool preallocate_files;
 		static bool preallocate_fully;

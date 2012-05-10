@@ -58,6 +58,7 @@ namespace bt
 		virtual Uint64 diskUsage();
 		virtual void loadFileMap();
 		virtual void saveFileMap();
+		virtual bool getMountPoints(QSet<QString>& mps);
 		
 	private:
 		PieceData::Ptr createPiece(Chunk* c,Uint64 off,Uint32 length,bool read_only);

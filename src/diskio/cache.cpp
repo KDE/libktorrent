@@ -18,14 +18,17 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "cache.h"
+#include <KLocalizedString>
 #include <util/functions.h>
 #include <util/log.h>
 #include <peer/connectionlimit.h>
 #include <peer/peermanager.h>
 #include <torrent/torrent.h>
+#include <torrent/job.h>
 #include "chunk.h"
 #include "cachefile.h"
 #include "piecedata.h"
+
 
 namespace bt
 {
@@ -85,7 +88,12 @@ namespace bt
 	void Cache::moveDataFilesFinished(const QMap<TorrentFileInterface*,QString> & files,Job* job)
 	{
 		Q_UNUSED(files);
-		Q_UNUSED(job);
+		if(job->error())
+			return;
+		
+		QSet<QString> mps;
+		if(getMountPoints(mps))
+			saveMountPoints(mps);
 	}
 	
 	PieceData::Ptr Cache::findPiece(Chunk* c,Uint32 off,Uint32 len,bool read_only)
@@ -150,5 +158,45 @@ namespace bt
 		if (mem || freed)
 			Out(SYS_DIO|LOG_DEBUG) << "Piece cache: memory in use " << BytesToString(mem) << ", memory freed " << BytesToString(freed) << endl;
 	}
+	
+	void Cache::saveMountPoints(const QSet<QString> & mp)
+	{
+		mount_points = mp;
+		
+		QString mp_file = tmpdir + "mount_points";
+		QFile fptr(mp_file);
+		if(!fptr.open(QIODevice::WriteOnly))
+			throw Error(i18n("Failed to create %1: %2", mp_file, fptr.errorString()));
+		
+		QTextStream out(&fptr);
+		foreach(const QString & mount_point, mount_points)
+		{
+			out << mount_point << ::endl;
+		}
+	}
 
+	void Cache::loadMountPoints()
+	{
+		QString mp_file = tmpdir + "mount_points";
+		QFile fptr(mp_file);
+		if(!fptr.open(QIODevice::ReadOnly))
+		{
+			Out(SYS_DIO|LOG_NOTICE) << "Failed to load " << mp_file << ": " << fptr.errorString() << endl;
+			
+			QSet<QString> mps;
+			if(getMountPoints(mps))
+			{
+				saveMountPoints(mps);
+			}
+		}
+		else
+		{
+			mount_points.clear();
+			QTextStream in(&fptr);
+			while(!in.atEnd())
+			{
+				mount_points.insert(in.readLine());
+			}
+		}
+	}
 }

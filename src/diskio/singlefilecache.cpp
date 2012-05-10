@@ -209,7 +209,6 @@ namespace bt
 		if(FileNameToLong(output_file))
 			output_file = ShortenFileName(output_file);
 
-
 		if(!bt::Exists(output_file))
 		{
 			MakeFilePath(output_file);
@@ -217,8 +216,23 @@ namespace bt
 		}
 		else
 			preexisting_files = true;
+		
+		QSet<QString> mps;
+		mps.insert(MountPoint(output_file));
+		saveMountPoints(mps);
 		saveFileMap();
 	}
+	
+	bool SingleFileCache::getMountPoints(QSet<QString>& mps)
+	{
+		QString mp = MountPoint(output_file);
+		if(mp.isEmpty())
+			return false;
+		
+		mps.insert(mp);
+		return true;
+	}
+
 
 	void SingleFileCache::close()
 	{

@@ -841,6 +841,7 @@ namespace bt
 	void ChunkManager::loadIndexFile()
 	{
 		d->loadIndexFile();
+		d->cache->loadMountPoints();
 	}
 
 	
@@ -868,6 +869,7 @@ namespace bt
 			cache = fac->create(tor,tmpdir,datadir);
 		
 		cache->loadFileMap();
+		
 		index_file = tmpdir + "index";
 		file_info_file = tmpdir + "file_info";
 		file_priority_file = tmpdir + "file_priority";

@@ -328,6 +328,8 @@ namespace bt
 				cf->changePath(tf->getPathOnDisk());
 			i++;
 		}
+		
+		Cache::moveDataFilesFinished(fmap, job);
 		saveFileMap();
 	}
 
@@ -338,6 +340,7 @@ namespace bt
 		if(!bt::Exists(tmpdir + "dnd"))
 			bt::MakeDir(tmpdir + "dnd");
 
+		QSet<QString> mount_points;
 		QSet<QString> shortened_names;
 		for(Uint32 i = 0; i < tor.getNumFiles(); i++)
 		{
@@ -361,12 +364,13 @@ namespace bt
 			}
 #endif
 			touch(tf);
+			if(!tf.doNotDownload())
+				mount_points.insert(tf.getMountPoint());
 		}
 
+		saveMountPoints(mount_points);
 		saveFileMap();
 	}
-
-
 
 	void MultiFileCache::touch(TorrentFile & tf)
 	{
@@ -904,6 +908,25 @@ namespace bt
 
 		return sum;
 	}
+	
+	bool MultiFileCache::getMountPoints(QSet<QString>& mps)
+	{
+		for(Uint32 i = 0; i < tor.getNumFiles(); i++)
+		{
+			TorrentFile & tf = tor.getFile(i);
+			if(tf.doNotDownload())
+				continue;
+			
+			QString mp = tf.getMountPoint();
+			if(mp.isEmpty())
+				return false;
+			
+			mps.insert(mp);
+		}
+		
+		return true;
+	}
+
 
 
 	///////////////////////////////
