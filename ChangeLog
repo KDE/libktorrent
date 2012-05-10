@@ -11,6 +11,7 @@ Changes in 1.2.1:
 - Fix deadlock in webseeding code (295719)
 - Fix individual torrent download limit not working
 - Fix build on FreeBSD
+- Fix crash due to attempting to call pop_front on an empty list (299536)
 
 Changes in 1.2:
 - Fix large file preallocation when not using quick preallocation in some cases (293279)
