@@ -120,14 +120,16 @@ namespace net
 				if (curr_packet->getType() == PIECE)
 				{
 					QMutexLocker locker(&mutex);
-					data_packets.pop_front();
+					if (!data_packets.empty())
+						data_packets.pop_front();
 					// reset ctrl_packets_sent so the next packet should be a ctrl packet
 					ctrl_packets_sent = 0;  
 				}
 				else
 				{
 					QMutexLocker locker(&mutex);
-					control_packets.pop_front();
+					if (!control_packets.empty())
+						control_packets.pop_front();
 					ctrl_packets_sent++;
 				}
 				curr_packet = selectPacket();
