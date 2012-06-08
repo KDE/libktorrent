@@ -188,6 +188,9 @@ namespace bt
 	
 	/// Get the mount point of a path
 	KTORRENT_EXPORT QString MountPoint(const QString & path);
+	
+	/// Is there something mounted on a mount point
+	KTORRENT_EXPORT bool IsMounted(const QString & mount_point);
 }
 
 #endif

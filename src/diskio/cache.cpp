@@ -21,6 +21,7 @@
 #include <KLocalizedString>
 #include <util/functions.h>
 #include <util/log.h>
+#include <util/fileops.h>
 #include <peer/connectionlimit.h>
 #include <peer/peermanager.h>
 #include <torrent/torrent.h>
@@ -198,5 +199,17 @@ namespace bt
 				mount_points.insert(in.readLine());
 			}
 		}
+	}
+	
+	bool Cache::isStorageMounted(QStringList& missing)
+	{
+		missing.clear();
+		foreach(const QString & mount_point, mount_points)
+		{
+			if(!IsMounted(mount_point))
+				missing.append(mount_point);
+		}
+		
+		return missing.empty();
 	}
 }

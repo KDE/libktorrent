@@ -637,4 +637,20 @@ namespace bt
 		return mountpoint;
 	}
 
+	bool IsMounted(const QString& mount_point)
+	{
+		QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
+		
+		foreach (Solid::Device dev,devs)
+		{
+			Solid::StorageAccess* sa = dev.as<Solid::StorageAccess>();
+			if (sa->filePath() == mount_point)
+			{
+				return sa->isAccessible();
+			}
+		}
+		
+		return false;
+	}
+
 }

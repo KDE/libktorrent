@@ -170,6 +170,12 @@ namespace bt
 	{
 		return d->cache->hasMissingFiles(sl);
 	}
+	
+	bool ChunkManager::isStorageMounted(QStringList & missing)
+	{
+		return d->cache->isStorageMounted(missing);
+	}
+
 
 	Chunk* ChunkManager::getChunk(unsigned int i)
 	{

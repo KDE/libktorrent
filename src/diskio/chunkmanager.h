@@ -303,6 +303,9 @@ namespace bt
 		/// The download priority of a file has changed
 		void downloadPriorityChanged(TorrentFile* tf,Priority newpriority,Priority oldpriority);
 		
+		/// Is the storage mounted ?
+		bool isStorageMounted(QStringList & missing);
+		
 	signals:
 		/**
 		 * Emitted when a range of chunks has been excluded

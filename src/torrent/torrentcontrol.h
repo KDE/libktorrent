@@ -159,6 +159,7 @@ namespace bt
 		virtual bool announceAllowed();
 		virtual Job* startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to);
 		virtual bool hasMissingFiles(QStringList & sl);
+		virtual bool isStorageMounted(QStringList& missing);
 		virtual Uint32 getNumDHTNodes() const;
 		virtual const DHTNode & getDHTNode(Uint32 i) const;
 		virtual void deleteDataFiles();

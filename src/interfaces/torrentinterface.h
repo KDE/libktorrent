@@ -306,6 +306,13 @@ namespace bt
 		virtual Job* startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to) = 0;
 		
 		/**
+		 * Is storage mounted for this torrent
+		 * @param missing Filled with missing mount points (if any)
+		 * @return true if there are any missing, false otherwise
+		 **/
+		virtual bool isStorageMounted(QStringList & missing) = 0;
+		
+		/**
 		 * Test all files and see if they are not missing.
 		 * If so put them in a list
 		 */

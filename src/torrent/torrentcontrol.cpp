@@ -1476,6 +1476,11 @@ namespace bt
 	{
 		return cman->hasExistingFiles();
 	}
+	
+	bool TorrentControl::isStorageMounted(QStringList& missing)
+	{
+		return cman->isStorageMounted(missing);
+	}
 
 	bool TorrentControl::hasMissingFiles(QStringList & sl)
 	{

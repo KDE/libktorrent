@@ -236,6 +236,9 @@ namespace bt
 		 **/
 		void loadMountPoints();
 		
+		/// Is the storage mounted ?
+		bool isStorageMounted(QStringList & missing);
+		
 	protected:
 		PieceData::Ptr findPiece(Chunk* c,Uint32 off,Uint32 len,bool read_only);
 		void insertPiece(Chunk* c,PieceData::Ptr p);
