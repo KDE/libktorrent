@@ -1,4 +1,4 @@
-Changes in 1.3:
+Changes in 1.3rc1:
 - Implement BEP 32, IPv6 DHT (295194)
 - Revamp DHT code and follow spec more closely on routing table
 - Revamp SingleFileCache, MultiFileCache and data preallocation
@@ -8,6 +8,7 @@ Changes in 1.3:
 - Keep track of partitions files of torrents are on
 - Add methods to check if storage is mounted
 - Make sure all trackers are used of a magnet link (302997, 303269)
+- Fix warning message about locale being recreated
 
 Changes in 1.2.1:
 - Fix deadlock in webseeding code (295719)

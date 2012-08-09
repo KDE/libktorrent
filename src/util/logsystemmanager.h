@@ -23,6 +23,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <QScopedPointer>
 #include <util/constants.h>
 #include <ktorrent_export.h>
 
@@ -52,7 +53,7 @@ namespace bt
 		iterator begin() {return systems.begin();}
 		iterator end() {return systems.end();}
 		
-		static LogSystemManager & instance() {return self;}
+		static LogSystemManager & instance(); 
 		
 		/// Get the ID of a system
 		Uint32 systemID(const QString & name);
@@ -63,7 +64,7 @@ namespace bt
 		
 	private:
 		QMap<QString,Uint32> systems;
-		static LogSystemManager self;
+		static QScopedPointer<LogSystemManager> self;
 	};
 
 }
