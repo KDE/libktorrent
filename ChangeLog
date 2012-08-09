@@ -9,6 +9,7 @@ Changes in 1.3rc1:
 - Add methods to check if storage is mounted
 - Make sure all trackers are used of a magnet link (302997, 303269)
 - Fix warning message about locale being recreated
+- Fix crash in DHT code caused by infinite recursion (300974)
 
 Changes in 1.2.1:
 - Fix deadlock in webseeding code (295719)
