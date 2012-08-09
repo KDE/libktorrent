@@ -74,12 +74,17 @@ namespace dht
 		bool keyInRange(const dht::Key & k) const;
 		
 		/// Are we allowed to split
-		bool splitAllowed() const {return keyInRange(our_id);}
+		bool splitAllowed() const;
+		
+		class UnableToSplit
+		{};
 		
 		/**
 		 * Split the bucket in two new buckets, each containing half the range of the original one.
+		 * @return A pair of KBucket's
+		 * @throw UnableToSplit if something goes wrong
 		 */
-		std::pair<KBucket::Ptr, KBucket::Ptr> split();
+		std::pair<KBucket::Ptr, KBucket::Ptr> split() throw (UnableToSplit);
 		
 		/**
 		 * Inserts an entry into the bucket.

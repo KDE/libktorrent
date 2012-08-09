@@ -69,10 +69,23 @@ namespace dht
 		return min_key <= k && k <= max_key;
 	}
 
+	bool KBucket::splitAllowed() const
+	{
+		if(!keyInRange(our_id))
+			return false;
+		
+		if(min_key + dht::K >= max_key)
+			return false;
+		
+		return true;
+	}
 
-	std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split()
+
+	std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() throw (KBucket::UnableToSplit)
 	{
 		dht::Key m = dht::Key::mid(min_key, max_key);
+		if(m == min_key || m + 1 == max_key)
+			throw UnableToSplit();
 
 		KBucket::Ptr left(new KBucket(min_key, m, srv, our_id));
 		KBucket::Ptr right(new KBucket(m + 1, max_key, srv, our_id));
