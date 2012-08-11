@@ -125,7 +125,7 @@ namespace dht
 			if(b->needsToBeRefreshed())
 			{
 				// the key needs to be the refreshed
-				dht::Key m = dht::Key::mid(b->maxKey(), b->maxKey());
+				dht::Key m = dht::Key::mid(b->minKey(), b->maxKey());
 				NodeLookup* nl = dh_table->refreshBucket(m, *b);
 				if(nl)
 					b->setRefreshTask(nl);
