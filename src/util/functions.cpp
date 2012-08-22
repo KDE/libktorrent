@@ -203,7 +203,7 @@ namespace bt
 			QList<QHostAddress> addrs = QNetworkInterface::allAddresses();
 			foreach (const QHostAddress & addr, addrs)
 			{
-				if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6)
+                if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6 && !addr.isInSubnet(QHostAddress("FE80::"), 64))
 					return addr.toString();
 			}
 		}
@@ -213,7 +213,7 @@ namespace bt
 			foreach (const QNetworkAddressEntry & entry,addrs)
 			{
 				QHostAddress addr = entry.ip();
-				if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6)
+				if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6 && !addr.isInSubnet(QHostAddress("FE80::"), 64))
 					return addr.toString();
 			}
 		}
