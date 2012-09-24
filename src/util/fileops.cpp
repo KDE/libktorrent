@@ -30,12 +30,15 @@
 #include <kio/copyjob.h> 
 #include <solid/device.h>
 #include <solid/storageaccess.h>
+#include <solid/storagedrive.h>
+#include <solid/storagevolume.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
-#include <qdir.h>
-#include <qfile.h>
-#include <qstringlist.h>
+#include <QDir>
+#include <QFile>
+#include <QStringList>
+#include <QSet>
 #include "error.h"
 #include "log.h"
 #include "file.h"
@@ -73,11 +76,13 @@ typedef	int64_t		__s64;
 #endif
 
 #ifndef Q_WS_WIN
+#include <mntent.h>
 #include <sys/statvfs.h>
 #endif
 #ifdef CopyFile
 #undef CopyFile
 #endif
+
 
 namespace bt
 {
@@ -619,38 +624,54 @@ namespace bt
 		return ret;
 	}
 	
-	QString MountPoint(const QString& path)
+	QSet<QString> AccessibleMountPoints()
 	{
-		QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
-		QString mountpoint;
+        QSet<QString> result;
+#ifndef Q_WS_WIN
+		FILE* fptr = setmntent("/proc/mounts", "r");
+		if(!fptr)
+			return result;
+
+		struct mntent mnt;
+		char buf[PATH_MAX];
+		while(getmntent_r(fptr, &mnt, buf, PATH_MAX))
+		{
+			result.insert(QString(mnt.mnt_dir));
+		}
 		
+		endmntent(fptr);
+		
+#else
+		QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
 		foreach (Solid::Device dev,devs)
 		{
 			Solid::StorageAccess* sa = dev.as<Solid::StorageAccess>();
-			if (path.startsWith(sa->filePath()))
+			if(!sa->filePath().isEmpty() && sa->isAccessible())
+				result.insert(sa->filePa());
+		}
+#endif
+		return result;
+	}
+	
+	QString MountPoint(const QString& path)
+	{
+        QSet<QString> mount_points = AccessibleMountPoints();
+		QString mount_point;
+		foreach (const QString & mp, mount_points)
+        {
+            if (path.startsWith(mp) && (mount_point.isEmpty() || mp.startsWith(mount_point)))
 			{
-				if (mountpoint.isEmpty() || sa->filePath().startsWith(mountpoint))
-					mountpoint = sa->filePath();
+				mount_point = mp;
 			}
 		}
 		
-		return mountpoint;
+		return mount_point;
 	}
+
 
 	bool IsMounted(const QString& mount_point)
 	{
-		QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
-		
-		foreach (Solid::Device dev,devs)
-		{
-			Solid::StorageAccess* sa = dev.as<Solid::StorageAccess>();
-			if (sa->filePath() == mount_point)
-			{
-				return sa->isAccessible();
-			}
-		}
-		
-		return false;
+		return AccessibleMountPoints().contains(mount_point);
 	}
 
 }
