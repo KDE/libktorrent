@@ -51,7 +51,8 @@ namespace bt
 	
 	void PreallocationThread::add(CacheFile::Ptr cache_file)
 	{
-		todo.append(cache_file);
+		if(cache_file)
+			todo.append(cache_file);
 	}
 
 
