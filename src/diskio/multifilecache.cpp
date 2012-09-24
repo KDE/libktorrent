@@ -783,7 +783,8 @@ namespace bt
 		while(i != files.end())
 		{
 			CacheFile::Ptr cf = i.value();
-			prealloc->add(cf);
+			if(cf)
+				prealloc->add(cf);
 			i++;
 		}
 	}
