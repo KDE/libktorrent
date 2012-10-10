@@ -66,7 +66,7 @@ namespace net
 		if (m_ip_version != 4 && m_ip_version != 6)
 			m_ip_version = 4;
 		
-#if defined(Q_OS_MACX) || defined(Q_OS_DARWIN) || (defined(Q_OS_FREEBSD) && __FreeBSD_version < 600020 && !defined(__DragonFly__))
+#if defined(Q_OS_MACX) || defined(Q_OS_DARWIN)
 		int val = 1; 
 		if (setsockopt(m_fd,SOL_SOCKET,SO_NOSIGPIPE,&val,sizeof(int)) < 0)
 		{
@@ -88,7 +88,7 @@ namespace net
 			Out(SYS_GEN|LOG_IMPORTANT) << QString("Cannot create socket : %1").arg(strerror(errno)) << endl;
 		m_fd = fd;
 		
-#if defined(Q_OS_MACX) || defined(Q_OS_DARWIN) || (defined(Q_OS_FREEBSD) && __FreeBSD_version < 600020 && !defined(__DragonFly__))
+#if defined(Q_OS_MACX) || defined(Q_OS_DARWIN)
 		int val = 1;
 		if (setsockopt(m_fd,SOL_SOCKET,SO_NOSIGPIPE,&val,sizeof(int)) < 0)
 		{
@@ -118,7 +118,7 @@ namespace net
 			Out(SYS_GEN|LOG_IMPORTANT) << QString("Cannot create socket : %1").arg(strerror(errno)) << endl;
 		m_fd = fd;
 		
-#if defined(Q_OS_MACX) || defined(Q_OS_DARWIN) || (defined(Q_OS_FREEBSD) && __FreeBSD_version < 600020 && !defined(__DragonFly__))
+#if defined(Q_OS_MACX) || defined(Q_OS_DARWIN)
 		int val = 1;
 		if (setsockopt(m_fd,SOL_SOCKET,SO_NOSIGPIPE,&val,sizeof(int)) < 0)
 		{
@@ -335,7 +335,7 @@ namespace net
 
 		if (m_ip_version == 4)
 		{
-#if defined(Q_OS_MACX) || defined(Q_OS_DARWIN) || (defined(Q_OS_FREEBSD) && __FreeBSD_version < 600020) || defined(Q_OS_NETBSD) || defined(Q_OS_BSD4)
+#if defined(Q_OS_MACX) || defined(Q_OS_DARWIN) || defined(Q_OS_NETBSD) || defined(Q_OS_BSD4)
 			unsigned int c = type_of_service;
 #else
 			unsigned char c = type_of_service;
