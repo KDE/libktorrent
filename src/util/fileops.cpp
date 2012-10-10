@@ -76,7 +76,9 @@ typedef	int64_t		__s64;
 #endif
 
 #ifndef Q_WS_WIN
-#include <mntent.h>
+# ifdef Q_OS_LINUX
+# include <mntent.h>
+# endif
 #include <sys/statvfs.h>
 #endif
 #ifdef CopyFile
@@ -623,11 +625,11 @@ namespace bt
 #endif
 		return ret;
 	}
-	
+
 	QSet<QString> AccessibleMountPoints()
 	{
         QSet<QString> result;
-#ifndef Q_WS_WIN
+#ifdef Q_OS_LINUX
 		FILE* fptr = setmntent("/proc/mounts", "r");
 		if(!fptr)
 			return result;
