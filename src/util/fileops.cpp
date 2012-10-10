@@ -647,7 +647,7 @@ namespace bt
 		{
 			Solid::StorageAccess* sa = dev.as<Solid::StorageAccess>();
 			if(!sa->filePath().isEmpty() && sa->isAccessible())
-				result.insert(sa->filePa());
+				result.insert(sa->filePath());
 		}
 #endif
 		return result;
