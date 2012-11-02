@@ -134,8 +134,6 @@ namespace bt
 	void TorrentControl::update()
 	{
 		UpdateCurrentTime();
-		if (job_queue->runningJobs())
-			return;
 
 		if (istats.io_error)
 		{
