@@ -134,8 +134,6 @@ namespace bt
     void TorrentControl::update()
     {
         UpdateCurrentTime();
-        if (job_queue->runningJobs())
-            return;
 
         if (istats.io_error)
         {
@@ -1218,6 +1216,8 @@ namespace bt
             return false;
 
         Uint32 preview_range = cman->previewChunkRangeSize();
+        if(preview_range == 0)
+            return false;
 
         const BitSet& bs = downloadedChunksBitSet();
         for (Uint32 i = 0; i < preview_range; i++)
