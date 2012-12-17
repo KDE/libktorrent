@@ -203,6 +203,9 @@ namespace bt
 	
 	bool Cache::isStorageMounted(QStringList& missing)
 	{
+        if(mount_points.isEmpty())
+            return true;
+        
 		missing.clear();
 		foreach(const QString & mount_point, mount_points)
 		{
