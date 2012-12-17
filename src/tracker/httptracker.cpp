@@ -157,11 +157,11 @@ namespace bt
 
 		KIO::StoredTransferJob* st = (KIO::StoredTransferJob*)j;
 		BDecoder dec(st->data(), false, 0);
-		BNode* n = 0;
+		QScopedPointer<BNode> n;
 
 		try
 		{
-			n = dec.decode();
+			n.reset(dec.decode());
 		}
 		catch (bt::Error & err)
 		{
@@ -171,7 +171,7 @@ namespace bt
 
 		if (n && n->getType() == BNode::DICT)
 		{
-			BDictNode* d = (BDictNode*)n;
+			BDictNode* d = (BDictNode*)n.data();
 			d = d->getDict(QString("files"));
 			if (d)
 			{
@@ -198,8 +198,6 @@ namespace bt
 				}
 			}
 		}
-
-		delete n;
 	}
 
 	void HTTPTracker::doRequest(WaitJob* wjob)
