@@ -61,7 +61,7 @@ private slots:
 		Out(SYS_GEN|LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
 		try
 		{
-			tor.load(creator.torrentPath(),false);
+			tor.load(bt::LoadFile(creator.torrentPath()),false);
 		}
 		catch (bt::Error & err)
 		{

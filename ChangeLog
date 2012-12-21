@@ -1,3 +1,6 @@
+Changes in 1.4:
+- Decrease code redundancy in torrent loading code
+
 Changes in 1.3.1:
 - Add workaround for broken handling of btrfs subvolumes by solid (306825)
 - Fix crash when preallocating diskspace when a file is enabled during the download of a torrent (307178) 

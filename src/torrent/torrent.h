@@ -110,14 +110,6 @@ namespace bt
 		 * @param preview Whether preview is possible or not
 		 */
 		void filePreviewChanged(TorrentFile* tf,bool preview);
-
-		/**
-		 * Load a .torrent file.
-		 * @param file The file
-		 * @param verbose Whether to print information to the log
-		 * @throw Error if something goes wrong
-		 */
-		void load(const QString & file,bool verbose);
 		
 		/**
 		 * Load a .torrent file.
