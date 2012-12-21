@@ -525,6 +525,41 @@ namespace bt
 		tor->setMonitor(tmon);
 	}
 
+
+
+	void TorrentControl::init(QueueManagerInterface* qman,
+	                          const QString & torrent,
+	                          const QString & tmpdir,
+	                          const QString & ddir)
+	{
+		// first load the torrent file
+		tor = new Torrent();
+		try
+		{
+			tor->load(torrent, false);
+		}
+		catch (bt::Error & err)
+		{
+			Out(SYS_GEN | LOG_NOTICE) << "Failed to load torrent: " << err.toString() << endl;
+			delete tor;
+			tor = 0;
+			throw Error(i18n("An error occurred while loading the torrent <b>%1</b>:<br/>"
+			                 "<b>%2</b><br/>"
+			                 "The torrent is probably corrupt or is not a valid torrent file.", torrent, err.toString()));
+		}
+
+		tor->setFilePriorityListener(this);
+		initInternal(qman, tmpdir, ddir);
+
+		// copy torrent in tor dir
+		QString tor_copy = tordir + "torrent";
+		if (tor_copy != torrent)
+		{
+			QFile::copy(torrent, tor_copy);
+		}
+	}
+
+
 	void TorrentControl::init(QueueManagerInterface* qman, const QByteArray & data, const QString & tmpdir, const QString & ddir)
 	{
 		// first load the torrent file

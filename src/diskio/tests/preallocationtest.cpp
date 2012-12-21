@@ -38,108 +38,108 @@ using namespace bt;
 
 class PreallocationTest : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 private slots:
-    void initTestCase()
-    {
-        KGlobal::setLocale(new KLocale("main"));
-        bt::InitLibKTorrent();
-        bt::InitLog("preallocationtest.log", false, true);
-        QMap<QString, bt::Uint64> files;
+	void initTestCase()
+	{
+		KGlobal::setLocale(new KLocale("main"));
+		bt::InitLibKTorrent();
+		bt::InitLog("preallocationtest.log", false, true);
+		QMap<QString, bt::Uint64> files;
 
-        files["aaa.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["bbb.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["ccc.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+		files["aaa.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+		files["bbb.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+		files["ccc.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+	
+		try
+		{
+			QVERIFY(multi_creator.createMultiFileTorrent(files, "movies"));
+			Out(SYS_GEN | LOG_DEBUG) << "Created " << multi_creator.torrentPath() << endl;
+			multi_tor.load(multi_creator.torrentPath(), false);
+			
+			// Truncate the files so we can preallocate them again
+			for (QMap<QString, bt::Uint64>::iterator i = files.begin(); i != files.end(); i++)
+			{
+				bt::TruncateFile(multi_creator.dataPath() + i.key(), 0);
+			}
+		}
+		catch(bt::Error & err)
+		{
+			Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << multi_creator.torrentPath() << endl;
+			QFAIL("Torrent load failure");
+		}
+		
+		try
+		{
+			QVERIFY(single_creator.createSingleFileTorrent(RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE), "bla.avi"));
+			Out(SYS_GEN | LOG_DEBUG) << "Created " << single_creator.torrentPath() << endl;
+			single_tor.load(single_creator.torrentPath(), false);
+			
+			// Truncate the file so we can preallocate them again
+			bt::TruncateFile(single_creator.dataPath(), 0);
+		}
+		catch(bt::Error & err)
+		{
+			Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << single_creator.torrentPath() << endl;
+			QFAIL("Torrent load failure");
+		}
+	}
 
-        try
-        {
-            QVERIFY(multi_creator.createMultiFileTorrent(files, "movies"));
-            Out(SYS_GEN | LOG_DEBUG) << "Created " << multi_creator.torrentPath() << endl;
-            multi_tor.load(bt::LoadFile(multi_creator.torrentPath()), false);
+	void cleanupTestCase()
+	{
+	}
 
-            // Truncate the files so we can preallocate them again
-            for (QMap<QString, bt::Uint64>::iterator i = files.begin(); i != files.end(); i++)
-            {
-                bt::TruncateFile(multi_creator.dataPath() + i.key(), 0);
-            }
-        }
-        catch (bt::Error& err)
-        {
-            Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << multi_creator.torrentPath() << endl;
-            QFAIL("Torrent load failure");
-        }
-
-        try
-        {
-            QVERIFY(single_creator.createSingleFileTorrent(RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE), "bla.avi"));
-            Out(SYS_GEN | LOG_DEBUG) << "Created " << single_creator.torrentPath() << endl;
-            single_tor.load(bt::LoadFile(single_creator.torrentPath()), false);
-
-            // Truncate the file so we can preallocate them again
-            bt::TruncateFile(single_creator.dataPath(), 0);
-        }
-        catch (bt::Error& err)
-        {
-            Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << single_creator.torrentPath() << endl;
-            QFAIL("Torrent load failure");
-        }
-    }
-
-    void cleanupTestCase()
-    {
-    }
-
-    void testPreallocationMultiFileCache()
-    {
-        bt::MultiFileCache cache(multi_tor, multi_creator.tempPath(), multi_creator.dataPath(), true);
-        cache.loadFileMap();
-        cache.setPreallocateFully(true);
-        cache.open();
-
-        PreallocationThread prealloc;
-        cache.preparePreallocation(&prealloc);
-        prealloc.run();
-
-        if (!prealloc.errorMessage().isEmpty())
-            Out(SYS_GEN | LOG_DEBUG) << "Preallocation failed: " << prealloc.errorMessage() << endl;
-
-        Out(SYS_GEN | LOG_DEBUG) << "bw: " << prealloc.bytesWritten() << ", ts: " << multi_tor.getTotalSize() << endl;
-        QVERIFY(prealloc.errorHappened() == false);
-        QVERIFY(prealloc.bytesWritten() == multi_tor.getTotalSize());
-
-        for (bt::Uint32 i = 0; i < multi_tor.getNumFiles(); i++)
-        {
-            QVERIFY(bt::FileSize(multi_tor.getFile(i).getPathOnDisk()) == multi_tor.getFile(i).getSize());
-        }
-    }
-
-    void testPreallocationSingleFileCache()
-    {
-        QFileInfo info(single_creator.dataPath());
-        bt::SingleFileCache cache(single_tor, single_creator.tempPath(), info.absoluteDir().absolutePath() + bt::DirSeparator());
-        cache.loadFileMap();
-        cache.setPreallocateFully(true);
-        cache.open();
-
-        PreallocationThread prealloc;
-        cache.preparePreallocation(&prealloc);
-        prealloc.run();
-
-        if (!prealloc.errorMessage().isEmpty())
-            Out(SYS_GEN | LOG_DEBUG) << "Preallocation failed: " << prealloc.errorMessage() << endl;
-
-        Out(SYS_GEN | LOG_DEBUG) << "bw: " << prealloc.bytesWritten() << ", ts: " << single_tor.getTotalSize() << endl;
-        QVERIFY(prealloc.errorHappened() == false);
-        QVERIFY(prealloc.bytesWritten() == single_tor.getTotalSize());
-        QVERIFY(bt::FileSize(single_creator.dataPath()) == single_tor.getTotalSize());
-    }
+	void testPreallocationMultiFileCache()
+	{
+		bt::MultiFileCache cache(multi_tor, multi_creator.tempPath(), multi_creator.dataPath(), true);
+		cache.loadFileMap();
+		cache.setPreallocateFully(true);
+		cache.open();
+		
+		PreallocationThread prealloc;
+		cache.preparePreallocation(&prealloc);
+		prealloc.run();
+		
+		if(!prealloc.errorMessage().isEmpty())
+			Out(SYS_GEN|LOG_DEBUG) << "Preallocation failed: " << prealloc.errorMessage() << endl;
+		
+		Out(SYS_GEN|LOG_DEBUG) << "bw: " << prealloc.bytesWritten() << ", ts: " << multi_tor.getTotalSize() << endl;
+		QVERIFY(prealloc.errorHappened() == false);
+		QVERIFY(prealloc.bytesWritten() == multi_tor.getTotalSize());
+		
+		for(bt::Uint32 i = 0; i < multi_tor.getNumFiles(); i++)
+		{
+			QVERIFY(bt::FileSize(multi_tor.getFile(i).getPathOnDisk()) == multi_tor.getFile(i).getSize());
+		}
+	}
+	
+	void testPreallocationSingleFileCache()
+	{
+		QFileInfo info(single_creator.dataPath());
+		bt::SingleFileCache cache(single_tor, single_creator.tempPath(), info.absoluteDir().absolutePath() + bt::DirSeparator());
+		cache.loadFileMap();
+		cache.setPreallocateFully(true);
+		cache.open();
+		
+		PreallocationThread prealloc;
+		cache.preparePreallocation(&prealloc);
+		prealloc.run();
+		
+		if(!prealloc.errorMessage().isEmpty())
+			Out(SYS_GEN|LOG_DEBUG) << "Preallocation failed: " << prealloc.errorMessage() << endl;
+		
+		Out(SYS_GEN|LOG_DEBUG) << "bw: " << prealloc.bytesWritten() << ", ts: " << single_tor.getTotalSize() << endl;
+		QVERIFY(prealloc.errorHappened() == false);
+		QVERIFY(prealloc.bytesWritten() == single_tor.getTotalSize());
+		QVERIFY(bt::FileSize(single_creator.dataPath()) == single_tor.getTotalSize());
+	}
 
 private:
-    DummyTorrentCreator multi_creator;
-    bt::Torrent multi_tor;
-    DummyTorrentCreator single_creator;
-    bt::Torrent single_tor;
+	DummyTorrentCreator multi_creator;
+	bt::Torrent multi_tor;
+	DummyTorrentCreator single_creator;
+	bt::Torrent single_tor;
 };
 
 

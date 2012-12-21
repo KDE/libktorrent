@@ -33,7 +33,6 @@
 #include <interfaces/serverinterface.h>
 #include <peer/utpex.h>
 #include <util/waitjob.h>
-#include <util/fileops.h>
 
 
 using namespace bt;
@@ -152,7 +151,7 @@ bool KTCLI::loadFromFile(const QString & path)
 {
 	try
 	{
-        tc->init(this, bt::LoadFile(path), tempDir(), QDir::currentPath());
+		tc->init(this, path, tempDir(), QDir::currentPath());
 		tc->setLoadUrl(KUrl(path));
 		tc->createFiles();
 		return true;
@@ -168,7 +167,7 @@ bool KTCLI::loadFromDir(const QString& path)
 {
 	try
 	{
-        tc->init(this, bt::LoadFile(path + "/torrent"), path, QString::null);
+		tc->init(this, path + "/torrent", path, QString::null);
 		tc->createFiles();
 		return true;
 	}

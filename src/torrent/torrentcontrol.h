@@ -78,6 +78,20 @@ namespace bt
 		/**
 		 * Initialize the TorrentControl. 
 		 * @param qman The QueueManager
+		 * @param torrent The filename of the torrent file
+		 * @param tmpdir The directory to store temporary data
+		 * @param datadir The directory to store the actual file(s)
+		 * 		(only used the first time we load a torrent)
+		 * @throw Error when something goes wrong
+		 */
+		void init(QueueManagerInterface* qman,
+				const QString & torrent,
+				const QString & tmpdir,
+				const QString & datadir);
+		
+		/**
+		 * Initialize the TorrentControl. 
+		 * @param qman The QueueManager
 		 * @param data The data of the torrent
 		 * @param tmpdir The directory to store temporary data
 		 * @param datadir The directory to store the actual file(s)

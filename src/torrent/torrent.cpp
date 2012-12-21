@@ -157,6 +157,16 @@ namespace bt
 			throw;
 		}
 	}
+
+	void Torrent::load(const QString & file,bool verbose)
+	{
+		QFile fptr(file);
+		if (!fptr.open(QIODevice::ReadOnly))
+			throw Error(i18n("Unable to open torrent file %1: %2", file, fptr.errorString()));
+		
+		QByteArray data = fptr.readAll();
+		load(data,verbose);
+	}
 	
 	void Torrent::loadInfo(BDictNode* dict)
 	{
