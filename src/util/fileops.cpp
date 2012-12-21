@@ -676,4 +676,13 @@ namespace bt
 		return AccessibleMountPoints().contains(mount_point);
 	}
 
+    QByteArray LoadFile(const QString& path)
+    {
+        QFile fptr(path);
+        if (fptr.open(QIODevice::ReadOnly))
+            return fptr.readAll();
+        else
+            throw Error(i18n("Unable to open file %1: %2").arg(path).arg(fptr.errorString()));
+    }
+
 }

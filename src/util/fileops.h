@@ -22,6 +22,7 @@
 
 #include <util/constants.h>
 #include <ktorrent_export.h>
+#include <QByteArray>
 
 class QString;
 
@@ -191,6 +192,9 @@ namespace bt
 	
 	/// Is there something mounted on a mount point
 	KTORRENT_EXPORT bool IsMounted(const QString & mount_point);
+    
+    /// Load a file into a QByteArray
+    KTORRENT_EXPORT QByteArray LoadFile(const QString & path);
 }
 
 #endif
