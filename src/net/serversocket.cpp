@@ -133,9 +133,10 @@ namespace net
 		{
 			// The first packet may be 0 bytes in size
 			Buffer::Ptr buf = d->pool->get(ba < 1500 ? 1500 : ba);
-			if (d->sock->recvFrom(buf->get(), ba, addr) == (int)ba && ba > 0)
+			int bytes_read = d->sock->recvFrom(buf->get(), ba, addr);
+			if (bytes_read <= (int)ba && ba > 0)
 			{
-				buf->setSize(ba);
+                buf->setSize(bytes_read);
 				d->dhandler->dataReceived(buf, addr);
 			}
 			first = false;
@@ -154,7 +155,6 @@ namespace net
 			d->rsn->setEnabled(on);
 	}
 
-	
 	void ServerSocket::readyToWrite(int)
 	{
 		d->dhandler->readyToWrite(this);
@@ -185,7 +185,6 @@ namespace net
 		else
 			return false;
 	}
-
 
 }
 
