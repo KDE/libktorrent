@@ -3,6 +3,7 @@ Changes in 1.3.1:
 - Fix crash when preallocating diskspace when a file is enabled during the download of a torrent (307178) 
 - Make sure stats get updated properly during data check (308707)
 - Bind peer sockets to preferred interface for outbound connections
+- Fix bug causing UDP connections not to get established on FreeBSD because FIONREAD returns the size of the data and the peer address (Review: 108076)
 
 Changes in 1.3:
 - Do not pass link local IPv6 addresses to ip parameter of tracker (305187)
