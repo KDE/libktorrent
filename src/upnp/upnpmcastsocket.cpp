@@ -92,22 +92,34 @@ namespace bt
 	void UPnPMCastSocket::discover()
 	{
 		Out(SYS_PNP|LOG_NOTICE) << "Trying to find UPnP devices on the local network" << endl;
-		
+        
+        
 		// send a HTTP M-SEARCH message to 239.255.255.250:1900
-		const char* data = "M-SEARCH * HTTP/1.1\r\n" 
+		const char* upnp_data = "M-SEARCH * HTTP/1.1\r\n" 
 				"HOST: 239.255.255.250:1900\r\n"
 				"ST:urn:schemas-upnp-org:device:InternetGatewayDevice:1\r\n"
 				"MAN:\"ssdp:discover\"\r\n"
 				"MX:3\r\n"
 				"\r\n\0";
+				
+		const char* tr64_data = "M-SEARCH * HTTP/1.1\r\n" 
+                "HOST: 239.255.255.250:1900\r\n"
+                "ST:urn:dslforum-org:device:InternetGatewayDevice:1\r\n"
+                "MAN:\"ssdp:discover\"\r\n"
+                "MX:3\r\n"
+                "\r\n\0";
 		
 		if (d->verbose)
 		{
 			Out(SYS_PNP|LOG_NOTICE) << "Sending : " << endl;
-			Out(SYS_PNP|LOG_NOTICE) << data << endl;
+            Out(SYS_PNP|LOG_NOTICE) << upnp_data << endl;
+            
+            Out(SYS_PNP|LOG_NOTICE) << "Sending : " << endl;
+            Out(SYS_PNP|LOG_NOTICE) << tr64_data << endl;
 		}
 		
-		writeDatagram(data,strlen(data),QHostAddress("239.255.255.250"),1900);
+		writeDatagram(upnp_data,strlen(upnp_data),QHostAddress("239.255.255.250"),1900);
+        writeDatagram(tr64_data,strlen(tr64_data),QHostAddress("239.255.255.250"),1900);
 	}
 	
 	void UPnPMCastSocket::onXmlFileDownloaded(UPnPRouter* r,bool success)

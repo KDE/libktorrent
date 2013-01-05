@@ -434,8 +434,6 @@ namespace bt
 		// add all the arguments for the command
 		QList<SOAP::Arg> args;
 		SOAP::Arg a;
-		a.element = "NewRemoteHost";
-		args.append(a);
 		
 		// the external port
 		a.element = "NewExternalPort";
@@ -495,8 +493,8 @@ namespace bt
 		// add all the arguments for the command
 		QList<SOAP::Arg> args;
 		SOAP::Arg a;
-		a.element = "NewRemoteHost";
-		args.append(a);
+		//a.element = "NewRemoteHost";
+		//args.append(a);
 		
 		// the external port
 		a.element = "NewExternalPort";
