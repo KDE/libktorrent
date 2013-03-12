@@ -12,4 +12,4 @@ target_link_libraries(connectionlimittest ${QT_QTTEST_LIBRARY} ktorrent)
 
 set(accessmanagertest_SRCS accessmanagertest.cpp)
 kde4_add_unit_test(accessmanagertest TESTNAME accessmanagertest ${accessmanagertest_SRCS})
-target_link_libraries(accessmanagertest ${QT_QTTEST_LIBRARY} ktorrent)
+target_link_libraries(accessmanagertest ${QT_QTTEST_LIBRARY} ${KDE4_KIO_LIBS} ktorrent)
