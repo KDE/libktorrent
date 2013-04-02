@@ -555,7 +555,7 @@ namespace bt
 	void WebSeed::retryLater()
 	{
 		num_failures = 3;
-		status = i18n("Unused for %1 seconds (Too many connection failures)", RETRY_INTERVAL);
+		status = i18np("Unused for %1 second (Too many connection failures)", "Unused for %1 seconds (Too many connection failures)", RETRY_INTERVAL);
 		retry_timer.start(RETRY_INTERVAL * 1000);
 	}
 
