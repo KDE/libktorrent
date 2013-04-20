@@ -90,10 +90,11 @@ namespace bt
 		/**
 		 * Do a HTTP GET request
 		 * @param path The path of the file
+		 * @param query The query string for the url
 		 * @param start Offset into file
 		 * @param len Length of data to download
 		 */
-		bool get(const QString & host,const QString & path,bt::Uint64 start,bt::Uint64 len);
+		bool get(const QString & host,const QString & path,const QString & query,bt::Uint64 start,bt::Uint64 len);
 
 		virtual void onDataReady(Uint8* buf,Uint32 size);
 		virtual void connectFinished(bool succeeded);
@@ -132,6 +133,7 @@ namespace bt
 		{
 			QString host;
 			QString path;
+			QString query;
 			bt::Uint64 start;
 			bt::Uint64 len;
 			bt::Uint64 data_received;
@@ -145,7 +147,7 @@ namespace bt
 			bt::Uint64 content_length;
 			int response_code;
 			
-			HttpGet(const QString & host,const QString & path,bt::Uint64 start,bt::Uint64 len,bool using_proxy);
+			HttpGet(const QString & host,const QString & path,const QString & query,bt::Uint64 start,bt::Uint64 len,bool using_proxy);
 			virtual ~HttpGet();
 			
 			bool onDataReady(Uint8* buf,Uint32 size);

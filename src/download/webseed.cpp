@@ -193,6 +193,7 @@ namespace bt
 		bytes_of_cur_chunk = 0;
 		
 		QString path = url.path();
+		QString query = url.query();
 		if (path.endsWith('/'))
 			path += tor.getNameSuggestion();
 		
@@ -212,7 +213,7 @@ namespace bt
 				range_queue.pop_front();
 				const TorrentFile & tf = tor.getFile(r.file);
 				QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
-				conn->get(host,path + '/' + tf.getPath(),r.off,r.len);
+				conn->get(host,path + '/' + tf.getPath(),query,r.off,r.len);
 			}
 		}
 		else
@@ -225,13 +226,14 @@ namespace bt
 				len += tor.getChunkSize(); 
 			
 			QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
-			conn->get(host,path,first_chunk * tor.getChunkSize(),len);
+			conn->get(host,path,query,first_chunk * tor.getChunkSize(),len);
 		}
 	}
 	
 	void WebSeed::continueCurChunk()
 	{
 		QString path = url.path();
+		QString query = url.query();
 		if (path.endsWith('/') && !isUserCreated())
 			path += tor.getNameSuggestion();
 		
@@ -255,7 +257,7 @@ namespace bt
 				{
 					const TorrentFile & tf = tor.getFile(r.file);
 					QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
-					conn->get(host,path + '/' + tf.getPath(),r.off,r.len);
+					conn->get(host,path + '/' + tf.getPath(),query,r.off,r.len);
 					break;
 				}
 				length += r.len;
@@ -271,7 +273,7 @@ namespace bt
 				len += tor.getChunkSize(); 
 			
 			QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
-			conn->get(host,path,first_chunk * tor.getChunkSize() + bytes_of_cur_chunk,len - bytes_of_cur_chunk);
+			conn->get(host,path,query,first_chunk * tor.getChunkSize() + bytes_of_cur_chunk,len - bytes_of_cur_chunk);
 		}
 		chunkStarted(cur_chunk);
 	}
@@ -376,6 +378,7 @@ namespace bt
 					}
 					
 					QString path = url.path();
+					QString query = url.query();
 					if (path.endsWith('/'))
 						path += tor.getNameSuggestion();
 					
@@ -384,7 +387,7 @@ namespace bt
 					range_queue.pop_front();
 					const TorrentFile & tf = tor.getFile(r.file);
 					QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
-					conn->get(host,path + '/' + tf.getPath(),r.off,r.len);
+					conn->get(host,path + '/' + tf.getPath(),query,r.off,r.len);
 				}
 				status = conn->getStatusString();
 			}

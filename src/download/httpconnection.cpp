@@ -248,13 +248,13 @@ namespace bt
 		}
 	}
 	
-	bool HttpConnection::get(const QString & host,const QString & path,bt::Uint64 start,bt::Uint64 len)
+	bool HttpConnection::get(const QString & host,const QString & path,const QString & query,bt::Uint64 start,bt::Uint64 len)
 	{
 		QMutexLocker locker(&mutex);
 		if (state == ERROR || request)
 			return false;
 			
-		request = new HttpGet(host,path,start,len,using_proxy);
+		request = new HttpGet(host,path,query,start,len,using_proxy);
 		if (sock)
 		{
 			sock->addData(request->buffer);
@@ -341,11 +341,12 @@ namespace bt
 	
 	////////////////////////////////////////////
 	
-	HttpConnection::HttpGet::HttpGet(const QString & host,const QString & path,bt::Uint64 start,bt::Uint64 len,bool using_proxy) 
-		: host(host),path(path),start(start),len(len),data_received(0),response_header_received(false),request_sent(false),response_code(0)
+	HttpConnection::HttpGet::HttpGet(const QString & host,const QString & path,const QString & query,bt::Uint64 start,bt::Uint64 len,bool using_proxy) 
+		: host(host),path(path),query(query),start(start),len(len),data_received(0),response_header_received(false),request_sent(false),response_code(0)
 	{
 		KUrl url;
 		url.setPath(path);
+		url.setQuery(query);
 		QString encoded_path = url.encodedPathAndQuery();
 		QHttpRequestHeader request("GET",!using_proxy ? encoded_path : QString("http://%1/%2").arg(host).arg(encoded_path));
 		request.setValue("Host",host);
