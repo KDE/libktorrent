@@ -3,6 +3,7 @@ Changes in 1.4:
 - Add support for TR-064 IGD's
 - Make sure we do not connect to the custom IP or the routers IP (316446)
 - Fix url query not getting passed to webseed download requests (318325)
+- Fix bug causing eta estimation to go wrong during uploading (320699)
 
 Changes in 1.3.2:
 - Fix bug causing authenticated peers not to get accepted
