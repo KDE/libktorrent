@@ -221,12 +221,14 @@ namespace bt
 			return;
 		
 		ConnectionLimit::Token::Ptr token = climit.acquire(d->tor.getInfoHash());
-		if(!token && d->killBadPeer())
-		{
+		if(!token)
+        {
+            d->killBadPeer();
 			token = climit.acquire(d->tor.getInfoHash());
-			if(token)
-				d->createPeer(sock, peer_id, support, false, token);
-		}
+        }
+		
+		if(token)
+			d->createPeer(sock, peer_id, support, false, token);
 	}
 
 	void PeerManager::peerAuthenticated(bt::Authenticate* auth, bt::PeerConnector::WPtr pcon, bool ok, bt::ConnectionLimit::Token::Ptr token)
