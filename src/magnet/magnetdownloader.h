@@ -23,7 +23,6 @@
 
 #include <QObject>
 #include <kio/job.h>
-#include <kio/http.h>
 #include <ktorrent_export.h>
 #include <torrent/torrent.h>
 #include <tracker/tracker.h>
