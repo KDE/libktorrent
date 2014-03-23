@@ -82,7 +82,6 @@ namespace bt
 
 	void MetadataDownload::download(Uint32 piece)
 	{
-		Out(SYS_GEN|LOG_NOTICE) << "Metadata download, requesting " << piece << endl;
 		QByteArray request;
 		BEncoder enc(new BEncoderBufferOutput(request));
 		enc.beginDict();
@@ -94,6 +93,7 @@ namespace bt
 
 	void MetadataDownload::downloadNext()
 	{
+        Out(SYS_GEN|LOG_NOTICE) << "Metadata download, requesting " << pieces.getNumBits() << " pieces" << endl;
 		for (Uint32 i = 0;i < pieces.getNumBits();i++)
 			if (!pieces.get(i))
 				download(i);
