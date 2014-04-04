@@ -137,6 +137,13 @@ namespace bt
 		 * @return whether a is smaller then b
 		 */
 		KTORRENT_EXPORT friend bool operator < (const SHA1Hash & a,const SHA1Hash & b);
+
+        /**
+         * Function to support the use of SHA1Hash as QHash keys
+         * @param key SHA1Hash used to compute a hash key
+         * @return hash key
+         */
+        KTORRENT_EXPORT friend uint qHash(const SHA1Hash &key);
 		
 		/**
 		 * Convert the hash to a byte array.

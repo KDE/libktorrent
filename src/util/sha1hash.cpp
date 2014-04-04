@@ -18,6 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "sha1hash.h"
+#include <QHash>
 #include <string.h>
 #include <stdio.h>
 #include <algorithm>
@@ -125,5 +126,10 @@ namespace bt
 		
 		return false;
 	}
+
+    uint qHash(const SHA1Hash &key)
+    {
+        return qHash(key.toByteArray());
+    }
 }
 
