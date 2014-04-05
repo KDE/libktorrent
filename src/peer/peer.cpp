@@ -41,12 +41,12 @@
 #include <net/reverseresolver.h>
 #include "utmetadata.h"
 
-
 using namespace net;
 
 namespace bt
 {
 
+    static const int MAX_METADATA_SIZE = 4 * 1024 * 1024; // maximum allowed metadata_size (up to 4 MiB)
 	static Uint32 peer_id_counter = 1;
 	bool Peer::resolve_hostname = true;
 
@@ -506,6 +506,13 @@ namespace bt
 						int metadata_size = 0;
 						if (dict->getValue("metadata_size"))
 							metadata_size = dict->getInt("metadata_size");
+
+                        if (metadata_size > MAX_METADATA_SIZE) // check for wrong metadata_size values
+                        {
+                            Out(SYS_GEN | LOG_NOTICE) << "Wrong metadata size: " << metadata_size << ". Killing peer... " << endl;
+                            kill();
+                            return;
+                        }
 
 						UTMetaData* md = new UTMetaData(pman->getTorrent(), ut_metadata_id, this);
 						md->setReportedMetadataSize(metadata_size);
