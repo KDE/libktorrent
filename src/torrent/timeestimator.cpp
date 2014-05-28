@@ -235,7 +235,7 @@ namespace bt
         m_perc = perc;
 
 
-        if(s.bytes_downloaded < 1024 * 1024 * 100 && m_samples->last() > 0) // < 100KB
+        if(s.bytes_downloaded < 1024 * 100 && m_samples->last() > 0) // < 100KB
         {
             m_lastETA = estimateGASA();
             return m_lastETA;
