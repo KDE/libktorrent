@@ -267,7 +267,7 @@ namespace bt
             return m_lastETA;
         }
 
-        m_lastETA = estimateGASA();
+        m_lastETA = estimateMAVG();
 
         return m_lastETA;
     }
