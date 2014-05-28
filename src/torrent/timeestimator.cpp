@@ -226,7 +226,7 @@ namespace bt
 
         double perc = (double) s.bytes_downloaded / (double) s.total_bytes;
 
-        int percentage = (int)(perc) * 100;
+        int percentage = perc * 100;
 
         //calculate percentage increasement
         double delta = 1 - 1 / (perc / m_perc);
