@@ -28,7 +28,6 @@
 
 namespace utp
 {
-	class Connection;
 
 	/**
 		Special wake up pipe for UTP polling

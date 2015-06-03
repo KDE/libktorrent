@@ -30,7 +30,6 @@
 
 namespace utp
 {
-	class UTPSocket;
 
 	/**
 		Implements the UTP server. It listens for UTP packets and manages all connections.

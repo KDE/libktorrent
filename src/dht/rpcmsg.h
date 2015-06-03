@@ -35,7 +35,6 @@ namespace bt
 namespace dht
 {
 	class DHT;
-	class RPCServer;
 
 	enum Type
 	{

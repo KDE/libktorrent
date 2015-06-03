@@ -32,8 +32,6 @@ namespace net
 	using bt::Uint32;
 	
 	class TrafficShapedSocket;
-	class UploadThread;
-	class DownloadThread;
 	
 	
 

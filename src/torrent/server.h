@@ -30,7 +30,6 @@
 namespace bt
 {
 	class PeerManager;
-	class SHA1Hash;
 
 
 	/**

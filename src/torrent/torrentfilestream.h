@@ -34,7 +34,6 @@ namespace bt
 	class ChunkManager;
 	class TorrentControl;
 	class TorrentInterface;
-	class ChunkSelectorDataProvider;
 	
 	
 	/**
