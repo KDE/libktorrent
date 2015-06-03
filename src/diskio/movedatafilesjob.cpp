@@ -20,6 +20,7 @@
 #include "movedatafilesjob.h"
 #include <QFileInfo>
 #include <KLocale>
+#include <KUrl>
 #include <kjobtrackerinterface.h>
 #include <kio/jobuidelegate.h>
 #include <util/log.h>

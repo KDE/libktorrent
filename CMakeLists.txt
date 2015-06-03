@@ -1,21 +1,16 @@
 project(LIBKTORRENT)
 
-find_package(KDE4 REQUIRED)
-find_package(KDE4Internal REQUIRED)
-find_package(GMP REQUIRED)
-find_package(Boost REQUIRED)
-find_package(QCA2 REQUIRED)
+cmake_minimum_required(VERSION 2.8.12)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules;${CMAKE_MODULE_PATH}")
 find_package(LibGcrypt REQUIRED)
 
 # set some default settings
-include(KDE4Defaults)
 enable_testing()
 set(BUILD_TESTING ON)
 
-# make some more macros available
-include (MacroLibrary)
+find_package(ECM 1.0.0 REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/")
 
 #
 # checks for functions and stuff
@@ -24,10 +19,36 @@ include(CheckIncludeFiles)
 include(CheckFunctionExists)
 include(CheckTypeSize) #XFS
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
-add_definitions( ${KDE4_DEFINITIONS} )
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDECompilerSettings)
+include(FeatureSummary)
+include(GenerateExportHeader)
+include(ECMMarkAsTest)
+
+find_package(GMP REQUIRED)
+find_package(Boost REQUIRED)
+find_package(Qca-qt5 REQUIRED)
+
+find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
+  Core
+  Gui
+  Network
+  Test
+  Widgets
+)
+
+# Load the frameworks we need
+find_package(KF5 REQUIRED
+  Archive
+  I18n
+  KIO
+  KDELibs4Support
+)
+
+kde_enable_exceptions()
 add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
-include_directories(${KDE4_INCLUDES} ${LIBKTORRENT_BINARY_DIR}	${LIBKTORRENT_SOURCE_DIR} ${GMP_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+include_directories( ${LIBKTORRENT_BINARY_DIR}	${LIBKTORRENT_SOURCE_DIR} ${Qt5Core_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${QCA-qt5_INCLUDE_DIR} ${Boost_INCLUDE_DIR}) #${GMP_INCLUDE_DIR}
 
 set(LIBKTORRENT_VERSION "1.1dev")
 
@@ -60,8 +81,10 @@ check_function_exists(statvfs64 HAVE_STATVFS64)
 
 
 add_subdirectory(src)
-add_subdirectory(testlib)
+#add_subdirectory(testlib)
 add_subdirectory(examples)
 add_subdirectory(cmake)
 add_subdirectory(doc)
+
+feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

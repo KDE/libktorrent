@@ -39,6 +39,7 @@
 #include <QFile>
 #include <QStringList>
 #include <QSet>
+#include <KUrl>
 #include "error.h"
 #include "log.h"
 #include "file.h"

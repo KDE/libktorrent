@@ -24,7 +24,6 @@
 #include <QTcpSocket>
 #include <interfaces/exitoperation.h>
 #include <util/constants.h>
-#include <QHttpResponseHeader>
 
 
 namespace bt
@@ -102,7 +101,7 @@ namespace bt
 		QString host;
 		bt::Uint16 port;
 		bool finished;
-		QHttpResponseHeader reply_header;
+// 		QHttpResponseHeader reply_header; PORT: KF5
 		QByteArray reply;
 		bool success;
 		QString error;

@@ -14,4 +14,3 @@ set (utp_HDR
 
 install(FILES ${utp_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/utp COMPONENT Devel)
 #add_subdirectory(tests)
-add_subdirectory(tests)

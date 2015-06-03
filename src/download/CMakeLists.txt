@@ -1,4 +1,4 @@
-add_subdirectory(tests)
+#add_subdirectory(tests)
 
 set (download_HDR
 	chunkdownload.h

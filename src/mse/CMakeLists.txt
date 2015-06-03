@@ -1,4 +1,4 @@
-add_subdirectory(tests)
+#add_subdirectory(tests)
 
 set (mse_HDR 
 	./encryptedserverauthenticate.h

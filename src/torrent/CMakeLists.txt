@@ -19,4 +19,4 @@ set (torrent_HDR
 
 install(FILES ${torrent_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/torrent COMPONENT Devel)
 
-add_subdirectory(tests)
+#add_subdirectory(tests)

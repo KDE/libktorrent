@@ -348,12 +348,12 @@ namespace bt
 		url.setPath(path);
 		url.setQuery(query);
 		QString encoded_path = url.encodedPathAndQuery();
-		QHttpRequestHeader request("GET",!using_proxy ? encoded_path : QString("http://%1/%2").arg(host).arg(encoded_path));
+		/*QHttpRequestHeader request("GET",!using_proxy ? encoded_path : QString("http://%1/%2").arg(host).arg(encoded_path)); PORT: KF5
 		request.setValue("Host",host);
 		request.setValue("Range",QString("bytes=%1-%2").arg(start).arg(start + len - 1));
-		request.setValue("User-Agent",bt::GetVersionString());
-		request.setValue("Accept"," text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
-		request.setValue("Accept-Language", "en-us,en;q=0.5");
+		request.setValue("User-Agent",bt::GetVersionString());*/
+		//request.setValue("Accept"," text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");PORT: KF5
+		/*request.setValue("Accept-Language", "en-us,en;q=0.5");PORT: KF5
 		request.setValue("Accept-Charset","ISO-8859-1,utf-8;q=0.7,*;q=0.7");
 		if (using_proxy)
 		{
@@ -362,7 +362,7 @@ namespace bt
 		}
 		else
 			request.setValue("Connection","Keep-Alive");
-		buffer = request.toString().toLocal8Bit();
+		buffer = request.toString().toLocal8Bit();*/
 		redirected = false;
 		content_length = 0;
 	//	Out(SYS_CON|LOG_DEBUG) << "HttpConnection: sending http request:" << endl;
@@ -384,7 +384,7 @@ namespace bt
 				return true; 
 			
 			response_header_received = true;
-			QHttpResponseHeader hdr(QString::fromLocal8Bit(buffer.mid(0,idx + 4)));
+			/*QHttpResponseHeader hdr(QString::fromLocal8Bit(buffer.mid(0,idx + 4)));PORT: KF5
 			
 			if (hdr.hasKey("Content-Length"))
 				content_length = hdr.value("Content-Length").toInt();
@@ -413,7 +413,7 @@ namespace bt
 			{
 				failure_reason = hdr.reasonPhrase();
 				return false;
-			}
+			}*/
 			
 			if (buffer.size() - (idx + 4) > 0)
 			{

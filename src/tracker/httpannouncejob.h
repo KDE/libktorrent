@@ -21,8 +21,9 @@
 
 #include <ktorrent_export.h>
 #include <kio/jobclasses.h>
-#include <QHttp>
+#include <KUrl>
 #include <QBuffer>
+#include <QSslError>
 
 namespace bt 
 {
@@ -55,16 +56,16 @@ namespace bt
 		
 	private slots:
 		void requestFinished(int id,bool err);
-		void readData(const QHttpResponseHeader & hdr);
+//		void readData(const QHttpResponseHeader & hdr); //PORT: KF5
 		void sendRequest();
 		void sslErrors(const QList<QSslError> & errors);
 		
 	private:
-		void handleRedirect(const QHttpResponseHeader & hdr);
+// 		void handleRedirect(const QHttpResponseHeader & hdr); //PORT: KF5
 		
 	private:
 		KUrl url;
-		QHttp* http;
+// 		QHttp* http; //PORT: KF5
 		QByteArray reply_data;
 		int get_id;
 		

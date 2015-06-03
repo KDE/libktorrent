@@ -5,4 +5,4 @@ set(testlib_SRC
 	dummytorrentcreator.cpp
 )
 
-kde4_add_library(testlib STATIC ${testlib_SRC})
+add_library(testlib STATIC ${testlib_SRC})

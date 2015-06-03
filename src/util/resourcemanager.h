@@ -22,9 +22,10 @@
 #ifndef BT_TICKETMANAGER_H
 #define BT_TICKETMANAGER_H
 
-#include <QSet>
 #include <QList>
 #include <QMap>
+#include <QSet>
+#include <QString>
 #include <ktorrent_export.h>
 #include "constants.h"
 

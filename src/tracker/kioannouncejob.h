@@ -23,6 +23,7 @@
 
 #include <ktorrent_export.h>
 #include <kio/jobclasses.h>
+#include <KUrl>
 
 
 namespace bt

@@ -21,6 +21,7 @@
 #define DHTTASK_H
 
 #include "rpccall.h"
+#include "rpcserver.h"
 #include "kbucket.h"
 
 namespace net

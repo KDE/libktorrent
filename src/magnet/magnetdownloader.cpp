@@ -177,7 +177,7 @@ namespace bt
 		KIO::StoredTransferJob* stj = qobject_cast<KIO::StoredTransferJob*>(job);
 		if (job->error())
 		{
-			Out(SYS_GEN|LOG_DEBUG) << "Failed to download " << stj->url() << ": " << stj->errorString() << endl;
+// 			Out(SYS_GEN|LOG_DEBUG) << "Failed to download " << stj->url() << ": " << stj->errorString() << endl; PORT: KF5
 			return;
 		}
 		
@@ -196,7 +196,7 @@ namespace bt
 		} 
 		catch (...) 
 		{
-			Out(SYS_GEN|LOG_NOTICE) << "Invalid torrent file from " << mlink.torrent() << endl;
+// 			Out(SYS_GEN|LOG_NOTICE) << "Invalid torrent file from " << mlink.torrent() << endl; PORT: KF5
 		}
 	}
 

@@ -19,7 +19,6 @@
  ***************************************************************************/
 #include <QTimer>
 #include <QHostAddress>
-#include <QHttpResponseHeader>
 #include <QStringList>
 #include <klocale.h>
 #include <util/log.h>
@@ -107,7 +106,7 @@ namespace bt
 		int eoh = reply.indexOf("\r\n\r\n");
 		if (eoh != -1)
 		{
-			reply_header = QHttpResponseHeader(QString::fromAscii(reply.mid(0,eoh + 4)));
+			/*reply_header = QHttpResponseHeader(QString::fromAscii(reply.mid(0,eoh + 4))); PORT: KF5
 			if (reply_header.contentLength() > 0 && reply.size() < eoh + 4 + reply_header.contentLength())
 			{
 				// Haven't got full content yet, so return and wait for more
@@ -122,7 +121,7 @@ namespace bt
 				finished = true;
 				result(this);
 				operationFinished(this);
-			}
+			}*/
 		}
 		else
 			return;

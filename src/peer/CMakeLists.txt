@@ -22,4 +22,4 @@ set (peer_HDR
 
 install(FILES ${peer_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/peer COMPONENT Devel)
 
-add_subdirectory(tests)
+#add_subdirectory(tests)

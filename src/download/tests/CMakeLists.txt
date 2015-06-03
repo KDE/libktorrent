@@ -1,4 +1,6 @@
 set(streamingchunkselectortest_SRCS streamingchunkselectortest.cpp)
 
-kde4_add_unit_test(streamingchunkselectortest TESTNAME streamingchunkselectortest ${streamingchunkselectortest_SRCS})
-target_link_libraries( streamingchunkselectortest ${QT_QTTEST_LIBRARY} testlib ktorrent)
+add_executable(streamingchunkselectortestNAME streamingchunkselectortest ${streamingchunkselectortest_SRCS})
+add_test(streamingchunkselectortest streamingchunkselectortest)
+ecm_mark_as_test(streamingchunkselectortest)
+target_link_libraries( streamingchunkselectortest Qt5::Test testlib ktorrent)

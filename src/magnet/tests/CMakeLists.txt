@@ -1,4 +1,6 @@
 set(magnetlinktest_SRCS magnetlinktest.cpp)
 
-kde4_add_unit_test(magnetlinktest TESTNAME magnetlinktest ${magnetlinktest_SRCS})
-target_link_libraries( magnetlinktest ${QT_QTTEST_LIBRARY} ktorrent)
+add_executable(magnetlinktestNAME magnetlinktest ${magnetlinktest_SRCS})
+add_test(magnetlinktest magnetlinktest)
+ecm_mark_as_test(magnetlinktest)
+target_link_libraries( magnetlinktest Qt5::Test ktorrent)

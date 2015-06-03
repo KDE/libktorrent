@@ -2,7 +2,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-ktorrent.h.cmake ${CMAKE_BINAR
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${LIBGCRYPT_INCLUDE_DIR} ${QCA2_INCLUDE_DIR})
+include_directories(${LIBGCRYPT_INCLUDE_DIR} ${QCA-qt5_INCLUDE_DIR})
 remove_definitions(-DQT_NO_HTTP)
 
 set(libktorrent_SRC
@@ -225,15 +225,15 @@ set(libktorrent_SRC ${libktorrent_SRC} util/win32.cpp)
 endif(WIN32)
 
 
-# kde4_add_ui_files(libktorrent_SRC ${libktorrent_UI})
-# kde4_add_kcfg_files(libktorrent_SRC settings.kcfgc)
-kde4_add_library(ktorrent SHARED ${libktorrent_SRC})
+# ki18n_wrap_ui(libktorrent_SRC ${libktorrent_UI})
+# kconfig_add_kcfg_files(libktorrent_SRC settings.kcfgc)
+add_library(ktorrent SHARED ${libktorrent_SRC})
 
-target_link_libraries(ktorrent ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${KDE4_SOLID_LIBS} ${LIBGCRYPT_LIBRARIES} ${QCA2_LIBRARIES})
+target_link_libraries(ktorrent KF5::Archive KF5::KIOCore KF5::KDELibs4Support qca-qt5 ${GMP_LIBRARIES} ${LIBGCRYPT_LIBRARIES} ${QCA-qt5_LIBRARIES})
 if(WIN32)
 target_link_libraries(ktorrent ws2_32)
 endif(WIN32)
-set_target_properties(ktorrent PROPERTIES VERSION 5.0.0 SOVERSION 5 LINK_INTERFACE_LIBRARIES ${KDE4_KDEUI_LIBS})
+# set_target_properties(ktorrent PROPERTIES VERSION 5.0.0 SOVERSION 5 LINK_INTERFACE_LIBRARIES )
 install(TARGETS ktorrent  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 

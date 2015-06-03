@@ -25,6 +25,7 @@
 #include "constants.h"
 #include <qstring.h>
 #include <ktorrent_export.h>
+#include <KUrl>
 
 // LOG MESSAGES CONSTANTS
 #define LOG_NONE 0x00
