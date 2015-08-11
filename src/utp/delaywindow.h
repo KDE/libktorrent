@@ -22,7 +22,9 @@
 #ifndef UTP_DELAYWINDOW_H
 #define UTP_DELAYWINDOW_H
 
+#ifndef Q_MOC_RUN
 #include <boost/circular_buffer.hpp>
+#endif // Q_MOC_RUN
 #include <utp/utpprotocol.h>
 
 namespace utp
