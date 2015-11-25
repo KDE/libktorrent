@@ -233,6 +233,11 @@ namespace bt
 		return *this;
 	}
 
+	Log & Log::operator << (const QUrl & url)
+	{
+		return operator << (url.toString());
+	}
+
 	Log & Log::operator << (const QString & s)
 	{
 		priv->write(s);

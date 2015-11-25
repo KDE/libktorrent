@@ -183,6 +183,13 @@ namespace bt
 		 * @return This Log
 		 */
 		Log & operator << (const KUrl & url);
+
+		/**
+		 * Write an URL to the file.
+		 * @param text The QUrl
+		 * @return This Log
+		 */
+		Log & operator << (const QUrl & url);
 		
 		/**
 		 * Sets a filter for log messages. Applies only to listeners via LogMonitorInterface!
