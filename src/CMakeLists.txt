@@ -234,7 +234,7 @@ if(WIN32)
 target_link_libraries(ktorrent ws2_32)
 endif(WIN32)
 # set_target_properties(ktorrent PROPERTIES VERSION 5.0.0 SOVERSION 5 LINK_INTERFACE_LIBRARIES )
-install(TARGETS ktorrent  ${INSTALL_TARGETS_DEFAULT_ARGS} )
+install(TARGETS ktorrent EXPORT LibKTorrentTargets  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
 set (interfaces_HDR

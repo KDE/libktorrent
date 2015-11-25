@@ -25,7 +25,15 @@ include(KDECompilerSettings)
 include(FeatureSummary)
 include(GenerateExportHeader)
 include(ECMMarkAsTest)
+include(ECMSetupVersion)
+include(ECMPackageConfigHelpers)
 
+set(LIBKTORRENT_VERSION "1.9.50")
+
+ecm_setup_version(${LIBKTORRENT_VERSION} VARIABLE_PREFIX LIBKTORRENT
+                        VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/libktorrent_version.h"
+                        PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfigVersion.cmake"
+                        SOVERSION 1)
 find_package(GMP REQUIRED)
 find_package(Boost REQUIRED)
 find_package(Qca-qt5 REQUIRED)
@@ -49,8 +57,6 @@ find_package(KF5 REQUIRED
 kde_enable_exceptions()
 add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 include_directories( ${LIBKTORRENT_BINARY_DIR}	${LIBKTORRENT_SOURCE_DIR} ${Qt5Core_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${QCA-qt5_INCLUDE_DIR} ${Boost_INCLUDE_DIR}) #${GMP_INCLUDE_DIR}
-
-set(LIBKTORRENT_VERSION "1.1dev")
 
 #XFS prealloc
 CHECK_INCLUDE_FILES(xfs/xfs.h HAVE_XFS_XFS_H)
@@ -83,8 +89,26 @@ check_function_exists(statvfs64 HAVE_STATVFS64)
 add_subdirectory(src)
 #add_subdirectory(testlib)
 add_subdirectory(examples)
-add_subdirectory(cmake)
 add_subdirectory(doc)
+
+# create a Config.cmake and a ConfigVersion.cmake file and install them
+set(INCLUDE_INSTALL_DIR "include/libktorrent/")
+
+set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/LibKTorrent")
+
+ecm_configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/LibKTorrentConfig.cmake.in"
+                              "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfig.cmake"
+                              INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
+                              PATH_VARS INCLUDE_INSTALL_DIR
+                              )
+
+install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfig.cmake"
+               "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfigVersion.cmake"
+        DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
+        COMPONENT Devel )
+
+install(EXPORT LibKTorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE LibKTorrentTargets.cmake )
+
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
