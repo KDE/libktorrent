@@ -35,6 +35,7 @@
 #include <klocale.h>
 #include <kmimetype.h>
 #include <kglobal.h>
+#include <kformat.h>
 #include <interfaces/torrentinterface.h>
 #include <util/signalcatcher.h>
 #include "error.h"
@@ -224,14 +225,14 @@ namespace bt
 		
 	QString BytesToString(Uint64 bytes)
 	{
-		KLocale* loc = KGlobal::locale();
-		return loc->formatByteSize(bytes,2);
+		static KFormat format;
+		return format.formatByteSize(bytes,2);
 	}
 
 	QString BytesPerSecToString(double speed)
 	{
-		KLocale* loc = KGlobal::locale();
-		return i18n("%1/s",loc->formatByteSize(speed,2));
+		static KFormat format;
+		return i18n("%1/s",format.formatByteSize(speed,2));
 	}
 
 	QString DurationToString(Uint32 nsecs)
