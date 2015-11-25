@@ -233,7 +233,7 @@ target_link_libraries(ktorrent KF5::Archive KF5::KIOCore KF5::KDELibs4Support qc
 if(WIN32)
 target_link_libraries(ktorrent ws2_32)
 endif(WIN32)
-# set_target_properties(ktorrent PROPERTIES VERSION 5.0.0 SOVERSION 5 LINK_INTERFACE_LIBRARIES )
+set_target_properties(ktorrent PROPERTIES VERSION 6.0.0 SOVERSION 6 )
 install(TARGETS ktorrent EXPORT LibKTorrentTargets  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
