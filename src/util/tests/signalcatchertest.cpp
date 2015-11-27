@@ -20,7 +20,7 @@
 
 #include <QtTest>
 #include <QObject>
-#include <time.h>
+#include <ctime>
 #include <util/log.h>
 #include <util/signalcatcher.h>
 #include <util/fileops.h>

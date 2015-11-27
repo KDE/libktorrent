@@ -20,7 +20,7 @@
 
 #include <QtTest>
 #include <QObject>
-#include <time.h>
+#include <ctime>
 #include <boost/scoped_array.hpp>
 #include <util/log.h>
 #include <utp/delaywindow.h>

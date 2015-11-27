@@ -4,8 +4,7 @@
 #define QT_GUI_LIB
 #include <QtTest>
 #include <QEventLoop>
-#include <KLocale>
-#include <KGlobal>
+#include <QLocale>
 #include <util/log.h>
 #include <util/error.h>
 #include <util/functions.h>
@@ -36,7 +35,7 @@ public:
 private slots:
     void initTestCase()
     {
-        KGlobal::setLocale(new KLocale("main"));
+        QLocale::setDefault(QLocale("main"));
         bt::InitLibKTorrent();
         bt::InitLog("datacheckertest.log", false, true);
         qsrand(time(0));

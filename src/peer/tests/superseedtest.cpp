@@ -20,7 +20,7 @@
 
 #include <QtTest>
 #include <QObject>
-#include <time.h>
+#include <ctime>
 #include <util/log.h>
 #include <peer/superseeder.h>
 #include <interfaces/peerinterface.h>

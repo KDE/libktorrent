@@ -87,7 +87,7 @@ check_function_exists(statvfs64 HAVE_STATVFS64)
 
 
 add_subdirectory(src)
-#add_subdirectory(testlib)
+add_subdirectory(testlib)
 add_subdirectory(examples)
 add_subdirectory(doc)
 

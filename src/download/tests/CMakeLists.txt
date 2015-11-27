@@ -1,6 +1,6 @@
 set(streamingchunkselectortest_SRCS streamingchunkselectortest.cpp)
 
-add_executable(streamingchunkselectortestNAME streamingchunkselectortest ${streamingchunkselectortest_SRCS})
+add_executable(streamingchunkselectortest ${streamingchunkselectortest_SRCS})
 add_test(streamingchunkselectortest streamingchunkselectortest)
 ecm_mark_as_test(streamingchunkselectortest)
 target_link_libraries( streamingchunkselectortest Qt5::Test testlib ktorrent)

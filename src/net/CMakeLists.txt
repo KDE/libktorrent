@@ -1,5 +1,4 @@
-
-#add_subdirectory(tests)
+add_subdirectory(tests)
 
 set(net_HDR  
 	socks.h
@@ -24,4 +23,3 @@ set(net_HDR
 )
 
 install(FILES ${net_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/net COMPONENT Devel)
-

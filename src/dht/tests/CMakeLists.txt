@@ -1,11 +1,11 @@
 set(rpcmsgtest_SRCS rpcmsgtest.cpp)
-add_executable(rpcmsgtestNAME rpcmsgtest ${rpcmsgtest_SRCS})
+add_executable(rpcmsgtest ${rpcmsgtest_SRCS})
 add_test(rpcmsgtest rpcmsgtest)
 ecm_mark_as_test(rpcmsgtest)
 target_link_libraries( rpcmsgtest Qt5::Test testlib ktorrent)
 
 set(keytest_SRCS keytest.cpp)
-add_executable(keytestNAME keytest ${keytest_SRCS})
+add_executable(keytest ${keytest_SRCS})
 add_test(keytest keytest)
 ecm_mark_as_test(keytest)
 target_link_libraries( keytest Qt5::Test testlib ktorrent)

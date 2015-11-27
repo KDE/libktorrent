@@ -6,3 +6,4 @@ set(testlib_SRC
 )
 
 add_library(testlib STATIC ${testlib_SRC})
+target_link_libraries(testlib KF5::KDELibs4Support)

@@ -1,9 +1,8 @@
 #define QT_GUI_LIB
 
-#include <time.h>
+#include <ctime>
 #include <QtTest>
-#include <KGlobal>
-#include <KLocale>
+#include <QLocale>
 #include <QEventLoop>
 #include <util/log.h>
 #include <util/error.h>
@@ -68,7 +67,7 @@ public:
 private slots:
     void initTestCase()
     {
-        KGlobal::setLocale(new KLocale("main"));
+        QLocale::setDefault(QLocale("main"));
         bt::InitLibKTorrent();
         bt::InitLog("streamingchunkselectortest.log", false, true);
         qsrand(time(0));

@@ -1,19 +1,19 @@
 include_directories(${LIBKTORRENT_SOURCE_DIR})
 
 set(statsfiletest_SRCS statsfiletest.cpp)
-add_executable(statsfiletestNAME statsfiletest ${statsfiletest_SRCS})
+add_executable(statsfiletest ${statsfiletest_SRCS})
 add_test(statsfiletest statsfiletest)
 ecm_mark_as_test(statsfiletest)
 target_link_libraries( statsfiletest Qt5::Test ktorrent)
 
 set(torrentfilestreamtest_SRCS torrentfilestreamtest.cpp)
-add_executable(torrentfilestreamtestNAME torrentfilestreamtest ${torrentfilestreamtest_SRCS})
+add_executable(torrentfilestreamtest ${torrentfilestreamtest_SRCS})
 add_test(torrentfilestreamtest torrentfilestreamtest)
 ecm_mark_as_test(torrentfilestreamtest)
 target_link_libraries( torrentfilestreamtest Qt5::Test testlib ktorrent)
 
 set(torrentfilestreammultitest_SRCS torrentfilestreammultitest.cpp)
-add_executable(torrentfilestreammultitestNAME torrentfilestreammultitest ${torrentfilestreammultitest_SRCS})
+add_executable(torrentfilestreammultitest ${torrentfilestreammultitest_SRCS})
 add_test(torrentfilestreammultitest torrentfilestreammultitest)
 ecm_mark_as_test(torrentfilestreammultitest)
 target_link_libraries( torrentfilestreammultitest Qt5::Test testlib ktorrent)

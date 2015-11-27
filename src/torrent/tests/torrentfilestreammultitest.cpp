@@ -2,10 +2,9 @@
 
 #include <QtTest>
 #include <QObject>
-#include <KGlobal>
-#include <KLocale>
+#include <QLocale>
 #include <unistd.h>
-#include <time.h>
+#include <ctime>
 #include <util/log.h>
 #include <util/error.h>
 #include <util/sha1hashgen.h>
@@ -52,7 +51,7 @@ public:
 private slots:
     void initTestCase()
     {
-        KGlobal::setLocale(new KLocale("main"));
+        QLocale::setDefault(QLocale("main"));
         bt::InitLog("torrentfilestreammultitest.log", false, false);
 
         files["aaa.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
