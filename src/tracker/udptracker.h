@@ -20,7 +20,7 @@
 #ifndef BTUDPTRACKER_H
 #define BTUDPTRACKER_H
 
-#include <kurl.h>
+#include <QUrl>
 #include <qtimer.h>
 #include <qbytearray.h>
 #include <net/address.h>
@@ -48,7 +48,7 @@ namespace bt
 	{
 		Q_OBJECT
 	public:
-		UDPTracker(const KUrl & url,TrackerDataSource* tds,const PeerID & id,int tier);
+		UDPTracker(const QUrl &url,TrackerDataSource* tds,const PeerID & id,int tier);
 		virtual ~UDPTracker();
 
 		virtual void start();
