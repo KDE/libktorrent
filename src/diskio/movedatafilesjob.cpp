@@ -19,8 +19,8 @@
  ***************************************************************************/
 #include "movedatafilesjob.h"
 #include <QFileInfo>
-#include <KLocale>
-#include <KUrl>
+#include <QUrl>
+#include <klocalizedstring.h>
 #include <kjobtrackerinterface.h>
 #include <kio/jobuidelegate.h>
 #include <util/log.h>
@@ -166,7 +166,7 @@ namespace bt
 		}
 			
 		QMap<QString,QString>::iterator i = todo.begin();
-		active_job = KIO::file_move(KUrl(i.key()),KUrl(i.value()),-1,KIO::HideProgressInfo);
+		active_job = KIO::file_move(QUrl::fromLocalFile(i.key()),QUrl::fromLocalFile(i.value()),-1,KIO::HideProgressInfo);
 		active_src = i.key();
 		active_dst = i.value();
 		Out(SYS_GEN|LOG_DEBUG) << "Moving " << active_src << " -> " << active_dst << endl;
@@ -199,7 +199,7 @@ namespace bt
 		QMap<QString,QString>::iterator i = success.begin();
 		while (i != success.end())
 		{	
-			KIO::Job* j = KIO::file_move(KUrl(i.value()),KUrl(i.key()),-1,KIO::HideProgressInfo);
+			KIO::Job* j = KIO::file_move(QUrl::fromLocalFile(i.value()),QUrl::fromLocalFile(i.key()),-1,KIO::HideProgressInfo);
 			connect(j,SIGNAL(result(KJob*)),this,SLOT(onRecoveryJobDone(KJob*)));
 			running_recovery_jobs++;
 			i++;

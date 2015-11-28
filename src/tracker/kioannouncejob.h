@@ -23,7 +23,7 @@
 
 #include <ktorrent_export.h>
 #include <kio/jobclasses.h>
-#include <KUrl>
+#include <QUrl>
 
 
 namespace bt
@@ -33,11 +33,11 @@ namespace bt
 	{
 		Q_OBJECT
 	public:
-		KIOAnnounceJob(const KUrl & url,const KIO::MetaData & md);
+		KIOAnnounceJob(const QUrl & url,const KIO::MetaData & md);
 		virtual ~KIOAnnounceJob();
 		
 		/// Get the announce url
-		KUrl announceUrl() const {return url;}
+		QUrl announceUrl() const {return url;}
 		
 		/// Get the reply data
 		const QByteArray & replyData() const {return reply_data;}
@@ -49,7 +49,7 @@ namespace bt
 		void finished(KJob* j);
 	
 	private:
-		KUrl url;
+		QUrl url;
 		QByteArray reply_data;
 		KIO::TransferJob* get_job;
 	};

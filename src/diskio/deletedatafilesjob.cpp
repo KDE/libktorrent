@@ -44,7 +44,7 @@ namespace bt
 	
 	void DeleteDataFilesJob::addFile(const QString & file)
 	{
-		files.append(KUrl(file));
+		files.append(QUrl::fromLocalFile(file));
 	}
 
 	void DeleteDataFilesJob::addEmptyDirectoryCheck(const QString & fpath)

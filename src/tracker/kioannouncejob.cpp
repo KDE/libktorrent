@@ -25,7 +25,7 @@
 namespace bt
 {
 	
-	KIOAnnounceJob::KIOAnnounceJob(const KUrl& url,const KIO::MetaData & md) : url(url)
+	KIOAnnounceJob::KIOAnnounceJob(const QUrl& url,const KIO::MetaData & md) : url(url)
 	{
 		get_job = KIO::get(url,KIO::NoReload,KIO::HideProgressInfo);
 		get_job->setMetaData(md);

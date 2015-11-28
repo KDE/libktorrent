@@ -20,9 +20,7 @@
 #include "httptracker.h"
 #include <config-ktorrent.h>
 
-#include <kurl.h>
-#include <klocale.h>
-#include <qhostaddress.h>
+#include <QHostAddress>
 #include <util/log.h>
 #include <util/functions.h>
 #include <util/error.h>
@@ -32,6 +30,7 @@
 #include <kio/job.h>
 #include <kio/netaccess.h>
 #include <kio/scheduler.h>
+#include <klocalizedstring.h>
 #include <kprotocolmanager.h>
 #include <bcodec/bnode.h>
 #include <bcodec/bdecoder.h>
@@ -488,7 +487,7 @@ namespace bt
 			if (!p.startsWith("http://"))
 				p = "http://" + p;
 			// set the proxy if the doNotUseKDEProxy ix enabled (URL must be valid to)
-			KUrl url = KUrl(p);
+			QUrl url(p);
 			if (url.isValid() && proxy.trimmed().length() >  0)
 				md["UseProxy"] = p;
 			else
@@ -529,7 +528,7 @@ namespace bt
 				QString proxy = KProtocolManager::proxyForUrl(u); // Use KDE settings
 				if (!proxy.isNull() && proxy != QLatin1String("DIRECT"))
 				{
-					KUrl proxy_url(proxy);
+					QUrl proxy_url(proxy);
 					j->setProxy(proxy_url.host(), proxy_url.port() <= 0 ? 80 : proxy_url.port());
 				}
 			}

@@ -100,7 +100,7 @@ private slots:
 
 	void testMMap()
 	{
-		KTemporaryFile tmp;
+		QTemporaryFile tmp;
 		QVERIFY(tmp.open());
 		int fd = tmp.handle();
 		try

@@ -23,8 +23,8 @@
 
 #include <util/ptrmap.h>
 #include <QString>
+#include <QUrl>
 #include <torrent/job.h>
-#include <kurl.h>
 
 namespace bt
 {
@@ -79,7 +79,7 @@ namespace bt
 		};
 
 	private:
-		KUrl::List files;
+		QList<QUrl> files;
 		QString base;
 		DirTree* directory_tree;
 		KIO::Job* active_job;

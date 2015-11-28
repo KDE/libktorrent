@@ -39,7 +39,6 @@
 #include <QFile>
 #include <QStringList>
 #include <QSet>
-#include <KUrl>
 #include "error.h"
 #include "log.h"
 #include "file.h"
@@ -198,7 +197,7 @@ namespace bt
 	void CopyFile(const QString & src,const QString & dst,bool nothrow)
 	{
 		KIO::FileCopyJob* copy = KIO::file_copy(QUrl::fromLocalFile(src), QUrl::fromLocalFile(dst));
-		if (!KIO::NetAccess::synchronousRun(copy , 0))
+		if (!KIO::NetAccess::synchronousRun(copy, 0))
 		{
 			if (!nothrow)
 				throw Error(i18n("Cannot copy %1 to %2: %3",
@@ -214,7 +213,8 @@ namespace bt
 
 	void CopyDir(const QString & src,const QString & dst,bool nothrow)
 	{
-		if (!KIO::NetAccess::dircopy(KUrl(src),KUrl(dst),0))
+		KIO::CopyJob* copy = KIO::copy(QUrl::fromLocalFile(src), QUrl::fromLocalFile(dst));
+		if (!KIO::NetAccess::synchronousRun(copy, 0))
 		{
 			if (!nothrow)
 				throw Error(i18n("Cannot copy %1 to %2: %3",
