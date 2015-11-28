@@ -65,10 +65,10 @@ namespace bt
 		pman = new PeerManager(tor);
 		connect(pman,SIGNAL(newPeer(Peer*)),this,SLOT(onNewPeer(Peer*)));
 		
-		foreach (const KUrl & url,mlink.trackers())
+		foreach (const QUrl &url,mlink.trackers())
 		{
 			Tracker* tracker;
-			if (url.protocol() == "udp")
+			if (url.scheme() == QLatin1String("udp"))
 				tracker = new UDPTracker(url,this,tor.getPeerID(),0);
 			else
 				tracker = new HTTPTracker(url,this,tor.getPeerID(),0);

@@ -569,4 +569,3 @@ namespace bt
 	}
 	
 }
-#include "chunkdownload.moc"

@@ -24,7 +24,7 @@ private slots:
 		QVERIFY(mlink.isValid());
 		QCOMPARE(mlink.displayName(),QString("Indie Top 50 - Best of Indie"));
 		QCOMPARE(mlink.torrent(),QString("http://torrents.thepiratebay.org/5156308/Indie_Top_50_-_Best_of_Indie.5156308.TPB.torrent"));
-		QCOMPARE(mlink.trackers()[0],KUrl("http://denis.stalker.h3q.com:6969/announce"));
+		QCOMPARE(mlink.trackers()[0],QUrl("http://denis.stalker.h3q.com:6969/announce"));
 		
 		bt::Uint8 hash[] = {
 			0xfe, 0x37, 0x7e, 0x01, 0x7e, 

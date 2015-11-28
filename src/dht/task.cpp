@@ -141,5 +141,3 @@ namespace dht
 
 }
 
-#include "task.moc"
-

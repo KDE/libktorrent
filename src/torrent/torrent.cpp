@@ -137,7 +137,7 @@ namespace bt
 			}
 			else if (dict->getValue("url-list"))
 			{
-				KUrl url(dict->getString("url-list",text_codec));
+				QUrl url(dict->getString("url-list",text_codec));
 				if (url.isValid())
 					web_seeds.append(url);
 			}
@@ -247,7 +247,7 @@ namespace bt
 		if (!trackers)
 			trackers = new TrackerTier();
 	
-		KUrl url(s);
+		QUrl url(s);
 		if (s.length() > 0 && url.isValid())
 			trackers->urls.append(url);
 	}
@@ -285,7 +285,7 @@ namespace bt
 			{
 				for (Uint32 j = 0;j < url_list->getNumChildren();j++)
 				{
-					KUrl url(url_list->getString(j,0));
+					QUrl url(url_list->getString(j,0));
 					tier->urls.append(url);
 				}
 				tier->next = new TrackerTier();
@@ -315,7 +315,7 @@ namespace bt
 	{
 		for (Uint32 i = 0;i < node->getNumChildren();i++)
 		{
-			KUrl url = KUrl(node->getString(i,text_codec));
+			QUrl url = QUrl(node->getString(i,text_codec));
 			if (url.isValid())
 				web_seeds.append(url);
 		}
@@ -325,7 +325,7 @@ namespace bt
 	{
 		Out(SYS_GEN|LOG_DEBUG) << "Name : " << name_suggestion << endl;
 		
-//		for (KUrl::List::iterator i = tracker_urls.begin();i != tracker_urls.end();i++)
+//		for (QList<QUrl>::iterator i = tracker_urls.begin();i != tracker_urls.end();i++)
 //			Out(SYS_GEN|LOG_DEBUG) << "Tracker URL : " << *i << endl;
 		
 		Out(SYS_GEN|LOG_DEBUG) << "Piece Length : " << chunk_size << endl;

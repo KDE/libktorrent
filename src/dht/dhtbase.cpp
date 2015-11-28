@@ -33,5 +33,3 @@ namespace dht
 	{}
 }
 
-#include "dhtbase.moc"
-

@@ -37,7 +37,7 @@ namespace bt
 		int tier = 1;
 		while (first)
 		{
-			KUrl::List::const_iterator i = first->urls.begin();
+			QList<QUrl>::const_iterator i = first->urls.begin();
 			while (i != first->urls.end())
 			{
 				addTracker(*i,true,tier);

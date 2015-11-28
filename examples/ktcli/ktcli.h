@@ -28,7 +28,7 @@
 #include <torrent/torrentcontrol.h>
 #include <interfaces/queuemanagerinterface.h>
 
-class KUrl;
+class QUrl;
 
 typedef boost::scoped_ptr<bt::TorrentControl> TorrentControlPtr;
 
@@ -44,7 +44,7 @@ public:
 	
 private:
 	QString tempDir();
-	bool load(const KUrl & url);
+	bool load(const QUrl &url);
 	bool loadFromFile(const QString & path);
 	bool loadFromDir(const QString & path);
 	

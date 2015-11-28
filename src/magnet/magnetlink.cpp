@@ -66,9 +66,9 @@ namespace bt
 		return info_hash == mlink.infoHash();
 	}
 
-	static KUrl::List GetTrackers(const KUrl & url)
+	static QList<QUrl> GetTrackers(const QUrl &url)
 	{
-		KUrl::List result;
+		QList<QUrl> result;
 		const QString encoded_query = QString::fromLatin1(url.encodedQuery());
 		const QString item = QLatin1String("tr=");
 		if(encoded_query.length() <= 1)
@@ -94,34 +94,34 @@ namespace bt
 
 	void MagnetLink::parse(const QString& mlink)
 	{
-		KUrl url(mlink);
-		if(url.protocol() != "magnet")
+		QUrl url(mlink);
+		if(url.scheme() != QLatin1String("magnet"))
 		{
 			Out(SYS_GEN | LOG_NOTICE) << "Invalid protocol of magnet link "
 			                          << mlink << endl;
 			return;
 		}
 
-		torrent_url = url.queryItem("to");
+		torrent_url = QUrlQuery(url).queryItemValue(QLatin1String("to"), QUrl::FullyDecoded);
 		//magnet://description-of-content.btih.HASH(-HASH)*.dht/path/file?x.pt=&x.to=
 
 		// TODO automatically select these files and prefetches from here
-		path = url.queryItem("pt");
-		if(path.isEmpty() && url.hasPath() && url.path() != "/")
+		path = QUrlQuery(url).queryItemValue(QLatin1String("pt"));
+		if(path.isEmpty() && url.path() != QLatin1String("/"))
 		{
 			// TODO find out why RemoveTrailingSlash does not work
-			path = url.path(KUrl::RemoveTrailingSlash).remove(QRegExp("^/"));
+			path = url.adjusted(QUrl::StripTrailingSlash).path().remove(QRegExp(QLatin1String("^/")));
 		}
 
-		QString xt = url.queryItem("xt");
+		QString xt = QUrlQuery(url).queryItemValue(QLatin1String("xt"));
 		if(xt.isEmpty()
-		        || !xt.startsWith("urn:btih:"))
+		        || !xt.startsWith(QLatin1String("urn:btih:")))
 		{
-			QRegExp btihHash("([^\\.]+).btih");
+			QRegExp btihHash(QLatin1String("([^\\.]+).btih"));
 			if(btihHash.indexIn(url.host()) != -1)
 			{
-				QString primaryHash = btihHash.cap(1).split("-")[0];
-				xt = "urn:btih:" + primaryHash;
+				QString primaryHash = btihHash.cap(1).split('-')[0];
+				xt = QLatin1String("urn:btih:") + primaryHash;
 			}
 			else
 			{
@@ -155,7 +155,7 @@ namespace bt
 
 			info_hash = SHA1Hash(hash);
 			tracker_urls = GetTrackers(url);
-			name = url.queryItem("dn");
+			name = QUrlQuery(url).queryItemValue(QLatin1String("dn")).replace('+', ' ');
 			magnet_string = mlink;
 		}
 		catch(...)
@@ -182,7 +182,7 @@ namespace bt
 	{
 		Uint32 part;
 		Uint32 tmp;
-		QString ret("");
+		QString ret;
 		QChar ch;
 		QString str = s.toUpper();
 		// 32 base32 chars -> 40 hex chars

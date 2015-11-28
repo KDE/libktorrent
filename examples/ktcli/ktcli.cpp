@@ -99,7 +99,7 @@ bool KTCLI::start()
 }
 
 
-bool KTCLI::load(const KUrl & url)
+bool KTCLI::load(const QUrl &url)
 {
 	QDir dir(url.toLocalFile());
 	if (dir.exists() && dir.exists("torrent") && dir.exists("stats"))
@@ -153,7 +153,7 @@ bool KTCLI::loadFromFile(const QString & path)
 	try
 	{
         tc->init(this, bt::LoadFile(path), tempDir(), QDir::currentPath());
-		tc->setLoadUrl(KUrl(path));
+		tc->setLoadUrl(QUrl(path));
 		tc->createFiles();
 		return true;
 	}

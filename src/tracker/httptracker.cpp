@@ -571,7 +571,7 @@ namespace bt
 
 	void HTTPTracker::setUseQHttp(bool on)
 	{
-		use_qhttp = on;
+		use_qhttp = false;
 	}
 
 }

@@ -376,4 +376,3 @@ namespace dht
 
 }
 
-#include "kbucket.moc"

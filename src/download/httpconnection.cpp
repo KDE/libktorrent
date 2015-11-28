@@ -21,6 +21,7 @@
 #include "httpconnection.h"
 #include <QTimer>
 #include <QtAlgorithms>
+#include <QUrl>
 #include <kurl.h>
 #include <klocale.h>
 #include <net/socketmonitor.h>
@@ -122,7 +123,7 @@ namespace bt
 		}
 	}
 	
-	void HttpConnection::connectTo(const KUrl & url)
+	void HttpConnection::connectTo(const QUrl &url)
 	{
 		if (OpenFileAllowed())
 		{
@@ -406,7 +407,7 @@ namespace bt
 				{
 					Out(SYS_CON|LOG_DEBUG) << "Redirected to " << hdr.value("Location") << endl;
 					redirected = true;
-					redirected_to = KUrl(hdr.value("Location"));
+					redirected_to = QUrl(hdr.value("Location"));
 				}
 			}
 			else if (! (hdr.statusCode() == 200 || hdr.statusCode() == 206))

@@ -22,7 +22,7 @@
 #define BTWEBSEED_H
 
 #include <QTimer>
-#include <kurl.h>
+#include <QUrl>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <interfaces/webseedinterface.h>
@@ -48,7 +48,7 @@ namespace bt
 	{
 		Q_OBJECT
 	public:
-		WebSeed(const KUrl & url,bool user,const Torrent & tor,ChunkManager & cman);
+		WebSeed(const QUrl &url,bool user,const Torrent & tor,ChunkManager & cman);
 		virtual ~WebSeed();
 		
 		/// Is this webseed busy ?
@@ -159,7 +159,7 @@ namespace bt
 		void chunkDownloadFinished(WebSeedChunkDownload* cd,Uint32 chunk);
 		
 	private slots:
-		void redirected(const KUrl & to_url);
+		void redirected(const QUrl &to_url);
 		
 	private:
 		struct Range
@@ -194,7 +194,7 @@ namespace bt
 		WebSeedChunkDownload* current;
 		Uint32 up_gid,down_gid;
 		QList<Range> range_queue;
-		KUrl redirected_url;
+		QUrl redirected_url;
 		PieceData::Ptr cur_piece;
 		QTimer retry_timer;
 		ConnectionLimit::Token::Ptr token;

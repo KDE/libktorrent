@@ -41,7 +41,7 @@ namespace bt
 
     TorrentCreator::TorrentCreator(const QString& tar,
                                    const QStringList& track,
-                                   const KUrl::List& webseeds,
+                                   const QList<QUrl>& webseeds,
                                    Uint32 cs,
                                    const QString& name,
                                    const QString& comments, bool priv, bool decentralized)
@@ -179,15 +179,15 @@ namespace bt
         if (webseeds.count() == 1)
         {
             enc.write("url-list");
-            enc.write(webseeds[0].prettyUrl());
+            enc.write(webseeds[0].toDisplayString());
         }
         else if (webseeds.count() > 0)
         {
             enc.write("url-list");
             enc.beginList();
-            foreach (const KUrl& u, webseeds)
+            foreach (const QUrl &u, webseeds)
             {
-                enc.write(u.prettyUrl());
+                enc.write(u.toDisplayString());
             }
             enc.end();
         }

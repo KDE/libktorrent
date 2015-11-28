@@ -24,7 +24,7 @@
 #include <qdatetime.h>
 #include <qobject.h>
 #include <qtimer.h>
-#include <kurl.h>
+#include <QUrl>
 #include <util/timer.h>
 #include <interfaces/torrentinterface.h>
 #include <interfaces/trackerslist.h>
@@ -125,8 +125,8 @@ namespace bt
 		virtual Uint32 getNumWebSeeds() const;
 		virtual const WebSeedInterface* getWebSeed(Uint32 i) const;
 		virtual WebSeedInterface* getWebSeed(Uint32 i);
-		virtual bool addWebSeed(const KUrl & url);
-		virtual bool removeWebSeed(const KUrl & url);
+		virtual bool addWebSeed(const QUrl &url);
+		virtual bool removeWebSeed(const QUrl &url);
 		virtual bool readyForPreview() const;
 		virtual bool isMultimedia() const;
 		virtual void markExistingFilesAsDownloaded();
@@ -162,8 +162,8 @@ namespace bt
 		virtual const SHA1Hash & getInfoHash() const;
 		virtual void setUserModifiedFileName(const QString & n);
 		virtual int getETA();
-		virtual void setMoveWhenCompletedDir(const KUrl & dir) {completed_dir = dir; saveStats();}
-		virtual KUrl getMoveWhenCompletedDir() const {return completed_dir;}
+		virtual void setMoveWhenCompletedDir(const QUrl &dir) {completed_dir = dir; saveStats();}
+		virtual QUrl getMoveWhenCompletedDir() const {return completed_dir;}
 		virtual void setSuperSeeding(bool on);
 		
 		/// Create all the necessary files
@@ -303,7 +303,7 @@ namespace bt
 		QString old_tordir;
 		QString outputdir;
 		QString error_msg;
-		KUrl completed_dir;
+		QUrl completed_dir;
 		bool prealloc;
 		TimeStamp last_diskspace_check;
 		bool loading_stats;

@@ -23,11 +23,11 @@
 
 #include <QMutex>
 #include <QTimer>
-#include <kurl.h>
+#include <QUrl>
 #include <net/streamsocket.h>
 #include <net/addressresolver.h>
 
-class KUrl;
+class QUrl;
 
 namespace bt
 {
@@ -52,7 +52,7 @@ namespace bt
 		bool isRedirected() const {return redirected;}
 		
 		/// Get the redirected url
-		KUrl redirectedUrl() const {return redirected_url;}
+		QUrl redirectedUrl() const {return redirected_url;}
 		
 		/**
 		 * Set the group ID's of the socket
@@ -65,7 +65,7 @@ namespace bt
 		 * Connect to a webseed
 		 * @param url Url of the webseeder
 		 */
-		void connectTo(const KUrl & url);
+		void connectTo(const QUrl &url);
 		
 		/**
 		 * Connect to a proxy.
@@ -142,7 +142,7 @@ namespace bt
 			bool request_sent;
 			QString failure_reason;
 			bool redirected;
-			KUrl redirected_to;
+			QUrl redirected_to;
 			bt::Uint64 content_length;
 			int response_code;
 			
@@ -164,7 +164,7 @@ namespace bt
 		Uint32 up_gid,down_gid;
 		bool close_when_finished;
 		bool redirected;
-		KUrl redirected_url;
+		QUrl redirected_url;
 		int response_code;
 	};
 }

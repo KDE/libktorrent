@@ -27,7 +27,7 @@
 #include <interfaces/trackerslist.h>
 #include <torrent/torrentstats.h>
 #include <torrent/torrentfilestream.h>
-#include <kurl.h>
+#include <QUrl>
 
 #ifdef ERROR
 #undef ERROR
@@ -93,10 +93,10 @@ namespace bt
 		virtual ~TorrentInterface();
 
 		/// Set the URL which the torrent was loaded from
-		void setLoadUrl(const KUrl& u) {url = u;}
+		void setLoadUrl(const QUrl &u) {url = u;}
 		
 		/// Get the URL which the torrent was loaded from
-		KUrl loadUrl() const {return url;}
+		QUrl loadUrl() const {return url;}
 		
 		/**
 		 * Update the object, should be called periodically.
@@ -404,10 +404,10 @@ namespace bt
 		virtual WebSeedInterface* getWebSeed(Uint32 i) = 0; 
 		
 		/// Add a webseed (return false, if there is already a webseed with the same url)
-		virtual bool addWebSeed(const KUrl & url) = 0;
+		virtual bool addWebSeed(const QUrl &url) = 0;
 		
 		/// Remove a webseed (only user created ones can be removed)
-		virtual bool removeWebSeed(const KUrl & url) = 0;
+		virtual bool removeWebSeed(const QUrl &url) = 0;
 		
 		/// Mark all existing files as downloaded (
 		virtual void markExistingFilesAsDownloaded() = 0;
@@ -451,12 +451,12 @@ namespace bt
 		 * Get the move upon completion directory. 
 		 * @param dir the directory an empty url disables this feature
 		 */
-		virtual void setMoveWhenCompletedDir(const KUrl & dir) = 0;
+		virtual void setMoveWhenCompletedDir(const QUrl &dir) = 0;
 
 		/**
 		 * Get the move upon completion directory. 
 		 */
-		virtual KUrl getMoveWhenCompletedDir() const = 0;
+		virtual QUrl getMoveWhenCompletedDir() const = 0;
 		
 		/**
 		 * Enable or disable superseeding mode, does nothing if the torrent is not finished.
@@ -562,7 +562,7 @@ namespace bt
 		TorrentStats stats;
 		QString user_modified_name;
 		QString display_name;
-		KUrl url;
+		QUrl url;
 	};
 
 }

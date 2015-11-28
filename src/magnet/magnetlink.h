@@ -24,7 +24,7 @@
 
 #include <ktorrent_export.h>
 #include <util/sha1hash.h>
-#include <KUrl>
+#include <QUrl>
 
 namespace bt
 {
@@ -68,7 +68,7 @@ namespace bt
 		QString torrent() const {return torrent_url;}
 		
 		/// Get all possible trackers (can be empty)
-		KUrl::List trackers() const {return tracker_urls;}
+		QList<QUrl> trackers() const {return tracker_urls;}
 		
 		/// Get the info hash
 		const SHA1Hash & infoHash() const {return info_hash;}
@@ -82,7 +82,7 @@ namespace bt
 		QString magnet_string;
 		SHA1Hash info_hash;
 		QString torrent_url;
-		KUrl::List tracker_urls;
+		QList<QUrl> tracker_urls;
 		QString path;
 		QString name;
 	};

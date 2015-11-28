@@ -539,7 +539,7 @@ namespace bt
             delete tor;
             tor = 0;
             throw Error(i18n("An error occurred while loading <b>%1</b>:<br/><b>%2</b>",
-                             loadUrl().prettyUrl(), err.toString()));
+                             loadUrl().toString(), err.toString()));
         }
 
         tor->setFilePriorityListener(this);
@@ -1038,7 +1038,7 @@ namespace bt
         if (!user_modified_name.isEmpty())
             stats_file->write("USER_MODIFIED_NAME", user_modified_name);
         stats_file->write("DISPLAY_NAME", display_name);
-        stats_file->write("URL", url.prettyUrl());
+        stats_file->write("URL", url.toDisplayString());
 
         stats_file->write("TIME_ADDED", QString("%1").arg(stats.time_added.toTime_t()));
         stats_file->write("SUPERSEEDING", stats.superseeding ? "1" : "0");
@@ -1083,9 +1083,9 @@ namespace bt
 
         if (stats_file->hasKey("COMPLETEDDIR"))
         {
-            completed_dir = KUrl(stats_file->readString("COMPLETEDDIR"));
-            if (completed_dir == KUrl(outputdir))
-                completed_dir = KUrl();
+            completed_dir = QUrl(stats_file->readString("COMPLETEDDIR"));
+            if (completed_dir == QUrl(outputdir))
+                completed_dir = QUrl();
         }
 
         if (stats_file->hasKey("USER_MODIFIED_NAME"))
@@ -1133,7 +1133,7 @@ namespace bt
         setUploadProps(up, aup);
         pman->setGroupIDs(upload_gid, download_gid);
 
-        url = KUrl(stats_file->readString("URL"));
+        url = QUrl(stats_file->readString("URL"));
 
         if (stats_file->hasKey("TIME_ADDED"))
             stats.time_added.setTime_t(stats_file->readULong("TIME_ADDED"));
@@ -1805,7 +1805,7 @@ namespace bt
         return downloader->getWebSeed(i);
     }
 
-    bool TorrentControl::addWebSeed(const KUrl& url)
+    bool TorrentControl::addWebSeed(const QUrl &url)
     {
         WebSeed* ws = downloader->addWebSeed(url);
         if (ws)
@@ -1816,7 +1816,7 @@ namespace bt
         return ws != 0;
     }
 
-    bool TorrentControl::removeWebSeed(const KUrl& url)
+    bool TorrentControl::removeWebSeed(const QUrl &url)
     {
         bool ret = downloader->removeWebSeed(url);
         if (ret)

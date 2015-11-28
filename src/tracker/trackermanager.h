@@ -48,14 +48,14 @@ namespace bt
 		
 		virtual TrackerInterface* getCurrentTracker() const;
 		virtual void setCurrentTracker(TrackerInterface* t);
-		virtual void setCurrentTracker(const KUrl & url);
+		virtual void setCurrentTracker(const QUrl &url);
 		virtual QList<TrackerInterface*> getTrackers();
-		virtual TrackerInterface* addTracker(const KUrl &url, bool custom = true,int tier = 1);
+		virtual TrackerInterface* addTracker(const QUrl &url, bool custom = true,int tier = 1);
 		virtual bool removeTracker(TrackerInterface* t);
-		virtual bool removeTracker(const KUrl & url);
+		virtual bool removeTracker(const QUrl &url);
 		virtual bool canRemoveTracker(TrackerInterface* t);
 		virtual void restoreDefault();
-		virtual void setTrackerEnabled(const KUrl & url,bool on);
+		virtual void setTrackerEnabled(const QUrl &url,bool on);
 		virtual bool noTrackersReachable() const;
 		
 		/// Get the number of seeders
@@ -125,11 +125,11 @@ namespace bt
 		
 	protected:
 		TorrentControl* tor;
-		PtrMap<KUrl,Tracker> trackers;
+		PtrMap<QUrl,Tracker> trackers;
 		bool no_save_custom_trackers;
 		PeerManager* pman;
 		Tracker* curr;
-		KUrl::List custom_trackers;
+		QList<QUrl> custom_trackers;
 		bool started;
 	};
 

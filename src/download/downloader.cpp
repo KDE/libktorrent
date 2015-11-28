@@ -67,10 +67,10 @@ namespace bt
 		current_chunks.setAutoDelete(true);
 		
 		active_webseed_downloads = 0;
-		const KUrl::List & urls = tor.getWebSeeds();
-		foreach (const KUrl &u,urls)
+		const QList<QUrl> & urls = tor.getWebSeeds();
+		foreach (const QUrl &u,urls)
 		{
-			if (u.protocol() == "http")
+			if (u.scheme() == "http")
 			{
 				WebSeed* ws = new WebSeed(u,false,tor,cman);
 				webseeds.append(ws);
@@ -827,7 +827,7 @@ namespace bt
 			tmon->downloadRemoved(cd);
 	}
 	
-	WebSeed* Downloader::addWebSeed(const KUrl & url)
+	WebSeed* Downloader::addWebSeed(const QUrl &url)
 	{
 		// Check for dupes
 		foreach (WebSeed* ws,webseeds)
@@ -846,7 +846,7 @@ namespace bt
 		return ws;
 	}
 		
-	bool Downloader::removeWebSeed(const KUrl & url)
+	bool Downloader::removeWebSeed(const QUrl &url)
 	{
 		foreach (WebSeed* ws,webseeds)
 		{
@@ -887,13 +887,13 @@ namespace bt
 		foreach (WebSeed* ws,webseeds)
 		{
 			if (ws->isUserCreated())
-				out << ws->getUrl().prettyUrl() << ::endl;
+				out << ws->getUrl().toDisplayString() << ::endl;
 		}
 		out << "====disabled====" << ::endl;
 		foreach (WebSeed* ws,webseeds)
 		{
 			if (!ws->isEnabled())
-				out << ws->getUrl().prettyUrl() << ::endl;
+				out << ws->getUrl().toDisplayString() << ::endl;
 		}
 	}
 	
@@ -911,14 +911,14 @@ namespace bt
 		while (!in.atEnd())
 		{
 			QString line = in.readLine();
-			if (line == "====disabled====")
+			if (line == QLatin1String("====disabled===="))
 			{
 				disabled_list_found = true;
 				continue;
 			}
 			
-			KUrl url(line);
-			if (!url.isValid() || url.protocol() != "http")
+			QUrl url(line);
+			if (!url.isValid() || url.scheme() != QLatin1String("http"))
 				continue;
 				
 			if (disabled_list_found)
@@ -968,5 +968,3 @@ namespace bt
 		use_webseeds = on;
 	}
 }
-
-#include "downloader.moc"
