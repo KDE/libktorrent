@@ -162,8 +162,8 @@ namespace bt
 		virtual const SHA1Hash & getInfoHash() const;
 		virtual void setUserModifiedFileName(const QString & n);
 		virtual int getETA();
-		virtual void setMoveWhenCompletedDir(const QUrl &dir) {completed_dir = dir; saveStats();}
-		virtual QUrl getMoveWhenCompletedDir() const {return completed_dir;}
+		virtual void setMoveWhenCompletedDir(const QString &dir) {completed_dir = dir; saveStats();}
+		virtual QString getMoveWhenCompletedDir() const {return completed_dir;}
 		virtual void setSuperSeeding(bool on);
 		
 		/// Create all the necessary files
@@ -303,7 +303,7 @@ namespace bt
 		QString old_tordir;
 		QString outputdir;
 		QString error_msg;
-		QUrl completed_dir;
+		QString completed_dir;
 		bool prealloc;
 		TimeStamp last_diskspace_check;
 		bool loading_stats;

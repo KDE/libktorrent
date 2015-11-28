@@ -451,12 +451,12 @@ namespace bt
 		 * Get the move upon completion directory. 
 		 * @param dir the directory an empty url disables this feature
 		 */
-		virtual void setMoveWhenCompletedDir(const QUrl &dir) = 0;
+		virtual void setMoveWhenCompletedDir(const QString &dir) = 0;
 
 		/**
 		 * Get the move upon completion directory. 
 		 */
-		virtual QUrl getMoveWhenCompletedDir() const = 0;
+		virtual QString getMoveWhenCompletedDir() const = 0;
 		
 		/**
 		 * Enable or disable superseeding mode, does nothing if the torrent is not finished.

@@ -186,8 +186,7 @@ namespace bt
                 finished(this);
 
                 //Move completed download to specified directory if needed
-                if (!completed_dir.toLocalFile().isNull())
-                    moveCompleted = true;
+                moveCompleted = !completed_dir.isEmpty();
 
                 // See if we need to do a data check
                 if (completed_datacheck)
@@ -991,7 +990,7 @@ namespace bt
             stats_file = new StatsFile(tordir + "stats");
 
         stats_file->write("OUTPUTDIR", cman->getDataDir());
-        stats_file->write("COMPLETEDDIR", completed_dir.path());
+        stats_file->write("COMPLETEDDIR", completed_dir);
 
         if (cman->getDataDir() != outputdir)
             outputdir = cman->getDataDir();
@@ -1083,9 +1082,9 @@ namespace bt
 
         if (stats_file->hasKey("COMPLETEDDIR"))
         {
-            completed_dir = QUrl(stats_file->readString("COMPLETEDDIR"));
-            if (completed_dir == QUrl(outputdir))
-                completed_dir = QUrl();
+            completed_dir = stats_file->readString("COMPLETEDDIR");
+            if (completed_dir == outputdir)
+                completed_dir = QString();
         }
 
         if (stats_file->hasKey("USER_MODIFIED_NAME"))
@@ -1843,7 +1842,7 @@ namespace bt
 
     void TorrentControl::moveToCompletedDir()
     {
-        QString outdir = completed_dir.toLocalFile();
+        QString outdir = completed_dir;
         if (!outdir.endsWith(bt::DirSeparator()))
             outdir += bt::DirSeparator();
 
@@ -1980,6 +1979,3 @@ namespace bt
 
 
 }
-
-#include "torrentcontrol.moc"
-
