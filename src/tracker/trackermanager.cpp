@@ -446,7 +446,7 @@ namespace bt
 		
 		if (n)
 		{
-			Out(SYS_TRK|LOG_DEBUG) << "Selected tracker " << n->trackerURL().prettyUrl() 
+			Out(SYS_TRK|LOG_DEBUG) << "Selected tracker " << n->trackerURL().toString() 
 			<< " (tier = " << n->getTier() << ")" << endl;
 		}
 		

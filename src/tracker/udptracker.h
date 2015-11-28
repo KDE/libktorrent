@@ -21,8 +21,8 @@
 #define BTUDPTRACKER_H
 
 #include <QUrl>
-#include <qtimer.h>
-#include <qbytearray.h>
+#include <QTimer>
+#include <QByteArray>
 #include <net/address.h>
 #include "tracker.h"
 

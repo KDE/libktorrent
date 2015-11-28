@@ -21,7 +21,7 @@
 #define BT_TRACKERINTERFACE_H
 
 #include <QDateTime>
-#include <kurl.h>
+#include <QUrl>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
@@ -38,14 +38,14 @@ namespace bt
 	class KTORRENT_EXPORT TrackerInterface
 	{
 	public:
-		TrackerInterface(const KUrl & url);
+		TrackerInterface(const QUrl &url);
 		virtual ~TrackerInterface();
 		
 		/// See if a start request succeeded
 		bool isStarted() const {return started;}
 		
 		/// get the tracker url
-		KUrl trackerURL() const {return url;}
+		QUrl trackerURL() const {return url;}
 		
 		/// Get the tracker status
 		TrackerStatus trackerStatus() const {return status;}
@@ -84,7 +84,7 @@ namespace bt
 		virtual void reset();
 		
 	protected:
-		KUrl url;
+		QUrl url;
 		Uint32 interval;
 		int seeders;
 		int leechers;

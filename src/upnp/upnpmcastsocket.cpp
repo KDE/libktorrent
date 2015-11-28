@@ -18,7 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <kurl.h>
+#include <QUrl>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -36,17 +36,18 @@
 
 namespace bt
 {
-	static bool UrlCompare(const KUrl & a, const KUrl & b)
+	static bool UrlCompare(const QUrl &a, const QUrl & b)
 	{
 		if (a == b)
 			return true;
 		
 		return 
-			a.protocol() == b.protocol() && 
+			a.scheme() == b.scheme() && 
 			a.host() == b.host() &&
-			a.pass() == b.pass() &&
+			a.password() == b.password() &&
 			a.port(80) == b.port(80) &&
-			a.encodedPathAndQuery() == b.encodedPathAndQuery();
+			a.path() == b.path() &&
+			a.query() == b.query(); //TODO check if ported correctly
 	}
 	
 	class UPnPMCastSocket::UPnPMCastSocketPrivate
@@ -59,7 +60,7 @@ namespace bt
 		void joinUPnPMCastGroup(int fd);
 		void leaveUPnPMCastGroup(int fd);
 		void onXmlFileDownloaded(UPnPRouter* r,bool success);
-		UPnPRouter* findDevice(const KUrl & location);
+		UPnPRouter* findDevice(const QUrl &location);
 		
 		QSet<UPnPRouter*> routers;
 		QSet<UPnPRouter*> pending_routers; // routers which we are downloading the XML file from
@@ -134,7 +135,7 @@ namespace bt
 		else
 		{
 			// add it to the list and emit the signal
-			KUrl location = r->getLocation();
+			QUrl location = r->getLocation();
 			if (d->findDevice(location))
 			{
 				r->deleteLater();
@@ -205,7 +206,7 @@ namespace bt
 		foreach (UPnPRouter* r,d->routers)
 		{
 			fout << r->getServer() << ::endl;
-			fout << r->getLocation().prettyUrl() << ::endl;
+			fout << r->getLocation().toString() << ::endl;
 		}
 	}
 	
@@ -243,7 +244,7 @@ namespace bt
 	
 	UPnPRouter* UPnPMCastSocket::findDevice(const QString & name) 
 	{
-		KUrl location(name);
+		QUrl location(name);
 		return d->findDevice(location);
 	}
 	
@@ -304,7 +305,7 @@ namespace bt
 	{
 		QStringList lines = QString::fromAscii(arr).split("\r\n");
 		QString server;
-		KUrl location;
+		QUrl location;
 		
 		/*
 		Out(SYS_PNP|LOG_DEBUG) << "Received : " << endl;
@@ -370,7 +371,7 @@ namespace bt
 		}
 	}
 	
-	UPnPRouter* UPnPMCastSocket::UPnPMCastSocketPrivate::findDevice(const KUrl& location)
+	UPnPRouter* UPnPMCastSocket::UPnPMCastSocketPrivate::findDevice(const QUrl &location)
 	{
 		foreach (UPnPRouter* r, routers)
 		{

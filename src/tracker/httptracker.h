@@ -46,7 +46,7 @@ namespace bt
 	{
 		Q_OBJECT
 	public:
-		HTTPTracker(const KUrl & url,TrackerDataSource* tds,const PeerID & id,int tier);
+		HTTPTracker(const QUrl &url,TrackerDataSource* tds,const PeerID & id,int tier);
 		virtual ~HTTPTracker();
 		
 		virtual void start();
@@ -72,12 +72,12 @@ namespace bt
 		bool updateData(const QByteArray & data);
 		void setupMetaData(KIO::MetaData & md);
  		void doAnnounceQueue();
- 		void doAnnounce(const KUrl & u);
-		void onAnnounceResult(const KUrl & url,const QByteArray & data,KJob* j);
+ 		void doAnnounce(const QUrl &u);
+		void onAnnounceResult(const QUrl &url,const QByteArray & data,KJob* j);
 
 	private:
 		KJob* active_job;
-		KUrl::List announce_queue;
+		QList<QUrl> announce_queue;
 		QString event;
 		Uint32 failures;
 		QTimer timer;

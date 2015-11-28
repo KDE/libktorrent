@@ -50,7 +50,7 @@ namespace bt
 	Uint16 HTTPTracker::proxy_port = 8080;
 	bool HTTPTracker::use_qhttp = false;
 
-	HTTPTracker::HTTPTracker(const KUrl & url, TrackerDataSource* tds, const PeerID & id, int tier)
+	HTTPTracker::HTTPTracker(const QUrl & url, TrackerDataSource* tds, const PeerID & id, int tier)
 			: Tracker(url, tds, id, tier),
 			supports_partial_seed_extension(false)
 	{
@@ -120,7 +120,7 @@ namespace bt
 
 		if (!url.fileName().startsWith("announce"))
 		{
-			Out(SYS_TRK | LOG_NOTICE) << "Tracker " << url << " does not support scraping" << endl;
+			Out(SYS_TRK | LOG_NOTICE) << "Tracker " << url.toString() << " does not support scraping" << endl;
 			return;
 		}
 
@@ -402,18 +402,16 @@ namespace bt
 	void HTTPTracker::onKIOAnnounceResult(KJob* j)
 	{
 		KIOAnnounceJob* st = (KIOAnnounceJob*)j;
-		KUrl u = st->announceUrl();
-		onAnnounceResult(u, st->replyData(), j);
+		onAnnounceResult(st->announceUrl(), st->replyData(), j);
 	}
 
 	void HTTPTracker::onQHttpAnnounceResult(KJob* j)
 	{
 		HTTPAnnounceJob* st = (HTTPAnnounceJob*)j;
-		KUrl u = st->announceUrl();
-		onAnnounceResult(u, st->replyData(), j);
+		onAnnounceResult(st->announceUrl(), st->replyData(), j);
 	}
 
-	void HTTPTracker::onAnnounceResult(const KUrl& url, const QByteArray& data, KJob* j)
+	void HTTPTracker::onAnnounceResult(const QUrl& url, const QByteArray& data, KJob* j)
 	{
 		timer.stop();
 		active_job = 0;
@@ -425,7 +423,7 @@ namespace bt
 				err = j->errorString();
 
 			Out(SYS_TRK | LOG_IMPORTANT) << "Error : " << err << endl;
-			if (url.queryItem("event") != "stopped")
+			if (QUrlQuery(url).queryItemValue("event") != "stopped")
 			{
 				failures++;
 				failed(err);
@@ -438,7 +436,7 @@ namespace bt
 		}
 		else
 		{
-			if (url.queryItem("event") != "stopped")
+			if (QUrlQuery(url).queryItemValue("event") != "stopped")
 			{
 				try
 				{
@@ -448,7 +446,7 @@ namespace bt
 						peersReady(this);
 						request_time = QDateTime::currentDateTime();
 						status = TRACKER_OK;
-						if (url.queryItem("event") == "started")
+						if (QUrlQuery(url).queryItemValue("event") == "started")
 							started = true;
 						if (started)
 							reannounce_timer.start(interval * 1000);
@@ -506,14 +504,14 @@ namespace bt
 		if (announce_queue.empty())
 			return;
 
-		KUrl u = announce_queue.front();
+		QUrl u = announce_queue.front();
 		announce_queue.pop_front();
 		doAnnounce(u);
 	}
 
-	void HTTPTracker::doAnnounce(const KUrl & u)
+	void HTTPTracker::doAnnounce(const QUrl & u)
 	{
-		Out(SYS_TRK | LOG_NOTICE) << "Doing tracker request to url (via " << (use_qhttp ? "QHttp" : "KIO") << "): " << u.prettyUrl() << endl;
+		Out(SYS_TRK | LOG_NOTICE) << "Doing tracker request to url (via " << (use_qhttp ? "QHttp" : "KIO") << "): " << u.toString() << endl;
 
 		if (!use_qhttp)
 		{
@@ -553,7 +551,7 @@ namespace bt
 	{
 		if (active_job)
 		{
-			error = i18n("Timeout contacting tracker %1", url.prettyUrl());
+			error = i18n("Timeout contacting tracker %1", url.toString());
 			active_job->kill(KJob::EmitResult);
 		}
 	}

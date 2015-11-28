@@ -54,7 +54,7 @@ namespace bt
     class UPnPRouter::UPnPRouterPrivate
     {
     public:
-        UPnPRouterPrivate(const QString& server, const KUrl& location, bool verbose, UPnPRouter* parent);
+        UPnPRouterPrivate(const QString& server, const QUrl &location, bool verbose, UPnPRouter* parent);
         ~UPnPRouterPrivate();
 
         HTTPRequest* sendSoapQuery(const QString& query, const QString& soapact, const QString& controlurl, bool at_exit = false);
@@ -65,7 +65,7 @@ namespace bt
 
     public:
         QString server;
-        KUrl location;
+        QUrl location;
         UPnPDeviceDescription desc;
         QList<UPnPService> services;
         QList<Forwarding> fwds;
@@ -140,7 +140,7 @@ namespace bt
 
 
 
-    UPnPRouter::UPnPRouter(const QString& server, const KUrl& location, bool verbose)
+    UPnPRouter::UPnPRouter(const QString& server, const QUrl &location, bool verbose)
         : d(new UPnPRouterPrivate(server, location, verbose, this))
     {
     }
@@ -165,7 +165,7 @@ namespace bt
     {
         if(j->error())
         {
-            d->error = i18n("Failed to download %1: %2", d->location.prettyUrl(), j->errorString());
+            d->error = i18n("Failed to download %1: %2", d->location.toDisplayString(), j->errorString());
             Out(SYS_PNP | LOG_IMPORTANT) << d->error << endl;
             return;
         }
@@ -351,7 +351,7 @@ namespace bt
         return d->server;
     }
 
-    KUrl UPnPRouter::getLocation() const
+    QUrl UPnPRouter::getLocation() const
     {
         return d->location;
     }
@@ -382,7 +382,7 @@ namespace bt
 
     ////////////////////////////////////
 
-    UPnPRouter::UPnPRouterPrivate::UPnPRouterPrivate(const QString& server, const KUrl& location, bool verbose, UPnPRouter* parent)
+    UPnPRouter::UPnPRouterPrivate::UPnPRouterPrivate(const QString& server, const QUrl &location, bool verbose, UPnPRouter* parent)
         : server(server), location(location), verbose(verbose), parent(parent)
     {
     }

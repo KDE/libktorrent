@@ -19,7 +19,6 @@
  ***************************************************************************/
 #include "log.h"
 #include <stdlib.h>
-#include <kurl.h>
 #include <klocale.h>
 #include <kglobal.h>
 #include <QTextStream>
@@ -225,12 +224,6 @@ namespace bt
 		lg.priv->endline();
 		lg.priv->mutex.unlock(); // unlock after end of line
 		return lg;
-	}
-
-	Log & Log::operator << (const KUrl & url)
-	{
-		priv->write(url.prettyUrl());
-		return *this;
 	}
 
 	Log & Log::operator << (const QUrl & url)

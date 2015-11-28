@@ -22,7 +22,7 @@
 
 namespace bt
 {
-	TrackerInterface::TrackerInterface(const KUrl& url) : url(url)
+	TrackerInterface::TrackerInterface(const QUrl &url) : url(url)
 	{
 		// default 5 minute interval
 		interval = 5 * 60 * 1000;

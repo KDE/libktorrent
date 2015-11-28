@@ -23,9 +23,9 @@
 
 
 #include "constants.h"
-#include <qstring.h>
+#include <QUrl>
+#include <QString>
 #include <ktorrent_export.h>
-#include <KUrl>
 
 // LOG MESSAGES CONSTANTS
 #define LOG_NONE 0x00
@@ -54,8 +54,6 @@
 #define SYS_ZCO 0x200000 // ZeroConf plugin
 #define SYS_SCR 0x400000 // Scripting plugin
 #define SYS_SYN 0x800000 // Syndication plugin
-
-class KUrl;
 
 
 namespace bt
@@ -176,13 +174,6 @@ namespace bt
 		* @return @a lg
 		*/
 		KTORRENT_EXPORT friend Log & endl(Log & lg);
-
-		/**
-		 * Write an URL to the file.
-		 * @param text The KUrl
-		 * @return This Log
-		 */
-		Log & operator << (const KUrl & url);
 
 		/**
 		 * Write an URL to the file.

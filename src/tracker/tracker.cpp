@@ -20,7 +20,7 @@
 #include "tracker.h"
 #include <stdlib.h>
 #include <time.h>
-#include <kurl.h>
+#include <QUrl>
 #include <util/functions.h>
 #include <util/log.h>
 #include <torrent/globals.h>
@@ -40,7 +40,7 @@ namespace bt
 	const Uint32 LONGER_WAIT_TIME = 300; 
 	const Uint32 FINAL_WAIT_TIME = 1800;
 	
-	Tracker::Tracker(const KUrl & url,TrackerDataSource* tds,const PeerID & id,int tier) 
+	Tracker::Tracker(const QUrl &url,TrackerDataSource* tds,const PeerID & id,int tier) 
 	: TrackerInterface(url),tier(tier),peer_id(id),tds(tds)
 	{
 		srand(time(0));
