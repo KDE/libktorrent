@@ -55,7 +55,7 @@ find_package(KF5 REQUIRED
 )
 
 kde_enable_exceptions()
-add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
+add_definitions(-DQT_USE_QSTRINGBUILDER)
 include_directories( ${LIBKTORRENT_BINARY_DIR}	${LIBKTORRENT_SOURCE_DIR} ${Qt5Core_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${QCA-qt5_INCLUDE_DIR} ${Boost_INCLUDE_DIR}) #${GMP_INCLUDE_DIR}
 
 #XFS prealloc
