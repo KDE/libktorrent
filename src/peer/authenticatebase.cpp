@@ -162,4 +162,3 @@ namespace bt
 	void AuthenticateBase::onReadyWrite()
 	{}
 }
-#include "authenticatebase.moc"

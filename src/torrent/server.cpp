@@ -121,4 +121,3 @@ namespace bt
 	
 }
 
-#include "server.moc"

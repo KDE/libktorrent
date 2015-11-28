@@ -160,4 +160,3 @@ namespace bt
 	
 }
 
-#include "peersourcemanager.moc"

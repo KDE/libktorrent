@@ -386,5 +386,3 @@ namespace bt
 }
 
 
-
-#include "upnpmcastsocket.moc"

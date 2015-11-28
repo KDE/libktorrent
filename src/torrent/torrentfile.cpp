@@ -113,9 +113,9 @@ namespace bt
 			}
 			
 			QString name = ptr->name();
-			if (name.startsWith("audio") ||  name == "application/ogg")
+			if (name.startsWith(QLatin1String("audio")) ||  name == QLatin1String("application/ogg"))
 				filetype = AUDIO;
-			else if (name.startsWith("video"))
+			else if (name.startsWith(QLatin1String("video")))
 				filetype = VIDEO;
 			else
 				filetype = NORMAL;
@@ -215,4 +215,3 @@ namespace bt
 	}
 	
 }
-#include "torrentfile.moc"

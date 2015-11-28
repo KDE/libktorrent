@@ -404,7 +404,7 @@ namespace bt
             location.setPort(80);
 
 
-        QUrl ctrlurl(controlurl);
+        QUrl ctrlurl = controlurl;
         QString host = !ctrlurl.host().isEmpty() ? ctrlurl.host() : location.host();
         bt::Uint16 port = ctrlurl.port() != -1 ? ctrlurl.port() : location.port(80);
 
@@ -555,13 +555,6 @@ namespace bt
         r->deleteLater();
     }
 }
-
-#include "upnprouter.moc"
-
-
-
-
-
 
 
 

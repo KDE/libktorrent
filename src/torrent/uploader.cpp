@@ -59,4 +59,3 @@ namespace bt
 	
 
 }
-#include "uploader.moc"

@@ -88,5 +88,3 @@ namespace bt
 
 }
 
-#include "waitjob.moc"
-

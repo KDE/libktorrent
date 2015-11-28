@@ -197,7 +197,8 @@ namespace bt
 
 	void CopyFile(const QString & src,const QString & dst,bool nothrow)
 	{
-		if (!KIO::NetAccess::file_copy(KUrl(src),KUrl(dst)))
+		KIO::FileCopyJob* copy = KIO::file_copy(QUrl::fromLocalFile(src), QUrl::fromLocalFile(dst));
+		if (!KIO::NetAccess::synchronousRun(copy , 0))
 		{
 			if (!nothrow)
 				throw Error(i18n("Cannot copy %1 to %2: %3",

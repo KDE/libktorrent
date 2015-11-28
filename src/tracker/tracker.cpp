@@ -150,5 +150,3 @@ namespace bt
 	}
 
 }
-
-#include "tracker.moc"
