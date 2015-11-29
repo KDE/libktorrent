@@ -20,7 +20,7 @@
 #include <QTimer>
 #include <QHostAddress>
 #include <QStringList>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <util/log.h>
 #include "httprequest.h"
 

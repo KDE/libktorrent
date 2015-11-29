@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include <QTextStream>
 #include <QFile>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <util/log.h>
 #include <tracker/tracker.h>
 #include <tracker/udptracker.h>

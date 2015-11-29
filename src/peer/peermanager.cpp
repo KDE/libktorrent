@@ -25,7 +25,7 @@
 #include <QSet>
 #include <QTextStream>
 #include <QDateTime>
-#include <klocale.h>
+#include <klocalizedstring.h>
 
 #include <util/ptrmap.h>
 #include <peer/peer.h>

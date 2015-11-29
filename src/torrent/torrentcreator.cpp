@@ -20,7 +20,7 @@
 #include "torrentcreator.h"
 #include <qdir.h>
 #include <qfileinfo.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <time.h>
 #include <util/error.h>
 #include <version.h>

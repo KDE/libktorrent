@@ -18,7 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "chunkdownload.h"
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <algorithm>
 #include <util/file.h>
 #include <util/log.h>

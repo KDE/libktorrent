@@ -20,6 +20,7 @@
 
 #include "peerconnector.h"
 #include <QSet>
+#include <QPointer>
 #include <interfaces/serverinterface.h>
 #include <mse/encryptedauthenticate.h>
 #include <torrent/torrent.h>
@@ -59,8 +60,8 @@ namespace bt
 		Method current_method;
 		net::Address addr;
 		bool local;
-		QWeakPointer<PeerManager> pman;
-		QWeakPointer<Authenticate> auth;
+		QPointer<PeerManager> pman;
+		QPointer<Authenticate> auth;
 		bool stopping;
 		bool do_not_start;
 		PeerConnector::WPtr self;

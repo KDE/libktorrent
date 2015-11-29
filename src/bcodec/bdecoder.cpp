@@ -20,7 +20,7 @@
 #include "bdecoder.h"
 #include <util/log.h>
 #include <util/error.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include "bnode.h"
 
 namespace bt

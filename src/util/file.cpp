@@ -22,7 +22,7 @@
 #include <config-ktorrent.h>
 
 #include <qfile.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <string.h>
 #include <errno.h>
 #include <stdio.h>

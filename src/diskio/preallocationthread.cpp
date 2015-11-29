@@ -27,7 +27,7 @@
 #include <util/log.h>
 #include <util/error.h>
 #include <qfile.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include "chunkmanager.h"
 
 #ifndef O_LARGEFILE

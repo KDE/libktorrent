@@ -24,7 +24,7 @@
 #include "singledatachecker.h"
 #include <torrent/torrentcontrol.h>
 #include <util/functions.h>
-#include <KLocale>
+#include <klocalizedstring.h>
 
 namespace bt
 {

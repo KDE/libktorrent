@@ -34,7 +34,7 @@
 #include <util/functions.h>
 #include <interfaces/cachefactory.h>
 #include <util/timer.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <QMimeDatabase>
 #include <QMimeType>
 

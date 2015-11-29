@@ -33,7 +33,7 @@
 #include <bcodec/bnode.h>
 #include <interfaces/monitorinterface.h>
 
-#include <klocale.h>
+#include <klocalizedstring.h>
 
 namespace bt
 {

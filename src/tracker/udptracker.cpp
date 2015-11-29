@@ -20,7 +20,7 @@
 #include "udptracker.h"
 #include <stdlib.h>
 #include <arpa/inet.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <util/functions.h>
 #include <util/log.h>
 #include <net/addressresolver.h>

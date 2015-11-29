@@ -21,6 +21,7 @@
 #include <config-ktorrent.h>
 
 #include <QHostAddress>
+#include <QUrlQuery>
 #include <util/log.h>
 #include <util/functions.h>
 #include <util/error.h>
@@ -28,7 +29,6 @@
 #include <interfaces/exitoperation.h>
 #include <interfaces/torrentinterface.h>
 #include <kio/job.h>
-#include <kio/netaccess.h>
 #include <kio/scheduler.h>
 #include <klocalizedstring.h>
 #include <kprotocolmanager.h>
@@ -128,10 +128,8 @@ namespace bt
 
 		QString epq = scrape_url.query(QUrl::FullyEncoded);
 		const SHA1Hash & info_hash = tds->infoHash();
-		if (scrape_url.queryItems().count() > 0)
-			epq += QLatin1String("&info_hash=") + info_hash.toURLString();
-		else
-			epq += QLatin1String("?info_hash=") + info_hash.toURLString();
+		if (epq.length()) epq += '&';
+		epq += QLatin1String("info_hash=") + info_hash.toURLString();
 		scrape_url.setQuery(epq, QUrl::StrictMode);
 
 		Out(SYS_TRK | LOG_NOTICE) << "Doing scrape request to url : " << scrape_url << endl;
@@ -209,6 +207,7 @@ namespace bt
 		}
 
 		Uint16 port = ServerInterface::getPort();
+
 
 		QUrlQuery query(url);
 		query.addQueryItem(QStringLiteral("peer_id"), peer_id.toString());

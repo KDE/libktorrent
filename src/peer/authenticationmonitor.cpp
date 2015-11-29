@@ -24,7 +24,6 @@
 #include <util/log.h>
 #include <mse/encryptedpacketsocket.h>
 #include "authenticatebase.h"
-#include <kdebug.h>
 #include "peerconnector.h"
 
 

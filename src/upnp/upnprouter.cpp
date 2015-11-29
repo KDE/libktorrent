@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include <stdlib.h>
 #include <QDir>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <kglobal.h>
 #include <kstandarddirs.h>
 #include <qstringlist.h>

@@ -20,7 +20,8 @@
 #ifndef DHTTASKMANAGER_H
 #define DHTTASKMANAGER_H
 
-#include <qlist.h>
+#include <QList>
+#include <QPointer>
 #include <util/constants.h>
 #include "task.h"
 
@@ -57,7 +58,7 @@ namespace dht
 
 	private:
 		const DHT* dh_table;
-		QList<QWeakPointer<Task> > queued;
+		QList<QPointer<Task> > queued;
 		bt::Uint32 num_active;
 	};
 

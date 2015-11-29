@@ -24,7 +24,7 @@
 #include <qstringlist.h>
 #include <qfileinfo.h>
 #include <QTextStream>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <util/file.h>
 #include <util/fileops.h>
 #include <util/functions.h>

@@ -22,7 +22,7 @@
 #include "webseed.h"
 
 #include <QTimer>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <kprotocolmanager.h>
 #include <util/log.h>
 #include <torrent/torrent.h>
