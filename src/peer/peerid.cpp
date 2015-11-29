@@ -21,7 +21,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <qmap.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include "version.h"
 
 namespace bt
@@ -41,7 +41,7 @@ namespace bt
 	PeerID::PeerID()
 	{
 		srand(time(0));
-		memcpy(id,bt::PeerIDPrefix().toAscii(),8);
+		memcpy(id,bt::PeerIDPrefix().toLatin1(),8);
 		for (int i = 8;i < 20;i++)
 			id[i] = RandomLetterOrNumber(); 
 		client_name = identifyClient();
@@ -120,108 +120,108 @@ namespace bt
 		{
 			// Keep things a bit alphabetic to make it easier add new ones
 			//AZUREUS STYLE
-			Map["AG"] = "Ares";
-			Map["A~"] = "Ares";
-			Map["AT"] = "Artemis";
-			Map["AV"] = "Avicora";
-			Map["AX"] = "BitPump";
-			Map["AR"] = "Arctic";
-			Map["AZ"] = "Azureus";
-			Map["BB"] = "BitBuddy";
-			Map["BC"] = "BitComet";
-			Map["BF"] = "Bitflu";
-			Map["BG"] = "BTGetit";
-			Map["BL"] = "BitBlinder";
-			Map["BM"] = "BitMagnet";
-			Map["BO"] = "BitsOnWheels";
-			Map["BP"] = "BitTorrent Pro";
-			Map["BR"] = "BitRocket";
-			Map["BS"] = "BTSlave";
-			Map["BW"] = "BitWombat";
-			Map["BX"] = "BitTorrent X";
-			Map["CD"] = "Enhanced CTorrent";
-			Map["CS"] = "SpywareTerminator";
-			Map["CT"] = "CTorrent";
-			Map["DE"] = "DelugeTorrent";
-			Map["DP"] = "Propagate Data Client";
-			Map["EB"] = "EBit";
-			Map["ES"] = "electric sheep";
-			Map["FC"] = "FileCroc";
-			Map["FT"] = "FoxTorrent";
-			Map["GS"] = "GSTorrent";
-			Map["G3"] = "G3 Torrent";
-			Map["HK"] = "Hekate";
-			Map["HL"] = "Halite";
-			Map["HN"] = "Hydranode";
-			Map["KG"] = "KGet";
-			Map["KT"] = "KTorrent"; // lets not forget our own client
-			Map["LC"] = "LeechCraft";
-			Map["LH"] = "LH-ABC";
-			Map["lt"] = "libTorrent";
-			Map["LT"] = "libtorrent";
-			Map["LP"] = "Lphant";
-			Map["LW"] = "LimeWire";
-			Map["MK"] = "Meerkat";
-			Map["ML"] = "MLDonkey";
-			Map["MO"] = "MonoTorrent";
-			Map["MP"] = "MooPolice";
-			Map["MT"] = "MoonLight";
-			Map["NE"] = "BT Next Evolution";
-			Map["NX"] = "Net Transport";
-			Map["OS"] = "OneSwarm";
-			Map["OT"] = "OmegaTorrent";
-			Map["PD"] = "Pando";
-			Map["qB"] = "qBittorrent";
-			Map["QD"] = "QQDownload";
-			Map["QT"] = "Qt 4 Torrent example";
-			Map["RT"] = "Retriever";
-			Map["RZ"] = "RezTorrent";
-			Map["S~"] = "Shareaza alpha/beta";
-			Map["SB"] = "Swiftbit";
-			Map["SD"] = "Thunder";
-			Map["SM"] = "SoMud";
-			Map["SS"] = "SwarmScope";
-			Map["ST"] = "SymTorrent";
-			Map["st"] = "sharktorrent";
-			Map["SZ"] = "Shareaza";
-			Map["TN"] = "Torrent .NET";
-			Map["TR"] = "Transmission";
-			Map["TS"] = "Torrent Storm";
-			Map["TT"] = "TuoTu";
-			Map["UL"] = "uLeecher!";
-			Map["UM"] = QString("%1Torrent for Mac").arg(QChar(0x00B5)); // µTorrent, 0x00B5 is unicode for µ
-			Map["UT"] = QString("%1Torrent").arg(QChar(0x00B5)); // µTorrent, 0x00B5 is unicode for µ
-			Map["VG"] = "Vagaa";
-			Map["WT"] = "BitLet";
-			Map["WY"] = "FireTorrent";
-			Map["XL"] = "Xunlei";
-			Map["XS"] = "XSwifter";
-			Map["XT"] = "Xan Torrent";
-			Map["XX"] = "Xtorrent";
-			Map["ZT"] = "Zip Torrent";
+			Map[QStringLiteral("AG")] = QStringLiteral("Ares");
+			Map[QStringLiteral("A~")] = QStringLiteral("Ares");
+			Map[QStringLiteral("AT")] = QStringLiteral("Artemis");
+			Map[QStringLiteral("AV")] = QStringLiteral("Avicora");
+			Map[QStringLiteral("AX")] = QStringLiteral("BitPump");
+			Map[QStringLiteral("AR")] = QStringLiteral("Arctic");
+			Map[QStringLiteral("AZ")] = QStringLiteral("Azureus");
+			Map[QStringLiteral("BB")] = QStringLiteral("BitBuddy");
+			Map[QStringLiteral("BC")] = QStringLiteral("BitComet");
+			Map[QStringLiteral("BF")] = QStringLiteral("Bitflu");
+			Map[QStringLiteral("BG")] = QStringLiteral("BTGetit");
+			Map[QStringLiteral("BL")] = QStringLiteral("BitBlinder");
+			Map[QStringLiteral("BM")] = QStringLiteral("BitMagnet");
+			Map[QStringLiteral("BO")] = QStringLiteral("BitsOnWheels");
+			Map[QStringLiteral("BP")] = QStringLiteral("BitTorrent Pro");
+			Map[QStringLiteral("BR")] = QStringLiteral("BitRocket");
+			Map[QStringLiteral("BS")] = QStringLiteral("BTSlave");
+			Map[QStringLiteral("BW")] = QStringLiteral("BitWombat");
+			Map[QStringLiteral("BX")] = QStringLiteral("BitTorrent X");
+			Map[QStringLiteral("CD")] = QStringLiteral("Enhanced CTorrent");
+			Map[QStringLiteral("CS")] = QStringLiteral("SpywareTerminator");
+			Map[QStringLiteral("CT")] = QStringLiteral("CTorrent");
+			Map[QStringLiteral("DE")] = QStringLiteral("DelugeTorrent");
+			Map[QStringLiteral("DP")] = QStringLiteral("Propagate Data Client");
+			Map[QStringLiteral("EB")] = QStringLiteral("EBit");
+			Map[QStringLiteral("ES")] = QStringLiteral("electric sheep");
+			Map[QStringLiteral("FC")] = QStringLiteral("FileCroc");
+			Map[QStringLiteral("FT")] = QStringLiteral("FoxTorrent");
+			Map[QStringLiteral("GS")] = QStringLiteral("GSTorrent");
+			Map[QStringLiteral("G3")] = QStringLiteral("G3 Torrent");
+			Map[QStringLiteral("HK")] = QStringLiteral("Hekate");
+			Map[QStringLiteral("HL")] = QStringLiteral("Halite");
+			Map[QStringLiteral("HN")] = QStringLiteral("Hydranode");
+			Map[QStringLiteral("KG")] = QStringLiteral("KGet");
+			Map[QStringLiteral("KT")] = QStringLiteral("KTorrent"); // lets not forget our own client
+			Map[QStringLiteral("LC")] = QStringLiteral("LeechCraft");
+			Map[QStringLiteral("LH")] = QStringLiteral("LH-ABC");
+			Map[QStringLiteral("lt")] = QStringLiteral("libTorrent");
+			Map[QStringLiteral("LT")] = QStringLiteral("libtorrent");
+			Map[QStringLiteral("LP")] = QStringLiteral("Lphant");
+			Map[QStringLiteral("LW")] = QStringLiteral("LimeWire");
+			Map[QStringLiteral("MK")] = QStringLiteral("Meerkat");
+			Map[QStringLiteral("ML")] = QStringLiteral("MLDonkey");
+			Map[QStringLiteral("MO")] = QStringLiteral("MonoTorrent");
+			Map[QStringLiteral("MP")] = QStringLiteral("MooPolice");
+			Map[QStringLiteral("MT")] = QStringLiteral("MoonLight");
+			Map[QStringLiteral("NE")] = QStringLiteral("BT Next Evolution");
+			Map[QStringLiteral("NX")] = QStringLiteral("Net Transport");
+			Map[QStringLiteral("OS")] = QStringLiteral("OneSwarm");
+			Map[QStringLiteral("OT")] = QStringLiteral("OmegaTorrent");
+			Map[QStringLiteral("PD")] = QStringLiteral("Pando");
+			Map[QStringLiteral("qB")] = QStringLiteral("qBittorrent");
+			Map[QStringLiteral("QD")] = QStringLiteral("QQDownload");
+			Map[QStringLiteral("QT")] = QStringLiteral("Qt 4 Torrent example");
+			Map[QStringLiteral("RT")] = QStringLiteral("Retriever");
+			Map[QStringLiteral("RZ")] = QStringLiteral("RezTorrent");
+			Map[QStringLiteral("S~")] = QStringLiteral("Shareaza alpha/beta");
+			Map[QStringLiteral("SB")] = QStringLiteral("Swiftbit");
+			Map[QStringLiteral("SD")] = QStringLiteral("Thunder");
+			Map[QStringLiteral("SM")] = QStringLiteral("SoMud");
+			Map[QStringLiteral("SS")] = QStringLiteral("SwarmScope");
+			Map[QStringLiteral("ST")] = QStringLiteral("SymTorrent");
+			Map[QStringLiteral("st")] = QStringLiteral("sharktorrent");
+			Map[QStringLiteral("SZ")] = QStringLiteral("Shareaza");
+			Map[QStringLiteral("TN")] = QStringLiteral("Torrent .NET");
+			Map[QStringLiteral("TR")] = QStringLiteral("Transmission");
+			Map[QStringLiteral("TS")] = QStringLiteral("Torrent Storm");
+			Map[QStringLiteral("TT")] = QStringLiteral("TuoTu");
+			Map[QStringLiteral("UL")] = QStringLiteral("uLeecher!");
+			Map[QStringLiteral("UM")] = QStringLiteral("%1Torrent for Mac").arg(QChar(0x00B5)); // µTorrent, 0x00B5 is unicode for µ
+			Map[QStringLiteral("UT")] = QStringLiteral("%1Torrent").arg(QChar(0x00B5)); // µTorrent, 0x00B5 is unicode for µ
+			Map[QStringLiteral("VG")] = QStringLiteral("Vagaa");
+			Map[QStringLiteral("WT")] = QStringLiteral("BitLet");
+			Map[QStringLiteral("WY")] = QStringLiteral("FireTorrent");
+			Map[QStringLiteral("XL")] = QStringLiteral("Xunlei");
+			Map[QStringLiteral("XS")] = QStringLiteral("XSwifter");
+			Map[QStringLiteral("XT")] = QStringLiteral("Xan Torrent");
+			Map[QStringLiteral("XX")] = QStringLiteral("Xtorrent");
+			Map[QStringLiteral("ZT")] = QStringLiteral("Zip Torrent");
 			
 			//SHADOWS STYLE
-			Map["A"] = "ABC";
-			Map["O"] = "Osprey Permaseed";
-			Map["Q"] = "BTQueue";
-			Map["R"] = "Tribler";
-			Map["S"] = "Shadow's";
-			Map["T"] = "BitTornado";
-			Map["U"] = "UPnP NAT BitTorrent";
+			Map[QStringLiteral("A")] = QStringLiteral("ABC");
+			Map[QStringLiteral("O")] = QStringLiteral("Osprey Permaseed");
+			Map[QStringLiteral("Q")] = QStringLiteral("BTQueue");
+			Map[QStringLiteral("R")] = QStringLiteral("Tribler");
+			Map[QStringLiteral("S")] = QStringLiteral("Shadow's");
+			Map[QStringLiteral("T")] = QStringLiteral("BitTornado");
+			Map[QStringLiteral("U")] = QStringLiteral("UPnP NAT BitTorrent");
 			//OTHER
-			Map["Plus"] = "Plus! II";
-			Map["OP"] = "Opera";
-			Map["BOW"] = "Bits on Wheels";
-			Map["M"] = "BitTorrent";
-			Map["exbc"] = "BitComet";
-			Map["Mbrst"] = "Burst!";
-			Map["XBT"] = "XBT Client";
-			Map["SP"] = "BitSpirit";
-			Map["FG"] = "FlashGet";
-			Map["RS"] = "Rufus";
-			Map["Q1"] = "Queen Bee";
-			Map["AP"] = "AllPeers";
-			Map["QVOD"] = "Qvod";
+			Map[QStringLiteral("Plus")] = QStringLiteral("Plus! II");
+			Map[QStringLiteral("OP")] = QStringLiteral("Opera");
+			Map[QStringLiteral("BOW")] = QStringLiteral("Bits on Wheels");
+			Map[QStringLiteral("M")] = QStringLiteral("BitTorrent");
+			Map[QStringLiteral("exbc")] = QStringLiteral("BitComet");
+			Map[QStringLiteral("Mbrst")] = QStringLiteral("Burst!");
+			Map[QStringLiteral("XBT")] = QStringLiteral("XBT Client");
+			Map[QStringLiteral("SP")] = QStringLiteral("BitSpirit");
+			Map[QStringLiteral("FG")] = QStringLiteral("FlashGet");
+			Map[QStringLiteral("RS")] = QStringLiteral("Rufus");
+			Map[QStringLiteral("Q1")] = QStringLiteral("Queen Bee");
+			Map[QStringLiteral("AP")] = QStringLiteral("AllPeers");
+			Map[QStringLiteral("QVOD")] = QStringLiteral("Qvod");
 			first = false;
 		}
 
@@ -246,61 +246,61 @@ namespace bt
 		}
 		else if (peer_id.at(0) == 'M' && peer_id.at(2) == '-' && (peer_id.at(4) == '-' || peer_id.at(5) == '-'))
 		{
-			name = Map["M"] + ' ' + peer_id.at(1) + '.' + peer_id.at(3);
+			name = Map[QStringLiteral("M")] + ' ' + peer_id.at(1) + '.' + peer_id.at(3);
 			if(peer_id.at(4) == '-')
-				name += QString(".%1").arg(peer_id.at(5));
+				name += QStringLiteral(".%1").arg(peer_id.at(5));
 			else
-				name += QString("%1.%2").arg(peer_id.at(4)).arg(peer_id.at(6));
+				name += QStringLiteral("%1.%2").arg(peer_id.at(4)).arg(peer_id.at(6));
 		}
-		else if (peer_id.startsWith("OP"))
+		else if (peer_id.startsWith(QLatin1String("OP")))
 		{
-			name = Map["OP"];
+			name = Map[QStringLiteral("OP")];
 		}
-		else if (peer_id.startsWith("exbc"))
+		else if (peer_id.startsWith(QLatin1String("exbc")))
 		{
-			name = Map["exbc"];
+			name = Map[QStringLiteral("exbc")];
 		}
-		else if (peer_id.mid(1,3) == "BOW")
+		else if (peer_id.mid(1,3) == QLatin1String("BOW"))
 		{
-			name = Map["BOW"];
+			name = Map[QStringLiteral("BOW")];
 		}
-		else if (peer_id.startsWith("Plus"))
+		else if (peer_id.startsWith(QLatin1String("Plus")))
 		{
-			name = Map["Plus"];
+			name = Map[QStringLiteral("Plus")];
 		}
-		else if (peer_id.startsWith("Mbrst"))
+		else if (peer_id.startsWith(QLatin1String("Mbrst")))
 		{
-			name = Map["Mbrst"] + ' ' + peer_id.at(5) + '.' + peer_id.at(7);
+			name = Map[QStringLiteral("Mbrst")] + ' ' + peer_id.at(5) + '.' + peer_id.at(7);
 		}
-		else if (peer_id.startsWith("XBT"))
+		else if (peer_id.startsWith(QLatin1String("XBT")))
 		{
-			name = Map["XBT"] + ' ' + peer_id.at(3) + '.' + peer_id.at(4) + '.' + peer_id.at(5);
+			name = Map[QStringLiteral("XBT")] + ' ' + peer_id.at(3) + '.' + peer_id.at(4) + '.' + peer_id.at(5);
 		}
-		else if (peer_id.startsWith("SP"))
+		else if (peer_id.startsWith(QLatin1String("SP")))
 		{
-			name = Map["SP"] + ' ' + peer_id.at(2) + '.' + peer_id.at(3) + '.'
+			name = Map[QStringLiteral("SP")] + ' ' + peer_id.at(2) + '.' + peer_id.at(3) + '.'
 				+ peer_id.at(4) + '.' + peer_id.at(5);
 		}
-		else if (peer_id.startsWith("FG"))
+		else if (peer_id.startsWith(QLatin1String("FG")))
 		{
-			name = Map["FG"] + ' ' + peer_id.at(2) + '.' + peer_id.at(3) + '.'
+			name = Map[QStringLiteral("FG")] + ' ' + peer_id.at(2) + '.' + peer_id.at(3) + '.'
 				+ peer_id.at(4) + '.' + peer_id.at(5);
 		}
-		else if (peer_id.mid(2,2) == "RS")
+		else if (peer_id.midRef(2,2) == QLatin1String("RS"))
 		{
-			name = Map["RS"];
+			name = Map[QStringLiteral("RS")];
 		}
-		else if (peer_id.startsWith("Q1"))
+		else if (peer_id.startsWith(QLatin1String("Q1")))
 		{
-			name = Map["Q1"];
+			name = Map[QStringLiteral("Q1")];
 		}
-		else if (peer_id.startsWith("AP"))
+		else if (peer_id.startsWith(QLatin1String("AP")))
 		{
-			name = Map["AP"];
+			name = Map[QStringLiteral("AP")];
 		}
-		else if (peer_id.startsWith("QVOD"))
+		else if (peer_id.startsWith(QLatin1String("QVOD")))
 		{
-			name = Map["QVOD"];
+			name = Map[QStringLiteral("QVOD")];
 		}
 			
 		return name;

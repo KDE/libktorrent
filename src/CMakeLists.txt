@@ -229,7 +229,9 @@ endif(WIN32)
 # kconfig_add_kcfg_files(libktorrent_SRC settings.kcfgc)
 add_library(ktorrent SHARED ${libktorrent_SRC})
 
-target_link_libraries(ktorrent KF5::Archive KF5::KIOCore KF5::KDELibs4Support qca-qt5 ${GMP_LIBRARIES} ${LIBGCRYPT_LIBRARIES} ${QCA-qt5_LIBRARIES})
+target_link_libraries(ktorrent
+	KF5::Archive KF5::KIOCore KF5::Solid KF5::KDELibs4Support
+	qca-qt5 ${GMP_LIBRARIES} ${LIBGCRYPT_LIBRARIES} ${QCA-qt5_LIBRARIES})
 if(WIN32)
 target_link_libraries(ktorrent ws2_32)
 endif(WIN32)

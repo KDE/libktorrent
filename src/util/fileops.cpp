@@ -24,9 +24,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <kio/job.h> 
-#include <kio/netaccess.h>
 #include <kio/copyjob.h> 
 #include <solid/device.h>
 #include <solid/storageaccess.h>
@@ -180,16 +179,16 @@ namespace bt
 		//	Out() << "Moving " << src << " -> " << dst << endl;
 		KIO::CopyJob *mv = KIO::move(QUrl::fromLocalFile(src), QUrl::fromLocalFile(dst),
                                              silent ? KIO::HideProgressInfo|KIO::Overwrite : KIO::DefaultFlags);
-		if (!KIO::NetAccess::synchronousRun(mv , 0)) 
+		if (!mv->exec())
 		{
 			if (!nothrow)
 				throw Error(i18n("Cannot move %1 to %2: %3",
 							src,dst,
-							KIO::NetAccess::lastErrorString()));
+							mv->errorString()));
 			else
 				Out(SYS_DIO|LOG_NOTICE) << QString("Error : Cannot move %1 to %2: %3")
 					.arg(src).arg(dst)
-					.arg(KIO::NetAccess::lastErrorString()) << endl;
+					.arg(mv->errorString()) << endl;
 
 		}
 	}
@@ -197,16 +196,16 @@ namespace bt
 	void CopyFile(const QString & src,const QString & dst,bool nothrow)
 	{
 		KIO::FileCopyJob* copy = KIO::file_copy(QUrl::fromLocalFile(src), QUrl::fromLocalFile(dst));
-		if (!KIO::NetAccess::synchronousRun(copy, 0))
+		if (!copy->exec())
 		{
 			if (!nothrow)
 				throw Error(i18n("Cannot copy %1 to %2: %3",
 							src,dst,
-							KIO::NetAccess::lastErrorString()));
+							copy->errorString()));
 			else
 				Out(SYS_DIO|LOG_NOTICE) << QString("Error : Cannot copy %1 to %2: %3")
 					.arg(src).arg(dst)
-					.arg(KIO::NetAccess::lastErrorString()) << endl;
+					.arg(copy->errorString()) << endl;
 
 		}
 	}
@@ -214,16 +213,16 @@ namespace bt
 	void CopyDir(const QString & src,const QString & dst,bool nothrow)
 	{
 		KIO::CopyJob* copy = KIO::copy(QUrl::fromLocalFile(src), QUrl::fromLocalFile(dst));
-		if (!KIO::NetAccess::synchronousRun(copy, 0))
+		if (!copy->exec())
 		{
 			if (!nothrow)
 				throw Error(i18n("Cannot copy %1 to %2: %3",
 							src,dst,
-							KIO::NetAccess::lastErrorString()));
+							copy->errorString()));
 			else
 				Out(SYS_DIO|LOG_NOTICE) << QString("Error : Cannot copy %1 to %2: %3")
 					.arg(src).arg(dst)
-					.arg(KIO::NetAccess::lastErrorString()) << endl;
+					.arg(copy->errorString()) << endl;
 
 		}
 	}
@@ -236,9 +235,9 @@ namespace bt
 	static bool DelDir(const QString & fn)
 	{
 		QDir d(fn);
-		QStringList subdirs = d.entryList(QDir::Dirs);
+		const QStringList subdirs = d.entryList(QDir::Dirs);
 
-		for (QStringList::iterator i = subdirs.begin(); i != subdirs.end();i++)
+		for (auto i = subdirs.begin(); i != subdirs.end();i++)
 		{
 			QString entry = *i;
 
@@ -249,8 +248,8 @@ namespace bt
 				return false;	
 		}
 
-		QStringList files = d.entryList(QDir::Files | QDir::System | QDir::Hidden);
-		for (QStringList::iterator i = files.begin(); i != files.end();i++)
+		const QStringList files = d.entryList(QDir::Files | QDir::System | QDir::Hidden);
+		for (auto i = files.begin(); i != files.end();i++)
 		{
 			QString file = d.absoluteFilePath(*i);
 			QFile fp(file);

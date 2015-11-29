@@ -18,7 +18,7 @@
 
 #include "httpannouncejob.h"
 #include <version.h>
-#include <KLocalizedString>
+#include <klocalizedstring.h>
 #include <util/log.h>
 #include <util/functions.h>
 #include <QTimer>
@@ -27,8 +27,9 @@
 namespace bt
 {
 
-    HTTPAnnounceJob::HTTPAnnounceJob(const KUrl& url) : url(url), get_id(0), proxy_port(-1)
+    HTTPAnnounceJob::HTTPAnnounceJob(const QUrl& url) : url(url), get_id(0), proxy_port(-1)
     {
+        qWarning()<<"not ported";
         /*http = new QHttp(this); PORT: KF5
         connect(http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)));
         connect(http, SIGNAL(readyRead(QHttpResponseHeader)), this, SLOT(readData(QHttpResponseHeader)));

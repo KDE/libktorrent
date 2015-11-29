@@ -20,7 +20,7 @@
  ***************************************************************************/
 #include "chunkmanager.h"
 #include <algorithm>
-#include <kmimetype.h>
+
 #include <util/file.h>
 #include <util/array.h>
 #include <qstringlist.h>
@@ -35,6 +35,8 @@
 #include <interfaces/cachefactory.h>
 #include <util/timer.h>
 #include <klocale.h>
+#include <QMimeDatabase>
+#include <QMimeType>
 
 namespace bt
 {
@@ -828,9 +830,9 @@ namespace bt
 
     Uint32 ChunkManager::previewChunkRangeSize() const
     {
-        KMimeType::Ptr ptr = KMimeType::findByPath(tor.getNameSuggestion());
+        QMimeType ptr = QMimeDatabase().mimeTypeForFile(tor.getNameSuggestion());
         Uint32 preview_size = 0;
-        if (ptr->name().startsWith("video"))
+        if (ptr.name().startsWith(QLatin1String("video")))
             preview_size = preview_size_video;
         else
             preview_size = preview_size_audio;
@@ -879,9 +881,9 @@ namespace bt
 
         cache->loadFileMap();
 
-        index_file = tmpdir + "index";
-        file_info_file = tmpdir + "file_info";
-        file_priority_file = tmpdir + "file_priority";
+        index_file = tmpdir + QLatin1String("index");
+        file_info_file = tmpdir + QLatin1String("file_info");
+        file_priority_file = tmpdir + QLatin1String("file_priority");
         Uint64 tsize = tor.getTotalSize();  // total size
         Uint64 csize = tor.getChunkSize();  // chunk size
         Uint64 lsize = tsize - (csize * (tor.getNumChunks() - 1)); // size of last chunk

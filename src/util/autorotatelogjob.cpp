@@ -18,7 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "autorotatelogjob.h"
-#include <kurl.h>
+#include <QUrl>
 #include <util/fileops.h>
 #include "log.h"
 #include "compressfilejob.h"

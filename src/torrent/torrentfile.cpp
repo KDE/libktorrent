@@ -19,12 +19,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "torrentfile.h"
-#include <kmimetype.h>
+
 #include <math.h>
 #include <util/log.h>
 #include <util/bitset.h>
 #include <util/functions.h>
 #include <diskio/chunkmanager.h>
+#include <QMimeDatabase>
+#include <QMimeType>
 
 
 namespace bt
@@ -105,14 +107,14 @@ namespace bt
 	{
 		if (filetype == UNKNOWN)
 		{
-			KMimeType::Ptr ptr = KMimeType::findByPath(getPath());
-			if (!ptr)
+			QMimeType ptr = QMimeDatabase().mimeTypeForFile(getPath());
+			if (!ptr.isValid())
 			{
 				filetype = NORMAL;
 				return false;
 			}
 			
-			QString name = ptr->name();
+			QString name = ptr.name();
 			if (name.startsWith(QLatin1String("audio")) ||  name == QLatin1String("application/ogg"))
 				filetype = AUDIO;
 			else if (name.startsWith(QLatin1String("video")))

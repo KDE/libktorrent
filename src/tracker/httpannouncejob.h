@@ -21,7 +21,7 @@
 
 #include <ktorrent_export.h>
 #include <kio/jobclasses.h>
-#include <KUrl>
+#include <QUrl>
 #include <QBuffer>
 #include <QSslError>
 
@@ -35,7 +35,7 @@ namespace bt
 	{
 		Q_OBJECT
 	public:
-		HTTPAnnounceJob(const KUrl & url);
+		HTTPAnnounceJob(const QUrl & url);
 		virtual ~HTTPAnnounceJob();
 		
 		/**
@@ -46,7 +46,7 @@ namespace bt
 		void setProxy(const QString & host,int port);
 		
 		/// Get the announce url
-		KUrl announceUrl() const {return url;}
+		QUrl announceUrl() const {return url;}
 		
 		/// Get the reply data
 		const QByteArray & replyData() const {return reply_data;}
@@ -64,7 +64,7 @@ namespace bt
 // 		void handleRedirect(const QHttpResponseHeader & hdr); //PORT: KF5
 		
 	private:
-		KUrl url;
+		QUrl url;
 // 		QHttp* http; //PORT: KF5
 		QByteArray reply_data;
 		int get_id;

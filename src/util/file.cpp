@@ -48,9 +48,9 @@ namespace bt
 			close();
 		
 #ifdef HAVE_FOPEN64
-		fptr = fopen64(QFile::encodeName(file),mode.toAscii().constData());
+		fptr = fopen64(QFile::encodeName(file),mode.toUtf8().constData());
 #else
-		fptr = fopen(QFile::encodeName(file),mode.toAscii().constData());
+		fptr = fopen(QFile::encodeName(file),mode.toUtf8().constData());
 #endif
 		return fptr != 0;
 	}

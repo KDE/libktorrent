@@ -19,27 +19,28 @@
  ***************************************************************************/
 #include "log.h"
 #include <stdlib.h>
-#include <klocale.h>
-#include <kglobal.h>
-#include <QTextStream>
-#include <qfile.h>
-#include <qlist.h>
 #include <iostream>
+
+#include <QTextStream>
+#include <QFile>
+#include <QList>
+#include <QDateTime>
+#include <QMutex>
+#include <QDebug>
+
+#include <kio/copyjob.h>
+
+#include "compressfilejob.h"
+#include "autorotatelogjob.h"
+#include "error.h"
 #include <interfaces/logmonitorinterface.h>
 #include <util/fileops.h>
-#include <qdatetime.h>
-#include <qmutex.h> 
-#include "error.h"
-#include "autorotatelogjob.h"
-#include <kdebug.h>
-#include <kio/copyjob.h>
-#include "compressfilejob.h"
 
 namespace bt
 {
 	const Uint32 MAX_LOG_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 	
-	static void QtMessageOutput(QtMsgType type, const char *msg);
+	static void QtMessageOutput(QtMsgType type, const QMessageLogContext& ctxt, const QString& msg);
 	
 	class Log::Private
 	{
@@ -102,7 +103,7 @@ namespace bt
 			QMutexLocker lock(&mutex);
 			
 			if (handle_qt_messages)
-				qInstallMsgHandler(QtMessageOutput);
+				qInstallMessageHandler(QtMessageOutput);
 
 			cleanup();
 			
@@ -187,7 +188,7 @@ namespace bt
 	
 	Log::~Log()
 	{
-		qInstallMsgHandler(0);
+		qInstallMessageHandler(0);
 		delete priv;
 	}
 	
@@ -263,7 +264,7 @@ namespace bt
 		priv->mutex.lock();
 	}
 
-	K_GLOBAL_STATIC(Log, global_log)
+	Q_GLOBAL_STATIC(Log, global_log)
 	
 	Log & Out(unsigned int arg)
 	{
@@ -288,7 +289,7 @@ namespace bt
 		global_log->removeMonitor(m);
 	}
 	
-	static void QtMessageOutput(QtMsgType type, const char *msg)
+	static void QtMessageOutput(QtMsgType type, const QMessageLogContext&, const QString& msg)
 	{
 		switch (type) 
 		{
@@ -296,16 +297,17 @@ namespace bt
 				Out(SYS_GEN|LOG_DEBUG) << "Qt Debug: " << msg << endl;
 				break;
 			case QtWarningMsg:
+			case QtInfoMsg:
 				Out(SYS_GEN|LOG_NOTICE) << "Qt Warning: " << msg << endl;
-				fprintf(stderr,"Warning: %s\n",msg);
+				fprintf(stderr,"Warning: %s\n",msg.toUtf8().constData());
 				break;
 			case QtCriticalMsg:
 				Out(SYS_GEN|LOG_IMPORTANT) << "Qt Critical: " << msg << endl;
-				fprintf(stderr,"Critical: %s\n",msg);
+				fprintf(stderr,"Critical: %s\n",msg.toUtf8().constData());
 				break;
 			case QtFatalMsg:
 				Out(SYS_GEN|LOG_IMPORTANT) << "Qt Fatal: " << msg << endl;
-				fprintf(stderr,"Fatal: %s\n",msg);
+				fprintf(stderr,"Fatal: %s\n",msg.toUtf8().constData());
 				abort();
 				break;
 		}

@@ -32,13 +32,13 @@
 #include <QNetworkInterface>
 #include <QTime>
 
-#include <kio/netaccess.h>
-#include <kmimetype.h>
 #include <kformat.h>
 #include <klocalizedstring.h>
 
 #include <interfaces/torrentinterface.h>
 #include <util/signalcatcher.h>
+#include <QMimeDatabase>
+#include <QMimeType>
 #include "error.h"
 #include "log.h"
 
@@ -47,8 +47,8 @@ namespace bt
 
 	bool IsMultimediaFile(const QString & filename)
 	{
-		KMimeType::Ptr ptr = KMimeType::findByPath(filename);
-		QString name = ptr->name();
+		QMimeType ptr = QMimeDatabase().mimeTypeForFile(filename);
+		QString name = ptr.name();
 		return name.startsWith(QLatin1String("audio")) || name.startsWith(QLatin1String("video")) || name == QLatin1String("application/ogg");
 	}
 	

@@ -19,11 +19,11 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <QMimeDatabase>
 #include <KFilterDev>
 #include <util/log.h>
 #include <util/fileops.h>
 #include "decompressfilejob.h"
-#include <kmimetype.h>
 
 namespace bt
 {

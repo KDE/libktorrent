@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "dhtpeersource.h"
-#include <kurl.h>
-#include <qhostaddress.h>
+#include <QHostAddress>
 #include <util/log.h>
 #include <util/functions.h>
 #include <torrent/globals.h>

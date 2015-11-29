@@ -20,7 +20,6 @@
 #ifndef KTHTTPREQUEST_H
 #define KTHTTPREQUEST_H
 
-#include <kurl.h>
 #include <QTcpSocket>
 #include <interfaces/exitoperation.h>
 #include <util/constants.h>

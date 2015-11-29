@@ -22,8 +22,7 @@
 #include <QTimer>
 #include <QtAlgorithms>
 #include <QUrl>
-#include <kurl.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <net/socketmonitor.h>
 #include <util/log.h>
 #include <util/functions.h>
@@ -345,16 +344,19 @@ namespace bt
 	HttpConnection::HttpGet::HttpGet(const QString & host,const QString & path,const QString & query,bt::Uint64 start,bt::Uint64 len,bool using_proxy) 
 		: host(host),path(path),query(query),start(start),len(len),data_received(0),response_header_received(false),request_sent(false),response_code(0)
 	{
+		qWarning()<<"not ported";
+		Out(SYS_CON|LOG_DEBUG) << "not ported";
+#if 0 //PORT: KF5
 		KUrl url;
 		url.setPath(path);
 		url.setQuery(query);
 		QString encoded_path = url.encodedPathAndQuery();
-		/*QHttpRequestHeader request("GET",!using_proxy ? encoded_path : QString("http://%1/%2").arg(host).arg(encoded_path)); PORT: KF5
+		QHttpRequestHeader request("GET",!using_proxy ? encoded_path : QString("http://%1/%2").arg(host).arg(encoded_path));
 		request.setValue("Host",host);
 		request.setValue("Range",QString("bytes=%1-%2").arg(start).arg(start + len - 1));
-		request.setValue("User-Agent",bt::GetVersionString());*/
-		//request.setValue("Accept"," text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");PORT: KF5
-		/*request.setValue("Accept-Language", "en-us,en;q=0.5");PORT: KF5
+		request.setValue("User-Agent",bt::GetVersionString());
+		request.setValue("Accept"," text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
+		request.setValue("Accept-Language", "en-us,en;q=0.5");PORT: KF5
 		request.setValue("Accept-Charset","ISO-8859-1,utf-8;q=0.7,*;q=0.7");
 		if (using_proxy)
 		{
@@ -363,11 +365,12 @@ namespace bt
 		}
 		else
 			request.setValue("Connection","Keep-Alive");
-		buffer = request.toString().toLocal8Bit();*/
+		buffer = request.toString().toLocal8Bit();
 		redirected = false;
 		content_length = 0;
 	//	Out(SYS_CON|LOG_DEBUG) << "HttpConnection: sending http request:" << endl;
 	//	Out(SYS_CON|LOG_DEBUG) << request.toString() << endl;
+#endif
 	}
 	
 	HttpConnection::HttpGet::~HttpGet()

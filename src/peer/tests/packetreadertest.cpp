@@ -155,6 +155,12 @@ private Q_SLOTS:
 		pr.update(*this);
 		QVERIFY(received_packet_size == 0);
 	}
+
+	void testUnicodeLiteral()
+	{
+		QString a = QString("%1Torrent").arg(QChar(0x00B5));
+		QVERIFY(a == QStringLiteral("µTorrent"));
+	}
 	
 private:
 	QScopedArrayPointer<bt::Uint8> received_packet;

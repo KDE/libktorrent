@@ -65,7 +65,7 @@ namespace bt
 	
 	bool ResourceManager::acquire(Resource* r)
 	{
-		if (active.size() < max_active_resources && pending.isEmpty())
+		if ((Uint32)active.size() < max_active_resources && pending.isEmpty())
 		{
 			add(r);
 			return true;

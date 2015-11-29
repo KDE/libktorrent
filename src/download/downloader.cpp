@@ -21,18 +21,19 @@
 
 #include <QFile>
 #include <QTextStream>
-#include <KLocale>
-#include <util/file.h>
-#include <util/log.h>
-#include <diskio/chunkmanager.h>
-#include <diskio/piecedata.h>
+#include <klocalizedstring.h>
+
 #include <torrent/torrent.h>
 #include <peer/peermanager.h>
+#include <peer/peer.h>
+#include <diskio/chunkmanager.h>
+#include <diskio/piecedata.h>
+#include <util/file.h>
+#include <util/log.h>
 #include <util/error.h>
-#include "chunkdownload.h"
 #include <util/sha1hash.h>
 #include <util/array.h>
-#include <peer/peer.h>
+#include "chunkdownload.h"
 #include <download/piece.h>
 #include <peer/peerdownloader.h>
 #include <peer/badpeerslist.h>
@@ -70,7 +71,7 @@ namespace bt
 		const QList<QUrl> & urls = tor.getWebSeeds();
 		foreach (const QUrl &u,urls)
 		{
-			if (u.scheme() == "http")
+			if (u.scheme() == QLatin1String("http"))
 			{
 				WebSeed* ws = new WebSeed(u,false,tor,cman);
 				webseeds.append(ws);

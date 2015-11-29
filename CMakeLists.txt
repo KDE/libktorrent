@@ -41,9 +41,9 @@ find_package(Qca-qt5 REQUIRED)
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
   Core
   Gui
+  Widgets
   Network
   Test
-  Widgets
 )
 
 # Load the frameworks we need
@@ -51,6 +51,7 @@ find_package(KF5 REQUIRED
   Archive
   I18n
   KIO
+  Solid
   KDELibs4Support
 )
 
