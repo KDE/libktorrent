@@ -19,13 +19,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "torrentcontrol.h"
-#include <qdir.h>
-#include <qfile.h>
+
+#include <QDir>
+#include <QFile>
 #include <QTextCodec>
-#include <klocale.h>
-#include <kfiledialog.h>
-#include <qtextstream.h>
-#include <qdatetime.h>
+#include <QTextStream>
+#include <QDateTime>
+
+#include <klocalizedstring.h>
+
 #include <util/log.h>
 #include <util/error.h>
 #include <util/bitset.h>

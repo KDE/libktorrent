@@ -228,6 +228,7 @@ endif(WIN32)
 # ki18n_wrap_ui(libktorrent_SRC ${libktorrent_UI})
 # kconfig_add_kcfg_files(libktorrent_SRC settings.kcfgc)
 add_library(ktorrent SHARED ${libktorrent_SRC})
+generate_export_header(ktorrent BASE_NAME ktorrent)
 
 target_link_libraries(ktorrent
 	KF5::Archive KF5::KIOCore KF5::Solid KF5::KDELibs4Support
