@@ -101,7 +101,7 @@ bool KTCLI::start()
 	}
 
 	if (parser.positionalArguments().isEmpty()) return false;
-	return load(parser.positionalArguments().at(0));
+	return load(QUrl::fromLocalFile(parser.positionalArguments().at(0)));
 }
 
 
