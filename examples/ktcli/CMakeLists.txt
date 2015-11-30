@@ -6,4 +6,4 @@ set(ktcli_SRC
 )
 
 add_executable(ktcli ${ktcli_SRC})
-target_link_libraries(ktcli ktorrent  KF5::KIOCore)
+target_link_libraries(ktcli ktorrent KF5::KIOCore KF5::Crash)

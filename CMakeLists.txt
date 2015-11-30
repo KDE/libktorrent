@@ -50,6 +50,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 # Load the frameworks we need
 find_package(KF5 REQUIRED
   Archive
+  Crash
   I18n
   KIO
   Solid
@@ -57,7 +58,7 @@ find_package(KF5 REQUIRED
 
 kde_enable_exceptions()
 add_definitions(-DQT_USE_QSTRINGBUILDER)
-include_directories( ${LIBKTORRENT_BINARY_DIR}	${LIBKTORRENT_SOURCE_DIR} ${Qt5Core_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${QCA-qt5_INCLUDE_DIR} ${Boost_INCLUDE_DIR}) #${GMP_INCLUDE_DIR}
+include_directories( ${LIBKTORRENT_BINARY_DIR}	${LIBKTORRENT_SOURCE_DIR} ${Qt5Core_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${QCA-qt5_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 
 #XFS prealloc
 CHECK_INCLUDE_FILES(xfs/xfs.h HAVE_XFS_XFS_H)

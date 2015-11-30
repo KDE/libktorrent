@@ -7,4 +7,4 @@ set(testlib_SRC
 )
 
 add_library(testlib STATIC ${testlib_SRC})
-target_link_libraries(testlib KF5::KIOCore)
+target_link_libraries(testlib KF5::KIOCore KF5::Crash)
