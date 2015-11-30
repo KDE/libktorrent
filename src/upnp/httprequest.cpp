@@ -79,7 +79,7 @@ namespace bt
 			Out(SYS_PNP|LOG_DEBUG) << payload << endl;
 		}
 
-		sock->write(req.toAscii());
+		sock->write(req.toLatin1());
 	}
 	
 	void HTTPRequest::onReadyRead()

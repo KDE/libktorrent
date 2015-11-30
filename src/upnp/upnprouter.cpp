@@ -19,11 +19,8 @@
  ***************************************************************************/
 #include <stdlib.h>
 #include <QDir>
+#include <QStringList>
 #include <klocalizedstring.h>
-#include <kglobal.h>
-#include <kstandarddirs.h>
-#include <qstringlist.h>
-#include <kio/netaccess.h>
 #include <kio/job.h>
 #include <torrent/globals.h>
 #include <util/log.h>
@@ -410,11 +407,11 @@ namespace bt
 
         QString http_hdr;
         QTextStream out(&http_hdr);
-        QByteArray encoded_query = ctrlurl.encodedQuery();
+        QString encoded_query = ctrlurl.query();
         if(encoded_query.isEmpty())
-            out << "POST " << ctrlurl.encodedPath() << " HTTP/1.1\r\n";
+            out << "POST " << ctrlurl.path() << " HTTP/1.1\r\n";
         else
-            out << "POST " << ctrlurl.encodedPath() << "?" << encoded_query << " HTTP/1.1\r\n";
+            out << "POST " << ctrlurl.path() << "?" << encoded_query << " HTTP/1.1\r\n";
         out << "Host: " << host << ":" << port << "\r\n";
         out << "User-Agent: " << bt::GetVersionString() << "\r\n";
         out << "Content-length: $CONTENT_LENGTH\r\n";

@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <QDir>
-#include <kcmdlineargs.h>
+#include <QCommandLineParser>
 #include <version.h>
 #include <util/error.h>
 #include <util/log.h>
@@ -47,7 +47,6 @@ int main(int argc, char** argv)
 #ifndef Q_WS_WIN
 	signal(SIGINT, signalhandler);
 #endif
-	QCoreApplication app(argc,argv);
 	try
 	{
 		if (!bt::InitLibKTorrent())
@@ -55,18 +54,11 @@ int main(int argc, char** argv)
 			fprintf(stderr,"Failed to initialize libktorrent\n");
 			return -1;
 		}
-		
-		KCmdLineOptions options;
-		options.add("+Url", ki18n("Torrent to open"));
-		options.add("port <port>", ki18n("Port to use"), "6881");
-		options.add("tmpdir <tmpdir>", ki18n("Port to use"), QDir::tempPath().toLocal8Bit());
-		options.add("encryption", ki18n("Whether or not to enable encryption"));
-		options.add("pex", ki18n("Whether or not to enable peer exchange"));
-		options.add("utp", ki18n("Whether or not to use utp"));
-		KCmdLineArgs::addCmdLineOptions(options);
-		KCmdLineArgs::init(argc,argv,"ktcli","ktorrent",ki18n("ktcli"),bt::GetVersionString().toAscii());
-		
-		KTCLI app;
+
+		QCoreApplication::setApplicationName("ktcli");
+		QCoreApplication::setApplicationVersion(bt::GetVersionString());
+
+		KTCLI app(argc,argv);
 		if (!app.start())
 			return -1;
 		else

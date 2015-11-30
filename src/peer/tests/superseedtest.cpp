@@ -41,7 +41,7 @@ public:
 		QString name = QString("%1").arg(peer_cnt++);
 		if (name.size() < 20)
 			name = name.leftJustified(20,' ');
-		peer_id = PeerID(name.toAscii());
+		peer_id = PeerID(name.toLatin1());
 		allowed_chunk = INVALID_CHUNK;
 		allow_called = false;
 	}

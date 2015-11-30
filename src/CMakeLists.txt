@@ -231,7 +231,7 @@ add_library(ktorrent SHARED ${libktorrent_SRC})
 generate_export_header(ktorrent BASE_NAME ktorrent)
 
 target_link_libraries(ktorrent
-	KF5::Archive KF5::KIOCore KF5::KIOWidgets KF5::Solid KF5::I18n KF5::KDELibs4Support
+	KF5::Archive KF5::KIOCore KF5::KIOWidgets KF5::Solid KF5::I18n Qt5::Xml
 	qca-qt5 ${GMP_LIBRARIES} ${LIBGCRYPT_LIBRARIES} ${QCA-qt5_LIBRARIES})
 if(WIN32)
 target_link_libraries(ktorrent ws2_32)

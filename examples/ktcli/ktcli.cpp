@@ -22,7 +22,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <QDir>
-#include <kcmdlineargs.h>
+#include <QCommandLineParser>
 
 #include "ktcli.h"
 
@@ -38,8 +38,16 @@
 
 using namespace bt;
 
-KTCLI::KTCLI() : tc(new TorrentControl()),updates(0)
+KTCLI::KTCLI(int argc, char** argv) : QCoreApplication(argc, argv), tc(new TorrentControl()),updates(0)
 {
+	parser.addPositionalArgument("url", tr("Torrent to open"));
+	parser.addOption(QCommandLineOption("port", tr("Port to use"), "<port>", "6881"));
+	parser.addOption(QCommandLineOption("tmpdir", tr("Port to use"), "<tmpdir>", QDir::tempPath()));
+	parser.addOption(QCommandLineOption("encryption", tr("Whether or not to enable encryption")));
+	parser.addOption(QCommandLineOption("pex", tr("Whether or not to enable peer exchange")));
+	parser.addOption(QCommandLineOption("utp", tr("Whether or not to use utp")));
+	parser.process(*this);
+
 	qsrand(time(0));
 	bt::SetClientInfo("ktcli",bt::MAJOR,bt::MINOR,bt::RELEASE,bt::NORMAL,"KT");
 	bt::InitLog("ktcli.log",false,true,false);
@@ -53,27 +61,24 @@ KTCLI::~KTCLI()
 
 bool KTCLI::start()
 {
-	KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
 	bool ok = false;
-	quint16 port = args->getOption("port").toInt(&ok);
+	quint16 port = parser.value("port").toInt(&ok);
 	if (!ok)
 		port = qrand();
-	
-	
 
-	if (args->isSet("encryption"))
+	if (parser.isSet("encryption"))
 	{
 		Out(SYS_GEN|LOG_NOTICE) << "Enabled encryption" << endl;
 		ServerInterface::enableEncryption(false);
 	}
 	
-	if (args->isSet("pex"))
+	if (parser.isSet("pex"))
 	{
 		Out(SYS_GEN|LOG_NOTICE) << "Enabled PEX" << endl;
 		UTPex::setEnabled(true);
 	}
 	
-	if (args->isSet("utp"))
+	if (parser.isSet("utp"))
 	{
 		Out(SYS_GEN|LOG_NOTICE) << "Enabled UTP" << endl;
 		if (!bt::Globals::instance().initUTPServer(port))
@@ -94,8 +99,9 @@ bool KTCLI::start()
 			return false;
 		}
 	}
-	
-	return load(KCmdLineArgs::parsedArgs()->url(args->count() - 1));
+
+	if (parser.positionalArguments().isEmpty()) return false;
+	return load(parser.positionalArguments().at(0));
 }
 
 
@@ -134,8 +140,7 @@ bool KTCLI::load(const QUrl &url)
 
 QString KTCLI::tempDir()
 {
-	KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
-	QDir tmpdir = QDir(args->getOption("tmpdir"));
+	QDir tmpdir = QDir(parser.value("tmpdir"));
 	int i = 0;
 	while (tmpdir.exists(QString("tor%1").arg(i)))
 		i++;

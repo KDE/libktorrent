@@ -120,7 +120,7 @@ namespace bt
 		}
 		
 		writeDatagram(upnp_data,strlen(upnp_data),QHostAddress("239.255.255.250"),1900);
-        writeDatagram(tr64_data,strlen(tr64_data),QHostAddress("239.255.255.250"),1900);
+		writeDatagram(tr64_data,strlen(tr64_data),QHostAddress("239.255.255.250"),1900);
 	}
 	
 	void UPnPMCastSocket::onXmlFileDownloaded(UPnPRouter* r,bool success)
@@ -303,7 +303,8 @@ namespace bt
 	
 	UPnPRouter* UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteArray & arr)
 	{
-		QStringList lines = QString::fromAscii(arr).split("\r\n");
+		const QString response = QString::fromLatin1(arr);
+		QVector<QStringRef> lines = response.splitRef("\r\n");
 		QString server;
 		QUrl location;
 		
@@ -314,22 +315,22 @@ namespace bt
 		*/
 		
 		// first read first line and see if contains a HTTP 200 OK message
-		QString line = lines.first();
-		if (!line.contains("HTTP"))
+		QStringRef line = lines.first();
+		if (!line.contains(QLatin1String("HTTP")))
 		{
 			// it is either a 200 OK or a NOTIFY
-			if (!line.contains("NOTIFY") && !line.contains("200")) 
+			if (!line.contains(QLatin1String("NOTIFY")) && !line.contains(QLatin1String("200")))
 				return 0;
 		}
-		else if (line.contains("M-SEARCH")) // ignore M-SEARCH 
+		else if (line.contains(QLatin1String("M-SEARCH"))) // ignore M-SEARCH
 			return 0;
 		
 		// quick check that the response being parsed is valid 
-		bool validDevice = false; 
+		bool validDevice = false;
 		for (int idx = 0;idx < lines.count() && !validDevice; idx++) 
 		{ 
 			line = lines[idx]; 
-			if ((line.contains("ST:") || line.contains("NT:")) && line.contains("InternetGatewayDevice")) 
+			if ((line.contains(QLatin1String("ST:")) || line.contains(QLatin1String("NT:"))) && line.contains(QLatin1String("InternetGatewayDevice")))
 			{
 				validDevice = true; 
 			}
@@ -344,15 +345,15 @@ namespace bt
 		for (int i = 1;i < lines.count();i++)
 		{
 			line = lines[i];
-			if (line.startsWith("Location") || line.startsWith("LOCATION") || line.startsWith("location"))
+			if (line.startsWith(QLatin1String("Location")) || line.startsWith(QLatin1String("LOCATION")) || line.startsWith(QLatin1String("location")))
 			{
-				location = line.mid(line.indexOf(':') + 1).trimmed();
+				location = line.mid(line.indexOf(':') + 1).trimmed().toString();
 				if (!location.isValid())
 					return 0;
 			}
-			else if (line.startsWith("Server") || line.startsWith("server") || line.startsWith("SERVER"))
+			else if (line.startsWith(QLatin1String("Server")) || line.startsWith(QLatin1String("server")) || line.startsWith(QLatin1String("SERVER")))
 			{
-				server = line.mid(line.indexOf(':') + 1).trimmed();
+				server = line.mid(line.indexOf(':') + 1).trimmed().toString();
 				if (server.length() == 0)
 					return 0;
 				

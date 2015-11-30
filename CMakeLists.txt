@@ -43,6 +43,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
   Gui
   Widgets
   Network
+  Xml
   Test
 )
 
@@ -52,7 +53,6 @@ find_package(KF5 REQUIRED
   I18n
   KIO
   Solid
-  KDELibs4Support
 )
 
 kde_enable_exceptions()
