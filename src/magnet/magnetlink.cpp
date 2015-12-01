@@ -70,7 +70,7 @@ namespace bt
 	{
 		QList<QUrl> result;
 		Q_FOREACH(QString tr, QUrlQuery(url).allQueryItemValues("tr", QUrl::FullyDecoded))
-			result << tr.replace(QLatin1Char('+'), QLatin1Char(' '));
+			result << QUrl(tr.replace(QLatin1Char('+'), QLatin1Char(' ')));
 		return result;
 	}
 

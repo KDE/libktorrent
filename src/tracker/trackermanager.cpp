@@ -376,8 +376,7 @@ namespace bt
 		QTextStream stream(&file);
 		while (!stream.atEnd())
 		{
-			QUrl url = stream.readLine();
-			addTracker(url,true);
+			addTracker(QUrl(stream.readLine()),true);
 		}
 		no_save_custom_trackers = false;
 	}
@@ -415,10 +414,9 @@ namespace bt
 			if (line.size() < 2)
 				continue;
 			
-			QUrl u = line.mid(2); // url starts at the second char
 			if (line[0] == '0')
 			{
-				Tracker* trk = trackers.find(u);
+				Tracker* trk = trackers.find(QUrl(line.mid(2))); // url starts at the second char
 				if (trk)
 					trk->setEnabled(false);
 			}

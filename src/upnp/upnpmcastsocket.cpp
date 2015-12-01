@@ -229,7 +229,7 @@ namespace bt
 			server = fin.readLine();
 			location = fin.readLine();
 				
-			UPnPRouter* r = new UPnPRouter(server,location);
+			UPnPRouter* r = new UPnPRouter(server,QUrl(location));
 			// download it's xml file
 			QObject::connect(r,SIGNAL(xmlFileDownloaded(UPnPRouter*,bool)),this,SLOT(onXmlFileDownloaded(UPnPRouter*,bool)));
 			r->downloadXMLFile();
@@ -347,7 +347,7 @@ namespace bt
 			line = lines[i];
 			if (line.startsWith(QLatin1String("Location")) || line.startsWith(QLatin1String("LOCATION")) || line.startsWith(QLatin1String("location")))
 			{
-				location = line.mid(line.indexOf(':') + 1).trimmed().toString();
+				location = QUrl(line.mid(line.indexOf(':') + 1).trimmed().toString()); //TODO fromLocalFile()?
 				if (!location.isValid())
 					return 0;
 			}

@@ -58,7 +58,7 @@ namespace bt
                 
 		if (!mlink.torrent().isEmpty()) 
 		{
-			KIO::StoredTransferJob *job = KIO::storedGet( mlink.torrent(), KIO::NoReload, KIO::HideProgressInfo );
+			KIO::StoredTransferJob *job = KIO::storedGet( QUrl(mlink.torrent()), KIO::NoReload, KIO::HideProgressInfo );
 			connect(job,SIGNAL(result(KJob*)),this,SLOT(onTorrentDownloaded(KJob*)));
 		}
 		
