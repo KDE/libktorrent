@@ -81,8 +81,8 @@ set(libktorrent_SRC
 	peer/superseeder.cpp
 	peer/connectionlimit.cpp 
 
-	download/piece.cpp
-	download/request.cpp
+	#download/piece.cpp all the code is inlined
+	#download/request.cpp all the code is inlined
 	download/packet.cpp
 	download/webseed.cpp
 	download/chunkdownload.cpp

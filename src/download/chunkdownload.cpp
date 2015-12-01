@@ -103,8 +103,7 @@ namespace bt
 			return false;
 
 	
-		DownloadStatus* ds = dstatus.find(p.getPieceDownloader());
-		if (ds)
+		if (DownloadStatus* ds = dstatus.find(p.getPieceDownloader()))
 			ds->remove(pp);
 		
 		PieceData::Ptr buf = chunk->getPiece(p.getOffset(),p.getLength(),false);

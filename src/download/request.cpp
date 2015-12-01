@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "request.h"
 #include <interfaces/piecedownloader.h>
-
+#if 0
 namespace bt
 {
 	Request::Request() : index(0),off(0),len(0),pd(0)
@@ -47,3 +47,4 @@ namespace bt
 	}
 
 }
+#endif
