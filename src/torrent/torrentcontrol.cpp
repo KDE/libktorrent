@@ -639,12 +639,12 @@ namespace bt
         downloader = new Downloader(*tor, *pman, *cman);
         downloader->loadWebSeeds(tordir + "webseeds");
         connect(downloader, SIGNAL(ioError(QString)), this, SLOT(onIOError(QString)));
-        connect(downloader, SIGNAL(chunkDownloaded(Uint32)), this, SLOT(downloaded(Uint32)));
+        connect(downloader, &Downloader::chunkDownloaded, this, &TorrentControl::downloaded);
         uploader = new Uploader(*cman, *pman);
         choke = new Choker(*pman, *cman);
 
-        connect(pman, SIGNAL(newPeer(Peer*)), this, SLOT(onNewPeer(Peer*)));
-        connect(pman, SIGNAL(peerKilled(Peer*)), this, SLOT(onPeerRemoved(Peer*)));
+        connect(pman, &PeerManager::newPeer, this, &TorrentControl::onNewPeer);
+        connect(pman, &PeerManager::peerKilled, this, &TorrentControl::onPeerRemoved);
         connect(cman, SIGNAL(excluded(Uint32, Uint32)), downloader, SLOT(onExcluded(Uint32, Uint32)));
         connect(cman, SIGNAL(included(Uint32, Uint32)), downloader, SLOT(onIncluded(Uint32, Uint32)));
         connect(cman, SIGNAL(corrupted(Uint32)), this, SLOT(corrupted(Uint32)));
