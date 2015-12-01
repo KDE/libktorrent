@@ -93,20 +93,10 @@ namespace bt
 	
 	bool Packet::isPiece(const Request & req) const
 	{
-		if (data[4] == PIECE)
-		{
-			if (ReadUint32(data,5) != req.getIndex())
-				return false;
-			
-			if (ReadUint32(data,9) != req.getOffset())
-				return false; 
-			
-			if (size - 13 != req.getLength())
-				return false;
-			
-			return true;
-		}
-		return false;
+		return (data[4] == PIECE)
+			&& (ReadUint32(data,5) == req.getIndex())
+			&& (ReadUint32(data,9) == req.getOffset())
+			&& (size - 13 == req.getLength());
 	}
 	
 	Packet* Packet::makeRejectOfPiece()
@@ -145,10 +135,7 @@ namespace bt
 	*/
 	bool Packet::isOK() const
 	{
-		if (!data)
-			return false;
-
-		return true;
+		return bool(data);
 	}
 
 	int Packet::send(net::SocketDevice* sock, Uint32 max_to_send)
