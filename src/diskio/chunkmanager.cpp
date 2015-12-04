@@ -16,7 +16,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "chunkmanager.h"
 #include <algorithm>
@@ -519,21 +519,17 @@ namespace bt
                 switch (buf[i + 1])
                 {
                 case FIRST_PRIORITY:
-                case 3:
                     tf.setPriority(FIRST_PRIORITY);
                     break;
                 case NORMAL_PRIORITY:
-                case 2:
                     // By default priority is set to normal, so do nothing
                     //tf.setPriority(NORMAL_PRIORITY);
                     break;
                 case EXCLUDED:
-                case 0:
                     //tf.setDoNotDownload(true);
                     tf.setPriority(EXCLUDED);
                     break;
                 case ONLY_SEED_PRIORITY:
-                case -1:
                     tf.setPriority(ONLY_SEED_PRIORITY);
                     break;
                 default:
