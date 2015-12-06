@@ -61,7 +61,9 @@ namespace bt
 		
 	private slots:
 		void onKIOAnnounceResult(KJob* j);
+#ifdef HAVE_HTTPANNOUNEJOB
 		void onQHttpAnnounceResult(KJob* j);
+#endif
 		void onScrapeResult(KJob* j);
 		void emitInvalidURLFailure();
 		void onTimeout();

@@ -175,7 +175,7 @@ set(libktorrent_SRC
 	tracker/udptracker.cpp  
 	tracker/udptrackersocket.cpp
 	tracker/trackermanager.cpp
-	tracker/httpannouncejob.cpp
+	#tracker/httpannouncejob.cpp
 	tracker/kioannouncejob.cpp
 	
 	datachecker/datachecker.cpp          

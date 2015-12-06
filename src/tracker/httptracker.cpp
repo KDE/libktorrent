@@ -38,8 +38,10 @@
 #include <torrent/server.h>
 #include <torrent/globals.h>
 #include "version.h"
-#include "httpannouncejob.h"
 #include "kioannouncejob.h"
+#ifdef HAVE_HTTPANNOUNEJOB
+#include "httpannouncejob.h"
+#endif
 
 
 namespace bt
@@ -402,11 +404,13 @@ namespace bt
 		onAnnounceResult(st->announceUrl(), st->replyData(), j);
 	}
 
+#ifdef HAVE_HTTPANNOUNEJOB
 	void HTTPTracker::onQHttpAnnounceResult(KJob* j)
 	{
 		HTTPAnnounceJob* st = (HTTPAnnounceJob*)j;
 		onAnnounceResult(st->announceUrl(), st->replyData(), j);
 	}
+#endif
 
 	void HTTPTracker::onAnnounceResult(const QUrl& url, const QByteArray& data, KJob* j)
 	{
@@ -518,6 +522,7 @@ namespace bt
 			connect(j, SIGNAL(result(KJob*)), this, SLOT(onKIOAnnounceResult(KJob*)));
 			active_job = j;
 		}
+#ifdef HAVE_HTTPANNOUNEJOB
 		else
 		{
 			HTTPAnnounceJob* j = new HTTPAnnounceJob(u);
@@ -538,6 +543,7 @@ namespace bt
 			active_job = j;
 			j->start();
 		}
+#endif
 
 		timer.start(60*1000);
 		status = TRACKER_ANNOUNCING;
