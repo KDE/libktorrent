@@ -89,6 +89,7 @@ set(libktorrent_SRC
 	download/chunkselector.cpp
 	download/downloader.cpp
 	download/httpconnection.cpp
+	download/httpresponseheader.cpp
 	download/streamingchunkselector.cpp
 
 	interfaces/piecedownloader.cpp

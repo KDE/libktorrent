@@ -26,6 +26,7 @@
 #include <net/socketmonitor.h>
 #include <util/log.h>
 #include <util/functions.h>
+#include "httpresponseheader.h"
 
 #include "version.h"
 
@@ -369,29 +370,28 @@ namespace bt
 	
 	HttpConnection::HttpGet::~HttpGet()
 	{}
-	
+
 	bool HttpConnection::HttpGet::onDataReady(Uint8* buf,Uint32 size)
 	{
 		if (!response_header_received)
 		{
 			// append the data
-			buffer.append(QByteArray::fromRawData((char*)buf,size, qstrlen((char*)buf,size)));
+			buffer.append(QByteArray::fromRawData((char*)buf,size));
 			// look for the end of the header 
 			int idx = buffer.indexOf("\r\n\r\n");
 			if (idx == -1) // haven't got the full header yet
 				return true; 
 			
 			response_header_received = true;
-			Out(SYS_CON|LOG_DEBUG) << "received header:" << buffer.mid(0,idx + 4).constData() << "but parsing code is not ported" << endl;
-			/*QHttpResponseHeader hdr(QString::fromLocal8Bit(buffer.mid(0,idx + 4)));PORT: KF5
+			HttpResponseHeader hdr(QString::fromLatin1(buffer.mid(0,idx + 4)));
 			
 			if (hdr.hasKey("Content-Length"))
 				content_length = hdr.value("Content-Length").toInt();
 			else
 				content_length = 0;
 			
-//			Out(SYS_CON|LOG_DEBUG) << "HttpConnection: http reply header received" << endl;
-//			Out(SYS_CON|LOG_DEBUG) << hdr.toString() << endl;
+			Out(SYS_CON|LOG_DEBUG) << "HttpConnection: http reply header received" << endl;
+			Out(SYS_CON|LOG_DEBUG) << buffer.mid(0,idx + 4).constData() << endl;
 			response_code = hdr.statusCode();
 			if ((hdr.statusCode() >= 300 && hdr.statusCode() <= 303) || hdr.statusCode() == 307)
 			{
@@ -412,7 +412,7 @@ namespace bt
 			{
 				failure_reason = hdr.reasonPhrase();
 				return false;
-			}*/
+			}
 			
 			if (buffer.size() - (idx + 4) > 0)
 			{
