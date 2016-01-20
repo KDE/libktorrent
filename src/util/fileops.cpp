@@ -53,6 +53,10 @@
 #define NAME_MAX 255
 #endif
 
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
+
 #ifdef HAVE_XFS_XFS_H
 
 #if !defined(HAVE___S64) || !defined(HAVE___U64)
