@@ -19,11 +19,11 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <QMimeDatabase>
 #include <KFilterDev>
 #include <util/log.h>
 #include <util/fileops.h>
 #include "decompressfilejob.h"
-#include <kmimetype.h>
 
 namespace bt
 {
@@ -48,30 +48,25 @@ namespace bt
 		}
 		
 		// open output file 
-		QString mime = KMimeType::findByPath(file)->name();
-		QIODevice* dev = KFilterDev::deviceForFile(file,mime);
-		if (!dev || !dev->open(QIODevice::ReadOnly))
+		KFilterDev dev(file);
+		if (!dev.open(QIODevice::ReadOnly))
 		{
 			err = KIO::ERR_CANNOT_OPEN_FOR_READING;
-			if (dev)
-				Out(SYS_GEN|LOG_NOTICE) << "Failed to open " << file << " : " << dev->errorString() << endl;
-			else
-				Out(SYS_GEN|LOG_NOTICE) << "Failed to open " << file << endl;
+			Out(SYS_GEN|LOG_NOTICE) << "Failed to open " << file << " : " << dev.errorString() << endl;
 			return;
 		}
 		
 		// copy the data
 		char buf[4096];
-		while (!canceled && !dev->atEnd())
+		while (!canceled && !dev.atEnd())
 		{
-			int len = dev->read(buf,4096);
+			int len = dev.read(buf,4096);
 			if (len <= 0 || len > 4096)
 				break;
 			
 			out.write(buf,len);
 		}
 		
-		delete dev;
 		out.close();
 		if (canceled)
 		{

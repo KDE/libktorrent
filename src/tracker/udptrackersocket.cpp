@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <QHostAddress>
-#include <KLocale>
+#include <klocalizedstring.h>
 #include <util/array.h>
 #include <net/portlist.h>
 #include <util/log.h>
@@ -282,4 +282,3 @@ namespace bt
 	}
 }
 
-#include "udptrackersocket.moc"

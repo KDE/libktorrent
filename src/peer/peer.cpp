@@ -459,7 +459,7 @@ namespace bt
             }
 
             BDictNode* dict = (BDictNode*)node;
-            BDictNode* mdict = dict->getDict(QString("m"));
+            BDictNode* mdict = dict->getDict(QByteArrayLiteral("m"));
             if (!mdict)
             {
                 delete node;
@@ -468,7 +468,7 @@ namespace bt
 
             BValueNode* val = 0;
 
-            if ((val = mdict->getValue("ut_pex")) && UTPex::isEnabled())
+            if ((val = mdict->getValue(QByteArrayLiteral("ut_pex"))) && UTPex::isEnabled())
             {
                 // ut_pex packet
                 ut_pex_id = val->data().toInt();
@@ -486,7 +486,7 @@ namespace bt
                 }
             }
 
-            if ((val = mdict->getValue("ut_metadata")))
+            if ((val = mdict->getValue(QByteArrayLiteral("ut_metadata"))))
             {
                 // meta data
                 Uint32 ut_metadata_id = val->data().toInt();
@@ -504,8 +504,8 @@ namespace bt
                     else
                     {
                         int metadata_size = 0;
-                        if (dict->getValue("metadata_size"))
-                            metadata_size = dict->getInt("metadata_size");
+                        if (dict->getValue(QByteArrayLiteral("metadata_size")))
+                            metadata_size = dict->getInt(QByteArrayLiteral("metadata_size"));
 
                         if (metadata_size > MAX_METADATA_SIZE) // check for wrong metadata_size values
                         {
@@ -521,12 +521,12 @@ namespace bt
                 }
             }
 
-            if ((val = dict->getValue("reqq")))
+            if ((val = dict->getValue(QByteArrayLiteral("reqq"))))
             {
                 stats.max_request_queue = val->data().toInt();
             }
 
-            if ((val = dict->getValue("upload_only")))
+            if ((val = dict->getValue(QByteArrayLiteral("upload_only"))))
             {
                 stats.partial_seed = val->data().toInt() == 1;
             }

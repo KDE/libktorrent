@@ -50,7 +50,7 @@ namespace bt
 		Packet(const Request & req,Uint8 type);
 		Packet(Uint32 index,Uint32 begin,Uint32 len,Chunk* ch);
 		Packet(Uint8 ext_id,const QByteArray & ext_data); // extension protocol packet
-		virtual ~Packet();
+		~Packet();
 
 		/// Get the packet type
 		Uint8 getType() const {return type;}
@@ -91,10 +91,10 @@ namespace bt
 		typedef QSharedPointer<Packet> Ptr;
 		
 	private:
-		Uint8 type;
 		Uint8* data;
 		Uint32 size;
 		Uint32 written;
+		Uint8 type;
 	};
 
 }

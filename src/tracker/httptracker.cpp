@@ -20,9 +20,8 @@
 #include "httptracker.h"
 #include <config-ktorrent.h>
 
-#include <kurl.h>
-#include <klocale.h>
-#include <qhostaddress.h>
+#include <QHostAddress>
+#include <QUrlQuery>
 #include <util/log.h>
 #include <util/functions.h>
 #include <util/error.h>
@@ -30,8 +29,8 @@
 #include <interfaces/exitoperation.h>
 #include <interfaces/torrentinterface.h>
 #include <kio/job.h>
-#include <kio/netaccess.h>
 #include <kio/scheduler.h>
+#include <klocalizedstring.h>
 #include <kprotocolmanager.h>
 #include <bcodec/bnode.h>
 #include <bcodec/bdecoder.h>
@@ -39,8 +38,10 @@
 #include <torrent/server.h>
 #include <torrent/globals.h>
 #include "version.h"
-#include "httpannouncejob.h"
 #include "kioannouncejob.h"
+#ifdef HAVE_HTTPANNOUNEJOB
+#include "httpannouncejob.h"
+#endif
 
 
 namespace bt
@@ -50,7 +51,7 @@ namespace bt
 	Uint16 HTTPTracker::proxy_port = 8080;
 	bool HTTPTracker::use_qhttp = false;
 
-	HTTPTracker::HTTPTracker(const KUrl & url, TrackerDataSource* tds, const PeerID & id, int tier)
+	HTTPTracker::HTTPTracker(const QUrl & url, TrackerDataSource* tds, const PeerID & id, int tier)
 			: Tracker(url, tds, id, tier),
 			supports_partial_seed_extension(false)
 	{
@@ -67,7 +68,7 @@ namespace bt
 
 	void HTTPTracker::start()
 	{
-		event = "started";
+		event = QStringLiteral("started");
 		resetTrackerStats();
 		doRequest();
 	}
@@ -89,7 +90,7 @@ namespace bt
 		else
 		{
 			reannounce_timer.stop();
-			event = "stopped";
+			event = QStringLiteral("stopped");
 			doRequest(wjob);
 			started = false;
 		}
@@ -97,7 +98,7 @@ namespace bt
 
 	void HTTPTracker::completed()
 	{
-		event = "completed";
+		event = QStringLiteral("completed");
 		doRequest();
 		event = QString();
 	}
@@ -118,31 +119,29 @@ namespace bt
 			return;
 		}
 
-		if (!url.fileName().startsWith("announce"))
+		if (!url.fileName().startsWith(QLatin1String("announce")))
 		{
 			Out(SYS_TRK | LOG_NOTICE) << "Tracker " << url << " does not support scraping" << endl;
 			return;
 		}
 
-		KUrl scrape_url = url;
-		scrape_url.setFileName(url.fileName().replace("announce", "scrape"));
+		QUrl scrape_url = url;
+		scrape_url.setPath(url.path(QUrl::FullyEncoded).replace(QStringLiteral("announce"), QStringLiteral("scrape")), QUrl::StrictMode);
 
-		QString epq = scrape_url.encodedPathAndQuery();
+		QString epq = scrape_url.query(QUrl::FullyEncoded);
 		const SHA1Hash & info_hash = tds->infoHash();
-		if (scrape_url.queryItems().count() > 0)
-			epq += "&info_hash=" + info_hash.toURLString();
-		else
-			epq += "?info_hash=" + info_hash.toURLString();
-		scrape_url.setEncodedPathAndQuery(epq);
+		if (epq.length()) epq += '&';
+		epq += QLatin1String("info_hash=") + info_hash.toURLString();
+		scrape_url.setQuery(epq, QUrl::StrictMode);
 
-		Out(SYS_TRK | LOG_NOTICE) << "Doing scrape request to url : " << scrape_url.prettyUrl() << endl;
+		Out(SYS_TRK | LOG_NOTICE) << "Doing scrape request to url : " << scrape_url << endl;
 		KIO::MetaData md;
 		setupMetaData(md);
 
 		KIO::StoredTransferJob* j = KIO::storedGet(scrape_url, KIO::NoReload, KIO::HideProgressInfo);
 		// set the meta data
 		j->setMetaData(md);
-		KIO::Scheduler::scheduleJob(j);
+		KIO::Scheduler::setJobPriority(j, 1);
 
 		connect(j, SIGNAL(result(KJob*)), this, SLOT(onScrapeResult(KJob*)));
 	}
@@ -172,7 +171,7 @@ namespace bt
 		if (n && n->getType() == BNode::DICT)
 		{
 			BDictNode* d = (BDictNode*)n.data();
-			d = d->getDict(QString("files"));
+			d = d->getDict(QByteArrayLiteral("files"));
 			if (d)
 			{
 				d = d->getDict(tds->infoHash().toByteArray());
@@ -180,10 +179,10 @@ namespace bt
 				{
 					try
 					{
-						seeders = d->getInt("complete");
-						leechers = d->getInt("incomplete");
-						total_downloaded = d->getInt("downloaded");
-						supports_partial_seed_extension = d->getValue("downloaders") != 0;
+						seeders = d->getInt(QByteArrayLiteral("complete"));
+						leechers = d->getInt(QByteArrayLiteral("incomplete"));
+						total_downloaded = d->getInt(QByteArrayLiteral("downloaded"));
+						supports_partial_seed_extension = d->getValue(QByteArrayLiteral("downloaders")) != 0;
 						Out(SYS_TRK | LOG_DEBUG) << "Scrape : leechers = " << leechers
 						<< ", seeders = " << seeders << ", downloaded = " << total_downloaded << endl;
 					}
@@ -202,7 +201,6 @@ namespace bt
 
 	void HTTPTracker::doRequest(WaitJob* wjob)
 	{
-		KUrl u = url;
 		if (!url.isValid())
 		{
 			requestPending();
@@ -212,42 +210,43 @@ namespace bt
 
 		Uint16 port = ServerInterface::getPort();
 
-		u.addQueryItem("peer_id", peer_id.toString());
-		u.addQueryItem("port", QString::number(port));
-		u.addQueryItem("uploaded", QString::number(bytesUploaded()));
-		u.addQueryItem("downloaded", QString::number(bytesDownloaded()));
 
-		if (event == "completed")
-			u.addQueryItem("left", "0"); // need to send 0 when we are completed
+		QUrlQuery query(url);
+		query.addQueryItem(QStringLiteral("peer_id"), peer_id.toString());
+		query.addQueryItem(QStringLiteral("port"), QString::number(port));
+		query.addQueryItem(QStringLiteral("uploaded"), QString::number(bytesUploaded()));
+		query.addQueryItem(QStringLiteral("downloaded"), QString::number(bytesDownloaded()));
+
+		if (event == QLatin1String("completed"))
+			query.addQueryItem(QStringLiteral("left"), QStringLiteral("0")); // need to send 0 when we are completed
 		else
-			u.addQueryItem("left", QString::number(tds->bytesLeft()));
+			query.addQueryItem(QStringLiteral("left"), QString::number(tds->bytesLeft()));
 
-		u.addQueryItem("compact", "1");
-		if (event != "stopped")
-			u.addQueryItem("numwant", "200");
+		query.addQueryItem(QStringLiteral("compact"), QStringLiteral("1"));
+		if (event != QLatin1String("stopped"))
+			query.addQueryItem(QStringLiteral("numwant"), QStringLiteral("200"));
 		else
-			u.addQueryItem("numwant", "0");
+			query.addQueryItem(QStringLiteral("numwant"), QStringLiteral("0"));
 
-		u.addQueryItem("key", QString::number(key));
+		query.addQueryItem(QStringLiteral("key"), QString::number(key));
 		QString cip = Tracker::getCustomIP();
 		if (cip.isNull())
 			cip = CurrentIPv6Address();
 		
 		if (!cip.isEmpty())
-			u.addQueryItem("ip", cip);
+			query.addQueryItem(QStringLiteral("ip"), cip);
 		
 		if (event.isEmpty() && supports_partial_seed_extension && tds->isPartialSeed())
-			event = "paused";
+			event = QStringLiteral("paused");
 
 		if (!event.isEmpty())
-			u.addQueryItem("event", event);
+			query.addQueryItem(QStringLiteral("event"), event);
 		
-		QString epq = u.encodedPathAndQuery();
 		const SHA1Hash & info_hash = tds->infoHash();
-		epq += "&info_hash=" + info_hash.toURLString();
+		QString epq = query.toString(QUrl::FullyEncoded) + QLatin1String("&info_hash=") + info_hash.toURLString();
 
-
-		u.setEncodedPathAndQuery(epq);
+		QUrl u = url;
+		u.setQuery(epq, QUrl::StrictMode);
 
 		if (active_job)
 		{
@@ -307,9 +306,9 @@ namespace bt
 		}
 
 		BDictNode* dict = (BDictNode*)n;
-		if (dict->getData("failure reason"))
+		if (dict->getData(QByteArrayLiteral("failure reason")))
 		{
-			BValueNode* vn = dict->getValue("failure reason");
+			BValueNode* vn = dict->getValue(QByteArrayLiteral("failure reason"));
 			error = vn->data().toString();
 			delete n;
 			failures++;
@@ -317,15 +316,15 @@ namespace bt
 			return false;
 		}
 
-		if (dict->getData("warning message"))
+		if (dict->getData(QByteArrayLiteral("warning message")))
 		{
-			BValueNode* vn = dict->getValue("warning message");
+			BValueNode* vn = dict->getValue(QByteArrayLiteral("warning message"));
 			warning = vn->data().toString();
 		}
 		else
 			warning.clear();
 
-		BValueNode* vn = dict->getValue("interval");
+		BValueNode* vn = dict->getValue(QByteArrayLiteral("interval"));
 
 		// if no interval is specified, use 5 minutes
 		if (vn)
@@ -333,19 +332,19 @@ namespace bt
 		else
 			interval = 5 * 60;
 
-		vn = dict->getValue("incomplete");
+		vn = dict->getValue(QByteArrayLiteral("incomplete"));
 		if (vn)
 			leechers = vn->data().toInt();
 
-		vn = dict->getValue("complete");
+		vn = dict->getValue(QByteArrayLiteral("complete"));
 		if (vn)
 			seeders = vn->data().toInt();
 
-		BListNode* ln = dict->getList("peers");
+		BListNode* ln = dict->getList(QByteArrayLiteral("peers"));
 		if (!ln)
 		{
 			// no list, it might however be a compact response
-			vn = dict->getValue("peers");
+			vn = dict->getValue(QByteArrayLiteral("peers"));
 			if (vn && vn->data().getType() == Value::STRING)
 			{
 				QByteArray arr = vn->data().toByteArray();
@@ -369,8 +368,8 @@ namespace bt
 				if (!dict)
 					continue;
 
-				BValueNode* ip_node = dict->getValue("ip");
-				BValueNode* port_node = dict->getValue("port");
+				BValueNode* ip_node = dict->getValue(QByteArrayLiteral("ip"));
+				BValueNode* port_node = dict->getValue(QByteArrayLiteral("port"));
 
 				if (!ip_node || !port_node)
 					continue;
@@ -381,7 +380,7 @@ namespace bt
 		}
 
 		// Check for IPv6 compact peers
-		vn = dict->getValue("peers6");
+		vn = dict->getValue(QByteArrayLiteral("peers6"));
 		if (vn && vn->data().getType() == Value::STRING)
 		{
 			QByteArray arr = vn->data().toByteArray();
@@ -402,18 +401,18 @@ namespace bt
 	void HTTPTracker::onKIOAnnounceResult(KJob* j)
 	{
 		KIOAnnounceJob* st = (KIOAnnounceJob*)j;
-		KUrl u = st->announceUrl();
-		onAnnounceResult(u, st->replyData(), j);
+		onAnnounceResult(st->announceUrl(), st->replyData(), j);
 	}
 
+#ifdef HAVE_HTTPANNOUNEJOB
 	void HTTPTracker::onQHttpAnnounceResult(KJob* j)
 	{
 		HTTPAnnounceJob* st = (HTTPAnnounceJob*)j;
-		KUrl u = st->announceUrl();
-		onAnnounceResult(u, st->replyData(), j);
+		onAnnounceResult(st->announceUrl(), st->replyData(), j);
 	}
+#endif
 
-	void HTTPTracker::onAnnounceResult(const KUrl& url, const QByteArray& data, KJob* j)
+	void HTTPTracker::onAnnounceResult(const QUrl& url, const QByteArray& data, KJob* j)
 	{
 		timer.stop();
 		active_job = 0;
@@ -425,7 +424,7 @@ namespace bt
 				err = j->errorString();
 
 			Out(SYS_TRK | LOG_IMPORTANT) << "Error : " << err << endl;
-			if (url.queryItem("event") != "stopped")
+			if (QUrlQuery(url).queryItemValue(QStringLiteral("event")) != QLatin1String("stopped"))
 			{
 				failures++;
 				failed(err);
@@ -438,7 +437,7 @@ namespace bt
 		}
 		else
 		{
-			if (url.queryItem("event") != "stopped")
+			if (QUrlQuery(url).queryItemValue(QStringLiteral("event")) != QLatin1String("stopped"))
 			{
 				try
 				{
@@ -448,7 +447,7 @@ namespace bt
 						peersReady(this);
 						request_time = QDateTime::currentDateTime();
 						status = TRACKER_OK;
-						if (url.queryItem("event") == "started")
+						if (QUrlQuery(url).queryItemValue(QStringLiteral("event")) == QLatin1String("started"))
 							started = true;
 						if (started)
 							reannounce_timer.start(interval * 1000);
@@ -491,7 +490,7 @@ namespace bt
 			if (!p.startsWith("http://"))
 				p = "http://" + p;
 			// set the proxy if the doNotUseKDEProxy ix enabled (URL must be valid to)
-			KUrl url = KUrl(p);
+			QUrl url(p);
 			if (url.isValid() && proxy.trimmed().length() >  0)
 				md["UseProxy"] = p;
 			else
@@ -506,14 +505,14 @@ namespace bt
 		if (announce_queue.empty())
 			return;
 
-		KUrl u = announce_queue.front();
+		QUrl u = announce_queue.front();
 		announce_queue.pop_front();
 		doAnnounce(u);
 	}
 
-	void HTTPTracker::doAnnounce(const KUrl & u)
+	void HTTPTracker::doAnnounce(const QUrl & u)
 	{
-		Out(SYS_TRK | LOG_NOTICE) << "Doing tracker request to url (via " << (use_qhttp ? "QHttp" : "KIO") << "): " << u.prettyUrl() << endl;
+		Out(SYS_TRK | LOG_NOTICE) << "Doing tracker request to url (via " << (use_qhttp ? "QHttp" : "KIO") << "): " << u.toString() << endl;
 
 		if (!use_qhttp)
 		{
@@ -523,6 +522,7 @@ namespace bt
 			connect(j, SIGNAL(result(KJob*)), this, SLOT(onKIOAnnounceResult(KJob*)));
 			active_job = j;
 		}
+#ifdef HAVE_HTTPANNOUNEJOB
 		else
 		{
 			HTTPAnnounceJob* j = new HTTPAnnounceJob(u);
@@ -530,9 +530,9 @@ namespace bt
 			if (!proxy_on)
 			{
 				QString proxy = KProtocolManager::proxyForUrl(u); // Use KDE settings
-				if (!proxy.isNull() && proxy != "DIRECT")
+				if (!proxy.isNull() && proxy != QLatin1String("DIRECT"))
 				{
-					KUrl proxy_url(proxy);
+					QUrl proxy_url(proxy);
 					j->setProxy(proxy_url.host(), proxy_url.port() <= 0 ? 80 : proxy_url.port());
 				}
 			}
@@ -543,6 +543,7 @@ namespace bt
 			active_job = j;
 			j->start();
 		}
+#endif
 
 		timer.start(60*1000);
 		status = TRACKER_ANNOUNCING;
@@ -553,7 +554,7 @@ namespace bt
 	{
 		if (active_job)
 		{
-			error = i18n("Timeout contacting tracker %1", url.prettyUrl());
+			error = i18n("Timeout contacting tracker %1", url.toString());
 			active_job->kill(KJob::EmitResult);
 		}
 	}
@@ -573,11 +574,7 @@ namespace bt
 
 	void HTTPTracker::setUseQHttp(bool on)
 	{
-		use_qhttp = on;
+		use_qhttp = false;
 	}
 
 }
-#include "httptracker.moc"
-
-
-

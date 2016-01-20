@@ -2,7 +2,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-ktorrent.h.cmake ${CMAKE_BINAR
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${LIBGCRYPT_INCLUDE_DIR} ${QCA2_INCLUDE_DIR})
+include_directories(${LIBGCRYPT_INCLUDE_DIR} ${QCA-qt5_INCLUDE_DIR})
 remove_definitions(-DQT_NO_HTTP)
 
 set(libktorrent_SRC
@@ -81,14 +81,15 @@ set(libktorrent_SRC
 	peer/superseeder.cpp
 	peer/connectionlimit.cpp 
 
-	download/piece.cpp
-	download/request.cpp
+	#download/piece.cpp all the code is inlined
+	#download/request.cpp all the code is inlined
 	download/packet.cpp
 	download/webseed.cpp
 	download/chunkdownload.cpp
 	download/chunkselector.cpp
 	download/downloader.cpp
 	download/httpconnection.cpp
+	download/httpresponseheader.cpp
 	download/streamingchunkselector.cpp
 
 	interfaces/piecedownloader.cpp
@@ -175,7 +176,7 @@ set(libktorrent_SRC
 	tracker/udptracker.cpp  
 	tracker/udptrackersocket.cpp
 	tracker/trackermanager.cpp
-	tracker/httpannouncejob.cpp
+	#tracker/httpannouncejob.cpp
 	tracker/kioannouncejob.cpp
 	
 	datachecker/datachecker.cpp          
@@ -225,16 +226,29 @@ set(libktorrent_SRC ${libktorrent_SRC} util/win32.cpp)
 endif(WIN32)
 
 
-# kde4_add_ui_files(libktorrent_SRC ${libktorrent_UI})
-# kde4_add_kcfg_files(libktorrent_SRC settings.kcfgc)
-kde4_add_library(ktorrent SHARED ${libktorrent_SRC})
+# ki18n_wrap_ui(libktorrent_SRC ${libktorrent_UI})
+# kconfig_add_kcfg_files(libktorrent_SRC settings.kcfgc)
+add_library(ktorrent SHARED ${libktorrent_SRC})
+generate_export_header(ktorrent BASE_NAME ktorrent)
 
-target_link_libraries(ktorrent ${KDE4_KIO_LIBS} ${GMP_LIBRARIES} ${KDE4_SOLID_LIBS} ${LIBGCRYPT_LIBRARIES} ${QCA2_LIBRARIES})
+target_link_libraries(ktorrent
+	KF5::Archive
+	KF5::Crash
+	KF5::KIOCore
+	KF5::KIOWidgets
+	KF5::Solid
+	KF5::I18n
+	Qt5::Xml
+	qca-qt5
+	${GMP_LIBRARIES}
+	${LIBGCRYPT_LIBRARIES}
+)
+
 if(WIN32)
 target_link_libraries(ktorrent ws2_32)
 endif(WIN32)
-set_target_properties(ktorrent PROPERTIES VERSION 5.0.0 SOVERSION 5 LINK_INTERFACE_LIBRARIES ${KDE4_KDEUI_LIBS})
-install(TARGETS ktorrent  ${INSTALL_TARGETS_DEFAULT_ARGS} )
+set_target_properties(ktorrent PROPERTIES VERSION 6.0.0 SOVERSION 6 )
+install(TARGETS ktorrent EXPORT LibKTorrentTargets  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
 set (interfaces_HDR
@@ -258,7 +272,7 @@ set (interfaces_HDR
 )
 
 set (ktorrent_HDR 
-	ktorrent_export.h
+	${CMAKE_CURRENT_BINARY_DIR}/ktorrent_export.h
 	version.h
 )
 	

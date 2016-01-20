@@ -28,7 +28,7 @@
 #include "download/chunkdownload.h"
 #include "peer/peermanager.h"
 
-class KUrl;
+class QUrl;
 
 namespace bt
 {
@@ -95,10 +95,10 @@ namespace bt
 		WebSeed* getWebSeed(Uint32 i) {return i < (Uint32)webseeds.count() ? webseeds[i] : 0;}
 		
 		/// Add a webseed
-		WebSeed* addWebSeed(const KUrl & url);
+		WebSeed* addWebSeed(const QUrl &url);
 		
 		/// Remove a webseed
-		bool removeWebSeed(const KUrl & url);
+		bool removeWebSeed(const QUrl &url);
 		
 		/// Remove all webseeds
 		void removeAllWebSeeds();

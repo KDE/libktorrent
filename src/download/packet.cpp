@@ -40,55 +40,47 @@ namespace bt
 	}
 
 
-	Packet::Packet(Uint8 type) : type(type),data(0),size(0),written(0)
+	Packet::Packet(Uint8 type) : data(0),size(5),written(0),type(type)
 	{
-		size = 5;
 		data = AllocPacket(size,type);
 	}
 	
-	Packet::Packet(Uint16 port) : type(PORT),data(0),size(0),written(0)
+	Packet::Packet(Uint16 port) : data(0),size(7),written(0),type(PORT)
 	{
-		size = 7;
 		data = AllocPacket(size,PORT);
 		WriteUint16(data,5,port);
-		
 	}
 	
-	Packet::Packet(Uint32 chunk,Uint8 type) : type(type),data(0),size(0),written(0)
+	Packet::Packet(Uint32 chunk,Uint8 type) : data(0),size(9),written(0),type(type)
 	{
-		size = 9;
 		data = AllocPacket(size,type);
 		WriteUint32(data,5,chunk);
 	}
 	
-	Packet::Packet(const BitSet & bs) : type(BITFIELD),data(0),size(0),written(0)
+	Packet::Packet(const BitSet & bs) : data(0),size(5 + bs.getNumBytes()),written(0),type(BITFIELD)
 	{
-		size = 5 + bs.getNumBytes();
 		data = AllocPacket(size,BITFIELD);
 		memcpy(data+5,bs.getData(),bs.getNumBytes());
 	}
 	
-	Packet::Packet(const Request & r,Uint8 type) : type(type),data(0),size(0),written(0)
+	Packet::Packet(const Request & r,Uint8 type) : data(0),size(17),written(0),type(type)
 	{
-		size = 17;
 		data = AllocPacket(size,type);
 		WriteUint32(data,5,r.getIndex());
 		WriteUint32(data,9,r.getOffset());
 		WriteUint32(data,13,r.getLength());
 	}
 	
-	Packet::Packet(Uint32 index,Uint32 begin,Uint32 len,Chunk* ch) : type(PIECE),data(0),size(0),written(0)
+	Packet::Packet(Uint32 index,Uint32 begin,Uint32 len,Chunk* ch) : data(0),size(13 + len),written(0),type(PIECE)
 	{
-		size = 13 + len;
 		data = AllocPacket(size,PIECE);
 		WriteUint32(data,5,index);
 		WriteUint32(data,9,begin);
 		ch->readPiece(begin,len,data + 13);
 	}
 
-	Packet::Packet(Uint8 ext_id,const QByteArray & ext_data) :  type(EXTENDED),data(0),size(0),written(0)
+	Packet::Packet(Uint8 ext_id,const QByteArray & ext_data) : data(0),size(6 + ext_data.size()),written(0),type(EXTENDED)
 	{
-		size = 6 + ext_data.size();
 		data = AllocPacket(size,EXTENDED);
 		data[5] = ext_id;
 		memcpy(data + 6,ext_data.data(),ext_data.size());
@@ -101,20 +93,10 @@ namespace bt
 	
 	bool Packet::isPiece(const Request & req) const
 	{
-		if (data[4] == PIECE)
-		{
-			if (ReadUint32(data,5) != req.getIndex())
-				return false;
-			
-			if (ReadUint32(data,9) != req.getOffset())
-				return false; 
-			
-			if (size - 13 != req.getLength())
-				return false;
-			
-			return true;
-		}
-		return false;
+		return (data[4] == PIECE)
+			&& (ReadUint32(data,5) == req.getIndex())
+			&& (ReadUint32(data,9) == req.getOffset())
+			&& (size - 13 == req.getLength());
 	}
 	
 	Packet* Packet::makeRejectOfPiece()
@@ -153,10 +135,7 @@ namespace bt
 	*/
 	bool Packet::isOK() const
 	{
-		if (!data)
-			return false;
-
-		return true;
+		return bool(data);
 	}
 
 	int Packet::send(net::SocketDevice* sock, Uint32 max_to_send)

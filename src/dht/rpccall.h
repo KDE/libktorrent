@@ -26,7 +26,6 @@
 
 namespace dht
 {
-	class RPCServer;
 	class RPCCall;
 
 	/**

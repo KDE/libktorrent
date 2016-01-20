@@ -32,7 +32,6 @@
 
 namespace bt
 {
-	class ChunkManager;
 
 	/**
 	 * @author Joris Guisson <joris.guisson@gmail.com>

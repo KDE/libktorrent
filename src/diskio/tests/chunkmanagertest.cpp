@@ -19,8 +19,7 @@
  ***************************************************************************/
 
 #include <QtTest>
-#include <KGlobal>
-#include <KLocale>
+#include <QLocale>
 #include <util/log.h>
 #include <util/functions.h>
 #include <torrent/torrentcontrol.h>
@@ -46,7 +45,7 @@ class ChunkManagerTest : public QObject
 private slots:
 	void initTestCase()
 	{
-		KGlobal::setLocale(new KLocale("main"));
+		QLocale::setDefault(QLocale("main"));
 		bt::InitLibKTorrent();
 		bt::InitLog("chunkmanagertest.log",false,true);
 		QMap<QString,bt::Uint64> files;

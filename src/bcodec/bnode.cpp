@@ -68,14 +68,14 @@ namespace bt
 		}
 	}
 	
-	QStringList BDictNode::keys() const
+	QList<QByteArray> BDictNode::keys() const
 	{
-		QStringList ret;
+		QList<QByteArray> ret; ret.reserve(children.size());
 		QList<DictEntry>::const_iterator i = children.begin();
 		while (i != children.end())
 		{
 			const DictEntry & e = *i;
-			ret << QString(e.key);
+			ret << e.key;
 			i++;
 		}
 		
@@ -90,20 +90,20 @@ namespace bt
 		children.append(entry);
 	}
 	
-	BNode* BDictNode::getData(const QString & key)
+	BNode* BDictNode::getData(const QByteArray & key)
 	{
-		QList<DictEntry>::iterator i = children.begin();
-		while (i != children.end())
+		auto i = children.constBegin();
+		while (i != children.constEnd())
 		{
-			DictEntry & e = *i;
-			if (QString(e.key) == key)
+			const DictEntry & e = *i;
+			if (e.key == key)
 				return e.node;
 			i++;
 		}
 		return 0;
 	}
 	
-	BDictNode* BDictNode::getDict(const QByteArray & key)
+	BDictNode* BDictNode::getDict(const QByteArray& key)
 	{
 		QList<DictEntry>::iterator i = children.begin();
 		while (i != children.end())
@@ -116,25 +116,19 @@ namespace bt
 		return 0;
 	}
 
-	BListNode* BDictNode::getList(const QString & key)
+	BListNode* BDictNode::getList(const QByteArray& key)
 	{
 		BNode* n = getData(key);
 		return dynamic_cast<BListNode*>(n);
 	}
 	
-	BDictNode* BDictNode::getDict(const QString & key)
-	{
-		BNode* n = getData(key);
-		return dynamic_cast<BDictNode*>(n);
-	}
-	
-	BValueNode* BDictNode::getValue(const QString & key)
+	BValueNode* BDictNode::getValue(const QByteArray& key)
 	{
 		BNode* n = getData(key);
 		return dynamic_cast<BValueNode*>(n);
 	}
 	
-	int BDictNode::getInt(const QString & key)
+	int BDictNode::getInt(const QByteArray& key)
 	{
 		BValueNode* v = getValue(key);
 		if (!v)
@@ -146,7 +140,7 @@ namespace bt
 		return v->data().toInt();
 	}
 	
-	qint64 BDictNode::getInt64(const QString & key)
+	qint64 BDictNode::getInt64(const QByteArray& key)
 	{
 		BValueNode* v = getValue(key);
 		if (!v)
@@ -158,7 +152,7 @@ namespace bt
 		return v->data().toInt64();
 	}
 	
-	QString BDictNode::getString(const QString & key,QTextCodec* tc)
+	QString BDictNode::getString(const QByteArray& key,QTextCodec* tc)
 	{
 		BValueNode* v = getValue(key);
 		if (!v)
@@ -173,7 +167,7 @@ namespace bt
 			return v->data().toString(tc);
 	}
 	
-	QByteArray BDictNode::getByteArray(const QString & key)
+	QByteArray BDictNode::getByteArray(const QByteArray& key)
 	{
 		BValueNode* v = getValue(key);
 		if (!v)

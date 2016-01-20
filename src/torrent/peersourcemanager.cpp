@@ -20,7 +20,7 @@
 #include "peersourcemanager.h"
 #include <qfile.h>
 #include <qtextstream.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <QtAlgorithms>
 // #include <functions.h>
 #include <util/log.h>
@@ -160,4 +160,3 @@ namespace bt
 	
 }
 
-#include "peersourcemanager.moc"

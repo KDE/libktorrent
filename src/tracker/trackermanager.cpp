@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include <QTextStream>
 #include <QFile>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <util/log.h>
 #include <tracker/tracker.h>
 #include <tracker/udptracker.h>
@@ -44,8 +44,8 @@ namespace bt
 		while (t)
 		{
 			// add all standard trackers
-			const KUrl::List & tr = t->urls;
-			KUrl::List::const_iterator i = tr.begin();
+			const QList<QUrl> & tr = t->urls;
+			QList<QUrl>::const_iterator i = tr.begin();
 			while (i != tr.end())
 			{
 				addTracker(*i,false,tier);
@@ -88,7 +88,7 @@ namespace bt
 			
 			// If all trackers have an ERROR status, and there is at least one
 			// enabled, we must return true;
-			for (PtrMap<KUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();i++)
+			for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();i++)
 			{
 				if (i->second->isEnabled())
 				{
@@ -103,7 +103,7 @@ namespace bt
 	}
 
 	
-	void TrackerManager::setCurrentTracker(bt::TrackerInterface* t) 
+	void TrackerManager::setCurrentTracker(bt::TrackerInterface* t)
 	{
 		if (!tor->getStats().priv_torrent)
 			return;
@@ -121,7 +121,7 @@ namespace bt
 		}
 	}
 	
-	void TrackerManager::setCurrentTracker(const KUrl& url) 
+	void TrackerManager::setCurrentTracker(const QUrl &url)
 	{
 		Tracker* trk = trackers.find(url);
 		if (trk)
@@ -132,7 +132,7 @@ namespace bt
 	QList<TrackerInterface*> TrackerManager::getTrackers() 
 	{
 		QList<TrackerInterface*> ret;
-		for (PtrMap<KUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+		for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
 		{
 			ret.append(i->second);
 		}
@@ -140,15 +140,15 @@ namespace bt
 		return ret;
 	}
 	
-	TrackerInterface* TrackerManager::addTracker(const KUrl& url, bool custom, int tier) 
+	TrackerInterface* TrackerManager::addTracker(const QUrl &url, bool custom, int tier) 
 	{
 		if (trackers.contains(url))
 			return 0;
 		
 		Tracker* trk = 0;
-		if (url.protocol() == "udp")
+		if (url.scheme() == QLatin1String("udp"))
 			trk = new UDPTracker(url,this,tor->getTorrent().getPeerID(),tier);
-		else if (url.protocol() == "http" || url.protocol() == "https")
+		else if (url.scheme() == QLatin1String("http") || url.scheme() == QLatin1String("https"))
 			trk = new HTTPTracker(url,this,tor->getTorrent().getPeerID(),tier);
 		else
 			return 0;
@@ -172,7 +172,7 @@ namespace bt
 		return removeTracker(t->trackerURL());
 	}
 	
-	bool TrackerManager::removeTracker(const KUrl& url) 
+	bool TrackerManager::removeTracker(const QUrl &url)
 	{
 		if (!custom_trackers.contains(url))
 			return false;
@@ -213,7 +213,7 @@ namespace bt
 	
 	void TrackerManager::restoreDefault() 
 	{
-		KUrl::List::iterator i = custom_trackers.begin();
+		QList<QUrl>::iterator i = custom_trackers.begin();
 		while (i != custom_trackers.end())
 		{
 			Tracker* t = trackers.find(*i);
@@ -274,7 +274,7 @@ namespace bt
 		}
 		else
 		{
-			for (PtrMap<KUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
 			{
 				if (i->second->isEnabled())
 					i->second->start();
@@ -295,14 +295,14 @@ namespace bt
 			if (curr)
 				curr->stop(wjob);
 			
-			for (PtrMap<KUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
 			{
 				i->second->reset();
 			}
 		}
 		else
 		{
-			for (PtrMap<KUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
 			{
 				i->second->stop(wjob);
 				i->second->reset();
@@ -319,7 +319,7 @@ namespace bt
 		}
 		else
 		{
-			for (PtrMap<KUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
 			{
 				i->second->completed();
 			}
@@ -328,7 +328,7 @@ namespace bt
 
 	void TrackerManager::scrape()
 	{
-		for (PtrMap<KUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+		for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
 		{
 			i->second->scrape();
 		}
@@ -345,7 +345,7 @@ namespace bt
 		}
 		else
 		{
-			for (PtrMap<KUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
 			{
 				if (i->second->isEnabled())
 					i->second->manualUpdate();
@@ -355,19 +355,19 @@ namespace bt
 	
 	void TrackerManager::saveCustomURLs()
 	{
-		QString trackers_file = tor->getTorDir() + "trackers"; 
+		QString trackers_file = tor->getTorDir() + QLatin1String("trackers");
 		QFile file(trackers_file);
 		if(!file.open(QIODevice::WriteOnly))
 			return;
 		
 		QTextStream stream(&file);
-		for (KUrl::List::iterator i = custom_trackers.begin();i != custom_trackers.end();i++)
-			stream << (*i).prettyUrl() << ::endl;
+		for (QList<QUrl>::iterator i = custom_trackers.begin();i != custom_trackers.end();i++)
+			stream << (*i).toDisplayString() << ::endl;
 	}
 	
 	void TrackerManager::loadCustomURLs()
 	{
-		QString trackers_file = tor->getTorDir() + "trackers";
+		QString trackers_file = tor->getTorDir() + QLatin1String("trackers");
 		QFile file(trackers_file);
 		if(!file.open( QIODevice::ReadOnly))
 			return;
@@ -376,34 +376,33 @@ namespace bt
 		QTextStream stream(&file);
 		while (!stream.atEnd())
 		{
-			KUrl url = stream.readLine();
-			addTracker(url,true);
+			addTracker(QUrl(stream.readLine()),true);
 		}
 		no_save_custom_trackers = false;
 	}
 	
 	void TrackerManager::saveTrackerStatus()
 	{
-		QString status_file = tor->getTorDir() + "tracker_status"; 
+		QString status_file = tor->getTorDir() + QLatin1String("tracker_status");
 		QFile file(status_file);
 		if(!file.open(QIODevice::WriteOnly))
 			return;
 		
 		QTextStream stream(&file);
-		PtrMap<KUrl,Tracker>::iterator i = trackers.begin();
+		PtrMap<QUrl,Tracker>::iterator i = trackers.begin();
 		while (i != trackers.end())
 		{
-			KUrl url = i->first;
+			QUrl url = i->first;
 			Tracker* trk = i->second;
 			
-			stream << (trk->isEnabled() ? "1:" : "0:") << url.prettyUrl() << ::endl;
+			stream << (trk->isEnabled() ? "1:" : "0:") << url.toDisplayString() << ::endl;
 			i++;
 		}
 	}
 	
 	void TrackerManager::loadTrackerStatus()
 	{
-		QString status_file = tor->getTorDir() + "tracker_status"; 
+		QString status_file = tor->getTorDir() + QLatin1String("tracker_status");
 		QFile file(status_file);
 		if(!file.open( QIODevice::ReadOnly))
 			return;
@@ -415,10 +414,9 @@ namespace bt
 			if (line.size() < 2)
 				continue;
 			
-			KUrl u = line.mid(2); // url starts at the second char
 			if (line[0] == '0')
 			{
-				Tracker* trk = trackers.find(u);
+				Tracker* trk = trackers.find(QUrl(line.mid(2))); // url starts at the second char
 				if (trk)
 					trk->setEnabled(false);
 			}
@@ -428,7 +426,7 @@ namespace bt
 	Tracker* TrackerManager::selectTracker()
 	{
 		Tracker* n = 0;
-		PtrMap<KUrl,Tracker>::iterator i = trackers.begin();
+		PtrMap<QUrl,Tracker>::iterator i = trackers.begin();
 		while (i != trackers.end())
 		{
 			Tracker* t = i->second;
@@ -446,7 +444,7 @@ namespace bt
 		
 		if (n)
 		{
-			Out(SYS_TRK|LOG_DEBUG) << "Selected tracker " << n->trackerURL().prettyUrl() 
+			Out(SYS_TRK|LOG_DEBUG) << "Selected tracker " << n->trackerURL().toString() 
 			<< " (tier = " << n->getTier() << ")" << endl;
 		}
 		
@@ -523,7 +521,7 @@ namespace bt
 		}
 		
 		int r = 0;
-		for (PtrMap<KUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();i++)
+		for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();i++)
 		{
 			int v = i->second->getNumSeeders();
 			if (v > r) 
@@ -539,7 +537,7 @@ namespace bt
 			return curr && curr->getNumLeechers() > 0 ? curr->getNumLeechers() : 0;
 		
 		int r = 0;
-		for (PtrMap<KUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();i++)
+		for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();i++)
 		{
 			int v = i->second->getNumLeechers();
 			if (v > r)
@@ -549,7 +547,7 @@ namespace bt
 		return r;
 	}
 	
-	void TrackerManager::setTrackerEnabled(const KUrl & url,bool enabled)
+	void TrackerManager::setTrackerEnabled(const QUrl &url,bool enabled)
 	{
 		Tracker* trk = trackers.find(url);
 		if (!trk)

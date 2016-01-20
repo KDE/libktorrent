@@ -42,7 +42,7 @@ namespace bt
 		/**
 		 * Constructor, set everything to 0.
 		 */
-		Request();
+		inline Request(): index(0),off(0),len(0),pd(0) {}
 		
 		/**
 		 * Constructor, set the index, offset,length and peer
@@ -51,14 +51,15 @@ namespace bt
 		 * @param len The length of the piece
 		 * @param pd Pointer to PieceDownloader of the request
 		 */
-		Request(Uint32 index,Uint32 off,Uint32 len,PieceDownloader* pd);
+		inline Request(Uint32 index,Uint32 off,Uint32 len,PieceDownloader* pd)
+			: index(index),off(off),len(len),pd(pd) {}
 		
 		/**
 		 * Copy constructor.
 		 * @param r Request to copy
 		 */
-		Request(const Request & r);
-		virtual ~Request();
+		inline Request(const Request & r): index(r.index),off(r.off),len(r.len),pd(r.pd) {}
+		~Request(){}
 
 		/// Get the index of the chunk
 		Uint32 getIndex() const {return index;}
@@ -70,13 +71,21 @@ namespace bt
 		Uint32 getLength() const {return len;}
 
 		/// Get the sending Peer
-		PieceDownloader* getPieceDownloader() const {return pd;}
+		inline PieceDownloader* getPieceDownloader() const {return pd;}
 		
 		/**
-		 * Assignmenth operator.
+		 * Assignment operator.
 		 * @param r The Request to copy
 		 */
-		Request & operator = (const Request & r);
+		inline Request & operator = (const Request & r)
+		{
+			index = r.index;
+			off = r.off;
+			len = r.len;
+			pd = r.pd;
+			return *this;
+		}
+
 		
 		/**
 		 * Compare two requests. Return true if they are the same.

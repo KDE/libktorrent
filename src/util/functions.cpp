@@ -29,14 +29,16 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <gcrypt.h>
-#include <qdatetime.h>
 #include <QNetworkInterface>
-#include <kio/netaccess.h>
-#include <klocale.h>
-#include <kmimetype.h>
-#include <kglobal.h>
+#include <QTime>
+
+#include <kformat.h>
+#include <klocalizedstring.h>
+
 #include <interfaces/torrentinterface.h>
 #include <util/signalcatcher.h>
+#include <QMimeDatabase>
+#include <QMimeType>
 #include "error.h"
 #include "log.h"
 
@@ -45,16 +47,16 @@ namespace bt
 
 	bool IsMultimediaFile(const QString & filename)
 	{
-		KMimeType::Ptr ptr = KMimeType::findByPath(filename);
-		QString name = ptr->name();
-		return name.startsWith("audio") || name.startsWith("video") || name == "application/ogg";
+		QMimeType ptr = QMimeDatabase().mimeTypeForFile(filename);
+		QString name = ptr.name();
+		return name.startsWith(QLatin1String("audio")) || name.startsWith(QLatin1String("video")) || name == QLatin1String("application/ogg");
 	}
 	
 	QString DirSeparator()
 	{
 		//QString tmp;
 		//tmp.append(QDir::separator());
-		return "/";
+		return QStringLiteral("/");
 	}
 	
 	void UpdateCurrentTime()
@@ -224,23 +226,21 @@ namespace bt
 		
 	QString BytesToString(Uint64 bytes)
 	{
-		KLocale* loc = KGlobal::locale();
-		return loc->formatByteSize(bytes,2);
+		static KFormat format;
+		return format.formatByteSize(bytes,2);
 	}
 
 	QString BytesPerSecToString(double speed)
 	{
-		KLocale* loc = KGlobal::locale();
-		return i18n("%1/s",loc->formatByteSize(speed,2));
+		static KFormat format;
+		return i18n("%1/s",format.formatByteSize(speed,2));
 	}
 
 	QString DurationToString(Uint32 nsecs)
 	{
-		KLocale* loc = KGlobal::locale();
-		QTime t;
 		int ndays = nsecs / 86400;
-		t = t.addSecs(nsecs % 86400);
-		QString s = loc->formatTime(t,true,true);
+		QTime t = QTime().addSecs(nsecs % 86400);
+		QString s = t.toString();
 		if (ndays > 0)
 			s = i18np("1 day ","%1 days ",ndays) + s;
 

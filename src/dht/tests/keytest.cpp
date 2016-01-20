@@ -52,8 +52,8 @@ static dht::Key KeyFromHexString(const QString & str)
 	
 	for (int i = s.size() - 1; i >= 0; i -= 2)
 	{
-		char left = s[i - 1].toAscii();
-		char right = s[i].toAscii();
+		char left = s[i - 1].toLatin1();
+		char right = s[i].toLatin1();
 		result[j--] = (HexCharToUint8(left) << 4) | HexCharToUint8(right);
 	}
 	

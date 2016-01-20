@@ -20,7 +20,7 @@
 #include "udptracker.h"
 #include <stdlib.h>
 #include <arpa/inet.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <util/functions.h>
 #include <util/log.h>
 #include <net/addressresolver.h>
@@ -39,7 +39,7 @@ namespace bt
 	Uint32 UDPTracker::num_instances = 0;
 	
 
-	UDPTracker::UDPTracker(const KUrl & url,TrackerDataSource* tds,const PeerID & id,int tier) 
+	UDPTracker::UDPTracker(const QUrl &url,TrackerDataSource* tds,const PeerID & id,int tier)
 	: Tracker(url,tds,id,tier)
 	{
 		num_instances++;
@@ -361,7 +361,7 @@ namespace bt
 			connection_id = 0;
 			failures++;
 			if (event != STOPPED)
-				onError(transaction_id,i18n("Timeout contacting tracker %1",url.prettyUrl()));
+				onError(transaction_id,i18n("Timeout contacting tracker %1",url.toDisplayString()));
 			else
 			{
 				status = TRACKER_IDLE;
@@ -371,7 +371,7 @@ namespace bt
 		else
 		{
 			failures++;
-			onError(transaction_id,i18n("Timeout contacting tracker %1",url.prettyUrl()));
+			onError(transaction_id,i18n("Timeout contacting tracker %1",url.toDisplayString()));
 		}
 	}
 

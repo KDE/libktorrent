@@ -21,7 +21,7 @@
 #ifndef BTWEBSEEDINTERFACE_H
 #define BTWEBSEEDINTERFACE_H
 
-#include <kurl.h>
+#include <QUrl>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
@@ -34,7 +34,7 @@ namespace bt
 	class KTORRENT_EXPORT WebSeedInterface 
 	{
 	public:
-		WebSeedInterface(const KUrl & url,bool user);
+		WebSeedInterface(const QUrl &url,bool user);
 		virtual ~WebSeedInterface();
 		
 		/// Disable or enable the webseed
@@ -44,7 +44,7 @@ namespace bt
 		bool isEnabled() const {return enabled;}
 		
 		/// Get the URL of the webseed
-		const KUrl & getUrl() const {return url;}
+		const QUrl &getUrl() const {return url;}
 		
 		/// Get how much data was downloaded
 		Uint64 getTotalDownloaded() const {return total_downloaded;}
@@ -59,7 +59,7 @@ namespace bt
 		bool isUserCreated() const {return user;}
 
 	protected:
-		KUrl url;
+		QUrl url;
 		Uint64 total_downloaded;
 		QString status;
 		bool user;

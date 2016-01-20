@@ -30,7 +30,6 @@
 
 namespace bt
 {
-	class File;
 	class BEncoder;
 }
 

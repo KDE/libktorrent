@@ -22,7 +22,8 @@
 
 #include <QList>
 #include <QVariant>
-#include <QStringList>
+#include <QList>
+#include <QByteArray>
 #include <util/constants.h>
 #include <ktorrent_export.h>
 #include "value.h"
@@ -110,7 +111,7 @@ namespace bt
 		virtual ~BDictNode();
 		
 		/// Get a list of keys
-		QStringList keys() const;
+		QList<QByteArray> keys() const;
 		
 		/**
 		 * Insert a BNode in the dictionary.
@@ -124,47 +125,40 @@ namespace bt
 		 * @param key The key
 		 * @return The node or 0 if there is no node with has key @a key 
 		 */
-		BNode* getData(const QString & key);
+		BNode* getData(const QByteArray & key);
 
 		/**
 		 * Get a BListNode.
 		 * @param key The key
 		 * @return The node or 0 if there is no list node with has key @a key
 		 */
-		BListNode* getList(const QString & key);
+		BListNode* getList(const QByteArray& key);
 
 		/**
 		 * Get a BDictNode.
 		 * @param key The key
 		 * @return The node or 0 if there is no dict node with has key @a key
 		 */
-		BDictNode* getDict(const QString & key);
-		
-		/**
-		 * Get a BDictNode.
-		 * @param key The key
-		 * @return The node or 0 if there is no dict node with has key @a key
-		 */
-		BDictNode* getDict(const QByteArray & key);
+		BDictNode* getDict(const QByteArray& key);
 
 		/**
 		 * Get a BValueNode.
 		 * @param key The key
 		 * @return The node or 0 if there is no value node with has key @a key
 		 */
-		BValueNode* getValue(const QString & key);
+		BValueNode* getValue(const QByteArray& key);
 		
 		/// Same as getValue, except directly returns an int, if something goes wrong, an error will be thrown
-		int getInt(const QString & key);
+		int getInt(const QByteArray& key);
 		
 		/// Same as getValue, except directly returns a qint64, if something goes wrong, an error will be thrown
-		qint64 getInt64(const QString & key);
+		qint64 getInt64(const QByteArray& key);
 		
 		/// Same as getValue, except directly returns a QString, if something goes wrong, an error will be thrown
-		QString getString(const QString & key,QTextCodec* tc);
+		QString getString(const QByteArray& key,QTextCodec* tc);
 		
 		/// Same as getValue, except directly returns an QByteArray, if something goes wrong, an error will be thrown
-		QByteArray getByteArray(const QString & key);
+		QByteArray getByteArray(const QByteArray& key);
 		
 		void printDebugInfo();
 	};

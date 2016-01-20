@@ -34,7 +34,6 @@ using bt::Uint8;
 
 namespace dht
 {
-	class RPCServerThread;
 	class Key;
 	class DHT;
 

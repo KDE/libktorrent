@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include <KLocale>
+#include <klocalizedstring.h>
 #include "torrentstats.h"
 #include <util/functions.h>
 

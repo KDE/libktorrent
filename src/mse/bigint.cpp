@@ -38,7 +38,7 @@ namespace mse
 	BigInt::BigInt(const QString & value)
 	{
 		mpz_init2(val,(value.length() - 2)*4);
-		mpz_set_str(val,value.toAscii().constData(),0);	
+		mpz_set_str(val,value.toLatin1().constData(),0);
 	}
 		
 	BigInt::BigInt(const BigInt & bi)

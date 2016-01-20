@@ -24,9 +24,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <kio/job.h> 
-#include <kio/netaccess.h>
 #include <kio/copyjob.h> 
 #include <solid/device.h>
 #include <solid/storageaccess.h>
@@ -178,49 +177,52 @@ namespace bt
 	void Move(const QString & src,const QString & dst,bool nothrow,bool silent)
 	{
 		//	Out() << "Moving " << src << " -> " << dst << endl;
-		KIO::CopyJob *mv = KIO::move(KUrl(src),KUrl(dst),silent ? KIO::HideProgressInfo|KIO::Overwrite : KIO::DefaultFlags); 
-		if (!KIO::NetAccess::synchronousRun(mv , 0)) 
+		KIO::CopyJob *mv = KIO::move(QUrl::fromLocalFile(src), QUrl::fromLocalFile(dst),
+                                             silent ? KIO::HideProgressInfo|KIO::Overwrite : KIO::DefaultFlags);
+		if (!mv->exec())
 		{
 			if (!nothrow)
 				throw Error(i18n("Cannot move %1 to %2: %3",
 							src,dst,
-							KIO::NetAccess::lastErrorString()));
+							mv->errorString()));
 			else
 				Out(SYS_DIO|LOG_NOTICE) << QString("Error : Cannot move %1 to %2: %3")
 					.arg(src).arg(dst)
-					.arg(KIO::NetAccess::lastErrorString()) << endl;
+					.arg(mv->errorString()) << endl;
 
 		}
 	}
 
 	void CopyFile(const QString & src,const QString & dst,bool nothrow)
 	{
-		if (!KIO::NetAccess::file_copy(KUrl(src),KUrl(dst)))
+		KIO::FileCopyJob* copy = KIO::file_copy(QUrl::fromLocalFile(src), QUrl::fromLocalFile(dst));
+		if (!copy->exec())
 		{
 			if (!nothrow)
 				throw Error(i18n("Cannot copy %1 to %2: %3",
 							src,dst,
-							KIO::NetAccess::lastErrorString()));
+							copy->errorString()));
 			else
 				Out(SYS_DIO|LOG_NOTICE) << QString("Error : Cannot copy %1 to %2: %3")
 					.arg(src).arg(dst)
-					.arg(KIO::NetAccess::lastErrorString()) << endl;
+					.arg(copy->errorString()) << endl;
 
 		}
 	}
 
 	void CopyDir(const QString & src,const QString & dst,bool nothrow)
 	{
-		if (!KIO::NetAccess::dircopy(KUrl(src),KUrl(dst),0))
+		KIO::CopyJob* copy = KIO::copy(QUrl::fromLocalFile(src), QUrl::fromLocalFile(dst));
+		if (!copy->exec())
 		{
 			if (!nothrow)
 				throw Error(i18n("Cannot copy %1 to %2: %3",
 							src,dst,
-							KIO::NetAccess::lastErrorString()));
+							copy->errorString()));
 			else
 				Out(SYS_DIO|LOG_NOTICE) << QString("Error : Cannot copy %1 to %2: %3")
 					.arg(src).arg(dst)
-					.arg(KIO::NetAccess::lastErrorString()) << endl;
+					.arg(copy->errorString()) << endl;
 
 		}
 	}
@@ -233,21 +235,21 @@ namespace bt
 	static bool DelDir(const QString & fn)
 	{
 		QDir d(fn);
-		QStringList subdirs = d.entryList(QDir::Dirs);
+		const QStringList subdirs = d.entryList(QDir::Dirs);
 
-		for (QStringList::iterator i = subdirs.begin(); i != subdirs.end();i++)
+		for (auto i = subdirs.begin(); i != subdirs.end();i++)
 		{
 			QString entry = *i;
 
-			if (entry == ".." || entry == ".")
+			if (entry == QLatin1String("..") || entry == QLatin1String("."))
 				continue;
 
 			if (!DelDir(d.absoluteFilePath(entry)))
 				return false;	
 		}
 
-		QStringList files = d.entryList(QDir::Files | QDir::System | QDir::Hidden);
-		for (QStringList::iterator i = files.begin(); i != files.end();i++)
+		const QStringList files = d.entryList(QDir::Files | QDir::System | QDir::Hidden);
+		for (auto i = files.begin(); i != files.end();i++)
 		{
 			QString file = d.absoluteFilePath(*i);
 			QFile fp(file);
@@ -470,7 +472,7 @@ namespace bt
 	bool FileNameToLong(const QString & path)
 	{
 		int length = 0;
-		QStringList names = path.split("/");
+		QStringList names = path.split('/');
 		foreach (const QString & s, names)
 		{
 			QByteArray encoded = QFile::encodeName(s);
@@ -479,7 +481,7 @@ namespace bt
 			length += encoded.length();
 		}
 		
-		length += path.count("/");
+		length += path.count('/');
 		return length >= PATH_MAX;
 	}
 	
@@ -502,16 +504,16 @@ namespace bt
 		
 		do
 		{
-			base = base.left(base.length() - 1);
+			base.chop(1);
 		}while (fixed_len + QFile::encodeName(base).length() > NAME_MAX - 4 && base.length() != 0);
 		
-		base += "... "; // add ... so that the user knows the name is shortened
+		base += QLatin1String("... "); // add ... so that the user knows the name is shortened
 		
 		QString ret = base;
 		if (extra_number > 0)
 			ret += QString::number(extra_number);
 		if (ext.length() > 0)
-			ret += "." + ext;
+			ret += '.' + ext;
 		return ret;
 	}
 	
@@ -525,7 +527,7 @@ namespace bt
 		QFileInfo fi(path);
 		QString ext = fi.suffix();
 		QString name = fi.completeBaseName();
-		QString fpath = fi.path() + "/";
+		QString fpath = fi.path() + '/';
 
                 // calculate the fixed length, 1 is for the . between filename and extension
 		int fixed_len = QFile::encodeName(fpath).length();
@@ -540,16 +542,16 @@ namespace bt
 
 		do
 		{
-			name = name.left(name.length() - 1);
+			name.chop(1);
 		}while (fixed_len + QFile::encodeName(name).length() > max_len - 4 && name.length() != 0);
 
-		name += "... "; // add ... so that the user knows the name is shortened
+		name += QLatin1String("... "); // add ... so that the user knows the name is shortened
 
 		QString ret = fpath + name;
 		if (extra_number > 0)
 			ret += QString::number(extra_number);
 		if (ext.length() > 0)
-			ret += "." + ext;
+			ret += '.' + ext;
 
 		return ret;
 	}
@@ -557,7 +559,7 @@ namespace bt
 	QString ShortenFileName(const QString & path,int extra_number)
 	{
 		QString assembled = "/";
-		QStringList names = path.split("/",QString::SkipEmptyParts);
+		QStringList names = path.split('/',QString::SkipEmptyParts);
 		int cnt = 0;
 		for (QStringList::iterator i = names.begin();i != names.end();i++)
 		{
@@ -657,7 +659,7 @@ namespace bt
 	
 	QString MountPoint(const QString& path)
 	{
-        QSet<QString> mount_points = AccessibleMountPoints();
+		QSet<QString> mount_points = AccessibleMountPoints();
 		QString mount_point;
 		foreach (const QString & mp, mount_points)
         {

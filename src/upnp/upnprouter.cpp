@@ -19,11 +19,8 @@
  ***************************************************************************/
 #include <stdlib.h>
 #include <QDir>
-#include <klocale.h>
-#include <kglobal.h>
-#include <kstandarddirs.h>
-#include <qstringlist.h>
-#include <kio/netaccess.h>
+#include <QStringList>
+#include <klocalizedstring.h>
 #include <kio/job.h>
 #include <torrent/globals.h>
 #include <util/log.h>
@@ -54,7 +51,7 @@ namespace bt
     class UPnPRouter::UPnPRouterPrivate
     {
     public:
-        UPnPRouterPrivate(const QString& server, const KUrl& location, bool verbose, UPnPRouter* parent);
+        UPnPRouterPrivate(const QString& server, const QUrl &location, bool verbose, UPnPRouter* parent);
         ~UPnPRouterPrivate();
 
         HTTPRequest* sendSoapQuery(const QString& query, const QString& soapact, const QString& controlurl, bool at_exit = false);
@@ -65,7 +62,7 @@ namespace bt
 
     public:
         QString server;
-        KUrl location;
+        QUrl location;
         UPnPDeviceDescription desc;
         QList<UPnPService> services;
         QList<Forwarding> fwds;
@@ -140,7 +137,7 @@ namespace bt
 
 
 
-    UPnPRouter::UPnPRouter(const QString& server, const KUrl& location, bool verbose)
+    UPnPRouter::UPnPRouter(const QString& server, const QUrl &location, bool verbose)
         : d(new UPnPRouterPrivate(server, location, verbose, this))
     {
     }
@@ -165,7 +162,7 @@ namespace bt
     {
         if(j->error())
         {
-            d->error = i18n("Failed to download %1: %2", d->location.prettyUrl(), j->errorString());
+            d->error = i18n("Failed to download %1: %2", d->location.toDisplayString(), j->errorString());
             Out(SYS_PNP | LOG_IMPORTANT) << d->error << endl;
             return;
         }
@@ -351,7 +348,7 @@ namespace bt
         return d->server;
     }
 
-    KUrl UPnPRouter::getLocation() const
+    QUrl UPnPRouter::getLocation() const
     {
         return d->location;
     }
@@ -382,7 +379,7 @@ namespace bt
 
     ////////////////////////////////////
 
-    UPnPRouter::UPnPRouterPrivate::UPnPRouterPrivate(const QString& server, const KUrl& location, bool verbose, UPnPRouter* parent)
+    UPnPRouter::UPnPRouterPrivate::UPnPRouterPrivate(const QString& server, const QUrl &location, bool verbose, UPnPRouter* parent)
         : server(server), location(location), verbose(verbose), parent(parent)
     {
     }
@@ -410,11 +407,11 @@ namespace bt
 
         QString http_hdr;
         QTextStream out(&http_hdr);
-        QByteArray encoded_query = ctrlurl.encodedQuery();
+        QString encoded_query = ctrlurl.query();
         if(encoded_query.isEmpty())
-            out << "POST " << ctrlurl.encodedPath() << " HTTP/1.1\r\n";
+            out << "POST " << ctrlurl.path() << " HTTP/1.1\r\n";
         else
-            out << "POST " << ctrlurl.encodedPath() << "?" << encoded_query << " HTTP/1.1\r\n";
+            out << "POST " << ctrlurl.path() << "?" << encoded_query << " HTTP/1.1\r\n";
         out << "Host: " << host << ":" << port << "\r\n";
         out << "User-Agent: " << bt::GetVersionString() << "\r\n";
         out << "Content-length: $CONTENT_LENGTH\r\n";
@@ -555,13 +552,6 @@ namespace bt
         r->deleteLater();
     }
 }
-
-#include "upnprouter.moc"
-
-
-
-
-
 
 
 

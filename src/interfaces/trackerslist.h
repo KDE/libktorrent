@@ -20,7 +20,7 @@
 #ifndef BTTRACKERSLIST_H
 #define BTTRACKERSLIST_H
 
-#include <kurl.h>
+#include <QUrl>
 #include <ktorrent_export.h>
 
 namespace bt
@@ -57,7 +57,7 @@ namespace bt
 		* does nothing.
 		* @param url Url of the tracker
 		*/
-		virtual void setCurrentTracker(const KUrl & url) = 0;
+		virtual void setCurrentTracker(const QUrl &url) = 0;
 		
 		/**
 		 * Gets a list of all available trackers. 
@@ -72,7 +72,7 @@ namespace bt
 		 * the main trackers, tier 2 are backups ...
 		 * @return The Tracker
 		 */
-		virtual TrackerInterface* addTracker(const KUrl &url, bool custom = true,int tier = 1) = 0;
+		virtual TrackerInterface* addTracker(const QUrl &url, bool custom = true,int tier = 1) = 0;
 	
 		/**
 		 * Removes the tracker from the list.
@@ -84,7 +84,7 @@ namespace bt
 		 * Removes the tracker from the list.
 		 * @param url The tracker url
 		 */
-		virtual bool removeTracker(const KUrl & url) = 0;
+		virtual bool removeTracker(const QUrl &url) = 0;
 		
 		/**
 		 * Return true if a tracker can be removed
@@ -100,7 +100,7 @@ namespace bt
 		/**
 		 * Set a tracker enabled or not
 		 */
-		virtual void setTrackerEnabled(const KUrl & url,bool on) = 0;
+		virtual void setTrackerEnabled(const QUrl &url,bool on) = 0;
 		
 		/**
 		 * Merge an other tracker list.

@@ -18,7 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "piece.h"
-
+#if 0
 namespace bt
 {
 
@@ -32,3 +32,4 @@ namespace bt
 
 
 }
+#endif

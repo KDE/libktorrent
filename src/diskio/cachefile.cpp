@@ -21,7 +21,6 @@
 
 #include <config-ktorrent.h>
 
-#include <kdebug.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -29,8 +28,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <qfile.h>
-#include <kio/netaccess.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <kfileitem.h>
 #include <util/array.h>
 #include <util/fileops.h>

@@ -56,4 +56,3 @@ namespace bt
 	}
 
 }
-#include "peersource.moc"

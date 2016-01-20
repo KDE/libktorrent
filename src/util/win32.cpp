@@ -34,7 +34,6 @@ THE SOFTWARE.
 // #undef inet_aton
 // #undef gettimeofday
 // #undef stat
-#include <kdebug.h>
 /* Windows needs this header file for the implementation of inet_aton() */
 #include <ctype.h>
 /* 

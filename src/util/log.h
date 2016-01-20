@@ -23,7 +23,8 @@
 
 
 #include "constants.h"
-#include <qstring.h>
+#include <QUrl>
+#include <QString>
 #include <ktorrent_export.h>
 
 // LOG MESSAGES CONSTANTS
@@ -53,8 +54,6 @@
 #define SYS_ZCO 0x200000 // ZeroConf plugin
 #define SYS_SCR 0x400000 // Scripting plugin
 #define SYS_SYN 0x800000 // Syndication plugin
-
-class KUrl;
 
 
 namespace bt
@@ -178,10 +177,10 @@ namespace bt
 
 		/**
 		 * Write an URL to the file.
-		 * @param text The KUrl
+		 * @param text The QUrl
 		 * @return This Log
 		 */
-		Log & operator << (const KUrl & url);
+		Log & operator << (const QUrl & url);
 		
 		/**
 		 * Sets a filter for log messages. Applies only to listeners via LogMonitorInterface!

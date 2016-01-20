@@ -20,7 +20,7 @@
 
 #include <QtTest>
 #include <QObject>
-#include <time.h>
+#include <ctime>
 #include <util/log.h>
 #include <torrent/statsfile.h>
 #include <KSharedConfig>

@@ -17,12 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include "trackerinterface.h"
 
 namespace bt
 {
-	TrackerInterface::TrackerInterface(const KUrl& url) : url(url)
+	TrackerInterface::TrackerInterface(const QUrl &url) : url(url)
 	{
 		// default 5 minute interval
 		interval = 5 * 60 * 1000;

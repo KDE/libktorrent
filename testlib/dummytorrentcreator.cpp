@@ -31,7 +31,7 @@ using namespace bt;
 DummyTorrentCreator::DummyTorrentCreator()
 {
 	chunk_size = 256;
-	trackers.append("http://localhost:5000/announce");
+	trackers.append(QStringLiteral("http://localhost:5000/announce"));
 	tmpdir.setAutoRemove(true);
 }
 
@@ -41,12 +41,12 @@ DummyTorrentCreator::~DummyTorrentCreator()
 
 bool DummyTorrentCreator::createMultiFileTorrent(const QMap<QString,bt::Uint64>& files, const QString& name)
 {
-	if (tmpdir.status() != 0)
+	if (!tmpdir.isValid())
 		return false;
 	
 	try
 	{
-		dpath = tmpdir.name() + "data" + bt::DirSeparator() + name + bt::DirSeparator();
+		dpath = tmpdir.path() + QLatin1String("data") + bt::DirSeparator() + name + bt::DirSeparator();
 		bt::MakePath(dpath);
 		
 		QMap<QString,bt::Uint64>::const_iterator i = files.begin();
@@ -58,7 +58,7 @@ bool DummyTorrentCreator::createMultiFileTorrent(const QMap<QString,bt::Uint64>&
 			i++;
 		}
 		
-		bt::TorrentCreator creator(dpath,trackers,KUrl::List(),chunk_size,name,"",false,false);
+		bt::TorrentCreator creator(dpath,trackers,QList<QUrl>(),chunk_size,name,"",false,false);
 		// Start the hashing thread and wait until it is done
 		creator.start();
 		creator.wait();
@@ -74,17 +74,17 @@ bool DummyTorrentCreator::createMultiFileTorrent(const QMap<QString,bt::Uint64>&
 
 bool DummyTorrentCreator::createSingleFileTorrent(bt::Uint64 size, const QString& filename)
 {
-	if (tmpdir.status() != 0)
+	if (!tmpdir.isValid())
 		return false;
 	
 	try
 	{
-		bt::MakePath(tmpdir.name() + "data" + bt::DirSeparator());
-		dpath = tmpdir.name() + "data" + bt::DirSeparator() + filename;
+		bt::MakePath(tmpdir.path() + QLatin1String("data") + bt::DirSeparator());
+		dpath = tmpdir.path() + QLatin1String("data") + bt::DirSeparator() + filename;
 		if (!createRandomFile(dpath,size))
 			return false;
 		
-		bt::TorrentCreator creator(dpath,trackers,KUrl::List(),chunk_size,filename,"",false,false);
+		bt::TorrentCreator creator(dpath,trackers,QList<QUrl>(),chunk_size,filename,"",false,false);
 		// Start the hashing thread and wait until it is done
 		creator.start();
 		creator.wait();
@@ -132,5 +132,5 @@ QString DummyTorrentCreator::dataPath() const
 
 QString DummyTorrentCreator::torrentPath() const
 {
-	return tmpdir.name() + "torrent";
+	return tmpdir.path() + QLatin1String("torrent");
 }

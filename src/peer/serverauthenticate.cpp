@@ -115,4 +115,3 @@ namespace bt
 	}
 }
 
-#include "serverauthenticate.moc"

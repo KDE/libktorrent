@@ -32,7 +32,6 @@ namespace net
 	using bt::Uint8;
 	using bt::Uint32;
 	
-	class Speed;
 	
 
 

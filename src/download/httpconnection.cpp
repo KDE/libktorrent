@@ -21,11 +21,12 @@
 #include "httpconnection.h"
 #include <QTimer>
 #include <QtAlgorithms>
-#include <kurl.h>
-#include <klocale.h>
+#include <QUrl>
+#include <klocalizedstring.h>
 #include <net/socketmonitor.h>
 #include <util/log.h>
 #include <util/functions.h>
+#include "httpresponseheader.h"
 
 #include "version.h"
 
@@ -122,7 +123,7 @@ namespace bt
 		}
 	}
 	
-	void HttpConnection::connectTo(const KUrl & url)
+	void HttpConnection::connectTo(const QUrl &url)
 	{
 		if (OpenFileAllowed())
 		{
@@ -344,55 +345,53 @@ namespace bt
 	HttpConnection::HttpGet::HttpGet(const QString & host,const QString & path,const QString & query,bt::Uint64 start,bt::Uint64 len,bool using_proxy) 
 		: host(host),path(path),query(query),start(start),len(len),data_received(0),response_header_received(false),request_sent(false),response_code(0)
 	{
-		KUrl url;
+		QUrl url;
 		url.setPath(path);
 		url.setQuery(query);
-		QString encoded_path = url.encodedPathAndQuery();
-		QHttpRequestHeader request("GET",!using_proxy ? encoded_path : QString("http://%1/%2").arg(host).arg(encoded_path));
-		request.setValue("Host",host);
-		request.setValue("Range",QString("bytes=%1-%2").arg(start).arg(start + len - 1));
-		request.setValue("User-Agent",bt::GetVersionString());
-		request.setValue("Accept"," text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
-		request.setValue("Accept-Language", "en-us,en;q=0.5");
-		request.setValue("Accept-Charset","ISO-8859-1,utf-8;q=0.7,*;q=0.7");
-		if (using_proxy)
-		{
-			request.setValue("Keep-Alive","300");
-			request.setValue("Proxy-Connection","keep-alive");
-		}
-		else
-			request.setValue("Connection","Keep-Alive");
-		buffer = request.toString().toLocal8Bit();
+
+                buffer.clear();
+		buffer += QByteArrayLiteral("GET ") + (using_proxy?url.toEncoded():(url.path(QUrl::FullyEncoded).toLatin1() + '?' + url.query(QUrl::FullyEncoded).toLatin1())) + "HTTP/1.1\r\n"
+		"Host: " + host + "\r\n"
+		"Range: bytes=" + QByteArray::number(start) + '-' + QByteArray::number(start + len - 1) + "\r\n";
+		"User-Agent: " + bt::GetVersionString().toLatin1() + "\r\n"
+		"Accept:  text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5\r\n"
+		"Accept-Language: en-us,en;q=0.5\r\n"
+		"Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7\r\n"
+		+(using_proxy?
+			"Keep-Alive: 300\r\n"
+			"Proxy-Connection: keep-alive\r\n\r\n" :
+			"Connection: Keep-Alive\r\n\r\n");
+
 		redirected = false;
 		content_length = 0;
-	//	Out(SYS_CON|LOG_DEBUG) << "HttpConnection: sending http request:" << endl;
-	//	Out(SYS_CON|LOG_DEBUG) << request.toString() << endl;
+		Out(SYS_CON|LOG_DEBUG) << "HttpConnection: sending http request:" << endl;
+		Out(SYS_CON|LOG_DEBUG) << buffer.constData() << endl;
 	}
 	
 	HttpConnection::HttpGet::~HttpGet()
 	{}
-	
+
 	bool HttpConnection::HttpGet::onDataReady(Uint8* buf,Uint32 size)
 	{
 		if (!response_header_received)
 		{
 			// append the data
-			buffer.append(QByteArray((char*)buf,size));
+			buffer.append(QByteArray::fromRawData((char*)buf,size));
 			// look for the end of the header 
 			int idx = buffer.indexOf("\r\n\r\n");
 			if (idx == -1) // haven't got the full header yet
 				return true; 
 			
 			response_header_received = true;
-			QHttpResponseHeader hdr(QString::fromLocal8Bit(buffer.mid(0,idx + 4)));
+			HttpResponseHeader hdr(QString::fromLatin1(buffer.mid(0,idx + 4)));
 			
 			if (hdr.hasKey("Content-Length"))
 				content_length = hdr.value("Content-Length").toInt();
 			else
 				content_length = 0;
 			
-//			Out(SYS_CON|LOG_DEBUG) << "HttpConnection: http reply header received" << endl;
-//			Out(SYS_CON|LOG_DEBUG) << hdr.toString() << endl;
+			Out(SYS_CON|LOG_DEBUG) << "HttpConnection: http reply header received" << endl;
+			Out(SYS_CON|LOG_DEBUG) << buffer.mid(0,idx + 4).constData() << endl;
 			response_code = hdr.statusCode();
 			if ((hdr.statusCode() >= 300 && hdr.statusCode() <= 303) || hdr.statusCode() == 307)
 			{
@@ -406,7 +405,7 @@ namespace bt
 				{
 					Out(SYS_CON|LOG_DEBUG) << "Redirected to " << hdr.value("Location") << endl;
 					redirected = true;
-					redirected_to = KUrl(hdr.value("Location"));
+					redirected_to = QUrl(hdr.value("Location"));
 				}
 			}
 			else if (! (hdr.statusCode() == 200 || hdr.statusCode() == 206))

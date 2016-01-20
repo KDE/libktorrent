@@ -2,10 +2,9 @@
 
 #include <QtTest>
 #include <QObject>
-#include <KGlobal>
-#include <KLocale>
+#include <QLocale>
 #include <unistd.h>
-#include <time.h>
+#include <ctime>
 #include <util/log.h>
 #include <util/error.h>
 #include <util/sha1hashgen.h>
@@ -44,7 +43,7 @@ public:
 private slots:
     void initTestCase()
     {
-        KGlobal::setLocale(new KLocale("main"));
+        QLocale::setDefault(QLocale("main"));
         bt::InitLog("torrentfilestreamtest.log", false, false);
         QVERIFY(creator.createSingleFileTorrent(TEST_FILE_SIZE, "test.avi"));
         QVERIFY(creator2.createSingleFileTorrent(TEST_FILE_SIZE, "test2.avi"));

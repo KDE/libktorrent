@@ -20,13 +20,13 @@
 
 #include <QtTest>
 #include <QObject>
-#include <time.h>
+#include <QTemporaryFile>
+#include <ctime>
 #include <util/log.h>
 #include <util/signalcatcher.h>
 #include <util/fileops.h>
 #include <sys/types.h>
 #include <signal.h>
-#include <ktemporaryfile.h>
 #include <sys/mman.h>
 #include <unistd.h>
 #include <setjmp.h>
@@ -100,7 +100,7 @@ private slots:
 
 	void testMMap()
 	{
-		KTemporaryFile tmp;
+		QTemporaryFile tmp;
 		QVERIFY(tmp.open());
 		int fd = tmp.handle();
 		try

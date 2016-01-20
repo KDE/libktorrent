@@ -19,13 +19,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "torrentcontrol.h"
-#include <qdir.h>
-#include <qfile.h>
+
+#include <QDir>
+#include <QFile>
 #include <QTextCodec>
-#include <klocale.h>
-#include <kfiledialog.h>
-#include <qtextstream.h>
-#include <qdatetime.h>
+#include <QTextStream>
+#include <QDateTime>
+
+#include <klocalizedstring.h>
+
 #include <util/log.h>
 #include <util/error.h>
 #include <util/bitset.h>
@@ -186,8 +188,7 @@ namespace bt
                 finished(this);
 
                 //Move completed download to specified directory if needed
-                if (!completed_dir.toLocalFile().isNull())
-                    moveCompleted = true;
+                moveCompleted = !completed_dir.isEmpty();
 
                 // See if we need to do a data check
                 if (completed_datacheck)
@@ -539,7 +540,7 @@ namespace bt
             delete tor;
             tor = 0;
             throw Error(i18n("An error occurred while loading <b>%1</b>:<br/><b>%2</b>",
-                             loadUrl().prettyUrl(), err.toString()));
+                             loadUrl().toString(), err.toString()));
         }
 
         tor->setFilePriorityListener(this);
@@ -638,12 +639,12 @@ namespace bt
         downloader = new Downloader(*tor, *pman, *cman);
         downloader->loadWebSeeds(tordir + "webseeds");
         connect(downloader, SIGNAL(ioError(QString)), this, SLOT(onIOError(QString)));
-        connect(downloader, SIGNAL(chunkDownloaded(Uint32)), this, SLOT(downloaded(Uint32)));
+        connect(downloader, &Downloader::chunkDownloaded, this, &TorrentControl::downloaded);
         uploader = new Uploader(*cman, *pman);
         choke = new Choker(*pman, *cman);
 
-        connect(pman, SIGNAL(newPeer(Peer*)), this, SLOT(onNewPeer(Peer*)));
-        connect(pman, SIGNAL(peerKilled(Peer*)), this, SLOT(onPeerRemoved(Peer*)));
+        connect(pman, &PeerManager::newPeer, this, &TorrentControl::onNewPeer);
+        connect(pman, &PeerManager::peerKilled, this, &TorrentControl::onPeerRemoved);
         connect(cman, SIGNAL(excluded(Uint32, Uint32)), downloader, SLOT(onExcluded(Uint32, Uint32)));
         connect(cman, SIGNAL(included(Uint32, Uint32)), downloader, SLOT(onIncluded(Uint32, Uint32)));
         connect(cman, SIGNAL(corrupted(Uint32)), this, SLOT(corrupted(Uint32)));
@@ -991,7 +992,7 @@ namespace bt
             stats_file = new StatsFile(tordir + "stats");
 
         stats_file->write("OUTPUTDIR", cman->getDataDir());
-        stats_file->write("COMPLETEDDIR", completed_dir.path());
+        stats_file->write("COMPLETEDDIR", completed_dir);
 
         if (cman->getDataDir() != outputdir)
             outputdir = cman->getDataDir();
@@ -1038,7 +1039,7 @@ namespace bt
         if (!user_modified_name.isEmpty())
             stats_file->write("USER_MODIFIED_NAME", user_modified_name);
         stats_file->write("DISPLAY_NAME", display_name);
-        stats_file->write("URL", url.prettyUrl());
+        stats_file->write("URL", url.toDisplayString());
 
         stats_file->write("TIME_ADDED", QString("%1").arg(stats.time_added.toTime_t()));
         stats_file->write("SUPERSEEDING", stats.superseeding ? "1" : "0");
@@ -1083,9 +1084,9 @@ namespace bt
 
         if (stats_file->hasKey("COMPLETEDDIR"))
         {
-            completed_dir = KUrl(stats_file->readString("COMPLETEDDIR"));
-            if (completed_dir == KUrl(outputdir))
-                completed_dir = KUrl();
+            completed_dir = stats_file->readString("COMPLETEDDIR");
+            if (completed_dir == outputdir)
+                completed_dir = QString();
         }
 
         if (stats_file->hasKey("USER_MODIFIED_NAME"))
@@ -1133,7 +1134,7 @@ namespace bt
         setUploadProps(up, aup);
         pman->setGroupIDs(upload_gid, download_gid);
 
-        url = KUrl(stats_file->readString("URL"));
+        url = QUrl(stats_file->readString("URL"));
 
         if (stats_file->hasKey("TIME_ADDED"))
             stats.time_added.setTime_t(stats_file->readULong("TIME_ADDED"));
@@ -1805,7 +1806,7 @@ namespace bt
         return downloader->getWebSeed(i);
     }
 
-    bool TorrentControl::addWebSeed(const KUrl& url)
+    bool TorrentControl::addWebSeed(const QUrl &url)
     {
         WebSeed* ws = downloader->addWebSeed(url);
         if (ws)
@@ -1816,7 +1817,7 @@ namespace bt
         return ws != 0;
     }
 
-    bool TorrentControl::removeWebSeed(const KUrl& url)
+    bool TorrentControl::removeWebSeed(const QUrl &url)
     {
         bool ret = downloader->removeWebSeed(url);
         if (ret)
@@ -1843,7 +1844,7 @@ namespace bt
 
     void TorrentControl::moveToCompletedDir()
     {
-        QString outdir = completed_dir.toLocalFile();
+        QString outdir = completed_dir;
         if (!outdir.endsWith(bt::DirSeparator()))
             outdir += bt::DirSeparator();
 
@@ -1980,6 +1981,3 @@ namespace bt
 
 
 }
-
-#include "torrentcontrol.moc"
-

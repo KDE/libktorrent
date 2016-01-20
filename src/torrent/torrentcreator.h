@@ -46,7 +46,7 @@ namespace bt
 		// input values
 		QString target;
 		QStringList trackers;
-		KUrl::List webseeds;
+		QList<QUrl> webseeds;
 		int chunk_size;
 		QString name,comments;
 		// calculated values
@@ -71,7 +71,7 @@ namespace bt
 		 * @param comments The comments field of the torrent
 		 * @param priv Private torrent or not
 		 */
-		TorrentCreator(const QString & target,const QStringList & trackers,const KUrl::List & webseeds,
+		TorrentCreator(const QString & target,const QStringList & trackers,const QList<QUrl> & webseeds,
 					   Uint32 chunk_size,const QString & name,
 					   const QString & comments,bool priv,bool decentralized);
 		virtual ~TorrentCreator();

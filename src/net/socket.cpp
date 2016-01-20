@@ -53,7 +53,6 @@
 #undef errno
 #define errno WSAGetLastError()
 #endif
-#include <kdebug.h>
 using namespace bt;
 
 namespace net

@@ -18,7 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <kurl.h>
+#include <QUrl>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -36,17 +36,18 @@
 
 namespace bt
 {
-	static bool UrlCompare(const KUrl & a, const KUrl & b)
+	static bool UrlCompare(const QUrl &a, const QUrl & b)
 	{
 		if (a == b)
 			return true;
 		
 		return 
-			a.protocol() == b.protocol() && 
+			a.scheme() == b.scheme() && 
 			a.host() == b.host() &&
-			a.pass() == b.pass() &&
+			a.password() == b.password() &&
 			a.port(80) == b.port(80) &&
-			a.encodedPathAndQuery() == b.encodedPathAndQuery();
+			a.path() == b.path() &&
+			a.query() == b.query(); //TODO check if ported correctly
 	}
 	
 	class UPnPMCastSocket::UPnPMCastSocketPrivate
@@ -59,7 +60,7 @@ namespace bt
 		void joinUPnPMCastGroup(int fd);
 		void leaveUPnPMCastGroup(int fd);
 		void onXmlFileDownloaded(UPnPRouter* r,bool success);
-		UPnPRouter* findDevice(const KUrl & location);
+		UPnPRouter* findDevice(const QUrl &location);
 		
 		QSet<UPnPRouter*> routers;
 		QSet<UPnPRouter*> pending_routers; // routers which we are downloading the XML file from
@@ -119,7 +120,7 @@ namespace bt
 		}
 		
 		writeDatagram(upnp_data,strlen(upnp_data),QHostAddress("239.255.255.250"),1900);
-        writeDatagram(tr64_data,strlen(tr64_data),QHostAddress("239.255.255.250"),1900);
+		writeDatagram(tr64_data,strlen(tr64_data),QHostAddress("239.255.255.250"),1900);
 	}
 	
 	void UPnPMCastSocket::onXmlFileDownloaded(UPnPRouter* r,bool success)
@@ -134,7 +135,7 @@ namespace bt
 		else
 		{
 			// add it to the list and emit the signal
-			KUrl location = r->getLocation();
+			QUrl location = r->getLocation();
 			if (d->findDevice(location))
 			{
 				r->deleteLater();
@@ -205,7 +206,7 @@ namespace bt
 		foreach (UPnPRouter* r,d->routers)
 		{
 			fout << r->getServer() << ::endl;
-			fout << r->getLocation().prettyUrl() << ::endl;
+			fout << r->getLocation().toString() << ::endl;
 		}
 	}
 	
@@ -228,7 +229,7 @@ namespace bt
 			server = fin.readLine();
 			location = fin.readLine();
 				
-			UPnPRouter* r = new UPnPRouter(server,location);
+			UPnPRouter* r = new UPnPRouter(server,QUrl(location));
 			// download it's xml file
 			QObject::connect(r,SIGNAL(xmlFileDownloaded(UPnPRouter*,bool)),this,SLOT(onXmlFileDownloaded(UPnPRouter*,bool)));
 			r->downloadXMLFile();
@@ -243,7 +244,7 @@ namespace bt
 	
 	UPnPRouter* UPnPMCastSocket::findDevice(const QString & name) 
 	{
-		KUrl location(name);
+		QUrl location(name);
 		return d->findDevice(location);
 	}
 	
@@ -302,9 +303,10 @@ namespace bt
 	
 	UPnPRouter* UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteArray & arr)
 	{
-		QStringList lines = QString::fromAscii(arr).split("\r\n");
+		const QString response = QString::fromLatin1(arr);
+		QVector<QStringRef> lines = response.splitRef("\r\n");
 		QString server;
-		KUrl location;
+		QUrl location;
 		
 		/*
 		Out(SYS_PNP|LOG_DEBUG) << "Received : " << endl;
@@ -313,22 +315,22 @@ namespace bt
 		*/
 		
 		// first read first line and see if contains a HTTP 200 OK message
-		QString line = lines.first();
-		if (!line.contains("HTTP"))
+		QStringRef line = lines.first();
+		if (!line.contains(QLatin1String("HTTP")))
 		{
 			// it is either a 200 OK or a NOTIFY
-			if (!line.contains("NOTIFY") && !line.contains("200")) 
+			if (!line.contains(QLatin1String("NOTIFY")) && !line.contains(QLatin1String("200")))
 				return 0;
 		}
-		else if (line.contains("M-SEARCH")) // ignore M-SEARCH 
+		else if (line.contains(QLatin1String("M-SEARCH"))) // ignore M-SEARCH
 			return 0;
 		
 		// quick check that the response being parsed is valid 
-		bool validDevice = false; 
+		bool validDevice = false;
 		for (int idx = 0;idx < lines.count() && !validDevice; idx++) 
 		{ 
 			line = lines[idx]; 
-			if ((line.contains("ST:") || line.contains("NT:")) && line.contains("InternetGatewayDevice")) 
+			if ((line.contains(QLatin1String("ST:")) || line.contains(QLatin1String("NT:"))) && line.contains(QLatin1String("InternetGatewayDevice")))
 			{
 				validDevice = true; 
 			}
@@ -343,15 +345,15 @@ namespace bt
 		for (int i = 1;i < lines.count();i++)
 		{
 			line = lines[i];
-			if (line.startsWith("Location") || line.startsWith("LOCATION") || line.startsWith("location"))
+			if (line.startsWith(QLatin1String("Location")) || line.startsWith(QLatin1String("LOCATION")) || line.startsWith(QLatin1String("location")))
 			{
-				location = line.mid(line.indexOf(':') + 1).trimmed();
+				location = QUrl(line.mid(line.indexOf(':') + 1).trimmed().toString()); //TODO fromLocalFile()?
 				if (!location.isValid())
 					return 0;
 			}
-			else if (line.startsWith("Server") || line.startsWith("server") || line.startsWith("SERVER"))
+			else if (line.startsWith(QLatin1String("Server")) || line.startsWith(QLatin1String("server")) || line.startsWith(QLatin1String("SERVER")))
 			{
-				server = line.mid(line.indexOf(':') + 1).trimmed();
+				server = line.mid(line.indexOf(':') + 1).trimmed().toString();
 				if (server.length() == 0)
 					return 0;
 				
@@ -370,7 +372,7 @@ namespace bt
 		}
 	}
 	
-	UPnPRouter* UPnPMCastSocket::UPnPMCastSocketPrivate::findDevice(const KUrl& location)
+	UPnPRouter* UPnPMCastSocket::UPnPMCastSocketPrivate::findDevice(const QUrl &location)
 	{
 		foreach (UPnPRouter* r, routers)
 		{
@@ -385,5 +387,3 @@ namespace bt
 }
 
 
-
-#include "upnpmcastsocket.moc"

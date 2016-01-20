@@ -20,7 +20,7 @@
 #ifndef KTUPNPROUTER_H
 #define KTUPNPROUTER_H
 
-#include <kurl.h>
+#include <QUrl>
 #include <qstringlist.h>
 #include <net/portlist.h>
 #include <ktorrent_export.h>
@@ -101,7 +101,7 @@ namespace bt
 		 * @param location The location of it's xml description file
 		 * @param verbose Print lots of debug info
 		 */
-		UPnPRouter(const QString & server,const KUrl & location,bool verbose = false);	
+		UPnPRouter(const QString & server,const QUrl &location,bool verbose = false);	
 		virtual ~UPnPRouter();
 
 		/// Disable or enable verbose logging
@@ -111,7 +111,7 @@ namespace bt
 		QString getServer() const;
 		
 		/// Get the location of it's xml description
-		KUrl getLocation() const;
+		QUrl getLocation() const;
 		
 		/// Get the device description
 		UPnPDeviceDescription & getDescription();

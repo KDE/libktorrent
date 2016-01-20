@@ -35,7 +35,6 @@ namespace bt
 namespace dht
 {
 	class DHT;
-	class RPCServer;
 
 	enum Type
 	{
@@ -54,12 +53,12 @@ namespace dht
 		NONE
 	};
 
-	const QString TID = "t";
-	const QString REQ = "q";
-	const QString RSP = "r";
-	const QString TYP = "y";
-	const QString ARG = "a";
-	const QString ERR_DHT = "e";
+	const QByteArray TID = QByteArrayLiteral("t");
+	const QByteArray REQ = "q";
+	const QByteArray RSP = "r";
+	const QByteArray TYP = "y";
+	const QByteArray ARG = "a";
+	const QByteArray ERR_DHT = "e";
 
 	/**
 	 * Base class for all RPC messages.

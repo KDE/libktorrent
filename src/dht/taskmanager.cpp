@@ -42,7 +42,7 @@ namespace dht
 	{
 		connect(task, SIGNAL(finished(Task*)), this, SLOT(taskFinished(Task*)));
 		if (task->isQueued())
-			queued.append(QWeakPointer<Task>(task));
+			queued.append(QPointer<Task>(task));
 		else
 			num_active++;
 	}
@@ -55,7 +55,7 @@ namespace dht
 
 		while (dh_table->canStartTask() && !queued.isEmpty())
 		{
-			QWeakPointer<Task> t = queued.takeFirst();
+			QPointer<Task> t = queued.takeFirst();
 			if (t)
 			{
 				Out(SYS_DHT | LOG_NOTICE) << "DHT: starting queued task" << endl;

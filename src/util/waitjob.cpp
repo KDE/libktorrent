@@ -20,7 +20,6 @@
 #include "waitjob.h"
 #include <qtimer.h>
 #include <torrent/globals.h>
-#include <kio/netaccess.h>
 #include "log.h"
 
 namespace bt
@@ -76,17 +75,15 @@ namespace bt
 	
 	void WaitJob::execute(WaitJob* job)
 	{
-		KIO::NetAccess::synchronousRun(job,0);
+		job->exec();
 	}
 	
 	void SynchronousWait(Uint32 millis)
 	{
 		Out(SYS_GEN|LOG_DEBUG) << "SynchronousWait" << endl;
 		WaitJob* j = new WaitJob(millis);
-		KIO::NetAccess::synchronousRun(j,0);
+		j->exec();
 	}
 
 }
-
-#include "waitjob.moc"
 

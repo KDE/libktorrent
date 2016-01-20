@@ -18,7 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "autorotatelogjob.h"
-#include <kurl.h>
+#include <QUrl>
 #include <util/fileops.h>
 #include "log.h"
 #include "compressfilejob.h"
@@ -45,11 +45,12 @@ namespace bt
 	{
 		while (cnt > 1)
 		{
-			QString prev = QString("%1-%2.gz").arg(file).arg(cnt - 1);
-			QString curr = QString("%1-%2.gz").arg(file).arg(cnt);
+			QString prev = QStringLiteral("%1-%2.gz").arg(file).arg(cnt - 1);
+			QString curr = QStringLiteral("%1-%2.gz").arg(file).arg(cnt);
 			if (bt::Exists(prev)) // if file exists start the move job
 			{
-				KIO::Job* sj = KIO::file_move(KUrl(prev),KUrl(curr),-1, KIO::Overwrite | KIO::HideProgressInfo);
+				KIO::Job* sj = KIO::file_move(QUrl::fromLocalFile(prev),QUrl::fromLocalFile(curr),
+                                                              -1, KIO::Overwrite | KIO::HideProgressInfo);
 				connect(sj,SIGNAL(result(KJob*)),this,SLOT(moveJobDone(KJob*)));	
 				return;
 			}
@@ -62,13 +63,14 @@ namespace bt
 		if (cnt == 1)
 		{
 			// move current log to 1 and zip it
-			KIO::Job* sj = KIO::file_move(KUrl(file),KUrl(file + "-1"),-1, KIO::Overwrite | KIO::HideProgressInfo);
+			KIO::Job* sj = KIO::file_move(QUrl::fromLocalFile(file),QUrl::fromLocalFile(file + QLatin1String("-1")),
+                                                      -1, KIO::Overwrite | KIO::HideProgressInfo);
 			connect(sj,SIGNAL(result(KJob*)),this,SLOT(moveJobDone(KJob*)));
 		}
 		else
 		{
 			// final log file is moved, now zip it and end the job
-			CompressFileJob* gzip = new CompressFileJob(file + "-1");
+			CompressFileJob* gzip = new CompressFileJob(file + QLatin1String("-1"));
 			connect(gzip,SIGNAL(result(KJob*)),this,SLOT(compressJobDone(KJob*)));
 			gzip->start();
 		}
@@ -88,4 +90,3 @@ namespace bt
 	}
 
 }
-#include "autorotatelogjob.moc"

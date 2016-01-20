@@ -156,7 +156,7 @@ namespace bt
 	{
 		if (!out) return;
 		
-		QByteArray s = QString::number(data.size()).toUtf8();
+		QByteArray s = QByteArray::number(data.size());
 		out->write(s,s.length());
 		out->write(":",1);
 		out->write(data.data(),data.size());

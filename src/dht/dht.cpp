@@ -51,8 +51,8 @@ namespace dht
 
 	DHT::DHT() : node(0), srv(0), db(0), tman(0), our_node_lookup(0)
 	{
-		connect(&update_timer, SIGNAL(timeout()), this, SLOT(update()));
-		connect(&expire_timer, SIGNAL(timeout()), this, SLOT(expireDatabaseItems()));
+		connect(&update_timer, &QTimer::timeout, this, &DHT::update);
+		connect(&expire_timer, &QTimer::timeout, this, &DHT::expireDatabaseItems);
 	}
 
 
@@ -159,7 +159,7 @@ namespace dht
 
 		our_node_lookup = findNode(node->getOurID());
 		if (our_node_lookup)
-			connect(our_node_lookup, SIGNAL(finished(Task*)), this, SLOT(ownNodeLookupFinished(Task*)));
+			connect(our_node_lookup, &NodeLookup::finished, this, &DHT::ownNodeLookupFinished);
 		return our_node_lookup;
 	}
 

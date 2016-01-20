@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "singlefilecache.h"
 #include <QTextStream>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <qfileinfo.h>
 #include <qstringlist.h>
 #include <kio/copyjob.h>

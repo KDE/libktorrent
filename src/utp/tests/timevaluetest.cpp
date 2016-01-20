@@ -19,8 +19,8 @@
 ***************************************************************************/
 
 #include <QtTest>
-#include "util/log.h"
-#include "utp/timevalue.h"
+#include <util/log.h>
+#include <utp/timevalue.h>
 
 using namespace utp;
 using namespace bt;

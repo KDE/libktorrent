@@ -1,4 +1,3 @@
-
 set (magnet_HDR
 	magnetdownloader.h
 	magnetlink.h

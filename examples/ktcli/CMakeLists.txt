@@ -5,5 +5,5 @@ set(ktcli_SRC
 	main.cpp
 )
 
-kde4_add_executable(ktcli ${ktcli_SRC})
-target_link_libraries(ktcli ktorrent ${KDE4_SOLID_LIBS} ${KDE4_KIO_LIBS})
+add_executable(ktcli ${ktcli_SRC})
+target_link_libraries(ktcli ktorrent KF5::KIOCore KF5::Crash)

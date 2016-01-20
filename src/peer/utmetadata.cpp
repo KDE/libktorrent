@@ -50,14 +50,14 @@ namespace bt
 		{
 			BDecoder dec(tmp,false,2);
 			node = dec.decode();
-			if (!node || !node->getType() == BNode::DICT)
+			if (!node || node->getType() != BNode::DICT)
 			{
 				delete node;
 				return;
 			}
 			
 			BDictNode* dict = (BDictNode*)node;
-			int type = dict->getInt("msg_type");
+			int type = dict->getInt(QByteArrayLiteral("msg_type"));
 			switch (type)
 			{
 				case 0: // request
@@ -84,7 +84,7 @@ namespace bt
 	{
 		if (download)
 		{
-			if (download->data(dict->getInt("piece"),piece_data))
+			if (download->data(dict->getInt(QByteArrayLiteral("piece")),piece_data))
 			{
 				peer->emitMetadataDownloaded(download->result());
 			}
@@ -94,12 +94,12 @@ namespace bt
 	void UTMetaData::reject(BDictNode* dict)
 	{
 		if (download)
-			download->reject(dict->getInt("piece"));
+			download->reject(dict->getInt(QByteArrayLiteral("piece")));
 	}
 
 	void UTMetaData::request(BDictNode* dict)
 	{
-		int piece = dict->getInt("piece");
+		int piece = dict->getInt(QByteArrayLiteral("piece"));
 		Out(SYS_CON|LOG_DEBUG) << "Received request for metadata piece " << piece << endl;
 		if (!tor.isLoaded())
 		{
@@ -126,8 +126,8 @@ namespace bt
 		QByteArray data;
 		BEncoder enc(new BEncoderBufferOutput(data));
 		enc.beginDict();
-		enc.write(QString("msg_type")); enc.write((bt::Uint32)2);
-		enc.write(QString("piece")); enc.write((bt::Uint32)piece);
+		enc.write(QByteArrayLiteral("msg_type")); enc.write((bt::Uint32)2);
+		enc.write(QByteArrayLiteral("piece")); enc.write((bt::Uint32)piece);
 		enc.end();
 		sendPacket(data);
 	}
@@ -138,9 +138,9 @@ namespace bt
 		QByteArray tmp;
 		BEncoder enc(new BEncoderBufferOutput(tmp));
 		enc.beginDict();
-		enc.write(QString("msg_type")); enc.write((bt::Uint32)1);
-		enc.write(QString("piece")); enc.write((bt::Uint32)piece);
-		enc.write(QString("total_size")); enc.write((bt::Uint32)total_size);
+		enc.write(QByteArrayLiteral("msg_type")); enc.write((bt::Uint32)1);
+		enc.write(QByteArrayLiteral("piece")); enc.write((bt::Uint32)piece);
+		enc.write(QByteArrayLiteral("total_size")); enc.write((bt::Uint32)total_size);
 		enc.end();
 		tmp.append(data);
 		sendPacket(tmp);

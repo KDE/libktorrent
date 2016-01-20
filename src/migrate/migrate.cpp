@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "migrate.h"
-#include <kurl.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <util/log.h>
 #include <util/error.h>
 #include <util/fileops.h>
@@ -50,23 +49,23 @@ namespace bt
 			tdir += bt::DirSeparator();
 		
 		// see if the current_chunks file exists
-		if (bt::Exists(tdir + "current_chunks"))
+		if (bt::Exists(tdir + QLatin1String("current_chunks")))
 		{
 			// first see if it isn't a download started by a post-mmap version
-			if (!IsPreMMap(tdir + "current_chunks"))
+			if (!IsPreMMap(tdir + QLatin1String("current_chunks")))
 			{
 				// it's not pre, so it must be post, so just return
 				Out(SYS_GEN|LOG_DEBUG) << "No migrate needed" << endl;
 				return;
 			}
 			
-			MigrateCurrentChunks(tor,tdir + "current_chunks"); 
+			MigrateCurrentChunks(tor,tdir + QLatin1String("current_chunks"));
 		}
 		
 		// now we need to migrate t
-		if (IsCacheMigrateNeeded(tor,tdir + "cache" + bt::DirSeparator()))
+		if (IsCacheMigrateNeeded(tor,tdir + QLatin1String("cache") + bt::DirSeparator()))
 		{
-			MigrateCache(tor,tdir + "cache" + bt::DirSeparator(),sdir);
+			MigrateCache(tor,tdir + QLatin1String("cache") + bt::DirSeparator(),sdir);
 		}
 	}
 	

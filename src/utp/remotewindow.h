@@ -32,7 +32,6 @@
 namespace utp
 {
 	struct SelectiveAck;
-	class Connection;
 	struct Header;
 
 	struct UnackedPacket

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).             *
+ *   Contact: http://www.qt-project.org/legal                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,53 +15,27 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#ifndef DHTTASKMANAGER_H
-#define DHTTASKMANAGER_H
 
-#include <QList>
-#include <QPointer>
-#include <util/constants.h>
-#include "task.h"
+#include <QString>
+#include <QMap>
 
-namespace dht
+class HttpResponseHeader
 {
-	class DHT;
+public:
+    HttpResponseHeader(const QString &str){parse(str);}
+    int statusCode(){return _statCode;}
+    QString reasonPhrase(){return _reasonPhr;}
+    QString value(const QString &key)const {return values[key.toLower()];}
+    bool hasKey(const QString &key)const {return values.contains(key.toLower());}
+private:
+    bool parse(const QString &);
+    bool parseLine(const QString &line, int number);
 
-	/**
-	 * @author Joris Guisson <joris.guisson@gmail.com>
-	 * 
-	 * Manages all dht tasks.
-	*/
-	class TaskManager : public QObject
-	{
-		Q_OBJECT
-	public:
-		TaskManager(const DHT* dh_table);
-		virtual ~TaskManager();
-		
-		/**
-		 * Add a task to manage.
-		 * @param task 
-		 */
-		void addTask(Task* task);
-		
-		/// Get the number of running tasks
-		bt::Uint32 getNumTasks() const {return num_active;}
-		
-		/// Get the number of queued tasks
-		bt::Uint32 getNumQueuedTasks() const {return queued.count();}
-		
-	private slots:
-		void taskFinished(Task* task);
-
-	private:
-		const DHT* dh_table;
-		QList<QPointer<Task> > queued;
-		bt::Uint32 num_active;
-	};
-
-}
-
-#endif
+    QMap<QString, QString> values;
+    int _majVer;
+    int _minVer;
+    int _statCode;        
+    QString _reasonPhr;
+};

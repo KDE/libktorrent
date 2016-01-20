@@ -1,22 +1,17 @@
 cmake_minimum_required(VERSION 2.8.9)
 project(LIBKTORRENT)
 
-find_package(KDE4 REQUIRED)
-find_package(KDE4Internal REQUIRED)
-find_package(GMP REQUIRED)
-find_package(Boost REQUIRED)
-find_package(QCA2 REQUIRED)
+cmake_minimum_required(VERSION 2.8.12)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules;${CMAKE_MODULE_PATH}")
 find_package(LibGcrypt REQUIRED)
 
 # set some default settings
-include(KDE4Defaults)
 enable_testing()
 set(BUILD_TESTING ON)
 
-# make some more macros available
-include (MacroLibrary)
+find_package(ECM 1.0.0 REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/")
 
 #
 # checks for functions and stuff
@@ -25,12 +20,48 @@ include(CheckIncludeFiles)
 include(CheckFunctionExists)
 include(CheckTypeSize) #XFS
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
-add_definitions( ${KDE4_DEFINITIONS} )
-add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
-include_directories(${KDE4_INCLUDES} ${LIBKTORRENT_BINARY_DIR}	${LIBKTORRENT_SOURCE_DIR} ${GMP_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDECompilerSettings)
+include(FeatureSummary)
+include(GenerateExportHeader)
+include(ECMMarkAsTest)
+include(ECMSetupVersion)
+include(ECMPackageConfigHelpers)
 
-set(LIBKTORRENT_VERSION "1.1dev")
+set(LIBKTORRENT_VERSION "1.9.50")
+
+ecm_setup_version(${LIBKTORRENT_VERSION} VARIABLE_PREFIX LIBKTORRENT
+                        VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/libktorrent_version.h"
+                        PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfigVersion.cmake"
+                        SOVERSION 1)
+find_package(GMP REQUIRED)
+find_package(Boost REQUIRED)
+find_package(Qca-qt5 REQUIRED)
+
+find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
+  Core
+  Gui
+  Widgets
+  Network
+  Xml
+  Test
+)
+
+# Load the frameworks we need
+find_package(KF5 REQUIRED
+  Archive
+  Crash
+  I18n
+  KIO
+  Solid
+)
+
+kde_enable_exceptions()
+add_definitions(-DQT_USE_QSTRINGBUILDER -DQT_NO_URL_CAST_FROM_STRING)
+add_definitions(-DTRANSLATION_DOMAIN="libktorrent")
+
+include_directories( ${LIBKTORRENT_BINARY_DIR}	${LIBKTORRENT_SOURCE_DIR} ${Qt5Core_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${QCA-qt5_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 
 #XFS prealloc
 CHECK_INCLUDE_FILES(xfs/xfs.h HAVE_XFS_XFS_H)
@@ -63,6 +94,26 @@ check_function_exists(statvfs64 HAVE_STATVFS64)
 add_subdirectory(src)
 add_subdirectory(testlib)
 add_subdirectory(examples)
-add_subdirectory(cmake)
 add_subdirectory(doc)
+
+# create a Config.cmake and a ConfigVersion.cmake file and install them
+set(INCLUDE_INSTALL_DIR "include/libktorrent/")
+
+set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/LibKTorrent")
+
+ecm_configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/LibKTorrentConfig.cmake.in"
+                              "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfig.cmake"
+                              INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
+                              PATH_VARS INCLUDE_INSTALL_DIR
+                              )
+
+install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfig.cmake"
+               "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfigVersion.cmake"
+        DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
+        COMPONENT Devel )
+
+install(EXPORT LibKTorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE LibKTorrentTargets.cmake )
+
+
+feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

@@ -18,7 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "chunkdownload.h"
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <algorithm>
 #include <util/file.h>
 #include <util/log.h>
@@ -103,8 +103,7 @@ namespace bt
 			return false;
 
 	
-		DownloadStatus* ds = dstatus.find(p.getPieceDownloader());
-		if (ds)
+		if (DownloadStatus* ds = dstatus.find(p.getPieceDownloader()))
 			ds->remove(pp);
 		
 		PieceData::Ptr buf = chunk->getPiece(p.getOffset(),p.getLength(),false);
@@ -569,4 +568,3 @@ namespace bt
 	}
 	
 }
-#include "chunkdownload.moc"

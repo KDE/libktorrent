@@ -49,8 +49,8 @@ namespace bt
 		}
 		
 		// open output file 
-		QIODevice* dev = KFilterDev::deviceForFile(file + ".gz","application/x-gzip");
-		if (!dev || !dev->open(QIODevice::WriteOnly))
+		KCompressionDevice dev(file + QLatin1String(".gz"),KCompressionDevice::GZip);
+		if (!dev.open(QIODevice::WriteOnly))
 		{
 			err = KIO::ERR_CANNOT_OPEN_FOR_WRITING;
 			printf("CompressThread: failed to open out file for writing");
@@ -65,15 +65,14 @@ namespace bt
 			if (len <= 0 || len > 4096)
 				break;
 			
-			dev->write(buf,len);
+			dev.write(buf,len);
 		}
 		
-		delete dev;
 		in.close();
 		if (canceled)
 		{
 			// delete output file when canceled
-			bt::Delete(file + ".gz",true);
+			bt::Delete(file + QLatin1String(".gz"),true);
 		}
 		else
 		{

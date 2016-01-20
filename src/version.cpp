@@ -24,12 +24,12 @@
 
 namespace bt 
 {
-	static QString g_name = "KTorrent";
+	static QString g_name = QStringLiteral("KTorrent");
 	static int g_major = 0;
 	static int g_minor = 0;
 	static int g_release = 0;
 	static VersionType g_vtype = NORMAL;
-	static QString g_peer_id = "KT";
+	static QString g_peer_id = QStringLiteral("KT");
 	
 	void SetClientInfo(const QString & name,int major,int minor,int release,VersionType type,const QString & peer_id)
 	{

@@ -21,7 +21,7 @@
 #ifndef BTTORRENT_H
 #define BTTORRENT_H
 
-#include <kurl.h>
+#include <QUrl>
 #include <QVector>
 #include <QList>
 #include <util/sha1hash.h>
@@ -43,7 +43,7 @@ namespace bt
 
 	struct TrackerTier
 	{
-		KUrl::List urls;
+		QList<QUrl> urls;
 		TrackerTier* next;
 		
 		TrackerTier() : next(0)
@@ -233,7 +233,7 @@ namespace bt
 		/**
 		 * Get the list with web seed URL's
 		 */
-		const KUrl::List & getWebSeeds() const {return web_seeds;}
+		const QList<QUrl>& getWebSeeds() const {return web_seeds;}
 		
 		/// Change the text codec
 		void changeTextCodec(QTextCodec* codec);
@@ -271,7 +271,7 @@ namespace bt
 		QVector<DHTNode> nodes;
 		QTextCodec* text_codec;
 		bool priv_torrent;
-		KUrl::List web_seeds;
+		QList<QUrl> web_seeds;
 		FilePriorityListener* file_prio_listener;
 		mutable Uint32 pos_cache_chunk;
 		mutable Uint32 pos_cache_file;

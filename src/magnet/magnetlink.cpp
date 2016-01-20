@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "magnetlink.h"
-#include <QUrl>
+#include <QUrlQuery>
 #include <QStringList>
 #include <util/log.h>
 #include <util/error.h>
@@ -66,62 +66,44 @@ namespace bt
 		return info_hash == mlink.infoHash();
 	}
 
-	static KUrl::List GetTrackers(const KUrl & url)
+	static QList<QUrl> GetTrackers(const QUrl &url)
 	{
-		KUrl::List result;
-		const QString encoded_query = QString::fromLatin1(url.encodedQuery());
-		const QString item = QLatin1String("tr=");
-		if(encoded_query.length() <= 1)
-			return result;
-
-		const QStringList items = encoded_query.split(QString(QLatin1Char('&')), QString::SkipEmptyParts);
-		const int len = item.length();
-		for(QStringList::ConstIterator it = items.begin(); it != items.end(); ++it)
-		{
-			if((*it).startsWith(item))
-			{
-				if((*it).length() > len)
-				{
-					QString str = (*it).mid(len);
-					str.replace(QLatin1Char('+'), QLatin1Char(' '));   // + in queries means space.
-					result.push_back(QUrl::fromPercentEncoding(str.toLatin1()));
-				}
-			}
-		}
-
+		QList<QUrl> result;
+		Q_FOREACH(QString tr, QUrlQuery(url).allQueryItemValues("tr", QUrl::FullyDecoded))
+			result << QUrl(tr.replace(QLatin1Char('+'), QLatin1Char(' ')));
 		return result;
 	}
 
 	void MagnetLink::parse(const QString& mlink)
 	{
-		KUrl url(mlink);
-		if(url.protocol() != "magnet")
+		QUrl url(mlink);
+		if(url.scheme() != QLatin1String("magnet"))
 		{
 			Out(SYS_GEN | LOG_NOTICE) << "Invalid protocol of magnet link "
 			                          << mlink << endl;
 			return;
 		}
 
-		torrent_url = url.queryItem("to");
+		torrent_url = QUrlQuery(url).queryItemValue(QStringLiteral("to"), QUrl::FullyDecoded);
 		//magnet://description-of-content.btih.HASH(-HASH)*.dht/path/file?x.pt=&x.to=
 
 		// TODO automatically select these files and prefetches from here
-		path = url.queryItem("pt");
-		if(path.isEmpty() && url.hasPath() && url.path() != "/")
+		path = QUrlQuery(url).queryItemValue(QStringLiteral("pt"));
+		if(path.isEmpty() && url.path() != QLatin1String("/"))
 		{
 			// TODO find out why RemoveTrailingSlash does not work
-			path = url.path(KUrl::RemoveTrailingSlash).remove(QRegExp("^/"));
+			path = url.adjusted(QUrl::StripTrailingSlash).path().remove(QRegExp(QLatin1String("^/")));
 		}
 
-		QString xt = url.queryItem("xt");
+		QString xt = QUrlQuery(url).queryItemValue(QLatin1String("xt"));
 		if(xt.isEmpty()
-		        || !xt.startsWith("urn:btih:"))
+		        || !xt.startsWith(QLatin1String("urn:btih:")))
 		{
-			QRegExp btihHash("([^\\.]+).btih");
+			QRegExp btihHash(QLatin1String("([^\\.]+).btih"));
 			if(btihHash.indexIn(url.host()) != -1)
 			{
-				QString primaryHash = btihHash.cap(1).split("-")[0];
-				xt = "urn:btih:" + primaryHash;
+				QString primaryHash = btihHash.cap(1).split('-')[0];
+				xt = QLatin1String("urn:btih:") + primaryHash;
 			}
 			else
 			{
@@ -155,7 +137,7 @@ namespace bt
 
 			info_hash = SHA1Hash(hash);
 			tracker_urls = GetTrackers(url);
-			name = url.queryItem("dn");
+			name = QUrlQuery(url).queryItemValue(QLatin1String("dn")).replace('+', ' ');
 			magnet_string = mlink;
 		}
 		catch(...)
@@ -173,16 +155,16 @@ namespace bt
 			throw bt::Error("Invalid char");
 
 		if(ch.isLower())
-			return 10 + ch.toAscii() - 'a';
+			return 10 + ch.toLatin1() - 'a';
 		else
-			return 10 + ch.toAscii() - 'A';
+			return 10 + ch.toLatin1() - 'A';
 	}
 
 	QString MagnetLink::base32ToHexString(const QString &s)
 	{
 		Uint32 part;
 		Uint32 tmp;
-		QString ret("");
+		QString ret;
 		QChar ch;
 		QString str = s.toUpper();
 		// 32 base32 chars -> 40 hex chars
@@ -199,7 +181,7 @@ namespace bt
 				if(ch.isDigit())
 					tmp = ch.digitValue() + 24;
 				else
-					tmp = ch.toAscii() - 'A';
+					tmp = ch.toLatin1() - 'A';
 				part = part + (tmp << 5 * (3 - j));
 			}
 

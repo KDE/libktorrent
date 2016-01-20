@@ -22,7 +22,7 @@
 #define DUMMYTORRENTCREATOR_H
 
 #include <QMap>
-#include <KTempDir>
+#include <QTemporaryDir>
 #include <QStringList>
 #include <util/constants.h>
 
@@ -69,13 +69,13 @@ public:
 	QString dataPath() const;
 	
 	/// Get the temp path used
-	QString tempPath() const {return tmpdir.name();}
+	QString tempPath() const {return tmpdir.path();}
 	
 private:
 	bool createRandomFile(const QString & path,bt::Uint64 size);
 	
 private:
-	KTempDir tmpdir;
+	QTemporaryDir tmpdir;
 	QString dpath;
 
 	QStringList trackers;

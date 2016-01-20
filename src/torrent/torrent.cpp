@@ -33,7 +33,7 @@
 #include <bcodec/bnode.h>
 #include <interfaces/monitorinterface.h>
 
-#include <klocale.h>
+#include <klocalizedstring.h>
 
 namespace bt
 {
@@ -100,9 +100,9 @@ namespace bt
 				throw Error(i18n("Corrupted torrent."));
 
 			// see if we can find an encoding node
-			if (dict->getValue("encoding"))
+			if (dict->getValue(QByteArrayLiteral("encoding")))
 			{
-				QByteArray enc = dict->getByteArray("encoding");
+				QByteArray enc = dict->getByteArray(QByteArrayLiteral("encoding"));
 				QTextCodec* tc = QTextCodec::codecForName(enc);
 				if (tc)
 				{
@@ -111,38 +111,38 @@ namespace bt
 				}
 			}
 			
-			BValueNode* c = dict->getValue("comment");
+			BValueNode* c = dict->getValue(QByteArrayLiteral("comment"));
 			if (c)
 				comments = c->data().toString(text_codec);
 
-			BValueNode* announce = dict->getValue("announce");
-			BListNode* nodes = dict->getList("nodes");
+			BValueNode* announce = dict->getValue(QByteArrayLiteral("announce"));
+			BListNode* nodes = dict->getList(QByteArrayLiteral("nodes"));
 			//if (!announce && !nodes)
 			//	throw Error(i18n("Torrent has no announce or nodes field."));
 				
 			if (announce)
-				loadTrackerURL(dict->getString("announce",text_codec));
+				loadTrackerURL(dict->getString(QByteArrayLiteral("announce"),text_codec));
 			
 			if (nodes) // DHT torrrents have a node key
 				loadNodes(nodes);
 			
-			loadInfo(dict->getDict(QString("info")));
-			loadAnnounceList(dict->getData("announce-list"));
+			loadInfo(dict->getDict(QByteArrayLiteral("info")));
+			loadAnnounceList(dict->getData(QByteArrayLiteral("announce-list")));
 			
 			// see if the torrent contains webseeds
-			BListNode* urls = dict->getList("url-list");
+			BListNode* urls = dict->getList(QByteArrayLiteral("url-list"));
 			if (urls)
 			{
 				loadWebSeeds(urls);
 			}
-			else if (dict->getValue("url-list"))
+			else if (dict->getValue(QByteArrayLiteral("url-list")))
 			{
-				KUrl url(dict->getString("url-list",text_codec));
+				QUrl url(dict->getString(QByteArrayLiteral("url-list"),text_codec));
 				if (url.isValid())
 					web_seeds.append(url);
 			}
 			
-			BNode* n = dict->getData("info");
+			BNode* n = dict->getData(QByteArrayLiteral("info"));
 			SHA1HashGen hg;
 			// save info dict
 			metadata = data.mid(n->getOffset(),n->getLength());
@@ -163,18 +163,18 @@ namespace bt
 		if (!dict)
 			throw Error(i18n("Corrupted torrent."));
 		
-		chunk_size = dict->getInt64("piece length");
-		BListNode* files = dict->getList("files");
+		chunk_size = dict->getInt64(QByteArrayLiteral("piece length"));
+		BListNode* files = dict->getList(QByteArrayLiteral("files"));
 		if (files)
 			loadFiles(files);
 		else
-			total_size = dict->getInt64("length");
+			total_size = dict->getInt64(QByteArrayLiteral("length"));
 		
 		loadHash(dict);
-		unencoded_name = dict->getByteArray("name");
+		unencoded_name = dict->getByteArray(QByteArrayLiteral("name"));
 		name_suggestion = text_codec->toUnicode(unencoded_name);
 		name_suggestion = SanityzeName(name_suggestion);
-		BValueNode* n = dict->getValue("private");
+		BValueNode* n = dict->getValue(QByteArrayLiteral("private"));
 		if (n && n->data().toInt() == 1)
 			priv_torrent = true;
 		
@@ -206,7 +206,7 @@ namespace bt
 			if (!d)
 				throw Error(i18n("Corrupted torrent."));
 			
-			BListNode* ln = d->getList("path");
+			BListNode* ln = d->getList(QByteArrayLiteral("path"));
 			if (!ln)
 				throw Error(i18n("Corrupted torrent."));
 
@@ -217,8 +217,8 @@ namespace bt
 				QByteArray v = ln->getByteArray(j);
 				unencoded_path.append(v);
 				QString sd = text_codec ? text_codec->toUnicode(v) : QString(v);
-				if (sd.contains("\n"))
-					sd = sd.remove("\n");
+				if (sd.contains(QLatin1String("\n")))
+					sd = sd.remove(QLatin1String("\n"));
 				path += sd;
 				if (j + 1 < ln->getNumChildren())
 					path += bt::DirSeparator();
@@ -231,7 +231,7 @@ namespace bt
 			if (!checkPathForDirectoryTraversal(path))
 				throw Error(i18n("Corrupted torrent."));
 
-			Uint64 s = d->getInt64("length");
+			Uint64 s = d->getInt64(QByteArrayLiteral("length"));
 			TorrentFile file(this,idx,path,total_size,s,chunk_size);
 			file.setUnencodedPath(unencoded_path);
 
@@ -247,14 +247,14 @@ namespace bt
 		if (!trackers)
 			trackers = new TrackerTier();
 	
-		KUrl url(s);
+		QUrl url(s);
 		if (s.length() > 0 && url.isValid())
 			trackers->urls.append(url);
 	}
 	
 	void Torrent::loadHash(BDictNode* dict)
 	{
-		QByteArray hash_string = dict->getByteArray("pieces");
+		QByteArray hash_string = dict->getByteArray(QByteArrayLiteral("pieces"));
 		for (int i = 0;i < hash_string.size();i+=20)
 		{
 			Uint8 h[20];
@@ -285,7 +285,7 @@ namespace bt
 			{
 				for (Uint32 j = 0;j < url_list->getNumChildren();j++)
 				{
-					KUrl url(url_list->getString(j,0));
+					QUrl url(url_list->getString(j,0));
 					tier->urls.append(url);
 				}
 				tier->next = new TrackerTier();
@@ -315,7 +315,7 @@ namespace bt
 	{
 		for (Uint32 i = 0;i < node->getNumChildren();i++)
 		{
-			KUrl url = KUrl(node->getString(i,text_codec));
+			QUrl url = QUrl(node->getString(i,text_codec));
 			if (url.isValid())
 				web_seeds.append(url);
 		}
@@ -325,7 +325,7 @@ namespace bt
 	{
 		Out(SYS_GEN|LOG_DEBUG) << "Name : " << name_suggestion << endl;
 		
-//		for (KUrl::List::iterator i = tracker_urls.begin();i != tracker_urls.end();i++)
+//		for (QList<QUrl>::iterator i = tracker_urls.begin();i != tracker_urls.end();i++)
 //			Out(SYS_GEN|LOG_DEBUG) << "Tracker URL : " << *i << endl;
 		
 		Out(SYS_GEN|LOG_DEBUG) << "Piece Length : " << chunk_size << endl;
@@ -489,7 +489,7 @@ namespace bt
 	bool Torrent::checkPathForDirectoryTraversal(const QString & p)
 	{
 		QStringList sl = p.split(bt::DirSeparator());
-		return !sl.contains("..");
+		return !sl.contains(QLatin1String(".."));
 	}
 	
 	void Torrent::changeTextCodec(QTextCodec* codec)

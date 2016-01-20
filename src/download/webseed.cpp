@@ -22,7 +22,7 @@
 #include "webseed.h"
 
 #include <QTimer>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <kprotocolmanager.h>
 #include <util/log.h>
 #include <torrent/torrent.h>
@@ -42,7 +42,7 @@ namespace bt
 	
 	const Uint32 RETRY_INTERVAL = 30;
 
-	WebSeed::WebSeed(const KUrl & url,bool user,const Torrent & tor,ChunkManager & cman) : WebSeedInterface(url,user),tor(tor),cman(cman)
+	WebSeed::WebSeed(const QUrl &url,bool user,const Torrent & tor,ChunkManager & cman) : WebSeedInterface(url,user),tor(tor),cman(cman)
 	{
 		first_chunk = last_chunk = tor.getNumChunks() + 1;
 		num_failures = 0;
@@ -108,7 +108,7 @@ namespace bt
 	{
 		setEnabled(false);
 		status = reason;
-		Out(SYS_CON|LOG_IMPORTANT) << "Auto disabled webseed " << url.prettyUrl() << endl;
+		Out(SYS_CON|LOG_IMPORTANT) << "Auto disabled webseed " << url.toDisplayString() << endl;
 	}
 
 
@@ -136,18 +136,18 @@ namespace bt
 			return;
 		}
 			
-		KUrl dst = url;
+		QUrl dst = url;
 		if (redirected_url.isValid())
 			dst = redirected_url;
 		
 		if (!proxy_enabled)
 		{
 			QString proxy = KProtocolManager::proxyForUrl(dst); // Use KDE settings
-			if (proxy.isNull() || proxy == "DIRECT")
+			if (proxy.isNull() || proxy == QLatin1String("DIRECT"))
 				conn->connectTo(dst); // direct connection 
 			else
 			{
-				KUrl proxy_url(proxy);
+				QUrl proxy_url(proxy);
 				conn->connectToProxy(proxy_url.host(),proxy_url.port() <= 0 ? 80 : proxy_url.port());
 			}
 		}
@@ -166,7 +166,7 @@ namespace bt
 		if (!enabled)
 			return;
 		
-		//Out(SYS_CON|LOG_DEBUG) << "WebSeed: downloading " << first << "-" << last << " from " << url.prettyUrl() << endl;
+		//Out(SYS_CON|LOG_DEBUG) << "WebSeed: downloading " << first << "-" << last << " from " << url.toDisplayString() << endl;
 		// open connection and connect if needed
 		if (!conn)
 		{
@@ -287,13 +287,13 @@ namespace bt
 	
 		if (!current)
 		{
-			current = new WebSeedChunkDownload(this,url.prettyUrl(),chunk,pieces_count);
+			current = new WebSeedChunkDownload(this,url.toDisplayString(),chunk,pieces_count);
 			chunkDownloadStarted(current,chunk);
 		}
 		else if (current->chunk != chunk)
 		{
 			chunkStopped();
-			current = new WebSeedChunkDownload(this,url.prettyUrl(),chunk,pieces_count);
+			current = new WebSeedChunkDownload(this,url.toDisplayString(),chunk,pieces_count);
 			chunkDownloadStarted(current,chunk);
 		}
 	}
@@ -537,12 +537,12 @@ namespace bt
 		}
 	}
 	
-	void WebSeed::redirected(const KUrl & to_url)
+	void WebSeed::redirected(const QUrl &to_url)
 	{
 		delete conn;
 		conn = 0;
 		token.clear();
-		if (to_url.isValid() && to_url.protocol() == "http")
+		if (to_url.isValid() && to_url.scheme() == QLatin1String("http"))
 		{
 			redirected_url = to_url;
 			download(cur_chunk,last_chunk);
@@ -586,4 +586,3 @@ namespace bt
 		
 
 }
-#include "webseed.moc"

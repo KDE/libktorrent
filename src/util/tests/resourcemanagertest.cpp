@@ -19,9 +19,9 @@
  ***************************************************************************/
 #include <QtTest>
 #include <QObject>
-#include "util/functions.h"
-#include "util/resourcemanager.h"
-#include "util/log.h"
+#include <util/functions.h>
+#include <util/resourcemanager.h>
+#include <util/log.h>
 
 using namespace bt;
 

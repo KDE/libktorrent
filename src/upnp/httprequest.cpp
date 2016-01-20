@@ -19,9 +19,8 @@
  ***************************************************************************/
 #include <QTimer>
 #include <QHostAddress>
-#include <QHttpResponseHeader>
 #include <QStringList>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <util/log.h>
 #include "httprequest.h"
 
@@ -66,21 +65,21 @@ namespace bt
 		if (finished)
 			return;
 		
-		payload = payload.replace("$LOCAL_IP",sock->localAddress().toString());
-		hdr = hdr.replace("$CONTENT_LENGTH",QString::number(payload.length()));
+		payload = payload.replace(QLatin1String("$LOCAL_IP"),sock->localAddress().toString());
+		hdr = hdr.replace(QLatin1String("$CONTENT_LENGTH"),QString::number(payload.length()));
 			
 		QString req = hdr + payload;
 		if (verbose)
 		{
 			Out(SYS_PNP|LOG_DEBUG) << "Sending " << endl;
-			QStringList lines = hdr.split("\r\n");
+			QStringList lines = hdr.split(QLatin1String("\r\n"));
 			foreach (const QString &line,lines)
 				Out(SYS_PNP|LOG_DEBUG) << line << endl;
 			
 			Out(SYS_PNP|LOG_DEBUG) << payload << endl;
 		}
 
-		sock->write(req.toAscii());
+		sock->write(req.toLatin1());
 	}
 	
 	void HTTPRequest::onReadyRead()
@@ -107,7 +106,7 @@ namespace bt
 		int eoh = reply.indexOf("\r\n\r\n");
 		if (eoh != -1)
 		{
-			reply_header = QHttpResponseHeader(QString::fromAscii(reply.mid(0,eoh + 4)));
+			/*reply_header = QHttpResponseHeader(QString::fromAscii(reply.mid(0,eoh + 4))); PORT: KF5
 			if (reply_header.contentLength() > 0 && reply.size() < eoh + 4 + reply_header.contentLength())
 			{
 				// Haven't got full content yet, so return and wait for more
@@ -122,7 +121,7 @@ namespace bt
 				finished = true;
 				result(this);
 				operationFinished(this);
-			}
+			}*/
 		}
 		else
 			return;
@@ -159,4 +158,3 @@ namespace bt
 
 
 }
-#include "httprequest.moc"

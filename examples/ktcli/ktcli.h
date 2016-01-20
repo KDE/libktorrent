@@ -23,20 +23,21 @@
 #define KTCLI_H
 
 #include <QTimer>
-#include <KApplication>
+#include <QCoreApplication>
+#include <QCommandLineParser>
 #include <boost/scoped_ptr.hpp>
 #include <torrent/torrentcontrol.h>
 #include <interfaces/queuemanagerinterface.h>
 
-class KUrl;
+class QUrl;
 
 typedef boost::scoped_ptr<bt::TorrentControl> TorrentControlPtr;
 
-class KTCLI : public KApplication,public bt::QueueManagerInterface
+class KTCLI : public QCoreApplication,public bt::QueueManagerInterface
 {
 	Q_OBJECT
 public:
-	KTCLI();
+	KTCLI(int argc, char** argv);
 	virtual ~KTCLI();
 	
 	/// Start downloading
@@ -44,7 +45,7 @@ public:
 	
 private:
 	QString tempDir();
-	bool load(const KUrl & url);
+	bool load(const QUrl &url);
 	bool loadFromFile(const QString & path);
 	bool loadFromDir(const QString & path);
 	
@@ -58,6 +59,7 @@ public slots:
 	void shutdown();
 	
 private:
+	QCommandLineParser parser;
 	QTimer timer;
 	TorrentControlPtr tc;
 	int updates;

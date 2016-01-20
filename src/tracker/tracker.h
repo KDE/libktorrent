@@ -20,7 +20,7 @@
 #ifndef BTTRACKER_H
 #define BTTRACKER_H
 
-#include <kurl.h>
+#include <QUrl>
 #include <util/sha1hash.h>
 #include <interfaces/peersource.h>
 #include <interfaces/trackerinterface.h>
@@ -28,7 +28,7 @@
 #include <ktorrent_export.h>
 #include <QTimer>
 
-class KUrl;
+class QUrl;
 
 namespace bt
 {
@@ -55,7 +55,7 @@ namespace bt
 	{
 		Q_OBJECT
 	public:
-		Tracker(const KUrl & url,TrackerDataSource* tds,const PeerID & id,int tier);
+		Tracker(const QUrl &url,TrackerDataSource* tds,const PeerID & id,int tier);
 		virtual ~Tracker();
 		
 		/**
@@ -65,7 +65,7 @@ namespace bt
 		static void setCustomIP(const QString & str);
 		
 		/// get the tracker url
-		KUrl trackerURL() const {return url;}
+		QUrl trackerURL() const {return url;}
 		
 		/**
 		 * Delete the tracker in ms milliseconds, or when the stopDone signal is emitted.
