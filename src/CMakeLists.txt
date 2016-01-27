@@ -232,6 +232,9 @@ add_library(ktorrent SHARED ${libktorrent_SRC})
 generate_export_header(ktorrent BASE_NAME ktorrent)
 
 target_link_libraries(ktorrent
+PRIVATE
+	qca-qt5
+PUBLIC
 	KF5::Archive
 	KF5::Crash
 	KF5::KIOCore
@@ -239,7 +242,6 @@ target_link_libraries(ktorrent
 	KF5::Solid
 	KF5::I18n
 	Qt5::Xml
-	qca-qt5
 	${GMP_LIBRARIES}
 	${LIBGCRYPT_LIBRARIES}
 )
