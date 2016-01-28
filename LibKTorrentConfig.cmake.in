@@ -11,7 +11,8 @@ find_dependency(Qt5Network "@QT_MIN_VERSION@")
 
 find_dependency(Boost "@Boost_MIN_VERSION@")
 find_dependency(GMP "@GMP_VERSION@")
-find_dependency(LibGcrypt "@LibGcrypt_VERSION@")
+# TODO Fix the error when uncommenting this line
+#find_dependency(LibGcrypt "@LibGcrypt_VERSION@")
 
 set_and_check(LIBKTORRENT_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
 include("${CMAKE_CURRENT_LIST_DIR}/LibKTorrentTargets.cmake")
