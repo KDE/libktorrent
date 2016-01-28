@@ -27,7 +27,7 @@ include(ECMSetupVersion)
 include(ECMPackageConfigHelpers)
 
 set(Boost_MIN_VERSION "1.34.0")
-set(GMP_VERSION "6.0.0")
+set(LibGMP_VERSION "6.0.0")
 set(LibGcrypt_VERSION "1.4.5")
 set(KF5_MIN_VERSION "5.14")
 set(QT_MIN_VERSION "5.2.0")
@@ -40,7 +40,7 @@ ecm_setup_version(${LIBKTORRENT_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         SOVERSION 1)
 
 find_package(Boost "${Boost_MIN_VERSION}" REQUIRED)
-find_package(GMP "${GMP_VERSION}" REQUIRED)
+find_package(LibGMP "${LibGMP_VERSION}" REQUIRED)
 find_package(LibGcrypt "${LibGcrypt_VERSION}" REQUIRED)
 find_package(Qca-qt5 REQUIRED)
 
