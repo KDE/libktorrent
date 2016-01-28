@@ -27,8 +27,8 @@ include(ECMSetupVersion)
 include(ECMPackageConfigHelpers)
 
 set(Boost_MIN_VERSION "1.34.0")
-set(LibGMP_VERSION "6.0.0")
-set(LibGcrypt_VERSION "1.4.5")
+set(LibGMP_MIN_VERSION 6.0.0)
+set(LibGcrypt_MIN_VERSION "1.4.5")
 set(KF5_MIN_VERSION "5.14")
 set(QT_MIN_VERSION "5.2.0")
 
@@ -38,11 +38,6 @@ ecm_setup_version(${LIBKTORRENT_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/libktorrent_version.h"
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfigVersion.cmake"
                         SOVERSION 1)
-
-find_package(Boost "${Boost_MIN_VERSION}" REQUIRED)
-find_package(LibGMP "${LibGMP_VERSION}" REQUIRED)
-find_package(LibGcrypt "${LibGcrypt_VERSION}" REQUIRED)
-find_package(Qca-qt5 REQUIRED)
 
 find_package(Qt5 "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENTS
   Core
@@ -61,6 +56,11 @@ find_package(KF5 "${KF5_MIN_VERSION}" REQUIRED COMPONENTS
   KIO
   Solid
 )
+
+find_package(Boost "${Boost_MIN_VERSION}" REQUIRED)
+find_package(LibGMP "${LibGMP_MIN_VERSION}" REQUIRED)
+find_package(LibGcrypt "${LibGcrypt_MIN_VERSION}" REQUIRED)
+find_package(Qca-qt5 REQUIRED)
 
 kde_enable_exceptions()
 add_definitions(-DQT_USE_QSTRINGBUILDER -DQT_NO_URL_CAST_FROM_STRING)
