@@ -26,7 +26,7 @@
 # ``LibGMP::LibGMP``
 #     The libgmp library
 #
-# Since 1.9.0.
+# Since 1.9.50.
 
 #=============================================================================
 # Copyright 2006 Laurent Montel, <montel@kde.org>
