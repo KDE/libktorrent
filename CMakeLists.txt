@@ -1,10 +1,7 @@
-cmake_minimum_required(VERSION 2.8.9)
+cmake_minimum_required(VERSION 2.8.12)
 project(LIBKTORRENT)
 
-cmake_minimum_required(VERSION 2.8.12)
-
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules;${CMAKE_MODULE_PATH}")
-find_package(LibGcrypt REQUIRED)
 
 # set some default settings
 enable_testing()
@@ -29,17 +26,25 @@ include(ECMMarkAsTest)
 include(ECMSetupVersion)
 include(ECMPackageConfigHelpers)
 
+set(Boost_MIN_VERSION "1.34.0")
+set(GMP_VERSION "6.0.0")
+set(LibGcrypt_VERSION "1.4.5")
+set(KF5_MIN_VERSION "5.14")
+set(QT_MIN_VERSION "5.2.0")
+
 set(LIBKTORRENT_VERSION "1.9.50")
 
 ecm_setup_version(${LIBKTORRENT_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/libktorrent_version.h"
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfigVersion.cmake"
                         SOVERSION 1)
-find_package(GMP REQUIRED)
-find_package(Boost REQUIRED)
+
+find_package(Boost "${Boost_MIN_VERSION}" REQUIRED)
+find_package(GMP "${GMP_VERSION}" REQUIRED)
+find_package(LibGcrypt "${LibGcrypt_VERSION}" REQUIRED)
 find_package(Qca-qt5 REQUIRED)
 
-find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
+find_package(Qt5 "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENTS
   Core
   Gui
   Widgets
@@ -49,7 +54,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 )
 
 # Load the frameworks we need
-find_package(KF5 REQUIRED
+find_package(KF5 "${KF5_MIN_VERSION}" REQUIRED COMPONENTS
   Archive
   Crash
   I18n
