@@ -29,7 +29,7 @@ include(ECMPackageConfigHelpers)
 set(Boost_MIN_VERSION "1.34.0")
 set(LibGMP_MIN_VERSION 6.0.0)
 set(LibGcrypt_MIN_VERSION "1.4.5")
-set(KF5_MIN_VERSION "5.14")
+set(KF5_MIN_VERSION "5.15")
 set(QT_MIN_VERSION "5.2.0")
 
 set(LIBKTORRENT_VERSION "1.9.50")
