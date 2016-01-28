@@ -227,6 +227,10 @@ endif(WIN32)
 # ki18n_wrap_ui(libktorrent_SRC ${libktorrent_UI})
 # kconfig_add_kcfg_files(libktorrent_SRC settings.kcfgc)
 add_library(ktorrent SHARED ${libktorrent_SRC})
+
+target_include_directories(ktorrent INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}>")
+target_include_directories(ktorrent PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOURCE_DIR}/src;${LIBKTORRENT_BINARY_DIR}/src;${LIBKTORRENT_BINARY_DIR}>")
+
 generate_export_header(ktorrent BASE_NAME ktorrent)
 
 target_link_libraries(ktorrent
