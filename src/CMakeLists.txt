@@ -228,9 +228,6 @@ endif(WIN32)
 # kconfig_add_kcfg_files(libktorrent_SRC settings.kcfgc)
 add_library(ktorrent SHARED ${libktorrent_SRC})
 
-target_include_directories(ktorrent INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}>")
-target_include_directories(ktorrent PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOURCE_DIR}/src;${LIBKTORRENT_BINARY_DIR}/src;${LIBKTORRENT_BINARY_DIR}>")
-
 generate_export_header(ktorrent BASE_NAME ktorrent)
 
 target_link_libraries(ktorrent
@@ -251,9 +248,11 @@ PUBLIC
 if(WIN32)
 target_link_libraries(ktorrent ws2_32)
 endif(WIN32)
-set_target_properties(ktorrent PROPERTIES VERSION 6.0.0 SOVERSION 6 )
-install(TARGETS ktorrent EXPORT LibKTorrentTargets  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
+target_include_directories(ktorrent PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOURCE_DIR}/src;${LIBKTORRENT_BINARY_DIR}/src;${LIBKTORRENT_BINARY_DIR}>")
+
+set_target_properties(ktorrent PROPERTIES VERSION 6.0.0 SOVERSION 6 )
+install(TARGETS ktorrent EXPORT LibKTorrentTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
 
 set (interfaces_HDR
     interfaces/peerinterface.h
