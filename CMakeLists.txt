@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(LIBKTORRENT)
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules;${CMAKE_MODULE_PATH}")
-
 # set some default settings
 enable_testing()
 set(BUILD_TESTING ON)
 
 find_package(ECM 1.0.0 REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/")
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ECM_MODULE_PATH} ${CMAKE_MODULE_PATH}")
 
 #
 # checks for functions and stuff
@@ -27,7 +25,7 @@ include(ECMSetupVersion)
 include(ECMPackageConfigHelpers)
 
 set(Boost_MIN_VERSION "1.34.0")
-set(LibGMP_MIN_VERSION 6.0.0)
+set(LibGMP_MIN_VERSION "6.0.0")
 set(LibGcrypt_MIN_VERSION "1.4.5")
 set(KF5_MIN_VERSION "5.15")
 set(QT_MIN_VERSION "5.2.0")
@@ -113,7 +111,7 @@ ecm_configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/LibKTorrentConfig
                               )
 
 # Install the CMake modules needed to use libktorrent
-add_subdirectory(cmake/modules)
+add_subdirectory(cmake)
 
 install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfig.cmake"
                "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfigVersion.cmake"
