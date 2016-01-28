@@ -248,11 +248,11 @@ PUBLIC
 if(WIN32)
 target_link_libraries(ktorrent ws2_32)
 endif(WIN32)
-
+target_include_directories(ktorrent INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/libktorrent>")
 target_include_directories(ktorrent PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOURCE_DIR}/src;${LIBKTORRENT_BINARY_DIR}/src;${LIBKTORRENT_BINARY_DIR}>")
 
-set_target_properties(ktorrent PROPERTIES VERSION 6.0.0 SOVERSION 6 )
-install(TARGETS ktorrent EXPORT LibKTorrentTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
+set_target_properties(ktorrent PROPERTIES VERSION 6.0.0 SOVERSION 6)
+install(TARGETS ktorrent EXPORT LibKTorrentTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 set (interfaces_HDR
     interfaces/peerinterface.h
