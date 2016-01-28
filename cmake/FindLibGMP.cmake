@@ -63,9 +63,9 @@ find_library(LibGMP_LIBRARIES NAMES gmp libgmp)
 # Get version from gmp.h
 if(LibGMP_INCLUDE_DIRS)
     file(STRINGS ${LibGMP_INCLUDE_DIRS}/gmp.h _GMP_H REGEX "^#define __GNU_MP_VERSION.*$")
-    string(REGEX REPLACE "^.*__GNU_MP_VERSION[ ]+\([0-9]+).*$" "\\1" LibGMP_MAJOR_VERSION "${_GMP_H}")
-    string(REGEX REPLACE "^.*__GNU_MP_VERSION_MINOR[ ]+\([0-9]+).*$" "\\1" LibGMP_MINOR_VERSION "${_GMP_H}")
-    string(REGEX REPLACE "^.*__GNU_MP_VERSION_PATCHLEVEL[ ]+\([0-9]+).*$" "\\1" LibGMP_PATCH_VERSION "${_GMP_H}")
+    string(REGEX REPLACE "^.*__GNU_MP_VERSION[ ]+([0-9]+).*$" "\\1" LibGMP_MAJOR_VERSION "${_GMP_H}")
+    string(REGEX REPLACE "^.*__GNU_MP_VERSION_MINOR[ ]+([0-9]+).*$" "\\1" LibGMP_MINOR_VERSION "${_GMP_H}")
+    string(REGEX REPLACE "^.*__GNU_MP_VERSION_PATCHLEVEL[ ]+([0-9]+).*$" "\\1" LibGMP_PATCH_VERSION "${_GMP_H}")
 
     set(LibGMP_VERSION "${LibGMP_MAJOR_VERSION}.${LibGMP_MINOR_VERSION}.${LibGMP_PATCH_VERSION}")
     unset(_GMP_H)
