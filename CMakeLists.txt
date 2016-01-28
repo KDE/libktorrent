@@ -1,12 +1,13 @@
-cmake_minimum_required(VERSION 2.8.12)
 project(LIBKTORRENT)
+
+cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 
 # set some default settings
 enable_testing()
 set(BUILD_TESTING ON)
 
-find_package(ECM 1.0.0 REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ECM_MODULE_PATH} ${CMAKE_MODULE_PATH}")
+find_package(ECM 1.0.0 CONFIG REQUIRED)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
 #
 # checks for functions and stuff
@@ -38,21 +39,21 @@ ecm_setup_version(${LIBKTORRENT_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         SOVERSION 1)
 
 find_package(Qt5 "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENTS
-  Core
-  Gui
-  Widgets
-  Network
-  Xml
-  Test
+    Core
+    Gui
+    Widgets
+    Network
+    Xml
+    Test
 )
 
 # Load the frameworks we need
 find_package(KF5 "${KF5_MIN_VERSION}" REQUIRED COMPONENTS
-  Archive
-  Crash
-  I18n
-  KIO
-  Solid
+    Archive
+    Crash
+    I18n
+    KIO
+    Solid
 )
 
 find_package(Boost "${Boost_MIN_VERSION}" REQUIRED)
@@ -64,16 +65,16 @@ kde_enable_exceptions()
 add_definitions(-DQT_USE_QSTRINGBUILDER -DQT_NO_URL_CAST_FROM_STRING)
 add_definitions(-DTRANSLATION_DOMAIN="libktorrent")
 
-include_directories( ${LIBKTORRENT_BINARY_DIR}	${LIBKTORRENT_SOURCE_DIR} ${Qt5Core_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${QCA-qt5_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+include_directories(${Boost_INCLUDE_DIR})
 
 #XFS prealloc
-CHECK_INCLUDE_FILES(xfs/xfs.h HAVE_XFS_XFS_H)
-IF(HAVE_XFS_XFS_H)
-	SET(CMAKE_EXTRA_INCLUDE_FILES xfs/xfs.h)
-	CHECK_TYPE_SIZE(__u64 HAVE___U64)
-	CHECK_TYPE_SIZE(__s64 HAVE___S64)
-	SET(CMAKE_EXTRA_INCLUDE_FILES)
-ENDIF(HAVE_XFS_XFS_H)
+check_include_files(xfs/xfs.h HAVE_XFS_XFS_H)
+if(HAVE_XFS_XFS_H)
+    set(CMAKE_EXTRA_INCLUDE_FILES xfs/xfs.h)
+    check_type_size(__u64 HAVE___U64)
+    check_type_size(__s64 HAVE___S64)
+    set(CMAKE_EXTRA_INCLUDE_FILES)
+endif()
 
 # check for 64 bit file I/O functions
 check_function_exists(fopen64 HAVE_FOPEN64)
@@ -116,10 +117,8 @@ add_subdirectory(cmake)
 install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfig.cmake"
                "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfigVersion.cmake"
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
-        COMPONENT Devel )
+        COMPONENT Devel)
 
-install(EXPORT LibKTorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE LibKTorrentTargets.cmake )
-
+install(EXPORT LibKTorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE LibKTorrentTargets.cmake)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
-
