@@ -10,7 +10,7 @@ find_dependency(Qt5Core "@QT_MIN_VERSION@")
 find_dependency(Qt5Network "@QT_MIN_VERSION@")
 
 find_dependency(Boost "@Boost_MIN_VERSION@")
-find_dependency(GMP "@GMP_VERSION@")
+find_dependency(LibGMP "@LibGMP_VERSION@")
 # TODO Fix the error when uncommenting this line
 #find_dependency(LibGcrypt "@LibGcrypt_VERSION@")
 

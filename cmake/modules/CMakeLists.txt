@@ -1,5 +1,5 @@
 install(FILES
-    FindGMP.cmake
+    FindLibGMP.cmake
     FindLibGcrypt.cmake
     DESTINATION ${CMAKECONFIG_INSTALL_DIR}
 )
