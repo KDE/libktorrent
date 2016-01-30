@@ -1,5 +1,3 @@
-include_directories(${LIBKTORRENT_SOURCE_DIR})
-
 set(statsfiletest_SRCS statsfiletest.cpp)
 add_executable(statsfiletest ${statsfiletest_SRCS})
 add_test(statsfiletest statsfiletest)

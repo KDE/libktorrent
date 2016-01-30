@@ -1,6 +1,5 @@
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-ktorrent.h.cmake ${CMAKE_BINARY_DIR}/config-ktorrent.h)
 
-include_directories(${QCA-qt5_INCLUDE_DIR})
 remove_definitions(-DQT_NO_HTTP)
 
 set(libktorrent_SRC
@@ -226,7 +225,7 @@ endif(WIN32)
 
 # ki18n_wrap_ui(libktorrent_SRC ${libktorrent_UI})
 # kconfig_add_kcfg_files(libktorrent_SRC settings.kcfgc)
-add_library(ktorrent SHARED ${libktorrent_SRC})
+add_library(ktorrent ${libktorrent_SRC})
 
 generate_export_header(ktorrent BASE_NAME ktorrent)
 
