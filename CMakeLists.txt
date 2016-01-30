@@ -59,7 +59,7 @@ find_package(KF5 "${KF5_MIN_VERSION}" REQUIRED COMPONENTS
 find_package(Boost "${Boost_MIN_VERSION}" REQUIRED)
 find_package(LibGMP "${LibGMP_MIN_VERSION}" REQUIRED)
 find_package(LibGcrypt "${LibGcrypt_MIN_VERSION}" REQUIRED)
-find_package(Qca-qt5 REQUIRED)
+find_package(Qca-qt5 CONFIG REQUIRED)
 
 kde_enable_exceptions()
 add_definitions(-DQT_USE_QSTRINGBUILDER -DQT_NO_URL_CAST_FROM_STRING)
@@ -93,7 +93,6 @@ check_function_exists(posix_fallocate HAVE_POSIX_FALLOCATE)
 check_function_exists(fallocate HAVE_FALLOCATE)
 check_function_exists(statvfs HAVE_STATVFS)
 check_function_exists(statvfs64 HAVE_STATVFS64)
-
 
 add_subdirectory(src)
 add_subdirectory(testlib)
