@@ -216,7 +216,7 @@ namespace utp
 	void RemoteWindow::updateWindowSize(double scaled_gain)
 	{
 		int d = (int)qRound(scaled_gain);
-		if ((int)max_window + d < MIN_PACKET_SIZE)
+		if (max_window + d < MIN_PACKET_SIZE)
 			max_window = MIN_PACKET_SIZE;
 		else
 			max_window += d;

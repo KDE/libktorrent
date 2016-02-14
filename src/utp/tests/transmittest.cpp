@@ -213,14 +213,14 @@ private slots:
 		SendThread st(outgoing, srv);
 		st.start(); // The thread will start sending a whole bunch of data
 		bt::Int64 received = 0;
-		int failures = 0;
+		//int failures = 0;
 		incoming->setBlocking(true);
 		while (received < BYTES_TO_SEND && incoming->connectionState() != CS_CLOSED)
 		{
 			bt::Uint32 ba = incoming->bytesAvailable();
 			if (ba > 0)
 			{
-				failures = 0;
+				//failures = 0;
 				QByteArray data(ba,0);
 				int to_read = ba;//;qMin<bt::Uint32>(1024,ba);
 				int ret = incoming->recv((bt::Uint8*)data.data(),to_read);

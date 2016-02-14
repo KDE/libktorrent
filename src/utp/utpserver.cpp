@@ -206,7 +206,7 @@ namespace utp
 		//Out(SYS_UTP|LOG_NOTICE) << "UTP: received " << ba << " bytes packet from " << addr.toString() << endl;
 		try
 		{
-			if (buffer->size() >= (int)utp::Header::size()) // discard packets which are to small
+			if (buffer->size() >= utp::Header::size()) // discard packets which are to small
 			{
 				p->handlePacket(buffer, addr);
 			}

@@ -95,7 +95,7 @@ private slots:
 		for (int i = 0;i < 10;i++)
 		{
 			int ret = a->send((const bt::Uint8*)test,strlen(test));
-			QVERIFY(ret == strlen(test));
+			QVERIFY(ret == (int)strlen(test));
 			
 			char tmp[20];
 			memset(tmp,0,20);

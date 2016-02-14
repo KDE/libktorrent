@@ -154,7 +154,7 @@ private slots:
 					continue;
 				
 				int ret = outgoing[i]->send((const bt::Uint8*)test,strlen(test));
-				QVERIFY(ret == strlen(test));
+				QVERIFY(ret == (int)strlen(test));
 				bs.set(i,true);
 			}
 		}
@@ -175,7 +175,7 @@ private slots:
 				if (!bs.get(i) && incoming[i]->ready(&poller,net::Poll::INPUT))
 				{
 					bt::Uint8 tmp[20];
-					QVERIFY(incoming[i]->recv(tmp,20) == strlen(test));
+					QVERIFY(incoming[i]->recv(tmp,20) == (int)strlen(test));
 					QVERIFY(memcmp(tmp,test,strlen(test)) == 0);
 					bs.set(i,true);
 				}

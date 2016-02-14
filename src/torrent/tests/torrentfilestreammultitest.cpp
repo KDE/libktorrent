@@ -1,4 +1,6 @@
+#ifndef QT_GUI_LIB
 #define QT_GUI_LIB
+#endif
 
 #include <QtTest>
 #include <QObject>
@@ -98,11 +100,10 @@ private slots:
             QVERIFY(stream);
             QVERIFY(!stream->open(QIODevice::ReadWrite));
             QVERIFY(stream->open(QIODevice::ReadOnly));
-            QVERIFY(stream->size() == tc.getTorrentFile(i).getSize());
+            QVERIFY(stream->size() == (qint64)tc.getTorrentFile(i).getSize());
 
             QByteArray tmp(stream->size(), 0);
-            bt::Uint64 written = 0;
-            bt::Uint32 idx = 0;
+            qint64 written = 0;
             while (written < stream->size())
             {
                 qint64 ret = stream->read(tmp.data(), stream->size());
@@ -134,7 +135,7 @@ private slots:
             QVERIFY(stream);
             QVERIFY(!stream->open(QIODevice::ReadWrite));
             QVERIFY(stream->open(QIODevice::ReadOnly));
-            QVERIFY(stream->size() == tc.getTorrentFile(i).getSize());
+            QVERIFY(stream->size() == (qint64)tc.getTorrentFile(i).getSize());
 
             QFile fptr(stream->path());
             QVERIFY(fptr.open(QIODevice::ReadOnly));

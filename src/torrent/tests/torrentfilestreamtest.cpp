@@ -1,4 +1,6 @@
+#ifndef QT_GUI_LIB
 #define QT_GUI_LIB
+#endif
 
 #include <QtTest>
 #include <QObject>
@@ -163,7 +165,7 @@ private slots:
 
         // Read an area of around 5 chunks in at a random location
         // And verify the 3 middle chunks
-        bt::Uint64 range_size = tc.getStats().chunk_size * 5;
+        qint64 range_size = tc.getStats().chunk_size * 5;
         qint64 off = ((qrand() % 100) / 100.0) * (tc.getStats().total_bytes - range_size);
         QVERIFY(stream->seek(off));
 

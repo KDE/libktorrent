@@ -99,7 +99,7 @@ private slots:
 		char test[] = "TEST";
 		
 		int ret = outgoing->send((const bt::Uint8*)test,strlen(test));
-		QVERIFY(ret == strlen(test));
+		QVERIFY(ret == (int)strlen(test));
 		
 		char tmp[20];
 		memset(tmp,0,20);

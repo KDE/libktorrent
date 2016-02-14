@@ -94,7 +94,7 @@ private slots:
 			bt::Uint8 tmp[100];
 			memset(tmp,0,100);
 			int ret = incoming->recv(tmp,100);
-			QVERIFY(ret == strlen(test));
+			QVERIFY(ret == (int)strlen(test));
 			QVERIFY(memcmp(tmp,test,strlen(test)) == 0);
 			
 			outgoing->close();

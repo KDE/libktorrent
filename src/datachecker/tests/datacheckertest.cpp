@@ -1,7 +1,10 @@
+#ifndef QT_GUI_LIB
+#define QT_GUI_LIB
+#endif
+
 #include <unistd.h>
 #include <time.h>
 
-#define QT_GUI_LIB
 #include <QtTest>
 #include <QEventLoop>
 #include <QLocale>
