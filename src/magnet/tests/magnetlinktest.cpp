@@ -8,7 +8,7 @@ class MagnetLinkTest : public QObject
 	Q_OBJECT
 public:
 	MagnetLinkTest() {}
-	virtual ~MagnetLinkTest() {}
+	~MagnetLinkTest() {}
 
 private slots:
 	void init()

@@ -32,18 +32,23 @@ namespace bt
 	}
 
 	MagnetLink::MagnetLink(const MagnetLink& mlink)
+		: magnet_string(mlink.magnet_string)
+		, info_hash(mlink.info_hash)
+		, torrent_url(mlink.torrent_url)
+		, tracker_urls(mlink.tracker_urls)
+		, path(mlink.path)
+		, name(mlink.name)
 	{
-		magnet_string = mlink.magnet_string;
-		info_hash = mlink.info_hash;
-		tracker_urls = mlink.tracker_urls;
-		torrent_url = mlink.torrent_url;
-		path = mlink.path;
-		name = mlink.name;
+	}
+
+	MagnetLink::MagnetLink(const QUrl& mlink)
+	{
+		parse(mlink);
 	}
 
 	MagnetLink::MagnetLink(const QString& mlink)
 	{
-		parse(mlink);
+		parse(QUrl(mlink));
 	}
 
 	MagnetLink::~MagnetLink()
@@ -74,13 +79,12 @@ namespace bt
 		return result;
 	}
 
-	void MagnetLink::parse(const QString& mlink)
+	void MagnetLink::parse(const QUrl& url)
 	{
-		QUrl url(mlink);
 		if(url.scheme() != QLatin1String("magnet"))
 		{
 			Out(SYS_GEN | LOG_NOTICE) << "Invalid protocol of magnet link "
-			                          << mlink << endl;
+			                          << url << endl;
 			return;
 		}
 
@@ -108,7 +112,7 @@ namespace bt
 			else
 			{
 				Out(SYS_GEN | LOG_NOTICE) << "No hash found in magnet link "
-				                          << mlink << endl;
+				                          << url << endl;
 				return;
 			}
 		}
@@ -117,7 +121,7 @@ namespace bt
 		if(ih.length() != 40 && ih.length() != 32)
 		{
 			Out(SYS_GEN | LOG_NOTICE) << "Hash has not valid length in magnet link "
-			                          << mlink << endl;
+			                          << url << endl;
 			return;
 		}
 
@@ -138,11 +142,11 @@ namespace bt
 			info_hash = SHA1Hash(hash);
 			tracker_urls = GetTrackers(url);
 			name = QUrlQuery(url).queryItemValue(QLatin1String("dn")).replace('+', ' ');
-			magnet_string = mlink;
+			magnet_string = url.toString();
 		}
 		catch(...)
 		{
-			Out(SYS_GEN | LOG_NOTICE) << "Invalid magnet link " << mlink << endl;
+			Out(SYS_GEN | LOG_NOTICE) << "Invalid magnet link " << url << endl;
 		}
 	}
 

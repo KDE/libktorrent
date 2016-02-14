@@ -43,8 +43,9 @@ namespace bt
 	public:
 		MagnetLink();
 		MagnetLink(const MagnetLink & mlink);
+		MagnetLink(const QUrl& mlink);
 		MagnetLink(const QString & mlink);
-		virtual ~MagnetLink();
+		~MagnetLink();
 		
 		/// Assignment operator
 		MagnetLink & operator = (const MagnetLink & mlink);
@@ -74,7 +75,7 @@ namespace bt
 		const SHA1Hash & infoHash() const {return info_hash;}
 		
 	private:
-		void parse(const QString & mlink);
+		void parse(const QUrl& mlink);
 		Uint8 charToHex(const QChar & ch);
 		QString base32ToHexString(const QString &s);
 
