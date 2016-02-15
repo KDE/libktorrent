@@ -258,7 +258,7 @@ namespace bt
 		if (pos + len > (Uint32) data.size())
 			throw Error(i18n("Torrent is incomplete."));
 
-		const QByteArray arr = QByteArray::fromRawData(data.constData() + pos, len);
+		const QByteArray arr(data.constData() + pos, len);
 		pos += len;
 		// read the string into n
 
