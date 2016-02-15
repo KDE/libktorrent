@@ -63,14 +63,15 @@ namespace utp
 
 	///////////////////////////////////////////////////////////
 
-	UTPServer::Private::Private(UTPServer* p) :
-			p(p),
-			running(false),
-			utp_thread(0),
-			mutex(QMutex::Recursive),
-			create_sockets(true),
-			tos(0),
-			mtc(new MainThreadCall(p))
+	UTPServer::Private::Private(UTPServer* p)
+			: p(p)
+			, running(false)
+			, utp_thread(0)
+			, mutex(QMutex::Recursive)
+			, create_sockets(true)
+			, tos(0)
+			, mtc(new MainThreadCall(p))
+			, timer(new QTimer)
 	{
 		QObject::connect(p, SIGNAL(handlePendingConnectionsDelayed()),
 		                 mtc, SLOT(handlePendingConnections()), Qt::QueuedConnection);
@@ -85,10 +86,12 @@ namespace utp
 
 		pending.clear();
 		delete mtc;
+		timer->deleteLater();
 	}
 
 	void UTPServer::Private::stop()
 	{
+		QTimer::singleShot(0, timer, &QTimer::stop); //kill in its own thread
 		running = false;
 		if (utp_thread)
 		{
@@ -98,7 +101,6 @@ namespace utp
 			utp_thread = 0;
 		}
 
-		timer.stop();
 		connections.clear();
 
 		// Close the socket
@@ -229,7 +231,7 @@ namespace utp
 
 	{
 		qsrand(time(0));
-		connect(&d->timer, SIGNAL(timeout()), this, SLOT(checkTimeouts()));
+		connect(d->timer, SIGNAL(timeout()), this, SLOT(checkTimeouts()));
 	}
 
 	UTPServer::~UTPServer()
@@ -294,7 +296,7 @@ namespace utp
 
 	void UTPServer::threadStarted()
 	{
-		d->timer.start(500);
+		d->timer->start(500);
 		foreach (net::ServerSocket::Ptr sock, d->sockets)
 		{
 			sock->setReadNotificationsEnabled(true);
@@ -450,7 +452,7 @@ namespace utp
 			d->utp_thread = new UTPServerThread(this);
 			foreach (net::ServerSocket::Ptr sock, d->sockets)
 				sock->moveToThread(d->utp_thread);
-			d->timer.moveToThread(d->utp_thread);
+			d->timer->moveToThread(d->utp_thread);
 			d->utp_thread->start();
 		}
 	}

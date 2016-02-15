@@ -112,7 +112,7 @@ namespace utp
 		QMutex pending_mutex;
 		MainThreadCall* mtc;
 		QList<Connection::WPtr> last_accepted;
-		QTimer timer;
+		QTimer* timer;
 	};
 }
 
