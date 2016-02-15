@@ -32,10 +32,8 @@ namespace bt
 
 	void BEncoderFileOutput::write(const char* str,Uint32 len)
 	{
-		if (!fptr)
-			return;
-
-		fptr->write(str,len);
+		if (fptr)
+			fptr->write(str,len);
 	}
 	
 	////////////////////////////////////
@@ -107,7 +105,7 @@ namespace bt
 	{
 		if (!out) return;
 		
-		QByteArray s = QString("i%1e").arg(val ? 1 : 0).toUtf8();
+		QByteArray s = QStringLiteral("i%1e").arg(val ? 1 : 0).toUtf8();
 		out->write(s,s.length());
 	}
 	
@@ -122,7 +120,7 @@ namespace bt
 	{
 		if (!out) return;
 		
-		QByteArray s = QString("i%1e").arg(val).toUtf8();
+		QByteArray s = QStringLiteral("i%1e").arg(val).toUtf8();
 		out->write(s,s.length());
 	}
 
@@ -130,7 +128,7 @@ namespace bt
 	{
 		if (!out) return;
 		
-		QByteArray s = QString("i%1e").arg(val).toUtf8();
+		QByteArray s = QStringLiteral("i%1e").arg(val).toUtf8();
 		out->write(s,s.length());
 	}
 
@@ -138,7 +136,7 @@ namespace bt
 	{
 		if (!out) return;
 
-		QByteArray s = QString("%1:%2").arg(strlen(str)).arg(str).toUtf8();
+		QByteArray s = QStringLiteral("%1:%2").arg(strlen(str)).arg(str).toUtf8();
 		out->write(s,s.length());
 	}
 	
@@ -156,7 +154,7 @@ namespace bt
 	{
 		if (!out) return;
 		
-		QByteArray s = QString("%1:").arg(size).toUtf8();
+		QByteArray s = QStringLiteral("%1:").arg(size).toUtf8();
 		out->write(s,s.length());
 		out->write((const char*)data,size);
 	}
