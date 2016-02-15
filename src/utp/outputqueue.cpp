@@ -39,7 +39,7 @@ namespace utp
 	int OutputQueue::add(const PacketBuffer & packet, Connection::WPtr conn)
 	{
 		QMutexLocker lock(&mutex);
-		queue.append(Entry(packet, conn));
+		queue.push_back(Entry(packet, conn));
 		return queue.size();
 	}
 
@@ -78,7 +78,7 @@ namespace utp
 		{
 			Out(SYS_UTP | LOG_NOTICE) << "UTP: " << err.location << endl;
 		}
-		sock->setWriteNotificationsEnabled(!queue.isEmpty());
+		sock->setWriteNotificationsEnabled(!queue.empty());
 		lock.unlock(); // unlock, so we can't get deadlocked in any subsequent close calls
 
 		foreach (utp::Connection::WPtr conn, to_close)

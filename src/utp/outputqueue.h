@@ -23,6 +23,7 @@
 #define UTP_OUTPUTQUEUE_H
 
 #include <QList>
+#include <deque>
 #include <net/serversocket.h>
 #include "connection.h"
 #include "packetbuffer.h"
@@ -64,7 +65,11 @@ namespace utp
 			{}
 		};
 
+#ifndef DO_NOT_USE_DEQUEUE
+		std::deque<Entry> queue;
+#else
 		QList<Entry> queue;
+#endif
 		QMutex mutex;
 	};
 

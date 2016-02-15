@@ -33,9 +33,8 @@ namespace bt
 	}
 
 	PacketReader::PacketReader(Uint32 max_packet_size)
-			: error(false), max_packet_size(max_packet_size)
+			: error(false), len_received(-1), max_packet_size(max_packet_size)
 	{
-		len_received = -1;
 	}
 
 
@@ -47,7 +46,7 @@ namespace bt
 	IncomingPacket::Ptr PacketReader::dequeuePacket()
 	{
 		QMutexLocker lock(&mutex);
-		if (packet_queue.count() == 0)
+		if (packet_queue.size() == 0)
 			return IncomingPacket::Ptr();
 
 		IncomingPacket::Ptr pck = packet_queue.front();
@@ -116,7 +115,7 @@ namespace bt
 		}
 
 		IncomingPacket::Ptr pck(new IncomingPacket(packet_length));
-		packet_queue.append(pck);
+		packet_queue.push_back(pck);
 		return am_of_len_read + readPacket(buf + am_of_len_read, size - am_of_len_read);
 	}
 
@@ -125,7 +124,7 @@ namespace bt
 		if (!size)
 			return 0;
 
-		IncomingPacket::Ptr pck = packet_queue.last();
+		IncomingPacket::Ptr pck = packet_queue.back();
 		if (pck->read + size >= pck->size)
 		{
 			// we can read the full packet
@@ -151,7 +150,7 @@ namespace bt
 			return;
 
 		mutex.lock();
-		if (packet_queue.count() == 0)
+		if (packet_queue.size() == 0)
 		{
 			Uint32 ret = 0;
 			while (ret < size && !error)
@@ -162,7 +161,7 @@ namespace bt
 		else
 		{
 			Uint32 ret = 0;
-			IncomingPacket::Ptr pck = packet_queue.last();
+			IncomingPacket::Ptr pck = packet_queue.back();
 			if (pck->read == pck->size) // last packet in queue is fully read
 				ret = newPacket(buf, size);
 			else

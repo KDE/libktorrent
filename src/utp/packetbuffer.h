@@ -39,7 +39,7 @@ namespace utp
 	public:
 		PacketBuffer();
 		PacketBuffer(const PacketBuffer & buf);
-		virtual ~PacketBuffer();
+		~PacketBuffer();
 
 		/**
 		 * Is the buffer empty
