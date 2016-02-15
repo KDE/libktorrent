@@ -22,7 +22,7 @@
 #define BT_SUPERSEEDER_H
 
 #include <ktorrent_export.h>
-#include <util/bitset.h>
+#include <util/constants.h>
 #include <QMap>
 #include <QSet>
 
@@ -30,6 +30,7 @@ namespace bt
 {
 	class ChunkCounter;
 	class PeerInterface;
+	class BitSet;
 	
 	
 	/**

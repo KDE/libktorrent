@@ -62,7 +62,7 @@ namespace utp
 		void stop();
 
 		/// Prepare the server for polling
-		void preparePolling(net::Poll* p, net::Poll::Mode mode, Connection::Ptr conn);
+		void preparePolling(net::Poll* p, net::Poll::Mode mode, Connection::Ptr& conn);
 
 		/// Set the TOS byte
 		void setTOS(bt::Uint8 type_of_service);

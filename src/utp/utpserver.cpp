@@ -455,7 +455,7 @@ namespace utp
 		}
 	}
 
-	void UTPServer::preparePolling(net::Poll* p, net::Poll::Mode mode, utp::Connection::Ptr conn)
+	void UTPServer::preparePolling(net::Poll* p, net::Poll::Mode mode, utp::Connection::Ptr& conn)
 	{
 		QMutexLocker lock(&d->mutex);
 		PollPipePair* pair = d->poll_pipes.find(p);

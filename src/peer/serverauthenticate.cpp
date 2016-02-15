@@ -69,7 +69,7 @@ namespace bt
 			return;
 		}
 		
-		// try to find a PeerManager which has te right info hash
+		// try to find a PeerManager which has the right info hash
 		SHA1Hash rh(hs+28);
 		PeerManager* pman = ServerInterface::findPeerManager(rh);
 		if (!pman)

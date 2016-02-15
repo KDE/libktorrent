@@ -177,12 +177,13 @@ namespace bt
 		
 		Uint32 byte = i / 8;
 		Uint32 bit = i % 8;
-		if (on && !get(i))
+		bool wasOn = get(i);
+		if (on && !wasOn)
 		{
 			num_on++;
 			data[byte] |= (0x01 << (7 - bit));
 		}
-		else if (!on && get(i))
+		else if (!on && wasOn)
 		{
 			num_on--;
 			Uint8 b = (0x01 << (7 - bit));

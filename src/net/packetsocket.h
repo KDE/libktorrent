@@ -20,7 +20,7 @@
 #ifndef NETBUFFEREDSOCKET_H
 #define NETBUFFEREDSOCKET_H
 
-#include <list>
+#include <deque>
 #include <QMutex>
 #include <net/socket.h>
 #include <download/request.h>
@@ -90,8 +90,8 @@ namespace net
 		bt::Packet::Ptr selectPacket();
 		
 	protected:
-		std::list<bt::Packet::Ptr> control_packets;
-		std::list<bt::Packet::Ptr> data_packets;
+		std::deque<bt::Packet::Ptr> control_packets;
+		std::deque<bt::Packet::Ptr> data_packets; //NOTE: revert back to lists because of erase() calls?
 		bt::Packet::Ptr curr_packet;
 		Uint32 ctrl_packets_sent;
 		

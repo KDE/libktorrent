@@ -24,7 +24,6 @@
 #include <QDateTime>
 #include <util/timer.h>
 #include <interfaces/peerinterface.h>
-#include <util/bitset.h>
 #include <util/ptrmap.h>
 #include <mse/encryptedpacketsocket.h>
 #include <ktorrent_export.h>
@@ -45,8 +44,7 @@ namespace bt
     class PeerDownloader;
     class PeerUploader;
     class PeerManager;
-
-
+    class BitSet;
 
 
     /**

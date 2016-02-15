@@ -178,7 +178,7 @@ namespace net
 	{
 		QMutexLocker locker(&mutex);
 		
-		std::list<Packet::Ptr>::iterator i = data_packets.begin();
+		auto i = data_packets.begin();
 		while (i != data_packets.end())
 		{
 			Packet::Ptr p = *i;
@@ -199,7 +199,7 @@ namespace net
 	void PacketSocket::doNotSendPiece(const bt::Request& req, bool reject)
 	{
 		QMutexLocker locker(&mutex);
-		std::list<Packet::Ptr>::iterator i = data_packets.begin();
+		auto i = data_packets.begin();
 		while (i != data_packets.end())
 		{
 			Packet::Ptr p = *i;

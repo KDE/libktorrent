@@ -30,10 +30,8 @@
 namespace bt
 {
 
-	PeerUploader::PeerUploader(Peer* peer) : peer(peer)
-	{
-		uploaded = 0;
-	}
+	PeerUploader::PeerUploader(Peer* peer) : peer(peer), uploaded(0)
+	{}
 
 
 	PeerUploader::~PeerUploader()
@@ -41,7 +39,7 @@ namespace bt
 
 	void PeerUploader::addRequest(const Request & r)
 	{
-		requests.append(r);
+		requests.push_back(r);
 	}
 	
 	void PeerUploader::removeRequest(const Request & r)
@@ -58,8 +56,8 @@ namespace bt
 		if (peer->areWeChoked())
 			return ret;
 		
-		while (requests.count() > 0)
-		{	
+		while (requests.size() > 0)
+		{
 			Request r = requests.front();
 			
 			Chunk* c = cman.getChunk(r.getIndex());	
@@ -70,7 +68,6 @@ namespace bt
 					if (peer->getStats().fast_extensions)
 						peer->sendReject(r);
 				}
-				requests.pop_front();
 			}
 			else
 			{
@@ -78,8 +75,9 @@ namespace bt
 				Out(SYS_CON|LOG_DEBUG) << "Cannot satisfy request" << endl;
 				if (peer->getStats().fast_extensions)
 					peer->sendReject(r);
-				requests.pop_front();
 			}
+			
+			requests.pop_front();
 		}
 		
 		return ret;
@@ -101,6 +99,6 @@ namespace bt
 		
 	Uint32 PeerUploader::getNumRequests() const
 	{
-		return requests.count();
+		return requests.size();
 	}
 }

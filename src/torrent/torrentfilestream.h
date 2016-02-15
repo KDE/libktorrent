@@ -25,7 +25,6 @@
 #include <QWeakPointer>
 #include <QSharedPointer>
 #include <ktorrent_export.h>
-#include <util/bitset.h>
 #include <util/constants.h>
 
 
@@ -34,6 +33,7 @@ namespace bt
 	class ChunkManager;
 	class TorrentControl;
 	class TorrentInterface;
+	class BitSet;
 	
 	
 	/**
