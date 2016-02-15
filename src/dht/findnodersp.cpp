@@ -60,16 +60,16 @@ namespace dht
 		{
 			enc.write(RSP); enc.beginDict();
 			{
-				enc.write(QString("id")); enc.write(id.getData(), 20);
+				enc.write(QByteArrayLiteral("id")); enc.write(id.getData(), 20);
 				if (nodes.size() > 0)
 				{
-					enc.write(QString("nodes")); 
+					enc.write(QByteArrayLiteral("nodes")); 
 					enc.write(nodes);
 				}
 				
 				if (nodes6.size() > 0)
 				{
-					enc.write(QString("nodes6")); 
+					enc.write(QByteArrayLiteral("nodes6")); 
 					enc.write(nodes6);
 				}
 			}

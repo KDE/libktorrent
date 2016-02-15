@@ -62,11 +62,11 @@ namespace dht
 		{
 			enc.write(ARG); enc.beginDict();
 			{
-				enc.write(QString("id")); enc.write(id.getData(), 20);
-				enc.write(QString("target")); enc.write(target.getData(), 20);
+				enc.write(QByteArrayLiteral("id")); enc.write(id.getData(), 20);
+				enc.write(QByteArrayLiteral("target")); enc.write(target.getData(), 20);
 			}
 			enc.end();
-			enc.write(REQ); enc.write(QString("find_node"));
+			enc.write(REQ); enc.write(QByteArrayLiteral("find_node"));
 			enc.write(TID); enc.write(mtid);
 			enc.write(TYP); enc.write(REQ);
 		}

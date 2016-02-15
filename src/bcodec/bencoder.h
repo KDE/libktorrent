@@ -125,7 +125,7 @@ namespace bt
 		void beginList();
 		
 		template <class T>
-		void write(const QString & key,T val)
+		void write(const QByteArray& key,T val)
 		{
 			write(key);
 			write(val);
@@ -155,17 +155,13 @@ namespace bt
 		 */
 		void write(Uint64 val);
 	
+private:
 		/**
 		 * Write a string
 		 * @param str 
 		 */
 		void write(const char* str);
-
-		/**
-		 * Write a string
-		 * @param str 
-		 */
-		void write(const QString & str);
+public:
 		
 		/**
 		 * Write a QByteArray

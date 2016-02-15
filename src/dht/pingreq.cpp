@@ -56,12 +56,12 @@ namespace dht
 			enc.write(ARG);
 			enc.beginDict();
 			{
-				enc.write(QString("id"));
+				enc.write(QByteArrayLiteral("id"));
 				enc.write(id.getData(), 20);
 			}
 			enc.end();
 			enc.write(REQ);
-			enc.write(QString("ping"));
+			enc.write(QByteArrayLiteral("ping"));
 			enc.write(TID);
 			enc.write(mtid);
 			enc.write(TYP);

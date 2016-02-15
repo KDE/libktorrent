@@ -120,18 +120,18 @@ namespace bt
 			QByteArray data;
 			BEncoder enc(new BEncoderBufferOutput(data));
 			enc.beginDict();
-			enc.write(QString("added"));
+			enc.write(QByteArrayLiteral("added"));
 			encode(enc,added);
-			enc.write(QString("added.f")); 
+			enc.write(QByteArrayLiteral("added.f")); 
 			if (added.size() == 0)
 			{
-				enc.write(QString(""));
+				enc.write(QByteArray());
 			}
 			else
 			{
 				encodeFlags(enc,flags);
 			}
-			enc.write(QString("dropped"));
+			enc.write(QByteArrayLiteral("dropped"));
 			encode(enc,peers);
 			enc.end();
 			
@@ -148,7 +148,7 @@ namespace bt
 	{
 		if (ps.size() == 0)
 		{
-			enc.write(QString(""));
+			enc.write(QByteArray());
 			return;
 		}
 		
@@ -177,7 +177,7 @@ namespace bt
 	{
 		if (flags.size() == 0)
 		{
-			enc.write(QString(""));
+			enc.write(QByteArray());
 			return;
 		}
 		

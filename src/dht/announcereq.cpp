@@ -62,13 +62,13 @@ namespace dht
 		{
 			enc.write(ARG); enc.beginDict();
 			{
-				enc.write(QString("id")); enc.write(id.getData(), 20);
-				enc.write(QString("info_hash")); enc.write(info_hash.getData(), 20);
-				enc.write(QString("port")); enc.write((Uint32)port);
-				enc.write(QString("token")); enc.write(token.getData(), 20);
+				enc.write(QByteArrayLiteral("id")); enc.write(id.getData(), 20);
+				enc.write(QByteArrayLiteral("info_hash")); enc.write(info_hash.getData(), 20);
+				enc.write(QByteArrayLiteral("port")); enc.write((Uint32)port);
+				enc.write(QByteArrayLiteral("token")); enc.write(token.getData(), 20);
 			}
 			enc.end();
-			enc.write(REQ); enc.write(QString("announce_peer"));
+			enc.write(REQ); enc.write(QByteArrayLiteral("announce_peer"));
 			enc.write(TID); enc.write(mtid);
 			enc.write(TYP); enc.write(REQ);
 		}

@@ -737,27 +737,27 @@ namespace bt
         QByteArray arr;
         BEncoder enc(new BEncoderBufferOutput(arr));
         enc.beginDict();
-        enc.write(QString("m"));
+        enc.write(QByteArrayLiteral("m"));
         // supported messages
         enc.beginDict();
-        enc.write(QString("ut_pex"));enc.write((Uint32)(pex_allowed ? UT_PEX_ID : 0));
-        enc.write(QString("ut_metadata")); enc.write(UT_METADATA_ID);
+        enc.write(QByteArrayLiteral("ut_pex"));enc.write((Uint32)(pex_allowed ? UT_PEX_ID : 0));
+        enc.write(QByteArrayLiteral("ut_metadata")); enc.write(UT_METADATA_ID);
         enc.end();
         if (port > 0)
         {
-            enc.write(QString("p"));
+            enc.write(QByteArrayLiteral("p"));
             enc.write((Uint32)port);
         }
-        enc.write("reqq");
+        enc.write(QByteArrayLiteral("reqq"));
         enc.write((bt::Uint32)250);
         if (metadata_size)
         {
-            enc.write(QString("metadata_size"));
+            enc.write(QByteArrayLiteral("metadata_size"));
             enc.write(metadata_size);
         }
 
-        enc.write("upload_only", partial_seed ? "1" : "0");
-        enc.write(QString("v")); enc.write(bt::GetVersionString());
+        enc.write(QByteArrayLiteral("upload_only"), partial_seed ? QByteArrayLiteral("1") : QByteArrayLiteral("0"));
+        enc.write(QByteArrayLiteral("v")); enc.write(bt::GetVersionString().toLatin1());
         enc.end();
         sendExtProtMsg(0, arr);
     }

@@ -115,7 +115,7 @@ namespace bt
 	{
 		if (!out) return;
 		
-		write(QString::number(val,'f'));
+		write(QByteArray::number(val,'f'));
 	}
 	
 	void BEncoder::write(Uint32 val)
@@ -142,24 +142,14 @@ namespace bt
 		out->write(s,s.length());
 	}
 	
-	void BEncoder::write(const QString & str)
-	{
-		if (!out) return;
-		
-		QByteArray u = str.toUtf8();
-		QByteArray s = QString("%1:").arg(u.length()).toUtf8();
-		out->write(s,s.length());
-		out->write(u,u.length());
-	}
-	
 	void BEncoder::write(const QByteArray & data)
 	{
 		if (!out) return;
 		
 		QByteArray s = QByteArray::number(data.size());
-		out->write(s,s.length());
+		out->write(s.constData(),s.length());
 		out->write(":",1);
-		out->write(data.data(),data.size());
+		out->write(data.constData(),data.size());
 	}
 
 	void BEncoder::write(const Uint8* data,Uint32 size)

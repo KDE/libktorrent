@@ -85,8 +85,8 @@ namespace bt
 		QByteArray request;
 		BEncoder enc(new BEncoderBufferOutput(request));
 		enc.beginDict();
-		enc.write(QString("msg_type")); enc.write((bt::Uint32)0);
-		enc.write(QString("piece")); enc.write((bt::Uint32)piece);
+		enc.write(QByteArrayLiteral("msg_type")); enc.write((bt::Uint32)0);
+		enc.write(QByteArrayLiteral("piece")); enc.write((bt::Uint32)piece);
 		enc.end();
 		ext->sendPacket(request);
 	}

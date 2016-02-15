@@ -59,7 +59,7 @@ namespace dht
 		{
 			enc.write(RSP); enc.beginDict();
 			{
-				enc.write(QString("id")); enc.write(id.getData(), 20);
+				enc.write(QByteArrayLiteral("id")); enc.write(id.getData(), 20);
 			}
 			enc.end();
 			enc.write(TID); enc.write(mtid);

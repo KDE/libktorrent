@@ -294,9 +294,9 @@ namespace dht
 	void KBucket::save(bt::BEncoder & enc)
 	{
 		enc.beginDict();
-		enc.write("min", min_key.toByteArray());
-		enc.write("max", max_key.toByteArray());
-		enc.write(QString("entries"));
+		enc.write(QByteArrayLiteral("min"), min_key.toByteArray());
+		enc.write(QByteArrayLiteral("max"), max_key.toByteArray());
+		enc.write(QByteArrayLiteral("entries"));
 		enc.beginList();
 		QList<KBucketEntry>::iterator i;
 		for (i = entries.begin();i != entries.end();i++)
@@ -304,8 +304,8 @@ namespace dht
 			enc.beginDict();
 			KBucketEntry & e = *i;
 
-			enc.write("id", e.getID().toByteArray());
-			enc.write(QString("address"));
+			enc.write(QByteArrayLiteral("id"), e.getID().toByteArray());
+			enc.write(QByteArrayLiteral("address"));
 			if (e.getAddress().ipVersion() == 4)
 			{
 				Uint8 tmp[6];
