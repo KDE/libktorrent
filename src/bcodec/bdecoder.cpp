@@ -208,7 +208,7 @@ namespace bt
 		if (ok)
 		{
 			pos++;
-			debugMsg(QString("INT = %1").arg(val));
+			debugMsg(QStringLiteral("INT = %1").arg(val));
 			BValueNode* vn = new BValueNode(Value(val), off);
 			vn->setLength(pos - off);
 			return vn;
@@ -230,14 +230,12 @@ namespace bt
 
 	BValueNode* BDecoder::parseString()
 	{
-		Uint32 off = pos;
+		const Uint32 off = pos;
 		// string are encoded 4:spam (length:string)
 
 		// first get length by looking for the :
-		QString n;
 		while (pos < (Uint32) data.size() && data[pos] != ':')
 		{
-			n += data[pos];
 			pos++;
 		}
 		// check if we aren't at the end of the data
@@ -247,19 +245,20 @@ namespace bt
 		}
 
 		// try to decode length
+		const QByteArray n = QByteArray::fromRawData(data.constData() + off, pos - off);
 		bool ok = true;
 		int len = 0;
 		len = n.toInt(&ok);
 		if (!ok || len < 0)
 		{
-			throw Error(i18n("Cannot convert %1 to an int", n));
+			throw Error(i18n("Cannot convert %1 to an int", QString::fromUtf8(n)));
 		}
 		// move pos to the first part of the string
 		pos++;
 		if (pos + len > (Uint32) data.size())
 			throw Error(i18n("Torrent is incomplete."));
 
-		QByteArray arr(data.constData() + pos, len);
+		const QByteArray arr = QByteArray::fromRawData(data.constData() + pos, len);
 		pos += len;
 		// read the string into n
 

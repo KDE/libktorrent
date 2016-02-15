@@ -99,7 +99,7 @@ namespace bt
 
 	QString PeerID::toString() const
 	{
-		QString r;
+		QString r; r.reserve(20);
 		for (int i = 0;i < 20;i++)
 			r += id[i] == 0 ? ' ' : id[i];
 		return r;
