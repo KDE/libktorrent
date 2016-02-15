@@ -69,7 +69,7 @@ namespace bt
 
 	private:
 		bool error;
-#ifndef DO_NOT_USE_DEQUEUE
+#ifndef DO_NOT_USE_DEQUE
 		std::deque<IncomingPacket::Ptr> packet_queue;
 #else
 		QList<IncomingPacket::Ptr> packet_queue;

@@ -336,8 +336,8 @@ namespace bt
 	
 	void ChunkDownload::endgameCancel(const Piece & p)
 	{
-		QList<PieceDownloader*>::iterator i = pdown.begin();
-		while (i != pdown.end())
+		auto i = pdown.constBegin();
+		while (i != pdown.constEnd())
 		{
 			PieceDownloader* pd = *i;
 			DownloadStatus* ds = dstatus.find(pd);
@@ -500,8 +500,8 @@ namespace bt
 
 	void ChunkDownload::cancelAll()
 	{
-		QList<PieceDownloader*>::iterator i = pdown.begin();
-		while (i != pdown.end())
+		auto i = pdown.constBegin();
+		while (i != pdown.constEnd())
 		{
 			sendCancels(*i);
 			i++;

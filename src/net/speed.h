@@ -23,6 +23,7 @@
 #include <QPair>
 #include <QLinkedList>
 #include <util/constants.h>
+#include <deque>
 
 namespace net
 {
@@ -36,7 +37,11 @@ namespace net
 	{
 		QAtomicInt rate;
 		bt::Uint32 bytes;
+#ifndef DO_NOT_USE_DEQUE
+		std::deque<QPair<bt::Uint32,bt::TimeStamp> > dlrate;
+#else
 		QLinkedList<QPair<bt::Uint32,bt::TimeStamp> > dlrate;
+#endif
 	public:
 		Speed();
 		virtual ~Speed();

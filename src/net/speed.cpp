@@ -37,13 +37,13 @@ namespace net
 	
 	void Speed::onData(Uint32 b,bt::TimeStamp ts)
 	{
-		dlrate.append(qMakePair(b,ts));
+		dlrate.push_back(qMakePair(b,ts));
 		bytes += b;
 	}
 
 	void Speed::update(bt::TimeStamp now)
 	{	
-		QLinkedList<QPair<Uint32,TimeStamp> >::iterator i = dlrate.begin();
+		auto i = dlrate.begin();
 		while (i != dlrate.end())
 		{
 			QPair<Uint32,TimeStamp> & p = *i;
@@ -53,7 +53,12 @@ namespace net
 					bytes -= p.first; // subtract bytes
 				else
 					bytes = 0;
+#ifndef DO_NOT_USE_DEQUE
+				dlrate.pop_front();
+				i = dlrate.begin();
+#else
 				i = dlrate.erase(i);
+#endif
 			}
 			else
 			{	

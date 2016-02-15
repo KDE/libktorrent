@@ -65,7 +65,7 @@ namespace utp
 			{}
 		};
 
-#ifndef DO_NOT_USE_DEQUEUE
+#ifndef DO_NOT_USE_DEQUE
 		std::deque<Entry> queue;
 #else
 		QList<Entry> queue;
