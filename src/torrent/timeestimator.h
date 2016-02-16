@@ -36,8 +36,10 @@ namespace bt
     class SampleQueue
     {
     public:
-        SampleQueue(int max);
+        SampleQueue();
         ~SampleQueue();
+
+        enum {SAMPLE_COUNT_MAX = 20};
 
         /**
          * Inserts new sample into the queue. The oldest sample is overwritten.
@@ -61,13 +63,12 @@ namespace bt
         Uint32 sum();
 
     private:
-        int m_size;
         int m_count;
 
         int m_start;
         int m_end;
 
-        Uint32* m_samples;
+        Uint32 m_samples[SAMPLE_COUNT_MAX];
     };
 
     /**
@@ -105,7 +106,7 @@ namespace bt
         Uint64 bytesLeft() const;
 
         TorrentControl* m_tc;
-        SampleQueue* m_samples;
+        SampleQueue m_samples;
 
         Uint32 m_lastAvg;
         int m_lastETA;

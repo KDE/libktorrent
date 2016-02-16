@@ -49,7 +49,7 @@ namespace bt
 		}
 #else
 		if (ret.endsWith('/'))
-			ret = ret.left(ret.length() - 1);
+			ret.chop(1);
 		if (ret.startsWith('/'))
 			ret = ret.mid(1);
 #endif
@@ -279,10 +279,7 @@ namespace bt
 			if (url_list)
 			{
 				for (Uint32 j = 0;j < url_list->getNumChildren();j++)
-				{
-					QUrl url(url_list->getString(j,0));
-					tier->urls.append(url);
-				}
+					tier->urls.append(QUrl(url_list->getString(j,0)));
 				tier->next = new TrackerTier();
 				tier = tier->next;
 			}

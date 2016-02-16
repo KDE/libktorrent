@@ -29,17 +29,13 @@ namespace bt
 {
 
     TimeEstimator::TimeEstimator(TorrentControl* tc)
-        : m_tc(tc)
+        : m_tc(tc), m_lastAvg(0), m_lastETA(0), m_perc(-1.0f)
     {
-        m_samples = new SampleQueue(20);
-        m_lastAvg = 0;
-        m_perc = -1;
     }
 
 
     TimeEstimator::~TimeEstimator()
     {
-        delete m_samples;
     }
 
     Uint32 TimeEstimator::sample() const
@@ -120,27 +116,27 @@ namespace bt
 
     int TimeEstimator::estimateWINX()
     {
-        if(m_samples->sum() > 0 && m_samples->count() > 0)
-            return (Uint32) floor((double) bytesLeft() / ((double) m_samples->sum() / (double) m_samples->count()));
+        if(m_samples.sum() > 0 && m_samples.count() > 0)
+            return (Uint32) floor((double) bytesLeft() / ((double) m_samples.sum() / (double) m_samples.count()));
 
         return NEVER;
     }
 
     int TimeEstimator::estimateMAVG()
     {
-        if(m_samples->count() > 0)
+        if(m_samples.count() > 0)
         {
             double lavg;
 
             if(m_lastAvg == 0)
-                lavg = (Uint32) m_samples->sum() / m_samples->count();
+                lavg = (Uint32) m_samples.sum() / m_samples.count();
             else
-                lavg = m_lastAvg - ((double) m_samples->first() / (double) m_samples->count()) + ((double) m_samples->last() / (double) m_samples->count());
+                lavg = m_lastAvg - ((double) m_samples.first() / (double) m_samples.count()) + ((double) m_samples.last() / (double) m_samples.count());
 
             m_lastAvg = (Uint32) floor(lavg);
 
             if(lavg > 0)
-                return (Uint32) floor((double) bytesLeft() / ((lavg + (m_samples->sum() / m_samples->count())) / 2));
+                return (Uint32) floor((double) bytesLeft() / ((lavg + (m_samples.sum() / m_samples.count())) / 2));
 
             return NEVER;
         }
@@ -148,38 +144,34 @@ namespace bt
         return NEVER;
     }
 
-    SampleQueue::SampleQueue(int max)
-        : m_size(max), m_count(0)
+    SampleQueue::SampleQueue()
+        : m_count(0)
     {
-        m_samples = new Uint32[max];
-
-        for(int i = 0; i < m_size; ++i)
+        for(int i = 0; i < SAMPLE_COUNT_MAX; ++i)
             m_samples[i] = 0;
 
         m_end = -1;
-
         m_start = 0;
     }
 
     SampleQueue::~ SampleQueue()
     {
-        delete [] m_samples;
     }
 
     void SampleQueue::push(Uint32 sample)
     {
-        if(m_count < m_size)
+        if(m_count < SAMPLE_COUNT_MAX)
         {
             //it's not full yet
-            m_samples[(++m_end) % m_size ] = sample;
+            m_samples[(++m_end) % SAMPLE_COUNT_MAX] = sample;
             m_count++;
 
             return;
         }
 
         //since it's full I'll just replace the oldest value with new one and update all variables.
-        m_end = (m_end + 1) % m_size;
-        m_start = (m_start + 1) % m_size;
+        m_end = (m_end + 1) % SAMPLE_COUNT_MAX;
+        m_start = (m_start + 1) % SAMPLE_COUNT_MAX;
         m_samples[m_end] = sample;
     }
 
@@ -195,7 +187,7 @@ namespace bt
 
     bool SampleQueue::isFull()
     {
-        return m_count >= m_size;
+        return m_count >= SAMPLE_COUNT_MAX;
     }
 
     int SampleQueue::count()
@@ -219,7 +211,7 @@ namespace bt
 
 
         //push new sample
-        m_samples->push(sample());
+        m_samples.push(sample());
 
         if(s.completed)
             return estimateWINX();
@@ -235,16 +227,16 @@ namespace bt
         m_perc = perc;
 
 
-        if(s.bytes_downloaded < 1024 * 100 && m_samples->last() > 0) // < 100KB
+        if(s.bytes_downloaded < 1024 * 100 && m_samples.last() > 0) // < 100KB
         {
             m_lastETA = estimateGASA();
             return m_lastETA;
         }
 
-        if(percentage >= 99 && m_samples->last() > 0 && bytesLeft() <= 10 * 1024 * 1024 * 1024LL) //1% of a very large torrent could be hundreds of MB so limit it to 10MB
+        if(percentage >= 99 && m_samples.last() > 0 && bytesLeft() <= 10 * 1024 * 1024 * 1024LL) //1% of a very large torrent could be hundreds of MB so limit it to 10MB
         {
 
-            if(!m_samples->isFull())
+            if(!m_samples.isFull())
             {
                 m_lastETA = estimateWINX();
 
