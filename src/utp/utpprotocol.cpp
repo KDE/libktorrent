@@ -31,12 +31,12 @@ namespace utp
 	{
 		switch (type)
 		{
-			case ST_DATA: return QString("DATA");
-			case ST_FIN: return QString("FIN");
-			case ST_STATE: return QString("STATE");
-			case ST_RESET: return QString("RESET");
-			case ST_SYN: return QString("SYN");
-			default: return QString("UNKNOWN");
+			case ST_DATA: return QStringLiteral("DATA");
+			case ST_FIN: return QStringLiteral("FIN");
+			case ST_STATE: return QStringLiteral("STATE");
+			case ST_RESET: return QStringLiteral("RESET");
+			case ST_SYN: return QStringLiteral("SYN");
+			default: return QStringLiteral("UNKNOWN");
 		}
 	}
 
@@ -72,13 +72,13 @@ namespace utp
 
 
 	PacketParser::PacketParser(const QByteArray& pkt)
-			: packet((const bt::Uint8*)pkt.data()), size(pkt.size()), sack_found(false), data_off(0), data_size(0)
+		: packet((const bt::Uint8*)pkt.data()), sack_found(false), size(pkt.size()), data_off(0), data_size(0)
 	{
 		hdr.read(packet);
 	}
 
 	PacketParser::PacketParser(const bt::Uint8* packet, bt::Uint32 size)
-			: packet(packet), size(size), sack_found(false), data_off(0), data_size(0)
+		: packet(packet), sack_found(false), size(size), data_off(0), data_size(0)
 	{
 		hdr.read(packet);
 	}

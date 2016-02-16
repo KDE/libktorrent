@@ -149,22 +149,22 @@ namespace bt
 		
 	protected:
 		Uint32 index;
+		Uint32 first_chunk;
+		Uint32 last_chunk;
+		Uint32 num_chunks_downloaded;
+		Uint64 size;
+		Uint64 first_chunk_off;
+		Uint64 last_chunk_size;
+		bool preexisting;
+		bool emit_status_changed;
+		bool preview;
+		mutable FileType filetype;
+		Priority priority;
 		QString path;
 		QString path_on_disk;
 		QString user_modified_path;
 		mutable QString mount_point;
-		Uint64 size;
-		Uint32 first_chunk;
-		Uint32 last_chunk;
-		Uint32 num_chunks_downloaded;
-		Priority priority;
-		bool preexisting;
-		bool emit_status_changed;
-		bool preview;
 		QList<QByteArray> unencoded_path;
-		Uint64 first_chunk_off;
-		Uint64 last_chunk_size;
-		mutable FileType filetype;
 	};
 
 }

@@ -26,10 +26,22 @@ namespace bt
 {
 
 	TorrentFileInterface::TorrentFileInterface(Uint32 index,const QString & path,Uint64 size)
-	: index(index),path(path),size(size),first_chunk(0),last_chunk(0),num_chunks_downloaded(0),
-	priority(NORMAL_PRIORITY),emit_status_changed(true),preview(false),filetype(UNKNOWN)
+		: index(index)
+		, first_chunk(0)
+		, last_chunk(0)
+		, num_chunks_downloaded(0)
+		, size(size)
+		, first_chunk_off(0)
+		, last_chunk_size(0)
+
+		, preexisting(false)
+		, emit_status_changed(true)
+		, preview(false)
+		, filetype(UNKNOWN)
+		, priority(NORMAL_PRIORITY)
+
+		, path(path)
 	{
-		preexisting = false;
 	}
 
 
@@ -49,7 +61,7 @@ namespace bt
 	
 	void TorrentFileInterface::changeTextCodec(QTextCodec* codec)
 	{
-		path = "";
+		path.clear();
 		int idx = 0;
 		foreach(const QByteArray & b,unencoded_path)
 		{

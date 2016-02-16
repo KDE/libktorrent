@@ -48,8 +48,8 @@ namespace utp
 
 	struct KTORRENT_EXPORT Header
 	{
-	unsigned int version: 4;
-	unsigned int type: 4;
+		unsigned int version: 4;
+		unsigned int type: 4;
 		bt::Uint8 extension;
 		bt::Uint16 connection_id;
 		bt::Uint32 timestamp_microseconds;
@@ -65,9 +65,11 @@ namespace utp
 
 	struct SelectiveAck
 	{
+		bt::Uint8* bitmask;
 		bt::Uint8 extension;
 		bt::Uint8 length;
-		bt::Uint8* bitmask;
+
+		SelectiveAck(): bitmask(NULL), extension(0), length(0){}
 	};
 
 	struct ExtensionBits
@@ -175,10 +177,10 @@ namespace utp
 
 	private:
 		const bt::Uint8* packet;
-		bt::Uint32 size;
 		Header hdr;
-		bool sack_found;
 		SelectiveAck sack;
+		bool sack_found;
+		bt::Uint32 size;
 		bt::Uint32 data_off;
 		bt::Uint32 data_size;
 	};
