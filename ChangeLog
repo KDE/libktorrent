@@ -1,3 +1,8 @@
+Changes in 5.0:
+- Port to KF5/Qt5: QHttp-based tracker communication was dropped in favour of KIO-based one
+- Optimize queue data structures shown up be callgrind
+- fix issues found by Coverity static analyzer
+
 Changes in 1.4:
 - Decrease code redundancy in torrent loading code
 - Add support for TR-064 IGD's

@@ -900,6 +900,15 @@ namespace bt
     bool Peer::sendChunk(Uint32 index, Uint32 begin, Uint32 len, Chunk * ch)
     {
         //		Out() << "sendChunk " << index << " " << begin << " " << len << endl;
+
+#ifndef NDEBUG
+        Q_ASSERT(ch);
+        if (!ch)
+        {
+            Out(SYS_CON | LOG_NOTICE) << "Warning : attempted to upload an invalid chunk" << endl;
+            return false;
+        }
+#endif
         if (begin >= ch->getSize() || begin + len > ch->getSize())
         {
             Out(SYS_CON | LOG_NOTICE) << "Warning : Illegal piece request" << endl;
@@ -907,20 +916,12 @@ namespace bt
             Out(SYS_CON | LOG_NOTICE) << "\tPiece : begin = " << begin << " len = " << len << endl;
             return false;
         }
-        else if (!ch)
-        {
-            Out(SYS_CON | LOG_NOTICE) << "Warning : attempted to upload an invalid chunk" << endl;
-            return false;
-        }
-        else
-        {
-            /*		Out(SYS_CON|LOG_DEBUG) << QString("Uploading %1 %2 %3 %4 %5")
-                *			.arg(index).arg(begin).arg(len).arg((quint64)ch,0,16).arg((quint64)ch->getData(),0,16)
-                *			<< endl;;
-                */
-            sock->addPacket(Packet::Ptr(new Packet(index, begin, len, ch)));
-            return true;
-        }
+        /*		Out(SYS_CON|LOG_DEBUG) << QString("Uploading %1 %2 %3 %4 %5")
+         *			.arg(index).arg(begin).arg(len).arg((quint64)ch,0,16).arg((quint64)ch->getData(),0,16)
+         *			<< endl;;
+         */
+        sock->addPacket(Packet::Ptr(new Packet(index, begin, len, ch)));
+        return true;
     }
 
     void Peer::sendExtProtMsg(Uint8 id, const QByteArray & data)
