@@ -239,11 +239,11 @@ namespace bt
 	QString DurationToString(Uint32 nsecs)
 	{
 		int ndays = nsecs / 86400;
-		QTime t = QTime().addSecs(nsecs % 86400);
-		QString s = t.toString();
-		if (ndays > 0)
-			s = i18np("1 day ","%1 days ",ndays) + s;
-
+		QTime t = QTime(0,0,0,0).addSecs(nsecs % 86400);
+		QString s;
+		if (ndays > 0)     s = i18np("1 day ","%1 days ",ndays);
+		else if (t.hour()) s = t.toString();
+		else               s = t.toString(QStringLiteral("mm:ss"));
 		return s;
 	}
 	
