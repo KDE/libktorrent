@@ -40,18 +40,21 @@ namespace bt
 	
 
 	UDPTracker::UDPTracker(const QUrl &url,TrackerDataSource* tds,const PeerID & id,int tier)
-	: Tracker(url,tds,id,tier)
+		: Tracker(url,tds,id,tier)
+		, connection_id(0)
+		, transaction_id(0)
+		, scrape_transaction_id(0)
+		, data_read(0)
+		, failures(0)
+		, resolved(false)
+		, todo(NOTHING)
+		, event(NONE)
 	{
 		num_instances++;
 		if (!socket)
 			socket = new UDPTrackerSocket();
 		
-		connection_id = 0;
-		transaction_id = 0;
 		interval = 0;
-		scrape_transaction_id = 0;
-		todo = NOTHING;
-		failures = 0;
 		
 		conn_timer.setSingleShot(true);
 		connect(&conn_timer,SIGNAL(timeout()),this,SLOT(onConnTimeout()));
@@ -63,8 +66,6 @@ namespace bt
 				this,SLOT(onError(Int32,QString)));
 		connect(socket,SIGNAL(scrapeReceived(Int32,const Uint8*,Uint32)),
 				this,SLOT(scrapeReceived(Int32,const Uint8*,Uint32)));
-		
-		resolved = false;
 	}
 
 

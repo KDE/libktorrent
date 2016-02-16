@@ -258,26 +258,28 @@ namespace bt
 		bool checkPathForDirectoryTraversal(const QString & p);
 		
 	private:
-		TrackerTier* trackers;
 		QString name_suggestion;
 		QByteArray unencoded_name;
-		Uint64 chunk_size;
-		Uint64 last_chunk_size;
-		Uint64 total_size;
+		QString comments;
+		QByteArray metadata;
+
 		SHA1Hash info_hash;
-		PeerID peer_id;
 		QVector<SHA1Hash> hash_pieces;
 		QVector<TorrentFile> files;
 		QVector<DHTNode> nodes;
-		QTextCodec* text_codec;
-		bool priv_torrent;
 		QList<QUrl> web_seeds;
+		PeerID peer_id;
+
+		TrackerTier* trackers;
+		Uint64 chunk_size;
+		Uint64 last_chunk_size;
+		Uint64 total_size;
+		QTextCodec* text_codec;
 		FilePriorityListener* file_prio_listener;
 		mutable Uint32 pos_cache_chunk;
 		mutable Uint32 pos_cache_file;
 		MonitorInterface* tmon;
-		QString comments;
-		QByteArray metadata;
+		bool priv_torrent;
 		bool loaded;
 	};
 

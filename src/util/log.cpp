@@ -49,13 +49,13 @@ namespace bt
 		QTextStream* out;
 		QFile* fptr;
 		bool to_cout;
+		unsigned int filter;
 		QList<LogMonitorInterface *> monitors;
 		QString tmp;
 		QMutex mutex;
-		unsigned int m_filter;
 		AutoRotateLogJob* rotate_job;
 	public:
-		Private(Log* parent) : parent(parent),out(0),fptr(0),to_cout(false),rotate_job(0)
+		Private(Log* parent) : parent(parent),out(0),fptr(0),to_cout(false),filter(0),rotate_job(0)
 		{
 		}
 
@@ -73,9 +73,9 @@ namespace bt
 			fptr = 0;
 		}
 		
-		void setFilter(unsigned int filter)
+		void setFilter(unsigned int f)
 		{
-			m_filter = filter;
+			filter = f;
 		}
 		
 		void rotateLogs(const QString & file)
@@ -150,7 +150,7 @@ namespace bt
 				while (i != monitors.end())
 				{
 					LogMonitorInterface* lmi = *i;
-					lmi->message(final,m_filter);
+					lmi->message(final,filter);
 					i++;
 				}
 			}

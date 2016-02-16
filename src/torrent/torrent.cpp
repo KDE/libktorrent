@@ -48,37 +48,32 @@ namespace bt
 				ret = ret.replace(invalid[i],'_');
 		}
 #else
-		if (ret.endsWith("/"))
+		if (ret.endsWith('/'))
 			ret = ret.left(ret.length() - 1);
-		if (ret.startsWith("/"))
+		if (ret.startsWith('/'))
 			ret = ret.mid(1);
 #endif
 		// Don't allow directory traversal things in names
-		if (ret.contains("/") || ret.contains(".."))
+		if (ret.contains('/') || ret.contains(QLatin1String("..")))
 		{
 			QStringList sl = ret.split(bt::DirSeparator());
-			sl.removeAll("..");
-			ret = sl.join("_");
+			sl.removeAll(QLatin1String(".."));
+			ret = sl.join(QStringLiteral("_"));
 		}
 		
 		return ret;
 	}
 
-	Torrent::Torrent() : chunk_size(0),total_size(0),priv_torrent(false),pos_cache_chunk(0),pos_cache_file(0),tmon(0)
+	Torrent::Torrent()
+		: trackers(NULL),chunk_size(0),last_chunk_size(0),total_size(0),text_codec(QTextCodec::codecForName("utf-8"))
+		, file_prio_listener(NULL),pos_cache_chunk(0),pos_cache_file(0),tmon(NULL),priv_torrent(false),loaded(false)
 	{
-		text_codec = QTextCodec::codecForName("utf-8");
-		trackers = 0;
-		file_prio_listener = 0;
-		loaded = false;
 	}
 
-	Torrent::Torrent(const bt::SHA1Hash & hash) : chunk_size(0),total_size(0),priv_torrent(false),pos_cache_chunk(0),pos_cache_file(0),tmon(0)
+	Torrent::Torrent(const bt::SHA1Hash & hash): info_hash(hash)
+		, trackers(NULL),chunk_size(0),last_chunk_size(0),total_size(0),text_codec(QTextCodec::codecForName("utf-8"))
+		, file_prio_listener(NULL),pos_cache_chunk(0),pos_cache_file(0),tmon(NULL),priv_torrent(false),loaded(false)
 	{
-		text_codec = QTextCodec::codecForName("utf-8");
-		trackers = 0;
-		file_prio_listener = 0;
-		loaded = false;
-		info_hash = hash;
 	}
 
 	Torrent::~Torrent()

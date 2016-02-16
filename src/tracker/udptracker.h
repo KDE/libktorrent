@@ -89,16 +89,16 @@ namespace bt
 
 	private:
 		net::Address address;
-		Int32 transaction_id;
 		Int64 connection_id;
+		Int32 transaction_id;
 		Int32 scrape_transaction_id;
 
 		Uint32 data_read;
 		int failures;
-		QTimer conn_timer;
-		Event event;
 		bool resolved;
 		Uint32 todo;
+		Event event;
+		QTimer conn_timer;
 
 		static UDPTrackerSocket* socket;
 		static Uint32 num_instances;
