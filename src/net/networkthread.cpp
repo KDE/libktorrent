@@ -30,7 +30,7 @@ namespace net
 {
 
 	NetworkThread::NetworkThread(SocketMonitor* sm)
-		: sm(sm),running(false)
+		: sm(sm), running(false), prev_run_time(0)
 	{
 		groups.setAutoDelete(true);
 		groups.insert(0,new SocketGroup(0,0));

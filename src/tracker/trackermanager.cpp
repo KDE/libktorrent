@@ -179,7 +179,7 @@ namespace bt
 		
 		custom_trackers.removeAll(url);
 		Tracker* trk = trackers.find(url);
-		if (curr == trk && tor->getStats().priv_torrent)
+		if (trk && curr == trk && tor->getStats().priv_torrent)
 		{
 			// do a timed delete on the tracker, so the stop signal
 			// has plenty of time to reach it

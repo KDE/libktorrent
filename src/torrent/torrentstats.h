@@ -53,6 +53,14 @@ namespace bt
 
 	struct KTORRENT_EXPORT TorrentStats
 	{
+		/// Error message for the user
+		QString error_msg;
+		/// QDateTime when the torrent was added
+		QDateTime time_added;
+		/// Name of the torrent
+		QString torrent_name;
+		/// Path of the dir or file where the data will get saved
+		QString output_path;
 		/// The number of bytes imported (igore these for average speed)
 		Uint64 imported_bytes;
 		/// Total number of bytes downloaded.
@@ -99,10 +107,6 @@ namespace bt
 		Uint64 session_bytes_downloaded;
 		/// The number of bytes uploaded in this session
 		Uint64 session_bytes_uploaded;
-		/// Name of the torrent
-		QString torrent_name;
-		/// Path of the dir or file where the data will get saved
-		QString output_path;
 		/// See if we are running
 		bool running;
 		/// See if the torrent has been started
@@ -111,36 +115,32 @@ namespace bt
 		bool queued;
 		/// See if we are allowed to startup this torrent automatically.
 		bool autostart;
-		/// See if we have a multi file torrent
-		bool multi_file_torrent;
 		/// See if the torrent is stopped by error
 		bool stopped_by_error;
 		/// See if the download is completed
 		bool completed;
+		/// See if this torrent is paused
+		bool paused;
+		/// Set to true if torrent was stopped due to reaching max share ration or max seed time
+		bool auto_stopped;
+		/// Set to true if superseeding is enabled
+		bool superseeding;
+		/// Whether or not the QM can start this torrent
+		bool qm_can_start;
+		/// See if we have a multi file torrent
+		bool multi_file_torrent;
+		/// Private torrent (i.e. no use of DHT)
+		bool priv_torrent;
 		/// Maximum share ratio
 		float max_share_ratio;
 		/// Maximum seed time in hours
 		float max_seed_time;
-		/// Private torrent (i.e. no use of DHT)
-		bool priv_torrent;
 		/// Number of corrupted chunks found since the last check
 		Uint32 num_corrupted_chunks;
 		/// TimeStamp when we last saw download activity
 		TimeStamp last_download_activity_time;
 		/// TimeStamp when we last saw upload activity
 		TimeStamp last_upload_activity_time;
-		/// Whether or not the QM can start this torrent
-		bool qm_can_start;
-		/// See if this torrent is paused
-		bool paused;
-		/// Error message for the user
-		QString error_msg;
-		/// QDateTime when the torrent was added
-		QDateTime time_added;
-		/// Set to true if superseeding is enabled
-		bool superseeding;
-		/// Set to true if torrent was stopped due to reaching max share ration or max seed time
-		bool auto_stopped;
 		
 		TorrentStats();
 		

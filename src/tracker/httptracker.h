@@ -81,9 +81,9 @@ namespace bt
 		KJob* active_job;
 		QList<QUrl> announce_queue;
 		QString event;
-		Uint32 failures;
 		QTimer timer;
 		QString error;
+		Uint32 failures;
 		bool supports_partial_seed_extension;
 		
 		

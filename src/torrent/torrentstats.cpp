@@ -24,27 +24,46 @@
 namespace bt
 {
 	TorrentStats::TorrentStats()
+		: imported_bytes(0)
+		, bytes_downloaded(0)
+		, bytes_uploaded(0)
+		, bytes_left(0)
+		, bytes_left_to_download(0)
+		, total_bytes(0)
+		, total_bytes_to_download(0)
+		, download_rate(0)
+		, upload_rate(0)
+		, num_peers(0)
+		, num_chunks_downloading(0)
+		, total_chunks(0)
+		, num_chunks_downloaded(0)
+		, num_chunks_excluded(0)
+		, num_chunks_left(0)
+		, chunk_size(0)
+		, seeders_total(0)
+		, seeders_connected_to(0)
+		, leechers_total(0)
+		, leechers_connected_to(0)
+		, status(NOT_STARTED)
+		, session_bytes_downloaded(0)
+		, session_bytes_uploaded(0)
+		, running(false)
+		, started(false)
+		, queued(false)
+		, autostart(false)
+		, stopped_by_error(false)
+		, completed(false)
+		, paused(false)
+		, auto_stopped(false)
+		, superseeding(false)
+		, qm_can_start(false)
+		, priv_torrent(false)
+		, multi_file_torrent(false)
+		, max_share_ratio(0.0f)
+		, max_seed_time(0.0f)
+		, num_corrupted_chunks(0)
 	{
-		imported_bytes = 0;
-		running = false;
-		started = false;
-		queued = false;
-		stopped_by_error = false;
-		session_bytes_downloaded = 0;
-		session_bytes_uploaded = 0;
-		status = NOT_STARTED;
-		autostart = false;
-		priv_torrent = false;
-		seeders_connected_to = seeders_total = 0;
-		leechers_connected_to = leechers_total = 0;
-		max_share_ratio = 0.00f;
-		max_seed_time = 0;
 		last_download_activity_time = last_upload_activity_time = bt::CurrentTime();
-		num_corrupted_chunks = 0;
-		qm_can_start = false;
-		paused = false;
-		superseeding = false;
-		auto_stopped = false;
 	}
 	
 	
@@ -59,10 +78,7 @@ namespace bt
 	
 	bool TorrentStats::overMaxRatio() const
 	{
-		if (completed && max_share_ratio > 0)
-			return shareRatio() - max_share_ratio > 0.00001;
-		else
-			return false;
+		return (completed && max_share_ratio > 0) && (shareRatio() - max_share_ratio > 0.00001);
 	}
 	
 	QString TorrentStats::statusToString() const

@@ -352,7 +352,7 @@ namespace bt
 		current_chunk_data = PieceData::Ptr();
 		if (tc->getStats().multi_file_torrent)
 		{
-			bt::Uint64 tor_byte_offset = firstChunk() * tc->getStats().chunk_size;
+			bt::Uint64 tor_byte_offset = (bt::Uint64)firstChunk() * (bt::Uint64)tc->getStats().chunk_size;
 			tor_byte_offset += firstChunkOffset() + pos;
 			current_chunk = tor_byte_offset / tc->getStats().chunk_size;
 			current_chunk_offset = tor_byte_offset % tc->getStats().chunk_size;

@@ -52,13 +52,12 @@ namespace bt
 	bool HTTPTracker::use_qhttp = false;
 
 	HTTPTracker::HTTPTracker(const QUrl & url, TrackerDataSource* tds, const PeerID & id, int tier)
-			: Tracker(url, tds, id, tier),
-			supports_partial_seed_extension(false)
+		: Tracker(url, tds, id, tier)
+		, active_job(NULL)
+		, failures(0)
+		, supports_partial_seed_extension(false)
 	{
-		active_job = 0;
-
 		interval = 5 * 60; // default interval 5 minutes
-		failures = 0;
 		connect(&timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
 	}
 
@@ -302,6 +301,7 @@ namespace bt
 		{
 			failures++;
 			failed(i18n("Invalid response from tracker"));
+			delete n;
 			return false;
 		}
 
@@ -310,9 +310,9 @@ namespace bt
 		{
 			BValueNode* vn = dict->getValue(QByteArrayLiteral("failure reason"));
 			error = vn->data().toString();
-			delete n;
 			failures++;
 			failed(error);
+			delete n;
 			return false;
 		}
 
