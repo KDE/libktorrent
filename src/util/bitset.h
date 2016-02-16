@@ -134,7 +134,7 @@ namespace bt
 		 * @param bs BitSet to subtract from this one
 		 * @return difference
 		 */
-		BitSet & operator - (const BitSet & bs);
+		BitSet operator - (const BitSet & bs) const;
 
 		/// Check if all bit are set to 1
 		bool allOn() const;

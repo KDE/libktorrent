@@ -511,6 +511,7 @@ namespace bt
                         {
                             Out(SYS_GEN | LOG_NOTICE) << "Wrong metadata size: " << metadata_size << ". Killing peer... " << endl;
                             kill();
+                            delete node;
                             return;
                         }
 

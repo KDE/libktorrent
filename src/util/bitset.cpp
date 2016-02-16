@@ -125,7 +125,7 @@ namespace bt
 		return *this;
 	}
 
-	BitSet & BitSet::operator - (const BitSet & bs)
+	BitSet BitSet::operator - (const BitSet & bs) const
 	{
 		return BitSet(*this) -= bs;
 	}
