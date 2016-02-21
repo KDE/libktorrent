@@ -45,7 +45,7 @@ namespace bt
 	{
 		srand(time(0));
 		key = rand();
-		connect(&reannounce_timer,SIGNAL(timeout()),this,SLOT(manualUpdate()));
+		connect(&reannounce_timer, &QTimer::timeout, this, &Tracker::manualUpdate);
 		reannounce_timer.setSingleShot(true);
 		bytes_downloaded_at_start = bytes_uploaded_at_start = 0;
 	}
@@ -87,7 +87,7 @@ namespace bt
 	void Tracker::timedDelete(int ms)
 	{
 		QTimer::singleShot(ms,this,SLOT(deleteLater()));
-		connect(this,SIGNAL(stopDone()),this,SLOT(deleteLater()));
+		connect(this, &Tracker::stopDone, this, &Tracker::deleteLater);
 	}
 	
 	void Tracker::failed(const QString& err) 

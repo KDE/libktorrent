@@ -108,7 +108,7 @@ namespace bt
         if (resolve_hostname)
         {
             net::ReverseResolver* res = new net::ReverseResolver();
-            connect(res, SIGNAL(resolved(QString)), this, SLOT(resolved(QString)), Qt::QueuedConnection);
+            connect(res, &net::ReverseResolver::resolved, this, &Peer::resolved, Qt::QueuedConnection);
             res->resolveAsync(sock->getRemoteAddress());
         }
     }

@@ -170,8 +170,8 @@ namespace bt
 		active_src = i.key();
 		active_dst = i.value();
 		Out(SYS_GEN|LOG_DEBUG) << "Moving " << active_src << " -> " << active_dst << endl;
-		connect(active_job,SIGNAL(result(KJob*)),this,SLOT(onJobDone(KJob*)));
-		connect(active_job,SIGNAL(canceled(KJob*)),this,SLOT(onCanceled(KJob*)));
+		connect(active_job, &KIO::Job::result, this, &MoveDataFilesJob::onJobDone);
+		connect(active_job, &KIO::Job::canceled, this, &MoveDataFilesJob::onCanceled);
 		connect(active_job,SIGNAL(processedAmount(KJob*,KJob::Unit,qulonglong)),
 				this,SLOT(onTransferred(KJob*,KJob::Unit,qulonglong)));
 		connect(active_job,SIGNAL(speed(KJob*,ulong)),
@@ -200,7 +200,7 @@ namespace bt
 		while (i != success.end())
 		{	
 			KIO::Job* j = KIO::file_move(QUrl::fromLocalFile(i.value()),QUrl::fromLocalFile(i.key()),-1,KIO::HideProgressInfo);
-			connect(j,SIGNAL(result(KJob*)),this,SLOT(onRecoveryJobDone(KJob*)));
+			connect(j, &KIO::Job::result, this, &MoveDataFilesJob::onRecoveryJobDone);
 			running_recovery_jobs++;
 			i++;
 		}

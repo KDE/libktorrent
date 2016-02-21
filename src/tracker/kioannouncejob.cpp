@@ -29,8 +29,8 @@ namespace bt
 	{
 		get_job = KIO::get(url,KIO::NoReload,KIO::HideProgressInfo);
 		get_job->setMetaData(md);
-		connect(get_job,SIGNAL(data(KIO::Job*,QByteArray)),this,SLOT(data(KIO::Job*,QByteArray)));
-		connect(get_job,SIGNAL(result(KJob*)),this,SLOT(finished(KJob*)));
+		connect(get_job, &KIO::TransferJob::data, this, &KIOAnnounceJob::data);
+		connect(get_job, &KIO::TransferJob::result, this, &KIOAnnounceJob::finished);
 	}
 
 	KIOAnnounceJob::~KIOAnnounceJob()

@@ -244,11 +244,10 @@ namespace bt
 	void TrackerManager::addTracker(Tracker* trk)
 	{
 		trackers.insert(trk->trackerURL(),trk);
-		connect(trk,SIGNAL(peersReady(PeerSource*)),
-				 pman,SLOT(peerSourceReady(PeerSource*)));
-		connect(trk,SIGNAL(scrapeDone()),tor,SLOT(trackerScrapeDone()));
-		connect(trk,SIGNAL(requestOK()),this,SLOT(onTrackerOK()));
-		connect(trk,SIGNAL(requestFailed(QString)),this,SLOT(onTrackerError(QString)));
+		connect(trk, &Tracker::peersReady, pman, &PeerManager::peerSourceReady);
+		connect(trk, &Tracker::scrapeDone, tor, &TorrentControl::trackerScrapeDone);
+		connect(trk, &Tracker::requestOK, this, &TrackerManager::onTrackerOK);
+		connect(trk, &Tracker::requestFailed, this, &TrackerManager::onTrackerError);
 	}
 	
 	void TrackerManager::start() 

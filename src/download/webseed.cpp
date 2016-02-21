@@ -52,7 +52,7 @@ namespace bt
 		status = i18n("Not connected");
 		up_gid = down_gid = 0;
 		cur_chunk = -1;
-		connect(&retry_timer,SIGNAL(timeout()),this,SLOT(reset()));
+		connect(&retry_timer, &QTimer::timeout, this, &WebSeed::reset);
 		retry_timer.setSingleShot(true);
 	}
 

@@ -43,8 +43,8 @@ namespace bt
 		response_code(0)
 	{
 		status = i18n("Not connected");
-		connect(&reply_timer,SIGNAL(timeout()),this,SLOT(replyTimeout()));
-		connect(&connect_timer,SIGNAL(timeout()),this,SLOT(connectTimeout()));
+		connect(&reply_timer, &QTimer::timeout, this, &HttpConnection::replyTimeout);
+		connect(&connect_timer, &QTimer::timeout, this, &HttpConnection::connectTimeout);
 		connect(this,SIGNAL(startReplyTimer(int)),&reply_timer,SLOT(start(int)),Qt::QueuedConnection);
 		connect(this,SIGNAL(stopReplyTimer()),&reply_timer,SLOT(stop()),Qt::QueuedConnection);
 		connect(this,SIGNAL(stopConnectTimer()),&connect_timer,SLOT(stop()),Qt::QueuedConnection);

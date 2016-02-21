@@ -34,7 +34,7 @@ namespace dht
 	RPCCall::RPCCall(dht::RPCMsg::Ptr msg, bool queued) : msg(msg), queued(queued)
 	{
 		timer.setSingleShot(true);
-		connect(&timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
+		connect(&timer, &QTimer::timeout, this, &RPCCall::onTimeout);
 		if (!queued)
 			timer.start(30*1000);
 	}

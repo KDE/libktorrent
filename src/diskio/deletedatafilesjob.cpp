@@ -58,7 +58,7 @@ namespace bt
 	void DeleteDataFilesJob::start()
 	{
 		active_job = KIO::del(files,KIO::HideProgressInfo);
-		connect(active_job,SIGNAL(result(KJob*)),this,SLOT(onDeleteJobDone(KJob*)));
+		connect(active_job, &KIO::Job::result, this, &DeleteDataFilesJob::onDeleteJobDone);
 	}
 
 	void DeleteDataFilesJob::onDeleteJobDone(KJob* j)

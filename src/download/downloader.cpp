@@ -75,11 +75,9 @@ namespace bt
 			{
 				WebSeed* ws = new WebSeed(u,false,tor,cman);
 				webseeds.append(ws);
-				connect(ws,SIGNAL(chunkReady(Chunk*)),this,SLOT(onChunkReady(Chunk*)));
-				connect(ws,SIGNAL(chunkDownloadStarted(WebSeedChunkDownload*,Uint32)),
-						this,SLOT(chunkDownloadStarted(WebSeedChunkDownload*,Uint32)));
-				connect(ws,SIGNAL(chunkDownloadFinished(WebSeedChunkDownload*,Uint32)),
-						this,SLOT(chunkDownloadFinished(WebSeedChunkDownload*,Uint32)));
+				connect(ws, &WebSeed::chunkReady, this, &Downloader::onChunkReady);
+				connect(ws, &WebSeed::chunkDownloadStarted, this, &Downloader::chunkDownloadStarted);
+				connect(ws, &WebSeed::chunkDownloadFinished, this, &Downloader::chunkDownloadFinished);
 			}
 		}
 		
@@ -839,11 +837,9 @@ namespace bt
 		
 		WebSeed* ws = new WebSeed(url,true,tor,cman);
 		webseeds.append(ws);
-		connect(ws,SIGNAL(chunkReady(Chunk*)),this,SLOT(onChunkReady(Chunk*)));
-		connect(ws,SIGNAL(chunkDownloadStarted(WebSeedChunkDownload*,Uint32)),
-				this,SLOT(chunkDownloadStarted(WebSeedChunkDownload*,Uint32)));
-		connect(ws,SIGNAL(chunkDownloadFinished(WebSeedChunkDownload*,Uint32)),
-				this,SLOT(chunkDownloadFinished(WebSeedChunkDownload*,Uint32)));
+		connect(ws, &WebSeed::chunkReady, this, &Downloader::onChunkReady);
+		connect(ws, &WebSeed::chunkDownloadStarted, this, &Downloader::chunkDownloadStarted);
+		connect(ws, &WebSeed::chunkDownloadFinished, this, &Downloader::chunkDownloadFinished);
 		return ws;
 	}
 		
@@ -937,11 +933,9 @@ namespace bt
 			{
 				WebSeed* ws = new WebSeed(url,true,tor,cman);
 				webseeds.append(ws);
-				connect(ws,SIGNAL(chunkReady(Chunk*)),this,SLOT(onChunkReady(Chunk*)));
-				connect(ws,SIGNAL(chunkDownloadStarted(WebSeedChunkDownload*,Uint32)),
-						this,SLOT(chunkDownloadStarted(WebSeedChunkDownload*,Uint32)));
-				connect(ws,SIGNAL(chunkDownloadFinished(WebSeedChunkDownload*,Uint32)),
-						this,SLOT(chunkDownloadFinished(WebSeedChunkDownload*,Uint32)));
+				connect(ws, &WebSeed::chunkReady, this, &Downloader::onChunkReady);
+				connect(ws, &WebSeed::chunkDownloadStarted, this, &Downloader::chunkDownloadStarted);
+				connect(ws, &WebSeed::chunkDownloadFinished, this, &Downloader::chunkDownloadFinished);
 			}
 		}
 	}

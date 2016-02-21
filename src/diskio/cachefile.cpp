@@ -76,7 +76,7 @@ namespace bt
 	{
 		// by default always try read write
 		fptr = new QFile(path);
-		connect(fptr,SIGNAL(aboutToClose()),this,SLOT(aboutToClose()));
+		connect(fptr, &QFile::aboutToClose, this, &CacheFile::aboutToClose);
 		bool ok = false;
 		if (!(ok = fptr->open(QIODevice::ReadWrite)))
 		{

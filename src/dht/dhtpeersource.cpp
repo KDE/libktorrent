@@ -35,7 +35,7 @@ namespace dht
 	DHTPeerSource::DHTPeerSource(DHTBase & dh_table,const bt::SHA1Hash & info_hash,const QString & torrent_name) 
 		: dh_table(dh_table),curr_task(0),info_hash(info_hash),torrent_name(torrent_name)
 	{
-		connect(&timer,SIGNAL(timeout()),this,SLOT(onTimeout()));
+		connect(&timer, &QTimer::timeout, this, &DHTPeerSource::onTimeout);
 		connect(&dh_table,SIGNAL(started()),this,SLOT(manualUpdate()));
 		connect(&dh_table,SIGNAL(stopped()),this,SLOT(dhtStopped()));
 		started = false;
@@ -95,8 +95,8 @@ namespace dht
 			foreach (const bt::DHTNode & n,nodes)
 				curr_task->addDHTNode(n.ip,n.port);
 
-			connect(curr_task,SIGNAL(dataReady(Task*)),this,SLOT(onDataReady(Task*)));
-			connect(curr_task,SIGNAL(finished(Task*)),this,SLOT(onFinished(Task*)));
+			connect(curr_task, &AnnounceTask::dataReady, this, &DHTPeerSource::onDataReady);
+			connect(curr_task, &AnnounceTask::finished, this, &DHTPeerSource::onFinished);
 			return true;
 		}
 		

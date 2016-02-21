@@ -281,7 +281,7 @@ namespace dht
 	{
 		RPCCall* c = d->doCall(msg);
 		if (c)
-			connect(c, SIGNAL(timeout(RPCCall*)), this, SLOT(callTimeout(RPCCall*)));
+			connect(c, &RPCCall::timeout, this, &RPCServer::callTimeout);
 		
 		return c;
 	}

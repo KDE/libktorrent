@@ -39,7 +39,7 @@ namespace bt
 	{
 		prealloc_thread = new PreallocationThread();
 		cman->preparePreallocation(prealloc_thread);
-		connect(prealloc_thread, SIGNAL(finished()), this, SLOT(finished()), Qt::QueuedConnection);
+		connect(prealloc_thread, &PreallocationThread::finished, this, &PreallocationJob::finished, Qt::QueuedConnection);
 		prealloc_thread->start(QThread::IdlePriority);
 	}
 

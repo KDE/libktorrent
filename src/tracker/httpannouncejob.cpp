@@ -30,10 +30,12 @@ namespace bt
     HTTPAnnounceJob::HTTPAnnounceJob(const QUrl& url) : url(url), get_id(0), proxy_port(-1)
     {
         qWarning()<<"not ported";
-        /*http = new QHttp(this); PORT: KF5
-        connect(http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)));
-        connect(http, SIGNAL(readyRead(QHttpResponseHeader)), this, SLOT(readData(QHttpResponseHeader)));
-        connect(http, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(sslErrors(QList<QSslError>)));*/
+        /*
+        http = new QHttp(this); PORT: KF5
+        connect(http, &QHttp::requestFinished, this, &HTTPAnnounceJob::requestFinished);
+        connect(http, &QHttp::readyRead, this, &HTTPAnnounceJob::readData);
+        connect(http, &QHttp::sslErrors, this, &HTTPAnnounceJob::sslErrors);
+        */
     }
 
     HTTPAnnounceJob::~HTTPAnnounceJob()

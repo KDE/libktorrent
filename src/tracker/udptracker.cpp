@@ -57,15 +57,11 @@ namespace bt
 		interval = 0;
 		
 		conn_timer.setSingleShot(true);
-		connect(&conn_timer,SIGNAL(timeout()),this,SLOT(onConnTimeout()));
-		connect(socket,SIGNAL(announceReceived(Int32,const Uint8*,Uint32)),
-				this,SLOT(announceReceived(Int32,const Uint8*,Uint32)));
-		connect(socket,SIGNAL(connectReceived(Int32,Int64)),
-				this,SLOT(connectReceived(Int32,Int64)));
-		connect(socket,SIGNAL(error(Int32,QString)),
-				this,SLOT(onError(Int32,QString)));
-		connect(socket,SIGNAL(scrapeReceived(Int32,const Uint8*,Uint32)),
-				this,SLOT(scrapeReceived(Int32,const Uint8*,Uint32)));
+		connect(&conn_timer, &QTimer::timeout, this, &UDPTracker::onConnTimeout);
+		connect(socket, &UDPTrackerSocket::announceReceived, this, &UDPTracker::announceReceived);
+		connect(socket, &UDPTrackerSocket::connectReceived, this, &UDPTracker::connectReceived);
+		connect(socket, &UDPTrackerSocket::error, this, &UDPTracker::onError);
+		connect(socket, &UDPTrackerSocket::scrapeReceived, this, &UDPTracker::scrapeReceived);
 	}
 
 

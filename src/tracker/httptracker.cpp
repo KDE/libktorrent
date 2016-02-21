@@ -58,7 +58,7 @@ namespace bt
 		, supports_partial_seed_extension(false)
 	{
 		interval = 5 * 60; // default interval 5 minutes
-		connect(&timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
+		connect(&timer, &QTimer::timeout, this, &HTTPTracker::onTimeout);
 	}
 
 	HTTPTracker::~HTTPTracker()
@@ -142,7 +142,7 @@ namespace bt
 		j->setMetaData(md);
 		KIO::Scheduler::setJobPriority(j, 1);
 
-		connect(j, SIGNAL(result(KJob*)), this, SLOT(onScrapeResult(KJob*)));
+		connect(j, &KIO::StoredTransferJob::result, this, &HTTPTracker::onScrapeResult);
 	}
 
 	void HTTPTracker::onScrapeResult(KJob* j)
@@ -519,14 +519,14 @@ namespace bt
 			KIO::MetaData md;
 			setupMetaData(md);
 			KIOAnnounceJob* j = new KIOAnnounceJob(u, md);
-			connect(j, SIGNAL(result(KJob*)), this, SLOT(onKIOAnnounceResult(KJob*)));
+			connect(j, &KIOAnnounceJob::result, this, &HTTPTracker::onKIOAnnounceResult);
 			active_job = j;
 		}
 #ifdef HAVE_HTTPANNOUNEJOB
 		else
 		{
 			HTTPAnnounceJob* j = new HTTPAnnounceJob(u);
-			connect(j, SIGNAL(result(KJob*)), this, SLOT(onQHttpAnnounceResult(KJob*)));
+			connect(j, &HTTPAnnounceJob::result, this, &HTTPTracker::onQHttpAnnounceResult);
 			if (!proxy_on)
 			{
 				QString proxy = KProtocolManager::proxyForUrl(u); // Use KDE settings

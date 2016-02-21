@@ -99,14 +99,14 @@ namespace net
 			d->rsn = new QSocketNotifier(d->sock->fd(),QSocketNotifier::Read,this);
 			if (d->isTCP())
 			{
-				connect(d->rsn,SIGNAL(activated(int)),this,SLOT(readyToAccept(int)));
+				connect(d->rsn, &QSocketNotifier::activated, this, &ServerSocket::readyToAccept);
 			}
 			else
 			{
 				d->wsn = new QSocketNotifier(d->sock->fd(),QSocketNotifier::Write,this);
 				d->wsn->setEnabled(false);
-				connect(d->rsn,SIGNAL(activated(int)),this,SLOT(readyToRead(int)));
-				connect(d->wsn,SIGNAL(activated(int)),this,SLOT(readyToWrite(int)));
+				connect(d->rsn, &QSocketNotifier::activated, this, &ServerSocket::readyToRead);
+				connect(d->wsn, &QSocketNotifier::activated, this, &ServerSocket::readyToWrite);
 			}
 			return true;
 		}

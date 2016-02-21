@@ -30,7 +30,7 @@ namespace bt
 	
 	AuthenticateBase::AuthenticateBase() : finished(false),local(false)
 	{
-		connect(&timer,SIGNAL(timeout()),this,SLOT(onTimeout()));
+		connect(&timer, &QTimer::timeout, this, &AuthenticateBase::onTimeout);
 		timer.setSingleShot(true);
 		timer.start(5000);
 		memset(handshake,0x00,68);
@@ -41,7 +41,7 @@ namespace bt
 
 	AuthenticateBase::AuthenticateBase(mse::EncryptedPacketSocket::Ptr  s) : sock(s),finished(false),local(false)
 	{
-		connect(&timer,SIGNAL(timeout()),this,SLOT(onTimeout()));
+		connect(&timer, &QTimer::timeout, this, &AuthenticateBase::onTimeout);
 		timer.setSingleShot(true);
 		timer.start(5000);
 		memset(handshake,0x00,68);
