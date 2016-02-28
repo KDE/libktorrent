@@ -69,8 +69,13 @@ namespace bt
 		}
 		
 		// piece fits, so copy into data
-		Out(SYS_GEN|LOG_NOTICE) << "Metadata download, dowloaded " << piece << endl;
+		//Out(SYS_GEN|LOG_NOTICE) << "Metadata download, dowloaded " << piece << endl;
 		Uint32 off = piece * METADATA_PIECE_SIZE;
+		if (metadata.size() < off + size)
+		{
+			Out(SYS_GEN|LOG_NOTICE) << "Metadata download, received large piece " << (off + size) << ", max " << metadata.size() << endl;
+			metadata.resize(off + size);
+		}
 		memcpy(metadata.data() + off,piece_data.data(),size);
 		pieces.set(piece,true);
 		
