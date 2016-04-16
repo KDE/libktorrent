@@ -38,6 +38,7 @@
 #include "preallocationthread.h"
 #include "cache.h"
 
+#include <QStorageInfo>
 
 // Not all systems have an O_LARGEFILE - Solaris depending
 // on command-line defines, FreeBSD never - so in those cases,
@@ -110,7 +111,8 @@ namespace bt
 		if (!fptr)
 		{
 		//	Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
-			if (!OpenFileAllowed()) 
+			QStorageInfo mount(path); //ntfs cannot handle mmap properly
+			if (!OpenFileAllowed() || mount.fileSystemType()=="fuseblk" || mount.fileSystemType().startsWith("ntfs"))
 				return 0; // Running out of file descriptors, force buffered mode
 			openFile(mode);
 		}
