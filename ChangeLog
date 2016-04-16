@@ -1,3 +1,6 @@
+Changes in 2.0.1:
+- Fix ui lags and hangs when downloading to ntfs partition
+
 Changes in 2.0:
 - Port to KF5/Qt5: QHttp-based tracker communication was dropped in favour of KIO-based one
 - Optimize queue data structures shown up by callgrind
