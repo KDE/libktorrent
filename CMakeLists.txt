@@ -40,8 +40,6 @@ ecm_setup_version(${LIBKTORRENT_VERSION} VARIABLE_PREFIX LIBKTORRENT
 
 find_package(Qt5 "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENTS
     Core
-    Gui
-    Widgets
     Network
     Xml
     Test
