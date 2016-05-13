@@ -351,7 +351,7 @@ namespace bt
 
                 buffer.clear();
 		buffer += QByteArrayLiteral("GET ") + (using_proxy?url.toEncoded():(url.path(QUrl::FullyEncoded).toLatin1() + '?' + url.query(QUrl::FullyEncoded).toLatin1())) + "HTTP/1.1\r\n"
-		"Host: " + host + "\r\n"
+		"Host: " + host.toLatin1() + "\r\n"
 		"Range: bytes=" + QByteArray::number(start) + '-' + QByteArray::number(start + len - 1) + "\r\n"
 		"User-Agent: " + bt::GetVersionString().toLatin1() + "\r\n"
 		"Accept:  text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5\r\n"
