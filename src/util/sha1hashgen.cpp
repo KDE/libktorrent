@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <arpa/inet.h>
-#include <Qca-qt5/QtCrypto/QtCrypto>
+#include <QtCrypto>
 #include "functions.h"
 
 
