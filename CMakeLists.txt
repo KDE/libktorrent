@@ -60,7 +60,7 @@ find_package(LibGcrypt "${LibGcrypt_MIN_VERSION}" REQUIRED)
 find_package(Qca-qt5 CONFIG REQUIRED)
 
 kde_enable_exceptions()
-add_definitions(-DQT_USE_QSTRINGBUILDER -DQT_NO_URL_CAST_FROM_STRING)
+add_definitions(-DQT_USE_QSTRINGBUILDER -DQT_NO_URL_CAST_FROM_STRING -DQT_NO_CAST_TO_ASCII)
 add_definitions(-DTRANSLATION_DOMAIN="libktorrent")
 
 include_directories(${Boost_INCLUDE_DIR})
