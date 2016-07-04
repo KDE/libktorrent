@@ -84,7 +84,7 @@ bool HttpResponseHeader::parse(const QString &str)
     }
 
     int number = 0;
-    for (auto it = lst.begin(); it != lines.end(); ++it) {
+    for (auto it = lines.begin(); it != lines.end(); ++it) {
         if (!parseLine(*it, number++)) {
             return false;
         }
