@@ -211,7 +211,7 @@ namespace bt
         bitset.set(i, false);
         d->todo.set(i, !excluded_chunks.get(i) && !only_seed_chunks.get(i));
         tor.updateFilePercentage(i, *this);
-        Out(SYS_DIO | LOG_DEBUG) << QString("Resetted chunk %1").arg(i) << endl;
+        Out(SYS_DIO | LOG_DEBUG) << QString("Reset chunk %1").arg(i) << endl;
     }
 
     void ChunkManager::checkMemoryUsage()
