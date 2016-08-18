@@ -96,9 +96,9 @@ endif()
 # #define GCRYPT_VERSION "1.6.4"
 if(LibGcrypt_INCLUDE_DIRS AND LibGcrypt_LIBRARIES)
     file(STRINGS ${LibGcrypt_INCLUDE_DIRS}/gcrypt.h _GCRYPT_H REGEX "^#define GCRYPT_VERSION[ ]+.*$")
-    string(REGEX REPLACE "^.*GCRYPT_VERSION[ ]+\"([0-9]).([0-9]).([0-9])\".*$" "\\1" LibGcrypt_MAJOR_VERSION "${_GCRYPT_H}")
-    string(REGEX REPLACE "^.*GCRYPT_VERSION[ ]+\"([0-9]).([0-9]).([0-9])\".*$" "\\2" LibGcrypt_MINOR_VERSION "${_GCRYPT_H}")
-    string(REGEX REPLACE "^.*GCRYPT_VERSION[ ]+\"([0-9]).([0-9]).([0-9])\".*$" "\\3" LibGcrypt_PATCH_VERSION "${_GCRYPT_H}")
+    string(REGEX REPLACE "^.*GCRYPT_VERSION[ ]+\"([0-9]+).([0-9]+).([0-9]+).*\".*$" "\\1" LibGcrypt_MAJOR_VERSION "${_GCRYPT_H}")
+    string(REGEX REPLACE "^.*GCRYPT_VERSION[ ]+\"([0-9]+).([0-9]+).([0-9]+).*\".*$" "\\2" LibGcrypt_MINOR_VERSION "${_GCRYPT_H}")
+    string(REGEX REPLACE "^.*GCRYPT_VERSION[ ]+\"([0-9]+).([0-9]+).([0-9]+).*\".*$" "\\3" LibGcrypt_PATCH_VERSION "${_GCRYPT_H}")
 
     set(LibGcrypt_VERSION "${LibGcrypt_MAJOR_VERSION}.${LibGcrypt_MINOR_VERSION}.${LibGcrypt_PATCH_VERSION}")
     unset(_GCRYPT_H)
