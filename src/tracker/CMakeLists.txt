@@ -8,4 +8,4 @@ set(tracker_HDR
     kioannouncejob.h
 )
 
-install(FILES ${tracker_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/tracker COMPONENT Devel)
+install(FILES ${tracker_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/tracker COMPONENT Devel)

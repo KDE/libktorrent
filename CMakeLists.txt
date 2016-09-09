@@ -6,8 +6,9 @@ cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 enable_testing()
 set(BUILD_TESTING ON)
 
-find_package(ECM 1.0.0 CONFIG REQUIRED)
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
+find_package(ECM 5.15.0  NO_MODULE)
+
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 #
 # checks for functions and stuff
@@ -35,7 +36,7 @@ set(LIBKTORRENT_VERSION "2.0.1")
 
 ecm_setup_version(${LIBKTORRENT_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/libktorrent_version.h"
-                        PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfigVersion.cmake"
+                        PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfigVersion.cmake"
                         SOVERSION 1)
 
 find_package(Qt5 "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENTS
@@ -61,7 +62,7 @@ find_package(Qca-qt5 CONFIG REQUIRED)
 
 kde_enable_exceptions()
 add_definitions(-DQT_USE_QSTRINGBUILDER -DQT_NO_URL_CAST_FROM_STRING -DQT_NO_CAST_TO_ASCII)
-add_definitions(-DTRANSLATION_DOMAIN="libktorrent")
+add_definitions(-DTRANSLATION_DOMAIN="libktorrent5")
 
 include_directories(${Boost_INCLUDE_DIR})
 
@@ -97,13 +98,10 @@ add_subdirectory(testlib)
 add_subdirectory(examples)
 add_subdirectory(doc)
 
-# create a Config.cmake and a ConfigVersion.cmake file and install them
-set(INCLUDE_INSTALL_DIR "include/libktorrent/")
+set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF5Torrent")
 
-set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/LibKTorrent")
-
-ecm_configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/LibKTorrentConfig.cmake.in"
-                              "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfig.cmake"
+ecm_configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KF5TorrentConfig.cmake.in"
+                              "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfig.cmake"
                               INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
                               PATH_VARS INCLUDE_INSTALL_DIR
                               )
@@ -111,11 +109,11 @@ ecm_configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/LibKTorrentConfig
 # Install the CMake modules needed to use libktorrent
 add_subdirectory(cmake)
 
-install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfig.cmake"
-               "${CMAKE_CURRENT_BINARY_DIR}/LibKTorrentConfigVersion.cmake"
+install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfig.cmake"
+               "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfigVersion.cmake"
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
         COMPONENT Devel)
 
-install(EXPORT LibKTorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE LibKTorrentTargets.cmake)
+install(EXPORT KF5TorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF5TorrentTargets.cmake NAMESPACE KF5:: )
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)

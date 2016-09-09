@@ -3,4 +3,4 @@ set (upnp_HDR
     upnpmcastsocket.h
 )
 
-install(FILES ${upnp_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/upnp COMPONENT Devel)
+install(FILES ${upnp_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/upnp COMPONENT Devel)

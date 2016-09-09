@@ -19,6 +19,6 @@ set(peer_HDR
     connectionlimit.h
 )
 
-install(FILES ${peer_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/peer COMPONENT Devel)
+install(FILES ${peer_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/peer COMPONENT Devel)
 
 add_subdirectory(tests)

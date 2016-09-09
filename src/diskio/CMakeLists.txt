@@ -15,4 +15,4 @@ set(diskio_HDR
     piecedata.h
 )
 
-install(FILES ${diskio_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/diskio COMPONENT Devel)
+install(FILES ${diskio_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/diskio COMPONENT Devel)

@@ -4,4 +4,4 @@ set(ktcli_SRC
 )
 
 add_executable(ktcli ${ktcli_SRC})
-target_link_libraries(ktcli ktorrent)
+target_link_libraries(ktcli KF5::Torrent)

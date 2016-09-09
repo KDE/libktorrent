@@ -225,11 +225,12 @@ endif(WIN32)
 
 # ki18n_wrap_ui(libktorrent_SRC ${libktorrent_UI})
 # kconfig_add_kcfg_files(libktorrent_SRC settings.kcfgc)
-add_library(ktorrent ${libktorrent_SRC})
+add_library(KF5Torrent ${libktorrent_SRC})
+add_library(KF5::Torrent ALIAS KF5Torrent)
 
-generate_export_header(ktorrent BASE_NAME ktorrent)
+generate_export_header(KF5Torrent BASE_NAME ktorrent)
 
-target_link_libraries(ktorrent
+target_link_libraries(KF5Torrent
 PRIVATE
     qca-qt5
 PUBLIC
@@ -245,13 +246,14 @@ PUBLIC
 )
 
 if(WIN32)
-target_link_libraries(ktorrent ws2_32)
+target_link_libraries(KF5Torrent ws2_32)
 endif(WIN32)
-target_include_directories(ktorrent INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/libktorrent>")
-target_include_directories(ktorrent PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOURCE_DIR}/src;${LIBKTORRENT_BINARY_DIR}/src;${LIBKTORRENT_BINARY_DIR}>")
+target_include_directories(KF5Torrent INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent>")
+target_include_directories(KF5Torrent PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOURCE_DIR}/src;${LIBKTORRENT_BINARY_DIR}/src;${LIBKTORRENT_BINARY_DIR}>")
 
-set_target_properties(ktorrent PROPERTIES VERSION 6.0.0 SOVERSION 6)
-install(TARGETS ktorrent EXPORT LibKTorrentTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
+
+set_target_properties(KF5Torrent PROPERTIES VERSION 6.0.0 SOVERSION 6 EXPORT_NAME Torrent)
+install(TARGETS KF5Torrent EXPORT KF5TorrentTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
 
 set (interfaces_HDR
     interfaces/peerinterface.h
@@ -293,10 +295,10 @@ set (migrate_HDR
 
 
 
-install(FILES ${bcodec_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/bcodec COMPONENT Devel)
-install(FILES ${interfaces_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/interfaces COMPONENT Devel)
-install(FILES ${migrate_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent/migrate COMPONENT Devel)
-install(FILES ${ktorrent_HDR} DESTINATION ${INCLUDE_INSTALL_DIR}/libktorrent COMPONENT Devel)
+install(FILES ${bcodec_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/bcodec COMPONENT Devel)
+install(FILES ${interfaces_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/interfaces COMPONENT Devel)
+install(FILES ${migrate_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/migrate COMPONENT Devel)
+install(FILES ${ktorrent_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent COMPONENT Devel)
 
 add_subdirectory(torrent)
 add_subdirectory(datachecker)
