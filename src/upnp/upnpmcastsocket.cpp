@@ -345,13 +345,13 @@ namespace bt
 		for (int i = 1;i < lines.count();i++)
 		{
 			line = lines[i];
-			if (line.startsWith(QLatin1String("Location")) || line.startsWith(QLatin1String("LOCATION")) || line.startsWith(QLatin1String("location")))
+			if (line.startsWith(QLatin1String("location"), Qt::CaseInsensitive))
 			{
 				location = QUrl(line.mid(line.indexOf(':') + 1).trimmed().toString()); //TODO fromLocalFile()?
 				if (!location.isValid())
 					return 0;
 			}
-			else if (line.startsWith(QLatin1String("Server")) || line.startsWith(QLatin1String("server")) || line.startsWith(QLatin1String("SERVER")))
+			else if (line.startsWith(QLatin1String("server"), Qt::CaseInsensitive))
 			{
 				server = line.mid(line.indexOf(':') + 1).trimmed().toString();
 				if (server.length() == 0)
