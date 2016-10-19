@@ -63,12 +63,32 @@ find_library(LibGMP_LIBRARIES NAMES gmp libgmp)
 # Get version from gmp.h
 if(LibGMP_INCLUDE_DIRS)
     file(STRINGS ${LibGMP_INCLUDE_DIRS}/gmp.h _GMP_H REGEX "^#define __GNU_MP_VERSION.*$")
-    string(REGEX REPLACE "^.*__GNU_MP_VERSION[ ]+([0-9]+).*$" "\\1" LibGMP_MAJOR_VERSION "${_GMP_H}")
-    string(REGEX REPLACE "^.*__GNU_MP_VERSION_MINOR[ ]+([0-9]+).*$" "\\1" LibGMP_MINOR_VERSION "${_GMP_H}")
-    string(REGEX REPLACE "^.*__GNU_MP_VERSION_PATCHLEVEL[ ]+([0-9]+).*$" "\\1" LibGMP_PATCH_VERSION "${_GMP_H}")
+    if(_GMP_H)
+        string(REGEX REPLACE "^.*__GNU_MP_VERSION[ ]+([0-9]+).*$" "\\1" LibGMP_MAJOR_VERSION "${_GMP_H}")
+        string(REGEX REPLACE "^.*__GNU_MP_VERSION_MINOR[ ]+([0-9]+).*$" "\\1" LibGMP_MINOR_VERSION "${_GMP_H}")
+        string(REGEX REPLACE "^.*__GNU_MP_VERSION_PATCHLEVEL[ ]+([0-9]+).*$" "\\1" LibGMP_PATCH_VERSION "${_GMP_H}")
 
-    set(LibGMP_VERSION "${LibGMP_MAJOR_VERSION}.${LibGMP_MINOR_VERSION}.${LibGMP_PATCH_VERSION}")
-    unset(_GMP_H)
+        set(LibGMP_VERSION "${LibGMP_MAJOR_VERSION}.${LibGMP_MINOR_VERSION}.${LibGMP_PATCH_VERSION}")
+        unset(_GMP_H)
+    else()
+        # parsing gmp.h failed, try test code instead
+        set(_gmp_version_source "
+#include <stddef.h>
+#include <stdio.h>
+#include <gmp.h>
+int main()
+{
+  printf(\"%d.%d.%d\",__GNU_MP_VERSION, __GNU_MP_VERSION_MINOR, __GNU_MP_VERSION_PATCHLEVEL);
+}
+"       )
+        set(_gmp_version_source_file ${CMAKE_BINARY_DIR}/CMakeTmp/cmake_gmp_version_check.cpp)
+        file(WRITE "${_gmp_version_source_file}" "${_gmp_version_source}")
+        try_run(_gmp_version_compile_result _gmp_version_run_result ${CMAKE_BINARY_DIR} ${_gmp_version_source_file}
+                CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${LibGMP_INCLUDE_DIRS}"
+                RUN_OUTPUT_VARIABLE _gmp_version_output )
+
+        set(LibGMP_VERSION "${_gmp_version_output}")
+    endif()
 endif()
 
 include(FindPackageHandleStandardArgs)
