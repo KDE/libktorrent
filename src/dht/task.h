@@ -35,6 +35,14 @@ namespace dht
 	class Task;
 	class KClosestNodesSearch;
 
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 *
+	 * Maximum number of concurrent requests. A value of 16 is proposed by the
+	 * reference implementation. Since this greatly influences the time it takes
+	 * the client to 'get to know' the DHT network, this should probably be made
+	 * user-configurable as an advanced setting.
+	 */
 	const bt::Uint32 MAX_CONCURRENT_REQS = 16;
 
 	/**

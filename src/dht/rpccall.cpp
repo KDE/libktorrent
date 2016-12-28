@@ -36,9 +36,12 @@ namespace dht
 		timer.setSingleShot(true);
 		connect(&timer, &QTimer::timeout, this, &RPCCall::onTimeout);
 		if (!queued)
-			timer.start(30*1000);
+			/**
+			 * @author Fonic <https://github.com/fonic>
+			 * Use constant defined in rpccall.h instead of hard-coded value.
+			 */
+			timer.start(RPC_CALL_TIMEOUT);
 	}
-
 
 	RPCCall::~RPCCall()
 	{
@@ -47,7 +50,11 @@ namespace dht
 	void RPCCall::start()
 	{
 		queued = false;
-		timer.start(30*1000);
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * Use constant defined in rpccall.h instead of hard-coded value.
+		 */
+		timer.start(RPC_CALL_TIMEOUT);
 	}
 
 	void RPCCall::onTimeout()

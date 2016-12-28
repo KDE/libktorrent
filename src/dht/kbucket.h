@@ -39,10 +39,23 @@ namespace dht
 	class KClosestNodesSearch;
 	class Task;
 
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Number of nodes to find in searches. The reference implementation
+	 * proposes a value of 8. This should probably be made user-configurable
+	 * as an advanced setting.
+	 */
 	const bt::Uint32 K = 20;
-	const bt::Uint32 BUCKET_MAGIC_NUMBER = 0xB0C4B0C4;
-	const bt::Uint32 BUCKET_REFRESH_INTERVAL = 15 * 60 * 1000;
 
+	const bt::Uint32 BUCKET_MAGIC_NUMBER = 0xB0C4B0C4;
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Interval defining how often to refresh buckets. The specification
+	 * proposes an interval of 15 mins. This should probably be made user-
+	 * configurable as an advanced setting.
+	 */
+	const bt::Uint32 BUCKET_REFRESH_INTERVAL = 15 * 60 * 1000;
 
 	/**
 	 * @author Joris Guisson

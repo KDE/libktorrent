@@ -21,12 +21,23 @@
 #define DHTRPCCALL_H
 
 #include <qtimer.h>
+#include <util/constants.h>
 #include "key.h"
 #include "rpcmsg.h"
 
 namespace dht
 {
 	class RPCCall;
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Timeout for RPC calls (i.e. DHT requests). This used to be hard-coded
+	 * in rpccall.cpp to a value of 30 * 1000. The reference implementation
+	 * uses much lower timeouts (4 secs, peers taking >= 1 sec to respond are
+	 * flagged as 'slow'), thus the value was lowered. This should probably be
+	 * made user-configurable as an advanced setting.
+	 */
+	const bt::Uint32 RPC_CALL_TIMEOUT = 5 * 1000;
 
 	/**
 	 * Class which objects should derive from, if they want to know the result of a call.
