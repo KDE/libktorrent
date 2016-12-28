@@ -539,7 +539,6 @@ namespace bt
              * accurately identify client as suggested by BitTorrent Extension
              * Protocol, section 'handshake message'. This will override a prior
              * identification based on peer ID (refer to src/peer/peerid.cpp).
-             *
              */
             if ((val = dict->getValue(QByteArrayLiteral("v"))))
             {
