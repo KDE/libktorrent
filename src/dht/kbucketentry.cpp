@@ -17,13 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include "kbucketentry.h"
 #include <util/log.h>
 #include <util/functions.h>
 
 namespace dht
 {
+
 	KBucketEntry::KBucketEntry()
 	{
 		last_responded = bt::CurrentTime();
@@ -45,11 +45,12 @@ namespace dht
 			last_responded(other.last_responded),
 			failed_queries(other.failed_queries),
 			questionable_pings(other.questionable_pings)
-	{}
-
+	{
+	}
 
 	KBucketEntry::~KBucketEntry()
-	{}
+	{
+	}
 
 	KBucketEntry & KBucketEntry::operator = (const KBucketEntry & other)
 	{
@@ -82,7 +83,6 @@ namespace dht
 			return false;
 	}
 
-
 	bool KBucketEntry::isBad() const
 	{
 		if (isGood())
@@ -94,7 +94,7 @@ namespace dht
 	void KBucketEntry::hasResponded()
 	{
 		last_responded = bt::CurrentTime();
-		failed_queries = 0; // reset failed queries
+		failed_queries = 0; // Reset failed queries
 		questionable_pings = 0;
 	}
 
@@ -104,4 +104,3 @@ namespace dht
 	}
 
 }
-

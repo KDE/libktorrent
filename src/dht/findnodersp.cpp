@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include "findnodersp.h"
 #include <util/log.h>
 #include <util/error.h>
@@ -25,12 +24,11 @@
 #include <bcodec/bencoder.h>
 #include "dht.h"
 
-
 using namespace bt;
-
 
 namespace dht
 {
+
 	FindNodeRsp::FindNodeRsp()
 			: RPCMsg(QByteArray(), FIND_NODE, RSP_MSG, Key())
 	{
@@ -38,9 +36,12 @@ namespace dht
 
 	FindNodeRsp::FindNodeRsp(const QByteArray & mtid, const Key & id)
 			: RPCMsg(mtid, FIND_NODE, RSP_MSG, id)
-	{}
+	{
+	}
 
-	FindNodeRsp::~FindNodeRsp() {}
+	FindNodeRsp::~FindNodeRsp()
+	{
+	}
 
 	void FindNodeRsp::apply(dht::DHT* dh_table)
 	{
@@ -63,13 +64,13 @@ namespace dht
 				enc.write(QByteArrayLiteral("id")); enc.write(id.getData(), 20);
 				if (nodes.size() > 0)
 				{
-					enc.write(QByteArrayLiteral("nodes")); 
+					enc.write(QByteArrayLiteral("nodes"));
 					enc.write(nodes);
 				}
-				
+
 				if (nodes6.size() > 0)
 				{
-					enc.write(QByteArrayLiteral("nodes6")); 
+					enc.write(QByteArrayLiteral("nodes6"));
 					enc.write(nodes6);
 				}
 			}
@@ -101,4 +102,3 @@ namespace dht
 	}
 
 }
-

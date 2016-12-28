@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #ifndef DHT_PACKEDNODECONTAINER_H
 #define DHT_PACKEDNODECONTAINER_H
 
@@ -36,20 +35,20 @@ namespace dht
 	public:
 		PackedNodeContainer();
 		virtual ~PackedNodeContainer();
-		
-		/// Add a single node to the nodes or nodes2 parameter depending on it's size
+
+		// Add a single node to the nodes or nodes2 parameter depending on it's size
 		void addNode(const QByteArray & a);
-		
-		/// Get the nodes parameter
+
+		// Get the nodes parameter
 		const QByteArray & getNodes() const {return nodes;}
-		
-		/// Get the nodes6 parameter
+
+		// Get the nodes6 parameter
 		const QByteArray & getNodes6() const {return nodes6;}
 	protected:
 		QByteArray nodes;
 		QByteArray nodes6;
 	};
-	
+
 }
 
 #endif // DHT_PACKEDNODECONTAINER_H

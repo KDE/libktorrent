@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2012 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include "pingreq.h"
 #include <util/log.h>
 #include <bcodec/bencoder.h>
@@ -27,6 +26,7 @@ using namespace bt;
 
 namespace dht
 {
+
 	PingReq::PingReq() : RPCMsg(QByteArray(), PING, REQ_MSG, Key())
 	{
 	}
@@ -36,7 +36,8 @@ namespace dht
 	}
 
 	PingReq::~PingReq()
-	{}
+	{
+	}
 
 	void PingReq::apply(dht::DHT* dh_table)
 	{
@@ -69,5 +70,5 @@ namespace dht
 		}
 		enc.end();
 	}
-}
 
+}

@@ -17,10 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #ifndef DHT_ANNOUNCEREQ_H
 #define DHT_ANNOUNCEREQ_H
-
 
 #include "getpeersreq.h"
 
@@ -36,16 +34,17 @@ namespace dht
 		AnnounceReq();
 		AnnounceReq(const Key & id,const Key & info_hash,bt::Uint16 port,const Key & token);
 		virtual ~AnnounceReq();
-		
+
 		virtual void apply(DHT* dh_table);
 		virtual void print();
 		virtual void encode(QByteArray & arr) const;
 		virtual void parse(bt::BDictNode* dict);
-		
+
 		const Key & getToken() const {return token;}
 		bt::Uint16 getPort() const {return port;}
-		
+
 		typedef QSharedPointer<AnnounceReq> Ptr;
+
 	private:
 		bt::Uint16 port;
 		Key token;

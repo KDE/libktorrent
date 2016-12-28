@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2012 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include "findnodereq.h"
 #include <util/log.h>
 #include <util/error.h>
@@ -25,24 +24,25 @@
 #include <bcodec/bencoder.h>
 #include "dht.h"
 
-
 using namespace bt;
 
 namespace dht
 {
+
 	FindNodeReq::FindNodeReq() :
 			RPCMsg(QByteArray(), FIND_NODE, REQ_MSG, Key())
 	{
 	}
 
-
-	FindNodeReq::FindNodeReq(const Key & id, const Key & target) : 
-		RPCMsg(QByteArray(), FIND_NODE, REQ_MSG, id), 
+	FindNodeReq::FindNodeReq(const Key & id, const Key & target) :
+		RPCMsg(QByteArray(), FIND_NODE, REQ_MSG, id),
 		target(target)
-	{}
+	{
+	}
 
 	FindNodeReq::~FindNodeReq()
-	{}
+	{
+	}
 
 	void FindNodeReq::apply(dht::DHT* dh_table)
 	{
@@ -88,12 +88,10 @@ namespace dht
 				want.append(ln->getString(i, 0));
 		}
 	}
-	
+
 	bool FindNodeReq::wants(int ip_version) const
 	{
 		return want.contains(QString("n%1").arg(ip_version));
 	}
 
-
 }
-

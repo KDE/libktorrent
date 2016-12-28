@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include "kbuckettable.h"
 #include <QFile>
 #include <util/log.h>
@@ -28,8 +27,6 @@
 #include <bcodec/bnode.h>
 #include "nodelookup.h"
 #include "dht.h"
-
-
 
 using namespace bt;
 
@@ -47,40 +44,38 @@ namespace dht
 
 	void KBucketTable::insert(const dht::KBucketEntry& entry, dht::RPCServerInterface* srv)
 	{
-		if(buckets.empty())
+		if (buckets.empty())
 		{
 			KBucket::Ptr initial(new KBucket(srv, our_id));
 			buckets.push_back(initial);
 		}
 
-
 		KBucketList::iterator kb = findBucket(entry.getID());
 
-		// return if we can't find a bucket, should never happen'
-		if(kb == buckets.end())
+		// Return if we can't find a bucket, should never happen'
+		if (kb == buckets.end())
 		{
 			Out(SYS_DHT | LOG_IMPORTANT) << "Unable to find bucket !" << endl;
 			return;
 		}
 
-		// insert it into the bucket
+		// Insert it into the bucket
 		try
 		{
-			if((*kb)->insert(entry))
+			if ((*kb)->insert(entry))
 			{
 				// Bucket needs to be splitted
 				std::pair<KBucket::Ptr, KBucket::Ptr> result = (*kb)->split();
-/*
-				Out(SYS_DHT | LOG_DEBUG) << "Splitting bucket " << (*kb)->minKey().toString() << "-" << (*kb)->maxKey().toString() << endl;
+				/*Out(SYS_DHT | LOG_DEBUG) << "Splitting bucket " << (*kb)->minKey().toString() << "-" << (*kb)->maxKey().toString() << endl;
 				Out(SYS_DHT | LOG_DEBUG) << "L: " << result.first->minKey().toString() << "-" << result.first->maxKey().toString() << endl;
 				Out(SYS_DHT | LOG_DEBUG) << "L range: " << (result.first->maxKey() - result.first->minKey()).toString() << endl;
 				Out(SYS_DHT | LOG_DEBUG) << "R: " << result.second->minKey().toString() << "-" << result.second->maxKey().toString() << endl;
-				Out(SYS_DHT | LOG_DEBUG) << "R range: " << (result.second->maxKey() - result.second->minKey()).toString() << endl;
-*/
+				Out(SYS_DHT | LOG_DEBUG) << "R range: " << (result.second->maxKey() - result.second->minKey()).toString() << endl;*/
+
 				buckets.insert(kb, result.first);
 				buckets.insert(kb, result.second);
 				buckets.erase(kb);
-				if(result.first->keyInRange(entry.getID()))
+				if (result.first->keyInRange(entry.getID()))
 					result.first->insert(entry);
 				else
 					result.second->insert(entry);
@@ -92,7 +87,6 @@ namespace dht
 			Out(SYS_DHT | LOG_IMPORTANT) << "Unable to split buckets further !" << endl;
 			return;
 		}
-
 	}
 
 	int KBucketTable::numEntries() const
@@ -102,7 +96,6 @@ namespace dht
 		{
 			count += (*i)->getNumEntries();
 		}
-
 		return count;
 	}
 
@@ -110,10 +103,9 @@ namespace dht
 	{
 		for(KBucketList::iterator i = buckets.begin(); i != buckets.end(); i++)
 		{
-			if((*i)->keyInRange(id))
+			if ((*i)->keyInRange(id))
 				return i;
 		}
-
 		return buckets.end();
 	}
 
@@ -122,12 +114,12 @@ namespace dht
 		for(KBucketList::iterator i = buckets.begin(); i != buckets.end(); i++)
 		{
 			KBucket::Ptr b = *i;
-			if(b->needsToBeRefreshed())
+			if (b->needsToBeRefreshed())
 			{
-				// the key needs to be the refreshed
+				// The key needs to be the refreshed
 				dht::Key m = dht::Key::mid(b->minKey(), b->maxKey());
 				NodeLookup* nl = dh_table->refreshBucket(m, *b);
-				if(nl)
+				if (nl)
 					b->setRefreshTask(nl);
 			}
 		}
@@ -138,7 +130,7 @@ namespace dht
 		for(KBucketList::iterator i = buckets.begin(); i != buckets.end(); i++)
 		{
 			KBucket::Ptr b = *i;
-			if(b->onTimeout(addr))
+			if (b->onTimeout(addr))
 				return;
 		}
 	}
@@ -146,7 +138,7 @@ namespace dht
 	void KBucketTable::loadTable(const QString& file, RPCServerInterface* srv)
 	{
 		QFile fptr(file);
-		if(!fptr.open(QIODevice::ReadOnly))
+		if (!fptr.open(QIODevice::ReadOnly))
 		{
 			Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Cannot open file " << file << " : " << fptr.errorString() << endl;
 			return;
@@ -158,13 +150,13 @@ namespace dht
 			bt::BDecoder dec(data, false, 0);
 
 			QScopedPointer<BListNode> bucket_list(dec.decodeList());
-			if(!bucket_list)
+			if (!bucket_list)
 				return;
 
 			for(bt::Uint32 i = 0; i < bucket_list->getNumChildren(); i++)
 			{
 				BDictNode* dict = bucket_list->getDict(i);
-				if(!dict)
+				if (!dict)
 					continue;
 
 				KBucket::Ptr bucket(new KBucket(srv, our_id));
@@ -181,7 +173,7 @@ namespace dht
 	void KBucketTable::saveTable(const QString& file)
 	{
 		bt::File fptr;
-		if(!fptr.open(file, "wb"))
+		if (!fptr.open(file, "wb"))
 		{
 			Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Cannot open file " << file << " : " << fptr.errorString() << endl;
 			return;

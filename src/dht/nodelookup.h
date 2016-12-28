@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #ifndef DHTNODELOOKUP_H
 #define DHTNODELOOKUP_H
@@ -30,7 +30,7 @@ namespace dht
 
 	/**
 	 * @author Joris Guisson <joris.guisson@gmail.com>
-	 * 
+	 *
 	 * Task to do a node lookup.
 	 */
 	class NodeLookup : public Task
@@ -42,10 +42,10 @@ namespace dht
 		virtual void update();
 		virtual void callFinished(RPCCall* c, RPCMsg::Ptr rsp);
 		virtual void callTimeout(RPCCall* c);
-	
+
 	private:
 		void handleNodes(const QByteArray & nodes, int ip_version);
-		
+
 	private:
 		dht::Key node_id;
 		bt::Uint32 num_nodes_rsp;
@@ -53,4 +53,4 @@ namespace dht
 
 }
 
-#endif
+#endif // DHTNODELOOKUP_H

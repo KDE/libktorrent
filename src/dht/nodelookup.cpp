@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "nodelookup.h"
 #include <util/log.h>
@@ -39,9 +39,9 @@ namespace dht
 	{
 	}
 
-
 	NodeLookup::~NodeLookup()
-	{}
+	{
+	}
 
 	void NodeLookup::handleNodes(const QByteArray& nodes, int ip_version)
 	{
@@ -49,21 +49,20 @@ namespace dht
 		Uint32 nnodes = nodes.size() / address_size;
 		for (Uint32 j = 0;j < nnodes;j++)
 		{
-			// unpack an entry and add it to the todo list
+			// Unpack an entry and add it to the todo list
 			try
 			{
 				KBucketEntry e = UnpackBucketEntry(nodes, j * address_size, ip_version);
-				// lets not talk to ourself
+				// Let's not talk to ourself
 				if (e.getID() != node->getOurID() && !todo.contains(e) && !visited.contains(e))
 					todo.insert(e);
 			}
 			catch (...)
 			{
-				// bad data, just ignore it
+				// Bad data, just ignore it
 			}
 		}
 	}
-
 
 	void NodeLookup::callFinished(RPCCall* , RPCMsg::Ptr rsp)
 	{
@@ -71,7 +70,7 @@ namespace dht
 		if (isFinished())
 			return;
 
-		// check the response and see if it is a good one
+		// Check the response and see if it is a good one
 		if (rsp->getMethod() == dht::FIND_NODE && rsp->getType() == dht::RSP_MSG)
 		{
 			FindNodeRsp::Ptr fnr = rsp.dynamicCast<FindNodeRsp>();
@@ -91,28 +90,29 @@ namespace dht
 
 	void NodeLookup::callTimeout(RPCCall*)
 	{
-		//	Out(SYS_DHT|LOG_DEBUG) << "NodeLookup::callTimeout" << endl;
+		//Out(SYS_DHT|LOG_DEBUG) << "NodeLookup::callTimeout" << endl;
 	}
 
 	void NodeLookup::update()
 	{
-		//	Out(SYS_DHT|LOG_DEBUG) << "NodeLookup::update" << endl;
-		//	Out(SYS_DHT|LOG_DEBUG) << "todo = " << todo.count() << " ; visited = " << visited.count() << endl;
-		// go over the todo list and send find node calls
-		// until we have nothing left
+		//Out(SYS_DHT|LOG_DEBUG) << "NodeLookup::update" << endl;
+		//Out(SYS_DHT|LOG_DEBUG) << "todo = " << todo.count() << " ; visited = " << visited.count() << endl;
+
+		// Go over the todo list and send find node calls until we have
+		// nothing left
 		while (!todo.empty() && canDoRequest())
 		{
 			KBucketEntrySet::iterator itr = todo.begin();
-			// only send a findNode if we haven't allrready visited the node
+			// Only send a findNode if we haven't allrready visited the node
 			if (!visited.contains(*itr))
 			{
-				// send a findNode to the node
+				// Send a findNode to the node
 				RPCMsg::Ptr fnr(new FindNodeReq(node->getOurID(), node_id));
 				fnr->setOrigin(itr->getAddress());
 				rpcCall(fnr);
 				visited.insert(*itr);
 			}
-			// remove the entry from the todo list
+			// Remove the entry from the todo list
 			todo.erase(itr);
 		}
 
@@ -123,9 +123,10 @@ namespace dht
 		}
 		else if (visited.size() > 200)
 		{
-			// don't let the task run forever
+			// Don't let the task run forever
 			Out(SYS_DHT | LOG_NOTICE) << "DHT: NodeLookup done" << endl;
 			done();
 		}
 	}
+
 }

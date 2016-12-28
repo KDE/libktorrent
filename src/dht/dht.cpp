@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "dht.h"
 #include <QMap>
@@ -47,8 +47,6 @@ using namespace bt;
 namespace dht
 {
 
-
-
 	DHT::DHT() : node(0), srv(0), db(0), tman(0), our_node_lookup(0)
 	{
 		connect(&update_timer, &QTimer::timeout, this, &DHT::update);
@@ -59,7 +57,6 @@ namespace dht
 		 */
 		connect(&bootstrap_timer, &QTimer::timeout, this, &DHT::checkBootstrap);
 	}
-
 
 	DHT::~DHT()
 	{
@@ -94,7 +91,7 @@ namespace dht
 		started();
 		if (node->getNumEntriesInRoutingTable() > 0)
 		{
-			// refresh the DHT table by looking for our own ID
+			// Refresh the DHT table by looking for our own ID
 			findOwnNode();
 		}
 		else
@@ -110,7 +107,6 @@ namespace dht
 			bootstrap_timer.start(BOOTSTRAP_CHECK_INTERVAL);
 		}
 	}
-
 
 	void DHT::stop()
 	{
@@ -135,7 +131,7 @@ namespace dht
 		if (!running)
 			return;
 
-		// ignore requests we get from ourself
+		// Ignore requests we get from ourself
 		if (r.getID() == node->getOurID())
 			return;
 
@@ -150,12 +146,12 @@ namespace dht
 		if (!running)
 			return;
 
-		// ignore requests we get from ourself
+		// Ignore requests we get from ourself
 		if (r.getID() == node->getOurID())
 			return;
 
 		node->received(this, r);
-		// find the K closest nodes and pack them
+		// Find the K closest nodes and pack them
 		KClosestNodesSearch kns(r.getTarget(), K);
 
 		bt::Uint32 wants = 0;
@@ -167,7 +163,7 @@ namespace dht
 		node->findKClosestNodes(kns, wants);
 
 		FindNodeRsp fnr(r.getMTID(), node->getOurID());
-		// pack the found nodes in a byte array
+		// Pack the found nodes in a byte array
 		kns.pack(&fnr);
 		fnr.setOrigin(r.getOrigin());
 		srv->sendMsg(fnr);
@@ -195,38 +191,35 @@ namespace dht
 			our_node_lookup = 0;
 	}
 
-
 	void DHT::announce(const AnnounceReq & r)
 	{
 		if (!running)
 			return;
 
-		// ignore requests we get from ourself
+		// Ignore requests we get from ourself
 		if (r.getID() == node->getOurID())
 			return;
 
 		node->received(this, r);
-		// first check if the token is OK
+		// First check if the token is OK
 		dht::Key token = r.getToken();
 		if (!db->checkToken(token, r.getOrigin()))
 			return;
 
-		// everything OK, so store the value
+		// Everything OK, so store the value
 		db->store(r.getInfoHash(), DBItem(r.getOrigin()));
-		// send a proper response to indicate everything is OK
+		// Send a proper response to indicate everything is OK
 		AnnounceRsp rsp(r.getMTID(), node->getOurID());
 		rsp.setOrigin(r.getOrigin());
 		srv->sendMsg(rsp);
 	}
-
-
 
 	void DHT::getPeers(const GetPeersReq & r)
 	{
 		if (!running)
 			return;
 
-		// ignore requests we get from ourself
+		// Ignore requests we get from ourself
 		if (r.getID() == node->getOurID())
 			return;
 
@@ -234,7 +227,7 @@ namespace dht
 		DBItemList dbl;
 		db->sample(r.getInfoHash(), dbl, 50, r.getOrigin().ipVersion());
 
-		// generate a token
+		// Generate a token
 		dht::Key token = db->genToken(r.getOrigin());
 
 		bt::Uint32 wants = 0;
@@ -243,8 +236,8 @@ namespace dht
 		if (r.wants(6) || r.getOrigin().ipVersion() == 6)
 			wants |= WANT_IPV6;
 
-		// if data is null do the same as when we have a findNode request
-		// find the K closest nodes and pack them
+		// If data is null do the same as when we have a findNode request
+		// Find the K closest nodes and pack them
 		KClosestNodesSearch kns(r.getInfoHash(), K);
 		node->findKClosestNodes(kns, wants);
 
@@ -266,7 +259,6 @@ namespace dht
 	{
 		Q_UNUSED(msg);
 	}
-
 
 	void DHT::portReceived(const QString & ip, bt::Uint16 port)
 	{
@@ -365,7 +357,6 @@ namespace dht
 		db->expire(bt::CurrentTime());
 	}
 
-
 	void DHT::update()
 	{
 		if (!running)
@@ -428,53 +419,62 @@ namespace dht
 			srv->ping(node->getOurID(), res->address());
 		}
 	}
-	
+
 	QMap<QString, int> DHT::getClosestGoodNodes(int maxNodes)
 	{
 		QMap<QString, int> map;
-		
+
 		if (!node)
 			return map;
-		
+
 		int max = 0;
 		KClosestNodesSearch kns(node->getOurID(), maxNodes*2);
 		node->findKClosestNodes(kns, WANT_BOTH);
-		
+
 		KClosestNodesSearch::Itr it;
 		for (it = kns.begin(); it != kns.end(); ++it)
 		{
 			KBucketEntry e = it->second;
-			
+
 			if (!e.isGood())
 				continue;
-			
+
 			const net::Address & a = e.getAddress();
-			
+
 			map.insert(a.toString(), a.port());
 			if (++max >= maxNodes)
 				break;
 		}
-		
+
 		return map;
 	}
-	
+
 	/**
 	 * @author Fonic <https://github.com/fonic>
 	 * Bootstrap DHT from well-knows nodes. The list of existing well-known
 	 * nodes was compiled through an extensive online research. For now, hard-
 	 * coded entries are used, as most other torrent clients do. This should
 	 * probably be made user-configurable as an advanced setting.
+	 *
+	 * Identified well-known nodes as of 11/08/16:
+	 * router.bittorrent.com:6881  - works reliably
+	 * router.utorrent.com:6881    - works reliably
+	 * dht.libtorrent.org:25401    - works reliably
+	 * dht.transmissionbt.com:6881 - works most of the time
+	 * dht.aelitis.com:6881        - not working, supposedly different protocol
+	 * router.bitcomet.com:6881    - DNS error (unknown host)
+	 * router.bitcomet.net:554     - DNS error (resolves to 127.0.0.1)
 	 */
 	void DHT::bootstrap()
 	{
 		Out(SYS_DHT | LOG_DEBUG) << "DHT: Adding well-known bootstrapping nodes" << endl;
-		addDHTNode(QString("router.bittorrent.com"), 6881);		// works reliably
-		addDHTNode(QString("router.utorrent.com"), 6881);		// works reliably
-		addDHTNode(QString("dht.libtorrent.org"), 25401);		// works reliably
-		//addDHTNode(QString("dht.transmissionbt.com"), 6881);	// works most of the time
-		//addDHTNode(QString("dht.aelitis.com"), 6881);			// not working, supposedly different protocol
-		//addDHTNode(QString("router.bitcomet.com"), 6881);		// DNS error (unknown host)
-		//addDHTNode(QString("router.bitcomet.net"), 554);		// DNS error (resolves to 127.0.0.1)
+		addDHTNode(QString("router.bittorrent.com"), 6881);
+		addDHTNode(QString("router.utorrent.com"), 6881);
+		addDHTNode(QString("dht.libtorrent.org"), 25401);
+		//addDHTNode(QString("dht.transmissionbt.com"), 6881);
+		//addDHTNode(QString("dht.aelitis.com"), 6881);
+		//addDHTNode(QString("router.bitcomet.com"), 6881);
+		//addDHTNode(QString("router.bitcomet.net"), 554);
 	}
 
 	/**
@@ -488,7 +488,7 @@ namespace dht
 	void DHT::checkBootstrap()
 	{
 		bootstrap_retries++;
-		
+
 		bt::Uint32 num_entries = node->getNumEntriesInRoutingTable();
 		if (num_entries >= BOOTSTRAP_MIN_ENTRIES)
 		{

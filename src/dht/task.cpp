@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,14 +15,12 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "task.h"
 #include <net/addressresolver.h>
 #include "kclosestnodessearch.h"
 #include "rpcserver.h"
-
-
 
 namespace dht
 {
@@ -35,9 +33,7 @@ namespace dht
 			task_finished(false),
 			queued(true)
 	{
-
 	}
-
 
 	Task::~Task()
 	{
@@ -45,7 +41,7 @@ namespace dht
 
 	void Task::start(const KClosestNodesSearch & kns, bool queued)
 	{
-		// fill the todo list
+		// Fill the todo list
 		for (KClosestNodesSearch::CItr i = kns.begin(); i != kns.end();i++)
 			todo.insert(i->second);
 		this->queued = queued;
@@ -61,7 +57,6 @@ namespace dht
 			update();
 		}
 	}
-
 
 	void Task::onResponse(dht::RPCCall* c, dht::RPCMsg::Ptr rsp)
 	{
@@ -140,4 +135,3 @@ namespace dht
 	}
 
 }
-

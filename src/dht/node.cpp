@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,10 +15,9 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "node.h"
-
 #include <util/log.h>
 #include <util/file.h>
 #include <util/error.h>
@@ -34,9 +33,7 @@
 #include "nodelookup.h"
 #include "kbuckettable.h"
 
-
 using namespace bt;
-
 
 namespace dht
 {
@@ -49,11 +46,11 @@ namespace dht
 			num_receives = 0;
 			new_key = false;
 		}
-		
+
 		~Private()
 		{
 		}
-		
+
 		void saveKey(const dht::Key & key, const QString & key_file)
 		{
 			bt::File fptr;
@@ -62,11 +59,11 @@ namespace dht
 				Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Cannot open file " << key_file << " : " << fptr.errorString() << endl;
 				return;
 			}
-			
+
 			fptr.write(key.getData(), 20);
 			fptr.close();
 		}
-		
+
 		dht::Key loadKey(const QString & key_file)
 		{
 			bt::File fptr;
@@ -78,7 +75,7 @@ namespace dht
 				new_key = true;
 				return r;
 			}
-			
+
 			Uint8 data[20];
 			if (fptr.read(data, 20) != 20)
 			{
@@ -87,18 +84,17 @@ namespace dht
 				new_key = true;
 				return r;
 			}
-			
+
 			new_key = false;
 			return dht::Key(data);
 		}
-		
+
 		QScopedPointer<KBucketTable> ipv4_table;
 		QScopedPointer<KBucketTable> ipv6_table;
 		RPCServer* srv;
 		Uint32 num_receives;
 		bool new_key;
 	};
-
 
 	Node::Node(RPCServer* srv, const QString & key_file) :
 			d(new Private(srv))
@@ -120,21 +116,21 @@ namespace dht
 			d->ipv4_table->insert(KBucketEntry(msg.getOrigin(), msg.getID()), d->srv);
 		else
 			d->ipv6_table->insert(KBucketEntry(msg.getOrigin(), msg.getID()), d->srv);
-		
+
 		d->num_receives++;
 
 		/**
 		 * @author Fonic <https://github.com/fonic>
 		 * This used to be 'if (d->num_receives == 3)' which doesn't make much
-         * sense since connecting to / bootstrapping DHT is possible with only
-         * one known node. Also, there seems to be no clue regarding the need
-         * for three known nodes in the DHT specification. Thus, changing this
-         * to 1 so that bootstrapping from one well-known node works.
+		 * sense since connecting to / bootstrapping DHT is possible with only
+		 * one known node. Also, there seems to be no clue regarding the need
+		 * for three known nodes in the DHT specification. Thus, changing this
+		 * to 1 so that bootstrapping from one well-known node works.
 		 */
 		if (d->num_receives == 1)
 		{
-			// do a node lookup upon our own id
-			// when we insert the first entry in the table
+			// Do a node lookup upon our own id when we insert the first entry
+			// in the table
 			dh_table->findOwnNode();
 		}
 
@@ -195,4 +191,5 @@ namespace dht
             num_entries = d->ipv4_table->numEntries() + d->ipv6_table->numEntries();
 		}
 	}
+
 }

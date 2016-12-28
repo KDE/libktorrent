@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #ifndef DHTRPCSERVER_H
 #define DHTRPCSERVER_H
@@ -49,14 +49,14 @@ namespace dht
 		RPCServer(DHT* dh_table, Uint16 port, QObject *parent = 0);
 		virtual ~RPCServer();
 
-		/// Start the server
+		// Start the server
 		void start();
 
-		/// Stop the server
+		// Stop the server
 		void stop();
 
 		/**
-		 * Do a RPC call.
+		 * Do an RPC call.
 		 * @param msg The message to send
 		 * @return The call object
 		 */
@@ -82,9 +82,9 @@ namespace dht
 		 */
 		void ping(const dht::Key & our_id, const net::Address & addr);
 
-		/// Get the number of active calls
+		// Get the number of active calls
 		Uint32 getNumActiveRPCCalls() const;
-		
+
 	private slots:
 		void callTimeout(RPCCall* call);
 
@@ -95,4 +95,4 @@ namespace dht
 
 }
 
-#endif
+#endif // DHTRPCSERVER_H

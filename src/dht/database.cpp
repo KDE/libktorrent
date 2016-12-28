@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "database.h"
 #include <arpa/inet.h>
@@ -27,6 +27,7 @@ using namespace bt;
 
 namespace dht
 {
+
 	DBItem::DBItem()
 	{
 		time_stamp = bt::CurrentTime();
@@ -44,7 +45,8 @@ namespace dht
 	}
 
 	DBItem::~DBItem()
-	{}
+	{
+	}
 
 	bool DBItem::expired(bt::TimeStamp now) const
 	{
@@ -74,16 +76,15 @@ namespace dht
 		}
 	}
 
-	///////////////////////////////////////////////
 
 	Database::Database()
 	{
 		items.setAutoDelete(true);
 	}
 
-
 	Database::~Database()
-	{}
+	{
+	}
 
 	void Database::store(const dht::Key & key, const DBItem & dbi)
 	{
@@ -117,8 +118,8 @@ namespace dht
 		while (itr != items.end())
 		{
 			DBItemList* dbl = itr->second;
-			// newer keys are inserted at the back
-			// so we can stop when we hit the first key which is not expired
+			// Newer keys are inserted at the back, so we can stop
+			// when we hit the first key which is not expired
 			while (dbl->count() > 0 && dbl->first().expired(now))
 			{
 				dbl->pop_front();
@@ -133,14 +134,14 @@ namespace dht
 		{
 			Uint8 tdata[14];
 			TimeStamp now = bt::CurrentTime();
-			// generate a hash of the ip port and the current time
+			// Generate a hash of the ip port and the current time,
 			// should prevent anybody from crapping things up
 			bt::WriteUint32(tdata, 0, addr.toIPv4Address());
 			bt::WriteUint16(tdata, 4, addr.port());
 			bt::WriteUint64(tdata, 6, now);
 
 			dht::Key token = SHA1Hash::generate(tdata, 14);
-			// keep track of the token, tokens will expire after a while
+			// Keep track of the token, tokens will expire after a while
 			tokens.insert(token, now);
 			return token;
 		}
@@ -148,14 +149,14 @@ namespace dht
 		{
 			Uint8 tdata[26];
 			TimeStamp now = bt::CurrentTime();
-			// generate a hash of the ip port and the current time
+			// Generate a hash of the ip port and the current time,
 			// should prevent anybody from crapping things up
 			memcpy(tdata, addr.toIPv6Address().c, 16);
 			bt::WriteUint16(tdata, 16, addr.port());
 			bt::WriteUint64(tdata, 18, now);
 
 			dht::Key token = SHA1Hash::generate(tdata, 26);
-			// keep track of the token, tokens will expire after a while
+			// Keep track of the token, tokens will expire after a while
 			tokens.insert(token, now);
 			return token;
 		}
@@ -163,11 +164,11 @@ namespace dht
 
 	bool Database::checkToken(const dht::Key & token, const net::Address & addr)
 	{
-		// the token must be in the map
+		// The token must be in the map
 		if (!tokens.contains(token))
 			return false;
 
-		// in the map so now get the timestamp and regenerate the token
+		// In the map so now get the timestamp and regenerate the token
 		// using the IP and port of the sender
 		TimeStamp ts = tokens[token];
 
@@ -179,8 +180,8 @@ namespace dht
 			bt::WriteUint64(tdata, 6, ts);
 			dht::Key ct = SHA1Hash::generate(tdata, 14);
 
-			// compare the generated token to the one received
-			if (token != ct)  // not good, this peer didn't went through the proper channels
+			// Compare the generated token to the one received
+			if (token != ct)  // Not good, this peer didn't went through the proper channels
 			{
 				Out(SYS_DHT | LOG_DEBUG) << "Invalid token" << endl;
 				return false;
@@ -195,15 +196,15 @@ namespace dht
 			bt::WriteUint64(tdata, 18, ts);
 
 			dht::Key ct = SHA1Hash::generate(tdata, 26);
-			// compare the generated token to the one received
-			if (token != ct)  // not good, this peer didn't went through the proper channels
+			// Compare the generated token to the one received
+			if (token != ct)  // Not good, this peer didn't went through the proper channels
 			{
 				Out(SYS_DHT | LOG_DEBUG) << "Invalid token" << endl;
 				return false;
 			}
 		}
 
-		// expire the token
+		// Expire the token
 		tokens.remove(token);
 		return true;
 	}
@@ -222,4 +223,5 @@ namespace dht
 			items.insert(key, dbl);
 		}
 	}
+
 }

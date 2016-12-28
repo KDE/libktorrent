@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,11 +15,10 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #ifndef DHTANNOUNCETASK_H
 #define DHTANNOUNCETASK_H
-
 
 #include "kbucket.h"
 #include "task.h"
@@ -44,17 +43,12 @@ namespace dht
 	};
 
 	/**
-		@author Joris Guisson <joris.guisson@gmail.com>
-	*/
+	 * @author Joris Guisson <joris.guisson@gmail.com>
+	 */
 	class AnnounceTask : public Task
 	{
 	public:
-		AnnounceTask(Database* db,
-		             RPCServer* rpc,
-		             Node* node,
-		             const dht::Key & info_hash,
-		             bt::Uint16 port,
-		             QObject* parent);
+		AnnounceTask(Database* db, RPCServer* rpc, Node* node, const dht::Key & info_hash, bt::Uint16 port, QObject* parent);
 		virtual ~AnnounceTask();
 
 		virtual void callFinished(RPCCall* c, RPCMsg::Ptr rsp);
@@ -68,19 +62,19 @@ namespace dht
 		 * @return false if no item to take, true else
 		 */
 		bool takeItem(DBItem & item);
-		
+
 	private:
 		void handleNodes(const QByteArray & nodes, int ip_version);
-		
+
 	private:
 		dht::Key info_hash;
 		bt::Uint16 port;
-		std::set<KBucketEntryAndToken> answered; // nodes which have answered with values
-		KBucketEntrySet answered_visited; // nodes which have answered with values which have been visited
+		std::set<KBucketEntryAndToken> answered; // Nodes which have answered with values
+		KBucketEntrySet answered_visited; // Nodes which have answered with values which have been visited
 		Database* db;
 		DBItemList returned_items;
 	};
 
 }
 
-#endif
+#endif // DHTANNOUNCETASK_H

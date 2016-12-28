@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include "announcereq.h"
 #include <util/log.h>
 #include <util/error.h>
@@ -25,11 +24,11 @@
 #include <bcodec/bencoder.h>
 #include "dht.h"
 
-
 using namespace bt;
 
 namespace dht
 {
+
 	AnnounceReq::AnnounceReq()
 	{
 		method = dht::ANNOUNCE_PEER;
@@ -41,7 +40,9 @@ namespace dht
 		method = dht::ANNOUNCE_PEER;
 	}
 
-	AnnounceReq::~AnnounceReq() {}
+	AnnounceReq::~AnnounceReq()
+	{
+	}
 
 	void AnnounceReq::apply(dht::DHT* dh_table)
 	{
@@ -74,17 +75,17 @@ namespace dht
 		}
 		enc.end();
 	}
-	
+
 	void AnnounceReq::parse(BDictNode* dict)
 	{
 		dht::GetPeersReq::parse(dict);
 		BDictNode* args = dict->getDict(ARG);
 		if (!args)
 			throw bt::Error("Invalid request, arguments missing");
-		
+
 		info_hash = Key(args->getByteArray("info_hash"));
 		port = args->getInt("port");
 		token = Key(args->getByteArray("token"));
 	}
-}
 
+}

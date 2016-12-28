@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #ifndef DHT_RPCMSGFACTORY_H
 #define DHT_RPCMSGFACTORY_H
 
@@ -33,9 +32,9 @@ namespace dht
 	{
 	public:
 		virtual ~RPCMethodResolver() {}
-		
-		/// Return the method associated with an mtid
-		virtual Method findMethod(const QByteArray & mtid) = 0; 
+
+		// Return the method associated with an mtid
+		virtual Method findMethod(const QByteArray & mtid) = 0;
 	};
 
 	/**
@@ -51,11 +50,11 @@ namespace dht
 		 * Creates a message out of a BDictNode.
 		 * @param dict The BDictNode
 		 * @param srv The RPCMethodResolver
-		 * @return A newly created message 
+		 * @return A newly created message
 		 * @throw bt::Error if something goes wrong
 		 */
 		RPCMsg::Ptr build(bt::BDictNode* dict, RPCMethodResolver* method_resolver);
-		
+
 	private:
 		RPCMsg::Ptr buildRequest(bt::BDictNode* dict);
 		RPCMsg::Ptr buildResponse(bt::BDictNode* dict, RPCMethodResolver* method_resolver);

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #ifndef DHTRPCCALL_H
 #define DHTRPCCALL_H
@@ -41,7 +41,7 @@ namespace dht
 
 	/**
 	 * Class which objects should derive from, if they want to know the result of a call.
-	*/
+	 */
 	class RPCCallListener : public QObject
 	{
 		Q_OBJECT
@@ -91,13 +91,13 @@ namespace dht
 		 */
 		void addListener(RPCCallListener* cl);
 
-		/// Get the message type
+		// Get the message type
 		Method getMsgMethod() const;
 
-		/// Get the request sent
+		// Get the request sent
 		const RPCMsg::Ptr getRequest() const {return msg;}
 
-		/// Get the request sent
+		// Get the request sent
 		RPCMsg::Ptr getRequest() {return msg;}
 
 	private slots:
@@ -115,4 +115,4 @@ namespace dht
 
 }
 
-#endif
+#endif // DHTRPCCALL_H

@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #ifndef DHT_RPCSERVERINTERFACE_H
 #define DHT_RPCSERVERINTERFACE_H
 
@@ -35,9 +34,9 @@ namespace dht
 	public:
 		RPCServerInterface();
 		virtual ~RPCServerInterface();
-		
+
 		/**
-		 * Do a RPC call.
+		 * Do an RPC call.
 		 * @param msg The message to send
 		 * @return The call object
 		 */

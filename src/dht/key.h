@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #ifndef DHTKEY_H
 #define DHTKEY_H
@@ -23,7 +23,6 @@
 #include <QByteArray>
 #include <util/sha1hash.h>
 #include <ktorrent_export.h>
-
 
 namespace dht
 {
@@ -62,7 +61,7 @@ namespace dht
 		 */
 		Key(const bt::Uint8* d);
 
-		/// Destructor.
+		// Destructor.
 		virtual ~Key();
 
 		/**
@@ -70,11 +69,11 @@ namespace dht
 		 * @return A random Key
 		 */
 		static Key random();
-		
-		/// Get the minimum key (all zeros)
+
+		// Get the minimum key (all zeros)
 		static Key min();
-		
-		/// Get the maximum key (all FF)
+
+		// Get the maximum key (all FF)
 		static Key max();
 
 		/**
@@ -98,14 +97,12 @@ namespace dht
 		 */
 		bool operator < (const Key & other) const;
 
-
 		/**
 		 * Smaller then or equal operator.
 		 * @param other The key to compare
 		 * @return rue if this key is smaller then or equal to other
 		 */
 		bool operator <= (const Key & other) const;
-
 
 		/**
 		 * Greater then operator.
@@ -120,26 +117,26 @@ namespace dht
 		 * @return rue if this key is greater then or equal to other
 		 */
 		bool operator >= (const Key & other) const;
-		
+
 		/**
 		 * Divide by a number operator
 		 */
 		Key operator / (int value) const;
-		
+
 		/**
 		 * Addition for keys
 		 * @param a The first key
 		 * @param b The second key
 		 */
 		friend KTORRENT_EXPORT Key operator + (const Key & a, const Key & b);
-		
+
 		/**
 		 * Subtraction for keys
 		 * @param a The first key
 		 * @param b The second key
 		 */
 		friend KTORRENT_EXPORT Key operator - (const Key & a, const Key & b);
-		
+
 		/**
 		 * Addition for key and a value
 		 * @param a The key
@@ -166,4 +163,4 @@ namespace dht
 
 }
 
-#endif
+#endif // DHTKEY_H

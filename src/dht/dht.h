@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #ifndef DHTDHT_H
 #define DHTDHT_H
@@ -28,7 +28,6 @@
 #include "key.h"
 #include "dhtbase.h"
 #include "rpcmsg.h"
-
 
 namespace net
 {
@@ -109,15 +108,15 @@ namespace dht
 	const bt::Uint32 MIN_AVAILABLE_RPC_SLOTS = 16;
 
 	/**
-		@author Joris Guisson <joris.guisson@gmail.com>
-	*/
+	 * @author Joris Guisson <joris.guisson@gmail.com>
+	 */
 	class DHT : public DHTBase
 	{
 		Q_OBJECT
 	public:
 		DHT();
 		virtual ~DHT();
-		
+
 		void ping(const PingReq & r);
 		void findNode(const FindNodeReq & r);
 		void response(const RPCMsg & r);
@@ -125,14 +124,14 @@ namespace dht
 		void announce(const AnnounceReq & r);
 		void error(const ErrMsg & r);
 		void timeout(RPCMsg::Ptr r);
-		
+
 		/**
 		 * A Peer has received a PORT message, and uses this function to alert the DHT of it.
 		 * @param ip The IP of the peer
 		 * @param port The port in the PORT message
 		 */
 		void portReceived(const QString & ip,bt::Uint16 port);
-		
+
 		/**
 		 * Do an announce on the DHT network
 		 * @param info_hash The info_hash
@@ -140,7 +139,7 @@ namespace dht
 		 * @return The task which handles this
 		 */
 		AnnounceTask* announce(const bt::SHA1Hash & info_hash,bt::Uint16 port);
-		
+
 		/**
 		 * Refresh a bucket using a find node task.
 		 * @param id The id
@@ -153,25 +152,25 @@ namespace dht
 		 * @param id The id of the key to search
 		 */
 		NodeLookup* findNode(const dht::Key & id);
-		
-		/// Do a findNode for our node id
+
+		// Do a findNode for our node id
 		NodeLookup* findOwnNode();
-		
-		/// See if it is possible to start a task
+
+		// See if it is possible to start a task
 		bool canStartTask() const;
-		
+
 		void start(const QString & table,const QString & key_file,bt::Uint16 port);
 		void stop();
 		void addDHTNode(const QString & host,bt::Uint16 hport);
-		
+
 		virtual QMap<QString, int> getClosestGoodNodes(int maxNodes);
-		
+
 		/**
 		 * @author Fonic <https://github.com/fonic>
 		 * Bootstrap from well-known nodes.
 		 */
 		void bootstrap();
-		
+
 	private slots:
 		void update();
 		void onResolverResults(net::AddressResolver* ar);
@@ -182,7 +181,7 @@ namespace dht
 		 * Timeout handler for bootstrap timer.
 		 */
 		void checkBootstrap();
-		
+
 	private:
 		Node* node;
 		RPCServer* srv;
@@ -202,4 +201,4 @@ namespace dht
 
 }
 
-#endif
+#endif // DHTDHT_H

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #ifndef DHTNODE_H
 #define DHTNODE_H
@@ -23,7 +23,6 @@
 #include <qobject.h>
 #include "key.h"
 #include "kbucket.h"
-
 
 using bt::Uint8;
 
@@ -33,12 +32,11 @@ namespace dht
 	class RPCMsg;
 	class RPCServer;
 	class KClosestNodesSearch;
-	
-	
+
 	const bt::Uint32 WANT_IPV4 = 1;
 	const bt::Uint32 WANT_IPV6 = 2;
 	const bt::Uint32 WANT_BOTH = WANT_IPV4 | WANT_IPV6;
-	
+
 	/**
 	 * @author Joris Guisson
 	 *
@@ -46,7 +44,7 @@ namespace dht
 	 * our id and 160 KBucket's.
 	 * A KBucketEntry is in node i, when the difference between our id and
 	 * the KBucketEntry's id is between 2 to the power i and 2 to the power i+1.
-	*/
+	 */
 	class Node : public QObject
 	{
 		Q_OBJECT
@@ -63,7 +61,7 @@ namespace dht
 		 */
 		void received(DHT* dh_table, const RPCMsg & msg);
 
-		/// Get our own ID
+		// Get our own ID
 		const dht::Key & getOurID() const {return our_id;}
 
 		/**
@@ -76,21 +74,21 @@ namespace dht
 
 		/**
 		 * Increase the failed queries count of the bucket entry we sent the message to
-		*/
+		 */
 		void onTimeout(RPCMsg::Ptr msg);
 
-		/// Check if a buckets needs to be refreshed, and refresh if necesarry
+		// Check if a buckets needs to be refreshed, and refresh if necesarry
 		void refreshBuckets(DHT* dh_table);
 
-		/// Save the routing table to a file
+		// Save the routing table to a file
 		void saveTable(const QString & file);
 
-		/// Load the routing table from a file
+		// Load the routing table from a file
 		void loadTable(const QString & file);
 
-		/// Get the number of entries in the routing table
+		// Get the number of entries in the routing table
 		bt::Uint32 getNumEntriesInRoutingTable() const {return num_entries;}
-		
+
 	private:
 		class Private;
 		Private* d;
@@ -100,4 +98,4 @@ namespace dht
 
 }
 
-#endif
+#endif // DHTNODE_H

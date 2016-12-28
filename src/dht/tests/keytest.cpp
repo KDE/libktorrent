@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include <algorithm>
 #include <QtTest>
 #include <QString>
@@ -43,20 +42,20 @@ static dht::Key KeyFromHexString(const QString & str)
 {
 	bt::Uint8 result[20];
 	std::fill(result, result + 20, 0);
-	
+
 	QString s = str.toLower();
 	if (s.size() % 2 != 0)
 		s.prepend('0');
-	
+
 	int j = 19;
-	
+
 	for (int i = s.size() - 1; i >= 0; i -= 2)
 	{
 		char left = s[i - 1].toLatin1();
 		char right = s[i].toLatin1();
 		result[j--] = (HexCharToUint8(left) << 4) | HexCharToUint8(right);
 	}
-	
+
 	return dht::Key(result);
 }
 
@@ -68,38 +67,38 @@ private slots:
 	{
 		bt::InitLog("keytest.log", false, true);
 	}
-	
+
 	void cleanupTestCase()
 	{
 	}
-	
+
 	void testAddition()
 	{
 		dht::Key a = KeyFromHexString("14455");
-		dht::Key b = KeyFromHexString("FFEEDD");	
+		dht::Key b = KeyFromHexString("FFEEDD");
 		dht::Key c = a + b;
 		QVERIFY(c == KeyFromHexString("1013332"));
-		
+
 		dht::Key d = a + 1;
 		QVERIFY(d == KeyFromHexString("14456"));
-		
+
 		dht::Key e = KeyFromHexString("FFFF") + 1;
 		QVERIFY(e == KeyFromHexString("10000"));
 	}
-	
+
 	void testSubtraction()
 	{
 		dht::Key a = KeyFromHexString("556677");
 		dht::Key b = KeyFromHexString("3384E6");
 		dht::Key c = a - b;
 		QVERIFY(c == KeyFromHexString("21E191"));
-		
+
 		dht::Key d = KeyFromHexString("550077");
 		dht::Key e = KeyFromHexString("3384E6");
 		dht::Key f = d - e;
 		QVERIFY(f == KeyFromHexString("217B91"));
 	}
-	
+
 	void testDivision()
 	{
 		dht::Key a = KeyFromHexString("550078");
@@ -107,7 +106,6 @@ private slots:
 		QVERIFY(b == KeyFromHexString("2A803C"));
 	}
 };
-
 
 QTEST_MAIN(KeyTest)
 

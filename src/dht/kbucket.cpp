@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "kbucket.h"
 #include <netinet/in.h>
@@ -31,11 +31,11 @@
 #include "task.h"
 #include "pingreq.h"
 
-
 using namespace bt;
 
 namespace dht
 {
+
 	KBucket::KBucket(RPCServerInterface* srv, const dht::Key& our_id) :
 			RPCCallListener(0),
 			min_key(Key::min()),
@@ -45,9 +45,7 @@ namespace dht
 			last_modified(bt::CurrentTime()),
 			refresh_task(0)
 	{
-
 	}
-
 
 	KBucket::KBucket(const dht::Key & min_key, const dht::Key & max_key, dht::RPCServerInterface* srv, const dht::Key& our_id) :
 			RPCCallListener(0),
@@ -60,9 +58,9 @@ namespace dht
 	{
 	}
 
-
 	KBucket::~KBucket()
-	{}
+	{
+	}
 
 	bool KBucket::keyInRange(const dht::Key& k) const
 	{
@@ -73,13 +71,12 @@ namespace dht
 	{
 		if(!keyInRange(our_id))
 			return false;
-		
+
 		if(min_key + dht::K >= max_key)
 			return false;
-		
+
 		return true;
 	}
-
 
 	std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() throw (KBucket::UnableToSplit)
 	{
@@ -118,7 +115,7 @@ namespace dht
 			return false;
 		}
 
-		// insert if not already in the list and we still have room
+		// Insert if not already in the list and we still have room
 		if (i == entries.end() && entries.count() < (int) dht::K)
 		{
 			entries.append(entry);
@@ -133,7 +130,7 @@ namespace dht
 			}
 			else
 			{
-				// ping questionable nodes when replacing a bad one fails
+				// Ping questionable nodes when replacing a bad one fails
 				pingQuestionable(entry);
 			}
 		}
@@ -150,16 +147,14 @@ namespace dht
 			return;
 
 		KBucketEntry entry = pending_entries_busy_pinging[c];
-		pending_entries_busy_pinging.remove(c); // call is done so erase it
+		pending_entries_busy_pinging.remove(c); // Call is done so erase it
 
-		// we have a response so try to find the next bad or questionable node
-		// if we do not have room see if we can get rid of some bad peers
-		if (!replaceBadEntry(entry)) // if no bad peers ping a questionable one
+		// We have a response so try to find the next bad or questionable node
+		// If we do not have room see if we can get rid of some bad peers
+		if (!replaceBadEntry(entry)) // If no bad peers ping a questionable one
 			pingQuestionable(entry);
 
 	}
-
-
 
 	void KBucket::onTimeout(RPCCall* c)
 	{
@@ -168,7 +163,7 @@ namespace dht
 
 		KBucketEntry entry = pending_entries_busy_pinging[c];
 
-		// replace the entry which timed out
+		// Replace the entry which timed out
 		QList<KBucketEntry>::iterator i;
 		for (i = entries.begin();i != entries.end();i++)
 		{
@@ -181,13 +176,13 @@ namespace dht
 				break;
 			}
 		}
-		pending_entries_busy_pinging.remove(c); // call is done so erase it
-		// see if we can do another pending entry
+		pending_entries_busy_pinging.remove(c); // Call is done so erase it
+		// See if we can do another pending entry
 		if (pending_entries_busy_pinging.count() < 2 && pending_entries.count() > 0)
 		{
 			KBucketEntry pe = pending_entries.front();
 			pending_entries.pop_front();
-			if (!replaceBadEntry(pe)) // if no bad peers ping a questionable one
+			if (!replaceBadEntry(pe)) // If no bad peers ping a questionable one
 				pingQuestionable(pe);
 		}
 	}
@@ -196,12 +191,12 @@ namespace dht
 	{
 		if (pending_entries_busy_pinging.count() >= 2)
 		{
-			pending_entries.append(replacement_entry); // lets not have to many pending_entries calls going on
+			pending_entries.append(replacement_entry); // Let's not have to many pending_entries calls going on
 			return;
 		}
 
+		// We haven't found any bad ones so try the questionable ones
 		QList<KBucketEntry>::iterator i;
-		// we haven't found any bad ones so try the questionable ones
 		for (i = entries.begin();i != entries.end();i++)
 		{
 			KBucketEntry & e = *i;
@@ -215,7 +210,7 @@ namespace dht
 				{
 					e.onPingQuestionable();
 					c->addListener(this);
-					// add the pending entry
+					// Add the pending entry
 					pending_entries_busy_pinging.insert(c, replacement_entry);
 					return;
 				}
@@ -231,7 +226,7 @@ namespace dht
 			KBucketEntry & e = *i;
 			if (e.isBad())
 			{
-				// bad one get rid of it
+				// Bad one, get rid of it
 				last_modified = bt::CurrentTime();
 				entries.erase(i);
 				entries.append(entry);
@@ -289,8 +284,6 @@ namespace dht
 		last_modified = bt::CurrentTime();
 	}
 
-
-
 	void KBucket::save(bt::BEncoder & enc)
 	{
 		enc.beginDict();
@@ -341,7 +334,7 @@ namespace dht
 			BDictNode* entry = entry_list->getDict(i);
 			if (!entry)
 				continue;
-			
+
 			Key id = Key(entry->getByteArray("id"));
 			QByteArray addr = entry->getByteArray("address");
 			if (addr.size() == 6)
@@ -354,7 +347,6 @@ namespace dht
 				memcpy(ip.c, addr.data(), 16);
 				entries.append(KBucketEntry(net::Address(ip, bt::ReadUint16((const Uint8*)addr.data(), 16)), id));
 			}
-
 		}
 	}
 
@@ -374,4 +366,3 @@ namespace dht
 	}
 
 }
-

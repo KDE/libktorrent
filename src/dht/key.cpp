@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "key.h"
 #include <time.h>
@@ -29,7 +29,8 @@ namespace dht
 {
 
 	Key::Key()
-	{}
+	{
+	}
 
 	Key::Key(const bt::SHA1Hash & k) : bt::SHA1Hash(k)
 	{
@@ -46,7 +47,8 @@ namespace dht
 	}
 
 	Key::~Key()
-	{}
+	{
+	}
 
 	bool Key::operator == (const Key & other) const
 	{
@@ -91,7 +93,7 @@ namespace dht
 	{
 		return operator > (other) || operator == (other);
 	}
-	
+
 	Key operator + (const dht::Key& a, const dht::Key& b)
 	{
 		bt::Uint8 result[20];
@@ -112,10 +114,10 @@ namespace dht
 				carry = false;
 			}
 		}
-		
+
 		return dht::Key(result);
 	}
-	
+
 	Key operator + (const Key & a, bt::Uint8 value)
 	{
 		bt::Uint8 b[20];
@@ -128,17 +130,16 @@ namespace dht
 	{
 		bt::Uint8 result[20];
 		bt::Uint8 remainder = 0;
-		
+
 		for (int i = 0; i < 20; i++)
 		{
 			bt::Uint8 d = (hash[i] + (remainder << 8)) / value;
 			remainder = (hash[i] + (remainder << 8)) % value;
 			result[i] = d;
 		}
-		
+
 		return dht::Key(result);
 	}
-
 
 	Key Key::distance(const Key & a, const Key & b)
 	{
@@ -189,7 +190,7 @@ namespace dht
 				carry = true;
 			}
 		}
-		
+
 		return dht::Key(result);
 	}
 
@@ -200,7 +201,7 @@ namespace dht
 		else
 			return b + (a - b) / 2;
 	}
-	
+
 	Key Key::max()
 	{
 		bt::Uint8 result[20];
@@ -214,6 +215,5 @@ namespace dht
 		std::fill(result, result + 20, 0x0);
 		return Key(result);
 	}
-
 
 }
