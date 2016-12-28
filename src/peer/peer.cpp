@@ -532,7 +532,7 @@ namespace bt
                 stats.partial_seed = val->data().toInt() == 1;
             }
 
-            /*
+            /**
              * @author Fonic <https://github.com/fonic>
              *
              * If present, evaluate 'v' string of extended handshake message to
