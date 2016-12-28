@@ -534,7 +534,6 @@ namespace bt
 
             /**
              * @author Fonic <https://github.com/fonic>
-             *
              * If present, evaluate 'v' string of extended handshake message to
              * accurately identify client as suggested by BitTorrent Extension
              * Protocol, section 'handshake message'. This will override a prior
