@@ -68,6 +68,29 @@ namespace dht
 
 	/**
 	 * @author Fonic <https://github.com/fonic>
+	 * Interval used for checking bootstrap result and retrying if necessary. One
+	 * minute should be enough time to complete bootstrapping. This should probably
+	 * be made user-configurable as an advanced setting.
+	 */
+	const bt::Uint32 BOOTSTRAP_CHECK_INTERVAL = 1 * 60 * 1000;
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Maximum number of bootstrapping retries. This should probably be made user-
+	 * configurable as an advanced setting.
+	 */
+	const bt::Uint32 BOOTSTRAP_MAX_RETRIES = 3;
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Minimum amount of routing table entries bootstrapping has to yield in order
+	 * to be considered sucessful.  This should probably be made user-configurable
+	 * as an advanced setting.
+	 */
+	const bt::Uint32 BOOTSTRAP_MIN_ENTRIES = 3;
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
 	 * Maximum number of concurrent tasks (i.e. outstanding DHT requests). This
 	 * used to be hard-coded in dht.cpp to a value of 7. Comparison to values in
 	 * the reference implementation is difficult, as the RI uses a finer-grained
@@ -80,8 +103,8 @@ namespace dht
 	/**
 	 * @author Fonic <https://github.com/fonic>
 	 * Minimum amount of RPC slots that have to be available to start a new task.
-	 * This used to be hard-coded in dht.cpp to a value of 16. This value has most
-	 * likely an internal-only scope and should not be made user-configurable.
+	 * This used to be hard-coded in dht.cpp to a value of 16. This value seems
+	 * to have an internal-only scope and should not be made user-configurable.
 	 */
 	const bt::Uint32 MIN_AVAILABLE_RPC_SLOTS = 16;
 
@@ -147,13 +170,18 @@ namespace dht
 		 * @author Fonic <https://github.com/fonic>
 		 * Bootstrap from well-known nodes.
 		 */
-		void bootStrap();
+		void bootstrap();
 		
 	private slots:
 		void update();
 		void onResolverResults(net::AddressResolver* ar);
 		void ownNodeLookupFinished(Task* t);
 		void expireDatabaseItems();
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * Timeout handler for bootstrap timer.
+		 */
+		void checkBootstrap();
 		
 	private:
 		Node* node;
@@ -164,6 +192,12 @@ namespace dht
 		QString table_file;
 		QTimer update_timer;
 		NodeLookup* our_node_lookup;
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * Timer for bootstrap result check, retry counter.
+		 */
+		QTimer bootstrap_timer;
+		bt::Uint32 bootstrap_retries;
 	};
 
 }

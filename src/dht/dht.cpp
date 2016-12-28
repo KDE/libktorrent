@@ -53,6 +53,11 @@ namespace dht
 	{
 		connect(&update_timer, &QTimer::timeout, this, &DHT::update);
 		connect(&expire_timer, &QTimer::timeout, this, &DHT::expireDatabaseItems);
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * Connect timer for bootstrap check.
+		 */
+		connect(&bootstrap_timer, &QTimer::timeout, this, &DHT::checkBootstrap);
 	}
 
 
@@ -96,10 +101,13 @@ namespace dht
 		{
 			/**
 			* @author Fonic <https://github.com/fonic>
-			* Routing table is empty, thus bootstrap using well-known nodes.
+			* Routing table is empty, bootstrap using well-known nodes. Start
+			* timer to check result and retry if necessary.
 			*/
-			Out(SYS_DHT | LOG_NOTICE) << "DHT: Routing table empty, bootstrapping required" << endl;
-			bootStrap();
+			Out(SYS_DHT | LOG_NOTICE) << "DHT: Routing table empty, bootstrapping from well-known nodes" << endl;
+			bootstrap();
+			bootstrap_retries = 0;
+			bootstrap_timer.start(BOOTSTRAP_CHECK_INTERVAL);
 		}
 	}
 
@@ -457,9 +465,9 @@ namespace dht
 	 * coded entries are used, as most other torrent clients do. This should
 	 * probably be made user-configurable as an advanced setting.
 	 */
-	void DHT::bootStrap()
+	void DHT::bootstrap()
 	{
-		Out(SYS_DHT | LOG_NOTICE) << "DHT: Adding well-known nodes for bootstrapping" << endl;
+		Out(SYS_DHT | LOG_DEBUG) << "DHT: Adding well-known bootstrapping nodes" << endl;
 		addDHTNode(QString("router.bittorrent.com"), 6881);		// works reliably
 		addDHTNode(QString("router.utorrent.com"), 6881);		// works reliably
 		addDHTNode(QString("dht.libtorrent.org"), 25401);		// works reliably
@@ -468,5 +476,41 @@ namespace dht
 		//addDHTNode(QString("router.bitcomet.com"), 6881);		// DNS error (unknown host)
 		//addDHTNode(QString("router.bitcomet.net"), 554);		// DNS error (resolves to 127.0.0.1)
 	}
-	
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Check bootstrap result, retry if necessary. This method is used as the
+	 * timeout handler for bootstrap_timer. Since there is no easy way to tell
+	 * wether bootstrapping was sucessful, the number of entries in the routing
+	 * table is compared to a predefined minimum value. Retries are counted,
+	 * retrying stops when the predefined limit is reached.
+	 */
+	void DHT::checkBootstrap()
+	{
+		bootstrap_retries++;
+		
+		bt::Uint32 num_entries = node->getNumEntriesInRoutingTable();
+		if (num_entries >= BOOTSTRAP_MIN_ENTRIES)
+		{
+			//Out(SYS_DHT | LOG_NOTICE) << "DHT: Bootstrapping successful, routing table contains " << num_entries << " entries (required: " << BOOTSTRAP_MIN_ENTRIES << ")" << endl;
+			Out(SYS_DHT | LOG_NOTICE) << "DHT: Bootstrapping successful" << endl;
+			bootstrap_timer.stop();
+		}
+		else
+		{
+			if (bootstrap_retries < BOOTSTRAP_MAX_RETRIES)
+			{
+				//Out(SYS_DHT | LOG_NOTICE) << "DHT: Bootstrapping failed, routing table contains " << num_entries << " entries (required: " << BOOTSTRAP_MIN_ENTRIES << "), retrying" << endl;
+				Out(SYS_DHT | LOG_NOTICE) << "DHT: Bootstrapping failed, retrying" << endl;
+				bootstrap();
+			}
+			else
+			{
+				//Out(SYS_DHT | LOG_NOTICE) << "DHT: Bootstrapping failed, maximum number of retries reached (limit: " << BOOTSTRAP_MAX_RETRIES << ")" << endl;
+				Out(SYS_DHT | LOG_NOTICE) << "DHT: Bootstrapping failed, maximum number of retries reached" << endl;
+				bootstrap_timer.stop();
+			}
+		}
+	}
+
 }
