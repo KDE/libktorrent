@@ -83,7 +83,7 @@ namespace dht
 	/**
 	 * @author Fonic <https://github.com/fonic>
 	 * Minimum amount of routing table entries bootstrapping has to yield in order
-	 * to be considered sucessful.  This should probably be made user-configurable
+	 * to be considered sucessful. This should probably be made user-configurable
 	 * as an advanced setting.
 	 */
 	const bt::Uint32 BOOTSTRAP_MIN_ENTRIES = 3;
