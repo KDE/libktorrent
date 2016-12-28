@@ -81,6 +81,12 @@ namespace dht
 		srv->start();
 		node->loadTable(table);
 		update_timer.start(1000);
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * Interval used for expiring database items. An interval of 5 mins
+		 * is proposed by the reference implementation. This should probably
+		 * be made user-configurable as an advanced setting.
+		 */
 		expire_timer.start(5*60*1000);
 		started();
 		if (node->getNumEntriesInRoutingTable() > 0)
