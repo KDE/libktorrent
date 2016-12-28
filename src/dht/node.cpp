@@ -122,7 +122,16 @@ namespace dht
 			d->ipv6_table->insert(KBucketEntry(msg.getOrigin(), msg.getID()), d->srv);
 		
 		d->num_receives++;
-		if (d->num_receives == 3)
+
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * This used to be 'if (d->num_receives == 3)' which doesn't make much
+         * sense since connecting to / bootstrapping DHT is possible with only
+         * one known node. Also, there seems to be no clue regarding the need
+         * for three known nodes in the DHT specification. Thus, changing this
+         * to 1 so that bootstrapping from one well-known node works.
+		 */
+		if (d->num_receives == 1)
 		{
 			// do a node lookup upon our own id
 			// when we insert the first entry in the table
@@ -173,6 +182,17 @@ namespace dht
 		{
 			d->ipv4_table->loadTable(file + ".ipv4", d->srv);
 			d->ipv6_table->loadTable(file + ".ipv6", d->srv);
+			/**
+			 * @author Fonic <https://github.com/fonic>
+			 * After loading tables, num_entries should be updated, otherwise
+			 * it will remain at zero until the first call to Node::received.
+			 * Since the number of entries in the routing table is checked in
+			 * DHT::start (which will always fail without this fix), this can
+			 * only be a bug. Also, without this fix, bootstrapping would always
+			 * be performed even if the client already knows other nodes from
+			 * previous sessions.
+			 */
+            num_entries = d->ipv4_table->numEntries() + d->ipv6_table->numEntries();
 		}
 	}
 }

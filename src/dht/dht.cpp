@@ -83,16 +83,23 @@ namespace dht
 		update_timer.start(1000);
 		/**
 		 * @author Fonic <https://github.com/fonic>
-		 * Interval used for expiring database items. An interval of 5 mins
-		 * is proposed by the reference implementation. This should probably
-		 * be made user-configurable as an advanced setting.
+		 * Use constant defined in dht.h instead of hard-coded value.
 		 */
-		expire_timer.start(5*60*1000);
+		expire_timer.start(DATABASE_EXPIRE_INTERVAL);
 		started();
 		if (node->getNumEntriesInRoutingTable() > 0)
 		{
 			// refresh the DHT table by looking for our own ID
 			findOwnNode();
+		}
+		else
+		{
+			/**
+			* @author Fonic <https://github.com/fonic>
+			* Routing table is empty, thus bootstrap using well-known nodes.
+			*/
+			Out(SYS_DHT | LOG_NOTICE) << "DHT: Routing table empty, bootstrapping required" << endl;
+			bootStrap();
 		}
 	}
 
@@ -163,6 +170,11 @@ namespace dht
 		if (our_node_lookup)
 			return our_node_lookup;
 
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * Added additional log debug output.
+		 */
+		Out(SYS_DHT | LOG_DEBUG) << "DHT: Finding own node" << endl;
 		our_node_lookup = findNode(node->getOurID());
 		if (our_node_lookup)
 			connect(our_node_lookup, &NodeLookup::finished, this, &DHT::ownNodeLookupFinished);
@@ -260,11 +272,16 @@ namespace dht
 
 	bool DHT::canStartTask() const
 	{
-		// we can start a task if we have less then  7 runnning and
-		// there are at least 16 RPC slots available
-		if (tman->getNumTasks() >= 7)
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * A task may only be started if the amount of already running task
+		 * is below the defined limit and if there is still a minimum amount
+		 * of RPC slots available. Both values used to be hard-coded and are
+		 * now defined by constants in dht.h.
+		 */
+		if (tman->getNumTasks() >= MAX_CONCURRENT_TASKS)
 			return false;
-		else if (256 - srv->getNumActiveRPCCalls() <= 16)
+		else if (256 - srv->getNumActiveRPCCalls() <= MIN_AVAILABLE_RPC_SLOTS)
 			return false;
 
 		return true;
@@ -301,7 +318,7 @@ namespace dht
 		bucket.updateRefreshTimer();
 		if (kns.getNumEntries() > 0)
 		{
-			Out(SYS_DHT | LOG_DEBUG) << "DHT: refreshing bucket " << endl;
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: Refreshing bucket " << endl;
 			NodeLookup* nl = new NodeLookup(id, srv, node, tman);
 			nl->start(kns, !canStartTask());
 			tman->addTask(nl);
@@ -320,7 +337,7 @@ namespace dht
 		node->findKClosestNodes(kns, WANT_BOTH);
 		if (kns.getNumEntries() > 0)
 		{
-			Out(SYS_DHT | LOG_DEBUG) << "DHT: finding node " << endl;
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: Finding node " << endl;
 			NodeLookup* at = new NodeLookup(id, srv, node, tman);
 			at->start(kns, !canStartTask());
 			tman->addTask(at);
@@ -332,6 +349,11 @@ namespace dht
 
 	void DHT::expireDatabaseItems()
 	{
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * Added additional log debug output.
+		 */
+		Out(SYS_DHT | LOG_DEBUG) << "DHT: Expiring database items" << endl;
 		db->expire(bt::CurrentTime());
 	}
 
@@ -358,11 +380,18 @@ namespace dht
 		node->onTimeout(r);
 	}
 
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * This method already existed, but seemed to be unused. It would have been
+	 * unusable anyway due to referencing the non-existing slot 'hostResolved'.
+	 * Reference fixed, method is now used for DHT bootstrapping.
+	 */
 	void DHT::addDHTNode(const QString & host, Uint16 hport)
 	{
 		if (!running)
 			return;
 
+		Out(SYS_DHT | LOG_DEBUG) << "DHT: Adding bootstrap node '" << host << ":" << hport << "'" << endl;
 		net::Address addr;
 		if (addr.setAddress(host))
 		{
@@ -370,7 +399,10 @@ namespace dht
 			srv->ping(node->getOurID(), addr);
 		}
 		else
-			net::AddressResolver::resolve(host, hport, this, SLOT(hostResolved(net::AddressResolver*)));
+		{
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: Resolving bootstrap node '" << host << "'" << endl;
+			net::AddressResolver::resolve(host, hport, this, SLOT(onResolverResults(net::AddressResolver*)));
+		}
 	}
 
 	void DHT::onResolverResults(net::AddressResolver* res)
@@ -380,6 +412,11 @@ namespace dht
 
 		if (res->succeeded())
 		{
+			/**
+			 * @author Fonic <https://github.com/fonic>
+			 * Added additional log debug output.
+			 */
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: Adding resolved bootstrap node '" << res->address().toString() << ":" << res->address().port() << "'" << endl;
 			srv->ping(node->getOurID(), res->address());
 		}
 	}
@@ -411,6 +448,25 @@ namespace dht
 		}
 		
 		return map;
+	}
+	
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Bootstrap DHT from well-knows nodes. The list of existing well-known
+	 * nodes was compiled through an extensive online research. For now, hard-
+	 * coded entries are used, as most other torrent clients do. This should
+	 * probably be made user-configurable as an advanced setting.
+	 */
+	void DHT::bootStrap()
+	{
+		Out(SYS_DHT | LOG_NOTICE) << "DHT: Adding well-known nodes for bootstrapping" << endl;
+		addDHTNode(QString("router.bittorrent.com"), 6881);		// works reliably
+		addDHTNode(QString("router.utorrent.com"), 6881);		// works reliably
+		addDHTNode(QString("dht.libtorrent.org"), 25401);		// works reliably
+		//addDHTNode(QString("dht.transmissionbt.com"), 6881);	// works most of the time
+		//addDHTNode(QString("dht.aelitis.com"), 6881);			// not working, supposedly different protocol
+		//addDHTNode(QString("router.bitcomet.com"), 6881);		// DNS error (unknown host)
+		//addDHTNode(QString("router.bitcomet.net"), 554);		// DNS error (resolves to 127.0.0.1)
 	}
 	
 }

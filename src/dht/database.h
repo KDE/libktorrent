@@ -32,7 +32,14 @@
 
 namespace dht
 {
-	/// Each item may only exist for 30 minutes
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Maximum allowed age of database items before expiration. This is not
+	 * to be confused with DATABASE_EXPIRE_INTERVAL in dht.h which defines
+	 * how often the database will be checked for expired items. A value of
+	 * 30 * 60* 1000 is proposed by the reference implementation.
+	 */
 	const bt::Uint32 MAX_ITEM_AGE = 30 * 60 * 1000;
 
 	/**

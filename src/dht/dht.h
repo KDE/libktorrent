@@ -57,6 +57,35 @@ namespace dht
 	class AnnounceReq;
 
 	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Interval used for expiring database items (i.e. checking the database for
+	 * expired items). This is not to be confused with MAX_ITEM_AGE in database.h
+	 * which defines _when_ database items expire). A value of 5 mins is proposed
+	 * by the reference implementation. This should probably be made user-config-
+	 * urable as an advanced setting.
+	 */
+	const bt::Uint32 DATABASE_EXPIRE_INTERVAL = 5 * 60 * 1000;
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Maximum number of concurrent tasks (i.e. outstanding DHT requests). This
+	 * used to be hard-coded in dht.cpp to a value of 7. Comparison to values in
+	 * the reference implementation is difficult, as the RI uses a finer-grained
+	 * mechanism (https://github.com/bittorrent/libbtdht/blob/master/src/DhtImpl.h,
+	 * @line 806ff, enum 'KademliaConstants'). This should probably be made user-
+	 * configurable as an advanced setting.
+	 */
+	const bt::Uint32 MAX_CONCURRENT_TASKS = 10;
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Minimum amount of RPC slots that have to be available to start a new task.
+	 * This used to be hard-coded in dht.cpp to a value of 16. This value has most
+	 * likely an internal-only scope and should not be made user-configurable.
+	 */
+	const bt::Uint32 MIN_AVAILABLE_RPC_SLOTS = 16;
+
+	/**
 		@author Joris Guisson <joris.guisson@gmail.com>
 	*/
 	class DHT : public DHTBase
@@ -113,6 +142,12 @@ namespace dht
 		void addDHTNode(const QString & host,bt::Uint16 hport);
 		
 		virtual QMap<QString, int> getClosestGoodNodes(int maxNodes);
+		
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * Bootstrap from well-known nodes.
+		 */
+		void bootStrap();
 		
 	private slots:
 		void update();

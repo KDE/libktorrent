@@ -34,8 +34,8 @@ namespace dht
 	 * Timeout for RPC calls (i.e. DHT requests). This used to be hard-coded
 	 * in rpccall.cpp to a value of 30 * 1000. The reference implementation
 	 * proposes much lower timeouts (4 secs, peers taking >= 1 sec to respond
-	 * are flagged as 'slow'), thus the value was lowered. This should probably
-	 * be made user-configurable as an advanced setting.
+	 * are flagged as 'slow'), thus the value was lowered considerably. This
+	 * should probably be made user-configurable as an advanced setting.
 	 */
 	const bt::Uint32 RPC_CALL_TIMEOUT = 5 * 1000;
 
