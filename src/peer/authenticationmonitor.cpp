@@ -47,7 +47,7 @@ namespace bt
 		{
 			AuthenticateBase* ab = *itr;
 			ab->deleteLater();
-			itr++;
+			++itr;
 		}
 		auths.clear();
 	}
@@ -101,7 +101,7 @@ namespace bt
 						dev->prepare(this,m);
 					}
 				}
-				itr++;
+				++itr;
 			}
 		}
 		
@@ -136,7 +136,7 @@ namespace bt
 					if (w)
 						ab->onReadyWrite();
 				}
-				itr++;
+				++itr;
 			}
 		}
 	}

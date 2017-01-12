@@ -249,7 +249,7 @@ namespace bt
 			{
 				if (j->first != pd && j->second->contains(i))
 					times_downloading++;
-				j++;
+				++j;
 			}
 			
 			// nobody is downloading this piece, so return it
@@ -278,7 +278,7 @@ namespace bt
 			{
 				PieceDownloader* pd = *i;
 				if (!pd->isChoked() && pd->canAddRequest() && sendRequest(pd))
-					i++;
+					++i;
 				else
 					i = tmp.erase(i);
 			}
@@ -328,7 +328,7 @@ namespace bt
 						chunk->getIndex(),
 						i*MAX_PIECE_LEN,
 						i+1<num ? MAX_PIECE_LEN : last_size,0));
-			itr++;
+			++itr;
 		}
 		ds->clear();
 		timer.update();
@@ -539,7 +539,7 @@ namespace bt
 			// if there is one which isn't choked 
 			if (!pd->isChoked())
 				return false;
-			i++;
+			++i;
 		}
 		return true;
 	}

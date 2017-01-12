@@ -100,7 +100,7 @@ namespace bt
 		
 		Uint32 sel = lp.front();
 		Uint32 cnt = downer->numDownloadersForChunk(sel);
-		for (std::list<Uint32>::const_iterator i = lp.begin();i != lp.end();i++)
+		for (std::list<Uint32>::const_iterator i = lp.begin();i != lp.end();++i)
 		{
 			Uint32 cnt_i = downer->numDownloadersForChunk(*i);
 			if (cnt_i < cnt)
@@ -154,7 +154,7 @@ namespace bt
 			if (c->isExcludedForDownloading() || c->isExcluded() || bs.get(i))
 			{
 				std::list<Uint32>::iterator tmp = itr;
-				itr++;
+				++itr;
 				chunks.erase(tmp);
 			}
 			else if (pd->hasChunk(i))
@@ -183,10 +183,10 @@ namespace bt
 				}
 					
 				
-				itr++;
+				++itr;
 			}
 			else
-				itr++;
+				++itr;
 		}
 		
 		if (sel >= cman->getNumChunks())

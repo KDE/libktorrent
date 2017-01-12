@@ -58,7 +58,7 @@ namespace net
 				TrafficShapedSocket* s = *itr;
 				if (!s->socketDevice())
 				{
-					itr++;
+					++itr;
 					continue;
 				}
 				
@@ -76,7 +76,7 @@ namespace net
 					g->add(s);
 					num_ready++;
 				}
-				itr++;
+				++itr;
 			}
 			
 			if (num_ready > 0)
@@ -122,7 +122,7 @@ namespace net
 			{
 				s->socketDevice()->prepare(this,Poll::INPUT);
 			}
-			itr++;
+			++itr;
 		}
 		sm->unlock();
 		return poll();

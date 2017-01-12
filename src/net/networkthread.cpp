@@ -119,7 +119,7 @@ namespace net
 				else
 					allowance = 0;
 			}
-			itr++;
+			++itr;
 		}
 		
 		return num_still_ready > 0;
@@ -141,7 +141,7 @@ namespace net
 					Uint32 as = g->getAssuredAllowance();
 					doGroup(g,as,now);
 				}
-				itr++;
+				++itr;
 			}
 			
 			Uint32 allowance = 0;
@@ -155,7 +155,7 @@ namespace net
 					doGroup(g,allowance,now);
 					g->clear();
 				}
-				itr++;
+				++itr;
 			}
 		}
 		else
@@ -179,7 +179,7 @@ namespace net
 					doGroup(g,as,now);
 					allowance -= (tmp - as); // subtract from allowance
 				}
-				itr++;
+				++itr;
 			}
 			
 			
@@ -196,7 +196,7 @@ namespace net
 			{
 				SocketGroup* g = itr->second;
 				g->clear();
-				itr++;
+				++itr;
 			}
 		}
 	}

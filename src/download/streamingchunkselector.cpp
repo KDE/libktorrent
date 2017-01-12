@@ -97,11 +97,11 @@ namespace bt
 			if (bs.get(i) || i < cursor)
 			{
 				std::list<Uint32>::iterator tmp = itr;
-				itr++;
+				++itr;
 				range.erase(tmp);
 			}
 			else
-				itr++;
+				++itr;
 		}
 	}
 	
@@ -118,16 +118,16 @@ namespace bt
 			if (bs.get(*i))
 			{
 				std::set<Uint32>::iterator j = i;
-				i++;
+				++i;
 				preview_chunks.erase(j);
 			}
 			else if (pd->hasChunk(*i) && *i >= range_start && *i <= range_end)
 			{
 				candidates.push_back(*i);
-				i++;
+				++i;
 			}
 			else
-				i++;
+				++i;
 		}
 		
 		if (!candidates.empty())
@@ -162,7 +162,7 @@ namespace bt
 			if (bs.get(i))
 			{
 				std::list<Uint32>::iterator tmp = itr;
-				itr++;
+				++itr;
 				range.erase(tmp);
 			}
 			else if (pd->hasChunk(i) && !c->isExcluded() && !c->isExcludedForDownloading())
@@ -184,10 +184,10 @@ namespace bt
 					break;
 				}
 				
-				itr++;
+				++itr;
 			}
 			else
-				itr++;
+				++itr;
 		}
 		
 		if (critical_chunk != INVALID_CHUNK)

@@ -107,7 +107,7 @@ namespace dht
 		{
 			if (ip_version == (bt::Uint32)i->getAddress().ipVersion())
 				tdbl.append(*i);
-			i++;
+			++i;
 		}
 	}
 
@@ -123,7 +123,7 @@ namespace dht
 			{
 				dbl->pop_front();
 			}
-			itr++;
+			++itr;
 		}
 	}
 

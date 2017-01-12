@@ -474,7 +474,7 @@ namespace bt
 		{
 			TorrentFile & f = getFile(*i);
 			f.updateNumDownloadedChunks(cman);
-			i++;
+			++i;
 		}
 	}
 	

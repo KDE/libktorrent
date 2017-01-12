@@ -49,7 +49,7 @@ namespace bt
 			while (i != tr.end())
 			{
 				addTracker(*i,false,tier);
-				i++;
+				++i;
 			}
 			
 			tier++;
@@ -88,7 +88,7 @@ namespace bt
 			
 			// If all trackers have an ERROR status, and there is at least one
 			// enabled, we must return true;
-			for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();i++)
+			for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();++i)
 			{
 				if (i->second->isEnabled())
 				{
@@ -132,7 +132,7 @@ namespace bt
 	QList<TrackerInterface*> TrackerManager::getTrackers() 
 	{
 		QList<TrackerInterface*> ret;
-		for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+		for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
 		{
 			ret.append(i->second);
 		}
@@ -232,7 +232,7 @@ namespace bt
 					trackers.erase(*i);
 				}
 			}
-			i++;
+			++i;
 		}
 		
 		custom_trackers.clear();
@@ -273,7 +273,7 @@ namespace bt
 		}
 		else
 		{
-			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
 			{
 				if (i->second->isEnabled())
 					i->second->start();
@@ -294,14 +294,14 @@ namespace bt
 			if (curr)
 				curr->stop(wjob);
 			
-			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
 			{
 				i->second->reset();
 			}
 		}
 		else
 		{
-			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
 			{
 				i->second->stop(wjob);
 				i->second->reset();
@@ -318,7 +318,7 @@ namespace bt
 		}
 		else
 		{
-			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
 			{
 				i->second->completed();
 			}
@@ -327,7 +327,7 @@ namespace bt
 
 	void TrackerManager::scrape()
 	{
-		for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+		for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
 		{
 			i->second->scrape();
 		}
@@ -344,7 +344,7 @@ namespace bt
 		}
 		else
 		{
-			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();i++)
+			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
 			{
 				if (i->second->isEnabled())
 					i->second->manualUpdate();
@@ -360,7 +360,7 @@ namespace bt
 			return;
 		
 		QTextStream stream(&file);
-		for (QList<QUrl>::iterator i = custom_trackers.begin();i != custom_trackers.end();i++)
+		for (QList<QUrl>::iterator i = custom_trackers.begin();i != custom_trackers.end();++i)
 			stream << (*i).toDisplayString() << ::endl;
 	}
 	
@@ -395,7 +395,7 @@ namespace bt
 			Tracker* trk = i->second;
 			
 			stream << (trk->isEnabled() ? "1:" : "0:") << url.toDisplayString() << ::endl;
-			i++;
+			++i;
 		}
 	}
 	
@@ -438,7 +438,7 @@ namespace bt
 				else if (t->failureCount() == n->failureCount())
 					n = t->getTier() < n->getTier() ? t : n;
 			}
-			i++;
+			++i;
 		}
 		
 		if (n)
@@ -520,7 +520,7 @@ namespace bt
 		}
 		
 		int r = 0;
-		for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();i++)
+		for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();++i)
 		{
 			int v = i->second->getNumSeeders();
 			if (v > r) 
@@ -536,7 +536,7 @@ namespace bt
 			return curr && curr->getNumLeechers() > 0 ? curr->getNumLeechers() : 0;
 		
 		int r = 0;
-		for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();i++)
+		for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();++i)
 		{
 			int v = i->second->getNumLeechers();
 			if (v > r)

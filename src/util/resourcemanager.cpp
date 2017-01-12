@@ -109,7 +109,7 @@ namespace bt
 				r->acquired();
 				activated++;
 			}
-			i++;
+			++i;
 			if (i == pending.end()) // Loop around
 				i = pending.begin();
 			

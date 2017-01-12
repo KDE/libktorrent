@@ -46,7 +46,7 @@ namespace dht
 	void Task::start(const KClosestNodesSearch & kns, bool queued)
 	{
 		// fill the todo list
-		for (KClosestNodesSearch::CItr i = kns.begin(); i != kns.end();i++)
+		for (KClosestNodesSearch::CItr i = kns.begin(); i != kns.end();++i)
 			todo.insert(i->second);
 		this->queued = queued;
 		if (!queued)

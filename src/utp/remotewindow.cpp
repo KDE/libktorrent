@@ -93,7 +93,7 @@ namespace utp
 					i = unacked_packets.erase(i);
 				}
 				else
-					i++;
+					++i;
 			}
 			else
 				break;
@@ -136,7 +136,7 @@ namespace utp
 				lost_packets = true;
 			}
 
-			itr++;
+			++itr;
 		}
 
 		if (sack)
@@ -159,7 +159,7 @@ namespace utp
 					}
 					lost_packets = true;
 				}
-				itr++;
+				++itr;
 			}
 		}
 
@@ -197,7 +197,7 @@ namespace utp
 			max_window = MIN_PACKET_SIZE;
 			bt::TimeStamp now = bt::Now();
 			// When a timeout occurs retransmit packets which are lost longer then the current timeout
-			for (QList<UnackedPacket>::iterator i = unacked_packets.begin(); i != unacked_packets.end(); i++)
+			for (QList<UnackedPacket>::iterator i = unacked_packets.begin(); i != unacked_packets.end(); ++i)
 			{
 				UnackedPacket & pkt = *i;
 				if (!pkt.retransmitted || now - pkt.send_time > conn->currentTimeout())

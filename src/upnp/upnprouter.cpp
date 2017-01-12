@@ -236,7 +236,7 @@ namespace bt
             }
             else
             {
-                itr++;
+                ++itr;
             }
         }
 
@@ -480,7 +480,7 @@ namespace bt
             if(fwo.port == port && fwo.service == srv)
                 itr = fwds.erase(itr);
             else
-                itr++;
+                ++itr;
         }
 
         fw.pending_req = sendSoapQuery(comm, srv->servicetype + "#" + action, srv->controlurl);
@@ -545,7 +545,7 @@ namespace bt
                     fwds.erase(i);
                 break;
             }
-            i++;
+            ++i;
         }
 
         active_reqs.removeAll(r);

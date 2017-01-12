@@ -125,7 +125,7 @@ namespace bt
 				i = ppl.erase(i);
 			}
 			else
-				i++;
+				++i;
 		}
 
 		// sort list by ACA score
@@ -178,7 +178,7 @@ namespace bt
 				i = ppl.erase(i);
 			}
 			else
-				i++;
+				++i;
 		}
 
 		qSort(ppl.begin(), ppl.end(), UploadRateGreaterThan);

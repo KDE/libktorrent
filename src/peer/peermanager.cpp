@@ -288,7 +288,7 @@ namespace bt
 			while(i != d->potential_peers.end())
 			{
 				out << i->first.toString() << " " <<  i->first.port() << ::endl;
-				i++;
+				++i;
 			}
 		}
 		catch(bt::Error & err)
@@ -423,7 +423,7 @@ namespace bt
 
 	void PeerManager::setGroupIDs(Uint32 up, Uint32 down)
 	{
-		for(PeerMap::iterator i = d->peer_map.begin(); i != d->peer_map.end(); i++)
+		for(PeerMap::iterator i = d->peer_map.begin(); i != d->peer_map.end(); ++i)
 			i.value()->setGroupIDs(up, down);
 	}
 
@@ -651,7 +651,7 @@ namespace bt
 					else
 						peer->sendNotInterested();
 				}
-				i++;
+				++i;
 			}
 		}
 
@@ -679,7 +679,7 @@ namespace bt
 
 	bool PeerManager::Private::killBadPeer()
 	{
-		for(PeerMap::iterator i = peer_map.begin(); i != peer_map.end(); i++)
+		for(PeerMap::iterator i = peer_map.begin(); i != peer_map.end(); ++i)
 		{
 			Peer::Ptr peer = i.value();
 			if(peer->getStats().aca_score <= -5.0 && peer->getStats().aca_score > -50.0)
@@ -714,7 +714,7 @@ namespace bt
 		{
 			if(i.value()->getAddress() == addr)
 				return true;
-			i++;
+			++i;
 		}
 		return false;
 	}
