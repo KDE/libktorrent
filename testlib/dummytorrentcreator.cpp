@@ -55,7 +55,7 @@ bool DummyTorrentCreator::createMultiFileTorrent(const QMap<QString,bt::Uint64>&
 			MakeFilePath(dpath + i.key());
 			if (!createRandomFile(dpath + i.key(),i.value()))
 				return false;
-			i++;
+			++i;
 		}
 		
 		bt::TorrentCreator creator(dpath,trackers,QList<QUrl>(),chunk_size,name,"",false,false);

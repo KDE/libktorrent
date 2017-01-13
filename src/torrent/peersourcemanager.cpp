@@ -49,7 +49,7 @@ namespace bt
 		{
 			PeerSource* ps = *itr;
 			ps->aboutToBeDestroyed();
-			itr++;
+			++itr;
 		}
 		qDeleteAll(additional);
 		additional.clear();
@@ -79,7 +79,7 @@ namespace bt
 		while (i != additional.end())
 		{
 			(*i)->start();
-			i++;
+			++i;
 		}
 		
 		TrackerManager::start();
@@ -94,7 +94,7 @@ namespace bt
 		while (i != additional.end())
 		{
 			(*i)->stop();
-			i++;
+			++i;
 		}
 		
 		TrackerManager::stop(wjob);
@@ -106,7 +106,7 @@ namespace bt
 		while (i != additional.end())
 		{
 			(*i)->completed();
-			i++;
+			++i;
 		}
 		
 		TrackerManager::completed();
@@ -120,7 +120,7 @@ namespace bt
 		while (i != additional.end())
 		{
 			(*i)->manualUpdate();
-			i++;
+			++i;
 		}
 		
 		TrackerManager::manualUpdate();

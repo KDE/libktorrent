@@ -151,7 +151,7 @@ namespace bt
 				{
 					LogMonitorInterface* lmi = *i;
 					lmi->message(final,filter);
-					i++;
+					++i;
 				}
 			}
 			tmp.clear();

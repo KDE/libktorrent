@@ -41,7 +41,7 @@ namespace bt
 			while (i != first->urls.end())
 			{
 				addTracker(*i,true,tier);
-				i++;
+				++i;
 			}
 			tier++;
 			first = first->next;

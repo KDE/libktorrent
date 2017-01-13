@@ -326,7 +326,7 @@ namespace bt
 			CacheFile::Ptr cf = files[tf->getIndex()];
 			if(cf)
 				cf->changePath(tf->getPathOnDisk());
-			i++;
+			++i;
 		}
 		
 		Cache::moveDataFilesFinished(fmap, job);
@@ -785,7 +785,7 @@ namespace bt
 			CacheFile::Ptr cf = i.value();
 			if(cf)
 				prealloc->add(cf);
-			i++;
+			++i;
 		}
 	}
 
@@ -821,7 +821,7 @@ namespace bt
 		{
 			QString path = output_dir;
 			// reassemble the full directory path
-			for(QStringList::iterator itr = sl.begin(); itr != sl.end(); itr++)
+			for(QStringList::iterator itr = sl.begin(); itr != sl.end(); ++itr)
 				path += *itr + bt::DirSeparator();
 
 			QDir dir(path);

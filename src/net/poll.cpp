@@ -107,7 +107,7 @@ namespace net
 			if (ret > 0 && ready(itr->first,INPUT))
 				itr->second->handleData();
 			itr->second->reset();
-			itr++;
+			++itr;
 		}
 		
 		poll_clients.clear();

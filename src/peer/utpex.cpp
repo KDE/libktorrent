@@ -166,7 +166,7 @@ namespace bt
 				WriteUint16(buf,size + 4,addr.port());
 				size += 6;
 			}
-			i++;
+			++i;
 		}
 		
 		enc.write(buf,size);
@@ -188,7 +188,7 @@ namespace bt
 		while (i != flags.end())
 		{
 			buf[idx++] = i->second;
-			i++;
+			++i;
 		}
 		
 		enc.write(buf,flags.size());

@@ -76,7 +76,7 @@ namespace bt
 			{
 				addMove(tf->getPathOnDisk(),i.value());
 			}
-			i++;
+			++i;
 		}
 	}
 
@@ -132,7 +132,7 @@ namespace bt
 		{
 			QFileInfo fi(i.key());
 			total_bytes += fi.size();
-			i++;
+			++i;
 		}
 		setTotalAmount(KJob::Bytes,total_bytes);
 		move_data_files_slot.add(this);
@@ -202,7 +202,7 @@ namespace bt
 			KIO::Job* j = KIO::file_move(QUrl::fromLocalFile(i.value()),QUrl::fromLocalFile(i.key()),-1,KIO::HideProgressInfo);
 			connect(j, &KIO::Job::result, this, &MoveDataFilesJob::onRecoveryJobDone);
 			running_recovery_jobs++;
-			i++;
+			++i;
 		}
 		success.clear();
 	}

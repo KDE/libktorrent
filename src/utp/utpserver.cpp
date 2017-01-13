@@ -190,7 +190,7 @@ namespace utp
 	void UTPServer::Private::wakeUpPollPipes(utp::Connection::Ptr conn, bool readable, bool writeable)
 	{
 		QMutexLocker lock(&mutex);
-		for (PollPipePairItr itr = poll_pipes.begin();itr != poll_pipes.end();itr++)
+		for (PollPipePairItr itr = poll_pipes.begin();itr != poll_pipes.end();++itr)
 		{
 			PollPipePair* pp = itr->second;
 			if (readable && pp->read_pipe->polling(conn->receiveConnectionID()))
@@ -522,7 +522,7 @@ namespace utp
 				i = d->connections.erase(i);
 			}
 			else
-				i++;
+				++i;
 		}
 	}
 
@@ -535,7 +535,7 @@ namespace utp
 		while (itr != d->connections.end())
 		{
 			itr.value()->checkTimeout(now);
-			itr++;
+			++itr;
 		}
 	}
 

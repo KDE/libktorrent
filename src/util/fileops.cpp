@@ -565,7 +565,7 @@ namespace bt
 		QString assembled = "/";
 		QStringList names = path.split('/',QString::SkipEmptyParts);
 		int cnt = 0;
-		for (QStringList::iterator i = names.begin();i != names.end();i++)
+		for (QStringList::iterator i = names.begin();i != names.end();++i)
 		{
 			QByteArray encoded = QFile::encodeName(*i);
 			if (encoded.length() >= NAME_MAX)

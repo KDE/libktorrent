@@ -60,7 +60,7 @@ namespace bt
 		while (i != piece_cache.end())
 		{
 			i.value()->unload();
-			i++;
+			++i;
 		}
 		piece_cache.clear();
 	}
@@ -105,7 +105,7 @@ namespace bt
 			PieceData::Ptr cp = i.value();
 			if (cp->offset() == off && cp->length() == len && !(!cp->writeable() && !read_only))
 				return PieceData::Ptr(cp);
-			i++;
+			++i;
 		}
 		
 		return PieceData::Ptr();
@@ -133,7 +133,7 @@ namespace bt
 			if (!i.value()->inUse())
 				i = piece_cache.erase(i);
 			else
-				i++;
+				++i;
 		}
 	}
 	
@@ -152,7 +152,7 @@ namespace bt
 			else
 			{
 				mem += i.value()->length();
-				i++;
+				++i;
 			}
 		}
 

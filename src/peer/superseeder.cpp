@@ -55,7 +55,7 @@ namespace bt
 				peers.append(p2);
 			}
 			else
-				i++;
+				++i;
 		}
 		
 		foreach (PeerInterface* p, peers)
@@ -173,7 +173,7 @@ namespace bt
 		while (i != active_chunks.end()) 
 		{
 			Out(SYS_GEN|LOG_DEBUG) << "Chunk " << i.key() << " : " << i.value()->getPeerID().toString() << endl;
-			i++;
+			++i;
 		}
 		
 		Out(SYS_GEN|LOG_DEBUG) << "Active peers: " << endl;
@@ -181,7 +181,7 @@ namespace bt
 		while (j != active_peers.end())
 		{
 			Out(SYS_GEN|LOG_DEBUG) << "Peer " << j.key()->getPeerID().toString() << " : " << j.value() << endl;
-			j++;
+			++j;
 		}
 	}
 

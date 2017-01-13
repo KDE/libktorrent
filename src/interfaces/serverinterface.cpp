@@ -74,7 +74,7 @@ namespace bt
 				else
 					return pm;
 			}
-			i++;
+			++i;
 		}
 		return 0;
 	}
@@ -93,7 +93,7 @@ namespace bt
 				info_hash = pm->getTorrent().getInfoHash();
 				return true;
 			}
-			i++;
+			++i;
 		}
 		return false;
 	}

@@ -96,7 +96,7 @@ namespace dht
 						Uint8 tmp[18];
 						Uint32 b = item.pack(tmp);
 						enc.write(tmp, b);
-						i++;
+						++i;
 					}
 					enc.end();
 				}

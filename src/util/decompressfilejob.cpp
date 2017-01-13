@@ -20,6 +20,7 @@
 
 #include <QFile>
 #include <QMimeDatabase>
+#include <kcompressiondevice.h>
 #include <KFilterDev>
 #include <util/log.h>
 #include <util/fileops.h>
@@ -48,7 +49,7 @@ namespace bt
 		}
 		
 		// open output file 
-		KFilterDev dev(file);
+		KCompressionDevice dev(file, KFilterDev::compressionTypeForMimeType(QMimeDatabase().mimeTypeForFile(file).name()));
 		if (!dev.open(QIODevice::ReadOnly))
 		{
 			err = KIO::ERR_CANNOT_OPEN_FOR_READING;

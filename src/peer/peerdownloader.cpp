@@ -140,7 +140,7 @@ namespace bt
 			{
 				TimeStampedRequest & tr = *i;
 				peer->sendCancel(tr.req);
-				i++;
+				++i;
 			}
 		}
 	
@@ -226,7 +226,7 @@ namespace bt
 		{
 			TimeStampedRequest & tr = *i;
 			rejected(tr.req);
-			i++;
+			++i;
 		}
 		reqs.clear();
 		
@@ -235,7 +235,7 @@ namespace bt
 		{
 			Request & req = *j;
 			rejected(req);
-			j++;
+			++j;
 		}
 		wait_queue.clear();
 	}

@@ -338,7 +338,7 @@ namespace bt
 			e.thing->unmapped();
 			// if it will be reopenend, we will not remove all mappings
 			// so that they will be redone on reopening
-			i++;
+			++i;
 			mappings.remove(e.ptr);
 			if (ret < 0)
 			{

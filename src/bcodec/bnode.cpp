@@ -64,7 +64,7 @@ namespace bt
 		{
 			DictEntry & e = *i;
 			delete e.node;
-			i++;
+			++i;
 		}
 	}
 	
@@ -76,7 +76,7 @@ namespace bt
 		{
 			const DictEntry & e = *i;
 			ret << e.key;
-			i++;
+			++i;
 		}
 		
 		return ret;
@@ -111,7 +111,7 @@ namespace bt
 			DictEntry & e = *i;
 			if (e.key == key)
 				return dynamic_cast<BDictNode*>(e.node);
-			i++;
+			++i;
 		}
 		return 0;
 	}
@@ -188,7 +188,7 @@ namespace bt
 			DictEntry & e = *i;
 			Out(SYS_GEN|LOG_DEBUG) << QString(e.key) << ": " << endl;
 			e.node->printDebugInfo();
-			i++;
+			++i;
 		}
 		Out(SYS_GEN|LOG_DEBUG) << "END" << endl;
 	}

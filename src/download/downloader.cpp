@@ -565,7 +565,7 @@ namespace bt
 			if (!i->second)
 				i = current_chunks.erase(i);
 			else
-				i++;
+				++i;
 		}
 		
 		// Save all the current downloads to a file
@@ -577,7 +577,7 @@ namespace bt
 		fptr.write(&hdr,sizeof(CurrentChunksHeader));
 		
 		Out(SYS_GEN|LOG_DEBUG) << "Saving " << current_chunks.count() << " chunk downloads" << endl;
-		for (CurChunkItr i = current_chunks.begin();i != current_chunks.end();i++)
+		for (CurChunkItr i = current_chunks.begin();i != current_chunks.end();++i)
 		{
 			ChunkDownload* cd = i->second;
 			cd->save(fptr); 
@@ -855,7 +855,7 @@ namespace bt
 					if (i->second == ws)
 						i = webseeds_chunks.erase(i);
 					else
-						i++;
+						++i;
 				}
 				webseeds.removeAll(ws);
 				delete ws;

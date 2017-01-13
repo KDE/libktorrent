@@ -52,7 +52,7 @@ namespace net
 				else
 					s->read(0,now);
 			}
-			i++;
+			++i;
 		}
 	}
 	
@@ -84,7 +84,7 @@ namespace net
 				if (ret != as) 
 					itr = sockets.erase(itr);
 				else
-					itr++;
+					++itr;
 			
 				if (ret > allowance)
 					allowance = 0;

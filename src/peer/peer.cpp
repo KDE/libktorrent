@@ -626,7 +626,7 @@ namespace bt
             {
                 if (i->second->needsUpdate())
                     i->second->update();
-                i++;
+                ++i;
             }
         }
 

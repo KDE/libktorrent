@@ -91,7 +91,7 @@ namespace dht
 
 		// Store the items in the database if there are any present
 		const DBItemList & items = gpr->getItemList();
-		for (DBItemList::const_iterator i = items.begin();i != items.end();i++)
+		for (DBItemList::const_iterator i = items.begin();i != items.end();++i)
 		{
 			//Out(SYS_DHT|LOG_DEBUG) << "DHT: GetPeers returned item " << i->getAddress().toString() << endl;
 			db->store(info_hash, *i);

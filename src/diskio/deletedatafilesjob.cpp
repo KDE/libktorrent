@@ -116,7 +116,7 @@ namespace bt
 		while (i != subdirs.end())
 		{
 			i->second->doDeleteOnEmpty(base + i->first + bt::DirSeparator());
-			i++;
+			++i;
 		}
 		
 		QDir dir(base);	

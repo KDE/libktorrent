@@ -88,7 +88,7 @@ namespace dht
 		KBucket::Ptr right(new KBucket(m + 1, max_key, srv, our_id));
 
 		QList<KBucketEntry>::iterator i;
-		for (i = entries.begin();i != entries.end();i++)
+		for (i = entries.begin();i != entries.end();++i)
 		{
 			KBucketEntry & e = *i;
 			if (left->keyInRange(e.getID()))
@@ -165,7 +165,7 @@ namespace dht
 
 		// Replace the entry which timed out
 		QList<KBucketEntry>::iterator i;
-		for (i = entries.begin();i != entries.end();i++)
+		for (i = entries.begin();i != entries.end();++i)
 		{
 			KBucketEntry & e = *i;
 			if (e.getAddress() == c->getRequest()->getOrigin())
@@ -197,7 +197,7 @@ namespace dht
 
 		// We haven't found any bad ones so try the questionable ones
 		QList<KBucketEntry>::iterator i;
-		for (i = entries.begin();i != entries.end();i++)
+		for (i = entries.begin();i != entries.end();++i)
 		{
 			KBucketEntry & e = *i;
 			if (e.isQuestionable())
@@ -221,7 +221,7 @@ namespace dht
 	bool KBucket::replaceBadEntry(const KBucketEntry & entry)
 	{
 		QList<KBucketEntry>::iterator i;
-		for (i = entries.begin();i != entries.end();i++)
+		for (i = entries.begin();i != entries.end();++i)
 		{
 			KBucketEntry & e = *i;
 			if (e.isBad())
@@ -247,7 +247,7 @@ namespace dht
 		while (i != entries.end())
 		{
 			kns.tryInsert(*i);
-			i++;
+			++i;
 		}
 	}
 
@@ -255,7 +255,7 @@ namespace dht
 	{
 		QList<KBucketEntry>::iterator i;
 
-		for (i = entries.begin();i != entries.end();i++)
+		for (i = entries.begin();i != entries.end();++i)
 		{
 			KBucketEntry & e = *i;
 			if (e.getAddress() == addr)
@@ -292,7 +292,7 @@ namespace dht
 		enc.write(QByteArrayLiteral("entries"));
 		enc.beginList();
 		QList<KBucketEntry>::iterator i;
-		for (i = entries.begin();i != entries.end();i++)
+		for (i = entries.begin();i != entries.end();++i)
 		{
 			enc.beginDict();
 			KBucketEntry & e = *i;

@@ -222,7 +222,7 @@ namespace utp
 		{
 			if (itr->packet)
 				Ack(sack, SeqNrDiff(last_seq_nr, itr->seq_nr));
-			itr++;
+			++itr;
 		}
 	}
 
