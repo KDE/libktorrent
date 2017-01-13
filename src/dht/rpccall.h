@@ -91,13 +91,19 @@ namespace dht
 		 */
 		void addListener(RPCCallListener* cl);
 
-		// Get the message type
+		/**
+		 * Get the message type
+		 */
 		Method getMsgMethod() const;
 
-		// Get the request sent
+		/**
+		 * Get the request sent
+		 */
 		const RPCMsg::Ptr getRequest() const {return msg;}
 
-		// Get the request sent
+		/**
+		 * Get the request sent
+		 */
 		RPCMsg::Ptr getRequest() {return msg;}
 
 	private slots:

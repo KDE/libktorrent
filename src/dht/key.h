@@ -61,7 +61,9 @@ namespace dht
 		 */
 		Key(const bt::Uint8* d);
 
-		// Destructor.
+		/**
+		 * Destructor.
+		 */
 		virtual ~Key();
 
 		/**
@@ -70,10 +72,14 @@ namespace dht
 		 */
 		static Key random();
 
-		// Get the minimum key (all zeros)
+		/**
+		 * Get the minimum key (all zeros)
+		 */
 		static Key min();
 
-		// Get the maximum key (all FF)
+		/**
+		 * Get the maximum key (all FF)
+		 */
 		static Key max();
 
 		/**

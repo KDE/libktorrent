@@ -61,7 +61,9 @@ namespace dht
 		 */
 		void received(DHT* dh_table, const RPCMsg & msg);
 
-		// Get our own ID
+		/**
+		 * Get our own ID
+		 */
 		const dht::Key & getOurID() const {return our_id;}
 
 		/**
@@ -77,16 +79,24 @@ namespace dht
 		 */
 		void onTimeout(RPCMsg::Ptr msg);
 
-		// Check if a buckets needs to be refreshed, and refresh if necesarry
+		/**
+		 * Check if a buckets needs to be refreshed, and refresh if necessary
+		 */
 		void refreshBuckets(DHT* dh_table);
 
-		// Save the routing table to a file
+		/**
+		 * Save the routing table to a file
+		 */
 		void saveTable(const QString & file);
 
-		// Load the routing table from a file
+		/**
+		 * Load the routing table from a file
+		 */
 		void loadTable(const QString & file);
 
-		// Get the number of entries in the routing table
+		/**
+		 * Get the number of entries in the routing table
+		 */
 		bt::Uint32 getNumEntriesInRoutingTable() const {return num_entries;}
 
 	private:

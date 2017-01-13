@@ -75,16 +75,24 @@ namespace dht
 
 		typedef QSharedPointer<KBucket> Ptr;
 
-		// Get the min key
+		/**
+		 * Get the min key
+		 */
 		const dht::Key & minKey() const {return min_key;}
 
-		// Get the max key
+		/**
+		 * Get the max key
+		 */
 		const dht::Key & maxKey() const {return max_key;}
 
-		// Does the key k lies in in the range of this bucket
+		/**
+		 * Check if key lies in the range of this bucket
+		 */
 		bool keyInRange(const dht::Key & k) const;
 
-		// Are we allowed to split
+		/**
+		 * Check if we are allowed to split
+		 */
 		bool splitAllowed() const;
 
 		class UnableToSplit {};
@@ -104,13 +112,19 @@ namespace dht
 		 */
 		bool insert(const KBucketEntry & entry);
 
-		// Get the least recently seen node
+		/**
+		 * Get the least recently seen node
+		 */
 		const KBucketEntry & leastRecentlySeen() const {return entries[0];}
 
-		// Get the number of entries
+		/**
+		 * Get the number of entries
+		 */
 		bt::Uint32 getNumEntries() const {return entries.count();}
 
-		// See if this bucket contains an entry
+		/**
+		 * Check if this bucket contains an entry
+		 */
 		bool contains(const KBucketEntry & entry) const;
 
 		/**
@@ -126,19 +140,29 @@ namespace dht
 		 */
 		bool onTimeout(const net::Address & addr);
 
-		// Check if the bucket needs to be refreshed
+		/**
+		 * Check if the bucket needs to be refreshed
+		 */
 		bool needsToBeRefreshed() const;
 
-		// Save the bucket to a file
+		/**
+		 * Save the bucket to a file
+		 */
 		void save(bt::BEncoder & enc);
 
-		// Load the bucket from a file
+		/**
+		 * Load the bucket from a file
+		 */
 		void load(bt::BDictNode* dict);
 
-		// Update the refresh timer of the bucket
+		/**
+		 * Update the refresh timer of the bucket
+		 */
 		void updateRefreshTimer();
 
-		// Set the refresh task
+		/**
+		 * Set the refresh task
+		 */
 		void setRefreshTask(Task* t);
 
 	private:

@@ -40,7 +40,9 @@ namespace dht
 		virtual void encode(QByteArray & arr) const;
 		virtual void parse(bt::BDictNode* dict);
 
-		// Get the error message
+		/**
+		 * Get the error message
+		 */
 		const QString & message() const {return msg;}
 
 		typedef QSharedPointer<ErrMsg> Ptr;

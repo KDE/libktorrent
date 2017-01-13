@@ -49,10 +49,14 @@ namespace dht
 		RPCServer(DHT* dh_table, Uint16 port, QObject *parent = 0);
 		virtual ~RPCServer();
 
-		// Start the server
+		/**
+		 * Start the server
+		 */
 		void start();
 
-		// Stop the server
+		/**
+		 * Stop the server
+		 */
 		void stop();
 
 		/**
@@ -82,7 +86,9 @@ namespace dht
 		 */
 		void ping(const dht::Key & our_id, const net::Address & addr);
 
-		// Get the number of active calls
+		/**
+		 * Get the number of active calls
+		 */
 		Uint32 getNumActiveRPCCalls() const;
 
 	private slots:

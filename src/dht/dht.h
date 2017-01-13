@@ -153,10 +153,14 @@ namespace dht
 		 */
 		NodeLookup* findNode(const dht::Key & id);
 
-		// Do a findNode for our node id
+		/**
+		 * Do a findNode for our node id
+		 */
 		NodeLookup* findOwnNode();
 
-		// See if it is possible to start a task
+		/**
+		 * See if it is possible to start a task
+		 */
 		bool canStartTask() const;
 
 		void start(const QString & table,const QString & key_file,bt::Uint16 port);

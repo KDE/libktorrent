@@ -58,10 +58,14 @@ namespace dht
 		CItr begin() const {return emap.begin();}
 		CItr end() const {return emap.end();}
 
-		// Get the target key of the search3
+		/**
+		 * Get the target key of the search3
+		 */
 		const dht::Key & getSearchTarget() const {return key;}
 
-		// Get the number of entries.
+		/**
+		 * Get the number of entries.
+		 */
 		bt::Uint32 getNumEntries() const {return emap.size();}
 
 		/**

@@ -37,9 +37,9 @@ namespace dht
 
 	struct Stats
 	{
-		// Number of peers in the routing table
+		/// Number of peers in the routing table
 		bt::Uint32 num_peers;
-		// Number of running tasks
+		/// Number of running tasks
 		bt::Uint32 num_tasks;
 	};
 
@@ -94,10 +94,14 @@ namespace dht
 		 */
 		bool isRunning() const {return running;}
 
-		// Get the DHT port
+		/**
+		 * Get the DHT port
+		 */
 		bt::Uint16 getPort() const {return port;}
 
-		// Get statistics about the DHT
+		/**
+		 * Get statistics about the DHT
+		 */
 		const dht::Stats & getStats() const {return stats;}
 
 		/**

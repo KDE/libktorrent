@@ -73,14 +73,18 @@ namespace dht
 		void start(const KClosestNodesSearch & kns, bool queued);
 
 		/**
-		 *  Start the task, to be used when a task is queued.
+		 * Start the task, to be used when a task is queued.
 		 */
 		void start();
 
-		// Decrements the outstanding_reqs
+		/**
+		 * Decrements the outstanding_reqs
+		 */
 		virtual void onResponse(RPCCall* c, RPCMsg::Ptr rsp);
 
-		// Decrements the outstanding_reqs
+		/**
+		 * Decrements the outstanding_reqs
+		 */
 		virtual void onTimeout(RPCCall* c);
 
 		/**
@@ -109,13 +113,19 @@ namespace dht
 		 */
 		bool rpcCall(RPCMsg::Ptr req);
 
-		// See if we can do a request
+		/**
+		 * See if we can do a request
+		 */
 		bool canDoRequest() const {return outstanding_reqs < MAX_CONCURRENT_REQS;}
 
-		// Is the task finished
+		/**
+		 * Is the task finished
+		 */
 		bool isFinished() const {return task_finished;}
 
-		// Get the number of outstanding requests
+		/**
+		 * Get the number of outstanding requests
+		 */
 		bt::Uint32 getNumOutstandingRequests() const {return outstanding_reqs;}
 
 		bool isQueued() const {return queued;}
@@ -125,7 +135,9 @@ namespace dht
 		 */
 		void emitDataReady();
 
-		// Kills the task
+		/**
+		 * Kills the task
+		 */
 		void kill();
 
 		/**

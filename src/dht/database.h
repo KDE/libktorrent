@@ -54,10 +54,14 @@ namespace dht
 		DBItem(const DBItem & item);
 		virtual ~DBItem();
 
-		// See if the item is expired
+		/**
+		 * See if the item is expired
+		 */
 		bool expired(bt::TimeStamp now) const;
 
-		// Get the address of an item
+		/**
+		 * Get the address of an item
+		 */
 		const net::Address & getAddress() const {return addr;}
 
 		/**
@@ -79,7 +83,7 @@ namespace dht
 	 * @author Joris Guisson
 	 *
 	 * Class where all the key value paires get stored.
-	*/
+	 */
 	class Database
 	{
 	public:
@@ -129,10 +133,14 @@ namespace dht
 		 */
 		bool checkToken(const dht::Key & token, const net::Address & addr);
 
-		// Test whether or not the DB contains a key
+		/**
+		 * Test whether or not the DB contains a key
+		 */
 		bool contains(const dht::Key & key) const;
 
-		// Insert an empty item (only if it isn't already in the DB)
+		/**
+		 * Insert an empty item (only if it isn't already in the DB)
+		 */
 		void insert(const dht::Key & key);
 
 	private:

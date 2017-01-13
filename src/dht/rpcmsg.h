@@ -97,31 +97,49 @@ namespace dht
 		 */
 		virtual void parse(bt::BDictNode* dict);
 
-		// Set the origin (i.e. where the message came from)
+		/**
+		 * Set the origin (i.e. where the message came from)
+		 */
 		void setOrigin(const net::Address & o) {origin = o;}
 
-		// Get the origin
+		/**
+		 * Get the origin
+		 */
 		const net::Address & getOrigin() const {return origin;}
 
-		// Set the origin (i.e. where the message came from)
+		/**
+		 * Set the origin (i.e. where the message came from)
+		 */
 		void setDestination(const net::Address & o) {origin = o;}
 
-		// Get the origin
+		/**
+		 * Get the origin
+		 */
 		const net::Address & getDestination() const {return origin;}
 
-		// Get the MTID
+		/**
+		 * Get the MTID
+		 */
 		const QByteArray & getMTID() const {return mtid;}
 
-		// Set the MTID
+		/**
+		 * Set the MTID
+		 */
 		void setMTID(const QByteArray & m) {mtid = m;}
 
-		// Get the id of the sender
+		/**
+		 * Get the id of the sender
+		 */
 		const Key & getID() const {return id;}
 
-		// Get the type of the message
+		/**
+		 * Get the type of the message
+		 */
 		Type getType() const {return type;}
 
-		// Get the message it's method
+		/**
+		 * Get the method of the message
+		 */
 		Method getMethod() const {return method;}
 
 	protected:
