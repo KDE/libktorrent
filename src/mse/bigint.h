@@ -64,7 +64,7 @@ namespace mse
 		 * @param bi BigInt to copy
 		 */
 		BigInt(const BigInt & bi);
-		virtual ~BigInt();
+		~BigInt();
 		
 		/**
 		 * Assignment operator.
