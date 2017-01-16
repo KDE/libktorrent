@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "dhtpeersource.h"
 #include <QHostAddress>
@@ -32,7 +32,7 @@ using namespace bt;
 namespace dht
 {
 
-	DHTPeerSource::DHTPeerSource(DHTBase & dh_table,const bt::SHA1Hash & info_hash,const QString & torrent_name) 
+	DHTPeerSource::DHTPeerSource(DHTBase & dh_table,const bt::SHA1Hash & info_hash,const QString & torrent_name)
 		: dh_table(dh_table),curr_task(0),info_hash(info_hash),torrent_name(torrent_name)
 	{
 		connect(&timer, &QTimer::timeout, this, &DHTPeerSource::onTimeout);
@@ -43,26 +43,25 @@ namespace dht
 		request_interval = 5 * 60 * 1000;
 	}
 
-
 	DHTPeerSource::~DHTPeerSource()
 	{
 		if (curr_task)
 			curr_task->kill();
 	}
-	
+
 	void DHTPeerSource::start()
 	{
 		started = true;
 		if (dh_table.isRunning())
 			doRequest();
 	}
-	
+
 	void DHTPeerSource::dhtStopped()
 	{
 		stop(0);
 		curr_task = 0;
 	}
-	
+
 	void DHTPeerSource::stop(bt::WaitJob*)
 	{
 		started = false;
@@ -72,22 +71,21 @@ namespace dht
 			timer.stop();
 		}
 	}
-	
+
 	void DHTPeerSource::manualUpdate()
 	{
 		if (dh_table.isRunning() && started)
 			doRequest();
 	}
 
-
 	bool DHTPeerSource::doRequest()
 	{
 		if (!dh_table.isRunning())
 			return false;
-		
+
 		if (curr_task)
 			return true;
-		
+
 		Uint16 port = ServerInterface::getPort();
 		curr_task = dh_table.announce(info_hash,port);
 		if (curr_task)
@@ -99,10 +97,10 @@ namespace dht
 			connect(curr_task, &AnnounceTask::finished, this, &DHTPeerSource::onFinished);
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	void DHTPeerSource::onFinished(Task* t)
 	{
 		if (curr_task == t)
@@ -112,7 +110,7 @@ namespace dht
 			timer.start(request_interval);
 		}
 	}
-	
+
 	void DHTPeerSource::onDataReady(Task* t)
 	{
 		if (curr_task == t)
@@ -122,29 +120,29 @@ namespace dht
 			while (curr_task->takeItem(item))
 			{
 				const net::Address & addr = item.getAddress();
-			/*	Out(SYS_DHT|LOG_NOTICE) << 
+			/*	Out(SYS_DHT|LOG_NOTICE) <<
 						QString("DHT: Got potential peer %1 for torrent %2")
 						.arg(addr.toString()).arg(tor->getStats().torrent_name) << endl;*/
 				addPeer(addr, false);
 				cnt++;
 			}
-			
+
 			if (cnt)
 			{
-				Out(SYS_DHT|LOG_NOTICE) << 
+				Out(SYS_DHT|LOG_NOTICE) <<
 						QString("DHT: Got %1 potential peers for torrent %2")
 						.arg(cnt).arg(torrent_name) << endl;
 				peersReady(this);
 			}
 		}
 	}
-	
+
 	void DHTPeerSource::onTimeout()
 	{
 		if (dh_table.isRunning() && started)
 			doRequest();
 	}
-	
+
 	void DHTPeerSource::addDHTNode(const bt::DHTNode& node)
 	{
 		nodes.append(node);
@@ -156,4 +154,3 @@ namespace dht
 	}
 
 }
-

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #ifndef DHTKBUCKET_H
 #define DHTKBUCKET_H
@@ -39,18 +39,30 @@ namespace dht
 	class KClosestNodesSearch;
 	class Task;
 
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Number of nodes to find in searches. The reference implementation
+	 * proposes a value of 8. This should probably be made user-configurable
+	 * as an advanced setting.
+	 */
 	const bt::Uint32 K = 20;
-	const bt::Uint32 BUCKET_MAGIC_NUMBER = 0xB0C4B0C4;
-	const bt::Uint32 BUCKET_REFRESH_INTERVAL = 15 * 60 * 1000;
 
+	const bt::Uint32 BUCKET_MAGIC_NUMBER = 0xB0C4B0C4;
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Interval defining how often to refresh buckets. The specification
+	 * proposes an interval of 15 mins. This should probably be made user-
+	 * configurable as an advanced setting.
+	 */
+	const bt::Uint32 BUCKET_REFRESH_INTERVAL = 15 * 60 * 1000;
 
 	/**
 	 * @author Joris Guisson
 	 *
-	 * A KBucket is just a list of KBucketEntry objects.
-	 * The list is sorted by time last seen :
-	 * The first element is the least recently seen, the last
-	 * the most recently seen.
+	 * A KBucket is just a list of KBucketEntry objects. The list is sorted
+	 * by time last seen, the first element is the least recently seen, the
+	 * last the most recently seen.
 	 */
 	class KBucket : public RPCCallListener
 	{
@@ -60,31 +72,39 @@ namespace dht
 		KBucket(RPCServerInterface* srv, const Key & our_id);
 		KBucket(const dht::Key & min_key, const dht::Key & max_key, RPCServerInterface* srv, const Key & our_id);
 		virtual ~KBucket();
-		
+
 		typedef QSharedPointer<KBucket> Ptr;
-		
-		/// Get the min key
+
+		/**
+		 * Get the min key
+		 */
 		const dht::Key & minKey() const {return min_key;}
-		
-		/// Get the max key
+
+		/**
+		 * Get the max key
+		 */
 		const dht::Key & maxKey() const {return max_key;}
 
-		/// Does the key k lies in in the range of this bucket
-		bool keyInRange(const dht::Key & k) const;
-		
-		/// Are we allowed to split
-		bool splitAllowed() const;
-		
-		class UnableToSplit
-		{};
-		
 		/**
-		 * Split the bucket in two new buckets, each containing half the range of the original one.
+		 * Check if key lies in the range of this bucket
+		 */
+		bool keyInRange(const dht::Key & k) const;
+
+		/**
+		 * Check if we are allowed to split
+		 */
+		bool splitAllowed() const;
+
+		class UnableToSplit {};
+
+		/**
+		 * Split the bucket in two new buckets, each containing half the range
+		 * of the original one.
 		 * @return A pair of KBucket's
 		 * @throw UnableToSplit if something goes wrong
 		 */
 		std::pair<KBucket::Ptr, KBucket::Ptr> split() throw (UnableToSplit);
-		
+
 		/**
 		 * Inserts an entry into the bucket.
 		 * @param entry The entry to insert
@@ -92,18 +112,24 @@ namespace dht
 		 */
 		bool insert(const KBucketEntry & entry);
 
-		/// Get the least recently seen node
+		/**
+		 * Get the least recently seen node
+		 */
 		const KBucketEntry & leastRecentlySeen() const {return entries[0];}
 
-		/// Get the number of entries
+		/**
+		 * Get the number of entries
+		 */
 		bt::Uint32 getNumEntries() const {return entries.count();}
 
-		/// See if this bucket contains an entry
+		/**
+		 * Check if this bucket contains an entry
+		 */
 		bool contains(const KBucketEntry & entry) const;
 
 		/**
-		 * Find the K closest entries to a key and store them in the KClosestNodesSearch
-		 * object.
+		 * Find the K closest entries to a key and store them in the KClosest
+		 * NodesSearch object.
 		 * @param kns The object to storre the search results
 		 */
 		void findKClosestNodes(KClosestNodesSearch & kns);
@@ -114,19 +140,29 @@ namespace dht
 		 */
 		bool onTimeout(const net::Address & addr);
 
-		/// Check if the bucket needs to be refreshed
+		/**
+		 * Check if the bucket needs to be refreshed
+		 */
 		bool needsToBeRefreshed() const;
 
-		/// save the bucket to a file
+		/**
+		 * Save the bucket to a file
+		 */
 		void save(bt::BEncoder & enc);
 
-		/// Load the bucket from a file
+		/**
+		 * Load the bucket from a file
+		 */
 		void load(bt::BDictNode* dict);
 
-		/// Update the refresh timer of the bucket
+		/**
+		 * Update the refresh timer of the bucket
+		 */
 		void updateRefreshTimer();
 
-		/// Set the refresh task
+		/**
+		 * Set the refresh task
+		 */
 		void setRefreshTask(Task* t);
 
 	private:
@@ -137,7 +173,7 @@ namespace dht
 
 	private slots:
 		void onFinished(Task* t);
-		
+
 	private:
 		dht::Key min_key, max_key;
 		QList<KBucketEntry> entries, pending_entries;
@@ -147,6 +183,7 @@ namespace dht
 		mutable bt::TimeStamp last_modified;
 		Task* refresh_task;
 	};
+
 }
 
 template <class T>
@@ -155,4 +192,4 @@ inline uint qHash(const T & e)
 	return e.hash();
 }
 
-#endif
+#endif // DHTKBUCKET_H

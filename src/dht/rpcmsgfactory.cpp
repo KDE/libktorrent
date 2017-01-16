@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include "rpcmsgfactory.h"
 #include <util/log.h>
 #include <util/error.h>
@@ -41,20 +40,18 @@ namespace dht
 
 	RPCMsgFactory::RPCMsgFactory()
 	{
-
 	}
 
 	RPCMsgFactory::~RPCMsgFactory()
 	{
-
 	}
-	
+
 	RPCMsg::Ptr RPCMsgFactory::buildRequest(BDictNode* dict)
 	{
 		BDictNode* args = dict->getDict(ARG);
 		if (!args)
 			throw bt::Error("Invalid request, arguments missing");
-		
+
 		RPCMsg::Ptr msg;
 		QString str = dict->getString(REQ, 0);
 		if (str == "ping")
@@ -89,22 +86,20 @@ namespace dht
 		else
 			throw bt::Error(QString("Invalid request type %1").arg(str));
 	}
-	
 
 	RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode* dict, dht::RPCMethodResolver* method_resolver)
 	{
 		BDictNode* args = dict->getDict(RSP);
 		if (!args)
 			throw bt::Error("Arguments missing for DHT response");
-		
+
 		QByteArray mtid = dict->getByteArray(TID);
-		// check for empty byte arrays should prevent 144416
+		// Check for empty byte arrays should prevent 144416
 		if (mtid.size() == 0)
 			throw bt::Error("Empty transaction ID in DHT response");
-		
+
+		// Find the call
 		RPCMsg::Ptr msg;
-		
-		// find the call
 		Method method = method_resolver->findMethod(mtid);
 		switch (method)
 		{
@@ -128,10 +123,9 @@ namespace dht
 			default:
 				throw bt::Error(QString("Unknown DHT rpc call (transaction id = %1)").arg(mtid[0]));
 		}
-		
+
 		return msg;
 	}
-
 
 	RPCMsg::Ptr RPCMsgFactory::build(bt::BDictNode* dict, RPCMethodResolver* method_resolver)
 	{

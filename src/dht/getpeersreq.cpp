@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include "getpeersreq.h"
 #include <util/log.h>
 #include <util/error.h>
@@ -25,11 +24,11 @@
 #include <bcodec/bencoder.h>
 #include "dht.h"
 
-
 using namespace bt;
 
 namespace dht
 {
+
 	GetPeersReq::GetPeersReq()
 			: RPCMsg(QByteArray(), GET_PEERS, REQ_MSG, Key())
 	{
@@ -37,10 +36,12 @@ namespace dht
 
 	GetPeersReq::GetPeersReq(const Key & id, const Key & info_hash)
 			: RPCMsg(QByteArray(), GET_PEERS, REQ_MSG, id), info_hash(info_hash)
-	{}
+	{
+	}
 
 	GetPeersReq::~GetPeersReq()
-	{}
+	{
+	}
 
 	void GetPeersReq::apply(dht::DHT* dh_table)
 	{
@@ -86,12 +87,10 @@ namespace dht
 				want.append(ln->getString(i, 0));
 		}
 	}
-	
+
 	bool GetPeersReq::wants(int ip_version) const
 	{
 		return want.contains(QString("n%1").arg(ip_version));
 	}
 
-
 }
-

@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include "announcersp.h"
 #include <util/log.h>
 #include <util/error.h>
@@ -29,6 +28,7 @@ using namespace bt;
 
 namespace dht
 {
+
 	AnnounceRsp::AnnounceRsp() : RPCMsg(QByteArray(), ANNOUNCE_PEER, RSP_MSG, Key())
 	{
 	}
@@ -67,7 +67,7 @@ namespace dht
 		}
 		enc.end();
 	}
-	
+
 	void AnnounceRsp::parse(BDictNode* dict)
 	{
 		dht::RPCMsg::parse(dict);
@@ -77,4 +77,3 @@ namespace dht
 	}
 
 }
-

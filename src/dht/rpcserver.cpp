@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "rpcserver.h"
 #include <QHostAddress>
@@ -50,7 +50,8 @@ namespace dht
 	public:
 		Private(RPCServer* p, DHT* dh_table, Uint16 port)
 				: p(p), dh_table(dh_table), next_mtid(0), port(port)
-		{}
+		{
+		}
 
 		~Private()
 		{
@@ -86,14 +87,14 @@ namespace dht
 		{
 			try
 			{
-				// read and decode the packet
+				// Read and decode the packet
 				BDecoder bdec(ptr->get(), ptr->size(), false);
 				boost::scoped_ptr<BNode> n(bdec.decode());
 
 				if (!n || n->getType() != BNode::DICT)
 					return;
 
-				// try to make a RPCMsg of it
+				// Try to make a RPCMsg of it
 				RPCMsg::Ptr msg = factory.build((BDictNode*)n.get(), this);
 				if (msg)
 				{
@@ -101,12 +102,12 @@ namespace dht
 						msg->setOrigin(addr.convertIPv4Mapped());
 					else
 						msg->setOrigin(addr);
-					
+
 					msg->apply(dh_table);
-					// erase an existing call
+					// Erase an existing call
 					if (msg->getType() == RSP_MSG && calls.contains(msg->getMTID()))
 					{
-						// delete the call, but first notify it off the response
+						// Delete the call, but first notify it off the response
 						RPCCall* c = calls.find(msg->getMTID());
 						c->response(msg);
 						calls.erase(msg->getMTID());
@@ -125,7 +126,7 @@ namespace dht
 		{
 			Q_UNUSED(sock);
 		}
-		
+
 		virtual Method findMethod(const QByteArray& mtid)
 		{
 			const RPCCall* call = calls.find(mtid);
@@ -168,13 +169,13 @@ namespace dht
 		{
 			Uint8 start = next_mtid;
 			QByteArray mtid(1, start);
-			
+
 			while (calls.contains(mtid))
 			{
 				mtid[0] = ++next_mtid;
-				if (next_mtid == start) // if this happens we cannot do any calls
+				if (next_mtid == start) // If this happens we cannot do any calls
 				{
-					// so queue the call
+					// So queue the call
 					RPCCall* c = new RPCCall(msg, true);
 					call_queue.append(c);
 					Out(SYS_DHT | LOG_NOTICE) << "Queueing RPC call, no slots available at the moment" << endl;
@@ -194,12 +195,12 @@ namespace dht
 			QByteArray data;
 			msg->encode(data);
 			send(msg->getDestination(), data);
-			//	PrintRawData(data);
+			//PrintRawData(data);
 		}
 
 		void timedOut(const QByteArray & mtid)
 		{
-			// delete the call
+			// Delete the call
 			RPCCall* c = calls.find(mtid);
 			if (c)
 			{
@@ -220,13 +221,10 @@ namespace dht
 		RPCMsgFactory factory;
 	};
 
-
-
 	RPCServer::RPCServer(DHT* dh_table, Uint16 port, QObject *parent)
 			: QObject(parent), d(new Private(this, dh_table, port))
 	{
 	}
-
 
 	RPCServer::~RPCServer()
 	{
@@ -260,8 +258,7 @@ namespace dht
 		d->reset();
 	}
 
-#if 0
-	static void PrintRawData(const QByteArray & data)
+	/*static void PrintRawData(const QByteArray & data)
 	{
 		QString tmp;
 		for (int i = 0;i < data.size();i++)
@@ -274,15 +271,14 @@ namespace dht
 		}
 
 		Out(SYS_DHT | LOG_DEBUG) << tmp << endl;
-	}
-#endif
+	}*/
 
 	RPCCall* RPCServer::doCall(RPCMsg::Ptr msg)
 	{
 		RPCCall* c = d->doCall(msg);
 		if (c)
 			connect(c, &RPCCall::timeout, this, &RPCServer::callTimeout);
-		
+
 		return c;
 	}
 
@@ -297,7 +293,7 @@ namespace dht
 		msg.encode(data);
 		d->send(msg.getDestination(), data);
 	}
-	
+
 	void RPCServer::callTimeout(RPCCall* call)
 	{
 		d->timedOut(call->getRequest()->getMTID());
@@ -314,5 +310,5 @@ namespace dht
 	{
 		return d->calls.count();
 	}
-}
 
+}

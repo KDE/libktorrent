@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "dht.h"
 #include <QMap>
@@ -47,14 +47,16 @@ using namespace bt;
 namespace dht
 {
 
-
-
 	DHT::DHT() : node(0), srv(0), db(0), tman(0), our_node_lookup(0)
 	{
 		connect(&update_timer, &QTimer::timeout, this, &DHT::update);
 		connect(&expire_timer, &QTimer::timeout, this, &DHT::expireDatabaseItems);
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * Connect timer for bootstrap check.
+		 */
+		connect(&bootstrap_timer, &QTimer::timeout, this, &DHT::checkBootstrap);
 	}
-
 
 	DHT::~DHT()
 	{
@@ -81,15 +83,30 @@ namespace dht
 		srv->start();
 		node->loadTable(table);
 		update_timer.start(1000);
-		expire_timer.start(5*60*1000);
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * Use constant defined in dht.h instead of hard-coded value.
+		 */
+		expire_timer.start(DATABASE_EXPIRE_INTERVAL);
 		started();
 		if (node->getNumEntriesInRoutingTable() > 0)
 		{
-			// refresh the DHT table by looking for our own ID
+			// Refresh the DHT table by looking for our own ID
 			findOwnNode();
 		}
+		else
+		{
+			/**
+			* @author Fonic <https://github.com/fonic>
+			* Routing table is empty, bootstrap using well-known nodes. Start
+			* timer to check result and retry if necessary.
+			*/
+			Out(SYS_DHT | LOG_NOTICE) << "DHT: Routing table empty, bootstrapping from well-known nodes" << endl;
+			bootstrap();
+			bootstrap_retries = 0;
+			bootstrap_timer.start(BOOTSTRAP_CHECK_INTERVAL);
+		}
 	}
-
 
 	void DHT::stop()
 	{
@@ -114,7 +131,7 @@ namespace dht
 		if (!running)
 			return;
 
-		// ignore requests we get from ourself
+		// Ignore requests we get from ourself
 		if (r.getID() == node->getOurID())
 			return;
 
@@ -129,12 +146,12 @@ namespace dht
 		if (!running)
 			return;
 
-		// ignore requests we get from ourself
+		// Ignore requests we get from ourself
 		if (r.getID() == node->getOurID())
 			return;
 
 		node->received(this, r);
-		// find the K closest nodes and pack them
+		// Find the K closest nodes and pack them
 		KClosestNodesSearch kns(r.getTarget(), K);
 
 		bt::Uint32 wants = 0;
@@ -146,7 +163,7 @@ namespace dht
 		node->findKClosestNodes(kns, wants);
 
 		FindNodeRsp fnr(r.getMTID(), node->getOurID());
-		// pack the found nodes in a byte array
+		// Pack the found nodes in a byte array
 		kns.pack(&fnr);
 		fnr.setOrigin(r.getOrigin());
 		srv->sendMsg(fnr);
@@ -157,6 +174,11 @@ namespace dht
 		if (our_node_lookup)
 			return our_node_lookup;
 
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * Added additional log debug output.
+		 */
+		Out(SYS_DHT | LOG_DEBUG) << "DHT: Finding own node" << endl;
 		our_node_lookup = findNode(node->getOurID());
 		if (our_node_lookup)
 			connect(our_node_lookup, &NodeLookup::finished, this, &DHT::ownNodeLookupFinished);
@@ -169,38 +191,35 @@ namespace dht
 			our_node_lookup = 0;
 	}
 
-
 	void DHT::announce(const AnnounceReq & r)
 	{
 		if (!running)
 			return;
 
-		// ignore requests we get from ourself
+		// Ignore requests we get from ourself
 		if (r.getID() == node->getOurID())
 			return;
 
 		node->received(this, r);
-		// first check if the token is OK
+		// First check if the token is OK
 		dht::Key token = r.getToken();
 		if (!db->checkToken(token, r.getOrigin()))
 			return;
 
-		// everything OK, so store the value
+		// Everything OK, so store the value
 		db->store(r.getInfoHash(), DBItem(r.getOrigin()));
-		// send a proper response to indicate everything is OK
+		// Send a proper response to indicate everything is OK
 		AnnounceRsp rsp(r.getMTID(), node->getOurID());
 		rsp.setOrigin(r.getOrigin());
 		srv->sendMsg(rsp);
 	}
-
-
 
 	void DHT::getPeers(const GetPeersReq & r)
 	{
 		if (!running)
 			return;
 
-		// ignore requests we get from ourself
+		// Ignore requests we get from ourself
 		if (r.getID() == node->getOurID())
 			return;
 
@@ -208,7 +227,7 @@ namespace dht
 		DBItemList dbl;
 		db->sample(r.getInfoHash(), dbl, 50, r.getOrigin().ipVersion());
 
-		// generate a token
+		// Generate a token
 		dht::Key token = db->genToken(r.getOrigin());
 
 		bt::Uint32 wants = 0;
@@ -217,8 +236,8 @@ namespace dht
 		if (r.wants(6) || r.getOrigin().ipVersion() == 6)
 			wants |= WANT_IPV6;
 
-		// if data is null do the same as when we have a findNode request
-		// find the K closest nodes and pack them
+		// If data is null do the same as when we have a findNode request
+		// Find the K closest nodes and pack them
 		KClosestNodesSearch kns(r.getInfoHash(), K);
 		node->findKClosestNodes(kns, wants);
 
@@ -241,7 +260,6 @@ namespace dht
 		Q_UNUSED(msg);
 	}
 
-
 	void DHT::portReceived(const QString & ip, bt::Uint16 port)
 	{
 		if (!running)
@@ -254,11 +272,16 @@ namespace dht
 
 	bool DHT::canStartTask() const
 	{
-		// we can start a task if we have less then  7 runnning and
-		// there are at least 16 RPC slots available
-		if (tman->getNumTasks() >= 7)
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * A task may only be started if the amount of already running task
+		 * is below the defined limit and if there is still a minimum amount
+		 * of RPC slots available. Both values used to be hard-coded and are
+		 * now defined by constants in dht.h.
+		 */
+		if (tman->getNumTasks() >= MAX_CONCURRENT_TASKS)
 			return false;
-		else if (256 - srv->getNumActiveRPCCalls() <= 16)
+		else if (256 - srv->getNumActiveRPCCalls() <= MIN_AVAILABLE_RPC_SLOTS)
 			return false;
 
 		return true;
@@ -295,7 +318,7 @@ namespace dht
 		bucket.updateRefreshTimer();
 		if (kns.getNumEntries() > 0)
 		{
-			Out(SYS_DHT | LOG_DEBUG) << "DHT: refreshing bucket " << endl;
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: Refreshing bucket " << endl;
 			NodeLookup* nl = new NodeLookup(id, srv, node, tman);
 			nl->start(kns, !canStartTask());
 			tman->addTask(nl);
@@ -314,7 +337,7 @@ namespace dht
 		node->findKClosestNodes(kns, WANT_BOTH);
 		if (kns.getNumEntries() > 0)
 		{
-			Out(SYS_DHT | LOG_DEBUG) << "DHT: finding node " << endl;
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: Finding node " << endl;
 			NodeLookup* at = new NodeLookup(id, srv, node, tman);
 			at->start(kns, !canStartTask());
 			tman->addTask(at);
@@ -326,9 +349,13 @@ namespace dht
 
 	void DHT::expireDatabaseItems()
 	{
+		/**
+		 * @author Fonic <https://github.com/fonic>
+		 * Added additional log debug output.
+		 */
+		Out(SYS_DHT | LOG_DEBUG) << "DHT: Expiring database items" << endl;
 		db->expire(bt::CurrentTime());
 	}
-
 
 	void DHT::update()
 	{
@@ -352,11 +379,18 @@ namespace dht
 		node->onTimeout(r);
 	}
 
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * This method already existed, but seemed to be unused. It would have been
+	 * unusable anyway due to referencing the non-existing slot 'hostResolved'.
+	 * Reference fixed, method is now used for DHT bootstrapping.
+	 */
 	void DHT::addDHTNode(const QString & host, Uint16 hport)
 	{
 		if (!running)
 			return;
 
+		Out(SYS_DHT | LOG_DEBUG) << "DHT: Adding bootstrap node '" << host << ":" << hport << "'" << endl;
 		net::Address addr;
 		if (addr.setAddress(host))
 		{
@@ -364,7 +398,10 @@ namespace dht
 			srv->ping(node->getOurID(), addr);
 		}
 		else
-			net::AddressResolver::resolve(host, hport, this, SLOT(hostResolved(net::AddressResolver*)));
+		{
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: Resolving bootstrap node '" << host << "'" << endl;
+			net::AddressResolver::resolve(host, hport, this, SLOT(onResolverResults(net::AddressResolver*)));
+		}
 	}
 
 	void DHT::onResolverResults(net::AddressResolver* res)
@@ -374,37 +411,106 @@ namespace dht
 
 		if (res->succeeded())
 		{
+			/**
+			 * @author Fonic <https://github.com/fonic>
+			 * Added additional log debug output.
+			 */
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: Adding resolved bootstrap node '" << res->address().toString() << ":" << res->address().port() << "'" << endl;
 			srv->ping(node->getOurID(), res->address());
 		}
 	}
-	
+
 	QMap<QString, int> DHT::getClosestGoodNodes(int maxNodes)
 	{
 		QMap<QString, int> map;
-		
+
 		if (!node)
 			return map;
-		
+
 		int max = 0;
 		KClosestNodesSearch kns(node->getOurID(), maxNodes*2);
 		node->findKClosestNodes(kns, WANT_BOTH);
-		
+
 		KClosestNodesSearch::Itr it;
 		for (it = kns.begin(); it != kns.end(); ++it)
 		{
 			KBucketEntry e = it->second;
-			
+
 			if (!e.isGood())
 				continue;
-			
+
 			const net::Address & a = e.getAddress();
-			
+
 			map.insert(a.toString(), a.port());
 			if (++max >= maxNodes)
 				break;
 		}
-		
+
 		return map;
 	}
-	
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Bootstrap DHT from well-knows nodes. The list of existing well-known
+	 * nodes was compiled through an extensive online research. For now, hard-
+	 * coded entries are used, as most other torrent clients do. This should
+	 * probably be made user-configurable as an advanced setting.
+	 *
+	 * Identified well-known nodes as of 11/08/16:
+	 * router.bittorrent.com:6881  - works reliably
+	 * router.utorrent.com:6881    - works reliably
+	 * dht.libtorrent.org:25401    - works reliably
+	 * dht.transmissionbt.com:6881 - works most of the time
+	 * dht.aelitis.com:6881        - not working, supposedly different protocol
+	 * router.bitcomet.com:6881    - DNS error (unknown host)
+	 * router.bitcomet.net:554     - DNS error (resolves to 127.0.0.1)
+	 */
+	void DHT::bootstrap()
+	{
+		Out(SYS_DHT | LOG_DEBUG) << "DHT: Adding well-known bootstrapping nodes" << endl;
+		addDHTNode(QString("router.bittorrent.com"), 6881);
+		addDHTNode(QString("router.utorrent.com"), 6881);
+		addDHTNode(QString("dht.libtorrent.org"), 25401);
+		//addDHTNode(QString("dht.transmissionbt.com"), 6881);
+		//addDHTNode(QString("dht.aelitis.com"), 6881);
+		//addDHTNode(QString("router.bitcomet.com"), 6881);
+		//addDHTNode(QString("router.bitcomet.net"), 554);
+	}
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Check bootstrap result, retry if necessary. This method is used as the
+	 * timeout handler for bootstrap_timer. Since there is no easy way to tell
+	 * wether bootstrapping was sucessful, the number of entries in the routing
+	 * table is compared to a predefined minimum value. Retries are counted,
+	 * retrying stops when the predefined limit is reached.
+	 */
+	void DHT::checkBootstrap()
+	{
+		bootstrap_retries++;
+
+		bt::Uint32 num_entries = node->getNumEntriesInRoutingTable();
+		if (num_entries >= BOOTSTRAP_MIN_ENTRIES)
+		{
+			//Out(SYS_DHT | LOG_NOTICE) << "DHT: Bootstrapping successful, routing table contains " << num_entries << " entries (required: " << BOOTSTRAP_MIN_ENTRIES << ")" << endl;
+			Out(SYS_DHT | LOG_NOTICE) << "DHT: Bootstrapping successful" << endl;
+			bootstrap_timer.stop();
+		}
+		else
+		{
+			if (bootstrap_retries < BOOTSTRAP_MAX_RETRIES)
+			{
+				//Out(SYS_DHT | LOG_NOTICE) << "DHT: Bootstrapping failed, routing table contains " << num_entries << " entries (required: " << BOOTSTRAP_MIN_ENTRIES << "), retrying" << endl;
+				Out(SYS_DHT | LOG_NOTICE) << "DHT: Bootstrapping failed, retrying" << endl;
+				bootstrap();
+			}
+			else
+			{
+				//Out(SYS_DHT | LOG_NOTICE) << "DHT: Bootstrapping failed, maximum number of retries reached (limit: " << BOOTSTRAP_MAX_RETRIES << ")" << endl;
+				Out(SYS_DHT | LOG_NOTICE) << "DHT: Bootstrapping failed, maximum number of retries reached" << endl;
+				bootstrap_timer.stop();
+			}
+		}
+	}
+
 }

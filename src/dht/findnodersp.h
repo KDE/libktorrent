@@ -17,17 +17,14 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #ifndef DHT_FINDNODERSP_H
 #define DHT_FINDNODERSP_H
-
 
 #include "rpcmsg.h"
 #include "packednodecontainer.h"
 
 namespace dht
 {
-
 
 	/**
 	 * FindNode response message for DHT
@@ -46,7 +43,6 @@ namespace dht
 
 		typedef QSharedPointer<FindNodeRsp> Ptr;
 	};
-
 
 }
 

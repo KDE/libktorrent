@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "kclosestnodessearch.h"
 #include <util/functions.h>
@@ -30,39 +30,37 @@ namespace dht
 
 	KClosestNodesSearch::KClosestNodesSearch(const dht::Key & key, Uint32 max_entries)
 			: key(key), max_entries(max_entries)
-	{}
-
+	{
+	}
 
 	KClosestNodesSearch::~KClosestNodesSearch()
-	{}
-
+	{
+	}
 
 	void KClosestNodesSearch::tryInsert(const KBucketEntry & e)
 	{
-		// calculate distance between key and e
+		// Calculate distance between key and e
 		dht::Key d = dht::Key::distance(key, e.getID());
 
 		if (emap.size() < max_entries)
 		{
-			// room in the map so just insert
+			// Room in the map so just insert
 			emap.insert(std::make_pair(d, e));
 		}
 		else
 		{
-			// now find the max distance
-			// seeing that the last element of the map has also
-			// the biggest distance to key (std::map is sorted on the distance)
-			// we just take the last
+			// Now find the max distance. Seeing that the last element of the
+			// map has also the biggest distance to key (std::map is sorted on
+			// the distance) we just take the last
 			const dht::Key & max = emap.rbegin()->first;
 			if (d < max)
 			{
-				// insert if d is smaller then max
+				// Insert if d is smaller then max
 				emap.insert(std::make_pair(d, e));
-				// erase the old max value
+				// Erase the old max value
 				emap.erase(max);
 			}
 		}
-
 	}
 
 	void KClosestNodesSearch::pack(PackedNodeContainer* cnt)

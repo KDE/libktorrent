@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include <QtTest>
 #include <util/log.h>
 #include <util/error.h>
@@ -36,7 +35,7 @@ private:
 		Q_UNUSED(mtid);
 		return current_method;
 	}
-	
+
 private slots:
 	void initTestCase()
 	{
@@ -92,12 +91,12 @@ private slots:
 			idx++;
 		}
 	}
-	
+
 	void testPing()
 	{
 		const char* msg[] = {"d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe", "d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re", 0};
 		current_method = dht::PING;
-		
+
 		int idx = 0;
 		while (msg[idx])
 		{
@@ -117,17 +116,17 @@ private slots:
 			idx++;
 		}
 	}
-	
+
 	void testFindNode()
 	{
 		const char* msg[] = {
-			"d1:ad2:id20:abcdefghij01234567896:target20:mnopqrstuvwxyz123456e1:q9:find_node1:t2:aa1:y1:qe", 
-			"d1:rd2:id20:0123456789abcdefghij5:nodes9:def456...e1:t2:aa1:y1:re", 
+			"d1:ad2:id20:abcdefghij01234567896:target20:mnopqrstuvwxyz123456e1:q9:find_node1:t2:aa1:y1:qe",
+			"d1:rd2:id20:0123456789abcdefghij5:nodes9:def456...e1:t2:aa1:y1:re",
 			0
 		};
-		
+
 		current_method = dht::FIND_NODE;
-		
+
 		int idx = 0;
 		while (msg[idx])
 		{
@@ -147,7 +146,7 @@ private slots:
 			idx++;
 		}
 	}
-	
+
 	void testGetPeers()
 	{
 		const char* msg[] = {
@@ -157,7 +156,7 @@ private slots:
 			0
 		};
 		current_method = dht::GET_PEERS;
-		
+
 		int idx = 0;
 		while (msg[idx])
 		{
@@ -177,7 +176,7 @@ private slots:
 			idx++;
 		}
 	}
-	
+
 	void testAnnounce()
 	{
 		const char* msg[] = {

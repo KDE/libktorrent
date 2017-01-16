@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #ifndef DHT_ANNOUNCERSP_H
 #define DHT_ANNOUNCERSP_H
 
@@ -35,14 +34,15 @@ namespace dht
 		AnnounceRsp();
 		AnnounceRsp(const QByteArray & mtid,const Key & id);
 		virtual ~AnnounceRsp();
-		
+
 		virtual void apply(DHT* dh_table);
 		virtual void print();
 		virtual void encode(QByteArray & arr) const;
 		virtual void parse(bt::BDictNode* dict);
-		
+
 		typedef QSharedPointer<AnnounceRsp> Ptr;
 	};
+
 }
 
 #endif // DHT_ANNOUNCERSP_H

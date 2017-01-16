@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include "getpeersrsp.h"
 #include <util/log.h>
 #include <util/error.h>
@@ -26,30 +25,32 @@
 #include <bcodec/bnode.h>
 #include "dht.h"
 
-
 using namespace bt;
 
 namespace dht
 {
+
 	GetPeersRsp::GetPeersRsp()
 			: RPCMsg(QByteArray(), dht::GET_PEERS, dht::RSP_MSG, Key())
 	{
 	}
 
 	GetPeersRsp::GetPeersRsp(const QByteArray & mtid, const Key & id, const Key & token)
-			: RPCMsg(mtid, dht::GET_PEERS, dht::RSP_MSG, id), 
+			: RPCMsg(mtid, dht::GET_PEERS, dht::RSP_MSG, id),
 			token(token)
 	{
 	}
 
 	GetPeersRsp::GetPeersRsp(const QByteArray & mtid, const Key & id, const DBItemList & values, const Key & token)
-			: RPCMsg(mtid, dht::GET_PEERS, dht::RSP_MSG, id), 
-			token(token), 
+			: RPCMsg(mtid, dht::GET_PEERS, dht::RSP_MSG, id),
+			token(token),
 			items(values)
-	{}
+	{
+	}
 
 	GetPeersRsp::~GetPeersRsp()
-	{}
+	{
+	}
 
 	void GetPeersRsp::apply(dht::DHT* dh_table)
 	{
@@ -67,24 +68,24 @@ namespace dht
 		BEncoder enc(new BEncoderBufferOutput(arr));
 		enc.beginDict();
 		{
-			enc.write(RSP); 
+			enc.write(RSP);
 			enc.beginDict();
 			{
 				enc.write(QByteArrayLiteral("id")); enc.write(id.getData(), 20);
 				if (nodes.size() > 0)
 				{
-					enc.write(QByteArrayLiteral("nodes")); 
+					enc.write(QByteArrayLiteral("nodes"));
 					enc.write(nodes);
 				}
-				
+
 				if (nodes6.size() > 0)
 				{
-					enc.write(QByteArrayLiteral("nodes6")); 
+					enc.write(QByteArrayLiteral("nodes6"));
 					enc.write(nodes6);
 				}
-				
+
 				enc.write(QByteArrayLiteral("token")); enc.write(token.getData(), 20);
-				
+
 				if (items.size() > 0)
 				{
 					enc.write(QByteArrayLiteral("values")); enc.beginList();
@@ -139,7 +140,7 @@ namespace dht
 				}
 			}
 		}
-		
+
 		if (args->getValue("nodes") || args->getList("nodes6"))
 		{
 			BValueNode* v = args->getValue("nodes");
@@ -151,5 +152,5 @@ namespace dht
 				nodes6 = v->data().toByteArray();
 		}
 	}
-}
 
+}

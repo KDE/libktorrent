@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,14 +15,13 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "rpcmsg.h"
 #include <bcodec/bnode.h>
 #include <util/error.h>
 
 using namespace bt;
-
 
 namespace dht
 {
@@ -33,23 +32,24 @@ namespace dht
 	{
 	}
 
-
 	RPCMsg::RPCMsg(const QByteArray & mtid, Method m, Type type, const Key & id) :
 			mtid(mtid),
 			method(m),
 			type(type),
 			id(id)
-	{}
+	{
+	}
 
 	RPCMsg::~RPCMsg()
-	{}
-	
+	{
+	}
+
 	void RPCMsg::parse(bt::BDictNode* dict)
 	{
 		mtid = dict->getByteArray(TID);
 		if (mtid.isEmpty())
 			throw bt::Error("Invalid DHT transaction ID");
-		
+
 		QString t = dict->getString(TYP, 0);
 		if (t == REQ)
 		{
@@ -57,7 +57,7 @@ namespace dht
 			BDictNode* args = dict->getDict(ARG);
 			if (!args)
 				return;
-			
+
 			id = Key(args->getByteArray("id"));
 		}
 		else if (t == RSP)
@@ -66,7 +66,7 @@ namespace dht
 			BDictNode* args = dict->getDict(RSP);
 			if (!args)
 				return;
-			
+
 			id = Key(args->getByteArray("id"));
 		}
 		else if (t == ERR_DHT)
@@ -74,4 +74,5 @@ namespace dht
 		else
 			throw bt::Error(QString("Unknown message type %1").arg(t));
 	}
+
 }

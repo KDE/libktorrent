@@ -17,10 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #ifndef DHT_GETPEERSRSP_H
 #define DHT_GETPEERSRSP_H
-
 
 #include "rpcmsg.h"
 #include "packednodecontainer.h"
@@ -50,6 +48,7 @@ namespace dht
 		bool containsValues() const {return nodes.size() == 0;}
 
 		typedef QSharedPointer<GetPeersRsp> Ptr;
+
 	private:
 		Key token;
 		DBItemList items;

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #ifndef DHTDATABASE_H
 #define DHTDATABASE_H
@@ -28,11 +28,16 @@
 #include <util/array.h>
 #include "key.h"
 
-
-
 namespace dht
 {
-	/// Each item may only exist for 30 minutes
+
+	/**
+	 * @author Fonic <https://github.com/fonic>
+	 * Maximum allowed age of database items before expiration. This is not
+	 * to be confused with DATABASE_EXPIRE_INTERVAL in dht.h which defines
+	 * how often the database will be checked for expired items. A value of
+	 * 30 * 60* 1000 is proposed by the reference implementation.
+	 */
 	const bt::Uint32 MAX_ITEM_AGE = 30 * 60 * 1000;
 
 	/**
@@ -49,10 +54,14 @@ namespace dht
 		DBItem(const DBItem & item);
 		virtual ~DBItem();
 
-		/// See if the item is expired
+		/**
+		 * See if the item is expired
+		 */
 		bool expired(bt::TimeStamp now) const;
 
-		/// Get the address of an item
+		/**
+		 * Get the address of an item
+		 */
 		const net::Address & getAddress() const {return addr;}
 
 		/**
@@ -74,7 +83,7 @@ namespace dht
 	 * @author Joris Guisson
 	 *
 	 * Class where all the key value paires get stored.
-	*/
+	 */
 	class Database
 	{
 	public:
@@ -124,12 +133,16 @@ namespace dht
 		 */
 		bool checkToken(const dht::Key & token, const net::Address & addr);
 
-		/// Test whether or not the DB contains a key
+		/**
+		 * Test whether or not the DB contains a key
+		 */
 		bool contains(const dht::Key & key) const;
 
-		/// Insert an empty item (only if it isn't already in the DB)
+		/**
+		 * Insert an empty item (only if it isn't already in the DB)
+		 */
 		void insert(const dht::Key & key);
-		
+
 	private:
 		bt::PtrMap<dht::Key, DBItemList> items;
 		QMap<dht::Key, bt::TimeStamp> tokens;
@@ -137,4 +150,4 @@ namespace dht
 
 }
 
-#endif
+#endif // DHTDATABASE_H

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #ifndef DHTTASKMANAGER_H
 #define DHTTASKMANAGER_H
@@ -31,28 +31,32 @@ namespace dht
 
 	/**
 	 * @author Joris Guisson <joris.guisson@gmail.com>
-	 * 
+	 *
 	 * Manages all dht tasks.
-	*/
+	 */
 	class TaskManager : public QObject
 	{
 		Q_OBJECT
 	public:
 		TaskManager(const DHT* dh_table);
 		virtual ~TaskManager();
-		
+
 		/**
 		 * Add a task to manage.
-		 * @param task 
+		 * @param task
 		 */
 		void addTask(Task* task);
-		
-		/// Get the number of running tasks
+
+		/**
+		 * Get the number of running tasks
+		 */
 		bt::Uint32 getNumTasks() const {return num_active;}
-		
-		/// Get the number of queued tasks
+
+		/**
+		 * Get the number of queued tasks
+		 */
 		bt::Uint32 getNumQueuedTasks() const {return queued.count();}
-		
+
 	private slots:
 		void taskFinished(Task* task);
 
@@ -64,4 +68,4 @@ namespace dht
 
 }
 
-#endif
+#endif // DHTTASKMANAGER_H

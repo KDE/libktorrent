@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2012 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #ifndef DHT_ERRMSG_H
 #define DHT_ERRMSG_H
 
@@ -40,14 +39,18 @@ namespace dht
 		virtual void print();
 		virtual void encode(QByteArray & arr) const;
 		virtual void parse(bt::BDictNode* dict);
-		
-		/// Get the error message
+
+		/**
+		 * Get the error message
+		 */
 		const QString & message() const {return msg;}
 
 		typedef QSharedPointer<ErrMsg> Ptr;
+
 	private:
 		QString msg;
 	};
+
 }
 
 #endif // DHT_ERRMSG_H

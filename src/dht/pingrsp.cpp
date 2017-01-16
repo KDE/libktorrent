@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #include "pingrsp.h"
 #include <util/log.h>
 #include <bcodec/bencoder.h>
@@ -25,20 +24,22 @@
 
 using namespace bt;
 
-
 namespace dht
 {
+
 	PingRsp::PingRsp()
 			: RPCMsg(QByteArray(), PING, RSP_MSG, Key())
 	{
 	}
-	
+
 	PingRsp::PingRsp(const QByteArray & mtid, const Key & id)
 			: RPCMsg(mtid, PING, RSP_MSG, id)
-	{}
+	{
+	}
 
-	PingRsp::~PingRsp() 
-	{}
+	PingRsp::~PingRsp()
+	{
+	}
 
 	void PingRsp::apply(dht::DHT* dh_table)
 	{
@@ -66,5 +67,5 @@ namespace dht
 		}
 		enc.end();
 	}
-}
 
+}

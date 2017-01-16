@@ -17,10 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-
 #ifndef DHT_PINGRSP_H
 #define DHT_PINGRSP_H
-
 
 #include "rpcmsg.h"
 
@@ -43,6 +41,7 @@ namespace dht
 
 		typedef QSharedPointer<PingRsp> Ptr;
 	};
+
 }
 
 #endif // DHT_PINGRSP_H

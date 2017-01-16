@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Joris Guisson                                   *
- *   joris.guisson@gmail.com                                               *
+ *   Copyright (C) 2012 by                                                 *
+ *   Joris Guisson <joris.guisson@gmail.com>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #ifndef DHTRPCMSG_H
 #define DHTRPCMSG_H
@@ -62,7 +62,7 @@ namespace dht
 
 	/**
 	 * Base class for all RPC messages.
-	*/
+	 */
 	class KTORRENT_EXPORT RPCMsg
 	{
 	public:
@@ -94,34 +94,52 @@ namespace dht
 		 * Parse the message
 		 * @param dict Data dictionary
 		 * @throws bt::Error when something goes wrong
-		 **/
+		 */
 		virtual void parse(bt::BDictNode* dict);
 
-		/// Set the origin (i.e. where the message came from)
+		/**
+		 * Set the origin (i.e. where the message came from)
+		 */
 		void setOrigin(const net::Address & o) {origin = o;}
 
-		/// Get the origin
+		/**
+		 * Get the origin
+		 */
 		const net::Address & getOrigin() const {return origin;}
 
-		/// Set the origin (i.e. where the message came from)
+		/**
+		 * Set the origin (i.e. where the message came from)
+		 */
 		void setDestination(const net::Address & o) {origin = o;}
 
-		/// Get the origin
+		/**
+		 * Get the origin
+		 */
 		const net::Address & getDestination() const {return origin;}
 
-		/// Get the MTID
+		/**
+		 * Get the MTID
+		 */
 		const QByteArray & getMTID() const {return mtid;}
 
-		/// Set the MTID
+		/**
+		 * Set the MTID
+		 */
 		void setMTID(const QByteArray & m) {mtid = m;}
 
-		/// Get the id of the sender
+		/**
+		 * Get the id of the sender
+		 */
 		const Key & getID() const {return id;}
 
-		/// Get the type of the message
+		/**
+		 * Get the type of the message
+		 */
 		Type getType() const {return type;}
 
-		/// Get the message it's method
+		/**
+		 * Get the method of the message
+		 */
 		Method getMethod() const {return method;}
 
 	protected:
@@ -132,7 +150,6 @@ namespace dht
 		net::Address origin;
 	};
 
-
 }
 
-#endif
+#endif // DHTRPCMSG_H
