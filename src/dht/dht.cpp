@@ -364,7 +364,7 @@ namespace dht
 			srv->ping(node->getOurID(), addr);
 		}
 		else
-			net::AddressResolver::resolve(host, hport, this, SLOT(hostResolved(net::AddressResolver*)));
+			net::AddressResolver::resolve(host, hport, this, SLOT(onResolverResults(net::AddressResolver*)));
 	}
 
 	void DHT::onResolverResults(net::AddressResolver* res)
