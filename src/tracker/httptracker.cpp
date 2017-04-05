@@ -492,9 +492,15 @@ namespace bt
 			// set the proxy if the doNotUseKDEProxy ix enabled (URL must be valid to)
 			QUrl url(p);
 			if (url.isValid() && proxy.trimmed().length() >  0)
+			{
 				md["UseProxy"] = p;
+				md["ProxyUrls"] = p;
+			}
 			else
+			{
 				md["UseProxy"] = QString();
+				md["ProxyUrls"] = QString();
+			}
 
 			Out(SYS_TRK | LOG_DEBUG) << "Using proxy : " << md["UseProxy"] << endl;
 		}
