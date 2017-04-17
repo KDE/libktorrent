@@ -243,16 +243,24 @@ namespace bt
 			Map[QStringLiteral("Q1")] = QStringLiteral("Queen Bee");
 			Map[QStringLiteral("AP")] = QStringLiteral("AllPeers");
 			Map[QStringLiteral("QVOD")] = QStringLiteral("Qvod");
+			Map[QStringLiteral("TIX")] = QStringLiteral("Tixati");
 			first = false;
 		}
 
-		QString name = i18n("Unknown client");
+		QString name;
 		if (peer_id.at(0) == '-' &&
 			peer_id.at(1).isLetter() &&
 			peer_id.at(2).isLetter() ) //AZ style
 		{
 			QString ID(peer_id.mid(1,2));
-			if (Map.contains(ID))
+			if (ID == QLatin1String("ML"))
+			{
+				name = Map[ID];
+				const int dash_pos = peer_id.indexOf('-', 3);
+				if (dash_pos != -1)
+					name += ' ' + peer_id.mid(3,dash_pos-3);
+			}
+			else if (Map.contains(ID))
 				name = Map[ID] + ' ' + peer_id.at(3) + '.' + peer_id.at(4) + '.'
 					+ peer_id.at(5) + '.' + peer_id.at(6);
 		}
@@ -322,6 +330,15 @@ namespace bt
 		else if (peer_id.startsWith(QLatin1String("QVOD")))
 		{
 			name = Map[QStringLiteral("QVOD")];
+		}
+		else if (peer_id.startsWith(QLatin1String("TIX")))
+		{
+			name = Map[QStringLiteral("TIX")] + ' ' + peer_id.at(3) + peer_id.at(4) + '.'
+				+ peer_id.at(5) + peer_id.at(6);
+		}
+		if (name.isEmpty())
+		{
+			name = i18n("Unknown client");
 		}
 			
 		return name;
