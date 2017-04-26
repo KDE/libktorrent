@@ -531,6 +531,11 @@ namespace bt
             {
                 stats.partial_seed = val->data().toInt() == 1;
             }
+
+            if ((val = dict->getValue(QByteArrayLiteral("v"))))
+            {
+                stats.client = val->data().toString();
+            }
         }
         catch (...)
         {
