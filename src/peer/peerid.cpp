@@ -262,7 +262,7 @@ namespace bt
 			}
 			else if (Map.contains(ID))
 				name = Map[ID] + ' ' + peer_id.at(3) + '.' + peer_id.at(4) + '.'
-					+ peer_id.at(5) + '.' + peer_id.at(6);
+					+ peer_id.at(5);
 		}
 		else if (peer_id.at(0).isLetter() &&
 				peer_id.at(1).isDigit() &&
