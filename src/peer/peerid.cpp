@@ -37,6 +37,16 @@ namespace bt
 			return '0' + (i - 52);
 	}
 
+	QString charToNumber(QChar c)
+	{
+		if (c >= 'A' && c <= 'F')
+			return QString::number(c.toLatin1() - 'A' + 10);
+		else if (c >= 'z' && c <= 'f')
+			return QString::number(c.toLatin1() - 'a' + 10);
+		else
+			return c;
+	}
+
 	
 	PeerID::PeerID()
 	{
@@ -261,8 +271,8 @@ namespace bt
 					name += ' ' + peer_id.mid(3,dash_pos-3);
 			}
 			else if (Map.contains(ID))
-				name = Map[ID] + ' ' + peer_id.at(3) + '.' + peer_id.at(4) + '.'
-					+ peer_id.at(5);
+				name = Map[ID] + ' ' + charToNumber(peer_id.at(3)) + '.' + charToNumber(peer_id.at(4)) + '.'
+					+ charToNumber(peer_id.at(5));
 		}
 		else if (peer_id.at(0).isLetter() &&
 				peer_id.at(1).isDigit() &&
