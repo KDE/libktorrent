@@ -117,3 +117,5 @@ install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfig.cmake"
 install(EXPORT KF5TorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF5TorrentTargets.cmake NAMESPACE KF5:: )
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+message("NOTE: LibKTorrent will crash unless you compile Botan library without GMP support.\n")
