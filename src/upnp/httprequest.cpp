@@ -15,146 +15,68 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include <QTimer>
+
 #include <QHostAddress>
+#include <QNetworkReply>
 #include <QStringList>
-#include <klocalizedstring.h>
+#include <QTimer>
+
+#include <KLocalizedString>
+
 #include <util/log.h>
 #include "httprequest.h"
-
-
-
 
 namespace bt
 {
 
-	HTTPRequest::HTTPRequest(const QString & hdr,const QString & payload,const QString & host,Uint16 port,bool verbose) 
-		: hdr(hdr),payload(payload),verbose(verbose),host(host),port(port),finished(false),success(false)
+	HTTPRequest::HTTPRequest(const QNetworkRequest & hdr,const QString & payload,const QString & host,Uint16 port,bool verbose) 
+		: hdr(hdr),m_payload(payload),verbose(verbose),host(host),port(port),success(false)
 	{
-		sock = new QTcpSocket(this);
-		connect(sock,SIGNAL(readyRead()),this,SLOT(onReadyRead()));
-		connect(sock,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(onError(QAbstractSocket::SocketError)));
-		connect(sock,SIGNAL(connected()),this, SLOT(onConnect()));
+		networkAccessManager = new QNetworkAccessManager(this);
+		connect(networkAccessManager, &QNetworkAccessManager::finished, this, &HTTPRequest::replyFinished);
+		networkAccessManager->connectToHost(host,port);
+
+		QTcpSocket socket;
+		QString localAddress;
+		socket.connectToHost(host, port);
+		if (socket.waitForConnected()) {
+			localAddress = socket.localAddress().toString();
+                        socket.close();
+		}
+		else {
+			Out(SYS_PNP|LOG_DEBUG) << "TCP connection timeout" << endl;
+			socket.close();
+			error = i18n("Operation timed out");
+                        success = false;
+			emit result(this);
+			operationFinished(this);
+			return;
+		}
+
+		m_payload = m_payload.replace(QLatin1String("$LOCAL_IP"), localAddress);
 	}
-	
-	
-	HTTPRequest::~HTTPRequest()
-	{
-		sock->close();
-	}
-	
+
 	void HTTPRequest::start()
 	{
-		success = false;
-		finished = false;
-		reply.clear();
-		sock->connectToHost(host,port);
-		QTimer::singleShot(30000,this,SLOT(onTimeout()));
+		networkAccessManager->post(hdr, m_payload.toLatin1());
 	}
-	
-	void HTTPRequest::cancel()
-	{
-		finished = true;
-		sock->close();
-	}
-	
-	void HTTPRequest::onConnect()
-	{
-		if (finished)
-			return;
-		
-		payload = payload.replace(QLatin1String("$LOCAL_IP"),sock->localAddress().toString());
-		hdr = hdr.replace(QLatin1String("$CONTENT_LENGTH"),QString::number(payload.length()));
-			
-		QString req = hdr + payload;
-		if (verbose)
-		{
-			Out(SYS_PNP|LOG_DEBUG) << "Sending " << endl;
-			QStringList lines = hdr.split(QLatin1String("\r\n"));
-			foreach (const QString &line,lines)
-				Out(SYS_PNP|LOG_DEBUG) << line << endl;
-			
-			Out(SYS_PNP|LOG_DEBUG) << payload << endl;
-		}
 
-		sock->write(req.toLatin1());
-	}
-	
-	void HTTPRequest::onReadyRead()
+	void HTTPRequest::replyFinished(QNetworkReply *networkReply)
 	{
-		if (finished)
-			return;
-		
-		Uint32 ba = sock->bytesAvailable();
-		if (ba == 0)
+		if(networkReply->error())
 		{
-			if (!finished)
-			{
-				error = i18n("Connection closed unexpectedly");
-				success = false;
-				finished = true;
-				result(this);
-				operationFinished(this);
-			}
-			sock->close();
+			error = networkReply->errorString();
+			success = false;
+			emit result(this);
+			operationFinished(this);
 			return;
 		}
-		
-		reply.append(sock->read(ba));
-		int eoh = reply.indexOf("\r\n\r\n");
-		if (eoh != -1)
-		{
-			/*reply_header = QHttpResponseHeader(QString::fromAscii(reply.mid(0,eoh + 4))); PORT: KF5
-			if (reply_header.contentLength() > 0 && reply.size() < eoh + 4 + reply_header.contentLength())
-			{
-				// Haven't got full content yet, so return and wait for more
-				return;
-			}
-			else
-			{
-				reply = reply.mid(eoh + 4);
-				success = reply_header.statusCode() == 200;
-				if (!success)
-					error = reply_header.reasonPhrase();
-				finished = true;
-				result(this);
-				operationFinished(this);
-			}*/
-		}
-		else
-			return;
-	}
-	
-	void HTTPRequest::onError(QAbstractSocket::SocketError err)
-	{
-		Q_UNUSED(err);
-		if (finished)
-			return;
-		
-		Out(SYS_PNP|LOG_DEBUG) << "HTTPRequest error : " << sock->errorString() << endl;
-		success = false;
-		finished = true;
-		sock->close();
-		error = sock->errorString();
-		result(this);
+		reply = networkReply->readAll();
+		success = true;
+		emit result(this);
 		operationFinished(this);
-	}
-	
-	void HTTPRequest::onTimeout()
-	{
-		if (finished)
-			return;
-
-		Out(SYS_PNP|LOG_DEBUG) << "HTTPRequest timeout" << endl;
-		success = false;
-		finished = true;
-		sock->close();
-		error = i18n("Operation timed out");
-		result(this);
-		operationFinished(this);
-	}
-
+}
 
 }

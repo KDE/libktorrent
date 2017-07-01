@@ -17,8 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include <qxml.h>
-#include <qstack.h>
+
+#include <QtXml>
+#include <QStack>
+
 #include <util/fileops.h>
 #include <util/log.h>
 #include "upnprouter.h"

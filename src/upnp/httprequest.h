@@ -17,10 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
+
 #ifndef KTHTTPREQUEST_H
 #define KTHTTPREQUEST_H
 
-#include <QTcpSocket>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+
 #include <interfaces/exitoperation.h>
 #include <util/constants.h>
 
@@ -46,19 +49,13 @@ namespace bt
 		 * @param port THe port
 		 * @param verbose Print traffic to the log
 		 */
-		HTTPRequest(const QString & hdr,const QString & payload,const QString & host,
+		HTTPRequest(const QNetworkRequest & hdr,const QString & payload,const QString & host,
 					bt::Uint16 port,bool verbose);
-		virtual ~HTTPRequest();
-		
 		/**
-		 * Open a connetion and send the request.
+		 * Open a connection and send the request.
 		 */
 		void start();
-		
-		/**
-			Cancel the request, no result signal will be emitted.
-		*/
-		void cancel();
+
 		
 		/**
 			Get the reply data
@@ -75,37 +72,31 @@ namespace bt
 		*/
 		QString errorString() const {return error;}
 		
-	signals:
+	Q_SIGNALS:
 		/**
 		 * An OK reply was sent.
 		 * @param r The sender of the request
-		 * @param data The data of the reply
 		 */
 		void result(HTTPRequest* r);
 		
-		
-	private slots:
-		void onReadyRead();
-		void onError(QAbstractSocket::SocketError err);
-		void onTimeout();
-		void onConnect();
-	
+
+	public:
+		void replyFinished(QNetworkReply *networkReply);
+
 	private:
 		void parseReply(int eoh);
-		
+
 	private:
-		QTcpSocket* sock;
-		QString hdr,payload;
+		QNetworkRequest hdr;
+		QString m_payload;
 		bool verbose;
 		QString host;
 		bt::Uint16 port;
-		bool finished;
-// 		QHttpResponseHeader reply_header; PORT: KF5
+                QNetworkAccessManager *networkAccessManager;
 		QByteArray reply;
 		bool success;
 		QString error;
 	};
-
 }
 
 #endif

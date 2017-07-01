@@ -18,7 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
+#include <QFile>
+#include <QStringList>
+#include <QTextStream>
 #include <QUrl>
+
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -27,9 +31,6 @@
 #include <netinet/ip.h>
 #endif
 #include <arpa/inet.h>
-#include <QStringList>
-#include <QFile>
-#include <QTextStream>
 #include <util/log.h>
 #include "upnpmcastsocket.h"
 

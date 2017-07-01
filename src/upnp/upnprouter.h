@@ -17,11 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
+
 #ifndef KTUPNPROUTER_H
 #define KTUPNPROUTER_H
 
 #include <QUrl>
-#include <qstringlist.h>
+#include <QStringList>
+
 #include <net/portlist.h>
 #include <ktorrent_export.h>
 

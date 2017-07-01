@@ -17,9 +17,14 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include <stdlib.h>
+
+#include <cstdlib>
+
 #include <QDir>
+#include <QDomElement>
+#include <QNetworkRequest>
 #include <QStringList>
+
 #include <klocalizedstring.h>
 #include <kio/job.h>
 #include <torrent/globals.h>
@@ -35,7 +40,6 @@
 #include "upnpdescriptionparser.h"
 #include "soap.h"
 #include "httprequest.h"
-#include <QDomElement>
 
 using namespace net;
 
@@ -150,7 +154,7 @@ namespace bt
 
     void UPnPRouter::addService(const UPnPService& s)
     {
-        foreach(const UPnPService& os, d->services)
+        for (const UPnPService& os : qAsConst(d->services))
         {
             if(s.servicetype == os.servicetype)
                 return;
@@ -200,7 +204,7 @@ namespace bt
         bool found = false;
         Out(SYS_PNP | LOG_NOTICE) << "Forwarding port " << port.number << " (" << (port.proto == UDP ? "UDP" : "TCP") << ")" << endl;
         // first find the right service
-        foreach(const UPnPService& s, d->services)
+        for (const UPnPService& s : qAsConst(d->services))
         {
             if(s.servicetype.contains("WANIPConnection") || s.servicetype.contains("WANPPPConnection"))
             {
@@ -370,7 +374,7 @@ namespace bt
 
     void UPnPRouter::visit(UPnPRouter::Visitor* visitor) const
     {
-        foreach(const Forwarding& fwd, d->fwds)
+        for (const Forwarding& fwd : qAsConst(d->fwds))
         {
             visitor->forwarding(fwd.port, fwd.pending_req != 0, fwd.service);
         }
@@ -386,9 +390,8 @@ namespace bt
 
     UPnPRouter::UPnPRouterPrivate::~UPnPRouterPrivate()
     {
-        foreach(HTTPRequest* r, active_reqs)
+        for (HTTPRequest* r : qAsConst(active_reqs))
         {
-            r->cancel();
             r->deleteLater();
         }
     }
@@ -405,27 +408,19 @@ namespace bt
         QString host = !ctrlurl.host().isEmpty() ? ctrlurl.host() : location.host();
         bt::Uint16 port = ctrlurl.port() != -1 ? ctrlurl.port() : location.port(80);
 
-        QString http_hdr;
-        QTextStream out(&http_hdr);
-        QString encoded_query = ctrlurl.query();
-        if(encoded_query.isEmpty())
-            out << "POST " << ctrlurl.path() << " HTTP/1.1\r\n";
-        else
-            out << "POST " << ctrlurl.path() << "?" << encoded_query << " HTTP/1.1\r\n";
-        out << "Host: " << host << ":" << port << "\r\n";
-        out << "User-Agent: " << bt::GetVersionString() << "\r\n";
-        out << "Content-length: $CONTENT_LENGTH\r\n";
-        out << "Content-Type: text/xml\r\n";
-        out << "SOAPAction: \"" << soapact << "\"\r\n\r\n";
+        QNetworkRequest networkReq;
+        networkReq.setUrl(ctrlurl);
+        networkReq.setRawHeader("Host", host.toLatin1() + QByteArrayLiteral(":") + QByteArray::number(port));
+        networkReq.setRawHeader("User-Agent", bt::GetVersionString().toLatin1());
+        networkReq.setHeader(QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml"));
+        networkReq.setRawHeader("SOAPAction", soapact.toLatin1());
 
-        HTTPRequest* r = new HTTPRequest(http_hdr, query, host, port, verbose);
+        HTTPRequest* r = new HTTPRequest(networkReq, query, host, port, verbose);
         if(!at_exit)
         {
             // Only listen for results when we are not exiting
             active_reqs.append(r);
         }
-
-        r->start();
         return r;
     }
 
@@ -519,7 +514,7 @@ namespace bt
 
     void UPnPRouter::UPnPRouterPrivate::getExternalIP()
     {
-        foreach(const UPnPService& s, services)
+        for (const UPnPService& s : qAsConst(services))
         {
             if(s.servicetype.contains("WANIPConnection") || s.servicetype.contains("WANPPPConnection"))
             {
