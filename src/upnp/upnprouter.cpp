@@ -287,7 +287,7 @@ namespace bt
                 {
                     d->external_ip = nodes.item(0).firstChild().nodeValue();
                     Out(SYS_PNP | LOG_DEBUG) << "UPnP: External IP: " << d->external_ip << endl;
-                    // Keep track of external IP so AccessManager can block it, makes no sense to connect to ourself
+                    // Keep track of external IP so AccessManager can block it, makes no sense to connect to ourselves
                     AccessManager::instance().addExternalIP(d->external_ip);
                 }
                 else
