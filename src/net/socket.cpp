@@ -17,8 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
+
 #include "socket.h"
-#include <qglobal.h>
+#include <QtGlobal>
 
 #include <unistd.h>
 #include <string.h>
@@ -69,7 +70,7 @@ namespace net
 		int val = 1; 
 		if (setsockopt(m_fd,SOL_SOCKET,SO_NOSIGPIPE,&val,sizeof(int)) < 0)
 		{
-			Out(SYS_CON|LOG_NOTICE) << QString("Failed to set the NOSIGPIPE option : %1").arg(strerror(errno)) << endl;
+			Out(SYS_CON|LOG_NOTICE) << QStringLiteral("Failed to set the NOSIGPIPE option : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
 		}
 #endif
 		cacheAddress();
@@ -84,14 +85,14 @@ namespace net
 		
 		int fd = socket(m_ip_version == 4 ? PF_INET : PF_INET6,tcp ? SOCK_STREAM : SOCK_DGRAM,0);
 		if (fd < 0)
-			Out(SYS_GEN|LOG_IMPORTANT) << QString("Cannot create socket : %1").arg(strerror(errno)) << endl;
+			Out(SYS_GEN|LOG_IMPORTANT) << QStringLiteral("Cannot create socket : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
 		m_fd = fd;
 		
 #if defined(Q_OS_MACX) || defined(Q_OS_DARWIN)
 		int val = 1;
 		if (setsockopt(m_fd,SOL_SOCKET,SO_NOSIGPIPE,&val,sizeof(int)) < 0)
 		{
-			Out(SYS_CON|LOG_NOTICE) << QString("Failed to set the NOSIGPIPE option : %1").arg(strerror(errno)) << endl;
+			Out(SYS_CON|LOG_NOTICE) << QStringLiteral("Failed to set the NOSIGPIPE option : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
 		}
 #endif	
 	}
@@ -114,14 +115,14 @@ namespace net
 		close();
 		int fd = socket(m_ip_version == 4 ? PF_INET : PF_INET6,SOCK_STREAM,0);
 		if (fd < 0)
-			Out(SYS_GEN|LOG_IMPORTANT) << QString("Cannot create socket : %1").arg(strerror(errno)) << endl;
+			Out(SYS_GEN|LOG_IMPORTANT) << QStringLiteral("Cannot create socket : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
 		m_fd = fd;
 		
 #if defined(Q_OS_MACX) || defined(Q_OS_DARWIN)
 		int val = 1;
 		if (setsockopt(m_fd,SOL_SOCKET,SO_NOSIGPIPE,&val,sizeof(int)) < 0)
 		{
-			Out(SYS_CON|LOG_NOTICE) << QString("Failed to set the NOSIGPIPE option : %1").arg(strerror(errno)) << endl;
+			Out(SYS_CON|LOG_NOTICE) << QString("Failed to set the NOSIGPIPE option : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
 		}
 #endif	
 		m_state = IDLE;
@@ -175,8 +176,8 @@ namespace net
 			}
 			else
 			{
-				Out(SYS_CON|LOG_NOTICE) << QString("Cannot connect to host %1 : %2")
-					.arg(a.toString()).arg(QString::fromLocal8Bit(strerror(errno))) << endl;
+				Out(SYS_CON|LOG_NOTICE) << QStringLiteral("Cannot connect to host %1 : %2")
+					.arg(a.toString()).arg(QString::fromUtf8(strerror(errno))) << endl;
 				return false;
 			}
 		}
@@ -199,7 +200,7 @@ namespace net
 		if (setsockopt(m_fd,SOL_SOCKET,SO_REUSEADDR,(char *)&val,sizeof(int)) < 0)
 #endif 
 		{
-			Out(SYS_CON|LOG_NOTICE) << QString("Failed to set the reuseaddr option : %1").arg(strerror(errno)) << endl;
+			Out(SYS_CON|LOG_NOTICE) << QStringLiteral("Failed to set the reuseaddr option : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
 		}
 
 		int len = 0;
@@ -207,19 +208,19 @@ namespace net
 		addr.toSocketAddress(&ss, len);
 		if (::bind(m_fd, (struct sockaddr*)&ss, len) != 0)
 		{
-			Out(SYS_CON|LOG_IMPORTANT) << QString("Cannot bind to port %1:%2 : %3")
+			Out(SYS_CON|LOG_IMPORTANT) << QStringLiteral("Cannot bind to port %1:%2 : %3")
 				.arg(addr.toString())
 				.arg(addr.port())
-				.arg(strerror(errno)) << endl;
+				.arg(QString::fromUtf8(strerror(errno))) << endl;
 			return false;
 		}
 
 		if (also_listen && listen(m_fd,SOMAXCONN) < 0)
 		{
-			Out(SYS_CON|LOG_IMPORTANT) << QString("Cannot listen to port %1:%2 : %3")
+			Out(SYS_CON|LOG_IMPORTANT) << QStringLiteral("Cannot listen to port %1:%2 : %3")
 				.arg(addr.toString())
 				.arg(addr.port())
-				.arg(strerror(errno)) << endl;
+				.arg(QString::fromUtf8(strerror(errno))) << endl;
 			return false;
 		}
 		
@@ -238,7 +239,7 @@ namespace net
 		{
 			if (errno != EAGAIN && errno != EWOULDBLOCK)
 			{
-			//	Out(SYS_CON|LOG_DEBUG) << "Send error : " << QString(strerror(errno)) << endl;
+			//	Out(SYS_CON|LOG_DEBUG) << "Send error : " << QString::fromUtf8(strerror(errno)) << endl;
 				close();
 			}
 			return 0;
@@ -257,7 +258,7 @@ namespace net
 		{
 			if (errno != EAGAIN && errno != EWOULDBLOCK)
 			{
-			//	Out(SYS_CON|LOG_DEBUG) << "Receive error : " << QString(strerror(errno)) << endl;
+			//	Out(SYS_CON|LOG_DEBUG) << "Receive error : " << QString::fromUtf8(strerror(errno)) << endl;
 				close();
 				return 0;
 			}
@@ -284,7 +285,7 @@ namespace net
 			if (errno == EAGAIN || errno == EWOULDBLOCK)
 				return SEND_WOULD_BLOCK;
 			
-			Out(SYS_CON|LOG_DEBUG) << "Send error : " << QString(strerror(errno)) << endl;
+			Out(SYS_CON|LOG_DEBUG) << "Send error : " << QString::fromUtf8(strerror(errno)) << endl;
 			return SEND_FAILURE;
 		}
 		
@@ -302,7 +303,7 @@ namespace net
 #endif
 		if (ret < 0)
 		{
-			Out(SYS_CON|LOG_DEBUG) << "Receive error : " << QString(strerror(errno)) << endl;
+			Out(SYS_CON|LOG_DEBUG) << "Receive error : " << QString::fromUtf8(strerror(errno)) << endl;
 			return 0;
 		}
 		a = ss;
@@ -317,7 +318,7 @@ namespace net
 			
 		if (sfd < 0)
 		{
-			Out(SYS_CON|LOG_DEBUG) << "Accept error : " << QString(strerror(errno)) << endl;
+			Out(SYS_CON|LOG_DEBUG) << "Accept error : " << QString::fromUtf8(strerror(errno)) << endl;
 			return -1;
 		}
 		a =  net::Address(&ss);
@@ -345,8 +346,8 @@ namespace net
 			if (setsockopt(m_fd,IPPROTO_IP,IP_TOS,(char *)&c,sizeof(c)) < 0)
 #endif
 			{
-				Out(SYS_CON|LOG_NOTICE) << QString("Failed to set TOS to %1 : %2")
-						.arg((int)type_of_service).arg(strerror(errno)) << endl;
+				Out(SYS_CON|LOG_NOTICE) << QStringLiteral("Failed to set TOS to %1 : %2")
+						.arg((int)type_of_service).arg(QString::fromUtf8(strerror(errno))) << endl;
 				return false;
 			}
 		}
@@ -356,8 +357,8 @@ namespace net
 			int c = type_of_service;
 			if (setsockopt(m_fd,IPPROTO_IPV6,IPV6_TCLASS,&c,sizeof(c)) < 0)
 			{
-				Out(SYS_CON|LOG_NOTICE) << QString("Failed to set traffic class to %1 : %2")
-						.arg((int)type_of_service).arg(strerror(errno)) << endl;
+				Out(SYS_CON|LOG_NOTICE) << QStringLiteral("Failed to set traffic class to %1 : %2")
+						.arg((int)type_of_service).arg(QString::fromUtf8(strerror(errno))) << endl;
 				return false;
 			}
 #endif

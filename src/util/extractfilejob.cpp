@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
+
 #include <QThread>
 #include "extractfilejob.h"
 #include <QFile>
@@ -64,7 +65,7 @@ namespace bt
 	void ExtractFileJob::start()
 	{
 		// first find the file in the archive
-		QStringList path_components = path.split("/",QString::SkipEmptyParts);
+		QStringList path_components = path.split(QLatin1Char('/'), QString::SkipEmptyParts);
 		const KArchiveDirectory* dir = archive->directory();
 		for (int i = 0;i < path_components.count();i++)
 		{

@@ -85,7 +85,7 @@ namespace bt
 				hash[5],hash[6],hash[7],hash[8],hash[9],
 				hash[10],hash[11],hash[12],hash[13],hash[14],
 				hash[15],hash[16],hash[17],hash[18],hash[19]);
-		return QString(tmp);
+		return QString::fromUtf8(tmp);
 	}
 	
 	QByteArray SHA1Hash::toByteArray() const

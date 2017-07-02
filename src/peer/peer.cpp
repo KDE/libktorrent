@@ -92,7 +92,7 @@ namespace bt
         stats.local = local;
         stats.transport_protocol = sock->socketDevice()->transportProtocol();
 
-        if (stats.ip_address == "0.0.0.0")
+        if (stats.ip_address == QStringLiteral("0.0.0.0"))
         {
             Out(SYS_CON | LOG_DEBUG) << "No more 0.0.0.0" << endl;
             kill();

@@ -48,9 +48,9 @@ namespace bt
 			close();
 		
 #ifdef HAVE_FOPEN64
-		fptr = fopen64(QFile::encodeName(file),mode.toUtf8().constData());
+		fptr = fopen64(QFile::encodeName(file).constData(), mode.toUtf8().constData());
 #else
-		fptr = fopen(QFile::encodeName(file),mode.toUtf8().constData());
+		fptr = fopen(QFile::encodeName(file).constData(), mode.toUtf8().constData());
 #endif
 		return fptr != 0;
 	}
@@ -81,7 +81,7 @@ namespace bt
 			if (errno == ENOSPC)
 				Out(SYS_DIO|LOG_IMPORTANT) << "Disk full !" << endl;
 			
-			throw Error(i18n("Cannot write to %1: %2",file,strerror(errno)));
+			throw Error(i18n("Cannot write to %1: %2", file, QString::fromUtf8(strerror(errno))));
 		}
 		return ret;
 	}
@@ -150,6 +150,6 @@ namespace bt
 
 	QString File::errorString() const
 	{
-		return QString(strerror(errno));
+		return QString::fromUtf8(strerror(errno));
 	}
 }

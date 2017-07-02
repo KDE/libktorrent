@@ -30,7 +30,7 @@ namespace bt
 {
 	static QCA::Initializer qca_init;
 
-	SHA1HashGen::SHA1HashGen() : h(new QCA::Hash("sha1"))
+	SHA1HashGen::SHA1HashGen() : h(new QCA::Hash(QStringLiteral("sha1")))
 	{
 		memset(result,9,20);
 	}

@@ -63,7 +63,7 @@ namespace net
 		memset(host,0,200);
 		memset(service,0,200);
 		if (getnameinfo((struct sockaddr*)&ss,slen,host,199,service,199,NI_NAMEREQD) == 0)
-			return QString(host);
+			return QString::fromUtf8(host);
 		else
 			return QString();
 	}

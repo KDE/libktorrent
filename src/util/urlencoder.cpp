@@ -71,7 +71,7 @@ namespace bt
 			} 
 			else if (ch == ' ') 
 			{			// space
-				res.append("%20");
+				res.append(QStringLiteral("%20"));
 			}
 			else if (ch == '-' || ch == '_'		// unreserved
 				    || ch == '.' || ch == '!'

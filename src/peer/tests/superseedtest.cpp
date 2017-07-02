@@ -38,10 +38,10 @@ class DummyPeer : public PeerInterface
 public:
 	DummyPeer() : PeerInterface(PeerID(),NUM_CHUNKS)
 	{
-		QString name = QString("%1").arg(peer_cnt++);
+		QString name = QStringLiteral("%1").arg(peer_cnt++);
 		if (name.size() < 20)
-			name = name.leftJustified(20,' ');
-		peer_id = PeerID(name.toLatin1());
+			name = name.leftJustified(20, QLatin1Char(' '));
+		peer_id = PeerID(name.toLatin1().constData());
 		allowed_chunk = INVALID_CHUNK;
 		allow_called = false;
 	}

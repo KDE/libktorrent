@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
+
 #include "functions.h"
-#include <qdir.h>
 #include <errno.h>
 #include <unistd.h>
 #include <sys/time.h>
@@ -29,16 +29,19 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <gcrypt.h>
+
+#include <QDir>
+#include <QMimeDatabase>
+#include <QMimeType>
 #include <QNetworkInterface>
 #include <QTime>
 
-#include <kformat.h>
-#include <klocalizedstring.h>
+#include <KFormat>
+#include <KLocalizedString>
 
 #include <interfaces/torrentinterface.h>
 #include <util/signalcatcher.h>
-#include <QMimeDatabase>
-#include <QMimeType>
+
 #include "error.h"
 #include "log.h"
 
@@ -125,7 +128,7 @@ namespace bt
 			if (setrlimit(RLIMIT_NOFILE,&lim) < 0)
 			{
 				Out(SYS_GEN|LOG_DEBUG) << "Failed to maximize file limit : " 
-						<< QString(strerror(errno)) << endl;
+						<< QString::fromUtf8(strerror(errno)) << endl;
 				return false;
 			}
 		}
@@ -143,7 +146,7 @@ namespace bt
 			if (setrlimit(RLIMIT_DATA,&lim) < 0)
 			{
 				Out(SYS_GEN|LOG_DEBUG) << "Failed to maximize data limit : " 
-						<< QString(strerror(errno)) << endl;
+						<< QString::fromUtf8(strerror(errno)) << endl;
 				return false;
 			}
 		}
@@ -205,7 +208,7 @@ namespace bt
 			QList<QHostAddress> addrs = QNetworkInterface::allAddresses();
 			foreach (const QHostAddress & addr, addrs)
 			{
-                if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6 && !addr.isInSubnet(QHostAddress("FE80::"), 64))
+                if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6 && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64))
 					return addr.toString();
 			}
 		}
@@ -215,7 +218,7 @@ namespace bt
 			foreach (const QNetworkAddressEntry & entry,addrs)
 			{
 				QHostAddress addr = entry.ip();
-				if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6 && !addr.isInSubnet(QHostAddress("FE80::"), 64))
+				if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6 && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64))
 					return addr.toString();
 			}
 		}

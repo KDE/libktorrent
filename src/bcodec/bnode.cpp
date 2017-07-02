@@ -20,7 +20,7 @@
 #include "bnode.h"
 #include <util/log.h>
 #include <util/error.h>
-#include <qtextcodec.h>
+#include <QTextCodec>
 
 namespace bt
 {
@@ -132,10 +132,10 @@ namespace bt
 	{
 		BValueNode* v = getValue(key);
 		if (!v)
-			throw bt::Error("Key not found in dict");
+			throw bt::Error(QStringLiteral("Key not found in dict"));
 		
 		if (v->data().getType() != bt::Value::INT)
-			throw bt::Error("Incompatible type");
+			throw bt::Error(QStringLiteral("Incompatible type"));
 		
 		return v->data().toInt();
 	}
@@ -144,10 +144,10 @@ namespace bt
 	{
 		BValueNode* v = getValue(key);
 		if (!v)
-			throw bt::Error("Key not found in dict");
+			throw bt::Error(QStringLiteral("Key not found in dict"));
 		
 		if (v->data().getType() != bt::Value::INT64 && v->data().getType() != bt::Value::INT)
-			throw bt::Error("Incompatible type");
+			throw bt::Error(QStringLiteral("Incompatible type"));
 		
 		return v->data().toInt64();
 	}
@@ -156,10 +156,10 @@ namespace bt
 	{
 		BValueNode* v = getValue(key);
 		if (!v)
-			throw bt::Error("Key not found in dict");
+			throw bt::Error(QStringLiteral("Key not found in dict"));
 		
 		if (v->data().getType() != bt::Value::STRING)
-			throw bt::Error("Incompatible type");
+			throw bt::Error(QStringLiteral("Incompatible type"));
 		
 		if (!tc)
 			return v->data().toString();
@@ -171,10 +171,10 @@ namespace bt
 	{
 		BValueNode* v = getValue(key);
 		if (!v)
-			throw bt::Error("Key not found in dict");
+			throw bt::Error(QStringLiteral("Key not found in dict"));
 		
 		if (v->data().getType() != bt::Value::STRING)
-			throw bt::Error("Incompatible type");
+			throw bt::Error(QStringLiteral("Incompatible type"));
 		
 		return v->data().toByteArray();
 	}
@@ -186,7 +186,7 @@ namespace bt
 		while (i != children.end())
 		{
 			DictEntry & e = *i;
-			Out(SYS_GEN|LOG_DEBUG) << QString(e.key) << ": " << endl;
+			Out(SYS_GEN|LOG_DEBUG) << QString::fromLatin1(e.key) << ": " << endl;
 			e.node->printDebugInfo();
 			++i;
 		}
@@ -234,10 +234,10 @@ namespace bt
 	{
 		BValueNode* v = getValue(idx);
 		if (!v)
-			throw bt::Error("Key not found in dict");
+			throw bt::Error(QStringLiteral("Key not found in dict"));
 		
 		if (v->data().getType() != bt::Value::INT)
-			throw bt::Error("Incompatible type");
+			throw bt::Error(QStringLiteral("Incompatible type"));
 		
 		return v->data().toInt();
 	}
@@ -246,10 +246,10 @@ namespace bt
 	{
 		BValueNode* v = getValue(idx);
 		if (!v)
-			throw bt::Error("Key not found in dict");
+			throw bt::Error(QStringLiteral("Key not found in dict"));
 		
 		if (v->data().getType() != bt::Value::INT64 && v->data().getType() != bt::Value::INT)
-			throw bt::Error("Incompatible type");
+			throw bt::Error(QStringLiteral("Incompatible type"));
 		
 		return v->data().toInt64();
 	}
@@ -258,10 +258,10 @@ namespace bt
 	{
 		BValueNode* v = getValue(idx);
 		if (!v)
-			throw bt::Error("Key not found in dict");
+			throw bt::Error(QStringLiteral("Key not found in dict"));
 		
 		if (v->data().getType() != bt::Value::STRING)
-			throw bt::Error("Incompatible type");
+			throw bt::Error(QStringLiteral("Incompatible type"));
 		
 		if (!tc)
 			return v->data().toString();
@@ -273,10 +273,10 @@ namespace bt
 	{
 		BValueNode* v = getValue(idx);
 		if (!v)
-			throw bt::Error("Key not found in dict");
+			throw bt::Error(QStringLiteral("Key not found in dict"));
 		
 		if (v->data().getType() != bt::Value::STRING)
-			throw bt::Error("Incompatible type");
+			throw bt::Error(QStringLiteral("Incompatible type"));
 		
 		return v->data().toByteArray();
 	}

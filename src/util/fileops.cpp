@@ -17,27 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
-#include "fileops.h"
-#include <config-ktorrent.h>
 
-#include <string.h>
-#include <stdlib.h>
+#include "fileops.h"
+#include "config-ktorrent.h"
+
+#include <string>
+#include <cstdlib>
 #include <unistd.h>
 #include <errno.h>
-#include <klocalizedstring.h>
-#include <kio/job.h> 
-#include <kio/copyjob.h> 
-#include <solid/device.h>
-#include <solid/storageaccess.h>
-#include <solid/storagedrive.h>
-#include <solid/storagevolume.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
+
 #include <QDir>
 #include <QFile>
-#include <QStringList>
 #include <QSet>
+#include <QStringList>
+
+#include <KLocalizedString>
+#include <KIO/Job>
+#include <KIO/CopyJob>
+#include <Solid/Device>
+#include <Solid/StorageAccess>
+#include <Solid/StorageDrive>
+#include <Solid/StorageVolume>
+
 #include "error.h"
 #include "log.h"
 #include "file.h"
@@ -165,16 +169,16 @@ namespace bt
 
 	void SymLink(const QString & link_to,const QString & link_url,bool nothrow)
 	{
-		if (symlink(QFile::encodeName(link_to),QFile::encodeName(link_url)) != 0)
+		if (symlink(QFile::encodeName(link_to).constData(), QFile::encodeName(link_url).constData()) != 0)
 		{
 			if (!nothrow)
 				throw Error(i18n("Cannot symlink %1 to %2: %3"
 							,link_url,link_to
-							,strerror(errno)));
+							,QString::fromUtf8(strerror(errno))));
 			else
-				Out(SYS_DIO|LOG_NOTICE) << QString("Error : Cannot symlink %1 to %2: %3")
+				Out(SYS_DIO|LOG_NOTICE) << QStringLiteral("Error : Cannot symlink %1 to %2: %3")
 					.arg(link_url).arg(link_to)
-					.arg(strerror(errno)) << endl;
+					.arg(QString::fromUtf8(strerror(errno))) << endl;
 		}
 	}
 
@@ -190,7 +194,7 @@ namespace bt
 							src,dst,
 							mv->errorString()));
 			else
-				Out(SYS_DIO|LOG_NOTICE) << QString("Error : Cannot move %1 to %2: %3")
+				Out(SYS_DIO|LOG_NOTICE) << QStringLiteral("Error : Cannot move %1 to %2: %3")
 					.arg(src).arg(dst)
 					.arg(mv->errorString()) << endl;
 
@@ -207,7 +211,7 @@ namespace bt
 							src,dst,
 							copy->errorString()));
 			else
-				Out(SYS_DIO|LOG_NOTICE) << QString("Error : Cannot copy %1 to %2: %3")
+				Out(SYS_DIO|LOG_NOTICE) << QStringLiteral("Error : Cannot copy %1 to %2: %3")
 					.arg(src).arg(dst)
 					.arg(copy->errorString()) << endl;
 
@@ -224,7 +228,7 @@ namespace bt
 							src,dst,
 							copy->errorString()));
 			else
-				Out(SYS_DIO|LOG_NOTICE) << QString("Error : Cannot copy %1 to %2: %3")
+				Out(SYS_DIO|LOG_NOTICE) << QStringLiteral("Error : Cannot copy %1 to %2: %3")
 					.arg(src).arg(dst)
 					.arg(copy->errorString()) << endl;
 
@@ -285,7 +289,7 @@ namespace bt
 
 		if (!ok)
 		{
-			QString err = i18n("Cannot delete %1: %2",url,strerror(errno));
+			QString err = i18n("Cannot delete %1: %2", url, QString::fromUtf8(strerror(errno)));
 			if (!nothrow)
 				throw Error(err);
 			else
@@ -300,7 +304,7 @@ namespace bt
 
 		
 		File fptr;
-		if (!fptr.open(url,"wb"))
+		if (!fptr.open(url, QStringLiteral("wb")))
 		{
 			if (!nothrow)
 				throw Error(i18n("Cannot create %1: %2",url,fptr.errorString()));
@@ -315,13 +319,13 @@ namespace bt
 		int ret = 0;
 #ifdef HAVE_STAT64
 		struct stat64 sb;
-		ret = stat64(QFile::encodeName(url),&sb);
+		ret = stat64(QFile::encodeName(url).constData(), &sb);
 #else
 		struct stat sb;
-		ret = stat(QFile::encodeName(url),&sb);
+		ret = stat(QFile::encodeName(url).constData(), &sb);
 #endif
 		if (ret < 0)
-			throw Error(i18n("Cannot calculate the filesize of %1: %2",url,strerror(errno)));
+			throw Error(i18n("Cannot calculate the filesize of %1: %2", url, QString::fromUtf8(strerror(errno))));
 
 		return (Uint64)sb.st_size;
 	}
@@ -337,7 +341,7 @@ namespace bt
 		ret = fstat(fd,&sb);
 #endif
 		if (ret < 0)
-			throw Error(i18n("Cannot calculate the filesize: %1",strerror(errno)));
+			throw Error(i18n("Cannot calculate the filesize: %1", QString::fromUtf8(strerror(errno))));
 
 		return (Uint64)sb.st_size;
 	}
@@ -385,31 +389,31 @@ namespace bt
 #else
 			if (ftruncate(fd,size) == -1)
 #endif
-				throw Error(i18n("Cannot expand file: %1",strerror(errno)));
+				throw Error(i18n("Cannot expand file: %1", QString::fromUtf8(strerror(errno))));
 		}
 		else
 		{
 #ifdef HAVE_POSIX_FALLOCATE64
 			if (posix_fallocate64(fd,0,size) != 0)
-				throw Error(i18n("Cannot expand file: %1",strerror(errno)));
+				throw Error(i18n("Cannot expand file: %1", QString::fromUtf8(strerror(errno))));
 #elif HAVE_POSIX_FALLOCATE
 			if (posix_fallocate(fd,0,size) != 0)
-				throw Error(i18n("Cannot expand file: %1",strerror(errno)));
+				throw Error(i18n("Cannot expand file: %1", QString::fromUtf8(strerror(errno))));
 #elif HAVE_FTRUNCATE64
 			if (ftruncate64(fd,size) == -1)
-				throw Error(i18n("Cannot expand file: %1",strerror(errno)));
+				throw Error(i18n("Cannot expand file: %1", QString::fromUtf8(strerror(errno))));
 #else
 			if (ftruncate(fd,size) == -1)
-				throw Error(i18n("Cannot expand file: %1",strerror(errno)));
+				throw Error(i18n("Cannot expand file: %1", QString::fromUtf8(strerror(errno))));
 #endif
 		}
 	}
 
 	void TruncateFile(const QString & path,Uint64 size)
 	{
-		int fd = ::open(QFile::encodeName(path),O_RDWR | O_LARGEFILE);
+		int fd = ::open(QFile::encodeName(path).constData(), O_RDWR | O_LARGEFILE);
 		if (fd < 0)
-			throw Error(i18n("Cannot open %1: %2",path,strerror(errno)));
+			throw Error(i18n("Cannot open %1: %2", path, QString::fromUtf8(strerror(errno))));
 
 		try
 		{
@@ -430,7 +434,7 @@ namespace bt
 #else
 		if (lseek(fd,off,whence) == -1)
 #endif
-			throw Error(i18n("Cannot seek in file: %1",strerror(errno)));
+			throw Error(i18n("Cannot seek in file: %1", QString::fromUtf8(strerror(errno))));
 	}
 
 	bool FreeDiskSpace(const QString & path,Uint64 & bytes_free)
@@ -438,10 +442,10 @@ namespace bt
 #ifdef HAVE_STATVFS
 #ifdef HAVE_STATVFS64
 		struct statvfs64 stfs;
-		if (statvfs64(QFile::encodeName(path), &stfs) == 0)
+		if (statvfs64(QFile::encodeName(path).constData(), &stfs) == 0)
 #else
 		struct statvfs stfs;
-		if (statvfs(QFile::encodeName(path), &stfs) == 0)
+		if (statvfs(QFile::encodeName(path).constData(), &stfs) == 0)
 #endif
 		{
 			if (stfs.f_blocks == 0) // if this is 0, then we are using gvfs
@@ -453,7 +457,7 @@ namespace bt
 		else
 		{
 			Out(SYS_GEN|LOG_DEBUG) << "Error : statvfs for " << path << " failed :  "
-				<< QString(strerror(errno)) << endl;
+				<< QString::fromUtf8(strerror(errno)) << endl;
 
 			return false;
 		}
@@ -476,8 +480,8 @@ namespace bt
 	bool FileNameToLong(const QString & path)
 	{
 		int length = 0;
-		QStringList names = path.split('/');
-		foreach (const QString & s, names)
+		const QStringList names = path.split(QLatin1Char('/'));
+		for (const QString & s : names)
 		{
 			QByteArray encoded = QFile::encodeName(s);
 			if (encoded.length() >= NAME_MAX)
@@ -485,11 +489,11 @@ namespace bt
 			length += encoded.length();
 		}
 		
-		length += path.count('/');
+		length += path.count(QLatin1Char('/'));
 		return length >= PATH_MAX;
 	}
 	
-	static QString ShortenName(const QString & name,int extra_number)
+	static QString ShortenName(const QString & name, int extra_number)
 	{
 		QFileInfo fi(name);
 		QString ext = fi.suffix();
@@ -511,13 +515,13 @@ namespace bt
 			base.chop(1);
 		}while (fixed_len + QFile::encodeName(base).length() > NAME_MAX - 4 && base.length() != 0);
 		
-		base += QLatin1String("... "); // add ... so that the user knows the name is shortened
+		base += QStringLiteral("... "); // add ... so that the user knows the name is shortened
 		
 		QString ret = base;
 		if (extra_number > 0)
 			ret += QString::number(extra_number);
 		if (ext.length() > 0)
-			ret += '.' + ext;
+			ret += QLatin1Char('.') + ext;
 		return ret;
 	}
 	
@@ -555,15 +559,15 @@ namespace bt
 		if (extra_number > 0)
 			ret += QString::number(extra_number);
 		if (ext.length() > 0)
-			ret += '.' + ext;
+			ret += QLatin1Char('.') + ext;
 
 		return ret;
 	}
 	
 	QString ShortenFileName(const QString & path,int extra_number)
 	{
-		QString assembled = "/";
-		QStringList names = path.split('/',QString::SkipEmptyParts);
+		QString assembled = QStringLiteral("/");
+		QStringList names = path.split(QLatin1Char('/'),QString::SkipEmptyParts);
 		int cnt = 0;
 		for (QStringList::iterator i = names.begin();i != names.end();++i)
 		{
@@ -573,7 +577,7 @@ namespace bt
 			
 			assembled += *i;
 			if (cnt < names.count() - 1)
-				assembled += '/';
+				assembled += QLatin1Char('/');
 			cnt++;
 		}
 		
@@ -593,10 +597,10 @@ namespace bt
 #ifndef Q_WS_WIN
 #ifdef HAVE_STAT64
 		struct stat64 sb;
-		if (stat64(QFile::encodeName(filename),&sb) == 0)
+		if (stat64(QFile::encodeName(filename).constData(), &sb) == 0)
 #else
 		struct stat sb;
-		if (stat(QFile::encodeName(filename),&sb) == 0)
+		if (stat(QFile::encodeName(filename).constData(), &sb) == 0)
 #endif
 		{
 			ret = (Uint64)sb.st_blocks * 512;
@@ -644,7 +648,7 @@ namespace bt
 		char buf[PATH_MAX];
 		while(getmntent_r(fptr, &mnt, buf, PATH_MAX))
 		{
-			result.insert(QString(mnt.mnt_dir));
+			result.insert(QString::fromUtf8(mnt.mnt_dir));
 		}
 		
 		endmntent(fptr);

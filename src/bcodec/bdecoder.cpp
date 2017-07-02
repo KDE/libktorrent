@@ -221,7 +221,7 @@ namespace bt
 				throw Error(i18n("Cannot convert %1 to an int", n));
 
 			pos++;
-			debugMsg(QString("INT64 = %1").arg(n));
+			debugMsg(QStringLiteral("INT64 = %1").arg(n));
 			BValueNode* vn = new BValueNode(Value(bi), off);
 			vn->setLength(pos - off);
 			return vn;
@@ -268,9 +268,9 @@ namespace bt
 		if (verbose)
 		{
 			if (arr.size() < 200)
-				debugMsg("STRING " + QString(arr));
+				debugMsg(QStringLiteral("STRING ") + QString::fromUtf8(arr));
 			else
-				debugMsg("STRING really long string");
+				debugMsg(QStringLiteral("STRING really long string"));
 		}
 		return vn;
 	}

@@ -110,7 +110,7 @@ private slots:
 		catch (bt::Error & err)
 		{
 			QString msg = QString("Exception thrown: %s").arg(err.toString());
-			QFAIL(msg.toLocal8Bit());
+			QFAIL(msg.toLocal8Bit().constData());
 		}
 		
 		
@@ -126,7 +126,7 @@ private slots:
 		catch (bt::BusError & e)
 		{
 			QString msg = QString("Caught signal: %s").arg(e.toString());
-			QFAIL(msg.toLocal8Bit());
+			QFAIL(msg.toLocal8Bit().constData());
 		}
 		
 		// Lets try one which should fail

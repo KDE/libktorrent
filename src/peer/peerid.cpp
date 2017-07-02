@@ -51,7 +51,7 @@ namespace bt
 	PeerID::PeerID()
 	{
 		srand(time(0));
-		memcpy(id,bt::PeerIDPrefix().toLatin1(),8);
+		memcpy(id, bt::PeerIDPrefix().toLatin1().constData(), 8);
 		for (int i = 8;i < 20;i++)
 			id[i] = RandomLetterOrNumber(); 
 		client_name = identifyClient();

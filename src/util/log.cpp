@@ -17,18 +17,19 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
+
 #include "log.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include <iostream>
 
-#include <QTextStream>
+#include <QDateTime>
+#include <QDebug>
 #include <QFile>
 #include <QList>
-#include <QDateTime>
 #include <QMutex>
-#include <QDebug>
+#include <QTextStream>
 
-#include <kio/copyjob.h>
+#include <KIO/CopyJob>
 
 #include "compressfilejob.h"
 #include "autorotatelogjob.h"
@@ -80,21 +81,21 @@ namespace bt
 		
 		void rotateLogs(const QString & file)
 		{
-			if (bt::Exists(file + "-10.gz"))
-				bt::Delete(file + "-10.gz",true);
+			if (bt::Exists(file + QStringLiteral("-10.gz")))
+				bt::Delete(file + QStringLiteral("-10.gz"), true);
 			
 			// move all log files one up
 			for (Uint32 i = 10;i > 1;i--)
 			{
-				QString prev = QString("%1-%2.gz").arg(file).arg(i - 1);
-				QString curr = QString("%1-%2.gz").arg(file).arg(i);
+				QString prev = QStringLiteral("%1-%2.gz").arg(file).arg(i - 1);
+				QString curr = QStringLiteral("%1-%2.gz").arg(file).arg(i);
 				if (bt::Exists(prev))
 					QFile::rename(prev,curr);
 			}
 			
 			// move current log to 1 and zip it
-			QFile::rename(file,file + "-1");
-			CompressFileJob* gzip = new CompressFileJob(file + "-1");
+			QFile::rename(file, file + QStringLiteral("-1"));
+			CompressFileJob* gzip = new CompressFileJob(file + QStringLiteral("-1"));
 			gzip->start();
 		}
 
@@ -130,7 +131,7 @@ namespace bt
 		
 		void finishLine()
 		{
-			QString final = QDateTime::currentDateTime().toString() + ": " + tmp;
+			QString final = QDateTime::currentDateTime().toString() + QStringLiteral(": ") + tmp;
 			
 			// only add stuff when we are not rotating the logs
 			// this could result in the loss of some messages
@@ -162,7 +163,7 @@ namespace bt
 			finishLine();
 			if (fptr && fptr->size() > MAX_LOG_FILE_SIZE && !rotate_job)
 			{
-				tmp = "Log larger then 10 MB, rotating";
+				tmp = QStringLiteral("Log larger then 10 MB, rotating");
 				finishLine();
 				QString file = fptr->fileName();
 				fptr->close(); // close the log file
@@ -240,7 +241,7 @@ namespace bt
 
 	Log & Log::operator << (const char* s)
 	{
-		priv->write(s);
+		priv->write(QString::fromUtf8(s));
 		return *this;
 	}
 

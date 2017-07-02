@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
+
 #include "bencoder.h"
 #include <util/file.h>
 #include <QByteArray>
@@ -106,7 +107,7 @@ namespace bt
 		if (!out) return;
 		
 		QByteArray s = QStringLiteral("i%1e").arg(val ? 1 : 0).toUtf8();
-		out->write(s,s.length());
+		out->write(s.constData(), s.length());
 	}
 	
 	void BEncoder::write(float val)
@@ -121,7 +122,7 @@ namespace bt
 		if (!out) return;
 		
 		QByteArray s = QStringLiteral("i%1e").arg(val).toUtf8();
-		out->write(s,s.length());
+		out->write(s.constData(), s.length());
 	}
 
 	void BEncoder::write(Uint64 val)
@@ -129,15 +130,15 @@ namespace bt
 		if (!out) return;
 		
 		QByteArray s = QStringLiteral("i%1e").arg(val).toUtf8();
-		out->write(s,s.length());
+		out->write(s.constData(), s.length());
 	}
 
 	void BEncoder::write(const char* str)	        
 	{
 		if (!out) return;
 
-		QByteArray s = QStringLiteral("%1:%2").arg(strlen(str)).arg(str).toUtf8();
-		out->write(s,s.length());
+		QByteArray s = QStringLiteral("%1:%2").arg(strlen(str)).arg(QString::fromUtf8(str)).toUtf8();
+		out->write(s.constData(), s.length());
 	}
 	
 	void BEncoder::write(const QByteArray & data)
