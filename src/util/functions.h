@@ -195,7 +195,7 @@ namespace bt
 	
 	template<class T> QString hex(T val)
 	{
-		return QString("0x%1").arg(val,0,16);
+		return QStringLiteral("0x%1").arg(val,0,16);
 	}
 	
 	struct KTORRENT_EXPORT RecursiveEntryGuard
