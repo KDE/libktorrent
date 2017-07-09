@@ -21,7 +21,7 @@
 #ifndef BT_JOB_H
 #define BT_JOB_H
 
-#include <kio/job.h>
+#include <KIO/Job>
 #include <ktorrent_export.h>
 #include "torrentstats.h"
 

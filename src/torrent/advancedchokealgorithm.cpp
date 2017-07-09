@@ -18,13 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "advancedchokealgorithm.h"
+
+#include <algorithm>
+
 #include <util/functions.h>
 #include <interfaces/torrentinterface.h>
 #include <diskio/chunkmanager.h>
 #include <peer/peer.h>
 #include <peer/peermanager.h>
-#include <krandom.h>
 
+#include <KRandom>
 
 namespace bt
 {
@@ -129,7 +132,7 @@ namespace bt
 		}
 
 		// sort list by ACA score
-		qSort(ppl.begin(), ppl.end(), ACAGreaterThan);
+		std::sort(ppl.begin(), ppl.end(), ACAGreaterThan);
 
 		doUnchoking(ppl, updateOptimisticPeer(pman, ppl));
 	}
@@ -181,7 +184,7 @@ namespace bt
 				++i;
 		}
 
-		qSort(ppl.begin(), ppl.end(), UploadRateGreaterThan);
+		std::sort(ppl.begin(), ppl.end(), UploadRateGreaterThan);
 
 		doUnchoking(ppl, updateOptimisticPeer(pman, ppl));
 	}

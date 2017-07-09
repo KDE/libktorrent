@@ -17,11 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
+
 #include "peersourcemanager.h"
-#include <qfile.h>
-#include <qtextstream.h>
-#include <klocalizedstring.h>
-#include <QtAlgorithms>
+
+#include <QFile>
+#include <QTextStream>
+#include <KLocalizedString>
+
 // #include <functions.h>
 #include <util/log.h>
 #include <torrent/globals.h>

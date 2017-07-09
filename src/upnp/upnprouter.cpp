@@ -25,8 +25,9 @@
 #include <QNetworkRequest>
 #include <QStringList>
 
-#include <klocalizedstring.h>
-#include <kio/job.h>
+#include <KIO/Job>
+#include <KLocalizedString>
+
 #include <torrent/globals.h>
 #include <util/log.h>
 #include <util/array.h>

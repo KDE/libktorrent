@@ -19,8 +19,8 @@
  ***************************************************************************/
 #include "job.h"
 #include "torrentcontrol.h"
-#include <kio/jobuidelegate.h>
-#include <kjobtrackerinterface.h>
+#include <KIO/JobUiDelegate>
+#include <KJobTrackerInterface>
 
 namespace bt
 {
