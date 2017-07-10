@@ -21,13 +21,14 @@
 #define BTTORRENTINTERFACE_H
 
 #include <QSharedPointer>
-#include <QWeakPointer>
+#include <QPointer>
+#include <QUrl>
+
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <interfaces/trackerslist.h>
 #include <torrent/torrentstats.h>
 #include <torrent/torrentfilestream.h>
-#include <QUrl>
 
 #ifdef ERROR
 #undef ERROR
@@ -464,7 +465,7 @@ namespace bt
 		virtual void setSuperSeeding(bool on) = 0;
 		
 		typedef QSharedPointer<TorrentInterface> Ptr;
-		typedef QWeakPointer<TorrentInterface> WPtr;
+		typedef QPointer<TorrentInterface> WPtr;
 
 	signals:
 		/**
