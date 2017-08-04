@@ -53,7 +53,7 @@ namespace dht
 		/// Get the number of queued tasks
 		bt::Uint32 getNumQueuedTasks() const {return queued.count();}
 		
-	private slots:
+	private Q_SLOTS:
 		void taskFinished(Task* task);
 
 	private:

@@ -106,10 +106,10 @@ namespace bt
 		/// Emit the failure signal, and set the error
 		void failed(const QString & err);
 		
-	public slots:
+	public Q_SLOTS:
 		virtual void manualUpdate() = 0;
 		
-	signals:
+	Q_SIGNALS:
 		/**
 		 * Emitted when an error happens.
 		 * @param failure_reason The reason why we couldn't reach the tracker

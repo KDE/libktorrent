@@ -55,7 +55,7 @@ namespace bt
 		/// Set the number of bytes which have been uploaded.
 		void setBytesUploaded(Uint64 b) {uploaded = b;}
 		
-	public slots:
+	public Q_SLOTS:
 		/**
 		 * Update every PeerUploader.
 		 */

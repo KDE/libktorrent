@@ -105,7 +105,7 @@ namespace bt
 		virtual const SHA1Hash & infoHash() const;
 		virtual bool isPartialSeed() const;
 		
-	private slots:
+	private Q_SLOTS:
 		/**
 		* The an error happened contacting the tracker.
 		* @param err The error

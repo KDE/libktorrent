@@ -42,7 +42,7 @@ namespace bt
 		
 		virtual void start();
 		virtual void kill(bool quietly=true);
-	private slots:
+	private Q_SLOTS:
 		void extractThreadDone();
 		
 	private:

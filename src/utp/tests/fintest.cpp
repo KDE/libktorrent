@@ -31,7 +31,7 @@ class FinTest : public QEventLoop
 	Q_OBJECT
 public:
 	
-public slots:
+public Q_SLOTS:
 	void accepted()
 	{
 		incoming = srv.acceptedConnection().toStrongRef();
@@ -43,7 +43,7 @@ public slots:
 		exit();
 	}
 	
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("fintest.log");

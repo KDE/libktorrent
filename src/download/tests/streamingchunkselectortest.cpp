@@ -66,7 +66,7 @@ public:
     StreamingChunkSelectorTest(QObject* parent) : QEventLoop(parent)
     {}
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         QLocale::setDefault(QLocale("main"));

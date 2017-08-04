@@ -181,7 +181,7 @@ namespace bt
 		/// Set a custom Cache factory
 		void setCacheFactory(CacheFactory* cf);
 		
-	public slots:
+	public Q_SLOTS:
 		/**
 		 * Update the object, should be called periodically.
 		 */
@@ -244,7 +244,7 @@ namespace bt
 		void allJobsDone();
 		bool preallocate();
 		
-	private slots:
+	private Q_SLOTS:
 		void onNewPeer(Peer* p);
 		void onPeerRemoved(Peer* p);
 		void doChoking();
@@ -279,7 +279,7 @@ namespace bt
 		virtual void downloadPriorityChanged(TorrentFile* tf, Priority newpriority, Priority oldpriority);
 		void updateRunningTimes();
 		
-	signals:
+	Q_SIGNALS:
 		void dataCheckFinished();
 		
 	private:

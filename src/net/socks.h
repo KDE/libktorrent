@@ -98,7 +98,7 @@ namespace net
 		State handleUsernamePasswordReply();
 		State handleConnectReply();
 		
-	private slots:
+	private Q_SLOTS:
 		void resolved(net::AddressResolver* ar);
 			
 	private:

@@ -64,7 +64,7 @@ namespace bt
 		/// Stop an ongoing check
 		void stop() {need_to_stop = true;}
 
-	signals:
+	Q_SIGNALS:
 		/**
 		 * Emitted when a chunk has been proccessed.
 		 * @param num The number processed

@@ -34,10 +34,10 @@ class PollTest : public QEventLoop
 	Q_OBJECT
 public:
 	
-public slots:
+public Q_SLOTS:
 
 	
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("polltest.log");

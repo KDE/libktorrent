@@ -132,7 +132,7 @@ namespace bt
 		void unmapAll();
 		bool allocateBytes(bt::Uint64 off,bt::Uint64 size);
 
-	private slots:
+	private Q_SLOTS:
 		void aboutToClose();
 		
 	private:

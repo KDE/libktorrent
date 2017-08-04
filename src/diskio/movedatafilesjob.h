@@ -57,7 +57,7 @@ namespace bt
 		/// Get the file map (could be empty)
 		const QMap<TorrentFileInterface*,QString> & fileMap() const {return file_map;}
 		
-	private slots:
+	private Q_SLOTS:
 		void onJobDone(KJob* j);
 		void onCanceled(KJob* j);
 		void onRecoveryJobDone(KJob* j);

@@ -45,7 +45,7 @@ namespace bt
 
 		/// whether or not we can do a deleteLater on the job after it has finished.
 		virtual bool deleteAllowed() const {return true;}
-	signals:
+	Q_SIGNALS:
 		void operationFinished(ExitOperation* opt);
 	};
 
@@ -60,7 +60,7 @@ namespace bt
 		virtual ~ExitJobOperation();
 		
 		virtual bool deleteAllowed() const {return true;}
-	private slots:
+	private Q_SLOTS:
 		virtual void onResult(KJob* j);
 	};
 }

@@ -66,7 +66,7 @@ namespace bt
 		/// Are there any ExitOperation's we need to wait for
 		bool needToWait() const {return exit_ops.count() > 0;}
 		
-	private slots:
+	private Q_SLOTS:
 		void timerDone();
 		void operationFinished(ExitOperation* op);
 		

@@ -37,7 +37,7 @@ private:
 		return current_method;
 	}
 	
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("rpcmsgtest.log", false, true);

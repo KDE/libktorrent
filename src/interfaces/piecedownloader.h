@@ -123,7 +123,7 @@ namespace bt
 		 */
 		virtual void checkTimeouts() = 0;
 		
-	signals:	
+	Q_SIGNALS:
 		/**
 		 * Emitted when a request takes longer then 60 seconds to download.
 		 * The sender of the request will have to request it again. This does not apply for

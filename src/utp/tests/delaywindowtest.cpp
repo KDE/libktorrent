@@ -38,7 +38,7 @@ public:
 	}
 	
 	
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("delaywindowtest.log",false,true);

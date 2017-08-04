@@ -44,7 +44,7 @@ namespace bt
 		
 		virtual bool doKill();
 		
-	private slots:
+	private Q_SLOTS:
 		void data(KIO::Job* j,const QByteArray & data);
 		void finished(KJob* j);
 	

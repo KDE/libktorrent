@@ -38,7 +38,7 @@ namespace dht
 		RPCCallListener(QObject* parent);
 		virtual ~RPCCallListener();
 
-	public slots:
+	public Q_SLOTS:
 		/**
 		 * A response was received.
 		 * @param c The call
@@ -89,10 +89,10 @@ namespace dht
 		/// Get the request sent
 		RPCMsg::Ptr getRequest() {return msg;}
 
-	private slots:
+	private Q_SLOTS:
 		void onTimeout();
 
-	signals:
+	Q_SIGNALS:
 		void response(RPCCall* c, RPCMsg::Ptr rsp);
 		void timeout(RPCCall* c);
 

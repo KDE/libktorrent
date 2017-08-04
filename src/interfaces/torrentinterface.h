@@ -467,7 +467,7 @@ namespace bt
 		typedef QSharedPointer<TorrentInterface> Ptr;
 		typedef QPointer<TorrentInterface> WPtr;
 
-	signals:
+	Q_SIGNALS:
 		/**
 		 * Emitted when we have finished downloading.
 		 * @param me The object who emitted the signal

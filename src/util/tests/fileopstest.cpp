@@ -33,7 +33,7 @@ class FileOpsTest : public QObject
 	Q_OBJECT
 public:
 	
-private slots:	
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("fileopstest.log");

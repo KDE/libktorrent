@@ -62,7 +62,7 @@ namespace bt
 		/// Kill the job
 		virtual void kill(bool quietly);
 		
-	private slots:
+	private Q_SLOTS:
 		void onDeleteJobDone(KJob* j);
 		
 	private:

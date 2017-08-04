@@ -312,7 +312,7 @@ namespace bt
         typedef QSharedPointer<Peer> Ptr;
         typedef QWeakPointer<Peer> WPtr;
 
-    private slots:
+    private Q_SLOTS:
         void resolved(const QString & hinfo);
 
     private:
@@ -332,7 +332,7 @@ namespace bt
         void handleExtendedPacket(const Uint8* packet,Uint32 size);
         void handleExtendedHandshake(const Uint8* packet,Uint32 size);
 
-    signals:
+    Q_SIGNALS:
         /**
          *  Emitted when metadata has been downloaded from the Peer
          */

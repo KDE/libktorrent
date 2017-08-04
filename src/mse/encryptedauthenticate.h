@@ -48,7 +48,7 @@ namespace mse
 							  bt::PeerConnector::WPtr pcon);
 		virtual ~EncryptedAuthenticate();
 		
-	private slots:
+	private Q_SLOTS:
 		virtual void connected();
 		virtual void onReadyRead();
 		

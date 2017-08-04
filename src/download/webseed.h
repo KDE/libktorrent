@@ -126,13 +126,13 @@ namespace bt
 		/// Get the number of failed attempts
 		Uint32 failedAttempts() const {return num_failures;}
 		
-	public slots:
+	public Q_SLOTS:
 		/**
 		 * Reset the webseed (kills the connection)
 		 */
 		void reset();
 		
-	signals:
+	Q_SIGNALS:
 		/**
 		 * Emitted when a chunk is downloaded
 		 * @param c The chunk
@@ -158,7 +158,7 @@ namespace bt
 		 */
 		void chunkDownloadFinished(WebSeedChunkDownload* cd,Uint32 chunk);
 		
-	private slots:
+	private Q_SLOTS:
 		void redirected(const QUrl &to_url);
 		
 	private:

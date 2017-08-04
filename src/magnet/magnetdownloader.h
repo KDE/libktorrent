@@ -64,7 +64,7 @@ namespace bt
 		/// Get the MagnetLink
 		const MagnetLink & magnetLink() const {return mlink;}
 		
-	public slots:
+	public Q_SLOTS:
 		/**
 		Start the MagnetDownloader, this will enable DHT.
 		*/
@@ -75,13 +75,13 @@ namespace bt
 		*/
 		void stop();
 		
-	signals:
+	Q_SIGNALS:
 		/**
 			Emitted when downloading the metadata was succesfull.
 		*/
 		void foundMetadata(bt::MagnetDownloader* self,const QByteArray & metadata);
 		
-	private slots:
+	private Q_SLOTS:
 		void onNewPeer(Peer* p);
 		void onMetadataDownloaded(const QByteArray & data);
 		void onTorrentDownloaded(KJob*);

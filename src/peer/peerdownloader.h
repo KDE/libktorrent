@@ -155,7 +155,7 @@ namespace bt
 		 */
 		void piece(const Piece & p);
 		
-	public slots:
+	public Q_SLOTS:
 		/**
 		 * Send a Request. Note that the DownloadCap
 		 * may not allow this. (In which case it will
@@ -186,7 +186,7 @@ namespace bt
 		 */
 		void update();
 		
-	private slots:
+	private Q_SLOTS:
 		void peerDestroyed();
 		
 		

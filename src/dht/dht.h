@@ -114,7 +114,7 @@ namespace dht
 		
 		virtual QMap<QString, int> getClosestGoodNodes(int maxNodes);
 		
-	private slots:
+	private Q_SLOTS:
 		void update();
 		void onResolverResults(net::AddressResolver* ar);
 		void ownNodeLookupFinished(Task* t);

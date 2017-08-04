@@ -128,7 +128,7 @@ namespace dht
 		 */
 		void addDHTNode(const QString & ip, bt::Uint16 port);
 
-	signals:
+	Q_SIGNALS:
 		/**
 		 * The task is finsihed.
 		 * @param t The Task
@@ -145,7 +145,7 @@ namespace dht
 	protected:
 		void done();
 
-	protected slots:
+	protected Q_SLOTS:
 		void onResolverResults(net::AddressResolver* res);
 
 	protected:

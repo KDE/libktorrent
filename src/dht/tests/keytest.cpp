@@ -63,7 +63,7 @@ static dht::Key KeyFromHexString(const QString & str)
 class KeyTest : public QObject
 {
 	Q_OBJECT
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("keytest.log", false, true);

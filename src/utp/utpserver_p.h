@@ -52,7 +52,7 @@ namespace utp
 		MainThreadCall(UTPServer* server);
 		virtual ~MainThreadCall();
 
-	public slots:
+	public Q_SLOTS:
 		/**
 			Calls UTPServer::handlePendingConnections, this should be executed in
 			the main thread.

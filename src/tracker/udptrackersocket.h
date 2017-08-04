@@ -109,7 +109,7 @@ namespace bt
 		/// Get the port in use.
 		static Uint16 getPort();
 
-	signals:
+	Q_SIGNALS:
 		/**
 		 * Emitted when a connect message is received.
 		 * @param tid The transaction_id

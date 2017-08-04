@@ -64,7 +64,7 @@ namespace bt
 		 */
 		void addPeer(const net::Address & addr,bool local = false);
 		
-	public slots:
+	public Q_SLOTS:
 		/**
 		 * Start gathering peers.
 		 */
@@ -92,7 +92,7 @@ namespace bt
 		 * to clean up some things.
 		 */
 		virtual void aboutToBeDestroyed();
-	signals:
+	Q_SIGNALS:
 		/**
 		 * This signal should be emitted when a new batch of peers is ready.
 		 * @param ps The PeerSource

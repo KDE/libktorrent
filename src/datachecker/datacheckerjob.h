@@ -52,7 +52,7 @@ namespace bt
 		/// Get the last chunk of the datacheck
 		bt::Uint32 lastChunk() const {return to;}
 		
-	private slots:
+	private Q_SLOTS:
 		void threadFinished();
 		void progress(quint32 num, quint32 total);
 		void status(quint32 num_failed, quint32 num_found, quint32 num_downloaded, quint32 num_not_downloaded);

@@ -33,7 +33,7 @@ class SocketTest : public QEventLoop
 	Q_OBJECT
 public:
 	
-public slots:
+public Q_SLOTS:
 	void accepted()
 	{
 		incoming = new UTPSocket(bt::Globals::instance().getUTPServer().acceptedConnection());
@@ -45,7 +45,7 @@ public slots:
 		exit();
 	}
 	
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("sockettest.log");

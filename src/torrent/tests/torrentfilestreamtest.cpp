@@ -42,7 +42,7 @@ public:
         Q_UNUSED(trk);
     }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         QLocale::setDefault(QLocale("main"));

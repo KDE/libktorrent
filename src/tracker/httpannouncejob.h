@@ -54,7 +54,7 @@ namespace bt
 		virtual void start();
 		virtual void kill(bool quietly=true);
 		
-	private slots:
+	private Q_SLOTS:
 		void requestFinished(int id,bool err);
 //		void readData(const QHttpResponseHeader & hdr); //PORT: KF5
 		void sendRequest();

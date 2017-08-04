@@ -39,7 +39,7 @@ public:
 	{
 	}
 
-private slots:
+private Q_SLOTS:
 	void testPacketBuffer()
 	{
 		bt::Uint8 tmp[200];

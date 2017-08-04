@@ -271,14 +271,14 @@ namespace bt
 		/// Are we a partial seed
 		bool isPartialSeed() const;
 
-	public slots:
+	public Q_SLOTS:
 		/**
 		 * A PeerSource, has new potential peers.
 		 * @param ps The PeerSource
 		 */
 		void peerSourceReady(PeerSource* ps);
 
-	signals:
+	Q_SIGNALS:
 		void newPeer(Peer* p);
 		void peerKilled(Peer* p);
 

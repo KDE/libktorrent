@@ -72,10 +72,10 @@ public:
 		return packet;
 	}
 	
-public slots:
+public Q_SLOTS:
 	
 	
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("connectiontest.log");

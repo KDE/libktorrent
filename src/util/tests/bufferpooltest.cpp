@@ -27,7 +27,7 @@ class BufferPoolTest : public QObject
 	Q_OBJECT
 public:
 
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("bufferpooltest.log");

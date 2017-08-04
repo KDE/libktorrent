@@ -35,7 +35,7 @@ class DataCheckerTest : public QEventLoop
 
 public:
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         QLocale::setDefault(QLocale("main"));

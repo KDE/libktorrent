@@ -150,7 +150,7 @@ namespace net
 		*/
 		bool setTOS(unsigned char type_of_service);
 		
-	private slots:
+	private Q_SLOTS:
 		void readyToAccept(int fd);
 		void readyToRead(int fd);
 		void readyToWrite(int fd);

@@ -57,7 +57,7 @@ namespace bt
 		virtual Uint32 failureCount() const {return failures;}
 		virtual void scrape();
 
-	private slots:
+	private Q_SLOTS:
 		void onConnTimeout();
 		void connectReceived(Int32 tid,Int64 connection_id);
 		void announceReceived(Int32 tid,const Uint8* buf,Uint32 size);

@@ -135,7 +135,7 @@ namespace dht
 		void pingQuestionable(const KBucketEntry & replacement_entry);
 		bool replaceBadEntry(const KBucketEntry & entry);
 
-	private slots:
+	private Q_SLOTS:
 		void onFinished(Task* t);
 		
 	private:

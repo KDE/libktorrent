@@ -59,7 +59,7 @@ namespace bt
 		static void setProxyEnabled(bool on);
 		static void setUseQHttp(bool on);
 		
-	private slots:
+	private Q_SLOTS:
 		void onKIOAnnounceResult(KJob* j);
 #ifdef HAVE_HTTPANNOUNEJOB
 		void onQHttpAnnounceResult(KJob* j);

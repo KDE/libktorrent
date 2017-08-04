@@ -54,7 +54,7 @@ namespace bt
 		/// Kill all jobs
 		void killAll();
 		
-	private slots:
+	private Q_SLOTS:
 		void jobDone(KJob* job);
 		
 	private:

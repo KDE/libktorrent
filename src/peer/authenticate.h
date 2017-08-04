@@ -66,11 +66,11 @@ namespace bt
 		/// See if the authentication is succesfull
 		bool isSuccesfull() const {return succes;}
 		
-	public slots:
+	public Q_SLOTS:
 		/// Stop the authentication
 		void stop();
 		
-	protected slots:
+	protected Q_SLOTS:
 		virtual void onReadyWrite();
 		virtual void onReadyRead();
 		

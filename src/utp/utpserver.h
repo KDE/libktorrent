@@ -82,12 +82,12 @@ namespace utp
 		virtual void closed(Connection::Ptr conn);
 		virtual void customEvent(QEvent* ev);
 
-	signals:
+	Q_SIGNALS:
 		void handlePendingConnectionsDelayed();
 		/// Emitted when a connection is accepted if creating sockets is disabled
 		void accepted();
 
-	private slots:
+	private Q_SLOTS:
 		void cleanup();
 		void checkTimeouts();
 

@@ -70,7 +70,7 @@ bool TestSigBusHandling()
 class SignalCatcherTest : public QObject
 {
 	Q_OBJECT
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("signalcatchertest.log");

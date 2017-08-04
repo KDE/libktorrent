@@ -40,7 +40,7 @@ namespace mse
 		EncryptedServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock);
 		virtual ~EncryptedServerAuthenticate();
 
-	private slots:
+	private Q_SLOTS:
 		virtual void onReadyRead();
 		
 	private:

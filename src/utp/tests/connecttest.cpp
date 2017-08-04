@@ -31,7 +31,7 @@ class ConnectTest : public QEventLoop
 	Q_OBJECT
 public:
 	
-public slots:
+public Q_SLOTS:
 	void accepted()
 	{
 		accepted_conn = srv.acceptedConnection().toStrongRef();
@@ -50,7 +50,7 @@ public slots:
 		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
 	}
 	
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("connecttest.log");

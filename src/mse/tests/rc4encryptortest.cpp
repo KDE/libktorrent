@@ -40,7 +40,7 @@ public:
 		return bt::SHA1Hash(hash);
 	}
 	
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		qsrand(time(0));

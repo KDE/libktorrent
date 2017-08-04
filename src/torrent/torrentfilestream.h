@@ -92,7 +92,7 @@ namespace bt
 		virtual qint64 readData(char* data, qint64 maxlen);
 		void emitReadChannelFinished();
 		
-	private slots:
+	private Q_SLOTS:
 		void chunkDownloaded(bt::TorrentInterface* tc, bt::Uint32 chunk);
 		
 	private:

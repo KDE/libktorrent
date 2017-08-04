@@ -77,13 +77,13 @@ namespace bt
 		 **/
 		bool catchSignal(int sig);
 		
-	private slots:
+	private Q_SLOTS:
 		void handleInput(int fd);
 		
 	private:
 		static void signalHandler(int sig, siginfo_t *siginfo, void *ptr);
 		
-	signals:
+	Q_SIGNALS:
 		/// Emitted when a 
 		void triggered();
 		

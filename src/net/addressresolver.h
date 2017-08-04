@@ -71,14 +71,14 @@ namespace net
 		 **/
 		static net::Address resolve(const QString & host, bt::Uint16 port);
 		
-	signals:
+	Q_SIGNALS:
 		/**
 		 * Emitted when hostname lookup succeeded
 		 * @param ar This AddressResolver
 		 **/
 		void resolved(net::AddressResolver* ar);
 		
-	private slots:
+	private Q_SLOTS:
 		void hostResolved(const QHostInfo & res);
 		
 	private:

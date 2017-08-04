@@ -62,19 +62,19 @@ namespace bt
 		/// Set verbose mode
 		void setVerbose(bool v);
 		
-	public slots:
+	public Q_SLOTS:
 		/**
 		 * Try to discover a UPnP device on the network.
 		 * A signal will be emitted when a device is found.
 		 */
 		void discover();
 	
-	private slots:
+	private Q_SLOTS:
 		void onReadyRead();
 		void error(QAbstractSocket::SocketError err);
 		void onXmlFileDownloaded(UPnPRouter* r,bool success);
 		
-	signals:
+	Q_SIGNALS:
 		/**
 		 * Emitted when a router or internet gateway device is detected.
 		 * @param router The router

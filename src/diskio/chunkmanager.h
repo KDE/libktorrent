@@ -321,7 +321,7 @@ namespace bt
         /// Is the storage mounted ?
         bool isStorageMounted(QStringList& missing);
 
-    signals:
+    Q_SIGNALS:
         /**
          * Emitted when a range of chunks has been excluded
          * @param from First chunk in range

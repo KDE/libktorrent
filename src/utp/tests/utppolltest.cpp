@@ -40,7 +40,7 @@ class UTPPollTest : public QEventLoop
 public:
 	
 	
-public slots:
+public Q_SLOTS:
 	void accepted()
 	{
 		utp::Connection::Ptr conn = bt::Globals::instance().getUTPServer().acceptedConnection();
@@ -65,7 +65,7 @@ public slots:
 		exit();
 	}
 	
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("utppolltest.log");

@@ -97,7 +97,7 @@ namespace bt
 		
 		
 		
-	protected slots:
+	protected Q_SLOTS:
 		void onTimeout();
 		void onError(int err);
 		

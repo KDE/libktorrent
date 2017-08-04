@@ -85,7 +85,7 @@ namespace dht
 		/// Get the number of active calls
 		Uint32 getNumActiveRPCCalls() const;
 		
-	private slots:
+	private Q_SLOTS:
 		void callTimeout(RPCCall* call);
 
 	private:

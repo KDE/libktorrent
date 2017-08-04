@@ -34,7 +34,7 @@ class CircularBufferTest : public QEventLoop
 public:
 
 	
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		memset(data,0xFF,13);

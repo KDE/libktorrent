@@ -199,7 +199,7 @@ namespace bt
 		/// Get the number of downloaders
 		Uint32 getNumDownloaders() const {return pdown.count();}
 
-	private slots:
+	private Q_SLOTS:
 		void onTimeout(const bt::Request & r);
 		void onRejected(const bt::Request & r);
 		

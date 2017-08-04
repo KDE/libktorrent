@@ -63,7 +63,7 @@ public:
 	
 	virtual bt::Uint32 currentTimeout() const {return 1000;}
 		
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("remotewindowtest.log");

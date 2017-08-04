@@ -115,7 +115,7 @@ namespace dht
 		 */
 		virtual QMap<QString, int> getClosestGoodNodes(int maxNodes) = 0;
 		
-	signals:
+	Q_SIGNALS:
 		void started();
 		void stopped();
 		

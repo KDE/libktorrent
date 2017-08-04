@@ -58,7 +58,7 @@ class StatsFileTest : public QEventLoop
 public:
 
 	
-private slots:
+private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("statsfiletest.log",false,false);

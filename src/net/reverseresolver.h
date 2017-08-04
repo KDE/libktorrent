@@ -66,7 +66,7 @@ namespace net
 		/// Shutdown the worker thread
 		static void shutdown();
 		
-	signals:
+	Q_SIGNALS:
 		/// Emitted when the resolution is complete
 		void resolved(const QString & host);
 		

@@ -184,13 +184,13 @@ namespace bt
 		void visit(Visitor* visitor) const;
 	
 		
-	private slots:
+	private Q_SLOTS:
 		void forwardResult(HTTPRequest* r);
 		void undoForwardResult(HTTPRequest* r);
 		void getExternalIPResult(HTTPRequest* r);
 		void downloadFinished(KJob* j);
 		
-	signals:
+	Q_SIGNALS:
 		/**
 		 * Internal state has changed, a forwarding succeeded or failed, or an undo forwarding succeeded or failed.
 		 */

@@ -53,7 +53,7 @@ private:
 	virtual bool alreadyLoaded(const bt::SHA1Hash& ih) const;
 	virtual void mergeAnnounceList(const bt::SHA1Hash& ih, const bt::TrackerTier* trk);
 	
-public slots:
+public Q_SLOTS:
 	void update();
 	void finished(bt::TorrentInterface* tor);
 	void shutdown();

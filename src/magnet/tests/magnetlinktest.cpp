@@ -10,7 +10,7 @@ public:
 	MagnetLinkTest() {}
 	~MagnetLinkTest() {}
 
-private slots:
+private Q_SLOTS:
 	void init()
 	{
 	}

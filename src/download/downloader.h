@@ -215,7 +215,7 @@ namespace bt
 		
 		/// Enable or disable the use of webseeds
 		static void setUseWebSeeds(bool on);
-	public slots:
+	public Q_SLOTS:
 		/**
 		 * Update the downloader.
 		 */
@@ -240,7 +240,7 @@ namespace bt
 		 */
 		void recalcDownloaded();
 		
-	private slots:
+	private Q_SLOTS:
 		virtual void pieceReceived(const bt::Piece & p);
 		bool finished(ChunkDownload* c);
 		
@@ -267,7 +267,7 @@ namespace bt
 		void chunkDownloadStarted(WebSeedChunkDownload* cd,Uint32 chunk);
 		void chunkDownloadFinished(WebSeedChunkDownload* cd,Uint32 chunk);
 		
-	signals:
+	Q_SIGNALS:
 		/**
 		 * An error occurred while we we're writing or reading from disk.
 		 * @param msg Message

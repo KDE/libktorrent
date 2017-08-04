@@ -39,7 +39,7 @@ namespace bt
 		virtual void kill(bool quietly = true);
 		virtual TorrentStatus torrentStatus() const {return ALLOCATING_DISKSPACE;}
 		
-	private slots:
+	private Q_SLOTS:
 		void finished();
 		
 	private:

@@ -56,7 +56,7 @@ namespace dht
 		void addDHTNode(const bt::DHTNode & node);
 		void setRequestInterval(bt::Uint32 interval);
 	
-	private slots:
+	private Q_SLOTS:
 		void onTimeout();
 		bool doRequest();
 		void onDataReady(Task* t);
