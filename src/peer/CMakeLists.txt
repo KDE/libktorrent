@@ -21,4 +21,6 @@ set(peer_HDR
 
 install(FILES ${peer_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/peer COMPONENT Devel)
 
-add_subdirectory(tests)
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()

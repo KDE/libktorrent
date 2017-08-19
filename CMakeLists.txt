@@ -4,7 +4,6 @@ cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 
 # set some default settings
 enable_testing()
-set(BUILD_TESTING ON)
 
 find_package(ECM 5.15.0  NO_MODULE)
 
@@ -104,7 +103,9 @@ check_function_exists(statvfs HAVE_STATVFS)
 check_function_exists(statvfs64 HAVE_STATVFS64)
 
 add_subdirectory(src)
-add_subdirectory(testlib)
+if(BUILD_TESTING)
+    add_subdirectory(testlib)
+endif()
 add_subdirectory(examples)
 add_subdirectory(doc)
 

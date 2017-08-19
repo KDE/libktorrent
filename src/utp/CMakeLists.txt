@@ -13,4 +13,6 @@ set(utp_HDR
 )
 
 install(FILES ${utp_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/utp COMPONENT Devel)
-add_subdirectory(tests)
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
