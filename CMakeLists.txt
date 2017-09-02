@@ -29,9 +29,9 @@ set(Boost_MIN_VERSION "1.34.0")
 set(LibGMP_MIN_VERSION "6.0.0")
 set(LibGcrypt_MIN_VERSION "1.4.5")
 set(KF5_MIN_VERSION "5.15")
-set(QT_MIN_VERSION "5.2.0")
+set(QT_MIN_VERSION "5.7.0")
 
-set(LIBKTORRENT_VERSION "2.1.0")
+set(LIBKTORRENT_VERSION "2.1.50")
 
 ecm_setup_version(${LIBKTORRENT_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/libktorrent_version.h"
