@@ -68,7 +68,7 @@ namespace dht
 		{
 			if((*kb)->insert(entry))
 			{
-				// Bucket needs to be splitted
+				// Bucket needs to be split
 				std::pair<KBucket::Ptr, KBucket::Ptr> result = (*kb)->split();
 /*
 				Out(SYS_DHT | LOG_DEBUG) << "Splitting bucket " << (*kb)->minKey().toString() << "-" << (*kb)->maxKey().toString() << endl;

@@ -100,7 +100,7 @@ namespace utp
 		/// Get the number of unacked packets
 		bt::Uint32 numUnackedPackets() const {return unacked_packets.count();}
 
-		/// A timeout occured
+		/// A timeout occurred
 		void timeout(Retransmitter* conn);
 
 		/// Get the window usage factor

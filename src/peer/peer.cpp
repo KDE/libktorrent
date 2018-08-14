@@ -618,7 +618,7 @@ namespace bt
             }
         }
 
-        // if no data is being sent or recieved, and there are pending requests
+        // if no data is being sent or received, and there are pending requests
         // increment the connection stalled timer
         if (getUploadRate() > 100 || getDownloadRate() > 100 ||
                 (uploader->getNumRequests() == 0 && sock->numPendingPieceUploads() == 0 && downloader->getNumRequests() == 0))

@@ -32,7 +32,7 @@ namespace bt
 		MagnetLink class
 		magnet links have the format: 
 		magnet:?xt=urn:btih:info_hash&dn=name&tr=tracker-url[,tracker-url...]
-		note: a comma-seperated list will not work with other clients likely
+		note: a comma-separated list will not work with other clients likely
 		optional parameters are
 		to=torrent-file-url (need not be valid)
 		pt=path-to-download-in-torrent

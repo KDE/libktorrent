@@ -65,7 +65,7 @@ namespace bt
 		if (ip.isNull())
 			return;
 		
-		if (custom_ip.endsWith(".i2p"))
+		if (custom_ip.endsWith(QLatin1String(".i2p")))
 		{
 			custom_ip_resolved = custom_ip;
 		}

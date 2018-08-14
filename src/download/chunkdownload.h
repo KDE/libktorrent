@@ -162,7 +162,7 @@ namespace bt
 		 * Load from a File
 		 * @param file The File
 		 * @param hdr Header for the chunk
-		 * @param update_hash Wether or not to update the hash
+		 * @param update_hash Whether or not to update the hash
 		 */
 		bool load(File & file,ChunkDownloadHeader & hdr,bool update_hash = true);
 

@@ -88,7 +88,7 @@ namespace dht
 		/**
 		 * Inserts an entry into the bucket.
 		 * @param entry The entry to insert
-		 * @return true If the bucket needs to be splitted, false otherwise
+		 * @return true If the bucket needs to be split, false otherwise
 		 */
 		bool insert(const KBucketEntry & entry);
 

@@ -18,9 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
+#include "reverseresolver.h"
 #include <sys/socket.h>
 #include <netdb.h>
-#include "reverseresolver.h"
 
 
 namespace net

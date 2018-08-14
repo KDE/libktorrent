@@ -20,7 +20,6 @@
  ***************************************************************************/
 #include "chunkselectorinterface.h"
 #include <boost/concept_check.hpp>
-#include <boost/concept_check.hpp>
 
 namespace bt
 {
