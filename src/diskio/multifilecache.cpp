@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
-#include <QSet>
 #include "multifilecache.h"
+#include <QSet>
 #include <errno.h>
 #include <qdir.h>
 #include <qstringlist.h>

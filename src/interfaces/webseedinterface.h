@@ -40,7 +40,7 @@ namespace bt
 		/// Disable or enable the webseed
 		virtual void setEnabled(bool on);
 		
-		/// Wether or not the webseed is enabled
+		/// Whether or not the webseed is enabled
 		bool isEnabled() const {return enabled;}
 		
 		/// Get the URL of the webseed

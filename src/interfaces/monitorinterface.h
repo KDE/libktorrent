@@ -85,7 +85,7 @@ namespace bt
 		/**
 		 * Preview status of a file has changed.
 		 * @param file The file
-		 * @param preview Wether or not it is available
+		 * @param preview Whether or not it is available
 		 */
 		virtual void filePreviewChanged(TorrentFileInterface* file,bool preview) = 0;
 	};

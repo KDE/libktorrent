@@ -36,6 +36,6 @@ private:
     QMap<QString, QString> values;
     int _majVer;
     int _minVer;
-    int _statCode;        
+    int _statCode;
     QString _reasonPhr;
 };
