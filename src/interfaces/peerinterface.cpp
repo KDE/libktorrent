@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
-#include "peerinterface.h"
 #include <util/functions.h>
+#include "peerinterface.h"
 
 namespace bt
 {

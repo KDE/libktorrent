@@ -18,8 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include "pollpipe.h"
 #include <util/log.h>
+#include "pollpipe.h"
 #include "connection.h"
 
 using namespace bt;

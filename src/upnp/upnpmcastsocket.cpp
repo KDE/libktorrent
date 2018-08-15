@@ -18,7 +18,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include "upnpmcastsocket.h"
 #include <QFile>
 #include <QStringList>
 #include <QTextStream>
@@ -33,6 +32,7 @@
 #endif
 #include <arpa/inet.h>
 #include <util/log.h>
+#include "upnpmcastsocket.h"
 
 
 namespace bt

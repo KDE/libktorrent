@@ -692,7 +692,7 @@ namespace bt
         if (fptr.open(QIODevice::ReadOnly))
             return fptr.readAll();
         else
-            throw Error(i18n("Unable to open file %1: %2", path, fptr.errorString()));
+            throw Error(i18n("Unable to open file %1: %2").arg(path).arg(fptr.errorString()));
     }
 
 }

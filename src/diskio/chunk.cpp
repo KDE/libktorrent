@@ -18,8 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 
-#include "chunk.h"
 #include <util/sha1hash.h>
+#include "chunk.h"
 #include "cache.h"
 #include "piecedata.h"
 #ifndef Q_WS_WIN

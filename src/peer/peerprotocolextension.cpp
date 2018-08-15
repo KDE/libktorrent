@@ -18,8 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include "peerprotocolextension.h"
 #include <stdio.h>
+#include "peerprotocolextension.h"
 #include "peer.h"
 
 namespace bt

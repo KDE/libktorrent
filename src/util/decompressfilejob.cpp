@@ -18,13 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include "decompressfilejob.h"
 #include <QFile>
 #include <QMimeDatabase>
 #include <kcompressiondevice.h>
 #include <KFilterDev>
 #include <util/log.h>
 #include <util/fileops.h>
+#include "decompressfilejob.h"
 
 namespace bt
 {

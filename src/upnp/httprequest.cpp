@@ -18,7 +18,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include "httprequest.h"
 #include <QHostAddress>
 #include <QNetworkReply>
 #include <QStringList>
@@ -27,6 +26,7 @@
 #include <KLocalizedString>
 
 #include <util/log.h>
+#include "httprequest.h"
 
 namespace bt
 {

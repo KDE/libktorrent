@@ -22,6 +22,7 @@
 
 #include <QList>
 #include <QVariant>
+#include <QList>
 #include <QByteArray>
 #include <util/constants.h>
 #include <ktorrent_export.h>

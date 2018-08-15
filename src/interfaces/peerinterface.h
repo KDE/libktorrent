@@ -34,7 +34,7 @@ namespace bt
 	 * @brief Interface for a Peer
 	 *
 	 * This is the interface for a Peer, it allows other classes to
-	 * get statistics about a Peer, and provides some basic functionality provided by a Peer.
+	 * get statistics about a Peer, and provides some basic funtionality provided by a Peer.
 	*/
 	class KTORRENT_EXPORT PeerInterface
 	{

@@ -18,7 +18,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include "upnprouter.h"
 #include <cstdlib>
 
 #include <QDir>
@@ -38,6 +37,7 @@
 #include <util/waitjob.h>
 #include <peer/accessmanager.h>
 #include <version.h>
+#include "upnprouter.h"
 #include "upnpdescriptionparser.h"
 #include "soap.h"
 #include "httprequest.h"

@@ -18,13 +18,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include "deletedatafilesjob.h"
 #include <QDir>
 #include <kio/deletejob.h>
 #include <kio/jobuidelegate.h>
 #include <util/log.h>
 #include <util/fileops.h>
 #include <util/functions.h>
+#include "deletedatafilesjob.h"
 
 namespace bt
 {

@@ -18,12 +18,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include "piecedata.h"
 #include <klocalizedstring.h>
 #include <util/log.h>
 #ifndef Q_WS_WIN
 #include <util/signalcatcher.h>
 #endif
+#include "piecedata.h"
 #include "chunk.h"
 #include <util/file.h>
 #include <util/sha1hashgen.h>

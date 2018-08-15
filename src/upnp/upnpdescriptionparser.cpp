@@ -18,13 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include "upnpdescriptionparser.h"
 #include <QtXml>
 #include <QStack>
 
 #include <util/fileops.h>
 #include <util/log.h>
 #include "upnprouter.h"
+#include "upnpdescriptionparser.h"
 
 using namespace bt;
 

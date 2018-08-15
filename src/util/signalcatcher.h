@@ -56,7 +56,7 @@ namespace bt
 		BusError(bool write_operation);
 		virtual ~BusError();
 		
-		/// Whether or not the SIGBUS was triggered by a write operation
+		/// Wether or not the SIGBUS was triggered by a write operation
 		bool write_operation;
 	};
 	

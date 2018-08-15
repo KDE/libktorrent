@@ -17,10 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include "signalcatcher.h"
 #include <klocalizedstring.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "signalcatcher.h"
 #include "log.h"
 
 #ifndef Q_WS_WIN

@@ -18,8 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include "extractfilejob.h"
 #include <QThread>
+#include "extractfilejob.h"
 #include <QFile>
 
 namespace bt

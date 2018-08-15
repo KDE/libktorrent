@@ -115,7 +115,7 @@ namespace bt
 		QStringList ips = NetworkInterfaceIPAddresses(iface);
 		if (ips.count() == 0)
 		{
-			// Interface does not exist, so add any addresses
+			// Interface does not exist, so add any adresses
 			ips << QHostAddress(QHostAddress::AnyIPv6).toString() << QHostAddress(QHostAddress::Any).toString();
 		}
 		

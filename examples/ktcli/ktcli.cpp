@@ -18,13 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include "ktcli.h"
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
 #include <QDir>
 #include <QCommandLineParser>
+
+#include "ktcli.h"
 
 #include <version.h>
 #include <util/error.h>

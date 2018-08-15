@@ -40,7 +40,7 @@ namespace bt
 		PeerProtocolExtension(bt::Uint32 id,Peer* peer);
 		virtual ~PeerProtocolExtension();
 		
-		/// Virtual update function does nothing, needs to be overridden if update
+		/// Virtual update function does nothing, needs to be overriden if update
 		virtual void update();
 		
 		/// Does this needs to be update
