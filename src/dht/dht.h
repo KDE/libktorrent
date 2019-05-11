@@ -113,6 +113,9 @@ namespace dht
 		void addDHTNode(const QString & host,bt::Uint16 hport);
 		
 		virtual QMap<QString, int> getClosestGoodNodes(int maxNodes);
+
+		/// Bootstrap from well-known nodes
+		void bootstrap();
 		
 	private Q_SLOTS:
 		void update();

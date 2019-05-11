@@ -88,6 +88,12 @@ namespace dht
 			// refresh the DHT table by looking for our own ID
 			findOwnNode();
 		}
+		else
+		{
+			// routing table is empty, bootstrap from well-known nodes
+			Out(SYS_DHT | LOG_NOTICE) << "DHT: Routing table empty, bootstrapping from well-known nodes" << endl;
+			bootstrap();
+		}
 	}
 
 
@@ -360,11 +366,15 @@ namespace dht
 		net::Address addr;
 		if (addr.setAddress(host))
 		{
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: Adding node '" << host << ":" << hport << "'" << endl;
 			addr.setPort(hport);
 			srv->ping(node->getOurID(), addr);
 		}
 		else
+		{
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: Resolving node '" << host << "'" << endl;
 			net::AddressResolver::resolve(host, hport, this, SLOT(onResolverResults(net::AddressResolver*)));
+		}
 	}
 
 	void DHT::onResolverResults(net::AddressResolver* res)
@@ -374,6 +384,7 @@ namespace dht
 
 		if (res->succeeded())
 		{
+			Out(SYS_DHT | LOG_DEBUG) << "DHT: Adding node '" << res->address().toString() << ":" << res->address().port() << "'" << endl;
 			srv->ping(node->getOurID(), res->address());
 		}
 	}
@@ -407,4 +418,13 @@ namespace dht
 		return map;
 	}
 	
+	void DHT::bootstrap()
+	{
+		Out(SYS_DHT | LOG_DEBUG) << "DHT: Adding well-known bootstrap nodes" << endl;
+		addDHTNode(QString("router.bittorrent.com"), 6881);
+		addDHTNode(QString("router.utorrent.com"), 6881);
+		addDHTNode(QString("dht.libtorrent.org"), 25401);
+		addDHTNode(QString("dht.transmissionbt.com"), 6881);
+	}
+
 }

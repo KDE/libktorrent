@@ -173,6 +173,7 @@ namespace dht
 		{
 			d->ipv4_table->loadTable(file + ".ipv4", d->srv);
 			d->ipv6_table->loadTable(file + ".ipv6", d->srv);
+			num_entries = d->ipv4_table->numEntries() + d->ipv6_table->numEntries();
 		}
 	}
 }
