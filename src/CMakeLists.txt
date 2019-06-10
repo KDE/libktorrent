@@ -235,7 +235,6 @@ PRIVATE
     qca-qt5
 PUBLIC
     KF5::Archive
-    KF5::Crash
     KF5::KIOCore
     KF5::KIOWidgets
     KF5::Solid
