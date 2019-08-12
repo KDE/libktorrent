@@ -350,7 +350,7 @@ namespace bt
 		url.setQuery(query);
 
                 buffer.clear();
-		buffer += QByteArrayLiteral("GET ") + (using_proxy?url.toEncoded():(url.path(QUrl::FullyEncoded).toLatin1() + '?' + url.query(QUrl::FullyEncoded).toLatin1())) + "HTTP/1.1\r\n"
+		buffer += QByteArrayLiteral("GET ") + (using_proxy?url.toEncoded():(url.path(QUrl::FullyEncoded).toLatin1() + '?' + url.query(QUrl::FullyEncoded).toLatin1())) + " HTTP/1.1\r\n"
 		"Host: " + host.toLatin1() + "\r\n"
 		"Range: bytes=" + QByteArray::number(start) + '-' + QByteArray::number(start + len - 1) + "\r\n"
 		"User-Agent: " + bt::GetVersionString().toLatin1() + "\r\n"
