@@ -49,7 +49,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		WebSeed(const QUrl &url,bool user,const Torrent & tor,ChunkManager & cman);
-		virtual ~WebSeed();
+		~WebSeed() override;
 		
 		/// Is this webseed busy ?
 		bool busy() const;
@@ -90,7 +90,7 @@ namespace bt
 		void cancel();
 		
 		/// Get the current download rate
-		Uint32 getDownloadRate() const;
+		Uint32 getDownloadRate() const override;
 		
 			
 		/**
@@ -118,7 +118,7 @@ namespace bt
 		/// Get the current webseed download
 		WebSeedChunkDownload* currentChunkDownload() {return current;}
 		
-		virtual void setEnabled(bool on);
+		void setEnabled(bool on) override;
 		
 		/// Disable the webseed 
 		void disable(const QString & reason);
@@ -208,9 +208,9 @@ namespace bt
 	{
 	public:
 		WebSeedChunkDownload(WebSeed* ws,const QString & url,Uint32 index,Uint32 total);
-		virtual ~WebSeedChunkDownload();
+		~WebSeedChunkDownload() override;
 	
-		virtual void getStats(Stats & s);
+		void getStats(Stats & s) override;
 	
 		WebSeed* ws;
 		QString url;

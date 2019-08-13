@@ -70,7 +70,7 @@ namespace bt
 		 * @param tf The TorrentFile to copy
 		 */
 		TorrentFile(const TorrentFile & tf);
-		virtual ~TorrentFile();
+		~TorrentFile() override;
 
 		/// Get the offset into the torrent
 		Uint64 getCacheOffset() const {return cache_offset;}
@@ -82,28 +82,28 @@ namespace bt
 		Uint64 getLastChunkSize() const {return last_chunk_size;}
 
 		/// Check if this file doesn't have to be downloaded
-		bool doNotDownload() const 	{return (priority == EXCLUDED);}
+		bool doNotDownload() const override 	{return (priority == EXCLUDED);}
 
 		/// Set whether we have to not download this file
-		void setDoNotDownload(bool dnd);
+		void setDoNotDownload(bool dnd) override;
 		
 		/// Checks if this file is multimedial
-		bool isMultimedia() const;
+		bool isMultimedia() const override;
 
 		/// Gets the priority of the file
-		Priority getPriority() const {return priority;}
+		Priority getPriority() const override {return priority;}
 
 		/// Sets the priority of the file
-		void setPriority(Priority newpriority = NORMAL_PRIORITY);
+		void setPriority(Priority newpriority = NORMAL_PRIORITY) override;
 		
 		/// Get the previous priority value
 		Priority getOldPriority() const {return old_priority;}
 		
 		
 		/// emits signal.
-		void emitDownloadStatusChanged();
+		void emitDownloadStatusChanged() override;
 		
-		void setEmitDownloadStatusChanged(bool show) { emit_status_changed = show; }
+		void setEmitDownloadStatusChanged(bool show) override { emit_status_changed = show; }
 
 		/**
 		 * Assignment operator

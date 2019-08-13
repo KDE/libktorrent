@@ -39,15 +39,15 @@ namespace utp
 		Q_OBJECT
 	public:
 		UTPServer(QObject* parent = 0);
-		virtual ~UTPServer();
+		~UTPServer() override;
 
 		/// Enabled creating sockets (tests need to have this disabled)
 		void setCreateSockets(bool on);
 
-		virtual bool changePort(bt::Uint16 port);
+		bool changePort(bt::Uint16 port) override;
 
 		/// Send a packet to some host
-		virtual bool sendTo(Connection::Ptr conn, const PacketBuffer & packet);
+		bool sendTo(Connection::Ptr conn, const PacketBuffer & packet) override;
 
 		/// Setup a connection to a remote address
 		Connection::WPtr connectTo(const net::Address & addr);
@@ -78,9 +78,9 @@ namespace utp
 
 	protected:
 		virtual void handlePacket(bt::Buffer::Ptr buffer, const net::Address & addr);
-		virtual void stateChanged(Connection::Ptr conn, bool readable, bool writeable);
-		virtual void closed(Connection::Ptr conn);
-		virtual void customEvent(QEvent* ev);
+		void stateChanged(Connection::Ptr conn, bool readable, bool writeable) override;
+		void closed(Connection::Ptr conn) override;
+		void customEvent(QEvent* ev) override;
 
 	Q_SIGNALS:
 		void handlePendingConnectionsDelayed();

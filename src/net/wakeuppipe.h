@@ -38,17 +38,17 @@ namespace net
 	{
 	public:
 		WakeUpPipe();
-		virtual ~WakeUpPipe();
+		~WakeUpPipe() override;
 		
 		/// Wake up the other socket
 		virtual void wakeUp();
 		
 		/// Read all the dummy data
-		virtual void handleData();
+		void handleData() override;
 		
-		virtual int fd() const {return readerSocket();}
+		int fd() const override {return readerSocket();}
 		
-		virtual void reset();
+		void reset() override;
 		
 		/// Have we been woken up
 		bool wokenUp() const {return woken_up;}

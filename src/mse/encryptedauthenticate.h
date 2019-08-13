@@ -46,11 +46,11 @@ namespace mse
 							  const bt::SHA1Hash& info_hash, 
 							  const bt::PeerID& peer_id, 
 							  bt::PeerConnector::WPtr pcon);
-		virtual ~EncryptedAuthenticate();
+		~EncryptedAuthenticate() override;
 		
 	private Q_SLOTS:
-		virtual void connected();
-		virtual void onReadyRead();
+		void connected() override;
+		void onReadyRead() override;
 		
 	private:
 		void handleYB();

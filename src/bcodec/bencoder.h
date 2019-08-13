@@ -55,7 +55,7 @@ namespace bt
 	public:
 		BEncoderFileOutput(File* fptr);
 
-		void write(const char* str,Uint32 len);
+		void write(const char* str,Uint32 len) override;
 	};
 	
 	/**
@@ -68,7 +68,7 @@ namespace bt
 	public:
 		BEncoderBufferOutput(QByteArray & data);
 
-		void write(const char* str,Uint32 len);
+		void write(const char* str,Uint32 len) override;
 	};
 
 	class KTORRENT_EXPORT BEncoderIODeviceOutput : public BEncoderOutput
@@ -77,7 +77,7 @@ namespace bt
 	public:
 		BEncoderIODeviceOutput(QIODevice* dev);
 			
-		void write(const char* str,Uint32 len);
+		void write(const char* str,Uint32 len) override;
 	};
 
 	/**

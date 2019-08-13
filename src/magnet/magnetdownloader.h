@@ -48,7 +48,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		MagnetDownloader(const MagnetLink & mlink,QObject* parent);
-		virtual ~MagnetDownloader();
+		~MagnetDownloader() override;
 		
 		/**
 			Update the MagnetDownloader
@@ -89,11 +89,11 @@ namespace bt
 		void dhtStopped();
 		
 	private:
-		virtual Uint64 bytesDownloaded() const;
-		virtual Uint64 bytesUploaded() const;
-		virtual Uint64 bytesLeft() const;
-		virtual const SHA1Hash & infoHash() const;
-		virtual bool isPartialSeed() const;
+		Uint64 bytesDownloaded() const override;
+		Uint64 bytesUploaded() const override;
+		Uint64 bytesLeft() const override;
+		const SHA1Hash & infoHash() const override;
+		bool isPartialSeed() const override;
 		
 	private:
 		MagnetLink mlink;

@@ -37,7 +37,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		JobQueue(TorrentControl* parent);
-		virtual ~JobQueue();
+		~JobQueue() override;
 		
 		/// Are there running jobs
 		bool runningJobs() const;

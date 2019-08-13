@@ -38,10 +38,10 @@ namespace mse
 		Q_OBJECT
 	public:
 		EncryptedServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock);
-		virtual ~EncryptedServerAuthenticate();
+		~EncryptedServerAuthenticate() override;
 
 	private Q_SLOTS:
-		virtual void onReadyRead();
+		void onReadyRead() override;
 		
 	private:
 		void handleYA();

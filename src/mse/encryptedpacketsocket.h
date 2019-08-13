@@ -53,7 +53,7 @@ namespace mse
 		EncryptedPacketSocket(int ip_version);
 		EncryptedPacketSocket(int fd,int ip_version);
 		EncryptedPacketSocket(net::SocketDevice* sock);
-		virtual ~EncryptedPacketSocket();
+		~EncryptedPacketSocket() override;
 		
 		/**
 		 * Send a chunk of data. (Does not encrypt the data)
@@ -146,8 +146,8 @@ namespace mse
 		typedef QSharedPointer<EncryptedPacketSocket> Ptr;
 		
 	private:
-		virtual void preProcess(bt::Packet::Ptr packet);
-		virtual void postProcess(Uint8* data, Uint32 size);
+		void preProcess(bt::Packet::Ptr packet) override;
+		void postProcess(Uint8* data, Uint32 size) override;
 		
 	private:
 		RC4Encryptor* enc;

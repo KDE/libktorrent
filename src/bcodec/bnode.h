@@ -87,10 +87,10 @@ namespace bt
 		Value value;
 	public:
 		BValueNode(const Value & v,Uint32 off);
-		virtual ~BValueNode();
+		~BValueNode() override;
 		
 		const Value & data() const {return value;}
-		void printDebugInfo();
+		void printDebugInfo() override;
 	};
 
 	/**
@@ -108,7 +108,7 @@ namespace bt
 		QList<DictEntry> children;
 	public:
 		BDictNode(Uint32 off);
-		virtual ~BDictNode();
+		~BDictNode() override;
 		
 		/// Get a list of keys
 		QList<QByteArray> keys() const;
@@ -160,7 +160,7 @@ namespace bt
 		/// Same as getValue, except directly returns an QByteArray, if something goes wrong, an error will be thrown
 		QByteArray getByteArray(const QByteArray& key);
 		
-		void printDebugInfo();
+		void printDebugInfo() override;
 	};
 
 	/**
@@ -173,14 +173,14 @@ namespace bt
 		QList<BNode*> children;
 	public:
 		BListNode(Uint32 off);
-		virtual ~BListNode();
+		~BListNode() override;
 
 		/**
 		 * Append a node to the list.
 		 * @param node The node
 		 */
 		void append(BNode* node);
-		void printDebugInfo();
+		void printDebugInfo() override;
 
 		/// Get the number of nodes in the list.
 		Uint32 getNumChildren() const {return children.count();}

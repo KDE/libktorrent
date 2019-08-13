@@ -35,12 +35,12 @@ namespace dht
 	public:
 		AnnounceReq();
 		AnnounceReq(const Key & id,const Key & info_hash,bt::Uint16 port,const Key & token);
-		virtual ~AnnounceReq();
+		~AnnounceReq() override;
 		
-		virtual void apply(DHT* dh_table);
-		virtual void print();
-		virtual void encode(QByteArray & arr) const;
-		virtual void parse(bt::BDictNode* dict);
+		void apply(DHT* dh_table) override;
+		void print() override;
+		void encode(QByteArray & arr) const override;
+		void parse(bt::BDictNode* dict) override;
 		
 		const Key & getToken() const {return token;}
 		bt::Uint16 getPort() const {return port;}

@@ -41,7 +41,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		ServerInterface(QObject* parent = 0);
-		virtual ~ServerInterface();
+		~ServerInterface() override;
 		
 		
 		/**

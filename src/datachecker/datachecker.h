@@ -43,7 +43,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		DataChecker(bt::Uint32 from, bt::Uint32 to);
-		virtual ~DataChecker();
+		~DataChecker() override;
 		
 		/**
 		 * Check to see which chunks have been downloaded of a torrent, and which chunks fail.

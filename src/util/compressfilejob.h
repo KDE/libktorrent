@@ -31,10 +31,10 @@ namespace bt
 	{
 	public:
 		CompressThread(const QString & file);
-		virtual ~CompressThread();
+		~CompressThread() override;
 		
 		/// Run the compression thread
-		virtual void run();
+		void run() override;
 		
 		/// Cancel the thread, things should be cleaned up properly
 		void cancel();
@@ -56,9 +56,9 @@ namespace bt
 		Q_OBJECT
 	public:
 		CompressFileJob(const QString & file);
-		virtual ~CompressFileJob();
+		~CompressFileJob() override;
 		
-		virtual void start();
+		void start() override;
 		virtual void kill(bool quietly=true);
 
 	private Q_SLOTS:

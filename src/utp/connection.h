@@ -94,7 +94,7 @@ namespace utp
 		};
 
 		Connection(bt::Uint16 recv_connection_id, Type type, const net::Address & remote, Transmitter* transmitter);
-		virtual ~Connection();
+		~Connection() override;
 
 		/// Turn on or off blocking mode
 		void setBlocking(bool on) {blocking = on;}
@@ -148,16 +148,16 @@ namespace utp
 		void reset();
 
 		/// Update the RTT time
-		virtual void updateRTT(const Header* hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size);
+		void updateRTT(const Header* hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size) override;
 
 		/// Retransmit a packet
-		virtual void retransmit(PacketBuffer & packet, bt::Uint16 p_seq_nr);
+		void retransmit(PacketBuffer & packet, bt::Uint16 p_seq_nr) override;
 
 		/// Is all data sent
 		bool allDataSent() const;
 
 		/// Get the current timeout
-		virtual bt::Uint32 currentTimeout() const {return stats.timeout;}
+		bt::Uint32 currentTimeout() const override {return stats.timeout;}
 
 		typedef QSharedPointer<Connection> Ptr;
 		typedef QWeakPointer<Connection> WPtr;

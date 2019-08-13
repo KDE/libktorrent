@@ -34,11 +34,11 @@ namespace dht
 	public:
 		PingReq();
 		PingReq(const Key & id);
-		virtual ~PingReq();
+		~PingReq() override;
 		
-		virtual void apply(DHT* dh_table);
-		virtual void print();
-		virtual void encode(QByteArray & arr) const;
+		void apply(DHT* dh_table) override;
+		void print() override;
+		void encode(QByteArray & arr) const override;
 		
 		typedef QSharedPointer<PingReq> Ptr;
 	};

@@ -35,10 +35,10 @@ namespace bt
 	{
 	public:
 		DecompressThread(const QString & file,const QString & dest_file);
-		virtual ~DecompressThread();
+		~DecompressThread() override;
 		
 		/// Run the decompression thread
-		virtual void run();
+		void run() override;
 		
 		/// Cancel the thread, things should be cleaned up properly
 		void cancel();
@@ -61,9 +61,9 @@ namespace bt
 		Q_OBJECT
 	public:
 		DecompressFileJob(const QString & file,const QString & dest);
-		virtual ~DecompressFileJob();
+		~DecompressFileJob() override;
 		
-		virtual void start();
+		void start() override;
 		virtual void kill(bool quietly=true);
 		
 	private Q_SLOTS:

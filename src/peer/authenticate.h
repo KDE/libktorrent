@@ -59,7 +59,7 @@ namespace bt
 					 const SHA1Hash & info_hash,const PeerID & peer_id,
 					 PeerConnector::WPtr pcon);
 		
-		virtual ~Authenticate();
+		~Authenticate() override;
 		
 		const PeerID & getPeerID() const {return peer_id;}
 
@@ -71,12 +71,12 @@ namespace bt
 		void stop();
 		
 	protected Q_SLOTS:
-		virtual void onReadyWrite();
-		virtual void onReadyRead();
+		void onReadyWrite() override;
+		void onReadyRead() override;
 		
 	protected:
-		void onFinish(bool succes);
-		void handshakeReceived(bool full);
+		void onFinish(bool succes) override;
+		void handshakeReceived(bool full) override;
 		virtual void connected();
 		
 	protected:

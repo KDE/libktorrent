@@ -54,7 +54,7 @@ namespace dht
 		 * @param parent The parent object
 		 */
 		Task(RPCServer* rpc, Node* node, QObject* parent);
-		virtual ~Task();
+		~Task() override;
 
 		/**
 		 * This will copy the results from the KClosestNodesSearch
@@ -71,10 +71,10 @@ namespace dht
 		void start();
 
 		/// Decrements the outstanding_reqs
-		virtual void onResponse(RPCCall* c, RPCMsg::Ptr rsp);
+		void onResponse(RPCCall* c, RPCMsg::Ptr rsp) override;
 
 		/// Decrements the outstanding_reqs
-		virtual void onTimeout(RPCCall* c);
+		void onTimeout(RPCCall* c) override;
 
 		/**
 		 * Will continue the task, this will be called every time we have

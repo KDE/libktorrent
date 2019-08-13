@@ -56,7 +56,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		Tracker(const QUrl &url,TrackerDataSource* tds,const PeerID & id,int tier);
-		virtual ~Tracker();
+		~Tracker() override;
 		
 		/**
 		 * Set the custom IP
@@ -107,7 +107,7 @@ namespace bt
 		void failed(const QString & err);
 		
 	public Q_SLOTS:
-		virtual void manualUpdate() = 0;
+		void manualUpdate() override = 0;
 		
 	Q_SIGNALS:
 		/**

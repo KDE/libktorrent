@@ -33,7 +33,7 @@ public:
 	TestResource(ResourceManager* rman, const QString& group) : Resource(rman,group),acq(false)
 	{}
 	
-	virtual void acquired()
+	void acquired() override
 	{
 		Out(SYS_GEN|LOG_DEBUG) << "Resource of " << groupName() << " acquired" << endl;
 		acq = true;

@@ -45,7 +45,7 @@ namespace bt
 	public:
 		AuthenticateBase();
 		AuthenticateBase(mse::EncryptedPacketSocket::Ptr s);
-		virtual ~AuthenticateBase();
+		~AuthenticateBase() override;
 
 		/// Set whether this is a local peer
 		void setLocal(bool loc) {local = loc;}

@@ -52,7 +52,7 @@ namespace dht
 				: p(p), dh_table(dh_table), next_mtid(0), port(port)
 		{}
 
-		~Private()
+		~Private() override
 		{
 			bt::Globals::instance().getPortList().removePort(port, net::UDP);
 			calls.setAutoDelete(true);
@@ -82,7 +82,7 @@ namespace dht
 			}
 		}
 
-		virtual void dataReceived(bt::Buffer::Ptr ptr, const net::Address& addr)
+		void dataReceived(bt::Buffer::Ptr ptr, const net::Address& addr) override
 		{
 			try
 			{
@@ -121,12 +121,12 @@ namespace dht
 			}
 		}
 
-		virtual void readyToWrite(net::ServerSocket* sock)
+		void readyToWrite(net::ServerSocket* sock) override
 		{
 			Q_UNUSED(sock);
 		}
 		
-		virtual Method findMethod(const QByteArray& mtid)
+		Method findMethod(const QByteArray& mtid) override
 		{
 			const RPCCall* call = calls.find(mtid);
 			if (call)

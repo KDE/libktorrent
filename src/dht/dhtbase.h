@@ -54,7 +54,7 @@ namespace dht
 		Q_OBJECT
 	public:
 		DHTBase();
-		virtual ~DHTBase();
+		~DHTBase() override;
 		
 		
 		/**

@@ -56,7 +56,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		CacheFile();
-		virtual ~CacheFile();
+		~CacheFile() override;
 		
 		enum Mode
 		{

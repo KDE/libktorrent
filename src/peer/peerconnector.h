@@ -57,7 +57,7 @@ namespace bt
 		};
 		
 		PeerConnector(const net::Address & addr,bool local,PeerManager* pman, ConnectionLimit::Token::Ptr token);
-		virtual ~PeerConnector();
+		~PeerConnector() override;
 	
 		/// Called when an authentication attempt is finished
 		void authenticationFinished(bt::Authenticate* auth, bool ok);
@@ -78,7 +78,7 @@ namespace bt
 		
 		
 	private:
-		virtual void acquired();
+		void acquired() override;
 		
 	private:
 		class Private;

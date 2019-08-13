@@ -59,7 +59,7 @@ namespace dht
 	public:
 		KBucket(RPCServerInterface* srv, const Key & our_id);
 		KBucket(const dht::Key & min_key, const dht::Key & max_key, RPCServerInterface* srv, const Key & our_id);
-		virtual ~KBucket();
+		~KBucket() override;
 		
 		typedef QSharedPointer<KBucket> Ptr;
 		
@@ -130,8 +130,8 @@ namespace dht
 		void setRefreshTask(Task* t);
 
 	private:
-		virtual void onResponse(RPCCall* c, RPCMsg::Ptr rsp);
-		virtual void onTimeout(RPCCall* c);
+		void onResponse(RPCCall* c, RPCMsg::Ptr rsp) override;
+		void onTimeout(RPCCall* c) override;
 		void pingQuestionable(const KBucketEntry & replacement_entry);
 		bool replaceBadEntry(const KBucketEntry & entry);
 

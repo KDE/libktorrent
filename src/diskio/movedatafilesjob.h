@@ -42,7 +42,7 @@ namespace bt
 			@param fmap Map of files and their destinations
 		*/
 		MoveDataFilesJob(const QMap<TorrentFileInterface*,QString> & fmap);
-		virtual ~MoveDataFilesJob();
+		~MoveDataFilesJob() override;
 		
 		/**
 		 * Add a move to the todo list.
@@ -51,8 +51,8 @@ namespace bt
 		 */
 		void addMove(const QString & src,const QString & dst);
 		
-		virtual void start();
-		virtual void kill(bool quietly = true);
+		void start() override;
+		void kill(bool quietly = true) override;
 		
 		/// Get the file map (could be empty)
 		const QMap<TorrentFileInterface*,QString> & fileMap() const {return file_map;}
@@ -67,7 +67,7 @@ namespace bt
 	private:
 		void recover(bool delete_active);
 		void startMoving();
-		virtual void acquired();
+		void acquired() override;
 
 	private:
 		bool err;

@@ -38,9 +38,9 @@ namespace bt
 		Q_OBJECT
 	public:
 		ExtractFileJob(KArchive* archive,const QString & path,const QString & dest);
-		virtual ~ExtractFileJob();
+		~ExtractFileJob() override;
 		
-		virtual void start();
+		void start() override;
 		virtual void kill(bool quietly=true);
 	private Q_SLOTS:
 		void extractThreadDone();

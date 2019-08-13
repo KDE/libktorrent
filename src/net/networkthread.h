@@ -47,7 +47,7 @@ namespace net
 		
 	public:
 		NetworkThread(SocketMonitor* sm);
-		virtual ~NetworkThread();
+		~NetworkThread() override;
 
 		
 		/**
@@ -81,7 +81,7 @@ namespace net
 		/**
 		 * The main function of the thread
 		 */
-		void run();
+		void run() override;
 		
 		/**
 		 * Subclasses must implement this function

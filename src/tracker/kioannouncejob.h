@@ -34,7 +34,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		KIOAnnounceJob(const QUrl & url,const KIO::MetaData & md);
-		virtual ~KIOAnnounceJob();
+		~KIOAnnounceJob() override;
 		
 		/// Get the announce url
 		QUrl announceUrl() const {return url;}
@@ -42,7 +42,7 @@ namespace bt
 		/// Get the reply data
 		const QByteArray & replyData() const {return reply_data;}
 		
-		virtual bool doKill();
+		bool doKill() override;
 		
 	private Q_SLOTS:
 		void data(KIO::Job* j,const QByteArray & data);

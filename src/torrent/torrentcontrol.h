@@ -70,7 +70,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		TorrentControl();
-		virtual ~TorrentControl();
+		~TorrentControl() override;
 		
 		/// Get the Torrent.
 		const Torrent & getTorrent() const {return *tor;}
@@ -96,75 +96,75 @@ namespace bt
 		/// Test if the torrent has existing files, only works the first time a torrent is loaded
 		bool hasExistingFiles() const;
 
-		virtual const BitSet & downloadedChunksBitSet() const;
-		virtual const BitSet & availableChunksBitSet() const;
-		virtual const BitSet & excludedChunksBitSet() const;
-		virtual const BitSet & onlySeedChunksBitSet() const;
-		virtual bool changeTorDir(const QString & new_dir);
-		virtual bool changeOutputDir(const QString& new_dir,int flags);
-		virtual void rollback();
-		virtual void setDisplayName(const QString & n);
-		virtual TrackersList* getTrackersList();
-		virtual const TrackersList* getTrackersList() const;
-		virtual QString getDataDir() const {return outputdir;}
-		virtual QString getTorDir() const {return tordir;}
-		virtual void setMonitor(MonitorInterface* tmo);
-		virtual Uint32 getRunningTimeDL() const;
-		virtual Uint32 getRunningTimeUL() const;
-		virtual Uint32 getNumFiles() const;
-		virtual TorrentFileInterface & getTorrentFile(Uint32 index);
-		virtual const TorrentFileInterface & getTorrentFile(Uint32 index) const;
-		virtual bool moveTorrentFiles(const QMap<TorrentFileInterface*,QString> & files);
-		virtual void recreateMissingFiles();
-		virtual void dndMissingFiles();
-		virtual TorrentFileStream::Ptr createTorrentFileStream(bt::Uint32 index,bool streaming_mode,QObject* parent);
-		virtual void addPeerSource(PeerSource* ps);
-		virtual void removePeerSource(PeerSource* ps);
-		virtual const QTextCodec* getTextCodec() const;
-		virtual void changeTextCodec(QTextCodec* tc);
-		virtual Uint32 getNumWebSeeds() const;
-		virtual const WebSeedInterface* getWebSeed(Uint32 i) const;
-		virtual WebSeedInterface* getWebSeed(Uint32 i);
-		virtual bool addWebSeed(const QUrl &url);
-		virtual bool removeWebSeed(const QUrl &url);
-		virtual bool readyForPreview() const;
-		virtual bool isMultimedia() const;
-		virtual void markExistingFilesAsDownloaded();
-		virtual int getPriority() const { return istats.priority; }
-		virtual void setPriority(int p);
-		virtual bool overMaxRatio();		
-		virtual void setMaxShareRatio(float ratio);
-		virtual float getMaxShareRatio() const { return stats.max_share_ratio; }
-		virtual bool overMaxSeedTime();
-		virtual void setMaxSeedTime(float hours);
-		virtual float getMaxSeedTime() const {return stats.max_seed_time;}
-		virtual void setAllowedToStart(bool on);
-		virtual void setQueued(bool queued);
-		virtual void setChunkSelector(ChunkSelectorInterface* csel);
-		virtual void networkUp();
-		virtual bool announceAllowed();
-		virtual Job* startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to);
-		virtual bool hasMissingFiles(QStringList & sl);
-		virtual bool isStorageMounted(QStringList& missing);
-		virtual Uint32 getNumDHTNodes() const;
-		virtual const DHTNode & getDHTNode(Uint32 i) const;
-		virtual void deleteDataFiles();
-		virtual const bt::PeerID & getOwnPeerID() const;
-		virtual QString getComments() const;
-		virtual const JobQueue* getJobQueue() const {return job_queue;}
-		virtual bool isFeatureEnabled(TorrentFeature tf);
-		virtual void setFeatureEnabled(TorrentFeature tf,bool on);
-		virtual bool checkDiskSpace(bool emit_sig = true);
-		virtual void setTrafficLimits(Uint32 up,Uint32 down);
-		virtual void getTrafficLimits(Uint32 & up,Uint32 & down);
-		virtual void setAssuredSpeeds(Uint32 up,Uint32 down);
-		virtual void getAssuredSpeeds(Uint32 & up,Uint32 & down);
-		virtual const SHA1Hash & getInfoHash() const;
-		virtual void setUserModifiedFileName(const QString & n);
-		virtual int getETA();
-		virtual void setMoveWhenCompletedDir(const QString &dir) {completed_dir = dir; saveStats();}
-		virtual QString getMoveWhenCompletedDir() const {return completed_dir;}
-		virtual void setSuperSeeding(bool on);
+		const BitSet & downloadedChunksBitSet() const override;
+		const BitSet & availableChunksBitSet() const override;
+		const BitSet & excludedChunksBitSet() const override;
+		const BitSet & onlySeedChunksBitSet() const override;
+		bool changeTorDir(const QString & new_dir) override;
+		bool changeOutputDir(const QString& new_dir,int flags) override;
+		void rollback() override;
+		void setDisplayName(const QString & n) override;
+		TrackersList* getTrackersList() override;
+		const TrackersList* getTrackersList() const override;
+		QString getDataDir() const override {return outputdir;}
+		QString getTorDir() const override {return tordir;}
+		void setMonitor(MonitorInterface* tmo) override;
+		Uint32 getRunningTimeDL() const override;
+		Uint32 getRunningTimeUL() const override;
+		Uint32 getNumFiles() const override;
+		TorrentFileInterface & getTorrentFile(Uint32 index) override;
+		const TorrentFileInterface & getTorrentFile(Uint32 index) const override;
+		bool moveTorrentFiles(const QMap<TorrentFileInterface*,QString> & files) override;
+		void recreateMissingFiles() override;
+		void dndMissingFiles() override;
+		TorrentFileStream::Ptr createTorrentFileStream(bt::Uint32 index,bool streaming_mode,QObject* parent) override;
+		void addPeerSource(PeerSource* ps) override;
+		void removePeerSource(PeerSource* ps) override;
+		const QTextCodec* getTextCodec() const override;
+		void changeTextCodec(QTextCodec* tc) override;
+		Uint32 getNumWebSeeds() const override;
+		const WebSeedInterface* getWebSeed(Uint32 i) const override;
+		WebSeedInterface* getWebSeed(Uint32 i) override;
+		bool addWebSeed(const QUrl &url) override;
+		bool removeWebSeed(const QUrl &url) override;
+		bool readyForPreview() const override;
+		bool isMultimedia() const override;
+		void markExistingFilesAsDownloaded() override;
+		int getPriority() const override { return istats.priority; }
+		void setPriority(int p) override;
+		bool overMaxRatio() override;		
+		void setMaxShareRatio(float ratio) override;
+		float getMaxShareRatio() const override { return stats.max_share_ratio; }
+		bool overMaxSeedTime() override;
+		void setMaxSeedTime(float hours) override;
+		float getMaxSeedTime() const override {return stats.max_seed_time;}
+		void setAllowedToStart(bool on) override;
+		void setQueued(bool queued) override;
+		void setChunkSelector(ChunkSelectorInterface* csel) override;
+		void networkUp() override;
+		bool announceAllowed() override;
+		Job* startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to) override;
+		bool hasMissingFiles(QStringList & sl) override;
+		bool isStorageMounted(QStringList& missing) override;
+		Uint32 getNumDHTNodes() const override;
+		const DHTNode & getDHTNode(Uint32 i) const override;
+		void deleteDataFiles() override;
+		const bt::PeerID & getOwnPeerID() const override;
+		QString getComments() const override;
+		const JobQueue* getJobQueue() const override {return job_queue;}
+		bool isFeatureEnabled(TorrentFeature tf) override;
+		void setFeatureEnabled(TorrentFeature tf,bool on) override;
+		bool checkDiskSpace(bool emit_sig = true) override;
+		void setTrafficLimits(Uint32 up,Uint32 down) override;
+		void getTrafficLimits(Uint32 & up,Uint32 & down) override;
+		void setAssuredSpeeds(Uint32 up,Uint32 down) override;
+		void getAssuredSpeeds(Uint32 & up,Uint32 & down) override;
+		const SHA1Hash & getInfoHash() const override;
+		void setUserModifiedFileName(const QString & n) override;
+		int getETA() override;
+		void setMoveWhenCompletedDir(const QString &dir) override {completed_dir = dir; saveStats();}
+		QString getMoveWhenCompletedDir() const override {return completed_dir;}
+		void setSuperSeeding(bool on) override;
 		
 		/// Create all the necessary files
 		void createFiles();
@@ -185,39 +185,39 @@ namespace bt
 		/**
 		 * Update the object, should be called periodically.
 		 */
-		void update();
+		void update() override;
 		
 		/**
 		 * Pause the torrent.
 		 */
-		void pause();
+		void pause() override;
 		
 		/**
 		 * Unpause the torrent.
 		 */
-		void unpause();
+		void unpause() override;
 		
 		/**
 		 * Start the download of the torrent.
 		 */
-		void start();
+		void start() override;
 		
 		/**
 		 * Stop the download, closes all connections.
 		 * @param wjob WaitJob to wait at exit for the completion of stopped requests
 		 */
-		void stop(WaitJob* wjob = 0);
+		void stop(WaitJob* wjob = 0) override;
 			
 		/**
 		 * Update the tracker, this should normally handled internally.
 		 * We leave it public so that the user can do a manual announce.
 		 */
-		void updateTracker();
+		void updateTracker() override;
 
 		/**
 		 * Scrape the tracker.
 		 * */
-		void scrapeTracker();
+		void scrapeTracker() override;
 
 		/**
 		 * A scrape has finished on the tracker.
@@ -260,7 +260,7 @@ namespace bt
 		
 	private:	
 		void updateTracker(const QString & ev,bool last_succes = true);
-		void updateStatus();
+		void updateStatus() override;
 		void saveStats();
 		void loadStats();
 		void loadOutputDir();
@@ -268,7 +268,7 @@ namespace bt
 		void getSeederInfo(Uint32 & total,Uint32 & connected_to) const;
 		void getLeecherInfo(Uint32 & total,Uint32 & connected_to) const;
 		void continueStart();
-		virtual void handleError(const QString & err);
+		void handleError(const QString & err) override;
 		void initInternal(QueueManagerInterface* qman,const QString & tmpdir,const QString & ddir);
 		void checkExisting(QueueManagerInterface* qman);
 		void setupDirs(const QString & tmpdir,const QString & ddir);
@@ -276,7 +276,7 @@ namespace bt
 		void setupData();
 		void setUploadProps(Uint32 limit,Uint32 rate);
 		void setDownloadProps(Uint32 limit,Uint32 rate);
-		virtual void downloadPriorityChanged(TorrentFile* tf, Priority newpriority, Priority oldpriority);
+		void downloadPriorityChanged(TorrentFile* tf, Priority newpriority, Priority oldpriority) override;
 		void updateRunningTimes();
 		
 	Q_SIGNALS:

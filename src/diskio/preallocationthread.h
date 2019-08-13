@@ -42,12 +42,12 @@ namespace bt
 	{
 	public:
 		PreallocationThread();
-		virtual ~PreallocationThread();
+		~PreallocationThread() override;
 		
 		/// Add a CacheFile to preallocate
 		void add(CacheFile::Ptr cache_file);
 
-		virtual void run();
+		void run() override;
 
 		/**
 		 * Stop the thread.

@@ -37,12 +37,12 @@ namespace bt
 	{
 	public:
 		UTMetaData(const Torrent & tor,bt::Uint32 id,Peer* peer);
-		virtual ~UTMetaData();
+		~UTMetaData() override;
 		
 		/**
 			Handle a metadata packet
 		*/
-		void handlePacket(const bt::Uint8* packet, Uint32 size);
+		void handlePacket(const bt::Uint8* packet, Uint32 size) override;
 		
 		/**
 			Set the reported metadata size

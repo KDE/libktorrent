@@ -47,7 +47,7 @@ namespace dht
 		Q_OBJECT
 	public:
 		RPCServer(DHT* dh_table, Uint16 port, QObject *parent = 0);
-		virtual ~RPCServer();
+		~RPCServer() override;
 
 		/// Start the server
 		void start();
@@ -60,7 +60,7 @@ namespace dht
 		 * @param msg The message to send
 		 * @return The call object
 		 */
-		virtual RPCCall* doCall(RPCMsg::Ptr msg);
+		RPCCall* doCall(RPCMsg::Ptr msg) override;
 
 		/**
 		 * Send a message, this only sends the message, it does not keep any call

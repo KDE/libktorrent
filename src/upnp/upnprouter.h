@@ -104,7 +104,7 @@ namespace bt
 		 * @param verbose Print lots of debug info
 		 */
 		UPnPRouter(const QString & server,const QUrl &location,bool verbose = false);	
-		virtual ~UPnPRouter();
+		~UPnPRouter() override;
 
 		/// Disable or enable verbose logging
 		void setVerbose(bool v);

@@ -47,9 +47,9 @@ namespace bt
 		Q_OBJECT
 	public:
 		Server();
-		virtual ~Server();
+		~Server() override;
 		
-		virtual bool changePort(Uint16 port);
+		bool changePort(Uint16 port) override;
 	private:
 		class Private;
 		Private* d;

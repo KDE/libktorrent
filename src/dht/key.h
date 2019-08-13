@@ -63,7 +63,7 @@ namespace dht
 		Key(const bt::Uint8* d);
 
 		/// Destructor.
-		virtual ~Key();
+		~Key() override;
 
 		/**
 		 * Create a random key.

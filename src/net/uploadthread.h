@@ -41,7 +41,7 @@ namespace net
 		WakeUpPipe::Ptr wake_up;
 	public:
 		UploadThread(SocketMonitor* sm);
-		virtual ~UploadThread();
+		~UploadThread() override;
 
 		/// Wake up thread, data is ready to be sent
   		void signalDataReady();
@@ -55,8 +55,8 @@ namespace net
 		/// Set the sleep time when using upload caps
 		static void setSleepTime(bt::Uint32 stime);
 	private: 
-		virtual void update();
-		virtual bool doGroup(SocketGroup* g,Uint32 & allowance,bt::TimeStamp now);
+		void update() override;
+		bool doGroup(SocketGroup* g,Uint32 & allowance,bt::TimeStamp now) override;
 		
 		int waitForSocketsReady();
 	};

@@ -43,7 +43,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		HttpConnection();
-		virtual ~HttpConnection();
+		~HttpConnection() override;
 		
 		/// Get the last http response code 
 		int responseCode() const {return response_code;}
@@ -95,9 +95,9 @@ namespace bt
 		 */
 		bool get(const QString & host,const QString & path,const QString & query,bt::Uint64 start,bt::Uint64 len);
 
-		virtual void onDataReady(Uint8* buf,Uint32 size);
-		virtual void connectFinished(bool succeeded);
-		virtual void dataSent();
+		void onDataReady(Uint8* buf,Uint32 size) override;
+		void connectFinished(bool succeeded) override;
+		void dataSent() override;
 		
 		/**
 		 * Get some part of the 

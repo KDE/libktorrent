@@ -38,24 +38,24 @@ namespace net
 	public:
 		explicit Socket(int fd,int ip_version);
 		explicit Socket(bool tcp,int ip_version);
-		virtual ~Socket();
+		~Socket() override;
 		
-		virtual void setBlocking(bool on);
-		virtual bool connectTo(const Address & addr);
-		virtual bool connectSuccesFull();
-		virtual void close();
-		virtual Uint32 bytesAvailable() const;
-		virtual int send(const bt::Uint8* buf,int len);
-		virtual int recv(bt::Uint8* buf,int max_len);
-		virtual bool ok() const {return m_fd >= 0;}
-		virtual int fd() const {return m_fd;}
-		virtual bool setTOS(unsigned char type_of_service);
-		virtual const Address & getPeerName() const {return addr;}
-		virtual Address getSockName() const;
+		void setBlocking(bool on) override;
+		bool connectTo(const Address & addr) override;
+		bool connectSuccesFull() override;
+		void close() override;
+		Uint32 bytesAvailable() const override;
+		int send(const bt::Uint8* buf,int len) override;
+		int recv(bt::Uint8* buf,int max_len) override;
+		bool ok() const override {return m_fd >= 0;}
+		int fd() const override {return m_fd;}
+		bool setTOS(unsigned char type_of_service) override;
+		const Address & getPeerName() const override {return addr;}
+		Address getSockName() const override;
 		
-		virtual void reset();
-		virtual void prepare(Poll* p,Poll::Mode mode);
-		virtual bool ready(const Poll* p,Poll::Mode mode) const;
+		void reset() override;
+		void prepare(Poll* p,Poll::Mode mode) override;
+		bool ready(const Poll* p,Poll::Mode mode) const override;
 		
 		bool bind(const QString & ip,Uint16 port,bool also_listen);
 		bool bind(const Address & addr,bool also_listen);

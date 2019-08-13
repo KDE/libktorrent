@@ -46,34 +46,34 @@ namespace bt
 	public:
 		TorrentFileStream(TorrentControl* tc,ChunkManager* cman,bool streaming_mode,QObject* parent);
 		TorrentFileStream(TorrentControl* tc,Uint32 file_index,ChunkManager* cman,bool streaming_mode,QObject* parent);
-		virtual ~TorrentFileStream();
+		~TorrentFileStream() override;
 		
 		/// Open the device (only readonly access will be allowed)
-		virtual bool open(QIODevice::OpenMode mode);
+		bool open(QIODevice::OpenMode mode) override;
 		
 		/// Close the device
-		virtual void close();
+		void close() override;
 		
 		/// Get the current stream position
-		virtual qint64 pos() const;
+		qint64 pos() const override;
 		
 		/// Get the total size
-		virtual qint64 size() const;
+		qint64 size() const override;
 		
 		/// Seek, will fail if attempting to seek to a point which is not downloaded yet
-		virtual bool seek(qint64 pos);
+		bool seek(qint64 pos) override;
 		
 		/// Are we at the end of the file
-		virtual bool atEnd() const;
+		bool atEnd() const override;
 		
 		/// Reset the stream
-		virtual bool reset();
+		bool reset() override;
 		
 		/// How many bytes are there available
-		virtual qint64 bytesAvailable() const;
+		qint64 bytesAvailable() const override;
 		
 		/// The stream is not sequential
-		virtual bool isSequential() const {return false;}
+		bool isSequential() const override {return false;}
 		
 		/// Get the path of the file
 		QString path() const;
@@ -88,8 +88,8 @@ namespace bt
 		typedef QWeakPointer<TorrentFileStream> WPtr;
 		
 	protected:
-		virtual qint64 writeData(const char* data, qint64 len);
-		virtual qint64 readData(char* data, qint64 maxlen);
+		qint64 writeData(const char* data, qint64 len) override;
+		qint64 readData(char* data, qint64 maxlen) override;
 		void emitReadChannelFinished();
 		
 	private Q_SLOTS:

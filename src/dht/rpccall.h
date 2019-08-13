@@ -36,7 +36,7 @@ namespace dht
 		Q_OBJECT
 	public:
 		RPCCallListener(QObject* parent);
-		virtual ~RPCCallListener();
+		~RPCCallListener() override;
 
 	public Q_SLOTS:
 		/**
@@ -61,7 +61,7 @@ namespace dht
 		Q_OBJECT
 	public:
 		RPCCall(RPCMsg::Ptr msg, bool queued);
-		virtual ~RPCCall();
+		~RPCCall() override;
 
 		/**
 		 * Called when a queued call gets started. Starts the timeout timer.

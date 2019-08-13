@@ -31,13 +31,13 @@ namespace bt
 		{
 		}
 		
-		virtual ~ExtractFileThread()
+		~ExtractFileThread() override
 		{
 			delete in_dev;
 			delete out_dev;
 		}
 		
-		virtual void run()
+		void run() override
 		{
 			char buf[4096];
 			qint64 ret = 0;

@@ -39,7 +39,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		PieceDownloader();
-		virtual ~PieceDownloader();
+		~PieceDownloader() override;
 		
 		/**
 		 * Grab the Peer, indicates how many ChunkDownload's

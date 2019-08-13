@@ -33,11 +33,11 @@ namespace bt
 		Q_OBJECT
 	public:
 		PreallocationJob(ChunkManager* cman,TorrentControl* tc);
-		virtual ~PreallocationJob();
+		~PreallocationJob() override;
 		
-		virtual void start();
-		virtual void kill(bool quietly = true);
-		virtual TorrentStatus torrentStatus() const {return ALLOCATING_DISKSPACE;}
+		void start() override;
+		void kill(bool quietly = true) override;
+		TorrentStatus torrentStatus() const override {return ALLOCATING_DISKSPACE;}
 		
 	private Q_SLOTS:
 		void finished();

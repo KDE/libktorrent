@@ -39,12 +39,12 @@ namespace bt
 		Q_OBJECT
 	public:
 		Job(bool stop_torrent,TorrentControl* tc);
-		virtual ~Job();
+		~Job() override;
 		
 		/// Do we need to stop the torrent when the job is running
 		bool stopTorrent() const {return stop_torrent;}
 		
-		virtual void start();
+		void start() override;
 		virtual void kill(bool quietly=true);
 		
 		/// Return the status of the torrent during the job (default implementation returns INVALID_STATUS)

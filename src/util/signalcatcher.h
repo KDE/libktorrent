@@ -54,7 +54,7 @@ namespace bt
 	{
 	public:
 		BusError(bool write_operation);
-		virtual ~BusError();
+		~BusError() override;
 		
 		/// Wether or not the SIGBUS was triggered by a write operation
 		bool write_operation;
@@ -68,7 +68,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		SignalCatcher(QObject* parent = 0);
-		virtual ~SignalCatcher();
+		~SignalCatcher() override;
 		
 		/**
 		 * Catch a UNIX signal

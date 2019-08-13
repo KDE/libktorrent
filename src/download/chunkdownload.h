@@ -96,7 +96,7 @@ namespace bt
 		 */
 		ChunkDownload(Chunk* chunk);
 		
-		virtual ~ChunkDownload();
+		~ChunkDownload() override;
 
 		/// Get the chunk
 		Chunk* getChunk() {return chunk;}
@@ -120,7 +120,7 @@ namespace bt
 		Uint32 getDownloadSpeed() const;
 
 		/// Get download stats
-		void getStats(Stats & s);
+		void getStats(Stats & s) override;
 		
 		/// See if a chunkdownload is idle (i.e. has no downloaders)
 		bool isIdle() const {return pdown.count() == 0;}

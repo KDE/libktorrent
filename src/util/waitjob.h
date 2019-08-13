@@ -40,7 +40,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		WaitJob(Uint32 millis);
-		virtual ~WaitJob();
+		~WaitJob() override;
 
 		virtual void kill(bool quietly=true);
 		

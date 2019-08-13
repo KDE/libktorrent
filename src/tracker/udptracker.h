@@ -49,13 +49,13 @@ namespace bt
 		Q_OBJECT
 	public:
 		UDPTracker(const QUrl &url,TrackerDataSource* tds,const PeerID & id,int tier);
-		virtual ~UDPTracker();
+		~UDPTracker() override;
 
-		virtual void start();
-		virtual void stop(WaitJob* wjob = 0);
-		virtual void completed();
-		virtual Uint32 failureCount() const {return failures;}
-		virtual void scrape();
+		void start() override;
+		void stop(WaitJob* wjob = 0) override;
+		void completed() override;
+		Uint32 failureCount() const override {return failures;}
+		void scrape() override;
 
 	private Q_SLOTS:
 		void onConnTimeout();
@@ -64,7 +64,7 @@ namespace bt
 		void scrapeReceived(Int32 tid,const Uint8* buf,Uint32 size);
 		void onError(Int32 tid,const QString & error_string);
 		void onResolverResults(net::AddressResolver* ar);
-		virtual void manualUpdate();
+		void manualUpdate() override;
 
 	private:
 		void sendConnect();

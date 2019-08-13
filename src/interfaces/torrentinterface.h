@@ -91,7 +91,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		TorrentInterface();
-		virtual ~TorrentInterface();
+		~TorrentInterface() override;
 
 		/// Set the URL which the torrent was loaded from
 		void setLoadUrl(const QUrl &u) {url = u;}

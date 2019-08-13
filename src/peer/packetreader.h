@@ -49,7 +49,7 @@ namespace bt
 	{
 	public:
 		PacketReader(Uint32 max_packet_size);
-		virtual ~PacketReader();
+		~PacketReader() override;
 
 		/**
 		 * Push packets to Peer (runs in main thread)
@@ -60,7 +60,7 @@ namespace bt
 		/// Did an error occur
 		bool ok() const {return !error;}
 		
-		virtual void onDataReady(Uint8* buf, Uint32 size);
+		void onDataReady(Uint8* buf, Uint32 size) override;
 
 	private:
 		Uint32 newPacket(Uint8* buf, Uint32 size);

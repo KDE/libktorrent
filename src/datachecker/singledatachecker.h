@@ -34,9 +34,9 @@ namespace bt
 	{
 	public:
 		SingleDataChecker(bt::Uint32 from, bt::Uint32 to);
-		virtual ~SingleDataChecker();
+		~SingleDataChecker() override;
 
-		virtual void check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & current_status);
+		void check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & current_status) override;
 	};
 
 }

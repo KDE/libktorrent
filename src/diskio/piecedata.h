@@ -46,7 +46,7 @@ namespace bt
 	{
 	public:
 		PieceData(Chunk* chunk, Uint32 off, Uint32 len, Uint8* ptr, CacheFile::Ptr cache_file, bool read_only);
-		virtual ~PieceData();
+		~PieceData() override;
 
 		/// Unload the piece
 		void unload();
@@ -137,7 +137,7 @@ namespace bt
 		bool inUse() const {return ref > 1;}
 
 	private:
-		virtual void unmapped();
+		void unmapped() override;
 
 	private:
 		Chunk* chunk;

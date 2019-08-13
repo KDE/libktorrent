@@ -40,32 +40,32 @@ namespace bt
 	{
 	public:
 		MultiFileCache(Torrent& tor, const QString & tmpdir, const QString & datadir, bool custom_output_name);
-		virtual ~MultiFileCache();
+		~MultiFileCache() override;
 
-		virtual void changeTmpDir(const QString& ndir);
-		virtual void create();
-		virtual PieceData::Ptr loadPiece(Chunk* c, Uint32 off, Uint32 length);
-		virtual PieceData::Ptr preparePiece(Chunk* c, Uint32 off, Uint32 length);
-		virtual void savePiece(PieceData::Ptr piece);
-		virtual void close();
-		virtual void open();
-		virtual Job* moveDataFiles(const QString & ndir);
-		virtual void moveDataFilesFinished(Job* job);
-		virtual Job* moveDataFiles(const QMap<TorrentFileInterface*, QString> & files);
-		virtual void moveDataFilesFinished(const QMap<TorrentFileInterface*, QString> & files, Job* job);
-		virtual QString getOutputPath() const;
-		virtual void changeOutputPath(const QString & outputpath);
-		virtual void preparePreallocation(PreallocationThread* prealloc);
-		virtual bool hasMissingFiles(QStringList & sl);
-		virtual Job* deleteDataFiles();
-		virtual Uint64 diskUsage();
-		virtual void loadFileMap();
-		virtual void saveFileMap();
-		virtual bool getMountPoints(QSet<QString>& mps);
+		void changeTmpDir(const QString& ndir) override;
+		void create() override;
+		PieceData::Ptr loadPiece(Chunk* c, Uint32 off, Uint32 length) override;
+		PieceData::Ptr preparePiece(Chunk* c, Uint32 off, Uint32 length) override;
+		void savePiece(PieceData::Ptr piece) override;
+		void close() override;
+		void open() override;
+		Job* moveDataFiles(const QString & ndir) override;
+		void moveDataFilesFinished(Job* job) override;
+		Job* moveDataFiles(const QMap<TorrentFileInterface*, QString> & files) override;
+		void moveDataFilesFinished(const QMap<TorrentFileInterface*, QString> & files, Job* job) override;
+		QString getOutputPath() const override;
+		void changeOutputPath(const QString & outputpath) override;
+		void preparePreallocation(PreallocationThread* prealloc) override;
+		bool hasMissingFiles(QStringList & sl) override;
+		Job* deleteDataFiles() override;
+		Uint64 diskUsage() override;
+		void loadFileMap() override;
+		void saveFileMap() override;
+		bool getMountPoints(QSet<QString>& mps) override;
 
 	private:
 		void touch(TorrentFile & tf);
-		virtual void downloadStatusChanged(TorrentFile*, bool);
+		void downloadStatusChanged(TorrentFile*, bool) override;
 		void saveFirstAndLastChunk(TorrentFile* tf, const QString & src_file, const QString & dst_file);
 		void recreateFile(TorrentFile* tf, const QString & dnd_file, const QString & output_file);
 		PieceData::Ptr createPiece(Chunk* c, Uint32 off, Uint32 length, bool read_only);

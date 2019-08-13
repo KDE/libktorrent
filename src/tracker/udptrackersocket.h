@@ -48,7 +48,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		UDPTrackerSocket();
-		virtual ~UDPTrackerSocket();
+		~UDPTrackerSocket() override;
 		
 		enum Action
 		{

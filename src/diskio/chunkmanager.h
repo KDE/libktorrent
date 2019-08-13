@@ -66,7 +66,7 @@ namespace bt
                      const QString& datadir,
                      bool custom_output_name,
                      CacheFactory* fac);
-        virtual ~ChunkManager();
+        ~ChunkManager() override;
 
         /// Get the torrent
         const Torrent& getTorrent() const
