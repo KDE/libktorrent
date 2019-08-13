@@ -65,7 +65,9 @@ namespace net
 		if (buffer.isEmpty())
 			return 0;
 		
-		int to_send = qMin<int>(buffer.size(), max);
+
+		// max 0 means unlimited transfer, try to send the entire buffer then
+		int to_send = (max == 0) ? buffer.size() : qMin<int>(buffer.size(), max);
 		int ret = sock->send((const bt::Uint8*)buffer.data(), to_send);
 		if (ret == to_send)
 		{
