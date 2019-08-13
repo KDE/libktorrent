@@ -31,7 +31,7 @@ class RPCMsgTest : public QObject, public dht::RPCMethodResolver
 {
 	Q_OBJECT
 private:
-	virtual dht::Method findMethod(const QByteArray& mtid)
+	dht::Method findMethod(const QByteArray& mtid) override
 	{
 		Q_UNUSED(mtid);
 		return current_method;

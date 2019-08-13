@@ -37,14 +37,14 @@ namespace bt
 		Q_OBJECT
 	public:
 		ServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock);
-		virtual ~ServerAuthenticate();
+		~ServerAuthenticate() override;
 
 		static bool isFirewalled();
 		static void setFirewalled(bool Firewalled);
 
 	protected:
-		void onFinish(bool succes);
-		void handshakeReceived(bool full);
+		void onFinish(bool succes) override;
+		void handshakeReceived(bool full) override;
 		
 	private:
 		static bool s_firewalled;

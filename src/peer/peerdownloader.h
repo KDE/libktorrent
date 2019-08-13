@@ -108,17 +108,17 @@ namespace bt
 		 * @param chunk_size Size of a chunk in bytes
 		 */
 		PeerDownloader(Peer* peer,Uint32 chunk_size);
-		virtual ~PeerDownloader();
+		~PeerDownloader() override;
 
 		/// See if we can add a request to the wait_queue
-		virtual bool canAddRequest() const;
-		virtual bool canDownloadChunk() const;
+		bool canAddRequest() const override;
+		bool canDownloadChunk() const override;
 		
 		/// Get the number of active requests
 		Uint32 getNumRequests() const;
 
 		/// Is the Peer choked.
-		virtual bool isChoked() const;
+		bool isChoked() const override;
 
 		/// Is NULL (is the Peer set)
 		bool isNull() const {return peer == 0;}
@@ -127,7 +127,7 @@ namespace bt
 		 * See if the Peer has a Chunk
 		 * @param idx The Chunk's index
 		 */
-		virtual bool hasChunk(Uint32 idx) const;
+		bool hasChunk(Uint32 idx) const override;
 		
 		/// Get the Peer
 		const Peer* getPeer() const {return peer;}
@@ -135,7 +135,7 @@ namespace bt
 		/**
 		 * Check for timed out requests.
 		 */
-		void checkTimeouts();
+		void checkTimeouts() override;
 		
 		/// Get the maximum number of chunk downloads
 		Uint32 getMaxChunkDownloads() const;
@@ -146,8 +146,8 @@ namespace bt
 		 */
 		void choked();
 		
-		virtual QString getName() const;
-		virtual Uint32 getDownloadRate() const;
+		QString getName() const override;
+		Uint32 getDownloadRate() const override;
 		
 		/**
 		 * Called when a piece has arrived.
@@ -162,18 +162,18 @@ namespace bt
 		 * be stored temporarely in the unsent_reqs list)
 		 * @param req The Request
 		 */
-		virtual void download(const Request & req);
+		void download(const Request & req) override;
 
 		/**
 		 * Cancel a Request.
 		 * @param req The Request
 		 */
-		virtual void cancel(const Request & req);
+		void cancel(const Request & req) override;
 
 		/**
 		 * Cancel all Requests
 		 */
-		virtual void cancelAll();
+		void cancelAll() override;
 		
 		/**
 		 * Handles a rejected request.

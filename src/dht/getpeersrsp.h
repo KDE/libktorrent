@@ -37,12 +37,12 @@ namespace dht
 		GetPeersRsp();
 		GetPeersRsp(const QByteArray & mtid, const Key & id, const Key & token);
 		GetPeersRsp(const QByteArray & mtid, const Key & id, const DBItemList & values, const Key & token);
-		virtual ~GetPeersRsp();
+		~GetPeersRsp() override;
 
-		virtual void apply(DHT* dh_table);
-		virtual void print();
-		virtual void encode(QByteArray & arr) const;
-		virtual void parse(bt::BDictNode* dict);
+		void apply(DHT* dh_table) override;
+		void print() override;
+		void encode(QByteArray & arr) const override;
+		void parse(bt::BDictNode* dict) override;
 
 		const DBItemList & getItemList() const {return items;}
 		const Key & getToken() const {return token;}

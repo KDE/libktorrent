@@ -48,7 +48,7 @@ namespace bt
 		{
 		}
 		
-		~Private()
+		~Private() override
 		{
 		}
 		
@@ -68,7 +68,7 @@ namespace bt
 			return false;
 		}
 		
-		virtual void dataReceived(bt::Buffer::Ptr buffer, const net::Address& addr)
+		void dataReceived(bt::Buffer::Ptr buffer, const net::Address& addr) override
 		{
 			Q_UNUSED(addr);
 			if (buffer->size() < 4)
@@ -92,7 +92,7 @@ namespace bt
 			}
 		}
 		
-		virtual void readyToWrite(net::ServerSocket* sock)
+		void readyToWrite(net::ServerSocket* sock) override
 		{
 			Q_UNUSED(sock);
 		}

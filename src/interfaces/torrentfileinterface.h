@@ -47,7 +47,7 @@ namespace bt
 		 * @param size The size
 		 */
 		TorrentFileInterface(Uint32 index,const QString & path,Uint64 size);
-		virtual ~TorrentFileInterface();
+		~TorrentFileInterface() override;
 		
 		enum FileType
 		{

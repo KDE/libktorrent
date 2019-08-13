@@ -51,10 +51,10 @@ namespace net
 	{
 	public:
 		StreamSocket(bool tcp, int ip_version, StreamSocketListener* listener);
-		virtual ~StreamSocket();
+		~StreamSocket() override;
 		
-		virtual bool bytesReadyToWrite() const;
-		virtual bt::Uint32 write(bt::Uint32 max, bt::TimeStamp now);
+		bool bytesReadyToWrite() const override;
+		bt::Uint32 write(bt::Uint32 max, bt::TimeStamp now) override;
 		
 		/**
 		 * Add data to send

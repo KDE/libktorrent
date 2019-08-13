@@ -38,7 +38,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		AutoRotateLogJob(const QString & file,Log* lg);
-		virtual ~AutoRotateLogJob();
+		~AutoRotateLogJob() override;
 		
 		virtual void kill(bool quietly=true);
 		

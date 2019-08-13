@@ -34,12 +34,12 @@ namespace dht
 	public:
 		ErrMsg();
 		ErrMsg(const QByteArray& mtid, const dht::Key& id, const QString& msg);
-		virtual ~ErrMsg();
+		~ErrMsg() override;
 
-		virtual void apply(DHT* dh_table);
-		virtual void print();
-		virtual void encode(QByteArray & arr) const;
-		virtual void parse(bt::BDictNode* dict);
+		void apply(DHT* dh_table) override;
+		void print() override;
+		void encode(QByteArray & arr) const override;
+		void parse(bt::BDictNode* dict) override;
 		
 		/// Get the error message
 		const QString & message() const {return msg;}

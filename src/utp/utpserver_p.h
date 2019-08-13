@@ -50,7 +50,7 @@ namespace utp
 		Q_OBJECT
 	public:
 		MainThreadCall(UTPServer* server);
-		virtual ~MainThreadCall();
+		~MainThreadCall() override;
 
 	public Q_SLOTS:
 		/**
@@ -85,7 +85,7 @@ namespace utp
 	{
 	public:
 		Private(UTPServer* p);
-		~Private();
+		~Private() override;
 
 
 		bool bind(const net::Address & addr);
@@ -94,8 +94,8 @@ namespace utp
 		void wakeUpPollPipes(Connection::Ptr conn, bool readable, bool writeable);
 		Connection::Ptr find(quint16 conn_id);
 		void stop();
-		virtual void dataReceived(bt::Buffer::Ptr buffer, const net::Address& addr);
-		virtual void readyToWrite(net::ServerSocket* sock);
+		void dataReceived(bt::Buffer::Ptr buffer, const net::Address& addr) override;
+		void readyToWrite(net::ServerSocket* sock) override;
 
 	public:
 		UTPServer* p;

@@ -35,12 +35,12 @@ namespace dht
 	public:
 		FindNodeReq();
 		FindNodeReq(const Key & id, const Key & target);
-		virtual ~FindNodeReq();
+		~FindNodeReq() override;
 
-		virtual void apply(DHT* dh_table);
-		virtual void print();
-		virtual void encode(QByteArray & arr) const;
-		virtual void parse(bt::BDictNode* dict);
+		void apply(DHT* dh_table) override;
+		void print() override;
+		void encode(QByteArray & arr) const override;
+		void parse(bt::BDictNode* dict) override;
 
 		const Key & getTarget() const {return target;}
 		bool wants(int ip_version) const;

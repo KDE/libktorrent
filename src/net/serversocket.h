@@ -95,7 +95,7 @@ namespace net
 		*/
 		ServerSocket(DataHandler* dhandler);
 		
-		virtual ~ServerSocket();
+		~ServerSocket() override;
 		
 		/**
 			Bind the socket to an IP and port

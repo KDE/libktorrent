@@ -33,9 +33,9 @@ namespace utp
 		Q_OBJECT
 	public:
 		UTPServerThread(UTPServer* srv);
-		virtual ~UTPServerThread();
+		~UTPServerThread() override;
 
-		virtual void run();
+		void run() override;
 
 	protected:
 		UTPServer* srv;

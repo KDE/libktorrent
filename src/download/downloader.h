@@ -76,7 +76,7 @@ namespace bt
 		 * @param cman The ChunkManager
 		 */
 		Downloader(Torrent & tor,PeerManager & pman,ChunkManager & cman);
-		virtual ~Downloader();
+		~Downloader() override;
 		
 		/**
 		 * Set the group ID's of the webseed (for speed limits)
@@ -241,7 +241,7 @@ namespace bt
 		void recalcDownloaded();
 		
 	private Q_SLOTS:
-		virtual void pieceReceived(const bt::Piece & p);
+		void pieceReceived(const bt::Piece & p) override;
 		bool finished(ChunkDownload* c);
 		
 		/**

@@ -45,7 +45,7 @@ namespace bt
 	    Q_OBJECT
 	public:
 		UPnPMCastSocket(bool verbose = false);
-		virtual ~UPnPMCastSocket();
+		~UPnPMCastSocket() override;
 		
 		/// Get the number of routers discovered
 		Uint32 getNumDevicesDiscovered() const;

@@ -35,7 +35,7 @@ namespace dht
 		KBucketEntryAndToken() {}
 		KBucketEntryAndToken(const KBucketEntry & e, const Key & token)
 				: KBucketEntry(e), token(token) {}
-		virtual ~KBucketEntryAndToken() {}
+		~KBucketEntryAndToken() override {}
 
 		const Key & getToken() const
 		{
@@ -55,11 +55,11 @@ namespace dht
 		             const dht::Key & info_hash,
 		             bt::Uint16 port,
 		             QObject* parent);
-		virtual ~AnnounceTask();
+		~AnnounceTask() override;
 
-		virtual void callFinished(RPCCall* c, RPCMsg::Ptr rsp);
-		virtual void callTimeout(RPCCall* c);
-		virtual void update();
+		void callFinished(RPCCall* c, RPCMsg::Ptr rsp) override;
+		void callTimeout(RPCCall* c) override;
+		void update() override;
 
 		/**
 		 * Take one item from the returned values.

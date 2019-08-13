@@ -43,7 +43,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		PeerSource();
-		virtual ~PeerSource();
+		~PeerSource() override;
 
 
 		

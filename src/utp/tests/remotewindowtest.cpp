@@ -40,7 +40,7 @@ public:
 	{
 	}
 	
-	virtual void updateRTT(const Header* hdr,bt::Uint32 packet_rtt,bt::Uint32 packet_size)
+	void updateRTT(const Header* hdr,bt::Uint32 packet_rtt,bt::Uint32 packet_size) override
 	{
 		Q_UNUSED(hdr);
 		Q_UNUSED(packet_rtt);
@@ -48,7 +48,7 @@ public:
 		update_rtt_called = true;
 	}
 	
-	virtual void retransmit(PacketBuffer & /*packet*/,bt::Uint16 p_seq_nr)
+	void retransmit(PacketBuffer & /*packet*/,bt::Uint16 p_seq_nr) override
 	{
 		bt::Out(SYS_UTP|LOG_NOTICE) << "retransmit " << p_seq_nr << bt::endl;
 		retransmit_ok = retransmit_seq_nr.contains(p_seq_nr);
@@ -61,7 +61,7 @@ public:
 		retransmit_ok = false;
 	}
 	
-	virtual bt::Uint32 currentTimeout() const {return 1000;}
+	bt::Uint32 currentTimeout() const override {return 1000;}
 		
 private Q_SLOTS:
 	void initTestCase()

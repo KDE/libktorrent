@@ -47,11 +47,11 @@ namespace dht
 		Q_OBJECT
 	public:
 		DHTPeerSource(DHTBase & dh_table,const bt::SHA1Hash & info_hash,const QString & torrent_name);
-		virtual ~DHTPeerSource();
+		~DHTPeerSource() override;
 
-		virtual void start();
-		virtual void stop(bt::WaitJob* wjob = 0);
-		virtual void manualUpdate();
+		void start() override;
+		void stop(bt::WaitJob* wjob = 0) override;
+		void manualUpdate() override;
 		
 		void addDHTNode(const bt::DHTNode & node);
 		void setRequestInterval(bt::Uint32 interval);

@@ -54,7 +54,7 @@ namespace bt
 		
 	public:
 		PeerSourceManager(TorrentControl* tor,PeerManager* pman);
-		virtual ~PeerSourceManager();
+		~PeerSourceManager() override;
 	
 				
 		/**
@@ -77,10 +77,10 @@ namespace bt
 		bool isStarted() const {return started;}
 		
 	
-		virtual void start();
-		virtual void stop(WaitJob* wjob = 0);
-		virtual void completed();
-		virtual void manualUpdate();
+		void start() override;
+		void stop(WaitJob* wjob = 0) override;
+		void completed() override;
+		void manualUpdate() override;
 		
 		///Adds DHT as PeerSource for this torrent
 		void addDHT();

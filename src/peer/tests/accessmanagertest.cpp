@@ -34,12 +34,12 @@ public:
         
     }
     
-    virtual ~TestBlockList()
+    ~TestBlockList() override
     {
         
     }
     
-    virtual bool blocked(const net::Address& addr) const
+    bool blocked(const net::Address& addr) const override
     {
         return addr.toString() == "8.8.8.8";
     }

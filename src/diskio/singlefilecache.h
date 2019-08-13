@@ -37,28 +37,28 @@ namespace bt
 	{
 	public:
 		SingleFileCache(Torrent& tor,const QString & tmpdir,const QString & datadir);
-		virtual ~SingleFileCache();
+		~SingleFileCache() override;
 
-		virtual PieceData::Ptr loadPiece(Chunk* c,Uint32 off,Uint32 length);
-		virtual PieceData::Ptr preparePiece(Chunk* c,Uint32 off,Uint32 length);
-		virtual void savePiece(PieceData::Ptr piece);
-		virtual void create();
-		virtual void close();
-		virtual void open();
-		virtual void changeTmpDir(const QString & ndir);
+		PieceData::Ptr loadPiece(Chunk* c,Uint32 off,Uint32 length) override;
+		PieceData::Ptr preparePiece(Chunk* c,Uint32 off,Uint32 length) override;
+		void savePiece(PieceData::Ptr piece) override;
+		void create() override;
+		void close() override;
+		void open() override;
+		void changeTmpDir(const QString & ndir) override;
 		using Cache::moveDataFiles;
-		virtual Job* moveDataFiles(const QString & ndir);
+		Job* moveDataFiles(const QString & ndir) override;
 		using Cache::moveDataFilesFinished;
-		virtual void moveDataFilesFinished(Job* job);
-		virtual void changeOutputPath(const QString& outputpath);
-		virtual QString getOutputPath() const {return output_file;}
-		virtual void preparePreallocation(PreallocationThread* prealloc);
-		virtual bool hasMissingFiles(QStringList & sl);
-		virtual Job* deleteDataFiles();
-		virtual Uint64 diskUsage();
-		virtual void loadFileMap();
-		virtual void saveFileMap();
-		virtual bool getMountPoints(QSet<QString>& mps);
+		void moveDataFilesFinished(Job* job) override;
+		void changeOutputPath(const QString& outputpath) override;
+		QString getOutputPath() const override {return output_file;}
+		void preparePreallocation(PreallocationThread* prealloc) override;
+		bool hasMissingFiles(QStringList & sl) override;
+		Job* deleteDataFiles() override;
+		Uint64 diskUsage() override;
+		void loadFileMap() override;
+		void saveFileMap() override;
+		bool getMountPoints(QSet<QString>& mps) override;
 		
 	private:
 		PieceData::Ptr createPiece(Chunk* c,Uint64 off,Uint32 length,bool read_only);

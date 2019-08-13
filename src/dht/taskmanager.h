@@ -39,7 +39,7 @@ namespace dht
 		Q_OBJECT
 	public:
 		TaskManager(const DHT* dh_table);
-		virtual ~TaskManager();
+		~TaskManager() override;
 		
 		/**
 		 * Add a task to manage.

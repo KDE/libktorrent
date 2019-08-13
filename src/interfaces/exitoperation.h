@@ -41,7 +41,7 @@ namespace bt
 		Q_OBJECT
 	public:
 		ExitOperation();
-		virtual ~ExitOperation();
+		~ExitOperation() override;
 
 		/// whether or not we can do a deleteLater on the job after it has finished.
 		virtual bool deleteAllowed() const {return true;}
@@ -57,9 +57,9 @@ namespace bt
 		Q_OBJECT
 	public:
 		ExitJobOperation(KJob* j);
-		virtual ~ExitJobOperation();
+		~ExitJobOperation() override;
 		
-		virtual bool deleteAllowed() const {return true;}
+		bool deleteAllowed() const override {return true;}
 	private Q_SLOTS:
 		virtual void onResult(KJob* j);
 	};

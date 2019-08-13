@@ -49,7 +49,7 @@ namespace bt
 		{
 		}
 		
-		~Private()
+		~Private() override
 		{
 		}
 		
@@ -58,7 +58,7 @@ namespace bt
 			sockets.clear();
 		}
 		
-		virtual void newConnection(int fd,const net::Address & addr)
+		void newConnection(int fd,const net::Address & addr) override
 		{
 			mse::EncryptedPacketSocket::Ptr s(new mse::EncryptedPacketSocket(fd,addr.ipVersion()));
 			p->newConnection(s);

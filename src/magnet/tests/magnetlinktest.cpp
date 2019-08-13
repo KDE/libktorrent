@@ -8,7 +8,7 @@ class MagnetLinkTest : public QObject
 	Q_OBJECT
 public:
 	MagnetLinkTest() {}
-	~MagnetLinkTest() {}
+	~MagnetLinkTest() override {}
 
 private Q_SLOTS:
 	void init()

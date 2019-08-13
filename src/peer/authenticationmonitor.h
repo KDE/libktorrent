@@ -44,7 +44,7 @@ namespace bt
 		AuthenticationMonitor();
 	public:
 		
-		virtual ~AuthenticationMonitor();
+		~AuthenticationMonitor() override;
 		
 		
 		/**

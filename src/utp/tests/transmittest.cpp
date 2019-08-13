@@ -88,7 +88,7 @@ public:
 	SendThread(Connection::Ptr outgoing, UTPServer & srv,QObject* parent = 0) : QThread(parent),outgoing(outgoing),srv(srv)
 	{}
 	
-	virtual void run()
+	void run() override
 	{
 		int step = 64*1024;
 		QByteArray data = Generate(step);

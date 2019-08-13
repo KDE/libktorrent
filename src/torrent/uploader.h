@@ -44,7 +44,7 @@ namespace bt
 		 * @param cman The ChunkManager
 		 */
 		Uploader(ChunkManager & cman,PeerManager & pman);
-		virtual ~Uploader();
+		~Uploader() override;
 
 		/// Get the number of bytes uploaded.
 		Uint64 bytesUploaded() const {return uploaded;}
@@ -62,7 +62,7 @@ namespace bt
 		void update();
 		
 	private:
-		virtual void visit(const bt::Peer::Ptr p);
+		void visit(const bt::Peer::Ptr p) override;
 		
 	private:
 		ChunkManager & cman;

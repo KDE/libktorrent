@@ -74,7 +74,7 @@ namespace bt
 		TorrentCreator(const QString & target,const QStringList & trackers,const QList<QUrl> & webseeds,
 					   Uint32 chunk_size,const QString & name,
 					   const QString & comments,bool priv,bool decentralized);
-		virtual ~TorrentCreator();
+		~TorrentCreator() override;
 
 		/// Get the number of chunks
 		Uint32 getNumChunks() const {return num_chunks;}
@@ -110,7 +110,7 @@ namespace bt
 		void buildFileList(const QString & dir);
 		bool calcHashSingle();
 		bool calcHashMulti();
-		virtual void run();
+		void run() override;
 		bool calculateHash();
 	};
 

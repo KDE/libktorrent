@@ -46,7 +46,7 @@ public:
 		allow_called = false;
 	}
 	
-	virtual ~DummyPeer()
+	~DummyPeer() override
 	{}
 	
 	void reset()
@@ -65,20 +65,20 @@ public:
 		pieces.setAll(true);
 	}
 	
-	virtual void kill() 
+	void kill() override 
 	{
 		killed = true;
 	}
 	
-	virtual Uint32 averageDownloadSpeed() const {return 0;}
+	Uint32 averageDownloadSpeed() const override {return 0;}
 	
-	virtual void chunkAllowed(Uint32 chunk)
+	void chunkAllowed(Uint32 chunk) override
 	{
 		allowed_chunk = chunk;
 		allow_called = true;
 	}
 	
-	virtual void handlePacket(const bt::Uint8* packet, Uint32 size)
+	void handlePacket(const bt::Uint8* packet, Uint32 size) override
 	{
 		Q_UNUSED(packet);
 		Q_UNUSED(size);

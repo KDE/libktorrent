@@ -37,14 +37,14 @@ namespace bt
 	{
 	public:
 		StreamingChunkSelector();
-		virtual ~StreamingChunkSelector();
+		~StreamingChunkSelector() override;
 		
-		virtual void init(ChunkManager* cman, Downloader* downer, PeerManager* pman);
-		virtual bool select(bt::PieceDownloader* pd, bt::Uint32& chunk);
-		virtual void dataChecked(const bt::BitSet& ok_chunks, Uint32 from, Uint32 to);
-		virtual void reincluded(bt::Uint32 from, bt::Uint32 to);
-		virtual void reinsert(bt::Uint32 chunk);
-		virtual bool selectRange(bt::Uint32& from, bt::Uint32& to, bt::Uint32 max_len);
+		void init(ChunkManager* cman, Downloader* downer, PeerManager* pman) override;
+		bool select(bt::PieceDownloader* pd, bt::Uint32& chunk) override;
+		void dataChecked(const bt::BitSet& ok_chunks, Uint32 from, Uint32 to) override;
+		void reincluded(bt::Uint32 from, bt::Uint32 to) override;
+		void reinsert(bt::Uint32 chunk) override;
+		bool selectRange(bt::Uint32& from, bt::Uint32& to, bt::Uint32 max_len) override;
 		
 		/// Get the critical window size in chunks
 		Uint32 criticialWindowSize() const {return critical_window_size;}

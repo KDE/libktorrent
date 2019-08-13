@@ -37,13 +37,13 @@ public:
     {
     }
 
-    virtual bool alreadyLoaded(const bt::SHA1Hash& ih) const
+    bool alreadyLoaded(const bt::SHA1Hash& ih) const override
     {
         Q_UNUSED(ih);
         return false;
     }
 
-    virtual void mergeAnnounceList(const bt::SHA1Hash& ih, const bt::TrackerTier* trk)
+    void mergeAnnounceList(const bt::SHA1Hash& ih, const bt::TrackerTier* trk) override
     {
         Q_UNUSED(ih);
         Q_UNUSED(trk);

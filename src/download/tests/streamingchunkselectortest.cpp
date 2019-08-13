@@ -28,24 +28,24 @@ const bt::Uint64 TEST_FILE_SIZE = 15 * 1024 * 1024;
 class DummyDownloader : public PieceDownloader
 {
 public:
-    virtual ~DummyDownloader() {}
+    ~DummyDownloader() override {}
 
-    virtual bool canAddRequest() const {return true;}
-    virtual void cancel(const bt::Request&) {}
-    virtual void cancelAll() {}
-    virtual bool canDownloadChunk() const {return getNumGrabbed() == 0;}
-    virtual void download(const bt::Request&) {}
-    virtual void checkTimeouts() {}
-    virtual Uint32 getDownloadRate() const {return 0;}
-    virtual QString getName() const {return "foobar";}
-    virtual bool isChoked() const {return false;}
+    bool canAddRequest() const override {return true;}
+    void cancel(const bt::Request&) override {}
+    void cancelAll() override {}
+    bool canDownloadChunk() const override {return getNumGrabbed() == 0;}
+    void download(const bt::Request&) override {}
+    void checkTimeouts() override {}
+    Uint32 getDownloadRate() const override {return 0;}
+    QString getName() const override {return "foobar";}
+    bool isChoked() const override {return false;}
 };
 
 class ExtendedStreamingChunkSelector : public bt::StreamingChunkSelector
 {
 public:
     ExtendedStreamingChunkSelector() {}
-    virtual ~ExtendedStreamingChunkSelector() {}
+    ~ExtendedStreamingChunkSelector() override {}
 
     void markDownloaded(Uint32 i)
     {

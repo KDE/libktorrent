@@ -40,7 +40,7 @@ namespace bt
 		
 		LogSystemManager();
 	public:
-		virtual ~LogSystemManager();
+		~LogSystemManager() override;
 
 		/// Register a system
 		void registerSystem(const QString & name,Uint32 id);

@@ -52,7 +52,7 @@ namespace dht
 		Q_OBJECT
 	public:
 		Node(RPCServer* srv, const QString & key_file);
-		virtual ~Node();
+		~Node() override;
 
 		/**
 		 * An RPC message was received, the node must now update

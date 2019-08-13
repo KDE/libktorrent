@@ -44,19 +44,19 @@ namespace bt
 		Q_OBJECT
 	public:
 		TrackerManager(TorrentControl* tor,PeerManager* pman);
-		virtual ~TrackerManager();
+		~TrackerManager() override;
 		
-		virtual TrackerInterface* getCurrentTracker() const;
-		virtual void setCurrentTracker(TrackerInterface* t);
-		virtual void setCurrentTracker(const QUrl &url);
-		virtual QList<TrackerInterface*> getTrackers();
-		virtual TrackerInterface* addTracker(const QUrl &url, bool custom = true,int tier = 1);
-		virtual bool removeTracker(TrackerInterface* t);
-		virtual bool removeTracker(const QUrl &url);
-		virtual bool canRemoveTracker(TrackerInterface* t);
-		virtual void restoreDefault();
-		virtual void setTrackerEnabled(const QUrl &url,bool on);
-		virtual bool noTrackersReachable() const;
+		TrackerInterface* getCurrentTracker() const override;
+		void setCurrentTracker(TrackerInterface* t) override;
+		void setCurrentTracker(const QUrl &url) override;
+		QList<TrackerInterface*> getTrackers() override;
+		TrackerInterface* addTracker(const QUrl &url, bool custom = true,int tier = 1) override;
+		bool removeTracker(TrackerInterface* t) override;
+		bool removeTracker(const QUrl &url) override;
+		bool canRemoveTracker(TrackerInterface* t) override;
+		void restoreDefault() override;
+		void setTrackerEnabled(const QUrl &url,bool on) override;
+		bool noTrackersReachable() const override;
 		
 		/// Get the number of seeders
 		Uint32 getNumSeeders() const;
@@ -99,11 +99,11 @@ namespace bt
 		void switchTracker(Tracker* trk);
 		Tracker* selectTracker();
 		
-		virtual Uint64 bytesDownloaded() const;
-		virtual Uint64 bytesUploaded() const;
-		virtual Uint64 bytesLeft() const;
-		virtual const SHA1Hash & infoHash() const;
-		virtual bool isPartialSeed() const;
+		Uint64 bytesDownloaded() const override;
+		Uint64 bytesUploaded() const override;
+		Uint64 bytesLeft() const override;
+		const SHA1Hash & infoHash() const override;
+		bool isPartialSeed() const override;
 		
 	private Q_SLOTS:
 		/**

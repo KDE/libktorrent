@@ -38,7 +38,7 @@ class KTCLI : public QCoreApplication,public bt::QueueManagerInterface
 	Q_OBJECT
 public:
 	KTCLI(int argc, char** argv);
-	virtual ~KTCLI();
+	~KTCLI() override;
 	
 	/// Start downloading
 	bool start();
@@ -49,9 +49,9 @@ private:
 	bool loadFromFile(const QString & path);
 	bool loadFromDir(const QString & path);
 	
-	virtual bool notify(QObject* obj, QEvent* ev);
-	virtual bool alreadyLoaded(const bt::SHA1Hash& ih) const;
-	virtual void mergeAnnounceList(const bt::SHA1Hash& ih, const bt::TrackerTier* trk);
+	bool notify(QObject* obj, QEvent* ev) override;
+	bool alreadyLoaded(const bt::SHA1Hash& ih) const override;
+	void mergeAnnounceList(const bt::SHA1Hash& ih, const bt::TrackerTier* trk) override;
 	
 public Q_SLOTS:
 	void update();

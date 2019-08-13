@@ -35,9 +35,9 @@ namespace bt
 	{
 	public:
 		MultiDataChecker(bt::Uint32 from, bt::Uint32 to);
-		virtual ~MultiDataChecker();
+		~MultiDataChecker() override;
 
-		virtual void check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & current_status);
+		void check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & current_status) override;
 	private:
 		bool loadChunk(Uint32 ci,Uint32 cs,const Torrent & to);
 		File::Ptr open(const Torrent & tor,Uint32 idx);

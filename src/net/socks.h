@@ -54,7 +54,7 @@ namespace net
 			CONNECT_REQUEST_SENT
 		};
 		Socks(mse::EncryptedPacketSocket::Ptr sock,const Address & dest);
-		virtual ~Socks();
+		~Socks() override;
 		
 		/// Setup a socks connection, return the current state
 		State setup();

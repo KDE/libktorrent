@@ -37,23 +37,23 @@ namespace utp
 	public:
 		UTPSocket();
 		UTPSocket(Connection::WPtr conn);
-		virtual ~UTPSocket();
+		~UTPSocket() override;
 
-		virtual int fd() const;
-		virtual bool ok() const;
-		virtual int send(const bt::Uint8* buf, int len);
-		virtual int recv(bt::Uint8* buf, int max_len);
-		virtual void close();
-		virtual void setBlocking(bool on);
-		virtual bt::Uint32 bytesAvailable() const;
-		virtual bool setTOS(unsigned char type_of_service);
-		virtual bool connectTo(const net::Address & addr);
-		virtual bool connectSuccesFull();
-		virtual const net::Address & getPeerName() const;
-		virtual net::Address getSockName() const;
-		virtual void reset();
-		virtual void prepare(net::Poll* p, net::Poll::Mode mode);
-		virtual bool ready(const net::Poll* p, net::Poll::Mode mode) const;
+		int fd() const override;
+		bool ok() const override;
+		int send(const bt::Uint8* buf, int len) override;
+		int recv(bt::Uint8* buf, int max_len) override;
+		void close() override;
+		void setBlocking(bool on) override;
+		bt::Uint32 bytesAvailable() const override;
+		bool setTOS(unsigned char type_of_service) override;
+		bool connectTo(const net::Address & addr) override;
+		bool connectSuccesFull() override;
+		const net::Address & getPeerName() const override;
+		net::Address getSockName() const override;
+		void reset() override;
+		void prepare(net::Poll* p, net::Poll::Mode mode) override;
+		bool ready(const net::Poll* p, net::Poll::Mode mode) const override;
 
 	private:
 		Connection::WPtr conn;

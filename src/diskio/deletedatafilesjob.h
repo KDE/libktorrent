@@ -41,7 +41,7 @@ namespace bt
 		 * @param base Base directory, the data files are in
 		 */
 		DeleteDataFilesJob(const QString & base);
-		virtual ~DeleteDataFilesJob();
+		~DeleteDataFilesJob() override;
 		
 		/**
 		 * Add a file to delete
@@ -57,10 +57,10 @@ namespace bt
 		void addEmptyDirectoryCheck(const QString & fpath);
 		
 		/// Start the job
-		virtual void start();
+		void start() override;
 		
 		/// Kill the job
-		virtual void kill(bool quietly);
+		void kill(bool quietly) override;
 		
 	private Q_SLOTS:
 		void onDeleteJobDone(KJob* j);

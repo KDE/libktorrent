@@ -36,7 +36,7 @@ namespace utp
 	{
 	public:
 		PollPipe(net::Poll::Mode mode);
-		virtual ~PollPipe();
+		~PollPipe() override;
 
 		typedef QSharedPointer<PollPipe> Ptr;
 
@@ -60,7 +60,7 @@ namespace utp
 		}
 
 		/// Reset the poll_index
-		virtual void reset();
+		void reset() override;
 
 		/// Polling mode
 		net::Poll::Mode pollingMode() const {return mode;}

@@ -45,9 +45,9 @@ namespace bt
 		BitSet status;
 	public:
 		DataCheckerThread(DataChecker* dc,const BitSet & status,const QString & path,const Torrent & tor,const QString & dnddir);
-		virtual ~DataCheckerThread();
+		~DataCheckerThread() override;
 
-		virtual void run();
+		void run() override;
 		
 		/// Get the data checker
 		DataChecker* getDataChecker() {return dc;}

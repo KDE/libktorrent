@@ -80,7 +80,7 @@ namespace bt
              ConnectionLimit::Token::Ptr token,
              PeerManager* pman);
 
-        virtual ~Peer();
+        ~Peer() override;
 
         /// Get the peer's unique ID.
         Uint32 getID() const {return id;}
@@ -152,7 +152,7 @@ namespace bt
         /**
          * Kill the Peer.
          */
-        void kill();
+        void kill() override;
 
         /// Get the time in milliseconds since the last time a piece was received.
         Uint32 getTimeSinceLastPiece() const;
@@ -168,7 +168,7 @@ namespace bt
         /// Set the ACA score
         void setACAScore(double s);
 
-        virtual bt::Uint32 averageDownloadSpeed() const;
+        bt::Uint32 averageDownloadSpeed() const override;
 
         /// Choke the peer
         void choke();
@@ -306,8 +306,8 @@ namespace bt
          */
         void clearPendingPieceUploads();
 
-        virtual void chunkAllowed(Uint32 chunk);
-        virtual void handlePacket(const bt::Uint8* packet, bt::Uint32 size);
+        void chunkAllowed(Uint32 chunk) override;
+        void handlePacket(const bt::Uint8* packet, bt::Uint32 size) override;
 
         typedef QSharedPointer<Peer> Ptr;
         typedef QWeakPointer<Peer> WPtr;

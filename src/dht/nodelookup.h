@@ -37,11 +37,11 @@ namespace dht
 	{
 	public:
 		NodeLookup(const dht::Key & node_id,RPCServer* rpc,Node* node,QObject* parent);
-		virtual ~NodeLookup();
+		~NodeLookup() override;
 
-		virtual void update();
-		virtual void callFinished(RPCCall* c, RPCMsg::Ptr rsp);
-		virtual void callTimeout(RPCCall* c);
+		void update() override;
+		void callFinished(RPCCall* c, RPCMsg::Ptr rsp) override;
+		void callTimeout(RPCCall* c) override;
 	
 	private:
 		void handleNodes(const QByteArray & nodes, int ip_version);

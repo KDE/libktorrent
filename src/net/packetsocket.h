@@ -47,7 +47,7 @@ namespace net
 		PacketSocket(SocketDevice* sock);
 		PacketSocket(int fd,int ip_version);
 		PacketSocket(bool tcp,int ip_version);
-		virtual ~PacketSocket();
+		~PacketSocket() override;
 		
 		/**
 		 * Add a packet to send
@@ -56,8 +56,8 @@ namespace net
 		void addPacket(bt::Packet::Ptr packet);
 		
 		
-		virtual Uint32 write(Uint32 max, bt::TimeStamp now);
-		virtual bool bytesReadyToWrite() const;
+		Uint32 write(Uint32 max, bt::TimeStamp now) override;
+		bool bytesReadyToWrite() const override;
 		
 		/// Get the number of data bytes uploaded
 		Uint32 dataBytesUploaded();

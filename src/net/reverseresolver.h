@@ -43,7 +43,7 @@ namespace net
 		Q_OBJECT
 	public:
 		ReverseResolver(QObject* parent = 0);
-		virtual ~ReverseResolver();
+		~ReverseResolver() override;
 		
 		/**
 			Resolve an ip address asynchronously, uses the worker thread 
@@ -80,13 +80,13 @@ namespace net
 		Q_OBJECT
 	public:
 		ReverseResolverThread();
-		virtual ~ReverseResolverThread();
+		~ReverseResolverThread() override;
 		
 		/// Add a ReverseResolver to the todo list
 		void add(ReverseResolver* rr);
 		
 		/// Run the thread
-		virtual void run();
+		void run() override;
 		
 		/// Stop the thread
 		void stop();

@@ -34,11 +34,11 @@ namespace bt
 		Q_OBJECT
 	public:
 		DataCheckerJob(bool auto_import,TorrentControl* tc, bt::Uint32 from, bt::Uint32 to);
-		virtual ~DataCheckerJob();
+		~DataCheckerJob() override;
 		
-		virtual void start();
-		virtual void kill(bool quietly = true);
-		virtual TorrentStatus torrentStatus() const {return CHECKING_DATA;}
+		void start() override;
+		void kill(bool quietly = true) override;
+		TorrentStatus torrentStatus() const override {return CHECKING_DATA;}
 		
 		/// Is this an automatic import
 		bool isAutoImport() const {return auto_import;}
@@ -58,7 +58,7 @@ namespace bt
 		void status(quint32 num_failed, quint32 num_found, quint32 num_downloaded, quint32 num_not_downloaded);
 		
 	private:
-		virtual void acquired();
+		void acquired() override;
 		
 	private:
 		DataCheckerThread* dcheck_thread;

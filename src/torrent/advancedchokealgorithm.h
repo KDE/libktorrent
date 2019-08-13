@@ -36,10 +36,10 @@ namespace bt
 	{
 	public:
 		AdvancedChokeAlgorithm();
-		virtual ~AdvancedChokeAlgorithm();
+		~AdvancedChokeAlgorithm() override;
 
-		virtual void doChokingLeechingState(PeerManager & pman, ChunkManager & cman, const TorrentStats & stats);
-		virtual void doChokingSeedingState(PeerManager & pman, ChunkManager & cman, const TorrentStats & stats);
+		void doChokingLeechingState(PeerManager & pman, ChunkManager & cman, const TorrentStats & stats) override;
+		void doChokingSeedingState(PeerManager & pman, ChunkManager & cman, const TorrentStats & stats) override;
 
 	private:
 		bool calcACAScore(Peer::Ptr p, ChunkManager & cman, const TorrentStats & stats);

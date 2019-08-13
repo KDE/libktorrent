@@ -35,21 +35,21 @@ public:
 	{
 	}
 	
-	virtual bool sendTo(Connection::Ptr conn, const PacketBuffer & packet)
+	bool sendTo(Connection::Ptr conn, const PacketBuffer & packet) override
 	{
 		sent_packets.append(packet);
 		Q_UNUSED(conn);
 		return true;
 	}
 	
-    virtual void stateChanged(Connection::Ptr conn, bool readable, bool writeable)
+    void stateChanged(Connection::Ptr conn, bool readable, bool writeable) override
 	{
 		Q_UNUSED(conn);
 		Q_UNUSED(readable);
 		Q_UNUSED(writeable);
 	}
 	
-    virtual void closed(Connection::Ptr conn)
+    void closed(Connection::Ptr conn) override
 	{
 		Q_UNUSED(conn);
 	}

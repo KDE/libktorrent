@@ -41,20 +41,20 @@ namespace bt
 	{
 	public:
 		UTPex(Peer* peer,Uint32 id);
-		virtual ~UTPex();
+		~UTPex() override;
 
 		/**
 		 * Handle a PEX packet
 		 * @param packet The packet 
 		 * @param size The size of the packet
 		 */
-		void handlePacket(const Uint8* packet,Uint32 size);
+		void handlePacket(const Uint8* packet,Uint32 size) override;
 		
 		/// Do we need to update PEX (should happen every minute)
-		bool needsUpdate() const;
+		bool needsUpdate() const override;
 		
 		/// Send a new PEX packet to the Peer
-		void update();
+		void update() override;
 		
 		/// Change the ID used in the extended packets
 		void changeID(Uint32 nid) {id = nid;}
@@ -67,7 +67,7 @@ namespace bt
 	private:
 		void encode(BEncoder & enc,const std::map<Uint32,net::Address> & ps);
 		void encodeFlags(BEncoder & enc,const std::map<Uint32,Uint8> & flags);
-		virtual void visit(const bt::Peer::Ptr p);
+		void visit(const bt::Peer::Ptr p) override;
 		
 	private:
 		std::map<Uint32,net::Address> peers; 

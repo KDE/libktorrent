@@ -45,7 +45,7 @@ namespace net
 		 * @param slot Slot of parent to connect to
 		 **/
 		AddressResolver(const QString & host, bt::Uint16 port, QObject* parent, const char* slot);
-		virtual ~AddressResolver();
+		~AddressResolver() override;
 		
 		/// Dit the resolver succeed ?
 		bool succeeded() const {return succesfull;}

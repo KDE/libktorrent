@@ -34,9 +34,9 @@ namespace bt
 	{
 	public:
 		BadPeersList();
-		virtual ~BadPeersList();
+		~BadPeersList() override;
 
-		virtual bool blocked(const net::Address & addr) const;
+		bool blocked(const net::Address & addr) const override;
 		
 		/// Add a bad peer to the list
 		void addBadPeer(const QString & ip);

@@ -64,7 +64,7 @@ namespace dht
 		Q_OBJECT
 	public:
 		DHT();
-		virtual ~DHT();
+		~DHT() override;
 		
 		void ping(const PingReq & r);
 		void findNode(const FindNodeReq & r);
@@ -79,7 +79,7 @@ namespace dht
 		 * @param ip The IP of the peer
 		 * @param port The port in the PORT message
 		 */
-		void portReceived(const QString & ip,bt::Uint16 port);
+		void portReceived(const QString & ip,bt::Uint16 port) override;
 		
 		/**
 		 * Do an announce on the DHT network
@@ -87,7 +87,7 @@ namespace dht
 		 * @param port The port
 		 * @return The task which handles this
 		 */
-		AnnounceTask* announce(const bt::SHA1Hash & info_hash,bt::Uint16 port);
+		AnnounceTask* announce(const bt::SHA1Hash & info_hash,bt::Uint16 port) override;
 		
 		/**
 		 * Refresh a bucket using a find node task.
@@ -108,17 +108,17 @@ namespace dht
 		/// See if it is possible to start a task
 		bool canStartTask() const;
 		
-		void start(const QString & table,const QString & key_file,bt::Uint16 port);
-		void stop();
-		void addDHTNode(const QString & host,bt::Uint16 hport);
+		void start(const QString & table,const QString & key_file,bt::Uint16 port) override;
+		void stop() override;
+		void addDHTNode(const QString & host,bt::Uint16 hport) override;
 		
-		virtual QMap<QString, int> getClosestGoodNodes(int maxNodes);
+		QMap<QString, int> getClosestGoodNodes(int maxNodes) override;
 
 		/// Bootstrap from well-known nodes
 		void bootstrap();
 		
 	private Q_SLOTS:
-		void update();
+		void update() override;
 		void onResolverResults(net::AddressResolver* ar);
 		void ownNodeLookupFinished(Task* t);
 		void expireDatabaseItems();

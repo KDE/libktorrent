@@ -72,7 +72,7 @@ namespace bt
 		 * @param tor The Torrent
 		 */
 		PeerManager(Torrent & tor);
-		virtual ~PeerManager();
+		~PeerManager() override;
 
 		/// Get the connection limits
 		static ConnectionLimit & connectionLimits();

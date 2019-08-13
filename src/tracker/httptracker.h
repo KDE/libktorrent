@@ -47,13 +47,13 @@ namespace bt
 		Q_OBJECT
 	public:
 		HTTPTracker(const QUrl &url,TrackerDataSource* tds,const PeerID & id,int tier);
-		virtual ~HTTPTracker();
+		~HTTPTracker() override;
 		
-		virtual void start();
-		virtual void stop(WaitJob* wjob = 0);
-		virtual void completed();
-		virtual Uint32 failureCount() const {return failures;}
-		virtual void scrape();
+		void start() override;
+		void stop(WaitJob* wjob = 0) override;
+		void completed() override;
+		Uint32 failureCount() const override {return failures;}
+		void scrape() override;
 		
 		static void setProxy(const QString & proxy,const bt::Uint16 proxy_port);
 		static void setProxyEnabled(bool on);
@@ -67,7 +67,7 @@ namespace bt
 		void onScrapeResult(KJob* j);
 		void emitInvalidURLFailure();
 		void onTimeout();
-		virtual void manualUpdate();
+		void manualUpdate() override;
 
 	private:
 		void doRequest(WaitJob* wjob = 0);

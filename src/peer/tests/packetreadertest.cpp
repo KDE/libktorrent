@@ -32,12 +32,12 @@ public:
 	PacketReaderTest(QObject* parent = 0) : QObject(parent), bt::PeerInterface(bt::PeerID(), 100)
 	{}
 	
-	virtual void chunkAllowed(bt::Uint32 chunk)
+	void chunkAllowed(bt::Uint32 chunk) override
 	{
 		Q_UNUSED(chunk);
 	}
 	
-	virtual void handlePacket(const bt::Uint8* packet, bt::Uint32 size)
+	void handlePacket(const bt::Uint8* packet, bt::Uint32 size) override
 	{
 		received_packet.reset(new bt::Uint8[size]);
 		memcpy(received_packet.data(), packet, size);
@@ -49,12 +49,12 @@ public:
 		return received_packet_size == size && memcmp(packet, received_packet.data(), size) == 0;
 	}
 	
-	virtual bt::Uint32 averageDownloadSpeed() const
+	bt::Uint32 averageDownloadSpeed() const override
 	{
 		return 0;
 	}
 	
-	virtual void kill()
+	void kill() override
 	{
 	}
 	

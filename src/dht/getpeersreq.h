@@ -35,15 +35,15 @@ namespace dht
 	public:
 		GetPeersReq();
 		GetPeersReq(const Key & id,const Key & info_hash);
-		virtual ~GetPeersReq();
+		~GetPeersReq() override;
 		
 		const Key & getInfoHash() const {return info_hash;}
 		bool wants(int ip_version) const;
 		
-		virtual void apply(DHT* dh_table);
-		virtual void print();
-		virtual void encode(QByteArray & arr) const;
-		virtual void parse(bt::BDictNode* dict);
+		void apply(DHT* dh_table) override;
+		void print() override;
+		void encode(QByteArray & arr) const override;
+		void parse(bt::BDictNode* dict) override;
 		
 		typedef QSharedPointer<GetPeersReq> Ptr;
 		

@@ -48,11 +48,11 @@ public:
 		qsrand(time(0));
 	}
 	
-	virtual ~PacketLossServer()
+	~PacketLossServer() override
 	{}
 	
 	
-	virtual void handlePacket(bt::Buffer::Ptr packet, const net::Address& addr)
+	void handlePacket(bt::Buffer::Ptr packet, const net::Address& addr) override
 	{
 		if (packet_loss)
 		{
@@ -88,7 +88,7 @@ public:
 	SendThread(Connection::Ptr outgoing,QObject* parent = 0) : QThread(parent),outgoing(outgoing)
 	{}
 	
-	virtual void run()
+	void run() override
 	{
 		char test[] = TEST_DATA;
 		int sent = 0;
