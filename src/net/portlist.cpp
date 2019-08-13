@@ -59,7 +59,7 @@ namespace net
 		
 	void PortList::removePort(bt::Uint16 number,Protocol proto)
 	{
-		PortList::iterator itr = qFind(begin(),end(),Port(number,proto,false));
+		PortList::iterator itr = std::find(begin(),end(),Port(number,proto,false));
 		if (itr == end())
 			return;
 		

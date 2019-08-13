@@ -105,7 +105,7 @@ namespace dht
 
 	bool KBucket::insert(const KBucketEntry & entry)
 	{
-		QList<KBucketEntry>::iterator i = qFind(entries.begin(), entries.end(), entry);
+		QList<KBucketEntry>::iterator i = std::find(entries.begin(), entries.end(), entry);
 
 		// If in the list, move it to the end
 		if (i != entries.end())
