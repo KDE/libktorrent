@@ -173,7 +173,7 @@ bool KTCLI::loadFromDir(const QString& path)
 {
 	try
 	{
-        tc->init(this, bt::LoadFile(path + "/torrent"), path, QString::null);
+        tc->init(this, bt::LoadFile(path + "/torrent"), path, QString());
 		tc->createFiles();
 		return true;
 	}

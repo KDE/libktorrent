@@ -67,7 +67,7 @@ namespace bt
 			return;
 		
 		if (active_job->error())
-			active_job->ui()->showErrorMessage();
+			active_job->uiDelegate()->showErrorMessage();
 		active_job = 0;
 		
 		if (directory_tree)

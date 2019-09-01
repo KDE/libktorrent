@@ -98,7 +98,7 @@ namespace bt
 			
 			active_job = 0;
 			if (j->error())
-				((KIO::Job*)j)->ui()->showErrorMessage();
+				((KIO::Job*)j)->uiDelegate()->showErrorMessage();
 	
 			// shit happened cancel all previous moves
 			err = true;
@@ -113,15 +113,6 @@ namespace bt
 			active_job = 0;
 			startMoving();
 		}
-	}
-	
-	void MoveDataFilesJob::onCanceled(KJob* j)
-	{
-		Q_UNUSED(j);
-		setError(KIO::ERR_USER_CANCELED);
-		active_job = 0;
-		err = true;
-		recover(true);
 	}
 	
 	void MoveDataFilesJob::start()
@@ -171,7 +162,6 @@ namespace bt
 		active_dst = i.value();
 		Out(SYS_GEN|LOG_DEBUG) << "Moving " << active_src << " -> " << active_dst << endl;
 		connect(active_job, &KIO::Job::result, this, &MoveDataFilesJob::onJobDone);
-		connect(active_job, &KIO::Job::canceled, this, &MoveDataFilesJob::onCanceled);
 		connect(active_job,SIGNAL(processedAmount(KJob*,KJob::Unit,qulonglong)),
 				this,SLOT(onTransferred(KJob*,KJob::Unit,qulonglong)));
 		connect(active_job,SIGNAL(speed(KJob*,ulong)),

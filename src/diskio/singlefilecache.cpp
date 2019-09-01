@@ -49,7 +49,7 @@ namespace bt
 		cache_file = tmpdir + "cache";
 		QFileInfo fi(cache_file);
 		if(fi.isSymLink())  // old style symlink
-			output_file = fi.readLink();
+			output_file = fi.symLinkTarget();
 		else
 			output_file = datadir + tor.getNameSuggestion();
 	}

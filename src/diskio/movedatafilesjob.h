@@ -59,7 +59,6 @@ namespace bt
 		
 	private Q_SLOTS:
 		void onJobDone(KJob* j);
-		void onCanceled(KJob* j);
 		void onRecoveryJobDone(KJob* j);
 		void onTransferred(KJob *job, KJob::Unit unit, qulonglong amount);
 		void onSpeed(KJob* job, unsigned long speed);
