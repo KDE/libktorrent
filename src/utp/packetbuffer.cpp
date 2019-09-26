@@ -44,16 +44,6 @@ namespace utp
 		buffer = pool->get(MAX_SIZE);
 	}
 
-	PacketBuffer::PacketBuffer(const PacketBuffer & buf)
-		: buffer(buf.buffer),
-		  header(buf.header),
-		  extension(buf.extension),
-		  payload(buf.payload),
-		  size(buf.size)
-	{
-
-	}
-
 	PacketBuffer::~PacketBuffer()
 	{
 	}

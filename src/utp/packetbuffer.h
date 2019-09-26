@@ -38,8 +38,10 @@ namespace utp
 	{
 	public:
 		PacketBuffer();
-		PacketBuffer(const PacketBuffer & buf);
 		~PacketBuffer();
+
+		PacketBuffer(const PacketBuffer & buf) = default;
+		PacketBuffer &operator=(const PacketBuffer & buf) = default;
 
 		/**
 		 * Is the buffer empty
