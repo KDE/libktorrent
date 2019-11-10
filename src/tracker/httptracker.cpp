@@ -416,7 +416,8 @@ namespace bt
 	{
 		timer.stop();
 		active_job = 0;
-		if (j->error() && data.size() == 0)
+		KIOAnnounceJob* st = (KIOAnnounceJob*)j;
+		if (st->IsErrorPage() || (j->error() && data.size() == 0))
 		{
 			QString err = error;
 			error.clear();
@@ -424,6 +425,12 @@ namespace bt
 				err = j->errorString();
 
 			Out(SYS_TRK | LOG_IMPORTANT) << "Error : " << err << endl;
+
+			if (st->IsErrorPage())
+			{
+				Out(SYS_TRK | LOG_IMPORTANT) << "HTTP Error page : " << QString::fromStdString(st->replyData().toStdString()) << endl;
+			}
+
 			if (QUrlQuery(url).queryItemValue(QStringLiteral("event")) != QLatin1String("stopped"))
 			{
 				failures++;
