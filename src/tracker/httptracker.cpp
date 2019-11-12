@@ -558,6 +558,7 @@ namespace bt
 		}
 #endif
 
+		time_out = false;
 		timer.start(60*1000);
 		status = TRACKER_ANNOUNCING;
 		requestPending();
@@ -567,6 +568,7 @@ namespace bt
 	{
 		if (active_job)
 		{
+			time_out = true;
 			error = i18n("Timeout contacting tracker %1", url.toString());
 			active_job->kill(KJob::EmitResult);
 		}

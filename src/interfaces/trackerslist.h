@@ -28,6 +28,13 @@ namespace bt
 	struct TrackerTier;
 	class TrackerInterface;
 
+	struct TrackersStatusInfo {
+		int trackers_count;
+		int errors;
+		int timeout_errors;
+		int warnings;
+	};
+
 	/**
 	 * @author Ivan Vasić <ivasic@gmail.com>
 	 * 
@@ -113,6 +120,10 @@ namespace bt
 		 */
 		virtual bool noTrackersReachable() const = 0;
 
+		/**
+		 * Returns true if any tracker has time out error
+		 */
+		virtual TrackersStatusInfo getTrackersStatusInfo() const = 0;
 	};
 
 }

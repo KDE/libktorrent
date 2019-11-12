@@ -102,6 +102,39 @@ namespace bt
 		}
 	}
 
+	void addTrackerStatusToInfo(const Tracker* tr, TrackersStatusInfo& info)
+	{
+		if (tr)
+		{
+			info.trackers_count++;
+
+			if (tr->trackerStatus() == TRACKER_ERROR) {
+				info.errors++;
+				if (tr->timeOut())
+					info.timeout_errors++;
+			}
+			if (tr->hasWarning())
+				info.warnings++;
+		}
+	}
+
+	TrackersStatusInfo TrackerManager::getTrackersStatusInfo() const
+	{
+		TrackersStatusInfo tsi;
+		tsi.trackers_count = tsi.errors = tsi.timeout_errors = tsi.warnings = 0;
+
+		if (tor->getStats().priv_torrent)
+		{
+			addTrackerStatusToInfo(curr, tsi);
+			return tsi;
+		}
+
+		for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();++i)
+			if (i->second->isEnabled())
+				addTrackerStatusToInfo(i->second, tsi);
+		return tsi;
+	}
+
 	
 	void TrackerManager::setCurrentTracker(bt::TrackerInterface* t)
 	{

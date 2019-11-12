@@ -57,6 +57,7 @@ namespace bt
 		void restoreDefault() override;
 		void setTrackerEnabled(const QUrl &url,bool on) override;
 		bool noTrackersReachable() const override;
+		TrackersStatusInfo getTrackersStatusInfo() const override;
 		
 		/// Get the number of seeders
 		Uint32 getNumSeeders() const;

@@ -267,6 +267,7 @@ namespace bt
 		int tn = 1;
 		for (int i = 0;i < failures;i++)
 			tn *= 2;
+		time_out = false;
 		conn_timer.start(60000 * tn);
 	}
 
@@ -353,6 +354,7 @@ namespace bt
 
 	void UDPTracker::onConnTimeout()
 	{
+		time_out = true;
 		if (connection_id)
 		{
 			connection_id = 0;

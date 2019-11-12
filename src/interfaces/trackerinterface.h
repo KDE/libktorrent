@@ -52,6 +52,12 @@ namespace bt
 		
 		/// Get a string of the current tracker status
 		QString trackerStatusString() const;
+
+		/// Is tracker timed out
+		bool timeOut() const {return time_out;}
+
+		/// Is there any warnings
+		bool hasWarning() const {return !warning.isEmpty();}
 		
 		/**
 		* Get the update interval in ms
@@ -91,6 +97,7 @@ namespace bt
 		int total_downloaded;
 		bool enabled;
 		TrackerStatus status;
+		bool time_out;
 		QDateTime request_time;
 		QString error;
 		QString warning;

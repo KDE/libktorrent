@@ -30,6 +30,7 @@ namespace bt
 		enabled = true;
 		started = false;
 		status = TRACKER_IDLE;
+		time_out = false;
 	}
 	
 	TrackerInterface::~TrackerInterface() 
