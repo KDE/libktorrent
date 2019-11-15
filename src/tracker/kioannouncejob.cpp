@@ -68,8 +68,10 @@ namespace bt
 			QString err_code = get_job->metaData().value(QStringLiteral("responsecode"));
 			setError(KIO::ERR_SLAVE_DEFINED);
 			setErrorText(QString("HTTP %1").arg(err_code));
-		} else
+		} else {
 			setError(j->error());
+			setErrorText(j->errorText());
+		}
 
 		emitResult();
 	}
