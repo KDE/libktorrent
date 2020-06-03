@@ -187,7 +187,7 @@ namespace dht
 
 		node->received(this, r);
 		// first check if the token is OK
-		dht::Key token = r.getToken();
+		QByteArray token = r.getToken();
 		if (!db->checkToken(token, r.getOrigin()))
 			return;
 
@@ -215,7 +215,7 @@ namespace dht
 		db->sample(r.getInfoHash(), dbl, 50, r.getOrigin().ipVersion());
 
 		// generate a token
-		dht::Key token = db->genToken(r.getOrigin());
+		QByteArray token = db->genToken(r.getOrigin());
 
 		bt::Uint32 wants = 0;
 		if (r.wants(4) || r.getOrigin().ipVersion() == 4)

@@ -35,8 +35,8 @@ namespace dht
 	{
 	public:
 		GetPeersRsp();
-		GetPeersRsp(const QByteArray & mtid, const Key & id, const Key & token);
-		GetPeersRsp(const QByteArray & mtid, const Key & id, const DBItemList & values, const Key & token);
+		GetPeersRsp(const QByteArray & mtid, const Key & id, const QByteArray & token);
+		GetPeersRsp(const QByteArray & mtid, const Key & id, const DBItemList & values, const QByteArray & token);
 		~GetPeersRsp() override;
 
 		void apply(DHT* dh_table) override;
@@ -45,13 +45,13 @@ namespace dht
 		void parse(bt::BDictNode* dict) override;
 
 		const DBItemList & getItemList() const {return items;}
-		const Key & getToken() const {return token;}
+		const QByteArray & getToken() const {return token;}
 		bool containsNodes() const {return nodes.size() > 0 || nodes6.size() > 0;}
 		bool containsValues() const {return nodes.size() == 0;}
 
 		typedef QSharedPointer<GetPeersRsp> Ptr;
 	private:
-		Key token;
+		QByteArray token;
 		DBItemList items;
 	};
 

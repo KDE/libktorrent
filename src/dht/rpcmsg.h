@@ -34,6 +34,9 @@ namespace bt
 
 namespace dht
 {
+
+#define MAX_TOKEN_SIZE 40
+
 	class DHT;
 
 	enum Type

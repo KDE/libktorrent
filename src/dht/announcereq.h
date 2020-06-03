@@ -34,7 +34,7 @@ namespace dht
 	{
 	public:
 		AnnounceReq();
-		AnnounceReq(const Key & id,const Key & info_hash,bt::Uint16 port,const Key & token);
+		AnnounceReq(const Key & id,const Key & info_hash,bt::Uint16 port,const QByteArray & token);
 		~AnnounceReq() override;
 		
 		void apply(DHT* dh_table) override;
@@ -42,13 +42,13 @@ namespace dht
 		void encode(QByteArray & arr) const override;
 		void parse(bt::BDictNode* dict) override;
 		
-		const Key & getToken() const {return token;}
+		const QByteArray & getToken() const {return token;}
 		bt::Uint16 getPort() const {return port;}
 		
 		typedef QSharedPointer<AnnounceReq> Ptr;
 	private:
 		bt::Uint16 port;
-		Key token;
+		QByteArray token;
 	};
 
 }

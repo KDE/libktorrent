@@ -32,17 +32,17 @@ using namespace bt;
 namespace dht
 {
 	GetPeersRsp::GetPeersRsp()
-			: RPCMsg(QByteArray(), dht::GET_PEERS, dht::RSP_MSG, Key())
+			: RPCMsg(QByteArray(), dht::GET_PEERS, dht::RSP_MSG, QByteArray())
 	{
 	}
 
-	GetPeersRsp::GetPeersRsp(const QByteArray & mtid, const Key & id, const Key & token)
+	GetPeersRsp::GetPeersRsp(const QByteArray & mtid, const Key & id, const QByteArray & token)
 			: RPCMsg(mtid, dht::GET_PEERS, dht::RSP_MSG, id), 
 			token(token)
 	{
 	}
 
-	GetPeersRsp::GetPeersRsp(const QByteArray & mtid, const Key & id, const DBItemList & values, const Key & token)
+	GetPeersRsp::GetPeersRsp(const QByteArray & mtid, const Key & id, const DBItemList & values, const QByteArray & token)
 			: RPCMsg(mtid, dht::GET_PEERS, dht::RSP_MSG, id), 
 			token(token), 
 			items(values)
@@ -82,8 +82,9 @@ namespace dht
 					enc.write(QByteArrayLiteral("nodes6")); 
 					enc.write(nodes6);
 				}
-				
-				enc.write(QByteArrayLiteral("token")); enc.write(token.getData(), 20);
+
+				// must cast data() to (const Uint8*) to call right write() overload
+				enc.write(QByteArrayLiteral("token")); enc.write((const Uint8*)token.data(), token.size());
 				
 				if (items.size() > 0)
 				{
@@ -114,7 +115,7 @@ namespace dht
 		if (!args)
 			throw bt::Error("Invalid response, arguments missing");
 
-		token = Key(args->getByteArray("token"));
+		token = args->getByteArray("token").left(MAX_TOKEN_SIZE);
 
 		BListNode* vals = args->getList("values");
 		if (vals)

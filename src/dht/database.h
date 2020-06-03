@@ -112,9 +112,9 @@ namespace dht
 		 * Generate a write token, which will give peers write access to
 		 * the DB.
 		 * @param addr The address of the peer
-		 * @return A Key
+		 * @return A QByteArray
 		 */
-		dht::Key genToken(const net::Address & addr);
+		QByteArray genToken(const net::Address & addr);
 
 		/**
 		 * Check if a received token is OK.
@@ -122,7 +122,7 @@ namespace dht
 		 * @param addr The address of the peer
 		 * @return true if the token was given to this peer, false other wise
 		 */
-		bool checkToken(const dht::Key & token, const net::Address & addr);
+		bool checkToken(const QByteArray & token, const net::Address & addr);
 
 		/// Test whether or not the DB contains a key
 		bool contains(const dht::Key & key) const;
@@ -132,7 +132,7 @@ namespace dht
 		
 	private:
 		bt::PtrMap<dht::Key, DBItemList> items;
-		QMap<dht::Key, bt::TimeStamp> tokens;
+		QMap<QByteArray, bt::TimeStamp> tokens;
 	};
 
 }

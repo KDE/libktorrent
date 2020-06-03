@@ -30,14 +30,14 @@ namespace dht
 
 	class KBucketEntryAndToken : public KBucketEntry
 	{
-		Key token;
+		QByteArray token;
 	public:
 		KBucketEntryAndToken() {}
-		KBucketEntryAndToken(const KBucketEntry & e, const Key & token)
+		KBucketEntryAndToken(const KBucketEntry & e, const QByteArray & token)
 				: KBucketEntry(e), token(token) {}
 		~KBucketEntryAndToken() override {}
 
-		const Key & getToken() const
+		const QByteArray & getToken() const
 		{
 			return token;
 		}

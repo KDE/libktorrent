@@ -127,7 +127,7 @@ namespace dht
 		}
 	}
 
-	dht::Key Database::genToken(const net::Address & addr)
+	QByteArray Database::genToken(const net::Address & addr)
 	{
 		if (addr.ipVersion() == 4)
 		{
@@ -139,7 +139,7 @@ namespace dht
 			bt::WriteUint16(tdata, 4, addr.port());
 			bt::WriteUint64(tdata, 6, now);
 
-			dht::Key token = SHA1Hash::generate(tdata, 14);
+			QByteArray token = SHA1Hash::generate(tdata, 14).toByteArray();
 			// keep track of the token, tokens will expire after a while
 			tokens.insert(token, now);
 			return token;
@@ -154,14 +154,14 @@ namespace dht
 			bt::WriteUint16(tdata, 16, addr.port());
 			bt::WriteUint64(tdata, 18, now);
 
-			dht::Key token = SHA1Hash::generate(tdata, 26);
+			QByteArray token = SHA1Hash::generate(tdata, 26).toByteArray();
 			// keep track of the token, tokens will expire after a while
 			tokens.insert(token, now);
 			return token;
 		}
 	}
 
-	bool Database::checkToken(const dht::Key & token, const net::Address & addr)
+	bool Database::checkToken(const QByteArray & token, const net::Address & addr)
 	{
 		// the token must be in the map
 		if (!tokens.contains(token))
@@ -177,7 +177,7 @@ namespace dht
 			bt::WriteUint32(tdata, 0, addr.toIPv4Address());
 			bt::WriteUint16(tdata, 4, addr.port());
 			bt::WriteUint64(tdata, 6, ts);
-			dht::Key ct = SHA1Hash::generate(tdata, 14);
+			QByteArray ct = SHA1Hash::generate(tdata, 14).toByteArray();
 
 			// compare the generated token to the one received
 			if (token != ct)  // not good, this peer didn't went through the proper channels
@@ -194,7 +194,7 @@ namespace dht
 			bt::WriteUint16(tdata, 16, addr.port());
 			bt::WriteUint64(tdata, 18, ts);
 
-			dht::Key ct = SHA1Hash::generate(tdata, 26);
+			QByteArray ct = SHA1Hash::generate(tdata, 26).toByteArray();
 			// compare the generated token to the one received
 			if (token != ct)  // not good, this peer didn't went through the proper channels
 			{
