@@ -33,7 +33,7 @@ namespace dht
 	 * @brief Key in the distributed hash table
 	 *
 	 * Key's in the distributed hash table are just SHA-1 hashes.
-	 * Key provides all necesarry operators to be used as a value.
+	 * Key provides all necessary operators to be used as a value.
 	 */
 	class KTORRENT_EXPORT Key : public bt::SHA1Hash
 	{
