@@ -62,14 +62,8 @@ namespace bt
 		// before we start calculating first check if we have piece that the peer doesn't have
 		const BitSet & ours = cman.getBitSet();
 		const BitSet & theirs = p->getBitSet();
-		for (Uint32 i = 0;i < ours.getNumBits();i++)
-		{
-			if (ours.get(i) && !theirs.get(i))
-			{
-				should_be_interested = true;
-				break;
-			}
-		}
+
+		should_be_interested = !ours.includesBitSet(theirs);
 
 		if (!should_be_interested || !p->isInterested())
 		{

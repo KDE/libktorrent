@@ -24,32 +24,11 @@
 namespace bt
 {
 	BitSet BitSet::null;
-	
-	// Fast lookup table to see how many bits are there in a byte
-	static const Uint8 BitCount[] = 
-	{
-		0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 
-		1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 
-		1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 
-		2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 
-		1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 
-		2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 
-		2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 
-		3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 
-		1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 
-		2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 
-		2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 
-		3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 
-		2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 
-		3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 
-		3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 
-		4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8
-	};
 
 
 	BitSet::BitSet(Uint32 num_bits) : num_bits(num_bits),data(0)
 	{
-		num_bytes = (num_bits / 8) + ((num_bits % 8 > 0) ? 1 : 0);
+		num_bytes = (num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0);
 		data = new Uint8[num_bytes];
 		std::fill(data,data+num_bytes,0x00);
 		num_on = 0;
@@ -57,17 +36,11 @@ namespace bt
 
 	BitSet::BitSet(const Uint8* d,Uint32 num_bits)  : num_bits(num_bits),data(0)
 	{
-		num_bytes = (num_bits / 8) + ((num_bits % 8 > 0) ? 1 : 0);
+		num_bytes = (num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0);
 		data = new Uint8[num_bytes];
 		memcpy(data,d,num_bytes);
 		num_on = 0;
-		Uint32 i = 0;
-		while (i < num_bits)
-		{
-			if (get(i))
-				num_on++;
-			i++;
-		}
+		updateNumOnBits();
 	}
 	
 	BitSet::BitSet(const BitSet & bs) : num_bits(bs.num_bits),num_bytes(bs.num_bytes),data(0),num_on(bs.num_on)
@@ -103,24 +76,32 @@ namespace bt
 		return *this;
 	}
 	
+	const Uint8 tail_mask_lookup[8] = {0xFF, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F};
+
 	void BitSet::invert()
 	{
+		if (num_bytes <= 0) return;
+
+		num_on = 0;
 		Uint32 i = 0;
-		while (i < num_bits)
+		while (i < num_bytes - 1)
 		{
-			set(i,!get(i));
+			data[i] = ~data[i];
+			num_on += BitCount[data[i]];
 			i++;
 		}
+		// i == num_bytes-1
+		data[i] = ~data[i] & tail_mask_lookup[num_bits & 7];
+		num_on += BitCount[data[i]];
 	}
 	
 	BitSet & BitSet::operator -= (const BitSet & bs)
 	{
-		Uint32 i = 0;
-		while (i < num_bits)
+		num_on = 0;
+		for (Uint32 i = 0; i < num_bytes; i++)
 		{
-			if (get(i) && bs.get(i))
-				set(i,false);
-			i++;
+			data[i] &= ~(data[i] & bs.data[i]);
+			num_on += BitCount[data[i]];
 		}
 		return *this;
 	}
@@ -142,44 +123,96 @@ namespace bt
 	}
 
 	void BitSet::orBitSet(const BitSet & other)
-	{		
-		Uint32 i = 0;
+	{
 		num_on = 0;
-		while (i < num_bytes)
-		{
-			Uint8 od = 0;
-			if (i < other.num_bytes)
-				od = other.data[i];
-			data[i] |= od;
-			num_on += BitCount[data[i]];
-			i++;
+
+		if (num_bits == other.num_bits) {
+			// best case
+			for (Uint32 i = 0; i < num_bytes; i++) {
+				data[i] |= other.data[i];
+				num_on += BitCount[data[i]];
+			}
+			return;
 		}
+
+		// process till the end of other data or last-1 byte in our data
+		// whatether comes first
+		for (Uint32 i = 0; i < qMin(num_bytes - 1, other.num_bytes); i++) {
+			data[i] |= other.data[i];
+			num_on += BitCount[data[i]];
+		}
+
+		// if last-1 not reached yet then the end of other data is reached
+		// so just add BitCount till last-1 byte
+		for (Uint32 i = other.num_bytes; i < num_bytes - 1; i++) {
+			num_on += BitCount[data[i]];
+		}
+
+		// if other has matching byte for our last byte - OR it with proper mask
+		if (other.num_bytes >= num_bytes) {
+			data[num_bytes-1] = (data[num_bytes-1] | other.data[num_bytes-1]) & tail_mask_lookup[num_bytes & 7];
+		}
+
+		// count bits set in last byte
+		num_on += BitCount[data[num_bytes-1]];
 	}
 	
 	void BitSet::andBitSet(const BitSet & other)
 	{
-		Uint32 i = 0;
 		num_on = 0;
-		while (i < num_bytes)
-		{
-			Uint8 od = 0;
-			if (i < other.num_bytes)
-				od = other.data[i];
-			data[i] &= od;
-			num_on += BitCount[data[i]];
-			i++;
+
+		if (num_bits == other.num_bits) {
+			// best case
+			for (Uint32 i = 0; i < num_bytes; i++) {
+				data[i] &= other.data[i];
+				num_on += BitCount[data[i]];
+			}
+			return;
 		}
+
+		// we expect 0's at the tail of last byte (if any)
+		// so just AND matching bytes and clear the others
+		// no need to worry about mask for last byte
+		for (Uint32 i = 0; i < qMin(num_bytes, other.num_bytes); i++) {
+			data[i] &= other.data[i];
+			num_on += BitCount[data[i]];
+		}
+
+		if (num_bytes > other.num_bytes) {
+			memset(data+other.num_bytes, 0, num_bytes - other.num_bytes);
+		}
+
 	}
 
-	bool BitSet::includesBitSet(const BitSet & other)
+	bool BitSet::includesBitSet(const BitSet & other) const
 	{
-		Uint32 i = 0;
-		while (i < num_bits)
-		{
-			if (other.get(i) && !get(i))
-				return false;
-			i++;
+
+		if (num_bits == other.num_bits) {
+			// best case
+			for (Uint32 i = 0; i < num_bytes; i++) {
+				if ( (data[i] | other.data[i]) != data[i]) {
+					return false;
+				}
+			}
+			return true;
 		}
+
+		// process till the end of other data or last-1 byte in our data
+		// whatether comes first
+		for (Uint32 i = 0; i < qMin(num_bytes - 1, other.num_bytes); i++) {
+			if ( (data[i] | other.data[i]) != data[i]) {
+				return false;
+			}
+		}
+
+		// if other has matching byte for our last byte - OR it with proper mask
+		if (other.num_bytes >= num_bytes) {
+			const Uint8 d = data[num_bytes-1];
+			if ( ( (d | other.data[num_bytes-1]) & tail_mask_lookup[num_bytes & 7]) != d) {
+				return false;
+			}
+		}
+
 		return true;
 	}
 
