@@ -455,7 +455,7 @@ namespace bt
 			off = file_off + (piece_off - chunk_off);
 			len = piece_len;
 		}
-		else if(piece_off >= chunk_off && piece_len < chunk_off + chunk_len)
+		else if(piece_off >= chunk_off && piece_off < chunk_off + chunk_len)
 		{
 			// The start of the piece lies partially in the current file
 			off = file_off + (piece_off - chunk_off);

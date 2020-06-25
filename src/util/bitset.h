@@ -113,7 +113,7 @@ namespace bt
 		 * see if this BitSet includes another.
 		 * @param other The other BitSet
 		 */
-		bool includesBitSet(const BitSet & other);
+		bool includesBitSet(const BitSet & other) const;
 		
 		/**
 		 * Assignment operator.
@@ -159,36 +159,42 @@ namespace bt
 		static BitSet null;
 	};
 
+	const Uint8 set_on_lookup[8]  = {0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
+	const Uint8 set_off_lookup[8] = {0x7F, 0xBF, 0xDF, 0xEF, 0xF7, 0xFB, 0xFD, 0xFE};
+
 	inline bool BitSet::get(Uint32 i) const
 	{
 		if (i >= num_bits)
 			return false;
-		
-		Uint32 byte = i / 8;
-		Uint32 bit = i % 8;
-		Uint8 b = data[byte] & (0x01 << (7 - bit));
-		return b != 0x00;
+		// i >> 3 equal to i / 8
+		// i & 7 equal to i % 8
+		return (data[i >> 3] & set_on_lookup[i & 7]) != 0;
 	}
 	
-	inline void BitSet::set(Uint32 i,bool on)
+
+	// Fast lookup table to see how many bits are there in a byte
+	// (macro compacted variant)
+	static const Uint8 BitCount[256] =
+	{
+	#   define B2(n) n,     n+1,     n+1,     n+2
+	#   define B4(n) B2(n), B2(n+1), B2(n+1), B2(n+2)
+	#   define B6(n) B4(n), B4(n+1), B4(n+1), B4(n+2)
+		B6(0), B6(1), B6(1), B6(2)
+	};
+
+	inline void BitSet::set(Uint32 i, bool on)
 	{
 		if (i >= num_bits)
 			return;
-		
-		Uint32 byte = i / 8;
-		Uint32 bit = i % 8;
-		bool wasOn = get(i);
-		if (on && !wasOn)
-		{
-			num_on++;
-			data[byte] |= (0x01 << (7 - bit));
+
+		Uint8* d = data + (i >> 3);
+		num_on -= BitCount[*d];
+		if (on) {
+			*d |= set_on_lookup[i & 7];
+		} else {
+			*d &= set_off_lookup[i & 7];
 		}
-		else if (!on && wasOn)
-		{
-			num_on--;
-			Uint8 b = (0x01 << (7 - bit));
-			data[byte] &= (~b);
-		}
+		num_on += BitCount[*d];
 	}
 }
 

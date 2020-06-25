@@ -78,7 +78,7 @@ namespace bt
     Uint32 TorrentControl::min_diskspace = 100;
 
     TorrentControl::TorrentControl()
-        : tor(0), psman(0), cman(0), pman(0), downloader(0), uploader(0), choke(0), tmon(0), prealloc(false)
+		: m_qman(0), tor(0), psman(0), cman(0), pman(0), downloader(0), uploader(0), choke(0), tmon(0), prealloc(false)
     {
         job_queue = new JobQueue(this);
         cache_factory = 0;
@@ -241,12 +241,15 @@ namespace bt
                 cman->checkMemoryUsage();
             }
 
-            // to satisfy people obsessed with their share ratio
-            if (stats_save_timer.getElapsedSinceUpdate() >= 5 * 60 * 1000)
-            {
-                saveStats();
-                stats_save_timer.update();
-            }
+			// to satisfy people obsessed with their share ratio
+			bool save_stats = m_qman ? m_qman->permitStatsSync(this) :
+									   (stats_save_timer.getElapsedSinceUpdate() >= 5 * 60 * 1000);
+
+			if (save_stats)
+			{
+				saveStats();
+				stats_save_timer.update();
+			}
 
             // Update DownloadCap
             updateStats();
@@ -528,6 +531,8 @@ namespace bt
 
     void TorrentControl::init(QueueManagerInterface* qman, const QByteArray& data, const QString& tmpdir, const QString& ddir)
     {
+		m_qman = qman;
+
         // first load the torrent file
         tor = new Torrent();
         try
