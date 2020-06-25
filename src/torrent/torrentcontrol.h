@@ -180,7 +180,10 @@ namespace bt
 		
 		/// Set a custom Cache factory
 		void setCacheFactory(CacheFactory* cf);
-		
+
+		/// Get time in msec since the last Stats file save on disk
+		TimeStamp getStatsSyncElapsedTime() { return stats_save_timer.getElapsedSinceUpdate(); }
+
 	public Q_SLOTS:
 		/**
 		 * Update the object, should be called periodically.
@@ -284,6 +287,7 @@ namespace bt
 		
 	private:
 		JobQueue* job_queue;
+		QueueManagerInterface* m_qman;
 		Torrent* tor;
 		PeerSourceManager* psman;
 		ChunkManager* cman;

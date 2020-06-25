@@ -36,4 +36,9 @@ namespace bt
 		qm_enabled = on;
 	}
 
+	bool QueueManagerInterface::permitStatsSync(TorrentControl *tc)
+	{
+		return tc->getStatsSyncElapsedTime() >= 5 * 60 * 1000; // 5 sec
+	}
+
 }
