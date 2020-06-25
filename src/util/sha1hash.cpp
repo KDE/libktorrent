@@ -31,18 +31,17 @@ namespace bt
 {
 	SHA1Hash::SHA1Hash()
 	{
-		std::fill(hash,hash+20,0);
+		memset(hash, 0, 20);
 	}
 
 	SHA1Hash::SHA1Hash(const SHA1Hash & other)
 	{
-		for (int i = 0;i < 20;i++)
-			hash[i] = other.hash[i];
+		memcpy(hash, other.hash, 20);
 	}
 
 	SHA1Hash::SHA1Hash(const Uint8* h)
 	{
-		memcpy(hash,h,20);
+		memcpy(hash, h, 20);
 	}
 
 
@@ -51,18 +50,13 @@ namespace bt
 
 	SHA1Hash & SHA1Hash::operator = (const SHA1Hash & other)
 	{
-		for (int i = 0;i < 20;i++)
-			hash[i] = other.hash[i];
+		memcpy(hash, other.hash, 20);
 		return *this;
 	}
 
 	bool SHA1Hash::operator == (const SHA1Hash & other) const
 	{
-		for (int i = 0;i < 20;i++)
-			if (hash[i] != other.hash[i])
-				return false;
-
-		return true;
+		return memcmp(hash, other.hash, 20) == 0;
 	}
 
 	SHA1Hash SHA1Hash::generate(const Uint8* data,Uint32 len)
@@ -72,20 +66,20 @@ namespace bt
 		return hg.generate(data,len);
 	}
 
+#define hex_str '%','0','2','x'
+#define hex_str4 hex_str, hex_str, hex_str, hex_str
+#define hex_str20 hex_str4, hex_str4, hex_str4, hex_str4, hex_str4
 	QString SHA1Hash::toString() const
 	{
 		char tmp[41];
-		char fmt[81];
-		for (int i = 0;i < 20;i++)
-			strncpy(fmt + 4*i,"%02x",4);
-		fmt[80] = '\0';
-		tmp[40] = '\0';
-		snprintf(tmp,41,fmt,
-				hash[0],hash[1],hash[2],hash[3],hash[4],
-				hash[5],hash[6],hash[7],hash[8],hash[9],
-				hash[10],hash[11],hash[12],hash[13],hash[14],
-				hash[15],hash[16],hash[17],hash[18],hash[19]);
-		return QString::fromUtf8(tmp);
+		char fmt[81] = {hex_str20, '\0'};
+		const Uint8* h = getData();
+		snprintf(tmp, 40, fmt,
+				h[0], h[1], h[2], h[3], h[4],
+				h[5], h[6], h[7], h[8], h[9],
+				h[10], h[11], h[12], h[13], h[14],
+				h[15], h[16], h[17], h[18], h[19]);
+		return QString::fromLatin1(tmp, 40);
 	}
 	
 	QByteArray SHA1Hash::toByteArray() const
@@ -107,24 +101,18 @@ namespace bt
 	SHA1Hash operator ^ (const SHA1Hash & a,const SHA1Hash & b)
 	{
 		SHA1Hash k;
-		for (int i = 0;i < 20;i++)
-		{
-			k.hash[i] = a.hash[i] ^ b.hash[i];
-		}
+		Uint64* k64 = (Uint64*) k.hash;
+		const Uint64* a64 = (Uint64*) a.hash;
+		const Uint64* b64 = (Uint64*) b.hash;
+		k64[0] = a64[0] ^ b64[0];
+		k64[1] = a64[1] ^ b64[1];
+		k.hash[4] = a.hash[4] ^ b.hash[4];
 		return k;
 	}
 
 	bool operator < (const SHA1Hash & a,const SHA1Hash & b)
 	{
-		for (int i = 0;i < 20;i++)
-		{
-			if (a.hash[i] < b.hash[i])
-				return true;
-			else if (a.hash[i] > b.hash[i])
-				return false;
-		}
-		
-		return false;
+		return memcmp(a.hash, b.hash, 20) < 0;
 	}
 
     uint qHash(const SHA1Hash &key)

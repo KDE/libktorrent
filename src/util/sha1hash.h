@@ -40,7 +40,7 @@ namespace bt
 	class KTORRENT_EXPORT SHA1Hash
 	{
 	protected:
-		Uint8 hash[20];
+		Uint32 hash[5];
 	public:
 		/**
 		 * Constructor, sets every byte in the hash to 0.
@@ -111,7 +111,7 @@ namespace bt
 		 * Directly get pointer to the data.
 		 * @return The data
 		 */
-		const Uint8* getData() const {return hash;}
+		const Uint8* getData() const {return (Uint8*) hash;}
 
 		/**
 		 * Function to print a SHA1Hash to the Log.

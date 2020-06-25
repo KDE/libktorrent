@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <algorithm>
 #include <util/constants.h>
+#include <endian.h>
 
 using namespace bt;
 
@@ -35,14 +36,13 @@ namespace dht
 	{
 	}
 
-	Key::Key(const Uint8* d) : bt::SHA1Hash(d)
+	Key::Key(const bt::Uint8* d) : bt::SHA1Hash(d)
 	{
 	}
 
 	Key::Key(const QByteArray & ba)
 	{
-		for (int i = 0;i < 20 && i < ba.size();i++)
-			hash[i] = ba[i];
+		memcpy(hash, ba.data(), std::min(20, ba.size()));
 	}
 
 	Key::~Key()
@@ -60,83 +60,64 @@ namespace dht
 
 	bool Key::operator < (const Key & other) const
 	{
-		for (int i = 0;i < 20;i++)
-		{
-			if (hash[i] < other.hash[i])
-				return true;
-			else if (hash[i] > other.hash[i])
-				return false;
-		}
-		return false;
+		return memcmp(hash, other.hash, 20) < 0;
 	}
 
 	bool Key::operator <= (const Key & other) const
 	{
-		return operator < (other) || operator == (other);
+		return memcmp(hash, other.hash, 20) <= 0;
 	}
 
 	bool Key::operator > (const Key & other) const
 	{
-		for (int i = 0;i < 20;i++)
-		{
-			if (hash[i] < other.hash[i])
-				return false;
-			else if (hash[i] > other.hash[i])
-				return true;
-		}
-		return false;
+		return memcmp(hash, other.hash, 20) > 0;
 	}
 
 	bool Key::operator >= (const Key & other) const
 	{
-		return operator > (other) || operator == (other);
+		return memcmp(hash, other.hash, 20) >= 0;
 	}
 	
 	Key operator + (const dht::Key& a, const dht::Key& b)
 	{
-		bt::Uint8 result[20];
-		bool carry = false;
-		const bt::Uint8* ad = a.getData();
-		const bt::Uint8* bd = b.getData();
-		for (int i = 19;i >= 0;i--)
-		{
-			unsigned int r = ad[i] + bd[i] + (carry ? 1 : 0);
-			if (r > 255)
-			{
-				result[i] = r & 0xFF;
-				carry = true;
-			}
-			else
-			{
-				result[i] = r;
-				carry = false;
-			}
+		dht::Key result;
+		bt::Uint64 sum = 0;
+
+		for (int i = 4; i >= 0; i--) {
+			sum += (bt::Uint64) htobe32(a.hash[i]) + htobe32(b.hash[i]);
+			result.hash[i] = htobe32(sum & 0xFFFFFFFF);
+			sum = sum >> 32;
 		}
 		
-		return dht::Key(result);
+		return result;
 	}
 	
 	Key operator + (const Key & a, bt::Uint8 value)
 	{
-		bt::Uint8 b[20];
-		memset(b, 0, 20);
-		b[19] = value;
-		return a + Key(b);
+		dht::Key result(a);
+
+		bt::Uint64 sum = value;
+		for (int i = 4; i >= 0 && sum != 0; i--) {
+			sum += htobe32(result.hash[i]);
+			result.hash[i] = htobe32(sum & 0xFFFFFFFF);
+			sum = sum >> 32;
+		}
+
+		return result;
 	}
 
 	Key Key::operator / (int value) const
 	{
-		bt::Uint8 result[20];
-		bt::Uint8 remainder = 0;
-		
-		for (int i = 0; i < 20; i++)
-		{
-			bt::Uint8 d = (hash[i] + (remainder << 8)) / value;
-			remainder = (hash[i] + (remainder << 8)) % value;
-			result[i] = d;
+		dht::Key result;
+		bt::Uint64 remainder = 0;
+
+		for (int i = 0; i < 5; i++) {
+			const bt::Uint32 h = htobe32(hash[i]);
+			result.hash[i]    =  htobe32( ( h + remainder) / value );
+			remainder = ((h + remainder) % value) << 32;
 		}
-		
-		return dht::Key(result);
+
+		return result;
 	}
 
 
@@ -149,48 +130,34 @@ namespace dht
 	{
 		srand(time(0));
 		Key k;
-		for (int i = 0;i < 20;i++)
+		Uint16* h = (Uint16*) k.hash;
+		for (int i = 0; i < 10; i++)
 		{
-			k.hash[i] = (Uint8)rand() % 0xFF;
+			h[i] = std::rand() & 0xFFFF; // rand() between 0 and only 2^31
 		}
 		return k;
 	}
 
 	Key operator - (const Key & a, const Key & b)
 	{
-		bt::Uint8 result[20];
-		bool carry = false;
-		const bt::Uint8* ad = a.getData();
-		const bt::Uint8* bd = b.getData();
-		for (int i = 19;i >= 0;i--)
+		dht::Key result;
+		bt::Uint32 carry = 0;
+		for (int i = 4; i >= 0; i--)
 		{
-			if (ad[i] >= bd[i])
+			const bt::Uint32 a32 = htobe32(a.hash[i]);
+			const bt::Uint32 b32 = htobe32(b.hash[i]);
+			if (a32 >= (( bt::Uint64)b32 + carry) )
 			{
-				result[i] = ad[i] - bd[i];
-				if (carry)
-				{
-					if (result[i] == 0)
-					{
-						result[i] = 0xFF;
-						carry = true;
-					}
-					else
-					{
-						result[i] -= 1;
-						carry = false;
-					}
-				}
-			}
-			else
-			{
-				result[i] = 256 - (bd[i] - ad[i]);
-				if (carry)
-					result[i] -= 1;
-				carry = true;
+				result.hash[i] = htobe32(a32 - b32 - carry);
+				carry = 0;
+			} else {
+				const bt::Uint64 max = 0xFFFFFFFF + 1;
+				result.hash[i] = htobe32( (bt::Uint32) (max - (b32 - a32) - carry) );
+				carry = 1;
 			}
 		}
 		
-		return dht::Key(result);
+		return result;
 	}
 
 	Key Key::mid(const dht::Key& a, const dht::Key& b)
@@ -200,19 +167,20 @@ namespace dht
 		else
 			return b + (a - b) / 2;
 	}
+
+#define rep4(v) v, v, v, v
+#define rep20(v) rep4(v), rep4(v), rep4(v), rep4(v), rep4(v)
+const bt::Uint8 val_max[20] = {rep20(0xFF)};
+const bt::Uint8 val_min[20] = {rep20(0x00)};
 	
 	Key Key::max()
 	{
-		bt::Uint8 result[20];
-		std::fill(result, result + 20, 0xFF);
-		return Key(result);
+		return Key(val_max);
 	}
 
 	Key Key::min()
 	{
-		bt::Uint8 result[20];
-		std::fill(result, result + 20, 0x0);
-		return Key(result);
+		return Key(val_min);
 	}
 
 
