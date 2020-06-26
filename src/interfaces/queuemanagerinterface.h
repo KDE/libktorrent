@@ -22,11 +22,11 @@
 #define BTQUEUEMANAGERINTERFACE_H
 
 #include <ktorrent_export.h>
-#include <libktorrent/torrent/torrentcontrol.h>
 
 namespace bt
 {
 	class SHA1Hash;
+	class TorrentControl;
 	struct TrackerTier;
 
 	/**
@@ -68,7 +68,7 @@ namespace bt
 		 * @return true if file save is permitted, false otherwise
 		 */
 
-		virtual bool permitStatsSync(bt::TorrentControl* tc);
+		virtual bool permitStatsSync(TorrentControl* tc);
 		
 		static bool enabled() {return qm_enabled;}
 	};
