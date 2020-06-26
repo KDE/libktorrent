@@ -22,7 +22,12 @@
 #include <stdlib.h>
 #include <algorithm>
 #include <util/constants.h>
+
+#if defined(Q_OS_FREEBSD) || defined(Q_OS_NETBSD)
+#include <sys/endian.h>
+#else
 #include <endian.h>
+#endif
 
 using namespace bt;
 
