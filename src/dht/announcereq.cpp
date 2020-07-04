@@ -48,33 +48,11 @@ namespace dht
 		dh_table->announce(*this);
 	}
 
-	QString tokenToHex(const QByteArray &token)
-	{
-		// slightly modified implementation of QByteArray::ToHex() (since Qt 5.9)
-		// copied here to keep minimal Qt ver. requirement eq. to 5.7
-		QByteArray hex(token.size() * 2, Qt::Uninitialized);
-		char *hexData = hex.data();
-		const uchar *data = (const uchar *)token.data();
-		for (int i = 0; i < token.size(); ++i) {
-			int j = (data[i] >> 4) & 0xf;
-			if (j <= 9)
-				hexData[i*2] = (j + '0');
-			 else
-				hexData[i*2] = (j + 'A' - 10); // <- use upper case
-			j = data[i] & 0xf;
-			if (j <= 9)
-				hexData[i*2+1] = (j + '0');
-			 else
-				hexData[i*2+1] = (j + 'A' - 10);
-		}
-		return QString(hex);
-	}
-
 	void AnnounceReq::print()
 	{
 		Out(SYS_DHT | LOG_DEBUG) << QString("REQ: %1 %2 : announce_peer %3 %4 %5")
 		.arg(mtid[0]).arg(id.toString()).arg(info_hash.toString())
-		.arg(port).arg(tokenToHex(token)) << endl;
+		.arg(port).arg(QString::fromLatin1(token.toHex())) << endl;
 	}
 
 	void AnnounceReq::encode(QByteArray & arr) const
