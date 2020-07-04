@@ -29,7 +29,7 @@ set(Boost_MIN_VERSION "1.34.0")
 set(LibGMP_MIN_VERSION "6.0.0")
 set(LibGcrypt_MIN_VERSION "1.4.5")
 set(KF5_MIN_VERSION "5.15")
-set(QT_MIN_VERSION "5.7.0")
+set(QT_MIN_VERSION "5.10.0")
 
 set(LIBKTORRENT_VERSION "2.2.0")
 

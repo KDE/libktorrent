@@ -27,7 +27,7 @@
 #include <peer/peer.h>
 #include <peer/peermanager.h>
 
-#include <KRandom>
+#include <QRandomGenerator>
 
 namespace bt
 {
@@ -190,7 +190,7 @@ namespace bt
 			return UNDEFINED_ID;
 
 		// find a random peer that is choked and interested
-		Uint32 start = KRandom::random() % num_peers;
+		Uint32 start = QRandomGenerator::global()->bounded(num_peers);
 		Uint32 i = (start + 1) % num_peers;
 		while (i != start)
 		{
