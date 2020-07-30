@@ -63,7 +63,7 @@ namespace bt
 		const BitSet & ours = cman.getBitSet();
 		const BitSet & theirs = p->getBitSet();
 
-		should_be_interested = !ours.includesBitSet(theirs);
+		should_be_interested = !theirs.includesBitSet(ours);
 
 		if (!should_be_interested || !p->isInterested())
 		{
