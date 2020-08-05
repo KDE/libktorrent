@@ -128,6 +128,12 @@ private Q_SLOTS:
 		QVERIFY(d == KeyFromHexString("0000000008000000000000000800000000000000"));
 
 	}
+	
+	void testConversion()
+	{
+		dht::Key d = KeyFromHexString("0102030405060708090AFFFEFDFCFBFAF9F8F7F6");
+		QVERIFY(d.toString() == QLatin1String("0102030405060708090afffefdfcfbfaf9f8f7f6"));
+	}
 };
 
 

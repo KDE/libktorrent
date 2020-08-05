@@ -74,7 +74,7 @@ namespace bt
 		char tmp[41];
 		char fmt[81] = {hex_str20, '\0'};
 		const Uint8* h = getData();
-		snprintf(tmp, 40, fmt,
+		snprintf(tmp, 41, fmt,
 				h[0], h[1], h[2], h[3], h[4],
 				h[5], h[6], h[7], h[8], h[9],
 				h[10], h[11], h[12], h[13], h[14],
