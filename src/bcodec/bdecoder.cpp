@@ -245,13 +245,23 @@ namespace bt
 		}
 
 		// try to decode length
-		const QByteArray n = QByteArray::fromRawData(data.constData() + off, pos - off);
 		bool ok = true;
 		int len = 0;
-		len = n.toInt(&ok);
+		// This is an optimized version of QByteArray::fromRawData(data.constData() + off, pos - off).toInt(&ok)
+		const char* start = data.constData() + off;
+		const char* end = start + pos - off;
+		while( start < end ) {
+			int n = *start++ - '0';
+			if (n < 0 || n > 9) {
+				ok = false;
+				break;
+			}
+			len = (len << 3) + (len << 1) + n;
+		}
+
 		if (!ok || len < 0)
 		{
-			throw Error(i18n("Cannot convert %1 to an int", QString::fromUtf8(n)));
+			throw Error(i18n("Cannot convert %1 to an int", QString::fromUtf8(data.constData() + off, pos - off)));
 		}
 		// move pos to the first part of the string
 		pos++;
