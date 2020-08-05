@@ -58,7 +58,7 @@ private Q_SLOTS:
             multi_tor.load(bt::LoadFile(multi_creator.torrentPath()), false);
 
             // Truncate the files so we can preallocate them again
-            for (QMap<QString, bt::Uint64>::iterator i = files.begin(); i != files.end(); i++)
+            for (QMap<QString, bt::Uint64>::const_iterator i = files.cbegin(); i != files.cend(); i++)
             {
                 bt::TruncateFile(multi_creator.dataPath() + i.key(), 0);
             }

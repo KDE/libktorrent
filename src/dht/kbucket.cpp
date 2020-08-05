@@ -246,13 +246,11 @@ namespace dht
 		return entries.contains(entry);
 	}
 
-	void KBucket::findKClosestNodes(KClosestNodesSearch & kns)
+	void KBucket::findKClosestNodes(KClosestNodesSearch & kns) const
 	{
-		QList<KBucketEntry>::iterator i = entries.begin();
-		while (i != entries.end())
+		for (const KBucketEntry& i: qAsConst(entries))
 		{
-			kns.tryInsert(*i);
-			++i;
+			kns.tryInsert(i);
 		}
 	}
 

@@ -136,7 +136,7 @@ namespace bt
 	
 	void ChunkDownload::releaseAllPDs()
 	{
-		foreach (PieceDownloader* pd,pdown)
+		for (PieceDownloader* pd: qAsConst(pdown))
 		{
 			pd->release();
 			sendCancels(pd);
@@ -386,7 +386,7 @@ namespace bt
 	Uint32 ChunkDownload::getDownloadSpeed() const
 	{
 		Uint32 r = 0;
-		foreach (PieceDownloader* pd,pdown)
+		for (PieceDownloader* pd: qAsConst(pdown))
 			r += pd->getDownloadRate();
 		
 		return r;

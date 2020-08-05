@@ -521,8 +521,8 @@ namespace bt
         downloader->setMonitor(tmon);
         if (tmon)
         {
-            QList<Peer::Ptr> ppl = pman->getPeers();
-            foreach (Peer::Ptr peer, ppl)
+            const QList<Peer::Ptr> ppl = pman->getPeers();
+            for (const Peer::Ptr& peer: ppl)
                 tmon->peerAdded(peer.data());
         }
 

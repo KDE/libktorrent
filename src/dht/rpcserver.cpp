@@ -137,7 +137,7 @@ namespace dht
 
 		void send(const net::Address & addr, const QByteArray & msg)
 		{
-			foreach(net::ServerSocket::Ptr sock, sockets)
+			for(net::ServerSocket::Ptr sock: qAsConst(sockets))
 			{
 				if (sock->sendTo((const bt::Uint8*)msg.data(), msg.size(), addr) == msg.size())
 					break;
@@ -237,8 +237,8 @@ namespace dht
 	{
 		d->reset();
 
-		QStringList ips = NetworkInterfaceIPAddresses(NetworkInterface());
-		foreach(const QString & addr, ips)
+		const QStringList ips = NetworkInterfaceIPAddresses(NetworkInterface());
+		for(const QString & addr: ips)
 		{
 			d->listen(addr);
 		}

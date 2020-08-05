@@ -91,7 +91,7 @@ namespace bt
 			// reject all requests 
 			// if the peer supports fast extensions, 
 			// choke doesn't mean reject all
-			foreach (const Request & r,requests)
+			for (const Request & r: qAsConst(requests))
 				peer->sendReject(r);
 		}
 		requests.clear();

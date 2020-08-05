@@ -63,7 +63,7 @@ namespace bt
         if(isOurOwnAddress(addr))
             return false;
 
-        foreach(const BlockListInterface* bl, blocklists)
+        for(const BlockListInterface* bl: qAsConst(blocklists))
         {
             if(bl->blocked(addr))
                 return false;
@@ -88,7 +88,7 @@ namespace bt
             return true;
             
            
-        foreach(const QString& ip, external_addresses)
+        for(const QString& ip: qAsConst(external_addresses))
         {
             net::Address address(ip, port);
             if(address == addr)

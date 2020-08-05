@@ -89,13 +89,13 @@ namespace bt
     {
         QDir d(target + dir);
         // first get all files (we ignore symlinks)
-        QStringList dfiles = d.entryList(QDir::Files);
+        const QStringList dfiles = d.entryList(QDir::Files);
         Uint32 cnt = 0; // counter to keep track of file index
-        for (QStringList::iterator i = dfiles.begin(); i != dfiles.end(); ++i)
+        for (const QString & s : dfiles)
         {
             // add a TorrentFile to the list
-            Uint64 fs = bt::FileSize(target + dir + *i);
-            TorrentFile f(0, cnt, dir + *i, tot_size, fs, chunk_size);
+            Uint64 fs = bt::FileSize(target + dir + s);
+            TorrentFile f(0, cnt, dir + s, tot_size, fs, chunk_size);
             files.append(f);
             // update total size
             tot_size += fs;
@@ -103,13 +103,10 @@ namespace bt
         }
 
         // now for each subdir do a buildFileList
-        QStringList subdirs = d.entryList(QDir::Dirs);
-        for (QStringList::iterator i = subdirs.begin(); i != subdirs.end(); ++i)
+        const QStringList subdirs = d.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+        for (const QString& s : subdirs)
         {
-            if (*i == "." || *i == "..")
-                continue;
-
-            QString sd = dir + *i;
+            QString sd = dir + s;
             if (!sd.endsWith(bt::DirSeparator()))
                 sd += bt::DirSeparator();
             buildFileList(sd);
@@ -138,7 +135,7 @@ namespace bt
             {
                 enc.write(QByteArrayLiteral("announce-list"));
                 enc.beginList();
-                foreach (const QString& t, trackers)
+                for (const QString& t: qAsConst(trackers))
                 {
                     enc.beginList();
                     enc.write(t.toUtf8());
@@ -166,7 +163,7 @@ namespace bt
             enc.write(QByteArrayLiteral("nodes"));
             enc.beginList();
 
-            foreach (const QString& t, trackers)
+            for (const QString& t: qAsConst(trackers))
             {
                 enc.beginList();
                 enc.write(t.section(',', 0, 0).toUtf8());
@@ -185,7 +182,7 @@ namespace bt
         {
             enc.write(QByteArrayLiteral("url-list"));
             enc.beginList();
-            foreach (const QUrl &u, webseeds)
+            for (const QUrl &u: qAsConst(webseeds))
             {
                 enc.write(u.toDisplayString().toUtf8());
             }
@@ -204,7 +201,7 @@ namespace bt
         {
             enc.write(QByteArrayLiteral("files"));
             enc.beginList();
-            foreach (const TorrentFile& file, files)
+            for (const TorrentFile& file: qAsConst(files))
                 saveFile(enc, file);
 
             enc.end();
@@ -230,8 +227,8 @@ namespace bt
         enc.write(QByteArrayLiteral("length")); enc.write(file.getSize());
         enc.write(QByteArrayLiteral("path"));
         enc.beginList();
-        QStringList sl = file.getPath().split(bt::DirSeparator());
-        foreach (const QString& s, sl)
+        const QStringList sl = file.getPath().split(bt::DirSeparator());
+        for (const QString& s: sl)
             enc.write(s.toUtf8());
         enc.end();
         enc.end();

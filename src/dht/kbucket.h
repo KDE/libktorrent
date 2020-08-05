@@ -104,9 +104,9 @@ namespace dht
 		/**
 		 * Find the K closest entries to a key and store them in the KClosestNodesSearch
 		 * object.
-		 * @param kns The object to storre the search results
+		 * @param kns The object to store the search results
 		 */
-		void findKClosestNodes(KClosestNodesSearch & kns);
+		void findKClosestNodes(KClosestNodesSearch & kns) const;
 
 		/**
 		 * A peer failed to respond

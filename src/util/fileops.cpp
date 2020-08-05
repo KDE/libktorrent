@@ -567,15 +567,13 @@ namespace bt
 	QString ShortenFileName(const QString & path,int extra_number)
 	{
 		QString assembled = QStringLiteral("/");
-		QStringList names = path.split(QLatin1Char('/'),QString::SkipEmptyParts);
+		const QStringList names = path.split(QLatin1Char('/'),QString::SkipEmptyParts);
 		int cnt = 0;
-		for (QStringList::iterator i = names.begin();i != names.end();++i)
+		for (const QString& s : names)
 		{
-			QByteArray encoded = QFile::encodeName(*i);
-			if (encoded.length() >= NAME_MAX)
-				*i = ShortenName(*i,extra_number);
-			
-			assembled += *i;
+			QByteArray encoded = QFile::encodeName(s);
+			assembled += (encoded.length() < NAME_MAX) ? s
+													   : ShortenName(s, extra_number);
 			if (cnt < names.count() - 1)
 				assembled += QLatin1Char('/');
 			cnt++;
@@ -654,10 +652,10 @@ namespace bt
 		endmntent(fptr);
 		
 #else
-		QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
-		foreach (Solid::Device dev,devs)
+		const QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
+		for (const Solid::Device& dev: devs)
 		{
-			Solid::StorageAccess* sa = dev.as<Solid::StorageAccess>();
+			const Solid::StorageAccess* sa = dev.as<Solid::StorageAccess>();
 			if(!sa->filePath().isEmpty() && sa->isAccessible())
 				result.insert(sa->filePath());
 		}
@@ -667,9 +665,9 @@ namespace bt
 	
 	QString MountPoint(const QString& path)
 	{
-		QSet<QString> mount_points = AccessibleMountPoints();
+		const QSet<QString> mount_points = AccessibleMountPoints();
 		QString mount_point;
-		foreach (const QString & mp, mount_points)
+		for (const QString & mp: mount_points)
         {
             if (path.startsWith(mp) && (mount_point.isEmpty() || mp.startsWith(mount_point)))
 			{

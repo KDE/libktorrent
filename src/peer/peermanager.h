@@ -226,7 +226,7 @@ namespace bt
 		/// Visit all peers
 		void visit(PeerVisitor & visitor);
 
-		/// Is PEX eanbled
+		/// Is PEX enabled
 		bool isPexEnabled() const;
 
 		/// Enable or disable PEX

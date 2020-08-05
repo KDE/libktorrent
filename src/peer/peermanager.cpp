@@ -114,7 +114,7 @@ namespace bt
 		if(d->paused)
 			return;
 
-		foreach(Peer::Ptr p, d->peer_map)
+		for(Peer::Ptr p: qAsConst(d->peer_map))
 		{
 			p->pause();
 		}
@@ -126,7 +126,7 @@ namespace bt
 		if(!d->paused)
 			return;
 
-		foreach(Peer::Ptr p, d->peer_map)
+		for(Peer::Ptr p: qAsConst(d->peer_map))
 		{
 			p->unpause();
 			if(p->hasWantedChunks(d->wanted_chunks))  // send interested when it has wanted chunks
@@ -171,7 +171,7 @@ namespace bt
 
 	void PeerManager::killSeeders()
 	{
-		foreach(Peer::Ptr peer, d->peer_map)
+		for(Peer::Ptr peer: qAsConst(d->peer_map))
 		{
 			if(peer->isSeeder())
 				peer->kill();
@@ -181,7 +181,7 @@ namespace bt
 	void PeerManager::killUninterested()
 	{
 		QTime now = QTime::currentTime();
-		foreach(Peer::Ptr peer, d->peer_map)
+		for(Peer::Ptr peer: qAsConst(d->peer_map))
 		{
 			if(!peer->isInterested() && (peer->getConnectTime().secsTo(now) > 30))
 				peer->kill();
@@ -222,10 +222,10 @@ namespace bt
 		
 		ConnectionLimit::Token::Ptr token = climit.acquire(d->tor.getInfoHash());
 		if(!token)
-        {
-            d->killBadPeer();
+		{
+			d->killBadPeer();
 			token = climit.acquire(d->tor.getInfoHash());
-        }
+		}
 		
 		if(token)
 			d->createPeer(sock, peer_id, support, false, token);
@@ -250,7 +250,7 @@ namespace bt
 		if(!d->started)
 			return false;
 
-		foreach(Peer::Ptr p, d->peer_map)
+		for(const Peer::Ptr& p: qAsConst(d->peer_map))
 		{
 			if(p->getPeerID() == peer_id)
 				return true;
@@ -277,15 +277,15 @@ namespace bt
 
 			QTextStream out(&fptr);
 			// first the active peers
-			foreach(Peer::Ptr p, d->peer_map)
+			for(const Peer::Ptr& p: qAsConst(d->peer_map))
 			{
 				const net::Address & addr = p->getAddress();
 				out << addr.toString() << " " << (unsigned short)addr.port() << ::endl;
 			}
 
 			// now the potential_peers
-			PPItr i = d->potential_peers.begin();
-			while(i != d->potential_peers.end())
+			std::map<net::Address, bool>::const_iterator i = d->potential_peers.cbegin();
+			while(i != d->potential_peers.cend())
 			{
 				out << i->first.toString() << " " <<  i->first.port() << ::endl;
 				++i;
@@ -359,7 +359,7 @@ namespace bt
 
 	Peer::Ptr PeerManager::findPeer(PieceDownloader* pd)
 	{
-		foreach(Peer::Ptr p, d->peer_map)
+		for(Peer::Ptr p: qAsConst(d->peer_map))
 		{
 			if((PieceDownloader*)p->getPeerDownloader() == pd)
 				return p;
@@ -409,7 +409,7 @@ namespace bt
 		if(d->pex_on == on)
 			return;
 
-		foreach(Peer::Ptr p, d->peer_map)
+		for(Peer::Ptr p: qAsConst(d->peer_map))
 		{
 			if(!p->isKilled())
 			{
@@ -423,8 +423,8 @@ namespace bt
 
 	void PeerManager::setGroupIDs(Uint32 up, Uint32 down)
 	{
-		for(PeerMap::iterator i = d->peer_map.begin(); i != d->peer_map.end(); ++i)
-			i.value()->setGroupIDs(up, down);
+		for(Peer::Ptr p: qAsConst(d->peer_map))
+			p->setGroupIDs(up, down);
 	}
 
 	void PeerManager::portPacketReceived(const QString& ip, Uint16 port)
@@ -446,7 +446,7 @@ namespace bt
 
 	void PeerManager::killStalePeers()
 	{
-		foreach(Peer::Ptr p, d->peer_map)
+		for(Peer::Ptr p: qAsConst(d->peer_map))
 		{
 			if(p->getDownloadRate() == 0 && p->getUploadRate() == 0)
 				p->kill();
@@ -463,7 +463,7 @@ namespace bt
 
 		// When entering or exiting superseeding mode kill all peers
 		// but first add the current list to the potential_peers list, so we can reconnect later.
-		foreach(Peer::Ptr p, d->peer_map)
+		for(Peer::Ptr p: qAsConst(d->peer_map))
 		{
 			const net::Address & addr = p->getAddress();
 			addPotentialPeer(addr, false);
@@ -476,7 +476,7 @@ namespace bt
 		if(d->superseeder)
 			return;
 
-		foreach(Peer::Ptr peer, d->peer_map)
+		for(Peer::Ptr peer: qAsConst(d->peer_map))
 		{
 			peer->sendHave(index);
 		}
@@ -490,7 +490,7 @@ namespace bt
 	Uint32 PeerManager::getNumConnectedLeechers() const
 	{
 		Uint32 cnt = 0;
-		foreach(Peer::Ptr peer, d->peer_map)
+		for(const Peer::Ptr& peer: qAsConst(d->peer_map))
 		{
 			if(!peer->isSeeder())
 				cnt++;
@@ -502,7 +502,7 @@ namespace bt
 	Uint32 PeerManager::getNumConnectedSeeders() const
 	{
 		Uint32 cnt = 0;
-		foreach(Peer::Ptr peer, d->peer_map)
+		for(const Peer::Ptr& peer: qAsConst(d->peer_map))
 		{
 			if(peer->isSeeder())
 				cnt++;
@@ -545,7 +545,7 @@ namespace bt
 
 	void PeerManager::visit(PeerManager::PeerVisitor& visitor)
 	{
-		foreach(const Peer::Ptr p, d->peer_map)
+		for(const Peer::Ptr& p: qAsConst(d->peer_map))
 		{
 			visitor.visit(p);
 		}
@@ -554,7 +554,7 @@ namespace bt
 	Uint32 PeerManager::uploadRate() const
 	{
 		Uint32 rate = 0;
-		foreach(const Peer::Ptr p, d->peer_map)
+		for(const Peer::Ptr& p: qAsConst(d->peer_map))
 		{
 			rate += p->getUploadRate();
 		}
@@ -574,7 +574,7 @@ namespace bt
 
 			// If partial seeding status changes, update all peers
 			bt::Uint16 port = ServerInterface::getPort();
-			foreach(Peer::Ptr peer, d->peer_map)
+			for(Peer::Ptr peer: qAsConst(d->peer_map))
 			{
 				peer->sendExtProtHandshake(port, d->tor.getMetaData().size(), d->partial_seed);
 			}
@@ -679,9 +679,8 @@ namespace bt
 
 	bool PeerManager::Private::killBadPeer()
 	{
-		for(PeerMap::iterator i = peer_map.begin(); i != peer_map.end(); ++i)
+		for(Peer::Ptr peer: qAsConst(peer_map))
 		{
-			Peer::Ptr peer = i.value();
 			if(peer->getStats().aca_score <= -5.0 && peer->getStats().aca_score > -50.0)
 			{
 				Out(SYS_GEN | LOG_DEBUG) << "Killing bad peer, to make room for other peers" << endl;

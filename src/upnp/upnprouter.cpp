@@ -550,18 +550,23 @@ namespace bt
 
     void UPnPRouter::UPnPRouterPrivate::httpRequestDone(HTTPRequest* r, bool erase_fwd)
     {
-        QList<Forwarding>::iterator i = fwds.begin();
-        while(i != fwds.end())
+        int idx = 0;
+        bool found = false;
+        for (const Forwarding& fw : qAsConst(fwds))
         {
-            Forwarding& fw = *i;
             if(fw.pending_req == r)
             {
-                fw.pending_req = 0;
-                if(erase_fwd)
-                    fwds.erase(i);
+                found = true;
                 break;
             }
-            ++i;
+            idx++;
+        }
+
+        if (found) {
+            Forwarding& fw = fwds[idx];
+            fw.pending_req = 0;
+            if(erase_fwd)
+                fwds.removeAt(idx);
         }
 
         active_reqs.removeAll(r);

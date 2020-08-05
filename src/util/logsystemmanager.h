@@ -49,9 +49,13 @@ namespace bt
 		void unregisterSystem(const QString & name);
 		
 		typedef QMap<QString,Uint32>::iterator iterator;
+		typedef QMap<QString,Uint32>::const_iterator const_iterator;
 		
 		iterator begin() {return systems.begin();}
 		iterator end() {return systems.end();}
+
+		const_iterator begin() const {return systems.cbegin();}
+		const_iterator end() const {return systems.cend();}
 		
 		static LogSystemManager & instance(); 
 		

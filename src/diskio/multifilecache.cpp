@@ -821,8 +821,8 @@ namespace bt
 		{
 			QString path = output_dir;
 			// reassemble the full directory path
-			for(QStringList::iterator itr = sl.begin(); itr != sl.end(); ++itr)
-				path += *itr + bt::DirSeparator();
+			for(const QString& s : sl)
+				path += s + bt::DirSeparator();
 
 			QDir dir(path);
 			QStringList el = dir.entryList(QDir::AllEntries | QDir::System | QDir::Hidden);

@@ -191,8 +191,8 @@ namespace bt
 			return QStringList();
 		
 		QStringList ips;
-		QList<QNetworkAddressEntry> addr_list = ni.addressEntries();
-		foreach (const QNetworkAddressEntry & entry,addr_list)
+		const QList<QNetworkAddressEntry> addr_list = ni.addressEntries();
+		for (const QNetworkAddressEntry & entry: addr_list)
 		{
 			ips << entry.ip().toString();
 		}
@@ -205,8 +205,8 @@ namespace bt
 		QNetworkInterface ni = QNetworkInterface::interfaceFromName(net_iface);
 		if (!ni.isValid())
 		{
-			QList<QHostAddress> addrs = QNetworkInterface::allAddresses();
-			foreach (const QHostAddress & addr, addrs)
+			const QList<QHostAddress> addrs = QNetworkInterface::allAddresses();
+			for (const QHostAddress & addr: addrs)
 			{
                 if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6 && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64))
 					return addr.toString();
@@ -214,8 +214,8 @@ namespace bt
 		}
 		else
 		{
-			QList<QNetworkAddressEntry> addrs = ni.addressEntries();
-			foreach (const QNetworkAddressEntry & entry,addrs)
+			const QList<QNetworkAddressEntry> addrs = ni.addressEntries();
+			for (const QNetworkAddressEntry & entry: addrs)
 			{
 				QHostAddress addr = entry.ip();
 				if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6 && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64))

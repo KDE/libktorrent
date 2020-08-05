@@ -97,8 +97,8 @@ namespace bt
 		Globals::instance().getPortList().removePort(port,net::TCP);
 		d->reset();
 		
-		QStringList possible = bindAddresses();
-		foreach (const QString & addr,possible)
+		const QStringList possible = bindAddresses();
+		for (const QString & addr: possible)
 		{
 			d->add(addr,p);
 		}

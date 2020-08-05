@@ -81,7 +81,7 @@ namespace utp
 		sock->setWriteNotificationsEnabled(!queue.empty());
 		lock.unlock(); // unlock, so we can't get deadlocked in any subsequent close calls
 
-		foreach (utp::Connection::WPtr conn, to_close)
+		for (const utp::Connection::WPtr& conn: qAsConst(to_close))
 		{
 			Connection::Ptr c = conn.toStrongRef();
 			if (c)

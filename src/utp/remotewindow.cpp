@@ -197,9 +197,8 @@ namespace utp
 			max_window = MIN_PACKET_SIZE;
 			bt::TimeStamp now = bt::Now();
 			// When a timeout occurs retransmit packets which are lost longer then the current timeout
-			for (QList<UnackedPacket>::iterator i = unacked_packets.begin(); i != unacked_packets.end(); ++i)
+			for (UnackedPacket & pkt : unacked_packets)
 			{
-				UnackedPacket & pkt = *i;
 				if (!pkt.retransmitted || now - pkt.send_time > conn->currentTimeout())
 				{
 					conn->retransmit(pkt.packet, pkt.seq_nr);

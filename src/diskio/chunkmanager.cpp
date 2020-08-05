@@ -1101,7 +1101,7 @@ namespace bt
         QList<Uint32> files;
         Torrent& tor = p->tor;
         tor.calcChunkPos(idx, files);
-        foreach (Uint32 fidx, files)
+        for (Uint32 fidx: qAsConst(files))
         {
             TorrentFile& tf = tor.getFile(fidx);
             if (!tf.isPreExistingFile())
@@ -1151,7 +1151,7 @@ namespace bt
         Priority highest = prio;
         // get list of files where first chunk lies in
         tor.calcChunkPos(idx, files);
-        foreach (Uint32 file, files)
+        for (Uint32 file: qAsConst(files))
         {
             Priority np = tor.getFile(file).getPriority();
             if (np > highest)
@@ -1167,7 +1167,7 @@ namespace bt
         QList<Uint32> files;
         Torrent& tor = p->tor;
         tor.calcChunkPos(idx, files);
-        foreach (Uint32 file, files)
+        for (Uint32 file: qAsConst(files))
         {
             const TorrentFile& other = tor.getFile(file);
             if (file == tf->getIndex())

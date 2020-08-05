@@ -100,12 +100,12 @@ namespace bt
 		
 		Uint32 sel = lp.front();
 		Uint32 cnt = downer->numDownloadersForChunk(sel);
-		for (std::list<Uint32>::const_iterator i = lp.begin();i != lp.end();++i)
+		for (Uint32 i : lp)
 		{
-			Uint32 cnt_i = downer->numDownloadersForChunk(*i);
+			Uint32 cnt_i = downer->numDownloadersForChunk(i);
 			if (cnt_i < cnt)
 			{
-				sel = *i;
+				sel = i;
 				cnt = cnt_i;
 			}
 		}

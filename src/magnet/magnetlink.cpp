@@ -74,7 +74,7 @@ namespace bt
 	static QList<QUrl> GetTrackers(const QUrl &url)
 	{
 		QList<QUrl> result;
-		Q_FOREACH(QString tr, QUrlQuery(url).allQueryItemValues("tr", QUrl::FullyDecoded))
+		for(QString tr: QUrlQuery(url).allQueryItemValues("tr", QUrl::FullyDecoded))
 			result << QUrl(tr.replace(QLatin1Char('+'), QLatin1Char(' ')));
 		return result;
 	}

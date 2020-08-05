@@ -54,12 +54,12 @@ namespace dht
 		/// Save table to a file
 		void saveTable(const QString & file);
 		
-		/// FInd the K closest nodes
-		void findKClosestNodes(KClosestNodesSearch & kns);
+		/// Find the K closest nodes
+		void findKClosestNodes(KClosestNodesSearch & kns) const;
 		
 	private:
 		typedef std::list<KBucket::Ptr> KBucketList;
-		KBucketList::iterator findBucket(const dht::Key & id);
+		inline KBucketList::iterator findBucket(const dht::Key & id);
 		
 	private:
 		Key our_id;

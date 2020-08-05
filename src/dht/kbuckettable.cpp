@@ -98,9 +98,9 @@ namespace dht
 	int KBucketTable::numEntries() const
 	{
 		int count = 0;
-		for(KBucketList::const_iterator i = buckets.begin(); i != buckets.end(); ++i)
+		for(const KBucket::Ptr& b : qAsConst(buckets))
 		{
-			count += (*i)->getNumEntries();
+			count += b->getNumEntries();
 		}
 
 		return count;
@@ -119,9 +119,8 @@ namespace dht
 
 	void KBucketTable::refreshBuckets(DHT* dh_table)
 	{
-		for(KBucketList::iterator i = buckets.begin(); i != buckets.end(); ++i)
+		for(const KBucket::Ptr& b : qAsConst(buckets))
 		{
-			KBucket::Ptr b = *i;
 			if(b->needsToBeRefreshed())
 			{
 				// the key needs to be the refreshed
@@ -135,9 +134,8 @@ namespace dht
 
 	void KBucketTable::onTimeout(const net::Address& addr)
 	{
-		for(KBucketList::iterator i = buckets.begin(); i != buckets.end(); ++i)
+		for(const KBucket::Ptr& b : qAsConst(buckets))
 		{
-			KBucket::Ptr b = *i;
 			if(b->onTimeout(addr))
 				return;
 		}
@@ -192,9 +190,8 @@ namespace dht
 		try
 		{
 			enc.beginList();
-			for(KBucketList::iterator i = buckets.begin(); i != buckets.end(); ++i)
+			for(const KBucket::Ptr& b : qAsConst(buckets))
 			{
-				KBucket::Ptr b = *i;
 				b->save(enc);
 			}
 			enc.end();
@@ -205,11 +202,10 @@ namespace dht
 		}
 	}
 
-	void KBucketTable::findKClosestNodes(KClosestNodesSearch& kns)
+	void KBucketTable::findKClosestNodes(KClosestNodesSearch& kns) const
 	{
-		for(KBucketList::iterator i = buckets.begin(); i != buckets.end(); ++i)
+		for(const KBucket::Ptr& b : qAsConst(buckets))
 		{
-			KBucket::Ptr b = *i;
 			b->findKClosestNodes(kns);
 		}
 	}

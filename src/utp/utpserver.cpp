@@ -250,7 +250,7 @@ namespace utp
 			d->pending.clear();
 		}
 
-		foreach (mse::EncryptedPacketSocket::Ptr s, p)
+		for (const mse::EncryptedPacketSocket::Ptr& s: qAsConst(p))
 		{
 			newConnection(s);
 		}
@@ -265,8 +265,8 @@ namespace utp
 		Globals::instance().getPortList().removePort(port, net::UDP);
 		d->sockets.clear();
 
-		QStringList possible = bindAddresses();
-		foreach (const QString & addr, possible)
+		const QStringList possible = bindAddresses();
+		for (const QString & addr: possible)
 		{
 			d->bind(net::Address(addr, p));
 		}
@@ -290,14 +290,14 @@ namespace utp
 	void UTPServer::setTOS(Uint8 type_of_service)
 	{
 		d->tos = type_of_service;
-		foreach (net::ServerSocket::Ptr sock, d->sockets)
-		sock->setTOS(d->tos);
+		for (net::ServerSocket::Ptr sock: qAsConst(d->sockets))
+			sock->setTOS(d->tos);
 	}
 
 	void UTPServer::threadStarted()
 	{
 		d->timer->start(500);
-		foreach (net::ServerSocket::Ptr sock, d->sockets)
+		for (net::ServerSocket::Ptr sock: qAsConst(d->sockets))
 		{
 			sock->setReadNotificationsEnabled(true);
 		}
@@ -396,7 +396,7 @@ namespace utp
 			}
 			else
 			{
-				foreach (net::ServerSocket::Ptr sock, d->sockets)
+				for (net::ServerSocket::Ptr sock: qAsConst(d->sockets))
 				sock->setWriteNotificationsEnabled(true);
 			}
 		}
@@ -407,7 +407,7 @@ namespace utp
 	{
 		if (ev->type() == QEvent::User)
 		{
-			foreach (net::ServerSocket::Ptr sock, d->sockets)
+			for (net::ServerSocket::Ptr sock: qAsConst(d->sockets))
 			sock->setWriteNotificationsEnabled(true);
 		}
 	}
@@ -450,7 +450,7 @@ namespace utp
 		if (!d->utp_thread)
 		{
 			d->utp_thread = new UTPServerThread(this);
-			foreach (net::ServerSocket::Ptr sock, d->sockets)
+			for (const net::ServerSocket::Ptr& sock: qAsConst(d->sockets))
 				sock->moveToThread(d->utp_thread);
 			d->timer->moveToThread(d->utp_thread);
 			d->utp_thread->start();

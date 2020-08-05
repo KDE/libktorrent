@@ -165,7 +165,7 @@ namespace bt
 	QList<TrackerInterface*> TrackerManager::getTrackers() 
 	{
 		QList<TrackerInterface*> ret;
-		for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
+		for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();++i)
 		{
 			ret.append(i->second);
 		}
@@ -306,7 +306,7 @@ namespace bt
 		}
 		else
 		{
-			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
+			for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();++i)
 			{
 				if (i->second->isEnabled())
 					i->second->start();
@@ -327,14 +327,14 @@ namespace bt
 			if (curr)
 				curr->stop(wjob);
 			
-			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
+			for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();++i)
 			{
 				i->second->reset();
 			}
 		}
 		else
 		{
-			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
+			for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();++i)
 			{
 				i->second->stop(wjob);
 				i->second->reset();
@@ -351,7 +351,7 @@ namespace bt
 		}
 		else
 		{
-			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
+			for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();++i)
 			{
 				i->second->completed();
 			}
@@ -360,7 +360,7 @@ namespace bt
 
 	void TrackerManager::scrape()
 	{
-		for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
+		for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();++i)
 		{
 			i->second->scrape();
 		}
@@ -377,7 +377,7 @@ namespace bt
 		}
 		else
 		{
-			for (PtrMap<QUrl,Tracker>::iterator i = trackers.begin();i != trackers.end();++i)
+			for (PtrMap<QUrl,Tracker>::const_iterator i = trackers.begin();i != trackers.end();++i)
 			{
 				if (i->second->isEnabled())
 					i->second->manualUpdate();
@@ -393,8 +393,8 @@ namespace bt
 			return;
 		
 		QTextStream stream(&file);
-		for (QList<QUrl>::iterator i = custom_trackers.begin();i != custom_trackers.end();++i)
-			stream << (*i).toDisplayString() << ::endl;
+		for (const QUrl& url : qAsConst(custom_trackers))
+			stream << url.toDisplayString() << ::endl;
 	}
 	
 	void TrackerManager::loadCustomURLs()

@@ -99,8 +99,8 @@ namespace bt
 	
 	PieceData::Ptr Cache::findPiece(Chunk* c,Uint32 off,Uint32 len,bool read_only)
 	{
-		PieceCache::iterator i = piece_cache.find(c);
-		while (i != piece_cache.end() && i.key() == c)
+		PieceCache::const_iterator i = piece_cache.constFind(c);
+		while (i != piece_cache.constEnd() && i.key() == c)
 		{
 			PieceData::Ptr cp = i.value();
 			if (cp->offset() == off && cp->length() == len && !(!cp->writeable() && !read_only))
@@ -170,7 +170,7 @@ namespace bt
 			throw Error(i18n("Failed to create %1: %2", mp_file, fptr.errorString()));
 		
 		QTextStream out(&fptr);
-		foreach(const QString & mount_point, mount_points)
+		for(const QString & mount_point: qAsConst(mount_points))
 		{
 			out << mount_point << ::endl;
 		}
@@ -203,11 +203,11 @@ namespace bt
 	
 	bool Cache::isStorageMounted(QStringList& missing)
 	{
-        if(mount_points.isEmpty())
-            return true;
-        
+		if(mount_points.isEmpty())
+			return true;
+
 		missing.clear();
-		foreach(const QString & mount_point, mount_points)
+		for(const QString & mount_point: qAsConst(mount_points))
 		{
 			if(!IsMounted(mount_point))
 				missing.append(mount_point);

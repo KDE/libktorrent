@@ -65,7 +65,9 @@ namespace bt
 		pman = new PeerManager(tor);
 		connect(pman,SIGNAL(newPeer(Peer*)),this,SLOT(onNewPeer(Peer*)));
 		
-		foreach (const QUrl &url,mlink.trackers())
+
+		const QList<QUrl> trackers_list = mlink.trackers();
+		for (const QUrl &url: trackers_list)
 		{
 			Tracker* tracker;
 			if (url.scheme() == QLatin1String("udp"))
@@ -94,7 +96,7 @@ namespace bt
 		if (!running())
 			return;
 		
-		foreach (Tracker* tracker,trackers)
+		for (Tracker* tracker: qAsConst(trackers))
 		{
 			tracker->stop();
 			delete tracker;

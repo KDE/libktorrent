@@ -46,12 +46,12 @@ private Q_SLOTS:
 	
 	void testMountPointDetermination()
 	{
-		QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
+		const QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
 		QString mountpoint;
 		
-		foreach (Solid::Device dev,devs)
+		for (const Solid::Device& dev: devs)
 		{
-			Solid::StorageAccess* sa = dev.as<Solid::StorageAccess>();
+			const Solid::StorageAccess* sa = dev.as<Solid::StorageAccess>();
 			if (sa->isAccessible())
 			{
 				QVERIFY(bt::MountPoint(sa->filePath()) == sa->filePath());

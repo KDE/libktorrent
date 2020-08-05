@@ -44,7 +44,7 @@ namespace bt
 	private:
 		bool calcACAScore(Peer::Ptr p, ChunkManager & cman, const TorrentStats & stats);
 		Peer::Ptr updateOptimisticPeer(PeerManager & pman, const QList<Peer::Ptr> & ppl);
-		void doUnchoking(QList<Peer::Ptr> & ppl, Peer::Ptr poup);
+		void doUnchoking(const QList<Peer::Ptr> &ppl, Peer::Ptr poup);
 		
 	private:
 		TimeStamp last_opt_sel_time; // last time we updated the optimistic unchoked peer

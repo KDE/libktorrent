@@ -160,7 +160,7 @@ namespace bt
         /*KUrl u = url; PORT: KF5
         u.setQuery(QString());
         Out(SYS_TRK | LOG_NOTICE) << "SSL errors detected when announcing to " << u.prettyUrl() << ":" << endl;
-        foreach (const QSslError& err, errors)
+	for (const QSslError& err: errors)
             Out(SYS_TRK | LOG_NOTICE) << err.errorString() << endl;
         Out(SYS_TRK | LOG_NOTICE) << "Errors will be ignored " << endl;
         http->ignoreSslErrors();*/

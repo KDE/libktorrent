@@ -33,7 +33,7 @@ namespace bt
 
 	WaitJob::~WaitJob()
 	{
-		foreach (ExitOperation* op,exit_ops)
+		for (ExitOperation* op: qAsConst(exit_ops))
 			delete op;
 	}
 

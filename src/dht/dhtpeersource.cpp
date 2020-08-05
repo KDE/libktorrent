@@ -92,7 +92,7 @@ namespace dht
 		curr_task = dh_table.announce(info_hash,port);
 		if (curr_task)
 		{
-			foreach (const bt::DHTNode & n,nodes)
+			for (const bt::DHTNode & n: qAsConst(nodes))
 				curr_task->addDHTNode(n.ip,n.port);
 
 			connect(curr_task, &AnnounceTask::dataReady, this, &DHTPeerSource::onDataReady);

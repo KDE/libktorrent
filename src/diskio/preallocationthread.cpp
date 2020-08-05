@@ -60,7 +60,7 @@ namespace bt
 	{
 		try
 		{
-			foreach(CacheFile::Ptr cache_file, todo)
+			for(CacheFile::Ptr cache_file: qAsConst(todo))
 			{
 				if(!isStopped())
 				{

@@ -69,7 +69,7 @@ namespace bt
 		
 		active_webseed_downloads = 0;
 		const QList<QUrl> & urls = tor.getWebSeeds();
-		foreach (const QUrl &u,urls)
+		for (const QUrl &u: urls)
 		{
 			if (u.scheme() == QLatin1String("http"))
 			{
@@ -152,7 +152,7 @@ namespace bt
 			else
 			{
 				current_chunks.erase(p.getIndex());
-				foreach (WebSeed* ws,webseeds)
+				for (WebSeed* ws: qAsConst(webseeds))
 				{
 					if (ws->inCurrentRange(p.getIndex()))
 						ws->chunkDownloaded(p.getIndex());
@@ -189,14 +189,14 @@ namespace bt
 		normalUpdate();
 		
 		// now see if there aren't any timed out pieces
-		foreach (PieceDownloader* pd,piece_downloaders)
+		for (PieceDownloader* pd: qAsConst(piece_downloaders))
 		{
 			pd->checkTimeouts();
 		}
 		
 		if (use_webseeds)
 		{
-			foreach (WebSeed* ws,webseeds)
+			for (WebSeed* ws: qAsConst(webseeds))
 			{
 				ws->update();
 			}
@@ -204,7 +204,7 @@ namespace bt
 		
 		if (isFinished() && webseeds_on)
 		{
-			foreach (WebSeed* ws,webseeds)
+			for (WebSeed* ws: qAsConst(webseeds))
 			{
 				ws->cancel();
 			}
@@ -231,7 +231,7 @@ namespace bt
 			}
 		}
 		
-		foreach (PieceDownloader* pd,piece_downloaders)
+		for (PieceDownloader* pd: qAsConst(piece_downloaders))
 		{
 			if (!pd->isChoked())
 			{
@@ -246,7 +246,7 @@ namespace bt
 		
 		if (use_webseeds)
 		{
-			foreach (WebSeed* ws,webseeds)
+			for (WebSeed* ws: qAsConst(webseeds))
 			{
 				if (!ws->busy() && ws->isEnabled() && ws->failedAttempts() < 3)
 				{
@@ -258,7 +258,7 @@ namespace bt
 		{
 			// reset all webseeds, webseeds have been disabled
 			webseeds_on = use_webseeds;
-			foreach (WebSeed* ws,webseeds)
+			for (WebSeed* ws: qAsConst(webseeds))
 			{
 				if (ws->busy() && ws->isEnabled())
 				{
@@ -395,7 +395,7 @@ namespace bt
 		if (webseed_endgame_mode)
 			return true;
 		
-		foreach (WebSeed* ws,webseeds)
+		for (WebSeed* ws: qAsConst(webseeds))
 		{
 			if (ws->busy() && ws->inCurrentRange(chunk))
 				return false;
@@ -439,7 +439,7 @@ namespace bt
 			// hash ok so save it
 			try
 			{
-				foreach (WebSeed* ws,webseeds)
+				for (WebSeed* ws: qAsConst(webseeds))
 				{
 					// tell all webseeds a chunk is downloaded
 					if (ws->inCurrentRange(c->getIndex()))
@@ -492,7 +492,7 @@ namespace bt
 		current_chunks.clear();
 		piece_downloaders.clear();
 		
-		foreach (WebSeed* ws,webseeds)
+		for (WebSeed* ws: qAsConst(webseeds))
 			ws->cancel();
 	}
 	
@@ -508,7 +508,7 @@ namespace bt
 		}
 		
 		current_chunks.clear();
-		foreach (WebSeed* ws,webseeds)
+		for (WebSeed* ws: qAsConst(webseeds))
 			ws->reset();
 	}
 	
@@ -516,12 +516,12 @@ namespace bt
 	{
 		// sum of the download rate of each peer
 		Uint32 rate = 0;
-		foreach (PieceDownloader* pd,piece_downloaders)
+		for (PieceDownloader* pd: qAsConst(piece_downloaders))
 			if (pd)
 				rate += pd->getDownloadRate();
 		
 		
-		foreach (WebSeed* ws,webseeds)
+		for (WebSeed* ws: qAsConst(webseeds))
 		{
 			rate += ws->getDownloadRate();
 		}
@@ -541,7 +541,7 @@ namespace bt
 			tmon->downloadStarted(cd);
 		}
 		
-		foreach (WebSeed* ws,webseeds)
+		for (WebSeed* ws: qAsConst(webseeds))
 		{
 			WebSeedChunkDownload* cd = ws->currentChunkDownload();
 			if (cd)
@@ -714,7 +714,7 @@ namespace bt
 			cman.resetChunk(i); // reset chunk it is not fully downloaded yet
 		}
 		
-		foreach (WebSeed* ws,webseeds)
+		for (WebSeed* ws: qAsConst(webseeds))
 		{
 			ws->onExcluded(from,to);
 		}
@@ -766,7 +766,7 @@ namespace bt
 			{
 				bytes_downloaded += c->getSize();
 				
-				foreach (WebSeed* ws,webseeds)
+				for (WebSeed* ws: qAsConst(webseeds))
 				{
 					// tell all webseeds a chunk is downloaded
 					if (ws->inCurrentRange(c->getIndex()))
@@ -829,7 +829,7 @@ namespace bt
 	WebSeed* Downloader::addWebSeed(const QUrl &url)
 	{
 		// Check for dupes
-		foreach (WebSeed* ws,webseeds)
+		for (WebSeed* ws: qAsConst(webseeds))
 		{
 			if (ws->getUrl() == url)
 				return 0;
@@ -845,7 +845,7 @@ namespace bt
 		
 	bool Downloader::removeWebSeed(const QUrl &url)
 	{
-		foreach (WebSeed* ws,webseeds)
+		for (WebSeed* ws: qAsConst(webseeds))
 		{
 			if (ws->getUrl() == url && ws->isUserCreated())
 			{
@@ -881,13 +881,13 @@ namespace bt
 		}
 		
 		QTextStream out(&fptr); 
-		foreach (WebSeed* ws,webseeds)
+		for (WebSeed* ws: qAsConst(webseeds))
 		{
 			if (ws->isUserCreated())
 				out << ws->getUrl().toDisplayString() << ::endl;
 		}
 		out << "====disabled====" << ::endl;
-		foreach (WebSeed* ws,webseeds)
+		for (WebSeed* ws: qAsConst(webseeds))
 		{
 			if (!ws->isEnabled())
 				out << ws->getUrl().toDisplayString() << ::endl;
@@ -920,7 +920,7 @@ namespace bt
 				
 			if (disabled_list_found)
 			{
-				foreach (WebSeed* ws,webseeds)
+				for (WebSeed* ws: qAsConst(webseeds))
 				{
 					if (ws->getUrl() == url)
 					{
@@ -942,7 +942,7 @@ namespace bt
 	
 	void Downloader::setGroupIDs(Uint32 up,Uint32 down)
 	{
-		foreach (WebSeed* ws,webseeds)
+		for (WebSeed* ws: qAsConst(webseeds))
 		{
 			ws->setGroupIDs(up,down);
 		}

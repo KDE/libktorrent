@@ -67,8 +67,8 @@ private Q_SLOTS:
 		QTextStream out(&file);
 		out << test_data;
 		
-		QStringList lines = test_data.split("\n");
-		foreach (const QString & line,lines)
+		const QStringList lines = test_data.split("\n");
+		for (const QString & line: lines)
 		{
 			QStringList sl = line.split("=");
 			if (sl.count() == 2)
@@ -88,7 +88,7 @@ private Q_SLOTS:
 		StatsFile st(file.fileName());
 		
 		int idx = 0;
-		foreach (const QString & key,keys)
+		for (const QString & key: qAsConst(keys))
 		{
 			QVERIFY(st.hasKey(key));
 			QVERIFY(st.readString(key) == values[idx++]);

@@ -317,8 +317,8 @@ namespace bt
 	{
 		Out(SYS_GEN|LOG_DEBUG) << "Name : " << name_suggestion << endl;
 		
-//		for (QList<QUrl>::iterator i = tracker_urls.begin();i != tracker_urls.end();i++)
-//			Out(SYS_GEN|LOG_DEBUG) << "Tracker URL : " << *i << endl;
+//		for (cost QUrl & url : qAsConst(tracker_urls) )
+//			Out(SYS_GEN|LOG_DEBUG) << "Tracker URL : " << url << endl;
 		
 		Out(SYS_GEN|LOG_DEBUG) << "Piece Length : " << chunk_size << endl;
 		if (this->isMultiFile())

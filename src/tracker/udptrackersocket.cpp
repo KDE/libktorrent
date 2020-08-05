@@ -61,7 +61,7 @@ namespace bt
 		
 		bool send(const Uint8* buf,int size,const net::Address & addr)
 		{
-			foreach (net::ServerSocket::Ptr sock,sockets)
+			for (net::ServerSocket::Ptr sock: qAsConst(sockets))
 				if (sock->sendTo(buf,size,addr) == size)
 					return true;
 				
@@ -108,8 +108,8 @@ namespace bt
 		if (port == 0)
 			port = 4444;
 		
-		QStringList ips = NetworkInterfaceIPAddresses(NetworkInterface());
-		foreach (const QString & ip,ips)
+		const QStringList ips = NetworkInterfaceIPAddresses(NetworkInterface());
+		for (const QString & ip: ips)
 			d->listen(ip,port);
 		
 		if (d->sockets.count() == 0)

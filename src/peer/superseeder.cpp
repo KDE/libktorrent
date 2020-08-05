@@ -58,7 +58,7 @@ namespace bt
 				++i;
 		}
 		
-		foreach (PeerInterface* p, peers)
+		for (PeerInterface* p: qAsConst(peers))
 		{
 			sendChunk(p);
 		}

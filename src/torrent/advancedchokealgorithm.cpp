@@ -131,13 +131,13 @@ namespace bt
 		doUnchoking(ppl, updateOptimisticPeer(pman, ppl));
 	}
 
-	void AdvancedChokeAlgorithm::doUnchoking(QList<Peer::Ptr> & ppl, Peer::Ptr poup)
+	void AdvancedChokeAlgorithm::doUnchoking(const QList<Peer::Ptr> & ppl, Peer::Ptr poup)
 	{
 		// Get the number of upload slots
 		Uint32 num_slots = Choker::getNumUploadSlots();
 		// Do the choking and unchoking
 		Uint32 num_unchoked = 0;
-		foreach (Peer::Ptr p, ppl)
+		for (Peer::Ptr p: ppl)
 		{
 			if (!poup && num_unchoked < num_slots)
 			{

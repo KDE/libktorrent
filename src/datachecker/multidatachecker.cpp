@@ -225,9 +225,9 @@ namespace bt
 			if (i.key() < min_idx)
 				i = files.erase(i);
 			else
-                        {
+			{
 				++i;
-                        }
+			}
 		}
 	}
 

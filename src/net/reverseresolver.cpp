@@ -127,7 +127,7 @@ namespace net
 		}
 		
 		// cleanup if necessary
-		foreach (ReverseResolver* rr,todo_list)
+		for (ReverseResolver* rr: qAsConst(todo_list))
 			rr->deleteLater();
 		todo_list.clear();
 	}

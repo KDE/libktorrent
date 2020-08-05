@@ -157,7 +157,7 @@ bool KTCLI::loadFromFile(const QString & path)
 {
 	try
 	{
-        tc->init(this, bt::LoadFile(path), tempDir(), QDir::currentPath());
+		tc->init(this, bt::LoadFile(path), tempDir(), QDir::currentPath());
 		tc->setLoadUrl(QUrl(path));
 		tc->createFiles();
 		return true;

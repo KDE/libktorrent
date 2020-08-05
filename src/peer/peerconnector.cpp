@@ -145,7 +145,7 @@ namespace bt
 		tried_methods.insert(current_method);
 
 		bt::TransportProtocol primary = ServerInterface::primaryTransportProtocol();
-		QList<Method> allowed;
+//		QList<Method> allowed;
 
 		bool tcp_allowed = OpenFileAllowed();
 		bool encryption = ServerInterface::isEncryptionEnabled();

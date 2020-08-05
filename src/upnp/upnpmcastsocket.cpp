@@ -204,7 +204,7 @@ namespace bt
 		// file format is simple : 2 lines per router, 
 		// one containing the server, the other the location
 		QTextStream fout(&fptr);
-		foreach (UPnPRouter* r,d->routers)
+		for (UPnPRouter* r: qAsConst(d->routers))
 		{
 			fout << r->getServer() << ::endl;
 			fout << r->getLocation().toString() << ::endl;
@@ -375,7 +375,7 @@ namespace bt
 	
 	UPnPRouter* UPnPMCastSocket::UPnPMCastSocketPrivate::findDevice(const QUrl &location)
 	{
-		foreach (UPnPRouter* r, routers)
+		for (UPnPRouter* r: qAsConst(routers))
 		{
 			if (UrlCompare(r->getLocation(),location))
 				return r;
