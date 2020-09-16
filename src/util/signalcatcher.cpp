@@ -133,7 +133,7 @@ namespace bt
 		::read(fd, &sig, sizeof(int));
 		
 		Out(SYS_GEN|LOG_IMPORTANT) << "Signal " <<  sig << " caught " << endl;
-		emit triggered();
+		Q_EMIT triggered();
 	}
 
 

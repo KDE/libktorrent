@@ -188,12 +188,12 @@ namespace bt
 		Q_UNUSED(tc);
 		Q_UNUSED(chunk);
 		d->update();
-		emit readyRead();
+		Q_EMIT readyRead();
 	}
 	
 	void TorrentFileStream::emitReadChannelFinished()
 	{
-		emit readChannelFinished();
+		Q_EMIT readChannelFinished();
 	}
 
 	

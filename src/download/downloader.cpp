@@ -449,12 +449,12 @@ namespace bt
 				cman.chunkDownloaded(c->getIndex());
 				Out(SYS_GEN|LOG_IMPORTANT) << "Chunk " << c->getIndex() << " downloaded " << endl;
 				pman.sendHave(c->getIndex());
-				emit chunkDownloaded(c->getIndex());
+				Q_EMIT chunkDownloaded(c->getIndex());
 			}
 			catch (Error & e)
 			{
 				Out(SYS_DIO|LOG_IMPORTANT) << "Error " << e.toString() << endl;
-				emit ioError(e.toString());
+				Q_EMIT ioError(e.toString());
 				return false;
 			}
 		}
@@ -793,7 +793,7 @@ namespace bt
 			catch (Error & e)
 			{
 				Out(SYS_DIO|LOG_IMPORTANT) << "Error " << e.toString() << endl;
-				emit ioError(e.toString());
+				Q_EMIT ioError(e.toString());
 			}
 		}
 		else

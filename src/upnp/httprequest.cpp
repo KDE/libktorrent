@@ -50,7 +50,7 @@ namespace bt
 			socket.close();
 			error = i18n("Operation timed out");
                         success = false;
-			emit result(this);
+			Q_EMIT result(this);
 			operationFinished(this);
 			return;
 		}
@@ -69,13 +69,13 @@ namespace bt
 		{
 			error = networkReply->errorString();
 			success = false;
-			emit result(this);
+			Q_EMIT result(this);
 			operationFinished(this);
 			return;
 		}
 		reply = networkReply->readAll();
 		success = true;
-		emit result(this);
+		Q_EMIT result(this);
 		operationFinished(this);
 }
 

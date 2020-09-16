@@ -72,7 +72,7 @@ namespace net
 	void ReverseResolver::run()
 	{
 		QString res = resolve(addr_to_resolve);
-		emit resolved(res);
+		Q_EMIT resolved(res);
 	}
 	
 	

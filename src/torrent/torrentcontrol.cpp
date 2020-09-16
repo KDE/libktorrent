@@ -140,7 +140,7 @@ namespace bt
         if (istats.io_error)
         {
             stop();
-            emit stoppedByError(this, stats.error_msg);
+            Q_EMIT stoppedByError(this, stats.error_msg);
             return;
         }
 
@@ -277,7 +277,7 @@ namespace bt
             {
                 stats.auto_stopped = true;
                 stop();
-                emit seedingAutoStopped(this, overMaxRatio() ? MAX_RATIO_REACHED : MAX_SEED_TIME_REACHED);
+                Q_EMIT seedingAutoStopped(this, overMaxRatio() ? MAX_RATIO_REACHED : MAX_SEED_TIME_REACHED);
             }
 
             //Update diskspace if needed (every 1 min)
@@ -288,7 +288,7 @@ namespace bt
 
             // Emit the needDataCheck signal if needed
             if (checkOnCompletion)
-                needDataCheck(this);
+                Q_EMIT needDataCheck(this);
 
             // Move completed files if needed:
             if (moveCompleted)
@@ -512,7 +512,7 @@ namespace bt
         updateStatus();
         updateStats();
 
-        emit torrentStopped(this);
+        Q_EMIT torrentStopped(this);
     }
 
     void TorrentControl::setMonitor(MonitorInterface* tmo)
@@ -1329,7 +1329,7 @@ namespace bt
             stats.max_share_ratio = ratio;
 
         saveStats();
-        emit maxRatioChanged(this);
+        Q_EMIT maxRatioChanged(this);
     }
 
     void TorrentControl::setMaxSeedTime(float hours)
@@ -1645,7 +1645,7 @@ namespace bt
                 // so that we do bother the user continuously
                 if (emit_sig && (toStop || !istats.diskspace_warning_emitted))
                 {
-                    emit diskSpaceLow(this, toStop);
+                    Q_EMIT diskSpaceLow(this, toStop);
                     istats.diskspace_warning_emitted = true;
                 }
 

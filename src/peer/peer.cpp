@@ -782,7 +782,7 @@ namespace bt
 
     void Peer::emitMetadataDownloaded(const QByteArray& data)
     {
-        emit metadataDownloaded(data);
+        Q_EMIT metadataDownloaded(data);
     }
 
     bool Peer::hasWantedChunks(const bt::BitSet& wanted_chunks) const
