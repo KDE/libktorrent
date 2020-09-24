@@ -1191,7 +1191,7 @@ namespace bt
             return false;
 
         const BitSet& bs = downloadedChunksBitSet();
-        for (Uint32 i = 0; i < preview_range; i++)
+        for (Uint32 i = 0; i < qMin(preview_range, bs.numOnBits()); i++)
         {
             if (!bs.get(i))
                 return false;
