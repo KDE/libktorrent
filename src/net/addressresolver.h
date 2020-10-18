@@ -47,7 +47,7 @@ namespace net
 		AddressResolver(const QString & host, bt::Uint16 port, QObject* parent, const char* slot);
 		~AddressResolver() override;
 		
-		/// Dit the resolver succeed ?
+		/// Did the resolver succeed ?
 		bool succeeded() const {return succesfull;}
 		
 		/// Get the resulting address
