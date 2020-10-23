@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = libktorrent
-PROJECT_NUMBER         = @LIBKTORRENT_VERSION@
+PROJECT_NUMBER         = @RELEASE_SERVICE_VERSION@
 OUTPUT_DIRECTORY       = @DOCS_OUTPUT_DIRECTORY@
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
@@ -160,8 +160,8 @@ FORMULA_FONTSIZE       = 10
 # configuration options related to the Qt Docs output
 #---------------------------------------------------------------------------
 GENERATE_QHP       = @GENERATE_QHP@
-QHP_NAMESPACE      = "org.ktorrent.@LIBKTORRENT_VERSION@"
-QHP_VIRTUAL_FOLDER = "libktorrent-@LIBKTORRENT_VERSION@"
+QHP_NAMESPACE      = "org.ktorrent.@RELEASE_SERVICE_VERSION@"
+QHP_VIRTUAL_FOLDER = "libktorrent-@RELEASE_SERVICE_VERSION@"
 QCH_FILE           = @CMAKE_BINARY_DIR@/"libktorrent.qch"
 QHG_LOCATION       = "qhelpgenerator"
 #---------------------------------------------------------------------------

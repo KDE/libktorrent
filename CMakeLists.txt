@@ -1,6 +1,16 @@
-project(LIBKTORRENT)
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+# KDE Application Version, managed by release script
+set (RELEASE_SERVICE_VERSION_MAJOR "20")
+set (RELEASE_SERVICE_VERSION_MINOR "11")
+set (RELEASE_SERVICE_VERSION_MICRO "70")
+set (RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_VERSION_MINOR}.${RELEASE_SERVICE_VERSION_MICRO}")
+project(LIBKTORRENT VERSION ${RELEASE_SERVICE_VERSION})
+
+add_definitions(-D'LIBKTORRENT_VERSION="${RELEASE_SERVICE_VERSION}"'
+                -D'LIBKTORRENT_MAJOR=${RELEASE_SERVICE_VERSION_MAJOR}'
+                -D'LIBKTORRENT_MINOR=${RELEASE_SERVICE_VERSION_MINOR}'
+                -D'LIBKTORRENT_MICRO=${RELEASE_SERVICE_VERSION_MICRO}')
 
 # set some default settings
 enable_testing()
@@ -23,7 +33,7 @@ include(FeatureSummary)
 include(GenerateExportHeader)
 include(ECMMarkAsTest)
 include(ECMSetupVersion)
-include(ECMPackageConfigHelpers)
+include(CMakePackageConfigHelpers)
 
 set(Boost_MIN_VERSION "1.34.0")
 set(LibGMP_MIN_VERSION "6.0.0")
@@ -31,9 +41,7 @@ set(LibGcrypt_MIN_VERSION "1.4.5")
 set(KF5_MIN_VERSION "5.15")
 set(QT_MIN_VERSION "5.10.0")
 
-set(LIBKTORRENT_VERSION "2.2.0")
-
-ecm_setup_version(${LIBKTORRENT_VERSION} VARIABLE_PREFIX LIBKTORRENT
+ecm_setup_version(${RELEASE_SERVICE_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/libktorrent_version.h"
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfigVersion.cmake"
                         SOVERSION 1)
@@ -111,7 +119,7 @@ add_subdirectory(doc)
 
 set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF5Torrent")
 
-ecm_configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KF5TorrentConfig.cmake.in"
+configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KF5TorrentConfig.cmake.in"
                               "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfig.cmake"
                               INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
                               PATH_VARS INCLUDE_INSTALL_DIR

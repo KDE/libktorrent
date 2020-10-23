@@ -18,6 +18,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
+
 #include "version.h"
 #include <QString>
 
@@ -28,63 +29,29 @@ namespace bt
 	static int g_major = 0;
 	static int g_minor = 0;
 	static int g_release = 0;
-	static VersionType g_vtype = NORMAL;
 	static QString g_peer_id = QStringLiteral("KT");
-	
+
+// TODO: create a function SetClientInfo(const QString &name, QString &version, const QString &peer_id) and  mark this one [[deprecated]]
 	void SetClientInfo(const QString & name,int major,int minor,int release,VersionType type,const QString & peer_id)
 	{
+		Q_UNUSED(type)
 		g_name = name;
 		g_major = major;
 		g_minor = minor;
 		g_release = release;
-		g_vtype = type;
 		g_peer_id = peer_id;
 	}
 	
 	QString PeerIDPrefix()
 	{
-		QString str = QString("-%1%2%3").arg(g_peer_id).arg(g_major).arg(g_minor);
-		switch (g_vtype)
-		{
-			case bt::NORMAL:
-				str += QString::number(g_release) + "0-";
-				break;
-			case bt::ALPHA:
-				str += QString("A%1-").arg(g_release);
-				break;
-			case bt::BETA:
-				str += QString("B%1-").arg(g_release);
-				break;
-			case bt::RELEASE_CANDIDATE:
-				str += QString("R%1-").arg(g_release);
-				break;
-			case DEVEL:
-				str += QString("DV-");
-		}
+		QString str = QString("-%1%2%3").arg(g_peer_id).arg(g_major).arg(g_minor).arg(g_release);
+		str += "-";
 		return str;
 	}
 
 	QString GetVersionString()
 	{
-		QString str = g_name + QString("/%1.%2").arg(g_major).arg(g_minor);
-		switch (g_vtype)
-		{
-			case bt::NORMAL:
-				str += QString(".%1").arg(g_release);
-				break;
-			case bt::ALPHA:
-				str += QString("alpha%1").arg(g_release);
-				break;
-			case bt::BETA:
-				str += QString("beta%1").arg(g_release);
-				break;
-			case bt::RELEASE_CANDIDATE:
-				str += QString("rc%1").arg(g_release);
-				break;
-			case DEVEL:
-				str += "dev";
-				break;
-		}
+		QString str = g_name + QString("/%1.%2.%3").arg(g_major).arg(g_minor).arg(g_release);
 		return str;
 	}
 }
