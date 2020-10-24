@@ -206,8 +206,8 @@ namespace bt
 		QTextStream fout(&fptr);
 		for (UPnPRouter* r: qAsConst(d->routers))
 		{
-			fout << r->getServer() << ::endl;
-			fout << r->getLocation().toString() << ::endl;
+			fout << r->getServer() << Qt::endl;
+			fout << r->getLocation().toString() << Qt::endl;
 		}
 	}
 	

@@ -394,7 +394,7 @@ namespace bt
 		
 		QTextStream stream(&file);
 		for (const QUrl& url : qAsConst(custom_trackers))
-			stream << url.toDisplayString() << ::endl;
+			stream << url.toDisplayString() << Qt::endl;
 	}
 	
 	void TrackerManager::loadCustomURLs()
@@ -427,7 +427,7 @@ namespace bt
 			QUrl url = i->first;
 			Tracker* trk = i->second;
 			
-			stream << (trk->isEnabled() ? "1:" : "0:") << url.toDisplayString() << ::endl;
+			stream << (trk->isEnabled() ? "1:" : "0:") << url.toDisplayString() << Qt::endl;
 			++i;
 		}
 	}

@@ -123,14 +123,14 @@ namespace bt
 		for(Uint32 i = 0; i < num; i++)
 		{
 			TorrentFile & tf = tor.getFile(i);
-			out << tf.getPathOnDisk() << ::endl;
+			out << tf.getPathOnDisk() << Qt::endl;
 		}
 
 		// After the actual paths on disk, save the user modified path names
 		for(Uint32 i = 0; i < num; i++)
 		{
 			TorrentFile & tf = tor.getFile(i);
-			out << tf.getUserModifiedPath() << ::endl;
+			out << tf.getUserModifiedPath() << Qt::endl;
 		}
 	}
 

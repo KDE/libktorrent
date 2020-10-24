@@ -114,7 +114,7 @@ namespace bt
 	
 	void MakePath(const QString & dir,bool nothrow)
 	{
-		QStringList sl = dir.split(bt::DirSeparator(),QString::SkipEmptyParts);
+		QStringList sl = dir.split(bt::DirSeparator(), Qt::SkipEmptyParts);
 		QString ctmp;
 #ifndef Q_WS_WIN
 		ctmp += bt::DirSeparator();
@@ -567,7 +567,7 @@ namespace bt
 	QString ShortenFileName(const QString & path,int extra_number)
 	{
 		QString assembled = QStringLiteral("/");
-		const QStringList names = path.split(QLatin1Char('/'),QString::SkipEmptyParts);
+		const QStringList names = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
 		int cnt = 0;
 		for (const QString& s : names)
 		{

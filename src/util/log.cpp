@@ -138,7 +138,7 @@ namespace bt
 			if (!rotate_job && fptr != 0)
 			{
 				if (out)
-					*out << final << ::endl;
+					*out << final << Qt::endl;
 				
 				fptr->flush();
 				if (to_cout)

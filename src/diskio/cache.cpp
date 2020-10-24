@@ -172,7 +172,7 @@ namespace bt
 		QTextStream out(&fptr);
 		for(const QString & mount_point: qAsConst(mount_points))
 		{
-			out << mount_point << ::endl;
+			out << mount_point << Qt::endl;
 		}
 	}
 

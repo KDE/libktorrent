@@ -65,7 +65,7 @@ namespace bt
 	void ExtractFileJob::start()
 	{
 		// first find the file in the archive
-		QStringList path_components = path.split(QLatin1Char('/'), QString::SkipEmptyParts);
+		QStringList path_components = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
 		const KArchiveDirectory* dir = archive->directory();
 		for (int i = 0;i < path_components.count();i++)
 		{

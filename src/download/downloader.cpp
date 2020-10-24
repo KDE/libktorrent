@@ -884,13 +884,13 @@ namespace bt
 		for (WebSeed* ws: qAsConst(webseeds))
 		{
 			if (ws->isUserCreated())
-				out << ws->getUrl().toDisplayString() << ::endl;
+				out << ws->getUrl().toDisplayString() << Qt::endl;
 		}
-		out << "====disabled====" << ::endl;
+		out << "====disabled====" << Qt::endl;
 		for (WebSeed* ws: qAsConst(webseeds))
 		{
 			if (!ws->isEnabled())
-				out << ws->getUrl().toDisplayString() << ::endl;
+				out << ws->getUrl().toDisplayString() << Qt::endl;
 		}
 	}
 	

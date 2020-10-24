@@ -280,14 +280,14 @@ namespace bt
 			for(const Peer::Ptr& p: qAsConst(d->peer_map))
 			{
 				const net::Address & addr = p->getAddress();
-				out << addr.toString() << " " << (unsigned short)addr.port() << ::endl;
+				out << addr.toString() << " " << (unsigned short)addr.port() << Qt::endl;
 			}
 
 			// now the potential_peers
 			std::map<net::Address, bool>::const_iterator i = d->potential_peers.cbegin();
 			while(i != d->potential_peers.cend())
 			{
-				out << i->first.toString() << " " <<  i->first.port() << ::endl;
+				out << i->first.toString() << " " <<  i->first.port() << Qt::endl;
 				++i;
 			}
 		}
