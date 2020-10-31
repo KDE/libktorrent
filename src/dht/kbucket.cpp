@@ -81,7 +81,7 @@ namespace dht
 	}
 
 
-	std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() throw (KBucket::UnableToSplit)
+	std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() noexcept(false)
 	{
 		dht::Key m = dht::Key::mid(min_key, max_key);
 		if(m == min_key || m + 1 == max_key)

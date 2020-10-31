@@ -83,7 +83,7 @@ namespace dht
 		 * @return A pair of KBucket's
 		 * @throw UnableToSplit if something goes wrong
 		 */
-		std::pair<KBucket::Ptr, KBucket::Ptr> split() throw (UnableToSplit);
+		std::pair<KBucket::Ptr, KBucket::Ptr> split() noexcept(false);
 		
 		/**
 		 * Inserts an entry into the bucket.
