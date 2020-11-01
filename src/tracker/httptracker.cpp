@@ -39,9 +39,6 @@
 #include <torrent/globals.h>
 #include "version.h"
 #include "kioannouncejob.h"
-#ifdef HAVE_HTTPANNOUNEJOB
-#include "httpannouncejob.h"
-#endif
 
 
 namespace bt
@@ -49,7 +46,6 @@ namespace bt
 	bool HTTPTracker::proxy_on = false;
 	QString HTTPTracker::proxy = QString();
 	Uint16 HTTPTracker::proxy_port = 8080;
-	bool HTTPTracker::use_qhttp = false;
 
 	HTTPTracker::HTTPTracker(const QUrl & url, TrackerDataSource* tds, const PeerID & id, int tier)
 		: Tracker(url, tds, id, tier)
@@ -404,14 +400,6 @@ namespace bt
 		onAnnounceResult(st->announceUrl(), st->replyData(), j);
 	}
 
-#ifdef HAVE_HTTPANNOUNEJOB
-	void HTTPTracker::onQHttpAnnounceResult(KJob* j)
-	{
-		HTTPAnnounceJob* st = (HTTPAnnounceJob*)j;
-		onAnnounceResult(st->announceUrl(), st->replyData(), j);
-	}
-#endif
-
 	void HTTPTracker::onAnnounceResult(const QUrl& url, const QByteArray& data, KJob* j)
 	{
 		timer.stop();
@@ -525,38 +513,13 @@ namespace bt
 
 	void HTTPTracker::doAnnounce(const QUrl & u)
 	{
-		Out(SYS_TRK | LOG_NOTICE) << "Doing tracker request to url (via " << (use_qhttp ? "QHttp" : "KIO") << "): " << u.toString() << endl;
+		Out(SYS_TRK | LOG_NOTICE) << "Doing tracker request to url (via KIO): " << u.toString() << endl;
 
-		if (!use_qhttp)
-		{
-			KIO::MetaData md;
-			setupMetaData(md);
-			KIOAnnounceJob* j = new KIOAnnounceJob(u, md);
-			connect(j, &KIOAnnounceJob::result, this, &HTTPTracker::onKIOAnnounceResult);
-			active_job = j;
-		}
-#ifdef HAVE_HTTPANNOUNEJOB
-		else
-		{
-			HTTPAnnounceJob* j = new HTTPAnnounceJob(u);
-			connect(j, &HTTPAnnounceJob::result, this, &HTTPTracker::onQHttpAnnounceResult);
-			if (!proxy_on)
-			{
-				QString proxy = KProtocolManager::proxyForUrl(u); // Use KDE settings
-				if (!proxy.isNull() && proxy != QLatin1String("DIRECT"))
-				{
-					QUrl proxy_url(proxy);
-					j->setProxy(proxy_url.host(), proxy_url.port() <= 0 ? 80 : proxy_url.port());
-				}
-			}
-			else if (!proxy.isNull())
-			{
-				j->setProxy(proxy, proxy_port);
-			}
-			active_job = j;
-			j->start();
-		}
-#endif
+		KIO::MetaData md;
+		setupMetaData(md);
+		KIOAnnounceJob* j = new KIOAnnounceJob(u, md);
+		connect(j, &KIOAnnounceJob::result, this, &HTTPTracker::onKIOAnnounceResult);
+		active_job = j;
 
 		time_out = false;
 		timer.start(60*1000);
@@ -589,7 +552,7 @@ namespace bt
 
 	void HTTPTracker::setUseQHttp(bool on)
 	{
-		use_qhttp = false;
+		Q_UNUSED(on)
 	}
 
 }

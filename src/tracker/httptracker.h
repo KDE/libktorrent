@@ -57,13 +57,10 @@ namespace bt
 		
 		static void setProxy(const QString & proxy,const bt::Uint16 proxy_port);
 		static void setProxyEnabled(bool on);
-		static void setUseQHttp(bool on);
+		[[deprecated]] static void setUseQHttp(bool on);
 		
 	private Q_SLOTS:
 		void onKIOAnnounceResult(KJob* j);
-#ifdef HAVE_HTTPANNOUNEJOB
-		void onQHttpAnnounceResult(KJob* j);
-#endif
 		void onScrapeResult(KJob* j);
 		void emitInvalidURLFailure();
 		void onTimeout();
@@ -90,7 +87,6 @@ namespace bt
 		static bool proxy_on;
 		static QString proxy;
 		static Uint16 proxy_port;
-		static bool use_qhttp;
 	};
 
 }

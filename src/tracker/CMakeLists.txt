@@ -4,7 +4,6 @@ set(tracker_HDR
     udptrackersocket.h
     httptracker.h
     trackermanager.h
-    httpannouncejob.h
     kioannouncejob.h
 )
 
