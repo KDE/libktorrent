@@ -20,11 +20,13 @@
 
 #include "ktcli.h"
 
-#include <stdlib.h>
+#include <cstdlib>
+#include <ctime>
 #include <unistd.h>
-#include <time.h>
+
 #include <QDir>
 #include <QCommandLineParser>
+#include <QRandomGenerator>
 
 #include <version.h>
 #include <util/error.h>
@@ -48,7 +50,6 @@ KTCLI::KTCLI(int argc, char** argv) : QCoreApplication(argc, argv), tc(new Torre
 	parser.addOption(QCommandLineOption("utp", tr("Whether or not to use utp")));
 	parser.process(*this);
 
-	qsrand(time(0));
 	bt::SetClientInfo("ktcli",bt::MAJOR,bt::MINOR,bt::RELEASE,bt::NORMAL,"KT");
 	bt::InitLog("ktcli.log",false,true,false);
 	connect(tc.get(),SIGNAL(finished(bt::TorrentInterface*)),this,SLOT(finished(bt::TorrentInterface*)));
@@ -64,7 +65,7 @@ bool KTCLI::start()
 	bool ok = false;
 	quint16 port = parser.value("port").toInt(&ok);
 	if (!ok)
-		port = qrand();
+		port = 1024 + QRandomGenerator::global()->bounded((1 << 16) - 1 - 1024); // Use non-root ports
 
 	if (parser.isSet("encryption"))
 	{

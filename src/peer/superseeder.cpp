@@ -20,6 +20,9 @@
 
 #include "superseeder.h"
 #include "chunkcounter.h"
+
+#include <QRandomGenerator>
+
 #include <util/log.h>
 #include <interfaces/peerinterface.h>
 
@@ -134,7 +137,7 @@ namespace bt
 		
 		// Use random chunk to start searching for a potential chunk we can send
 		Uint32 num_chunks = chunk_counter->getNumChunks();
-		Uint32 start = qrand() % num_chunks;
+		Uint32 start = QRandomGenerator::global()->bounded(num_chunks);
 		Uint32 chunk = (start + 1) % num_chunks;
 		Uint32 alternative = num_chunks;
 		while (chunk != start) 

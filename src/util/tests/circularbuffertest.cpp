@@ -18,9 +18,12 @@
 *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
 ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
+#include <QRandomGenerator>
+#include <QtTest>
+
 #include <ctime>
+
 #include <util/log.h>
 #include <util/pipe.h>
 #include <util/circularbuffer.h>
@@ -89,11 +92,10 @@ private Q_SLOTS:
 	void testIntensively()
 	{
 		CircularBuffer cbuf(20);
-		qsrand(time(0));
 		
 		for (int i = 0;i < 1000;i++)
 		{
-			Uint32 r = 1 + qrand() % 20;
+			Uint32 r = 1 + QRandomGenerator::global()->bounded(20);
 			Uint32 expected = r;
 			if (expected + cbuf.size() >= 20)
 				expected = 20 - cbuf.size();
@@ -102,7 +104,7 @@ private Q_SLOTS:
 			
 			bt::Uint8 ret[20];
 			memset(ret,0,20);
-			r = 1 + qrand() % 20;
+			r = 1 + QRandomGenerator::global()->bounded(20);
 			expected = qMin(r,cbuf.size());
 			QVERIFY(cbuf.read(ret,expected) == expected);
 		}

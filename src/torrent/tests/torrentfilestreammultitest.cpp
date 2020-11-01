@@ -2,9 +2,11 @@
 #define QT_GUI_LIB
 #endif
 
-#include <QtTest>
-#include <QObject>
 #include <QLocale>
+#include <QObject>
+#include <QRandomGenerator64>
+#include <QtTest>
+
 #include <unistd.h>
 #include <ctime>
 #include <util/log.h>
@@ -17,8 +19,6 @@
 #include <interfaces/queuemanagerinterface.h>
 
 
-
-
 using namespace bt;
 
 const bt::Uint32 TEST_FILE_SIZE = 5 * 1024 * 1024;
@@ -26,7 +26,7 @@ const bt::Uint32 TEST_FILE_SIZE = 5 * 1024 * 1024;
 bt::Uint64 RandomSize(bt::Uint64 min_size, bt::Uint64 max_size)
 {
     bt::Uint64 r = max_size - min_size;
-    return min_size + qrand() % r;
+    return min_size + QRandomGenerator64::global()->generate() % r;
 }
 
 class TorrentFileStreamMultiTest : public QEventLoop, public bt::QueueManagerInterface
@@ -81,8 +81,6 @@ private Q_SLOTS:
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
-
-        qsrand(time(0));
     }
 
     void cleanupTestCase()
@@ -142,7 +140,7 @@ private Q_SLOTS:
 
             for (bt::Uint32 j = 0; j < 10; j++)
             {
-                qint64 off = qrand() % (stream->size() - 256);
+                qint64 off = QRandomGenerator64::global()-> generate() % (stream->size() - 256);
                 QVERIFY(stream->seek(off));
                 QVERIFY(fptr.seek(off));
 

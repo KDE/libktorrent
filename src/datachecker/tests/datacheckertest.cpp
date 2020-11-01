@@ -5,9 +5,11 @@
 #include <unistd.h>
 #include <time.h>
 
-#include <QtTest>
 #include <QEventLoop>
 #include <QLocale>
+#include <QRandomGenerator64>
+#include <QtTest>
+
 #include <util/log.h>
 #include <util/error.h>
 #include <util/functions.h>
@@ -16,6 +18,7 @@
 #include <datachecker/singledatachecker.h>
 #include <datachecker/multidatachecker.h>
 #include <testlib/dummytorrentcreator.h>
+
 #include <boost/concept_check.hpp>
 
 
@@ -26,7 +29,7 @@ const bt::Uint64 TEST_FILE_SIZE = 15 * 1024 * 1024;
 bt::Uint64 RandomSize(bt::Uint64 min_size, bt::Uint64 max_size)
 {
     bt::Uint64 r = max_size - min_size;
-    return min_size + qrand() % r;
+    return min_size + QRandomGenerator64::global()->generate() % r;
 }
 
 class DataCheckerTest : public QEventLoop
@@ -41,7 +44,6 @@ private Q_SLOTS:
         QLocale::setDefault(QLocale("main"));
         bt::InitLibKTorrent();
         bt::InitLog("datacheckertest.log", false, true);
-        qsrand(time(0));
     }
 
     void testSingleFile()

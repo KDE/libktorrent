@@ -18,13 +18,16 @@
 *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
 ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
+#include <QRandomGenerator>
+#include <QtTest>
+
 #include <util/log.h>
 #include <utp/connection.h>
 #include <utp/utpsocket.h>
 #include <utp/utpserver.h>
 #include <util/functions.h>
+
 #include <ctime>
 #include <unistd.h>
 
@@ -45,7 +48,6 @@ public:
 	PacketLossServer(QObject* parent = 0) : UTPServer(parent),packet_loss(false),loss_factor(0.5)
 	{
 		setCreateSockets(false);
-		qsrand(time(0));
 	}
 	
 	~PacketLossServer() override
@@ -57,7 +59,7 @@ public:
 		if (packet_loss)
 		{
 			// pick a random number from 0 to 100
-			int r = qrand() % 100;
+			int r = QRandomGenerator::global()->bounded(100);
 			if (r <= (int)qRound(100 * loss_factor))
 			{
 				Out(SYS_UTP|LOG_DEBUG) << "Dropping packet " << endl;
@@ -72,7 +74,6 @@ public:
 	{
 		packet_loss = on;
 		loss_factor = lf;
-		qsrand(time(0));
 	}
 	
 private:

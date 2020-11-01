@@ -106,7 +106,6 @@ private Q_SLOTS:
 	{
 		bt::InitLog("superseedtest.log");
 		allow_called = false;
-		qsrand(time(0));
 	}
 	
 	void cleanupTestCase()

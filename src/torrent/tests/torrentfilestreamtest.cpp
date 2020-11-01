@@ -2,9 +2,11 @@
 #define QT_GUI_LIB
 #endif
 
-#include <QtTest>
 #include <QObject>
 #include <QLocale>
+#include <QRandomGenerator>
+#include <QtTest>
+
 #include <unistd.h>
 #include <ctime>
 #include <util/log.h>
@@ -15,7 +17,6 @@
 #include <torrent/torrentcontrol.h>
 #include <torrent/torrentfilestream.h>
 #include <interfaces/queuemanagerinterface.h>
-
 
 
 using namespace bt;
@@ -73,8 +74,6 @@ private Q_SLOTS:
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
-
-        qsrand(time(0));
     }
 
     void cleanupTestCase()
@@ -131,9 +130,9 @@ private Q_SLOTS:
             }
 
             // Lets read in two times, first at the back and then at the front
-            qint64 split = qrand() % chunk_size;
+            qint64 split = QRandomGenerator::global()->bounded(chunk_size);
             while (split == 0)
-                split = qrand() % chunk_size;
+                split = QRandomGenerator::global()->bounded(chunk_size);
 
             QVERIFY(stream->seek(idx * tc.getStats().chunk_size + split));
             qint64 ret = stream->read(tmp.data() + split, chunk_size - split);
@@ -166,7 +165,7 @@ private Q_SLOTS:
         // Read an area of around 5 chunks in at a random location
         // And verify the 3 middle chunks
         qint64 range_size = tc.getStats().chunk_size * 5;
-        qint64 off = ((qrand() % 100) / 100.0) * (tc.getStats().total_bytes - range_size);
+        qint64 off = QRandomGenerator::global()->bounded(100) / 100.0 * (tc.getStats().total_bytes - range_size);
         QVERIFY(stream->seek(off));
 
         Out(SYS_GEN | LOG_DEBUG) << "Reading random range" << endl;
@@ -234,7 +233,7 @@ private Q_SLOTS:
         QVERIFY(fptr.open(QIODevice::ReadOnly));
         for (int i = 0; i < 20; i++)
         {
-            qint64 off = qrand() % (TEST_FILE_SIZE - 100);
+            qint64 off = QRandomGenerator::global()->bounded(TEST_FILE_SIZE - 100);
             // Seek to a random location
             QVERIFY(stream->seek(off));
             QByteArray tmp(100, 0);

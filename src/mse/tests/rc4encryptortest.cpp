@@ -32,18 +32,17 @@ public:
 	
 	bt::SHA1Hash randomKey()
 	{
-		bt::Uint8 hash[20];
-		for (int i = 0;i < 20;i++)
+		bt::Uint32 hash[5];
+		for (int i = 0; i < 5; i++)
 		{
-			hash[i] = (Uint8)rand() % 0xFF;
+			hash[i] = QRandomGenerator::global()->generate();
 		}
-		return bt::SHA1Hash(hash);
+		return bt::SHA1Hash(reinterpret_cast<Uint8*>(hash));
 	}
 	
 private Q_SLOTS:
 	void initTestCase()
 	{
-		qsrand(time(0));
 	}
 	
 	void cleanupTestCase()
@@ -61,13 +60,13 @@ private Q_SLOTS:
 		for (int i = 0;i < 1000;i++)
 		{
 			memset(tmp,0,1024);
-			bt::Uint8 data[1024];
-			for (int j = 0;j < 1024;j++)
-				data[j] = qrand() % 0xFF;
+			bt::Uint32 data[256];
+			for (int j = 0;j < 256;j++)
+				data[j] = QRandomGenerator::global()->generate();
 			
 			memcpy(tmp,data,1024);
-			a.encryptReplace(data,1024);
-			b.decrypt(data,1024);
+			a.encryptReplace(reinterpret_cast<Uint8*>(data),1024);
+			b.decrypt(reinterpret_cast<Uint8*>(data),1024);
 			QVERIFY(memcmp(tmp,data,1024) == 0);
 		}
 	}

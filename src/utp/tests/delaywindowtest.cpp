@@ -18,10 +18,14 @@
 *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
 ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
+#include <QRandomGenerator>
+#include <QtTest>
+
 #include <ctime>
+
 #include <boost/scoped_array.hpp>
+
 #include <util/log.h>
 #include <utp/delaywindow.h>
 #include <util/functions.h>
@@ -42,7 +46,6 @@ private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("delaywindowtest.log",false,true);
-		qsrand(time(0));
 	}
 	
 	void cleanupTestCase()
@@ -56,7 +59,7 @@ private Q_SLOTS:
 		
 		for (int i = 0;i < 100;i++)
 		{
-			bt::Uint32 val = qrand() * qrand();
+			bt::Uint32 val = QRandomGenerator::global()->generate();
 			Header hdr;
 			hdr.timestamp_difference_microseconds = val;
 			if (val < base_delay)
@@ -73,7 +76,7 @@ private Q_SLOTS:
 		
 		boost::scoped_array<bt::Uint32> delay_samples(new bt::Uint32[SAMPLE_COUNT]);
 		for (int i = 0;i < SAMPLE_COUNT;i++)
-			delay_samples[i] = qrand() % 1000000;
+			delay_samples[i] = QRandomGenerator::global()->bounded(1000000);
 		
 		boost::scoped_array<bt::Uint32> returned_delay_new(new bt::Uint32[SAMPLE_COUNT]);
 		boost::scoped_array<bt::Uint32> returned_delay_old(new bt::Uint32[SAMPLE_COUNT]);

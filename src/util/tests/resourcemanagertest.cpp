@@ -17,8 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include <QtTest>
+
 #include <QObject>
+#include <QRandomGenerator>
+#include <QtTest>
+
 #include <util/functions.h>
 #include <util/resourcemanager.h>
 #include <util/log.h>
@@ -52,7 +55,6 @@ private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("resourcemanagertest.log");
-		qsrand(bt::Now());
 	}
 	
 	void cleanupTestCase()
@@ -124,7 +126,7 @@ private Q_SLOTS:
 		Uint32 num_acquired = 0;
 		for (int i = 0;i < 500;i++)
 		{
-			TestResource* r = new TestResource(&rm,classes[rand() % 4]);
+			TestResource* r = new TestResource(&rm,classes[QRandomGenerator::global()->bounded(4)]);
 			tr.append(r);
 			rm.add(r);
 			if (r->acq)

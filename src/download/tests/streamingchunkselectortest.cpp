@@ -3,9 +3,11 @@
 #endif
 
 #include <ctime>
-#include <QtTest>
-#include <QLocale>
+
 #include <QEventLoop>
+#include <QLocale>
+#include <QtTest>
+
 #include <util/log.h>
 #include <util/error.h>
 #include <util/bitset.h>
@@ -72,7 +74,6 @@ private Q_SLOTS:
         QLocale::setDefault(QLocale("main"));
         bt::InitLibKTorrent();
         bt::InitLog("streamingchunkselectortest.log", false, true);
-        qsrand(time(0));
     }
 
     void testSimple()

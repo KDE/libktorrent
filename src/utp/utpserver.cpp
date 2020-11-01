@@ -20,11 +20,15 @@
 
 #include "utpserver.h"
 #include "utpserver_p.h"
-#include <QEvent>
-#include <QTimer>
-#include <QHostAddress>
+
 #include <QCoreApplication>
-#include <stdlib.h>
+#include <QEvent>
+#include <QHostAddress>
+#include <QRandomGenerator>
+#include <QTimer>
+
+#include <cstdlib>
+
 #ifndef Q_CC_MSVC
 #include <sys/select.h>
 #endif
@@ -230,7 +234,6 @@ namespace utp
 			: ServerInterface(parent), d(new Private(this))
 
 	{
-		qsrand(time(0));
 		connect(d->timer, SIGNAL(timeout()), this, SLOT(checkTimeouts()));
 	}
 
@@ -419,9 +422,9 @@ namespace utp
 			return Connection::WPtr();
 
 		QMutexLocker lock(&d->mutex);
-		quint16 recv_conn_id = qrand() % 32535;
+		quint16 recv_conn_id = QRandomGenerator::global()->bounded(32535);
 		while (d->connections.contains(recv_conn_id))
-			recv_conn_id = qrand() % 32535;
+			recv_conn_id = QRandomGenerator::global()->bounded(32535);
 
 		Connection::Ptr conn(new Connection(recv_conn_id, Connection::OUTGOING, addr, this));
 		conn->setWeakPointer(conn);

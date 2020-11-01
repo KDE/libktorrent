@@ -37,7 +37,6 @@ private Q_SLOTS:
 	void initTestCase()
 	{
 		bt::InitLog("fileopstest.log");
-		qsrand(bt::Now());
 	}
 	
 	void cleanupTestCase()
