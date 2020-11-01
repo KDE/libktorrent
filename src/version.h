@@ -21,6 +21,7 @@
 #ifndef BTVERSION_H
 #define BTVERSION_H
 
+#include <libktorrent_version.h>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
@@ -62,13 +63,13 @@ namespace bt
 	
 	
 	/// Major version number of the ktorrent library
-	const Uint32 MAJOR = LIBKTORRENT_MAJOR;
+	const Uint32 MAJOR = LIBKTORRENT_VERSION_MAJOR;
 	/// Minor version number of the ktorrent library
-	const Uint32 MINOR = LIBKTORRENT_MINOR;
+	const Uint32 MINOR = LIBKTORRENT_VERSION_MINOR;
 	/// Version type of the ktorrent library
 	const VersionType VERSION_TYPE = NORMAL;
 	/// Release version number of the ktorrent library (only for normal releases)
-	const Uint32 RELEASE = LIBKTORRENT_MICRO;
+	const Uint32 RELEASE = LIBKTORRENT_VERSION_PATCH;
 }
 
 #endif

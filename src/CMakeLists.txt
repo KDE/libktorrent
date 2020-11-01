@@ -276,6 +276,7 @@ set (interfaces_HDR
 
 set (ktorrent_HDR
     ${CMAKE_CURRENT_BINARY_DIR}/ktorrent_export.h
+    ${CMAKE_BINARY_DIR}/libktorrent_version.h
     version.h
 )
 
