@@ -85,7 +85,7 @@ namespace bt
 			throw Error(i18n("Failed to create %1: %2", file_map, fptr.errorString()));
 
 		QTextStream out(&fptr);
-		out << output_file << ::endl;
+		out << output_file << Qt::endl;
 	}
 
 	void SingleFileCache::changeTmpDir(const QString & ndir)
