@@ -36,7 +36,6 @@ namespace bt
 	const Uint32 OPT_SEL_INTERVAL = 30*1000; // we switch optimistic peer each 30 seconds
 	const double NEWBIE_BONUS = 1.0;
 	const double SNUB_PENALTY = 10.0;
-	const double ONE_MB = 1024*1024;
 
 
 	AdvancedChokeAlgorithm::AdvancedChokeAlgorithm()

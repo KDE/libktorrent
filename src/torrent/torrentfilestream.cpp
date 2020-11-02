@@ -28,8 +28,6 @@
 
 namespace bt
 {
-	const Uint32 INVALID_CHUNK = 0xFFFFFFFF;
-	
 	class TorrentFileStream::Private
 	{
 	public:

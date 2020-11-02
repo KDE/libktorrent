@@ -301,8 +301,6 @@ namespace bt
 		if (!in_chunks)
 			chunks.push_back(chunk);
 	}
-
-	const Uint32 MAX_RANGE_SIZE = 10 * 1024 * 1024; // lets take 10 MB for the max range to download in one go 
 	
 	struct ChunkRange
 	{
