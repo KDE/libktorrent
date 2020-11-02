@@ -213,8 +213,7 @@ namespace mse
 	{
 		// decrypt the padding
 		our_rc4->decrypt(buf + (vc_off + 14),pad_D_len);
-		
-		bool rc4 = false;
+
 		if (crypto_select & 0x00000001) // plain_text selected
 		{
 			delete our_rc4;
@@ -224,7 +223,6 @@ namespace mse
 		{
 			sock->setRC4Encryptor(our_rc4);
 			our_rc4 = 0;
-			rc4 = true;
 		}
 		else // we don't support anything else so error out
 		{
