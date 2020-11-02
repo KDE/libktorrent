@@ -182,10 +182,6 @@ set(libktorrent_SRC
     datachecker/multidatachecker.cpp
     datachecker/datacheckerjob.cpp
 
-    migrate/cachemigrate.cpp
-    migrate/ccmigrate.cpp
-    migrate/migrate.cpp
-
     magnet/magnetdownloader.cpp
     magnet/magnetlink.cpp
     magnet/metadatadownload.cpp

@@ -42,8 +42,6 @@
 #include <datachecker/singledatachecker.h>
 #include <datachecker/multidatachecker.h>
 #include <datachecker/datacheckerthread.h>
-#include <migrate/ccmigrate.h>
-#include <migrate/cachemigrate.h>
 #include <dht/dhtbase.h>
 #include <download/downloader.h>
 #include <download/webseed.h>
