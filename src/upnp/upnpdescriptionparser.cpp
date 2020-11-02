@@ -19,8 +19,11 @@
  ***************************************************************************/
 
 #include "upnpdescriptionparser.h"
-#include <QtXml>
+
+#include <QFile>
 #include <QStack>
+#include <QStringRef>
+#include <QXmlStreamReader>
 
 #include <util/fileops.h>
 #include <util/log.h>
@@ -31,7 +34,7 @@ using namespace bt;
 namespace bt
 {
 	
-	class XMLContentHandler : public QXmlDefaultHandler
+	class XMLContentHandler
 	{
 		enum Status
 		{
@@ -44,18 +47,20 @@ namespace bt
 		QStack<Status> status_stack;
 	public:
 		XMLContentHandler(UPnPRouter* router);
-		~XMLContentHandler() override;
+		~XMLContentHandler();
 
+		bool parse(const QByteArray& data);
 
-		bool startDocument() override;
-		bool endDocument() override;
-		bool startElement(const QString &, const QString & localName, const QString &,
-		                  const QXmlAttributes & atts) override;
-		bool endElement(const QString & , const QString & localName, const QString &  ) override;
-		bool characters(const QString & ch) override;
+		bool startDocument();
+		bool endDocument();
+		bool startElement(const QStringRef& namespaceUri, const QStringRef& localName,
+                              const QStringRef& qName, const QXmlStreamAttributes& atts);
+		bool endElement(const QStringRef& namespaceUri, const QStringRef& localName,
+                            const QStringRef& qName);
+		bool characters(const QStringRef& chars);
 		
-		bool interestingDeviceField(const QString & name);
-		bool interestingServiceField(const QString & name);
+		bool interestingDeviceField(const QStringRef& name);
+		bool interestingServiceField(const QStringRef& name);
 	};
 
 
@@ -66,20 +71,17 @@ namespace bt
 	UPnPDescriptionParser::~UPnPDescriptionParser()
 	{}
 
-	bool UPnPDescriptionParser::parse(const QString & file,UPnPRouter* router)
+	bool UPnPDescriptionParser::parse(const QString & file, UPnPRouter* router)
 	{
-		bool ret = true;
 		QFile fptr(file);
 		if (!fptr.open(QIODevice::ReadOnly))
 			return false;
 
-		QXmlInputSource input(&fptr);
+		QByteArray data = fptr.readAll();
 		XMLContentHandler chandler(router);
-		QXmlSimpleReader reader;
 
-		reader.setContentHandler(&chandler);
-		ret = reader.parse(&input,false);
-		
+		const bool ret = chandler.parse(data);
+
 		if (!ret)
 		{
 			Out(SYS_PNP|LOG_IMPORTANT) << "Error parsing XML" << endl;
@@ -88,16 +90,12 @@ namespace bt
 		return true;
 	}
 	
-	bool UPnPDescriptionParser::parse(const QByteArray & data,UPnPRouter* router)
+	bool UPnPDescriptionParser::parse(const QByteArray & data, UPnPRouter* router)
 	{
-		bool ret = true;
-		QXmlInputSource input;
-		input.setData(data);
 		XMLContentHandler chandler(router);
-		QXmlSimpleReader reader;
 
-		reader.setContentHandler(&chandler);
-		ret = reader.parse(&input,false);
+		const bool ret = chandler.parse(data);
+
 		
 		if (!ret)
 		{
@@ -108,14 +106,62 @@ namespace bt
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
-	
-	
+
+
 	XMLContentHandler::XMLContentHandler(UPnPRouter* router) : router(router)
 	{}
 
 	XMLContentHandler::~XMLContentHandler()
 	{}
 
+        bool XMLContentHandler::parse(const QByteArray& data)
+	{
+		QXmlStreamReader reader(data);
+
+		while (!reader.atEnd()) {
+			reader.readNext();
+			if (reader.hasError())
+				return false;
+
+			switch (reader.tokenType()) {
+			case QXmlStreamReader::StartDocument:
+				if (!startDocument()) {
+					return false;
+				}
+				break;
+			case QXmlStreamReader::EndDocument:
+				if (!endDocument()) {
+					return false;
+				}
+				break;
+			case QXmlStreamReader::StartElement:
+				if (!startElement(reader.namespaceUri(), reader.name(),
+						  reader.qualifiedName(), reader.attributes())) {
+					return false;
+				}
+				break;
+			case QXmlStreamReader::EndElement:
+				if (!endElement(reader.namespaceUri(), reader.name(),
+						reader.qualifiedName())) {
+					return false;
+				}
+				break;
+			case QXmlStreamReader::Characters:
+				if (!reader.isWhitespace() && !reader.text().trimmed().isEmpty()) {
+					if (!characters(reader.text()))
+						return false;
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
+		if (!reader.isEndDocument())
+			return false;
+
+		return true;
+	}
 
 	bool XMLContentHandler::startDocument()
 	{
@@ -129,22 +175,26 @@ namespace bt
 		return true;
 	}
 	
-	bool XMLContentHandler::interestingDeviceField(const QString & name)
+	bool XMLContentHandler::interestingDeviceField(const QStringRef& name)
 	{
 		return name == "friendlyName" || name == "manufacturer" || name == "modelDescription" ||
 				name == "modelName" || name == "modelNumber";
 	}
 
 	
-	bool XMLContentHandler::interestingServiceField(const QString & name)
+	bool XMLContentHandler::interestingServiceField(const QStringRef& name)
 	{
 		return name == "serviceType" || name == "serviceId" || name == "SCPDURL" ||
 				name == "controlURL" || name == "eventSubURL";
 	}
 
-	bool XMLContentHandler::startElement(const QString &, const QString & localName, const QString &,
-	                                     const QXmlAttributes & )
+	bool XMLContentHandler::startElement(const QStringRef& namespaceUri, const QStringRef& localName,
+					     const QStringRef& qName, const QXmlStreamAttributes& atts)
 	{
+		Q_UNUSED(namespaceUri)
+		Q_UNUSED(qName)
+		Q_UNUSED(atts)
+
 		tmp = "";
 		switch (status_stack.top())
 		{
@@ -190,8 +240,12 @@ namespace bt
 		return true;
 	}
 
-	bool XMLContentHandler::endElement(const QString & , const QString & localName, const QString &  )
+	bool XMLContentHandler::endElement(const QStringRef& namespaceUri, const QStringRef& localName,
+					   const QStringRef& qName)
 	{
+		Q_UNUSED(namespaceUri)
+		Q_UNUSED(qName)
+
 		switch (status_stack.top())
 		{
 		case FIELD:
@@ -200,12 +254,12 @@ namespace bt
 			if (status_stack.top() == DEVICE)
 			{
 				// if we are in a device
-				router->getDescription().setProperty(localName,tmp);
+				router->getDescription().setProperty(localName.toString(), tmp);
 			}
 			else if (status_stack.top() == SERVICE)
 			{
 				// set a property of a service
-				curr_service.setProperty(localName,tmp);
+				curr_service.setProperty(localName.toString(), tmp);
 			}
 			break;
 		case SERVICE:
@@ -225,13 +279,9 @@ namespace bt
 		return true;
 	}
 
-
-	bool XMLContentHandler::characters(const QString & ch)
+	bool XMLContentHandler::characters(const QStringRef& chars)
 	{
-		if (ch.length() > 0)
-		{
-			tmp += ch;
-		}
+		tmp.append(chars);
 		return true;
 	}
 
