@@ -283,14 +283,6 @@ set (bcodec_HDR
     bcodec/value.h
 )
 
-set (migrate_HDR
-    migrate/ccmigrate.h
-    migrate/migrate.h
-    migrate/cachemigrate.h
-)
-
-
-
 install(FILES ${bcodec_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/bcodec COMPONENT Devel)
 install(FILES ${interfaces_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/interfaces COMPONENT Devel)
 install(FILES ${migrate_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/migrate COMPONENT Devel)
