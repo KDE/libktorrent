@@ -114,7 +114,7 @@ namespace bt
 	XMLContentHandler::~XMLContentHandler()
 	{}
 
-        bool XMLContentHandler::parse(const QByteArray& data)
+	bool XMLContentHandler::parse(const QByteArray& data)
 	{
 		QXmlStreamReader reader(data);
 
