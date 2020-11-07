@@ -31,13 +31,13 @@ namespace bt
 
 	ExitJobOperation::ExitJobOperation(KJob* j)
 	{
-		connect(j,SIGNAL(result(KJob*)),this,SLOT(onResult(KJob*)));
+		connect(j, &KJob::result, this, &ExitJobOperation::onResult);
 	}
-	
+
 	ExitJobOperation::~ExitJobOperation()
 	{
 	}
-	
+
 	void ExitJobOperation::onResult(KJob* )
 	{
 		operationFinished(this);

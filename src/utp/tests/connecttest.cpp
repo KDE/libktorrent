@@ -28,10 +28,7 @@ using namespace utp;
 
 class ConnectTest : public QEventLoop
 {
-	Q_OBJECT
 public:
-	
-public Q_SLOTS:
 	void accepted()
 	{
 		accepted_conn = srv.acceptedConnection().toStrongRef();
@@ -47,10 +44,10 @@ public Q_SLOTS:
 	{
 		net::Address addr("127.0.0.1",port);
 		srv.connectTo(addr);
-		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
+		QTimer::singleShot(5000, this, &ConnectTest::endEventLoop); // use a 5 second timeout
 	}
 	
-private Q_SLOTS:
+private:
 	void initTestCase()
 	{
 		bt::InitLog("connecttest.log");
@@ -76,12 +73,12 @@ private Q_SLOTS:
 	
 	void testConnect()
 	{
-		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
-		QTimer::singleShot(0,this,SLOT(startConnect()));
+		connect(&srv, &utp::UTPServer::accepted, this, &ConnectTest::accepted, Qt::QueuedConnection);
+		QTimer::singleShot(0, this, &ConnectTest::startConnect);
 		exec();
-		QVERIFY(accepted_conn != 0);
+		QVERIFY(accepted_conn != nullptr);
 	}
-	
+
 private:
 	utp::UTPServer srv;
 	int port;
@@ -89,5 +86,3 @@ private:
 };
 
 QTEST_MAIN(ConnectTest)
-
-#include "connecttest.moc"

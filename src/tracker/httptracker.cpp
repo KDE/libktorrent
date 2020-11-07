@@ -22,16 +22,18 @@
 
 #include <QHostAddress>
 #include <QUrlQuery>
+
+#include <KIO/Job>
+#include <KIO/Scheduler>
+#include <KLocalizedString>
+#include <KProtocolManager>
+
 #include <util/log.h>
 #include <util/functions.h>
 #include <util/error.h>
 #include <util/waitjob.h>
 #include <interfaces/exitoperation.h>
 #include <interfaces/torrentinterface.h>
-#include <kio/job.h>
-#include <kio/scheduler.h>
-#include <klocalizedstring.h>
-#include <kprotocolmanager.h>
 #include <bcodec/bnode.h>
 #include <bcodec/bdecoder.h>
 #include <peer/peermanager.h>
@@ -199,7 +201,7 @@ namespace bt
 		if (!url.isValid())
 		{
 			requestPending();
-			QTimer::singleShot(500, this, SLOT(emitInvalidURLFailure()));
+			QTimer::singleShot(500, this, &HTTPTracker::emitInvalidURLFailure);
 			return;
 		}
 

@@ -29,7 +29,7 @@
 namespace bt
 {
 	static ResourceManager data_checker_slot(1);
-	
+
 	DataCheckerJob::DataCheckerJob(bool auto_import, bt::TorrentControl* tc, bt::Uint32 from, bt::Uint32 to)
 		: Job(true,tc),
 		Resource(&data_checker_slot,tc->getInfoHash().toString()),
@@ -45,8 +45,8 @@ namespace bt
 		if (this->to >= tc->getStats().total_chunks)
 			this->to = tc->getStats().total_chunks - 1;
 	}
-	
-	
+
+
 	DataCheckerJob::~DataCheckerJob()
 	{
 	}
@@ -60,19 +60,17 @@ namespace bt
 			dc = new MultiDataChecker(from, to);
 		else
 			dc = new SingleDataChecker(from, to);
-		
-		connect(dc,SIGNAL(progress(quint32,quint32)),
-				this,SLOT(progress(quint32,quint32)),Qt::QueuedConnection);
-		connect(dc,SIGNAL(status(quint32,quint32,quint32,quint32)),
-				this,SLOT(status(quint32,quint32,quint32,quint32)),Qt::QueuedConnection);
-		
+
+		connect(dc, &DataChecker::progress, this, &DataCheckerJob::progress, Qt::QueuedConnection);
+		connect(dc, &DataChecker::status, this, &DataCheckerJob::status, Qt::QueuedConnection);
+
 		TorrentControl* tor = torrent();
 		dcheck_thread = new DataCheckerThread(
 				dc,tor->downloadedChunksBitSet(),
 				stats.output_path,tor->getTorrent(),
 				tor->getTorDir() + "dnd" + bt::DirSeparator());
-				
-		connect(dcheck_thread,SIGNAL(finished()),this,SLOT(threadFinished()),Qt::QueuedConnection);
+
+		connect(dcheck_thread, &DataCheckerThread::finished, this, &DataCheckerJob::threadFinished, Qt::QueuedConnection);
 		
 		torrent()->beforeDataCheck();
 		
@@ -81,7 +79,7 @@ namespace bt
 		if (!started)
 			infoMessage(this,i18n("Waiting for other data checks to finish"));
 	}
-	
+
 	void DataCheckerJob::acquired()
 	{
 		started = true;
@@ -101,8 +99,8 @@ namespace bt
 		}
 		bt::Job::kill(quietly);
 	}
-	
-	
+
+
 	void DataCheckerJob::threadFinished()
 	{
 		if (!killed)
@@ -119,21 +117,21 @@ namespace bt
 		}
 		else
 			setError(0);
-		
+
 		dcheck_thread->deleteLater();
 		dcheck_thread = 0;
 		if (!killed) // Job::kill already emitted the result
 			emitResult();
-		
+
 		release();
 	}
-	
+
 	void DataCheckerJob::progress(quint32 num, quint32 total)
 	{
 		Q_UNUSED(total);
 		setProcessedAmount(Bytes,num);
 	}
-	
+
 	void DataCheckerJob::status(quint32 num_failed, quint32 num_found, quint32 num_downloaded, quint32 num_not_downloaded)
 	{
 		QPair<QString,QString> field1 = qMakePair(QString::number(num_failed),QString::number(num_found));

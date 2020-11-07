@@ -21,9 +21,10 @@
 #ifndef BT_EXTRACTFILEJOB_H
 #define BT_EXTRACTFILEJOB_H
 
-#include <kio/jobclasses.h>
+#include <KArchive>
+#include <KIO/Job>
+
 #include <ktorrent_export.h>
-#include <karchive.h>
 
 
 namespace bt 
@@ -35,16 +36,15 @@ namespace bt
 	*/
 	class KTORRENT_EXPORT ExtractFileJob : public KIO::Job
 	{
-		Q_OBJECT
 	public:
 		ExtractFileJob(KArchive* archive,const QString & path,const QString & dest);
 		~ExtractFileJob() override;
 		
 		void start() override;
 		virtual void kill(bool quietly=true);
-	private Q_SLOTS:
+	private:
 		void extractThreadDone();
-		
+
 	private:
 		KArchive* archive;
 		QString path;

@@ -82,10 +82,9 @@ static void Dump(const bt::Uint8* pkt, bt::Uint32 size,const QString & file)
 
 class SendThread : public QThread
 {
-	Q_OBJECT
 public:
 	
-	SendThread(Connection::Ptr outgoing, UTPServer & srv,QObject* parent = 0) : QThread(parent),outgoing(outgoing),srv(srv)
+	SendThread(Connection::Ptr outgoing, UTPServer & srv,QObject* parent = nullptr) : QThread(parent),outgoing(outgoing),srv(srv)
 	{}
 	
 	void run() override
@@ -134,13 +133,11 @@ public:
 
 class TransmitTest : public QEventLoop
 {
-	Q_OBJECT
 public:
-	TransmitTest(QObject* parent = 0) : QEventLoop(parent)
+	TransmitTest(QObject* parent = nullptr) : QEventLoop(parent)
 	{
 	}
-	
-public Q_SLOTS:
+
 	void accepted()
 	{
 		incoming = srv.acceptedConnection().toStrongRef();
@@ -160,7 +157,7 @@ public Q_SLOTS:
 		exit();
 	}
 	
-private Q_SLOTS:
+private:
 	void initTestCase()
 	{
 		bt::InitLog("transmittest.log",false,true,false);
@@ -177,17 +174,17 @@ private Q_SLOTS:
 		srv.setCreateSockets(false);
 		srv.start();
 	}
-	
+
 	void cleanupTestCase()
 	{
 		srv.stop();
 	}
-	
+
 	void testConnect()
 	{
-		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
-		QTimer::singleShot(0,this,SLOT(startConnect())); 
-		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
+		connect(&srv, &utp::UTPServer::accepted, this, &TransmitTest::accepted, Qt::QueuedConnection);
+		QTimer::singleShot(0, this, &TransmitTest::startConnect); 
+		QTimer::singleShot(5000, this, &TransmitTest::endEventLoop); // use a 5 second timeout
 		exec();
 		QVERIFY(outgoing);
 		QVERIFY(incoming);
@@ -196,9 +193,7 @@ private Q_SLOTS:
 			QVERIFY(outgoing->waitUntilConnected());
 		QVERIFY(outgoing->connectionState() == CS_CONNECTED);
 	}
-	
-	
-	
+
 	void testThreaded()
 	{
 		bt::Out(SYS_UTP|LOG_DEBUG) << "testThreaded" << bt::endl;
@@ -262,5 +257,3 @@ private:
 };
 
 QTEST_MAIN(TransmitTest)
-
-#include "transmittest.moc"

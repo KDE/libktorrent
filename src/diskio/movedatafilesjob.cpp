@@ -36,7 +36,7 @@ namespace bt
 		: Job(true,0),
 		Resource(&move_data_files_slot,"MoveDataFilesJob"),
 		err(false),
-		active_job(0),
+		active_job(nullptr),
 		running_recovery_jobs(0),
 		bytes_moved(0),
 		total_bytes(0),
@@ -49,7 +49,7 @@ namespace bt
 		: Job(true,0),
 		Resource(&move_data_files_slot,"MoveDataFilesJob"),
 		err(false),
-		active_job(0),
+		active_job(nullptr),
 		running_recovery_jobs(0),
 		bytes_moved(0),
 		total_bytes(0),
@@ -162,10 +162,8 @@ namespace bt
 		active_dst = i.value();
 		Out(SYS_GEN|LOG_DEBUG) << "Moving " << active_src << " -> " << active_dst << endl;
 		connect(active_job, &KIO::Job::result, this, &MoveDataFilesJob::onJobDone);
-		connect(active_job,SIGNAL(processedAmount(KJob*,KJob::Unit,qulonglong)),
-				this,SLOT(onTransferred(KJob*,KJob::Unit,qulonglong)));
-		connect(active_job,SIGNAL(speed(KJob*,ulong)),
-				this,SLOT(onSpeed(KJob*,ulong)));
+		connect(active_job, qOverload<KJob*, KJob::Unit, qulonglong>(&KIO::Job::processedAmount), this, &MoveDataFilesJob::onTransferred);
+		connect(active_job, &KIO::Job::speed, this, &MoveDataFilesJob::onSpeed);
 		todo.erase(i);
 		
 		description(this, i18nc("@title job","Moving"),

@@ -87,7 +87,7 @@ namespace utp
 		/// Emitted when a connection is accepted if creating sockets is disabled
 		void accepted();
 
-	private Q_SLOTS:
+	private:
 		void cleanup();
 		void checkTimeouts();
 

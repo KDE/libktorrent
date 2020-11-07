@@ -243,7 +243,8 @@ namespace bt
 	private Q_SLOTS:
 		void pieceReceived(const bt::Piece & p) override;
 		bool finished(ChunkDownload* c);
-		
+
+	public:
 		/**
 		 * Kill all ChunkDownload's which have been excluded.
 		 * @param from First chunk of range
@@ -257,16 +258,17 @@ namespace bt
 		 * @param to Last chunk
 		 */
 		void onIncluded(Uint32 from,Uint32 to);
-		
+
+	private:
 		/**
 		 * A WebSeed has finished a Chunk
 		 * @param c The chunk
 		 */
 		void onChunkReady(Chunk* c);
-		
+
 		void chunkDownloadStarted(WebSeedChunkDownload* cd,Uint32 chunk);
 		void chunkDownloadFinished(WebSeedChunkDownload* cd,Uint32 chunk);
-		
+
 	Q_SIGNALS:
 		/**
 		 * An error occurred while we we're writing or reading from disk.

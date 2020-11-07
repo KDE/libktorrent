@@ -54,13 +54,12 @@ namespace bt
 	 */
 	class ExitJobOperation : public ExitOperation
 	{
-		Q_OBJECT
 	public:
 		ExitJobOperation(KJob* j);
 		~ExitJobOperation() override;
-		
+
 		bool deleteAllowed() const override {return true;}
-	private Q_SLOTS:
+	private:
 		virtual void onResult(KJob* j);
 	};
 }

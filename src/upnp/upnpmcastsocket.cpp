@@ -70,8 +70,8 @@ namespace bt
 	
 	UPnPMCastSocket::UPnPMCastSocket(bool verbose) : d(new UPnPMCastSocketPrivate(verbose))
 	{
-		QObject::connect(this,SIGNAL(readyRead()),this,SLOT(onReadyRead()));
-		QObject::connect(this,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(error(QAbstractSocket::SocketError)));
+		QObject::connect(this, &UPnPMCastSocket::readyRead, this, &UPnPMCastSocket::onReadyRead);
+		QObject::connect(this, &UPnPMCastSocket::error, this, &UPnPMCastSocket::error);
 	
 		for (Uint32 i = 0;i < 10;i++)
 		{
@@ -148,7 +148,7 @@ namespace bt
 			}
 		}
 	}
-	
+
 	void UPnPMCastSocket::onReadyRead()
 	{
 		if (pendingDatagramSize() == 0)
@@ -161,37 +161,34 @@ namespace bt
 			::read(fd,&tmp,1);
 			return;
 		}
-		
+
 		QByteArray data(pendingDatagramSize(),0);
 		if (readDatagram(data.data(),pendingDatagramSize()) == -1)
 			return;
-		
+
 		if (d->verbose)
 		{
 			Out(SYS_PNP|LOG_NOTICE) << "Received : " << endl;
 			Out(SYS_PNP|LOG_NOTICE) << QString(data) << endl;
 		}
-		
+
 		// try to make a router of it
 		UPnPRouter* r = d->parseResponse(data);
 		if (r)
 		{
-			QObject::connect(r,SIGNAL(xmlFileDownloaded(UPnPRouter*,bool)),
-					this,SLOT(onXmlFileDownloaded(UPnPRouter*,bool)));
-			
+			QObject::connect(r, &UPnPRouter::xmlFileDownloaded, this, &UPnPMCastSocket::onXmlFileDownloaded);
+
 			// download it's xml file
 			r->downloadXMLFile();
 			d->pending_routers.insert(r);
 		}
 	}
-	
-	
-	
+
 	void UPnPMCastSocket::error(QAbstractSocket::SocketError )
 	{
 		Out(SYS_PNP|LOG_IMPORTANT) << "UPnPMCastSocket Error : " << errorString() << endl;
 	}
-	
+
 	void UPnPMCastSocket::saveRouters(const QString & file)
 	{
 		QFile fptr(file);
@@ -210,7 +207,7 @@ namespace bt
 			fout << r->getLocation().toString() << Qt::endl;
 		}
 	}
-	
+
 	void UPnPMCastSocket::loadRouters(const QString & file)
 	{
 		QFile fptr(file);
@@ -232,12 +229,12 @@ namespace bt
 				
 			UPnPRouter* r = new UPnPRouter(server,QUrl(location));
 			// download it's xml file
-			QObject::connect(r,SIGNAL(xmlFileDownloaded(UPnPRouter*,bool)),this,SLOT(onXmlFileDownloaded(UPnPRouter*,bool)));
+			QObject::connect(r, &UPnPRouter::xmlFileDownloaded, this, &UPnPMCastSocket::onXmlFileDownloaded);
 			r->downloadXMLFile();
 			d->pending_routers.insert(r);
 		}
 	}
-	
+
 	Uint32 UPnPMCastSocket::getNumDevicesDiscovered() const 
 	{
 		return d->routers.count();

@@ -90,7 +90,7 @@ namespace bt
 	
 	
 	DecompressFileJob::DecompressFileJob(const QString& file, const QString& dest) 
-		: file(file),dest(dest),decompress_thread(0)
+		: file(file),dest(dest),decompress_thread(nullptr)
 	{
 	}
 
@@ -102,7 +102,7 @@ namespace bt
 	void DecompressFileJob::start()
 	{
 		decompress_thread = new DecompressThread(file,dest);
-		connect(decompress_thread,SIGNAL(finished()),this,SLOT(decompressThreadFinished()),Qt::QueuedConnection);
+		connect(decompress_thread, &DecompressThread::finished, this, &DecompressFileJob::decompressThreadFinished, Qt::QueuedConnection);
 		decompress_thread->start();
 	}
 	
@@ -113,7 +113,7 @@ namespace bt
 			decompress_thread->cancel();
 			decompress_thread->wait();
 			delete decompress_thread;
-			decompress_thread = 0;
+			decompress_thread = nullptr;
 		}
 		setError(KIO::ERR_USER_CANCELED);
 		if (!quietly)
@@ -125,7 +125,7 @@ namespace bt
 		setError(decompress_thread->error());
 		decompress_thread->wait();
 		delete decompress_thread;
-		decompress_thread = 0;
+		decompress_thread = nullptr;
 		emitResult();
 	}
 

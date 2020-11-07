@@ -27,7 +27,7 @@ namespace bt
 
 	WaitJob::WaitJob(Uint32 millis) : KIO::Job(/*false*/)
 	{
-		QTimer::singleShot(millis,this,SLOT(timerDone()));
+		QTimer::singleShot(millis, this, &WaitJob::timerDone);
 	}
 
 
@@ -50,8 +50,7 @@ namespace bt
 	void WaitJob::addExitOperation(ExitOperation* op)
 	{
 		exit_ops.append(op);
-		connect(op,SIGNAL(operationFinished(ExitOperation*)),
-				this,SLOT(operationFinished(ExitOperation*)));
+		connect(op, &ExitOperation::operationFinished, this, &WaitJob::operationFinished);
 	}
 	
 	void WaitJob::addExitOperation(KIO::Job* job)

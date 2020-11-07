@@ -114,12 +114,12 @@ namespace bt
 				
 				QIODevice* in_dev = file->createDevice();
 				extract_thread = new ExtractFileThread(in_dev,out_dev);
-				connect(extract_thread,SIGNAL(finished()),this,SLOT(extractThreadDone()),Qt::QueuedConnection);
+				connect(extract_thread, &ExtractFileThread::finished, this, &ExtractFileJob::extractThreadDone, Qt::QueuedConnection);
 				extract_thread->start();
 			}
 		}
 	}
-	
+
 	void ExtractFileJob::kill(bool quietly)
 	{
 		if (extract_thread)
@@ -127,7 +127,7 @@ namespace bt
 			extract_thread->canceled = true;
 			extract_thread->wait();
 			delete extract_thread;
-			extract_thread = 0;
+			extract_thread = nullptr;
 		}
 		setError(KIO::ERR_USER_CANCELED);
 		if (!quietly)
@@ -138,7 +138,7 @@ namespace bt
 	{
 		extract_thread->wait();
 		delete extract_thread;
-		extract_thread = 0;
+		extract_thread = nullptr;
 		setError(0);
 		emitResult();
 	}

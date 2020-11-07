@@ -26,7 +26,7 @@
 #include <QTextStream>
 #include <QDateTime>
 
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 
 #include <util/log.h>
 #include <util/error.h>
@@ -76,10 +76,10 @@ namespace bt
     Uint32 TorrentControl::min_diskspace = 100;
 
     TorrentControl::TorrentControl()
-		: m_qman(0), tor(0), psman(0), cman(0), pman(0), downloader(0), uploader(0), choke(0), tmon(0), prealloc(false)
+		: m_qman(nullptr), tor(nullptr), psman(nullptr), cman(nullptr), pman(nullptr), downloader(nullptr), uploader(nullptr), choke(nullptr), tmon(nullptr), prealloc(false)
     {
         job_queue = new JobQueue(this);
-        cache_factory = 0;
+        cache_factory = nullptr;
         istats.session_bytes_uploaded = 0;
         old_tordir = QString();
         stats_file = 0;
@@ -109,7 +109,7 @@ namespace bt
         {
             // block all signals to prevent crash at exit
             blockSignals(true);
-            stop(0);
+            stop(nullptr);
         }
 
         if (tmon)
@@ -634,23 +634,23 @@ namespace bt
         if (bt::Exists(tordir + "index"))
             cman->loadIndexFile();
 
-        connect(cman, SIGNAL(updateStats()), this, SLOT(updateStats()));
+        connect(cman, &ChunkManager::updateStats, this, &TorrentControl::updateStats);
         updateStats();
         stats.completed = cman->completed();
 
-        // create downloader,uploader and choker
+        // create downloader, uploader and choker
         downloader = new Downloader(*tor, *pman, *cman);
         downloader->loadWebSeeds(tordir + "webseeds");
-        connect(downloader, SIGNAL(ioError(QString)), this, SLOT(onIOError(QString)));
+        connect(downloader, &Downloader::ioError, this, &TorrentControl::onIOError);
         connect(downloader, &Downloader::chunkDownloaded, this, &TorrentControl::downloaded);
         uploader = new Uploader(*cman, *pman);
         choke = new Choker(*pman, *cman);
 
         connect(pman, &PeerManager::newPeer, this, &TorrentControl::onNewPeer);
         connect(pman, &PeerManager::peerKilled, this, &TorrentControl::onPeerRemoved);
-        connect(cman, SIGNAL(excluded(Uint32, Uint32)), downloader, SLOT(onExcluded(Uint32, Uint32)));
-        connect(cman, SIGNAL(included(Uint32, Uint32)), downloader, SLOT(onIncluded(Uint32, Uint32)));
-        connect(cman, SIGNAL(corrupted(Uint32)), this, SLOT(corrupted(Uint32)));
+        connect(cman, &ChunkManager::excluded, downloader, &Downloader::onExcluded);
+        connect(cman, &ChunkManager::included, downloader, &Downloader::onIncluded);
+        connect(cman, &ChunkManager::corrupted, this, &TorrentControl::corrupted);
     }
 
     void TorrentControl::initInternal(QueueManagerInterface* qman, const QString& tmpdir, const QString& ddir)
@@ -835,7 +835,7 @@ namespace bt
                 if (j)
                 {
                     j->setTorrent(this);
-                    connect(j, SIGNAL(result(KJob*)), this, SLOT(moveDataFilesFinished(KJob*)));
+                    connect(j, &Job::result, this, &TorrentControl::moveDataFilesFinished);
                     job_queue->enqueue(j);
                     return true;
                 }
@@ -886,7 +886,7 @@ namespace bt
             Job* j = cman->moveDataFiles(files);
             if (j)
             {
-                connect(j, SIGNAL(result(KJob*)), this, SLOT(moveDataFilesWithMapFinished(KJob*)));
+                connect(j, &Job::result, this, &TorrentControl::moveDataFilesWithMapFinished);
                 job_queue->enqueue(j);
             }
 
@@ -1420,7 +1420,7 @@ namespace bt
             // use QTimer because we need to ensure this is run after the JobQueue removes the job
             QTimer::singleShot(0, this, SIGNAL(updateQueue()));
             if (stats.completed)
-                QTimer::singleShot(0, this, SLOT(emitFinished()));
+                QTimer::singleShot(0, this, &TorrentControl::emitFinished);
         }
     }
 

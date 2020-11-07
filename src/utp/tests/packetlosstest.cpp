@@ -43,9 +43,8 @@ using namespace bt;
 */
 class PacketLossServer : public UTPServer
 {
-	Q_OBJECT
 public:
-	PacketLossServer(QObject* parent = 0) : UTPServer(parent),packet_loss(false),loss_factor(0.5)
+	PacketLossServer(QObject* parent = nullptr) : UTPServer(parent),packet_loss(false),loss_factor(0.5)
 	{
 		setCreateSockets(false);
 	}
@@ -83,7 +82,6 @@ private:
 
 class SendThread : public QThread
 {
-	Q_OBJECT
 public:
 	
 	SendThread(Connection::Ptr outgoing,QObject* parent = 0) : QThread(parent),outgoing(outgoing)
@@ -116,13 +114,11 @@ public:
 
 class PacketLoss : public QEventLoop
 {
-	Q_OBJECT
 public:
-	PacketLoss(QObject* parent = 0) : QEventLoop(parent)
+	PacketLoss(QObject* parent = nullptr) : QEventLoop(parent)
 	{
 	}
-	
-public Q_SLOTS:
+
 	void accepted()
 	{
 		incoming = srv.acceptedConnection().toStrongRef();
@@ -134,7 +130,7 @@ public Q_SLOTS:
 		exit();
 	}
 	
-private Q_SLOTS:
+private:
 	void initTestCase()
 	{
 		bt::InitLog("packetlosstest.log");
@@ -159,10 +155,10 @@ private Q_SLOTS:
 	void testConnect()
 	{
 		net::Address addr("127.0.0.1",port);
-		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
+		connect(&srv, &PacketLossServer::accepted, this, &PacketLoss::accepted, Qt::QueuedConnection);
 		outgoing = srv.connectTo(addr).toStrongRef();
 		QVERIFY(outgoing);
-		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
+		QTimer::singleShot(5000, this, &PacketLoss::endEventLoop); // use a 5 second timeout
 		exec();
 		QVERIFY(incoming);
 	}
@@ -227,6 +223,3 @@ private:
 };
 
 QTEST_MAIN(PacketLoss)
-
-#include "packetlosstest.moc"
-

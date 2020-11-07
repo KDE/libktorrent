@@ -21,7 +21,6 @@
 #include "dht.h"
 #include "rpcmsg.h"
 
-
 namespace dht
 {
 	RPCCallListener::RPCCallListener(QObject* parent) : QObject(parent)
@@ -70,8 +69,8 @@ namespace dht
 
 	void RPCCall::addListener(RPCCallListener* cl)
 	{
-		connect(this, SIGNAL(response(RPCCall*, RPCMsg::Ptr)), cl, SLOT(onResponse(RPCCall*, RPCMsg::Ptr)));
-		connect(this, SIGNAL(timeout(RPCCall*)), cl, SLOT(onTimeout(RPCCall*)));
+		connect(this, qOverload<RPCCall*, RPCMsg::Ptr>(&RPCCall::response), cl, &RPCCallListener::onResponse);
+		connect(this, &RPCCall::timeout, cl, &RPCCallListener::onTimeout);
 	}
 
 }

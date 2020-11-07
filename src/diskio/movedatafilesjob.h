@@ -33,7 +33,6 @@ namespace bt
 	*/
 	class MoveDataFilesJob : public Job, public Resource
 	{
-		Q_OBJECT
 	public:
 		MoveDataFilesJob();
 		
@@ -57,13 +56,12 @@ namespace bt
 		/// Get the file map (could be empty)
 		const QMap<TorrentFileInterface*,QString> & fileMap() const {return file_map;}
 		
-	private Q_SLOTS:
+	private:
 		void onJobDone(KJob* j);
 		void onRecoveryJobDone(KJob* j);
 		void onTransferred(KJob *job, KJob::Unit unit, qulonglong amount);
 		void onSpeed(KJob* job, unsigned long speed);
-		
-	private:
+
 		void recover(bool delete_active);
 		void startMoving();
 		void acquired() override;

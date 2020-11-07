@@ -70,15 +70,14 @@ namespace utp
 	UTPServer::Private::Private(UTPServer* p)
 			: p(p)
 			, running(false)
-			, utp_thread(0)
+			, utp_thread(nullptr)
 			, mutex(QMutex::Recursive)
 			, create_sockets(true)
 			, tos(0)
 			, mtc(new MainThreadCall(p))
 			, timer(new QTimer)
 	{
-		QObject::connect(p, SIGNAL(handlePendingConnectionsDelayed()),
-		                 mtc, SLOT(handlePendingConnections()), Qt::QueuedConnection);
+		QObject::connect(p, &UTPServer::handlePendingConnectionsDelayed, mtc, &MainThreadCall::handlePendingConnections, Qt::QueuedConnection);
 
 		poll_pipes.setAutoDelete(true);
 	}
@@ -234,7 +233,7 @@ namespace utp
 			: ServerInterface(parent), d(new Private(this))
 
 	{
-		connect(d->timer, SIGNAL(timeout()), this, SLOT(checkTimeouts()));
+		connect(d->timer, &QTimer::timeout, this, &UTPServer::checkTimeouts);
 	}
 
 	UTPServer::~UTPServer()
@@ -511,7 +510,7 @@ namespace utp
 	void UTPServer::closed(Connection::Ptr conn)
 	{
 		Q_UNUSED(conn);
-		QTimer::singleShot(0, this, SLOT(cleanup()));
+		QTimer::singleShot(0, this, &UTPServer::cleanup);
 	}
 
 	void UTPServer::cleanup()

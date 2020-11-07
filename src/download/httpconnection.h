@@ -112,7 +112,7 @@ namespace bt
 		/// Get the status string
 		const QString getStatusString() const;
 		
-	private Q_SLOTS:
+	private:
 		void hostResolved(net::AddressResolver* ar);
 		void connectTimeout();
 		void replyTimeout();

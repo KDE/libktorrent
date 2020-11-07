@@ -47,8 +47,6 @@ namespace bt
 	*/
 	class PeerSourceManager : public TrackerManager
 	{
-		Q_OBJECT
-		
 		QList<PeerSource*> additional;
 		dht::DHTPeerSource* m_dht;
 		

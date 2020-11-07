@@ -36,7 +36,6 @@ namespace dht
 	*/
 	class TaskManager : public QObject
 	{
-		Q_OBJECT
 	public:
 		TaskManager(const DHT* dh_table);
 		~TaskManager() override;
@@ -53,10 +52,9 @@ namespace dht
 		/// Get the number of queued tasks
 		bt::Uint32 getNumQueuedTasks() const {return queued.count();}
 		
-	private Q_SLOTS:
+	private:
 		void taskFinished(Task* task);
 
-	private:
 		const DHT* dh_table;
 		QList<QPointer<Task> > queued;
 		bt::Uint32 num_active;

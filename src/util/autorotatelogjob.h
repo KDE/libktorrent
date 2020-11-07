@@ -35,20 +35,18 @@ namespace bt
 	*/
 	class AutoRotateLogJob : public KIO::Job
 	{
-		Q_OBJECT
 	public:
 		AutoRotateLogJob(const QString & file,Log* lg);
 		~AutoRotateLogJob() override;
-		
+
 		virtual void kill(bool quietly=true);
-		
-	private Q_SLOTS:
+
+	private:
 		void moveJobDone(KJob*);
 		void compressJobDone(KJob*);
-		
-	private:
+
 		void update();
-		
+
 	private:
 		QString file;
 		int cnt;

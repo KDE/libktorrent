@@ -19,7 +19,9 @@
  ***************************************************************************/
 
 #include "torrentfilestream.h"
+
 #include <QPointer>
+
 #include <diskio/chunkmanager.h>
 #include <diskio/piecedata.h>
 #include <util/timer.h>
@@ -205,9 +207,8 @@ namespace bt
 		current_chunk_offset(0),csel(0),bitset(cman->getNumChunks())
 	{
 		current_chunk = firstChunk();
-		connect(tc,SIGNAL(chunkDownloaded(bt::TorrentInterface*,bt::Uint32)),
-				p,SLOT(chunkDownloaded(bt::TorrentInterface*,bt::Uint32)));
-		
+		connect(tc, &TorrentControl::chunkDownloaded, p, &TorrentFileStream::chunkDownloaded);
+
 		if (streaming_mode)
 		{
 			csel = new StreamingChunkSelector();
@@ -228,7 +229,7 @@ namespace bt
 		current_chunk = firstChunk();
 		current_chunk_offset = firstChunkOffset();
 		bitset = BitSet(lastChunk() - firstChunk() + 1);
-		
+
 		if (streaming_mode)
 		{
 			csel = new StreamingChunkSelector();
@@ -236,13 +237,13 @@ namespace bt
 			csel->setSequentialRange(firstChunk(),lastChunk());
 		}
 	}
-	
+
 	TorrentFileStream::Private::~Private()
 	{
 		if (csel && tc)
 			tc->setChunkSelector(0); // Force creation of new chunk selector
 	}
-	
+
 	void TorrentFileStream::Private::reset()
 	{
 		current_byte_offset = 0;
@@ -253,7 +254,7 @@ namespace bt
 		cman->checkMemoryUsage();
 		update();
 	}
-	
+
 	void TorrentFileStream::Private::update()
 	{
 		const BitSet & chunks = cman->getBitSet();
@@ -275,22 +276,22 @@ namespace bt
 			}
 			return;
 		}
-		
+
 		// Update the bitset
 		for (Uint32 i = first;i <= last;i++)
 			bitset.set(i - first,chunks.get(i));
-		
+
 		bytes_readable = 0;
 		if (!bitset.get(current_chunk - first)) // If we don't have the current chunk, we can't read anything
 			return;
-		
+
 		// Add all chunks past the current one
 		for (Uint32 i = current_chunk + 1;i <= last;i++)
 		{
 			// If we don't have the chunk we cannot read it, so break out of loop
 			if (!bitset.get(i - first))
 				break;
-			
+
 			if (i != last)
 				bytes_readable += cman->getChunk(i)->getSize();
 			else

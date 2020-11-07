@@ -40,8 +40,8 @@ namespace bt
 		: QObject(parent),mlink(mlink),pman(0),dht_ps(0),tor(mlink.infoHash()),found(false)
 	{
 		dht::DHTBase & dht_table = Globals::instance().getDHT();
-		connect(&dht_table,SIGNAL(started()),this,SLOT(dhtStarted()));
-		connect(&dht_table,SIGNAL(stopped()),this,SLOT(dhtStopped()));
+		connect(&dht_table, &dht::DHTBase::started, this, &MagnetDownloader::dhtStarted);
+		connect(&dht_table, &dht::DHTBase::stopped, this, &MagnetDownloader::dhtStopped);
 	}
 
 	MagnetDownloader::~MagnetDownloader()
@@ -59,11 +59,11 @@ namespace bt
 		if (!mlink.torrent().isEmpty()) 
 		{
 			KIO::StoredTransferJob *job = KIO::storedGet( QUrl(mlink.torrent()), KIO::NoReload, KIO::HideProgressInfo );
-			connect(job,SIGNAL(result(KJob*)),this,SLOT(onTorrentDownloaded(KJob*)));
+			connect(job, &KIO::StoredTransferJob::result, this, &MagnetDownloader::onTorrentDownloaded);
 		}
 		
 		pman = new PeerManager(tor);
-		connect(pman,SIGNAL(newPeer(Peer*)),this,SLOT(onNewPeer(Peer*)));
+		connect(pman, &PeerManager::newPeer, this, &MagnetDownloader::onNewPeer);
 		
 
 		const QList<QUrl> trackers_list = mlink.trackers();
@@ -75,7 +75,7 @@ namespace bt
 			else
 				tracker = new HTTPTracker(url,this,tor.getPeerID(),0);
 			trackers << tracker;
-			connect(tracker,SIGNAL(peersReady(PeerSource*)),pman,SLOT(peerSourceReady(PeerSource*)));
+			connect(tracker, &Tracker::peersReady, pman, &PeerManager::peerSourceReady);
 			tracker->start();
 		}
 	
@@ -84,7 +84,7 @@ namespace bt
 		{
 			dht_ps = new dht::DHTPeerSource(dht_table,mlink.infoHash(),mlink.displayName());
 			dht_ps->setRequestInterval(0); // Do not wait if the announce task finishes
-			connect(dht_ps,SIGNAL(peersReady(PeerSource*)),pman,SLOT(peerSourceReady(PeerSource*)));
+			connect(dht_ps, &dht::DHTPeerSource::peersReady, pman, &PeerManager::peerSourceReady);
 			dht_ps->start();
 		}
 		
@@ -141,7 +141,7 @@ namespace bt
 		}
 		else
 		{
-			connect(p,SIGNAL(metadataDownloaded(QByteArray)),this,SLOT(onMetadataDownloaded(QByteArray)));
+			connect(p, &Peer::metadataDownloaded, this, &MagnetDownloader::onMetadataDownloaded);
 		}
 	}
 
@@ -217,7 +217,7 @@ namespace bt
 		found = true;
 		Out(SYS_GEN|LOG_IMPORTANT) << "Metadata downloaded" << endl;
 		foundMetadata(this,data);
-		QTimer::singleShot(0,this,SLOT(stop()));
+		QTimer::singleShot(0, this, &MagnetDownloader::stop);
 	}
 
 	void MagnetDownloader::dhtStarted()
@@ -227,7 +227,7 @@ namespace bt
 			dht::DHTBase & dht_table = Globals::instance().getDHT();
 			dht_ps = new dht::DHTPeerSource(dht_table,mlink.infoHash(),mlink.displayName());
 			dht_ps->setRequestInterval(0); // Do not wait if the announce task finishes
-			connect(dht_ps,SIGNAL(peersReady(PeerSource*)),pman,SLOT(peerSourceReady(PeerSource*)));
+			connect(dht_ps, &dht::DHTPeerSource::peersReady, pman, &PeerManager::peerSourceReady);
 			dht_ps->start();
 		}
 	}

@@ -33,21 +33,21 @@
 
 namespace bt
 {
-	
+
 	class File;
 	class Chunk;
 	class Piece;
 	class Peer;
 	class Request;
 	class PieceDownloader;
-	
+
 	struct ChunkDownloadHeader
 	{
 		Uint32 index;
 		Uint32 num_bits;
 		Uint32 buffered;
 	};
-	
+
 	struct PieceHeader
 	{
 		Uint32 piece;
@@ -65,21 +65,20 @@ namespace bt
 		void remove(Uint32 p);
 		bool contains(Uint32 p);
 		void clear();
-		
+
 		void timeout() {timeouts++;}
 		Uint32 numTimeouts() const {return timeouts;}
-		
+
 		typedef QSet<Uint32>::iterator iterator;
 		iterator begin() {return status.begin();}
 		iterator end() {return status.end();}
-		
+
 	private:
 		Uint32 timeouts;
 		QSet<Uint32> status;
 	};
-	
-	
-	
+
+
 	/**
 	 * @author Joris Guisson
 	 * @brief Handles the download off one Chunk off a Peer
@@ -88,7 +87,6 @@ namespace bt
 	*/
 	class KTORRENT_EXPORT ChunkDownload : public QObject,public ChunkDownloadInterface 
 	{
-		Q_OBJECT
 	public:
 		/**
 		 * Constructor, set the chunk and the PeerManager.
@@ -199,11 +197,10 @@ namespace bt
 		/// Get the number of downloaders
 		Uint32 getNumDownloaders() const {return pdown.count();}
 
-	private Q_SLOTS:
+	private:
 		void onTimeout(const bt::Request & r);
 		void onRejected(const bt::Request & r);
-		
-	private:
+
 		void notDownloaded(const Request & r,bool reject);
 		void updateHash();
 		void sendRequests();
@@ -211,8 +208,7 @@ namespace bt
 		void sendCancels(PieceDownloader* pd);
 		void endgameCancel(const Piece & p);
 		Uint32 bestPiece(PieceDownloader* pd);
-		
-	private:		
+
 		BitSet pieces;
 		Chunk* chunk;
 		Uint32 num;

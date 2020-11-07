@@ -21,10 +21,11 @@
 #ifndef BTTORRENTCONTROL_H
 #define BTTORRENTCONTROL_H
 
-#include <qdatetime.h>
-#include <qobject.h>
-#include <qtimer.h>
+#include <QDateTime>
+#include <QObject>
+#include <QTimer>
 #include <QUrl>
+
 #include <util/timer.h>
 #include <interfaces/torrentinterface.h>
 #include <interfaces/trackerslist.h>
@@ -165,52 +166,52 @@ namespace bt
 		void setMoveWhenCompletedDir(const QString &dir) override {completed_dir = dir; saveStats();}
 		QString getMoveWhenCompletedDir() const override {return completed_dir;}
 		void setSuperSeeding(bool on) override;
-		
+
 		/// Create all the necessary files
 		void createFiles();
-		
+
 		/// Get the PeerManager
 		const PeerManager * getPeerMgr() const;
-		
+
 		/**
 		 * Set a custom chunk selector factory (needs to be done for init is called)
 		 * Note: TorrentControl does not take ownership
 		 */
 		void setChunkSelectorFactory(ChunkSelectorFactoryInterface* csfi);
-		
+
 		/// Set a custom Cache factory
 		void setCacheFactory(CacheFactory* cf);
 
 		/// Get time in msec since the last Stats file save on disk
 		TimeStamp getStatsSyncElapsedTime() { return stats_save_timer.getElapsedSinceUpdate(); }
 
-	public Q_SLOTS:
+	public:
 		/**
 		 * Update the object, should be called periodically.
 		 */
 		void update() override;
-		
+
 		/**
 		 * Pause the torrent.
 		 */
 		void pause() override;
-		
+
 		/**
 		 * Unpause the torrent.
 		 */
 		void unpause() override;
-		
+
 		/**
 		 * Start the download of the torrent.
 		 */
 		void start() override;
-		
+
 		/**
 		 * Stop the download, closes all connections.
 		 * @param wjob WaitJob to wait at exit for the completion of stopped requests
 		 */
 		void stop(WaitJob* wjob = 0) override;
-			
+
 		/**
 		 * Update the tracker, this should normally handled internally.
 		 * We leave it public so that the user can do a manual announce.
@@ -226,19 +227,19 @@ namespace bt
 		 * A scrape has finished on the tracker.
 		 * */
 		void trackerScrapeDone();
-		
+
 		/**
 		 * Enable or disable data check upon completion
 		 * @param on 
 		 */
 		static void setDataCheckWhenCompleted(bool on) {completed_datacheck = on;}
-		
+
 		/**
 		 * Set the minimum amount of diskspace in MB. When there is less then this free, torrents will be stopped.
 		 * @param m 
 		 */
 		static void setMinimumDiskSpace(Uint32 m) {min_diskspace = m;}
-		
+
 	protected:
 		/// Called when a data check is finished by DataCheckerJob
 		void afterDataCheck(DataCheckerJob* job,const BitSet & result);
@@ -246,8 +247,8 @@ namespace bt
 		void preallocFinished(const QString & error,bool completed);
 		void allJobsDone();
 		bool preallocate();
-		
-	private Q_SLOTS:
+
+	private:
 		void onNewPeer(Peer* p);
 		void onPeerRemoved(Peer* p);
 		void doChoking();
@@ -260,8 +261,7 @@ namespace bt
 		void downloaded(Uint32 chunk);
 		void moveToCompletedDir();
 		void emitFinished();
-		
-	private:	
+
 		void updateTracker(const QString & ev,bool last_succes = true);
 		void updateStatus() override;
 		void saveStats();
@@ -281,10 +281,10 @@ namespace bt
 		void setDownloadProps(Uint32 limit,Uint32 rate);
 		void downloadPriorityChanged(TorrentFile* tf, Priority newpriority, Priority oldpriority) override;
 		void updateRunningTimes();
-		
+
 	Q_SIGNALS:
 		void dataCheckFinished();
-		
+
 	private:
 		JobQueue* job_queue;
 		QueueManagerInterface* m_qman;
@@ -311,7 +311,7 @@ namespace bt
 		bool prealloc;
 		TimeStamp last_diskspace_check;
 		bool loading_stats;
-		
+
 		struct InternalStats
 		{
 			QDateTime time_started_dl; 
@@ -328,29 +328,28 @@ namespace bt
 			bool dht_on;
 			bool diskspace_warning_emitted;
 		};
-		
+
 		Uint32 upload_gid; // group ID for upload
 		Uint32 upload_limit; 
 		Uint32 download_gid; // group ID for download
 		Uint32 download_limit; 
-		
+
 		Uint32 assured_download_speed;
 		Uint32 assured_upload_speed;
-		
+
 		InternalStats istats;
 		StatsFile* stats_file;
-		
+
 		TorrentFileStream::WPtr stream;
-		
+
 		static bool completed_datacheck;
 		static Uint32 min_diskspace;
-		
+
 		friend class DataCheckerJob;
 		friend class PreallocationJob;
 		friend class JobQueue;
 	};
-	
-	
+
 }
 
 #endif

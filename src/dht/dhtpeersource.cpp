@@ -36,8 +36,8 @@ namespace dht
 		: dh_table(dh_table),curr_task(0),info_hash(info_hash),torrent_name(torrent_name)
 	{
 		connect(&timer, &QTimer::timeout, this, &DHTPeerSource::onTimeout);
-		connect(&dh_table,SIGNAL(started()),this,SLOT(manualUpdate()));
-		connect(&dh_table,SIGNAL(stopped()),this,SLOT(dhtStopped()));
+		connect(&dh_table, &DHTBase::started, this, &DHTPeerSource::manualUpdate);
+		connect(&dh_table, &DHTBase::stopped, this, &DHTPeerSource::dhtStopped);
 		started = false;
 		timer.setSingleShot(true);
 		request_interval = 5 * 60 * 1000;

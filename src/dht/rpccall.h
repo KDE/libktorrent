@@ -33,12 +33,10 @@ namespace dht
 	*/
 	class RPCCallListener : public QObject
 	{
-		Q_OBJECT
 	public:
 		RPCCallListener(QObject* parent);
 		~RPCCallListener() override;
 
-	public Q_SLOTS:
 		/**
 		 * A response was received.
 		 * @param c The call

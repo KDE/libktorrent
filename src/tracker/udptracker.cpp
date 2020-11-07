@@ -53,9 +53,9 @@ namespace bt
 		num_instances++;
 		if (!socket)
 			socket = new UDPTrackerSocket();
-		
+
 		interval = 0;
-		
+
 		conn_timer.setSingleShot(true);
 		connect(&conn_timer, &QTimer::timeout, this, &UDPTracker::onConnTimeout);
 		connect(socket, &UDPTrackerSocket::announceReceived, this, &UDPTracker::announceReceived);

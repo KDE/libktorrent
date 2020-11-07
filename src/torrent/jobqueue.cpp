@@ -58,9 +58,9 @@ namespace bt
 	{
 		if (queue.isEmpty())
 			return;
-		
+
 		Job* j = queue.front();
-		connect(j,SIGNAL(result(KJob*)),this,SLOT(jobDone(KJob*)));
+		connect(j, &Job::result, this, &JobQueue::jobDone);
 		if (j->stopTorrent() && tc->getStats().running)
 		{
 			// stop the torrent if the job requires it

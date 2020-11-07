@@ -41,6 +41,9 @@ set(LibGcrypt_MIN_VERSION "1.4.5")
 set(KF5_MIN_VERSION "5.15")
 set(QT_MIN_VERSION "5.14.0")
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 ecm_setup_version(${RELEASE_SERVICE_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/libktorrent_version.h"
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfigVersion.cmake"

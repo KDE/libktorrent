@@ -28,10 +28,7 @@ using namespace utp;
 
 class SendTest : public QEventLoop
 {
-	Q_OBJECT
-	public:
-		
-public Q_SLOTS:
+public:
 	void accepted()
 	{
 		incoming = new UTPSocket(bt::Globals::instance().getUTPServer().acceptedConnection());
@@ -43,7 +40,7 @@ public Q_SLOTS:
 		exit();
 	}
 	
-private Q_SLOTS:
+private:
 	void initTestCase()
 	{
 		bt::InitLog("sendtest.log");
@@ -74,12 +71,12 @@ private Q_SLOTS:
 		
 		net::Address addr("127.0.0.1",port);
 		utp::UTPServer & srv = bt::Globals::instance().getUTPServer();
-		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
+		connect(&srv, &utp::UTPServer::accepted,this, &SendTest::accepted, Qt::QueuedConnection);
 		outgoing = new utp::UTPSocket();
 		outgoing->setBlocking(false);
 		outgoing->connectTo(addr);
 		
-		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
+		QTimer::singleShot(5000, this, &SendTest::endEventLoop); // use a 5 second timeout
 		exec();
 		QVERIFY(incoming != 0);
 		
@@ -176,5 +173,3 @@ private:
 };
 
 QTEST_MAIN(SendTest)
-
-#include "sendtest.moc"

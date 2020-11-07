@@ -28,30 +28,29 @@ using namespace utp;
 
 class ConnectionTest : public QEventLoop,public Transmitter
 {
-	Q_OBJECT
 public:
 	
-	ConnectionTest(QObject* parent = 0) : QEventLoop(parent),remote("127.0.0.1",50000)
+	ConnectionTest(QObject* parent = nullptr) : QEventLoop(parent), remote("127.0.0.1", 50000)
 	{
 	}
 	
 	bool sendTo(Connection::Ptr conn, const PacketBuffer & packet) override
 	{
 		sent_packets.append(packet);
-		Q_UNUSED(conn);
+		Q_UNUSED(conn)
 		return true;
 	}
 	
     void stateChanged(Connection::Ptr conn, bool readable, bool writeable) override
 	{
-		Q_UNUSED(conn);
-		Q_UNUSED(readable);
-		Q_UNUSED(writeable);
+		Q_UNUSED(conn)
+		Q_UNUSED(readable)
+		Q_UNUSED(writeable)
 	}
 	
     void closed(Connection::Ptr conn) override
 	{
-		Q_UNUSED(conn);
+		Q_UNUSED(conn)
 	}
 	
 	bt::Buffer::Ptr buildPacket(bt::Uint32 type,bt::Uint32 recv_conn_id,bt::Uint32 send_conn_id,bt::Uint16 seq_nr,bt::Uint16 ack_nr)
@@ -72,10 +71,8 @@ public:
 		return packet;
 	}
 	
-public Q_SLOTS:
-	
-	
-private Q_SLOTS:
+
+private:
 	void initTestCase()
 	{
 		bt::InitLog("connectiontest.log");
@@ -121,7 +118,7 @@ private Q_SLOTS:
 		QVERIFY(s.state == CS_CONNECTED);
 		QVERIFY(sent_packets.count() == 1);
 	}
-	
+
 	void testIncomingConnectionSetup()
 	{
 		bt::Uint32 conn_id = 666;
@@ -134,7 +131,6 @@ private Q_SLOTS:
 		QVERIFY(s.state == CS_CONNECTED);
 	}
 
-	
 private:
 	net::Address remote;
 	QList<PacketBuffer> sent_packets;
@@ -142,6 +138,3 @@ private:
 };
 
 QTEST_MAIN(ConnectionTest)
-
-#include "connectiontest.moc"
-

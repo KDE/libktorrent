@@ -155,11 +155,7 @@ namespace bt
 
     void UPnPRouter::addService(const UPnPService& s)
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
-        foreach(const UPnPService& os, d->services)
-#else
         for (const UPnPService& os : qAsConst(d->services))
-#endif
         {
             if(s.servicetype == os.servicetype)
                 return;
@@ -195,7 +191,7 @@ namespace bt
         // downlaod XML description into a temporary file in /tmp
         Out(SYS_PNP | LOG_DEBUG) << "Downloading XML file " << d->location << endl;
         KIO::Job* job = KIO::storedGet(d->location, KIO::NoReload, KIO::Overwrite | KIO::HideProgressInfo);
-        connect(job, SIGNAL(result(KJob*)), this, SLOT(downloadFinished(KJob*)));
+        connect(job, &KIO::Job::result, this, &UPnPRouter::downloadFinished);
     }
 
     void UPnPRouter::forward(const net::Port& port)
@@ -209,11 +205,7 @@ namespace bt
         bool found = false;
         Out(SYS_PNP | LOG_NOTICE) << "Forwarding port " << port.number << " (" << (port.proto == UDP ? "UDP" : "TCP") << ")" << endl;
         // first find the right service
-#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
-        foreach(const UPnPService& s, d->services)
-#else
         for (const UPnPService& s : qAsConst(d->services))
-#endif   
         {
             if(s.servicetype.contains("WANIPConnection") || s.servicetype.contains("WANPPPConnection"))
             {
@@ -383,11 +375,7 @@ namespace bt
 
     void UPnPRouter::visit(UPnPRouter::Visitor* visitor) const
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
-        foreach(const Forwarding& fwd, d->fwds)
-#else
         for (const Forwarding& fwd : qAsConst(d->fwds))
-#endif   
         {
             visitor->forwarding(fwd.port, fwd.pending_req != 0, fwd.service);
         }
@@ -403,11 +391,7 @@ namespace bt
 
     UPnPRouter::UPnPRouterPrivate::~UPnPRouterPrivate()
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
-        foreach(HTTPRequest* r, active_reqs)
-#else
         for (HTTPRequest* r : qAsConst(active_reqs))
-#endif   
         {
             r->deleteLater();
         }
@@ -496,7 +480,7 @@ namespace bt
         }
 
         fw.pending_req = sendSoapQuery(comm, srv->servicetype + "#" + action, srv->controlurl);
-        connect(fw.pending_req, SIGNAL(result(HTTPRequest*)), parent, SLOT(forwardResult(HTTPRequest*)));
+        connect(fw.pending_req, &HTTPRequest::result, parent, &UPnPRouter::forwardResult);
         fwds.append(fw);
     }
 
@@ -526,23 +510,19 @@ namespace bt
         if(waitjob)
             waitjob->addExitOperation(r);
         else
-            connect(r, SIGNAL(result(HTTPRequest*)), parent, SLOT(undoForwardResult(HTTPRequest*)));
+            connect(r, &HTTPRequest::result, parent, &UPnPRouter::undoForwardResult);
     }
 
     void UPnPRouter::UPnPRouterPrivate::getExternalIP()
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
-        foreach(const UPnPService& s, services)
-#else
         for (const UPnPService& s : qAsConst(services))
-#endif   
         {
             if(s.servicetype.contains("WANIPConnection") || s.servicetype.contains("WANPPPConnection"))
             {
                 QString action = "GetExternalIPAddress";
                 QString comm = SOAP::createCommand(action, s.servicetype);
                 HTTPRequest* r = sendSoapQuery(comm, s.servicetype + "#" + action, s.controlurl);
-                connect(r, SIGNAL(result(HTTPRequest*)), parent, SLOT(getExternalIPResult(HTTPRequest*)));
+                connect(r, &HTTPRequest::result, parent, &UPnPRouter::getExternalIPResult);
                 break;
             }
         }

@@ -182,9 +182,8 @@ namespace bt
 			@param visitor The Visitor
 		*/
 		void visit(Visitor* visitor) const;
-	
-		
-	private Q_SLOTS:
+
+	private:
 		void forwardResult(HTTPRequest* r);
 		void undoForwardResult(HTTPRequest* r);
 		void getExternalIPResult(HTTPRequest* r);

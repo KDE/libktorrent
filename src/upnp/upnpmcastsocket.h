@@ -23,6 +23,7 @@
 
 #include <QSet>
 #include <QUdpSocket>
+
 #include <util/ptrmap.h>
 #include <util/constants.h>
 #include <ktorrent_export.h>
@@ -42,7 +43,7 @@ namespace bt
 	*/
 	class KTORRENT_EXPORT UPnPMCastSocket : public QUdpSocket
 	{
-	    Q_OBJECT
+		Q_OBJECT
 	public:
 		UPnPMCastSocket(bool verbose = false);
 		~UPnPMCastSocket() override;
@@ -61,19 +62,19 @@ namespace bt
 
 		/// Set verbose mode
 		void setVerbose(bool v);
-		
-	public Q_SLOTS:
+
+	public:
 		/**
 		 * Try to discover a UPnP device on the network.
 		 * A signal will be emitted when a device is found.
 		 */
 		void discover();
-	
-	private Q_SLOTS:
+
+	private:
 		void onReadyRead();
 		void error(QAbstractSocket::SocketError err);
 		void onXmlFileDownloaded(UPnPRouter* r,bool success);
-		
+
 	Q_SIGNALS:
 		/**
 		 * Emitted when a router or internet gateway device is detected.

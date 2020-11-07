@@ -20,6 +20,7 @@
 
 #include <QtTest>
 #include <QObject>
+
 #include <util/log.h>
 #include <utp/connection.h>
 #include <utp/utpsocket.h>
@@ -42,7 +43,7 @@ class CongestionTestServer : public UTPServer
 {
 	Q_OBJECT
 public:
-	CongestionTestServer(QObject* parent = 0) : UTPServer(parent),congestion_delay(200)
+	CongestionTestServer(QObject* parent = nullptr) : UTPServer(parent), congestion_delay(200)
 	{}
 	
 	virtual ~CongestionTestServer()
@@ -61,7 +62,7 @@ public:
 		congestion_delay = cd;
 	}
 	
-public Q_SLOTS:
+public:
 	void delayedSend()
 	{
 	}
@@ -72,10 +73,9 @@ private:
 
 class SendThread : public QThread
 {
-	Q_OBJECT
 public:
 	
-	SendThread(Connection::Ptr outgoing,QObject* parent = 0) : QThread(parent),outgoing(outgoing)
+	SendThread(Connection::Ptr outgoing, QObject* parent = nullptr) : QThread(parent), outgoing(outgoing)
 	{}
 	
 	virtual void run()
@@ -105,13 +105,12 @@ public:
 
 class CongestionTest : public QEventLoop
 {
-	Q_OBJECT
 public:
 	CongestionTest(QObject* parent = 0) : QEventLoop(parent)
 	{
 	}
 	
-public Q_SLOTS:
+public :
 	void accepted()
 	{
 		incoming = srv.acceptedConnection().toStrongRef();
@@ -123,7 +122,7 @@ public Q_SLOTS:
 		exit();
 	}
 	
-private Q_SLOTS:
+private:
 	void initTestCase()
 	{
 		bt::InitLog("congestiontest.log");
@@ -150,14 +149,14 @@ private Q_SLOTS:
 	void testConnect()
 	{
 		net::Address addr("127.0.0.1",port);
-		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
+		connect(&srv, &CongestionTestServer::accepted, this, &CongestionTest::accepted, Qt::QueuedConnection);
 		outgoing = srv.connectTo(addr);
 		QVERIFY(outgoing != 0);
-		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
+		QTimer::singleShot(5000, this, &CongestionTest::endEventLoop); // use a 5 second timeout
 		exec();
 		QVERIFY(incoming != 0);
 	}
-	
+
 	void testCongestionTest()
 	{
 		bt::Out(SYS_UTP|LOG_DEBUG) << "testCongestionTest" << bt::endl;
@@ -212,6 +211,3 @@ private:
 };
 
 QTEST_MAIN(CongestionTest)
-
-#include "congestiontest.moc"
-

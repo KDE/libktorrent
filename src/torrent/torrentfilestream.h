@@ -42,7 +42,6 @@ namespace bt
 	*/
 	class KTORRENT_EXPORT TorrentFileStream : public QIODevice
 	{
-		Q_OBJECT
 	public:
 		TorrentFileStream(TorrentControl* tc,ChunkManager* cman,bool streaming_mode,QObject* parent);
 		TorrentFileStream(TorrentControl* tc,Uint32 file_index,ChunkManager* cman,bool streaming_mode,QObject* parent);
@@ -92,10 +91,9 @@ namespace bt
 		qint64 readData(char* data, qint64 maxlen) override;
 		void emitReadChannelFinished();
 		
-	private Q_SLOTS:
-		void chunkDownloaded(bt::TorrentInterface* tc, bt::Uint32 chunk);
-		
 	private:
+		void chunkDownloaded(bt::TorrentInterface* tc, bt::Uint32 chunk);
+
 		class Private;
 		Private* d;
 	};

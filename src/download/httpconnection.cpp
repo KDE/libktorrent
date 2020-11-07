@@ -35,19 +35,19 @@ namespace bt
 {
 
 	HttpConnection::HttpConnection() :
-		sock(0),
+		sock(nullptr),
 		state(IDLE),
 		mutex(QMutex::Recursive),
-		request(0),
+		request(nullptr),
 		using_proxy(false),
 		response_code(0)
 	{
 		status = i18n("Not connected");
 		connect(&reply_timer, &QTimer::timeout, this, &HttpConnection::replyTimeout);
 		connect(&connect_timer, &QTimer::timeout, this, &HttpConnection::connectTimeout);
-		connect(this,SIGNAL(startReplyTimer(int)),&reply_timer,SLOT(start(int)),Qt::QueuedConnection);
-		connect(this,SIGNAL(stopReplyTimer()),&reply_timer,SLOT(stop()),Qt::QueuedConnection);
-		connect(this,SIGNAL(stopConnectTimer()),&connect_timer,SLOT(stop()),Qt::QueuedConnection);
+		connect(this, &HttpConnection::startReplyTimer, &reply_timer, qOverload<int>(&QTimer::start), Qt::QueuedConnection);
+		connect(this, &HttpConnection::stopReplyTimer, &reply_timer, &QTimer::stop, Qt::QueuedConnection);
+		connect(this, &HttpConnection::stopConnectTimer, &connect_timer, &QTimer::stop, Qt::QueuedConnection);
 		up_gid = down_gid = 0;
 		close_when_finished = false;
 		redirected = false;

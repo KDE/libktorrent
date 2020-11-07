@@ -40,7 +40,7 @@ namespace dht
 
 	void TaskManager::addTask(Task* task)
 	{
-		connect(task, SIGNAL(finished(Task*)), this, SLOT(taskFinished(Task*)));
+		connect(task, &Task::finished, this, &TaskManager::taskFinished);
 		if (task->isQueued())
 			queued.append(QPointer<Task>(task));
 		else

@@ -15,11 +15,15 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
+
 #include "chunkdownload.h"
-#include <klocalizedstring.h>
+
+#include <KLocalizedString>
+
 #include <algorithm>
+
 #include <util/file.h>
 #include <util/log.h>
 #include <util/array.h>
@@ -140,8 +144,8 @@ namespace bt
 		{
 			pd->release();
 			sendCancels(pd);
-			disconnect(pd,SIGNAL(timedout(bt::Request)),this,SLOT(onTimeout(bt::Request)));
-			disconnect(pd,SIGNAL(rejected(bt::Request)),this,SLOT(onRejected(bt::Request)));
+			disconnect(pd, &PieceDownloader::timedout, this, &ChunkDownload::onTimeout);
+			disconnect(pd, &PieceDownloader::rejected, this, &ChunkDownload::onRejected);
 		}
 		dstatus.clear();
 		pdown.clear();
@@ -155,8 +159,8 @@ namespace bt
 		pd->grab();
 		pdown.append(pd);
 		dstatus.insert(pd,new DownloadStatus());
-		connect(pd,SIGNAL(timedout(bt::Request)),this,SLOT(onTimeout(bt::Request)));
-		connect(pd,SIGNAL(rejected(bt::Request)),this,SLOT(onRejected(bt::Request)));
+		connect(pd, &PieceDownloader::timedout, this, &ChunkDownload::onTimeout);
+		connect(pd, &PieceDownloader::rejected, this, &ChunkDownload::onRejected);
 		sendRequests();
 		return true;
 	}
@@ -168,8 +172,8 @@ namespace bt
 		
 		pd->release();
 		sendCancels(pd);
-		disconnect(pd,SIGNAL(timedout(bt::Request)),this,SLOT(onTimeout(bt::Request)));
-		disconnect(pd,SIGNAL(rejected(bt::Request)),this,SLOT(onRejected(bt::Request)));
+		disconnect(pd, &PieceDownloader::timedout, this, &ChunkDownload::onTimeout);
+		disconnect(pd, &PieceDownloader::rejected, this, &ChunkDownload::onRejected);
 		dstatus.erase(pd);
 		pdown.removeAll(pd);
 	}
@@ -358,8 +362,8 @@ namespace bt
 
 		dstatus.erase(pd);
 		pdown.removeAll(pd);
-		disconnect(pd,SIGNAL(timedout(bt::Request)),this,SLOT(onTimeout(bt::Request)));
-		disconnect(pd,SIGNAL(rejected(bt::Request)),this,SLOT(onRejected(bt::Request)));
+		disconnect(pd, &PieceDownloader::timedout, this, &ChunkDownload::onTimeout);
+		disconnect(pd, &PieceDownloader::rejected, this, &ChunkDownload::onRejected);
 	}
 	
 	Uint32 ChunkDownload::getChunkIndex() const

@@ -31,7 +31,6 @@ namespace bt
 	/// Job which runs a DataChecker
 	class KTORRENT_EXPORT DataCheckerJob : public bt::Job, public Resource
 	{
-		Q_OBJECT
 	public:
 		DataCheckerJob(bool auto_import,TorrentControl* tc, bt::Uint32 from, bt::Uint32 to);
 		~DataCheckerJob() override;
@@ -52,15 +51,13 @@ namespace bt
 		/// Get the last chunk of the datacheck
 		bt::Uint32 lastChunk() const {return to;}
 		
-	private Q_SLOTS:
+	private:
 		void threadFinished();
 		void progress(quint32 num, quint32 total);
 		void status(quint32 num_failed, quint32 num_found, quint32 num_downloaded, quint32 num_not_downloaded);
-		
-	private:
+
 		void acquired() override;
-		
-	private:
+
 		DataCheckerThread* dcheck_thread;
 		bool killed;
 		bool auto_import;

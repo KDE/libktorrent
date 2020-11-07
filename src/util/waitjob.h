@@ -20,8 +20,9 @@
 #ifndef BTWAITJOB_H
 #define BTWAITJOB_H
 
-#include <kio/job.h>
-#include <qlist.h>
+#include <KIO/Job>
+#include <QList>
+
 #include <interfaces/exitoperation.h>
 #include "constants.h"
 #include <ktorrent_export.h>
@@ -37,7 +38,6 @@ namespace bt
 	 */
 	class KTORRENT_EXPORT WaitJob : public KIO::Job
 	{
-		Q_OBJECT
 	public:
 		WaitJob(Uint32 millis);
 		~WaitJob() override;
@@ -65,11 +65,11 @@ namespace bt
 		
 		/// Are there any ExitOperation's we need to wait for
 		bool needToWait() const {return exit_ops.count() > 0;}
-		
-	private Q_SLOTS:
+
+	private:
 		void timerDone();
 		void operationFinished(ExitOperation* op);
-		
+
 	private:
 		QList<ExitOperation*> exit_ops;
 	};

@@ -32,9 +32,9 @@ namespace bt
 	
 	static void sigbus_handler(int sig, siginfo_t *siginfo, void *ptr)
 	{
-		Q_UNUSED(siginfo);
-		Q_UNUSED(ptr);
-		Q_UNUSED(sig);
+		Q_UNUSED(siginfo)
+		Q_UNUSED(ptr)
+		Q_UNUSED(sig)
 		// Jump to error handling code,
 		// ignore signal if we are not safe to jump
 		if (siglongjmp_safe)
@@ -92,11 +92,11 @@ namespace bt
 
 	SignalCatcher::SignalCatcher(QObject* parent) 
 		: QObject(parent),
-		notifier(0)
+		notifier(nullptr)
 	{
 		socketpair(AF_UNIX, SOCK_STREAM, 0, signal_received_pipe);
 		notifier = new QSocketNotifier(signal_received_pipe[1], QSocketNotifier::Read, this);
-		connect(notifier, SIGNAL(activated(int)), this, SLOT(handleInput(int)));
+		connect(notifier, &QSocketNotifier::activated, this, &SignalCatcher::handleInput);
 	}
 
 	SignalCatcher::~SignalCatcher()

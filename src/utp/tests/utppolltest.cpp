@@ -36,11 +36,7 @@ using namespace bt;
 
 class UTPPollTest : public QEventLoop
 {
-	Q_OBJECT
 public:
-	
-	
-public Q_SLOTS:
 	void accepted()
 	{
 		utp::Connection::Ptr conn = bt::Globals::instance().getUTPServer().acceptedConnection();
@@ -65,7 +61,7 @@ public Q_SLOTS:
 		exit();
 	}
 	
-private Q_SLOTS:
+private:
 	void initTestCase()
 	{
 		bt::InitLog("utppolltest.log");
@@ -119,10 +115,10 @@ private Q_SLOTS:
 	{
 		Out(SYS_UTP|LOG_DEBUG) << "testConnect " << endl;
 		utp::UTPServer & srv = bt::Globals::instance().getUTPServer();
-		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
-		
-		QTimer::singleShot(0,this,SLOT(doConnect())); 
-		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
+		connect(&srv, &UTPServer::accepted, this, &UTPPollTest::accepted, Qt::QueuedConnection);
+
+		QTimer::singleShot(0, this, &UTPPollTest::doConnect); 
+		QTimer::singleShot(5000, this, &UTPPollTest::endEventLoop); // use a 5 second timeout
 		exec();
 		QVERIFY(num_accepted == NUM_SOCKETS);
 		for (int i = 0; i < num_accepted; i++)
@@ -226,6 +222,3 @@ private:
 };
 
 QTEST_MAIN(UTPPollTest)
-
-#include "utppolltest.moc"
-

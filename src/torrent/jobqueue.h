@@ -34,7 +34,6 @@ namespace bt
 	*/
 	class KTORRENT_EXPORT JobQueue : public QObject
 	{
-		Q_OBJECT
 	public:
 		JobQueue(TorrentControl* parent);
 		~JobQueue() override;
@@ -54,10 +53,9 @@ namespace bt
 		/// Kill all jobs
 		void killAll();
 		
-	private Q_SLOTS:
-		void jobDone(KJob* job);
-		
 	private:
+		void jobDone(KJob* job);
+
 		QList<Job*> queue;
 		TorrentControl* tc;
 		bool restart;

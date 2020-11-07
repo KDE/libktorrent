@@ -18,9 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "tracker.h"
-#include <stdlib.h>
-#include <time.h>
+
+#include <cstdlib>
+#include <ctime>
+
 #include <QUrl>
+
 #include <util/functions.h>
 #include <util/log.h>
 #include <torrent/globals.h>
@@ -35,11 +38,11 @@ namespace bt
 {
 	static QString custom_ip;
 	static QString custom_ip_resolved;
-	
+
 	const Uint32 INITIAL_WAIT_TIME = 30; 
 	const Uint32 LONGER_WAIT_TIME = 300; 
 	const Uint32 FINAL_WAIT_TIME = 1800;
-	
+
 	Tracker::Tracker(const QUrl &url,TrackerDataSource* tds,const PeerID & id,int tier) 
 	: TrackerInterface(url),tier(tier),peer_id(id),tds(tds)
 	{
@@ -86,7 +89,7 @@ namespace bt
 	
 	void Tracker::timedDelete(int ms)
 	{
-		QTimer::singleShot(ms,this,SLOT(deleteLater()));
+		QTimer::singleShot(ms, this, &Tracker::deleteLater);
 		connect(this, &Tracker::stopDone, this, &Tracker::deleteLater);
 	}
 	

@@ -22,24 +22,26 @@
 
 #include <QFile>
 #include <QThread>
-#include <kio/global.h>
-#include <kfilterdev.h>
+
+#include <KIO/Global>
+#include <KFilterDev>
+
 #include "fileops.h"
 
 namespace bt
 {
-	
+
 	CompressThread::CompressThread(const QString & file) : file(file),canceled(false),err(0)
 	{
 	}
-	
+
 	CompressThread::~CompressThread()
 	{}
-		
+
 	void CompressThread::run()
 	{
 		QFile in(file);
-		
+
 		// open input file readonly
 		if (!in.open(QIODevice::ReadOnly))
 		{
@@ -47,7 +49,7 @@ namespace bt
 			printf("CompressThread: failed to open input file %s for reading: %s\n",in.fileName().toLocal8Bit().constData(),in.errorString().toLocal8Bit().constData());
 			return;
 		}
-		
+
 		// open output file 
 		KCompressionDevice dev(file + QLatin1String(".gz"),KCompressionDevice::GZip);
 		if (!dev.open(QIODevice::WriteOnly))
@@ -64,10 +66,10 @@ namespace bt
 			int len = in.read(buf,4096);
 			if (len <= 0 || len > 4096)
 				break;
-			
+
 			dev.write(buf,len);
 		}
-		
+
 		in.close();
 		if (canceled)
 		{
@@ -80,12 +82,12 @@ namespace bt
 			bt::Delete(file,true);
 		}
 	}
-	
+
 	void CompressThread::cancel()
 	{
 		canceled = true;
 	}
-	
+
 	////////////////////////////////////////////////////////////
 
 	CompressFileJob::CompressFileJob(const QString & file) : file(file),compress_thread(0)
@@ -99,10 +101,10 @@ namespace bt
 	void CompressFileJob::start()
 	{
 		compress_thread = new CompressThread(file);
-		connect(compress_thread,SIGNAL(finished()),this,SLOT(compressThreadFinished()),Qt::QueuedConnection);
+		connect(compress_thread, &CompressThread::finished, this, &CompressFileJob::compressThreadFinished, Qt::QueuedConnection);
 		compress_thread->start();
 	}
-	
+
 	void CompressFileJob::kill(bool quietly)
 	{
 		if (compress_thread)
@@ -110,7 +112,7 @@ namespace bt
 			compress_thread->cancel();
 			compress_thread->wait();
 			delete compress_thread;
-			compress_thread = 0;
+			compress_thread = nullptr;
 		}
 		setError(KIO::ERR_USER_CANCELED);
 		if (!quietly)
@@ -122,7 +124,7 @@ namespace bt
 		setError(compress_thread->error());
 		compress_thread->wait();
 		delete compress_thread;
-		compress_thread = 0;
+		compress_thread = nullptr;
 		emitResult();
 	}
 

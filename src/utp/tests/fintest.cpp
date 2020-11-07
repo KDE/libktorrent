@@ -28,22 +28,19 @@ using namespace utp;
 
 class FinTest : public QEventLoop
 {
-	Q_OBJECT
 public:
-	
-public Q_SLOTS:
 	void accepted()
 	{
 		incoming = srv.acceptedConnection().toStrongRef();
 		exit();
 	}
-	
+
 	void endEventLoop()
 	{
 		exit();
 	}
-	
-private Q_SLOTS:
+
+private:
 	void initTestCase()
 	{
 		bt::InitLog("fintest.log");
@@ -69,10 +66,10 @@ private Q_SLOTS:
 	void testConnect()
 	{
 		net::Address addr("127.0.0.1",port);
-		connect(&srv,SIGNAL(accepted()),this,SLOT(accepted()),Qt::QueuedConnection);
+		connect(&srv, &utp::UTPServer::accepted, this, &FinTest::accepted, Qt::QueuedConnection);
 		outgoing = srv.connectTo(addr).toStrongRef();
 		QVERIFY(outgoing);
-		QTimer::singleShot(5000,this,SLOT(endEventLoop())); // use a 5 second timeout
+		QTimer::singleShot(5000, this, &FinTest::endEventLoop); // use a 5 second timeout
 		exec();
 		QVERIFY(incoming);
 	}
@@ -118,6 +115,3 @@ private:
 };
 
 QTEST_MAIN(FinTest)
-
-#include "fintest.moc"
-

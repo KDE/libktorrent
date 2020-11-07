@@ -44,7 +44,6 @@ namespace dht
 	*/
 	class KTORRENT_EXPORT DHTPeerSource : public bt::PeerSource
 	{
-		Q_OBJECT
 	public:
 		DHTPeerSource(DHTBase & dh_table,const bt::SHA1Hash & info_hash,const QString & torrent_name);
 		~DHTPeerSource() override;
@@ -56,14 +55,13 @@ namespace dht
 		void addDHTNode(const bt::DHTNode & node);
 		void setRequestInterval(bt::Uint32 interval);
 	
-	private Q_SLOTS:
+	private:
 		void onTimeout();
 		bool doRequest();
 		void onDataReady(Task* t);
 		void onFinished(Task* t);
 		void dhtStopped();
-		
-	private:
+
 		DHTBase & dh_table;
 		AnnounceTask* curr_task;
 		bt::SHA1Hash info_hash;

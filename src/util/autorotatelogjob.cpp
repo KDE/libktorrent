@@ -17,8 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
+
 #include "autorotatelogjob.h"
+
 #include <QUrl>
+
 #include <util/fileops.h>
 #include "log.h"
 #include "compressfilejob.h"
@@ -40,7 +43,7 @@ namespace bt
 	{
 		emitResult();
 	}
-		
+
 	void AutoRotateLogJob::update()
 	{
 		while (cnt > 1)
@@ -51,7 +54,7 @@ namespace bt
 			{
 				KIO::Job* sj = KIO::file_move(QUrl::fromLocalFile(prev),QUrl::fromLocalFile(curr),
                                                               -1, KIO::Overwrite | KIO::HideProgressInfo);
-				connect(sj,SIGNAL(result(KJob*)),this,SLOT(moveJobDone(KJob*)));	
+				connect(sj, &KIO::Job::result, this, &AutoRotateLogJob::moveJobDone);
 				return;
 			}
 			else
@@ -59,30 +62,30 @@ namespace bt
 				cnt--;
 			}
 		}
-			
+
 		if (cnt == 1)
 		{
 			// move current log to 1 and zip it
 			KIO::Job* sj = KIO::file_move(QUrl::fromLocalFile(file),QUrl::fromLocalFile(file + QLatin1String("-1")),
                                                       -1, KIO::Overwrite | KIO::HideProgressInfo);
-			connect(sj,SIGNAL(result(KJob*)),this,SLOT(moveJobDone(KJob*)));
+			connect(sj, &KIO::Job::result,this, &AutoRotateLogJob::moveJobDone);
 		}
 		else
 		{
 			// final log file is moved, now zip it and end the job
 			CompressFileJob* gzip = new CompressFileJob(file + QLatin1String("-1"));
-			connect(gzip,SIGNAL(result(KJob*)),this,SLOT(compressJobDone(KJob*)));
+			connect(gzip, &CompressFileJob::result, this, &AutoRotateLogJob::compressJobDone);
 			gzip->start();
 		}
 	}
-		
-	
+
+
 	void AutoRotateLogJob::moveJobDone(KJob*)
 	{
 		cnt--; // decrease counter so the new file will be moved in update
 		update(); // don't care about result of job
 	}
-	
+
 	void AutoRotateLogJob::compressJobDone(KJob*)
 	{
 		lg->logRotateDone();
