@@ -23,85 +23,81 @@
 
 namespace bt
 {
-	static bt::Uint32 SystemConnectionLimit()
-	{
+static bt::Uint32 SystemConnectionLimit()
+{
 #ifndef Q_WS_WIN
-		return bt::MaxOpenFiles() - 50; // leave about 50 free for regular files
+    return bt::MaxOpenFiles() - 50; // leave about 50 free for regular files
 #else
-		return 9999; // there isn't a real limit on windows
+    return 9999; // there isn't a real limit on windows
 #endif
-	}
+}
 
-	ConnectionLimit::ConnectionLimit() :
-		global_limit(SystemConnectionLimit()),
-		global_total(0),
-		torrent_limit(0)
-	{
+ConnectionLimit::ConnectionLimit() :
+    global_limit(SystemConnectionLimit()),
+    global_total(0),
+    torrent_limit(0)
+{
 
-	}
+}
 
-	ConnectionLimit::~ConnectionLimit()
-	{
-	}
+ConnectionLimit::~ConnectionLimit()
+{
+}
 
-	void ConnectionLimit::setLimits(Uint32 global_limit, Uint32 torrent_limit)
-	{
-		this->global_limit = global_limit;
-		this->torrent_limit = torrent_limit;
-		if(this->global_limit > SystemConnectionLimit())
-			this->global_limit = SystemConnectionLimit();
-	}
+void ConnectionLimit::setLimits(Uint32 global_limit, Uint32 torrent_limit)
+{
+    this->global_limit = global_limit;
+    this->torrent_limit = torrent_limit;
+    if (this->global_limit > SystemConnectionLimit())
+        this->global_limit = SystemConnectionLimit();
+}
 
 
-	ConnectionLimit::Token::Ptr ConnectionLimit::acquire(const SHA1Hash& hash)
-	{
-		if(global_limit != 0 && global_total >= global_limit)
-			return Token::Ptr();
+ConnectionLimit::Token::Ptr ConnectionLimit::acquire(const SHA1Hash& hash)
+{
+    if (global_limit != 0 && global_total >= global_limit)
+        return Token::Ptr();
 
-		QMap<SHA1Hash, bt::Uint32>::iterator i = torrent_totals.find(hash);
-		if(i == torrent_totals.end())
-		{
-			torrent_totals[hash] = 1;
-			global_total++;
-			return Token::Ptr(new Token(*this, hash));
-		}
-		else if(torrent_limit == 0 || i.value() < torrent_limit)
-		{
-			i.value()++;
-			global_total++;
-			return Token::Ptr(new Token(*this, hash));
-		}
+    QMap<SHA1Hash, bt::Uint32>::iterator i = torrent_totals.find(hash);
+    if (i == torrent_totals.end()) {
+        torrent_totals[hash] = 1;
+        global_total++;
+        return Token::Ptr(new Token(*this, hash));
+    } else if (torrent_limit == 0 || i.value() < torrent_limit) {
+        i.value()++;
+        global_total++;
+        return Token::Ptr(new Token(*this, hash));
+    }
 
-		return Token::Ptr();
-	}
+    return Token::Ptr();
+}
 
-	void ConnectionLimit::release(const ConnectionLimit::Token& token)
-	{
-		QMap<SHA1Hash, bt::Uint32>::iterator i = torrent_totals.find(token.infoHash());
-		if(i != torrent_totals.end())
-		{
-			if(i.value() > 0)
-				i.value()--;
+void ConnectionLimit::release(const ConnectionLimit::Token& token)
+{
+    QMap<SHA1Hash, bt::Uint32>::iterator i = torrent_totals.find(token.infoHash());
+    if (i != torrent_totals.end()) {
+        if (i.value() > 0)
+            i.value()--;
 
-			// erase when torrent has no tokens left
-			if(i.value() == 0)
-				torrent_totals.erase(i);
+        // erase when torrent has no tokens left
+        if (i.value() == 0)
+            torrent_totals.erase(i);
 
-			if(global_total > 0)
-				global_total--;
-		}
-	}
+        if (global_total > 0)
+            global_total--;
+    }
+}
 
-	ConnectionLimit::Token::Token(ConnectionLimit& limit, const SHA1Hash& hash) :
-		limit(limit),
-		hash(hash)
-	{
+ConnectionLimit::Token::Token(ConnectionLimit& limit, const SHA1Hash& hash) :
+    limit(limit),
+    hash(hash)
+{
 
-	}
+}
 
-	ConnectionLimit::Token::~Token()
-	{
-		limit.release(*this);
-	}
+ConnectionLimit::Token::~Token()
+{
+    limit.release(*this);
+}
 
 }

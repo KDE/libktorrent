@@ -23,23 +23,23 @@
 
 namespace bt
 {
-	bool QueueManagerInterface::qm_enabled = true;
+bool QueueManagerInterface::qm_enabled = true;
 
-	QueueManagerInterface::QueueManagerInterface()
-	{}
+QueueManagerInterface::QueueManagerInterface()
+{}
 
 
-	QueueManagerInterface::~QueueManagerInterface()
-	{}
+QueueManagerInterface::~QueueManagerInterface()
+{}
 
-	void QueueManagerInterface::setQueueManagerEnabled(bool on)
-	{
-		qm_enabled = on;
-	}
+void QueueManagerInterface::setQueueManagerEnabled(bool on)
+{
+    qm_enabled = on;
+}
 
-	bool QueueManagerInterface::permitStatsSync(TorrentControl *tc)
-	{
-		return tc->getStatsSyncElapsedTime() >= 5 * 60 * 1000; // 5 sec
-	}
+bool QueueManagerInterface::permitStatsSync(TorrentControl *tc)
+{
+    return tc->getStatsSyncElapsedTime() >= 5 * 60 * 1000; // 5 sec
+}
 
 }

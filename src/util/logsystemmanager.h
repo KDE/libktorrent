@@ -30,46 +30,58 @@
 namespace bt
 {
 
-	/**
-		Keeps track of all logging system ID's
-	*/
-	class KTORRENT_EXPORT LogSystemManager : public QObject
-	{
-		Q_OBJECT
-		
-		
-		LogSystemManager();
-	public:
-		~LogSystemManager() override;
+/**
+    Keeps track of all logging system ID's
+*/
+class KTORRENT_EXPORT LogSystemManager : public QObject
+{
+    Q_OBJECT
 
-		/// Register a system
-		void registerSystem(const QString & name,Uint32 id);
-		
-		/// Unregister a system
-		void unregisterSystem(const QString & name);
-		
-		typedef QMap<QString,Uint32>::iterator iterator;
-		typedef QMap<QString,Uint32>::const_iterator const_iterator;
-		
-		iterator begin() {return systems.begin();}
-		iterator end() {return systems.end();}
 
-		const_iterator begin() const {return systems.cbegin();}
-		const_iterator end() const {return systems.cend();}
-		
-		static LogSystemManager & instance(); 
-		
-		/// Get the ID of a system
-		Uint32 systemID(const QString & name);
-		
-	Q_SIGNALS:
-		void registered(const QString & name);
-		void unregisted(const QString & name);
-		
-	private:
-		QMap<QString,Uint32> systems;
-		static QScopedPointer<LogSystemManager> self;
-	};
+    LogSystemManager();
+public:
+    ~LogSystemManager() override;
+
+    /// Register a system
+    void registerSystem(const QString & name, Uint32 id);
+
+    /// Unregister a system
+    void unregisterSystem(const QString & name);
+
+    typedef QMap<QString, Uint32>::iterator iterator;
+    typedef QMap<QString, Uint32>::const_iterator const_iterator;
+
+    iterator begin()
+    {
+        return systems.begin();
+    }
+    iterator end()
+    {
+        return systems.end();
+    }
+
+    const_iterator begin() const
+    {
+        return systems.cbegin();
+    }
+    const_iterator end() const
+    {
+        return systems.cend();
+    }
+
+    static LogSystemManager & instance();
+
+    /// Get the ID of a system
+    Uint32 systemID(const QString & name);
+
+Q_SIGNALS:
+    void registered(const QString & name);
+    void unregisted(const QString & name);
+
+private:
+    QMap<QString, Uint32> systems;
+    static QScopedPointer<LogSystemManager> self;
+};
 
 }
 

@@ -54,66 +54,63 @@ UT_PEX=1\n";
 
 class StatsFileTest : public QEventLoop
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
 
-	
+
 private Q_SLOTS:
-	void initTestCase()
-	{
-		bt::InitLog("statsfiletest.log",false,false);
-		QVERIFY(file.open());
-		file.setAutoRemove(true);
-		QTextStream out(&file);
-		out << test_data;
-		
-		const QStringList lines = test_data.split("\n");
-		for (const QString & line: lines)
-		{
-			QStringList sl = line.split("=");
-			if (sl.count() == 2)
-			{
-				keys.append(sl[0]);
-				values.append(sl[1]);
-			}
-		}
-	}
-	
-	void cleanupTestCase()
-	{
-	}
-	
-	void testRead()
-	{
-		StatsFile st(file.fileName());
-		
-		int idx = 0;
-		for (const QString & key: qAsConst(keys))
-		{
-			QVERIFY(st.hasKey(key));
-			QVERIFY(st.readString(key) == values[idx++]);
-		}
-		
-		QVERIFY(st.readInt("RUNNING_TIME_DL") == 7042);
-		QVERIFY(st.readInt("RUNNING_TIME_UL") == 7042);
-		QVERIFY(st.readBoolean("DHT") == true);
-	}
-	
-	void testWrite()
-	{
-		StatsFile sta(file.fileName());
-		sta.write("DINGES","1234");
-		sta.sync();
-		
-		StatsFile stb(file.fileName());
-		QVERIFY(stb.readInt("DINGES") == 1234);
-	}
-	
-	
+    void initTestCase()
+    {
+        bt::InitLog("statsfiletest.log", false, false);
+        QVERIFY(file.open());
+        file.setAutoRemove(true);
+        QTextStream out(&file);
+        out << test_data;
+
+        const QStringList lines = test_data.split("\n");
+        for (const QString & line : lines) {
+            QStringList sl = line.split("=");
+            if (sl.count() == 2) {
+                keys.append(sl[0]);
+                values.append(sl[1]);
+            }
+        }
+    }
+
+    void cleanupTestCase()
+    {
+    }
+
+    void testRead()
+    {
+        StatsFile st(file.fileName());
+
+        int idx = 0;
+        for (const QString & key : qAsConst(keys)) {
+            QVERIFY(st.hasKey(key));
+            QVERIFY(st.readString(key) == values[idx++]);
+        }
+
+        QVERIFY(st.readInt("RUNNING_TIME_DL") == 7042);
+        QVERIFY(st.readInt("RUNNING_TIME_UL") == 7042);
+        QVERIFY(st.readBoolean("DHT") == true);
+    }
+
+    void testWrite()
+    {
+        StatsFile sta(file.fileName());
+        sta.write("DINGES", "1234");
+        sta.sync();
+
+        StatsFile stb(file.fileName());
+        QVERIFY(stb.readInt("DINGES") == 1234);
+    }
+
+
 private:
-	QTemporaryFile file;
-	QStringList keys;
-	QStringList values;
+    QTemporaryFile file;
+    QStringList keys;
+    QStringList values;
 };
 
 QTEST_MAIN(StatsFileTest)

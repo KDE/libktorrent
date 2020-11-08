@@ -25,56 +25,74 @@
 
 namespace utp
 {
-	class UTPServer;
+class UTPServer;
 }
 
 namespace net
 {
-	class PortList;
+class PortList;
 }
 
 namespace dht
 {
-	class DHTBase;
+class DHTBase;
 }
 
 namespace bt
 {
-	class Server;
+class Server;
 
-	
 
-	class KTORRENT_EXPORT Globals
-	{
-	public:
-		virtual ~Globals();
-		
-		bool initTCPServer(Uint16 port);
-		void shutdownTCPServer();
-		
-		bool initUTPServer(Uint16 port);
-		void shutdownUTPServer();
-		
-		bool isUTPEnabled() const {return utp_server != 0;}
-		bool isTCPEnabled() const {return tcp_server != 0;}
 
-		Server & getTCPServer() {return *tcp_server;}
-		dht::DHTBase & getDHT() {return *dh_table;}
-		net::PortList & getPortList() {return *plist;}
-		utp::UTPServer & getUTPServer() {return *utp_server;}
-				
-		static Globals & instance();
-		static void cleanup();
-	private:
-		Globals();
-		
-		Server* tcp_server;
-		dht::DHTBase* dh_table;
-		net::PortList* plist;
-		utp::UTPServer* utp_server;
-		
-		static Globals* inst;
-	};
+class KTORRENT_EXPORT Globals
+{
+public:
+    virtual ~Globals();
+
+    bool initTCPServer(Uint16 port);
+    void shutdownTCPServer();
+
+    bool initUTPServer(Uint16 port);
+    void shutdownUTPServer();
+
+    bool isUTPEnabled() const
+    {
+        return utp_server != 0;
+    }
+    bool isTCPEnabled() const
+    {
+        return tcp_server != 0;
+    }
+
+    Server & getTCPServer()
+    {
+        return *tcp_server;
+    }
+    dht::DHTBase & getDHT()
+    {
+        return *dh_table;
+    }
+    net::PortList & getPortList()
+    {
+        return *plist;
+    }
+    utp::UTPServer & getUTPServer()
+    {
+        return *utp_server;
+    }
+
+    static Globals & instance();
+    static void cleanup();
+private:
+    Globals();
+
+    Server* tcp_server;
+    dht::DHTBase* dh_table;
+    net::PortList* plist;
+    utp::UTPServer* utp_server;
+
+    static Globals* inst;
+};
 }
 
 #endif

@@ -24,41 +24,41 @@
 
 class BufferPoolTest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
 
 private Q_SLOTS:
-	void initTestCase()
-	{
-		bt::InitLog("bufferpooltest.log");
-	}
+    void initTestCase()
+    {
+        bt::InitLog("bufferpooltest.log");
+    }
 
-	void cleanupTestCase()
-	{
-	}
+    void cleanupTestCase()
+    {
+    }
 
 
-	void testPool()
-	{
-		bt::BufferPool::Ptr pool(new bt::BufferPool());
-		pool->setWeakPointer(pool.toWeakRef());
+    void testPool()
+    {
+        bt::BufferPool::Ptr pool(new bt::BufferPool());
+        pool->setWeakPointer(pool.toWeakRef());
 
-		bt::Buffer::Ptr a = pool->get(1000);
-		QVERIFY(a);
-		QVERIFY(a->size() == 1000);
-		QVERIFY(a->capacity() == 1000);
-		a.clear();
+        bt::Buffer::Ptr a = pool->get(1000);
+        QVERIFY(a);
+        QVERIFY(a->size() == 1000);
+        QVERIFY(a->capacity() == 1000);
+        a.clear();
 
-		a = pool->get(500);
-		QVERIFY(a);
-		QVERIFY(a->size() == 500);
-		QVERIFY(a->capacity() == 1000);
+        a = pool->get(500);
+        QVERIFY(a);
+        QVERIFY(a->size() == 500);
+        QVERIFY(a->capacity() == 1000);
 
-		bt::Buffer::Ptr b = pool->get(2000);
-		QVERIFY(b);
-		QVERIFY(b->size() == 2000);
-		QVERIFY(b->capacity() == 2000);
-	}
+        bt::Buffer::Ptr b = pool->get(2000);
+        QVERIFY(b);
+        QVERIFY(b->size() == 2000);
+        QVERIFY(b->capacity() == 2000);
+    }
 };
 
 QTEST_MAIN(BufferPoolTest)

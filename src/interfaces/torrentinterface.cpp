@@ -21,18 +21,18 @@
 
 namespace bt
 {
-	
-	
-
-	TorrentInterface::TorrentInterface()
-	{}
 
 
-	TorrentInterface::~TorrentInterface()
-	{}
-	
-	
-	
+
+TorrentInterface::TorrentInterface()
+{}
+
+
+TorrentInterface::~TorrentInterface()
+{}
+
+
+
 
 
 }

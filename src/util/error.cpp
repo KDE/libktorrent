@@ -22,19 +22,19 @@
 
 namespace bt
 {
-	Error::Error(const QString & msg) : msg(msg)
-	{
-		//Out(SYS_GEN|LOG_DEBUG) << "Error thrown: " << msg << endl;
-	}
+Error::Error(const QString & msg) : msg(msg)
+{
+    //Out(SYS_GEN|LOG_DEBUG) << "Error thrown: " << msg << endl;
+}
 
-	Error::~Error()
-	{}
+Error::~Error()
+{}
 
-	Warning::Warning(const QString& msg) : msg(msg)
-	{
-		//Out(SYS_GEN|LOG_DEBUG) << "Warning thrown: " << msg << endl;
-	}
+Warning::Warning(const QString& msg) : msg(msg)
+{
+    //Out(SYS_GEN|LOG_DEBUG) << "Warning thrown: " << msg << endl;
+}
 
-	Warning::~Warning()
-	{}
+Warning::~Warning()
+{}
 }

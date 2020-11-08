@@ -26,14 +26,14 @@
 namespace bt
 {
 
-	/**
-	@author Joris Guisson
-	*/
-	class URLEncoder
-	{
-	public:
-		static QString encode(const char* buf,Uint32 size);
-	};
+/**
+@author Joris Guisson
+*/
+class URLEncoder
+{
+public:
+    static QString encode(const char* buf, Uint32 size);
+};
 
 }
 

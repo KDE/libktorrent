@@ -29,33 +29,33 @@
 namespace bt
 {
 
-	Uploader::Uploader(ChunkManager & cman,PeerManager & pman) 
-	: cman(cman),pman(pman),uploaded(0)
-	{}
+Uploader::Uploader(ChunkManager & cman, PeerManager & pman)
+    : cman(cman), pman(pman), uploaded(0)
+{}
 
 
-	Uploader::~Uploader()
-	{
-	}
+Uploader::~Uploader()
+{
+}
 
-	
-	void Uploader::visit(const bt::Peer::Ptr p)
-	{
-		PeerUploader* pu = p->getPeerUploader();
-		uploaded += pu->handleRequests(cman);
-	}
 
-	
-	void Uploader::update()
-	{
-		pman.visit(*this);
-	}
-	
+void Uploader::visit(const bt::Peer::Ptr p)
+{
+    PeerUploader* pu = p->getPeerUploader();
+    uploaded += pu->handleRequests(cman);
+}
 
-	Uint32 Uploader::uploadRate() const
-	{
-		return pman.uploadRate();
-	}
-	
+
+void Uploader::update()
+{
+    pman.visit(*this);
+}
+
+
+Uint32 Uploader::uploadRate() const
+{
+    return pman.uploadRate();
+}
+
 
 }

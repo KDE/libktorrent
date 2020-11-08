@@ -27,30 +27,30 @@
 #include <ktorrent_export.h>
 
 
-namespace bt 
+namespace bt
 {
-	class ExtractFileThread;
-	
-	/**
-		Job which extracts a single file out of an archive
-	*/
-	class KTORRENT_EXPORT ExtractFileJob : public KIO::Job
-	{
-	public:
-		ExtractFileJob(KArchive* archive,const QString & path,const QString & dest);
-		~ExtractFileJob() override;
-		
-		void start() override;
-		virtual void kill(bool quietly=true);
-	private:
-		void extractThreadDone();
+class ExtractFileThread;
 
-	private:
-		KArchive* archive;
-		QString path;
-		QString dest;
-		ExtractFileThread* extract_thread;
-	};
+/**
+    Job which extracts a single file out of an archive
+*/
+class KTORRENT_EXPORT ExtractFileJob : public KIO::Job
+{
+public:
+    ExtractFileJob(KArchive* archive, const QString & path, const QString & dest);
+    ~ExtractFileJob() override;
+
+    void start() override;
+    virtual void kill(bool quietly = true);
+private:
+    void extractThreadDone();
+
+private:
+    KArchive* archive;
+    QString path;
+    QString dest;
+    ExtractFileThread* extract_thread;
+};
 
 }
 

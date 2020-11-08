@@ -54,26 +54,20 @@ private Q_SLOTS:
         QVERIFY(creator.createSingleFileTorrent(TEST_FILE_SIZE, "test.avi"));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
-        try
-        {
+        try {
             tc.init(0, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
-        }
-        catch (bt::Error& err)
-        {
+        } catch (bt::Error& err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
 
         SingleDataChecker dc(0, tc.getStats().total_chunks);
-        try
-        {
+        try {
             QString dnd = tc.getTorDir() + "dnd" + bt::DirSeparator();
             dc.check(tc.getStats().output_path, tc.getTorrent(), dnd, tc.downloadedChunksBitSet());
             QVERIFY(dc.getResult().allOn());
-        }
-        catch (bt::Error& err)
-        {
+        } catch (bt::Error& err) {
             Out(SYS_GEN | LOG_DEBUG) << "Datacheck failed: " << err.toString() << endl;
             QFAIL("Torrent load failure");
         }
@@ -93,26 +87,20 @@ private Q_SLOTS:
         QVERIFY(creator.createMultiFileTorrent(files, "movies"));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
-        try
-        {
+        try {
             tc.init(0, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
-        }
-        catch (bt::Error& err)
-        {
+        } catch (bt::Error& err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
 
         MultiDataChecker dc(0, tc.getStats().total_chunks);
-        try
-        {
+        try {
             QString dnd = tc.getTorDir() + "dnd" + bt::DirSeparator();
             dc.check(tc.getStats().output_path, tc.getTorrent(), dnd, tc.downloadedChunksBitSet());
             QVERIFY(dc.getResult().allOn());
-        }
-        catch (bt::Error& err)
-        {
+        } catch (bt::Error& err) {
             Out(SYS_GEN | LOG_DEBUG) << "Datacheck failed: " << err.toString() << endl;
             QFAIL("Torrent check failure");
         }
@@ -132,30 +120,23 @@ private Q_SLOTS:
         QVERIFY(creator.createMultiFileTorrent(files, "movies"));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
-        try
-        {
+        try {
             tc.init(0, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
-        }
-        catch (bt::Error& err)
-        {
+        } catch (bt::Error& err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
 
-        for (Uint32 file = 0; file < tc.getNumFiles(); file++)
-        {
+        for (Uint32 file = 0; file < tc.getNumFiles(); file++) {
             const bt::TorrentFileInterface& fi = tc.getTorrentFile(file);
             MultiDataChecker dc(fi.getFirstChunk(), fi.getLastChunk());
-            try
-            {
+            try {
                 QString dnd = tc.getTorDir() + "dnd" + bt::DirSeparator();
                 dc.check(tc.getStats().output_path, tc.getTorrent(), dnd, tc.downloadedChunksBitSet());
                 for (Uint32 i = 0; i < tc.getStats().total_chunks; i++)
                     QVERIFY(dc.getResult().get(i) == (i >= fi.getFirstChunk() && i <= fi.getLastChunk()));
-            }
-            catch (bt::Error& err)
-            {
+            } catch (bt::Error& err) {
                 Out(SYS_GEN | LOG_DEBUG) << "Datacheck failed: " << err.toString() << endl;
                 QFAIL("Torrent check failure");
             }

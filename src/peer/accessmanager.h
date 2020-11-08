@@ -27,48 +27,48 @@
 
 namespace bt
 {
-    class BlockListInterface;
-    class BadPeersList;
+class BlockListInterface;
+class BadPeersList;
 
-    /**
-        @author Joris Guisson
+/**
+    @author Joris Guisson
 
-        Class which determines whether or not we allow an IP to connect to us.
-        It uses blocklists to do this. Blocklists should register with this class.
-        By default it has one blocklist, the banned peers list.
-    */
-    class KTORRENT_EXPORT AccessManager
-    {
-        AccessManager();
-    public:
-        virtual ~AccessManager();
+    Class which determines whether or not we allow an IP to connect to us.
+    It uses blocklists to do this. Blocklists should register with this class.
+    By default it has one blocklist, the banned peers list.
+*/
+class KTORRENT_EXPORT AccessManager
+{
+    AccessManager();
+public:
+    virtual ~AccessManager();
 
-        /// Get the singleton instance
-        static AccessManager& instance();
+    /// Get the singleton instance
+    static AccessManager& instance();
 
-        /// Add a blocklist (AccessManager takes ownership unless list is explicitly remove with removeBlockList)
-        void addBlockList(BlockListInterface* bl);
+    /// Add a blocklist (AccessManager takes ownership unless list is explicitly remove with removeBlockList)
+    void addBlockList(BlockListInterface* bl);
 
-        /// Remove a blocklist
-        void removeBlockList(BlockListInterface* bl);
+    /// Remove a blocklist
+    void removeBlockList(BlockListInterface* bl);
 
-        /// Are we allowed to have a connection with a peer
-        bool allowed(const net::Address& addr) const;
+    /// Are we allowed to have a connection with a peer
+    bool allowed(const net::Address& addr) const;
 
-        /// Ban a peer (i.e. add it to the banned list)
-        void banPeer(const QString& addr);
-        
-        /// Add an external IP throuch which we are reacheable
-        void addExternalIP(const QString& addr);
-        
-    private:
-        bool isOurOwnAddress(const net::Address& addr) const;
-        
-    private:
-        QList<BlockListInterface*> blocklists;
-        BadPeersList* banned;
-        QStringList external_addresses;
-    };
+    /// Ban a peer (i.e. add it to the banned list)
+    void banPeer(const QString& addr);
+
+    /// Add an external IP throuch which we are reacheable
+    void addExternalIP(const QString& addr);
+
+private:
+    bool isOurOwnAddress(const net::Address& addr) const;
+
+private:
+    QList<BlockListInterface*> blocklists;
+    BadPeersList* banned;
+    QStringList external_addresses;
+};
 
 }
 

@@ -24,42 +24,42 @@
 
 namespace bt
 {
-		
-	/**
-	 * @author Joris Guisson
-	 *
-	 * Handles the authentication of incoming connections on the Server.
-	 * Once the authentication is finished, the socket gets handed over
-	 * to the right PeerManager.
-	*/
-	class ServerAuthenticate : public AuthenticateBase
-	{
-		Q_OBJECT
-	public:
-		ServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock);
-		~ServerAuthenticate() override;
 
-		static bool isFirewalled();
-		static void setFirewalled(bool Firewalled);
+/**
+ * @author Joris Guisson
+ *
+ * Handles the authentication of incoming connections on the Server.
+ * Once the authentication is finished, the socket gets handed over
+ * to the right PeerManager.
+*/
+class ServerAuthenticate : public AuthenticateBase
+{
+    Q_OBJECT
+public:
+    ServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock);
+    ~ServerAuthenticate() override;
 
-	protected:
-		void onFinish(bool succes) override;
-		void handshakeReceived(bool full) override;
-		
-	private:
-		static bool s_firewalled;
-	};
+    static bool isFirewalled();
+    static void setFirewalled(bool Firewalled);
+
+protected:
+    void onFinish(bool succes) override;
+    void handshakeReceived(bool full) override;
+
+private:
+    static bool s_firewalled;
+};
 
 }
 
 inline bool bt::ServerAuthenticate::isFirewalled()
 {
-	return s_firewalled;
+    return s_firewalled;
 }
 
 inline void bt::ServerAuthenticate::setFirewalled(bool Firewalled)
 {
-	s_firewalled = Firewalled;
+    s_firewalled = Firewalled;
 }
 
 

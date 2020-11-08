@@ -22,12 +22,12 @@
 namespace bt
 {
 
-	LogMonitorInterface::LogMonitorInterface()
-	{}
+LogMonitorInterface::LogMonitorInterface()
+{}
 
 
-	LogMonitorInterface::~LogMonitorInterface()
-	{}
+LogMonitorInterface::~LogMonitorInterface()
+{}
 
 
 }

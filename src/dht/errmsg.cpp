@@ -29,38 +29,38 @@ using namespace bt;
 
 namespace dht
 {
-	ErrMsg::ErrMsg()
-	{
-	}
+ErrMsg::ErrMsg()
+{
+}
 
-	ErrMsg::ErrMsg(const QByteArray & mtid, const Key & id, const QString & msg)
-			: RPCMsg(mtid, NONE, ERR_MSG, id), msg(msg)
-	{}
+ErrMsg::ErrMsg(const QByteArray & mtid, const Key & id, const QString & msg)
+    : RPCMsg(mtid, NONE, ERR_MSG, id), msg(msg)
+{}
 
-	ErrMsg::~ErrMsg()
-	{}
+ErrMsg::~ErrMsg()
+{}
 
-	void ErrMsg::apply(dht::DHT* dh_table)
-	{
-		dh_table->error(*this);
-	}
+void ErrMsg::apply(dht::DHT* dh_table)
+{
+    dh_table->error(*this);
+}
 
-	void ErrMsg::print()
-	{
-		Out(SYS_DHT | LOG_NOTICE) << "ERR: " << mtid[0] << " " << msg << endl;
-	}
+void ErrMsg::print()
+{
+    Out(SYS_DHT | LOG_NOTICE) << "ERR: " << mtid[0] << " " << msg << endl;
+}
 
-	void ErrMsg::encode(QByteArray &) const
-	{}
-	
-	void ErrMsg::parse(BDictNode* dict)
-	{
-		RPCMsg::parse(dict);
-		BListNode* ln = dict->getList(ERR_DHT);
-		if (!ln)
-			throw bt::Error("Invalid error message");
-		
-		msg = ln->getString(1, 0);
-	}
+void ErrMsg::encode(QByteArray &) const
+{}
+
+void ErrMsg::parse(BDictNode* dict)
+{
+    RPCMsg::parse(dict);
+    BListNode* ln = dict->getList(ERR_DHT);
+    if (!ln)
+        throw bt::Error("Invalid error message");
+
+    msg = ln->getString(1, 0);
+}
 
 }

@@ -22,13 +22,13 @@
 namespace bt
 {
 
-	Piece::Piece(Uint32 index, Uint32 off, Uint32 len, PieceDownloader* pd,const Uint8* data)
-	: Request(index, off, len, pd),data(data)
-	{}
+Piece::Piece(Uint32 index, Uint32 off, Uint32 len, PieceDownloader* pd, const Uint8* data)
+    : Request(index, off, len, pd), data(data)
+{}
 
 
-	Piece::~Piece()
-	{}
+Piece::~Piece()
+{}
 
 
 }

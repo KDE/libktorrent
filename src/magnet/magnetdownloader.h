@@ -30,77 +30,80 @@
 
 namespace dht
 {
-	class DHTPeerSource;
+class DHTPeerSource;
 }
 
 namespace bt
 {
-	class Peer;
-	class PeerManager;
+class Peer;
+class PeerManager;
 
-	/**
-		Class which tries to download the metadata associated to a MagnetLink
-		It basically has a Tracker (optional), a DHTPeerSource and a PeerManager.
-		With these it tries to find peers, connect to them and download the metadata.
-	*/
-	class KTORRENT_EXPORT MagnetDownloader : public QObject, public TrackerDataSource
-	{
-		Q_OBJECT
-	public:
-		MagnetDownloader(const MagnetLink & mlink,QObject* parent);
-		~MagnetDownloader() override;
+/**
+    Class which tries to download the metadata associated to a MagnetLink
+    It basically has a Tracker (optional), a DHTPeerSource and a PeerManager.
+    With these it tries to find peers, connect to them and download the metadata.
+*/
+class KTORRENT_EXPORT MagnetDownloader : public QObject, public TrackerDataSource
+{
+    Q_OBJECT
+public:
+    MagnetDownloader(const MagnetLink & mlink, QObject* parent);
+    ~MagnetDownloader() override;
 
-		/**
-			Update the MagnetDownloader
-		*/
-		void update();
+    /**
+        Update the MagnetDownloader
+    */
+    void update();
 
-		/// Is the magnet download running
-		bool running() const;
+    /// Is the magnet download running
+    bool running() const;
 
-		/// How many peers are we connected to
-		Uint32 numPeers() const;
+    /// How many peers are we connected to
+    Uint32 numPeers() const;
 
-		/// Get the MagnetLink
-		const MagnetLink & magnetLink() const {return mlink;}
+    /// Get the MagnetLink
+    const MagnetLink & magnetLink() const
+    {
+        return mlink;
+    }
 
-		/**
-		Start the MagnetDownloader, this will enable DHT.
-		*/
-		void start();
+    /**
+    Start the MagnetDownloader, this will enable DHT.
+    */
+    void start();
 
-		/**
-		Stop the MagnetDownloader
-		*/
-		void stop();
+    /**
+    Stop the MagnetDownloader
+    */
+    void stop();
 
-	Q_SIGNALS:
-		/**
-			Emitted when downloading the metadata was succesfull.
-		*/
-		void foundMetadata(bt::MagnetDownloader* self,const QByteArray & metadata);
-		
-	private:
-		void onNewPeer(Peer* p);
-		void onMetadataDownloaded(const QByteArray & data);
-		void onTorrentDownloaded(KJob*);
-		void dhtStarted();
-		void dhtStopped();
+Q_SIGNALS:
+    /**
+        Emitted when downloading the metadata was succesfull.
+    */
+    void foundMetadata(bt::MagnetDownloader* self, const QByteArray & metadata);
 
-		Uint64 bytesDownloaded() const override;
-		Uint64 bytesUploaded() const override;
-		Uint64 bytesLeft() const override;
-		const SHA1Hash & infoHash() const override;
-		bool isPartialSeed() const override;
+private:
+    void onNewPeer(Peer* p);
+    void onMetadataDownloaded(const QByteArray & data);
+    void onTorrentDownloaded(KJob*);
+    void dhtStarted();
+    void dhtStopped();
 
-		MagnetLink mlink;
-		QList<Tracker*> trackers;
-		PeerManager* pman;
-		dht::DHTPeerSource* dht_ps;
-		QByteArray metadata;
-		Torrent tor;
-		bool found;
-	};
+    Uint64 bytesDownloaded() const override;
+    Uint64 bytesUploaded() const override;
+    Uint64 bytesLeft() const override;
+    const SHA1Hash & infoHash() const override;
+    bool isPartialSeed() const override;
+
+    MagnetLink mlink;
+    QList<Tracker*> trackers;
+    PeerManager* pman;
+    dht::DHTPeerSource* dht_ps;
+    QByteArray metadata;
+    Torrent tor;
+    bool found;
+};
 
 }
 

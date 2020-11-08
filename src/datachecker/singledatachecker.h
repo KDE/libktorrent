@@ -25,19 +25,19 @@
 namespace bt
 {
 
-	/**
-	 * @author Joris Guisson
-	 * 
-	 * Data checker for single file torrents.
-	 */
-	class KTORRENT_EXPORT SingleDataChecker : public DataChecker
-	{
-	public:
-		SingleDataChecker(bt::Uint32 from, bt::Uint32 to);
-		~SingleDataChecker() override;
+/**
+ * @author Joris Guisson
+ *
+ * Data checker for single file torrents.
+ */
+class KTORRENT_EXPORT SingleDataChecker : public DataChecker
+{
+public:
+    SingleDataChecker(bt::Uint32 from, bt::Uint32 to);
+    ~SingleDataChecker() override;
 
-		void check(const QString& path, const Torrent& tor,const QString & dnddir,const BitSet & current_status) override;
-	};
+    void check(const QString& path, const Torrent& tor, const QString & dnddir, const BitSet & current_status) override;
+};
 
 }
 

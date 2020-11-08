@@ -26,45 +26,45 @@
 
 namespace dht
 {
-	
-	/**
-	 * Holds a table of buckets.
-	 */
-	class KBucketTable
-	{
-	public:
-		KBucketTable(const Key & our_id);
-		virtual ~KBucketTable();
-		
-		/// Insert a KBucketEntry into the table
-		void insert(const KBucketEntry & entry, RPCServerInterface* srv);
-		
-		/// Get the number of entries
-		int numEntries() const;
-		
-		/// Refresh the buckets
-		void refreshBuckets(DHT* dh_table);
-		
-		/// Timeout happened
-		void onTimeout(const net::Address & addr);
-		
-		/// Load the table from a file
-		void loadTable(const QString& file, dht::RPCServerInterface* srv);
-		
-		/// Save table to a file
-		void saveTable(const QString & file);
-		
-		/// Find the K closest nodes
-		void findKClosestNodes(KClosestNodesSearch & kns) const;
-		
-	private:
-		typedef std::list<KBucket::Ptr> KBucketList;
-		inline KBucketList::iterator findBucket(const dht::Key & id);
-		
-	private:
-		Key our_id;
-		KBucketList buckets;
-	};
+
+/**
+ * Holds a table of buckets.
+ */
+class KBucketTable
+{
+public:
+    KBucketTable(const Key & our_id);
+    virtual ~KBucketTable();
+
+    /// Insert a KBucketEntry into the table
+    void insert(const KBucketEntry & entry, RPCServerInterface* srv);
+
+    /// Get the number of entries
+    int numEntries() const;
+
+    /// Refresh the buckets
+    void refreshBuckets(DHT* dh_table);
+
+    /// Timeout happened
+    void onTimeout(const net::Address & addr);
+
+    /// Load the table from a file
+    void loadTable(const QString& file, dht::RPCServerInterface* srv);
+
+    /// Save table to a file
+    void saveTable(const QString & file);
+
+    /// Find the K closest nodes
+    void findKClosestNodes(KClosestNodesSearch & kns) const;
+
+private:
+    typedef std::list<KBucket::Ptr> KBucketList;
+    inline KBucketList::iterator findBucket(const dht::Key & id);
+
+private:
+    Key our_id;
+    KBucketList buckets;
+};
 
 }
 

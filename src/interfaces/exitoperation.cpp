@@ -22,25 +22,25 @@
 namespace bt
 {
 
-	ExitOperation::ExitOperation()
-	{}
+ExitOperation::ExitOperation()
+{}
 
 
-	ExitOperation::~ExitOperation()
-	{}
+ExitOperation::~ExitOperation()
+{}
 
-	ExitJobOperation::ExitJobOperation(KJob* j)
-	{
-		connect(j, &KJob::result, this, &ExitJobOperation::onResult);
-	}
+ExitJobOperation::ExitJobOperation(KJob* j)
+{
+    connect(j, &KJob::result, this, &ExitJobOperation::onResult);
+}
 
-	ExitJobOperation::~ExitJobOperation()
-	{
-	}
+ExitJobOperation::~ExitJobOperation()
+{
+}
 
-	void ExitJobOperation::onResult(KJob* )
-	{
-		operationFinished(this);
-	}
+void ExitJobOperation::onResult(KJob*)
+{
+    operationFinished(this);
+}
 
 }

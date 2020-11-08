@@ -40,315 +40,354 @@ class KJob;
 
 namespace bt
 {
-	class StatsFile;
-	class Choker;
-	class PeerSourceManager;
-	class ChunkManager;
-	class PeerManager;
-	class Downloader;
-	class Uploader;
-	class Peer;
-	class BitSet;
-	class QueueManagerInterface;
-	class TimeEstimator;
-	class WaitJob;
-	class MonitorInterface;
-	class ChunkSelectorFactoryInterface;
-	class CacheFactory;
-	class JobQueue;
-	class DataCheckerJob;
-	
-	/**
-	 * @author Joris Guisson
-	 * @brief Controls just about everything
-	 * 
-	 * This is the interface which any user gets to deal with.
-	 * This class controls the uploading, downloading, choking,
-	 * updating the tracker and chunk management.
-	 */
-	class KTORRENT_EXPORT TorrentControl : public TorrentInterface, public FilePriorityListener
-	{
-		Q_OBJECT
-	public:
-		TorrentControl();
-		~TorrentControl() override;
-		
-		/// Get the Torrent.
-		const Torrent & getTorrent() const {return *tor;}
-		
-		/**
-		 * Initialize the TorrentControl. 
-		 * @param qman The QueueManager
-		 * @param data The data of the torrent
-		 * @param tmpdir The directory to store temporary data
-		 * @param datadir The directory to store the actual file(s)
-		 * 		(only used the first time we load a torrent)
-		 * @throw Error when something goes wrong
-		 */
-		void init(QueueManagerInterface* qman,
-				  const QByteArray & data,
-				  const QString & tmpdir,
-				  const QString & datadir);
-				  
-				  
-		/// Tell the TorrentControl obj to preallocate diskspace in the next update
-		void setPreallocateDiskSpace(bool pa) {prealloc = pa;}
-		
-		/// Test if the torrent has existing files, only works the first time a torrent is loaded
-		bool hasExistingFiles() const;
+class StatsFile;
+class Choker;
+class PeerSourceManager;
+class ChunkManager;
+class PeerManager;
+class Downloader;
+class Uploader;
+class Peer;
+class BitSet;
+class QueueManagerInterface;
+class TimeEstimator;
+class WaitJob;
+class MonitorInterface;
+class ChunkSelectorFactoryInterface;
+class CacheFactory;
+class JobQueue;
+class DataCheckerJob;
 
-		const BitSet & downloadedChunksBitSet() const override;
-		const BitSet & availableChunksBitSet() const override;
-		const BitSet & excludedChunksBitSet() const override;
-		const BitSet & onlySeedChunksBitSet() const override;
-		bool changeTorDir(const QString & new_dir) override;
-		bool changeOutputDir(const QString& new_dir,int flags) override;
-		void rollback() override;
-		void setDisplayName(const QString & n) override;
-		TrackersList* getTrackersList() override;
-		const TrackersList* getTrackersList() const override;
-		QString getDataDir() const override {return outputdir;}
-		QString getTorDir() const override {return tordir;}
-		void setMonitor(MonitorInterface* tmo) override;
-		Uint32 getRunningTimeDL() const override;
-		Uint32 getRunningTimeUL() const override;
-		Uint32 getNumFiles() const override;
-		TorrentFileInterface & getTorrentFile(Uint32 index) override;
-		const TorrentFileInterface & getTorrentFile(Uint32 index) const override;
-		bool moveTorrentFiles(const QMap<TorrentFileInterface*,QString> & files) override;
-		void recreateMissingFiles() override;
-		void dndMissingFiles() override;
-		TorrentFileStream::Ptr createTorrentFileStream(bt::Uint32 index,bool streaming_mode,QObject* parent) override;
-		void addPeerSource(PeerSource* ps) override;
-		void removePeerSource(PeerSource* ps) override;
-		const QTextCodec* getTextCodec() const override;
-		void changeTextCodec(QTextCodec* tc) override;
-		Uint32 getNumWebSeeds() const override;
-		const WebSeedInterface* getWebSeed(Uint32 i) const override;
-		WebSeedInterface* getWebSeed(Uint32 i) override;
-		bool addWebSeed(const QUrl &url) override;
-		bool removeWebSeed(const QUrl &url) override;
-		bool readyForPreview() const override;
-		bool isMultimedia() const override;
-		void markExistingFilesAsDownloaded() override;
-		int getPriority() const override { return istats.priority; }
-		void setPriority(int p) override;
-		bool overMaxRatio() override;		
-		void setMaxShareRatio(float ratio) override;
-		float getMaxShareRatio() const override { return stats.max_share_ratio; }
-		bool overMaxSeedTime() override;
-		void setMaxSeedTime(float hours) override;
-		float getMaxSeedTime() const override {return stats.max_seed_time;}
-		void setAllowedToStart(bool on) override;
-		void setQueued(bool queued) override;
-		void setChunkSelector(ChunkSelectorInterface* csel) override;
-		void networkUp() override;
-		bool announceAllowed() override;
-		Job* startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to) override;
-		bool hasMissingFiles(QStringList & sl) override;
-		bool isStorageMounted(QStringList& missing) override;
-		Uint32 getNumDHTNodes() const override;
-		const DHTNode & getDHTNode(Uint32 i) const override;
-		void deleteDataFiles() override;
-		const bt::PeerID & getOwnPeerID() const override;
-		QString getComments() const override;
-		const JobQueue* getJobQueue() const override {return job_queue;}
-		bool isFeatureEnabled(TorrentFeature tf) override;
-		void setFeatureEnabled(TorrentFeature tf,bool on) override;
-		bool checkDiskSpace(bool emit_sig = true) override;
-		void setTrafficLimits(Uint32 up,Uint32 down) override;
-		void getTrafficLimits(Uint32 & up,Uint32 & down) override;
-		void setAssuredSpeeds(Uint32 up,Uint32 down) override;
-		void getAssuredSpeeds(Uint32 & up,Uint32 & down) override;
-		const SHA1Hash & getInfoHash() const override;
-		void setUserModifiedFileName(const QString & n) override;
-		int getETA() override;
-		void setMoveWhenCompletedDir(const QString &dir) override {completed_dir = dir; saveStats();}
-		QString getMoveWhenCompletedDir() const override {return completed_dir;}
-		void setSuperSeeding(bool on) override;
+/**
+ * @author Joris Guisson
+ * @brief Controls just about everything
+ *
+ * This is the interface which any user gets to deal with.
+ * This class controls the uploading, downloading, choking,
+ * updating the tracker and chunk management.
+ */
+class KTORRENT_EXPORT TorrentControl : public TorrentInterface, public FilePriorityListener
+{
+    Q_OBJECT
+public:
+    TorrentControl();
+    ~TorrentControl() override;
 
-		/// Create all the necessary files
-		void createFiles();
+    /// Get the Torrent.
+    const Torrent & getTorrent() const
+    {
+        return *tor;
+    }
 
-		/// Get the PeerManager
-		const PeerManager * getPeerMgr() const;
+    /**
+     * Initialize the TorrentControl.
+     * @param qman The QueueManager
+     * @param data The data of the torrent
+     * @param tmpdir The directory to store temporary data
+     * @param datadir The directory to store the actual file(s)
+     *      (only used the first time we load a torrent)
+     * @throw Error when something goes wrong
+     */
+    void init(QueueManagerInterface* qman,
+              const QByteArray & data,
+              const QString & tmpdir,
+              const QString & datadir);
 
-		/**
-		 * Set a custom chunk selector factory (needs to be done for init is called)
-		 * Note: TorrentControl does not take ownership
-		 */
-		void setChunkSelectorFactory(ChunkSelectorFactoryInterface* csfi);
 
-		/// Set a custom Cache factory
-		void setCacheFactory(CacheFactory* cf);
+    /// Tell the TorrentControl obj to preallocate diskspace in the next update
+    void setPreallocateDiskSpace(bool pa)
+    {
+        prealloc = pa;
+    }
 
-		/// Get time in msec since the last Stats file save on disk
-		TimeStamp getStatsSyncElapsedTime() { return stats_save_timer.getElapsedSinceUpdate(); }
+    /// Test if the torrent has existing files, only works the first time a torrent is loaded
+    bool hasExistingFiles() const;
 
-	public:
-		/**
-		 * Update the object, should be called periodically.
-		 */
-		void update() override;
+    const BitSet & downloadedChunksBitSet() const override;
+    const BitSet & availableChunksBitSet() const override;
+    const BitSet & excludedChunksBitSet() const override;
+    const BitSet & onlySeedChunksBitSet() const override;
+    bool changeTorDir(const QString & new_dir) override;
+    bool changeOutputDir(const QString& new_dir, int flags) override;
+    void rollback() override;
+    void setDisplayName(const QString & n) override;
+    TrackersList* getTrackersList() override;
+    const TrackersList* getTrackersList() const override;
+    QString getDataDir() const override
+    {
+        return outputdir;
+    }
+    QString getTorDir() const override
+    {
+        return tordir;
+    }
+    void setMonitor(MonitorInterface* tmo) override;
+    Uint32 getRunningTimeDL() const override;
+    Uint32 getRunningTimeUL() const override;
+    Uint32 getNumFiles() const override;
+    TorrentFileInterface & getTorrentFile(Uint32 index) override;
+    const TorrentFileInterface & getTorrentFile(Uint32 index) const override;
+    bool moveTorrentFiles(const QMap<TorrentFileInterface*, QString> & files) override;
+    void recreateMissingFiles() override;
+    void dndMissingFiles() override;
+    TorrentFileStream::Ptr createTorrentFileStream(bt::Uint32 index, bool streaming_mode, QObject* parent) override;
+    void addPeerSource(PeerSource* ps) override;
+    void removePeerSource(PeerSource* ps) override;
+    const QTextCodec* getTextCodec() const override;
+    void changeTextCodec(QTextCodec* tc) override;
+    Uint32 getNumWebSeeds() const override;
+    const WebSeedInterface* getWebSeed(Uint32 i) const override;
+    WebSeedInterface* getWebSeed(Uint32 i) override;
+    bool addWebSeed(const QUrl &url) override;
+    bool removeWebSeed(const QUrl &url) override;
+    bool readyForPreview() const override;
+    bool isMultimedia() const override;
+    void markExistingFilesAsDownloaded() override;
+    int getPriority() const override
+    {
+        return istats.priority;
+    }
+    void setPriority(int p) override;
+    bool overMaxRatio() override;
+    void setMaxShareRatio(float ratio) override;
+    float getMaxShareRatio() const override
+    {
+        return stats.max_share_ratio;
+    }
+    bool overMaxSeedTime() override;
+    void setMaxSeedTime(float hours) override;
+    float getMaxSeedTime() const override
+    {
+        return stats.max_seed_time;
+    }
+    void setAllowedToStart(bool on) override;
+    void setQueued(bool queued) override;
+    void setChunkSelector(ChunkSelectorInterface* csel) override;
+    void networkUp() override;
+    bool announceAllowed() override;
+    Job* startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to) override;
+    bool hasMissingFiles(QStringList & sl) override;
+    bool isStorageMounted(QStringList& missing) override;
+    Uint32 getNumDHTNodes() const override;
+    const DHTNode & getDHTNode(Uint32 i) const override;
+    void deleteDataFiles() override;
+    const bt::PeerID & getOwnPeerID() const override;
+    QString getComments() const override;
+    const JobQueue* getJobQueue() const override
+    {
+        return job_queue;
+    }
+    bool isFeatureEnabled(TorrentFeature tf) override;
+    void setFeatureEnabled(TorrentFeature tf, bool on) override;
+    bool checkDiskSpace(bool emit_sig = true) override;
+    void setTrafficLimits(Uint32 up, Uint32 down) override;
+    void getTrafficLimits(Uint32 & up, Uint32 & down) override;
+    void setAssuredSpeeds(Uint32 up, Uint32 down) override;
+    void getAssuredSpeeds(Uint32 & up, Uint32 & down) override;
+    const SHA1Hash & getInfoHash() const override;
+    void setUserModifiedFileName(const QString & n) override;
+    int getETA() override;
+    void setMoveWhenCompletedDir(const QString &dir) override
+    {
+        completed_dir = dir;
+        saveStats();
+    }
+    QString getMoveWhenCompletedDir() const override
+    {
+        return completed_dir;
+    }
+    void setSuperSeeding(bool on) override;
 
-		/**
-		 * Pause the torrent.
-		 */
-		void pause() override;
+    /// Create all the necessary files
+    void createFiles();
 
-		/**
-		 * Unpause the torrent.
-		 */
-		void unpause() override;
+    /// Get the PeerManager
+    const PeerManager * getPeerMgr() const;
 
-		/**
-		 * Start the download of the torrent.
-		 */
-		void start() override;
+    /**
+     * Set a custom chunk selector factory (needs to be done for init is called)
+     * Note: TorrentControl does not take ownership
+     */
+    void setChunkSelectorFactory(ChunkSelectorFactoryInterface* csfi);
 
-		/**
-		 * Stop the download, closes all connections.
-		 * @param wjob WaitJob to wait at exit for the completion of stopped requests
-		 */
-		void stop(WaitJob* wjob = 0) override;
+    /// Set a custom Cache factory
+    void setCacheFactory(CacheFactory* cf);
 
-		/**
-		 * Update the tracker, this should normally handled internally.
-		 * We leave it public so that the user can do a manual announce.
-		 */
-		void updateTracker() override;
+    /// Get time in msec since the last Stats file save on disk
+    TimeStamp getStatsSyncElapsedTime()
+    {
+        return stats_save_timer.getElapsedSinceUpdate();
+    }
 
-		/**
-		 * Scrape the tracker.
-		 * */
-		void scrapeTracker() override;
+public:
+    /**
+     * Update the object, should be called periodically.
+     */
+    void update() override;
 
-		/**
-		 * A scrape has finished on the tracker.
-		 * */
-		void trackerScrapeDone();
+    /**
+     * Pause the torrent.
+     */
+    void pause() override;
 
-		/**
-		 * Enable or disable data check upon completion
-		 * @param on 
-		 */
-		static void setDataCheckWhenCompleted(bool on) {completed_datacheck = on;}
+    /**
+     * Unpause the torrent.
+     */
+    void unpause() override;
 
-		/**
-		 * Set the minimum amount of diskspace in MB. When there is less then this free, torrents will be stopped.
-		 * @param m 
-		 */
-		static void setMinimumDiskSpace(Uint32 m) {min_diskspace = m;}
+    /**
+     * Start the download of the torrent.
+     */
+    void start() override;
 
-	protected:
-		/// Called when a data check is finished by DataCheckerJob
-		void afterDataCheck(DataCheckerJob* job,const BitSet & result);
-		void beforeDataCheck();
-		void preallocFinished(const QString & error,bool completed);
-		void allJobsDone();
-		bool preallocate();
+    /**
+     * Stop the download, closes all connections.
+     * @param wjob WaitJob to wait at exit for the completion of stopped requests
+     */
+    void stop(WaitJob* wjob = 0) override;
 
-	private:
-		void onNewPeer(Peer* p);
-		void onPeerRemoved(Peer* p);
-		void doChoking();
-		void onIOError(const QString & msg);
-		/// Update the stats of the torrent.
-		void updateStats();
-		void corrupted(Uint32 chunk);
-		void moveDataFilesFinished(KJob* j);
-		void moveDataFilesWithMapFinished(KJob* j);
-		void downloaded(Uint32 chunk);
-		void moveToCompletedDir();
-		void emitFinished();
+    /**
+     * Update the tracker, this should normally handled internally.
+     * We leave it public so that the user can do a manual announce.
+     */
+    void updateTracker() override;
 
-		void updateTracker(const QString & ev,bool last_succes = true);
-		void updateStatus() override;
-		void saveStats();
-		void loadStats();
-		void loadOutputDir();
-		void loadEncoding();
-		void getSeederInfo(Uint32 & total,Uint32 & connected_to) const;
-		void getLeecherInfo(Uint32 & total,Uint32 & connected_to) const;
-		void continueStart();
-		void handleError(const QString & err) override;
-		void initInternal(QueueManagerInterface* qman,const QString & tmpdir,const QString & ddir);
-		void checkExisting(QueueManagerInterface* qman);
-		void setupDirs(const QString & tmpdir,const QString & ddir);
-		void setupStats();
-		void setupData();
-		void setUploadProps(Uint32 limit,Uint32 rate);
-		void setDownloadProps(Uint32 limit,Uint32 rate);
-		void downloadPriorityChanged(TorrentFile* tf, Priority newpriority, Priority oldpriority) override;
-		void updateRunningTimes();
+    /**
+     * Scrape the tracker.
+     * */
+    void scrapeTracker() override;
 
-	Q_SIGNALS:
-		void dataCheckFinished();
+    /**
+     * A scrape has finished on the tracker.
+     * */
+    void trackerScrapeDone();
 
-	private:
-		JobQueue* job_queue;
-		QueueManagerInterface* m_qman;
-		Torrent* tor;
-		PeerSourceManager* psman;
-		ChunkManager* cman;
-		PeerManager* pman;
-		Downloader* downloader;
-		Uploader* uploader;
-		Choker* choke;
-		TimeEstimator* m_eta;
-		MonitorInterface* tmon;
-		CacheFactory* cache_factory;
-		QString move_data_files_destination_path;
-		Timer choker_update_timer;
-		Timer stats_save_timer;
-		Timer stalled_timer;
-		Timer wanted_update_timer;
-		QString tordir;
-		QString old_tordir;
-		QString outputdir;
-		QString error_msg;
-		QString completed_dir;
-		bool prealloc;
-		TimeStamp last_diskspace_check;
-		bool loading_stats;
+    /**
+     * Enable or disable data check upon completion
+     * @param on
+     */
+    static void setDataCheckWhenCompleted(bool on)
+    {
+        completed_datacheck = on;
+    }
 
-		struct InternalStats
-		{
-			QDateTime time_started_dl; 
-			QDateTime time_started_ul;
-			Uint32 running_time_dl;
-			Uint32 running_time_ul;
-			Uint64 prev_bytes_dl;
-			Uint64 prev_bytes_ul;
-			Uint64 session_bytes_uploaded;
-			bool io_error;
-			bool custom_output_name;
-			Uint16 port;
-			int priority;
-			bool dht_on;
-			bool diskspace_warning_emitted;
-		};
+    /**
+     * Set the minimum amount of diskspace in MB. When there is less then this free, torrents will be stopped.
+     * @param m
+     */
+    static void setMinimumDiskSpace(Uint32 m)
+    {
+        min_diskspace = m;
+    }
 
-		Uint32 upload_gid; // group ID for upload
-		Uint32 upload_limit; 
-		Uint32 download_gid; // group ID for download
-		Uint32 download_limit; 
+protected:
+    /// Called when a data check is finished by DataCheckerJob
+    void afterDataCheck(DataCheckerJob* job, const BitSet & result);
+    void beforeDataCheck();
+    void preallocFinished(const QString & error, bool completed);
+    void allJobsDone();
+    bool preallocate();
 
-		Uint32 assured_download_speed;
-		Uint32 assured_upload_speed;
+private:
+    void onNewPeer(Peer* p);
+    void onPeerRemoved(Peer* p);
+    void doChoking();
+    void onIOError(const QString & msg);
+    /// Update the stats of the torrent.
+    void updateStats();
+    void corrupted(Uint32 chunk);
+    void moveDataFilesFinished(KJob* j);
+    void moveDataFilesWithMapFinished(KJob* j);
+    void downloaded(Uint32 chunk);
+    void moveToCompletedDir();
+    void emitFinished();
 
-		InternalStats istats;
-		StatsFile* stats_file;
+    void updateTracker(const QString & ev, bool last_succes = true);
+    void updateStatus() override;
+    void saveStats();
+    void loadStats();
+    void loadOutputDir();
+    void loadEncoding();
+    void getSeederInfo(Uint32 & total, Uint32 & connected_to) const;
+    void getLeecherInfo(Uint32 & total, Uint32 & connected_to) const;
+    void continueStart();
+    void handleError(const QString & err) override;
+    void initInternal(QueueManagerInterface* qman, const QString & tmpdir, const QString & ddir);
+    void checkExisting(QueueManagerInterface* qman);
+    void setupDirs(const QString & tmpdir, const QString & ddir);
+    void setupStats();
+    void setupData();
+    void setUploadProps(Uint32 limit, Uint32 rate);
+    void setDownloadProps(Uint32 limit, Uint32 rate);
+    void downloadPriorityChanged(TorrentFile* tf, Priority newpriority, Priority oldpriority) override;
+    void updateRunningTimes();
 
-		TorrentFileStream::WPtr stream;
+Q_SIGNALS:
+    void dataCheckFinished();
 
-		static bool completed_datacheck;
-		static Uint32 min_diskspace;
+private:
+    JobQueue* job_queue;
+    QueueManagerInterface* m_qman;
+    Torrent* tor;
+    PeerSourceManager* psman;
+    ChunkManager* cman;
+    PeerManager* pman;
+    Downloader* downloader;
+    Uploader* uploader;
+    Choker* choke;
+    TimeEstimator* m_eta;
+    MonitorInterface* tmon;
+    CacheFactory* cache_factory;
+    QString move_data_files_destination_path;
+    Timer choker_update_timer;
+    Timer stats_save_timer;
+    Timer stalled_timer;
+    Timer wanted_update_timer;
+    QString tordir;
+    QString old_tordir;
+    QString outputdir;
+    QString error_msg;
+    QString completed_dir;
+    bool prealloc;
+    TimeStamp last_diskspace_check;
+    bool loading_stats;
 
-		friend class DataCheckerJob;
-		friend class PreallocationJob;
-		friend class JobQueue;
-	};
+    struct InternalStats {
+        QDateTime time_started_dl;
+        QDateTime time_started_ul;
+        Uint32 running_time_dl;
+        Uint32 running_time_ul;
+        Uint64 prev_bytes_dl;
+        Uint64 prev_bytes_ul;
+        Uint64 session_bytes_uploaded;
+        bool io_error;
+        bool custom_output_name;
+        Uint16 port;
+        int priority;
+        bool dht_on;
+        bool diskspace_warning_emitted;
+    };
+
+    Uint32 upload_gid; // group ID for upload
+    Uint32 upload_limit;
+    Uint32 download_gid; // group ID for download
+    Uint32 download_limit;
+
+    Uint32 assured_download_speed;
+    Uint32 assured_upload_speed;
+
+    InternalStats istats;
+    StatsFile* stats_file;
+
+    TorrentFileStream::WPtr stream;
+
+    static bool completed_datacheck;
+    static Uint32 min_diskspace;
+
+    friend class DataCheckerJob;
+    friend class PreallocationJob;
+    friend class JobQueue;
+};
 
 }
 

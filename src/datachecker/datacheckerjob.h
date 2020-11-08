@@ -23,48 +23,63 @@
 #include <torrent/job.h>
 #include <util/resourcemanager.h>
 
-namespace bt 
+namespace bt
 {
-	class DataCheckerThread;
+class DataCheckerThread;
 
-	
-	/// Job which runs a DataChecker
-	class KTORRENT_EXPORT DataCheckerJob : public bt::Job, public Resource
-	{
-	public:
-		DataCheckerJob(bool auto_import,TorrentControl* tc, bt::Uint32 from, bt::Uint32 to);
-		~DataCheckerJob() override;
-		
-		void start() override;
-		void kill(bool quietly = true) override;
-		TorrentStatus torrentStatus() const override {return CHECKING_DATA;}
-		
-		/// Is this an automatic import
-		bool isAutoImport() const {return auto_import;}
-		
-		/// Was the job stopped
-		bool isStopped() const {return killed;}
-		
-		/// Get the first chunk the datacheck was started from
-		bt::Uint32 firstChunk() const {return from;}
-		
-		/// Get the last chunk of the datacheck
-		bt::Uint32 lastChunk() const {return to;}
-		
-	private:
-		void threadFinished();
-		void progress(quint32 num, quint32 total);
-		void status(quint32 num_failed, quint32 num_found, quint32 num_downloaded, quint32 num_not_downloaded);
 
-		void acquired() override;
+/// Job which runs a DataChecker
+class KTORRENT_EXPORT DataCheckerJob : public bt::Job, public Resource
+{
+public:
+    DataCheckerJob(bool auto_import, TorrentControl* tc, bt::Uint32 from, bt::Uint32 to);
+    ~DataCheckerJob() override;
 
-		DataCheckerThread* dcheck_thread;
-		bool killed;
-		bool auto_import;
-		bool started;
-		bt::Uint32 from;
-		bt::Uint32 to;
-	};
+    void start() override;
+    void kill(bool quietly = true) override;
+    TorrentStatus torrentStatus() const override
+    {
+        return CHECKING_DATA;
+    }
+
+    /// Is this an automatic import
+    bool isAutoImport() const
+    {
+        return auto_import;
+    }
+
+    /// Was the job stopped
+    bool isStopped() const
+    {
+        return killed;
+    }
+
+    /// Get the first chunk the datacheck was started from
+    bt::Uint32 firstChunk() const
+    {
+        return from;
+    }
+
+    /// Get the last chunk of the datacheck
+    bt::Uint32 lastChunk() const
+    {
+        return to;
+    }
+
+private:
+    void threadFinished();
+    void progress(quint32 num, quint32 total);
+    void status(quint32 num_failed, quint32 num_found, quint32 num_downloaded, quint32 num_not_downloaded);
+
+    void acquired() override;
+
+    DataCheckerThread* dcheck_thread;
+    bool killed;
+    bool auto_import;
+    bool started;
+    bt::Uint32 from;
+    bt::Uint32 to;
+};
 
 }
 

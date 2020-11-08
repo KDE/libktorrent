@@ -36,61 +36,60 @@ struct pollfd;
 namespace net
 {
 
-	/**
-		Client for a Poll
-	*/
-	class KTORRENT_EXPORT PollClient
-	{
-	public:
-		PollClient() {}
-		virtual ~PollClient() {}
-		
-		/// Get the filedescriptor to poll
-		virtual int fd() const = 0;
-		
-		/// Handle data
-		virtual void handleData() = 0;
-		
-		/// Reset the client called after poll finishes
-		virtual void reset() = 0;
-		
-		typedef QSharedPointer<PollClient> Ptr;
-	};
-	
-	/**
-		Class which does polling of sockets
-	*/
-	class KTORRENT_EXPORT Poll
-	{
-	public:
-		Poll();
-		virtual ~Poll();
-		
-		enum Mode
-		{
-			INPUT, OUTPUT
-		};
-		
-		/// Add a file descriptor to the poll (returns the index of it)
-		int add(int fd,Mode mode);
-		
-		/// Add a poll client
-		int add(PollClient::Ptr pc);
-		
-		/// Poll all sockets
-		int poll(int timeout = -1);
-		
-		/// Check if a socket at an index is read
-		bool ready(int index,Mode mode) const;
-		
-		/// Reset the poll
-		void reset();
-		
-	private:
-		std::vector<struct pollfd> fd_vec;
-		bt::Uint32 num_sockets;
-		std::map<int,PollClient::Ptr> poll_clients;
-	};
+/**
+    Client for a Poll
+*/
+class KTORRENT_EXPORT PollClient
+{
+public:
+    PollClient() {}
+    virtual ~PollClient() {}
+
+    /// Get the filedescriptor to poll
+    virtual int fd() const = 0;
+
+    /// Handle data
+    virtual void handleData() = 0;
+
+    /// Reset the client called after poll finishes
+    virtual void reset() = 0;
+
+    typedef QSharedPointer<PollClient> Ptr;
+};
+
+/**
+    Class which does polling of sockets
+*/
+class KTORRENT_EXPORT Poll
+{
+public:
+    Poll();
+    virtual ~Poll();
+
+    enum Mode {
+        INPUT, OUTPUT
+    };
+
+    /// Add a file descriptor to the poll (returns the index of it)
+    int add(int fd, Mode mode);
+
+    /// Add a poll client
+    int add(PollClient::Ptr pc);
+
+    /// Poll all sockets
+    int poll(int timeout = -1);
+
+    /// Check if a socket at an index is read
+    bool ready(int index, Mode mode) const;
+
+    /// Reset the poll
+    void reset();
+
+private:
+    std::vector<struct pollfd> fd_vec;
+    bt::Uint32 num_sockets;
+    std::map<int, PollClient::Ptr> poll_clients;
+};
 
 }
 

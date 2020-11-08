@@ -27,117 +27,112 @@
 namespace dht
 {
 
-	Task::Task(RPCServer* rpc, Node* node, QObject* parent)
-			: RPCCallListener(parent),
-			node(node),
-			rpc(rpc),
-			outstanding_reqs(0),
-			task_finished(false),
-			queued(true)
-	{
+Task::Task(RPCServer* rpc, Node* node, QObject* parent)
+    : RPCCallListener(parent),
+      node(node),
+      rpc(rpc),
+      outstanding_reqs(0),
+      task_finished(false),
+      queued(true)
+{
 
-	}
-
-
-	Task::~Task()
-	{
-	}
-
-	void Task::start(const KClosestNodesSearch & kns, bool queued)
-	{
-		// fill the todo list
-		for (KClosestNodesSearch::CItr i = kns.begin(); i != kns.end();++i)
-			todo.insert(i->second);
-		this->queued = queued;
-		if (!queued)
-			update();
-	}
-
-	void Task::start()
-	{
-		if (queued)
-		{
-			queued = false;
-			update();
-		}
-	}
+}
 
 
-	void Task::onResponse(dht::RPCCall* c, dht::RPCMsg::Ptr rsp)
-	{
-		if (outstanding_reqs > 0)
-			outstanding_reqs--;
+Task::~Task()
+{
+}
 
-		if (!isFinished())
-		{
-			callFinished(c, rsp);
+void Task::start(const KClosestNodesSearch & kns, bool queued)
+{
+    // fill the todo list
+    for (KClosestNodesSearch::CItr i = kns.begin(); i != kns.end(); ++i)
+        todo.insert(i->second);
+    this->queued = queued;
+    if (!queued)
+        update();
+}
 
-			if (canDoRequest() && !isFinished())
-				update();
-		}
-	}
+void Task::start()
+{
+    if (queued) {
+        queued = false;
+        update();
+    }
+}
 
-	void Task::onTimeout(RPCCall* c)
-	{
-		if (outstanding_reqs > 0)
-			outstanding_reqs--;
 
-		if (!isFinished())
-		{
-			callTimeout(c);
+void Task::onResponse(dht::RPCCall* c, dht::RPCMsg::Ptr rsp)
+{
+    if (outstanding_reqs > 0)
+        outstanding_reqs--;
 
-			if (canDoRequest() && !isFinished())
-				update();
-		}
-	}
+    if (!isFinished()) {
+        callFinished(c, rsp);
 
-	bool Task::rpcCall(dht::RPCMsg::Ptr req)
-	{
-		if (!canDoRequest())
-			return false;
+        if (canDoRequest() && !isFinished())
+            update();
+    }
+}
 
-		RPCCall* c = rpc->doCall(req);
-		c->addListener(this);
-		outstanding_reqs++;
-		return true;
-	}
+void Task::onTimeout(RPCCall* c)
+{
+    if (outstanding_reqs > 0)
+        outstanding_reqs--;
 
-	void Task::done()
-	{
-		task_finished = true;
-		finished(this);
-	}
+    if (!isFinished()) {
+        callTimeout(c);
 
-	void Task::emitDataReady()
-	{
-		dataReady(this);
-	}
+        if (canDoRequest() && !isFinished())
+            update();
+    }
+}
 
-	void Task::kill()
-	{
-		task_finished = true;
-		finished(this);
-	}
+bool Task::rpcCall(dht::RPCMsg::Ptr req)
+{
+    if (!canDoRequest())
+        return false;
 
-	void Task::addDHTNode(const QString & ip, bt::Uint16 port)
-	{
-		net::Address addr;
-		if (addr.setAddress(ip))
-		{
-			addr.setPort(port);
-			todo.insert(KBucketEntry(addr, dht::Key()));
-		}
-		else
-			net::AddressResolver::resolve(ip, port, this, SLOT(onResolverResults(net::AddressResolver*)));
-	}
+    RPCCall* c = rpc->doCall(req);
+    c->addListener(this);
+    outstanding_reqs++;
+    return true;
+}
 
-	void Task::onResolverResults(net::AddressResolver* ar)
-	{
-		if (!ar->succeeded())
-			return;
+void Task::done()
+{
+    task_finished = true;
+    finished(this);
+}
 
-		todo.insert(KBucketEntry(ar->address(), dht::Key()));
-	}
+void Task::emitDataReady()
+{
+    dataReady(this);
+}
+
+void Task::kill()
+{
+    task_finished = true;
+    finished(this);
+}
+
+void Task::addDHTNode(const QString & ip, bt::Uint16 port)
+{
+    net::Address addr;
+    if (addr.setAddress(ip)) {
+        addr.setPort(port);
+        todo.insert(KBucketEntry(addr, dht::Key()));
+    } else
+        net::AddressResolver::resolve(ip, port, this, SLOT(onResolverResults(net::AddressResolver*)));
+}
+
+void Task::onResolverResults(net::AddressResolver* ar)
+{
+    if (!ar->succeeded())
+        return;
+
+    todo.insert(KBucketEntry(ar->address(), dht::Key()));
+}
 
 }
 

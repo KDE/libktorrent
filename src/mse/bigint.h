@@ -33,65 +33,65 @@ using bt::Uint64;
 namespace mse
 {
 
-	/**
-	 * @author Joris Guisson <joris.guisson@gmail.com>
-	 * 
-	 * Class which can hold an arbitrary large integer. This will be a very important part of our
-	 * MSE implementation.
-	*/
-	class BigInt
-	{
-	public:
-		/**
-		 * Create a big integer, with num_bits bits.
-		 * All bits will be set to 0.
-		 * @param num_bits The number of bits
-		 */
-		BigInt(Uint32 num_bits = 0);
-		
-		/**
-		 * Create a big integer of a string. The string must be
-		 * a hexadecimal representation of an integer. For example :
-		 * 12AFFE123488BBBE123
-		 * 
-		 * Letters can be upper or lower case. Invalid chars will create an invalid number.
-		 * @param value The hexadecimal representation of the number
-		 */
-		BigInt(const QString & value);
-		
-		/**
-		 * Copy constructor.
-		 * @param bi BigInt to copy
-		 */
-		BigInt(const BigInt & bi);
-		~BigInt();
-		
-		/**
-		 * Assignment operator.
-		 * @param bi The BigInt to copy
-		 * @return *this
-		 */
-		BigInt & operator = (const BigInt & bi);
-		
-		/**
-		 * Calculates
-		 * (x ^ e) mod d 
-		 * ^ is power
-		 */
-		static BigInt powerMod(const BigInt & x,const BigInt & e,const BigInt & d);
-		
-		/// Make a random BigInt
-		static BigInt random();
-		
-		/// Export the bigint ot a buffer
-		Uint32 toBuffer(Uint8* buf,Uint32 max_size) const;
-		
-		/// Make a BigInt out of a buffer
-		static BigInt fromBuffer(const Uint8* buf,Uint32 size);
-		
-	private:
-		mpz_t val;
-	};
+/**
+ * @author Joris Guisson <joris.guisson@gmail.com>
+ *
+ * Class which can hold an arbitrary large integer. This will be a very important part of our
+ * MSE implementation.
+*/
+class BigInt
+{
+public:
+    /**
+     * Create a big integer, with num_bits bits.
+     * All bits will be set to 0.
+     * @param num_bits The number of bits
+     */
+    BigInt(Uint32 num_bits = 0);
+
+    /**
+     * Create a big integer of a string. The string must be
+     * a hexadecimal representation of an integer. For example :
+     * 12AFFE123488BBBE123
+     *
+     * Letters can be upper or lower case. Invalid chars will create an invalid number.
+     * @param value The hexadecimal representation of the number
+     */
+    BigInt(const QString & value);
+
+    /**
+     * Copy constructor.
+     * @param bi BigInt to copy
+     */
+    BigInt(const BigInt & bi);
+    ~BigInt();
+
+    /**
+     * Assignment operator.
+     * @param bi The BigInt to copy
+     * @return *this
+     */
+    BigInt & operator = (const BigInt & bi);
+
+    /**
+     * Calculates
+     * (x ^ e) mod d
+     * ^ is power
+     */
+    static BigInt powerMod(const BigInt & x, const BigInt & e, const BigInt & d);
+
+    /// Make a random BigInt
+    static BigInt random();
+
+    /// Export the bigint ot a buffer
+    Uint32 toBuffer(Uint8* buf, Uint32 max_size) const;
+
+    /// Make a BigInt out of a buffer
+    static BigInt fromBuffer(const Uint8* buf, Uint32 size);
+
+private:
+    mpz_t val;
+};
 
 }
 

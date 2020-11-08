@@ -27,50 +27,50 @@
 
 namespace bt
 {
-	class WaitJob;
-	struct DHTNode;
+class WaitJob;
+struct DHTNode;
 }
 
 
 namespace dht
 {
-	class DHTBase;
-	class AnnounceTask;
+class DHTBase;
+class AnnounceTask;
 
-	
 
-	/**
-		@author Joris Guisson <joris.guisson@gmail.com>
-	*/
-	class KTORRENT_EXPORT DHTPeerSource : public bt::PeerSource
-	{
-	public:
-		DHTPeerSource(DHTBase & dh_table,const bt::SHA1Hash & info_hash,const QString & torrent_name);
-		~DHTPeerSource() override;
 
-		void start() override;
-		void stop(bt::WaitJob* wjob = 0) override;
-		void manualUpdate() override;
-		
-		void addDHTNode(const bt::DHTNode & node);
-		void setRequestInterval(bt::Uint32 interval);
-	
-	private:
-		void onTimeout();
-		bool doRequest();
-		void onDataReady(Task* t);
-		void onFinished(Task* t);
-		void dhtStopped();
+/**
+    @author Joris Guisson <joris.guisson@gmail.com>
+*/
+class KTORRENT_EXPORT DHTPeerSource : public bt::PeerSource
+{
+public:
+    DHTPeerSource(DHTBase & dh_table, const bt::SHA1Hash & info_hash, const QString & torrent_name);
+    ~DHTPeerSource() override;
 
-		DHTBase & dh_table;
-		AnnounceTask* curr_task;
-		bt::SHA1Hash info_hash;
-		QTimer timer;
-		bool started;
-		QList<bt::DHTNode> nodes;
-		QString torrent_name;
-		bt::Uint32 request_interval;
-	};
+    void start() override;
+    void stop(bt::WaitJob* wjob = 0) override;
+    void manualUpdate() override;
+
+    void addDHTNode(const bt::DHTNode & node);
+    void setRequestInterval(bt::Uint32 interval);
+
+private:
+    void onTimeout();
+    bool doRequest();
+    void onDataReady(Task* t);
+    void onFinished(Task* t);
+    void dhtStopped();
+
+    DHTBase & dh_table;
+    AnnounceTask* curr_task;
+    bt::SHA1Hash info_hash;
+    QTimer timer;
+    bool started;
+    QList<bt::DHTNode> nodes;
+    QString torrent_name;
+    bt::Uint32 request_interval;
+};
 
 }
 

@@ -18,7 +18,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.           *
  ***************************************************************************/
- 
+
 #ifndef IPBLOCKINGINTERFACE_H
 #define IPBLOCKINGINTERFACE_H
 
@@ -26,28 +26,28 @@
 
 namespace net
 {
-	class Address;
+class Address;
 }
 
 
 namespace bt
 {
-	/**
-	 * @author Ivan Vasic
-	 * @brief Base class for BlockLists
-	*/
-	class KTORRENT_EXPORT BlockListInterface 
-	{	
-	public:
-		BlockListInterface();
-		virtual ~BlockListInterface();
-		
-		/**
-		 * This function checks if IP is blocked
-		 * @return TRUE if IP should be blocked. FALSE otherwise
-		 * @arg addr Address of the peer
-		 */
-		virtual bool blocked(const net::Address & addr) const = 0;
-	};
+/**
+ * @author Ivan Vasic
+ * @brief Base class for BlockLists
+*/
+class KTORRENT_EXPORT BlockListInterface
+{
+public:
+    BlockListInterface();
+    virtual ~BlockListInterface();
+
+    /**
+     * This function checks if IP is blocked
+     * @return TRUE if IP should be blocked. FALSE otherwise
+     * @arg addr Address of the peer
+     */
+    virtual bool blocked(const net::Address & addr) const = 0;
+};
 }
 #endif

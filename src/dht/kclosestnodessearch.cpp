@@ -26,68 +26,60 @@ using namespace bt;
 
 namespace dht
 {
-	typedef std::map<dht::Key, KBucketEntry>::iterator KNSitr;
+typedef std::map<dht::Key, KBucketEntry>::iterator KNSitr;
 
-	KClosestNodesSearch::KClosestNodesSearch(const dht::Key & key, Uint32 max_entries)
-			: key(key), max_entries(max_entries)
-	{}
-
-
-	KClosestNodesSearch::~KClosestNodesSearch()
-	{}
+KClosestNodesSearch::KClosestNodesSearch(const dht::Key & key, Uint32 max_entries)
+    : key(key), max_entries(max_entries)
+{}
 
 
-	void KClosestNodesSearch::tryInsert(const KBucketEntry & e)
-	{
-		// calculate distance between key and e
-		dht::Key d = dht::Key::distance(key, e.getID());
+KClosestNodesSearch::~KClosestNodesSearch()
+{}
 
-		if (emap.size() < max_entries)
-		{
-			// room in the map so just insert
-			emap.insert(std::make_pair(d, e));
-		}
-		else
-		{
-			// now find the max distance
-			// seeing that the last element of the map has also
-			// the biggest distance to key (std::map is sorted on the distance)
-			// we just take the last
-			const dht::Key & max = emap.rbegin()->first;
-			if (d < max)
-			{
-				// insert if d is smaller then max
-				emap.insert(std::make_pair(d, e));
-				// erase the old max value
-				emap.erase(max);
-			}
-		}
 
-	}
+void KClosestNodesSearch::tryInsert(const KBucketEntry & e)
+{
+    // calculate distance between key and e
+    dht::Key d = dht::Key::distance(key, e.getID());
 
-	void KClosestNodesSearch::pack(PackedNodeContainer* cnt)
-	{
-		Uint32 j = 0;
+    if (emap.size() < max_entries) {
+        // room in the map so just insert
+        emap.insert(std::make_pair(d, e));
+    } else {
+        // now find the max distance
+        // seeing that the last element of the map has also
+        // the biggest distance to key (std::map is sorted on the distance)
+        // we just take the last
+        const dht::Key & max = emap.rbegin()->first;
+        if (d < max) {
+            // insert if d is smaller then max
+            emap.insert(std::make_pair(d, e));
+            // erase the old max value
+            emap.erase(max);
+        }
+    }
 
-		KNSitr i = emap.begin();
-		while (i != emap.end())
-		{
-			const KBucketEntry & e = i->second;
-			if (e.getAddress().ipVersion() == 4)
-			{
-				QByteArray d(26, 0);
-				PackBucketEntry(i->second, d, 0);
-				cnt->addNode(d);
-			}
-			else
-			{
-				QByteArray d(38, 0);
-				PackBucketEntry(i->second, d, 0);
-				cnt->addNode(d);
-			}
-			j++;
-			++i;
-		}
-	}
+}
+
+void KClosestNodesSearch::pack(PackedNodeContainer* cnt)
+{
+    Uint32 j = 0;
+
+    KNSitr i = emap.begin();
+    while (i != emap.end()) {
+        const KBucketEntry & e = i->second;
+        if (e.getAddress().ipVersion() == 4) {
+            QByteArray d(26, 0);
+            PackBucketEntry(i->second, d, 0);
+            cnt->addNode(d);
+        } else {
+            QByteArray d(38, 0);
+            PackBucketEntry(i->second, d, 0);
+            cnt->addNode(d);
+        }
+        j++;
+        ++i;
+    }
+}
 
 }

@@ -29,41 +29,44 @@
 
 namespace bt
 {
-	class UTMetaData;
-	
-	const int METADATA_PIECE_SIZE = 16 * 1024;
-	
-	/**
-		Handles the metadatadownload
-	*/
-	class MetadataDownload
-	{
-	public:
-		MetadataDownload(UTMetaData* ext,Uint32 size);
-		virtual ~MetadataDownload();
-		
-		/// A reject of a piece was received
-		void reject(Uint32 piece);
-		
-		/**
-			A piece was received
-			@return true if all the data has been received
-		*/
-		bool data(Uint32 piece,const QByteArray & piece_data);
-		
-		/// Get the result
-		const QByteArray & result() const {return metadata;}
-		
-	private:
-		void download(Uint32 piece);
-		void downloadNext();
-		
-	private:
-		UTMetaData* ext;
-		BitSet pieces;
-		QByteArray metadata;
-		Uint32 total_size;
-	};
+class UTMetaData;
+
+const int METADATA_PIECE_SIZE = 16 * 1024;
+
+/**
+    Handles the metadatadownload
+*/
+class MetadataDownload
+{
+public:
+    MetadataDownload(UTMetaData* ext, Uint32 size);
+    virtual ~MetadataDownload();
+
+    /// A reject of a piece was received
+    void reject(Uint32 piece);
+
+    /**
+        A piece was received
+        @return true if all the data has been received
+    */
+    bool data(Uint32 piece, const QByteArray & piece_data);
+
+    /// Get the result
+    const QByteArray & result() const
+    {
+        return metadata;
+    }
+
+private:
+    void download(Uint32 piece);
+    void downloadNext();
+
+private:
+    UTMetaData* ext;
+    BitSet pieces;
+    QByteArray metadata;
+    Uint32 total_size;
+};
 
 }
 

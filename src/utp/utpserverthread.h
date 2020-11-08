@@ -26,20 +26,20 @@
 
 namespace utp
 {
-	class UTPServer;
+class UTPServer;
 
-	class KTORRENT_EXPORT UTPServerThread : public QThread
-	{
-		Q_OBJECT
-	public:
-		UTPServerThread(UTPServer* srv);
-		~UTPServerThread() override;
+class KTORRENT_EXPORT UTPServerThread : public QThread
+{
+    Q_OBJECT
+public:
+    UTPServerThread(UTPServer* srv);
+    ~UTPServerThread() override;
 
-		void run() override;
+    void run() override;
 
-	protected:
-		UTPServer* srv;
-	};
+protected:
+    UTPServer* srv;
+};
 
 }
 

@@ -22,15 +22,14 @@
 
 bool HttpResponseHeader::parseLine(const QString &line, int number)
 {
-    if (number != 0)
-    {
+    if (number != 0) {
         int i = line.indexOf(QLatin1Char(':'));
         if (i == -1)
             return false;
 
         values[line.leftRef(i).trimmed().toString().toLower()] = line.midRef(i + 1).trimmed().toString();
 
-        return true;        
+        return true;
     }
 
     QString l = line.simplified();

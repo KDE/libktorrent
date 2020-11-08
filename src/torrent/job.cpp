@@ -24,46 +24,45 @@
 
 namespace bt
 {
-	KJobTrackerInterface* Job::tracker = 0;
-	
-	Job::Job(bool stop_torrent, bt::TorrentControl* tc) : tc(tc),stop_torrent(stop_torrent)
-	{
-		setUiDelegate(new KIO::JobUiDelegate());
-	}
-	
-	Job::~Job()
-	{
-	}
+KJobTrackerInterface* Job::tracker = 0;
 
-	void Job::start()
-	{
-	}
-	
-	void Job::kill(bool quietly)
-	{
-		if (!quietly)
-		{
-			setError(KIO::ERR_USER_CANCELED);
-			emitResult();
-		}
-	}
-	
-	
-	TorrentStatus Job::torrentStatus() const
-	{
-		return INVALID_STATUS;
-	}
-	
-	void Job::setJobTracker(KJobTrackerInterface* trk)
-	{
-		tracker = trk;
-	}
-	
-	void Job::registerWithTracker()
-	{
-		if (tracker)
-			tracker->registerJob(this);
-	}
+Job::Job(bool stop_torrent, bt::TorrentControl* tc) : tc(tc), stop_torrent(stop_torrent)
+{
+    setUiDelegate(new KIO::JobUiDelegate());
+}
+
+Job::~Job()
+{
+}
+
+void Job::start()
+{
+}
+
+void Job::kill(bool quietly)
+{
+    if (!quietly) {
+        setError(KIO::ERR_USER_CANCELED);
+        emitResult();
+    }
+}
+
+
+TorrentStatus Job::torrentStatus() const
+{
+    return INVALID_STATUS;
+}
+
+void Job::setJobTracker(KJobTrackerInterface* trk)
+{
+    tracker = trk;
+}
+
+void Job::registerWithTracker()
+{
+    if (tracker)
+        tracker->registerJob(this);
+}
 
 
 }

@@ -27,29 +27,35 @@
 namespace dht
 {
 
-	/**
-	 * Announce request in the DHT protocol
-	 */
-	class KTORRENT_EXPORT AnnounceReq : public GetPeersReq
-	{
-	public:
-		AnnounceReq();
-		AnnounceReq(const Key & id,const Key & info_hash,bt::Uint16 port,const QByteArray & token);
-		~AnnounceReq() override;
-		
-		void apply(DHT* dh_table) override;
-		void print() override;
-		void encode(QByteArray & arr) const override;
-		void parse(bt::BDictNode* dict) override;
-		
-		const QByteArray & getToken() const {return token;}
-		bt::Uint16 getPort() const {return port;}
-		
-		typedef QSharedPointer<AnnounceReq> Ptr;
-	private:
-		bt::Uint16 port;
-		QByteArray token;
-	};
+/**
+ * Announce request in the DHT protocol
+ */
+class KTORRENT_EXPORT AnnounceReq : public GetPeersReq
+{
+public:
+    AnnounceReq();
+    AnnounceReq(const Key & id, const Key & info_hash, bt::Uint16 port, const QByteArray & token);
+    ~AnnounceReq() override;
+
+    void apply(DHT* dh_table) override;
+    void print() override;
+    void encode(QByteArray & arr) const override;
+    void parse(bt::BDictNode* dict) override;
+
+    const QByteArray & getToken() const
+    {
+        return token;
+    }
+    bt::Uint16 getPort() const
+    {
+        return port;
+    }
+
+    typedef QSharedPointer<AnnounceReq> Ptr;
+private:
+    bt::Uint16 port;
+    QByteArray token;
+};
 
 }
 

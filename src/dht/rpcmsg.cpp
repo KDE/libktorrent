@@ -26,52 +26,48 @@ using namespace bt;
 
 namespace dht
 {
-	RPCMsg::RPCMsg() :
-			mtid(0),
-			method(NONE),
-			type(INVALID)
-	{
-	}
+RPCMsg::RPCMsg() :
+    mtid(0),
+    method(NONE),
+    type(INVALID)
+{
+}
 
 
-	RPCMsg::RPCMsg(const QByteArray & mtid, Method m, Type type, const Key & id) :
-			mtid(mtid),
-			method(m),
-			type(type),
-			id(id)
-	{}
+RPCMsg::RPCMsg(const QByteArray & mtid, Method m, Type type, const Key & id) :
+    mtid(mtid),
+    method(m),
+    type(type),
+    id(id)
+{}
 
-	RPCMsg::~RPCMsg()
-	{}
-	
-	void RPCMsg::parse(bt::BDictNode* dict)
-	{
-		mtid = dict->getByteArray(TID);
-		if (mtid.isEmpty())
-			throw bt::Error("Invalid DHT transaction ID");
-		
-		QString t = dict->getString(TYP, 0);
-		if (t == REQ)
-		{
-			type = REQ_MSG;
-			BDictNode* args = dict->getDict(ARG);
-			if (!args)
-				return;
-			
-			id = Key(args->getByteArray("id"));
-		}
-		else if (t == RSP)
-		{
-			type = RSP_MSG;
-			BDictNode* args = dict->getDict(RSP);
-			if (!args)
-				return;
-			
-			id = Key(args->getByteArray("id"));
-		}
-		else if (t == ERR_DHT)
-			type = ERR_MSG;
-		else
-			throw bt::Error(QString("Unknown message type %1").arg(t));
-	}
+RPCMsg::~RPCMsg()
+{}
+
+void RPCMsg::parse(bt::BDictNode* dict)
+{
+    mtid = dict->getByteArray(TID);
+    if (mtid.isEmpty())
+        throw bt::Error("Invalid DHT transaction ID");
+
+    QString t = dict->getString(TYP, 0);
+    if (t == REQ) {
+        type = REQ_MSG;
+        BDictNode* args = dict->getDict(ARG);
+        if (!args)
+            return;
+
+        id = Key(args->getByteArray("id"));
+    } else if (t == RSP) {
+        type = RSP_MSG;
+        BDictNode* args = dict->getDict(RSP);
+        if (!args)
+            return;
+
+        id = Key(args->getByteArray("id"));
+    } else if (t == ERR_DHT)
+        type = ERR_MSG;
+    else
+        throw bt::Error(QString("Unknown message type %1").arg(t));
+}
 }

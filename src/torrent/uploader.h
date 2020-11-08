@@ -25,50 +25,56 @@
 
 namespace bt
 {
-	class Peer;
-	class ChunkManager;
-	
+class Peer;
+class ChunkManager;
 
-	/**
-	 * @author Joris Guisson
-	 *
-	 * Class which manages the uploading of data. It has a PeerUploader for
-	 * each Peer.
-	 */
-	class Uploader : public QObject, public PeerManager::PeerVisitor
-	{
-		Q_OBJECT
-	public:
-		/**
-		 * Constructor, sets the ChunkManager. 
-		 * @param cman The ChunkManager
-		 */
-		Uploader(ChunkManager & cman,PeerManager & pman);
-		~Uploader() override;
 
-		/// Get the number of bytes uploaded.
-		Uint64 bytesUploaded() const {return uploaded;}
+/**
+ * @author Joris Guisson
+ *
+ * Class which manages the uploading of data. It has a PeerUploader for
+ * each Peer.
+ */
+class Uploader : public QObject, public PeerManager::PeerVisitor
+{
+    Q_OBJECT
+public:
+    /**
+     * Constructor, sets the ChunkManager.
+     * @param cman The ChunkManager
+     */
+    Uploader(ChunkManager & cman, PeerManager & pman);
+    ~Uploader() override;
 
-		/// Get the upload rate of all Peers combined.
-		Uint32 uploadRate() const;
+    /// Get the number of bytes uploaded.
+    Uint64 bytesUploaded() const
+    {
+        return uploaded;
+    }
 
-		/// Set the number of bytes which have been uploaded.
-		void setBytesUploaded(Uint64 b) {uploaded = b;}
-		
-	public Q_SLOTS:
-		/**
-		 * Update every PeerUploader.
-		 */
-		void update();
-		
-	private:
-		void visit(const bt::Peer::Ptr p) override;
-		
-	private:
-		ChunkManager & cman;
-		PeerManager & pman;
-		Uint64 uploaded;
-	};
+    /// Get the upload rate of all Peers combined.
+    Uint32 uploadRate() const;
+
+    /// Set the number of bytes which have been uploaded.
+    void setBytesUploaded(Uint64 b)
+    {
+        uploaded = b;
+    }
+
+public Q_SLOTS:
+    /**
+     * Update every PeerUploader.
+     */
+    void update();
+
+private:
+    void visit(const bt::Peer::Ptr p) override;
+
+private:
+    ChunkManager & cman;
+    PeerManager & pman;
+    Uint64 uploaded;
+};
 
 }
 

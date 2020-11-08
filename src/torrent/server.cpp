@@ -40,84 +40,79 @@
 
 namespace bt
 {
-	typedef QSharedPointer<net::ServerSocket> ServerSocketPtr;
+typedef QSharedPointer<net::ServerSocket> ServerSocketPtr;
 
-	class Server::Private : public net::ServerSocket::ConnectionHandler
-	{
-	public:
-		Private(Server* p) : p(p)
-		{
-		}
-		
-		~Private() override
-		{
-		}
-		
-		void reset()
-		{
-			sockets.clear();
-		}
-		
-		void newConnection(int fd,const net::Address & addr) override
-		{
-			mse::EncryptedPacketSocket::Ptr s(new mse::EncryptedPacketSocket(fd,addr.ipVersion()));
-			p->newConnection(s);
-		}
-		
-		void add(const QString & ip,bt::Uint16 port)
-		{
-			ServerSocketPtr sock(new net::ServerSocket(this));
-			if (sock->bind(ip,port))
-			{
-				sockets.append(sock);
-			}
-		}
-		
-		
-		Server* p;
-		QList<ServerSocketPtr> sockets;
-	};
+class Server::Private : public net::ServerSocket::ConnectionHandler
+{
+public:
+    Private(Server* p) : p(p)
+    {
+    }
 
-	Server::Server() : d(new Private(this))
-	{
-	}
+    ~Private() override
+    {
+    }
+
+    void reset()
+    {
+        sockets.clear();
+    }
+
+    void newConnection(int fd, const net::Address & addr) override
+    {
+        mse::EncryptedPacketSocket::Ptr s(new mse::EncryptedPacketSocket(fd, addr.ipVersion()));
+        p->newConnection(s);
+    }
+
+    void add(const QString & ip, bt::Uint16 port)
+    {
+        ServerSocketPtr sock(new net::ServerSocket(this));
+        if (sock->bind(ip, port)) {
+            sockets.append(sock);
+        }
+    }
 
 
-	Server::~Server()
-	{
-		Globals::instance().getPortList().removePort(port,net::TCP);
-		delete d;
-	}
-	
-	bool Server::changePort(Uint16 p)
-	{
-		if (d->sockets.count() > 0 && p == port)
-			return true;
+    Server* p;
+    QList<ServerSocketPtr> sockets;
+};
 
-		Globals::instance().getPortList().removePort(port,net::TCP);
-		d->reset();
-		
-		const QStringList possible = bindAddresses();
-		for (const QString & addr: possible)
-		{
-			d->add(addr,p);
-		}
-		
-		if (d->sockets.count() == 0)
-		{
-			// Try any addresses if previous binds failed
-			d->add(QHostAddress(QHostAddress::AnyIPv6).toString(),p);
-			d->add(QHostAddress(QHostAddress::Any).toString(),p);
-		}
-		
-		if (d->sockets.count())
-		{
-			Globals::instance().getPortList().addNewPort(p,net::TCP,true);
-			return true;
-		}
-		else
-			return false;
-	}
-	
+Server::Server() : d(new Private(this))
+{
+}
+
+
+Server::~Server()
+{
+    Globals::instance().getPortList().removePort(port, net::TCP);
+    delete d;
+}
+
+bool Server::changePort(Uint16 p)
+{
+    if (d->sockets.count() > 0 && p == port)
+        return true;
+
+    Globals::instance().getPortList().removePort(port, net::TCP);
+    d->reset();
+
+    const QStringList possible = bindAddresses();
+    for (const QString & addr : possible) {
+        d->add(addr, p);
+    }
+
+    if (d->sockets.count() == 0) {
+        // Try any addresses if previous binds failed
+        d->add(QHostAddress(QHostAddress::AnyIPv6).toString(), p);
+        d->add(QHostAddress(QHostAddress::Any).toString(), p);
+    }
+
+    if (d->sockets.count()) {
+        Globals::instance().getPortList().addNewPort(p, net::TCP, true);
+        return true;
+    } else
+        return false;
+}
+
 }
 

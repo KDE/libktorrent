@@ -31,52 +31,50 @@
 namespace bt
 {
 
-	HTTPRequest::HTTPRequest(const QNetworkRequest & hdr,const QString & payload,const QString & host,Uint16 port,bool verbose) 
-		: hdr(hdr),m_payload(payload),verbose(verbose),host(host),port(port),success(false)
-	{
-		networkAccessManager = new QNetworkAccessManager(this);
-		connect(networkAccessManager, &QNetworkAccessManager::finished, this, &HTTPRequest::replyFinished);
-		networkAccessManager->connectToHost(host,port);
+HTTPRequest::HTTPRequest(const QNetworkRequest & hdr, const QString & payload, const QString & host, Uint16 port, bool verbose)
+    : hdr(hdr), m_payload(payload), verbose(verbose), host(host), port(port), success(false)
+{
+    networkAccessManager = new QNetworkAccessManager(this);
+    connect(networkAccessManager, &QNetworkAccessManager::finished, this, &HTTPRequest::replyFinished);
+    networkAccessManager->connectToHost(host, port);
 
-		QTcpSocket socket;
-		QString localAddress;
-		socket.connectToHost(host, port);
-		if (socket.waitForConnected()) {
-			localAddress = socket.localAddress().toString();
-                        socket.close();
-		}
-		else {
-			Out(SYS_PNP|LOG_DEBUG) << "TCP connection timeout" << endl;
-			socket.close();
-			error = i18n("Operation timed out");
-                        success = false;
-			Q_EMIT result(this);
-			operationFinished(this);
-			return;
-		}
+    QTcpSocket socket;
+    QString localAddress;
+    socket.connectToHost(host, port);
+    if (socket.waitForConnected()) {
+        localAddress = socket.localAddress().toString();
+        socket.close();
+    } else {
+        Out(SYS_PNP | LOG_DEBUG) << "TCP connection timeout" << endl;
+        socket.close();
+        error = i18n("Operation timed out");
+        success = false;
+        Q_EMIT result(this);
+        operationFinished(this);
+        return;
+    }
 
-		m_payload = m_payload.replace(QLatin1String("$LOCAL_IP"), localAddress);
-	}
+    m_payload = m_payload.replace(QLatin1String("$LOCAL_IP"), localAddress);
+}
 
-	void HTTPRequest::start()
-	{
-		networkAccessManager->post(hdr, m_payload.toLatin1());
-	}
+void HTTPRequest::start()
+{
+    networkAccessManager->post(hdr, m_payload.toLatin1());
+}
 
-	void HTTPRequest::replyFinished(QNetworkReply *networkReply)
-	{
-		if(networkReply->error())
-		{
-			error = networkReply->errorString();
-			success = false;
-			Q_EMIT result(this);
-			operationFinished(this);
-			return;
-		}
-		reply = networkReply->readAll();
-		success = true;
-		Q_EMIT result(this);
-		operationFinished(this);
+void HTTPRequest::replyFinished(QNetworkReply *networkReply)
+{
+    if (networkReply->error()) {
+        error = networkReply->errorString();
+        success = false;
+        Q_EMIT result(this);
+        operationFinished(this);
+        return;
+    }
+    reply = networkReply->readAll();
+    success = true;
+    Q_EMIT result(this);
+    operationFinished(this);
 }
 
 }

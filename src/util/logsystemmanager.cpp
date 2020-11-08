@@ -24,53 +24,53 @@
 
 namespace bt
 {
-	QScopedPointer<LogSystemManager> LogSystemManager::self;
+QScopedPointer<LogSystemManager> LogSystemManager::self;
 
-	LogSystemManager::LogSystemManager()
-		: QObject()
-	{
-		// register default systems
-		registerSystem(i18n("General"), SYS_GEN);
-		registerSystem(i18n("Connections"), SYS_CON);
-		registerSystem(i18n("Tracker"), SYS_TRK);
-		registerSystem(i18n("DHT"), SYS_DHT);
-		registerSystem(i18n("Disk Input/Output"), SYS_DIO);
-		registerSystem(i18n("µTP"), SYS_UTP);
-	}
-
-
-	LogSystemManager::~LogSystemManager()
-	{
-	}
-
-	LogSystemManager& LogSystemManager::instance()
-	{
-		if(!self)
-			self.reset(new LogSystemManager());
-		return *self;
-	}
+LogSystemManager::LogSystemManager()
+    : QObject()
+{
+    // register default systems
+    registerSystem(i18n("General"), SYS_GEN);
+    registerSystem(i18n("Connections"), SYS_CON);
+    registerSystem(i18n("Tracker"), SYS_TRK);
+    registerSystem(i18n("DHT"), SYS_DHT);
+    registerSystem(i18n("Disk Input/Output"), SYS_DIO);
+    registerSystem(i18n("µTP"), SYS_UTP);
+}
 
 
-	void LogSystemManager::registerSystem(const QString & name, Uint32 id)
-	{
-		systems.insert(name, id);
-		registered(name);
-	}
+LogSystemManager::~LogSystemManager()
+{
+}
 
-	void LogSystemManager::unregisterSystem(const QString & name)
-	{
-		if(systems.remove(name))
-			unregisted(name);
-	}
+LogSystemManager& LogSystemManager::instance()
+{
+    if (!self)
+        self.reset(new LogSystemManager());
+    return *self;
+}
 
-	Uint32 LogSystemManager::systemID(const QString & name)
-	{
-		iterator i = systems.find(name);
-		if(i == systems.end())
-			return 0;
-		else
-			return i.value();
-	}
+
+void LogSystemManager::registerSystem(const QString & name, Uint32 id)
+{
+    systems.insert(name, id);
+    registered(name);
+}
+
+void LogSystemManager::unregisterSystem(const QString & name)
+{
+    if (systems.remove(name))
+        unregisted(name);
+}
+
+Uint32 LogSystemManager::systemID(const QString & name)
+{
+    iterator i = systems.find(name);
+    if (i == systems.end())
+        return 0;
+    else
+        return i.value();
+}
 
 
 }

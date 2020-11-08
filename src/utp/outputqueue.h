@@ -31,47 +31,46 @@
 
 namespace utp
 {
-	/**
-	 * Manages the send queue of all UTP server sockets
-	 */
-	class OutputQueue
-	{
-	public:
-		OutputQueue();
-		virtual ~OutputQueue();
+/**
+ * Manages the send queue of all UTP server sockets
+ */
+class OutputQueue
+{
+public:
+    OutputQueue();
+    virtual ~OutputQueue();
 
-		/**
-		 * Add an entry to the queue.
-		 * @param data The packet
-		 * @param conn The connection this packet belongs to
-		 * @return The number of queued packets
-		 */
-		int add(const PacketBuffer & packet, Connection::WPtr conn);
+    /**
+     * Add an entry to the queue.
+     * @param data The packet
+     * @param conn The connection this packet belongs to
+     * @return The number of queued packets
+     */
+    int add(const PacketBuffer & packet, Connection::WPtr conn);
 
-		/**
-		 * Attempt to send the queue on a socket
-		 * @param sock The socket
-		 */
-		void send(net::ServerSocket* sock);
+    /**
+     * Attempt to send the queue on a socket
+     * @param sock The socket
+     */
+    void send(net::ServerSocket* sock);
 
-	private:
-		struct Entry
-		{
-			PacketBuffer data;
-			Connection::WPtr conn;
+private:
+    struct Entry {
+        PacketBuffer data;
+        Connection::WPtr conn;
 
-			Entry(const PacketBuffer & data, Connection::WPtr conn)
-					: data(data), conn(conn)
-			{}
-		};
+        Entry(const PacketBuffer & data, Connection::WPtr conn)
+            : data(data), conn(conn)
+        {}
+    };
 
 #ifndef DO_NOT_USE_DEQUE
-		std::deque<Entry> queue;
+    std::deque<Entry> queue;
 #else
-		QList<Entry> queue;
+    QList<Entry> queue;
 #endif
-		QMutex mutex;
-	};
+    QMutex mutex;
+};
 
 }
 

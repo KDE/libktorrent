@@ -27,21 +27,21 @@ using namespace bt;
 namespace utp
 {
 
-	PollPipe::PollPipe(net::Poll::Mode mode) : mode(mode), poll_index(-1)
-	{
+PollPipe::PollPipe(net::Poll::Mode mode) : mode(mode), poll_index(-1)
+{
 
-	}
+}
 
-	PollPipe::~PollPipe()
-	{
-	}
+PollPipe::~PollPipe()
+{
+}
 
-	void PollPipe::reset()
-	{
-		QMutexLocker lock(&mutex);
-		poll_index = -1;
-		conn_ids.reset();
-	}
+void PollPipe::reset()
+{
+    QMutexLocker lock(&mutex);
+    poll_index = -1;
+    conn_ids.reset();
+}
 
 }
 

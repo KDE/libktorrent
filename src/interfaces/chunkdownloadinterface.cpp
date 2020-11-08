@@ -22,12 +22,12 @@
 namespace bt
 {
 
-	ChunkDownloadInterface::ChunkDownloadInterface()
-	{}
+ChunkDownloadInterface::ChunkDownloadInterface()
+{}
 
 
-	ChunkDownloadInterface::~ChunkDownloadInterface()
-	{}
+ChunkDownloadInterface::~ChunkDownloadInterface()
+{}
 
 
 }

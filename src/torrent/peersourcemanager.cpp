@@ -38,121 +38,115 @@ namespace bt
 {
 
 
-	PeerSourceManager::PeerSourceManager(TorrentControl* tor, PeerManager* pman) 
-		: TrackerManager(tor,pman),m_dht(0)
-	{
-	}
+PeerSourceManager::PeerSourceManager(TorrentControl* tor, PeerManager* pman)
+    : TrackerManager(tor, pman), m_dht(0)
+{
+}
 
-	PeerSourceManager::~PeerSourceManager()
-	{
-		QList<PeerSource*>::iterator itr = additional.begin();
-		while (itr != additional.end())
-		{
-			PeerSource* ps = *itr;
-			ps->aboutToBeDestroyed();
-			++itr;
-		}
-		qDeleteAll(additional);
-		additional.clear();
-	}
+PeerSourceManager::~PeerSourceManager()
+{
+    QList<PeerSource*>::iterator itr = additional.begin();
+    while (itr != additional.end()) {
+        PeerSource* ps = *itr;
+        ps->aboutToBeDestroyed();
+        ++itr;
+    }
+    qDeleteAll(additional);
+    additional.clear();
+}
 
-	void PeerSourceManager::addPeerSource(PeerSource* ps)
-	{
-		additional.append(ps);
-		connect(ps, &PeerSource::peersReady, pman, &PeerManager::peerSourceReady);
-	}
+void PeerSourceManager::addPeerSource(PeerSource* ps)
+{
+    additional.append(ps);
+    connect(ps, &PeerSource::peersReady, pman, &PeerManager::peerSourceReady);
+}
 
-	void PeerSourceManager::removePeerSource(PeerSource* ps)
-	{
-		disconnect(ps, &PeerSource::peersReady, pman, &PeerManager::peerSourceReady);
-		additional.removeAll(ps);
-	}
+void PeerSourceManager::removePeerSource(PeerSource* ps)
+{
+    disconnect(ps, &PeerSource::peersReady, pman, &PeerManager::peerSourceReady);
+    additional.removeAll(ps);
+}
 
-	void PeerSourceManager::start()
-	{
-		if (started)
-			return;
+void PeerSourceManager::start()
+{
+    if (started)
+        return;
 
-		QList<PeerSource*>::iterator i = additional.begin();
-		while (i != additional.end())
-		{
-			(*i)->start();
-			++i;
-		}
+    QList<PeerSource*>::iterator i = additional.begin();
+    while (i != additional.end()) {
+        (*i)->start();
+        ++i;
+    }
 
-		TrackerManager::start();
-	}
+    TrackerManager::start();
+}
 
-	void PeerSourceManager::stop(WaitJob* wjob)
-	{
-		if (!started)
-			return;
+void PeerSourceManager::stop(WaitJob* wjob)
+{
+    if (!started)
+        return;
 
-		QList<PeerSource*>::iterator i = additional.begin();
-		while (i != additional.end())
-		{
-			(*i)->stop();
-			++i;
-		}
+    QList<PeerSource*>::iterator i = additional.begin();
+    while (i != additional.end()) {
+        (*i)->stop();
+        ++i;
+    }
 
-		TrackerManager::stop(wjob);
-	}
+    TrackerManager::stop(wjob);
+}
 
-	void PeerSourceManager::completed()
-	{
-		QList<PeerSource*>::iterator i = additional.begin();
-		while (i != additional.end())
-		{
-			(*i)->completed();
-			++i;
-		}
+void PeerSourceManager::completed()
+{
+    QList<PeerSource*>::iterator i = additional.begin();
+    while (i != additional.end()) {
+        (*i)->completed();
+        ++i;
+    }
 
-		TrackerManager::completed();
-	}
+    TrackerManager::completed();
+}
 
 
-	void PeerSourceManager::manualUpdate()
-	{
-		QList<PeerSource*>::iterator i = additional.begin();
-		while (i != additional.end())
-		{
-			(*i)->manualUpdate();
-			++i;
-		}
+void PeerSourceManager::manualUpdate()
+{
+    QList<PeerSource*>::iterator i = additional.begin();
+    while (i != additional.end()) {
+        (*i)->manualUpdate();
+        ++i;
+    }
 
-		TrackerManager::manualUpdate();
-	}
-	
-	void PeerSourceManager::addDHT()
-	{
-		if(m_dht)
-		{
-			removePeerSource(m_dht);
-			delete m_dht;
-		}
+    TrackerManager::manualUpdate();
+}
 
-		m_dht = new dht::DHTPeerSource(Globals::instance().getDHT(),tor->getInfoHash(),tor->getStats().torrent_name);
-		for (Uint32 i = 0;i < tor->getNumDHTNodes();i++)
-			m_dht->addDHTNode(tor->getDHTNode(i));
-		
-		// add the DHT source
-		addPeerSource(m_dht);
-	}
+void PeerSourceManager::addDHT()
+{
+    if (m_dht) {
+        removePeerSource(m_dht);
+        delete m_dht;
+    }
 
-	void PeerSourceManager::removeDHT()
-	{
-		if (!m_dht)
-			return;
+    m_dht = new dht::DHTPeerSource(Globals::instance().getDHT(), tor->getInfoHash(), tor->getStats().torrent_name);
+    for (Uint32 i = 0; i < tor->getNumDHTNodes(); i++)
+        m_dht->addDHTNode(tor->getDHTNode(i));
 
-		removePeerSource(m_dht);
-		delete m_dht;
-		m_dht = 0;
-	}
+    // add the DHT source
+    addPeerSource(m_dht);
+}
 
-	bool PeerSourceManager::dhtStarted()
-	{
-		return m_dht != 0;
-	}
+void PeerSourceManager::removeDHT()
+{
+    if (!m_dht)
+        return;
+
+    removePeerSource(m_dht);
+    delete m_dht;
+    m_dht = 0;
+}
+
+bool PeerSourceManager::dhtStarted()
+{
+    return m_dht != 0;
+}
 
 }
 

@@ -27,22 +27,22 @@
 namespace dht
 {
 
-	/**
-	 * Ping response message in the DHT protocol
-	 */
-	class KTORRENT_EXPORT PingRsp : public RPCMsg
-	{
-	public:
-		PingRsp();
-		PingRsp(const QByteArray & mtid, const Key & id);
-		~PingRsp() override;
+/**
+ * Ping response message in the DHT protocol
+ */
+class KTORRENT_EXPORT PingRsp : public RPCMsg
+{
+public:
+    PingRsp();
+    PingRsp(const QByteArray & mtid, const Key & id);
+    ~PingRsp() override;
 
-		void apply(DHT* dh_table) override;
-		void print() override;
-		void encode(QByteArray & arr) const override;
+    void apply(DHT* dh_table) override;
+    void print() override;
+    void encode(QByteArray & arr) const override;
 
-		typedef QSharedPointer<PingRsp> Ptr;
-	};
+    typedef QSharedPointer<PingRsp> Ptr;
+};
 }
 
 #endif // DHT_PINGRSP_H

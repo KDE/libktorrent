@@ -33,59 +33,59 @@ using bt::Uint32;
 
 namespace bt
 {
-	class UPnPRouter;
-	
-	/**
-	 * @author Joris Guisson
-	 * 
-	 * Socket used to discover UPnP devices. This class will keep track
-	 * of all discovered devices. 
-	*/
-	class KTORRENT_EXPORT UPnPMCastSocket : public QUdpSocket
-	{
-		Q_OBJECT
-	public:
-		UPnPMCastSocket(bool verbose = false);
-		~UPnPMCastSocket() override;
-		
-		/// Get the number of routers discovered
-		Uint32 getNumDevicesDiscovered() const;
-		
-		/// Find a router using it's server name
-		UPnPRouter* findDevice(const QString & name);
-		
-		/// Save all routers to a file (for convenience at startup)
-		void saveRouters(const QString & file);
-		
-		/// Load all routers from a file
-		void loadRouters(const QString & file);
+class UPnPRouter;
 
-		/// Set verbose mode
-		void setVerbose(bool v);
+/**
+ * @author Joris Guisson
+ *
+ * Socket used to discover UPnP devices. This class will keep track
+ * of all discovered devices.
+*/
+class KTORRENT_EXPORT UPnPMCastSocket : public QUdpSocket
+{
+    Q_OBJECT
+public:
+    UPnPMCastSocket(bool verbose = false);
+    ~UPnPMCastSocket() override;
 
-	public:
-		/**
-		 * Try to discover a UPnP device on the network.
-		 * A signal will be emitted when a device is found.
-		 */
-		void discover();
+    /// Get the number of routers discovered
+    Uint32 getNumDevicesDiscovered() const;
 
-	private:
-		void onReadyRead();
-		void error(QAbstractSocket::SocketError err);
-		void onXmlFileDownloaded(UPnPRouter* r,bool success);
+    /// Find a router using it's server name
+    UPnPRouter* findDevice(const QString & name);
 
-	Q_SIGNALS:
-		/**
-		 * Emitted when a router or internet gateway device is detected.
-		 * @param router The router
-		 */
-		void discovered(bt::UPnPRouter* router);
+    /// Save all routers to a file (for convenience at startup)
+    void saveRouters(const QString & file);
 
-	private:
-		class UPnPMCastSocketPrivate;
-		UPnPMCastSocketPrivate* d;
-	};
+    /// Load all routers from a file
+    void loadRouters(const QString & file);
+
+    /// Set verbose mode
+    void setVerbose(bool v);
+
+public:
+    /**
+     * Try to discover a UPnP device on the network.
+     * A signal will be emitted when a device is found.
+     */
+    void discover();
+
+private:
+    void onReadyRead();
+    void error(QAbstractSocket::SocketError err);
+    void onXmlFileDownloaded(UPnPRouter* r, bool success);
+
+Q_SIGNALS:
+    /**
+     * Emitted when a router or internet gateway device is detected.
+     * @param router The router
+     */
+    void discovered(bt::UPnPRouter* router);
+
+private:
+    class UPnPMCastSocketPrivate;
+    UPnPMCastSocketPrivate* d;
+};
 }
 
 #endif

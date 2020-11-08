@@ -20,7 +20,7 @@
 #ifndef NETUPLOADTHREAD_H
 #define NETUPLOADTHREAD_H
 
-#include <qwaitcondition.h> 
+#include <qwaitcondition.h>
 #include <qmutex.h>
 #include <net/networkthread.h>
 #include <net/wakeuppipe.h>
@@ -28,38 +28,44 @@
 
 namespace net
 {
-	class SocketMonitor;
-	
-	/**
-		@author Joris Guisson <joris.guisson@gmail.com>
-	*/
-	class UploadThread : public NetworkThread
-	{
-		static bt::Uint32 ucap;
-		static bt::Uint32 sleep_time;
-		
-		WakeUpPipe::Ptr wake_up;
-	public:
-		UploadThread(SocketMonitor* sm);
-		~UploadThread() override;
+class SocketMonitor;
 
-		/// Wake up thread, data is ready to be sent
-  		void signalDataReady();
+/**
+    @author Joris Guisson <joris.guisson@gmail.com>
+*/
+class UploadThread : public NetworkThread
+{
+    static bt::Uint32 ucap;
+    static bt::Uint32 sleep_time;
 
-		/// Set the upload cap
-		static void setCap(bt::Uint32 uc) {ucap = uc;}
-		
-		/// Get the upload cap
-		static Uint32 cap() {return ucap;}
-		
-		/// Set the sleep time when using upload caps
-		static void setSleepTime(bt::Uint32 stime);
-	private: 
-		void update() override;
-		bool doGroup(SocketGroup* g,Uint32 & allowance,bt::TimeStamp now) override;
-		
-		int waitForSocketsReady();
-	};
+    WakeUpPipe::Ptr wake_up;
+public:
+    UploadThread(SocketMonitor* sm);
+    ~UploadThread() override;
+
+    /// Wake up thread, data is ready to be sent
+    void signalDataReady();
+
+    /// Set the upload cap
+    static void setCap(bt::Uint32 uc)
+    {
+        ucap = uc;
+    }
+
+    /// Get the upload cap
+    static Uint32 cap()
+    {
+        return ucap;
+    }
+
+    /// Set the sleep time when using upload caps
+    static void setSleepTime(bt::Uint32 stime);
+private:
+    void update() override;
+    bool doGroup(SocketGroup* g, Uint32 & allowance, bt::TimeStamp now) override;
+
+    int waitForSocketsReady();
+};
 
 }
 

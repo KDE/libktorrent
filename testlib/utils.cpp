@@ -22,8 +22,8 @@
 
 #include <QRandomGenerator64>
 
-bt::Uint64 RandomSize(bt::Uint64 min_size,bt::Uint64 max_size)
+bt::Uint64 RandomSize(bt::Uint64 min_size, bt::Uint64 max_size)
 {
-	bt::Uint64 r = max_size - min_size;
-	return min_size + QRandomGenerator64::global()->generate() % r;
+    bt::Uint64 r = max_size - min_size;
+    return min_size + QRandomGenerator64::global()->generate() % r;
 }

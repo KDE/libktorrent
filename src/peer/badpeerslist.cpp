@@ -24,24 +24,24 @@
 namespace bt
 {
 
-	BadPeersList::BadPeersList()
-	{
-	}
+BadPeersList::BadPeersList()
+{
+}
 
 
-	BadPeersList::~BadPeersList()
-	{
-	}
+BadPeersList::~BadPeersList()
+{
+}
 
 
-	bool BadPeersList::blocked(const net::Address & addr) const
-	{
-		return bad_peers.contains(addr.toString());
-	}
-	
-	void BadPeersList::addBadPeer(const QString & ip)
-	{
-		bad_peers << ip;
-	}
+bool BadPeersList::blocked(const net::Address & addr) const
+{
+    return bad_peers.contains(addr.toString());
+}
+
+void BadPeersList::addBadPeer(const QString & ip)
+{
+    bad_peers << ip;
+}
 
 }

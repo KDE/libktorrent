@@ -36,13 +36,13 @@ THE SOFTWARE.
 // #undef stat
 /* Windows needs this header file for the implementation of inet_aton() */
 #include <ctype.h>
-/* 
+/*
 * Check whether "cp" is a valid ascii representation of an Internet address
 * and convert to a binary address.  Returns 1 if the address is valid, 0 if
 * not.  This replaces inet_addr, the return value from which cannot
 * distinguish between failure and a local broadcast address.
 *
-* This implementation of the standard inet_aton() function was copied 
+* This implementation of the standard inet_aton() function was copied
 * (with trivial modifications) from the OpenBSD project.
 */
 #if 0
@@ -58,41 +58,41 @@ mingw_inet_aton(const char *cp, struct in_addr *addr)
     assert(sizeof(val) == 4);
 
     c = *cp;
-    while(1) {
+    while (1) {
         /*
          * Collect number up to ``.''.
          * Values are specified as for C:
          * 0x=hex, 0=octal, isdigit=decimal.
          */
-        if(!isdigit(c))
+        if (!isdigit(c))
             return (0);
         val = 0; base = 10;
-        if(c == '0') {
+        if (c == '0') {
             c = *++cp;
-            if(c == 'x' || c == 'X')
+            if (c == 'x' || c == 'X')
                 base = 16, c = *++cp;
             else
                 base = 8;
         }
-        while(1) {
-            if(isascii(c) && isdigit(c)) {
+        while (1) {
+            if (isascii(c) && isdigit(c)) {
                 val = (val * base) + (c - '0');
                 c = *++cp;
-            } else if(base == 16 && isascii(c) && isxdigit(c)) {
+            } else if (base == 16 && isascii(c) && isxdigit(c)) {
                 val = (val << 4) |
-                    (c + 10 - (islower(c) ? 'a' : 'A'));
+                      (c + 10 - (islower(c) ? 'a' : 'A'));
                 c = *++cp;
             } else
                 break;
         }
-        if(c == '.') {
+        if (c == '.') {
             /*
              * Internet format:
              *    a.b.c.d
              *    a.b.c    (with c treated as 16 bits)
              *    a.b    (with b treated as 24 bits)
              */
-            if(pp >= parts + 3)
+            if (pp >= parts + 3)
                 return (0);
             *pp++ = val;
             c = *++cp;
@@ -102,14 +102,14 @@ mingw_inet_aton(const char *cp, struct in_addr *addr)
     /*
      * Check for trailing characters.
      */
-    if(c != '\0' && (!isascii(c) || !isspace(c)))
+    if (c != '\0' && (!isascii(c) || !isspace(c)))
         return (0);
     /*
      * Concoct the address according to
      * the number of parts specified.
      */
     n = pp - parts + 1;
-    switch(n) {
+    switch (n) {
 
     case 0:
         return (0);        /* initial nondigit */
@@ -118,25 +118,25 @@ mingw_inet_aton(const char *cp, struct in_addr *addr)
         break;
 
     case 2:                /* a.b -- 8.24 bits */
-        if((val > 0xffffff) || (parts[0] > 0xff))
+        if ((val > 0xffffff) || (parts[0] > 0xff))
             return (0);
         val |= parts[0] << 24;
         break;
 
     case 3:                /* a.b.c -- 8.8.16 bits */
-        if((val > 0xffff) || (parts[0] > 0xff) || (parts[1] > 0xff))
+        if ((val > 0xffff) || (parts[0] > 0xff) || (parts[1] > 0xff))
             return (0);
         val |= (parts[0] << 24) | (parts[1] << 16);
         break;
 
     case 4:                /* a.b.c.d -- 8.8.8.8 bits */
-        if((val > 0xff) || (parts[0] > 0xff) ||
-           (parts[1] > 0xff) || (parts[2] > 0xff))
+        if ((val > 0xff) || (parts[0] > 0xff) ||
+            (parts[1] > 0xff) || (parts[2] > 0xff))
             return (0);
         val |= (parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8);
         break;
     }
-    if(addr)
+    if (addr)
         addr->s_addr = htonl(val);
     return (1);
 }
@@ -164,7 +164,7 @@ mingw_gettimeofday(struct timeval *tv, char *tz)
     assert(tz == NULL);
     assert(sizeof(t) == 8);
 
-    if(tv) {
+    if (tv) {
         GetSystemTimeAsFileTime(&ft);
         li.LowPart  = ft.dwLowDateTime;
         li.HighPart = ft.dwHighDateTime;
@@ -190,19 +190,19 @@ int mingw_poll(struct pollfd *fds, unsigned int nfds, int timo)
     FD_ZERO(&efds);
     for (i = 0, op = ip = 0; i < nfds; ++i) {
         fds[i].revents = 0;
-        if(fds[i].events & (POLLIN|POLLPRI)) {
+        if (fds[i].events & (POLLIN | POLLPRI)) {
             ip = &ifds;
             FD_SET(fds[i].fd, ip);
         }
-        if(fds[i].events & POLLOUT) {
+        if (fds[i].events & POLLOUT) {
             op = &ofds;
             FD_SET(fds[i].fd, op);
         }
         FD_SET(fds[i].fd, &efds);
-    } 
+    }
 
     /* Set up the timeval structure for the timeout parameter */
-    if(timo < 0) {
+    if (timo < 0) {
         toptr = 0;
     } else {
         toptr = &timeout;
@@ -216,17 +216,17 @@ int mingw_poll(struct pollfd *fds, unsigned int nfds, int timo)
 
     //kWarning()<<"Exiting select rc="<<rc;
 
-    if(rc <= 0)
+    if (rc <= 0)
         return rc;
 
-    if(rc > 0) {
+    if (rc > 0) {
         for (i = 0; i < nfds; ++i) {
             int fd = fds[i].fd;
-            if(fds[i].events & (POLLIN|POLLPRI) && FD_ISSET(fd, &ifds))
+            if (fds[i].events & (POLLIN | POLLPRI) && FD_ISSET(fd, &ifds))
                 fds[i].revents |= POLLIN;
-            if(fds[i].events & POLLOUT && FD_ISSET(fd, &ofds))
+            if (fds[i].events & POLLOUT && FD_ISSET(fd, &ofds))
                 fds[i].revents |= POLLOUT;
-            if(FD_ISSET(fd, &efds))
+            if (FD_ISSET(fd, &efds))
                 /* Some error was detected ... should be some way to know. */
                 fds[i].revents |= POLLHUP;
             //kWarning()<<QString("%1 %2 %3 revent = %4").arg(FD_ISSET(fd, &ifds)).arg(FD_ISSET(fd, &ofds)).arg(FD_ISSET(fd, &efds)).arg(fds[i].revents);
@@ -235,7 +235,8 @@ int mingw_poll(struct pollfd *fds, unsigned int nfds, int timo)
     return rc;
 }
 #if 0
-int mingw_close_socket(SOCKET fd) {
+int mingw_close_socket(SOCKET fd)
+{
     int rc;
 
     rc = closesocket(fd);
@@ -246,20 +247,20 @@ int mingw_close_socket(SOCKET fd) {
 static void
 set_errno(int winsock_err)
 {
-    switch(winsock_err) {
-        case WSAEWOULDBLOCK:
-            errno = EAGAIN;
-            break;
-        default:
-            errno = winsock_err;
-            break;
+    switch (winsock_err) {
+    case WSAEWOULDBLOCK:
+        errno = EAGAIN;
+        break;
+    default:
+        errno = winsock_err;
+        break;
     }
 }
 
 int mingw_write_socket(SOCKET fd, void *buf, int n)
 {
     int rc = send(fd, buf, n, 0);
-    if(rc == SOCKET_ERROR) {
+    if (rc == SOCKET_ERROR) {
         set_errno(WSAGetLastError());
     }
     return rc;
@@ -268,7 +269,7 @@ int mingw_write_socket(SOCKET fd, void *buf, int n)
 int mingw_read_socket(SOCKET fd, void *buf, int n)
 {
     int rc = recv(fd, buf, n, 0);
-    if(rc == SOCKET_ERROR) {
+    if (rc == SOCKET_ERROR) {
         set_errno(WSAGetLastError());
     }
     return rc;
@@ -288,7 +289,7 @@ mingw_setnonblocking(SOCKET fd, int nonblocking)
 
     unsigned long mode = 1;
     rc = ioctlsocket(fd, FIONBIO, &mode);
-    if(rc != 0) {
+    if (rc != 0) {
         set_errno(WSAGetLastError());
     }
     return (rc == 0 ? 0 : -1);
@@ -303,7 +304,7 @@ SOCKET
 mingw_socket(int domain, int type, int protocol)
 {
     SOCKET fd = socket(domain, type, protocol);
-    if(fd == INVALID_SOCKET) {
+    if (fd == INVALID_SOCKET) {
         set_errno(WSAGetLastError());
     }
     return fd;
@@ -312,15 +313,15 @@ mingw_socket(int domain, int type, int protocol)
 static void
 set_connect_errno(int winsock_err)
 {
-    switch(winsock_err) {
-        case WSAEINVAL:
-        case WSAEALREADY:
-        case WSAEWOULDBLOCK:
-            errno = EINPROGRESS;
-            break;
-        default:
-            errno = winsock_err;
-            break;
+    switch (winsock_err) {
+    case WSAEINVAL:
+    case WSAEALREADY:
+    case WSAEWOULDBLOCK:
+        errno = EINPROGRESS;
+        break;
+    default:
+        errno = winsock_err;
+        break;
     }
 }
 
@@ -334,7 +335,7 @@ mingw_connect(SOCKET fd, struct sockaddr *addr, socklen_t addr_len)
 {
     int rc = connect(fd, addr, addr_len);
     assert(rc == 0 || rc == SOCKET_ERROR);
-    if(rc == SOCKET_ERROR) {
+    if (rc == SOCKET_ERROR) {
         set_connect_errno(WSAGetLastError());
     }
     return rc;
@@ -349,7 +350,7 @@ SOCKET
 mingw_accept(SOCKET fd, struct sockaddr *addr, socklen_t *addr_len)
 {
     SOCKET newfd = accept(fd, addr, addr_len);
-    if(newfd == INVALID_SOCKET) {
+    if (newfd == INVALID_SOCKET) {
         set_errno(WSAGetLastError());
         newfd = -1;
     }
@@ -366,7 +367,7 @@ mingw_shutdown(SOCKET fd, int mode)
 {
     int rc = shutdown(fd, mode);
     assert(rc == 0 || rc == SOCKET_ERROR);
-    if(rc == SOCKET_ERROR) {
+    if (rc == SOCKET_ERROR) {
         set_errno(WSAGetLastError());
     }
     return rc;
@@ -382,7 +383,7 @@ mingw_getpeername(SOCKET fd, struct sockaddr *name, socklen_t *namelen)
 {
     int rc = getpeername(fd, name, namelen);
     assert(rc == 0 || rc == SOCKET_ERROR);
-    if(rc == SOCKET_ERROR) {
+    if (rc == SOCKET_ERROR) {
         set_errno(WSAGetLastError());
     }
     return rc;
@@ -397,11 +398,11 @@ mingw_stat(const char *filename, struct stat *ss)
     char *noslash;
 
     len = strlen(filename);
-    if(len <= 1 || filename[len - 1] != '/')
+    if (len <= 1 || filename[len - 1] != '/')
         return stat(filename, ss);
 
     noslash = malloc(len);
-    if(noslash == NULL)
+    if (noslash == NULL)
         return -1;
 
     memcpy(noslash, filename, len - 1);
@@ -417,19 +418,19 @@ mingw_stat(const char *filename, struct stat *ss)
 char *mingw_strerror(int error)
 {
 #ifdef UNICODE
-	wchar_t message[1024];
+    wchar_t message[1024];
 #else
-	char message[1024];
+    char message[1024];
 #endif
-	static char cmessage[1024];
+    static char cmessage[1024];
 
     FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                NULL,
-                error,
-                MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                message,
-                sizeof(message),
-                NULL );
+                  NULL,
+                  error,
+                  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                  message,
+                  sizeof(message),
+                  NULL);
 #ifdef UNICODE
     wcstombs(cmessage, message, 1024);
 #endif
@@ -438,60 +439,63 @@ char *mingw_strerror(int error)
         if (*p == '\n' || *p == '\r')
             *p = ' ';
     }
-    
-	
+
+
     return cmessage;
 }
 
 #if 0
-static int init(struct pollfd *pollfds, nfds_t nfds, SOCKET *fds, HANDLE *hEvents) {
+static int init(struct pollfd *pollfds, nfds_t nfds, SOCKET *fds, HANDLE *hEvents)
+{
     nfds_t i;
-    
+
     for (i = 0; i < nfds; i++) {
         fds[i] = INVALID_SOCKET;
         hEvents[i] = NULL;
     }
-    
+
     for (i = 0; i < nfds; i++) {
         fds[i] = pollfds[i].fd;
         hEvents[i] = WSACreateEvent();
         pollfds[i].revents = 0;
-        
+
         if (WSAEventSelect(fds[i], hEvents[i], pollfds[i].events) < 0) {
             errno = WSAGetLastError();
             return -1;
         }
     }
-    
+
     return 0;
 }
 
-static void clean(nfds_t nfds, SOCKET *fds, HANDLE *hEvents) {
+static void clean(nfds_t nfds, SOCKET *fds, HANDLE *hEvents)
+{
     nfds_t i;
-    
+
     for (i = 0; i < nfds; i++) {
         if (fds[i] != INVALID_SOCKET) {
             WSAEventSelect(fds[i], NULL, 0);
         }
-        
+
         if (hEvents[i] != NULL) {
             WSACloseEvent(hEvents[i]);
         }
     }
 }
 
-int poll(struct pollfd *pollfds, nfds_t nfds, int timeout) {
+int poll(struct pollfd *pollfds, nfds_t nfds, int timeout)
+{
     SOCKET *fds;
     HANDLE *hEvents;
     DWORD n;
-    
+
     fds = (SOCKET *)alloca(sizeof(SOCKET) * nfds);
     hEvents = (HANDLE *)alloca(sizeof(HANDLE) * nfds);
     if (init(pollfds, nfds, fds, hEvents) < 0) {
         clean(nfds, fds, hEvents);
         return -1;
     }
-    
+
     n = WSAWaitForMultipleEvents(nfds, hEvents, FALSE, timeout, FALSE);
     if (n == WSA_WAIT_FAILED) {
         clean(nfds, fds, hEvents);
@@ -503,16 +507,16 @@ int poll(struct pollfd *pollfds, nfds_t nfds, int timeout) {
         SOCKET fd;
         HANDLE hEvent;
         WSANETWORKEVENTS events;
-        
+
         n -= WSA_WAIT_EVENT_0;
         fd = fds[n];
         hEvent = hEvents[n];
-        
+
         if (WSAEnumNetworkEvents(fd, hEvent, &events) < 0) {
             clean(nfds, fds, hEvents);
             return -1;
         }
-        
+
         pollfds[n].revents = (short) events.lNetworkEvents;
         clean(nfds, fds, hEvents);
         return n + 1;

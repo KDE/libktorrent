@@ -30,39 +30,39 @@ using namespace bt;
 
 class WakeUpPipeTest : public QEventLoop
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
 
 public Q_SLOTS:
 
 
 private Q_SLOTS:
-	void initTestCase()
-	{
-		bt::InitLog("wakeuppipetest.log");
-	}
+    void initTestCase()
+    {
+        bt::InitLog("wakeuppipetest.log");
+    }
 
-	void cleanupTestCase()
-	{
-	}
+    void cleanupTestCase()
+    {
+    }
 
-	void testWakeUp()
-	{
-		Poll poll;
-		WakeUpPipe::Ptr p(new WakeUpPipe);
-		p->wakeUp();
+    void testWakeUp()
+    {
+        Poll poll;
+        WakeUpPipe::Ptr p(new WakeUpPipe);
+        p->wakeUp();
 
-		poll.add(p);
-		QVERIFY(poll.poll() > 0);
-	}
+        poll.add(p);
+        QVERIFY(poll.poll() > 0);
+    }
 
-	void testEmptyWakeUp()
-	{
-		WakeUpPipe::Ptr p(new WakeUpPipe);
-		Poll poll;
-		poll.add(p);
-		QVERIFY(poll.poll(100) == 0);
-	}
+    void testEmptyWakeUp()
+    {
+        WakeUpPipe::Ptr p(new WakeUpPipe);
+        Poll poll;
+        poll.add(p);
+        QVERIFY(poll.poll(100) == 0);
+    }
 
 private:
 };

@@ -29,7 +29,7 @@
 
 namespace bt
 {
-	class BDictNode;
+class BDictNode;
 }
 
 namespace dht
@@ -37,103 +37,128 @@ namespace dht
 
 #define MAX_TOKEN_SIZE 40
 
-	class DHT;
+class DHT;
 
-	enum Type
-	{
-		REQ_MSG,
-		RSP_MSG,
-		ERR_MSG,
-		INVALID
-	};
+enum Type {
+    REQ_MSG,
+    RSP_MSG,
+    ERR_MSG,
+    INVALID
+};
 
-	enum Method
-	{
-		PING,
-		FIND_NODE,
-		GET_PEERS,
-		ANNOUNCE_PEER,
-		NONE
-	};
+enum Method {
+    PING,
+    FIND_NODE,
+    GET_PEERS,
+    ANNOUNCE_PEER,
+    NONE
+};
 
-	const QByteArray TID = QByteArrayLiteral("t");
-	const QByteArray REQ = "q";
-	const QByteArray RSP = "r";
-	const QByteArray TYP = "y";
-	const QByteArray ARG = "a";
-	const QByteArray ERR_DHT = "e";
+const QByteArray TID = QByteArrayLiteral("t");
+const QByteArray REQ = "q";
+const QByteArray RSP = "r";
+const QByteArray TYP = "y";
+const QByteArray ARG = "a";
+const QByteArray ERR_DHT = "e";
 
-	/**
-	 * Base class for all RPC messages.
-	*/
-	class KTORRENT_EXPORT RPCMsg
-	{
-	public:
-		RPCMsg();
-		RPCMsg(const QByteArray & mtid, Method m, Type type, const Key & id);
-		virtual ~RPCMsg();
+/**
+ * Base class for all RPC messages.
+*/
+class KTORRENT_EXPORT RPCMsg
+{
+public:
+    RPCMsg();
+    RPCMsg(const QByteArray & mtid, Method m, Type type, const Key & id);
+    virtual ~RPCMsg();
 
-		typedef QSharedPointer<RPCMsg> Ptr;
+    typedef QSharedPointer<RPCMsg> Ptr;
 
-		/**
-		 * When this message arrives this function will be called upon the DHT.
-		 * The message should then call the appropriate DHT function (double dispatch)
-		 * @param dh_table Pointer to DHT
-		 */
-		virtual void apply(DHT* dh_table) = 0;
+    /**
+     * When this message arrives this function will be called upon the DHT.
+     * The message should then call the appropriate DHT function (double dispatch)
+     * @param dh_table Pointer to DHT
+     */
+    virtual void apply(DHT* dh_table) = 0;
 
-		/**
-		 * Print the message for debugging purposes.
-		 */
-		virtual void print() = 0;
+    /**
+     * Print the message for debugging purposes.
+     */
+    virtual void print() = 0;
 
-		/**
-		 * BEncode the message.
-		 * @param arr Data array
-		 */
-		virtual void encode(QByteArray & arr) const = 0;
+    /**
+     * BEncode the message.
+     * @param arr Data array
+     */
+    virtual void encode(QByteArray & arr) const = 0;
 
-		/**
-		 * Parse the message
-		 * @param dict Data dictionary
-		 * @throws bt::Error when something goes wrong
-		 **/
-		virtual void parse(bt::BDictNode* dict);
+    /**
+     * Parse the message
+     * @param dict Data dictionary
+     * @throws bt::Error when something goes wrong
+     **/
+    virtual void parse(bt::BDictNode* dict);
 
-		/// Set the origin (i.e. where the message came from)
-		void setOrigin(const net::Address & o) {origin = o;}
+    /// Set the origin (i.e. where the message came from)
+    void setOrigin(const net::Address & o)
+    {
+        origin = o;
+    }
 
-		/// Get the origin
-		const net::Address & getOrigin() const {return origin;}
+    /// Get the origin
+    const net::Address & getOrigin() const
+    {
+        return origin;
+    }
 
-		/// Set the origin (i.e. where the message came from)
-		void setDestination(const net::Address & o) {origin = o;}
+    /// Set the origin (i.e. where the message came from)
+    void setDestination(const net::Address & o)
+    {
+        origin = o;
+    }
 
-		/// Get the origin
-		const net::Address & getDestination() const {return origin;}
+    /// Get the origin
+    const net::Address & getDestination() const
+    {
+        return origin;
+    }
 
-		/// Get the MTID
-		const QByteArray & getMTID() const {return mtid;}
+    /// Get the MTID
+    const QByteArray & getMTID() const
+    {
+        return mtid;
+    }
 
-		/// Set the MTID
-		void setMTID(const QByteArray & m) {mtid = m;}
+    /// Set the MTID
+    void setMTID(const QByteArray & m)
+    {
+        mtid = m;
+    }
 
-		/// Get the id of the sender
-		const Key & getID() const {return id;}
+    /// Get the id of the sender
+    const Key & getID() const
+    {
+        return id;
+    }
 
-		/// Get the type of the message
-		Type getType() const {return type;}
+    /// Get the type of the message
+    Type getType() const
+    {
+        return type;
+    }
 
-		/// Get the message it's method
-		Method getMethod() const {return method;}
+    /// Get the message it's method
+    Method getMethod() const
+    {
+        return method;
+    }
 
-	protected:
-		QByteArray mtid;
-		Method method;
-		Type type;
-		Key id;
-		net::Address origin;
-	};
+protected:
+    QByteArray mtid;
+    Method method;
+    Type type;
+    Key id;
+    net::Address origin;
+};
 
 
 }

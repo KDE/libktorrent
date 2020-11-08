@@ -28,57 +28,59 @@
 
 namespace bt
 {
-	class PeerInterface;
+class PeerInterface;
 
-	struct IncomingPacket
-	{
-		QScopedArrayPointer<Uint8> data;
-		Uint32 size;
-		Uint32 read;
+struct IncomingPacket {
+    QScopedArrayPointer<Uint8> data;
+    Uint32 size;
+    Uint32 read;
 
-		IncomingPacket(Uint32 size);
-		
-		typedef QSharedPointer<IncomingPacket> Ptr;
-	};
+    IncomingPacket(Uint32 size);
 
-	/**
-	 * Chops up the raw byte stream from a socket into bittorrent packets
-	 * @author Joris Guisson
-	*/
-	class KTORRENT_EXPORT PacketReader : public net::SocketReader
-	{
-	public:
-		PacketReader(Uint32 max_packet_size);
-		~PacketReader() override;
+    typedef QSharedPointer<IncomingPacket> Ptr;
+};
 
-		/**
-		 * Push packets to Peer (runs in main thread)
-		 * @param peer The PeerInterface which will handle the packet
-		 */
-		void update(PeerInterface & peer);
+/**
+ * Chops up the raw byte stream from a socket into bittorrent packets
+ * @author Joris Guisson
+*/
+class KTORRENT_EXPORT PacketReader : public net::SocketReader
+{
+public:
+    PacketReader(Uint32 max_packet_size);
+    ~PacketReader() override;
 
-		/// Did an error occur
-		bool ok() const {return !error;}
-		
-		void onDataReady(Uint8* buf, Uint32 size) override;
+    /**
+     * Push packets to Peer (runs in main thread)
+     * @param peer The PeerInterface which will handle the packet
+     */
+    void update(PeerInterface & peer);
 
-	private:
-		Uint32 newPacket(Uint8* buf, Uint32 size);
-		Uint32 readPacket(Uint8* buf, Uint32 size);
-		IncomingPacket::Ptr dequeuePacket();
+    /// Did an error occur
+    bool ok() const
+    {
+        return !error;
+    }
 
-	private:
-		bool error;
+    void onDataReady(Uint8* buf, Uint32 size) override;
+
+private:
+    Uint32 newPacket(Uint8* buf, Uint32 size);
+    Uint32 readPacket(Uint8* buf, Uint32 size);
+    IncomingPacket::Ptr dequeuePacket();
+
+private:
+    bool error;
 #ifndef DO_NOT_USE_DEQUE
-		std::deque<IncomingPacket::Ptr> packet_queue;
+    std::deque<IncomingPacket::Ptr> packet_queue;
 #else
-		QList<IncomingPacket::Ptr> packet_queue;
+    QList<IncomingPacket::Ptr> packet_queue;
 #endif
-		QMutex mutex;
-		Uint8 len[4];
-		int len_received;
-		Uint32 max_packet_size;
-	};
+    QMutex mutex;
+    Uint8 len[4];
+    int len_received;
+    Uint32 max_packet_size;
+};
 
 }
 

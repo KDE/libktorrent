@@ -31,10 +31,9 @@
 
 void signalhandler(int sig)
 {
-	if (sig == SIGINT)
-	{
-		qApp->quit();
-	}
+    if (sig == SIGINT) {
+        qApp->quit();
+    }
 }
 
 #endif
@@ -45,33 +44,27 @@ using namespace bt;
 int main(int argc, char** argv)
 {
 #ifndef Q_WS_WIN
-	signal(SIGINT, signalhandler);
+    signal(SIGINT, signalhandler);
 #endif
-	try
-	{
-		if (!bt::InitLibKTorrent())
-		{
-			fprintf(stderr,"Failed to initialize libktorrent\n");
-			return -1;
-		}
+    try {
+        if (!bt::InitLibKTorrent()) {
+            fprintf(stderr, "Failed to initialize libktorrent\n");
+            return -1;
+        }
 
-		QCoreApplication::setApplicationName("ktcli");
-		QCoreApplication::setApplicationVersion(bt::GetVersionString());
+        QCoreApplication::setApplicationName("ktcli");
+        QCoreApplication::setApplicationVersion(bt::GetVersionString());
 
-		KTCLI app(argc,argv);
-		if (!app.start())
-			return -1;
-		else
-			return app.exec();
-	}
-	catch (bt::Error & err)
-	{
-		Out(SYS_GEN|LOG_IMPORTANT) << "Uncaught error: " << err.toString() << endl;
-	}
-	catch (std::exception & err)
-	{
-		Out(SYS_GEN|LOG_IMPORTANT) << "Uncaught error: " << err.what() << endl;
-	}
-	
-	return -1;
+        KTCLI app(argc, argv);
+        if (!app.start())
+            return -1;
+        else
+            return app.exec();
+    } catch (bt::Error & err) {
+        Out(SYS_GEN | LOG_IMPORTANT) << "Uncaught error: " << err.toString() << endl;
+    } catch (std::exception & err) {
+        Out(SYS_GEN | LOG_IMPORTANT) << "Uncaught error: " << err.what() << endl;
+    }
+
+    return -1;
 }

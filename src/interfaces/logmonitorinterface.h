@@ -27,25 +27,25 @@ class QString;
 namespace bt
 {
 
-	/**
-	 * @author Joris Guisson
-	 * @brief Interface for classes who which to receive which log messages are printed
-	 *
-	 * This class is an interface for all classes which want to know,
-	 * what is written to the log.
-	*/
-	class KTORRENT_EXPORT LogMonitorInterface
-	{
-	public:
-		LogMonitorInterface();
-		virtual ~LogMonitorInterface();
+/**
+ * @author Joris Guisson
+ * @brief Interface for classes who which to receive which log messages are printed
+ *
+ * This class is an interface for all classes which want to know,
+ * what is written to the log.
+*/
+class KTORRENT_EXPORT LogMonitorInterface
+{
+public:
+    LogMonitorInterface();
+    virtual ~LogMonitorInterface();
 
-		/**
-		 * A line was written to the log file.
-		 * @param line The line
-		 */
-		virtual void message(const QString & line, unsigned int arg) = 0;
-	};
+    /**
+     * A line was written to the log file.
+     * @param line The line
+     */
+    virtual void message(const QString & line, unsigned int arg) = 0;
+};
 
 }
 

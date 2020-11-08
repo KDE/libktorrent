@@ -53,24 +53,19 @@ private Q_SLOTS:
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator2.torrentPath() << endl;
-        try
-        {
+        try {
             tc.init(this, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
             QVERIFY(tc.hasExistingFiles());
             tc.startDataCheck(false, 0, tc.getStats().total_chunks);
-            do
-            {
+            do {
                 processEvents(AllEvents, 1000);
-            }
-            while (tc.getStats().status == bt::CHECKING_DATA);
+            } while (tc.getStats().status == bt::CHECKING_DATA);
             QVERIFY(tc.getStats().completed);
 
             incomplete_tc.init(this, bt::LoadFile(creator2.torrentPath()), creator2.tempPath() + "tor0", creator2.tempPath() + "data/");
             incomplete_tc.createFiles();
-        }
-        catch (bt::Error& err)
-        {
+        } catch (bt::Error& err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
@@ -91,8 +86,7 @@ private Q_SLOTS:
         QByteArray tmp(tc.getStats().chunk_size, 0);
         bt::Uint64 written = 0;
         bt::Uint32 idx = 0;
-        while (written < TEST_FILE_SIZE)
-        {
+        while (written < TEST_FILE_SIZE) {
             qint64 ret = stream->read(tmp.data(), tc.getStats().chunk_size);
             QVERIFY(ret == tc.getStats().chunk_size);
             written += tc.getStats().chunk_size;
@@ -119,11 +113,9 @@ private Q_SLOTS:
         QByteArray tmp(chunk_size, 0);
         bt::Uint64 written = 0;
         bt::Uint32 idx = 0;
-        while (written < TEST_FILE_SIZE)
-        {
+        while (written < TEST_FILE_SIZE) {
             // Chunk size of last chunk can be smaller
-            if (idx == tc.getStats().total_chunks - 1)
-            {
+            if (idx == tc.getStats().total_chunks - 1) {
                 chunk_size = tc.getStats().chunk_size % tc.getStats().total_bytes;
                 if (chunk_size == 0)
                     chunk_size = tc.getStats().chunk_size;
@@ -174,8 +166,7 @@ private Q_SLOTS:
 
         QByteArray range(range_size, 0);
         qint64 bytes_read = 0;
-        while (bytes_read < range_size)
-        {
+        while (bytes_read < range_size) {
             qint64 ret = stream->read(range.data() + bytes_read, range_size - bytes_read);
             Out(SYS_GEN | LOG_DEBUG) << "ret = " << ret << endl;
             Out(SYS_GEN | LOG_DEBUG) << "read = " << bytes_read << endl;
@@ -206,8 +197,7 @@ private Q_SLOTS:
 
 
         // Verify the hashes
-        for (int i = 0; i < 3; i++)
-        {
+        for (int i = 0; i < 3; i++) {
             bt::SHA1Hash hash = bt::SHA1Hash::generate((const bt::Uint8*)range.data() + chunk_off, tc.getStats().chunk_size);
 
             Out(SYS_GEN | LOG_DEBUG) << "chash = " << hash.toString() << endl;
@@ -231,8 +221,7 @@ private Q_SLOTS:
 
         QFile fptr(stream->path());
         QVERIFY(fptr.open(QIODevice::ReadOnly));
-        for (int i = 0; i < 20; i++)
-        {
+        for (int i = 0; i < 20; i++) {
             qint64 off = QRandomGenerator::global()->bounded(TEST_FILE_SIZE - 100);
             // Seek to a random location
             QVERIFY(stream->seek(off));

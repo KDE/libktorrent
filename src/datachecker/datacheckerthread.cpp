@@ -26,35 +26,32 @@
 namespace bt
 {
 
-	DataCheckerThread::DataCheckerThread(DataChecker* dc,
-										 const BitSet & status,
-										 const QString & path,
-										 const Torrent & tor,
-										 const QString & dnddir)
-		: dc(dc),path(path),tor(tor),dnddir(dnddir),status(status)
-	{
-		running = true;
-		dc->moveToThread(this);
-	}
+DataCheckerThread::DataCheckerThread(DataChecker* dc,
+                                     const BitSet & status,
+                                     const QString & path,
+                                     const Torrent & tor,
+                                     const QString & dnddir)
+    : dc(dc), path(path), tor(tor), dnddir(dnddir), status(status)
+{
+    running = true;
+    dc->moveToThread(this);
+}
 
 
-	DataCheckerThread::~DataCheckerThread()
-	{
-		delete dc;
-	}
+DataCheckerThread::~DataCheckerThread()
+{
+    delete dc;
+}
 
-	void DataCheckerThread::run()
-	{
-		try
-		{
-			dc->check(path,tor,dnddir,status);
-		}
-		catch (bt::Error & e)
-		{
-			error = e.toString();
-			Out(SYS_GEN|LOG_DEBUG) << error << endl;
-		}
-		running = false;
-	}
+void DataCheckerThread::run()
+{
+    try {
+        dc->check(path, tor, dnddir, status);
+    } catch (bt::Error & e) {
+        error = e.toString();
+        Out(SYS_GEN | LOG_DEBUG) << error << endl;
+    }
+    running = false;
+}
 
 }

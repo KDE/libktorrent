@@ -29,23 +29,23 @@ namespace dht
 {
 
 
-	/**
-	 * FindNode response message for DHT
-	 */
-	class KTORRENT_EXPORT FindNodeRsp : public RPCMsg, public PackedNodeContainer
-	{
-	public:
-		FindNodeRsp();
-		FindNodeRsp(const QByteArray & mtid, const Key & id);
-		~FindNodeRsp() override;
+/**
+ * FindNode response message for DHT
+ */
+class KTORRENT_EXPORT FindNodeRsp : public RPCMsg, public PackedNodeContainer
+{
+public:
+    FindNodeRsp();
+    FindNodeRsp(const QByteArray & mtid, const Key & id);
+    ~FindNodeRsp() override;
 
-		void apply(DHT* dh_table) override;
-		void print() override;
-		void encode(QByteArray & arr) const override;
-		void parse(bt::BDictNode* dict) override;
+    void apply(DHT* dh_table) override;
+    void print() override;
+    void encode(QByteArray & arr) const override;
+    void parse(bt::BDictNode* dict) override;
 
-		typedef QSharedPointer<FindNodeRsp> Ptr;
-	};
+    typedef QSharedPointer<FindNodeRsp> Ptr;
+};
 
 
 }

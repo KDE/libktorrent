@@ -27,23 +27,23 @@
 namespace bt
 {
 
-	/**
-		Blocklist to keep track of bad peers.
-	*/
-	class BadPeersList : public BlockListInterface
-	{
-	public:
-		BadPeersList();
-		~BadPeersList() override;
+/**
+    Blocklist to keep track of bad peers.
+*/
+class BadPeersList : public BlockListInterface
+{
+public:
+    BadPeersList();
+    ~BadPeersList() override;
 
-		bool blocked(const net::Address & addr) const override;
-		
-		/// Add a bad peer to the list
-		void addBadPeer(const QString & ip);
+    bool blocked(const net::Address & addr) const override;
 
-	private:
-		QStringList bad_peers;
-	};
+    /// Add a bad peer to the list
+    void addBadPeer(const QString & ip);
+
+private:
+    QStringList bad_peers;
+};
 
 }
 

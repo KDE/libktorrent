@@ -32,15 +32,30 @@ class DummyDownloader : public PieceDownloader
 public:
     ~DummyDownloader() override {}
 
-    bool canAddRequest() const override {return true;}
+    bool canAddRequest() const override
+    {
+        return true;
+    }
     void cancel(const bt::Request&) override {}
     void cancelAll() override {}
-    bool canDownloadChunk() const override {return getNumGrabbed() == 0;}
+    bool canDownloadChunk() const override
+    {
+        return getNumGrabbed() == 0;
+    }
     void download(const bt::Request&) override {}
     void checkTimeouts() override {}
-    Uint32 getDownloadRate() const override {return 0;}
-    QString getName() const override {return "foobar";}
-    bool isChoked() const override {return false;}
+    Uint32 getDownloadRate() const override
+    {
+        return 0;
+    }
+    QString getName() const override
+    {
+        return "foobar";
+    }
+    bool isChoked() const override
+    {
+        return false;
+    }
 };
 
 class ExtendedStreamingChunkSelector : public bt::StreamingChunkSelector
@@ -54,7 +69,10 @@ public:
         cman->chunkDownloaded(i);
     }
 
-    Downloader* downloader() {return downer;}
+    Downloader* downloader()
+    {
+        return downer;
+    }
 };
 
 class StreamingChunkSelectorTest : public QEventLoop
@@ -83,13 +101,10 @@ private Q_SLOTS:
         QVERIFY(creator.createSingleFileTorrent(TEST_FILE_SIZE, "test.avi"));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
-        try
-        {
+        try {
             tc.init(0, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
-        }
-        catch (bt::Error& err)
-        {
+        } catch (bt::Error& err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
@@ -100,8 +115,7 @@ private Q_SLOTS:
         QVERIFY(csel != 0);
         csel->setSequentialRange(0, 50);
 
-        for (Uint32 i = 0; i < 50; i++)
-        {
+        for (Uint32 i = 0; i < 50; i++) {
             DummyDownloader dd;
             Uint32 selected = 0xFFFFFFFF;
             QVERIFY(csel->select(&dd, selected));
@@ -121,13 +135,10 @@ private Q_SLOTS:
         QVERIFY(creator.createSingleFileTorrent(2 * TEST_FILE_SIZE, "test2.avi"));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
-        try
-        {
+        try {
             tc.init(0, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
-        }
-        catch (bt::Error& err)
-        {
+        } catch (bt::Error& err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
@@ -141,26 +152,22 @@ private Q_SLOTS:
         // Check that critical chunks are spread over multiple peers
         csel->setSequentialRange(20, 60);
         DummyDownloader dd[32];
-        for (Uint32 i = 0; i < 32; i++)
-        {
+        for (Uint32 i = 0; i < 32; i++) {
             downer->addPieceDownloader(&dd[i]);
         }
 
         // Check the spread of the downloaders
         downer->update();
-        for (Uint32 i = 20; i < csel->criticialWindowSize(); i++)
-        {
+        for (Uint32 i = 20; i < csel->criticialWindowSize(); i++) {
             QVERIFY(downer->downloading(i));
             QVERIFY(downer->download(i)->getNumDownloaders() == 32 / csel->criticialWindowSize());
         }
 
-        for (Uint32 i = 0; i < 32; i++)
-        {
+        for (Uint32 i = 0; i < 32; i++) {
             QVERIFY(dd[i].getNumGrabbed() == 1);
         }
 
-        for (Uint32 i = 0; i < 32; i++)
-        {
+        for (Uint32 i = 0; i < 32; i++) {
             downer->removePieceDownloader(&dd[i]);
         }
         // cleanup

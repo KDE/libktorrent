@@ -25,24 +25,24 @@
 
 namespace dht
 {
-	class RPCCall;
+class RPCCall;
 
-	/**
-	 * Interface class for an RPCServer
-	 */
-	class RPCServerInterface
-	{
-	public:
-		RPCServerInterface();
-		virtual ~RPCServerInterface();
-		
-		/**
-		 * Do a RPC call.
-		 * @param msg The message to send
-		 * @return The call object
-		 */
-		virtual RPCCall* doCall(RPCMsg::Ptr msg) = 0;
-	};
+/**
+ * Interface class for an RPCServer
+ */
+class RPCServerInterface
+{
+public:
+    RPCServerInterface();
+    virtual ~RPCServerInterface();
+
+    /**
+     * Do a RPC call.
+     * @param msg The message to send
+     * @return The call object
+     */
+    virtual RPCCall* doCall(RPCMsg::Ptr msg) = 0;
+};
 
 }
 

@@ -63,21 +63,16 @@ private Q_SLOTS:
         QVERIFY(creator.createMultiFileTorrent(files, "movies"));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
-        try
-        {
+        try {
             tc.init(this, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
             QVERIFY(tc.hasExistingFiles());
             tc.startDataCheck(false, 0, tc.getStats().total_chunks);
-            do
-            {
+            do {
                 processEvents(AllEvents, 1000);
-            }
-            while (tc.getStats().status == bt::CHECKING_DATA);
+            } while (tc.getStats().status == bt::CHECKING_DATA);
             QVERIFY(tc.getStats().completed);
-        }
-        catch (bt::Error& err)
-        {
+        } catch (bt::Error& err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
@@ -91,8 +86,7 @@ private Q_SLOTS:
     {
         Out(SYS_GEN | LOG_DEBUG) << "Begin: testSimple() " << endl;
         // Simple test read each file and check if they are the same on disk
-        for (bt::Uint32 i = 0; i < tc.getNumFiles(); i++)
-        {
+        for (bt::Uint32 i = 0; i < tc.getNumFiles(); i++) {
             Out(SYS_GEN | LOG_DEBUG) << "Doing file " << i << endl;
             bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(i, false, this);
             QVERIFY(stream);
@@ -102,8 +96,7 @@ private Q_SLOTS:
 
             QByteArray tmp(stream->size(), 0);
             qint64 written = 0;
-            while (written < stream->size())
-            {
+            while (written < stream->size()) {
                 qint64 ret = stream->read(tmp.data(), stream->size());
                 Out(SYS_GEN | LOG_DEBUG) << "Returned " << ret << endl;
                 QVERIFY(ret == stream->size());
@@ -127,8 +120,7 @@ private Q_SLOTS:
         Out(SYS_GEN | LOG_DEBUG) << "Begin: testSeek() " << endl;
 
         // In each file take a couple of random samples and compare them with the actual file
-        for (bt::Uint32 i = 0; i < tc.getNumFiles(); i++)
-        {
+        for (bt::Uint32 i = 0; i < tc.getNumFiles(); i++) {
             bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(i, false, this);
             QVERIFY(stream);
             QVERIFY(!stream->open(QIODevice::ReadWrite));
@@ -138,8 +130,7 @@ private Q_SLOTS:
             QFile fptr(stream->path());
             QVERIFY(fptr.open(QIODevice::ReadOnly));
 
-            for (bt::Uint32 j = 0; j < 10; j++)
-            {
+            for (bt::Uint32 j = 0; j < 10; j++) {
                 qint64 off = QRandomGenerator64::global()-> generate() % (stream->size() - 256);
                 QVERIFY(stream->seek(off));
                 QVERIFY(fptr.seek(off));

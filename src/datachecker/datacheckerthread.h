@@ -26,38 +26,47 @@
 
 namespace bt
 {
-	class Torrent;
-	class DataChecker;
+class Torrent;
+class DataChecker;
 
-	/**
-		@author Joris Guisson <joris.guisson@gmail.com>
-	
-		Thread which runs the data check.
-	*/
-	class KTORRENT_EXPORT DataCheckerThread : public QThread
-	{
-		DataChecker* dc;
-		QString path;
-		const Torrent & tor;
-		QString dnddir;
-		bool running;
-		QString error;
-		BitSet status;
-	public:
-		DataCheckerThread(DataChecker* dc,const BitSet & status,const QString & path,const Torrent & tor,const QString & dnddir);
-		~DataCheckerThread() override;
+/**
+    @author Joris Guisson <joris.guisson@gmail.com>
 
-		void run() override;
-		
-		/// Get the data checker
-		DataChecker* getDataChecker() {return dc;}
-		
-		/// Are we still running
-		bool isRunning() const {return running;}
-		
-		/// Get the error (if any occurred)
-		QString getError() const {return error;}
-	};
+    Thread which runs the data check.
+*/
+class KTORRENT_EXPORT DataCheckerThread : public QThread
+{
+    DataChecker* dc;
+    QString path;
+    const Torrent & tor;
+    QString dnddir;
+    bool running;
+    QString error;
+    BitSet status;
+public:
+    DataCheckerThread(DataChecker* dc, const BitSet & status, const QString & path, const Torrent & tor, const QString & dnddir);
+    ~DataCheckerThread() override;
+
+    void run() override;
+
+    /// Get the data checker
+    DataChecker* getDataChecker()
+    {
+        return dc;
+    }
+
+    /// Are we still running
+    bool isRunning() const
+    {
+        return running;
+    }
+
+    /// Get the error (if any occurred)
+    QString getError() const
+    {
+        return error;
+    }
+};
 
 }
 

@@ -27,47 +27,47 @@ using namespace bt;
 
 namespace dht
 {
-	PingReq::PingReq() : RPCMsg(QByteArray(), PING, REQ_MSG, Key())
-	{
-	}
+PingReq::PingReq() : RPCMsg(QByteArray(), PING, REQ_MSG, Key())
+{
+}
 
-	PingReq::PingReq(const Key & id) : RPCMsg(QByteArray(), PING, REQ_MSG, id)
-	{
-	}
+PingReq::PingReq(const Key & id) : RPCMsg(QByteArray(), PING, REQ_MSG, id)
+{
+}
 
-	PingReq::~PingReq()
-	{}
+PingReq::~PingReq()
+{}
 
-	void PingReq::apply(dht::DHT* dh_table)
-	{
-		dh_table->ping(*this);
-	}
+void PingReq::apply(dht::DHT* dh_table)
+{
+    dh_table->ping(*this);
+}
 
-	void PingReq::print()
-	{
-		Out(SYS_DHT | LOG_DEBUG) << QString("REQ: %1 %2 : ping").arg(mtid[0]).arg(id.toString()) << endl;
-	}
+void PingReq::print()
+{
+    Out(SYS_DHT | LOG_DEBUG) << QString("REQ: %1 %2 : ping").arg(mtid[0]).arg(id.toString()) << endl;
+}
 
-	void PingReq::encode(QByteArray & arr) const
-	{
-		BEncoder enc(new BEncoderBufferOutput(arr));
-		enc.beginDict();
-		{
-			enc.write(ARG);
-			enc.beginDict();
-			{
-				enc.write(QByteArrayLiteral("id"));
-				enc.write(id.getData(), 20);
-			}
-			enc.end();
-			enc.write(REQ);
-			enc.write(QByteArrayLiteral("ping"));
-			enc.write(TID);
-			enc.write(mtid);
-			enc.write(TYP);
-			enc.write(REQ);
-		}
-		enc.end();
-	}
+void PingReq::encode(QByteArray & arr) const
+{
+    BEncoder enc(new BEncoderBufferOutput(arr));
+    enc.beginDict();
+    {
+        enc.write(ARG);
+        enc.beginDict();
+        {
+            enc.write(QByteArrayLiteral("id"));
+            enc.write(id.getData(), 20);
+        }
+        enc.end();
+        enc.write(REQ);
+        enc.write(QByteArrayLiteral("ping"));
+        enc.write(TID);
+        enc.write(mtid);
+        enc.write(TYP);
+        enc.write(REQ);
+    }
+    enc.end();
+}
 }
 

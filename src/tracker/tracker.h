@@ -33,119 +33,125 @@ class QUrl;
 
 namespace bt
 {
-	/**
-		Interface used by the Tracker to obtain the data it needs to know
-		when announcing.
-	*/
-	class KTORRENT_EXPORT TrackerDataSource
-	{
-	public:
-		virtual ~TrackerDataSource() {}
-		
-		virtual Uint64 bytesDownloaded() const = 0;
-		virtual Uint64 bytesUploaded() const = 0;
-		virtual Uint64 bytesLeft() const = 0;
-		virtual const SHA1Hash & infoHash() const = 0;
-		virtual bool isPartialSeed() const = 0;
-	};
+/**
+    Interface used by the Tracker to obtain the data it needs to know
+    when announcing.
+*/
+class KTORRENT_EXPORT TrackerDataSource
+{
+public:
+    virtual ~TrackerDataSource() {}
 
-	/**
-	 * Base class for all tracker classes.
-	*/
-	class KTORRENT_EXPORT Tracker : public PeerSource,public TrackerInterface
-	{
-		Q_OBJECT
-	public:
-		Tracker(const QUrl &url,TrackerDataSource* tds,const PeerID & id,int tier);
-		~Tracker() override;
+    virtual Uint64 bytesDownloaded() const = 0;
+    virtual Uint64 bytesUploaded() const = 0;
+    virtual Uint64 bytesLeft() const = 0;
+    virtual const SHA1Hash & infoHash() const = 0;
+    virtual bool isPartialSeed() const = 0;
+};
 
-		/**
-		 * Set the custom IP
-		 * @param str 
-		 */
-		static void setCustomIP(const QString & str);
+/**
+ * Base class for all tracker classes.
+*/
+class KTORRENT_EXPORT Tracker : public PeerSource, public TrackerInterface
+{
+    Q_OBJECT
+public:
+    Tracker(const QUrl &url, TrackerDataSource* tds, const PeerID & id, int tier);
+    ~Tracker() override;
 
-		/// get the tracker url
-		QUrl trackerURL() const {return url;}
+    /**
+     * Set the custom IP
+     * @param str
+     */
+    static void setCustomIP(const QString & str);
 
-		/**
-		 * Delete the tracker in ms milliseconds, or when the stopDone signal is emitted.
-		 * @param ms Number of ms to wait
-		 */
-		void timedDelete(int ms);
+    /// get the tracker url
+    QUrl trackerURL() const
+    {
+        return url;
+    }
 
-		/**
-		 * Get the number of failed attempts to reach a tracker.
-		 * @return The number of failed attempts
-		 */
-		virtual Uint32 failureCount() const = 0;
+    /**
+     * Delete the tracker in ms milliseconds, or when the stopDone signal is emitted.
+     * @param ms Number of ms to wait
+     */
+    void timedDelete(int ms);
 
-		/**
-		 * Do a tracker scrape to get more accurate stats about a torrent.
-		 * Does nothing if the tracker does not support this.
-		 */
-		virtual void scrape() = 0;
+    /**
+     * Get the number of failed attempts to reach a tracker.
+     * @return The number of failed attempts
+     */
+    virtual Uint32 failureCount() const = 0;
 
-		/// Get the trackers tier
-		int getTier() const {return tier;}
+    /**
+     * Do a tracker scrape to get more accurate stats about a torrent.
+     * Does nothing if the tracker does not support this.
+     */
+    virtual void scrape() = 0;
 
-		/// Get the custom ip to use, null if none is set
-		static QString getCustomIP();
+    /// Get the trackers tier
+    int getTier() const
+    {
+        return tier;
+    }
 
-		/// Handle a failure
-		void handleFailure();
-	protected:
-		/// Reset the tracker stats
-		void resetTrackerStats();
+    /// Get the custom ip to use, null if none is set
+    static QString getCustomIP();
 
-		/// Calculates the bytes downloaded to send with the request
-		Uint64 bytesDownloaded() const;
+    /// Handle a failure
+    void handleFailure();
+protected:
+    /// Reset the tracker stats
+    void resetTrackerStats();
 
-		/// Calculates the bytes uploaded to send with the request
-		Uint64 bytesUploaded() const;
+    /// Calculates the bytes downloaded to send with the request
+    Uint64 bytesDownloaded() const;
 
-		/// Emit the failure signal, and set the error
-		void failed(const QString & err);
+    /// Calculates the bytes uploaded to send with the request
+    Uint64 bytesUploaded() const;
 
-	public:
-		void manualUpdate() override = 0;
+    /// Emit the failure signal, and set the error
+    void failed(const QString & err);
 
-	Q_SIGNALS:
-		/**
-		 * Emitted when an error happens.
-		 * @param failure_reason The reason why we couldn't reach the tracker
-		 */
-		void requestFailed(const QString & failure_reason);
+public:
+    void manualUpdate() override = 0;
 
-		/**
-		 * Emitted when a stop is done.
-		 */
-		void stopDone();
+Q_SIGNALS:
+    /**
+     * Emitted when an error happens.
+     * @param failure_reason The reason why we couldn't reach the tracker
+     */
+    void requestFailed(const QString & failure_reason);
 
-		/**
-		 * Emitted when a request to the tracker succeeded
-		 */
-		void requestOK();
+    /**
+     * Emitted when a stop is done.
+     */
+    void stopDone();
 
-		/**
-		 * A request to the tracker has been started.
-		 */
-		void requestPending();
+    /**
+     * Emitted when a request to the tracker succeeded
+     */
+    void requestOK();
 
-		/**
-		 * Emitted when a scrape has finished
-		 * */
-		void scrapeDone();
+    /**
+     * A request to the tracker has been started.
+     */
+    void requestPending();
 
-	protected:
-		int tier;
-		PeerID peer_id;
-		TrackerDataSource* tds;
-		Uint32 key;
-		QTimer reannounce_timer;
-		Uint64 bytes_downloaded_at_start;
-		Uint64 bytes_uploaded_at_start;
-	};
+    /**
+     * Emitted when a scrape has finished
+     * */
+    void scrapeDone();
+
+protected:
+    int tier;
+    PeerID peer_id;
+    TrackerDataSource* tds;
+    Uint32 key;
+    QTimer reannounce_timer;
+    Uint64 bytes_downloaded_at_start;
+    Uint64 bytes_uploaded_at_start;
+};
 }
 
 #endif

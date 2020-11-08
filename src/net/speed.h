@@ -28,28 +28,31 @@
 namespace net
 {
 
-	/**
-		@author Joris Guisson <joris.guisson@gmail.com>
-		
-		Measures the download and upload speed.
-	*/
-	class Speed
-	{
-		QAtomicInt rate;
-		bt::Uint32 bytes;
+/**
+    @author Joris Guisson <joris.guisson@gmail.com>
+
+    Measures the download and upload speed.
+*/
+class Speed
+{
+    QAtomicInt rate;
+    bt::Uint32 bytes;
 #ifndef DO_NOT_USE_DEQUE
-		std::deque<QPair<bt::Uint32,bt::TimeStamp> > dlrate;
+    std::deque<QPair<bt::Uint32, bt::TimeStamp> > dlrate;
 #else
-		QLinkedList<QPair<bt::Uint32,bt::TimeStamp> > dlrate;
+    QLinkedList<QPair<bt::Uint32, bt::TimeStamp> > dlrate;
 #endif
-	public:
-		Speed();
-		virtual ~Speed();
-		
-		void onData(bt::Uint32 bytes,bt::TimeStamp ts);
-		void update(bt::TimeStamp now);
-		int getRate() const {return rate;}
-	};
+public:
+    Speed();
+    virtual ~Speed();
+
+    void onData(bt::Uint32 bytes, bt::TimeStamp ts);
+    void update(bt::TimeStamp now);
+    int getRate() const
+    {
+        return rate;
+    }
+};
 
 }
 

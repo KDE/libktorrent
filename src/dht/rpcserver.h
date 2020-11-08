@@ -34,64 +34,64 @@ using bt::Uint8;
 
 namespace dht
 {
-	class Key;
-	class DHT;
+class Key;
+class DHT;
 
-	/**
-	 * @author Joris Guisson
-	 *
-	 * Class to handle incoming and outgoing RPC messages.
-	 */
-	class RPCServer : public QObject, public RPCServerInterface
-	{
-		Q_OBJECT
-	public:
-		RPCServer(DHT* dh_table, Uint16 port, QObject *parent = 0);
-		~RPCServer() override;
+/**
+ * @author Joris Guisson
+ *
+ * Class to handle incoming and outgoing RPC messages.
+ */
+class RPCServer : public QObject, public RPCServerInterface
+{
+    Q_OBJECT
+public:
+    RPCServer(DHT* dh_table, Uint16 port, QObject *parent = 0);
+    ~RPCServer() override;
 
-		/// Start the server
-		void start();
+    /// Start the server
+    void start();
 
-		/// Stop the server
-		void stop();
+    /// Stop the server
+    void stop();
 
-		/**
-		 * Do a RPC call.
-		 * @param msg The message to send
-		 * @return The call object
-		 */
-		RPCCall* doCall(RPCMsg::Ptr msg) override;
+    /**
+     * Do a RPC call.
+     * @param msg The message to send
+     * @return The call object
+     */
+    RPCCall* doCall(RPCMsg::Ptr msg) override;
 
-		/**
-		 * Send a message, this only sends the message, it does not keep any call
-		 * information. This should be used for replies.
-		 * @param msg The message to send
-		 */
-		void sendMsg(RPCMsg::Ptr msg);
+    /**
+     * Send a message, this only sends the message, it does not keep any call
+     * information. This should be used for replies.
+     * @param msg The message to send
+     */
+    void sendMsg(RPCMsg::Ptr msg);
 
-		/**
-		 * Send a message, this only sends the message, it does not keep any call
-		 * information. This should be used for replies.
-		 * @param msg The message to send
-		 */
-		void sendMsg(const RPCMsg & msg);
+    /**
+     * Send a message, this only sends the message, it does not keep any call
+     * information. This should be used for replies.
+     * @param msg The message to send
+     */
+    void sendMsg(const RPCMsg & msg);
 
-		/**
-		 * Ping a node, we don't care about the MTID.
-		 * @param addr The address
-		 */
-		void ping(const dht::Key & our_id, const net::Address & addr);
+    /**
+     * Ping a node, we don't care about the MTID.
+     * @param addr The address
+     */
+    void ping(const dht::Key & our_id, const net::Address & addr);
 
-		/// Get the number of active calls
-		Uint32 getNumActiveRPCCalls() const;
-		
-	private Q_SLOTS:
-		void callTimeout(RPCCall* call);
+    /// Get the number of active calls
+    Uint32 getNumActiveRPCCalls() const;
 
-	private:
-		class Private;
-		Private* d;
-	};
+private Q_SLOTS:
+    void callTimeout(RPCCall* call);
+
+private:
+    class Private;
+    Private* d;
+};
 
 }
 

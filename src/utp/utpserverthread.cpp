@@ -25,21 +25,21 @@
 namespace utp
 {
 
-	UTPServerThread::UTPServerThread(UTPServer* srv): srv(srv)
-	{
-		srv->moveToThread(this);
-	}
+UTPServerThread::UTPServerThread(UTPServer* srv): srv(srv)
+{
+    srv->moveToThread(this);
+}
 
-	UTPServerThread::~UTPServerThread()
-	{
+UTPServerThread::~UTPServerThread()
+{
 
-	}
+}
 
-	void UTPServerThread::run()
-	{
-		srv->threadStarted();
-		exec();
-	}
+void UTPServerThread::run()
+{
+    srv->threadStarted();
+    exec();
+}
 
 }
 

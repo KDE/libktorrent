@@ -23,14 +23,14 @@
 namespace bt
 {
 
-	CacheFactory::CacheFactory()
-	{
-	}
+CacheFactory::CacheFactory()
+{
+}
 
 
-	CacheFactory::~CacheFactory()
-	{
-	}
+CacheFactory::~CacheFactory()
+{
+}
 
 
 }

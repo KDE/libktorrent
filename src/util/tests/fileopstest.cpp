@@ -30,37 +30,35 @@ using namespace bt;
 
 class FileOpsTest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	
+
 private Q_SLOTS:
-	void initTestCase()
-	{
-		bt::InitLog("fileopstest.log");
-	}
-	
-	void cleanupTestCase()
-	{
-	}
-	
-	void testMountPointDetermination()
-	{
-		const QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
-		QString mountpoint;
-		
-		for (const Solid::Device& dev: devs)
-		{
-			const Solid::StorageAccess* sa = dev.as<Solid::StorageAccess>();
-			if (sa->isAccessible())
-			{
-				QVERIFY(bt::MountPoint(sa->filePath()) == sa->filePath());
-			
-				QString path = sa->filePath() + "/some/random/path/test.foobar";
-				Out(SYS_GEN|LOG_DEBUG) << "Testing " << path << endl;
-				QVERIFY(bt::MountPoint(path) == sa->filePath());
-			}
-		}
-	}
+    void initTestCase()
+    {
+        bt::InitLog("fileopstest.log");
+    }
+
+    void cleanupTestCase()
+    {
+    }
+
+    void testMountPointDetermination()
+    {
+        const QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
+        QString mountpoint;
+
+        for (const Solid::Device& dev : devs) {
+            const Solid::StorageAccess* sa = dev.as<Solid::StorageAccess>();
+            if (sa->isAccessible()) {
+                QVERIFY(bt::MountPoint(sa->filePath()) == sa->filePath());
+
+                QString path = sa->filePath() + "/some/random/path/test.foobar";
+                Out(SYS_GEN | LOG_DEBUG) << "Testing " << path << endl;
+                QVERIFY(bt::MountPoint(path) == sa->filePath());
+            }
+        }
+    }
 };
 
 

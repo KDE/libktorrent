@@ -26,28 +26,34 @@
 namespace bt
 {
 
-	/**
-		@author Joris Guisson
-	*/
-	class KTORRENT_EXPORT Error
-	{
-		QString msg;
-	public:
-		Error(const QString & msg);
-		virtual ~Error();
-		
-		QString toString() const {return msg;}
-	};
+/**
+    @author Joris Guisson
+*/
+class KTORRENT_EXPORT Error
+{
+    QString msg;
+public:
+    Error(const QString & msg);
+    virtual ~Error();
 
-	class KTORRENT_EXPORT Warning
-	{
-		QString msg;
-	public:
-		Warning(const QString & msg);
-		virtual ~Warning();
-		
-		QString toString() const {return msg;}
-	};
+    QString toString() const
+    {
+        return msg;
+    }
+};
+
+class KTORRENT_EXPORT Warning
+{
+    QString msg;
+public:
+    Warning(const QString & msg);
+    virtual ~Warning();
+
+    QString toString() const
+    {
+        return msg;
+    }
+};
 }
 
 #endif

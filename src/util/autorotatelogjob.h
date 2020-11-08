@@ -25,33 +25,33 @@
 
 namespace bt
 {
-	class Log;
+class Log;
 
-	/**
-		@author Joris Guisson <joris.guisson@gmail.com>
-		
-		Job which handles the rotation of the log file. 
-		This Job must do several move jobs which must be done sequentially.
-	*/
-	class AutoRotateLogJob : public KIO::Job
-	{
-	public:
-		AutoRotateLogJob(const QString & file,Log* lg);
-		~AutoRotateLogJob() override;
+/**
+    @author Joris Guisson <joris.guisson@gmail.com>
 
-		virtual void kill(bool quietly=true);
+    Job which handles the rotation of the log file.
+    This Job must do several move jobs which must be done sequentially.
+*/
+class AutoRotateLogJob : public KIO::Job
+{
+public:
+    AutoRotateLogJob(const QString & file, Log* lg);
+    ~AutoRotateLogJob() override;
 
-	private:
-		void moveJobDone(KJob*);
-		void compressJobDone(KJob*);
+    virtual void kill(bool quietly = true);
 
-		void update();
+private:
+    void moveJobDone(KJob*);
+    void compressJobDone(KJob*);
 
-	private:
-		QString file;
-		int cnt;
-		Log* lg;
-	};
+    void update();
+
+private:
+    QString file;
+    int cnt;
+    Log* lg;
+};
 
 }
 

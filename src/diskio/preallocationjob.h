@@ -23,29 +23,32 @@
 #include <torrent/job.h>
 
 
-namespace bt 
+namespace bt
 {
-	class PreallocationThread;
-	class ChunkManager;
+class PreallocationThread;
+class ChunkManager;
 
-	class KTORRENT_EXPORT PreallocationJob : public bt::Job
-	{
-		Q_OBJECT
-	public:
-		PreallocationJob(ChunkManager* cman,TorrentControl* tc);
-		~PreallocationJob() override;
-		
-		void start() override;
-		void kill(bool quietly = true) override;
-		TorrentStatus torrentStatus() const override {return ALLOCATING_DISKSPACE;}
-		
-	private Q_SLOTS:
-		void finished();
-		
-	private:
-		ChunkManager* cman;
-		PreallocationThread* prealloc_thread;
-	};
+class KTORRENT_EXPORT PreallocationJob : public bt::Job
+{
+    Q_OBJECT
+public:
+    PreallocationJob(ChunkManager* cman, TorrentControl* tc);
+    ~PreallocationJob() override;
+
+    void start() override;
+    void kill(bool quietly = true) override;
+    TorrentStatus torrentStatus() const override
+    {
+        return ALLOCATING_DISKSPACE;
+    }
+
+private Q_SLOTS:
+    void finished();
+
+private:
+    ChunkManager* cman;
+    PreallocationThread* prealloc_thread;
+};
 
 }
 

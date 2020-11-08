@@ -21,10 +21,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-/* 
+/*
  * Polipo was originally designed to run on Unix-like systems. This
  * header file (and it's accompanying implementation file mingw.c) contain
- * code that allows polipo to run on Microsoft Windows too. 
+ * code that allows polipo to run on Microsoft Windows too.
  *
  * The target MS windows compiler is Mingw (MINimal Gnu for Windows). The
  * code in this file probably get's us pretty close to MSVC also, but
@@ -67,7 +67,7 @@ THE SOFTWARE.
  * in terms of select() in win32.cpp. The following definitions
  * are copied from linux man pages. A poll() macro is defined to
  * call the version in win32.cpp.
- * pollfd is defined in Windows SDK 6.0A and newer if using 
+ * pollfd is defined in Windows SDK 6.0A and newer if using
  * MSVC2008, in what seems to be a blatant bug (MSVC2008 reports
  * Windows XP as 0x0600 instead of 0x501)
  */
@@ -106,7 +106,7 @@ struct KTORRENT_EXPORT pollfd {
 // #define inet_aton(x, y)      mingw_inet_aton(x, y)
 // #define gettimeofday(x, y)   mingw_gettimeofday(x, y)
 // #define stat(x, y)           mingw_stat(x, y)
-// 
+//
 // #define mkdir(x, y) mkdir(x)
 
 /* Winsock uses int instead of the usual socklen_t */
@@ -127,11 +127,11 @@ KTORRENT_EXPORT int     mingw_poll(struct pollfd *, unsigned int, int);
 // #define READ(x, y, z)  mingw_read_socket(x, y, z)
 // #define WRITE(x, y, z) mingw_write_socket(x, y, z)
 // #define CLOSE(x)       mingw_close_socket(x)
-// 
+//
 // int mingw_read_socket(SOCKET, void *, int);
 // int mingw_write_socket(SOCKET, void *, int);
 // int mingw_close_socket(SOCKET);
-// 
+//
 // int mingw_setnonblocking(SOCKET, int);
 // int mingw_stat(const char*, struct stat*);
 #define strerror(e) mingw_strerror(e)

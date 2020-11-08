@@ -26,40 +26,40 @@
 
 namespace dht
 {
-	/**
-	 * Interface to resolve the method of an RPC call given an mtid
-	 */
-	class RPCMethodResolver
-	{
-	public:
-		virtual ~RPCMethodResolver() {}
-		
-		/// Return the method associated with an mtid
-		virtual Method findMethod(const QByteArray & mtid) = 0; 
-	};
+/**
+ * Interface to resolve the method of an RPC call given an mtid
+ */
+class RPCMethodResolver
+{
+public:
+    virtual ~RPCMethodResolver() {}
 
-	/**
-	 * Creates RPC message objects out of a BDictNode
-	 */
-	class KTORRENT_EXPORT RPCMsgFactory
-	{
-	public:
-		RPCMsgFactory();
-		virtual ~RPCMsgFactory();
+    /// Return the method associated with an mtid
+    virtual Method findMethod(const QByteArray & mtid) = 0;
+};
 
-		/**
-		 * Creates a message out of a BDictNode.
-		 * @param dict The BDictNode
-		 * @param srv The RPCMethodResolver
-		 * @return A newly created message 
-		 * @throw bt::Error if something goes wrong
-		 */
-		RPCMsg::Ptr build(bt::BDictNode* dict, RPCMethodResolver* method_resolver);
-		
-	private:
-		RPCMsg::Ptr buildRequest(bt::BDictNode* dict);
-		RPCMsg::Ptr buildResponse(bt::BDictNode* dict, RPCMethodResolver* method_resolver);
-	};
+/**
+ * Creates RPC message objects out of a BDictNode
+ */
+class KTORRENT_EXPORT RPCMsgFactory
+{
+public:
+    RPCMsgFactory();
+    virtual ~RPCMsgFactory();
+
+    /**
+     * Creates a message out of a BDictNode.
+     * @param dict The BDictNode
+     * @param srv The RPCMethodResolver
+     * @return A newly created message
+     * @throw bt::Error if something goes wrong
+     */
+    RPCMsg::Ptr build(bt::BDictNode* dict, RPCMethodResolver* method_resolver);
+
+private:
+    RPCMsg::Ptr buildRequest(bt::BDictNode* dict);
+    RPCMsg::Ptr buildResponse(bt::BDictNode* dict, RPCMethodResolver* method_resolver);
+};
 
 }
 
