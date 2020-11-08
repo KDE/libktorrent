@@ -18,9 +18,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "bigint.h"
-#include <time.h>
-#include <string.h>
-#include <stdlib.h>
+
+#include <QRandomGenerator>
+
+#include <cstring>
 #include <util/log.h>
 #include <util/functions.h>
 
@@ -67,18 +68,11 @@ BigInt BigInt::powerMod(const BigInt & x, const BigInt & e, const BigInt & d)
 
 BigInt BigInt::random()
 {
-    static Uint32 rnd = 0;
-    if (rnd % 10 == 0) {
-        TimeStamp now = bt::CurrentTime();
-        srand(now);
-        rnd = 0;
-    }
-    rnd++;
-    Uint8 tmp[20];
-    for (Uint32 i = 0; i < 20; i++)
-        tmp[i] = (Uint8)rand() % 0x100;
+    Uint32 tmp[5];
+    for (Uint8 i = 0; i < 5; i++)
+        tmp[i] = QRandomGenerator::global()->generate();
 
-    return BigInt::fromBuffer(tmp, 20);
+    return BigInt::fromBuffer(reinterpret_cast<Uint8*>(tmp), 20);
 }
 
 Uint32 BigInt::toBuffer(Uint8* buf, Uint32 /*max_size*/) const

@@ -18,8 +18,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "encryptedauthenticate.h"
-#include <stdlib.h>
+
+#include <QRandomGenerator>
 #include <algorithm>
+
 #include <util/functions.h>
 #include <util/log.h>
 #include <torrent/globals.h>
@@ -69,7 +71,7 @@ void EncryptedAuthenticate::connected()
     // we are connected so send ya and some padding
     Uint8 tmp[608];
     ya.toBuffer(tmp, 96);
-    sock->sendData(tmp, 96 + rand() % 512);
+    sock->sendData(tmp, 96 + QRandomGenerator::global()->bounded(512));
     state = SENT_YA;
 }
 

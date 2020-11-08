@@ -18,17 +18,19 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "peerid.h"
-#include <time.h>
-#include <stdlib.h>
-#include <qmap.h>
-#include <klocalizedstring.h>
+
+#include <QMap>
+#include <QRandomGenerator>
+
+#include <KLocalizedString>
+
 #include "version.h"
 
 namespace bt
 {
 char RandomLetterOrNumber()
 {
-    int i = rand() % 62;
+    int i = QRandomGenerator::global()->bounded(62);
     if (i < 26)
         return 'a' + i;
     else if (i < 52)
@@ -50,7 +52,6 @@ QString charToNumber(QChar c)
 
 PeerID::PeerID()
 {
-    srand(time(0));
     memcpy(id, bt::PeerIDPrefix().toLatin1().constData(), 8);
     for (int i = 8; i < 20; i++)
         id[i] = RandomLetterOrNumber();

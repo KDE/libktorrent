@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "key.h"
-#include <time.h>
-#include <stdlib.h>
+
+#include <QRandomGenerator>
+
 #include <algorithm>
 #include <util/constants.h>
 
@@ -133,11 +134,10 @@ Key Key::distance(const Key & a, const Key & b)
 
 Key Key::random()
 {
-    srand(time(0));
     Key k;
-    Uint16* h = (Uint16*) k.hash;
-    for (int i = 0; i < 10; i++) {
-        h[i] = std::rand() & 0xFFFF; // rand() between 0 and only 2^31
+    Uint32* h = k.hash;
+    for (int i = 0; i < 5; i++) {
+        h[i] = QRandomGenerator::global()->generate();
     }
     return k;
 }

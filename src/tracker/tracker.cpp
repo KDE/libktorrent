@@ -19,9 +19,7 @@
  ***************************************************************************/
 #include "tracker.h"
 
-#include <cstdlib>
-#include <ctime>
-
+#include <QRandomGenerator>
 #include <QUrl>
 
 #include <util/functions.h>
@@ -31,7 +29,6 @@
 #include <net/addressresolver.h>
 #include "udptracker.h"
 #include "httptracker.h"
-
 
 
 namespace bt
@@ -46,8 +43,7 @@ const Uint32 FINAL_WAIT_TIME = 1800;
 Tracker::Tracker(const QUrl &url, TrackerDataSource* tds, const PeerID & id, int tier)
     : TrackerInterface(url), tier(tier), peer_id(id), tds(tds)
 {
-    srand(time(0));
-    key = rand();
+    key = QRandomGenerator::global()->generate();
     connect(&reannounce_timer, &QTimer::timeout, this, &Tracker::manualUpdate);
     reannounce_timer.setSingleShot(true);
     bytes_downloaded_at_start = bytes_uploaded_at_start = 0;
