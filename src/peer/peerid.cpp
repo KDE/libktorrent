@@ -52,8 +52,8 @@ QString charToNumber(QChar c)
 
 PeerID::PeerID()
 {
-    memcpy(id, bt::PeerIDPrefix().toLatin1().constData(), 8);
-    for (int i = 8; i < 20; i++)
+    memcpy(id, bt::PeerIDPrefix().toLatin1().constData(), 10);
+    for (int i = 10; i < 20; i++)
         id[i] = RandomLetterOrNumber();
     client_name = identifyClient();
 }
@@ -267,9 +267,16 @@ QString PeerID::identifyClient() const
             const int dash_pos = peer_id.indexOf('-', 3);
             if (dash_pos != -1)
                 name += ' ' + peer_id.mid(3, dash_pos - 3);
-        } else if (Map.contains(ID))
-            name = Map[ID] + ' ' + charToNumber(peer_id.at(3)) + '.' + charToNumber(peer_id.at(4)) + '.'
-                   + charToNumber(peer_id.at(5));
+        } else if (Map.contains(ID)) {
+            if (peer_id.at(9) == '-') {
+                name = Map[ID] + ' ' + charToNumber(peer_id.at(3)) + charToNumber(peer_id.at(4))
+                        + '.' + charToNumber(peer_id.at(5)) + charToNumber(peer_id.at(6))
+                        + '.' + charToNumber(peer_id.at(7)) + charToNumber(peer_id.at(8));
+            } else {
+                name = Map[ID] + ' ' + charToNumber(peer_id.at(3)) + '.' + charToNumber(peer_id.at(4)) + '.'
+                        + charToNumber(peer_id.at(5));
+            }
+        }
     } else if (peer_id.at(0).isLetter() &&
                peer_id.at(1).isDigit() &&
                peer_id.at(2).isDigit()) { //Shadow's style
