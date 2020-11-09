@@ -44,9 +44,7 @@ void SetClientInfo(const QString & name, int major, int minor, int release, Vers
 
 QString PeerIDPrefix()
 {
-    QString str = QString("-%1%2%3").arg(g_peer_id).arg(g_major).arg(g_minor).arg(g_release);
-    str += "-";
-    return str;
+    return QString("-%1%2%3%4-").arg(g_peer_id).arg(g_major).arg(g_minor).arg(g_release);
 }
 
 QString GetVersionString()
