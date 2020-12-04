@@ -46,7 +46,7 @@ using namespace net;
 namespace bt
 {
 
-static const int MAX_METADATA_SIZE = 4 * 1024 * 1024; // maximum allowed metadata_size (up to 4 MiB)
+static const int MAX_METADATA_SIZE = 100 * 1024 * 1024; // maximum allowed metadata_size (up to 100 MiB)
 static Uint32 peer_id_counter = 1;
 bool Peer::resolve_hostname = true;
 
@@ -453,7 +453,8 @@ void Peer::handleExtendedHandshake(const Uint8* packet, Uint32 size)
                         metadata_size = dict->getInt(QByteArrayLiteral("metadata_size"));
 
                     if (metadata_size > MAX_METADATA_SIZE) { // check for wrong metadata_size values
-                        Out(SYS_GEN | LOG_NOTICE) << "Wrong metadata size: " << metadata_size << ". Killing peer... " << endl;
+                        Out(SYS_GEN | LOG_NOTICE) << "Wrong or too high metadata size: " << metadata_size << ". Killing peer... " << endl;
+                        Out(SYS_GEN | LOG_NOTICE) << "Maximum supported metadata (torrent file) size: " << MAX_METADATA_SIZE << endl;
                         kill();
                         delete node;
                         return;
