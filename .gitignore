@@ -1,0 +1,12 @@
+# Ignore the following files
+*.kdev4
+*.moc
+*.user
+.*.swp
+/build*/
+CMakeLists.txt.user*
+.vscode
+.cmake/
+/.clang-format
+cmake-build-debug*
+.idea
