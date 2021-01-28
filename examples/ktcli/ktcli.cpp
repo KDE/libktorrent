@@ -52,8 +52,8 @@ KTCLI::KTCLI(int argc, char** argv) : QCoreApplication(argc, argv), tc(new Torre
 
     bt::SetClientInfo("ktcli", bt::MAJOR, bt::MINOR, bt::RELEASE, bt::NORMAL, "KT");
     bt::InitLog("ktcli.log", false, true, false);
-    connect(tc.get(), SIGNAL(finished(bt::TorrentInterface*)), this, SLOT(finished(bt::TorrentInterface*)));
-    connect(this, SIGNAL(aboutToQuit()), this, SLOT(shutdown()));
+    connect(tc.get(), &TorrentInterface::finished, this, &KTCLI::finished);
+    connect(this, &QCoreApplication::aboutToQuit, this, &KTCLI::shutdown);
 }
 
 KTCLI::~KTCLI()
@@ -106,7 +106,7 @@ bool KTCLI::load(const QUrl &url)
         // Load existing torrent
         if (loadFromDir(dir.absolutePath())) {
             tc->start();
-            connect(&timer, SIGNAL(timeout()), this, SLOT(update()));
+            connect(&timer, &QTimer::timeout, this, &KTCLI::update);
             timer.start(250);
             return true;
         }
@@ -114,7 +114,7 @@ bool KTCLI::load(const QUrl &url)
         QString path = url.toLocalFile();
         if (loadFromFile(path)) {
             tc->start();
-            connect(&timer, SIGNAL(timeout()), this, SLOT(update()));
+            connect(&timer, &QTimer::timeout, this, &KTCLI::update);
             timer.start(250);
             return true;
         }
@@ -208,7 +208,7 @@ void KTCLI::finished(bt::TorrentInterface* tor)
 {
     Q_UNUSED(tor);
     Out(SYS_GEN | LOG_NOTICE) << "Torrent fully downloaded" << endl;
-    QTimer::singleShot(0, this, SLOT(shutdown()));
+    QTimer::singleShot(0, this, &KTCLI::shutdown);
 }
 
 void KTCLI::shutdown()
