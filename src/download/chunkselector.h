@@ -20,11 +20,9 @@
 #ifndef BTCHUNKSELECTOR_H
 #define BTCHUNKSELECTOR_H
 
+#include <interfaces/chunkselectorinterface.h>
 #include <list>
 #include <util/timer.h>
-#include <interfaces/chunkselectorinterface.h>
-
-
 
 namespace bt
 {
@@ -38,16 +36,17 @@ class PieceDownloader;
  * @author Joris Guisson
  *
  * Selects which Chunks to download.
-*/
+ */
 class ChunkSelector : public ChunkSelectorInterface
 {
     std::list<Uint32> chunks;
     Timer sort_timer;
+
 public:
     ChunkSelector();
     ~ChunkSelector() override;
 
-    void init(ChunkManager* cman, Downloader* downer, PeerManager* pman) override;
+    void init(ChunkManager *cman, Downloader *downer, PeerManager *pman) override;
 
     /**
      * Select which chunk to download for a PieceDownloader.
@@ -55,13 +54,13 @@ public:
      * @param chunk Index of chunk gets stored here
      * @return true upon succes, false otherwise
      */
-    bool select(PieceDownloader* pd, Uint32 & chunk) override;
+    bool select(PieceDownloader *pd, Uint32 &chunk) override;
 
     /**
      * Data has been checked, and these chunks are OK.
      * @param ok_chunks The ok_chunks
      */
-    void dataChecked(const bt::BitSet& ok_chunks, bt::Uint32 from, bt::Uint32 to) override;
+    void dataChecked(const bt::BitSet &ok_chunks, bt::Uint32 from, bt::Uint32 to) override;
 
     /**
      * A range of chunks has been reincluded.
@@ -76,12 +75,12 @@ public:
      */
     void reinsert(Uint32 chunk) override;
 
-    bool selectRange(Uint32 & from, Uint32 & to, Uint32 max_len) override;
+    bool selectRange(Uint32 &from, Uint32 &to, Uint32 max_len) override;
+
 protected:
-    Uint32 leastPeers(const std::list<Uint32> & lp, Uint32 alternative, Uint32 max_peers_per_chunk);
+    Uint32 leastPeers(const std::list<Uint32> &lp, Uint32 alternative, Uint32 max_peers_per_chunk);
 };
 
 }
 
 #endif
-

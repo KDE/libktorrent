@@ -33,7 +33,7 @@ class Request;
 /**
  * Interface for all things which want to download pieces from something.
  * @author Joris Guisson
-*/
+ */
 class KTORRENT_EXPORT PieceDownloader : public QObject
 {
     Q_OBJECT
@@ -64,13 +64,13 @@ public:
      * Send a Request.
      * @param req The Request
      */
-    virtual void download(const bt::Request & req) = 0;
+    virtual void download(const bt::Request &req) = 0;
 
     /**
      * Cancel a Request.
      * @param req The Request
      */
-    virtual void cancel(const bt::Request & req) = 0;
+    virtual void cancel(const bt::Request &req) = 0;
 
     /**
      * Cancel all Requests
@@ -145,13 +145,13 @@ Q_SIGNALS:
      * unsent requests. Their timestamps will be updated when they get transmitted.
      * @param r The request
      */
-    void timedout(const bt::Request & r);
+    void timedout(const bt::Request &r);
 
     /**
      * A request was rejected.
      * @param req The Request
      */
-    void rejected(const bt::Request & req);
+    void rejected(const bt::Request &req);
 
 private:
     int grabbed;

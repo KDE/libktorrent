@@ -19,17 +19,15 @@
  ***************************************************************************/
 #include "globals.h"
 
-#include <net/portlist.h>
+#include "server.h"
 #include <dht/dht.h>
+#include <net/portlist.h>
 #include <net/reverseresolver.h>
 #include <utp/utpserver.h>
-#include "server.h"
-
 
 namespace bt
 {
-
-Globals* Globals::inst = 0;
+Globals *Globals::inst = 0;
 
 Globals::Globals()
 {
@@ -39,7 +37,7 @@ Globals::Globals()
     dh_table = new dht::DHT();
 }
 
-Globals::~ Globals()
+Globals::~Globals()
 {
     // shutdown the reverse resolver thread
     net::ReverseResolver::shutdown();
@@ -49,7 +47,7 @@ Globals::~ Globals()
     delete plist;
 }
 
-Globals & Globals::instance()
+Globals &Globals::instance()
 {
     if (!inst)
         inst = new Globals();
@@ -103,4 +101,3 @@ void Globals::shutdownUTPServer()
 }
 
 }
-

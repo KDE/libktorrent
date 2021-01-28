@@ -22,11 +22,13 @@
 
 namespace bt
 {
-
-WebSeedInterface::WebSeedInterface(const QUrl &url, bool user) : url(url), total_downloaded(0), user(user), enabled(true)
+WebSeedInterface::WebSeedInterface(const QUrl &url, bool user)
+    : url(url)
+    , total_downloaded(0)
+    , user(user)
+    , enabled(true)
 {
 }
-
 
 WebSeedInterface::~WebSeedInterface()
 {

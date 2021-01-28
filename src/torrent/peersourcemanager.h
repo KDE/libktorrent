@@ -20,14 +20,11 @@
 #ifndef BTPEERSOURCEMANAGER_H
 #define BTPEERSOURCEMANAGER_H
 
-
-#include <util/constants.h>
-#include <util/waitjob.h>
+#include <interfaces/torrentinterface.h>
 #include <tracker/tracker.h>
 #include <tracker/trackermanager.h>
-#include <interfaces/torrentinterface.h>
-
-
+#include <util/constants.h>
+#include <util/waitjob.h>
 
 namespace dht
 {
@@ -44,16 +41,15 @@ class PeerSource;
  * @author Joris Guisson <joris.guisson@gmail.com>
  *
  * This class manages all PeerSources.
-*/
+ */
 class PeerSourceManager : public TrackerManager
 {
-    QList<PeerSource*> additional;
-    dht::DHTPeerSource* m_dht;
+    QList<PeerSource *> additional;
+    dht::DHTPeerSource *m_dht;
 
 public:
-    PeerSourceManager(TorrentControl* tor, PeerManager* pman);
+    PeerSourceManager(TorrentControl *tor, PeerManager *pman);
     ~PeerSourceManager() override;
-
 
     /**
      * Add a PeerSource, the difference between PeerSource and Tracker
@@ -61,13 +57,13 @@ public:
      * PeerSource can always be used.
      * @param ps The PeerSource
      */
-    void addPeerSource(PeerSource* ps);
+    void addPeerSource(PeerSource *ps);
 
     /**
-    * Remove a Tracker or PeerSource.
-    * @param ps
-    */
-    void removePeerSource(PeerSource* ps);
+     * Remove a Tracker or PeerSource.
+     * @param ps
+     */
+    void removePeerSource(PeerSource *ps);
 
     /**
      * See if the PeerSourceManager has been started
@@ -77,17 +73,16 @@ public:
         return started;
     }
 
-
     void start() override;
-    void stop(WaitJob* wjob = 0) override;
+    void stop(WaitJob *wjob = 0) override;
     void completed() override;
     void manualUpdate() override;
 
-    ///Adds DHT as PeerSource for this torrent
+    /// Adds DHT as PeerSource for this torrent
     void addDHT();
-    ///Removes DHT from PeerSourceManager for this torrent.
+    /// Removes DHT from PeerSourceManager for this torrent.
     void removeDHT();
-    ///Checks if DHT is enabled
+    /// Checks if DHT is enabled
     bool dhtStarted();
 };
 

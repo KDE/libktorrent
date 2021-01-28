@@ -21,21 +21,19 @@
 #ifndef BT_PEERCONNECTOR_H
 #define BT_PEERCONNECTOR_H
 
+#include "connectionlimit.h"
 #include <QSharedPointer>
 #include <ktorrent_export.h>
+#include <net/address.h>
 #include <util/constants.h>
 #include <util/resourcemanager.h>
-#include <net/address.h>
-#include "connectionlimit.h"
 
 #if (QT_VERSION < QT_VERSION_CHECK(4, 7, 0))
-template <class T>
-uint qHash(const QSharedPointer<T> &ptr)
+template<class T> uint qHash(const QSharedPointer<T> &ptr)
 {
     return qHash<T>(ptr.data());
 }
 #endif
-
 
 namespace bt
 {
@@ -55,11 +53,11 @@ public:
         UTP_WITHOUT_ENCRYPTION,
     };
 
-    PeerConnector(const net::Address & addr, bool local, PeerManager* pman, ConnectionLimit::Token::Ptr token);
+    PeerConnector(const net::Address &addr, bool local, PeerManager *pman, ConnectionLimit::Token::Ptr token);
     ~PeerConnector() override;
 
     /// Called when an authentication attempt is finished
-    void authenticationFinished(bt::Authenticate* auth, bool ok);
+    void authenticationFinished(bt::Authenticate *auth, bool ok);
 
     /// Start connecting
     void start();
@@ -75,13 +73,12 @@ public:
     /// Set a weak pointer to this object
     void setWeakPointer(WPtr ptr);
 
-
 private:
     void acquired() override;
 
 private:
     class Private;
-    Private* d;
+    Private *d;
 };
 
 }

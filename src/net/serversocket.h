@@ -18,21 +18,18 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #ifndef NET_SERVERSOCKET_H
 #define NET_SERVERSOCKET_H
 
 #include <QObject>
 #include <QSharedPointer>
 #include <ktorrent_export.h>
-#include <util/constants.h>
 #include <util/bufferpool.h>
+#include <util/constants.h>
 
 namespace net
 {
 class Address;
-
-
 
 /**
     Convenience class to create and bind a server socket.
@@ -51,14 +48,16 @@ public:
     class KTORRENT_EXPORT ConnectionHandler
     {
     public:
-        virtual ~ConnectionHandler() {}
+        virtual ~ConnectionHandler()
+        {
+        }
 
         /**
             A new connection has been accepted
             @param fd The filedescriptor of the connection
             @param addr The address of the connection
         */
-        virtual void newConnection(int fd, const net::Address & addr) = 0;
+        virtual void newConnection(int fd, const net::Address &addr) = 0;
     };
 
     /**
@@ -67,33 +66,35 @@ public:
     class KTORRENT_EXPORT DataHandler
     {
     public:
-        virtual ~DataHandler() {}
+        virtual ~DataHandler()
+        {
+        }
 
         /**
             An UDP packet was received
             @param data The packet
             @param addr The address from which it was received
         */
-        virtual void dataReceived(bt::Buffer::Ptr buffer, const net::Address & addr) = 0;
+        virtual void dataReceived(bt::Buffer::Ptr buffer, const net::Address &addr) = 0;
 
         /**
             Socket has become writeable
             @param sock The socket
         */
-        virtual void readyToWrite(net::ServerSocket* sock) = 0;
+        virtual void readyToWrite(net::ServerSocket *sock) = 0;
     };
 
     /**
         Create a TCP server socket
         @param chandler The connection handler
     */
-    ServerSocket(ConnectionHandler* chandler);
+    ServerSocket(ConnectionHandler *chandler);
 
     /**
         Create an UDP server socket
         @param dhandler The data handler
     */
-    ServerSocket(DataHandler* dhandler);
+    ServerSocket(DataHandler *dhandler);
 
     ~ServerSocket() override;
 
@@ -103,14 +104,14 @@ public:
         @param port The port number
         @return true upon success, false otherwise
     */
-    bool bind(const QString & ip, bt::Uint16 port);
+    bool bind(const QString &ip, bt::Uint16 port);
 
     /**
         Bind the socket to an address
         @param addr The address
         @return true upon success, false otherwise
     */
-    bool bind(const net::Address & addr);
+    bool bind(const net::Address &addr);
 
     /**
         Method to send data with the socket. Only use this when
@@ -119,7 +120,7 @@ public:
         @param addr The address to send to
         @return The number of bytes sent
     */
-    int sendTo(const QByteArray & data, const net::Address & addr);
+    int sendTo(const QByteArray &data, const net::Address &addr);
 
     /**
         Method to send data with the socket. Only use this when
@@ -129,7 +130,7 @@ public:
         @param addr The address to send to
         @return The number of bytes sent
     */
-    int sendTo(const bt::Uint8* buf, int size, const net::Address & addr);
+    int sendTo(const bt::Uint8 *buf, int size, const net::Address &addr);
 
     /**
         Enable write notifications.
@@ -157,7 +158,7 @@ private Q_SLOTS:
 
 private:
     class Private;
-    Private* d;
+    Private *d;
 };
 
 }

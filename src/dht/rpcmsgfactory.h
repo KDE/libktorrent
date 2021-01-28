@@ -21,8 +21,8 @@
 #ifndef DHT_RPCMSGFACTORY_H
 #define DHT_RPCMSGFACTORY_H
 
-#include <ktorrent_export.h>
 #include "rpcmsg.h"
+#include <ktorrent_export.h>
 
 namespace dht
 {
@@ -32,10 +32,12 @@ namespace dht
 class RPCMethodResolver
 {
 public:
-    virtual ~RPCMethodResolver() {}
+    virtual ~RPCMethodResolver()
+    {
+    }
 
     /// Return the method associated with an mtid
-    virtual Method findMethod(const QByteArray & mtid) = 0;
+    virtual Method findMethod(const QByteArray &mtid) = 0;
 };
 
 /**
@@ -54,11 +56,11 @@ public:
      * @return A newly created message
      * @throw bt::Error if something goes wrong
      */
-    RPCMsg::Ptr build(bt::BDictNode* dict, RPCMethodResolver* method_resolver);
+    RPCMsg::Ptr build(bt::BDictNode *dict, RPCMethodResolver *method_resolver);
 
 private:
-    RPCMsg::Ptr buildRequest(bt::BDictNode* dict);
-    RPCMsg::Ptr buildResponse(bt::BDictNode* dict, RPCMethodResolver* method_resolver);
+    RPCMsg::Ptr buildRequest(bt::BDictNode *dict);
+    RPCMsg::Ptr buildResponse(bt::BDictNode *dict, RPCMethodResolver *method_resolver);
 };
 
 }

@@ -20,12 +20,10 @@
 #ifndef NETSOCKETMONITOR_H
 #define NETSOCKETMONITOR_H
 
-
+#include <ktorrent_export.h>
 #include <list>
 #include <qmutex.h>
 #include <util/constants.h>
-#include <ktorrent_export.h>
-
 
 namespace net
 {
@@ -33,27 +31,26 @@ using bt::Uint32;
 
 class TrafficShapedSocket;
 
-
-
 /**
  * @author Joris Guisson <joris.guisson@gmail.com>
  *
  * Monitors all sockets for upload and download traffic.
  * It uses two threads to do this.
-*/
+ */
 class KTORRENT_EXPORT SocketMonitor
 {
     SocketMonitor();
+
 public:
     virtual ~SocketMonitor();
 
     /// Add a new socket, will start the threads if necessary
-    void add(TrafficShapedSocket* sock);
+    void add(TrafficShapedSocket *sock);
 
     /// Remove a socket, will stop threads if no more sockets are left
-    void remove(TrafficShapedSocket* sock);
+    void remove(TrafficShapedSocket *sock);
 
-    typedef std::list<TrafficShapedSocket*>::iterator Itr;
+    typedef std::list<TrafficShapedSocket *>::iterator Itr;
 
     /// Get the begin of the list of sockets
     Itr begin()
@@ -85,7 +82,6 @@ public:
      * Shutdown the socketmonitor and all the networking threads.
      */
     void shutdown();
-
 
     /**
      * Creata a new upload or download group
@@ -124,15 +120,15 @@ public:
     static void setUploadCap(Uint32 bytes_per_sec);
     static Uint32 getUploadCap();
     static void setSleepTime(Uint32 sleep_time);
-    static SocketMonitor & instance()
+    static SocketMonitor &instance()
     {
         return self;
     }
 
 private:
     class Private;
-    Private* d;
-    std::list<TrafficShapedSocket*> sockets;
+    Private *d;
+    std::list<TrafficShapedSocket *> sockets;
     static SocketMonitor self;
 };
 

@@ -30,7 +30,7 @@ class UPnPRouter;
  * @author Joris Guisson
  *
  * Parses the xml description of a router.
-*/
+ */
 class UPnPDescriptionParser
 {
 public:
@@ -43,8 +43,7 @@ public:
      * @param router The router off the xml description
      * @return true upon success
      */
-    bool parse(const QString & file, UPnPRouter* router);
-
+    bool parse(const QString &file, UPnPRouter *router);
 
     /**
      * Parse the xml description.
@@ -52,7 +51,7 @@ public:
      * @param router The router off the xml description
      * @return true upon success
      */
-    bool parse(const QByteArray & data, UPnPRouter* router);
+    bool parse(const QByteArray &data, UPnPRouter *router);
 };
 
 }

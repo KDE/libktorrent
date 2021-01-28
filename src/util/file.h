@@ -20,14 +20,13 @@
 #ifndef BTFILE_H
 #define BTFILE_H
 
-#include <stdio.h>
+#include "constants.h"
 #include <QSharedPointer>
 #include <ktorrent_export.h>
-#include "constants.h"
+#include <stdio.h>
 
 namespace bt
 {
-
 /**
  * @author Joris Guisson
  * @brief Wrapper class for stdio's FILE
@@ -36,8 +35,9 @@ namespace bt
  */
 class KTORRENT_EXPORT File
 {
-    FILE* fptr;
+    FILE *fptr;
     QString file;
+
 public:
     /**
      * Constructor.
@@ -55,7 +55,7 @@ public:
      * @param mode Mode
      * @return true upon succes
      */
-    bool open(const QString & file, const QString & mode);
+    bool open(const QString &file, const QString &mode);
 
     /**
      * Close the file.
@@ -74,7 +74,7 @@ public:
      * @param size Size of the data
      * @return The number of bytes written
      */
-    Uint32 write(const void* buf, Uint32 size);
+    Uint32 write(const void *buf, Uint32 size);
 
     /**
      * Read a bunch of data. If anything goes wrong
@@ -83,7 +83,7 @@ public:
      * @param size Size of the buffer
      * @return The number of bytes read
      */
-    Uint32 read(void* buf, Uint32 size);
+    Uint32 read(void *buf, Uint32 size);
 
     enum SeekPos {
         BEGIN,

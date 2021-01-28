@@ -28,7 +28,6 @@ namespace net
 class SocketDevice;
 }
 
-
 namespace bt
 {
 class BitSet;
@@ -40,17 +39,17 @@ class Peer;
  * @author Joris Guisson
  *
  * Packet off data, which gets sent to a Peer
-*/
+ */
 class Packet
 {
 public:
     Packet(Uint8 type);
     Packet(Uint16 port);
     Packet(Uint32 chunk, Uint8 type);
-    Packet(const BitSet & bs);
-    Packet(const Request & req, Uint8 type);
-    Packet(Uint32 index, Uint32 begin, Uint32 len, Chunk* ch);
-    Packet(Uint8 ext_id, const QByteArray & ext_data); // extension protocol packet
+    Packet(const BitSet &bs);
+    Packet(const Request &req, Uint8 type);
+    Packet(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch);
+    Packet(Uint8 ext_id, const QByteArray &ext_data); // extension protocol packet
     ~Packet();
 
     /// Get the packet type
@@ -61,11 +60,11 @@ public:
 
     bool isOK() const;
 
-    const Uint8* getData() const
+    const Uint8 *getData() const
     {
         return data;
     }
-    Uint8* getData()
+    Uint8 *getData()
     {
         return data;
     }
@@ -84,7 +83,7 @@ public:
      * If this packet is a piece, make a reject for it
      * @return The newly created Packet, 0 if this is not a piece
      */
-    Packet* makeRejectOfPiece();
+    Packet *makeRejectOfPiece();
 
     /// Are we sending this packet ?
     bool sending() const
@@ -97,7 +96,7 @@ public:
      * @param req The request
      * @return If this is a piece in response of this request
      */
-    bool isPiece(const Request & req) const;
+    bool isPiece(const Request &req) const;
 
     /**
      * Send the packet over a SocketDevice
@@ -105,12 +104,12 @@ public:
      * @param max_to_send Max bytes to send
      * @return int Return value of send call from SocketDevice
      **/
-    int send(net::SocketDevice* sock, Uint32 max_to_send);
+    int send(net::SocketDevice *sock, Uint32 max_to_send);
 
     typedef QSharedPointer<Packet> Ptr;
 
 private:
-    Uint8* data;
+    Uint8 *data;
     Uint32 size;
     Uint32 written;
     Uint8 type;

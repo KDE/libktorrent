@@ -20,45 +20,44 @@
 #include "movedatafilesjob.h"
 #include <QFileInfo>
 #include <QUrl>
-#include <klocalizedstring.h>
-#include <kjobtrackerinterface.h>
+#include <interfaces/torrentfileinterface.h>
 #include <kio/jobuidelegate.h>
-#include <util/log.h>
+#include <kjobtrackerinterface.h>
+#include <klocalizedstring.h>
 #include <util/fileops.h>
 #include <util/functions.h>
-#include <interfaces/torrentfileinterface.h>
+#include <util/log.h>
 
 namespace bt
 {
 static ResourceManager move_data_files_slot(1);
 
 MoveDataFilesJob::MoveDataFilesJob()
-    : Job(true, 0),
-      Resource(&move_data_files_slot, "MoveDataFilesJob"),
-      err(false),
-      active_job(nullptr),
-      running_recovery_jobs(0),
-      bytes_moved(0),
-      total_bytes(0),
-      bytes_moved_current_file(0)
+    : Job(true, 0)
+    , Resource(&move_data_files_slot, "MoveDataFilesJob")
+    , err(false)
+    , active_job(nullptr)
+    , running_recovery_jobs(0)
+    , bytes_moved(0)
+    , total_bytes(0)
+    , bytes_moved_current_file(0)
 {
 }
 
-
-MoveDataFilesJob::MoveDataFilesJob(const QMap< TorrentFileInterface*, QString >& fmap)
-    : Job(true, 0),
-      Resource(&move_data_files_slot, "MoveDataFilesJob"),
-      err(false),
-      active_job(nullptr),
-      running_recovery_jobs(0),
-      bytes_moved(0),
-      total_bytes(0),
-      bytes_moved_current_file(0)
+MoveDataFilesJob::MoveDataFilesJob(const QMap<TorrentFileInterface *, QString> &fmap)
+    : Job(true, 0)
+    , Resource(&move_data_files_slot, "MoveDataFilesJob")
+    , err(false)
+    , active_job(nullptr)
+    , running_recovery_jobs(0)
+    , bytes_moved(0)
+    , total_bytes(0)
+    , bytes_moved_current_file(0)
 {
     file_map = fmap;
-    QMap<TorrentFileInterface*, QString>::const_iterator i = file_map.constBegin();
+    QMap<TorrentFileInterface *, QString>::const_iterator i = file_map.constBegin();
     while (i != file_map.constEnd()) {
-        TorrentFileInterface* tf = i.key();
+        TorrentFileInterface *tf = i.key();
         QString dest = i.value();
         if (QFileInfo(dest).isDir()) {
             QString path = tf->getUserModifiedPath();
@@ -76,16 +75,16 @@ MoveDataFilesJob::MoveDataFilesJob(const QMap< TorrentFileInterface*, QString >&
     }
 }
 
-
 MoveDataFilesJob::~MoveDataFilesJob()
-{}
+{
+}
 
-void MoveDataFilesJob::addMove(const QString & src, const QString & dst)
+void MoveDataFilesJob::addMove(const QString &src, const QString &dst)
 {
     todo.insert(src, dst);
 }
 
-void MoveDataFilesJob::onJobDone(KJob* j)
+void MoveDataFilesJob::onJobDone(KJob *j)
 {
     if (j->error() || err) {
         if (!err)
@@ -93,7 +92,7 @@ void MoveDataFilesJob::onJobDone(KJob* j)
 
         active_job = 0;
         if (j->error())
-            ((KIO::Job*)j)->uiDelegate()->showErrorMessage();
+            ((KIO::Job *)j)->uiDelegate()->showErrorMessage();
 
         // shit happened cancel all previous moves
         err = true;
@@ -120,7 +119,8 @@ void MoveDataFilesJob::start()
     setTotalAmount(KJob::Bytes, total_bytes);
     move_data_files_slot.add(this);
     if (!active_job) {
-        description(this, i18n("Waiting for other move jobs to finish"),
+        description(this,
+                    i18n("Waiting for other move jobs to finish"),
                     qMakePair(i18nc("The source of a file operation", "Source"), active_src),
                     qMakePair(i18nc("The destination of a file operation", "Destination"), active_dst));
         emitSpeed(0);
@@ -138,7 +138,6 @@ void MoveDataFilesJob::kill(bool quietly)
     // don't do anything we cannot abort in the middle of this operation
 }
 
-
 void MoveDataFilesJob::startMoving()
 {
     if (todo.isEmpty()) {
@@ -152,11 +151,12 @@ void MoveDataFilesJob::startMoving()
     active_dst = i.value();
     Out(SYS_GEN | LOG_DEBUG) << "Moving " << active_src << " -> " << active_dst << endl;
     connect(active_job, &KIO::Job::result, this, &MoveDataFilesJob::onJobDone);
-    connect(active_job, qOverload<KJob*, KJob::Unit, qulonglong>(&KIO::Job::processedAmount), this, &MoveDataFilesJob::onTransferred);
+    connect(active_job, qOverload<KJob *, KJob::Unit, qulonglong>(&KIO::Job::processedAmount), this, &MoveDataFilesJob::onTransferred);
     connect(active_job, &KIO::Job::speed, this, &MoveDataFilesJob::onSpeed);
     todo.erase(i);
 
-    description(this, i18nc("@title job", "Moving"),
+    description(this,
+                i18nc("@title job", "Moving"),
                 qMakePair(i18nc("The source of a file operation", "Source"), active_src),
                 qMakePair(i18nc("The destination of a file operation", "Destination"), active_dst));
     addSubjob(active_job);
@@ -175,7 +175,7 @@ void MoveDataFilesJob::recover(bool delete_active)
     running_recovery_jobs = 0;
     QMap<QString, QString>::iterator i = success.begin();
     while (i != success.end()) {
-        KIO::Job* j = KIO::file_move(QUrl::fromLocalFile(i.value()), QUrl::fromLocalFile(i.key()), -1, KIO::HideProgressInfo);
+        KIO::Job *j = KIO::file_move(QUrl::fromLocalFile(i.value()), QUrl::fromLocalFile(i.key()), -1, KIO::HideProgressInfo);
         connect(j, &KIO::Job::result, this, &MoveDataFilesJob::onRecoveryJobDone);
         running_recovery_jobs++;
         ++i;
@@ -183,7 +183,7 @@ void MoveDataFilesJob::recover(bool delete_active)
     success.clear();
 }
 
-void MoveDataFilesJob::onRecoveryJobDone(KJob* j)
+void MoveDataFilesJob::onRecoveryJobDone(KJob *j)
 {
     Q_UNUSED(j);
     running_recovery_jobs--;
@@ -200,11 +200,10 @@ void MoveDataFilesJob::onTransferred(KJob *job, KJob::Unit unit, qulonglong amou
     }
 }
 
-void MoveDataFilesJob::onSpeed(KJob* job, unsigned long speed)
+void MoveDataFilesJob::onSpeed(KJob *job, unsigned long speed)
 {
     Q_UNUSED(job);
     emitSpeed(speed);
 }
-
 
 }

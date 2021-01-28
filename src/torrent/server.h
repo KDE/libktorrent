@@ -20,17 +20,15 @@
 #ifndef BTSERVER_H
 #define BTSERVER_H
 
+#include "globals.h"
+#include <interfaces/serverinterface.h>
+#include <ktorrent_export.h>
 #include <qlist.h>
 #include <qobject.h>
-#include <ktorrent_export.h>
-#include <interfaces/serverinterface.h>
-#include "globals.h"
-
 
 namespace bt
 {
 class PeerManager;
-
 
 /**
  * @author Joris Guisson
@@ -50,9 +48,10 @@ public:
     ~Server() override;
 
     bool changePort(Uint16 port) override;
+
 private:
     class Private;
-    Private* d;
+    Private *d;
 };
 
 }

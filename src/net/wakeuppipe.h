@@ -20,14 +20,13 @@
 #ifndef KTWAKEUPPIPE_H
 #define KTWAKEUPPIPE_H
 
-#include <ktorrent_export.h>
-#include <util/pipe.h>
-#include <net/poll.h>
 #include <QMutex>
+#include <ktorrent_export.h>
+#include <net/poll.h>
+#include <util/pipe.h>
 
 namespace net
 {
-
 /**
     A WakeUpPipe's purpose is to wakeup a select or poll call.
     It works by using a pipe
@@ -60,6 +59,7 @@ public:
     }
 
     typedef QSharedPointer<WakeUpPipe> Ptr;
+
 protected:
     mutable QMutex mutex;
     bool woken_up;

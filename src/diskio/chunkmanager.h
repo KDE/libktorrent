@@ -20,16 +20,15 @@
 #ifndef BTCHUNKMANAGER_H
 #define BTCHUNKMANAGER_H
 
+#include "chunk.h"
 #include <QMap>
+#include <QObject>
 #include <QSet>
 #include <QString>
-#include <QObject>
-#include <vector>
-#include <util/bitset.h>
-#include <torrent/torrent.h>
 #include <ktorrent_export.h>
-#include "chunk.h"
-
+#include <torrent/torrent.h>
+#include <util/bitset.h>
+#include <vector>
 
 class QStringList;
 
@@ -60,15 +59,11 @@ class KTORRENT_EXPORT ChunkManager : public QObject
 {
     Q_OBJECT
 public:
-    ChunkManager(Torrent& tor,
-                 const QString& tmpdir,
-                 const QString& datadir,
-                 bool custom_output_name,
-                 CacheFactory* fac);
+    ChunkManager(Torrent &tor, const QString &tmpdir, const QString &datadir, bool custom_output_name, CacheFactory *fac);
     ~ChunkManager() override;
 
     /// Get the torrent
-    const Torrent& getTorrent() const
+    const Torrent &getTorrent() const
     {
         return tor;
     }
@@ -79,7 +74,7 @@ public:
     /// Get the actual output path
     QString getOutputPath() const;
 
-    void changeOutputPath(const QString& output_path);
+    void changeOutputPath(const QString &output_path);
 
     /// Remove obsolete chunks
     void checkMemoryUsage();
@@ -88,33 +83,32 @@ public:
      * Change the data dir.
      * @param data_dir
      */
-    void changeDataDir(const QString& data_dir);
+    void changeDataDir(const QString &data_dir);
 
     /**
      * Move the data files of the torrent.
      * @param ndir The new directory
      */
-    Job* moveDataFiles(const QString& ndir);
+    Job *moveDataFiles(const QString &ndir);
 
     /**
      * A move of data files has finished
      * @param job The job doing the move
      */
-    void moveDataFilesFinished(Job* job);
+    void moveDataFilesFinished(Job *job);
 
     /**
      * Move some data files to a new location
      * @param files Map of files and their new location
      */
-    Job* moveDataFiles(const QMap<TorrentFileInterface*, QString> & files);
-
+    Job *moveDataFiles(const QMap<TorrentFileInterface *, QString> &files);
 
     /**
      * A move of data files with the map has finished
      * @param files Map of files and their new location
      * @param job The job doing the move
      */
-    void moveDataFilesFinished(const QMap<TorrentFileInterface*, QString> & files, Job* job);
+    void moveDataFilesFinished(const QMap<TorrentFileInterface *, QString> &files, Job *job);
 
     /**
      * Loads the index file.
@@ -133,13 +127,13 @@ public:
      * Test all files and see if they are not missing.
      * If so put them in a list
      */
-    bool hasMissingFiles(QStringList& sl);
+    bool hasMissingFiles(QStringList &sl);
 
     /**
      * Prepare diskspace preallocation
      * @param prealloc The thread going to do the preallocation
      */
-    void preparePreallocation(PreallocationThread* prealloc);
+    void preparePreallocation(PreallocationThread *prealloc);
 
     /**
      * Open the necessary files when the download gets started.
@@ -156,7 +150,7 @@ public:
      * @param i The Chunk's index
      * @return The Chunk, or 0 when i is out of bounds
      */
-    Chunk* getChunk(unsigned int i);
+    Chunk *getChunk(unsigned int i);
 
     /**
      * Reset a chunk as if it were never downloaded.
@@ -222,7 +216,7 @@ public:
     /**
      * Get a BitSet of the status of all Chunks
      */
-    const BitSet& getBitSet() const
+    const BitSet &getBitSet() const
     {
         return bitset;
     }
@@ -230,7 +224,7 @@ public:
     /**
      * Get the excluded bitset
      */
-    const BitSet& getExcludedBitSet() const
+    const BitSet &getExcludedBitSet() const
     {
         return excluded_chunks;
     }
@@ -238,7 +232,7 @@ public:
     /**
      * Get the only seed bitset.
      */
-    const BitSet& getOnlySeedBitSet() const
+    const BitSet &getOnlySeedBitSet() const
     {
         return only_seed_chunks;
     }
@@ -274,7 +268,6 @@ public:
      */
     void include(Uint32 from, Uint32 to);
 
-
     /**
      * Data has been checked, and these chunks are OK.
      * The ChunkManager will update it's internal structures
@@ -282,7 +275,7 @@ public:
      * @param from First chunk of the check
      * @param to Last chunk of the check
      */
-    void dataChecked(const BitSet& ok_chunks, Uint32 from, Uint32 to);
+    void dataChecked(const BitSet &ok_chunks, Uint32 from, Uint32 to);
 
     /// Test if the torrent has existing files, only works the first time a torrent is loaded
     bool hasExistingFiles() const;
@@ -297,7 +290,7 @@ public:
     void dndMissingFiles();
 
     /// Delete all data files
-    Job* deleteDataFiles();
+    Job *deleteDataFiles();
 
     /// Are all not deselected chunks downloaded.
     bool completed() const;
@@ -309,16 +302,16 @@ public:
     Uint64 diskUsage();
 
     /// Get the size in chunks of the preview range of a file of the torrent
-    Uint32 previewChunkRangeSize(const TorrentFile& tf) const;
+    Uint32 previewChunkRangeSize(const TorrentFile &tf) const;
 
     /// Get the size in chunks of the preview range for a single file torrent
     Uint32 previewChunkRangeSize() const;
 
     /// The download priority of a file has changed
-    void downloadPriorityChanged(TorrentFile* tf, Priority newpriority, Priority oldpriority);
+    void downloadPriorityChanged(TorrentFile *tf, Priority newpriority, Priority oldpriority);
 
     /// Is the storage mounted ?
-    bool isStorageMounted(QStringList& missing);
+    bool isStorageMounted(QStringList &missing);
 
 Q_SIGNALS:
     /**
@@ -352,8 +345,8 @@ private:
     static Uint32 preview_size_video;
 
     class Private;
-    Private* d;
-    Torrent& tor;
+    Private *d;
+    Torrent &tor;
     BitSet bitset;
     BitSet excluded_chunks;
     BitSet only_seed_chunks;

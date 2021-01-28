@@ -20,27 +20,24 @@
 #ifndef BTSTATSFILE_H
 #define BTSTATSFILE_H
 
-
 #include <KSharedConfig>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
-
 namespace bt
 {
-
 /**
  * @brief This class is used for loading/storing torrent stats in a file.
  * @author Ivan Vasic <ivasic@gmail.com>
-*/
+ */
 class KTORRENT_EXPORT StatsFile
 {
 public:
     /**
-        * @brief A constructor.
-        * Constructs StatsFile object and calls readSync().
-        */
-    StatsFile(const QString & filename);
+     * @brief A constructor.
+     * Constructs StatsFile object and calls readSync().
+     */
+    StatsFile(const QString &filename);
     virtual ~StatsFile();
 
     QString readString(const QString &key);
@@ -61,7 +58,7 @@ public:
      * @param key The key
      * @return true if key is in the stats file
      */
-    bool hasKey(const QString & key) const;
+    bool hasKey(const QString &key) const;
 
 private:
     KSharedConfigPtr cfg;

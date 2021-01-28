@@ -20,10 +20,9 @@
 
 #include "serversocket.h"
 
+#include "socket.h"
 #include <QSocketNotifier>
 #include <util/log.h>
-#include "socket.h"
-
 
 using namespace bt;
 
@@ -32,10 +31,22 @@ namespace net
 class ServerSocket::Private
 {
 public:
-    Private(ConnectionHandler* chandler) : sock(0), rsn(0), wsn(0), chandler(chandler), dhandler(0)
-    {}
+    Private(ConnectionHandler *chandler)
+        : sock(0)
+        , rsn(0)
+        , wsn(0)
+        , chandler(chandler)
+        , dhandler(0)
+    {
+    }
 
-    Private(DataHandler* dhandler) : sock(0), rsn(0), wsn(0), chandler(0), dhandler(dhandler), pool(new BufferPool())
+    Private(DataHandler *dhandler)
+        : sock(0)
+        , rsn(0)
+        , wsn(0)
+        , chandler(0)
+        , dhandler(dhandler)
+        , pool(new BufferPool())
     {
         pool->setWeakPointer(pool.toWeakRef());
     }
@@ -62,22 +73,22 @@ public:
         return chandler != 0;
     }
 
-    net::Socket* sock;
-    QSocketNotifier* rsn;
-    QSocketNotifier* wsn;
-    ConnectionHandler* chandler;
-    DataHandler* dhandler;
+    net::Socket *sock;
+    QSocketNotifier *rsn;
+    QSocketNotifier *wsn;
+    ConnectionHandler *chandler;
+    DataHandler *dhandler;
     bt::BufferPool::Ptr pool;
 };
 
-ServerSocket::ServerSocket(ConnectionHandler* chandler) : d(new Private(chandler))
+ServerSocket::ServerSocket(ConnectionHandler *chandler)
+    : d(new Private(chandler))
 {
-
 }
 
-ServerSocket::ServerSocket(ServerSocket::DataHandler* dhandler) : d(new Private(dhandler))
+ServerSocket::ServerSocket(ServerSocket::DataHandler *dhandler)
+    : d(new Private(dhandler))
 {
-
 }
 
 ServerSocket::~ServerSocket()
@@ -85,12 +96,12 @@ ServerSocket::~ServerSocket()
     delete d;
 }
 
-bool ServerSocket::bind(const QString& ip, bt::Uint16 port)
+bool ServerSocket::bind(const QString &ip, bt::Uint16 port)
 {
     return bind(net::Address(ip, port));
 }
 
-bool ServerSocket::bind(const net::Address& addr)
+bool ServerSocket::bind(const net::Address &addr)
 {
     d->reset();
 
@@ -156,16 +167,16 @@ void ServerSocket::readyToWrite(int)
     d->dhandler->readyToWrite(this);
 }
 
-int ServerSocket::sendTo(const QByteArray& data, const net::Address& addr)
+int ServerSocket::sendTo(const QByteArray &data, const net::Address &addr)
 {
     // Only UDP server socket can send
     if (!d->dhandler)
         return 0;
 
-    return d->sock->sendTo((const Uint8*)data.data(), data.size(), addr);
+    return d->sock->sendTo((const Uint8 *)data.data(), data.size(), addr);
 }
 
-int ServerSocket::sendTo(const bt::Uint8* buf, int size, const net::Address& addr)
+int ServerSocket::sendTo(const bt::Uint8 *buf, int size, const net::Address &addr)
 {
     // Only UDP server socket can send
     if (!d->dhandler)
@@ -183,4 +194,3 @@ bool ServerSocket::setTOS(unsigned char type_of_service)
 }
 
 }
-

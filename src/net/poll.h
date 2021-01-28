@@ -21,11 +21,11 @@
 #ifndef NET_POLL_H
 #define NET_POLL_H
 
-#include <map>
-#include <vector>
 #include <QSharedPointer>
-#include <util/constants.h>
 #include <ktorrent_export.h>
+#include <map>
+#include <util/constants.h>
+#include <vector>
 
 #ifdef Q_WS_WIN
 #include <util/win32.h>
@@ -35,15 +35,18 @@ struct pollfd;
 
 namespace net
 {
-
 /**
     Client for a Poll
 */
 class KTORRENT_EXPORT PollClient
 {
 public:
-    PollClient() {}
-    virtual ~PollClient() {}
+    PollClient()
+    {
+    }
+    virtual ~PollClient()
+    {
+    }
 
     /// Get the filedescriptor to poll
     virtual int fd() const = 0;

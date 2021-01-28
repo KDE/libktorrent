@@ -36,10 +36,11 @@ class SocketGroup
 {
     Uint32 limit;
     Uint32 assured_rate;
-    std::list<TrafficShapedSocket*> sockets;
+    std::list<TrafficShapedSocket *> sockets;
     bt::TimeStamp prev_run_time;
     Uint32 group_allowance;
     Uint32 group_assured;
+
 public:
     SocketGroup(Uint32 limit, Uint32 assured_rate);
     virtual ~SocketGroup();
@@ -51,7 +52,7 @@ public:
     }
 
     /// Add a socket for processing
-    void add(TrafficShapedSocket* s)
+    void add(TrafficShapedSocket *s)
     {
         sockets.push_back(s);
     }
@@ -62,7 +63,7 @@ public:
         @param now Current time
         @return true if we can download more data, false otherwise
     */
-    bool download(Uint32 & global_allowance, bt::TimeStamp now);
+    bool download(Uint32 &global_allowance, bt::TimeStamp now);
 
     /**
         Process all the sockets in the vector for upload
@@ -70,7 +71,7 @@ public:
         @param now Current time
         @return true if we can upload more data, false otherwise
      */
-    bool upload(Uint32 & global_allowance, bt::TimeStamp now);
+    bool upload(Uint32 &global_allowance, bt::TimeStamp now);
 
     /**
      * Set the group limit in bytes per sec
@@ -109,12 +110,12 @@ public:
     {
         return group_assured;
     }
+
 private:
     void processUnlimited(bool up, bt::TimeStamp now);
-    bool processLimited(bool up, bt::TimeStamp now, Uint32 & allowance);
-    bool process(bool up, bt::TimeStamp now, Uint32 & global_allowance);
+    bool processLimited(bool up, bt::TimeStamp now, Uint32 &allowance);
+    bool process(bool up, bt::TimeStamp now, Uint32 &global_allowance);
 };
-
 
 }
 

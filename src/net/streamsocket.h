@@ -18,20 +18,20 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #ifndef NET_STREAMSOCKET_H
 #define NET_STREAMSOCKET_H
 
 #include <QByteArray>
 #include <net/trafficshapedsocket.h>
 
-
 namespace net
 {
 class StreamSocketListener
 {
 public:
-    virtual ~StreamSocketListener() {}
+    virtual ~StreamSocketListener()
+    {
+    }
 
     /**
      * Called when a StreamSocket gets connected.
@@ -50,7 +50,7 @@ public:
 class StreamSocket : public net::TrafficShapedSocket
 {
 public:
-    StreamSocket(bool tcp, int ip_version, StreamSocketListener* listener);
+    StreamSocket(bool tcp, int ip_version, StreamSocketListener *listener);
     ~StreamSocket() override;
 
     bool bytesReadyToWrite() const override;
@@ -60,10 +60,10 @@ public:
      * Add data to send
      * @param data The QByteArray
      */
-    void addData(const QByteArray & data);
+    void addData(const QByteArray &data);
 
 private:
-    StreamSocketListener* listener;
+    StreamSocketListener *listener;
     QByteArray buffer;
 };
 

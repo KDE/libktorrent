@@ -18,9 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "kclosestnodessearch.h"
-#include <util/functions.h>
 #include "pack.h"
 #include "packednodecontainer.h"
+#include <util/functions.h>
 
 using namespace bt;
 
@@ -28,16 +28,17 @@ namespace dht
 {
 typedef std::map<dht::Key, KBucketEntry>::iterator KNSitr;
 
-KClosestNodesSearch::KClosestNodesSearch(const dht::Key & key, Uint32 max_entries)
-    : key(key), max_entries(max_entries)
-{}
-
+KClosestNodesSearch::KClosestNodesSearch(const dht::Key &key, Uint32 max_entries)
+    : key(key)
+    , max_entries(max_entries)
+{
+}
 
 KClosestNodesSearch::~KClosestNodesSearch()
-{}
+{
+}
 
-
-void KClosestNodesSearch::tryInsert(const KBucketEntry & e)
+void KClosestNodesSearch::tryInsert(const KBucketEntry &e)
 {
     // calculate distance between key and e
     dht::Key d = dht::Key::distance(key, e.getID());
@@ -50,7 +51,7 @@ void KClosestNodesSearch::tryInsert(const KBucketEntry & e)
         // seeing that the last element of the map has also
         // the biggest distance to key (std::map is sorted on the distance)
         // we just take the last
-        const dht::Key & max = emap.rbegin()->first;
+        const dht::Key &max = emap.rbegin()->first;
         if (d < max) {
             // insert if d is smaller then max
             emap.insert(std::make_pair(d, e));
@@ -58,16 +59,15 @@ void KClosestNodesSearch::tryInsert(const KBucketEntry & e)
             emap.erase(max);
         }
     }
-
 }
 
-void KClosestNodesSearch::pack(PackedNodeContainer* cnt)
+void KClosestNodesSearch::pack(PackedNodeContainer *cnt)
 {
     Uint32 j = 0;
 
     KNSitr i = emap.begin();
     while (i != emap.end()) {
-        const KBucketEntry & e = i->second;
+        const KBucketEntry &e = i->second;
         if (e.getAddress().ipVersion() == 4) {
             QByteArray d(26, 0);
             PackBucketEntry(i->second, d, 0);

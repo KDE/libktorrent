@@ -25,13 +25,12 @@
 
 namespace bt
 {
-
 /**
  * @author Joris Guisson
  * @brief Interface for a ChunkDownload
  *
  * This class provides the interface for a ChunkDownload object.
-*/
+ */
 class ChunkDownloadInterface
 {
 public:
@@ -53,7 +52,7 @@ public:
         bt::Uint32 num_downloaders;
     };
 
-    virtual void getStats(Stats & s) = 0;
+    virtual void getStats(Stats &s) = 0;
 };
 
 }

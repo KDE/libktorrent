@@ -20,11 +20,10 @@
 #ifndef BTAUTHENTICATEBASE_H
 #define BTAUTHENTICATEBASE_H
 
+#include <mse/encryptedpacketsocket.h>
 #include <qobject.h>
 #include <qtimer.h>
 #include <util/constants.h>
-#include <mse/encryptedpacketsocket.h>
-
 
 namespace bt
 {
@@ -89,7 +88,7 @@ protected:
      * @param info_hash The info_hash to include
      * @param our_peer_id Our PeerID
      */
-    void sendHandshake(const SHA1Hash & info_hash, const PeerID & our_peer_id);
+    void sendHandshake(const SHA1Hash &info_hash, const PeerID &our_peer_id);
 
     /**
      * Authentication finished.
@@ -107,10 +106,8 @@ protected:
 
     /**
      * Fill in the handshake in a buffer.
-    */
-    void makeHandshake(bt::Uint8* buf, const SHA1Hash & info_hash, const PeerID & our_peer_id);
-
-
+     */
+    void makeHandshake(bt::Uint8 *buf, const SHA1Hash &info_hash, const PeerID &our_peer_id);
 
 protected Q_SLOTS:
     void onTimeout();

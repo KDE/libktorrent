@@ -35,7 +35,7 @@ class Job;
 class KTORRENT_EXPORT JobQueue : public QObject
 {
 public:
-    JobQueue(TorrentControl* parent);
+    JobQueue(TorrentControl *parent);
     ~JobQueue() override;
 
     /// Are there running jobs
@@ -45,19 +45,19 @@ public:
     void startNextJob();
 
     /// Enqueue a job
-    void enqueue(Job* job);
+    void enqueue(Job *job);
 
     /// Get the current job
-    Job* currentJob();
+    Job *currentJob();
 
     /// Kill all jobs
     void killAll();
 
 private:
-    void jobDone(KJob* job);
+    void jobDone(KJob *job);
 
-    QList<Job*> queue;
-    TorrentControl* tc;
+    QList<Job *> queue;
+    TorrentControl *tc;
     bool restart;
 };
 

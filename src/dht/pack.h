@@ -24,7 +24,6 @@
 
 namespace dht
 {
-
 /**
  * Pack a KBucketEntry into a byte array.
  * If the array is not large enough, an error will be thrown
@@ -32,7 +31,7 @@ namespace dht
  * @param ba The byte array
  * @param off The offset into the array
  */
-void PackBucketEntry(const KBucketEntry & e, QByteArray & ba, bt::Uint32 off);
+void PackBucketEntry(const KBucketEntry &e, QByteArray &ba, bt::Uint32 off);
 
 /**
  * Unpack a KBucketEntry from a byte array.
@@ -42,7 +41,7 @@ void PackBucketEntry(const KBucketEntry & e, QByteArray & ba, bt::Uint32 off);
  * @param ip_version The ip version (4 or 6)
  * @return The entry
  */
-KBucketEntry UnpackBucketEntry(const QByteArray & ba, bt::Uint32 off, int ip_version);
+KBucketEntry UnpackBucketEntry(const QByteArray &ba, bt::Uint32 off, int ip_version);
 
 }
 

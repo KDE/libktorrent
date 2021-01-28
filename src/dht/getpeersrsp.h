@@ -21,13 +21,11 @@
 #ifndef DHT_GETPEERSRSP_H
 #define DHT_GETPEERSRSP_H
 
-
-#include "rpcmsg.h"
 #include "packednodecontainer.h"
+#include "rpcmsg.h"
 
 namespace dht
 {
-
 /**
  * GetPeers response message
  */
@@ -35,20 +33,20 @@ class KTORRENT_EXPORT GetPeersRsp : public RPCMsg, public PackedNodeContainer
 {
 public:
     GetPeersRsp();
-    GetPeersRsp(const QByteArray & mtid, const Key & id, const QByteArray & token);
-    GetPeersRsp(const QByteArray & mtid, const Key & id, const DBItemList & values, const QByteArray & token);
+    GetPeersRsp(const QByteArray &mtid, const Key &id, const QByteArray &token);
+    GetPeersRsp(const QByteArray &mtid, const Key &id, const DBItemList &values, const QByteArray &token);
     ~GetPeersRsp() override;
 
-    void apply(DHT* dh_table) override;
+    void apply(DHT *dh_table) override;
     void print() override;
-    void encode(QByteArray & arr) const override;
-    void parse(bt::BDictNode* dict) override;
+    void encode(QByteArray &arr) const override;
+    void parse(bt::BDictNode *dict) override;
 
-    const DBItemList & getItemList() const
+    const DBItemList &getItemList() const
     {
         return items;
     }
-    const QByteArray & getToken() const
+    const QByteArray &getToken() const
     {
         return token;
     }
@@ -62,6 +60,7 @@ public:
     }
 
     typedef QSharedPointer<GetPeersRsp> Ptr;
+
 private:
     QByteArray token;
     DBItemList items;

@@ -28,19 +28,19 @@
 #include <KIO/Job>
 #include <KLocalizedString>
 
+#include "httprequest.h"
+#include "soap.h"
+#include "upnpdescriptionparser.h"
+#include "upnprouter.h"
+#include <peer/accessmanager.h>
 #include <torrent/globals.h>
-#include <util/log.h>
 #include <util/array.h>
 #include <util/error.h>
-#include <util/functions.h>
 #include <util/fileops.h>
+#include <util/functions.h>
+#include <util/log.h>
 #include <util/waitjob.h>
-#include <peer/accessmanager.h>
 #include <version.h>
-#include "upnprouter.h"
-#include "upnpdescriptionparser.h"
-#include "soap.h"
-#include "httprequest.h"
 
 using namespace net;
 
@@ -48,20 +48,20 @@ namespace bt
 {
 struct Forwarding {
     net::Port port;
-    HTTPRequest* pending_req;
-    const UPnPService* service;
+    HTTPRequest *pending_req;
+    const UPnPService *service;
 };
 
 class UPnPRouter::UPnPRouterPrivate
 {
 public:
-    UPnPRouterPrivate(const QString& server, const QUrl &location, bool verbose, UPnPRouter* parent);
+    UPnPRouterPrivate(const QString &server, const QUrl &location, bool verbose, UPnPRouter *parent);
     ~UPnPRouterPrivate();
 
-    HTTPRequest* sendSoapQuery(const QString& query, const QString& soapact, const QString& controlurl, bool at_exit = false);
-    void forward(const UPnPService* srv, const net::Port& port);
-    void undoForward(const UPnPService* srv, const net::Port& port, bt::WaitJob* waitjob);
-    void httpRequestDone(HTTPRequest* r, bool erase_fwd);
+    HTTPRequest *sendSoapQuery(const QString &query, const QString &soapact, const QString &controlurl, bool at_exit = false);
+    void forward(const UPnPService *srv, const net::Port &port);
+    void undoForward(const UPnPService *srv, const net::Port &port, bt::WaitJob *waitjob);
+    void httpRequestDone(HTTPRequest *r, bool erase_fwd);
     void getExternalIP();
 
 public:
@@ -70,10 +70,10 @@ public:
     UPnPDeviceDescription desc;
     QList<UPnPService> services;
     QList<Forwarding> fwds;
-    QList<HTTPRequest*> active_reqs;
+    QList<HTTPRequest *> active_reqs;
     QString error;
     bool verbose;
-    UPnPRouter* parent;
+    UPnPRouter *parent;
     QString external_ip;
 };
 
@@ -83,7 +83,7 @@ UPnPService::UPnPService()
 {
 }
 
-UPnPService::UPnPService(const UPnPService& s)
+UPnPService::UPnPService(const UPnPService &s)
 {
     this->servicetype = s.servicetype;
     this->controlurl = s.controlurl;
@@ -92,7 +92,7 @@ UPnPService::UPnPService(const UPnPService& s)
     this->scpdurl = s.scpdurl;
 }
 
-void UPnPService::setProperty(const QString& name, const QString& value)
+void UPnPService::setProperty(const QString &name, const QString &value)
 {
     if (name == "serviceType")
         servicetype = value;
@@ -111,7 +111,7 @@ void UPnPService::clear()
     servicetype = controlurl = eventsuburl = scpdurl = serviceid = "";
 }
 
-UPnPService& UPnPService::operator = (const UPnPService& s)
+UPnPService &UPnPService::operator=(const UPnPService &s)
 {
     this->servicetype = s.servicetype;
     this->controlurl = s.controlurl;
@@ -123,7 +123,7 @@ UPnPService& UPnPService::operator = (const UPnPService& s)
 
 ///////////////////////////////////////
 
-void UPnPDeviceDescription::setProperty(const QString& name, const QString& value)
+void UPnPDeviceDescription::setProperty(const QString &name, const QString &value)
 {
     if (name == "friendlyName")
         friendlyName = value;
@@ -139,29 +139,26 @@ void UPnPDeviceDescription::setProperty(const QString& name, const QString& valu
 
 ///////////////////////////////////////
 
-
-
-UPnPRouter::UPnPRouter(const QString& server, const QUrl &location, bool verbose)
+UPnPRouter::UPnPRouter(const QString &server, const QUrl &location, bool verbose)
     : d(new UPnPRouterPrivate(server, location, verbose, this))
 {
 }
-
 
 UPnPRouter::~UPnPRouter()
 {
     delete d;
 }
 
-void UPnPRouter::addService(const UPnPService& s)
+void UPnPRouter::addService(const UPnPService &s)
 {
-    for (const UPnPService& os : qAsConst(d->services)) {
+    for (const UPnPService &os : qAsConst(d->services)) {
         if (s.servicetype == os.servicetype)
             return;
     }
     d->services.append(s);
 }
 
-void UPnPRouter::downloadFinished(KJob* j)
+void UPnPRouter::downloadFinished(KJob *j)
 {
     if (j->error()) {
         d->error = i18n("Failed to download %1: %2", d->location.toDisplayString(), j->errorString());
@@ -169,7 +166,7 @@ void UPnPRouter::downloadFinished(KJob* j)
         return;
     }
 
-    KIO::StoredTransferJob* st = (KIO::StoredTransferJob*)j;
+    KIO::StoredTransferJob *st = (KIO::StoredTransferJob *)j;
     // load in the file (target is always local)
     UPnPDescriptionParser desc_parse;
     bool ret = desc_parse.parse(st->data(), this);
@@ -186,11 +183,11 @@ void UPnPRouter::downloadXMLFile()
     d->error = QString();
     // downlaod XML description into a temporary file in /tmp
     Out(SYS_PNP | LOG_DEBUG) << "Downloading XML file " << d->location << endl;
-    KIO::Job* job = KIO::storedGet(d->location, KIO::NoReload, KIO::Overwrite | KIO::HideProgressInfo);
+    KIO::Job *job = KIO::storedGet(d->location, KIO::NoReload, KIO::Overwrite | KIO::HideProgressInfo);
     connect(job, &KIO::Job::result, this, &UPnPRouter::downloadFinished);
 }
 
-void UPnPRouter::forward(const net::Port& port)
+void UPnPRouter::forward(const net::Port &port)
 {
     if (!d->error.isEmpty()) {
         d->error = QString();
@@ -200,7 +197,7 @@ void UPnPRouter::forward(const net::Port& port)
     bool found = false;
     Out(SYS_PNP | LOG_NOTICE) << "Forwarding port " << port.number << " (" << (port.proto == UDP ? "UDP" : "TCP") << ")" << endl;
     // first find the right service
-    for (const UPnPService& s : qAsConst(d->services)) {
+    for (const UPnPService &s : qAsConst(d->services)) {
         if (s.servicetype.contains("WANIPConnection") || s.servicetype.contains("WANPPPConnection")) {
             d->forward(&s, port);
             found = true;
@@ -214,17 +211,13 @@ void UPnPRouter::forward(const net::Port& port)
     }
 }
 
-
-
-
-void UPnPRouter::undoForward(const net::Port& port, bt::WaitJob* waitjob)
+void UPnPRouter::undoForward(const net::Port &port, bt::WaitJob *waitjob)
 {
-    Out(SYS_PNP | LOG_NOTICE) << "Undoing forward of port " << port.number
-                              << " (" << (port.proto == UDP ? "UDP" : "TCP") << ")" << endl;
+    Out(SYS_PNP | LOG_NOTICE) << "Undoing forward of port " << port.number << " (" << (port.proto == UDP ? "UDP" : "TCP") << ")" << endl;
 
     QList<Forwarding>::iterator itr = d->fwds.begin();
     while (itr != d->fwds.end()) {
-        Forwarding& wd = *itr;
+        Forwarding &wd = *itr;
         if (wd.port == port) {
             d->undoForward(wd.service, wd.port, waitjob);
             itr = d->fwds.erase(itr);
@@ -236,7 +229,7 @@ void UPnPRouter::undoForward(const net::Port& port, bt::WaitJob* waitjob)
     stateChanged();
 }
 
-void UPnPRouter::forwardResult(HTTPRequest* r)
+void UPnPRouter::forwardResult(HTTPRequest *r)
 {
     if (r->succeeded()) {
         d->httpRequestDone(r, false);
@@ -249,13 +242,13 @@ void UPnPRouter::forwardResult(HTTPRequest* r)
     }
 }
 
-void UPnPRouter::undoForwardResult(HTTPRequest* r)
+void UPnPRouter::undoForwardResult(HTTPRequest *r)
 {
     d->active_reqs.removeAll(r);
     r->deleteLater();
 }
 
-void UPnPRouter::getExternalIPResult(HTTPRequest* r)
+void UPnPRouter::getExternalIPResult(HTTPRequest *r)
 {
     d->active_reqs.removeAll(r);
     if (r->succeeded()) {
@@ -283,7 +276,6 @@ QString UPnPRouter::getExternalIP() const
 {
     return d->external_ip;
 }
-
 
 #if 0
 
@@ -317,12 +309,10 @@ void UPnPRouter::isPortForwarded(const net::Port& port)
 }
 #endif
 
-
 void UPnPRouter::setVerbose(bool v)
 {
     d->verbose = v;
 }
-
 
 QString UPnPRouter::getServer() const
 {
@@ -334,12 +324,12 @@ QUrl UPnPRouter::getLocation() const
     return d->location;
 }
 
-UPnPDeviceDescription& UPnPRouter::getDescription()
+UPnPDeviceDescription &UPnPRouter::getDescription()
 {
     return d->desc;
 }
 
-const UPnPDeviceDescription& UPnPRouter::getDescription() const
+const UPnPDeviceDescription &UPnPRouter::getDescription() const
 {
     return d->desc;
 }
@@ -349,35 +339,36 @@ QString UPnPRouter::getError() const
     return d->error;
 }
 
-void UPnPRouter::visit(UPnPRouter::Visitor* visitor) const
+void UPnPRouter::visit(UPnPRouter::Visitor *visitor) const
 {
-    for (const Forwarding& fwd : qAsConst(d->fwds)) {
+    for (const Forwarding &fwd : qAsConst(d->fwds)) {
         visitor->forwarding(fwd.port, fwd.pending_req != 0, fwd.service);
     }
 }
 
-
 ////////////////////////////////////
 
-UPnPRouter::UPnPRouterPrivate::UPnPRouterPrivate(const QString& server, const QUrl &location, bool verbose, UPnPRouter* parent)
-    : server(server), location(location), verbose(verbose), parent(parent)
+UPnPRouter::UPnPRouterPrivate::UPnPRouterPrivate(const QString &server, const QUrl &location, bool verbose, UPnPRouter *parent)
+    : server(server)
+    , location(location)
+    , verbose(verbose)
+    , parent(parent)
 {
 }
 
 UPnPRouter::UPnPRouterPrivate::~UPnPRouterPrivate()
 {
-    for (HTTPRequest* r : qAsConst(active_reqs)) {
+    for (HTTPRequest *r : qAsConst(active_reqs)) {
         r->deleteLater();
     }
 }
 
-HTTPRequest* UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString& query, const QString& soapact, const QString& controlurl, bool at_exit)
+HTTPRequest *UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString &query, const QString &soapact, const QString &controlurl, bool at_exit)
 {
     // if port is not set, 0 will be returned
     // thanks to Diego R. Brogna for spotting this bug
     if (location.port() <= 0)
         location.setPort(80);
-
 
     QUrl ctrlurl(controlurl);
     QString host = !ctrlurl.host().isEmpty() ? ctrlurl.host() : location.host();
@@ -390,7 +381,7 @@ HTTPRequest* UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString& query, 
     networkReq.setHeader(QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml"));
     networkReq.setRawHeader("SOAPAction", soapact.toLatin1());
 
-    HTTPRequest* r = new HTTPRequest(networkReq, query, host, port, verbose);
+    HTTPRequest *r = new HTTPRequest(networkReq, query, host, port, verbose);
     if (!at_exit) {
         // Only listen for results when we are not exiting
         active_reqs.append(r);
@@ -398,7 +389,7 @@ HTTPRequest* UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString& query, 
     return r;
 }
 
-void UPnPRouter::UPnPRouterPrivate::forward(const UPnPService* srv, const net::Port& port)
+void UPnPRouter::UPnPRouterPrivate::forward(const UPnPService *srv, const net::Port &port)
 {
     // add all the arguments for the command
     QList<SOAP::Arg> args;
@@ -421,7 +412,7 @@ void UPnPRouter::UPnPRouterPrivate::forward(const UPnPService* srv, const net::P
 
     // the local IP address
     a.element = "NewInternalClient";
-    a.value = "$LOCAL_IP";// will be replaced by our local ip in HTTPRequest
+    a.value = "$LOCAL_IP"; // will be replaced by our local ip in HTTPRequest
     args.append(a);
 
     a.element = "NewEnabled";
@@ -430,7 +421,7 @@ void UPnPRouter::UPnPRouterPrivate::forward(const UPnPService* srv, const net::P
 
     a.element = "NewPortMappingDescription";
     static Uint32 cnt = 0;
-    a.value = QString("KTorrent UPNP %1").arg(cnt++);   // TODO: change this
+    a.value = QString("KTorrent UPNP %1").arg(cnt++); // TODO: change this
     args.append(a);
 
     a.element = "NewLeaseDuration";
@@ -444,7 +435,7 @@ void UPnPRouter::UPnPRouterPrivate::forward(const UPnPService* srv, const net::P
     // erase old forwarding if one exists
     QList<Forwarding>::iterator itr = fwds.begin();
     while (itr != fwds.end()) {
-        Forwarding& fwo = *itr;
+        Forwarding &fwo = *itr;
         if (fwo.port == port && fwo.service == srv)
             itr = fwds.erase(itr);
         else
@@ -456,13 +447,13 @@ void UPnPRouter::UPnPRouterPrivate::forward(const UPnPService* srv, const net::P
     fwds.append(fw);
 }
 
-void UPnPRouter::UPnPRouterPrivate::undoForward(const UPnPService* srv, const net::Port& port, bt::WaitJob* waitjob)
+void UPnPRouter::UPnPRouterPrivate::undoForward(const UPnPService *srv, const net::Port &port, bt::WaitJob *waitjob)
 {
     // add all the arguments for the command
     QList<SOAP::Arg> args;
     SOAP::Arg a;
-    //a.element = "NewRemoteHost";
-    //args.append(a);
+    // a.element = "NewRemoteHost";
+    // args.append(a);
 
     // the external port
     a.element = "NewExternalPort";
@@ -474,10 +465,9 @@ void UPnPRouter::UPnPRouterPrivate::undoForward(const UPnPService* srv, const ne
     a.value = port.proto == net::TCP ? "TCP" : "UDP";
     args.append(a);
 
-
     QString action = "DeletePortMapping";
     QString comm = SOAP::createCommand(action, srv->servicetype, args);
-    HTTPRequest* r = sendSoapQuery(comm, srv->servicetype + "#" + action, srv->controlurl, waitjob != 0);
+    HTTPRequest *r = sendSoapQuery(comm, srv->servicetype + "#" + action, srv->controlurl, waitjob != 0);
 
     if (waitjob)
         waitjob->addExitOperation(r);
@@ -487,22 +477,22 @@ void UPnPRouter::UPnPRouterPrivate::undoForward(const UPnPService* srv, const ne
 
 void UPnPRouter::UPnPRouterPrivate::getExternalIP()
 {
-    for (const UPnPService& s : qAsConst(services)) {
+    for (const UPnPService &s : qAsConst(services)) {
         if (s.servicetype.contains("WANIPConnection") || s.servicetype.contains("WANPPPConnection")) {
             QString action = "GetExternalIPAddress";
             QString comm = SOAP::createCommand(action, s.servicetype);
-            HTTPRequest* r = sendSoapQuery(comm, s.servicetype + "#" + action, s.controlurl);
+            HTTPRequest *r = sendSoapQuery(comm, s.servicetype + "#" + action, s.controlurl);
             connect(r, &HTTPRequest::result, parent, &UPnPRouter::getExternalIPResult);
             break;
         }
     }
 }
 
-void UPnPRouter::UPnPRouterPrivate::httpRequestDone(HTTPRequest* r, bool erase_fwd)
+void UPnPRouter::UPnPRouterPrivate::httpRequestDone(HTTPRequest *r, bool erase_fwd)
 {
     int idx = 0;
     bool found = false;
-    for (const Forwarding& fw : qAsConst(fwds)) {
+    for (const Forwarding &fw : qAsConst(fwds)) {
         if (fw.pending_req == r) {
             found = true;
             break;
@@ -511,7 +501,7 @@ void UPnPRouter::UPnPRouterPrivate::httpRequestDone(HTTPRequest* r, bool erase_f
     }
 
     if (found) {
-        Forwarding& fw = fwds[idx];
+        Forwarding &fw = fwds[idx];
         fw.pending_req = 0;
         if (erase_fwd)
             fwds.removeAt(idx);
@@ -521,6 +511,3 @@ void UPnPRouter::UPnPRouterPrivate::httpRequestDone(HTTPRequest* r, bool erase_f
     r->deleteLater();
 }
 }
-
-
-

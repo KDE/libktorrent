@@ -18,32 +18,31 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "nodelookup.h"
-#include <util/log.h>
-#include <torrent/globals.h>
-#include "rpcmsg.h"
-#include "node.h"
-#include "pack.h"
-#include "kbucket.h"
 #include "findnodereq.h"
 #include "findnodersp.h"
+#include "kbucket.h"
+#include "node.h"
+#include "pack.h"
+#include "rpcmsg.h"
+#include <torrent/globals.h>
+#include <util/log.h>
 
 using namespace bt;
 
 namespace dht
 {
-
-NodeLookup::NodeLookup(const dht::Key & key, RPCServer* rpc, Node* node, QObject* parent)
-    : Task(rpc, node, parent),
-      node_id(key),
-      num_nodes_rsp(0)
+NodeLookup::NodeLookup(const dht::Key &key, RPCServer *rpc, Node *node, QObject *parent)
+    : Task(rpc, node, parent)
+    , node_id(key)
+    , num_nodes_rsp(0)
 {
 }
 
-
 NodeLookup::~NodeLookup()
-{}
+{
+}
 
-void NodeLookup::handleNodes(const QByteArray& nodes, int ip_version)
+void NodeLookup::handleNodes(const QByteArray &nodes, int ip_version)
 {
     Uint32 address_size = ip_version == 4 ? 26 : 38;
     Uint32 nnodes = nodes.size() / address_size;
@@ -60,10 +59,9 @@ void NodeLookup::handleNodes(const QByteArray& nodes, int ip_version)
     }
 }
 
-
-void NodeLookup::callFinished(RPCCall*, RPCMsg::Ptr rsp)
+void NodeLookup::callFinished(RPCCall *, RPCMsg::Ptr rsp)
 {
-    //Out(SYS_DHT|LOG_DEBUG) << "NodeLookup::callFinished" << endl;
+    // Out(SYS_DHT|LOG_DEBUG) << "NodeLookup::callFinished" << endl;
     if (isFinished())
         return;
 
@@ -73,18 +71,18 @@ void NodeLookup::callFinished(RPCCall*, RPCMsg::Ptr rsp)
         if (!fnr)
             return;
 
-        const QByteArray & nodes = fnr->getNodes();
+        const QByteArray &nodes = fnr->getNodes();
         if (nodes.size() > 0)
             handleNodes(nodes, 4);
 
-        const QByteArray & nodes6 = fnr->getNodes6();
+        const QByteArray &nodes6 = fnr->getNodes6();
         if (nodes6.size() > 0)
             handleNodes(nodes6, 6);
         num_nodes_rsp++;
     }
 }
 
-void NodeLookup::callTimeout(RPCCall*)
+void NodeLookup::callTimeout(RPCCall *)
 {
     //  Out(SYS_DHT|LOG_DEBUG) << "NodeLookup::callTimeout" << endl;
 }

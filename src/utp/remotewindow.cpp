@@ -19,22 +19,20 @@
  ***************************************************************************/
 
 #include "remotewindow.h"
-#include "utpprotocol.h"
 #include "connection.h"
-#include <util/log.h>
+#include "utpprotocol.h"
 #include <util/functions.h>
+#include <util/log.h>
 
 using namespace bt;
 
 namespace utp
 {
-
-
-UnackedPacket::UnackedPacket(const PacketBuffer & packet, bt::Uint16 seq_nr, bt::TimeStamp send_time)
-    : packet(packet),
-      seq_nr(seq_nr),
-      send_time(send_time),
-      retransmitted(false)
+UnackedPacket::UnackedPacket(const PacketBuffer &packet, bt::Uint16 seq_nr, bt::TimeStamp send_time)
+    : packet(packet)
+    , seq_nr(seq_nr)
+    , send_time(send_time)
+    , retransmitted(false)
 {
 }
 
@@ -42,15 +40,13 @@ UnackedPacket::~UnackedPacket()
 {
 }
 
-
 RemoteWindow::RemoteWindow()
-    : cur_window(0),
-      max_window(64 * 1024),
-      wnd_size(0),
-      last_ack_nr(0),
-      last_ack_receive_count(0)
+    : cur_window(0)
+    , max_window(64 * 1024)
+    , wnd_size(0)
+    , last_ack_nr(0)
+    , last_ack_receive_count(0)
 {
-
 }
 
 RemoteWindow::~RemoteWindow()
@@ -58,7 +54,7 @@ RemoteWindow::~RemoteWindow()
     clear();
 }
 
-void RemoteWindow::packetReceived(const utp::Header* hdr, const SelectiveAck* sack, Retransmitter* conn)
+void RemoteWindow::packetReceived(const utp::Header *hdr, const SelectiveAck *sack, Retransmitter *conn)
 {
     if (hdr->ack_nr == last_ack_nr) {
         if (hdr->type == ST_STATE)
@@ -94,20 +90,20 @@ void RemoteWindow::packetReceived(const utp::Header* hdr, const SelectiveAck* sa
     }
 }
 
-void RemoteWindow::addPacket(const PacketBuffer & packet, bt::Uint16 seq_nr, bt::TimeStamp send_time)
+void RemoteWindow::addPacket(const PacketBuffer &packet, bt::Uint16 seq_nr, bt::TimeStamp send_time)
 {
     cur_window += packet.payloadSize();
     wnd_size -= packet.payloadSize();
     unacked_packets.append(UnackedPacket(packet, seq_nr, send_time));
 }
 
-void RemoteWindow::checkLostPackets(const utp::Header* hdr, const utp::SelectiveAck* sack, Retransmitter* conn)
+void RemoteWindow::checkLostPackets(const utp::Header *hdr, const utp::SelectiveAck *sack, Retransmitter *conn)
 {
     bt::TimeStamp now = bt::Now();
     bool lost_packets = false;
 
     QList<UnackedPacket>::iterator itr = unacked_packets.begin();
-    UnackedPacket & first_unacked = *itr;
+    UnackedPacket &first_unacked = *itr;
     if (last_ack_receive_count >= 3 && first_unacked.seq_nr == hdr->ack_nr + 1) {
         // packet has been lost
         if (!first_unacked.retransmitted || now - first_unacked.send_time > conn->currentTimeout()) {
@@ -127,8 +123,7 @@ void RemoteWindow::checkLostPackets(const utp::Header* hdr, const utp::Selective
         bt::Uint16 lost_index = lost(sack);
         while (lost_index > 0 && itr != unacked_packets.end()) {
             bt::Uint16 d = itr->seq_nr - hdr->ack_nr;
-            if (d < lost_index &&
-                (!itr->retransmitted || now - itr->send_time > conn->currentTimeout())) {
+            if (d < lost_index && (!itr->retransmitted || now - itr->send_time > conn->currentTimeout())) {
                 try {
                     conn->retransmit(itr->packet, itr->seq_nr);
                     itr->send_time = now;
@@ -147,7 +142,7 @@ void RemoteWindow::checkLostPackets(const utp::Header* hdr, const utp::Selective
     }
 }
 
-bt::Uint16 RemoteWindow::lost(const SelectiveAck* sack)
+bt::Uint16 RemoteWindow::lost(const SelectiveAck *sack)
 {
     // A packet is lost if 3 packets have been acked after it
     bt::Uint32 acked = 0;
@@ -165,13 +160,13 @@ bt::Uint16 RemoteWindow::lost(const SelectiveAck* sack)
     return 0;
 }
 
-void RemoteWindow::timeout(Retransmitter* conn)
+void RemoteWindow::timeout(Retransmitter *conn)
 {
     try {
         max_window = MIN_PACKET_SIZE;
         bt::TimeStamp now = bt::Now();
         // When a timeout occurs retransmit packets which are lost longer then the current timeout
-        for (UnackedPacket & pkt : unacked_packets) {
+        for (UnackedPacket &pkt : unacked_packets) {
             if (!pkt.retransmitted || now - pkt.send_time > conn->currentTimeout()) {
                 conn->retransmit(pkt.packet, pkt.seq_nr);
                 pkt.send_time = bt::Now();
@@ -190,7 +185,7 @@ void RemoteWindow::updateWindowSize(double scaled_gain)
     else
         max_window += d;
 
-    //if (scaled_gain > 1000)
+    // if (scaled_gain > 1000)
     //  Out(SYS_UTP|LOG_DEBUG) << "RemoteWindow::updateWindowSize " << scaled_gain << " " << max_window << endl;
 }
 
@@ -199,4 +194,3 @@ void RemoteWindow::clear()
     unacked_packets.clear();
 }
 }
-

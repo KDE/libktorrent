@@ -20,19 +20,18 @@
 #ifndef BTURLENCODER_H
 #define BTURLENCODER_H
 
-#include <qstring.h>
 #include "constants.h"
+#include <qstring.h>
 
 namespace bt
 {
-
 /**
 @author Joris Guisson
 */
 class URLEncoder
 {
 public:
-    static QString encode(const char* buf, Uint32 size);
+    static QString encode(const char *buf, Uint32 size);
 };
 
 }

@@ -36,13 +36,13 @@ class Torrent;
 class KTORRENT_EXPORT UTMetaData : public PeerProtocolExtension
 {
 public:
-    UTMetaData(const Torrent & tor, bt::Uint32 id, Peer* peer);
+    UTMetaData(const Torrent &tor, bt::Uint32 id, Peer *peer);
     ~UTMetaData() override;
 
     /**
         Handle a metadata packet
     */
-    void handlePacket(const bt::Uint8* packet, Uint32 size) override;
+    void handlePacket(const bt::Uint8 *packet, Uint32 size) override;
 
     /**
         Set the reported metadata size
@@ -50,17 +50,17 @@ public:
     void setReportedMetadataSize(Uint32 metadata_size);
 
 private:
-    void request(BDictNode* dict);
-    void reject(BDictNode* dict);
-    void data(BDictNode* dict, const QByteArray & piece_data);
+    void request(BDictNode *dict);
+    void reject(BDictNode *dict);
+    void data(BDictNode *dict, const QByteArray &piece_data);
     void sendReject(int piece);
-    void sendData(int piece, int total_size, const QByteArray & data);
+    void sendData(int piece, int total_size, const QByteArray &data);
     void startDownload();
 
 private:
-    const Torrent & tor;
+    const Torrent &tor;
     Uint32 reported_metadata_size;
-    MetadataDownload* download;
+    MetadataDownload *download;
 };
 
 }

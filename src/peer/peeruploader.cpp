@@ -18,36 +18,37 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "peeruploader.h"
-#include <set>
-#include <util/log.h>
-#include <util/functions.h>
-#include <util/sha1hash.h>
 #include "peer.h"
 #include <diskio/chunkmanager.h>
+#include <set>
 #include <torrent/torrent.h>
-
+#include <util/functions.h>
+#include <util/log.h>
+#include <util/sha1hash.h>
 
 namespace bt
 {
-
-PeerUploader::PeerUploader(Peer* peer) : peer(peer), uploaded(0)
-{}
-
+PeerUploader::PeerUploader(Peer *peer)
+    : peer(peer)
+    , uploaded(0)
+{
+}
 
 PeerUploader::~PeerUploader()
-{}
+{
+}
 
-void PeerUploader::addRequest(const Request & r)
+void PeerUploader::addRequest(const Request &r)
 {
     requests.push_back(r);
 }
 
-void PeerUploader::removeRequest(const Request & r)
+void PeerUploader::removeRequest(const Request &r)
 {
     requests.removeAll(r);
 }
 
-Uint32 PeerUploader::handleRequests(ChunkManager & cman)
+Uint32 PeerUploader::handleRequests(ChunkManager &cman)
 {
     Uint32 ret = uploaded;
     uploaded = 0;
@@ -59,7 +60,7 @@ Uint32 PeerUploader::handleRequests(ChunkManager & cman)
     while (requests.size() > 0) {
         Request r = requests.front();
 
-        Chunk* c = cman.getChunk(r.getIndex());
+        Chunk *c = cman.getChunk(r.getIndex());
         if (c && c->getStatus() == Chunk::ON_DISK) {
             if (!peer->sendChunk(r.getIndex(), r.getOffset(), r.getLength(), c)) {
                 if (peer->getStats().fast_extensions)
@@ -85,7 +86,7 @@ void PeerUploader::clearAllRequests()
         // reject all requests
         // if the peer supports fast extensions,
         // choke doesn't mean reject all
-        for (const Request & r : qAsConst(requests))
+        for (const Request &r : qAsConst(requests))
             peer->sendReject(r);
     }
     requests.clear();

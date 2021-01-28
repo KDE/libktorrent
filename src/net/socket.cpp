@@ -21,16 +21,16 @@
 #include "socket.h"
 #include <QtGlobal>
 
-#include <unistd.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
+#include <arpa/inet.h>
 #include <errno.h>
+#include <netdb.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
-#include <arpa/inet.h>
-#include <netdb.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #if defined(Q_OS_LINUX) && !defined(__FreeBSD_kernel__)
 #include <asm/ioctls.h>
@@ -58,9 +58,12 @@ using namespace bt;
 
 namespace net
 {
-
 Socket::Socket(int fd, int ip_version)
-    : SocketDevice(bt::TCP), m_fd(fd), m_ip_version(ip_version), r_poll_index(-1), w_poll_index(-1)
+    : SocketDevice(bt::TCP)
+    , m_fd(fd)
+    , m_ip_version(ip_version)
+    , r_poll_index(-1)
+    , w_poll_index(-1)
 {
     // check if the IP version is 4 or 6
     if (m_ip_version != 4 && m_ip_version != 6)
@@ -76,7 +79,11 @@ Socket::Socket(int fd, int ip_version)
 }
 
 Socket::Socket(bool tcp, int ip_version)
-    : SocketDevice(bt::TCP), m_fd(-1), m_ip_version(ip_version), r_poll_index(-1), w_poll_index(-1)
+    : SocketDevice(bt::TCP)
+    , m_fd(-1)
+    , m_ip_version(ip_version)
+    , r_poll_index(-1)
+    , w_poll_index(-1)
 {
     // check if the IP version is 4 or 6
     if (m_ip_version != 4 && m_ip_version != 6)
@@ -152,12 +159,12 @@ void Socket::setBlocking(bool on)
 #endif
 }
 
-bool Socket::connectTo(const Address & a)
+bool Socket::connectTo(const Address &a)
 {
     int len = 0;
     struct sockaddr_storage ss;
     a.toSocketAddress(&ss, len);
-    if (::connect(m_fd, (struct sockaddr*)&ss, len) < 0) {
+    if (::connect(m_fd, (struct sockaddr *)&ss, len) < 0) {
 #ifndef Q_WS_WIN
         if (errno == EINPROGRESS)
 #else
@@ -168,8 +175,7 @@ bool Socket::connectTo(const Address & a)
             m_state = CONNECTING;
             return false;
         } else {
-            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Cannot connect to host %1 : %2")
-                                      .arg(a.toString()).arg(QString::fromUtf8(strerror(errno))) << endl;
+            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Cannot connect to host %1 : %2").arg(a.toString()).arg(QString::fromUtf8(strerror(errno))) << endl;
             return false;
         }
     }
@@ -178,12 +184,12 @@ bool Socket::connectTo(const Address & a)
     return true;
 }
 
-bool Socket::bind(const QString & ip, Uint16 port, bool also_listen)
+bool Socket::bind(const QString &ip, Uint16 port, bool also_listen)
 {
     return bind(net::Address(ip, port), also_listen);
 }
 
-bool Socket::bind(const net::Address& addr, bool also_listen)
+bool Socket::bind(const net::Address &addr, bool also_listen)
 {
     int val = 1;
 #ifndef Q_WS_WIN
@@ -198,19 +204,15 @@ bool Socket::bind(const net::Address& addr, bool also_listen)
     int len = 0;
     struct sockaddr_storage ss;
     addr.toSocketAddress(&ss, len);
-    if (::bind(m_fd, (struct sockaddr*)&ss, len) != 0) {
-        Out(SYS_CON | LOG_IMPORTANT) << QStringLiteral("Cannot bind to port %1:%2 : %3")
-                                     .arg(addr.toString())
-                                     .arg(addr.port())
-                                     .arg(QString::fromUtf8(strerror(errno))) << endl;
+    if (::bind(m_fd, (struct sockaddr *)&ss, len) != 0) {
+        Out(SYS_CON | LOG_IMPORTANT)
+            << QStringLiteral("Cannot bind to port %1:%2 : %3").arg(addr.toString()).arg(addr.port()).arg(QString::fromUtf8(strerror(errno))) << endl;
         return false;
     }
 
     if (also_listen && listen(m_fd, SOMAXCONN) < 0) {
-        Out(SYS_CON | LOG_IMPORTANT) << QStringLiteral("Cannot listen to port %1:%2 : %3")
-                                     .arg(addr.toString())
-                                     .arg(addr.port())
-                                     .arg(QString::fromUtf8(strerror(errno))) << endl;
+        Out(SYS_CON | LOG_IMPORTANT)
+            << QStringLiteral("Cannot listen to port %1:%2 : %3").arg(addr.toString()).arg(addr.port()).arg(QString::fromUtf8(strerror(errno))) << endl;
         return false;
     }
 
@@ -218,7 +220,7 @@ bool Socket::bind(const net::Address& addr, bool also_listen)
     return true;
 }
 
-int Socket::send(const bt::Uint8* buf, int len)
+int Socket::send(const bt::Uint8 *buf, int len)
 {
 #ifndef Q_WS_WIN
     int ret = ::send(m_fd, buf, len, MSG_NOSIGNAL);
@@ -235,7 +237,7 @@ int Socket::send(const bt::Uint8* buf, int len)
     return ret;
 }
 
-int Socket::recv(bt::Uint8* buf, int max_len)
+int Socket::recv(bt::Uint8 *buf, int max_len)
 {
 #ifndef Q_WS_WIN
     int ret = ::recv(m_fd, buf, max_len, 0);
@@ -258,12 +260,12 @@ int Socket::recv(bt::Uint8* buf, int max_len)
     return ret;
 }
 
-int Socket::sendTo(const bt::Uint8* buf, int len, const Address & a)
+int Socket::sendTo(const bt::Uint8 *buf, int len, const Address &a)
 {
     int alen = 0;
     struct sockaddr_storage ss;
     a.toSocketAddress(&ss, alen);
-    int ret = ::sendto(m_fd, (char*)buf, len, 0, (struct sockaddr*)&ss, alen);
+    int ret = ::sendto(m_fd, (char *)buf, len, 0, (struct sockaddr *)&ss, alen);
     if (ret < 0) {
         if (errno == EAGAIN || errno == EWOULDBLOCK)
             return SEND_WOULD_BLOCK;
@@ -275,14 +277,14 @@ int Socket::sendTo(const bt::Uint8* buf, int len, const Address & a)
     return ret;
 }
 
-int Socket::recvFrom(bt::Uint8* buf, int max_len, Address & a)
+int Socket::recvFrom(bt::Uint8 *buf, int max_len, Address &a)
 {
     struct sockaddr_storage ss;
     socklen_t slen = sizeof(ss);
 #ifndef Q_WS_WIN
-    int ret = ::recvfrom(m_fd, buf, max_len, 0, (struct sockaddr*)&ss, &slen);
+    int ret = ::recvfrom(m_fd, buf, max_len, 0, (struct sockaddr *)&ss, &slen);
 #else
-    int ret = ::recvfrom(m_fd, (char *)buf, max_len, 0, (struct sockaddr*)&ss, &slen);
+    int ret = ::recvfrom(m_fd, (char *)buf, max_len, 0, (struct sockaddr *)&ss, &slen);
 #endif
     if (ret < 0) {
         Out(SYS_CON | LOG_DEBUG) << "Receive error : " << QString::fromUtf8(strerror(errno)) << endl;
@@ -292,17 +294,17 @@ int Socket::recvFrom(bt::Uint8* buf, int max_len, Address & a)
     return ret;
 }
 
-int Socket::accept(Address & a)
+int Socket::accept(Address &a)
 {
     struct sockaddr_storage ss;
     socklen_t slen = sizeof(ss);
-    int sfd = ::accept(m_fd, (struct sockaddr*)&ss, &slen);
+    int sfd = ::accept(m_fd, (struct sockaddr *)&ss, &slen);
 
     if (sfd < 0) {
         Out(SYS_CON | LOG_DEBUG) << "Accept error : " << QString::fromUtf8(strerror(errno)) << endl;
         return -1;
     }
-    a =  net::Address(&ss);
+    a = net::Address(&ss);
 
     Out(SYS_CON | LOG_DEBUG) << "Accepted connection from " << a.toString() << endl;
     return sfd;
@@ -326,16 +328,16 @@ bool Socket::setTOS(unsigned char type_of_service)
         if (setsockopt(m_fd, IPPROTO_IP, IP_TOS, (char *)&c, sizeof(c)) < 0)
 #endif
         {
-            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Failed to set TOS to %1 : %2")
-                                      .arg((int)type_of_service).arg(QString::fromUtf8(strerror(errno))) << endl;
+            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Failed to set TOS to %1 : %2").arg((int)type_of_service).arg(QString::fromUtf8(strerror(errno)))
+                                      << endl;
             return false;
         }
     } else {
 #if defined(IPV6_TCLASS)
         int c = type_of_service;
         if (setsockopt(m_fd, IPPROTO_IPV6, IPV6_TCLASS, &c, sizeof(c)) < 0) {
-            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Failed to set traffic class to %1 : %2")
-                                      .arg((int)type_of_service).arg(QString::fromUtf8(strerror(errno))) << endl;
+            Out(SYS_CON | LOG_NOTICE)
+                << QStringLiteral("Failed to set traffic class to %1 : %2").arg((int)type_of_service).arg(QString::fromUtf8(strerror(errno))) << endl;
             return false;
         }
 #endif
@@ -350,7 +352,7 @@ Uint32 Socket::bytesAvailable() const
 #ifndef Q_WS_WIN
     if (ioctl(m_fd, FIONREAD, &ret) < 0)
 #else
-    if (ioctlsocket(m_fd, FIONREAD, (u_long*)&ret) < 0)
+    if (ioctlsocket(m_fd, FIONREAD, (u_long *)&ret) < 0)
 #endif
         return 0;
 
@@ -381,20 +383,20 @@ bool Socket::connectSuccesFull()
 
 void Socket::cacheAddress()
 {
-    struct sockaddr_storage ss;           /* Where the peer adr goes. */
+    struct sockaddr_storage ss; /* Where the peer adr goes. */
     socklen_t sslen = sizeof(ss);
 
-    if (getpeername(m_fd, (struct sockaddr*)&ss, &sslen) == 0) {
+    if (getpeername(m_fd, (struct sockaddr *)&ss, &sslen) == 0) {
         addr = net::Address(&ss);
     }
 }
 
 Address Socket::getSockName() const
 {
-    struct sockaddr_storage ss;           /* Where the peer adr goes. */
+    struct sockaddr_storage ss; /* Where the peer adr goes. */
     socklen_t sslen = sizeof(ss);
 
-    if (getsockname(m_fd, (struct sockaddr*)&ss, &sslen) == 0)
+    if (getsockname(m_fd, (struct sockaddr *)&ss, &sslen) == 0)
         return net::Address(&ss);
     else
         return Address();
@@ -407,8 +409,7 @@ int Socket::take()
     return ret;
 }
 
-
-void Socket::prepare(Poll* p, Poll::Mode mode)
+void Socket::prepare(Poll *p, Poll::Mode mode)
 {
     if (m_fd >= 0) {
         if (mode == Poll::OUTPUT)
@@ -418,7 +419,7 @@ void Socket::prepare(Poll* p, Poll::Mode mode)
     }
 }
 
-bool Socket::ready(const Poll* p, Poll::Mode mode) const
+bool Socket::ready(const Poll *p, Poll::Mode mode) const
 {
     return p->ready(mode == Poll::OUTPUT ? w_poll_index : r_poll_index, mode);
 }

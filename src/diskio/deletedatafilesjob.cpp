@@ -22,32 +22,30 @@
 #include <QDir>
 #include <kio/deletejob.h>
 #include <kio/jobuidelegate.h>
-#include <util/log.h>
 #include <util/fileops.h>
 #include <util/functions.h>
+#include <util/log.h>
 
 namespace bt
 {
-
-
-
-DeleteDataFilesJob::DeleteDataFilesJob(const QString & base)
-    : Job(true, 0), base(base), directory_tree(0)
+DeleteDataFilesJob::DeleteDataFilesJob(const QString &base)
+    : Job(true, 0)
+    , base(base)
+    , directory_tree(0)
 {
 }
-
 
 DeleteDataFilesJob::~DeleteDataFilesJob()
 {
     delete directory_tree;
 }
 
-void DeleteDataFilesJob::addFile(const QString & file)
+void DeleteDataFilesJob::addFile(const QString &file)
 {
     files.append(QUrl::fromLocalFile(file));
 }
 
-void DeleteDataFilesJob::addEmptyDirectoryCheck(const QString & fpath)
+void DeleteDataFilesJob::addEmptyDirectoryCheck(const QString &fpath)
 {
     if (!directory_tree)
         directory_tree = new DirTree(base);
@@ -61,7 +59,7 @@ void DeleteDataFilesJob::start()
     connect(active_job, &KIO::Job::result, this, &DeleteDataFilesJob::onDeleteJobDone);
 }
 
-void DeleteDataFilesJob::onDeleteJobDone(KJob* j)
+void DeleteDataFilesJob::onDeleteJobDone(KJob *j)
 {
     if (j != active_job)
         return;
@@ -77,14 +75,13 @@ void DeleteDataFilesJob::onDeleteJobDone(KJob* j)
     emitResult();
 }
 
-
 void DeleteDataFilesJob::kill(bool quietly)
 {
     Q_UNUSED(quietly);
 }
 
-
-DeleteDataFilesJob::DirTree::DirTree(const QString & name) : name(name)
+DeleteDataFilesJob::DirTree::DirTree(const QString &name)
+    : name(name)
 {
     subdirs.setAutoDelete(true);
 }
@@ -93,14 +90,14 @@ DeleteDataFilesJob::DirTree::~DirTree()
 {
 }
 
-void DeleteDataFilesJob::DirTree::insert(const QString & fpath)
+void DeleteDataFilesJob::DirTree::insert(const QString &fpath)
 {
     int i = fpath.indexOf(bt::DirSeparator());
     if (i == -1) // last part of fpath is a file, so we need to ignore that
         return;
 
     QString dn = fpath.left(i);
-    DirTree* d = subdirs.find(dn);
+    DirTree *d = subdirs.find(dn);
     if (!d) {
         d = new DirTree(dn);
         subdirs.insert(dn, d);
@@ -109,7 +106,7 @@ void DeleteDataFilesJob::DirTree::insert(const QString & fpath)
     d->insert(fpath.mid(i + 1));
 }
 
-void DeleteDataFilesJob::DirTree::doDeleteOnEmpty(const QString & base)
+void DeleteDataFilesJob::DirTree::doDeleteOnEmpty(const QString &base)
 {
     bt::PtrMap<QString, DirTree>::iterator i = subdirs.begin();
     while (i != subdirs.end()) {

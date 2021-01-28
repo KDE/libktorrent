@@ -18,43 +18,44 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "dht.h"
+#include "announcereq.h"
+#include "announcersp.h"
+#include "announcetask.h"
+#include "database.h"
+#include "findnodereq.h"
+#include "findnodersp.h"
+#include "getpeersreq.h"
+#include "getpeersrsp.h"
+#include "kclosestnodessearch.h"
+#include "node.h"
+#include "nodelookup.h"
+#include "pingreq.h"
+#include "pingrsp.h"
+#include "rpcmsg.h"
+#include "rpcserver.h"
+#include "taskmanager.h"
 #include <QMap>
+#include <bcodec/bnode.h>
 #include <net/addressresolver.h>
-#include <util/log.h>
 #include <util/array.h>
 #include <util/error.h>
 #include <util/functions.h>
-#include <bcodec/bnode.h>
-#include "announcetask.h"
-#include "node.h"
-#include "rpcserver.h"
-#include "rpcmsg.h"
-#include "kclosestnodessearch.h"
-#include "database.h"
-#include "taskmanager.h"
-#include "nodelookup.h"
-#include "pingreq.h"
-#include "findnodereq.h"
-#include "getpeersreq.h"
-#include "announcereq.h"
-#include "pingrsp.h"
-#include "findnodersp.h"
-#include "getpeersrsp.h"
-#include "announcersp.h"
+#include <util/log.h>
 
 using namespace bt;
 
 namespace dht
 {
-
-
-
-DHT::DHT() : node(0), srv(0), db(0), tman(0), our_node_lookup(0)
+DHT::DHT()
+    : node(0)
+    , srv(0)
+    , db(0)
+    , tman(0)
+    , our_node_lookup(0)
 {
     connect(&update_timer, &QTimer::timeout, this, &DHT::update);
     connect(&expire_timer, &QTimer::timeout, this, &DHT::expireDatabaseItems);
 }
-
 
 DHT::~DHT()
 {
@@ -62,7 +63,7 @@ DHT::~DHT()
         stop();
 }
 
-void DHT::start(const QString & table, const QString & key_file, bt::Uint16 port)
+void DHT::start(const QString &table, const QString &key_file, bt::Uint16 port)
 {
     if (running)
         return;
@@ -93,7 +94,6 @@ void DHT::start(const QString & table, const QString & key_file, bt::Uint16 port
     }
 }
 
-
 void DHT::stop()
 {
     if (!running)
@@ -106,13 +106,17 @@ void DHT::stop()
     node->saveTable(table_file);
     running = false;
     stopped();
-    delete tman; tman = 0;
-    delete db; db = 0;
-    delete node; node = 0;
-    delete srv; srv = 0;
+    delete tman;
+    tman = 0;
+    delete db;
+    db = 0;
+    delete node;
+    node = 0;
+    delete srv;
+    srv = 0;
 }
 
-void DHT::ping(const PingReq & r)
+void DHT::ping(const PingReq &r)
 {
     if (!running)
         return;
@@ -127,7 +131,7 @@ void DHT::ping(const PingReq & r)
     node->received(this, r);
 }
 
-void DHT::findNode(const dht::FindNodeReq& r)
+void DHT::findNode(const dht::FindNodeReq &r)
 {
     if (!running)
         return;
@@ -155,7 +159,7 @@ void DHT::findNode(const dht::FindNodeReq& r)
     srv->sendMsg(fnr);
 }
 
-NodeLookup* DHT::findOwnNode()
+NodeLookup *DHT::findOwnNode()
 {
     if (our_node_lookup)
         return our_node_lookup;
@@ -166,14 +170,13 @@ NodeLookup* DHT::findOwnNode()
     return our_node_lookup;
 }
 
-void DHT::ownNodeLookupFinished(Task* t)
+void DHT::ownNodeLookupFinished(Task *t)
 {
     if (our_node_lookup == t)
         our_node_lookup = 0;
 }
 
-
-void DHT::announce(const AnnounceReq & r)
+void DHT::announce(const AnnounceReq &r)
 {
     if (!running)
         return;
@@ -196,9 +199,7 @@ void DHT::announce(const AnnounceReq & r)
     srv->sendMsg(rsp);
 }
 
-
-
-void DHT::getPeers(const GetPeersReq & r)
+void DHT::getPeers(const GetPeersReq &r)
 {
     if (!running)
         return;
@@ -231,7 +232,7 @@ void DHT::getPeers(const GetPeersReq & r)
     srv->sendMsg(fnr);
 }
 
-void DHT::response(const RPCMsg & r)
+void DHT::response(const RPCMsg &r)
 {
     if (!running)
         return;
@@ -239,13 +240,12 @@ void DHT::response(const RPCMsg & r)
     node->received(this, r);
 }
 
-void DHT::error(const ErrMsg & msg)
+void DHT::error(const ErrMsg &msg)
 {
     Q_UNUSED(msg);
 }
 
-
-void DHT::portReceived(const QString & ip, bt::Uint16 port)
+void DHT::portReceived(const QString &ip, bt::Uint16 port)
 {
     if (!running)
         return;
@@ -267,7 +267,7 @@ bool DHT::canStartTask() const
     return true;
 }
 
-AnnounceTask* DHT::announce(const bt::SHA1Hash & info_hash, bt::Uint16 port)
+AnnounceTask *DHT::announce(const bt::SHA1Hash &info_hash, bt::Uint16 port)
 {
     if (!running)
         return 0;
@@ -276,7 +276,7 @@ AnnounceTask* DHT::announce(const bt::SHA1Hash & info_hash, bt::Uint16 port)
     node->findKClosestNodes(kns, WANT_BOTH);
     if (kns.getNumEntries() > 0) {
         Out(SYS_DHT | LOG_NOTICE) << "DHT: Doing announce " << endl;
-        AnnounceTask* at = new AnnounceTask(db, srv, node, info_hash, port, tman);
+        AnnounceTask *at = new AnnounceTask(db, srv, node, info_hash, port, tman);
         at->start(kns, !canStartTask());
         tman->addTask(at);
         if (!db->contains(info_hash))
@@ -287,7 +287,7 @@ AnnounceTask* DHT::announce(const bt::SHA1Hash & info_hash, bt::Uint16 port)
     return 0;
 }
 
-NodeLookup* DHT::refreshBucket(const dht::Key & id, KBucket & bucket)
+NodeLookup *DHT::refreshBucket(const dht::Key &id, KBucket &bucket)
 {
     if (!running)
         return 0;
@@ -297,7 +297,7 @@ NodeLookup* DHT::refreshBucket(const dht::Key & id, KBucket & bucket)
     bucket.updateRefreshTimer();
     if (kns.getNumEntries() > 0) {
         Out(SYS_DHT | LOG_DEBUG) << "DHT: refreshing bucket " << endl;
-        NodeLookup* nl = new NodeLookup(id, srv, node, tman);
+        NodeLookup *nl = new NodeLookup(id, srv, node, tman);
         nl->start(kns, !canStartTask());
         tman->addTask(nl);
         return nl;
@@ -306,7 +306,7 @@ NodeLookup* DHT::refreshBucket(const dht::Key & id, KBucket & bucket)
     return 0;
 }
 
-NodeLookup* DHT::findNode(const dht::Key & id)
+NodeLookup *DHT::findNode(const dht::Key &id)
 {
     if (!running)
         return 0;
@@ -315,7 +315,7 @@ NodeLookup* DHT::findNode(const dht::Key & id)
     node->findKClosestNodes(kns, WANT_BOTH);
     if (kns.getNumEntries() > 0) {
         Out(SYS_DHT | LOG_DEBUG) << "DHT: finding node " << endl;
-        NodeLookup* at = new NodeLookup(id, srv, node, tman);
+        NodeLookup *at = new NodeLookup(id, srv, node, tman);
         at->start(kns, !canStartTask());
         tman->addTask(at);
         return at;
@@ -329,7 +329,6 @@ void DHT::expireDatabaseItems()
     db->expire(bt::CurrentTime());
 }
 
-
 void DHT::update()
 {
     if (!running)
@@ -339,7 +338,7 @@ void DHT::update()
         node->refreshBuckets(this);
         stats.num_tasks = tman->getNumTasks() + tman->getNumQueuedTasks();
         stats.num_peers = node->getNumEntriesInRoutingTable();
-    } catch (bt::Error & e) {
+    } catch (bt::Error &e) {
         Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Error: " << e.toString() << endl;
     }
 }
@@ -349,7 +348,7 @@ void DHT::timeout(RPCMsg::Ptr r)
     node->onTimeout(r);
 }
 
-void DHT::addDHTNode(const QString & host, Uint16 hport)
+void DHT::addDHTNode(const QString &host, Uint16 hport)
 {
     if (!running)
         return;
@@ -361,11 +360,11 @@ void DHT::addDHTNode(const QString & host, Uint16 hport)
         srv->ping(node->getOurID(), addr);
     } else {
         Out(SYS_DHT | LOG_DEBUG) << "DHT: Resolving node '" << host << "'" << endl;
-        net::AddressResolver::resolve(host, hport, this, SLOT(onResolverResults(net::AddressResolver*)));
+        net::AddressResolver::resolve(host, hport, this, SLOT(onResolverResults(net::AddressResolver *)));
     }
 }
 
-void DHT::onResolverResults(net::AddressResolver* res)
+void DHT::onResolverResults(net::AddressResolver *res)
 {
     if (!running)
         return;
@@ -394,7 +393,7 @@ QMap<QString, int> DHT::getClosestGoodNodes(int maxNodes)
         if (!e.isGood())
             continue;
 
-        const net::Address & a = e.getAddress();
+        const net::Address &a = e.getAddress();
 
         map.insert(a.toString(), a.port());
         if (++max >= maxNodes)

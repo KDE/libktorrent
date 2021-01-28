@@ -20,24 +20,21 @@
 #ifndef BTPREALLOCATIONTHREAD_H
 #define BTPREALLOCATIONTHREAD_H
 
-#include <qstring.h>
-#include <qthread.h>
-#include <qmap.h>
-#include <qmutex.h>
-#include <util/constants.h>
 #include "cachefile.h"
 #include "ktorrent_export.h"
-
-
+#include <qmap.h>
+#include <qmutex.h>
+#include <qstring.h>
+#include <qthread.h>
+#include <util/constants.h>
 
 namespace bt
 {
-
 /**
  * @author Joris Guisson <joris.guisson@gmail.com>
  *
  * Thread to preallocate diskspace
-*/
+ */
 class KTORRENT_EXPORT PreallocationThread : public QThread
 {
 public:
@@ -58,7 +55,7 @@ public:
      * Set an error message, also calls stop
      * @param msg The message
      */
-    void setErrorMsg(const QString & msg);
+    void setErrorMsg(const QString &msg);
 
     /// See if the thread has been stopped
     bool isStopped() const;
@@ -67,7 +64,7 @@ public:
     bool errorHappened() const;
 
     /// Get the error_msg
-    const QString & errorMessage() const
+    const QString &errorMessage() const
     {
         return error_msg;
     }
@@ -86,8 +83,9 @@ public:
 
     /// See if the thread was done
     bool isDone() const;
+
 private:
-    bool expand(const QString & path, Uint64 max_size);
+    bool expand(const QString &path, Uint64 max_size);
 
 private:
     QList<CacheFile::Ptr> todo;

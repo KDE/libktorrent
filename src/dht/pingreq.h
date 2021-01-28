@@ -25,7 +25,6 @@
 
 namespace dht
 {
-
 /**
  * Ping request message in the DHT protocol
  */
@@ -33,12 +32,12 @@ class KTORRENT_EXPORT PingReq : public RPCMsg
 {
 public:
     PingReq();
-    PingReq(const Key & id);
+    PingReq(const Key &id);
     ~PingReq() override;
 
-    void apply(DHT* dh_table) override;
+    void apply(DHT *dh_table) override;
     void print() override;
-    void encode(QByteArray & arr) const override;
+    void encode(QByteArray &arr) const override;
 
     typedef QSharedPointer<PingReq> Ptr;
 };

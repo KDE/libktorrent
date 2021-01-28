@@ -18,28 +18,34 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "bnode.h"
-#include <util/log.h>
-#include <util/error.h>
 #include <QTextCodec>
+#include <util/error.h>
+#include <util/log.h>
 
 namespace bt
 {
-
-BNode::BNode(Type type, Uint32 off) : type(type), off(off), len(0)
+BNode::BNode(Type type, Uint32 off)
+    : type(type)
+    , off(off)
+    , len(0)
 {
 }
 
-
 BNode::~BNode()
-{}
+{
+}
 
 ////////////////////////////////////////////////
 
-BValueNode::BValueNode(const Value & v, Uint32 off) : BNode(VALUE, off), value(v)
-{}
+BValueNode::BValueNode(const Value &v, Uint32 off)
+    : BNode(VALUE, off)
+    , value(v)
+{
+}
 
 BValueNode::~BValueNode()
-{}
+{
+}
 
 void BValueNode::printDebugInfo()
 {
@@ -53,7 +59,8 @@ void BValueNode::printDebugInfo()
 
 ////////////////////////////////////////////////
 
-BDictNode::BDictNode(Uint32 off) : BNode(DICT, off)
+BDictNode::BDictNode(Uint32 off)
+    : BNode(DICT, off)
 {
 }
 
@@ -61,7 +68,7 @@ BDictNode::~BDictNode()
 {
     QList<DictEntry>::iterator i = children.begin();
     while (i != children.end()) {
-        DictEntry & e = *i;
+        DictEntry &e = *i;
         delete e.node;
         ++i;
     }
@@ -69,10 +76,11 @@ BDictNode::~BDictNode()
 
 QList<QByteArray> BDictNode::keys() const
 {
-    QList<QByteArray> ret; ret.reserve(children.size());
+    QList<QByteArray> ret;
+    ret.reserve(children.size());
     QList<DictEntry>::const_iterator i = children.begin();
     while (i != children.end()) {
-        const DictEntry & e = *i;
+        const DictEntry &e = *i;
         ret << e.key;
         ++i;
     }
@@ -80,7 +88,7 @@ QList<QByteArray> BDictNode::keys() const
     return ret;
 }
 
-void BDictNode::insert(const QByteArray & key, BNode* node)
+void BDictNode::insert(const QByteArray &key, BNode *node)
 {
     DictEntry entry;
     entry.key = key;
@@ -88,11 +96,11 @@ void BDictNode::insert(const QByteArray & key, BNode* node)
     children.append(entry);
 }
 
-BNode* BDictNode::getData(const QByteArray & key)
+BNode *BDictNode::getData(const QByteArray &key)
 {
     auto i = children.constBegin();
     while (i != children.constEnd()) {
-        const DictEntry & e = *i;
+        const DictEntry &e = *i;
         if (e.key == key)
             return e.node;
         i++;
@@ -100,33 +108,33 @@ BNode* BDictNode::getData(const QByteArray & key)
     return 0;
 }
 
-BDictNode* BDictNode::getDict(const QByteArray& key)
+BDictNode *BDictNode::getDict(const QByteArray &key)
 {
     QList<DictEntry>::iterator i = children.begin();
     while (i != children.end()) {
-        DictEntry & e = *i;
+        DictEntry &e = *i;
         if (e.key == key)
-            return dynamic_cast<BDictNode*>(e.node);
+            return dynamic_cast<BDictNode *>(e.node);
         ++i;
     }
     return 0;
 }
 
-BListNode* BDictNode::getList(const QByteArray& key)
+BListNode *BDictNode::getList(const QByteArray &key)
 {
-    BNode* n = getData(key);
-    return dynamic_cast<BListNode*>(n);
+    BNode *n = getData(key);
+    return dynamic_cast<BListNode *>(n);
 }
 
-BValueNode* BDictNode::getValue(const QByteArray& key)
+BValueNode *BDictNode::getValue(const QByteArray &key)
 {
-    BNode* n = getData(key);
-    return dynamic_cast<BValueNode*>(n);
+    BNode *n = getData(key);
+    return dynamic_cast<BValueNode *>(n);
 }
 
-int BDictNode::getInt(const QByteArray& key)
+int BDictNode::getInt(const QByteArray &key)
 {
-    BValueNode* v = getValue(key);
+    BValueNode *v = getValue(key);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -136,9 +144,9 @@ int BDictNode::getInt(const QByteArray& key)
     return v->data().toInt();
 }
 
-qint64 BDictNode::getInt64(const QByteArray& key)
+qint64 BDictNode::getInt64(const QByteArray &key)
 {
-    BValueNode* v = getValue(key);
+    BValueNode *v = getValue(key);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -148,9 +156,9 @@ qint64 BDictNode::getInt64(const QByteArray& key)
     return v->data().toInt64();
 }
 
-QString BDictNode::getString(const QByteArray& key, QTextCodec* tc)
+QString BDictNode::getString(const QByteArray &key, QTextCodec *tc)
 {
-    BValueNode* v = getValue(key);
+    BValueNode *v = getValue(key);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -163,9 +171,9 @@ QString BDictNode::getString(const QByteArray& key, QTextCodec* tc)
         return v->data().toString(tc);
 }
 
-QByteArray BDictNode::getByteArray(const QByteArray& key)
+QByteArray BDictNode::getByteArray(const QByteArray &key)
 {
-    BValueNode* v = getValue(key);
+    BValueNode *v = getValue(key);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -180,7 +188,7 @@ void BDictNode::printDebugInfo()
     Out(SYS_GEN | LOG_DEBUG) << "DICT" << endl;
     QList<DictEntry>::iterator i = children.begin();
     while (i != children.end()) {
-        DictEntry & e = *i;
+        DictEntry &e = *i;
         Out(SYS_GEN | LOG_DEBUG) << QString::fromLatin1(e.key) << ": " << endl;
         e.node->printDebugInfo();
         ++i;
@@ -190,43 +198,42 @@ void BDictNode::printDebugInfo()
 
 ////////////////////////////////////////////////
 
-BListNode::BListNode(Uint32 off) : BNode(LIST, off)
+BListNode::BListNode(Uint32 off)
+    : BNode(LIST, off)
 {
 }
-
 
 BListNode::~BListNode()
 {
     for (int i = 0; i < children.count(); i++) {
-        BNode* n = children.at(i);
+        BNode *n = children.at(i);
         delete n;
     }
 }
 
-
-void BListNode::append(BNode* node)
+void BListNode::append(BNode *node)
 {
     children.append(node);
 }
 
-BListNode* BListNode::getList(Uint32 idx)
+BListNode *BListNode::getList(Uint32 idx)
 {
-    return dynamic_cast<BListNode*>(getChild(idx));
+    return dynamic_cast<BListNode *>(getChild(idx));
 }
 
-BDictNode* BListNode::getDict(Uint32 idx)
+BDictNode *BListNode::getDict(Uint32 idx)
 {
-    return dynamic_cast<BDictNode*>(getChild(idx));
+    return dynamic_cast<BDictNode *>(getChild(idx));
 }
 
-BValueNode* BListNode::getValue(Uint32 idx)
+BValueNode *BListNode::getValue(Uint32 idx)
 {
-    return dynamic_cast<BValueNode*>(getChild(idx));
+    return dynamic_cast<BValueNode *>(getChild(idx));
 }
 
 int BListNode::getInt(Uint32 idx)
 {
-    BValueNode* v = getValue(idx);
+    BValueNode *v = getValue(idx);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -238,7 +245,7 @@ int BListNode::getInt(Uint32 idx)
 
 qint64 BListNode::getInt64(Uint32 idx)
 {
-    BValueNode* v = getValue(idx);
+    BValueNode *v = getValue(idx);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -248,9 +255,9 @@ qint64 BListNode::getInt64(Uint32 idx)
     return v->data().toInt64();
 }
 
-QString BListNode::getString(Uint32 idx, QTextCodec* tc)
+QString BListNode::getString(Uint32 idx, QTextCodec *tc)
 {
-    BValueNode* v = getValue(idx);
+    BValueNode *v = getValue(idx);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -265,7 +272,7 @@ QString BListNode::getString(Uint32 idx, QTextCodec* tc)
 
 QByteArray BListNode::getByteArray(Uint32 idx)
 {
-    BValueNode* v = getValue(idx);
+    BValueNode *v = getValue(idx);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -277,12 +284,11 @@ QByteArray BListNode::getByteArray(Uint32 idx)
 
 void BListNode::printDebugInfo()
 {
-    Out(SYS_GEN | LOG_DEBUG) << "LIST " <<  children.count() << endl;
+    Out(SYS_GEN | LOG_DEBUG) << "LIST " << children.count() << endl;
     for (int i = 0; i < children.count(); i++) {
-        BNode* n = children.at(i);
+        BNode *n = children.at(i);
         n->printDebugInfo();
     }
     Out(SYS_GEN | LOG_DEBUG) << "END" << endl;
 }
 }
-

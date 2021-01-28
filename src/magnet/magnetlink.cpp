@@ -19,19 +19,18 @@
  ***************************************************************************/
 
 #include "magnetlink.h"
-#include <QUrlQuery>
 #include <QStringList>
-#include <util/log.h>
+#include <QUrlQuery>
 #include <util/error.h>
+#include <util/log.h>
 
 namespace bt
 {
-
 MagnetLink::MagnetLink()
 {
 }
 
-MagnetLink::MagnetLink(const MagnetLink& mlink)
+MagnetLink::MagnetLink(const MagnetLink &mlink)
     : magnet_string(mlink.magnet_string)
     , info_hash(mlink.info_hash)
     , torrent_url(mlink.torrent_url)
@@ -41,12 +40,12 @@ MagnetLink::MagnetLink(const MagnetLink& mlink)
 {
 }
 
-MagnetLink::MagnetLink(const QUrl& mlink)
+MagnetLink::MagnetLink(const QUrl &mlink)
 {
     parse(mlink);
 }
 
-MagnetLink::MagnetLink(const QString& mlink)
+MagnetLink::MagnetLink(const QString &mlink)
 {
     parse(QUrl(mlink));
 }
@@ -55,7 +54,7 @@ MagnetLink::~MagnetLink()
 {
 }
 
-MagnetLink& MagnetLink::operator=(const bt::MagnetLink& mlink)
+MagnetLink &MagnetLink::operator=(const bt::MagnetLink &mlink)
 {
     magnet_string = mlink.magnet_string;
     info_hash = mlink.info_hash;
@@ -66,7 +65,7 @@ MagnetLink& MagnetLink::operator=(const bt::MagnetLink& mlink)
     return *this;
 }
 
-bool MagnetLink::operator==(const bt::MagnetLink& mlink) const
+bool MagnetLink::operator==(const bt::MagnetLink &mlink) const
 {
     return info_hash == mlink.infoHash();
 }
@@ -79,16 +78,15 @@ static QList<QUrl> GetTrackers(const QUrl &url)
     return result;
 }
 
-void MagnetLink::parse(const QUrl& url)
+void MagnetLink::parse(const QUrl &url)
 {
     if (url.scheme() != QLatin1String("magnet")) {
-        Out(SYS_GEN | LOG_NOTICE) << "Invalid protocol of magnet link "
-                                  << url << endl;
+        Out(SYS_GEN | LOG_NOTICE) << "Invalid protocol of magnet link " << url << endl;
         return;
     }
 
     torrent_url = QUrlQuery(url).queryItemValue(QStringLiteral("to"), QUrl::FullyDecoded);
-    //magnet://description-of-content.btih.HASH(-HASH)*.dht/path/file?x.pt=&x.to=
+    // magnet://description-of-content.btih.HASH(-HASH)*.dht/path/file?x.pt=&x.to=
 
     // TODO automatically select these files and prefetches from here
     path = QUrlQuery(url).queryItemValue(QStringLiteral("pt"));
@@ -98,23 +96,20 @@ void MagnetLink::parse(const QUrl& url)
     }
 
     QString xt = QUrlQuery(url).queryItemValue(QLatin1String("xt"));
-    if (xt.isEmpty()
-        || !xt.startsWith(QLatin1String("urn:btih:"))) {
+    if (xt.isEmpty() || !xt.startsWith(QLatin1String("urn:btih:"))) {
         QRegExp btihHash(QLatin1String("([^\\.]+).btih"));
         if (btihHash.indexIn(url.host()) != -1) {
             QString primaryHash = btihHash.cap(1).split('-')[0];
             xt = QLatin1String("urn:btih:") + primaryHash;
         } else {
-            Out(SYS_GEN | LOG_NOTICE) << "No hash found in magnet link "
-                                      << url << endl;
+            Out(SYS_GEN | LOG_NOTICE) << "No hash found in magnet link " << url << endl;
             return;
         }
     }
 
     QString ih = xt.mid(9);
     if (ih.length() != 40 && ih.length() != 32) {
-        Out(SYS_GEN | LOG_NOTICE) << "Hash has not valid length in magnet link "
-                                  << url << endl;
+        Out(SYS_GEN | LOG_NOTICE) << "Hash has not valid length in magnet link " << url << endl;
         return;
     }
 
@@ -139,7 +134,7 @@ void MagnetLink::parse(const QUrl& url)
     }
 }
 
-Uint8 MagnetLink::charToHex(const QChar& ch)
+Uint8 MagnetLink::charToHex(const QChar &ch)
 {
     if (ch.isDigit())
         return ch.digitValue();
@@ -189,4 +184,3 @@ QString MagnetLink::base32ToHexString(const QString &s)
 }
 
 }
-

@@ -18,25 +18,22 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <QtTest>
 #include <QLocale>
-#include <util/log.h>
-#include <util/functions.h>
-#include <torrent/torrentcontrol.h>
+#include <QtTest>
 #include <diskio/chunkmanager.h>
 #include <diskio/piecedata.h>
-#include <testlib/utils.h>
 #include <testlib/dummytorrentcreator.h>
+#include <testlib/utils.h>
+#include <torrent/torrentcontrol.h>
+#include <util/fileops.h>
+#include <util/functions.h>
+#include <util/log.h>
 #include <util/sha1hashgen.h>
 #include <util/signalcatcher.h>
-#include <util/fileops.h>
-
 
 using namespace bt;
 
 const bt::Uint64 TEST_FILE_SIZE = 15 * 1024 * 1024;
-
-
 
 class ChunkManagerTest : public QObject
 {
@@ -54,13 +51,12 @@ private Q_SLOTS:
         files["bbb.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
         files["ccc.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
 
-
         QVERIFY(creator.createMultiFileTorrent(files, "movies"));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
             tor.load(bt::LoadFile(creator.torrentPath()), false);
-        } catch (bt::Error & err) {
+        } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
@@ -73,7 +69,7 @@ private Q_SLOTS:
     void testPieceDataLoading()
     {
         ChunkManager cman(tor, creator.tempPath(), creator.dataPath(), true, 0);
-        Chunk* c = cman.getChunk(0);
+        Chunk *c = cman.getChunk(0);
         QVERIFY(c);
 
         try {
@@ -94,7 +90,7 @@ private Q_SLOTS:
             QVERIFY(!ptr->writeable());
             ptr->write(tmp, 20);
             QFAIL("No exception thrown");
-        } catch (bt::Error & err) {
+        } catch (bt::Error &err) {
         }
     }
 
@@ -102,7 +98,7 @@ private Q_SLOTS:
     void testBusErrorHandling()
     {
         ChunkManager cman(tor, creator.tempPath(), creator.dataPath(), true, 0);
-        Chunk* c = cman.getChunk(0);
+        Chunk *c = cman.getChunk(0);
         QVERIFY(c);
 
         PieceData::Ptr f = c->getPiece(0, c->getSize(), false);
@@ -118,20 +114,18 @@ private Q_SLOTS:
 
             f->write(tmp, 20);
             QFAIL("No BusError thrown\n");
-        } catch (bt::BusError & err) {
-        } catch (bt::Error & err) {
+        } catch (bt::BusError &err) {
+        } catch (bt::Error &err) {
             QFAIL("Truncate failed\n");
         }
     }
 
 #endif
 
-
 private:
     DummyTorrentCreator creator;
     bt::Torrent tor;
 };
-
 
 QTEST_MAIN(ChunkManagerTest)
 

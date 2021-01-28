@@ -18,13 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <QDir>
-#include <QCommandLineParser>
-#include <version.h>
-#include <util/error.h>
-#include <util/log.h>
-#include <util/functions.h>
 #include "ktcli.h"
+#include <QCommandLineParser>
+#include <QDir>
+#include <util/error.h>
+#include <util/functions.h>
+#include <util/log.h>
+#include <version.h>
 
 #ifndef Q_WS_WIN
 #include <signal.h>
@@ -38,10 +38,9 @@ void signalhandler(int sig)
 
 #endif
 
-
 using namespace bt;
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 #ifndef Q_WS_WIN
     signal(SIGINT, signalhandler);
@@ -60,9 +59,9 @@ int main(int argc, char** argv)
             return -1;
         else
             return app.exec();
-    } catch (bt::Error & err) {
+    } catch (bt::Error &err) {
         Out(SYS_GEN | LOG_IMPORTANT) << "Uncaught error: " << err.toString() << endl;
-    } catch (std::exception & err) {
+    } catch (std::exception &err) {
         Out(SYS_GEN | LOG_IMPORTANT) << "Uncaught error: " << err.what() << endl;
     }
 

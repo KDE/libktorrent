@@ -26,11 +26,12 @@ namespace bt
 bool QueueManagerInterface::qm_enabled = true;
 
 QueueManagerInterface::QueueManagerInterface()
-{}
-
+{
+}
 
 QueueManagerInterface::~QueueManagerInterface()
-{}
+{
+}
 
 void QueueManagerInterface::setQueueManagerEnabled(bool on)
 {

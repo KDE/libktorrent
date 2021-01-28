@@ -18,27 +18,28 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "networkthread.h"
+#include "socketgroup.h"
+#include "socketmonitor.h"
 #include <math.h>
 #include <util/functions.h>
 #include <util/log.h>
-#include "socketgroup.h"
-#include "socketmonitor.h"
 
 using namespace bt;
 
 namespace net
 {
-
-NetworkThread::NetworkThread(SocketMonitor* sm)
-    : sm(sm), running(false), prev_run_time(0)
+NetworkThread::NetworkThread(SocketMonitor *sm)
+    : sm(sm)
+    , running(false)
+    , prev_run_time(0)
 {
     groups.setAutoDelete(true);
     groups.insert(0, new SocketGroup(0, 0));
 }
 
-
 NetworkThread::~NetworkThread()
-{}
+{
+}
 
 void NetworkThread::run()
 {
@@ -51,7 +52,7 @@ void NetworkThread::run()
 void NetworkThread::addGroup(Uint32 gid, Uint32 limit, Uint32 assured_rate)
 {
     // if group already exists, just change the limit
-    SocketGroup* g = groups.find(gid);
+    SocketGroup *g = groups.find(gid);
     if (g) {
         g->setLimit(limit);
         g->setAssuredRate(assured_rate);
@@ -70,7 +71,7 @@ void NetworkThread::removeGroup(Uint32 gid)
 
 void NetworkThread::setGroupLimit(Uint32 gid, Uint32 limit)
 {
-    SocketGroup* g = groups.find(gid);
+    SocketGroup *g = groups.find(gid);
     if (g) {
         g->setLimit(limit);
     }
@@ -78,20 +79,20 @@ void NetworkThread::setGroupLimit(Uint32 gid, Uint32 limit)
 
 void NetworkThread::setGroupAssuredRate(Uint32 gid, Uint32 as)
 {
-    SocketGroup* g = groups.find(gid);
+    SocketGroup *g = groups.find(gid);
     if (g) {
         g->setAssuredRate(as);
     }
 }
 
-Uint32 NetworkThread::doGroupsLimited(Uint32 num_ready, bt::TimeStamp now, Uint32 & allowance)
+Uint32 NetworkThread::doGroupsLimited(Uint32 num_ready, bt::TimeStamp now, Uint32 &allowance)
 {
     Uint32 num_still_ready = 0;
 
     // this is one pass over all the groups
     bt::PtrMap<Uint32, SocketGroup>::iterator itr = groups.begin();
     while (itr != groups.end() && allowance > 0) {
-        SocketGroup* g = itr->second;
+        SocketGroup *g = itr->second;
         if (g->numSockets() > 0) {
             Uint32 group_allowance = (Uint32)ceil(((double)g->numSockets() / num_ready) * allowance);
 
@@ -124,7 +125,7 @@ void NetworkThread::doGroups(Uint32 num_ready, bt::TimeStamp now, bt::Uint32 lim
         // calculate group allowance for each group and check for assured rate groups
         bt::PtrMap<Uint32, SocketGroup>::iterator itr = groups.begin();
         while (itr != groups.end()) {
-            SocketGroup* g = itr->second;
+            SocketGroup *g = itr->second;
             g->calcAllowance(now);
             if (g->numSockets() > 0 && g->getAssuredAllowance() > 0) {
                 // lets make sure that the assured rate is done first
@@ -138,7 +139,7 @@ void NetworkThread::doGroups(Uint32 num_ready, bt::TimeStamp now, bt::Uint32 lim
         // do the rest
         itr = groups.begin();
         while (itr != groups.end()) {
-            SocketGroup* g = itr->second;
+            SocketGroup *g = itr->second;
             if (g->numSockets() > 0) {
                 doGroup(g, allowance, now);
                 g->clear();
@@ -151,7 +152,7 @@ void NetworkThread::doGroups(Uint32 num_ready, bt::TimeStamp now, bt::Uint32 lim
         // calculate group allowance for each group
         bt::PtrMap<Uint32, SocketGroup>::iterator itr = groups.begin();
         while (itr != groups.end()) {
-            SocketGroup* g = itr->second;
+            SocketGroup *g = itr->second;
             g->calcAllowance(now);
             if (g->numSockets() > 0 && g->getAssuredAllowance() > 0) {
                 // do assured stuff
@@ -166,8 +167,6 @@ void NetworkThread::doGroups(Uint32 num_ready, bt::TimeStamp now, bt::Uint32 lim
             ++itr;
         }
 
-
-
         while (allowance > 0 && num_ready > 0) {
             // loop until nobody is ready anymore or the allowance is up
             num_ready = doGroupsLimited(num_ready, now, allowance);
@@ -176,7 +175,7 @@ void NetworkThread::doGroups(Uint32 num_ready, bt::TimeStamp now, bt::Uint32 lim
         // make sure all groups are cleared
         itr = groups.begin();
         while (itr != groups.end()) {
-            SocketGroup* g = itr->second;
+            SocketGroup *g = itr->second;
             g->clear();
             ++itr;
         }

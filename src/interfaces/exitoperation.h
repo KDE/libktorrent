@@ -20,13 +20,12 @@
 #ifndef BTEXITOPERATION_H
 #define BTEXITOPERATION_H
 
-#include <qobject.h>
 #include <kio/job.h>
 #include <ktorrent_export.h>
+#include <qobject.h>
 
 namespace bt
 {
-
 /**
  * @author Joris Guisson <joris.guisson@gmail.com>
  *
@@ -35,7 +34,7 @@ namespace bt
  *
  * ExitOperation's can be used in combination with a WaitJob, to wait for a certain amount of time
  * to give several ExitOperation's the time time to finish up.
-*/
+ */
 class KTORRENT_EXPORT ExitOperation : public QObject
 {
     Q_OBJECT
@@ -49,7 +48,7 @@ public:
         return true;
     }
 Q_SIGNALS:
-    void operationFinished(ExitOperation* opt);
+    void operationFinished(ExitOperation *opt);
 };
 
 /**
@@ -58,15 +57,16 @@ Q_SIGNALS:
 class ExitJobOperation : public ExitOperation
 {
 public:
-    ExitJobOperation(KJob* j);
+    ExitJobOperation(KJob *j);
     ~ExitJobOperation() override;
 
     bool deleteAllowed() const override
     {
         return true;
     }
+
 private:
-    virtual void onResult(KJob* j);
+    virtual void onResult(KJob *j);
 };
 }
 

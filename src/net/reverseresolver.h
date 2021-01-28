@@ -21,13 +21,12 @@
 #ifndef NET_REVERSERESOLVER_H
 #define NET_REVERSERESOLVER_H
 
+#include <QMutex>
 #include <QObject>
 #include <QThread>
-#include <QMutex>
 #include <QWaitCondition>
 #include <ktorrent_export.h>
 #include <net/address.h>
-
 
 namespace net
 {
@@ -42,7 +41,7 @@ class ReverseResolver : public QObject
 {
     Q_OBJECT
 public:
-    ReverseResolver(QObject* parent = 0);
+    ReverseResolver(QObject *parent = 0);
     ~ReverseResolver() override;
 
     /**
@@ -51,12 +50,12 @@ public:
         that it will be emitted from the worker thread.
         @param addr The address
     */
-    void resolveAsync(const net::Address & addr);
+    void resolveAsync(const net::Address &addr);
 
     /**
         Resolve an ip address synchronously.
     */
-    QString resolve(const net::Address & addr);
+    QString resolve(const net::Address &addr);
 
     /**
         Run the actual resolve and emit the signal when done
@@ -68,10 +67,10 @@ public:
 
 Q_SIGNALS:
     /// Emitted when the resolution is complete
-    void resolved(const QString & host);
+    void resolved(const QString &host);
 
 private:
-    static ReverseResolverThread* worker;
+    static ReverseResolverThread *worker;
     net::Address addr_to_resolve;
 };
 
@@ -83,7 +82,7 @@ public:
     ~ReverseResolverThread() override;
 
     /// Add a ReverseResolver to the todo list
-    void add(ReverseResolver* rr);
+    void add(ReverseResolver *rr);
 
     /// Run the thread
     void run() override;
@@ -94,7 +93,7 @@ public:
 private:
     QMutex mutex;
     QWaitCondition more_data;
-    QList<ReverseResolver*> todo_list;
+    QList<ReverseResolver *> todo_list;
     bool stopped;
 };
 

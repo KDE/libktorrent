@@ -21,8 +21,8 @@
 #define NETPORTLIST_H
 
 #include <QList>
-#include <util/constants.h>
 #include <ktorrent_export.h>
+#include <util/constants.h>
 
 namespace net
 {
@@ -38,9 +38,9 @@ struct KTORRENT_EXPORT Port {
 
     Port();
     Port(bt::Uint16 number, Protocol proto, bool forward);
-    Port(const Port & p);
+    Port(const Port &p);
 
-    bool operator == (const Port & p) const;
+    bool operator==(const Port &p) const;
 };
 
 /**
@@ -49,19 +49,21 @@ struct KTORRENT_EXPORT Port {
 class KTORRENT_EXPORT PortListener
 {
 public:
-    virtual ~PortListener() {}
+    virtual ~PortListener()
+    {
+    }
 
     /**
      * A port has been added.
      * @param port The port
      */
-    virtual void portAdded(const Port & port) = 0;
+    virtual void portAdded(const Port &port) = 0;
 
     /**
      * A port has been removed
      * @param port The port
      */
-    virtual void portRemoved(const Port & port) = 0;
+    virtual void portRemoved(const Port &port) = 0;
 };
 
 /**
@@ -69,10 +71,11 @@ public:
  *
  * List of ports which are currently being used.
  *
-*/
+ */
 class KTORRENT_EXPORT PortList : public QList<Port>
 {
-    PortListener* lst;
+    PortListener *lst;
+
 public:
     PortList();
     virtual ~PortList();
@@ -96,7 +99,7 @@ public:
      * Set the port listener.
      * @param pl Port listener
      */
-    void setListener(PortListener* pl)
+    void setListener(PortListener *pl)
     {
         lst = pl;
     }
@@ -106,11 +109,10 @@ public:
 
 #ifdef Q_CC_MSVC
 #include <QHash>
-inline uint qHash(const net::Port & port)
+inline uint qHash(const net::Port &port)
 {
     return qHash((uint)port.number);
 }
 #endif
-
 
 #endif

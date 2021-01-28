@@ -19,22 +19,20 @@
  ***************************************************************************/
 
 #include "packetbuffer.h"
-#include <list>
+#include "utpprotocol.h"
 #include <QMutex>
 #include <QMutexLocker>
-#include "utpprotocol.h"
+#include <list>
 
 namespace utp
 {
-
-
 bt::BufferPool::Ptr PacketBuffer::pool;
 
 PacketBuffer::PacketBuffer()
-    : header(0),
-      extension(0),
-      payload(0),
-      size(0)
+    : header(0)
+    , extension(0)
+    , payload(0)
+    , size(0)
 {
     if (!pool) {
         pool = bt::BufferPool::Ptr(new bt::BufferPool());
@@ -52,7 +50,7 @@ void PacketBuffer::clearPool()
     pool.clear();
 }
 
-bool PacketBuffer::setHeader(const Header & hdr, bt::Uint32 extension_length)
+bool PacketBuffer::setHeader(const Header &hdr, bt::Uint32 extension_length)
 {
     if (Header::size() - extension_length > headRoom())
         return false;
@@ -72,7 +70,7 @@ bool PacketBuffer::setHeader(const Header & hdr, bt::Uint32 extension_length)
     return true;
 }
 
-bt::Uint32 PacketBuffer::fillData(bt::CircularBuffer & cbuf, bt::Uint32 to_read)
+bt::Uint32 PacketBuffer::fillData(bt::CircularBuffer &cbuf, bt::Uint32 to_read)
 {
     // Make sure we leave enough room for a header
     if (to_read > MAX_SIZE - Header::size())
@@ -87,7 +85,7 @@ bt::Uint32 PacketBuffer::fillData(bt::CircularBuffer & cbuf, bt::Uint32 to_read)
     return to_read;
 }
 
-bt::Uint32 PacketBuffer::fillData(const bt::Uint8* data, bt::Uint32 data_size)
+bt::Uint32 PacketBuffer::fillData(const bt::Uint8 *data, bt::Uint32 data_size)
 {
     if (data_size > MAX_SIZE)
         data_size = MAX_SIZE;
@@ -104,6 +102,5 @@ void PacketBuffer::fillDummyData(bt::Uint32 amount)
     header = extension = payload = (buffer->get() + MAX_SIZE) - amount;
     size += amount;
 }
-
 
 } /* namespace utp */

@@ -19,27 +19,29 @@
  ***************************************************************************/
 
 #include "chunk.h"
-#include <util/sha1hash.h>
 #include "cache.h"
 #include "piecedata.h"
+#include <util/sha1hash.h>
 #ifndef Q_WS_WIN
 #include <util/signalcatcher.h>
 #endif
 
 namespace bt
 {
-
-Chunk::Chunk(Uint32 index, Uint32 size, Cache* cache)
-    : status(Chunk::NOT_DOWNLOADED), index(index), size(size), priority(NORMAL_PRIORITY), cache(cache)
+Chunk::Chunk(Uint32 index, Uint32 size, Cache *cache)
+    : status(Chunk::NOT_DOWNLOADED)
+    , index(index)
+    , size(size)
+    , priority(NORMAL_PRIORITY)
+    , cache(cache)
 {
 }
-
 
 Chunk::~Chunk()
 {
 }
 
-bool Chunk::readPiece(Uint32 off, Uint32 len, Uint8* data)
+bool Chunk::readPiece(Uint32 off, Uint32 len, Uint8 *data)
 {
     PieceData::Ptr d = cache->loadPiece(this, off, len);
     if (d && d->ok())
@@ -48,7 +50,7 @@ bool Chunk::readPiece(Uint32 off, Uint32 len, Uint8* data)
         return false;
 }
 
-bool Chunk::checkHash(const SHA1Hash & h)
+bool Chunk::checkHash(const SHA1Hash &h)
 {
     PieceData::Ptr d = getPiece(0, size, true);
     if (!d || !d->ok())

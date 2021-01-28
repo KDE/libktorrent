@@ -22,13 +22,12 @@
 
 namespace bt
 {
-
-ChunkCounter::ChunkCounter(Uint32 num_chunks) : cnt(num_chunks)
+ChunkCounter::ChunkCounter(Uint32 num_chunks)
+    : cnt(num_chunks)
 {
     // fill with 0
     cnt.fill(0);
 }
-
 
 ChunkCounter::~ChunkCounter()
 {
@@ -39,7 +38,7 @@ void ChunkCounter::reset()
     cnt.fill(0);
 }
 
-void ChunkCounter::incBitSet(const BitSet & bs)
+void ChunkCounter::incBitSet(const BitSet &bs)
 {
     for (Uint32 i = 0; i < cnt.size(); i++) {
         if (bs.get(i))
@@ -47,7 +46,7 @@ void ChunkCounter::incBitSet(const BitSet & bs)
     }
 }
 
-void ChunkCounter::decBitSet(const BitSet & bs)
+void ChunkCounter::decBitSet(const BitSet &bs)
 {
     for (Uint32 i = 0; i < cnt.size(); i++) {
         if (bs.get(i))

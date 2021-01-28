@@ -20,11 +20,10 @@
 #ifndef MSEENCRYPTEDAUTHENTICATE_H
 #define MSEENCRYPTEDAUTHENTICATE_H
 
+#include "bigint.h"
+#include <peer/authenticate.h>
 #include <util/constants.h>
 #include <util/sha1hash.h>
-#include <peer/authenticate.h>
-#include "bigint.h"
-
 
 namespace mse
 {
@@ -36,15 +35,15 @@ const Uint32 MAX_EA_BUF_SIZE = 622 + 512;
  * @author Joris Guisson <joris.guisson@gmail.com>
  *
  * Encrypted version of the Authenticate class
-*/
+ */
 class EncryptedAuthenticate : public bt::Authenticate
 {
     Q_OBJECT
 public:
-    EncryptedAuthenticate(const net::Address & addr,
+    EncryptedAuthenticate(const net::Address &addr,
                           bt::TransportProtocol proto,
-                          const bt::SHA1Hash& info_hash,
-                          const bt::PeerID& peer_id,
+                          const bt::SHA1Hash &info_hash,
+                          const bt::PeerID &peer_id,
                           bt::PeerConnector::WPtr pcon);
     ~EncryptedAuthenticate() override;
 
@@ -70,7 +69,7 @@ private:
 
     BigInt xa, ya, s, skey, yb;
     State state;
-    RC4Encryptor* our_rc4;
+    RC4Encryptor *our_rc4;
     Uint8 buf[MAX_EA_BUF_SIZE];
     Uint32 buf_size;
     Uint32 vc_off;

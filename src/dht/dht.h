@@ -20,15 +20,14 @@
 #ifndef DHTDHT_H
 #define DHTDHT_H
 
-#include <qtimer.h>
-#include <qstring.h>
+#include "dhtbase.h"
+#include "key.h"
+#include "rpcmsg.h"
 #include <qmap.h>
+#include <qstring.h>
+#include <qtimer.h>
 #include <util/constants.h>
 #include <util/timer.h>
-#include "key.h"
-#include "dhtbase.h"
-#include "rpcmsg.h"
-
 
 namespace net
 {
@@ -66,12 +65,12 @@ public:
     DHT();
     ~DHT() override;
 
-    void ping(const PingReq & r);
-    void findNode(const FindNodeReq & r);
-    void response(const RPCMsg & r);
-    void getPeers(const GetPeersReq &  r);
-    void announce(const AnnounceReq & r);
-    void error(const ErrMsg & r);
+    void ping(const PingReq &r);
+    void findNode(const FindNodeReq &r);
+    void response(const RPCMsg &r);
+    void getPeers(const GetPeersReq &r);
+    void announce(const AnnounceReq &r);
+    void error(const ErrMsg &r);
     void timeout(RPCMsg::Ptr r);
 
     /**
@@ -79,7 +78,7 @@ public:
      * @param ip The IP of the peer
      * @param port The port in the PORT message
      */
-    void portReceived(const QString & ip, bt::Uint16 port) override;
+    void portReceived(const QString &ip, bt::Uint16 port) override;
 
     /**
      * Do an announce on the DHT network
@@ -87,30 +86,30 @@ public:
      * @param port The port
      * @return The task which handles this
      */
-    AnnounceTask* announce(const bt::SHA1Hash & info_hash, bt::Uint16 port) override;
+    AnnounceTask *announce(const bt::SHA1Hash &info_hash, bt::Uint16 port) override;
 
     /**
      * Refresh a bucket using a find node task.
      * @param id The id
      * @param bucket The bucket to refresh
      */
-    NodeLookup* refreshBucket(const dht::Key & id, KBucket & bucket);
+    NodeLookup *refreshBucket(const dht::Key &id, KBucket &bucket);
 
     /**
      * Do a NodeLookup.
      * @param id The id of the key to search
      */
-    NodeLookup* findNode(const dht::Key & id);
+    NodeLookup *findNode(const dht::Key &id);
 
     /// Do a findNode for our node id
-    NodeLookup* findOwnNode();
+    NodeLookup *findOwnNode();
 
     /// See if it is possible to start a task
     bool canStartTask() const;
 
-    void start(const QString & table, const QString & key_file, bt::Uint16 port) override;
+    void start(const QString &table, const QString &key_file, bt::Uint16 port) override;
     void stop() override;
-    void addDHTNode(const QString & host, bt::Uint16 hport) override;
+    void addDHTNode(const QString &host, bt::Uint16 hport) override;
 
     QMap<QString, int> getClosestGoodNodes(int maxNodes) override;
 
@@ -119,19 +118,19 @@ public:
 
 private Q_SLOTS:
     void update() override;
-    void onResolverResults(net::AddressResolver* ar);
-    void ownNodeLookupFinished(Task* t);
+    void onResolverResults(net::AddressResolver *ar);
+    void ownNodeLookupFinished(Task *t);
     void expireDatabaseItems();
 
 private:
-    Node* node;
-    RPCServer* srv;
-    Database* db;
-    TaskManager* tman;
+    Node *node;
+    RPCServer *srv;
+    Database *db;
+    TaskManager *tman;
     QTimer expire_timer;
     QString table_file;
     QTimer update_timer;
-    NodeLookup* our_node_lookup;
+    NodeLookup *our_node_lookup;
 };
 
 }

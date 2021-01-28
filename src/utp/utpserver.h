@@ -27,10 +27,8 @@
 #include <net/poll.h>
 #include <utp/connection.h>
 
-
 namespace utp
 {
-
 /**
     Implements the UTP server. It listens for UTP packets and manages all connections.
 */
@@ -38,7 +36,7 @@ class KTORRENT_EXPORT UTPServer : public bt::ServerInterface, public Transmitter
 {
     Q_OBJECT
 public:
-    UTPServer(QObject* parent = 0);
+    UTPServer(QObject *parent = 0);
     ~UTPServer() override;
 
     /// Enabled creating sockets (tests need to have this disabled)
@@ -47,10 +45,10 @@ public:
     bool changePort(bt::Uint16 port) override;
 
     /// Send a packet to some host
-    bool sendTo(Connection::Ptr conn, const PacketBuffer & packet) override;
+    bool sendTo(Connection::Ptr conn, const PacketBuffer &packet) override;
 
     /// Setup a connection to a remote address
-    Connection::WPtr connectTo(const net::Address & addr);
+    Connection::WPtr connectTo(const net::Address &addr);
 
     /// Get the last accepted connection (Note: for unittest purposes)
     Connection::WPtr acceptedConnection();
@@ -62,7 +60,7 @@ public:
     void stop();
 
     /// Prepare the server for polling
-    void preparePolling(net::Poll* p, net::Poll::Mode mode, Connection::Ptr& conn);
+    void preparePolling(net::Poll *p, net::Poll::Mode mode, Connection::Ptr &conn);
 
     /// Set the TOS byte
     void setTOS(bt::Uint8 type_of_service);
@@ -77,10 +75,10 @@ public:
     void handlePendingConnections();
 
 protected:
-    virtual void handlePacket(bt::Buffer::Ptr buffer, const net::Address & addr);
+    virtual void handlePacket(bt::Buffer::Ptr buffer, const net::Address &addr);
     void stateChanged(Connection::Ptr conn, bool readable, bool writeable) override;
     void closed(Connection::Ptr conn) override;
-    void customEvent(QEvent* ev) override;
+    void customEvent(QEvent *ev) override;
 
 Q_SIGNALS:
     void handlePendingConnectionsDelayed();
@@ -93,7 +91,7 @@ private:
 
 private:
     class Private;
-    Private* d;
+    Private *d;
 };
 
 }

@@ -19,15 +19,17 @@
  ***************************************************************************/
 
 #include "preallocationjob.h"
-#include "preallocationthread.h"
 #include "chunkmanager.h"
-#include <util/log.h>
+#include "preallocationthread.h"
 #include <torrent/torrentcontrol.h>
+#include <util/log.h>
 
 namespace bt
 {
-
-PreallocationJob::PreallocationJob(ChunkManager* cman, TorrentControl* tc): Job(false, tc), cman(cman), prealloc_thread(0)
+PreallocationJob::PreallocationJob(ChunkManager *cman, TorrentControl *tc)
+    : Job(false, tc)
+    , cman(cman)
+    , prealloc_thread(0)
 {
 }
 
@@ -53,7 +55,6 @@ void PreallocationJob::kill(bool quietly)
     }
     bt::Job::kill(quietly);
 }
-
 
 void PreallocationJob::finished()
 {

@@ -20,14 +20,12 @@
 #ifndef BTADVANCEDCHOKEALGORITHM_H
 #define BTADVANCEDCHOKEALGORITHM_H
 
-#include <peer/peer.h>
 #include "choker.h"
-
+#include <peer/peer.h>
 
 namespace bt
 {
 struct TorrentStats;
-
 
 /**
     @author Joris Guisson <joris.guisson@gmail.com>
@@ -38,12 +36,12 @@ public:
     AdvancedChokeAlgorithm();
     ~AdvancedChokeAlgorithm() override;
 
-    void doChokingLeechingState(PeerManager & pman, ChunkManager & cman, const TorrentStats & stats) override;
-    void doChokingSeedingState(PeerManager & pman, ChunkManager & cman, const TorrentStats & stats) override;
+    void doChokingLeechingState(PeerManager &pman, ChunkManager &cman, const TorrentStats &stats) override;
+    void doChokingSeedingState(PeerManager &pman, ChunkManager &cman, const TorrentStats &stats) override;
 
 private:
-    bool calcACAScore(Peer::Ptr p, ChunkManager & cman, const TorrentStats & stats);
-    Peer::Ptr updateOptimisticPeer(PeerManager & pman, const QList<Peer::Ptr> & ppl);
+    bool calcACAScore(Peer::Ptr p, ChunkManager &cman, const TorrentStats &stats);
+    Peer::Ptr updateOptimisticPeer(PeerManager &pman, const QList<Peer::Ptr> &ppl);
     void doUnchoking(const QList<Peer::Ptr> &ppl, Peer::Ptr poup);
 
 private:

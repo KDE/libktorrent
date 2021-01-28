@@ -24,9 +24,11 @@
 
 namespace bt
 {
-KJobTrackerInterface* Job::tracker = 0;
+KJobTrackerInterface *Job::tracker = 0;
 
-Job::Job(bool stop_torrent, bt::TorrentControl* tc) : tc(tc), stop_torrent(stop_torrent)
+Job::Job(bool stop_torrent, bt::TorrentControl *tc)
+    : tc(tc)
+    , stop_torrent(stop_torrent)
 {
     setUiDelegate(new KIO::JobUiDelegate());
 }
@@ -47,13 +49,12 @@ void Job::kill(bool quietly)
     }
 }
 
-
 TorrentStatus Job::torrentStatus() const
 {
     return INVALID_STATUS;
 }
 
-void Job::setJobTracker(KJobTrackerInterface* trk)
+void Job::setJobTracker(KJobTrackerInterface *trk)
 {
     tracker = trk;
 }
@@ -64,6 +65,4 @@ void Job::registerWithTracker()
         tracker->registerJob(this);
 }
 
-
 }
-

@@ -18,14 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #ifndef BT_METADATADOWNLOAD_H
 #define BT_METADATADOWNLOAD_H
 
-
-#include <util/constants.h>
-#include <util/bitset.h>
 #include <QByteArray>
+#include <util/bitset.h>
+#include <util/constants.h>
 
 namespace bt
 {
@@ -39,7 +37,7 @@ const int METADATA_PIECE_SIZE = 16 * 1024;
 class MetadataDownload
 {
 public:
-    MetadataDownload(UTMetaData* ext, Uint32 size);
+    MetadataDownload(UTMetaData *ext, Uint32 size);
     virtual ~MetadataDownload();
 
     /// A reject of a piece was received
@@ -49,10 +47,10 @@ public:
         A piece was received
         @return true if all the data has been received
     */
-    bool data(Uint32 piece, const QByteArray & piece_data);
+    bool data(Uint32 piece, const QByteArray &piece_data);
 
     /// Get the result
-    const QByteArray & result() const
+    const QByteArray &result() const
     {
         return metadata;
     }
@@ -62,7 +60,7 @@ private:
     void downloadNext();
 
 private:
-    UTMetaData* ext;
+    UTMetaData *ext;
     BitSet pieces;
     QByteArray metadata;
     Uint32 total_size;

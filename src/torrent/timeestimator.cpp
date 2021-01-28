@@ -18,21 +18,22 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "timeestimator.h"
+#include "torrentcontrol.h"
 #include <math.h>
 #include <torrent/globals.h>
-#include <util/log.h>
 #include <util/constants.h>
-#include "torrentcontrol.h"
+#include <util/log.h>
 //#include "settings.h"
 
 namespace bt
 {
-
-TimeEstimator::TimeEstimator(TorrentControl* tc)
-    : m_tc(tc), m_lastAvg(0), m_lastETA(0), m_perc(-1.0f)
+TimeEstimator::TimeEstimator(TorrentControl *tc)
+    : m_tc(tc)
+    , m_lastAvg(0)
+    , m_lastETA(0)
+    , m_perc(-1.0f)
 {
 }
-
 
 TimeEstimator::~TimeEstimator()
 {
@@ -40,7 +41,7 @@ TimeEstimator::~TimeEstimator()
 
 Uint32 TimeEstimator::sample() const
 {
-    const TorrentStats& s = m_tc->getStats();
+    const TorrentStats &s = m_tc->getStats();
     if (s.completed) {
         return s.upload_rate;
     } else {
@@ -50,7 +51,7 @@ Uint32 TimeEstimator::sample() const
 
 Uint64 TimeEstimator::bytesLeft() const
 {
-    const TorrentStats& s = m_tc->getStats();
+    const TorrentStats &s = m_tc->getStats();
     if (s.completed) {
         if (s.max_share_ratio >= 0.01f) {
             float ratio = s.shareRatio();
@@ -71,8 +72,7 @@ Uint64 TimeEstimator::bytesLeft() const
 
 int TimeEstimator::estimate()
 {
-    const TorrentStats& s = m_tc->getStats();
-
+    const TorrentStats &s = m_tc->getStats();
 
     // in seeding mode check if we still need to seed
     if (s.completed) {
@@ -90,14 +90,14 @@ int TimeEstimator::estimate()
 
 int TimeEstimator::estimateGASA()
 {
-    const TorrentStats& s = m_tc->getStats();
+    const TorrentStats &s = m_tc->getStats();
 
     if (m_tc->getRunningTimeDL() > 0 && s.bytes_downloaded > 0) {
         Uint64 d = s.bytes_downloaded;
         if (s.imported_bytes <= s.bytes_downloaded)
             d -= s.imported_bytes;
-        double avg_speed = (double) d / (double) m_tc->getRunningTimeDL();
-        return (Uint32) floor((double) bytesLeft() / avg_speed);
+        double avg_speed = (double)d / (double)m_tc->getRunningTimeDL();
+        return (Uint32)floor((double)bytesLeft() / avg_speed);
     }
 
     return NEVER;
@@ -106,7 +106,7 @@ int TimeEstimator::estimateGASA()
 int TimeEstimator::estimateWINX()
 {
     if (m_samples.sum() > 0 && m_samples.count() > 0)
-        return (Uint32) floor((double) bytesLeft() / ((double) m_samples.sum() / (double) m_samples.count()));
+        return (Uint32)floor((double)bytesLeft() / ((double)m_samples.sum() / (double)m_samples.count()));
 
     return NEVER;
 }
@@ -117,14 +117,14 @@ int TimeEstimator::estimateMAVG()
         double lavg;
 
         if (m_lastAvg == 0)
-            lavg = (Uint32) m_samples.sum() / m_samples.count();
+            lavg = (Uint32)m_samples.sum() / m_samples.count();
         else
-            lavg = m_lastAvg - ((double) m_samples.first() / (double) m_samples.count()) + ((double) m_samples.last() / (double) m_samples.count());
+            lavg = m_lastAvg - ((double)m_samples.first() / (double)m_samples.count()) + ((double)m_samples.last() / (double)m_samples.count());
 
-        m_lastAvg = (Uint32) floor(lavg);
+        m_lastAvg = (Uint32)floor(lavg);
 
         if (lavg > 0)
-            return (Uint32) floor((double) bytesLeft() / ((lavg + (m_samples.sum() / m_samples.count())) / 2));
+            return (Uint32)floor((double)bytesLeft() / ((lavg + (m_samples.sum() / m_samples.count())) / 2));
 
         return NEVER;
     }
@@ -142,21 +142,21 @@ SampleQueue::SampleQueue()
     m_start = 0;
 }
 
-SampleQueue::~ SampleQueue()
+SampleQueue::~SampleQueue()
 {
 }
 
 void SampleQueue::push(Uint32 sample)
 {
     if (m_count < SAMPLE_COUNT_MAX) {
-        //it's not full yet
+        // it's not full yet
         m_samples[(++m_end) % SAMPLE_COUNT_MAX] = sample;
         m_count++;
 
         return;
     }
 
-    //since it's full I'll just replace the oldest value with new one and update all variables.
+    // since it's full I'll just replace the oldest value with new one and update all variables.
     m_end = (m_end + 1) % SAMPLE_COUNT_MAX;
     m_start = (m_start + 1) % SAMPLE_COUNT_MAX;
     m_samples[m_end] = sample;
@@ -194,32 +194,31 @@ Uint32 SampleQueue::sum()
 
 int TimeEstimator::estimateKT()
 {
-    const TorrentStats& s = m_tc->getStats();
+    const TorrentStats &s = m_tc->getStats();
 
-
-    //push new sample
+    // push new sample
     m_samples.push(sample());
 
     if (s.completed)
         return estimateWINX();
 
-    double perc = (double) s.bytes_downloaded / (double) s.total_bytes;
+    double perc = (double)s.bytes_downloaded / (double)s.total_bytes;
 
     int percentage = perc * 100;
 
-    //calculate percentage increasement
+    // calculate percentage increasement
     double delta = 1 - 1 / (perc / m_perc);
 
-    //remember last percentage
+    // remember last percentage
     m_perc = perc;
-
 
     if (s.bytes_downloaded < 1024 * 100 && m_samples.last() > 0) { // < 100KB
         m_lastETA = estimateGASA();
         return m_lastETA;
     }
 
-    if (percentage >= 99 && m_samples.last() > 0 && bytesLeft() <= 10 * 1024 * 1024 * 1024LL) { //1% of a very large torrent could be hundreds of MB so limit it to 10MB
+    if (percentage >= 99 && m_samples.last() > 0
+        && bytesLeft() <= 10 * 1024 * 1024 * 1024LL) { // 1% of a very large torrent could be hundreds of MB so limit it to 10MB
 
         if (!m_samples.isFull()) {
             m_lastETA = estimateWINX();
@@ -247,4 +246,3 @@ int TimeEstimator::estimateKT()
 }
 
 }
-

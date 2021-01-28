@@ -18,8 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
+#include <QtTest>
 #include <util/log.h>
 #include <utp/localwindow.h>
 #include <utp/utpprotocol.h>
@@ -27,15 +27,10 @@
 using namespace utp;
 using namespace bt;
 
-
-
-
-
 class LocalWindowTest : public QObject
 {
     Q_OBJECT
 public:
-
 private Q_SLOTS:
     void initTestCase()
     {
@@ -392,11 +387,10 @@ private Q_SLOTS:
     }
 
 private:
-    //bt::Uint8 data[13];
-    //bt::Uint8 data2[6];
+    // bt::Uint8 data[13];
+    // bt::Uint8 data2[6];
 };
 
 QTEST_MAIN(LocalWindowTest)
 
 #include "localwindowtest.moc"
-

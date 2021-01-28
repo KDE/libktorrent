@@ -37,7 +37,7 @@ const Uint32 UT_METADATA_ID = 2;
 class KTORRENT_EXPORT PeerProtocolExtension
 {
 public:
-    PeerProtocolExtension(bt::Uint32 id, Peer* peer);
+    PeerProtocolExtension(bt::Uint32 id, Peer *peer);
     virtual ~PeerProtocolExtension();
 
     /// Virtual update function does nothing, needs to be overridden if update
@@ -50,17 +50,17 @@ public:
     }
 
     /// Handle a packet
-    virtual void handlePacket(const bt::Uint8* packet, Uint32 size) = 0;
+    virtual void handlePacket(const bt::Uint8 *packet, Uint32 size) = 0;
 
     /// Send an extension protocol packet
-    void sendPacket(const QByteArray & data);
+    void sendPacket(const QByteArray &data);
 
     /// Change the ID
     void changeID(Uint32 id);
 
 protected:
     bt::Uint32 id;
-    Peer* peer;
+    Peer *peer;
 };
 
 }

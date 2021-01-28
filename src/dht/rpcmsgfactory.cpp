@@ -19,39 +19,36 @@
  ***************************************************************************/
 
 #include "rpcmsgfactory.h"
-#include <util/log.h>
-#include <util/error.h>
-#include <util/functions.h>
-#include <bcodec/bnode.h>
-#include "rpcserver.h"
+#include "announcereq.h"
+#include "announcersp.h"
 #include "dht.h"
 #include "errmsg.h"
-#include "pingreq.h"
 #include "findnodereq.h"
-#include "announcereq.h"
-#include "pingrsp.h"
 #include "findnodersp.h"
 #include "getpeersrsp.h"
-#include "announcersp.h"
+#include "pingreq.h"
+#include "pingrsp.h"
+#include "rpcserver.h"
+#include <bcodec/bnode.h>
+#include <util/error.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 using namespace bt;
 
 namespace dht
 {
-
 RPCMsgFactory::RPCMsgFactory()
 {
-
 }
 
 RPCMsgFactory::~RPCMsgFactory()
 {
-
 }
 
-RPCMsg::Ptr RPCMsgFactory::buildRequest(BDictNode* dict)
+RPCMsg::Ptr RPCMsgFactory::buildRequest(BDictNode *dict)
 {
-    BDictNode* args = dict->getDict(ARG);
+    BDictNode *args = dict->getDict(ARG);
     if (!args)
         throw bt::Error("Invalid request, arguments missing");
 
@@ -80,10 +77,9 @@ RPCMsg::Ptr RPCMsgFactory::buildRequest(BDictNode* dict)
         throw bt::Error(QString("Invalid request type %1").arg(str));
 }
 
-
-RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode* dict, dht::RPCMethodResolver* method_resolver)
+RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver *method_resolver)
 {
-    BDictNode* args = dict->getDict(RSP);
+    BDictNode *args = dict->getDict(RSP);
     if (!args)
         throw bt::Error("Arguments missing for DHT response");
 
@@ -121,8 +117,7 @@ RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode* dict, dht::RPCMethodResolver
     return msg;
 }
 
-
-RPCMsg::Ptr RPCMsgFactory::build(bt::BDictNode* dict, RPCMethodResolver* method_resolver)
+RPCMsg::Ptr RPCMsgFactory::build(bt::BDictNode *dict, RPCMethodResolver *method_resolver)
 {
     QString t = dict->getString(TYP, 0);
     if (t == REQ) {

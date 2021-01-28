@@ -20,25 +20,24 @@
 #ifndef MSEBIGINT_H
 #define MSEBIGINT_H
 
-#include <qstring.h>
-#include <util/constants.h>
 #include <cstdio>
 #include <gmp.h>
+#include <qstring.h>
+#include <util/constants.h>
 
-using bt::Uint8;
 using bt::Uint16;
 using bt::Uint32;
 using bt::Uint64;
+using bt::Uint8;
 
 namespace mse
 {
-
 /**
  * @author Joris Guisson <joris.guisson@gmail.com>
  *
  * Class which can hold an arbitrary large integer. This will be a very important part of our
  * MSE implementation.
-*/
+ */
 class BigInt
 {
 public:
@@ -57,13 +56,13 @@ public:
      * Letters can be upper or lower case. Invalid chars will create an invalid number.
      * @param value The hexadecimal representation of the number
      */
-    BigInt(const QString & value);
+    BigInt(const QString &value);
 
     /**
      * Copy constructor.
      * @param bi BigInt to copy
      */
-    BigInt(const BigInt & bi);
+    BigInt(const BigInt &bi);
     ~BigInt();
 
     /**
@@ -71,23 +70,23 @@ public:
      * @param bi The BigInt to copy
      * @return *this
      */
-    BigInt & operator = (const BigInt & bi);
+    BigInt &operator=(const BigInt &bi);
 
     /**
      * Calculates
      * (x ^ e) mod d
      * ^ is power
      */
-    static BigInt powerMod(const BigInt & x, const BigInt & e, const BigInt & d);
+    static BigInt powerMod(const BigInt &x, const BigInt &e, const BigInt &d);
 
     /// Make a random BigInt
     static BigInt random();
 
     /// Export the bigint ot a buffer
-    Uint32 toBuffer(Uint8* buf, Uint32 max_size) const;
+    Uint32 toBuffer(Uint8 *buf, Uint32 max_size) const;
 
     /// Make a BigInt out of a buffer
-    static BigInt fromBuffer(const Uint8* buf, Uint32 size);
+    static BigInt fromBuffer(const Uint8 *buf, Uint32 size);
 
 private:
     mpz_t val;

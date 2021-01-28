@@ -18,26 +18,28 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "cache.h"
+#include "cachefile.h"
+#include "chunk.h"
+#include "piecedata.h"
 #include <KLocalizedString>
-#include <util/functions.h>
-#include <util/log.h>
-#include <util/fileops.h>
 #include <peer/connectionlimit.h>
 #include <peer/peermanager.h>
-#include <torrent/torrent.h>
 #include <torrent/job.h>
-#include "chunk.h"
-#include "cachefile.h"
-#include "piecedata.h"
-
+#include <torrent/torrent.h>
+#include <util/fileops.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 namespace bt
 {
 bool Cache::preallocate_files = true;
 bool Cache::preallocate_fully = false;
 
-Cache::Cache(Torrent & tor, const QString & tmpdir, const QString & datadir)
-    : tor(tor), tmpdir(tmpdir), datadir(datadir), mmap_failures(0)
+Cache::Cache(Torrent &tor, const QString &tmpdir, const QString &datadir)
+    : tor(tor)
+    , tmpdir(tmpdir)
+    , datadir(datadir)
+    , mmap_failures(0)
 {
     if (!datadir.endsWith(bt::DirSeparator()))
         this->datadir += bt::DirSeparator();
@@ -47,7 +49,6 @@ Cache::Cache(Torrent & tor, const QString & tmpdir, const QString & datadir)
 
     preexisting_files = false;
 }
-
 
 Cache::~Cache()
 {
@@ -64,8 +65,7 @@ void Cache::cleanupPieceCache()
     piece_cache.clear();
 }
 
-
-void Cache::changeTmpDir(const QString & ndir)
+void Cache::changeTmpDir(const QString &ndir)
 {
     tmpdir = ndir;
 }
@@ -75,17 +75,17 @@ bool Cache::mappedModeAllowed()
 #ifndef Q_WS_WIN
     return MaxOpenFiles() - bt::PeerManager::connectionLimits().totalConnections() > 100;
 #else
-    return true; //there isn't a file handle limit on windows
+    return true; // there isn't a file handle limit on windows
 #endif
 }
 
-Job* Cache::moveDataFiles(const QMap<TorrentFileInterface*, QString> & files)
+Job *Cache::moveDataFiles(const QMap<TorrentFileInterface *, QString> &files)
 {
     Q_UNUSED(files);
     return 0;
 }
 
-void Cache::moveDataFilesFinished(const QMap<TorrentFileInterface*, QString> & files, Job* job)
+void Cache::moveDataFilesFinished(const QMap<TorrentFileInterface *, QString> &files, Job *job)
 {
     Q_UNUSED(files);
     if (job->error())
@@ -96,7 +96,7 @@ void Cache::moveDataFilesFinished(const QMap<TorrentFileInterface*, QString> & f
         saveMountPoints(mps);
 }
 
-PieceData::Ptr Cache::findPiece(Chunk* c, Uint32 off, Uint32 len, bool read_only)
+PieceData::Ptr Cache::findPiece(Chunk *c, Uint32 off, Uint32 len, bool read_only)
 {
     PieceCache::const_iterator i = piece_cache.constFind(c);
     while (i != piece_cache.constEnd() && i.key() == c) {
@@ -109,12 +109,12 @@ PieceData::Ptr Cache::findPiece(Chunk* c, Uint32 off, Uint32 len, bool read_only
     return PieceData::Ptr();
 }
 
-void Cache::insertPiece(Chunk* c, PieceData::Ptr p)
+void Cache::insertPiece(Chunk *c, PieceData::Ptr p)
 {
     piece_cache.insert(c, p);
 }
 
-void Cache::clearPieces(Chunk* c)
+void Cache::clearPieces(Chunk *c)
 {
     PieceCache::iterator i = piece_cache.find(c);
     while (i != piece_cache.end() && i.key() == c) {
@@ -152,7 +152,7 @@ void Cache::checkMemoryUsage()
         Out(SYS_DIO | LOG_DEBUG) << "Piece cache: memory in use " << BytesToString(mem) << ", memory freed " << BytesToString(freed) << endl;
 }
 
-void Cache::saveMountPoints(const QSet<QString> & mp)
+void Cache::saveMountPoints(const QSet<QString> &mp)
 {
     mount_points = mp;
 
@@ -162,7 +162,7 @@ void Cache::saveMountPoints(const QSet<QString> & mp)
         throw Error(i18n("Failed to create %1: %2", mp_file, fptr.errorString()));
 
     QTextStream out(&fptr);
-    for (const QString & mount_point : qAsConst(mount_points)) {
+    for (const QString &mount_point : qAsConst(mount_points)) {
         out << mount_point << Qt::endl;
     }
 }
@@ -187,13 +187,13 @@ void Cache::loadMountPoints()
     }
 }
 
-bool Cache::isStorageMounted(QStringList& missing)
+bool Cache::isStorageMounted(QStringList &missing)
 {
     if (mount_points.isEmpty())
         return true;
 
     missing.clear();
-    for (const QString & mount_point : qAsConst(mount_points)) {
+    for (const QString &mount_point : qAsConst(mount_points)) {
         if (!IsMounted(mount_point))
             missing.append(mount_point);
     }

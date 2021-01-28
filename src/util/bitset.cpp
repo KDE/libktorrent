@@ -25,8 +25,9 @@ namespace bt
 {
 BitSet BitSet::null;
 
-
-BitSet::BitSet(Uint32 num_bits) : num_bits(num_bits), data(0)
+BitSet::BitSet(Uint32 num_bits)
+    : num_bits(num_bits)
+    , data(0)
 {
     num_bytes = (num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0);
     data = new Uint8[num_bytes];
@@ -34,7 +35,9 @@ BitSet::BitSet(Uint32 num_bits) : num_bits(num_bits), data(0)
     num_on = 0;
 }
 
-BitSet::BitSet(const Uint8* d, Uint32 num_bits)  : num_bits(num_bits), data(0)
+BitSet::BitSet(const Uint8 *d, Uint32 num_bits)
+    : num_bits(num_bits)
+    , data(0)
 {
     num_bytes = (num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0);
     data = new Uint8[num_bytes];
@@ -43,7 +46,11 @@ BitSet::BitSet(const Uint8* d, Uint32 num_bits)  : num_bits(num_bits), data(0)
     updateNumOnBits();
 }
 
-BitSet::BitSet(const BitSet & bs) : num_bits(bs.num_bits), num_bytes(bs.num_bytes), data(0), num_on(bs.num_on)
+BitSet::BitSet(const BitSet &bs)
+    : num_bits(bs.num_bits)
+    , num_bytes(bs.num_bytes)
+    , data(0)
+    , num_on(bs.num_on)
 {
     data = new Uint8[num_bytes];
     std::copy(bs.data, bs.data + num_bytes, data);
@@ -51,7 +58,7 @@ BitSet::BitSet(const BitSet & bs) : num_bits(bs.num_bits), num_bytes(bs.num_byte
 
 BitSet::~BitSet()
 {
-    delete [] data;
+    delete[] data;
 }
 
 void BitSet::updateNumOnBits()
@@ -64,9 +71,9 @@ void BitSet::updateNumOnBits()
     }
 }
 
-BitSet & BitSet::operator = (const BitSet & bs)
+BitSet &BitSet::operator=(const BitSet &bs)
 {
-    delete [] data;
+    delete[] data;
     num_bytes = bs.num_bytes;
     num_bits = bs.num_bits;
     data = new Uint8[num_bytes];
@@ -79,7 +86,8 @@ const Uint8 tail_mask_lookup[8] = {0xFF, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7
 
 void BitSet::invert()
 {
-    if (num_bytes <= 0) return;
+    if (num_bytes <= 0)
+        return;
 
     num_on = 0;
     Uint32 i = 0;
@@ -93,7 +101,7 @@ void BitSet::invert()
     num_on += BitCount[data[i]];
 }
 
-BitSet & BitSet::operator -= (const BitSet & bs)
+BitSet &BitSet::operator-=(const BitSet &bs)
 {
     num_on = 0;
     for (Uint32 i = 0; i < num_bytes; i++) {
@@ -103,7 +111,7 @@ BitSet & BitSet::operator -= (const BitSet & bs)
     return *this;
 }
 
-BitSet BitSet::operator - (const BitSet & bs) const
+BitSet BitSet::operator-(const BitSet &bs) const
 {
     return BitSet(*this) -= bs;
 }
@@ -119,7 +127,7 @@ void BitSet::clear()
     setAll(false);
 }
 
-void BitSet::orBitSet(const BitSet & other)
+void BitSet::orBitSet(const BitSet &other)
 {
     num_on = 0;
 
@@ -154,7 +162,7 @@ void BitSet::orBitSet(const BitSet & other)
     num_on += BitCount[data[num_bytes - 1]];
 }
 
-void BitSet::andBitSet(const BitSet & other)
+void BitSet::andBitSet(const BitSet &other)
 {
     num_on = 0;
 
@@ -178,12 +186,10 @@ void BitSet::andBitSet(const BitSet & other)
     if (num_bytes > other.num_bytes) {
         memset(data + other.num_bytes, 0, num_bytes - other.num_bytes);
     }
-
 }
 
-bool BitSet::includesBitSet(const BitSet & other) const
+bool BitSet::includesBitSet(const BitSet &other) const
 {
-
     if (num_bits == other.num_bits) {
         // best case
         for (Uint32 i = 0; i < num_bytes; i++) {
@@ -218,7 +224,7 @@ bool BitSet::allOn() const
     return num_on == num_bits;
 }
 
-bool BitSet::operator == (const BitSet & bs) const
+bool BitSet::operator==(const BitSet &bs) const
 {
     if (this->getNumBits() != bs.getNumBits())
         return false;
@@ -226,4 +232,3 @@ bool BitSet::operator == (const BitSet & bs) const
     return memcmp(data, bs.data, num_bytes) == 0;
 }
 }
-

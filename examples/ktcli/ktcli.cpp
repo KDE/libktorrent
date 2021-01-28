@@ -24,23 +24,25 @@
 #include <ctime>
 #include <unistd.h>
 
-#include <QDir>
 #include <QCommandLineParser>
+#include <QDir>
 #include <QRandomGenerator>
 
-#include <version.h>
-#include <util/error.h>
-#include <util/functions.h>
-#include <peer/authenticationmonitor.h>
 #include <interfaces/serverinterface.h>
+#include <peer/authenticationmonitor.h>
 #include <peer/utpex.h>
-#include <util/waitjob.h>
+#include <util/error.h>
 #include <util/fileops.h>
-
+#include <util/functions.h>
+#include <util/waitjob.h>
+#include <version.h>
 
 using namespace bt;
 
-KTCLI::KTCLI(int argc, char** argv) : QCoreApplication(argc, argv), tc(new TorrentControl()), updates(0)
+KTCLI::KTCLI(int argc, char **argv)
+    : QCoreApplication(argc, argv)
+    , tc(new TorrentControl())
+    , updates(0)
 {
     parser.addPositionalArgument("url", tr("Torrent to open"));
     parser.addOption(QCommandLineOption("port", tr("Port to use"), "<port>", "6881"));
@@ -94,10 +96,10 @@ bool KTCLI::start()
         }
     }
 
-    if (parser.positionalArguments().isEmpty()) return false;
+    if (parser.positionalArguments().isEmpty())
+        return false;
     return load(QUrl::fromLocalFile(parser.positionalArguments().at(0)));
 }
-
 
 bool KTCLI::load(const QUrl &url)
 {
@@ -140,57 +142,55 @@ QString KTCLI::tempDir()
     return tmpdir.absolutePath();
 }
 
-bool KTCLI::loadFromFile(const QString & path)
+bool KTCLI::loadFromFile(const QString &path)
 {
     try {
         tc->init(this, bt::LoadFile(path), tempDir(), QDir::currentPath());
         tc->setLoadUrl(QUrl(path));
         tc->createFiles();
         return true;
-    } catch (bt::Error & err) {
+    } catch (bt::Error &err) {
         Out(SYS_GEN | LOG_IMPORTANT) << err.toString() << endl;
         return false;
     }
 }
 
-bool KTCLI::loadFromDir(const QString& path)
+bool KTCLI::loadFromDir(const QString &path)
 {
     try {
         tc->init(this, bt::LoadFile(path + "/torrent"), path, QString());
         tc->createFiles();
         return true;
-    } catch (bt::Error & err) {
+    } catch (bt::Error &err) {
         Out(SYS_GEN | LOG_IMPORTANT) << err.toString() << endl;
         return false;
     }
 }
 
-
-bool KTCLI::notify(QObject* obj, QEvent* ev)
+bool KTCLI::notify(QObject *obj, QEvent *ev)
 {
     try {
         return QCoreApplication::notify(obj, ev);
-    } catch (bt::Error & err) {
+    } catch (bt::Error &err) {
         Out(SYS_GEN | LOG_DEBUG) << "Error: " << err.toString() << endl;
-    } catch (std::exception & err) {
+    } catch (std::exception &err) {
         Out(SYS_GEN | LOG_DEBUG) << "Error: " << err.what() << endl;
     }
 
     return true;
 }
 
-bool KTCLI::alreadyLoaded(const bt::SHA1Hash& ih) const
+bool KTCLI::alreadyLoaded(const bt::SHA1Hash &ih) const
 {
     Q_UNUSED(ih);
     return false;
 }
 
-void KTCLI::mergeAnnounceList(const bt::SHA1Hash& ih, const bt::TrackerTier* trk)
+void KTCLI::mergeAnnounceList(const bt::SHA1Hash &ih, const bt::TrackerTier *trk)
 {
     Q_UNUSED(ih);
     Q_UNUSED(trk);
 }
-
 
 void KTCLI::update()
 {
@@ -204,7 +204,7 @@ void KTCLI::update()
     }
 }
 
-void KTCLI::finished(bt::TorrentInterface* tor)
+void KTCLI::finished(bt::TorrentInterface *tor)
 {
     Q_UNUSED(tor);
     Out(SYS_GEN | LOG_NOTICE) << "Torrent fully downloaded" << endl;
@@ -215,7 +215,7 @@ void KTCLI::shutdown()
 {
     AuthenticationMonitor::instance().shutdown();
 
-    WaitJob* j = new WaitJob(2000);
+    WaitJob *j = new WaitJob(2000);
     tc->stop(j);
     if (j->needToWait())
         j->exec();
@@ -225,4 +225,3 @@ void KTCLI::shutdown()
     Globals::instance().shutdownUTPServer();
     quit();
 }
-

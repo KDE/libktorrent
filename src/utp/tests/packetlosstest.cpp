@@ -1,36 +1,35 @@
 /***************************************************************************
-*   Copyright (C) 2010 by Joris Guisson                                   *
-*   joris.guisson@gmail.com                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
-***************************************************************************/
+ *   Copyright (C) 2010 by Joris Guisson                                   *
+ *   joris.guisson@gmail.com                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
+ ***************************************************************************/
 
 #include <QObject>
 #include <QRandomGenerator>
 #include <QtTest>
 
+#include <util/functions.h>
 #include <util/log.h>
 #include <utp/connection.h>
-#include <utp/utpsocket.h>
 #include <utp/utpserver.h>
-#include <util/functions.h>
+#include <utp/utpsocket.h>
 
 #include <ctime>
 #include <unistd.h>
-
 
 #define PACKETS_TO_SEND 20
 #define TEST_DATA "This is the packet loss test\n"
@@ -44,16 +43,19 @@ using namespace bt;
 class PacketLossServer : public UTPServer
 {
 public:
-    PacketLossServer(QObject* parent = nullptr) : UTPServer(parent), packet_loss(false), loss_factor(0.5)
+    PacketLossServer(QObject *parent = nullptr)
+        : UTPServer(parent)
+        , packet_loss(false)
+        , loss_factor(0.5)
     {
         setCreateSockets(false);
     }
 
     ~PacketLossServer() override
-    {}
+    {
+    }
 
-
-    void handlePacket(bt::Buffer::Ptr packet, const net::Address& addr) override
+    void handlePacket(bt::Buffer::Ptr packet, const net::Address &addr) override
     {
         if (packet_loss) {
             // pick a random number from 0 to 100
@@ -81,16 +83,18 @@ private:
 class SendThread : public QThread
 {
 public:
-
-    SendThread(Connection::Ptr outgoing, QObject* parent = 0) : QThread(parent), outgoing(outgoing)
-    {}
+    SendThread(Connection::Ptr outgoing, QObject *parent = 0)
+        : QThread(parent)
+        , outgoing(outgoing)
+    {
+    }
 
     void run() override
     {
         char test[] = TEST_DATA;
         int sent = 0;
         while (sent < PACKETS_TO_SEND && outgoing->connectionState() != CS_CLOSED) {
-            int ret = outgoing->send((const bt::Uint8*)test, strlen(test));
+            int ret = outgoing->send((const bt::Uint8 *)test, strlen(test));
             if (ret > 0) {
                 sent++;
             }
@@ -111,7 +115,8 @@ public:
 class PacketLoss : public QEventLoop
 {
 public:
-    PacketLoss(QObject* parent = nullptr) : QEventLoop(parent)
+    PacketLoss(QObject *parent = nullptr)
+        : QEventLoop(parent)
     {
     }
 
@@ -177,7 +182,7 @@ private:
             bt::Uint32 ba = incoming->bytesAvailable();
             if (ba > 0) {
                 QByteArray data(ba, 0);
-                int ret = incoming->recv((bt::Uint8*)data.data(), ba);
+                int ret = incoming->recv((bt::Uint8 *)data.data(), ba);
                 if (ret > 0) {
                     received_data.append(data);
                     received += ret;
@@ -200,8 +205,6 @@ private:
     }
 
 private:
-
-
 private:
     Connection::Ptr incoming;
     Connection::Ptr outgoing;

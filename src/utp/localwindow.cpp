@@ -28,16 +28,15 @@ using namespace bt;
 namespace utp
 {
 WindowPacket::WindowPacket(bt::Uint16 seq_nr)
-    : seq_nr(seq_nr),
-      bytes_read(0)
+    : seq_nr(seq_nr)
+    , bytes_read(0)
 {
-
 }
 
 WindowPacket::WindowPacket(bt::Uint16 seq_nr, bt::Buffer::Ptr packet, bt::Uint32 data_off)
-    : seq_nr(seq_nr),
-      packet(packet),
-      bytes_read(data_off)
+    : seq_nr(seq_nr)
+    , packet(packet)
+    , bytes_read(data_off)
 {
 }
 
@@ -45,7 +44,7 @@ WindowPacket::~WindowPacket()
 {
 }
 
-bt::Uint32 WindowPacket::read(bt::Uint8* dst, bt::Uint32 max_len)
+bt::Uint32 WindowPacket::read(bt::Uint8 *dst, bt::Uint32 max_len)
 {
     bt::Uint32 to_read = qMin(packet->size() - bytes_read, max_len);
     if (to_read == 0)
@@ -67,35 +66,33 @@ void WindowPacket::set(bt::Buffer::Ptr packet, bt::Uint32 data_off)
     bytes_read = data_off;
 }
 
-bool operator < (const WindowPacket & a, const WindowPacket & b)
+bool operator<(const WindowPacket &a, const WindowPacket &b)
 {
     return SeqNrCmpS(a.seq_nr, b.seq_nr);
 }
 
-bool operator < (const WindowPacket & a, bt::Uint16 seq_nr)
+bool operator<(const WindowPacket &a, bt::Uint16 seq_nr)
 {
     return SeqNrCmpS(a.seq_nr, seq_nr);
 }
 
-bool operator < (bt::Uint16 seq_nr, const WindowPacket & a)
+bool operator<(bt::Uint16 seq_nr, const WindowPacket &a)
 {
-    return  SeqNrCmpS(seq_nr, a.seq_nr);
+    return SeqNrCmpS(seq_nr, a.seq_nr);
 }
 
 LocalWindow::LocalWindow(bt::Uint32 cap)
-    : last_seq_nr(0),
-      first_seq_nr(0),
-      capacity(cap),
-      window_space(cap),
-      bytes_available(0)
+    : last_seq_nr(0)
+    , first_seq_nr(0)
+    , capacity(cap)
+    , window_space(cap)
+    , bytes_available(0)
 {
-
 }
 
 LocalWindow::~LocalWindow()
 {
 }
-
 
 void LocalWindow::setLastSeqNr(bt::Uint16 lsn)
 {
@@ -103,12 +100,12 @@ void LocalWindow::setLastSeqNr(bt::Uint16 lsn)
     first_seq_nr = lsn;
 }
 
-bt::Uint32 LocalWindow::read(bt::Uint8* data, bt::Uint32 max_len)
+bt::Uint32 LocalWindow::read(bt::Uint8 *data, bt::Uint32 max_len)
 {
     bt::Uint16 off = SeqNrDiff(incoming_packets.front().seq_nr, first_seq_nr);
     bt::Uint32 written = 0;
     while (off < incoming_packets.size() && incoming_packets[off].packet && SeqNrCmpSE(incoming_packets[off].seq_nr, last_seq_nr) && written < max_len) {
-        WindowPacket & pkt = incoming_packets[off];
+        WindowPacket &pkt = incoming_packets[off];
         bt::Uint32 ret = pkt.read(data + written, max_len - written);
         written += ret;
         window_space += ret;
@@ -129,7 +126,7 @@ bt::Uint32 LocalWindow::read(bt::Uint8* data, bt::Uint32 max_len)
     return written;
 }
 
-bool LocalWindow::packetReceived(const utp::Header* hdr, bt::Buffer::Ptr packet, bt::Uint32 data_off)
+bool LocalWindow::packetReceived(const utp::Header *hdr, bt::Buffer::Ptr packet, bt::Uint32 data_off)
 {
     // Drop duplicate data packets
     // Make sure we take into account wrapping around
@@ -168,7 +165,7 @@ bool LocalWindow::packetReceived(const utp::Header* hdr, bt::Buffer::Ptr packet,
         bt::Uint16 off = SeqNrDiff(incoming_packets.front().seq_nr, next_seq_nr);
         // See if we can increase the last_seq_nr some more
         while (off < incoming_packets.size()) {
-            WindowPacket & pkt = incoming_packets[off];
+            WindowPacket &pkt = incoming_packets[off];
             if (pkt.packet) {
                 bytes_available += pkt.packet->size() - pkt.bytes_read;
                 last_seq_nr = next_seq_nr;
@@ -188,7 +185,6 @@ bool LocalWindow::packetReceived(const utp::Header* hdr, bt::Buffer::Ptr packet,
     return true;
 }
 
-
 bt::Uint32 LocalWindow::selectiveAckBits() const
 {
     if (!incoming_packets.empty() && SeqNrCmpS(last_seq_nr, incoming_packets.back().seq_nr))
@@ -197,7 +193,7 @@ bt::Uint32 LocalWindow::selectiveAckBits() const
         return 0;
 }
 
-void LocalWindow::fillSelectiveAck(SelectiveAck* sack)
+void LocalWindow::fillSelectiveAck(SelectiveAck *sack)
 {
     // First turn off all bits
     memset(sack->bitmask, 0, sack->length);
@@ -211,4 +207,3 @@ void LocalWindow::fillSelectiveAck(SelectiveAck* sack)
 }
 
 }
-

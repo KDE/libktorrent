@@ -21,10 +21,9 @@
 #ifndef BT_STREAMINGCHUNKSELECTOR_H
 #define BT_STREAMINGCHUNKSELECTOR_H
 
+#include <download/chunkselector.h>
 #include <ktorrent_export.h>
 #include <set>
-#include <download/chunkselector.h>
-
 
 namespace bt
 {
@@ -39,12 +38,12 @@ public:
     StreamingChunkSelector();
     ~StreamingChunkSelector() override;
 
-    void init(ChunkManager* cman, Downloader* downer, PeerManager* pman) override;
-    bool select(bt::PieceDownloader* pd, bt::Uint32& chunk) override;
-    void dataChecked(const bt::BitSet& ok_chunks, Uint32 from, Uint32 to) override;
+    void init(ChunkManager *cman, Downloader *downer, PeerManager *pman) override;
+    bool select(bt::PieceDownloader *pd, bt::Uint32 &chunk) override;
+    void dataChecked(const bt::BitSet &ok_chunks, Uint32 from, Uint32 to) override;
     void reincluded(bt::Uint32 from, bt::Uint32 to) override;
     void reinsert(bt::Uint32 chunk) override;
-    bool selectRange(bt::Uint32& from, bt::Uint32& to, bt::Uint32 max_len) override;
+    bool selectRange(bt::Uint32 &from, bt::Uint32 &to, bt::Uint32 max_len) override;
 
     /// Get the critical window size in chunks
     Uint32 criticialWindowSize() const
@@ -66,7 +65,7 @@ public:
 private:
     void updateRange();
     void initRange();
-    bool selectFromPreview(bt::PieceDownloader* pd, bt::Uint32& chunk);
+    bool selectFromPreview(bt::PieceDownloader *pd, bt::Uint32 &chunk);
 
 private:
     bt::Uint32 range_start;

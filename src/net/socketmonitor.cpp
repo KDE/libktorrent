@@ -18,14 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "socketmonitor.h"
+#include "downloadthread.h"
+#include "trafficshapedsocket.h"
+#include "uploadthread.h"
 #include <math.h>
+#include <torrent/globals.h>
 #include <unistd.h>
 #include <util/functions.h>
 #include <util/log.h>
-#include <torrent/globals.h>
-#include "trafficshapedsocket.h"
-#include "uploadthread.h"
-#include "downloadthread.h"
 
 using namespace bt;
 
@@ -36,7 +36,11 @@ SocketMonitor SocketMonitor::self;
 class SocketMonitor::Private
 {
 public:
-    Private(SocketMonitor* p) : mutex(QMutex::Recursive), ut(0), dt(0), next_group_id(1)
+    Private(SocketMonitor *p)
+        : mutex(QMutex::Recursive)
+        , ut(0)
+        , dt(0)
+        , next_group_id(1)
     {
         dt = new DownloadThread(p);
         ut = new UploadThread(p);
@@ -50,16 +54,15 @@ public:
     void shutdown();
 
     QMutex mutex;
-    UploadThread* ut;
-    DownloadThread* dt;
+    UploadThread *ut;
+    DownloadThread *dt;
     Uint32 next_group_id;
 };
 
-SocketMonitor::SocketMonitor() : d(new Private(this))
+SocketMonitor::SocketMonitor()
+    : d(new Private(this))
 {
-
 }
-
 
 SocketMonitor::~SocketMonitor()
 {
@@ -82,7 +85,6 @@ void SocketMonitor::Private::shutdown()
         }
     }
 
-
     if (dt && dt->isRunning()) {
         dt->stop();
         dt->wakeUp(); // wake it up if necessary
@@ -97,7 +99,6 @@ void SocketMonitor::Private::shutdown()
     ut = 0;
     dt = 0;
 }
-
 
 void SocketMonitor::lock()
 {
@@ -119,7 +120,6 @@ Uint32 SocketMonitor::getDownloadCap()
     return DownloadThread::cap();
 }
 
-
 void SocketMonitor::setUploadCap(Uint32 bytes_per_sec)
 {
     UploadThread::setCap(bytes_per_sec);
@@ -130,14 +130,13 @@ Uint32 SocketMonitor::getUploadCap()
     return UploadThread::cap();
 }
 
-
 void SocketMonitor::setSleepTime(Uint32 sleep_time)
 {
     DownloadThread::setSleepTime(sleep_time);
     UploadThread::setSleepTime(sleep_time);
 }
 
-void SocketMonitor::add(TrafficShapedSocket* sock)
+void SocketMonitor::add(TrafficShapedSocket *sock)
 {
     QMutexLocker lock(&d->mutex);
 
@@ -159,7 +158,7 @@ void SocketMonitor::add(TrafficShapedSocket* sock)
     d->dt->wakeUp();
 }
 
-void SocketMonitor::remove(TrafficShapedSocket* sock)
+void SocketMonitor::remove(TrafficShapedSocket *sock)
 {
     QMutexLocker lock(&d->mutex);
     if (sockets.size() == 0)

@@ -18,25 +18,23 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "datacheckerthread.h"
-#include <util/log.h>
-#include <util/error.h>
-#include <torrent/torrent.h>
 #include "datachecker.h"
+#include <torrent/torrent.h>
+#include <util/error.h>
+#include <util/log.h>
 
 namespace bt
 {
-
-DataCheckerThread::DataCheckerThread(DataChecker* dc,
-                                     const BitSet & status,
-                                     const QString & path,
-                                     const Torrent & tor,
-                                     const QString & dnddir)
-    : dc(dc), path(path), tor(tor), dnddir(dnddir), status(status)
+DataCheckerThread::DataCheckerThread(DataChecker *dc, const BitSet &status, const QString &path, const Torrent &tor, const QString &dnddir)
+    : dc(dc)
+    , path(path)
+    , tor(tor)
+    , dnddir(dnddir)
+    , status(status)
 {
     running = true;
     dc->moveToThread(this);
 }
-
 
 DataCheckerThread::~DataCheckerThread()
 {
@@ -47,7 +45,7 @@ void DataCheckerThread::run()
 {
     try {
         dc->check(path, tor, dnddir, status);
-    } catch (bt::Error & e) {
+    } catch (bt::Error &e) {
         error = e.toString();
         Out(SYS_GEN | LOG_DEBUG) << error << endl;
     }

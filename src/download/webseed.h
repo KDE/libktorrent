@@ -23,14 +23,12 @@
 
 #include <QTimer>
 #include <QUrl>
-#include <ktorrent_export.h>
-#include <util/constants.h>
-#include <interfaces/webseedinterface.h>
-#include <interfaces/chunkdownloadinterface.h>
 #include <diskio/piecedata.h>
+#include <interfaces/chunkdownloadinterface.h>
+#include <interfaces/webseedinterface.h>
+#include <ktorrent_export.h>
 #include <peer/connectionlimit.h>
-
-
+#include <util/constants.h>
 
 namespace bt
 {
@@ -48,7 +46,7 @@ class KTORRENT_EXPORT WebSeed : public QObject, public WebSeedInterface
 {
     Q_OBJECT
 public:
-    WebSeed(const QUrl &url, bool user, const Torrent & tor, ChunkManager & cman);
+    WebSeed(const QUrl &url, bool user, const Torrent &tor, ChunkManager &cman);
     ~WebSeed() override;
 
     /// Is this webseed busy ?
@@ -88,13 +86,12 @@ public:
     void chunkDownloaded(Uint32 chunk);
 
     /**
-    * Cancel the current download and kill the connection
-    */
+     * Cancel the current download and kill the connection
+     */
     void cancel();
 
     /// Get the current download rate
     Uint32 getDownloadRate() const override;
-
 
     /**
      * Set the group ID's of the http connection (for speed limits)
@@ -103,13 +100,12 @@ public:
      */
     void setGroupIDs(Uint32 up, Uint32 down);
 
-
     /**
      * Set the proxy to use for all WebSeeds
      * @param host Hostname or IP address of the proxy
      * @param port Port number of the proxy
      */
-    static void setProxy(const QString & host, bt::Uint16 port);
+    static void setProxy(const QString &host, bt::Uint16 port);
 
     /**
      * Whether or not to enable or disable the use of a proxy.
@@ -119,7 +115,7 @@ public:
     static void setProxyEnabled(bool on);
 
     /// Get the current webseed download
-    WebSeedChunkDownload* currentChunkDownload()
+    WebSeedChunkDownload *currentChunkDownload()
     {
         return current;
     }
@@ -127,7 +123,7 @@ public:
     void setEnabled(bool on) override;
 
     /// Disable the webseed
-    void disable(const QString & reason);
+    void disable(const QString &reason);
 
     /// Get the number of failed attempts
     Uint32 failedAttempts() const
@@ -146,7 +142,7 @@ Q_SIGNALS:
      * Emitted when a chunk is downloaded
      * @param c The chunk
      */
-    void chunkReady(Chunk* c);
+    void chunkReady(Chunk *c);
 
     /**
      * Emitted when a range has been fully downloaded
@@ -158,14 +154,14 @@ Q_SIGNALS:
      * @param cd The ChunkDownloadInterface
      * @param chunk The chunk which is being started
      */
-    void chunkDownloadStarted(WebSeedChunkDownload* cd, Uint32 chunk);
+    void chunkDownloadStarted(WebSeedChunkDownload *cd, Uint32 chunk);
 
     /**
      * A ChunkDownload was finished
      * @param cd The ChunkDownloadInterface
      * @param chunk The chunk which is being stopped
      */
-    void chunkDownloadFinished(WebSeedChunkDownload* cd, Uint32 chunk);
+    void chunkDownloadFinished(WebSeedChunkDownload *cd, Uint32 chunk);
 
 private Q_SLOTS:
     void redirected(const QUrl &to_url);
@@ -177,10 +173,12 @@ private:
         Uint64 len;
     };
 
-    class AutoDisabled {}; // Exception
+    class AutoDisabled
+    {
+    }; // Exception
 
     void fillRangeList(Uint32 chunk);
-    void handleData(const QByteArray & data);
+    void handleData(const QByteArray &data);
     void chunkStarted(Uint32 chunk);
     void chunkStopped();
     void connectToServer();
@@ -189,9 +187,9 @@ private:
     void retryLater();
 
 private:
-    const Torrent & tor;
-    ChunkManager & cman;
-    HttpConnection* conn;
+    const Torrent &tor;
+    ChunkManager &cman;
+    HttpConnection *conn;
     QList<QByteArray> chunks;
     Uint32 first_chunk;
     Uint32 last_chunk;
@@ -199,7 +197,7 @@ private:
     Uint32 bytes_of_cur_chunk;
     Uint32 num_failures;
     Uint32 downloaded;
-    WebSeedChunkDownload* current;
+    WebSeedChunkDownload *current;
     Uint32 up_gid, down_gid;
     QList<Range> range_queue;
     QUrl redirected_url;
@@ -215,12 +213,12 @@ private:
 class WebSeedChunkDownload : public ChunkDownloadInterface
 {
 public:
-    WebSeedChunkDownload(WebSeed* ws, const QString & url, Uint32 index, Uint32 total);
+    WebSeedChunkDownload(WebSeed *ws, const QString &url, Uint32 index, Uint32 total);
     ~WebSeedChunkDownload() override;
 
-    void getStats(Stats & s) override;
+    void getStats(Stats &s) override;
 
-    WebSeed* ws;
+    WebSeed *ws;
     QString url;
     Uint32 chunk;
     Uint32 total_pieces;

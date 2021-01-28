@@ -18,21 +18,19 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #include "addressresolver.h"
 
 namespace net
 {
-
-AddressResolver::AddressResolver(const QString & host, bt::Uint16 port, QObject* parent, const char* slot) :
-    QObject(parent),
-    lookup_id(-1),
-    succesfull(false)
+AddressResolver::AddressResolver(const QString &host, bt::Uint16 port, QObject *parent, const char *slot)
+    : QObject(parent)
+    , lookup_id(-1)
+    , succesfull(false)
 {
     result.setPort(port);
     lookup_id = QHostInfo::lookupHost(host, this, SLOT(hostResolved(QHostInfo)));
     ongoing = true;
-    connect(this, SIGNAL(resolved(net::AddressResolver*)), parent, slot);
+    connect(this, SIGNAL(resolved(net::AddressResolver *)), parent, slot);
 }
 
 AddressResolver::~AddressResolver()
@@ -41,7 +39,7 @@ AddressResolver::~AddressResolver()
         QHostInfo::abortHostLookup(lookup_id);
 }
 
-void AddressResolver::hostResolved(const QHostInfo& res)
+void AddressResolver::hostResolved(const QHostInfo &res)
 {
     ongoing = false;
     succesfull = res.error() == QHostInfo::NoError && res.addresses().count() > 0;
@@ -55,12 +53,12 @@ void AddressResolver::hostResolved(const QHostInfo& res)
     deleteLater();
 }
 
-void AddressResolver::resolve(const QString& host, Uint16 port, QObject* parent, const char* slot)
+void AddressResolver::resolve(const QString &host, Uint16 port, QObject *parent, const char *slot)
 {
     new AddressResolver(host, port, parent, slot);
 }
 
-Address AddressResolver::resolve(const QString& host, Uint16 port)
+Address AddressResolver::resolve(const QString &host, Uint16 port)
 {
     QHostInfo info = QHostInfo::fromName(host);
     if (info.error() == QHostInfo::NoError && info.addresses().size() > 0)
@@ -68,6 +66,5 @@ Address AddressResolver::resolve(const QString& host, Uint16 port)
     else
         return net::Address();
 }
-
 
 }

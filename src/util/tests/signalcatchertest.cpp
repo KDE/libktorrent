@@ -1,36 +1,35 @@
 /***************************************************************************
-*   Copyright (C) 2010 by Joris Guisson                                   *
-*   joris.guisson@gmail.com                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
-***************************************************************************/
+ *   Copyright (C) 2010 by Joris Guisson                                   *
+ *   joris.guisson@gmail.com                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
+ ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
 #include <QTemporaryFile>
+#include <QtTest>
 #include <ctime>
-#include <util/log.h>
-#include <util/signalcatcher.h>
-#include <util/fileops.h>
-#include <sys/types.h>
+#include <setjmp.h>
 #include <signal.h>
 #include <sys/mman.h>
+#include <sys/types.h>
 #include <unistd.h>
-#include <setjmp.h>
-
+#include <util/fileops.h>
+#include <util/log.h>
+#include <util/signalcatcher.h>
 
 using namespace bt;
 
@@ -86,7 +85,7 @@ private Q_SLOTS:
             BUS_ERROR_WPROTECT();
             kill(getpid(), SIGBUS);
             QFAIL("Didn't catch SIGBUS");
-        } catch (bt::BusError & e) {
+        } catch (bt::BusError &e) {
             Out(SYS_GEN | LOG_DEBUG) << QString("Caught signal: %1").arg(e.toString()) << endl;
         } catch (...) {
             QFAIL("Didn't catch SIGBUS");
@@ -100,20 +99,19 @@ private Q_SLOTS:
         int fd = tmp.handle();
         try {
             TruncateFile(fd, 4096, true);
-        } catch (bt::Error & err) {
+        } catch (bt::Error &err) {
             QString msg = QString("Exception thrown: %s").arg(err.toString());
             QFAIL(msg.toLocal8Bit().constData());
         }
 
-
-        char* ptr = (char*)mmap(0, 4096, PROT_WRITE, MAP_SHARED, fd, 0);
+        char *ptr = (char *)mmap(0, 4096, PROT_WRITE, MAP_SHARED, fd, 0);
         QVERIFY(ptr);
 
         // First try a write which should not fail
         try {
             BUS_ERROR_WPROTECT();
             memcpy(ptr, "Testing", 7);
-        } catch (bt::BusError & e) {
+        } catch (bt::BusError &e) {
             QString msg = QString("Caught signal: %s").arg(e.toString());
             QFAIL(msg.toLocal8Bit().constData());
         }
@@ -124,7 +122,7 @@ private Q_SLOTS:
             TruncateFile(fd, 0, true);
             memcpy(ptr, "Testing", 7);
             QFAIL("Didn't catch SIGBUS");
-        } catch (bt::BusError & e) {
+        } catch (bt::BusError &e) {
             Out(SYS_GEN | LOG_DEBUG) << QString("Caught signal: %1").arg(e.toString()) << endl;
         }
     }

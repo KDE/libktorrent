@@ -20,8 +20,8 @@
 #ifndef BTDNDFILE_H
 #define BTDNDFILE_H
 
-#include <QString>
 #include <QSharedPointer>
+#include <QString>
 #include <util/constants.h>
 
 namespace bt
@@ -37,11 +37,11 @@ class TorrentFile;
 class DNDFile
 {
 public:
-    DNDFile(const QString & path, const TorrentFile* tf, Uint32 chunk_size);
+    DNDFile(const QString &path, const TorrentFile *tf, Uint32 chunk_size);
     virtual ~DNDFile();
 
     /// Change the path of the file
-    void changePath(const QString & npath);
+    void changePath(const QString &npath);
 
     /**
      * CHeck integrity of the file, create it if it doesn't exist.
@@ -53,8 +53,8 @@ public:
      * @param buf The buffer
      * @param off Offset off chunk
      * @param size How many bytes to read of the first chunk
-    */
-    Uint32 readFirstChunk(Uint8* buf, Uint32 off, Uint32 size);
+     */
+    Uint32 readFirstChunk(Uint8 *buf, Uint32 off, Uint32 size);
 
     /**
      * Read the (partial)last chunk into a buffer.
@@ -62,7 +62,7 @@ public:
      * @param off Offset off chunk
      * @param size How many bytes to read of the last chunk
      */
-    Uint32 readLastChunk(Uint8* buf, Uint32 off, Uint32 size);
+    Uint32 readLastChunk(Uint8 *buf, Uint32 off, Uint32 size);
 
     /**
      * Write the partial first chunk.
@@ -70,7 +70,7 @@ public:
      * @param off Offset into partial chunk
      * @param size Size to write
      */
-    void writeFirstChunk(const Uint8* buf, Uint32 off, Uint32 size);
+    void writeFirstChunk(const Uint8 *buf, Uint32 off, Uint32 size);
 
     /**
      * Write the partial last chunk.
@@ -78,7 +78,7 @@ public:
      * @param off Offset into partial chunk
      * @param size Size to write
      */
-    void writeLastChunk(const Uint8* buf, Uint32 off, Uint32 size);
+    void writeLastChunk(const Uint8 *buf, Uint32 off, Uint32 size);
 
     typedef QSharedPointer<DNDFile> Ptr;
 

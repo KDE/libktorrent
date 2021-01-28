@@ -20,11 +20,11 @@
 
 #include "dummytorrentcreator.h"
 #include <QFile>
-#include <util/log.h>
-#include <util/fileops.h>
-#include <util/error.h>
-#include <util/functions.h>
 #include <torrent/torrentcreator.h>
+#include <util/error.h>
+#include <util/fileops.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 using namespace bt;
 
@@ -39,7 +39,7 @@ DummyTorrentCreator::~DummyTorrentCreator()
 {
 }
 
-bool DummyTorrentCreator::createMultiFileTorrent(const QMap<QString, bt::Uint64>& files, const QString& name)
+bool DummyTorrentCreator::createMultiFileTorrent(const QMap<QString, bt::Uint64> &files, const QString &name)
 {
     if (!tmpdir.isValid())
         return false;
@@ -62,13 +62,13 @@ bool DummyTorrentCreator::createMultiFileTorrent(const QMap<QString, bt::Uint64>
         creator.wait();
         creator.saveTorrent(torrentPath());
         return true;
-    } catch (bt::Error & err) {
+    } catch (bt::Error &err) {
         Out(SYS_GEN | LOG_NOTICE) << "Error creating torrent: " << err.toString() << endl;
         return false;
     }
 }
 
-bool DummyTorrentCreator::createSingleFileTorrent(bt::Uint64 size, const QString& filename)
+bool DummyTorrentCreator::createSingleFileTorrent(bt::Uint64 size, const QString &filename)
 {
     if (!tmpdir.isValid())
         return false;
@@ -85,20 +85,19 @@ bool DummyTorrentCreator::createSingleFileTorrent(bt::Uint64 size, const QString
         creator.wait();
         creator.saveTorrent(torrentPath());
         return true;
-    } catch (bt::Error & err) {
+    } catch (bt::Error &err) {
         Out(SYS_GEN | LOG_NOTICE) << "Error creating torrent: " << err.toString() << endl;
         return false;
     }
 }
 
-bool DummyTorrentCreator::createRandomFile(const QString& path, bt::Uint64 size)
+bool DummyTorrentCreator::createRandomFile(const QString &path, bt::Uint64 size)
 {
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         Out(SYS_GEN | LOG_NOTICE) << "Error opening " << path << ": " << file.errorString() << endl;
         return false;
     }
-
 
     bt::Uint64 written = 0;
     while (written < size) {
@@ -114,7 +113,6 @@ bool DummyTorrentCreator::createRandomFile(const QString& path, bt::Uint64 size)
 
     return true;
 }
-
 
 QString DummyTorrentCreator::dataPath() const
 {

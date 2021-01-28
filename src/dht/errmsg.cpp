@@ -19,11 +19,10 @@
  ***************************************************************************/
 
 #include "errmsg.h"
-#include <bcodec/bnode.h>
-#include <util/log.h>
-#include <util/error.h>
 #include "dht.h"
-
+#include <bcodec/bnode.h>
+#include <util/error.h>
+#include <util/log.h>
 
 using namespace bt;
 
@@ -33,14 +32,17 @@ ErrMsg::ErrMsg()
 {
 }
 
-ErrMsg::ErrMsg(const QByteArray & mtid, const Key & id, const QString & msg)
-    : RPCMsg(mtid, NONE, ERR_MSG, id), msg(msg)
-{}
+ErrMsg::ErrMsg(const QByteArray &mtid, const Key &id, const QString &msg)
+    : RPCMsg(mtid, NONE, ERR_MSG, id)
+    , msg(msg)
+{
+}
 
 ErrMsg::~ErrMsg()
-{}
+{
+}
 
-void ErrMsg::apply(dht::DHT* dh_table)
+void ErrMsg::apply(dht::DHT *dh_table)
 {
     dh_table->error(*this);
 }
@@ -51,12 +53,13 @@ void ErrMsg::print()
 }
 
 void ErrMsg::encode(QByteArray &) const
-{}
+{
+}
 
-void ErrMsg::parse(BDictNode* dict)
+void ErrMsg::parse(BDictNode *dict)
 {
     RPCMsg::parse(dict);
-    BListNode* ln = dict->getList(ERR_DHT);
+    BListNode *ln = dict->getList(ERR_DHT);
     if (!ln)
         throw bt::Error("Invalid error message");
 

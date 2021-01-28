@@ -20,11 +20,11 @@
 #ifndef BTTORRENTCREATOR_H
 #define BTTORRENTCREATOR_H
 
-#include <QThread>
-#include <QStringList>
-#include <util/sha1hash.h>
-#include <ktorrent_export.h>
 #include "torrent.h"
+#include <QStringList>
+#include <QThread>
+#include <ktorrent_export.h>
+#include <util/sha1hash.h>
 
 namespace bt
 {
@@ -60,6 +60,7 @@ class KTORRENT_EXPORT TorrentCreator : public QThread
     Uint64 tot_size;
     bool decentralized;
     bool stopped;
+
 public:
     /**
      * Constructor.
@@ -71,9 +72,14 @@ public:
      * @param comments The comments field of the torrent
      * @param priv Private torrent or not
      */
-    TorrentCreator(const QString & target, const QStringList & trackers, const QList<QUrl> & webseeds,
-                   Uint32 chunk_size, const QString & name,
-                   const QString & comments, bool priv, bool decentralized);
+    TorrentCreator(const QString &target,
+                   const QStringList &trackers,
+                   const QList<QUrl> &webseeds,
+                   Uint32 chunk_size,
+                   const QString &name,
+                   const QString &comments,
+                   bool priv,
+                   bool decentralized);
     ~TorrentCreator() override;
 
     /// Get the number of chunks
@@ -92,7 +98,7 @@ public:
      * @param url Filename
      * @throw Error if something goes wrong
      */
-    void saveTorrent(const QString & url);
+    void saveTorrent(const QString &url);
 
     /**
      * Make a TorrentControl object for this torrent.
@@ -104,7 +110,7 @@ public:
      * @throw Error if something goes wrong
      * @return The newly created object
      */
-    TorrentControl* makeTC(const QString & data_dir);
+    TorrentControl *makeTC(const QString &data_dir);
 
     /// Stop the thread
     void stop()
@@ -113,10 +119,10 @@ public:
     }
 
 private:
-    void saveInfo(BEncoder & enc);
-    void saveFile(BEncoder & enc, const TorrentFile & file);
-    void savePieces(BEncoder & enc);
-    void buildFileList(const QString & dir);
+    void saveInfo(BEncoder &enc);
+    void saveFile(BEncoder &enc, const TorrentFile &file);
+    void savePieces(BEncoder &enc);
+    void buildFileList(const QString &dir);
     bool calcHashSingle();
     bool calcHashMulti();
     void run() override;

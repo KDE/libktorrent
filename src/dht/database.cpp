@@ -19,9 +19,9 @@
  ***************************************************************************/
 #include "database.h"
 #include <arpa/inet.h>
+#include <torrent/globals.h>
 #include <util/functions.h>
 #include <util/log.h>
-#include <torrent/globals.h>
 
 using namespace bt;
 
@@ -32,33 +32,35 @@ DBItem::DBItem()
     time_stamp = bt::CurrentTime();
 }
 
-DBItem::DBItem(const net::Address & addr) : addr(addr)
+DBItem::DBItem(const net::Address &addr)
+    : addr(addr)
 {
     time_stamp = bt::CurrentTime();
 }
 
-DBItem::DBItem(const DBItem & it)
+DBItem::DBItem(const DBItem &it)
 {
     addr = it.addr;
     time_stamp = it.time_stamp;
 }
 
 DBItem::~DBItem()
-{}
+{
+}
 
 bool DBItem::expired(bt::TimeStamp now) const
 {
     return (now - time_stamp >= MAX_ITEM_AGE);
 }
 
-DBItem & DBItem::operator = (const DBItem & it)
+DBItem &DBItem::operator=(const DBItem &it)
 {
     addr = it.addr;
     time_stamp = it.time_stamp;
     return *this;
 }
 
-Uint32 DBItem::pack(Uint8* buf) const
+Uint32 DBItem::pack(Uint8 *buf) const
 {
     if (addr.ipVersion() == 4) {
         WriteUint32(buf, 0, addr.toIPv4Address());
@@ -78,13 +80,13 @@ Database::Database()
     items.setAutoDelete(true);
 }
 
-
 Database::~Database()
-{}
-
-void Database::store(const dht::Key & key, const DBItem & dbi)
 {
-    DBItemList* dbl = items.find(key);
+}
+
+void Database::store(const dht::Key &key, const DBItem &dbi)
+{
+    DBItemList *dbl = items.find(key);
     if (!dbl) {
         dbl = new DBItemList();
         items.insert(key, dbl);
@@ -92,9 +94,9 @@ void Database::store(const dht::Key & key, const DBItem & dbi)
     dbl->append(dbi);
 }
 
-void Database::sample(const dht::Key & key, DBItemList & tdbl, bt::Uint32 max_entries, bt::Uint32 ip_version)
+void Database::sample(const dht::Key &key, DBItemList &tdbl, bt::Uint32 max_entries, bt::Uint32 ip_version)
 {
-    DBItemList* dbl = items.find(key);
+    DBItemList *dbl = items.find(key);
     if (!dbl)
         return;
 
@@ -110,7 +112,7 @@ void Database::expire(bt::TimeStamp now)
 {
     bt::PtrMap<dht::Key, DBItemList>::iterator itr = items.begin();
     while (itr != items.end()) {
-        DBItemList* dbl = itr->second;
+        DBItemList *dbl = itr->second;
         // newer keys are inserted at the back
         // so we can stop when we hit the first key which is not expired
         while (dbl->count() > 0 && dbl->first().expired(now)) {
@@ -120,7 +122,7 @@ void Database::expire(bt::TimeStamp now)
     }
 }
 
-QByteArray Database::genToken(const net::Address & addr)
+QByteArray Database::genToken(const net::Address &addr)
 {
     if (addr.ipVersion() == 4) {
         Uint8 tdata[14];
@@ -151,7 +153,7 @@ QByteArray Database::genToken(const net::Address & addr)
     }
 }
 
-bool Database::checkToken(const QByteArray & token, const net::Address & addr)
+bool Database::checkToken(const QByteArray &token, const net::Address &addr)
 {
     // the token must be in the map
     if (!tokens.contains(token))
@@ -193,14 +195,14 @@ bool Database::checkToken(const QByteArray & token, const net::Address & addr)
     return true;
 }
 
-bool Database::contains(const dht::Key & key) const
+bool Database::contains(const dht::Key &key) const
 {
     return items.find(key) != 0;
 }
 
-void Database::insert(const dht::Key & key)
+void Database::insert(const dht::Key &key)
 {
-    DBItemList* dbl = items.find(key);
+    DBItemList *dbl = items.find(key);
     if (!dbl) {
         dbl = new DBItemList();
         items.insert(key, dbl);

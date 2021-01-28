@@ -20,11 +20,10 @@
 #ifndef NETUPLOADTHREAD_H
 #define NETUPLOADTHREAD_H
 
-#include <qwaitcondition.h>
-#include <qmutex.h>
 #include <net/networkthread.h>
 #include <net/wakeuppipe.h>
-
+#include <qmutex.h>
+#include <qwaitcondition.h>
 
 namespace net
 {
@@ -39,8 +38,9 @@ class UploadThread : public NetworkThread
     static bt::Uint32 sleep_time;
 
     WakeUpPipe::Ptr wake_up;
+
 public:
-    UploadThread(SocketMonitor* sm);
+    UploadThread(SocketMonitor *sm);
     ~UploadThread() override;
 
     /// Wake up thread, data is ready to be sent
@@ -60,9 +60,10 @@ public:
 
     /// Set the sleep time when using upload caps
     static void setSleepTime(bt::Uint32 stime);
+
 private:
     void update() override;
-    bool doGroup(SocketGroup* g, Uint32 & allowance, bt::TimeStamp now) override;
+    bool doGroup(SocketGroup *g, Uint32 &allowance, bt::TimeStamp now) override;
 
     int waitForSocketsReady();
 };

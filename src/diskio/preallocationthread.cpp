@@ -19,42 +19,40 @@
  ***************************************************************************/
 #include "preallocationthread.h"
 #include <errno.h>
-#include <unistd.h>
 #include <fcntl.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
-#include <util/log.h>
-#include <util/error.h>
-#include <qfile.h>
-#include <klocalizedstring.h>
 #include "chunkmanager.h"
+#include <klocalizedstring.h>
+#include <qfile.h>
+#include <util/error.h>
+#include <util/log.h>
 
 #ifndef O_LARGEFILE
-# define O_LARGEFILE 0
+#define O_LARGEFILE 0
 #endif
 
 namespace bt
 {
-
-PreallocationThread::PreallocationThread() :
-    stopped(false),
-    not_finished(false),
-    done(false),
-    bytes_written(0)
+PreallocationThread::PreallocationThread()
+    : stopped(false)
+    , not_finished(false)
+    , done(false)
+    , bytes_written(0)
 {
 }
 
-
 PreallocationThread::~PreallocationThread()
-{}
+{
+}
 
 void PreallocationThread::add(CacheFile::Ptr cache_file)
 {
     if (cache_file)
         todo.append(cache_file);
 }
-
 
 void PreallocationThread::run()
 {
@@ -68,7 +66,7 @@ void PreallocationThread::run()
             }
         }
 
-    } catch (Error & err) {
+    } catch (Error &err) {
         setErrorMsg(err.toString());
     }
 
@@ -83,7 +81,7 @@ void PreallocationThread::stop()
     stopped = true;
 }
 
-void PreallocationThread::setErrorMsg(const QString & msg)
+void PreallocationThread::setErrorMsg(const QString &msg)
 {
     QMutexLocker lock(&mutex);
     error_msg = msg;

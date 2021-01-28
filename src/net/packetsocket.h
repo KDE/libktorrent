@@ -20,20 +20,17 @@
 #ifndef NETBUFFEREDSOCKET_H
 #define NETBUFFEREDSOCKET_H
 
-#include <deque>
 #include <QMutex>
-#include <net/socket.h>
-#include <download/request.h>
+#include <deque>
 #include <download/packet.h>
+#include <download/request.h>
+#include <net/socket.h>
 #include <net/trafficshapedsocket.h>
 
 namespace net
 {
-using bt::Uint8;
 using bt::Uint32;
-
-
-
+using bt::Uint8;
 
 /**
  * @author Joris Guisson <joris.guisson@gmail.com>
@@ -44,7 +41,7 @@ using bt::Uint32;
 class PacketSocket : public TrafficShapedSocket
 {
 public:
-    PacketSocket(SocketDevice* sock);
+    PacketSocket(SocketDevice *sock);
     PacketSocket(int fd, int ip_version);
     PacketSocket(bool tcp, int ip_version);
     ~PacketSocket() override;
@@ -54,7 +51,6 @@ public:
      * @param packet The Packet to send
      **/
     void addPacket(bt::Packet::Ptr packet);
-
 
     Uint32 write(Uint32 max, bt::TimeStamp now) override;
     bool bytesReadyToWrite() const override;
@@ -74,7 +70,7 @@ public:
      * @param req The request
      * @param reject Whether we can send a reject instead
      */
-    void doNotSendPiece(const bt::Request& req, bool reject);
+    void doNotSendPiece(const bt::Request &req, bool reject);
 
     /// Get the number of pending piece uploads
     Uint32 numPendingPieceUploads() const;
@@ -91,7 +87,7 @@ private:
 
 protected:
     std::deque<bt::Packet::Ptr> control_packets;
-    std::deque<bt::Packet::Ptr> data_packets; //NOTE: revert back to lists because of erase() calls?
+    std::deque<bt::Packet::Ptr> data_packets; // NOTE: revert back to lists because of erase() calls?
     bt::Packet::Ptr curr_packet;
     Uint32 ctrl_packets_sent;
 

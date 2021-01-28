@@ -18,36 +18,32 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "serverauthenticate.h"
+#include "peerid.h"
+#include "peermanager.h"
 #include <mse/encryptedpacketsocket.h>
-#include <util/sha1hash.h>
-#include <util/log.h>
+#include <peer/accessmanager.h>
 #include <torrent/globals.h>
 #include <torrent/server.h>
-#include "peermanager.h"
-#include "peerid.h"
 #include <torrent/torrent.h>
-#include <peer/accessmanager.h>
-
+#include <util/log.h>
+#include <util/sha1hash.h>
 
 namespace bt
 {
 bool ServerAuthenticate::s_firewalled = true;
 
-
-ServerAuthenticate::ServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock) : AuthenticateBase(sock)
+ServerAuthenticate::ServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock)
+    : AuthenticateBase(sock)
 {
 }
-
 
 ServerAuthenticate::~ServerAuthenticate()
 {
 }
 
-
 void ServerAuthenticate::onFinish(bool succes)
 {
-    Out(SYS_CON | LOG_NOTICE) << "Authentication(S) to " << sock->getRemoteIPAddress()
-                              << " : " << (succes ? "ok" : "failure") << endl;
+    Out(SYS_CON | LOG_NOTICE) << "Authentication(S) to " << sock->getRemoteIPAddress() << " : " << (succes ? "ok" : "failure") << endl;
     finished = true;
     setFirewalled(false);
 
@@ -59,8 +55,8 @@ void ServerAuthenticate::onFinish(bool succes)
 
 void ServerAuthenticate::handshakeReceived(bool full)
 {
-    Uint8* hs = handshake;
-    AccessManager & aman = AccessManager::instance();
+    Uint8 *hs = handshake;
+    AccessManager &aman = AccessManager::instance();
 
     if (!aman.allowed(sock->getRemoteAddress())) {
         Out(SYS_GEN | LOG_NOTICE) << "The IP address " << sock->getRemoteIPAddress() << " is blocked" << endl;
@@ -70,7 +66,7 @@ void ServerAuthenticate::handshakeReceived(bool full)
 
     // try to find a PeerManager which has the right info hash
     SHA1Hash rh(hs + 28);
-    PeerManager* pman = ServerInterface::findPeerManager(rh);
+    PeerManager *pman = ServerInterface::findPeerManager(rh);
     if (!pman) {
         onFinish(false);
         return;
@@ -95,7 +91,6 @@ void ServerAuthenticate::handshakeReceived(bool full)
             return;
         }
 
-
         // send handshake and finish off
         sendHandshake(rh, pman->getTorrent().getPeerID());
         onFinish(true);
@@ -107,4 +102,3 @@ void ServerAuthenticate::handshakeReceived(bool full)
     }
 }
 }
-

@@ -18,7 +18,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #ifndef NET_ADDRESSRESOLVER_H
 #define NET_ADDRESSRESOLVER_H
 
@@ -28,7 +27,6 @@
 
 namespace net
 {
-
 /**
  * Resolves hostnames into net::Address objects.
  * This class will clean itself up, after it is done using deleteLater.
@@ -44,7 +42,7 @@ public:
      * @param parent Parent
      * @param slot Slot of parent to connect to
      **/
-    AddressResolver(const QString & host, bt::Uint16 port, QObject* parent, const char* slot);
+    AddressResolver(const QString &host, bt::Uint16 port, QObject *parent, const char *slot);
     ~AddressResolver() override;
 
     /// Did the resolver succeed ?
@@ -54,7 +52,7 @@ public:
     }
 
     /// Get the resulting address
-    const net::Address & address() const
+    const net::Address &address() const
     {
         return result;
     }
@@ -67,7 +65,7 @@ public:
      * @param slot Slot of parent to connect to
      * @return void
      **/
-    static void resolve(const QString & host, bt::Uint16 port, QObject* parent, const char* slot);
+    static void resolve(const QString &host, bt::Uint16 port, QObject *parent, const char *slot);
 
     /**
      * Synchronous resolve
@@ -75,17 +73,17 @@ public:
      * @param port Port number
      * @return :Address
      **/
-    static net::Address resolve(const QString & host, bt::Uint16 port);
+    static net::Address resolve(const QString &host, bt::Uint16 port);
 
 Q_SIGNALS:
     /**
      * Emitted when hostname lookup succeeded
      * @param ar This AddressResolver
      **/
-    void resolved(net::AddressResolver* ar);
+    void resolved(net::AddressResolver *ar);
 
 private Q_SLOTS:
-    void hostResolved(const QHostInfo & res);
+    void hostResolved(const QHostInfo &res);
 
 private:
     int lookup_id;

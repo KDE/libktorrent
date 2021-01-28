@@ -18,16 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #ifndef BT_TICKETMANAGER_H
 #define BT_TICKETMANAGER_H
 
+#include "constants.h"
 #include <QList>
 #include <QMap>
 #include <QSet>
 #include <QString>
 #include <ktorrent_export.h>
-#include "constants.h"
 
 namespace bt
 {
@@ -40,7 +39,7 @@ class ResourceManager;
 class KTORRENT_EXPORT Resource
 {
 public:
-    Resource(ResourceManager* rman, const QString & group);
+    Resource(ResourceManager *rman, const QString &group);
     virtual ~Resource();
 
     /// Get the name of the group the resource is part of
@@ -55,11 +54,11 @@ public:
     /// Release the Resource
     void release();
 
-    typedef QSet<Resource*> Set;
-    typedef QList<Resource*> List;
+    typedef QSet<Resource *> Set;
+    typedef QList<Resource *> List;
 
 private:
-    ResourceManager* rman;
+    ResourceManager *rman;
     QString group;
 };
 
@@ -85,7 +84,7 @@ public:
         Add a Resource
         @param r The Resource
      */
-    void add(Resource* r);
+    void add(Resource *r);
 
     /**
      * Try to have a Resource acquired. If it succeeds, it will be added and
@@ -93,13 +92,13 @@ public:
      * @param r The Resource
      * @return true upon success, false otherwise
      */
-    bool acquire(Resource* r);
+    bool acquire(Resource *r);
 
     /**
         Remove a resource.
         @param r The Resource
      */
-    void remove(Resource* r);
+    void remove(Resource *r);
 
     /**
      * Shutdown the resource manager, no more resources will be handed out.

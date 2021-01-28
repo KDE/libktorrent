@@ -23,9 +23,9 @@
 
 #include <QMap>
 #include <QSharedPointer>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 #include <util/sha1hash.h>
-#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -58,11 +58,11 @@ public:
     class Token
     {
     public:
-        Token(ConnectionLimit & limit, const bt::SHA1Hash & hash);
+        Token(ConnectionLimit &limit, const bt::SHA1Hash &hash);
         ~Token();
 
         /// Get the info hash
-        const bt::SHA1Hash & infoHash() const
+        const bt::SHA1Hash &infoHash() const
         {
             return hash;
         }
@@ -70,24 +70,23 @@ public:
         typedef QSharedPointer<Token> Ptr;
 
     private:
-        ConnectionLimit & limit;
+        ConnectionLimit &limit;
         bt::SHA1Hash hash;
     };
-
 
     /**
      * Request a token for a given torrent
      * @param hash Info hash of the torrent
      * @return ConnectionLimit::Token::Ptr a valid token if a connection can be opened, a 0 pointer if not
      **/
-    Token::Ptr acquire(const SHA1Hash & hash);
+    Token::Ptr acquire(const SHA1Hash &hash);
 
 protected:
     /**
      * Release one Token. Will be done by destructor of Token.
      * @param token The Token
      **/
-    void release(const Token & token);
+    void release(const Token &token);
 
 private:
     bt::Uint32 global_limit;

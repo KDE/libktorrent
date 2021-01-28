@@ -20,9 +20,9 @@
 #ifndef BTCHUNK_H
 #define BTCHUNK_H
 
+#include <diskio/piecedata.h>
 #include <ktorrent_export.h>
 #include <util/constants.h>
-#include <diskio/piecedata.h>
 
 namespace bt
 {
@@ -45,7 +45,7 @@ class PieceData;
 class KTORRENT_EXPORT Chunk
 {
 public:
-    Chunk(Uint32 index, Uint32 size, Cache* cache);
+    Chunk(Uint32 index, Uint32 size, Cache *cache);
     ~Chunk();
 
     enum Status {
@@ -59,7 +59,7 @@ public:
      * @param len The length of the chunk
      * @param data The data, should be big enough to hold len bytes
      */
-    bool readPiece(Uint32 off, Uint32 len, Uint8* data);
+    bool readPiece(Uint32 off, Uint32 len, Uint8 *data);
 
     /**
      * Get a pointer to the data of a piece.
@@ -140,14 +140,14 @@ public:
      * @param h The hash
      * @return true if the data matches the hash
      */
-    bool checkHash(const SHA1Hash & h);
+    bool checkHash(const SHA1Hash &h);
 
 private:
     Status status;
     Uint32 index;
     Uint32 size;
     Priority priority;
-    Cache* cache;
+    Cache *cache;
 };
 }
 

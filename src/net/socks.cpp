@@ -19,19 +19,18 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "socks.h"
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <netinet/in.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 
-#include <util/log.h>
-#include <util/constants.h>
 #include <mse/encryptedpacketsocket.h>
+#include <util/constants.h>
+#include <util/log.h>
 
 using namespace bt;
 
 namespace net
 {
-
 bool Socks::socks_enabled = false;
 int Socks::socks_version = 4;
 QString Socks::socks_server_host;
@@ -41,35 +40,33 @@ QString Socks::socks_password;
 bool Socks::socks_server_addr_resolved = false;
 net::Address Socks::socks_server_addr;
 
-
-Socks::Socks(mse::EncryptedPacketSocket::Ptr sock, const Address & dest) :
-    sock(sock),
-    dest(dest),
-    state(IDLE),
-    internal_state(NONE)
+Socks::Socks(mse::EncryptedPacketSocket::Ptr sock, const Address &dest)
+    : sock(sock)
+    , dest(dest)
+    , state(IDLE)
+    , internal_state(NONE)
 {
     version = socks_version; // copy version in case it changes
 }
-
 
 Socks::~Socks()
 {
 }
 
-void Socks::setSocksAuthentication(const QString & username, const QString & password)
+void Socks::setSocksAuthentication(const QString &username, const QString &password)
 {
     socks_username = username;
     socks_password = password;
 }
 
-void Socks::setSocksServerAddress(const QString & host, bt::Uint16 port)
+void Socks::setSocksServerAddress(const QString &host, bt::Uint16 port)
 {
     socks_server_addr_resolved = false;
     socks_server_host = host;
     socks_server_port = port;
 }
 
-void Socks::resolved(net::AddressResolver* ar)
+void Socks::resolved(net::AddressResolver *ar)
 {
     if (!ar->succeeded()) {
         state = FAILED;
@@ -82,14 +79,12 @@ void Socks::resolved(net::AddressResolver* ar)
         setup();
 }
 
-
 Socks::State Socks::setup()
 {
     state = CONNECTING_TO_SERVER;
     if (!socks_server_addr_resolved) {
         // resolve the address
-        net::AddressResolver::resolve(socks_server_host, socks_server_port,
-                                      this, SLOT(resolved(net::AddressResolver*)));
+        net::AddressResolver::resolve(socks_server_host, socks_server_port, this, SLOT(resolved(net::AddressResolver *)));
         return state;
     } else if (sock->connectTo(socks_server_addr)) {
         state = CONNECTING_TO_HOST;
@@ -125,7 +120,6 @@ Socks::State Socks::onReadyToRead()
         return state;
     }
 
-
     switch (internal_state) {
     case AUTH_REQUEST_SENT:
         return handleAuthReply();
@@ -152,7 +146,7 @@ const Uint8 SOCKS_ADDR_TYPE_IPV6 = 4;
 
 const Uint8 SOCKS_REPLY_OK = 0; //' succeeded
 const Uint8 SOCKS_REPLY_SERVER_FAILURE = 1; // general SOCKS server failure
-const Uint8 SOCKS_REPLY_NOT_ALLOWED = 2;  // connection not allowed by ruleset
+const Uint8 SOCKS_REPLY_NOT_ALLOWED = 2; // connection not allowed by ruleset
 const Uint8 SOCKS_REPLY_NETWORK_UNREACHABLE = 3;
 const Uint8 SOCKS_REPLY_HOST_UNREACHABLE = 4;
 const Uint8 SOCKS_REPLY_CONNECTION_REFUSED = 5;
@@ -168,7 +162,6 @@ const Uint8 SOCKS_V4_REPLY_FAILED_3 = 0x5d;
 const Uint8 SOCKS_AUTH_METHOD_NONE = 0x00;
 const Uint8 SOCKS_AUTH_METHOD_GSSAPI = 0x01;
 const Uint8 SOCKS_AUTH_METHOD_USERNAME_PASSWORD = 0x02;
-
 
 struct SocksAuthRequest {
     Uint8 version;
@@ -225,7 +218,6 @@ struct SocksConnectRequest {
             char domain_name[200];
         }domain;*/
     };
-
 };
 
 struct SocksConnectReply {
@@ -256,7 +248,7 @@ Socks::State Socks::sendAuthRequest()
         req.methods[0] = SOCKS_AUTH_METHOD_NONE; // No authentication
         req.methods[1] = SOCKS_AUTH_METHOD_USERNAME_PASSWORD; // Username and password
         req.methods[2] = SOCKS_AUTH_METHOD_GSSAPI; // GSSAPI
-        sock->sendData((const Uint8*)&req, req.size());
+        sock->sendData((const Uint8 *)&req, req.size());
         internal_state = AUTH_REQUEST_SENT;
     } else {
         if (dest.protocol() == QAbstractSocket::IPv6Protocol) {
@@ -274,25 +266,24 @@ Socks::State Socks::sendAuthRequest()
         quint32 ip = htonl(dest.toIPv4Address());
         memcpy(req.ip, &ip, 4);
         strcpy(req.user_id, "KTorrent");
-        sock->sendData((const Uint8*)&req, req.size());
+        sock->sendData((const Uint8 *)&req, req.size());
         internal_state = CONNECT_REQUEST_SENT;
-        //Out(SYS_CON|LOG_DEBUG) << "SOCKSV4 send connect" << endl;
+        // Out(SYS_CON|LOG_DEBUG) << "SOCKSV4 send connect" << endl;
     }
     return state;
 }
 
-
 Socks::State Socks::handleAuthReply()
 {
     SocksAuthReply reply;
-    if (sock->readData((Uint8*)&reply, sizeof(SocksAuthReply)) != sizeof(SocksAuthReply)) {
-        //Out(SYS_CON|LOG_DEBUG) << "sock->readData SocksAuthReply size not ok" << endl;
+    if (sock->readData((Uint8 *)&reply, sizeof(SocksAuthReply)) != sizeof(SocksAuthReply)) {
+        // Out(SYS_CON|LOG_DEBUG) << "sock->readData SocksAuthReply size not ok" << endl;
         state = FAILED;
         return state;
     }
 
     if (reply.version != SOCKS_VERSION_5 || reply.method == 0xFF) {
-        //Out(SYS_CON|LOG_DEBUG) << "SocksAuthReply = " << reply.version << " " << reply.method << endl;
+        // Out(SYS_CON|LOG_DEBUG) << "SocksAuthReply = " << reply.version << " " << reply.method << endl;
         state = FAILED;
         return state;
     }
@@ -333,7 +324,7 @@ Socks::State Socks::handleUsernamePasswordReply()
     //  Out(SYS_CON|LOG_DEBUG) << "Socks: handleUsernamePasswordReply " << endl;
     Uint8 reply[2];
     if (sock->readData(reply, 2) != 2) {
-        //Out(SYS_CON|LOG_DEBUG) << "sock->readData UPWReply size not ok" << endl;
+        // Out(SYS_CON|LOG_DEBUG) << "sock->readData UPWReply size not ok" << endl;
         state = FAILED;
         return state;
     }
@@ -368,20 +359,19 @@ void Socks::sendConnectRequest()
         len += 16;
         req.address_type = SOCKS_ADDR_TYPE_IPV6;
     }
-    sock->sendData((const Uint8*)&req, len);
+    sock->sendData((const Uint8 *)&req, len);
     internal_state = CONNECT_REQUEST_SENT;
 }
 
 Socks::State Socks::handleConnectReply()
 {
     if (version == 4) {
-        //Out(SYS_CON|LOG_DEBUG) << "SOCKSV4 handleConnectReply" << endl;
+        // Out(SYS_CON|LOG_DEBUG) << "SOCKSV4 handleConnectReply" << endl;
         SocksV4ConnectReply reply;
-        if (sock->readData((Uint8*)&reply, sizeof(SocksV4ConnectReply)) != sizeof(SocksV4ConnectReply)) {
+        if (sock->readData((Uint8 *)&reply, sizeof(SocksV4ConnectReply)) != sizeof(SocksV4ConnectReply)) {
             //  Out(SYS_CON|LOG_DEBUG) << "sock->readData SocksV4ConnectReply size not ok" << endl;
             state = FAILED;
             return state;
-
         }
 
         if (reply.reply != SOCKS_V4_REPLY_OK) {
@@ -396,14 +386,14 @@ Socks::State Socks::handleConnectReply()
     }
 
     SocksConnectReply reply;
-    if (sock->readData((Uint8*)&reply, sizeof(SocksConnectReply)) != sizeof(SocksConnectReply)) {
-        //Out(SYS_CON|LOG_DEBUG) << "sock->readData SocksConnectReply size not ok" << endl;
+    if (sock->readData((Uint8 *)&reply, sizeof(SocksConnectReply)) != sizeof(SocksConnectReply)) {
+        // Out(SYS_CON|LOG_DEBUG) << "sock->readData SocksConnectReply size not ok" << endl;
         state = FAILED;
         return state;
     }
 
     if (reply.version != SOCKS_VERSION_5 || reply.reply != SOCKS_REPLY_OK) {
-        //Out(SYS_CON|LOG_DEBUG) << "SocksConnectReply : " << reply.version << " " << reply.reply << " " << reply.address_type << endl;
+        // Out(SYS_CON|LOG_DEBUG) << "SocksConnectReply : " << reply.version << " " << reply.reply << " " << reply.address_type << endl;
         state = FAILED;
         return state;
     }
@@ -412,48 +402,47 @@ Socks::State Socks::handleConnectReply()
     if (reply.address_type == SOCKS_ADDR_TYPE_IPV4) {
         Uint8 addr[6]; // IP and port
         if (ba < 6 || sock->readData(addr, 6) != 6) {
-            //Out(SYS_CON|LOG_DEBUG) << "Failed to read IPv4 address : " << endl;
+            // Out(SYS_CON|LOG_DEBUG) << "Failed to read IPv4 address : " << endl;
             state = FAILED;
             return state;
         } else {
-            //Out(SYS_CON|LOG_DEBUG) << "Socks: connect OK ! " << endl;
+            // Out(SYS_CON|LOG_DEBUG) << "Socks: connect OK ! " << endl;
             state = CONNECTED;
             return state;
         }
     } else if (reply.address_type == SOCKS_ADDR_TYPE_IPV6) {
         Uint8 addr[18]; // IP and port
         if (ba < 18 || sock->readData(addr, 6) != 6) {
-            //Out(SYS_CON|LOG_DEBUG) << "Failed to read IPv4 address : " << endl;
+            // Out(SYS_CON|LOG_DEBUG) << "Failed to read IPv4 address : " << endl;
             state = FAILED;
             return state;
         } else {
-            //Out(SYS_CON|LOG_DEBUG) << "Socks: connect OK ! " << endl;
+            // Out(SYS_CON|LOG_DEBUG) << "Socks: connect OK ! " << endl;
             state = CONNECTED;
             return state;
         }
     } else if (reply.address_type == SOCKS_ADDR_TYPE_DOMAIN) {
         Uint8 len = 0;
         if (ba == 0 || sock->readData(&len, 1) != 1) {
-            //Out(SYS_CON|LOG_DEBUG) << "Failed to read domain name length " << endl;
+            // Out(SYS_CON|LOG_DEBUG) << "Failed to read domain name length " << endl;
             state = FAILED;
             return state;
         }
         ba = sock->bytesAvailable();
         Uint8 tmp[256];
         if (ba < len || sock->readData(tmp, len) != len) {
-            //Out(SYS_CON|LOG_DEBUG) << "Failed to read domain name" << endl;
+            // Out(SYS_CON|LOG_DEBUG) << "Failed to read domain name" << endl;
             state = FAILED;
             return state;
         } else {
-            //Out(SYS_CON|LOG_DEBUG) << "Socks: connect OK ! " << endl;
+            // Out(SYS_CON|LOG_DEBUG) << "Socks: connect OK ! " << endl;
             state = CONNECTED;
             return state;
         }
     } else {
-        //Out(SYS_CON|LOG_DEBUG) << "Invalid address type : " << reply.address_type << endl;
+        // Out(SYS_CON|LOG_DEBUG) << "Invalid address type : " << reply.address_type << endl;
         state = FAILED;
         return state;
     }
 }
 }
-

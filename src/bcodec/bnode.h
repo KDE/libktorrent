@@ -20,13 +20,12 @@
 #ifndef BTBNODE_H
 #define BTBNODE_H
 
+#include "value.h"
+#include <QByteArray>
 #include <QList>
 #include <QVariant>
-#include <QByteArray>
-#include <util/constants.h>
 #include <ktorrent_export.h>
-#include "value.h"
-
+#include <util/constants.h>
 
 namespace bt
 {
@@ -38,7 +37,7 @@ class BListNode;
  *
  * There are 3 possible pieces of data in b-encoded piece of data.
  * This is the base class for all those 3 things.
-*/
+ */
 class KTORRENT_EXPORT BNode
 {
 public:
@@ -83,6 +82,7 @@ public:
 
     /// Print some debugging info
     virtual void printDebugInfo() = 0;
+
 private:
     Type type;
     Uint32 off, len;
@@ -97,11 +97,12 @@ private:
 class KTORRENT_EXPORT BValueNode : public BNode
 {
     Value value;
+
 public:
-    BValueNode(const Value & v, Uint32 off);
+    BValueNode(const Value &v, Uint32 off);
     ~BValueNode() override;
 
-    const Value & data() const
+    const Value &data() const
     {
         return value;
     }
@@ -117,9 +118,10 @@ class KTORRENT_EXPORT BDictNode : public BNode
 {
     struct DictEntry {
         QByteArray key;
-        BNode* node;
+        BNode *node;
     };
     QList<DictEntry> children;
+
 public:
     BDictNode(Uint32 off);
     ~BDictNode() override;
@@ -132,47 +134,47 @@ public:
      * @param key The key
      * @param node The node
      */
-    void insert(const QByteArray & key, BNode* node);
+    void insert(const QByteArray &key, BNode *node);
 
     /**
      * Get a BNode.
      * @param key The key
      * @return The node or 0 if there is no node with has key @a key
      */
-    BNode* getData(const QByteArray & key);
+    BNode *getData(const QByteArray &key);
 
     /**
      * Get a BListNode.
      * @param key The key
      * @return The node or 0 if there is no list node with has key @a key
      */
-    BListNode* getList(const QByteArray& key);
+    BListNode *getList(const QByteArray &key);
 
     /**
      * Get a BDictNode.
      * @param key The key
      * @return The node or 0 if there is no dict node with has key @a key
      */
-    BDictNode* getDict(const QByteArray& key);
+    BDictNode *getDict(const QByteArray &key);
 
     /**
      * Get a BValueNode.
      * @param key The key
      * @return The node or 0 if there is no value node with has key @a key
      */
-    BValueNode* getValue(const QByteArray& key);
+    BValueNode *getValue(const QByteArray &key);
 
     /// Same as getValue, except directly returns an int, if something goes wrong, an error will be thrown
-    int getInt(const QByteArray& key);
+    int getInt(const QByteArray &key);
 
     /// Same as getValue, except directly returns a qint64, if something goes wrong, an error will be thrown
-    qint64 getInt64(const QByteArray& key);
+    qint64 getInt64(const QByteArray &key);
 
     /// Same as getValue, except directly returns a QString, if something goes wrong, an error will be thrown
-    QString getString(const QByteArray& key, QTextCodec* tc);
+    QString getString(const QByteArray &key, QTextCodec *tc);
 
     /// Same as getValue, except directly returns an QByteArray, if something goes wrong, an error will be thrown
-    QByteArray getByteArray(const QByteArray& key);
+    QByteArray getByteArray(const QByteArray &key);
 
     void printDebugInfo() override;
 };
@@ -184,7 +186,8 @@ public:
  */
 class KTORRENT_EXPORT BListNode : public BNode
 {
-    QList<BNode*> children;
+    QList<BNode *> children;
+
 public:
     BListNode(Uint32 off);
     ~BListNode() override;
@@ -193,7 +196,7 @@ public:
      * Append a node to the list.
      * @param node The node
      */
-    void append(BNode* node);
+    void append(BNode *node);
     void printDebugInfo() override;
 
     /// Get the number of nodes in the list.
@@ -207,7 +210,7 @@ public:
      * @param idx The index
      * @return The node or 0 if idx is out of bounds
      */
-    BNode* getChild(Uint32 idx)
+    BNode *getChild(Uint32 idx)
     {
         return children.at(idx);
     }
@@ -218,7 +221,7 @@ public:
      * @return The node or 0 if the index is out of bounds or the element
      *  at postion @a idx isn't a BListNode.
      */
-    BListNode* getList(Uint32 idx);
+    BListNode *getList(Uint32 idx);
 
     /**
      * Get a BDictNode.
@@ -226,7 +229,7 @@ public:
      * @return The node or 0 if the index is out of bounds or the element
      *  at postion @a idx isn't a BDictNode.
      */
-    BDictNode* getDict(Uint32 idx);
+    BDictNode *getDict(Uint32 idx);
 
     /**
      * Get a BValueNode.
@@ -234,7 +237,7 @@ public:
      * @return The node or 0 if the index is out of bounds or the element
      *  at postion @a idx isn't a BValueNode.
      */
-    BValueNode* getValue(Uint32 idx);
+    BValueNode *getValue(Uint32 idx);
 
     /// Same as getValue, except directly returns an int, if something goes wrong, an error will be thrown
     int getInt(Uint32 idx);
@@ -243,7 +246,7 @@ public:
     qint64 getInt64(Uint32 idx);
 
     /// Same as getValue, except directly returns a QString, if something goes wrong, an error will be thrown
-    QString getString(Uint32 idx, QTextCodec* tc);
+    QString getString(Uint32 idx, QTextCodec *tc);
 
     /// Same as getValue, except directly returns an QByteArray, if something goes wrong, an error will be thrown
     QByteArray getByteArray(Uint32 idx);

@@ -19,32 +19,30 @@
  ***************************************************************************/
 #include "node.h"
 
-#include <util/log.h>
-#include <util/file.h>
-#include <util/error.h>
-#include <util/functions.h>
-#include <util/fileops.h>
-#include <torrent/globals.h>
-#include "rpcmsg.h"
-#include "key.h"
-#include "rpccall.h"
-#include "rpcserver.h"
-#include "kclosestnodessearch.h"
 #include "dht.h"
-#include "nodelookup.h"
 #include "kbuckettable.h"
-
+#include "kclosestnodessearch.h"
+#include "key.h"
+#include "nodelookup.h"
+#include "rpccall.h"
+#include "rpcmsg.h"
+#include "rpcserver.h"
+#include <torrent/globals.h>
+#include <util/error.h>
+#include <util/file.h>
+#include <util/fileops.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 using namespace bt;
 
-
 namespace dht
 {
-
 class Node::Private
 {
 public:
-    Private(RPCServer* srv) : srv(srv)
+    Private(RPCServer *srv)
+        : srv(srv)
     {
         num_receives = 0;
         new_key = false;
@@ -54,7 +52,7 @@ public:
     {
     }
 
-    void saveKey(const dht::Key & key, const QString & key_file)
+    void saveKey(const dht::Key &key, const QString &key_file)
     {
         bt::File fptr;
         if (!fptr.open(key_file, "wb")) {
@@ -66,7 +64,7 @@ public:
         fptr.close();
     }
 
-    dht::Key loadKey(const QString & key_file)
+    dht::Key loadKey(const QString &key_file)
     {
         bt::File fptr;
         if (!fptr.open(key_file, "rb")) {
@@ -91,14 +89,13 @@ public:
 
     QScopedPointer<KBucketTable> ipv4_table;
     QScopedPointer<KBucketTable> ipv6_table;
-    RPCServer* srv;
+    RPCServer *srv;
     Uint32 num_receives;
     bool new_key;
 };
 
-
-Node::Node(RPCServer* srv, const QString & key_file) :
-    d(new Private(srv))
+Node::Node(RPCServer *srv, const QString &key_file)
+    : d(new Private(srv))
 {
     num_entries = 0;
     our_id = d->loadKey(key_file);
@@ -111,7 +108,7 @@ Node::~Node()
     delete d;
 }
 
-void Node::received(dht::DHT* dh_table, const dht::RPCMsg & msg)
+void Node::received(dht::DHT *dh_table, const dht::RPCMsg &msg)
 {
     if (msg.getOrigin().ipVersion() == 4)
         d->ipv4_table->insert(KBucketEntry(msg.getOrigin(), msg.getID()), d->srv);
@@ -128,7 +125,7 @@ void Node::received(dht::DHT* dh_table, const dht::RPCMsg & msg)
     num_entries = d->ipv4_table->numEntries() + d->ipv6_table->numEntries();
 }
 
-void Node::findKClosestNodes(KClosestNodesSearch & kns, bt::Uint32 want)
+void Node::findKClosestNodes(KClosestNodesSearch &kns, bt::Uint32 want)
 {
     if (want & WANT_IPV4)
         d->ipv4_table->findKClosestNodes(kns);
@@ -144,19 +141,19 @@ void Node::onTimeout(RPCMsg::Ptr msg)
         d->ipv6_table->onTimeout(msg->getOrigin());
 }
 
-void Node::refreshBuckets(DHT* dh_table)
+void Node::refreshBuckets(DHT *dh_table)
 {
     d->ipv4_table->refreshBuckets(dh_table);
     d->ipv6_table->refreshBuckets(dh_table);
 }
 
-void Node::saveTable(const QString & file)
+void Node::saveTable(const QString &file)
 {
     d->ipv4_table->saveTable(file + ".ipv4");
     d->ipv6_table->saveTable(file + ".ipv6");
 }
 
-void Node::loadTable(const QString & file)
+void Node::loadTable(const QString &file)
 {
     if (d->new_key) {
         d->new_key = false;

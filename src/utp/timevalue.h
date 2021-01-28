@@ -35,14 +35,14 @@ public:
     /// Default constructor, gets the current time
     TimeValue();
     TimeValue(bt::Uint64 secs, bt::Uint64 usecs);
-    TimeValue(const TimeValue & tv);
+    TimeValue(const TimeValue &tv);
 
-    TimeValue & operator = (const TimeValue & tv);
+    TimeValue &operator=(const TimeValue &tv);
 
     bt::Uint32 timestampMicroSeconds() const
     {
         bt::Uint64 microsecs = seconds * 1000000 + microseconds;
-        //return microsecs & 0x00000000FFFFFFFF;
+        // return microsecs & 0x00000000FFFFFFFF;
         return microsecs;
     }
 
@@ -66,9 +66,8 @@ public:
     bt::Uint64 microseconds;
 };
 
-
 /// Calculate the a - b in milliseconds
-inline bt::Int64 operator - (const TimeValue & a, const TimeValue & b)
+inline bt::Int64 operator-(const TimeValue &a, const TimeValue &b)
 {
     bt::Int64 seconds = a.seconds - b.seconds;
     bt::Int64 microseconds = a.microseconds - b.microseconds;
@@ -81,7 +80,7 @@ inline bt::Int64 operator - (const TimeValue & a, const TimeValue & b)
     return (1000000LL * seconds + microseconds) / 1000;
 }
 
-inline bool operator < (const TimeValue & a, const TimeValue & b)
+inline bool operator<(const TimeValue &a, const TimeValue &b)
 {
     if (a.seconds < b.seconds)
         return true;
@@ -91,7 +90,7 @@ inline bool operator < (const TimeValue & a, const TimeValue & b)
         return false;
 }
 
-inline bool operator <= (const TimeValue & a, const TimeValue & b)
+inline bool operator<=(const TimeValue &a, const TimeValue &b)
 {
     if (a.seconds < b.seconds)
         return true;
@@ -101,7 +100,7 @@ inline bool operator <= (const TimeValue & a, const TimeValue & b)
         return false;
 }
 
-inline bool operator > (const TimeValue & a, const TimeValue & b)
+inline bool operator>(const TimeValue &a, const TimeValue &b)
 {
     if (a.seconds > b.seconds)
         return true;
@@ -111,7 +110,7 @@ inline bool operator > (const TimeValue & a, const TimeValue & b)
         return false;
 }
 
-inline bool operator >= (const TimeValue & a, const TimeValue & b)
+inline bool operator>=(const TimeValue &a, const TimeValue &b)
 {
     if (a.seconds > b.seconds)
         return true;

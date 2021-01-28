@@ -20,11 +20,11 @@
 #ifndef BTUDPTRACKER_H
 #define BTUDPTRACKER_H
 
-#include <QUrl>
-#include <QTimer>
-#include <QByteArray>
-#include <net/address.h>
 #include "tracker.h"
+#include <QByteArray>
+#include <QTimer>
+#include <QUrl>
+#include <net/address.h>
 
 namespace net
 {
@@ -33,7 +33,6 @@ class AddressResolver;
 
 namespace bt
 {
-
 class UDPTrackerSocket;
 
 /**
@@ -48,11 +47,11 @@ class UDPTracker : public Tracker
 {
     Q_OBJECT
 public:
-    UDPTracker(const QUrl &url, TrackerDataSource* tds, const PeerID & id, int tier);
+    UDPTracker(const QUrl &url, TrackerDataSource *tds, const PeerID &id, int tier);
     ~UDPTracker() override;
 
     void start() override;
-    void stop(WaitJob* wjob = 0) override;
+    void stop(WaitJob *wjob = 0) override;
     void completed() override;
     Uint32 failureCount() const override
     {
@@ -63,10 +62,10 @@ public:
 private Q_SLOTS:
     void onConnTimeout();
     void connectReceived(Int32 tid, Int64 connection_id);
-    void announceReceived(Int32 tid, const Uint8* buf, Uint32 size);
-    void scrapeReceived(Int32 tid, const Uint8* buf, Uint32 size);
-    void onError(Int32 tid, const QString & error_string);
-    void onResolverResults(net::AddressResolver* ar);
+    void announceReceived(Int32 tid, const Uint8 *buf, Uint32 size);
+    void scrapeReceived(Int32 tid, const Uint8 *buf, Uint32 size);
+    void onError(Int32 tid, const QString &error_string);
+    void onResolverResults(net::AddressResolver *ar);
     void manualUpdate() override;
 
 private:
@@ -101,7 +100,7 @@ private:
     Event event;
     QTimer conn_timer;
 
-    static UDPTrackerSocket* socket;
+    static UDPTrackerSocket *socket;
     static Uint32 num_instances;
 };
 

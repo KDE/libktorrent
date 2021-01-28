@@ -18,8 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <QString>
 #include <QMap>
+#include <QString>
 
 class HttpResponseHeader
 {
@@ -36,14 +36,15 @@ public:
     {
         return _reasonPhr;
     }
-    QString value(const QString &key)const
+    QString value(const QString &key) const
     {
         return values[key.toLower()];
     }
-    bool hasKey(const QString &key)const
+    bool hasKey(const QString &key) const
     {
         return values.contains(key.toLower());
     }
+
 private:
     bool parse(const QString &);
     bool parseLine(const QString &line, int number);

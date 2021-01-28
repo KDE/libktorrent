@@ -1,37 +1,37 @@
 /***************************************************************************
-*   Copyright (C) 2010 by Joris Guisson                                   *
-*   joris.guisson@gmail.com                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
-***************************************************************************/
+ *   Copyright (C) 2010 by Joris Guisson                                   *
+ *   joris.guisson@gmail.com                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
+ ***************************************************************************/
 
-#include <QtTest>
-#include <QObject>
 #include <QFile>
+#include <QObject>
 #include <QTextStream>
-#include <util/log.h>
-#include <utp/connection.h>
-#include <utp/utpsocket.h>
-#include <utp/utpserver.h>
-#include <util/functions.h>
+#include <QtTest>
 #include <unistd.h>
+#include <util/functions.h>
+#include <util/log.h>
 #include <util/sha1hash.h>
 #include <util/sha1hashgen.h>
+#include <utp/connection.h>
+#include <utp/utpserver.h>
+#include <utp/utpsocket.h>
 
-#define BYTES_TO_SEND 100*1024*1024
+#define BYTES_TO_SEND 100 * 1024 * 1024
 
 using namespace utp;
 using namespace bt;
@@ -82,9 +82,12 @@ static void Dump(const bt::Uint8* pkt, bt::Uint32 size,const QString & file)
 class SendThread : public QThread
 {
 public:
-
-    SendThread(Connection::Ptr outgoing, UTPServer & srv, QObject* parent = nullptr) : QThread(parent), outgoing(outgoing), srv(srv)
-    {}
+    SendThread(Connection::Ptr outgoing, UTPServer &srv, QObject *parent = nullptr)
+        : QThread(parent)
+        , outgoing(outgoing)
+        , srv(srv)
+    {
+    }
 
     void run() override
     {
@@ -97,13 +100,13 @@ public:
         net::Poll poller;
         while (sent < BYTES_TO_SEND && outgoing->connectionState() != CS_CLOSED) {
             int to_send = step - off;
-            int ret = outgoing->send((const bt::Uint8*)data.data() + off, to_send);
+            int ret = outgoing->send((const bt::Uint8 *)data.data() + off, to_send);
             if (ret > 0) {
-                hgen.update((const bt::Uint8*)data.data() + off, ret);
+                hgen.update((const bt::Uint8 *)data.data() + off, ret);
                 sent += ret;
                 off += ret;
                 off = off % step;
-                //Out(SYS_UTP|LOG_DEBUG) << "Transmitted " << sent << endl;
+                // Out(SYS_UTP|LOG_DEBUG) << "Transmitted " << sent << endl;
             } else if (ret == 0) {
                 srv.preparePolling(&poller, net::Poll::OUTPUT, outgoing);
                 poller.poll(1000);
@@ -121,13 +124,14 @@ public:
 
     Connection::Ptr outgoing;
     bt::SHA1Hash sent_hash;
-    UTPServer & srv;
+    UTPServer &srv;
 };
 
 class TransmitTest : public QEventLoop
 {
 public:
-    TransmitTest(QObject* parent = nullptr) : QEventLoop(parent)
+    TransmitTest(QObject *parent = nullptr)
+        : QEventLoop(parent)
     {
     }
 
@@ -199,20 +203,20 @@ private:
         SendThread st(outgoing, srv);
         st.start(); // The thread will start sending a whole bunch of data
         bt::Int64 received = 0;
-        //int failures = 0;
+        // int failures = 0;
         incoming->setBlocking(true);
         while (received < BYTES_TO_SEND && incoming->connectionState() != CS_CLOSED) {
             bt::Uint32 ba = incoming->bytesAvailable();
             if (ba > 0) {
-                //failures = 0;
+                // failures = 0;
                 QByteArray data(ba, 0);
-                int to_read = ba;//;qMin<bt::Uint32>(1024,ba);
-                int ret = incoming->recv((bt::Uint8*)data.data(), to_read);
+                int to_read = ba; //;qMin<bt::Uint32>(1024,ba);
+                int ret = incoming->recv((bt::Uint8 *)data.data(), to_read);
                 QVERIFY(ret == to_read);
                 if (ret > 0) {
-                    hgen.update((bt::Uint8*)data.data(), ret);
+                    hgen.update((bt::Uint8 *)data.data(), ret);
                     received += ret;
-                    //Out(SYS_UTP|LOG_DEBUG) << "Received " << received << endl;
+                    // Out(SYS_UTP|LOG_DEBUG) << "Received " << received << endl;
                 }
             } else if (incoming->connectionState() != CS_CLOSED) {
                 incoming->waitForData(1000);
@@ -233,8 +237,6 @@ private:
     }
 
 private:
-
-
 private:
     Connection::Ptr incoming;
     Connection::Ptr outgoing;

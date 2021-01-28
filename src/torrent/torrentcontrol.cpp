@@ -20,55 +20,53 @@
  ***************************************************************************/
 #include "torrentcontrol.h"
 
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QTextCodec>
 #include <QTextStream>
-#include <QDateTime>
 
 #include <KLocalizedString>
 
-#include <util/log.h>
-#include <util/error.h>
-#include <util/bitset.h>
-#include <util/functions.h>
-#include <util/fileops.h>
-#include <util/waitjob.h>
-#include <interfaces/trackerslist.h>
-#include <interfaces/monitorinterface.h>
-#include <interfaces/cachefactory.h>
-#include <interfaces/queuemanagerinterface.h>
-#include <interfaces/chunkselectorinterface.h>
-#include <datachecker/singledatachecker.h>
-#include <datachecker/multidatachecker.h>
-#include <datachecker/datacheckerthread.h>
-#include <dht/dhtbase.h>
-#include <download/downloader.h>
-#include <download/webseed.h>
-#include <diskio/cache.h>
-#include <diskio/chunkmanager.h>
-#include <diskio/preallocationthread.h>
-#include <diskio/preallocationjob.h>
-#include <diskio/movedatafilesjob.h>
-#include <datachecker/datacheckerjob.h>
-#include <peer/peer.h>
-#include <peer/peermanager.h>
-#include <peer/peerdownloader.h>
-#include <net/socketmonitor.h>
-#include "torrentfile.h"
-#include "torrent.h"
 #include "choker.h"
 #include "globals.h"
-#include "server.h"
-#include "uploader.h"
+#include "jobqueue.h"
 #include "peersourcemanager.h"
+#include "server.h"
 #include "statsfile.h"
 #include "timeestimator.h"
-#include "jobqueue.h"
+#include "torrent.h"
+#include "torrentfile.h"
 #include "torrentfilestream.h"
+#include "uploader.h"
+#include <datachecker/datacheckerjob.h>
+#include <datachecker/datacheckerthread.h>
+#include <datachecker/multidatachecker.h>
+#include <datachecker/singledatachecker.h>
+#include <dht/dhtbase.h>
+#include <diskio/cache.h>
+#include <diskio/chunkmanager.h>
+#include <diskio/movedatafilesjob.h>
+#include <diskio/preallocationjob.h>
+#include <diskio/preallocationthread.h>
+#include <download/downloader.h>
+#include <download/webseed.h>
+#include <interfaces/cachefactory.h>
+#include <interfaces/chunkselectorinterface.h>
+#include <interfaces/monitorinterface.h>
+#include <interfaces/queuemanagerinterface.h>
+#include <interfaces/trackerslist.h>
 #include <kio/copyjob.h>
-
-
+#include <net/socketmonitor.h>
+#include <peer/peer.h>
+#include <peer/peerdownloader.h>
+#include <peer/peermanager.h>
+#include <util/bitset.h>
+#include <util/error.h>
+#include <util/fileops.h>
+#include <util/functions.h>
+#include <util/log.h>
+#include <util/waitjob.h>
 
 namespace bt
 {
@@ -76,7 +74,16 @@ bool TorrentControl::completed_datacheck = false;
 Uint32 TorrentControl::min_diskspace = 100;
 
 TorrentControl::TorrentControl()
-    : m_qman(nullptr), tor(nullptr), psman(nullptr), cman(nullptr), pman(nullptr), downloader(nullptr), uploader(nullptr), choke(nullptr), tmon(nullptr), prealloc(false)
+    : m_qman(nullptr)
+    , tor(nullptr)
+    , psman(nullptr)
+    , cman(nullptr)
+    , pman(nullptr)
+    , downloader(nullptr)
+    , uploader(nullptr)
+    , choke(nullptr)
+    , tmon(nullptr)
+    , prealloc(false)
 {
     job_queue = new JobQueue(this);
     cache_factory = nullptr;
@@ -160,7 +167,7 @@ void TorrentControl::update()
         uploader->update();
         downloader->update();
 
-        //helper var, check if needed to move completed files somewhere
+        // helper var, check if needed to move completed files somewhere
         bool moveCompleted = false;
         bool checkOnCompletion = false;
 
@@ -180,7 +187,7 @@ void TorrentControl::update()
 
             finished(this);
 
-            //Move completed download to specified directory if needed
+            // Move completed download to specified directory if needed
             moveCompleted = !completed_dir.isEmpty();
 
             // See if we need to do a data check
@@ -230,8 +237,7 @@ void TorrentControl::update()
         }
 
         // to satisfy people obsessed with their share ratio
-        bool save_stats = m_qman ? m_qman->permitStatsSync(this) :
-                          (stats_save_timer.getElapsedSinceUpdate() >= 5 * 60 * 1000);
+        bool save_stats = m_qman ? m_qman->permitStatsSync(this) : (stats_save_timer.getElapsedSinceUpdate() >= 5 * 60 * 1000);
 
         if (save_stats) {
             saveStats();
@@ -251,8 +257,7 @@ void TorrentControl::update()
 
         // do a manual update if we are stalled for more then 2 minutes
         // we do not do this for private torrents
-        if (stalled_timer.getElapsedSinceUpdate() > 120000 && !stats.completed &&
-            !stats.priv_torrent) {
+        if (stalled_timer.getElapsedSinceUpdate() > 120000 && !stats.completed && !stats.priv_torrent) {
             Out(SYS_TRK | LOG_NOTICE) << "Stalled for too long, time to get some fresh blood" << endl;
             psman->manualUpdate();
             stalled_timer.update();
@@ -264,7 +269,7 @@ void TorrentControl::update()
             Q_EMIT seedingAutoStopped(this, overMaxRatio() ? MAX_RATIO_REACHED : MAX_SEED_TIME_REACHED);
         }
 
-        //Update diskspace if needed (every 1 min)
+        // Update diskspace if needed (every 1 min)
         if (!stats.completed && stats.running && bt::CurrentTime() - last_diskspace_check >= 60 * 1000) {
             checkDiskSpace(true);
         }
@@ -278,7 +283,7 @@ void TorrentControl::update()
             moveToCompletedDir();
     }
 #ifndef Q_WS_WIN
-    catch (BusError& e) {
+    catch (BusError &e) {
         Out(SYS_DIO | LOG_IMPORTANT) << "Caught SIGBUS " << endl;
         if (!e.write_operation)
             onIOError(e.toString());
@@ -286,12 +291,12 @@ void TorrentControl::update()
             onIOError(i18n("Error writing to disk, do you have enough diskspace?"));
     }
 #endif
-    catch (Error& e) {
+    catch (Error &e) {
         onIOError(e.toString());
     }
 }
 
-void TorrentControl::onIOError(const QString& msg)
+void TorrentControl::onIOError(const QString &msg)
 {
     Out(SYS_DIO | LOG_IMPORTANT) << "Error : " << msg << endl;
     stats.stopped_by_error = true;
@@ -310,7 +315,7 @@ void TorrentControl::pause()
 
     try {
         downloader->saveDownloads(tordir + "current_chunks");
-    } catch (Error& e) {
+    } catch (Error &e) {
         // print out warning in case of failure
         // it doesn't corrupt the data, so just a couple of lost chunks
         Out(SYS_GEN | LOG_NOTICE) << "Warning : " << e.toString() << endl;
@@ -337,7 +342,7 @@ void TorrentControl::unpause()
 
     try {
         downloader->loadDownloads(tordir + "current_chunks");
-    } catch (Error& e) {
+    } catch (Error &e) {
         // print out warning in case of failure
         // we can still continue the download
         Out(SYS_GEN | LOG_NOTICE) << "Warning : " << e.toString() << endl;
@@ -372,7 +377,7 @@ void TorrentControl::start()
         aboutToBeStarted(this, ret);
         if (!ret)
             return;
-    } catch (Error& err) {
+    } catch (Error &err) {
         // something went wrong when files were recreated, set error and rethrow
         onIOError(err.toString());
         return;
@@ -380,7 +385,7 @@ void TorrentControl::start()
 
     try {
         cman->start();
-    } catch (Error& e) {
+    } catch (Error &e) {
         onIOError(e.toString());
         throw;
     }
@@ -402,7 +407,7 @@ void TorrentControl::continueStart()
     pman->loadPeerList(tordir + "peer_list");
     try {
         downloader->loadDownloads(tordir + "current_chunks");
-    } catch (Error& e) {
+    } catch (Error &e) {
         // print out warning in case of failure
         // we can still continue the download
         Out(SYS_GEN | LOG_NOTICE) << "Warning : " << e.toString() << endl;
@@ -432,8 +437,7 @@ void TorrentControl::updateRunningTimes()
     istats.time_started_ul = istats.time_started_dl = now;
 }
 
-
-void TorrentControl::stop(WaitJob* wjob)
+void TorrentControl::stop(WaitJob *wjob)
 {
     if (!stats.paused)
         updateRunningTimes();
@@ -450,7 +454,7 @@ void TorrentControl::stop(WaitJob* wjob)
 
         try {
             downloader->saveDownloads(tordir + "current_chunks");
-        } catch (Error& e) {
+        } catch (Error &e) {
             // print out warning in case of failure
             // it doesn't corrupt the data, so just a couple of lost chunks
             Out(SYS_GEN | LOG_NOTICE) << "Warning : " << e.toString() << endl;
@@ -458,7 +462,6 @@ void TorrentControl::stop(WaitJob* wjob)
 
         downloader->clearDownloads();
     }
-
 
     pman->savePeerList(tordir + "peer_list");
     pman->stop();
@@ -475,20 +478,20 @@ void TorrentControl::stop(WaitJob* wjob)
     Q_EMIT torrentStopped(this);
 }
 
-void TorrentControl::setMonitor(MonitorInterface* tmo)
+void TorrentControl::setMonitor(MonitorInterface *tmo)
 {
     tmon = tmo;
     downloader->setMonitor(tmon);
     if (tmon) {
         const QList<Peer::Ptr> ppl = pman->getPeers();
-        for (const Peer::Ptr& peer : ppl)
+        for (const Peer::Ptr &peer : ppl)
             tmon->peerAdded(peer.data());
     }
 
     tor->setMonitor(tmon);
 }
 
-void TorrentControl::init(QueueManagerInterface* qman, const QByteArray& data, const QString& tmpdir, const QString& ddir)
+void TorrentControl::init(QueueManagerInterface *qman, const QByteArray &data, const QString &tmpdir, const QString &ddir)
 {
     m_qman = qman;
 
@@ -496,12 +499,11 @@ void TorrentControl::init(QueueManagerInterface* qman, const QByteArray& data, c
     tor = new Torrent();
     try {
         tor->load(data, false);
-    } catch (bt::Error& err) {
+    } catch (bt::Error &err) {
         Out(SYS_GEN | LOG_NOTICE) << "Failed to load torrent: " << err.toString() << endl;
         delete tor;
         tor = 0;
-        throw Error(i18n("An error occurred while loading <b>%1</b>:<br/><b>%2</b>",
-                         loadUrl().toString(), err.toString()));
+        throw Error(i18n("An error occurred while loading <b>%1</b>:<br/><b>%2</b>", loadUrl().toString(), err.toString()));
     }
 
     tor->setFilePriorityListener(this);
@@ -516,23 +518,24 @@ void TorrentControl::init(QueueManagerInterface* qman, const QByteArray& data, c
     fptr.write(data.data(), data.size());
 }
 
-void TorrentControl::checkExisting(QueueManagerInterface* qman)
+void TorrentControl::checkExisting(QueueManagerInterface *qman)
 {
     // check if we haven't already loaded the torrent
     // only do this when qman isn't 0
     if (qman && qman->alreadyLoaded(tor->getInfoHash())) {
         if (!stats.priv_torrent) {
             qman->mergeAnnounceList(tor->getInfoHash(), tor->getTrackerList());
-            throw Warning(i18n(
-                              "You are already downloading the torrent <b>%1</b>. "
-                              "The tracker lists from both torrents have been merged.", tor->getNameSuggestion()));
+            throw Warning(
+                i18n("You are already downloading the torrent <b>%1</b>. "
+                     "The tracker lists from both torrents have been merged.",
+                     tor->getNameSuggestion()));
         } else {
             throw Warning(i18n("You are already downloading the torrent <b>%1</b>.", tor->getNameSuggestion()));
         }
     }
 }
 
-void TorrentControl::setupDirs(const QString& tmpdir, const QString& ddir)
+void TorrentControl::setupDirs(const QString &tmpdir, const QString &ddir)
 {
     tordir = tmpdir;
 
@@ -577,7 +580,7 @@ void TorrentControl::setupData()
 {
     // create PeerManager and Tracker
     pman = new PeerManager(*tor);
-    //Out() << "Tracker url " << url << " " << url.protocol() << " " << url.prettyURL() << endl;
+    // Out() << "Tracker url " << url << " " << url.protocol() << " " << url.prettyURL() << endl;
     psman = new PeerSourceManager(this, pman);
 
     // Create chunkmanager, load the index file if it exists
@@ -605,7 +608,7 @@ void TorrentControl::setupData()
     connect(cman, &ChunkManager::corrupted, this, &TorrentControl::corrupted);
 }
 
-void TorrentControl::initInternal(QueueManagerInterface* qman, const QString& tmpdir, const QString& ddir)
+void TorrentControl::initInternal(QueueManagerInterface *qman, const QString &tmpdir, const QString &ddir)
 {
     checkExisting(qman);
     setupDirs(tmpdir, ddir);
@@ -623,7 +626,7 @@ void TorrentControl::initInternal(QueueManagerInterface* qman, const QString& tm
 
         //  Out() << "Downloaded : " << BytesToString(db) << endl;
         //  Out() << "current_chunks : " << BytesToString(cb) << endl;
-    } catch (Error& e) {
+    } catch (Error &e) {
         // print out warning in case of failure
         Out(SYS_GEN | LOG_DEBUG) << "Warning : " << e.toString() << endl;
         istats.prev_bytes_dl = downloader->bytesDownloaded();
@@ -636,7 +639,7 @@ void TorrentControl::initInternal(QueueManagerInterface* qman, const QString& tm
     updateStatus();
 }
 
-void TorrentControl::setDisplayName(const QString& n)
+void TorrentControl::setDisplayName(const QString &n)
 {
     display_name = n;
     saveStats();
@@ -659,12 +662,12 @@ void TorrentControl::scrapeTracker()
     psman->scrape();
 }
 
-void TorrentControl::onNewPeer(Peer* p)
+void TorrentControl::onNewPeer(Peer *p)
 {
     if (!stats.superseeding) {
         // Only send which chunks we have when we are not superseeding
         if (p->getStats().fast_extensions) {
-            const BitSet& bs = cman->getBitSet();
+            const BitSet &bs = cman->getBitSet();
             if (bs.allOn())
                 p->sendHaveAll();
             else if (bs.numOnBits() == 0)
@@ -696,7 +699,7 @@ void TorrentControl::onNewPeer(Peer* p)
         tmon->peerAdded(p);
 }
 
-void TorrentControl::onPeerRemoved(Peer* p)
+void TorrentControl::onPeerRemoved(Peer *p)
 {
     downloader->removePieceDownloader(p->getPeerDownloader());
     if (tmon)
@@ -708,7 +711,7 @@ void TorrentControl::doChoking()
     choke->update(stats.completed, stats);
 }
 
-bool TorrentControl::changeTorDir(const QString& new_dir)
+bool TorrentControl::changeTorDir(const QString &new_dir)
 {
     int pos = tordir.lastIndexOf(bt::DirSeparator(), -2);
     if (pos == -1) {
@@ -723,7 +726,7 @@ bool TorrentControl::changeTorDir(const QString& new_dir)
         bt::Move(tordir, ntordir);
         old_tordir = tordir;
         tordir = ntordir;
-    } catch (Error& err) {
+    } catch (Error &err) {
         Out(SYS_GEN | LOG_IMPORTANT) << "Could not move " << tordir << " to " << ntordir << endl;
         return false;
     }
@@ -732,9 +735,9 @@ bool TorrentControl::changeTorDir(const QString& new_dir)
     return true;
 }
 
-bool TorrentControl::changeOutputDir(const QString& ndir, int flags)
+bool TorrentControl::changeOutputDir(const QString &ndir, int flags)
 {
-    //check if torrent is running and stop it before moving data
+    // check if torrent is running and stop it before moving data
     QString new_dir = ndir;
     if (!new_dir.endsWith(bt::DirSeparator()))
         new_dir += bt::DirSeparator();
@@ -754,7 +757,7 @@ bool TorrentControl::changeOutputDir(const QString& ndir, int flags)
 
         if (stats.output_path != nd) {
             move_data_files_destination_path = nd;
-            Job* j = 0;
+            Job *j = 0;
             if (flags & bt::TorrentInterface::MOVE_FILES) {
                 if (stats.multi_file_torrent)
                     j = cman->moveDataFiles(nd);
@@ -773,7 +776,7 @@ bool TorrentControl::changeOutputDir(const QString& ndir, int flags)
         } else {
             Out(SYS_GEN | LOG_NOTICE) << "Source is the same as destination, so doing nothing" << endl;
         }
-    } catch (Error& err) {
+    } catch (Error &err) {
         Out(SYS_GEN | LOG_IMPORTANT) << "Could not move " << stats.output_path << " to " << new_dir << ". Exception: " << endl;
         return false;
     }
@@ -781,9 +784,9 @@ bool TorrentControl::changeOutputDir(const QString& ndir, int flags)
     return true;
 }
 
-void TorrentControl::moveDataFilesFinished(KJob* kj)
+void TorrentControl::moveDataFilesFinished(KJob *kj)
 {
-    Job* job = (Job*)kj;
+    Job *job = (Job *)kj;
     if (job)
         cman->moveDataFilesFinished(job);
 
@@ -793,39 +796,38 @@ void TorrentControl::moveDataFilesFinished(KJob* kj)
         istats.custom_output_name = true;
 
         saveStats();
-        Out(SYS_GEN | LOG_NOTICE) << "Data directory changed for torrent " << "'" << stats.torrent_name << "' to: " << move_data_files_destination_path << endl;
+        Out(SYS_GEN | LOG_NOTICE) << "Data directory changed for torrent "
+                                  << "'" << stats.torrent_name << "' to: " << move_data_files_destination_path << endl;
     } else if (job->error()) {
         Out(SYS_GEN | LOG_IMPORTANT) << "Could not move " << stats.output_path << " to " << move_data_files_destination_path << endl;
     }
 }
 
-bool TorrentControl::moveTorrentFiles(const QMap<TorrentFileInterface*, QString> & files)
+bool TorrentControl::moveTorrentFiles(const QMap<TorrentFileInterface *, QString> &files)
 {
     try {
-        Job* j = cman->moveDataFiles(files);
+        Job *j = cman->moveDataFiles(files);
         if (j) {
             connect(j, &Job::result, this, &TorrentControl::moveDataFilesWithMapFinished);
             job_queue->enqueue(j);
         }
 
-    } catch (Error& err) {
+    } catch (Error &err) {
         return false;
     }
 
     return true;
 }
 
-
-void TorrentControl::moveDataFilesWithMapFinished(KJob* j)
+void TorrentControl::moveDataFilesWithMapFinished(KJob *j)
 {
     if (!j)
         return;
 
-    MoveDataFilesJob* job = (MoveDataFilesJob*)j;
+    MoveDataFilesJob *job = (MoveDataFilesJob *)j;
     cman->moveDataFilesFinished(job->fileMap(), job);
     Out(SYS_GEN | LOG_NOTICE) << "Move of data files completed " << endl;
 }
-
 
 void TorrentControl::rollback()
 {
@@ -833,7 +835,7 @@ void TorrentControl::rollback()
         bt::Move(tordir, old_tordir);
         tordir = old_tordir;
         cman->changeDataDir(tordir);
-    } catch (Error& err) {
+    } catch (Error &err) {
         Out(SYS_GEN | LOG_IMPORTANT) << "Could not move " << tordir << " to " << old_tordir << endl;
     }
 }
@@ -867,7 +869,7 @@ void TorrentControl::updateStatus()
         statusChanged(this);
 }
 
-const BitSet& TorrentControl::downloadedChunksBitSet() const
+const BitSet &TorrentControl::downloadedChunksBitSet() const
 {
     if (cman)
         return cman->getBitSet();
@@ -875,7 +877,7 @@ const BitSet& TorrentControl::downloadedChunksBitSet() const
         return BitSet::null;
 }
 
-const BitSet& TorrentControl::availableChunksBitSet() const
+const BitSet &TorrentControl::availableChunksBitSet() const
 {
     if (!pman)
         return BitSet::null;
@@ -883,7 +885,7 @@ const BitSet& TorrentControl::availableChunksBitSet() const
         return pman->getAvailableChunksBitSet();
 }
 
-const BitSet& TorrentControl::excludedChunksBitSet() const
+const BitSet &TorrentControl::excludedChunksBitSet() const
 {
     if (!cman)
         return BitSet::null;
@@ -891,7 +893,7 @@ const BitSet& TorrentControl::excludedChunksBitSet() const
         return cman->getExcludedBitSet();
 }
 
-const BitSet& TorrentControl::onlySeedChunksBitSet() const
+const BitSet &TorrentControl::onlySeedChunksBitSet() const
 {
     if (!cman)
         return BitSet::null;
@@ -938,7 +940,7 @@ void TorrentControl::saveStats()
     stats_file->write("AUTO_STOPPED", stats.auto_stopped ? "1" : "0");
 
     if (!stats.priv_torrent) {
-        //save dht and pex
+        // save dht and pex
         stats_file->write("DHT", isFeatureEnabled(DHT_FEATURE) ? "1" : "0");
         stats_file->write("UT_PEX", isFeatureEnabled(UT_PEX_FEATURE) ? "1" : "0");
     }
@@ -958,8 +960,6 @@ void TorrentControl::saveStats()
 
     stats_file->sync();
 }
-
-
 
 void TorrentControl::loadStats()
 {
@@ -1028,7 +1028,7 @@ void TorrentControl::loadStats()
 
     QString codec = stats_file->readString("ENCODING");
     if (codec.length() > 0) {
-        QTextCodec* cod = QTextCodec::codecForName(codec.toLocal8Bit());
+        QTextCodec *cod = QTextCodec::codecForName(codec.toLocal8Bit());
         if (cod)
             changeTextCodec(cod);
     }
@@ -1075,7 +1075,7 @@ void TorrentControl::loadEncoding()
 
     QString codec = stats_file->readString("ENCODING");
     if (codec.length() > 0) {
-        QTextCodec* cod = QTextCodec::codecForName(codec.toLocal8Bit());
+        QTextCodec *cod = QTextCodec::codecForName(codec.toLocal8Bit());
         if (cod)
             changeTextCodec(cod);
     }
@@ -1090,7 +1090,7 @@ bool TorrentControl::readyForPreview() const
     if (preview_range == 0)
         return false;
 
-    const BitSet& bs = downloadedChunksBitSet();
+    const BitSet &bs = downloadedChunksBitSet();
     for (Uint32 i = 0; i < qMin(preview_range, bs.getNumBits()); i++) {
         if (!bs.get(i))
             return false;
@@ -1130,7 +1130,6 @@ void TorrentControl::updateStats()
     else
         stats.session_bytes_uploaded = istats.session_bytes_uploaded;
 
-
     getSeederInfo(stats.seeders_total, stats.seeders_connected_to);
     getLeecherInfo(stats.leechers_total, stats.leechers_connected_to);
 }
@@ -1141,7 +1140,7 @@ void TorrentControl::trackerScrapeDone()
     stats.leechers_total = psman->getNumLeechers();
 }
 
-void TorrentControl::getSeederInfo(Uint32& total, Uint32& connected_to) const
+void TorrentControl::getSeederInfo(Uint32 &total, Uint32 &connected_to) const
 {
     total = 0;
     connected_to = 0;
@@ -1154,7 +1153,7 @@ void TorrentControl::getSeederInfo(Uint32& total, Uint32& connected_to) const
         total = connected_to;
 }
 
-void TorrentControl::getLeecherInfo(Uint32& total, Uint32& connected_to) const
+void TorrentControl::getLeecherInfo(Uint32 &total, Uint32 &connected_to) const
 {
     total = 0;
     connected_to = 0;
@@ -1191,7 +1190,7 @@ Uint32 TorrentControl::getNumFiles() const
         return 0;
 }
 
-TorrentFileInterface& TorrentControl::getTorrentFile(Uint32 index)
+TorrentFileInterface &TorrentControl::getTorrentFile(Uint32 index)
 {
     if (tor)
         return tor->getFile(index);
@@ -1199,7 +1198,7 @@ TorrentFileInterface& TorrentControl::getTorrentFile(Uint32 index)
         return TorrentFile::null;
 }
 
-const TorrentFileInterface& TorrentControl::getTorrentFile(Uint32 index) const
+const TorrentFileInterface &TorrentControl::getTorrentFile(Uint32 index) const
 {
     if (tor)
         return tor->getFile(index);
@@ -1252,19 +1251,19 @@ bool TorrentControl::overMaxSeedTime()
     return false;
 }
 
-TrackersList* TorrentControl::getTrackersList()
+TrackersList *TorrentControl::getTrackersList()
 {
     return psman;
 }
 
-const TrackersList* TorrentControl::getTrackersList() const
+const TrackersList *TorrentControl::getTrackersList() const
 {
     return psman;
 }
 
-Job* TorrentControl::startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to)
+Job *TorrentControl::startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to)
 {
-    Job* j = new DataCheckerJob(auto_import, this, from, to);
+    Job *j = new DataCheckerJob(auto_import, this, from, to);
     job_queue->enqueue(j);
     return j;
 }
@@ -1276,8 +1275,7 @@ void TorrentControl::beforeDataCheck()
     statusChanged(this);
 }
 
-
-void TorrentControl::afterDataCheck(DataCheckerJob* job, const BitSet& result)
+void TorrentControl::afterDataCheck(DataCheckerJob *job, const BitSet &result)
 {
     bool completed = stats.completed;
     if (job && !job->isStopped()) {
@@ -1322,7 +1320,6 @@ void TorrentControl::emitFinished()
     finished(this);
 }
 
-
 void TorrentControl::markExistingFilesAsDownloaded()
 {
     cman->markExistingFilesAsDownloaded();
@@ -1339,12 +1336,12 @@ bool TorrentControl::hasExistingFiles() const
     return cman->hasExistingFiles();
 }
 
-bool TorrentControl::isStorageMounted(QStringList& missing)
+bool TorrentControl::isStorageMounted(QStringList &missing)
 {
     return cman->isStorageMounted(missing);
 }
 
-bool TorrentControl::hasMissingFiles(QStringList& sl)
+bool TorrentControl::hasMissingFiles(QStringList &sl)
 {
     return cman->hasMissingFiles(sl);
 }
@@ -1355,7 +1352,7 @@ void TorrentControl::recreateMissingFiles()
         cman->recreateMissingFiles();
         prealloc = true; // set prealloc to true so files will be truncated again
         downloader->dataChecked(cman->getBitSet(), 0, tor->getNumChunks() - 1); // update chunk selector
-    } catch (Error& err) {
+    } catch (Error &err) {
         onIOError(err.toString());
         throw;
     }
@@ -1368,13 +1365,13 @@ void TorrentControl::dndMissingFiles()
         prealloc = true; // set prealloc to true so files will be truncated again
         missingFilesMarkedDND(this);
         downloader->dataChecked(cman->getBitSet(), 0, tor->getNumChunks() - 1); // update chunk selector
-    } catch (Error& err) {
+    } catch (Error &err) {
         onIOError(err.toString());
         throw;
     }
 }
 
-void TorrentControl::handleError(const QString& err)
+void TorrentControl::handleError(const QString &err)
 {
     onIOError(err);
 }
@@ -1384,7 +1381,7 @@ Uint32 TorrentControl::getNumDHTNodes() const
     return tor->getNumDHTNodes();
 }
 
-const DHTNode& TorrentControl::getDHTNode(Uint32 i) const
+const DHTNode &TorrentControl::getDHTNode(Uint32 i) const
 {
     return tor->getDHTNode(i);
 }
@@ -1394,23 +1391,23 @@ void TorrentControl::deleteDataFiles()
     if (!cman)
         return;
 
-    Job* job = cman->deleteDataFiles();
+    Job *job = cman->deleteDataFiles();
     if (job)
         job->start(); // don't use queue, this is only done when removing the torrent
 }
 
-const bt::SHA1Hash& TorrentControl::getInfoHash() const
+const bt::SHA1Hash &TorrentControl::getInfoHash() const
 {
     return tor->getInfoHash();
 }
 
-void TorrentControl::addPeerSource(PeerSource* ps)
+void TorrentControl::addPeerSource(PeerSource *ps)
 {
     if (psman)
         psman->addPeerSource(ps);
 }
 
-void TorrentControl::removePeerSource(PeerSource* ps)
+void TorrentControl::removePeerSource(PeerSource *ps)
 {
     if (psman)
         psman->removePeerSource(ps);
@@ -1433,13 +1430,10 @@ int TorrentControl::getETA()
     return m_eta->estimate();
 }
 
-
-
-const bt::PeerID& TorrentControl::getOwnPeerID() const
+const bt::PeerID &TorrentControl::getOwnPeerID() const
 {
     return tor->getPeerID();
 }
-
 
 bool TorrentControl::isFeatureEnabled(TorrentFeature tf)
 {
@@ -1491,7 +1485,7 @@ bool TorrentControl::checkDiskSpace(bool emit_sig)
 {
     last_diskspace_check = bt::CurrentTime();
 
-    //calculate free disk space
+    // calculate free disk space
     Uint64 bytes_free = 0;
     if (FreeDiskSpace(getDataDir(), bytes_free)) {
         Out(SYS_GEN | LOG_DEBUG) << "FreeBytes " << BytesToString(bytes_free) << endl;
@@ -1500,7 +1494,7 @@ bool TorrentControl::checkDiskSpace(bool emit_sig)
         try {
             downloaded = cman->diskUsage();
             Out(SYS_GEN | LOG_DEBUG) << "Downloaded " << BytesToString(downloaded) << endl;
-        } catch (bt::Error& err) {
+        } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Error : " << err.toString() << endl;
         }
         Uint64 remaining = 0;
@@ -1509,7 +1503,7 @@ bool TorrentControl::checkDiskSpace(bool emit_sig)
 
         Out(SYS_GEN | LOG_DEBUG) << "Remaining " << BytesToString(remaining) << endl;
         if (remaining > bytes_free) {
-            bool toStop = bytes_free < (Uint64) min_diskspace * 1024 * 1024;
+            bool toStop = bytes_free < (Uint64)min_diskspace * 1024 * 1024;
 
             // if we don't need to stop the torrent, only emit the signal once
             // so that we do bother the user continuously
@@ -1532,7 +1526,7 @@ bool TorrentControl::checkDiskSpace(bool emit_sig)
 
 void TorrentControl::setUploadProps(Uint32 limit, Uint32 rate)
 {
-    net::SocketMonitor& smon = net::SocketMonitor::instance();
+    net::SocketMonitor &smon = net::SocketMonitor::instance();
     if (upload_gid) {
         if (!limit && !rate) {
             smon.removeGroup(net::SocketMonitor::UPLOAD_GROUP, upload_gid);
@@ -1553,7 +1547,7 @@ void TorrentControl::setUploadProps(Uint32 limit, Uint32 rate)
 
 void TorrentControl::setDownloadProps(Uint32 limit, Uint32 rate)
 {
-    net::SocketMonitor& smon = net::SocketMonitor::instance();
+    net::SocketMonitor &smon = net::SocketMonitor::instance();
     if (download_gid) {
         if (!limit && !rate) {
             smon.removeGroup(net::SocketMonitor::DOWNLOAD_GROUP, download_gid);
@@ -1581,7 +1575,7 @@ void TorrentControl::setTrafficLimits(Uint32 up, Uint32 down)
     downloader->setGroupIDs(upload_gid, download_gid);
 }
 
-void TorrentControl::getTrafficLimits(Uint32& up, Uint32& down)
+void TorrentControl::getTrafficLimits(Uint32 &up, Uint32 &down)
 {
     up = upload_limit;
     down = download_limit;
@@ -1596,18 +1590,18 @@ void TorrentControl::setAssuredSpeeds(Uint32 up, Uint32 down)
     downloader->setGroupIDs(upload_gid, download_gid);
 }
 
-void TorrentControl::getAssuredSpeeds(Uint32& up, Uint32& down)
+void TorrentControl::getAssuredSpeeds(Uint32 &up, Uint32 &down)
 {
     up = assured_upload_speed;
     down = assured_download_speed;
 }
 
-const PeerManager* TorrentControl::getPeerMgr() const
+const PeerManager *TorrentControl::getPeerMgr() const
 {
     return pman;
 }
 
-void TorrentControl::preallocFinished(const QString& error, bool completed)
+void TorrentControl::preallocFinished(const QString &error, bool completed)
 {
     Out(SYS_GEN | LOG_DEBUG) << "preallocFinished " << error << " " << completed << endl;
     if (!error.isEmpty() || !completed) {
@@ -1625,7 +1619,7 @@ void TorrentControl::preallocFinished(const QString& error, bool completed)
     }
 }
 
-const QTextCodec* TorrentControl::getTextCodec() const
+const QTextCodec *TorrentControl::getTextCodec() const
 {
     if (!tor)
         return 0;
@@ -1633,7 +1627,7 @@ const QTextCodec* TorrentControl::getTextCodec() const
         return tor->getTextCodec();
 }
 
-void TorrentControl::changeTextCodec(QTextCodec* tc)
+void TorrentControl::changeTextCodec(QTextCodec *tc)
 {
     if (tor) {
         tor->changeTextCodec(tc);
@@ -1641,7 +1635,7 @@ void TorrentControl::changeTextCodec(QTextCodec* tc)
     }
 }
 
-void TorrentControl::setCacheFactory(CacheFactory* cf)
+void TorrentControl::setCacheFactory(CacheFactory *cf)
 {
     cache_factory = cf;
 }
@@ -1651,19 +1645,19 @@ Uint32 TorrentControl::getNumWebSeeds() const
     return downloader->getNumWebSeeds();
 }
 
-const WebSeedInterface* TorrentControl::getWebSeed(Uint32 i) const
+const WebSeedInterface *TorrentControl::getWebSeed(Uint32 i) const
 {
     return downloader->getWebSeed(i);
 }
 
-WebSeedInterface* TorrentControl::getWebSeed(Uint32 i)
+WebSeedInterface *TorrentControl::getWebSeed(Uint32 i)
 {
     return downloader->getWebSeed(i);
 }
 
 bool TorrentControl::addWebSeed(const QUrl &url)
 {
-    WebSeed* ws = downloader->addWebSeed(url);
+    WebSeed *ws = downloader->addWebSeed(url);
     if (ws) {
         downloader->saveWebSeeds(tordir + "webseeds");
         ws->setGroupIDs(upload_gid, download_gid); // make sure webseed has proper group ID
@@ -1679,7 +1673,7 @@ bool TorrentControl::removeWebSeed(const QUrl &url)
     return ret;
 }
 
-void TorrentControl::setUserModifiedFileName(const QString& n)
+void TorrentControl::setUserModifiedFileName(const QString &n)
 {
     TorrentInterface::setUserModifiedFileName(n);
     QString path = getDataDir();
@@ -1726,7 +1720,6 @@ QString TorrentControl::getComments() const
     return tor->getComments();
 }
 
-
 void TorrentControl::allJobsDone()
 {
     updateStatus();
@@ -1735,7 +1728,7 @@ void TorrentControl::allJobsDone()
     runningJobsDone(this);
 }
 
-void TorrentControl::setChunkSelector(ChunkSelectorInterface* csel)
+void TorrentControl::setChunkSelector(ChunkSelectorInterface *csel)
 {
     if (!downloader)
         return;
@@ -1768,7 +1761,7 @@ bool TorrentControl::preallocate()
     return false;
 }
 
-void TorrentControl::downloadPriorityChanged(TorrentFile* tf, Priority newpriority, Priority oldpriority)
+void TorrentControl::downloadPriorityChanged(TorrentFile *tf, Priority newpriority, Priority oldpriority)
 {
     if (cman)
         cman->downloadPriorityChanged(tf, newpriority, oldpriority);
@@ -1800,7 +1793,7 @@ void TorrentControl::setSuperSeeding(bool on)
     saveStats();
 }
 
-TorrentFileStream::Ptr TorrentControl::createTorrentFileStream(Uint32 index, bool streaming_mode, QObject* parent)
+TorrentFileStream::Ptr TorrentControl::createTorrentFileStream(Uint32 index, bool streaming_mode, QObject *parent)
 {
     if (streaming_mode && !stream.toStrongRef().isNull())
         return TorrentFileStream::Ptr(0);
@@ -1820,7 +1813,5 @@ TorrentFileStream::Ptr TorrentControl::createTorrentFileStream(Uint32 index, boo
         return ptr;
     }
 }
-
-
 
 }

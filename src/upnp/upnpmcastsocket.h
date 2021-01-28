@@ -24,10 +24,10 @@
 #include <QSet>
 #include <QUdpSocket>
 
-#include <util/ptrmap.h>
-#include <util/constants.h>
-#include <ktorrent_export.h>
 #include "upnprouter.h"
+#include <ktorrent_export.h>
+#include <util/constants.h>
+#include <util/ptrmap.h>
 
 using bt::Uint32;
 
@@ -40,7 +40,7 @@ class UPnPRouter;
  *
  * Socket used to discover UPnP devices. This class will keep track
  * of all discovered devices.
-*/
+ */
 class KTORRENT_EXPORT UPnPMCastSocket : public QUdpSocket
 {
     Q_OBJECT
@@ -52,13 +52,13 @@ public:
     Uint32 getNumDevicesDiscovered() const;
 
     /// Find a router using it's server name
-    UPnPRouter* findDevice(const QString & name);
+    UPnPRouter *findDevice(const QString &name);
 
     /// Save all routers to a file (for convenience at startup)
-    void saveRouters(const QString & file);
+    void saveRouters(const QString &file);
 
     /// Load all routers from a file
-    void loadRouters(const QString & file);
+    void loadRouters(const QString &file);
 
     /// Set verbose mode
     void setVerbose(bool v);
@@ -73,18 +73,18 @@ public:
 private:
     void onReadyRead();
     void error(QAbstractSocket::SocketError err);
-    void onXmlFileDownloaded(UPnPRouter* r, bool success);
+    void onXmlFileDownloaded(UPnPRouter *r, bool success);
 
 Q_SIGNALS:
     /**
      * Emitted when a router or internet gateway device is detected.
      * @param router The router
      */
-    void discovered(bt::UPnPRouter* router);
+    void discovered(bt::UPnPRouter *router);
 
 private:
     class UPnPMCastSocketPrivate;
-    UPnPMCastSocketPrivate* d;
+    UPnPMCastSocketPrivate *d;
 };
 }
 

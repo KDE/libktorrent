@@ -21,8 +21,8 @@
 #ifndef BTCOMPRESSFILEJOB_H
 #define BTCOMPRESSFILEJOB_H
 
-#include <QThread>
 #include <KIO/Job>
+#include <QThread>
 #include <ktorrent_export.h>
 
 namespace bt
@@ -30,7 +30,7 @@ namespace bt
 class KTORRENT_EXPORT CompressThread : public QThread
 {
 public:
-    CompressThread(const QString & file);
+    CompressThread(const QString &file);
     ~CompressThread() override;
 
     /// Run the compression thread
@@ -57,7 +57,7 @@ private:
 class KTORRENT_EXPORT CompressFileJob : public KIO::Job
 {
 public:
-    CompressFileJob(const QString & file);
+    CompressFileJob(const QString &file);
     ~CompressFileJob() override;
 
     void start() override;
@@ -68,7 +68,7 @@ private:
 
 private:
     QString file;
-    CompressThread* compress_thread;
+    CompressThread *compress_thread;
 };
 
 }

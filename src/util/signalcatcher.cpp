@@ -18,10 +18,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "signalcatcher.h"
+#include "log.h"
 #include <klocalizedstring.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include "log.h"
 
 #ifndef Q_WS_WIN
 
@@ -50,7 +50,6 @@ static bool InstallBusHandler()
     if (sigaction(SIGBUS, 0, &act) != -1 && act.sa_sigaction == sigbus_handler)
         return true;
 
-
     act.sa_sigaction = sigbus_handler;
     act.sa_flags = SA_SIGINFO;
 
@@ -73,25 +72,21 @@ BusErrorGuard::~BusErrorGuard()
     siglongjmp_safe = false;
 }
 
-
-
 BusError::BusError(bool write_operation)
-    : Error(write_operation ? i18n("Error when writing to disk") : i18n("Error when reading from disk")),
-      write_operation(write_operation)
+    : Error(write_operation ? i18n("Error when writing to disk") : i18n("Error when reading from disk"))
+    , write_operation(write_operation)
 {
-
 }
 
 BusError::~BusError()
 {
-
 }
 
 int SignalCatcher::signal_received_pipe[2];
 
-SignalCatcher::SignalCatcher(QObject* parent)
-    : QObject(parent),
-      notifier(nullptr)
+SignalCatcher::SignalCatcher(QObject *parent)
+    : QObject(parent)
+    , notifier(nullptr)
 {
     socketpair(AF_UNIX, SOCK_STREAM, 0, signal_received_pipe);
     notifier = new QSocketNotifier(signal_received_pipe[1], QSocketNotifier::Read, this);
@@ -102,13 +97,12 @@ SignalCatcher::~SignalCatcher()
 {
 }
 
-void SignalCatcher::signalHandler(int sig, siginfo_t* siginfo, void* ptr)
+void SignalCatcher::signalHandler(int sig, siginfo_t *siginfo, void *ptr)
 {
     Q_UNUSED(siginfo);
     Q_UNUSED(ptr);
     ::write(signal_received_pipe[0], &sig, sizeof(int));
 }
-
 
 bool SignalCatcher::catchSignal(int sig)
 {
@@ -130,10 +124,9 @@ void SignalCatcher::handleInput(int fd)
     int sig = 0;
     ::read(fd, &sig, sizeof(int));
 
-    Out(SYS_GEN | LOG_IMPORTANT) << "Signal " <<  sig << " caught " << endl;
+    Out(SYS_GEN | LOG_IMPORTANT) << "Signal " << sig << " caught " << endl;
     Q_EMIT triggered();
 }
-
 
 }
 

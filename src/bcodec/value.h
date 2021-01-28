@@ -20,13 +20,12 @@
 #ifndef BTVALUE_H
 #define BTVALUE_H
 
+#include <ktorrent_export.h>
 #include <qstring.h>
 #include <util/constants.h>
-#include <ktorrent_export.h>
 
 namespace bt
 {
-
 /**
 @author Joris Guisson
 */
@@ -42,14 +41,14 @@ public:
     Value();
     Value(int val);
     Value(Int64 val);
-    Value(const QByteArray & val);
-    Value(const Value & val);
+    Value(const QByteArray &val);
+    Value(const Value &val);
     ~Value();
 
-    Value & operator = (const Value & val);
-    Value & operator = (Int32 val);
-    Value & operator = (Int64 val);
-    Value & operator = (const QByteArray & val);
+    Value &operator=(const Value &val);
+    Value &operator=(Int32 val);
+    Value &operator=(Int64 val);
+    Value &operator=(const QByteArray &val);
 
     Type getType() const
     {
@@ -67,11 +66,12 @@ public:
     {
         return QString::fromUtf8(strval);
     }
-    QString toString(QTextCodec* tc) const;
+    QString toString(QTextCodec *tc) const;
     QByteArray toByteArray() const
     {
         return strval;
     }
+
 private:
     Type type;
     Int32 ival;

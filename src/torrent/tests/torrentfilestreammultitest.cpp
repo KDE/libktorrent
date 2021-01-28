@@ -7,17 +7,16 @@
 #include <QRandomGenerator64>
 #include <QtTest>
 
-#include <unistd.h>
 #include <ctime>
-#include <util/log.h>
-#include <util/error.h>
-#include <util/sha1hashgen.h>
-#include <util/fileops.h>
+#include <interfaces/queuemanagerinterface.h>
 #include <testlib/dummytorrentcreator.h>
 #include <torrent/torrentcontrol.h>
 #include <torrent/torrentfilestream.h>
-#include <interfaces/queuemanagerinterface.h>
-
+#include <unistd.h>
+#include <util/error.h>
+#include <util/fileops.h>
+#include <util/log.h>
+#include <util/sha1hashgen.h>
 
 using namespace bt;
 
@@ -33,22 +32,22 @@ class TorrentFileStreamMultiTest : public QEventLoop, public bt::QueueManagerInt
 {
     Q_OBJECT
 public:
-    TorrentFileStreamMultiTest(QObject* parent = 0) : QEventLoop(parent)
+    TorrentFileStreamMultiTest(QObject *parent = 0)
+        : QEventLoop(parent)
     {
     }
 
-    bool alreadyLoaded(const bt::SHA1Hash& ih) const override
+    bool alreadyLoaded(const bt::SHA1Hash &ih) const override
     {
         Q_UNUSED(ih);
         return false;
     }
 
-    void mergeAnnounceList(const bt::SHA1Hash& ih, const bt::TrackerTier* trk) override
+    void mergeAnnounceList(const bt::SHA1Hash &ih, const bt::TrackerTier *trk) override
     {
         Q_UNUSED(ih);
         Q_UNUSED(trk);
     }
-
 
 private Q_SLOTS:
     void initTestCase()
@@ -72,7 +71,7 @@ private Q_SLOTS:
                 processEvents(AllEvents, 1000);
             } while (tc.getStats().status == bt::CHECKING_DATA);
             QVERIFY(tc.getStats().completed);
-        } catch (bt::Error& err) {
+        } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
@@ -131,7 +130,7 @@ private Q_SLOTS:
             QVERIFY(fptr.open(QIODevice::ReadOnly));
 
             for (bt::Uint32 j = 0; j < 10; j++) {
-                qint64 off = QRandomGenerator64::global()-> generate() % (stream->size() - 256);
+                qint64 off = QRandomGenerator64::global()->generate() % (stream->size() - 256);
                 QVERIFY(stream->seek(off));
                 QVERIFY(fptr.seek(off));
 

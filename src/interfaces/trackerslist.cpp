@@ -22,17 +22,15 @@
 
 namespace bt
 {
-
 TrackersList::TrackersList()
 {
 }
-
 
 TrackersList::~TrackersList()
 {
 }
 
-void TrackersList::merge(const bt::TrackerTier* first)
+void TrackersList::merge(const bt::TrackerTier *first)
 {
     int tier = 1;
     while (first) {

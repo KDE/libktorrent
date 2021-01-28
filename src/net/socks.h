@@ -21,10 +21,10 @@
 #ifndef NETSOCKS_H
 #define NETSOCKS_H
 
-#include <net/address.h>
-#include <net/addressresolver.h>
 #include <ktorrent_export.h>
 #include <mse/encryptedpacketsocket.h>
+#include <net/address.h>
+#include <net/addressresolver.h>
 
 namespace net
 {
@@ -32,7 +32,7 @@ namespace net
  * @author Joris Guisson
  *
  * Class which handles the SOCKSv5 protocol
-*/
+ */
 class KTORRENT_EXPORT Socks : public QObject
 {
     Q_OBJECT
@@ -51,7 +51,7 @@ public:
         USERNAME_AND_PASSWORD_SENT,
         CONNECT_REQUEST_SENT,
     };
-    Socks(mse::EncryptedPacketSocket::Ptr sock, const Address & dest);
+    Socks(mse::EncryptedPacketSocket::Ptr sock, const Address &dest);
     ~Socks() override;
 
     /// Setup a socks connection, return the current state
@@ -82,7 +82,7 @@ public:
     }
 
     /// Set the socks server address
-    static void setSocksServerAddress(const QString & host, bt::Uint16 port);
+    static void setSocksServerAddress(const QString &host, bt::Uint16 port);
 
     /// Set the socks version (4 or 5)
     static void setSocksVersion(int version)
@@ -95,7 +95,7 @@ public:
      * @param username The username
      * @param password The password
      */
-    static void setSocksAuthentication(const QString & username, const QString & password);
+    static void setSocksAuthentication(const QString &username, const QString &password);
 
 private:
     State sendAuthRequest();
@@ -106,7 +106,7 @@ private:
     State handleConnectReply();
 
 private Q_SLOTS:
-    void resolved(net::AddressResolver* ar);
+    void resolved(net::AddressResolver *ar);
 
 private:
     mse::EncryptedPacketSocket::Ptr sock;

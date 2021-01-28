@@ -20,10 +20,9 @@
 #ifndef BTHTTPTRACKER_H
 #define BTHTTPTRACKER_H
 
+#include "tracker.h"
 #include <QTimer>
 #include <ktorrent_export.h>
-#include "tracker.h"
-
 
 class KJob;
 
@@ -34,8 +33,6 @@ class MetaData;
 
 namespace bt
 {
-
-
 /**
  * @author Joris Guisson
  * @brief Communicates with the tracker
@@ -46,11 +43,11 @@ class KTORRENT_EXPORT HTTPTracker : public Tracker
 {
     Q_OBJECT
 public:
-    HTTPTracker(const QUrl &url, TrackerDataSource* tds, const PeerID & id, int tier);
+    HTTPTracker(const QUrl &url, TrackerDataSource *tds, const PeerID &id, int tier);
     ~HTTPTracker() override;
 
     void start() override;
-    void stop(WaitJob* wjob = 0) override;
+    void stop(WaitJob *wjob = 0) override;
     void completed() override;
     Uint32 failureCount() const override
     {
@@ -58,34 +55,33 @@ public:
     }
     void scrape() override;
 
-    static void setProxy(const QString & proxy, const bt::Uint16 proxy_port);
+    static void setProxy(const QString &proxy, const bt::Uint16 proxy_port);
     static void setProxyEnabled(bool on);
     [[deprecated]] static void setUseQHttp(bool on);
 
 private Q_SLOTS:
-    void onKIOAnnounceResult(KJob* j);
-    void onScrapeResult(KJob* j);
+    void onKIOAnnounceResult(KJob *j);
+    void onScrapeResult(KJob *j);
     void emitInvalidURLFailure();
     void onTimeout();
     void manualUpdate() override;
 
 private:
-    void doRequest(WaitJob* wjob = 0);
-    bool updateData(const QByteArray & data);
-    void setupMetaData(KIO::MetaData & md);
+    void doRequest(WaitJob *wjob = 0);
+    bool updateData(const QByteArray &data);
+    void setupMetaData(KIO::MetaData &md);
     void doAnnounceQueue();
     void doAnnounce(const QUrl &u);
-    void onAnnounceResult(const QUrl &url, const QByteArray & data, KJob* j);
+    void onAnnounceResult(const QUrl &url, const QByteArray &data, KJob *j);
 
 private:
-    KJob* active_job;
+    KJob *active_job;
     QList<QUrl> announce_queue;
     QString event;
     QTimer timer;
     QString error;
     Uint32 failures;
     bool supports_partial_seed_extension;
-
 
     static bool proxy_on;
     static QString proxy;

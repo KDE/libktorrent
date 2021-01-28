@@ -21,27 +21,27 @@
 
 #include <config-ktorrent.h>
 
-#include <qfile.h>
-#include <klocalizedstring.h>
-#include <string.h>
-#include <errno.h>
-#include <stdio.h>
 #include "error.h"
 #include "log.h"
+#include <errno.h>
+#include <klocalizedstring.h>
+#include <qfile.h>
+#include <stdio.h>
+#include <string.h>
 
 namespace bt
 {
-
-File::File() : fptr(0)
-{}
-
+File::File()
+    : fptr(0)
+{
+}
 
 File::~File()
 {
     close();
 }
 
-bool File::open(const QString & file, const QString & mode)
+bool File::open(const QString &file, const QString &mode)
 {
     this->file = file;
     if (fptr)
@@ -69,7 +69,7 @@ void File::flush()
         fflush(fptr);
 }
 
-Uint32 File::write(const void* buf, Uint32 size)
+Uint32 File::write(const void *buf, Uint32 size)
 {
     if (!fptr)
         return 0;
@@ -84,7 +84,7 @@ Uint32 File::write(const void* buf, Uint32 size)
     return ret;
 }
 
-Uint32 File::read(void* buf, Uint32 size)
+Uint32 File::read(void *buf, Uint32 size)
 {
     if (!fptr)
         return 0;
@@ -105,9 +105,15 @@ Uint64 File::seek(SeekPos from, Int64 num)
 
     int p = SEEK_CUR; // use a default to prevent compiler warning
     switch (from) {
-    case BEGIN : p = SEEK_SET; break;
-    case END : p = SEEK_END; break;
-    case CURRENT : p = SEEK_CUR; break;
+    case BEGIN:
+        p = SEEK_SET;
+        break;
+    case END:
+        p = SEEK_END;
+        break;
+    case CURRENT:
+        p = SEEK_CUR;
+        break;
     default:
         break;
     }

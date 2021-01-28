@@ -21,14 +21,11 @@
 #ifndef DHT_FINDNODERSP_H
 #define DHT_FINDNODERSP_H
 
-
-#include "rpcmsg.h"
 #include "packednodecontainer.h"
+#include "rpcmsg.h"
 
 namespace dht
 {
-
-
 /**
  * FindNode response message for DHT
  */
@@ -36,17 +33,16 @@ class KTORRENT_EXPORT FindNodeRsp : public RPCMsg, public PackedNodeContainer
 {
 public:
     FindNodeRsp();
-    FindNodeRsp(const QByteArray & mtid, const Key & id);
+    FindNodeRsp(const QByteArray &mtid, const Key &id);
     ~FindNodeRsp() override;
 
-    void apply(DHT* dh_table) override;
+    void apply(DHT *dh_table) override;
     void print() override;
-    void encode(QByteArray & arr) const override;
-    void parse(bt::BDictNode* dict) override;
+    void encode(QByteArray &arr) const override;
+    void parse(bt::BDictNode *dict) override;
 
     typedef QSharedPointer<FindNodeRsp> Ptr;
 };
-
 
 }
 

@@ -20,13 +20,13 @@
 #ifndef BTDOWNLOADER_H
 #define BTDOWNLOADER_H
 
-#include <qobject.h>
-#include <util/ptrmap.h>
-#include <util/constants.h>
-#include <ktorrent_export.h>
-#include "download/webseed.h"
 #include "download/chunkdownload.h"
+#include "download/webseed.h"
 #include "peer/peermanager.h"
+#include <ktorrent_export.h>
+#include <qobject.h>
+#include <util/constants.h>
+#include <util/ptrmap.h>
 
 class QUrl;
 
@@ -62,7 +62,7 @@ struct CurrentChunksHeader {
  *
  * This class manages the downloading of the file. It should
  * regurarly be updated.
-*/
+ */
 class KTORRENT_EXPORT Downloader : public QObject, public PieceHandler
 {
     Q_OBJECT
@@ -74,7 +74,7 @@ public:
      * @param pman The PeerManager
      * @param cman The ChunkManager
      */
-    Downloader(Torrent & tor, PeerManager & pman, ChunkManager & cman);
+    Downloader(Torrent &tor, PeerManager &pman, ChunkManager &cman);
     ~Downloader() override;
 
     /**
@@ -91,19 +91,19 @@ public:
     }
 
     /// Get a webseed
-    const WebSeed* getWebSeed(Uint32 i) const
+    const WebSeed *getWebSeed(Uint32 i) const
     {
         return i < (Uint32)webseeds.count() ? webseeds[i] : 0;
     }
 
     /// Get a webseed
-    WebSeed* getWebSeed(Uint32 i)
+    WebSeed *getWebSeed(Uint32 i)
     {
         return i < (Uint32)webseeds.count() ? webseeds[i] : 0;
     }
 
     /// Add a webseed
-    WebSeed* addWebSeed(const QUrl &url);
+    WebSeed *addWebSeed(const QUrl &url);
 
     /// Remove a webseed
     bool removeWebSeed(const QUrl &url);
@@ -112,10 +112,10 @@ public:
     void removeAllWebSeeds();
 
     /// Save the user created webseeds
-    void saveWebSeeds(const QString & file);
+    void saveWebSeeds(const QString &file);
 
     /// Add the user created webseeds
-    void loadWebSeeds(const QString & file);
+    void loadWebSeeds(const QString &file);
 
     /// Get the number of bytes we have downloaded
     Uint64 bytesDownloaded() const
@@ -154,20 +154,19 @@ public:
         return current_chunks.end();
     }
 
-
     /**
      * Get a download for a chunk
      * @param chunk The chunk
      * @return The ChunkDownload, or 0 if no download is found
      */
-    ChunkDownload* download(Uint32 chunk);
+    ChunkDownload *download(Uint32 chunk);
 
     /**
      * Get a download for a chunk (const version)
      * @param chunk The chunk
      * @return The ChunkDownload, or 0 if no download is found
      */
-    const ChunkDownload* download(Uint32 chunk) const;
+    const ChunkDownload *download(Uint32 chunk) const;
 
     /**
      * See if we are downloading a Chunk
@@ -180,7 +179,7 @@ public:
      * Can we download a chunk from a webseed.
      * @param chunk ID of Chunk
      * @return true if we can
-    */
+     */
     bool canDownloadFromWebSeed(Uint32 chunk) const;
 
     /**
@@ -197,20 +196,20 @@ public:
      * Save the current downloads.
      * @param file The file to save to
      */
-    void saveDownloads(const QString & file);
+    void saveDownloads(const QString &file);
 
     /**
      * Load the current downloads.
      * @param file The file to load from
      */
-    void loadDownloads(const QString & file);
+    void loadDownloads(const QString &file);
 
     /**
      * Get the number of bytes already downloaded in the current_chunks file.
      * @param file The path of the current_chunks file
      * @return The bytes already downloading
      */
-    Uint32 getDownloadedBytesOfCurrentChunksFile(const QString & file);
+    Uint32 getDownloadedBytesOfCurrentChunksFile(const QString &file);
 
     /**
      * A corrupted chunk has been detected, make sure we redownload it.
@@ -219,19 +218,19 @@ public:
     void corrupted(Uint32 chunk);
 
     /// Set the ChunkSelector, 0 means KT will reset to the default selector
-    void setChunkSelector(ChunkSelectorInterface* csel);
+    void setChunkSelector(ChunkSelectorInterface *csel);
 
     /**
      * We got a new connection.
      * @param peer The PieceDownloader
      */
-    void addPieceDownloader(PieceDownloader* peer);
+    void addPieceDownloader(PieceDownloader *peer);
 
     /**
      * Remove a piece downloader.
      * @param peer The PieceDownloader
      */
-    void removePieceDownloader(PieceDownloader* peer);
+    void removePieceDownloader(PieceDownloader *peer);
 
     /// Enable or disable the use of webseeds
     static void setUseWebSeeds(bool on);
@@ -245,7 +244,7 @@ public Q_SLOTS:
      * Set the TorrentMonitor.
      * @param tmo
      */
-    void setMonitor(MonitorInterface* tmo);
+    void setMonitor(MonitorInterface *tmo);
 
     /**
      * Data has been checked, and these chunks are OK.
@@ -253,7 +252,7 @@ public Q_SLOTS:
      * @param from First chunk of the check
      * @param to Last chunk of the check
      */
-    void dataChecked(const BitSet & ok_chunks, bt::Uint32 from, bt::Uint32 to);
+    void dataChecked(const BitSet &ok_chunks, bt::Uint32 from, bt::Uint32 to);
 
     /**
      * Recalculate the number of bytes downloaded.
@@ -261,8 +260,8 @@ public Q_SLOTS:
     void recalcDownloaded();
 
 private Q_SLOTS:
-    void pieceReceived(const bt::Piece & p) override;
-    bool finished(ChunkDownload* c);
+    void pieceReceived(const bt::Piece &p) override;
+    bool finished(ChunkDownload *c);
 
 public:
     /**
@@ -284,17 +283,17 @@ private:
      * A WebSeed has finished a Chunk
      * @param c The chunk
      */
-    void onChunkReady(Chunk* c);
+    void onChunkReady(Chunk *c);
 
-    void chunkDownloadStarted(WebSeedChunkDownload* cd, Uint32 chunk);
-    void chunkDownloadFinished(WebSeedChunkDownload* cd, Uint32 chunk);
+    void chunkDownloadStarted(WebSeedChunkDownload *cd, Uint32 chunk);
+    void chunkDownloadFinished(WebSeedChunkDownload *cd, Uint32 chunk);
 
 Q_SIGNALS:
     /**
      * An error occurred while we we're writing or reading from disk.
      * @param msg Message
      */
-    void ioError(const QString & msg);
+    void ioError(const QString &msg);
 
     /**
      * Emitted when a chunk has been downloaded.
@@ -303,25 +302,25 @@ Q_SIGNALS:
     void chunkDownloaded(Uint32 chunk);
 
 private:
-    bool downloadFrom(PieceDownloader* pd);
-    void downloadFrom(WebSeed* ws);
+    bool downloadFrom(PieceDownloader *pd);
+    void downloadFrom(WebSeed *ws);
     void normalUpdate();
-    bool findDownloadForPD(PieceDownloader* pd);
-    ChunkDownload* selectCD(PieceDownloader* pd, Uint32 num);
-    ChunkDownload* selectWorst(PieceDownloader* pd);
+    bool findDownloadForPD(PieceDownloader *pd);
+    ChunkDownload *selectCD(PieceDownloader *pd, Uint32 num);
+    ChunkDownload *selectWorst(PieceDownloader *pd);
 
 private:
-    Torrent & tor;
-    PeerManager & pman;
-    ChunkManager & cman;
+    Torrent &tor;
+    PeerManager &pman;
+    ChunkManager &cman;
     Uint64 bytes_downloaded;
     Uint64 curr_chunks_downloaded;
     Uint64 unnecessary_data;
     PtrMap<Uint32, ChunkDownload> current_chunks;
-    QList<PieceDownloader*> piece_downloaders;
-    MonitorInterface* tmon;
-    ChunkSelectorInterface* chunk_selector;
-    QList<WebSeed*> webseeds;
+    QList<PieceDownloader *> piece_downloaders;
+    MonitorInterface *tmon;
+    ChunkSelectorInterface *chunk_selector;
+    QList<WebSeed *> webseeds;
     PtrMap<Uint32, WebSeed> webseeds_chunks;
     Uint32 active_webseed_downloads;
     bool webseeds_on;
@@ -330,8 +329,6 @@ private:
 
     static bool use_webseeds;
 };
-
-
 
 }
 

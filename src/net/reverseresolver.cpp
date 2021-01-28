@@ -19,25 +19,23 @@
  ***************************************************************************/
 
 #include "reverseresolver.h"
-#include <sys/socket.h>
 #include <netdb.h>
-
+#include <sys/socket.h>
 
 namespace net
 {
-ReverseResolverThread* ReverseResolver::worker = 0;
+ReverseResolverThread *ReverseResolver::worker = 0;
 
-ReverseResolver::ReverseResolver(QObject* parent): QObject(parent)
+ReverseResolver::ReverseResolver(QObject *parent)
+    : QObject(parent)
 {
 }
-
 
 ReverseResolver::~ReverseResolver()
 {
 }
 
-
-void ReverseResolver::resolveAsync(const net::Address& addr)
+void ReverseResolver::resolveAsync(const net::Address &addr)
 {
     addr_to_resolve = addr;
     if (!worker) {
@@ -49,7 +47,7 @@ void ReverseResolver::resolveAsync(const net::Address& addr)
     }
 }
 
-QString ReverseResolver::resolve(const net::Address& addr)
+QString ReverseResolver::resolve(const net::Address &addr)
 {
     struct sockaddr_storage ss;
     int slen = 0;
@@ -59,19 +57,17 @@ QString ReverseResolver::resolve(const net::Address& addr)
     char service[200];
     memset(host, 0, 200);
     memset(service, 0, 200);
-    if (getnameinfo((struct sockaddr*)&ss, slen, host, 199, service, 199, NI_NAMEREQD) == 0)
+    if (getnameinfo((struct sockaddr *)&ss, slen, host, 199, service, 199, NI_NAMEREQD) == 0)
         return QString::fromUtf8(host);
     else
         return QString();
 }
-
 
 void ReverseResolver::run()
 {
     QString res = resolve(addr_to_resolve);
     Q_EMIT resolved(res);
 }
-
 
 void ReverseResolver::shutdown()
 {
@@ -83,17 +79,16 @@ void ReverseResolver::shutdown()
     }
 }
 
-
-ReverseResolverThread::ReverseResolverThread() : stopped(false)
+ReverseResolverThread::ReverseResolverThread()
+    : stopped(false)
 {
 }
-
 
 ReverseResolverThread::~ReverseResolverThread()
 {
 }
 
-void ReverseResolverThread::add(ReverseResolver* rr)
+void ReverseResolverThread::add(ReverseResolver *rr)
 {
     mutex.lock();
     todo_list.append(rr);
@@ -101,13 +96,12 @@ void ReverseResolverThread::add(ReverseResolver* rr)
     more_data.wakeOne();
 }
 
-
 void ReverseResolverThread::run()
 {
     while (!stopped) {
         mutex.lock();
         if (!todo_list.empty()) {
-            ReverseResolver* rr = todo_list.first();
+            ReverseResolver *rr = todo_list.first();
             todo_list.pop_front();
             mutex.unlock();
             rr->run();
@@ -119,7 +113,7 @@ void ReverseResolverThread::run()
     }
 
     // cleanup if necessary
-    for (ReverseResolver* rr : qAsConst(todo_list))
+    for (ReverseResolver *rr : qAsConst(todo_list))
         rr->deleteLater();
     todo_list.clear();
 }
@@ -131,6 +125,4 @@ void ReverseResolverThread::stop()
     more_data.wakeOne();
 }
 
-
 }
-

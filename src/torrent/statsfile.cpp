@@ -19,14 +19,12 @@
  ***************************************************************************/
 #include "statsfile.h"
 
-#include <util/log.h>
-#include <util/functions.h>
 #include <KConfigGroup>
-
+#include <util/functions.h>
+#include <util/log.h>
 
 namespace bt
 {
-
 StatsFile::StatsFile(const QString &filename)
 {
     cfg = KSharedConfig::openConfig(filename);
@@ -63,7 +61,7 @@ int StatsFile::readInt(const QString &key)
 
 bool StatsFile::readBoolean(const QString &key)
 {
-    return (bool) readInt(key);
+    return (bool)readInt(key);
 }
 
 unsigned long StatsFile::readULong(const QString &key)
@@ -83,7 +81,7 @@ void StatsFile::sync()
     cfg->sync();
 }
 
-bool StatsFile::hasKey(const QString& key) const
+bool StatsFile::hasKey(const QString &key) const
 {
     return cfg->group(QString()).hasKey(key);
 }

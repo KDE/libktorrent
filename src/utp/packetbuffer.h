@@ -23,9 +23,9 @@
 
 #include <QSharedPointer>
 #include <ktorrent_export.h>
-#include <util/constants.h>
-#include <util/circularbuffer.h>
 #include <util/bufferpool.h>
+#include <util/circularbuffer.h>
+#include <util/constants.h>
 
 namespace utp
 {
@@ -40,8 +40,8 @@ public:
     PacketBuffer();
     ~PacketBuffer();
 
-    PacketBuffer(const PacketBuffer & buf) = default;
-    PacketBuffer &operator=(const PacketBuffer & buf) = default;
+    PacketBuffer(const PacketBuffer &buf) = default;
+    PacketBuffer &operator=(const PacketBuffer &buf) = default;
 
     /**
      * Is the buffer empty
@@ -57,10 +57,10 @@ public:
      * @param extension_length Length of the extension header
      * @return False if there is not enough head room, true otherwise
      **/
-    bool setHeader(const Header & hdr, bt::Uint32 extension_length);
+    bool setHeader(const Header &hdr, bt::Uint32 extension_length);
 
     /// Get a pointer to the extension data
-    bt::Uint8* extensionData()
+    bt::Uint8 *extensionData()
     {
         return extension;
     }
@@ -71,7 +71,7 @@ public:
      * @param to_read Amount to read
      * @return The amount used as payload
      **/
-    bt::Uint32 fillData(bt::CircularBuffer & cbuf, bt::Uint32 to_read);
+    bt::Uint32 fillData(bt::CircularBuffer &cbuf, bt::Uint32 to_read);
 
     /**
      * Fill with data from a buffer.
@@ -79,7 +79,7 @@ public:
      * @param data_size The data size
      * @return The amount used as payload
      **/
-    bt::Uint32 fillData(const bt::Uint8* data, bt::Uint32 data_size);
+    bt::Uint32 fillData(const bt::Uint8 *data, bt::Uint32 data_size);
 
     /**
      * For testing purpoes fill with dummy data.
@@ -93,7 +93,7 @@ public:
     static void clearPool();
 
     /// Get the data pointer
-    const bt::Uint8* data() const
+    const bt::Uint8 *data() const
     {
         return header;
     }
@@ -120,9 +120,9 @@ public:
 
 private:
     bt::Buffer::Ptr buffer;
-    bt::Uint8* header;
-    bt::Uint8* extension;
-    bt::Uint8* payload;
+    bt::Uint8 *header;
+    bt::Uint8 *extension;
+    bt::Uint8 *payload;
     bt::Uint32 size;
 
     static bt::BufferPool::Ptr pool;

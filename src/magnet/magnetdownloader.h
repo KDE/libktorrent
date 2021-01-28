@@ -21,12 +21,12 @@
 #ifndef BT_MAGNETDOWNLOADER_H
 #define BT_MAGNETDOWNLOADER_H
 
+#include "magnetlink.h"
 #include <QObject>
 #include <kio/job.h>
 #include <ktorrent_export.h>
 #include <torrent/torrent.h>
 #include <tracker/tracker.h>
-#include "magnetlink.h"
 
 namespace dht
 {
@@ -47,7 +47,7 @@ class KTORRENT_EXPORT MagnetDownloader : public QObject, public TrackerDataSourc
 {
     Q_OBJECT
 public:
-    MagnetDownloader(const MagnetLink & mlink, QObject* parent);
+    MagnetDownloader(const MagnetLink &mlink, QObject *parent);
     ~MagnetDownloader() override;
 
     /**
@@ -62,7 +62,7 @@ public:
     Uint32 numPeers() const;
 
     /// Get the MagnetLink
-    const MagnetLink & magnetLink() const
+    const MagnetLink &magnetLink() const
     {
         return mlink;
     }
@@ -81,25 +81,25 @@ Q_SIGNALS:
     /**
         Emitted when downloading the metadata was succesfull.
     */
-    void foundMetadata(bt::MagnetDownloader* self, const QByteArray & metadata);
+    void foundMetadata(bt::MagnetDownloader *self, const QByteArray &metadata);
 
 private:
-    void onNewPeer(Peer* p);
-    void onMetadataDownloaded(const QByteArray & data);
-    void onTorrentDownloaded(KJob*);
+    void onNewPeer(Peer *p);
+    void onMetadataDownloaded(const QByteArray &data);
+    void onTorrentDownloaded(KJob *);
     void dhtStarted();
     void dhtStopped();
 
     Uint64 bytesDownloaded() const override;
     Uint64 bytesUploaded() const override;
     Uint64 bytesLeft() const override;
-    const SHA1Hash & infoHash() const override;
+    const SHA1Hash &infoHash() const override;
     bool isPartialSeed() const override;
 
     MagnetLink mlink;
-    QList<Tracker*> trackers;
-    PeerManager* pman;
-    dht::DHTPeerSource* dht_ps;
+    QList<Tracker *> trackers;
+    PeerManager *pman;
+    dht::DHTPeerSource *dht_ps;
     QByteArray metadata;
     Torrent tor;
     bool found;

@@ -43,7 +43,7 @@ struct IncomingPacket {
 /**
  * Chops up the raw byte stream from a socket into bittorrent packets
  * @author Joris Guisson
-*/
+ */
 class KTORRENT_EXPORT PacketReader : public net::SocketReader
 {
 public:
@@ -54,7 +54,7 @@ public:
      * Push packets to Peer (runs in main thread)
      * @param peer The PeerInterface which will handle the packet
      */
-    void update(PeerInterface & peer);
+    void update(PeerInterface &peer);
 
     /// Did an error occur
     bool ok() const
@@ -62,11 +62,11 @@ public:
         return !error;
     }
 
-    void onDataReady(Uint8* buf, Uint32 size) override;
+    void onDataReady(Uint8 *buf, Uint32 size) override;
 
 private:
-    Uint32 newPacket(Uint8* buf, Uint32 size);
-    Uint32 readPacket(Uint8* buf, Uint32 size);
+    Uint32 newPacket(Uint8 *buf, Uint32 size);
+    Uint32 readPacket(Uint8 *buf, Uint32 size);
     IncomingPacket::Ptr dequeuePacket();
 
 private:

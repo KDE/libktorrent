@@ -23,11 +23,11 @@
 
 #ifndef Q_WS_WIN
 
-#include <ktorrent_export.h>
-#include <signal.h>
-#include <setjmp.h>
 #include <QObject>
 #include <QSocketNotifier>
+#include <ktorrent_export.h>
+#include <setjmp.h>
+#include <signal.h>
 #include <util/error.h>
 
 namespace bt
@@ -67,7 +67,7 @@ class KTORRENT_EXPORT SignalCatcher : public QObject
 {
     Q_OBJECT
 public:
-    SignalCatcher(QObject* parent = 0);
+    SignalCatcher(QObject *parent = 0);
     ~SignalCatcher() override;
 
     /**
@@ -88,16 +88,22 @@ Q_SIGNALS:
     void triggered();
 
 private:
-    QSocketNotifier* notifier;
+    QSocketNotifier *notifier;
     static int signal_received_pipe[2];
 };
 }
 
 /// Before writing to memory mapped data, call this macro to ensure that SIGBUS signals are caught and properly dealt with
-#define BUS_ERROR_WPROTECT() BusErrorGuard bus_error_guard; if (sigsetjmp(bt::sigbus_env, 1)) throw bt::BusError(true)
+#define BUS_ERROR_WPROTECT()                                                                                                                                   \
+    BusErrorGuard bus_error_guard;                                                                                                                             \
+    if (sigsetjmp(bt::sigbus_env, 1))                                                                                                                          \
+    throw bt::BusError(true)
 
 /// Before reading from memory mapped data, call this macro to ensure that SIGBUS signals are caught and properly dealt with
-#define BUS_ERROR_RPROTECT() BusErrorGuard bus_error_guard; if (sigsetjmp(bt::sigbus_env, 1)) throw bt::BusError(false)
+#define BUS_ERROR_RPROTECT()                                                                                                                                   \
+    BusErrorGuard bus_error_guard;                                                                                                                             \
+    if (sigsetjmp(bt::sigbus_env, 1))                                                                                                                          \
+    throw bt::BusError(false)
 
 #endif
 

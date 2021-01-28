@@ -22,28 +22,47 @@
 
 namespace bt
 {
+Value::Value()
+    : type(INT)
+    , ival(0)
+    , big_ival(0)
+{
+}
 
-Value::Value() : type(INT), ival(0), big_ival(0)
-{}
+Value::Value(int val)
+    : type(INT)
+    , ival(val)
+    , big_ival(val)
+{
+}
 
-Value::Value(int val) : type(INT), ival(val), big_ival(val)
-{}
+Value::Value(Int64 val)
+    : type(INT64)
+    , big_ival(val)
+{
+}
 
-Value::Value(Int64 val) : type(INT64), big_ival(val)
-{}
+Value::Value(const QByteArray &val)
+    : type(STRING)
+    , ival(0)
+    , strval(val)
+    , big_ival(0)
+{
+}
 
-Value::Value(const QByteArray & val) : type(STRING), ival(0), strval(val), big_ival(0)
-{}
-
-Value::Value(const Value & val)
-    : type(val.type), ival(val.ival), strval(val.strval), big_ival(val.big_ival)
-{}
+Value::Value(const Value &val)
+    : type(val.type)
+    , ival(val.ival)
+    , strval(val.strval)
+    , big_ival(val.big_ival)
+{
+}
 
 Value::~Value()
-{}
+{
+}
 
-
-QString Value::toString(QTextCodec* tc) const
+QString Value::toString(QTextCodec *tc) const
 {
     if (!tc)
         return toString();
@@ -51,8 +70,7 @@ QString Value::toString(QTextCodec* tc) const
         return tc->toUnicode(strval);
 }
 
-
-Value & Value::operator = (const Value & val)
+Value &Value::operator=(const Value &val)
 {
     type = val.type;
     ival = val.ival;
@@ -61,7 +79,7 @@ Value & Value::operator = (const Value & val)
     return *this;
 }
 
-Value & Value::operator = (Int32 val)
+Value &Value::operator=(Int32 val)
 {
     type = INT;
     ival = val;
@@ -69,14 +87,14 @@ Value & Value::operator = (Int32 val)
     return *this;
 }
 
-Value & Value::operator = (Int64 val)
+Value &Value::operator=(Int64 val)
 {
     type = INT64;
     big_ival = val;
     return *this;
 }
 
-Value & Value::operator = (const QByteArray & val)
+Value &Value::operator=(const QByteArray &val)
 {
     type = STRING;
     strval = val;

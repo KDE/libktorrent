@@ -26,7 +26,6 @@
 
 namespace bt
 {
-
 /**
     Cross platform pipe implementation, uses socketpair on unix and a TCP connection over the localhost in windows.
 */
@@ -49,10 +48,10 @@ public:
     }
 
     /// Write data to the write end of the pipe
-    int write(const Uint8* data, int len);
+    int write(const Uint8 *data, int len);
 
     /// Read data from the read end of the pipe
-    int read(Uint8* buffer, int max_len);
+    int read(Uint8 *buffer, int max_len);
 
 protected:
     int reader;

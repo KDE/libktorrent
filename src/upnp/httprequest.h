@@ -27,10 +27,8 @@
 #include <interfaces/exitoperation.h>
 #include <util/constants.h>
 
-
 namespace bt
 {
-
 /**
  * @author Joris Guisson
  *
@@ -49,13 +47,11 @@ public:
      * @param port THe port
      * @param verbose Print traffic to the log
      */
-    HTTPRequest(const QNetworkRequest & hdr, const QString & payload, const QString & host,
-                bt::Uint16 port, bool verbose);
+    HTTPRequest(const QNetworkRequest &hdr, const QString &payload, const QString &host, bt::Uint16 port, bool verbose);
     /**
      * Open a connection and send the request.
      */
     void start();
-
 
     /**
         Get the reply data
@@ -86,8 +82,7 @@ Q_SIGNALS:
      * An OK reply was sent.
      * @param r The sender of the request
      */
-    void result(HTTPRequest* r);
-
+    void result(HTTPRequest *r);
 
 public:
     void replyFinished(QNetworkReply *networkReply);

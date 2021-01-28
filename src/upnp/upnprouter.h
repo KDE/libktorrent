@@ -21,11 +21,11 @@
 #ifndef KTUPNPROUTER_H
 #define KTUPNPROUTER_H
 
-#include <QUrl>
 #include <QStringList>
+#include <QUrl>
 
-#include <net/portlist.h>
 #include <ktorrent_export.h>
+#include <net/portlist.h>
 
 class KJob;
 
@@ -36,7 +36,7 @@ class WaitJob;
 
 /**
  * Structure describing a UPnP service found in an xml file.
-*/
+ */
 struct KTORRENT_EXPORT UPnPService {
     QString serviceid;
     QString servicetype;
@@ -45,14 +45,14 @@ struct KTORRENT_EXPORT UPnPService {
     QString scpdurl;
 
     UPnPService();
-    UPnPService(const UPnPService & s);
+    UPnPService(const UPnPService &s);
 
     /**
      * Set a property of the service.
      * @param name Name of the property (matches to variable names)
      * @param value Value of the property
      */
-    void setProperty(const QString & name, const QString & value);
+    void setProperty(const QString &name, const QString &value);
 
     /**
      * Set all strings to empty.
@@ -64,7 +64,7 @@ struct KTORRENT_EXPORT UPnPService {
      * @param s The service to copy
      * @return *this
      */
-    UPnPService & operator = (const UPnPService & s);
+    UPnPService &operator=(const UPnPService &s);
 };
 
 /**
@@ -82,7 +82,7 @@ struct KTORRENT_EXPORT UPnPDeviceDescription {
      * @param name Name of the property (matches to variable names)
      * @param value Value of the property
      */
-    void setProperty(const QString & name, const QString & value);
+    void setProperty(const QString &name, const QString &value);
 };
 
 /**
@@ -90,7 +90,7 @@ struct KTORRENT_EXPORT UPnPDeviceDescription {
  *
  * Class representing a UPnP enabled router. This class is also used to communicate
  * with the router.
-*/
+ */
 class KTORRENT_EXPORT UPnPRouter : public QObject
 {
     Q_OBJECT
@@ -101,7 +101,7 @@ public:
      * @param location The location of it's xml description file
      * @param verbose Print lots of debug info
      */
-    UPnPRouter(const QString & server, const QUrl &location, bool verbose = false);
+    UPnPRouter(const QString &server, const QUrl &location, bool verbose = false);
     ~UPnPRouter() override;
 
     /// Disable or enable verbose logging
@@ -114,10 +114,10 @@ public:
     QUrl getLocation() const;
 
     /// Get the device description
-    UPnPDeviceDescription & getDescription();
+    UPnPDeviceDescription &getDescription();
 
     /// Get the device description (const version)
-    const UPnPDeviceDescription & getDescription() const;
+    const UPnPDeviceDescription &getDescription() const;
 
     /// Get the current error (null string if there is none)
     QString getError() const;
@@ -134,7 +134,7 @@ public:
      * Add a service to the router.
      * @param s The service
      */
-    void addService(const UPnPService & s);
+    void addService(const UPnPService &s);
 
 #if 0
     /**
@@ -148,7 +148,7 @@ public:
      * Forward a local port
      * @param port The local port to forward
      */
-    void forward(const net::Port & port);
+    void forward(const net::Port &port);
 
     /**
      * Undo forwarding
@@ -156,7 +156,7 @@ public:
      * @param waitjob When this is set the jobs needs to be added to the waitjob,
      * so we can wait for their completeion at exit
      */
-    void undoForward(const net::Port & port, bt::WaitJob* waitjob = 0);
+    void undoForward(const net::Port &port, bt::WaitJob *waitjob = 0);
 
     /**
         In order to iterate over all forwardings, the visitor pattern must be used.
@@ -164,7 +164,9 @@ public:
     class Visitor
     {
     public:
-        virtual ~Visitor() {}
+        virtual ~Visitor()
+        {
+        }
 
         /**
             Called for each forwarding.
@@ -172,20 +174,20 @@ public:
             @param pending When set to true, the forwarding is not completed yet
             @param service The UPnPService this forwarding is for
         */
-        virtual void forwarding(const net::Port & port, bool pending, const UPnPService* service) = 0;
+        virtual void forwarding(const net::Port &port, bool pending, const UPnPService *service) = 0;
     };
 
     /**
         Visit all forwardings
         @param visitor The Visitor
     */
-    void visit(Visitor* visitor) const;
+    void visit(Visitor *visitor) const;
 
 private:
-    void forwardResult(HTTPRequest* r);
-    void undoForwardResult(HTTPRequest* r);
-    void getExternalIPResult(HTTPRequest* r);
-    void downloadFinished(KJob* j);
+    void forwardResult(HTTPRequest *r);
+    void undoForwardResult(HTTPRequest *r);
+    void getExternalIPResult(HTTPRequest *r);
+    void downloadFinished(KJob *j);
 
 Q_SIGNALS:
     /**
@@ -198,11 +200,11 @@ Q_SIGNALS:
      * @param r The router which emitted the signal
      * @param success Whether or not it succeeded
      */
-    void xmlFileDownloaded(UPnPRouter* r, bool success);
+    void xmlFileDownloaded(UPnPRouter *r, bool success);
 
 private:
     class UPnPRouterPrivate;
-    UPnPRouterPrivate* d;
+    UPnPRouterPrivate *d;
 };
 
 }

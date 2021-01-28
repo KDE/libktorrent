@@ -18,19 +18,21 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "authenticate.h"
-#include <util/log.h>
-#include <mse/encryptedpacketsocket.h>
-#include <peer/accessmanager.h>
-#include <net/socks.h>
-#include <utp/utpsocket.h>
 #include "peerconnector.h"
+#include <mse/encryptedpacketsocket.h>
+#include <net/socks.h>
+#include <peer/accessmanager.h>
+#include <util/log.h>
+#include <utp/utpsocket.h>
 
 namespace bt
 {
-
-Authenticate::Authenticate(const net::Address & addr, TransportProtocol proto,
-                           const SHA1Hash & info_hash, const PeerID & peer_id, PeerConnector::WPtr pcon)
-    : info_hash(info_hash), our_peer_id(peer_id), addr(addr), pcon(pcon), socks(0)
+Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, const SHA1Hash &info_hash, const PeerID &peer_id, PeerConnector::WPtr pcon)
+    : info_hash(info_hash)
+    , our_peer_id(peer_id)
+    , addr(addr)
+    , pcon(pcon)
+    , socks(0)
 {
     finished = succes = false;
     if (proto == TCP)
@@ -149,7 +151,7 @@ void Authenticate::onFinish(bool succes)
 
 void Authenticate::handshakeReceived(bool full)
 {
-    const Uint8* hs = handshake;
+    const Uint8 *hs = handshake;
     if (!AccessManager::instance().allowed(addr)) {
         Out(SYS_CON | LOG_DEBUG) << "The IP address " << addr.toString() << " is blocked " << endl;
         onFinish(false);
@@ -187,7 +189,5 @@ void Authenticate::stop()
 
     onFinish(false);
 }
-
-
 
 }

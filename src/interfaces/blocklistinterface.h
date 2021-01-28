@@ -29,13 +29,12 @@ namespace net
 class Address;
 }
 
-
 namespace bt
 {
 /**
  * @author Ivan Vasic
  * @brief Base class for BlockLists
-*/
+ */
 class KTORRENT_EXPORT BlockListInterface
 {
 public:
@@ -47,7 +46,7 @@ public:
      * @return TRUE if IP should be blocked. FALSE otherwise
      * @arg addr Address of the peer
      */
-    virtual bool blocked(const net::Address & addr) const = 0;
+    virtual bool blocked(const net::Address &addr) const = 0;
 };
 }
 #endif

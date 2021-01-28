@@ -32,12 +32,11 @@ static bt::Uint32 SystemConnectionLimit()
 #endif
 }
 
-ConnectionLimit::ConnectionLimit() :
-    global_limit(SystemConnectionLimit()),
-    global_total(0),
-    torrent_limit(0)
+ConnectionLimit::ConnectionLimit()
+    : global_limit(SystemConnectionLimit())
+    , global_total(0)
+    , torrent_limit(0)
 {
-
 }
 
 ConnectionLimit::~ConnectionLimit()
@@ -52,8 +51,7 @@ void ConnectionLimit::setLimits(Uint32 global_limit, Uint32 torrent_limit)
         this->global_limit = SystemConnectionLimit();
 }
 
-
-ConnectionLimit::Token::Ptr ConnectionLimit::acquire(const SHA1Hash& hash)
+ConnectionLimit::Token::Ptr ConnectionLimit::acquire(const SHA1Hash &hash)
 {
     if (global_limit != 0 && global_total >= global_limit)
         return Token::Ptr();
@@ -72,7 +70,7 @@ ConnectionLimit::Token::Ptr ConnectionLimit::acquire(const SHA1Hash& hash)
     return Token::Ptr();
 }
 
-void ConnectionLimit::release(const ConnectionLimit::Token& token)
+void ConnectionLimit::release(const ConnectionLimit::Token &token)
 {
     QMap<SHA1Hash, bt::Uint32>::iterator i = torrent_totals.find(token.infoHash());
     if (i != torrent_totals.end()) {
@@ -88,11 +86,10 @@ void ConnectionLimit::release(const ConnectionLimit::Token& token)
     }
 }
 
-ConnectionLimit::Token::Token(ConnectionLimit& limit, const SHA1Hash& hash) :
-    limit(limit),
-    hash(hash)
+ConnectionLimit::Token::Token(ConnectionLimit &limit, const SHA1Hash &hash)
+    : limit(limit)
+    , hash(hash)
 {
-
 }
 
 ConnectionLimit::Token::~Token()

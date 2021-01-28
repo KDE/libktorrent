@@ -45,25 +45,25 @@ public:
      * A peer has been added.
      * @param peer The peer
      */
-    virtual void peerAdded(PeerInterface* peer) = 0;
+    virtual void peerAdded(PeerInterface *peer) = 0;
 
     /**
      * A peer has been removed.
      * @param peer The peer
      */
-    virtual void peerRemoved(PeerInterface* peer) = 0;
+    virtual void peerRemoved(PeerInterface *peer) = 0;
 
     /**
      * The download of a chunk has been started.
      * @param cd The ChunkDownload
      */
-    virtual void downloadStarted(ChunkDownloadInterface* cd) = 0;
+    virtual void downloadStarted(ChunkDownloadInterface *cd) = 0;
 
     /**
      * The download of a chunk has been stopped.
      * @param cd The ChunkDownload
      */
-    virtual void downloadRemoved(ChunkDownloadInterface* cd) = 0;
+    virtual void downloadRemoved(ChunkDownloadInterface *cd) = 0;
 
     /**
      * The download has been stopped.
@@ -80,14 +80,14 @@ public:
      * @param file The file
      * @param percentage The percentage
      */
-    virtual void filePercentageChanged(TorrentFileInterface* file, float percentage) = 0;
+    virtual void filePercentageChanged(TorrentFileInterface *file, float percentage) = 0;
 
     /**
      * Preview status of a file has changed.
      * @param file The file
      * @param preview Whether or not it is available
      */
-    virtual void filePreviewChanged(TorrentFileInterface* file, bool preview) = 0;
+    virtual void filePreviewChanged(TorrentFileInterface *file, bool preview) = 0;
 };
 
 }

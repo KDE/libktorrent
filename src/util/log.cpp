@@ -31,8 +31,8 @@
 
 #include <KIO/CopyJob>
 
-#include "compressfilejob.h"
 #include "autorotatelogjob.h"
+#include "compressfilejob.h"
 #include "error.h"
 #include <interfaces/logmonitorinterface.h>
 #include <util/fileops.h>
@@ -41,22 +41,29 @@ namespace bt
 {
 const Uint32 MAX_LOG_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
-static void QtMessageOutput(QtMsgType type, const QMessageLogContext& ctxt, const QString& msg);
+static void QtMessageOutput(QtMsgType type, const QMessageLogContext &ctxt, const QString &msg);
 
 class Log::Private
 {
 public:
-    Log* parent;
-    QTextStream* out;
-    QFile* fptr;
+    Log *parent;
+    QTextStream *out;
+    QFile *fptr;
     bool to_cout;
     unsigned int filter;
     QList<LogMonitorInterface *> monitors;
     QString tmp;
     QMutex mutex;
-    AutoRotateLogJob* rotate_job;
+    AutoRotateLogJob *rotate_job;
+
 public:
-    Private(Log* parent) : parent(parent), out(0), fptr(0), to_cout(false), filter(0), rotate_job(0)
+    Private(Log *parent)
+        : parent(parent)
+        , out(0)
+        , fptr(0)
+        , to_cout(false)
+        , filter(0)
+        , rotate_job(0)
     {
     }
 
@@ -79,7 +86,7 @@ public:
         filter = f;
     }
 
-    void rotateLogs(const QString & file)
+    void rotateLogs(const QString &file)
     {
         if (bt::Exists(file + QStringLiteral("-10.gz")))
             bt::Delete(file + QStringLiteral("-10.gz"), true);
@@ -94,11 +101,11 @@ public:
 
         // move current log to 1 and zip it
         QFile::rename(file, file + QStringLiteral("-1"));
-        CompressFileJob* gzip = new CompressFileJob(file + QStringLiteral("-1"));
+        CompressFileJob *gzip = new CompressFileJob(file + QStringLiteral("-1"));
         gzip->start();
     }
 
-    void setOutputFile(const QString & file, bool rotate, bool handle_qt_messages)
+    void setOutputFile(const QString &file, bool rotate, bool handle_qt_messages)
     {
         QMutexLocker lock(&mutex);
 
@@ -113,8 +120,7 @@ public:
         fptr = new QFile(file);
         if (!fptr->open(QIODevice::WriteOnly)) {
             QString err = fptr->errorString();
-            std::cout << "Failed to open log file " << file.toLocal8Bit().constData() << ": "
-                      << err.toLocal8Bit().constData() << std::endl;
+            std::cout << "Failed to open log file " << file.toLocal8Bit().constData() << ": " << err.toLocal8Bit().constData() << std::endl;
             cleanup();
             return;
         }
@@ -122,7 +128,7 @@ public:
         out = new QTextStream(fptr);
     }
 
-    void write(const QString & line)
+    void write(const QString &line)
     {
         tmp += line;
     }
@@ -139,13 +145,14 @@ public:
 
             fptr->flush();
             if (to_cout)
-                std::cout << final.toLocal8Bit().constData() << std::endl;;
+                std::cout << final.toLocal8Bit().constData() << std::endl;
+            ;
         }
 
         if (monitors.count() > 0) {
             QList<LogMonitorInterface *>::iterator i = monitors.begin();
             while (i != monitors.end()) {
-                LogMonitorInterface* lmi = *i;
+                LogMonitorInterface *lmi = *i;
                 lmi->message(final, filter);
                 ++i;
             }
@@ -180,25 +187,23 @@ Log::Log()
     priv = new Private(this);
 }
 
-
 Log::~Log()
 {
     qInstallMessageHandler(0);
     delete priv;
 }
 
-
-void Log::setOutputFile(const QString & file, bool rotate, bool handle_qt_messages)
+void Log::setOutputFile(const QString &file, bool rotate, bool handle_qt_messages)
 {
     priv->setOutputFile(file, rotate, handle_qt_messages);
 }
 
-void Log::addMonitor(LogMonitorInterface* m)
+void Log::addMonitor(LogMonitorInterface *m)
 {
     priv->monitors.append(m);
 }
 
-void Log::removeMonitor(LogMonitorInterface* m)
+void Log::removeMonitor(LogMonitorInterface *m)
 {
     int index = priv->monitors.indexOf(m);
     if (index != -1)
@@ -215,38 +220,38 @@ void Log::logRotateDone()
     priv->logRotateDone();
 }
 
-Log & endl(Log & lg)
+Log &endl(Log &lg)
 {
     lg.priv->endline();
     lg.priv->mutex.unlock(); // unlock after end of line
     return lg;
 }
 
-Log & Log::operator << (const QUrl & url)
+Log &Log::operator<<(const QUrl &url)
 {
-    return operator << (url.toString());
+    return operator<<(url.toString());
 }
 
-Log & Log::operator << (const QString & s)
+Log &Log::operator<<(const QString &s)
 {
     priv->write(s);
     return *this;
 }
 
-Log & Log::operator << (const char* s)
+Log &Log::operator<<(const char *s)
 {
     priv->write(QString::fromUtf8(s));
     return *this;
 }
 
-Log & Log::operator << (Uint64 v)
+Log &Log::operator<<(Uint64 v)
 {
-    return operator << (QString::number(v));
+    return operator<<(QString::number(v));
 }
 
-Log & Log::operator << (Int64 v)
+Log &Log::operator<<(Int64 v)
 {
-    return operator << (QString::number(v));
+    return operator<<(QString::number(v));
 }
 
 void Log::setFilter(unsigned int filter)
@@ -261,30 +266,30 @@ void Log::lock()
 
 Q_GLOBAL_STATIC(Log, global_log)
 
-Log & Out(unsigned int arg)
+Log &Out(unsigned int arg)
 {
     global_log->setFilter(arg);
     global_log->lock();
     return *global_log;
 }
 
-void InitLog(const QString & file, bool rotate, bool handle_qt_messages, bool to_stdout)
+void InitLog(const QString &file, bool rotate, bool handle_qt_messages, bool to_stdout)
 {
     global_log->setOutputFile(file, rotate, handle_qt_messages);
     global_log->setOutputToConsole(to_stdout);
 }
 
-void AddLogMonitor(LogMonitorInterface* m)
+void AddLogMonitor(LogMonitorInterface *m)
 {
     global_log->addMonitor(m);
 }
 
-void RemoveLogMonitor(LogMonitorInterface* m)
+void RemoveLogMonitor(LogMonitorInterface *m)
 {
     global_log->removeMonitor(m);
 }
 
-static void QtMessageOutput(QtMsgType type, const QMessageLogContext&, const QString& msg)
+static void QtMessageOutput(QtMsgType type, const QMessageLogContext &, const QString &msg)
 {
     switch (type) {
     case QtDebugMsg:

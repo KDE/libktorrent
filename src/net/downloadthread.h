@@ -20,13 +20,12 @@
 #ifndef NETDOWNLOADTHREAD_H
 #define NETDOWNLOADTHREAD_H
 
-#include <vector>
 #include <net/networkthread.h>
 #include <net/wakeuppipe.h>
+#include <vector>
 
 namespace net
 {
-
 /**
  * @author Joris Guisson <joris.guisson@gmail.com>
  *
@@ -35,7 +34,7 @@ namespace net
 class DownloadThread : public NetworkThread
 {
 public:
-    DownloadThread(SocketMonitor* sm);
+    DownloadThread(SocketMonitor *sm);
     ~DownloadThread() override;
 
     /// Wake up the download thread
@@ -55,9 +54,10 @@ public:
 
     /// Set the sleep time when using download caps
     static void setSleepTime(bt::Uint32 stime);
+
 private:
     void update() override;
-    bool doGroup(SocketGroup* g, Uint32 & allowance, bt::TimeStamp now) override;
+    bool doGroup(SocketGroup *g, Uint32 &allowance, bt::TimeStamp now) override;
     int waitForSocketReady();
 
 private:

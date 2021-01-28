@@ -21,9 +21,8 @@
 #define BTDATACHECKER_H
 
 #include <QObject>
-#include <util/bitset.h>
 #include <ktorrent_export.h>
-
+#include <util/bitset.h>
 
 class QString;
 
@@ -31,13 +30,12 @@ namespace bt
 {
 class Torrent;
 
-
 /**
  * @author Joris Guisson
  *
  * Checks which data is downloaded, given a torrent and a file or directory containing
  * files of the torrent.
-*/
+ */
 class KTORRENT_EXPORT DataChecker : public QObject
 {
     Q_OBJECT
@@ -54,12 +52,12 @@ public:
      * @param dnddir DND dir, optional argument if we know this
      * @param current_status Current status of the torrent
      */
-    virtual void check(const QString & path, const Torrent & tor, const QString & dnddir, const BitSet & current_status) = 0;
+    virtual void check(const QString &path, const Torrent &tor, const QString &dnddir, const BitSet &current_status) = 0;
 
     /**
      * Get the BitSet representing all the downloaded chunks and which is the result of the data check.
      */
-    const BitSet & getResult() const
+    const BitSet &getResult() const
     {
         return result;
     }
@@ -86,7 +84,6 @@ Q_SIGNALS:
      * @param num_not_downloaded Number of not downloaded chunks
      */
     void status(quint32 num_failed, quint32 num_found, quint32 num_downloaded, quint32 num_not_downloaded);
-
 
 protected:
     BitSet result;

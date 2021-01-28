@@ -8,20 +8,17 @@
 #include <QLocale>
 #include <QtTest>
 
-#include <util/log.h>
-#include <util/error.h>
-#include <util/bitset.h>
-#include <util/functions.h>
-#include <util/fileops.h>
-#include <torrent/torrentcontrol.h>
-#include <interfaces/piecedownloader.h>
-#include <download/streamingchunkselector.h>
-#include <download/downloader.h>
-#include <diskio/chunkmanager.h>
 #include "testlib/dummytorrentcreator.h"
-
-
-
+#include <diskio/chunkmanager.h>
+#include <download/downloader.h>
+#include <download/streamingchunkselector.h>
+#include <interfaces/piecedownloader.h>
+#include <torrent/torrentcontrol.h>
+#include <util/bitset.h>
+#include <util/error.h>
+#include <util/fileops.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 using namespace bt;
 
@@ -30,20 +27,30 @@ const bt::Uint64 TEST_FILE_SIZE = 15 * 1024 * 1024;
 class DummyDownloader : public PieceDownloader
 {
 public:
-    ~DummyDownloader() override {}
+    ~DummyDownloader() override
+    {
+    }
 
     bool canAddRequest() const override
     {
         return true;
     }
-    void cancel(const bt::Request&) override {}
-    void cancelAll() override {}
+    void cancel(const bt::Request &) override
+    {
+    }
+    void cancelAll() override
+    {
+    }
     bool canDownloadChunk() const override
     {
         return getNumGrabbed() == 0;
     }
-    void download(const bt::Request&) override {}
-    void checkTimeouts() override {}
+    void download(const bt::Request &) override
+    {
+    }
+    void checkTimeouts() override
+    {
+    }
     Uint32 getDownloadRate() const override
     {
         return 0;
@@ -61,15 +68,19 @@ public:
 class ExtendedStreamingChunkSelector : public bt::StreamingChunkSelector
 {
 public:
-    ExtendedStreamingChunkSelector() {}
-    ~ExtendedStreamingChunkSelector() override {}
+    ExtendedStreamingChunkSelector()
+    {
+    }
+    ~ExtendedStreamingChunkSelector() override
+    {
+    }
 
     void markDownloaded(Uint32 i)
     {
         cman->chunkDownloaded(i);
     }
 
-    Downloader* downloader()
+    Downloader *downloader()
     {
         return downer;
     }
@@ -81,10 +92,13 @@ class StreamingChunkSelectorTest : public QEventLoop
 
 public:
     StreamingChunkSelectorTest()
-    {}
+    {
+    }
 
-    StreamingChunkSelectorTest(QObject* parent) : QEventLoop(parent)
-    {}
+    StreamingChunkSelectorTest(QObject *parent)
+        : QEventLoop(parent)
+    {
+    }
 
 private Q_SLOTS:
     void initTestCase()
@@ -104,13 +118,12 @@ private Q_SLOTS:
         try {
             tc.init(0, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
-        } catch (bt::Error& err) {
+        } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
 
-
-        ExtendedStreamingChunkSelector* csel = new ExtendedStreamingChunkSelector();
+        ExtendedStreamingChunkSelector *csel = new ExtendedStreamingChunkSelector();
         tc.setChunkSelector(csel);
         QVERIFY(csel != 0);
         csel->setSequentialRange(0, 50);
@@ -138,15 +151,15 @@ private Q_SLOTS:
         try {
             tc.init(0, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
-        } catch (bt::Error& err) {
+        } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
 
-        ExtendedStreamingChunkSelector* csel = new ExtendedStreamingChunkSelector();
+        ExtendedStreamingChunkSelector *csel = new ExtendedStreamingChunkSelector();
         tc.setChunkSelector(csel);
         QVERIFY(csel != 0);
-        Downloader* downer = csel->downloader();
+        Downloader *downer = csel->downloader();
         QVERIFY(downer != 0);
 
         // Check that critical chunks are spread over multiple peers
@@ -178,4 +191,3 @@ private Q_SLOTS:
 QTEST_MAIN(StreamingChunkSelectorTest)
 
 #include "streamingchunkselectortest.moc"
-

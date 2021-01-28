@@ -22,14 +22,13 @@
 #include <QRandomGenerator>
 #include <QUrl>
 
-#include <util/functions.h>
-#include <util/log.h>
+#include "httptracker.h"
+#include "udptracker.h"
+#include <net/addressresolver.h>
 #include <torrent/globals.h>
 #include <torrent/server.h>
-#include <net/addressresolver.h>
-#include "udptracker.h"
-#include "httptracker.h"
-
+#include <util/functions.h>
+#include <util/log.h>
 
 namespace bt
 {
@@ -40,8 +39,11 @@ const Uint32 INITIAL_WAIT_TIME = 30;
 const Uint32 LONGER_WAIT_TIME = 300;
 const Uint32 FINAL_WAIT_TIME = 1800;
 
-Tracker::Tracker(const QUrl &url, TrackerDataSource* tds, const PeerID & id, int tier)
-    : TrackerInterface(url), tier(tier), peer_id(id), tds(tds)
+Tracker::Tracker(const QUrl &url, TrackerDataSource *tds, const PeerID &id, int tier)
+    : TrackerInterface(url)
+    , tier(tier)
+    , peer_id(id)
+    , tds(tds)
 {
     key = QRandomGenerator::global()->generate();
     connect(&reannounce_timer, &QTimer::timeout, this, &Tracker::manualUpdate);
@@ -53,7 +55,7 @@ Tracker::~Tracker()
 {
 }
 
-void Tracker::setCustomIP(const QString & ip)
+void Tracker::setCustomIP(const QString &ip)
 {
     if (custom_ip == ip)
         return;
@@ -86,13 +88,12 @@ void Tracker::timedDelete(int ms)
     connect(this, &Tracker::stopDone, this, &Tracker::deleteLater);
 }
 
-void Tracker::failed(const QString& err)
+void Tracker::failed(const QString &err)
 {
     error = err;
     status = TRACKER_ERROR;
     requestFailed(err);
 }
-
 
 void Tracker::handleFailure()
 {

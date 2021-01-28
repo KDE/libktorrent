@@ -21,16 +21,14 @@
 #ifndef BTTORRENTFILE_H
 #define BTTORRENTFILE_H
 
+#include <interfaces/torrentfileinterface.h>
 #include <qstring.h>
 #include <util/constants.h>
-#include <interfaces/torrentfileinterface.h>
 
 namespace bt
 {
 class ChunkManager;
 class Torrent;
-
-
 
 /**
  * @author Joris Guisson
@@ -42,7 +40,7 @@ class KTORRENT_EXPORT TorrentFile : public TorrentFileInterface
 {
     Q_OBJECT
 
-    Torrent* tor;
+    Torrent *tor;
     Uint64 cache_offset;
     Priority priority;
     Priority old_priority;
@@ -52,7 +50,7 @@ public:
     /**
      * Default constructor. Creates a null TorrentFile.
      */
-    TorrentFile(Torrent* tor = 0);
+    TorrentFile(Torrent *tor = 0);
 
     /**
      * Constructor.
@@ -63,13 +61,13 @@ public:
      * @param size Size of the file
      * @param chunk_size Size of each chunk
      */
-    TorrentFile(Torrent* tor, Uint32 index, const QString & path, Uint64 off, Uint64 size, Uint64 chunk_size);
+    TorrentFile(Torrent *tor, Uint32 index, const QString &path, Uint64 off, Uint64 size, Uint64 chunk_size);
 
     /**
      * Copy constructor.
      * @param tf The TorrentFile to copy
      */
-    TorrentFile(const TorrentFile & tf);
+    TorrentFile(const TorrentFile &tf);
     ~TorrentFile() override;
 
     /// Get the offset into the torrent
@@ -117,7 +115,6 @@ public:
         return old_priority;
     }
 
-
     /// emits signal.
     void emitDownloadStatusChanged() override;
 
@@ -131,7 +128,7 @@ public:
      * @param tf The file to copy
      * @return *this
      */
-    TorrentFile & operator = (const TorrentFile & tf);
+    TorrentFile &operator=(const TorrentFile &tf);
 
     /// See if the file is missing
     bool isMissing() const
@@ -158,7 +155,7 @@ public:
      * Update the number of downloaded chunks for this file.
      * @param cman The ChunkManager
      */
-    void updateNumDownloadedChunks(ChunkManager & cman);
+    void updateNumDownloadedChunks(ChunkManager &cman);
 };
 
 }

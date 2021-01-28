@@ -19,43 +19,44 @@
  ***************************************************************************/
 #include "utpex.h"
 
-#include <net/address.h>
-#include <util/functions.h>
-#include <util/log.h>
+#include "peer.h"
+#include "peermanager.h"
 #include <bcodec/bdecoder.h>
 #include <bcodec/bencoder.h>
 #include <bcodec/bnode.h>
-#include "peermanager.h"
-#include "peer.h"
-
+#include <net/address.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 namespace bt
 {
-
 bool UTPex::pex_enabled = true;
 
-UTPex::UTPex(Peer* peer, Uint32 id) : PeerProtocolExtension(id, peer), last_updated(0)
-{}
-
+UTPex::UTPex(Peer *peer, Uint32 id)
+    : PeerProtocolExtension(id, peer)
+    , last_updated(0)
+{
+}
 
 UTPex::~UTPex()
-{}
+{
+}
 
-void UTPex::handlePacket(const Uint8* packet, Uint32 size)
+void UTPex::handlePacket(const Uint8 *packet, Uint32 size)
 {
     if (size <= 2 || packet[1] != 1)
         return;
 
-    QByteArray tmp = QByteArray::fromRawData((const char*)packet, size);
-    BNode* node = 0;
+    QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
+    BNode *node = 0;
     try {
         BDecoder dec(tmp, false, 2);
         node = dec.decode();
         if (node && node->getType() == BNode::DICT) {
-            BDictNode* dict = (BDictNode*)node;
+            BDictNode *dict = (BDictNode *)node;
 
             // ut_pex packet, emit signal to notify PeerManager
-            BValueNode* val = dict->getValue("added");
+            BValueNode *val = dict->getValue("added");
             if (val) {
                 QByteArray data = val->data().toByteArray();
                 peer->emitPex(data);
@@ -96,10 +97,9 @@ void UTPex::visit(const bt::Peer::Ptr p)
     }
 }
 
-
 void UTPex::update()
 {
-    PeerManager* pman = peer->getPeerManager();
+    PeerManager *pman = peer->getPeerManager();
     last_updated = bt::CurrentTime();
 
     pman->visit(*this);
@@ -130,21 +130,21 @@ void UTPex::update()
     npeers.clear();
 }
 
-void UTPex::encode(BEncoder & enc, const std::map<Uint32, net::Address> & ps)
+void UTPex::encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps)
 {
     if (ps.size() == 0) {
         enc.write(QByteArray());
         return;
     }
 
-    Uint8* buf = new Uint8[ps.size() * 6];
+    Uint8 *buf = new Uint8[ps.size() * 6];
     Uint32 size = 0;
 
     std::map<Uint32, net::Address>::const_iterator i = ps.begin();
     while (i != ps.end()) {
-        const net::Address & addr = i->second;
+        const net::Address &addr = i->second;
         if (addr.ipVersion() == 4) {
-            quint32 ip =  htonl(addr.toIPv4Address());
+            quint32 ip = htonl(addr.toIPv4Address());
             memcpy(buf + size, &ip, 4);
             WriteUint16(buf, size + 4, addr.port());
             size += 6;
@@ -153,17 +153,17 @@ void UTPex::encode(BEncoder & enc, const std::map<Uint32, net::Address> & ps)
     }
 
     enc.write(buf, size);
-    delete [] buf;
+    delete[] buf;
 }
 
-void UTPex::encodeFlags(BEncoder & enc, const std::map<Uint32, Uint8> & flags)
+void UTPex::encodeFlags(BEncoder &enc, const std::map<Uint32, Uint8> &flags)
 {
     if (flags.size() == 0) {
         enc.write(QByteArray());
         return;
     }
 
-    Uint8* buf = new Uint8[flags.size()];
+    Uint8 *buf = new Uint8[flags.size()];
     Uint32 idx = 0;
 
     std::map<Uint32, Uint8>::const_iterator i = flags.begin();
@@ -173,6 +173,6 @@ void UTPex::encodeFlags(BEncoder & enc, const std::map<Uint32, Uint8> & flags)
     }
 
     enc.write(buf, flags.size());
-    delete [] buf;
+    delete[] buf;
 }
 }

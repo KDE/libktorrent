@@ -18,23 +18,24 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
+#include <QtTest>
 #include <util/log.h>
-#include <utp/utpserver.h>
 #include <utp/connection.h>
+#include <utp/utpserver.h>
 
 using namespace utp;
 
 class ConnectionTest : public QEventLoop, public Transmitter
 {
 public:
-
-    ConnectionTest(QObject* parent = nullptr) : QEventLoop(parent), remote("127.0.0.1", 50000)
+    ConnectionTest(QObject *parent = nullptr)
+        : QEventLoop(parent)
+        , remote("127.0.0.1", 50000)
     {
     }
 
-    bool sendTo(Connection::Ptr conn, const PacketBuffer & packet) override
+    bool sendTo(Connection::Ptr conn, const PacketBuffer &packet) override
     {
         sent_packets.append(packet);
         Q_UNUSED(conn)
@@ -71,7 +72,6 @@ public:
         return packet;
     }
 
-
 private:
     void initTestCase()
     {
@@ -107,7 +107,7 @@ private:
         bt::Uint32 conn_id = 666;
         Connection conn(conn_id, utp::Connection::OUTGOING, remote, this);
         conn.startConnecting();
-        const Connection::Stats & s = conn.connectionStats();
+        const Connection::Stats &s = conn.connectionStats();
         QVERIFY(s.state == utp::CS_SYN_SENT);
         QVERIFY(s.seq_nr == 2);
 
@@ -123,7 +123,7 @@ private:
     {
         bt::Uint32 conn_id = 666;
         Connection conn(conn_id, utp::Connection::INCOMING, remote, this);
-        const Connection::Stats & s = conn.connectionStats();
+        const Connection::Stats &s = conn.connectionStats();
 
         bt::Buffer::Ptr pkt = buildPacket(ST_SYN, conn_id - 1, conn_id, 1, 1);
         PacketParser pp(pkt->get(), pkt->size());

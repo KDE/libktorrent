@@ -33,7 +33,7 @@ class Torrent;
  * Factory to create Cache objects. If you want a custom Cache you need to derive from this class
  * and implement the create method to create your own custom Caches.
  * @author Joris Guisson
-*/
+ */
 class KTORRENT_EXPORT CacheFactory
 {
 public:
@@ -47,7 +47,7 @@ public:
      * @param datadir The data directory, where to store the data
      * @return
      */
-    virtual Cache* create(Torrent & tor, const QString & tmpdir, const QString & datadir) = 0;
+    virtual Cache *create(Torrent &tor, const QString &tmpdir, const QString &datadir) = 0;
 };
 
 }

@@ -22,7 +22,6 @@
 
 #include <torrent/job.h>
 
-
 namespace bt
 {
 class PreallocationThread;
@@ -32,7 +31,7 @@ class KTORRENT_EXPORT PreallocationJob : public bt::Job
 {
     Q_OBJECT
 public:
-    PreallocationJob(ChunkManager* cman, TorrentControl* tc);
+    PreallocationJob(ChunkManager *cman, TorrentControl *tc);
     ~PreallocationJob() override;
 
     void start() override;
@@ -46,8 +45,8 @@ private Q_SLOTS:
     void finished();
 
 private:
-    ChunkManager* cman;
-    PreallocationThread* prealloc_thread;
+    ChunkManager *cman;
+    PreallocationThread *prealloc_thread;
 };
 
 }

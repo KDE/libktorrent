@@ -18,52 +18,70 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "packet.h"
+#include "request.h"
+#include <diskio/chunk.h>
+#include <net/socketdevice.h>
+#include <peer/peer.h>
 #include <qstring.h>
 #include <string.h>
-#include <net/socketdevice.h>
-#include <util/log.h>
 #include <util/bitset.h>
 #include <util/functions.h>
-#include <diskio/chunk.h>
-#include <peer/peer.h>
-#include "request.h"
+#include <util/log.h>
 
 namespace bt
 {
-
-static Uint8* AllocPacket(Uint32 size, Uint8 type)
+static Uint8 *AllocPacket(Uint32 size, Uint8 type)
 {
-    Uint8* data = new Uint8[size];
+    Uint8 *data = new Uint8[size];
     WriteUint32(data, 0, size - 4);
     data[4] = type;
     return data;
 }
 
-
-Packet::Packet(Uint8 type) : data(0), size(5), written(0), type(type)
+Packet::Packet(Uint8 type)
+    : data(0)
+    , size(5)
+    , written(0)
+    , type(type)
 {
     data = AllocPacket(size, type);
 }
 
-Packet::Packet(Uint16 port) : data(0), size(7), written(0), type(PORT)
+Packet::Packet(Uint16 port)
+    : data(0)
+    , size(7)
+    , written(0)
+    , type(PORT)
 {
     data = AllocPacket(size, PORT);
     WriteUint16(data, 5, port);
 }
 
-Packet::Packet(Uint32 chunk, Uint8 type) : data(0), size(9), written(0), type(type)
+Packet::Packet(Uint32 chunk, Uint8 type)
+    : data(0)
+    , size(9)
+    , written(0)
+    , type(type)
 {
     data = AllocPacket(size, type);
     WriteUint32(data, 5, chunk);
 }
 
-Packet::Packet(const BitSet & bs) : data(0), size(5 + bs.getNumBytes()), written(0), type(BITFIELD)
+Packet::Packet(const BitSet &bs)
+    : data(0)
+    , size(5 + bs.getNumBytes())
+    , written(0)
+    , type(BITFIELD)
 {
     data = AllocPacket(size, BITFIELD);
     memcpy(data + 5, bs.getData(), bs.getNumBytes());
 }
 
-Packet::Packet(const Request & r, Uint8 type) : data(0), size(17), written(0), type(type)
+Packet::Packet(const Request &r, Uint8 type)
+    : data(0)
+    , size(17)
+    , written(0)
+    , type(type)
 {
     data = AllocPacket(size, type);
     WriteUint32(data, 5, r.getIndex());
@@ -71,7 +89,11 @@ Packet::Packet(const Request & r, Uint8 type) : data(0), size(17), written(0), t
     WriteUint32(data, 13, r.getLength());
 }
 
-Packet::Packet(Uint32 index, Uint32 begin, Uint32 len, Chunk* ch) : data(0), size(13 + len), written(0), type(PIECE)
+Packet::Packet(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch)
+    : data(0)
+    , size(13 + len)
+    , written(0)
+    , type(PIECE)
 {
     data = AllocPacket(size, PIECE);
     WriteUint32(data, 5, index);
@@ -79,7 +101,11 @@ Packet::Packet(Uint32 index, Uint32 begin, Uint32 len, Chunk* ch) : data(0), siz
     ch->readPiece(begin, len, data + 13);
 }
 
-Packet::Packet(Uint8 ext_id, const QByteArray & ext_data) : data(0), size(6 + ext_data.size()), written(0), type(EXTENDED)
+Packet::Packet(Uint8 ext_id, const QByteArray &ext_data)
+    : data(0)
+    , size(6 + ext_data.size())
+    , written(0)
+    , type(EXTENDED)
 {
     data = AllocPacket(size, EXTENDED);
     data[5] = ext_id;
@@ -88,18 +114,15 @@ Packet::Packet(Uint8 ext_id, const QByteArray & ext_data) : data(0), size(6 + ex
 
 Packet::~Packet()
 {
-    delete [] data;
+    delete[] data;
 }
 
-bool Packet::isPiece(const Request & req) const
+bool Packet::isPiece(const Request &req) const
 {
-    return (data[4] == PIECE)
-           && (ReadUint32(data, 5) == req.getIndex())
-           && (ReadUint32(data, 9) == req.getOffset())
-           && (size - 13 == req.getLength());
+    return (data[4] == PIECE) && (ReadUint32(data, 5) == req.getIndex()) && (ReadUint32(data, 9) == req.getOffset()) && (size - 13 == req.getLength());
 }
 
-Packet* Packet::makeRejectOfPiece()
+Packet *Packet::makeRejectOfPiece()
 {
     if (getType() != PIECE)
         return 0;
@@ -138,7 +161,7 @@ bool Packet::isOK() const
     return bool(data);
 }
 
-int Packet::send(net::SocketDevice* sock, Uint32 max_to_send)
+int Packet::send(net::SocketDevice *sock, Uint32 max_to_send)
 {
     Uint32 bw = size - written;
     if (!bw) // nothing to write

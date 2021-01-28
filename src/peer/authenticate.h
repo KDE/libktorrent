@@ -20,12 +20,10 @@
 #ifndef BTAUTHENTICATE_H
 #define BTAUTHENTICATE_H
 
-
-#include <util/sha1hash.h>
-#include <peer/peerid.h>
-#include <peer/peerconnector.h>
 #include "authenticatebase.h"
-
+#include <peer/peerconnector.h>
+#include <peer/peerid.h>
+#include <util/sha1hash.h>
 
 namespace net
 {
@@ -34,8 +32,6 @@ class Socks;
 
 namespace bt
 {
-
-
 /**
  * @author Joris Guisson
  * @brief Authenicate a peer
@@ -55,13 +51,11 @@ public:
      * @param peer_id Peer ID
      * @param pman PeerManager
      */
-    Authenticate(const net::Address & addr, TransportProtocol proto,
-                 const SHA1Hash & info_hash, const PeerID & peer_id,
-                 PeerConnector::WPtr pcon);
+    Authenticate(const net::Address &addr, TransportProtocol proto, const SHA1Hash &info_hash, const PeerID &peer_id, PeerConnector::WPtr pcon);
 
     ~Authenticate() override;
 
-    const PeerID & getPeerID() const
+    const PeerID &getPeerID() const
     {
         return peer_id;
     }
@@ -91,7 +85,7 @@ protected:
     net::Address addr;
     bool succes;
     PeerConnector::WPtr pcon;
-    net::Socks* socks;
+    net::Socks *socks;
 };
 }
 

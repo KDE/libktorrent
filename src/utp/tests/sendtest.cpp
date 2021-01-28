@@ -17,12 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include <QtTest>
 #include <QObject>
+#include <QtTest>
+#include <torrent/globals.h>
 #include <util/log.h>
 #include <utp/utpserver.h>
 #include <utp/utpsocket.h>
-#include <torrent/globals.h>
 
 using namespace utp;
 
@@ -69,7 +69,7 @@ private:
         bt::Out(SYS_UTP | LOG_DEBUG) << "testConnect" << bt::endl;
 
         net::Address addr("127.0.0.1", port);
-        utp::UTPServer & srv = bt::Globals::instance().getUTPServer();
+        utp::UTPServer &srv = bt::Globals::instance().getUTPServer();
         connect(&srv, &utp::UTPServer::accepted, this, &SendTest::accepted, Qt::QueuedConnection);
         outgoing = new utp::UTPSocket();
         outgoing->setBlocking(false);
@@ -93,12 +93,12 @@ private:
         outgoing->setBlocking(true);
         char test[] = "TEST";
 
-        int ret = outgoing->send((const bt::Uint8*)test, strlen(test));
+        int ret = outgoing->send((const bt::Uint8 *)test, strlen(test));
         QVERIFY(ret == (int)strlen(test));
 
         char tmp[20];
         memset(tmp, 0, 20);
-        ret = incoming->recv((bt::Uint8*)tmp, 20);
+        ret = incoming->recv((bt::Uint8 *)tmp, 20);
         QVERIFY(ret == 4);
         QVERIFY(memcmp(tmp, test, ret) == 0);
     }
@@ -106,10 +106,10 @@ private:
     void testSend2()
     {
         bt::Out(SYS_UTP | LOG_DEBUG) << "testSend2" << bt::endl;
-        bt::Uint8* sdata = new bt::Uint8[1000];
+        bt::Uint8 *sdata = new bt::Uint8[1000];
         outgoing->send(sdata, 1000);
 
-        bt::Uint8* rdata = new bt::Uint8[1000];
+        bt::Uint8 *rdata = new bt::Uint8[1000];
         int ret = incoming->recv(rdata, 1000);
         QVERIFY(ret == 1000);
         QVERIFY(memcmp(sdata, rdata, ret) == 0);
@@ -123,17 +123,17 @@ private:
         bt::Out(SYS_UTP | LOG_DEBUG) << "testSend3" << bt::endl;
         char test[] = "TEST";
 
-        outgoing->send((const bt::Uint8*)test, strlen(test));
-        incoming->send((const bt::Uint8*)test, strlen(test));
+        outgoing->send((const bt::Uint8 *)test, strlen(test));
+        incoming->send((const bt::Uint8 *)test, strlen(test));
 
         char tmp[20];
         memset(tmp, 0, 20);
-        int ret = incoming->recv((bt::Uint8*)tmp, 20);
+        int ret = incoming->recv((bt::Uint8 *)tmp, 20);
         QVERIFY(ret == 4);
         QVERIFY(memcmp(tmp, test, ret) == 0);
 
         memset(tmp, 0, 20);
-        ret = outgoing->recv((bt::Uint8*)tmp, 20);
+        ret = outgoing->recv((bt::Uint8 *)tmp, 20);
         QVERIFY(ret == 4);
         QVERIFY(memcmp(tmp, test, ret) == 0);
     }
@@ -143,17 +143,17 @@ private:
         bt::Out(SYS_UTP | LOG_DEBUG) << "testSend4" << bt::endl;
         char test[] = "TEST";
 
-        outgoing->send((const bt::Uint8*)test, strlen(test));
-        outgoing->send((const bt::Uint8*)test, strlen(test));
+        outgoing->send((const bt::Uint8 *)test, strlen(test));
+        outgoing->send((const bt::Uint8 *)test, strlen(test));
 
         char tmp[20];
         memset(tmp, 0, 20);
-        int ret = incoming->recv((bt::Uint8*)tmp, 20);
+        int ret = incoming->recv((bt::Uint8 *)tmp, 20);
         QVERIFY(ret == 4 || ret == 8);
         QVERIFY(memcmp(tmp, test, 4) == 0);
         if (ret != 8) {
             memset(tmp, 0, 20);
-            ret = incoming->recv((bt::Uint8*)tmp, 20);
+            ret = incoming->recv((bt::Uint8 *)tmp, 20);
             QVERIFY(ret == 4);
             QVERIFY(memcmp(tmp, test, ret) == 0);
         } else {
@@ -163,8 +163,8 @@ private:
 
 private:
     int port;
-    utp::UTPSocket* incoming;
-    utp::UTPSocket* outgoing;
+    utp::UTPSocket *incoming;
+    utp::UTPSocket *outgoing;
 };
 
 QTEST_MAIN(SendTest)

@@ -18,22 +18,21 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "waitjob.h"
+#include "log.h"
 #include <qtimer.h>
 #include <torrent/globals.h>
-#include "log.h"
 
 namespace bt
 {
-
-WaitJob::WaitJob(Uint32 millis) : KIO::Job(/*false*/)
+WaitJob::WaitJob(Uint32 millis)
+    : KIO::Job(/*false*/)
 {
     QTimer::singleShot(millis, this, &WaitJob::timerDone);
 }
 
-
 WaitJob::~WaitJob()
 {
-    for (ExitOperation* op : qAsConst(exit_ops))
+    for (ExitOperation *op : qAsConst(exit_ops))
         delete op;
 }
 
@@ -47,19 +46,18 @@ void WaitJob::timerDone()
     emitResult();
 }
 
-void WaitJob::addExitOperation(ExitOperation* op)
+void WaitJob::addExitOperation(ExitOperation *op)
 {
     exit_ops.append(op);
     connect(op, &ExitOperation::operationFinished, this, &WaitJob::operationFinished);
 }
 
-void WaitJob::addExitOperation(KIO::Job* job)
+void WaitJob::addExitOperation(KIO::Job *job)
 {
     addExitOperation(new ExitJobOperation(job));
 }
 
-
-void WaitJob::operationFinished(ExitOperation* op)
+void WaitJob::operationFinished(ExitOperation *op)
 {
     if (exit_ops.count() > 0) {
         exit_ops.removeAll(op);
@@ -71,7 +69,7 @@ void WaitJob::operationFinished(ExitOperation* op)
     }
 }
 
-void WaitJob::execute(WaitJob* job)
+void WaitJob::execute(WaitJob *job)
 {
     job->exec();
 }
@@ -79,9 +77,8 @@ void WaitJob::execute(WaitJob* job)
 void SynchronousWait(Uint32 millis)
 {
     Out(SYS_GEN | LOG_DEBUG) << "SynchronousWait" << endl;
-    WaitJob* j = new WaitJob(millis);
+    WaitJob *j = new WaitJob(millis);
     j->exec();
 }
 
 }
-

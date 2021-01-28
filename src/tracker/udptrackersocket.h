@@ -20,11 +20,11 @@
 #ifndef BTUDPTRACKERSOCKET_H
 #define BTUDPTRACKERSOCKET_H
 
-#include <QObject>
 #include <QByteArray>
-#include <util/constants.h>
-#include <util/bufferpool.h>
+#include <QObject>
 #include <ktorrent_export.h>
+#include <util/bufferpool.h>
+#include <util/constants.h>
 
 #ifdef ERROR
 #undef ERROR
@@ -37,12 +37,11 @@ class Address;
 
 namespace bt
 {
-
 /**
  * @author Joris Guisson
  *
  * Class which handles communication with one or more UDP trackers.
-*/
+ */
 class KTORRENT_EXPORT UDPTrackerSocket : public QObject
 {
     Q_OBJECT
@@ -64,7 +63,7 @@ public:
      * @param tid The transaction_id
      * @param addr The address to send to
      */
-    void sendConnect(Int32 tid, const net::Address & addr);
+    void sendConnect(Int32 tid, const net::Address &addr);
 
     /**
      * Send an announce message. As a response to this, the announceReceived
@@ -74,24 +73,23 @@ public:
      * @param data The data to send (connect input structure, in UDP Tracker specifaction)
      * @param addr The address to send to
      */
-    void sendAnnounce(Int32 tid, const Uint8* data, const net::Address & addr);
+    void sendAnnounce(Int32 tid, const Uint8 *data, const net::Address &addr);
 
     /**
-    * Send a scrape message. As a response to this, the scrapeReceived
-    * signal will be emitted, classes recieving this signal should check if
-    * the transaction_id is the same.
-    * @param tid The transaction_id
-    * @param data The data to send (connect input structure, in UDP Tracker specifaction)
-    * @param addr The address to send to
-    */
-    void sendScrape(Int32 tid, const Uint8* data, const net::Address & addr);
+     * Send a scrape message. As a response to this, the scrapeReceived
+     * signal will be emitted, classes recieving this signal should check if
+     * the transaction_id is the same.
+     * @param tid The transaction_id
+     * @param data The data to send (connect input structure, in UDP Tracker specifaction)
+     * @param addr The address to send to
+     */
+    void sendScrape(Int32 tid, const Uint8 *data, const net::Address &addr);
 
     /**
      * If a transaction times out, this should be used to cancel it.
      * @param tid
      */
     void cancelTransaction(Int32 tid);
-
 
     /**
      * Compute a free transaction_id.
@@ -122,22 +120,22 @@ Q_SIGNALS:
      * @param buf The data
      * @param size The data size
      */
-    void announceReceived(Int32 tid, const Uint8* buf, Uint32 size);
+    void announceReceived(Int32 tid, const Uint8 *buf, Uint32 size);
 
     /**
-    * Emitted when a scrape message is received.
-    * @param tid The transaction_id
-    * @param buf The data
-    * @param size The data size
-    */
-    void scrapeReceived(Int32 tid, const Uint8* buf, Uint32 size);
+     * Emitted when a scrape message is received.
+     * @param tid The transaction_id
+     * @param buf The data
+     * @param size The data size
+     */
+    void scrapeReceived(Int32 tid, const Uint8 *buf, Uint32 size);
 
     /**
      * Signal emitted, when an error occurs during a transaction.
      * @param tid The transaction_id
      * @param error_string Potential error string
      */
-    void error(Int32 tid, const QString & error_string);
+    void error(Int32 tid, const QString &error_string);
 
 private:
     void handleConnect(bt::Buffer::Ptr buf);
@@ -147,7 +145,7 @@ private:
 
 private:
     class Private;
-    Private* d;
+    Private *d;
 
     static Uint16 port;
 };

@@ -20,8 +20,8 @@
 #ifndef BTDATACHECKERTHREAD_H
 #define BTDATACHECKERTHREAD_H
 
-#include <qthread.h>
 #include <ktorrent_export.h>
+#include <qthread.h>
 #include <util/bitset.h>
 
 namespace bt
@@ -36,21 +36,22 @@ class DataChecker;
 */
 class KTORRENT_EXPORT DataCheckerThread : public QThread
 {
-    DataChecker* dc;
+    DataChecker *dc;
     QString path;
-    const Torrent & tor;
+    const Torrent &tor;
     QString dnddir;
     bool running;
     QString error;
     BitSet status;
+
 public:
-    DataCheckerThread(DataChecker* dc, const BitSet & status, const QString & path, const Torrent & tor, const QString & dnddir);
+    DataCheckerThread(DataChecker *dc, const BitSet &status, const QString &path, const Torrent &tor, const QString &dnddir);
     ~DataCheckerThread() override;
 
     void run() override;
 
     /// Get the data checker
-    DataChecker* getDataChecker()
+    DataChecker *getDataChecker()
     {
         return dc;
     }

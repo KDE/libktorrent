@@ -24,14 +24,13 @@
 #include <QMutex>
 #include <QTimer>
 #include <QUrl>
-#include <net/streamsocket.h>
 #include <net/addressresolver.h>
+#include <net/streamsocket.h>
 
 class QUrl;
 
 namespace bt
 {
-
 /**
     @author Joris Guisson
 
@@ -81,7 +80,7 @@ public:
      * @param proxy The HTTP proxy to use (null means don't use any)
      * @param proxy_port The port of the HTTP proxy
      */
-    void connectToProxy(const QString & proxy, Uint16 proxy_port);
+    void connectToProxy(const QString &proxy, Uint16 proxy_port);
 
     /// Check if the connection is OK
     bool ok() const;
@@ -102,9 +101,9 @@ public:
      * @param start Offset into file
      * @param len Length of data to download
      */
-    bool get(const QString & host, const QString & path, const QString & query, bt::Uint64 start, bt::Uint64 len);
+    bool get(const QString &host, const QString &path, const QString &query, bt::Uint64 start, bt::Uint64 len);
 
-    void onDataReady(Uint8* buf, Uint32 size) override;
+    void onDataReady(Uint8 *buf, Uint32 size) override;
     void connectFinished(bool succeeded) override;
     void dataSent() override;
 
@@ -113,7 +112,7 @@ public:
      * @param data Bytearray to copy the data into
      * @return true if data was filled in
      */
-    bool getData(QByteArray & data);
+    bool getData(QByteArray &data);
 
     /// Get the current download rate
     int getDownloadRate() const;
@@ -122,7 +121,7 @@ public:
     const QString getStatusString() const;
 
 private:
-    void hostResolved(net::AddressResolver* ar);
+    void hostResolved(net::AddressResolver *ar);
     void connectTimeout();
     void replyTimeout();
 
@@ -158,20 +157,20 @@ private:
         bt::Uint64 content_length;
         int response_code;
 
-        HttpGet(const QString & host, const QString & path, const QString & query, bt::Uint64 start, bt::Uint64 len, bool using_proxy);
+        HttpGet(const QString &host, const QString &path, const QString &query, bt::Uint64 start, bt::Uint64 len, bool using_proxy);
         virtual ~HttpGet();
 
-        bool onDataReady(Uint8* buf, Uint32 size);
+        bool onDataReady(Uint8 *buf, Uint32 size);
         bool finished() const
         {
             return data_received >= len;
         }
     };
 
-    net::StreamSocket* sock;
+    net::StreamSocket *sock;
     State state;
     mutable QMutex mutex;
-    HttpGet* request;
+    HttpGet *request;
     bool using_proxy;
     QString status;
     QTimer connect_timer;

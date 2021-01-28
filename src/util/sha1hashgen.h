@@ -20,9 +20,9 @@
 #ifndef BTSHA1HASHGEN_H
 #define BTSHA1HASHGEN_H
 
-#include <ktorrent_export.h>
 #include "constants.h"
 #include "sha1hash.h"
+#include <ktorrent_export.h>
 
 namespace QCA
 {
@@ -31,7 +31,6 @@ class Hash;
 
 namespace bt
 {
-
 /**
  * @author Joris Guisson
  *
@@ -41,7 +40,7 @@ namespace bt
  * - start, update and end : data can be delivered in chunks
  *
  * Mixing the 2, is not a good idea
-*/
+ */
 class KTORRENT_EXPORT SHA1HashGen
 {
 public:
@@ -54,7 +53,7 @@ public:
      * @param len The length
      * @return The SHA1 hash
      */
-    SHA1Hash generate(const Uint8* data, Uint32 len);
+    SHA1Hash generate(const Uint8 *data, Uint32 len);
 
     /**
      * Start SHA1 hash generation in chunks.
@@ -66,8 +65,7 @@ public:
      * @param data The data
      * @param len Length of the data
      */
-    void update(const Uint8* data, Uint32 len);
-
+    void update(const Uint8 *data, Uint32 len);
 
     /**
      * All data has been delivered, calculate the final hash.
@@ -81,7 +79,7 @@ public:
     SHA1Hash get() const;
 
 private:
-    QCA::Hash* h;
+    QCA::Hash *h;
     Uint8 result[20];
 };
 

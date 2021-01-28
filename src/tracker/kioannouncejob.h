@@ -21,19 +21,17 @@
 #ifndef BT_KIOANNOUNCEJOB_H
 #define BT_KIOANNOUNCEJOB_H
 
-#include <ktorrent_export.h>
-#include <kio/jobclasses.h>
 #include <QUrl>
-
+#include <kio/jobclasses.h>
+#include <ktorrent_export.h>
 
 namespace bt
 {
-
 class KTORRENT_EXPORT KIOAnnounceJob : public KIO::Job
 {
     Q_OBJECT
 public:
-    KIOAnnounceJob(const QUrl & url, const KIO::MetaData & md);
+    KIOAnnounceJob(const QUrl &url, const KIO::MetaData &md);
     ~KIOAnnounceJob() override;
 
     /// Get the announce url
@@ -43,7 +41,7 @@ public:
     }
 
     /// Get the reply data
-    const QByteArray & replyData() const
+    const QByteArray &replyData() const
     {
         return reply_data;
     }
@@ -56,14 +54,14 @@ public:
     }
 
 private Q_SLOTS:
-    void data(KIO::Job* j, const QByteArray & data);
-    void finished(KJob* j);
+    void data(KIO::Job *j, const QByteArray &data);
+    void finished(KJob *j);
 
 private:
     bool error_page;
     QUrl url;
     QByteArray reply_data;
-    KIO::TransferJob* get_job;
+    KIO::TransferJob *get_job;
 };
 
 }

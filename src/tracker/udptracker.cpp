@@ -18,28 +18,24 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "udptracker.h"
-#include <stdlib.h>
+#include "udptrackersocket.h"
 #include <arpa/inet.h>
+#include <interfaces/torrentinterface.h>
 #include <klocalizedstring.h>
-#include <util/functions.h>
-#include <util/log.h>
 #include <net/addressresolver.h>
 #include <peer/peermanager.h>
-#include <interfaces/torrentinterface.h>
+#include <stdlib.h>
 #include <torrent/globals.h>
 #include <torrent/server.h>
-#include "udptrackersocket.h"
-
-
+#include <util/functions.h>
+#include <util/log.h>
 
 namespace bt
 {
-
-UDPTrackerSocket* UDPTracker::socket = 0;
+UDPTrackerSocket *UDPTracker::socket = 0;
 Uint32 UDPTracker::num_instances = 0;
 
-
-UDPTracker::UDPTracker(const QUrl &url, TrackerDataSource* tds, const PeerID & id, int tier)
+UDPTracker::UDPTracker(const QUrl &url, TrackerDataSource *tds, const PeerID &id, int tier)
     : Tracker(url, tds, id, tier)
     , connection_id(0)
     , transaction_id(0)
@@ -64,7 +60,6 @@ UDPTracker::UDPTracker(const QUrl &url, TrackerDataSource* tds, const PeerID & i
     connect(socket, &UDPTrackerSocket::scrapeReceived, this, &UDPTracker::scrapeReceived);
 }
 
-
 UDPTracker::~UDPTracker()
 {
     num_instances--;
@@ -82,7 +77,7 @@ void UDPTracker::start()
     doRequest();
 }
 
-void UDPTracker::stop(WaitJob*)
+void UDPTracker::stop(WaitJob *)
 {
     if (!started) {
         if (transaction_id) {
@@ -130,7 +125,7 @@ void UDPTracker::connectReceived(Int32 tid, Int64 cid)
         sendScrape();
 }
 
-void UDPTracker::announceReceived(Int32 tid, const bt::Uint8* buf, bt::Uint32 size)
+void UDPTracker::announceReceived(Int32 tid, const bt::Uint8 *buf, bt::Uint32 size)
 {
     if (tid != transaction_id || size < 20)
         return;
@@ -175,7 +170,7 @@ void UDPTracker::announceReceived(Int32 tid, const bt::Uint8* buf, bt::Uint32 si
     request_time = QDateTime::currentDateTime();
 }
 
-void UDPTracker::onError(Int32 tid, const QString & error_string)
+void UDPTracker::onError(Int32 tid, const QString &error_string)
 {
     if (tid != transaction_id)
         return;
@@ -184,14 +179,12 @@ void UDPTracker::onError(Int32 tid, const QString & error_string)
     failed(error_string);
 }
 
-
 bool UDPTracker::doRequest()
 {
     Out(SYS_TRK | LOG_NOTICE) << "Doing tracker request to url : " << url << endl;
     if (!resolved) {
         todo |= ANNOUNCE_REQUEST;
-        net::AddressResolver::resolve(url.host(), url.port(80),
-                                      this, SLOT(onResolverResults(net::AddressResolver*)));
+        net::AddressResolver::resolve(url.host(), url.port(80), this, SLOT(onResolverResults(net::AddressResolver *)));
     } else if (connection_id == 0) {
         todo |= ANNOUNCE_REQUEST;
         failures = 0;
@@ -210,8 +203,7 @@ void UDPTracker::scrape()
     Out(SYS_TRK | LOG_NOTICE) << "Doing scrape request to url : " << url << endl;
     if (!resolved) {
         todo |= SCRAPE_REQUEST;
-        net::AddressResolver::resolve(url.host(), url.port(80),
-                                      this, SLOT(onResolverResults(net::AddressResolver*)));
+        net::AddressResolver::resolve(url.host(), url.port(80), this, SLOT(onResolverResults(net::AddressResolver *)));
     } else if (connection_id == 0) {
         todo |= SCRAPE_REQUEST;
         failures = 0;
@@ -221,7 +213,7 @@ void UDPTracker::scrape()
     }
 }
 
-void UDPTracker::scrapeReceived(Int32 tid, const Uint8* buf, Uint32 size)
+void UDPTracker::scrapeReceived(Int32 tid, const Uint8 *buf, Uint32 size)
 {
     /*
     0               32-bit integer  action  2
@@ -237,8 +229,7 @@ void UDPTracker::scrapeReceived(Int32 tid, const Uint8* buf, Uint32 size)
     seeders = ReadInt32(buf, 8);
     total_downloaded = ReadInt32(buf, 12);
     leechers = ReadInt32(buf, 16);
-    Out(SYS_TRK | LOG_DEBUG) << "Scrape : leechers = " << leechers
-                             << ", seeders = " << seeders << ", downloaded = " << total_downloaded << endl;
+    Out(SYS_TRK | LOG_DEBUG) << "Scrape : leechers = " << leechers << ", seeders = " << seeders << ", downloaded = " << total_downloaded << endl;
 }
 
 void UDPTracker::sendConnect()
@@ -280,7 +271,7 @@ void UDPTracker::sendAnnounce()
     WriteInt64(buf, 0, connection_id);
     WriteInt32(buf, 8, UDPTrackerSocket::ANNOUNCE);
     WriteInt32(buf, 12, transaction_id);
-    const SHA1Hash & info_hash = tds->infoHash();
+    const SHA1Hash &info_hash = tds->infoHash();
     memcpy(buf + 16, info_hash.getData(), 20);
     memcpy(buf + 36, peer_id.data(), 20);
     WriteInt64(buf, 56, bytesDownloaded());
@@ -307,7 +298,6 @@ void UDPTracker::sendAnnounce()
     socket->sendAnnounce(transaction_id, buf, address);
 }
 
-
 void UDPTracker::sendScrape()
 {
     todo &= ~SCRAPE_REQUEST;
@@ -323,12 +313,11 @@ void UDPTracker::sendScrape()
     WriteInt64(buf, 0, connection_id);
     WriteInt32(buf, 8, UDPTrackerSocket::SCRAPE);
     WriteInt32(buf, 12, scrape_transaction_id);
-    const SHA1Hash & info_hash = tds->infoHash();
+    const SHA1Hash &info_hash = tds->infoHash();
     memcpy(buf + 16, info_hash.getData(), 20);
 
     socket->sendScrape(scrape_transaction_id, buf, address);
 }
-
 
 void UDPTracker::onConnTimeout()
 {
@@ -348,7 +337,7 @@ void UDPTracker::onConnTimeout()
     }
 }
 
-void UDPTracker::onResolverResults(net::AddressResolver* ar)
+void UDPTracker::onResolverResults(net::AddressResolver *ar)
 {
     if (ar->succeeded()) {
         address = ar->address();

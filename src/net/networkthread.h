@@ -20,11 +20,11 @@
 #ifndef NETNETWORKTHREAD_H
 #define NETNETWORKTHREAD_H
 
+#include <net/poll.h>
+#include <net/socketgroup.h>
 #include <qthread.h>
 #include <util/constants.h>
 #include <util/ptrmap.h>
-#include <net/socketgroup.h>
-#include <net/poll.h>
 
 using bt::Uint32;
 
@@ -40,15 +40,14 @@ class SocketMonitor;
 class NetworkThread : public QThread, public Poll
 {
 protected:
-    SocketMonitor* sm;
+    SocketMonitor *sm;
     bool running;
     bt::PtrMap<Uint32, SocketGroup> groups;
     bt::TimeStamp prev_run_time;
 
 public:
-    NetworkThread(SocketMonitor* sm);
+    NetworkThread(SocketMonitor *sm);
     ~NetworkThread() override;
-
 
     /**
      * Add a new group with a given limit
@@ -95,7 +94,7 @@ public:
      * @param now The current time
      * @return true if the group can go again
      */
-    virtual bool doGroup(SocketGroup* g, Uint32 & allowance, bt::TimeStamp now) = 0;
+    virtual bool doGroup(SocketGroup *g, Uint32 &allowance, bt::TimeStamp now) = 0;
 
     /// Stop before the next update
     void stop()
@@ -119,7 +118,7 @@ protected:
     void doGroups(Uint32 num_ready, bt::TimeStamp now, bt::Uint32 limit);
 
 private:
-    Uint32 doGroupsLimited(Uint32 num_ready, bt::TimeStamp now, Uint32 & allowance);
+    Uint32 doGroupsLimited(Uint32 num_ready, bt::TimeStamp now, Uint32 &allowance);
 };
 
 }

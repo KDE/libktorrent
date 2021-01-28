@@ -21,21 +21,18 @@
 #ifndef UTP_CONNECTION_H
 #define UTP_CONNECTION_H
 
-#include <QPair>
-#include <QMutex>
-#include <QWaitCondition>
 #include <QBasicTimer>
+#include <QMutex>
+#include <QPair>
 #include <QSharedPointer>
+#include <QWaitCondition>
+#include <boost/concept_check.hpp>
 #include <ktorrent_export.h>
 #include <net/address.h>
-#include <utp/utpprotocol.h>
 #include <util/circularbuffer.h>
 #include <util/timer.h>
 #include <utp/remotewindow.h>
-#include <boost/concept_check.hpp>
-
-
-
+#include <utp/utpprotocol.h>
 
 namespace utp
 {
@@ -59,7 +56,7 @@ public:
     class TransmissionError
     {
     public:
-        TransmissionError(const char* file, int line);
+        TransmissionError(const char *file, int line);
 
         QString location;
     };
@@ -91,7 +88,7 @@ public:
         bool writeable;
     };
 
-    Connection(bt::Uint16 recv_connection_id, Type type, const net::Address & remote, Transmitter* transmitter);
+    Connection(bt::Uint16 recv_connection_id, Type type, const net::Address &remote, Transmitter *transmitter);
     ~Connection() override;
 
     /// Turn on or off blocking mode
@@ -107,16 +104,16 @@ public:
     void startConnecting();
 
     /// Get the connection stats
-    const Stats & connectionStats() const
+    const Stats &connectionStats() const
     {
         return stats;
     }
 
     /// Handle a single packet
-    ConnectionState handlePacket(const PacketParser & parser, bt::Buffer::Ptr packet);
+    ConnectionState handlePacket(const PacketParser &parser, bt::Buffer::Ptr packet);
 
     /// Get the remote address
-    const net::Address & remoteAddress() const
+    const net::Address &remoteAddress() const
     {
         return stats.remote;
     }
@@ -128,10 +125,10 @@ public:
     }
 
     /// Send some data, returns the amount of bytes sent (or -1 on error)
-    int send(const bt::Uint8* data, bt::Uint32 len);
+    int send(const bt::Uint8 *data, bt::Uint32 len);
 
     /// Read available data from local window, returns the amount of bytes read
-    int recv(bt::Uint8* buf, bt::Uint32 max_len);
+    int recv(bt::Uint8 *buf, bt::Uint32 max_len);
 
     /// Get the connection state
     ConnectionState connectionState() const
@@ -164,10 +161,10 @@ public:
     void reset();
 
     /// Update the RTT time
-    void updateRTT(const Header* hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size) override;
+    void updateRTT(const Header *hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size) override;
 
     /// Retransmit a packet
-    void retransmit(PacketBuffer & packet, bt::Uint16 p_seq_nr) override;
+    void retransmit(PacketBuffer &packet, bt::Uint16 p_seq_nr) override;
 
     /// Is all data sent
     bool allDataSent() const;
@@ -188,37 +185,37 @@ public:
     }
 
     /// Check if we haven't hit a timeout yet
-    void checkTimeout(const TimeValue & now);
+    void checkTimeout(const TimeValue &now);
 
 private:
     void sendSYN();
     void sendState();
     void sendFIN();
     void sendReset();
-    void updateDelayMeasurement(const Header* hdr);
+    void updateDelayMeasurement(const Header *hdr);
     void sendStateOrData();
     void sendPackets();
     void sendPacket(bt::Uint32 type, bt::Uint16 p_ack_nr);
     void checkIfClosed();
-    void sendDataPacket(PacketBuffer & packet, bt::Uint16 seq_nr, const TimeValue & now);
+    void sendDataPacket(PacketBuffer &packet, bt::Uint16 seq_nr, const TimeValue &now);
     void startTimer();
     void checkState();
     bt::Uint32 extensionLength() const;
     void handleTimeout();
 
 private:
-    Transmitter* transmitter;
-    LocalWindow* local_wnd;
-    RemoteWindow* remote_wnd;
+    Transmitter *transmitter;
+    LocalWindow *local_wnd;
+    RemoteWindow *remote_wnd;
     bt::CircularBuffer output_buffer;
-    //bt::Timer timer;
+    // bt::Timer timer;
     mutable QMutex mutex;
     QWaitCondition connected;
     QWaitCondition data_ready;
     Stats stats;
     bool fin_sent;
     TimeValue last_packet_sent;
-    DelayWindow* delay_window;
+    DelayWindow *delay_window;
     Connection::WPtr self;
     bool blocking;
 
@@ -234,7 +231,7 @@ public:
     virtual ~Transmitter();
 
     /// Send a packet of a connection
-    virtual bool sendTo(Connection::Ptr conn, const PacketBuffer & packet) = 0;
+    virtual bool sendTo(Connection::Ptr conn, const PacketBuffer &packet) = 0;
 
     /// Connection has become readable, writeable or both
     virtual void stateChanged(Connection::Ptr conn, bool readable, bool writeable) = 0;

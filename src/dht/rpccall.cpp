@@ -23,21 +23,24 @@
 
 namespace dht
 {
-RPCCallListener::RPCCallListener(QObject* parent) : QObject(parent)
-{}
+RPCCallListener::RPCCallListener(QObject *parent)
+    : QObject(parent)
+{
+}
 
 RPCCallListener::~RPCCallListener()
 {
 }
 
-RPCCall::RPCCall(dht::RPCMsg::Ptr msg, bool queued) : msg(msg), queued(queued)
+RPCCall::RPCCall(dht::RPCMsg::Ptr msg, bool queued)
+    : msg(msg)
+    , queued(queued)
 {
     timer.setSingleShot(true);
     connect(&timer, &QTimer::timeout, this, &RPCCall::onTimeout);
     if (!queued)
         timer.start(30 * 1000);
 }
-
 
 RPCCall::~RPCCall()
 {
@@ -67,9 +70,9 @@ Method RPCCall::getMsgMethod() const
         return dht::NONE;
 }
 
-void RPCCall::addListener(RPCCallListener* cl)
+void RPCCall::addListener(RPCCallListener *cl)
 {
-    connect(this, qOverload<RPCCall*, RPCMsg::Ptr>(&RPCCall::response), cl, &RPCCallListener::onResponse);
+    connect(this, qOverload<RPCCall *, RPCMsg::Ptr>(&RPCCall::response), cl, &RPCCallListener::onResponse);
     connect(this, &RPCCall::timeout, cl, &RPCCallListener::onTimeout);
 }
 

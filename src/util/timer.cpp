@@ -23,18 +23,21 @@
 
 namespace bt
 {
-
-Timer::Timer() : elapsed(0)
+Timer::Timer()
+    : elapsed(0)
 {
     last = Now();
 }
 
-Timer::Timer(const Timer & t) : last(t.last), elapsed(t.elapsed)
-{}
+Timer::Timer(const Timer &t)
+    : last(t.last)
+    , elapsed(t.elapsed)
+{
+}
 
 Timer::~Timer()
-{}
-
+{
+}
 
 TimeStamp Timer::update()
 {
@@ -51,7 +54,7 @@ TimeStamp Timer::getElapsedSinceUpdate() const
     return (now > last) ? now - last : 0;
 }
 
-Timer & Timer::operator = (const Timer & t)
+Timer &Timer::operator=(const Timer &t)
 {
     last = t.last;
     elapsed = t.elapsed;

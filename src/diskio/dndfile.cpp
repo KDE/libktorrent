@@ -19,12 +19,12 @@
  ***************************************************************************/
 #include "dndfile.h"
 #include <klocalizedstring.h>
-#include <util/log.h>
-#include <util/file.h>
-#include <util/error.h>
-#include <util/fileops.h>
-#include <util/sha1hash.h>
 #include <torrent/torrentfile.h>
+#include <util/error.h>
+#include <util/file.h>
+#include <util/fileops.h>
+#include <util/log.h>
+#include <util/sha1hash.h>
 
 namespace bt
 {
@@ -37,17 +37,18 @@ struct DNDFileHeader {
     Uint8 data_sha1[20];
 };
 
-DNDFile::DNDFile(const QString & path, const TorrentFile* tf, Uint32 chunk_size) : path(path)
+DNDFile::DNDFile(const QString &path, const TorrentFile *tf, Uint32 chunk_size)
+    : path(path)
 {
     last_size = tf->getLastChunkSize();
     first_size = chunk_size - tf->getFirstChunkOffset();
 }
 
-
 DNDFile::~DNDFile()
-{}
+{
+}
 
-void DNDFile::changePath(const QString & npath)
+void DNDFile::changePath(const QString &npath)
 {
     path = npath;
 }
@@ -88,9 +89,7 @@ void DNDFile::create()
     fptr.close();
 }
 
-
-
-Uint32 DNDFile::readFirstChunk(Uint8* buf, Uint32 off, Uint32 size)
+Uint32 DNDFile::readFirstChunk(Uint8 *buf, Uint32 off, Uint32 size)
 {
     File fptr;
     if (!fptr.open(path, "rb")) {
@@ -105,7 +104,7 @@ Uint32 DNDFile::readFirstChunk(Uint8* buf, Uint32 off, Uint32 size)
     return fptr.read(buf, size);
 }
 
-Uint32 DNDFile::readLastChunk(Uint8* buf, Uint32 off, Uint32 size)
+Uint32 DNDFile::readLastChunk(Uint8 *buf, Uint32 off, Uint32 size)
 {
     File fptr;
     if (!fptr.open(path, "rb")) {
@@ -120,7 +119,7 @@ Uint32 DNDFile::readLastChunk(Uint8* buf, Uint32 off, Uint32 size)
     return fptr.read(buf, size);
 }
 
-void DNDFile::writeFirstChunk(const Uint8* buf, Uint32 off, Uint32 size)
+void DNDFile::writeFirstChunk(const Uint8 *buf, Uint32 off, Uint32 size)
 {
     File fptr;
     if (!fptr.open(path, "r+b")) {
@@ -135,8 +134,7 @@ void DNDFile::writeFirstChunk(const Uint8* buf, Uint32 off, Uint32 size)
     fptr.write(buf, size);
 }
 
-
-void DNDFile::writeLastChunk(const Uint8* buf, Uint32 off, Uint32 size)
+void DNDFile::writeLastChunk(const Uint8 *buf, Uint32 off, Uint32 size)
 {
     File fptr;
     if (!fptr.open(path, "r+b")) {

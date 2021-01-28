@@ -18,18 +18,17 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "net/wakeuppipe.h"
-#include <util/log.h>
 #include <util/functions.h>
+#include <util/log.h>
 
 using namespace bt;
 
 namespace net
 {
-
-WakeUpPipe::WakeUpPipe() : woken_up(false)
+WakeUpPipe::WakeUpPipe()
+    : woken_up(false)
 {
 }
-
 
 WakeUpPipe::~WakeUpPipe()
 {
@@ -42,7 +41,7 @@ void WakeUpPipe::wakeUp()
         return;
 
     char data[] = "d";
-    if (bt::Pipe::write((const bt::Uint8*)data, 1) != 1)
+    if (bt::Pipe::write((const bt::Uint8 *)data, 1) != 1)
         Out(SYS_GEN | LOG_DEBUG) << "WakeUpPipe: wake up failed " << endl;
     else
         woken_up = true;
@@ -58,7 +57,6 @@ void WakeUpPipe::handleData()
 
     woken_up = false;
 }
-
 
 void WakeUpPipe::reset()
 {

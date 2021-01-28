@@ -20,15 +20,13 @@
 #ifndef DHTDATABASE_H
 #define DHTDATABASE_H
 
-#include <qmap.h>
-#include <qlist.h>
-#include <net/address.h>
-#include <util/ptrmap.h>
-#include <util/constants.h>
-#include <util/array.h>
 #include "key.h"
-
-
+#include <net/address.h>
+#include <qlist.h>
+#include <qmap.h>
+#include <util/array.h>
+#include <util/constants.h>
+#include <util/ptrmap.h>
 
 namespace dht
 {
@@ -45,15 +43,15 @@ class DBItem
 {
 public:
     DBItem();
-    DBItem(const net::Address & addr);
-    DBItem(const DBItem & item);
+    DBItem(const net::Address &addr);
+    DBItem(const DBItem &item);
     virtual ~DBItem();
 
     /// See if the item is expired
     bool expired(bt::TimeStamp now) const;
 
     /// Get the address of an item
-    const net::Address & getAddress() const
+    const net::Address &getAddress() const
     {
         return addr;
     }
@@ -63,9 +61,10 @@ public:
      * @param buf The buffer
      * @return The number of bytes used
      */
-    bt::Uint32 pack(bt::Uint8* buf) const;
+    bt::Uint32 pack(bt::Uint8 *buf) const;
 
-    DBItem & operator = (const DBItem & item);
+    DBItem &operator=(const DBItem &item);
+
 private:
     net::Address addr;
     bt::TimeStamp time_stamp;
@@ -77,7 +76,7 @@ typedef QList<DBItem> DBItemList;
  * @author Joris Guisson
  *
  * Class where all the key value paires get stored.
-*/
+ */
 class Database
 {
 public:
@@ -89,7 +88,7 @@ public:
      * @param key The key
      * @param dbi The DBItem to store
      */
-    void store(const dht::Key & key, const DBItem & dbi);
+    void store(const dht::Key &key, const DBItem &dbi);
 
     /**
      * Get max_entries items from the database, which have
@@ -102,7 +101,7 @@ public:
      * @param max_entries The maximum number entries
      * @param ip_version Wanted IP version (4 or 6)
      */
-    void sample(const dht::Key & key, DBItemList & dbl, bt::Uint32 max_entries, bt::Uint32 ip_version);
+    void sample(const dht::Key &key, DBItemList &dbl, bt::Uint32 max_entries, bt::Uint32 ip_version);
 
     /**
      * Expire all items older then 30 minutes
@@ -117,7 +116,7 @@ public:
      * @param addr The address of the peer
      * @return A QByteArray
      */
-    QByteArray genToken(const net::Address & addr);
+    QByteArray genToken(const net::Address &addr);
 
     /**
      * Check if a received token is OK.
@@ -125,13 +124,13 @@ public:
      * @param addr The address of the peer
      * @return true if the token was given to this peer, false other wise
      */
-    bool checkToken(const QByteArray & token, const net::Address & addr);
+    bool checkToken(const QByteArray &token, const net::Address &addr);
 
     /// Test whether or not the DB contains a key
-    bool contains(const dht::Key & key) const;
+    bool contains(const dht::Key &key) const;
 
     /// Insert an empty item (only if it isn't already in the DB)
-    void insert(const dht::Key & key);
+    void insert(const dht::Key &key);
 
 private:
     bt::PtrMap<dht::Key, DBItemList> items;

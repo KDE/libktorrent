@@ -27,12 +27,11 @@ namespace bt
 {
 class DataCheckerThread;
 
-
 /// Job which runs a DataChecker
 class KTORRENT_EXPORT DataCheckerJob : public bt::Job, public Resource
 {
 public:
-    DataCheckerJob(bool auto_import, TorrentControl* tc, bt::Uint32 from, bt::Uint32 to);
+    DataCheckerJob(bool auto_import, TorrentControl *tc, bt::Uint32 from, bt::Uint32 to);
     ~DataCheckerJob() override;
 
     void start() override;
@@ -73,7 +72,7 @@ private:
 
     void acquired() override;
 
-    DataCheckerThread* dcheck_thread;
+    DataCheckerThread *dcheck_thread;
     bool killed;
     bool auto_import;
     bool started;

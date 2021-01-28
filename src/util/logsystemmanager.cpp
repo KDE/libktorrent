@@ -19,8 +19,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "logsystemmanager.h"
-#include <klocalizedstring.h>
 #include "log.h"
+#include <klocalizedstring.h>
 
 namespace bt
 {
@@ -38,32 +38,30 @@ LogSystemManager::LogSystemManager()
     registerSystem(i18n("µTP"), SYS_UTP);
 }
 
-
 LogSystemManager::~LogSystemManager()
 {
 }
 
-LogSystemManager& LogSystemManager::instance()
+LogSystemManager &LogSystemManager::instance()
 {
     if (!self)
         self.reset(new LogSystemManager());
     return *self;
 }
 
-
-void LogSystemManager::registerSystem(const QString & name, Uint32 id)
+void LogSystemManager::registerSystem(const QString &name, Uint32 id)
 {
     systems.insert(name, id);
     registered(name);
 }
 
-void LogSystemManager::unregisterSystem(const QString & name)
+void LogSystemManager::unregisterSystem(const QString &name)
 {
     if (systems.remove(name))
         unregisted(name);
 }
 
-Uint32 LogSystemManager::systemID(const QString & name)
+Uint32 LogSystemManager::systemID(const QString &name)
 {
     iterator i = systems.find(name);
     if (i == systems.end())
@@ -71,6 +69,5 @@ Uint32 LogSystemManager::systemID(const QString & name)
     else
         return i.value();
 }
-
 
 }

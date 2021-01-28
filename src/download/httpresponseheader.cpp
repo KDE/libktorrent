@@ -36,8 +36,7 @@ bool HttpResponseHeader::parseLine(const QString &line, int number)
     if (l.length() < 10)
         return false;
 
-    if (l.startsWith(QLatin1String("HTTP/")) && l[5].isDigit() && l[6] == QLatin1Char('.') &&
-        l[7].isDigit() && l[8] == QLatin1Char(' ') && l[9].isDigit()) {
+    if (l.startsWith(QLatin1String("HTTP/")) && l[5].isDigit() && l[6] == QLatin1Char('.') && l[7].isDigit() && l[8] == QLatin1Char(' ') && l[9].isDigit()) {
         _majVer = l[5].toLatin1() - '0';
         _minVer = l[7].toLatin1() - '0';
 
@@ -90,4 +89,3 @@ bool HttpResponseHeader::parse(const QString &str)
     }
     return true;
 }
-

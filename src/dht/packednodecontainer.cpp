@@ -22,10 +22,14 @@
 
 namespace dht
 {
-PackedNodeContainer::PackedNodeContainer() {}
-PackedNodeContainer::~PackedNodeContainer() {}
+PackedNodeContainer::PackedNodeContainer()
+{
+}
+PackedNodeContainer::~PackedNodeContainer()
+{
+}
 
-void PackedNodeContainer::addNode(const QByteArray & a)
+void PackedNodeContainer::addNode(const QByteArray &a)
 {
     if (a.size() == 26)
         nodes.append(a);
@@ -34,4 +38,3 @@ void PackedNodeContainer::addNode(const QByteArray & a)
 }
 
 }
-

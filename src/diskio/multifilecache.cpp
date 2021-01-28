@@ -19,41 +19,39 @@
  ***************************************************************************/
 #include "multifilecache.h"
 #include <QSet>
-#include <errno.h>
-#include <qdir.h>
-#include <qstringlist.h>
-#include <qfileinfo.h>
 #include <QTextStream>
+#include <errno.h>
 #include <klocalizedstring.h>
+#include <qdir.h>
+#include <qfileinfo.h>
+#include <qstringlist.h>
+#include <util/error.h>
 #include <util/file.h>
 #include <util/fileops.h>
 #include <util/functions.h>
-#include <util/error.h>
 #include <util/log.h>
 #ifdef Q_WS_WIN
 #include <util/win32.h>
 #endif
-#include <torrent/torrent.h>
 #include "cache.h"
-#include "chunk.h"
 #include "cachefile.h"
-#include "dndfile.h"
-#include "preallocationthread.h"
-#include "movedatafilesjob.h"
+#include "chunk.h"
 #include "deletedatafilesjob.h"
+#include "dndfile.h"
+#include "movedatafilesjob.h"
 #include "piecedata.h"
-
+#include "preallocationthread.h"
+#include <torrent/torrent.h>
 
 namespace bt
 {
-static Uint64 FileOffset(Chunk* c, const TorrentFile & f, Uint64 chunk_size);
-static Uint64 FileOffset(Uint32 cindex, const TorrentFile & f, Uint64 chunk_size);
-static void DeleteEmptyDirs(const QString & output_dir, const QString & fpath);
+static Uint64 FileOffset(Chunk *c, const TorrentFile &f, Uint64 chunk_size);
+static Uint64 FileOffset(Uint32 cindex, const TorrentFile &f, Uint64 chunk_size);
+static void DeleteEmptyDirs(const QString &output_dir, const QString &fpath);
 
-
-
-
-MultiFileCache::MultiFileCache(Torrent& tor, const QString & tmpdir, const QString & datadir, bool custom_output_name) : Cache(tor, tmpdir, datadir), opened(false)
+MultiFileCache::MultiFileCache(Torrent &tor, const QString &tmpdir, const QString &datadir, bool custom_output_name)
+    : Cache(tor, tmpdir, datadir)
+    , opened(false)
 {
     cache_dir = tmpdir + "cache" + bt::DirSeparator();
 
@@ -62,7 +60,6 @@ MultiFileCache::MultiFileCache(Torrent& tor, const QString & tmpdir, const QStri
     else
         output_dir = this->datadir;
 }
-
 
 MultiFileCache::~MultiFileCache()
 {
@@ -76,7 +73,7 @@ void MultiFileCache::loadFileMap()
         // file map doesn't exist, so just set the path on disk if it has not happened yet
         Uint32 num = tor.getNumFiles();
         for (Uint32 i = 0; i < num; i++) {
-            TorrentFile & tf = tor.getFile(i);
+            TorrentFile &tf = tor.getFile(i);
             if (tf.getPathOnDisk().isEmpty())
                 tf.setPathOnDisk(output_dir + tf.getUserModifiedPath());
         }
@@ -115,17 +112,16 @@ void MultiFileCache::saveFileMap()
     // file map doesn't exist, so create it based upon the output_dir
     Uint32 num = tor.getNumFiles();
     for (Uint32 i = 0; i < num; i++) {
-        TorrentFile & tf = tor.getFile(i);
+        TorrentFile &tf = tor.getFile(i);
         out << tf.getPathOnDisk() << Qt::endl;
     }
 
     // After the actual paths on disk, save the user modified path names
     for (Uint32 i = 0; i < num; i++) {
-        TorrentFile & tf = tor.getFile(i);
+        TorrentFile &tf = tor.getFile(i);
         out << tf.getUserModifiedPath() << Qt::endl;
     }
 }
-
 
 QString MultiFileCache::getOutputPath() const
 {
@@ -149,7 +145,7 @@ void MultiFileCache::open()
     QString dnd_dir = tmpdir + "dnd" + bt::DirSeparator();
     // open all files
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
-        TorrentFile & tf = tor.getFile(i);
+        TorrentFile &tf = tor.getFile(i);
         if (!tf.doNotDownload()) {
             if (files.contains(i))
                 files.remove(i);
@@ -177,7 +173,7 @@ void MultiFileCache::open()
     opened = true;
 }
 
-void MultiFileCache::changeTmpDir(const QString& ndir)
+void MultiFileCache::changeTmpDir(const QString &ndir)
 {
     Cache::changeTmpDir(ndir);
     QString dnd_dir = tmpdir + "dnd" + bt::DirSeparator();
@@ -185,7 +181,7 @@ void MultiFileCache::changeTmpDir(const QString& ndir)
     // change paths for individual files, it should not
     // be a problem to move these files when they are open
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
-        TorrentFile & tf = tor.getFile(i);
+        TorrentFile &tf = tor.getFile(i);
         if (tf.doNotDownload()) {
             DNDFile::Ptr dfd = dnd_files[i];
             if (dfd) {
@@ -196,7 +192,7 @@ void MultiFileCache::changeTmpDir(const QString& ndir)
     }
 }
 
-void MultiFileCache::changeOutputPath(const QString & outputpath)
+void MultiFileCache::changeOutputPath(const QString &outputpath)
 {
     output_dir = outputpath;
     if (!output_dir.endsWith(bt::DirSeparator()))
@@ -206,7 +202,7 @@ void MultiFileCache::changeOutputPath(const QString & outputpath)
 
     Uint32 num = tor.getNumFiles();
     for (Uint32 i = 0; i < num; i++) {
-        TorrentFile & tf = tor.getFile(i);
+        TorrentFile &tf = tor.getFile(i);
         tf.setPathOnDisk(output_dir + tf.getUserModifiedPath());
         CacheFile::Ptr cf = files[tf.getIndex()];
         if (cf)
@@ -215,7 +211,7 @@ void MultiFileCache::changeOutputPath(const QString & outputpath)
     saveFileMap();
 }
 
-Job* MultiFileCache::moveDataFiles(const QString & ndir)
+Job *MultiFileCache::moveDataFiles(const QString &ndir)
 {
     if (!bt::Exists(ndir))
         bt::MakeDir(ndir);
@@ -226,11 +222,11 @@ Job* MultiFileCache::moveDataFiles(const QString & ndir)
 
     new_output_dir = nd;
 
-    MoveDataFilesJob* job = new MoveDataFilesJob();
+    MoveDataFilesJob *job = new MoveDataFilesJob();
     int nmoves = 0;
 
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
-        TorrentFile & tf = tor.getFile(i);
+        TorrentFile &tf = tor.getFile(i);
         if (tf.doNotDownload())
             continue;
 
@@ -252,13 +248,13 @@ Job* MultiFileCache::moveDataFiles(const QString & ndir)
     }
 }
 
-void MultiFileCache::moveDataFilesFinished(Job* job)
+void MultiFileCache::moveDataFilesFinished(Job *job)
 {
     if (job->error())
         return;
 
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
-        TorrentFile & tf = tor.getFile(i);
+        TorrentFile &tf = tor.getFile(i);
         tf.setPathOnDisk(new_output_dir + tf.getUserModifiedPath());
         CacheFile::Ptr cf = files[tf.getIndex()];
         if (cf)
@@ -268,23 +264,23 @@ void MultiFileCache::moveDataFilesFinished(Job* job)
     }
 }
 
-Job* MultiFileCache::moveDataFiles(const QMap<TorrentFileInterface*, QString> & files)
+Job *MultiFileCache::moveDataFiles(const QMap<TorrentFileInterface *, QString> &files)
 {
     if (files.count() == 0)
         return 0;
 
-    MoveDataFilesJob* job = new MoveDataFilesJob(files);
+    MoveDataFilesJob *job = new MoveDataFilesJob(files);
     return job;
 }
 
-void MultiFileCache::moveDataFilesFinished(const QMap<TorrentFileInterface*, QString> & fmap, Job* job)
+void MultiFileCache::moveDataFilesFinished(const QMap<TorrentFileInterface *, QString> &fmap, Job *job)
 {
     if (job->error())
         return;
 
-    QMap<TorrentFileInterface*, QString>::const_iterator i = fmap.begin();
+    QMap<TorrentFileInterface *, QString>::const_iterator i = fmap.begin();
     while (i != fmap.end()) {
-        TorrentFileInterface* tf = i.key();
+        TorrentFileInterface *tf = i.key();
         QString path = tf->getPathOnDisk();
         QString dest = i.value();
         if (QFileInfo(dest).isDir()) {
@@ -317,7 +313,7 @@ void MultiFileCache::create()
     QSet<QString> mount_points;
     QSet<QString> shortened_names;
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
-        TorrentFile & tf = tor.getFile(i);
+        TorrentFile &tf = tor.getFile(i);
 #ifndef Q_WS_WIN
         // check if the filename is to long
         if (FileNameToLong(tf.getPathOnDisk())) {
@@ -343,7 +339,7 @@ void MultiFileCache::create()
     saveFileMap();
 }
 
-void MultiFileCache::touch(TorrentFile & tf)
+void MultiFileCache::touch(TorrentFile &tf)
 {
     QString fpath = tf.getUserModifiedPath();
     bool dnd = tf.doNotDownload();
@@ -362,7 +358,7 @@ void MultiFileCache::touch(TorrentFile & tf)
     }
 }
 
-PieceData::Ptr MultiFileCache::createPiece(Chunk* c, Uint32 off, Uint32 length, bool read_only)
+PieceData::Ptr MultiFileCache::createPiece(Chunk *c, Uint32 off, Uint32 length, bool read_only)
 {
     open();
 
@@ -371,7 +367,7 @@ PieceData::Ptr MultiFileCache::createPiece(Chunk* c, Uint32 off, Uint32 length, 
 
     // one file so try to map it
     if (tflist.count() == 1) {
-        const TorrentFile & f = tor.getFile(tflist.first());
+        const TorrentFile &f = tor.getFile(tflist.first());
         CacheFile::Ptr fd = files[tflist.first()];
         if (!fd)
             return PieceData::Ptr();
@@ -379,7 +375,7 @@ PieceData::Ptr MultiFileCache::createPiece(Chunk* c, Uint32 off, Uint32 length, 
         if (Cache::mappedModeAllowed() && mmap_failures < 3) {
             Uint64 offset = FileOffset(c, f, tor.getChunkSize()) + off;
             PieceData::Ptr piece(new PieceData(c, off, length, 0, fd, read_only));
-            Uint8* buf = (Uint8*)fd->map(piece.data(), offset, length, read_only ? CacheFile::READ : CacheFile::RW);
+            Uint8 *buf = (Uint8 *)fd->map(piece.data(), offset, length, read_only ? CacheFile::READ : CacheFile::RW);
             if (buf) {
                 piece->setData(buf);
                 insertPiece(c, piece);
@@ -391,13 +387,13 @@ PieceData::Ptr MultiFileCache::createPiece(Chunk* c, Uint32 off, Uint32 length, 
     }
 
     // mmap failed or there are multiple files, so just do buffered
-    Uint8* buf = new Uint8[length];
+    Uint8 *buf = new Uint8[length];
     PieceData::Ptr piece(new PieceData(c, off, length, buf, CacheFile::Ptr(), read_only));
     insertPiece(c, piece);
     return piece;
 }
 
-PieceData::Ptr MultiFileCache::preparePiece(Chunk* c, Uint32 off, Uint32 length)
+PieceData::Ptr MultiFileCache::preparePiece(Chunk *c, Uint32 off, Uint32 length)
 {
     PieceData::Ptr piece = findPiece(c, off, length, false);
     if (piece)
@@ -406,9 +402,7 @@ PieceData::Ptr MultiFileCache::preparePiece(Chunk* c, Uint32 off, Uint32 length)
     return createPiece(c, off, length, false);
 }
 
-void MultiFileCache::calculateOffsetAndLength(
-    Uint32 piece_off, Uint32 piece_len, Uint64 file_off,
-    Uint32 chunk_off, Uint32 chunk_len, Uint64 & off, Uint32 & len)
+void MultiFileCache::calculateOffsetAndLength(Uint32 piece_off, Uint32 piece_len, Uint64 file_off, Uint32 chunk_off, Uint32 chunk_len, Uint64 &off, Uint32 &len)
 {
     // if the piece offset lies in the range of the current chunk, we need to read data
     if (piece_off >= chunk_off && piece_off + piece_len <= chunk_off + chunk_len) {
@@ -430,7 +424,7 @@ void MultiFileCache::calculateOffsetAndLength(
     }
 }
 
-PieceData::Ptr MultiFileCache::loadPiece(Chunk* c, Uint32 off, Uint32 length)
+PieceData::Ptr MultiFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
 {
     open();
 
@@ -449,7 +443,7 @@ PieceData::Ptr MultiFileCache::loadPiece(Chunk* c, Uint32 off, Uint32 length)
 
     // The chunk lies in one file, so it is easy
     if (tflist.count() == 1) {
-        const TorrentFile & f = tor.getFile(tflist[0]);
+        const TorrentFile &f = tor.getFile(tflist[0]);
         CacheFile::Ptr fd = files[tflist[0]];
         Uint64 piece_off = FileOffset(c, f, tor.getChunkSize()) + off;
 
@@ -458,11 +452,11 @@ PieceData::Ptr MultiFileCache::loadPiece(Chunk* c, Uint32 off, Uint32 length)
     }
 
     // multiple files
-    Uint8* data = piece->data();
+    Uint8 *data = piece->data();
     Uint32 chunk_off = 0; // number of bytes passed of the chunk
     Uint32 piece_off = 0; // how many bytes read to the piece
     for (int i = 0; i < tflist.count(); i++) {
-        const TorrentFile & f = tor.getFile(tflist[i]);
+        const TorrentFile &f = tor.getFile(tflist[i]);
         CacheFile::Ptr fd = files[tflist[i]];
         DNDFile::Ptr dfd = dnd_files[tflist[i]];
 
@@ -494,7 +488,7 @@ PieceData::Ptr MultiFileCache::loadPiece(Chunk* c, Uint32 off, Uint32 length)
         Uint32 read_length = 0; // how many bytes to read
         calculateOffsetAndLength(off, length, file_off, chunk_off, cdata, read_offset, read_length);
 
-        Uint8* ptr = data + piece_off; // location to write to
+        Uint8 *ptr = data + piece_off; // location to write to
         piece_off += read_length;
 
         if (fd) {
@@ -524,11 +518,11 @@ void MultiFileCache::savePiece(PieceData::Ptr piece)
     if (piece->mapped())
         return;
 
-    Uint8* data = piece->data();
+    Uint8 *data = piece->data();
     if (!data) // this should not happen but just in case
         return;
 
-    Chunk* c = piece->parentChunk();
+    Chunk *c = piece->parentChunk();
     QList<Uint32> tflist;
     tor.calcChunkPos(c->getIndex(), tflist);
     Uint32 chunk_off = 0; // number of bytes passed of the chunk
@@ -537,7 +531,7 @@ void MultiFileCache::savePiece(PieceData::Ptr piece)
     Uint32 length = piece->length();
 
     for (int i = 0; i < tflist.count(); i++) {
-        const TorrentFile & f = tor.getFile(tflist[i]);
+        const TorrentFile &f = tor.getFile(tflist[i]);
         CacheFile::Ptr fd = files[tflist[i]];
         DNDFile::Ptr dfd = dnd_files[tflist[i]];
 
@@ -569,7 +563,7 @@ void MultiFileCache::savePiece(PieceData::Ptr piece)
         Uint32 write_length = 0; // how many bytes to write
         calculateOffsetAndLength(off, length, file_off, chunk_off, cdata, write_offset, write_length);
 
-        Uint8* ptr = data + piece_off; // location to read from
+        Uint8 *ptr = data + piece_off; // location to read from
         piece_off += write_length;
 
         if (fd) {
@@ -585,7 +579,7 @@ void MultiFileCache::savePiece(PieceData::Ptr piece)
     }
 }
 
-void MultiFileCache::downloadStatusChanged(TorrentFile* tf, bool download)
+void MultiFileCache::downloadStatusChanged(TorrentFile *tf, bool download)
 {
     bool dnd = !download;
     QString dnd_dir = tmpdir + "dnd" + bt::DirSeparator();
@@ -628,14 +622,12 @@ void MultiFileCache::downloadStatusChanged(TorrentFile* tf, bool download)
             fd->open(tf->getPathOnDisk(), tf->getSize());
             files.insert(tf->getIndex(), fd);
         }
-    } catch (bt::Error & err) {
+    } catch (bt::Error &err) {
         Out(SYS_DIO | LOG_DEBUG) << err.toString() << endl;
     }
 }
 
-
-
-void MultiFileCache::saveFirstAndLastChunk(TorrentFile* tf, const QString & src_file, const QString & dst_file)
+void MultiFileCache::saveFirstAndLastChunk(TorrentFile *tf, const QString &src_file, const QString &dst_file)
 {
     DNDFile out(dst_file, tf, tor.getChunkSize());
     File fptr;
@@ -644,7 +636,7 @@ void MultiFileCache::saveFirstAndLastChunk(TorrentFile* tf, const QString & src_
 
     Uint32 cs = (tf->getFirstChunk() == tor.getNumChunks() - 1) ? tor.getLastChunkSize() : tor.getChunkSize();
 
-    Uint8* tmp = new Uint8[tor.getChunkSize()];
+    Uint8 *tmp = new Uint8[tor.getChunkSize()];
     try {
         fptr.read(tmp, cs - tf->getFirstChunkOffset());
         out.writeFirstChunk(tmp, 0, cs - tf->getFirstChunkOffset());
@@ -655,14 +647,14 @@ void MultiFileCache::saveFirstAndLastChunk(TorrentFile* tf, const QString & src_
             fptr.read(tmp, tf->getLastChunkSize());
             out.writeLastChunk(tmp, 0, tf->getLastChunkSize());
         }
-        delete [] tmp;
+        delete[] tmp;
     } catch (...) {
-        delete [] tmp;
+        delete[] tmp;
         throw;
     }
 }
 
-void MultiFileCache::recreateFile(TorrentFile* tf, const QString & dnd_file, const QString & output_file)
+void MultiFileCache::recreateFile(TorrentFile *tf, const QString &dnd_file, const QString &output_file)
 {
     DNDFile dnd(dnd_file, tf, tor.getChunkSize());
 
@@ -677,10 +669,8 @@ void MultiFileCache::recreateFile(TorrentFile* tf, const QString & dnd_file, con
     if (!fptr.open(output_file, "r+b"))
         throw Error(i18n("Cannot open file %1: %2", output_file, fptr.errorString()));
 
-
-    Uint32 ts = cs - tf->getFirstChunkOffset() > tf->getLastChunkSize() ?
-                cs - tf->getFirstChunkOffset() : tf->getLastChunkSize();
-    Uint8* tmp = new Uint8[ts];
+    Uint32 ts = cs - tf->getFirstChunkOffset() > tf->getLastChunkSize() ? cs - tf->getFirstChunkOffset() : tf->getLastChunkSize();
+    Uint8 *tmp = new Uint8[ts];
 
     try {
         Uint32 to_read = cs - tf->getFirstChunkOffset();
@@ -698,15 +688,15 @@ void MultiFileCache::recreateFile(TorrentFile* tf, const QString & dnd_file, con
             if (to_read > 0)
                 fptr.write(tmp, to_read);
         }
-        delete [] tmp;
+        delete[] tmp;
 
     } catch (...) {
-        delete [] tmp;
+        delete[] tmp;
         throw;
     }
 }
 
-void MultiFileCache::preparePreallocation(PreallocationThread* prealloc)
+void MultiFileCache::preparePreallocation(PreallocationThread *prealloc)
 {
     QMap<Uint32, CacheFile::Ptr>::iterator i = files.begin();
     while (i != files.end()) {
@@ -717,11 +707,11 @@ void MultiFileCache::preparePreallocation(PreallocationThread* prealloc)
     }
 }
 
-bool MultiFileCache::hasMissingFiles(QStringList & sl)
+bool MultiFileCache::hasMissingFiles(QStringList &sl)
 {
     bool ret = false;
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
-        TorrentFile & tf = tor.getFile(i);
+        TorrentFile &tf = tor.getFile(i);
         if (tf.doNotDownload())
             continue;
 
@@ -736,7 +726,7 @@ bool MultiFileCache::hasMissingFiles(QStringList & sl)
     return ret;
 }
 
-static void DeleteEmptyDirs(const QString & output_dir, const QString & fpath)
+static void DeleteEmptyDirs(const QString &output_dir, const QString &fpath)
 {
     QStringList sl = fpath.split(bt::DirSeparator());
     // remove the last, which is just the filename
@@ -745,7 +735,7 @@ static void DeleteEmptyDirs(const QString & output_dir, const QString & fpath)
     while (sl.count() > 0) {
         QString path = output_dir;
         // reassemble the full directory path
-        for (const QString& s : sl)
+        for (const QString &s : sl)
             path += s + bt::DirSeparator();
 
         QDir dir(path);
@@ -758,7 +748,6 @@ static void DeleteEmptyDirs(const QString & output_dir, const QString & fpath)
             bt::Delete(path, true);
             sl.pop_back(); // remove the last so we can go one higher
         } else {
-
             // children, so we cannot delete any more directories higher up
             return;
         }
@@ -775,11 +764,11 @@ static void DeleteEmptyDirs(const QString & output_dir, const QString & fpath)
     }
 }
 
-Job* MultiFileCache::deleteDataFiles()
+Job *MultiFileCache::deleteDataFiles()
 {
-    DeleteDataFilesJob* job = new DeleteDataFilesJob(output_dir);
+    DeleteDataFilesJob *job = new DeleteDataFilesJob(output_dir);
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
-        TorrentFile & tf = tor.getFile(i);
+        TorrentFile &tf = tor.getFile(i);
         QString fpath = tf.getPathOnDisk();
         if (!tf.doNotDownload()) {
             // first delete the file
@@ -798,7 +787,7 @@ Uint64 MultiFileCache::diskUsage()
     Uint64 sum = 0;
 
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
-        TorrentFile & tf = tor.getFile(i);
+        TorrentFile &tf = tor.getFile(i);
         if (tf.doNotDownload())
             continue;
 
@@ -813,7 +802,7 @@ Uint64 MultiFileCache::diskUsage()
                 cf->open(tf.getPathOnDisk(), tf.getSize());
                 sum += cf->diskUsage();
             }
-        } catch (bt::Error & err) { // make sure we catch any exceptions
+        } catch (bt::Error &err) { // make sure we catch any exceptions
             Out(SYS_DIO | LOG_DEBUG) << "Error: " << err.toString() << endl;
         }
     }
@@ -821,10 +810,10 @@ Uint64 MultiFileCache::diskUsage()
     return sum;
 }
 
-bool MultiFileCache::getMountPoints(QSet<QString>& mps)
+bool MultiFileCache::getMountPoints(QSet<QString> &mps)
 {
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
-        TorrentFile & tf = tor.getFile(i);
+        TorrentFile &tf = tor.getFile(i);
         if (tf.doNotDownload())
             continue;
 
@@ -838,16 +827,14 @@ bool MultiFileCache::getMountPoints(QSet<QString>& mps)
     return true;
 }
 
-
-
 ///////////////////////////////
 
-Uint64 FileOffset(Chunk* c, const TorrentFile & f, Uint64 chunk_size)
+Uint64 FileOffset(Chunk *c, const TorrentFile &f, Uint64 chunk_size)
 {
     return FileOffset(c->getIndex(), f, chunk_size);
 }
 
-Uint64 FileOffset(Uint32 cindex, const TorrentFile & f, Uint64 chunk_size)
+Uint64 FileOffset(Uint32 cindex, const TorrentFile &f, Uint64 chunk_size)
 {
     return f.fileOffset(cindex, chunk_size);
 }

@@ -24,23 +24,28 @@
 
 namespace bt
 {
-
 /**
 @author Joris Guisson
 */
 class Piece : public Request
 {
 public:
-    inline Piece(Uint32 index, Uint32 off, Uint32 len, PieceDownloader* pd, const Uint8* data)
-        : Request(index, off, len, pd), data(data) {}
-    ~Piece() {}
+    inline Piece(Uint32 index, Uint32 off, Uint32 len, PieceDownloader *pd, const Uint8 *data)
+        : Request(index, off, len, pd)
+        , data(data)
+    {
+    }
+    ~Piece()
+    {
+    }
 
-    const Uint8* getData() const
+    const Uint8 *getData() const
     {
         return data;
     }
+
 private:
-    const Uint8* data;
+    const Uint8 *data;
 };
 
 }

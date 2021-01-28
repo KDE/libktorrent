@@ -36,15 +36,15 @@ class RPCServer;
 class NodeLookup : public Task
 {
 public:
-    NodeLookup(const dht::Key & node_id, RPCServer* rpc, Node* node, QObject* parent);
+    NodeLookup(const dht::Key &node_id, RPCServer *rpc, Node *node, QObject *parent);
     ~NodeLookup() override;
 
     void update() override;
-    void callFinished(RPCCall* c, RPCMsg::Ptr rsp) override;
-    void callTimeout(RPCCall* c) override;
+    void callFinished(RPCCall *c, RPCMsg::Ptr rsp) override;
+    void callTimeout(RPCCall *c) override;
 
 private:
-    void handleNodes(const QByteArray & nodes, int ip_version);
+    void handleNodes(const QByteArray &nodes, int ip_version);
 
 private:
     dht::Key node_id;

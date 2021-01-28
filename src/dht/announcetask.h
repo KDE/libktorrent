@@ -20,7 +20,6 @@
 #ifndef DHTANNOUNCETASK_H
 #define DHTANNOUNCETASK_H
 
-
 #include "kbucket.h"
 #include "task.h"
 
@@ -31,13 +30,21 @@ class Database;
 class KBucketEntryAndToken : public KBucketEntry
 {
     QByteArray token;
-public:
-    KBucketEntryAndToken() {}
-    KBucketEntryAndToken(const KBucketEntry & e, const QByteArray & token)
-        : KBucketEntry(e), token(token) {}
-    ~KBucketEntryAndToken() override {}
 
-    const QByteArray & getToken() const
+public:
+    KBucketEntryAndToken()
+    {
+    }
+    KBucketEntryAndToken(const KBucketEntry &e, const QByteArray &token)
+        : KBucketEntry(e)
+        , token(token)
+    {
+    }
+    ~KBucketEntryAndToken() override
+    {
+    }
+
+    const QByteArray &getToken() const
     {
         return token;
     }
@@ -49,16 +56,11 @@ public:
 class AnnounceTask : public Task
 {
 public:
-    AnnounceTask(Database* db,
-                 RPCServer* rpc,
-                 Node* node,
-                 const dht::Key & info_hash,
-                 bt::Uint16 port,
-                 QObject* parent);
+    AnnounceTask(Database *db, RPCServer *rpc, Node *node, const dht::Key &info_hash, bt::Uint16 port, QObject *parent);
     ~AnnounceTask() override;
 
-    void callFinished(RPCCall* c, RPCMsg::Ptr rsp) override;
-    void callTimeout(RPCCall* c) override;
+    void callFinished(RPCCall *c, RPCMsg::Ptr rsp) override;
+    void callTimeout(RPCCall *c) override;
     void update() override;
 
     /**
@@ -67,17 +69,17 @@ public:
      * @param item The item
      * @return false if no item to take, true else
      */
-    bool takeItem(DBItem & item);
+    bool takeItem(DBItem &item);
 
 private:
-    void handleNodes(const QByteArray & nodes, int ip_version);
+    void handleNodes(const QByteArray &nodes, int ip_version);
 
 private:
     dht::Key info_hash;
     bt::Uint16 port;
     std::set<KBucketEntryAndToken> answered; // nodes which have answered with values
     KBucketEntrySet answered_visited; // nodes which have answered with values which have been visited
-    Database* db;
+    Database *db;
     DBItemList returned_items;
 };
 

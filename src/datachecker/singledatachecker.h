@@ -24,7 +24,6 @@
 
 namespace bt
 {
-
 /**
  * @author Joris Guisson
  *
@@ -36,7 +35,7 @@ public:
     SingleDataChecker(bt::Uint32 from, bt::Uint32 to);
     ~SingleDataChecker() override;
 
-    void check(const QString& path, const Torrent& tor, const QString & dnddir, const BitSet & current_status) override;
+    void check(const QString &path, const Torrent &tor, const QString &dnddir, const BitSet &current_status) override;
 };
 
 }

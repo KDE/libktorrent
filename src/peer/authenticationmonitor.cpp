@@ -18,33 +18,31 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "authenticationmonitor.h"
+#include "authenticatebase.h"
+#include "peerconnector.h"
 #include <math.h>
+#include <mse/encryptedpacketsocket.h>
 #include <unistd.h>
 #include <util/functions.h>
 #include <util/log.h>
-#include <mse/encryptedpacketsocket.h>
-#include "authenticatebase.h"
-#include "peerconnector.h"
-
 
 namespace bt
 {
 AuthenticationMonitor AuthenticationMonitor::self;
 
 AuthenticationMonitor::AuthenticationMonitor()
-{}
-
+{
+}
 
 AuthenticationMonitor::~AuthenticationMonitor()
 {
-
 }
 
 void AuthenticationMonitor::clear()
 {
-    std::list<AuthenticateBase*>::iterator itr = auths.begin();
+    std::list<AuthenticateBase *>::iterator itr = auths.begin();
     while (itr != auths.end()) {
-        AuthenticateBase* ab = *itr;
+        AuthenticateBase *ab = *itr;
         ab->deleteLater();
         ++itr;
     }
@@ -58,14 +56,12 @@ void AuthenticationMonitor::shutdown()
     clear();
 }
 
-
-
-void AuthenticationMonitor::add(AuthenticateBase* s)
+void AuthenticationMonitor::add(AuthenticateBase *s)
 {
     auths.push_back(s);
 }
 
-void AuthenticationMonitor::remove(AuthenticateBase* s)
+void AuthenticationMonitor::remove(AuthenticateBase *s)
 {
     auths.remove(s);
 }
@@ -77,9 +73,9 @@ void AuthenticationMonitor::update()
 
     reset();
 
-    std::list<AuthenticateBase*>::iterator itr = auths.begin();
+    std::list<AuthenticateBase *>::iterator itr = auths.begin();
     while (itr != auths.end()) {
-        AuthenticateBase* ab = *itr;
+        AuthenticateBase *ab = *itr;
         if (!ab || ab->isFinished()) {
             if (ab)
                 ab->deleteLater();
@@ -88,7 +84,7 @@ void AuthenticationMonitor::update()
         } else {
             mse::EncryptedPacketSocket::Ptr socket = ab->getSocket();
             if (socket) {
-                net::SocketDevice* dev = socket->socketDevice();
+                net::SocketDevice *dev = socket->socketDevice();
                 if (dev) {
                     net::Poll::Mode m = socket->connecting() ? Poll::OUTPUT : Poll::INPUT;
                     dev->prepare(this, m);
@@ -105,9 +101,9 @@ void AuthenticationMonitor::update()
 
 void AuthenticationMonitor::handleData()
 {
-    std::list<AuthenticateBase*>::iterator itr = auths.begin();
+    std::list<AuthenticateBase *>::iterator itr = auths.begin();
     while (itr != auths.end()) {
-        AuthenticateBase* ab = *itr;
+        AuthenticateBase *ab = *itr;
         if (!ab || ab->isFinished()) {
             if (ab)
                 ab->deleteLater();
@@ -115,7 +111,7 @@ void AuthenticationMonitor::handleData()
         } else {
             mse::EncryptedPacketSocket::Ptr socket = ab->getSocket();
             if (socket) {
-                net::SocketDevice* dev = socket->socketDevice();
+                net::SocketDevice *dev = socket->socketDevice();
                 bool r = dev && dev->ready(this, Poll::INPUT);
                 bool w = dev && dev->ready(this, Poll::OUTPUT);
                 if (r)

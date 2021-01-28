@@ -23,13 +23,14 @@
 
 #include <QRandomGenerator>
 
-#include <util/log.h>
 #include <interfaces/peerinterface.h>
+#include <util/log.h>
 
 namespace bt
 {
 SuperSeeder::SuperSeeder(Uint32 num_chunks)
-    : chunk_counter(new ChunkCounter(num_chunks)), num_seeders(0)
+    : chunk_counter(new ChunkCounter(num_chunks))
+    , num_seeders(0)
 {
 }
 
@@ -37,18 +38,18 @@ SuperSeeder::~SuperSeeder()
 {
 }
 
-void SuperSeeder::have(PeerInterface* peer, Uint32 chunk)
+void SuperSeeder::have(PeerInterface *peer, Uint32 chunk)
 {
     chunk_counter->inc(chunk);
     if (peer->getBitSet().allOn()) // it is possible the peer has become a seeder
         num_seeders++;
 
-    QList<PeerInterface*> peers;
+    QList<PeerInterface *> peers;
 
     ActiveChunkItr i = active_chunks.find(chunk);
     while (i != active_chunks.end() && i.key() == chunk) {
         // Somebody else has an active chunk we sent to p2
-        PeerInterface* p2 = i.value();
+        PeerInterface *p2 = i.value();
         if (peer != p2) {
             active_peers.remove(p2);
             i = active_chunks.erase(i);
@@ -58,12 +59,12 @@ void SuperSeeder::have(PeerInterface* peer, Uint32 chunk)
             ++i;
     }
 
-    for (PeerInterface* p : qAsConst(peers)) {
+    for (PeerInterface *p : qAsConst(peers)) {
         sendChunk(p);
     }
 }
 
-void SuperSeeder::haveAll(PeerInterface* peer)
+void SuperSeeder::haveAll(PeerInterface *peer)
 {
     // Lets just ignore seeders
     if (active_peers.contains(peer)) {
@@ -75,7 +76,7 @@ void SuperSeeder::haveAll(PeerInterface* peer)
     num_seeders++;
 }
 
-void SuperSeeder::bitset(PeerInterface* peer, const bt::BitSet& bs)
+void SuperSeeder::bitset(PeerInterface *peer, const bt::BitSet &bs)
 {
     if (bs.allOn()) {
         haveAll(peer);
@@ -89,7 +90,7 @@ void SuperSeeder::bitset(PeerInterface* peer, const bt::BitSet& bs)
     }
 }
 
-void SuperSeeder::peerAdded(PeerInterface* peer)
+void SuperSeeder::peerAdded(PeerInterface *peer)
 {
     if (peer->getBitSet().allOn()) {
         num_seeders++;
@@ -99,7 +100,7 @@ void SuperSeeder::peerAdded(PeerInterface* peer)
     }
 }
 
-void SuperSeeder::peerRemoved(PeerInterface* peer)
+void SuperSeeder::peerRemoved(PeerInterface *peer)
 {
     // remove the peer
     if (active_peers.contains(peer)) {
@@ -115,12 +116,12 @@ void SuperSeeder::peerRemoved(PeerInterface* peer)
     chunk_counter->decBitSet(peer->getBitSet());
 }
 
-void SuperSeeder::sendChunk(PeerInterface* peer)
+void SuperSeeder::sendChunk(PeerInterface *peer)
 {
     if (active_peers.contains(peer))
         return;
 
-    const BitSet & bs = peer->getBitSet();
+    const BitSet &bs = peer->getBitSet();
     if (bs.allOn())
         return;
 
@@ -169,6 +170,5 @@ void SuperSeeder::dump()
         ++j;
     }
 }
-
 
 }

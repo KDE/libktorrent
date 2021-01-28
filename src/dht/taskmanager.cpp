@@ -18,27 +18,26 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "taskmanager.h"
+#include "dht.h"
+#include "nodelookup.h"
 #include <QtAlgorithms>
 #include <util/log.h>
-#include "nodelookup.h"
-#include "dht.h"
 
 using namespace bt;
 
 namespace dht
 {
-
-TaskManager::TaskManager(const DHT* dh_table) : dh_table(dh_table), num_active(0)
+TaskManager::TaskManager(const DHT *dh_table)
+    : dh_table(dh_table)
+    , num_active(0)
 {
 }
-
 
 TaskManager::~TaskManager()
 {
 }
 
-
-void TaskManager::addTask(Task* task)
+void TaskManager::addTask(Task *task)
 {
     connect(task, &Task::finished, this, &TaskManager::taskFinished);
     if (task->isQueued())
@@ -47,7 +46,7 @@ void TaskManager::addTask(Task* task)
         num_active++;
 }
 
-void TaskManager::taskFinished(Task* task)
+void TaskManager::taskFinished(Task *task)
 {
     if (!task->isQueued() && num_active > 0)
         num_active--;

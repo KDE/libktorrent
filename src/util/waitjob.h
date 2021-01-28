@@ -23,13 +23,12 @@
 #include <KIO/Job>
 #include <QList>
 
-#include <interfaces/exitoperation.h>
 #include "constants.h"
+#include <interfaces/exitoperation.h>
 #include <ktorrent_export.h>
 
 namespace bt
 {
-
 /**
  * @author Joris Guisson <joris.guisson@gmail.com>
  *
@@ -48,20 +47,19 @@ public:
      * Add an ExitOperation;
      * @param op The operation
      */
-    void addExitOperation(ExitOperation* op);
+    void addExitOperation(ExitOperation *op);
 
     /**
      * Add a KIO::Job to wait on;
      * @param job The job
      */
-    void addExitOperation(KIO::Job* job);
-
+    void addExitOperation(KIO::Job *job);
 
     /**
      * Execute a WaitJob
      * @param job The Job
      */
-    static void execute(WaitJob* job);
+    static void execute(WaitJob *job);
 
     /// Are there any ExitOperation's we need to wait for
     bool needToWait() const
@@ -71,15 +69,13 @@ public:
 
 private:
     void timerDone();
-    void operationFinished(ExitOperation* op);
+    void operationFinished(ExitOperation *op);
 
 private:
-    QList<ExitOperation*> exit_ops;
+    QList<ExitOperation *> exit_ops;
 };
 
 KTORRENT_EXPORT void SynchronousWait(Uint32 millis);
-
-
 
 }
 

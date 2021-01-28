@@ -23,28 +23,28 @@
 
 using namespace bt;
 
-
 namespace dht
 {
-RPCMsg::RPCMsg() :
-    mtid(0),
-    method(NONE),
-    type(INVALID)
+RPCMsg::RPCMsg()
+    : mtid(0)
+    , method(NONE)
+    , type(INVALID)
 {
 }
 
-
-RPCMsg::RPCMsg(const QByteArray & mtid, Method m, Type type, const Key & id) :
-    mtid(mtid),
-    method(m),
-    type(type),
-    id(id)
-{}
+RPCMsg::RPCMsg(const QByteArray &mtid, Method m, Type type, const Key &id)
+    : mtid(mtid)
+    , method(m)
+    , type(type)
+    , id(id)
+{
+}
 
 RPCMsg::~RPCMsg()
-{}
+{
+}
 
-void RPCMsg::parse(bt::BDictNode* dict)
+void RPCMsg::parse(bt::BDictNode *dict)
 {
     mtid = dict->getByteArray(TID);
     if (mtid.isEmpty())
@@ -53,14 +53,14 @@ void RPCMsg::parse(bt::BDictNode* dict)
     QString t = dict->getString(TYP, 0);
     if (t == REQ) {
         type = REQ_MSG;
-        BDictNode* args = dict->getDict(ARG);
+        BDictNode *args = dict->getDict(ARG);
         if (!args)
             return;
 
         id = Key(args->getByteArray("id"));
     } else if (t == RSP) {
         type = RSP_MSG;
-        BDictNode* args = dict->getDict(RSP);
+        BDictNode *args = dict->getDict(RSP);
         if (!args)
             return;
 

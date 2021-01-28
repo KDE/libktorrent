@@ -18,32 +18,27 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "task.h"
-#include <net/addressresolver.h>
 #include "kclosestnodessearch.h"
 #include "rpcserver.h"
-
-
+#include <net/addressresolver.h>
 
 namespace dht
 {
-
-Task::Task(RPCServer* rpc, Node* node, QObject* parent)
-    : RPCCallListener(parent),
-      node(node),
-      rpc(rpc),
-      outstanding_reqs(0),
-      task_finished(false),
-      queued(true)
+Task::Task(RPCServer *rpc, Node *node, QObject *parent)
+    : RPCCallListener(parent)
+    , node(node)
+    , rpc(rpc)
+    , outstanding_reqs(0)
+    , task_finished(false)
+    , queued(true)
 {
-
 }
-
 
 Task::~Task()
 {
 }
 
-void Task::start(const KClosestNodesSearch & kns, bool queued)
+void Task::start(const KClosestNodesSearch &kns, bool queued)
 {
     // fill the todo list
     for (KClosestNodesSearch::CItr i = kns.begin(); i != kns.end(); ++i)
@@ -61,8 +56,7 @@ void Task::start()
     }
 }
 
-
-void Task::onResponse(dht::RPCCall* c, dht::RPCMsg::Ptr rsp)
+void Task::onResponse(dht::RPCCall *c, dht::RPCMsg::Ptr rsp)
 {
     if (outstanding_reqs > 0)
         outstanding_reqs--;
@@ -75,7 +69,7 @@ void Task::onResponse(dht::RPCCall* c, dht::RPCMsg::Ptr rsp)
     }
 }
 
-void Task::onTimeout(RPCCall* c)
+void Task::onTimeout(RPCCall *c)
 {
     if (outstanding_reqs > 0)
         outstanding_reqs--;
@@ -93,7 +87,7 @@ bool Task::rpcCall(dht::RPCMsg::Ptr req)
     if (!canDoRequest())
         return false;
 
-    RPCCall* c = rpc->doCall(req);
+    RPCCall *c = rpc->doCall(req);
     c->addListener(this);
     outstanding_reqs++;
     return true;
@@ -116,17 +110,17 @@ void Task::kill()
     finished(this);
 }
 
-void Task::addDHTNode(const QString & ip, bt::Uint16 port)
+void Task::addDHTNode(const QString &ip, bt::Uint16 port)
 {
     net::Address addr;
     if (addr.setAddress(ip)) {
         addr.setPort(port);
         todo.insert(KBucketEntry(addr, dht::Key()));
     } else
-        net::AddressResolver::resolve(ip, port, this, SLOT(onResolverResults(net::AddressResolver*)));
+        net::AddressResolver::resolve(ip, port, this, SLOT(onResolverResults(net::AddressResolver *)));
 }
 
-void Task::onResolverResults(net::AddressResolver* ar)
+void Task::onResolverResults(net::AddressResolver *ar)
 {
     if (!ar->succeeded())
         return;
@@ -135,4 +129,3 @@ void Task::onResolverResults(net::AddressResolver* ar)
 }
 
 }
-

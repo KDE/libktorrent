@@ -76,7 +76,7 @@ private:
 /**
  * ETA estimator class. It will use different algorithms for different download phases.
  * @author Ivan Vasic <ivasic@gmail.com>
-*/
+ */
 class KTORRENT_EXPORT TimeEstimator
 {
 public:
@@ -84,17 +84,17 @@ public:
     static const int ALREADY_FINISHED = 0;
 
     enum ETAlgorithm {
-        ETA_KT,     //ktorrent default algorithm - combination of the following according to our tests
-        ETA_CSA,    //current speed algorithm
-        ETA_GASA,   //global average speed algorithm
-        ETA_WINX,   //window of X algorithm
-        ETA_MAVG    //moving average algorithm
+        ETA_KT, // ktorrent default algorithm - combination of the following according to our tests
+        ETA_CSA, // current speed algorithm
+        ETA_GASA, // global average speed algorithm
+        ETA_WINX, // window of X algorithm
+        ETA_MAVG // moving average algorithm
     };
 
-    TimeEstimator(TorrentControl* tc);
+    TimeEstimator(TorrentControl *tc);
     ~TimeEstimator();
 
-    ///Returns ETA for m_tc torrent.
+    /// Returns ETA for m_tc torrent.
     int estimate();
 
 private:
@@ -106,13 +106,13 @@ private:
     Uint32 sample() const;
     Uint64 bytesLeft() const;
 
-    TorrentControl* m_tc;
+    TorrentControl *m_tc;
     SampleQueue m_samples;
 
     Uint32 m_lastAvg;
     int m_lastETA;
 
-    //last percentage
+    // last percentage
     double m_perc;
 };
 

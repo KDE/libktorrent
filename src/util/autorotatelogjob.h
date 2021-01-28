@@ -20,8 +20,8 @@
 #ifndef BTAUTOROTATELOGJOB_H
 #define BTAUTOROTATELOGJOB_H
 
-#include <kio/job.h>
 #include <cstdlib>
+#include <kio/job.h>
 
 namespace bt
 {
@@ -36,21 +36,21 @@ class Log;
 class AutoRotateLogJob : public KIO::Job
 {
 public:
-    AutoRotateLogJob(const QString & file, Log* lg);
+    AutoRotateLogJob(const QString &file, Log *lg);
     ~AutoRotateLogJob() override;
 
     virtual void kill(bool quietly = true);
 
 private:
-    void moveJobDone(KJob*);
-    void compressJobDone(KJob*);
+    void moveJobDone(KJob *);
+    void compressJobDone(KJob *);
 
     void update();
 
 private:
     QString file;
     int cnt;
-    Log* lg;
+    Log *lg;
 };
 
 }

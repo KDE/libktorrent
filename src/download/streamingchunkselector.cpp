@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 #include "streamingchunkselector.h"
+#include "downloader.h"
 #include <diskio/chunkmanager.h>
 #include <interfaces/piecedownloader.h>
-#include "downloader.h"
 
 namespace bt
 {
@@ -29,16 +29,18 @@ const Uint32 INVALID_CHUNK = 0xFFFFFFFF;
 const Uint32 CRITICAL_WINDOW_SIZE = 2 * 1024 * 1024;
 
 StreamingChunkSelector::StreamingChunkSelector()
-    : range_start(0), range_end(0), cursor(0), critical_window_size(1)
+    : range_start(0)
+    , range_end(0)
+    , cursor(0)
+    , critical_window_size(1)
 {
 }
 
 StreamingChunkSelector::~StreamingChunkSelector()
 {
-
 }
 
-void StreamingChunkSelector::init(ChunkManager* cman, Downloader* downer, PeerManager* pman)
+void StreamingChunkSelector::init(ChunkManager *cman, Downloader *downer, PeerManager *pman)
 {
     bt::ChunkSelector::init(cman, downer, pman);
     range_end = cman->getNumChunks() - 1;
@@ -51,7 +53,6 @@ void StreamingChunkSelector::init(ChunkManager* cman, Downloader* downer, PeerMa
         if (cman->getChunk(i)->getPriority() == bt::PREVIEW_PRIORITY)
             preview_chunks.insert(i);
 }
-
 
 void StreamingChunkSelector::setCursor(Uint32 chunk)
 {
@@ -72,7 +73,7 @@ void StreamingChunkSelector::setSequentialRange(Uint32 from, Uint32 to)
 void StreamingChunkSelector::initRange()
 {
     // Initialize the range
-    const BitSet & bs = cman->getBitSet();
+    const BitSet &bs = cman->getBitSet();
     range.clear();
     for (Uint32 i = cursor; i <= range_end; i++) {
         if (!bs.get(i))
@@ -80,10 +81,9 @@ void StreamingChunkSelector::initRange()
     }
 }
 
-
 void StreamingChunkSelector::updateRange()
 {
-    const BitSet & bs = cman->getBitSet();
+    const BitSet &bs = cman->getBitSet();
     if (range.empty() || cursor < range.front())
         initRange(); // Reinitialize range
 
@@ -100,9 +100,9 @@ void StreamingChunkSelector::updateRange()
     }
 }
 
-bool StreamingChunkSelector::selectFromPreview(PieceDownloader* pd, Uint32& chunk)
+bool StreamingChunkSelector::selectFromPreview(PieceDownloader *pd, Uint32 &chunk)
 {
-    const BitSet & bs = cman->getBitSet();
+    const BitSet &bs = cman->getBitSet();
 
     std::list<Uint32> candidates;
     // Gather all preview chunks which lie inside the range
@@ -127,15 +127,13 @@ bool StreamingChunkSelector::selectFromPreview(PieceDownloader* pd, Uint32& chun
         return false;
 }
 
-
-
-bool StreamingChunkSelector::select(bt::PieceDownloader* pd, bt::Uint32& chunk)
+bool StreamingChunkSelector::select(bt::PieceDownloader *pd, bt::Uint32 &chunk)
 {
     // Always give precendence to preview chunks
     if (selectFromPreview(pd, chunk))
         return true;
 
-    const BitSet & bs = cman->getBitSet();
+    const BitSet &bs = cman->getBitSet();
     Uint32 critical_chunk = INVALID_CHUNK;
     Uint32 critical_chunk_downloaders = INVALID_CHUNK;
     Uint32 non_critical_chunk = INVALID_CHUNK;
@@ -143,7 +141,7 @@ bool StreamingChunkSelector::select(bt::PieceDownloader* pd, bt::Uint32& chunk)
     std::list<Uint32>::iterator itr = range.begin();
     while (itr != range.end()) {
         Uint32 i = *itr;
-        const Chunk* c = cman->getChunk(i);
+        const Chunk *c = cman->getChunk(i);
 
         // if we have the chunk remove it from the list
         if (bs.get(i)) {
@@ -181,7 +179,7 @@ bool StreamingChunkSelector::select(bt::PieceDownloader* pd, bt::Uint32& chunk)
     }
 }
 
-void StreamingChunkSelector::dataChecked(const bt::BitSet& ok_chunks, Uint32 from, Uint32 to)
+void StreamingChunkSelector::dataChecked(const bt::BitSet &ok_chunks, Uint32 from, Uint32 to)
 {
     bt::ChunkSelector::dataChecked(ok_chunks, from, to);
     updateRange();
@@ -223,7 +221,7 @@ void StreamingChunkSelector::reinsert(bt::Uint32 chunk)
     }
 }
 
-bool StreamingChunkSelector::selectRange(bt::Uint32& from, bt::Uint32& to, bt::Uint32 max_len)
+bool StreamingChunkSelector::selectRange(bt::Uint32 &from, bt::Uint32 &to, bt::Uint32 max_len)
 {
     return bt::ChunkSelector::selectRange(from, to, max_len);
 }

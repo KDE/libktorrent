@@ -20,12 +20,11 @@
 #ifndef BTPEERID_H
 #define BTPEERID_H
 
-#include <qstring.h>
 #include <ktorrent_export.h>
+#include <qstring.h>
 
 namespace bt
 {
-
 /**
 @author Joris Guisson
 */
@@ -33,15 +32,16 @@ class KTORRENT_EXPORT PeerID
 {
     char id[20];
     QString client_name;
+
 public:
     PeerID();
-    PeerID(const char* pid);
-    PeerID(const PeerID & pid);
+    PeerID(const char *pid);
+    PeerID(const PeerID &pid);
     virtual ~PeerID();
 
-    PeerID & operator = (const PeerID & pid);
+    PeerID &operator=(const PeerID &pid);
 
-    const char* data() const
+    const char *data() const
     {
         return id;
     }
@@ -55,9 +55,9 @@ public:
      */
     QString identifyClient() const;
 
-    friend bool operator == (const PeerID & a, const PeerID & b);
-    friend bool operator != (const PeerID & a, const PeerID & b);
-    friend bool operator < (const PeerID & a, const PeerID & b);
+    friend bool operator==(const PeerID &a, const PeerID &b);
+    friend bool operator!=(const PeerID &a, const PeerID &b);
+    friend bool operator<(const PeerID &a, const PeerID &b);
 };
 
 }

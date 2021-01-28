@@ -18,33 +18,35 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
-#include <util/log.h>
-#include <peer/packetreader.h>
+#include <QtTest>
 #include <interfaces/peerinterface.h>
-
+#include <peer/packetreader.h>
+#include <util/log.h>
 
 class PacketReaderTest : public QObject, public bt::PeerInterface
 {
     Q_OBJECT
 public:
-    PacketReaderTest(QObject* parent = 0) : QObject(parent), bt::PeerInterface(bt::PeerID(), 100)
-    {}
+    PacketReaderTest(QObject *parent = 0)
+        : QObject(parent)
+        , bt::PeerInterface(bt::PeerID(), 100)
+    {
+    }
 
     void chunkAllowed(bt::Uint32 chunk) override
     {
         Q_UNUSED(chunk);
     }
 
-    void handlePacket(const bt::Uint8* packet, bt::Uint32 size) override
+    void handlePacket(const bt::Uint8 *packet, bt::Uint32 size) override
     {
         received_packet.reset(new bt::Uint8[size]);
         memcpy(received_packet.data(), packet, size);
         received_packet_size = size;
     }
 
-    bool check(const bt::Uint8* packet, bt::Uint32 size)
+    bool check(const bt::Uint8 *packet, bt::Uint32 size)
     {
         return received_packet_size == size && memcmp(packet, received_packet.data(), size) == 0;
     }
@@ -170,4 +172,3 @@ private:
 QTEST_MAIN(PacketReaderTest)
 
 #include "packetreadertest.moc"
-

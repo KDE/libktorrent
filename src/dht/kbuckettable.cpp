@@ -19,25 +19,22 @@
  ***************************************************************************/
 
 #include "kbuckettable.h"
-#include <QFile>
-#include <util/log.h>
-#include <util/file.h>
-#include <util/error.h>
-#include <bcodec/bencoder.h>
-#include <bcodec/bdecoder.h>
-#include <bcodec/bnode.h>
-#include "nodelookup.h"
 #include "dht.h"
-
-
+#include "nodelookup.h"
+#include <QFile>
+#include <bcodec/bdecoder.h>
+#include <bcodec/bencoder.h>
+#include <bcodec/bnode.h>
+#include <util/error.h>
+#include <util/file.h>
+#include <util/log.h>
 
 using namespace bt;
 
 namespace dht
 {
-
-KBucketTable::KBucketTable(const Key & our_id) :
-    our_id(our_id)
+KBucketTable::KBucketTable(const Key &our_id)
+    : our_id(our_id)
 {
 }
 
@@ -45,13 +42,12 @@ KBucketTable::~KBucketTable()
 {
 }
 
-void KBucketTable::insert(const dht::KBucketEntry& entry, dht::RPCServerInterface* srv)
+void KBucketTable::insert(const dht::KBucketEntry &entry, dht::RPCServerInterface *srv)
 {
     if (buckets.empty()) {
         KBucket::Ptr initial(new KBucket(srv, our_id));
         buckets.push_back(initial);
     }
-
 
     KBucketList::iterator kb = findBucket(entry.getID());
 
@@ -86,20 +82,19 @@ void KBucketTable::insert(const dht::KBucketEntry& entry, dht::RPCServerInterfac
         Out(SYS_DHT | LOG_IMPORTANT) << "Unable to split buckets further !" << endl;
         return;
     }
-
 }
 
 int KBucketTable::numEntries() const
 {
     int count = 0;
-    for (const KBucket::Ptr& b : qAsConst(buckets)) {
+    for (const KBucket::Ptr &b : qAsConst(buckets)) {
         count += b->getNumEntries();
     }
 
     return count;
 }
 
-KBucketTable::KBucketList::iterator KBucketTable::findBucket(const dht::Key& id)
+KBucketTable::KBucketList::iterator KBucketTable::findBucket(const dht::Key &id)
 {
     for (KBucketList::iterator i = buckets.begin(); i != buckets.end(); ++i) {
         if ((*i)->keyInRange(id))
@@ -109,28 +104,28 @@ KBucketTable::KBucketList::iterator KBucketTable::findBucket(const dht::Key& id)
     return buckets.end();
 }
 
-void KBucketTable::refreshBuckets(DHT* dh_table)
+void KBucketTable::refreshBuckets(DHT *dh_table)
 {
-    for (const KBucket::Ptr& b : qAsConst(buckets)) {
+    for (const KBucket::Ptr &b : qAsConst(buckets)) {
         if (b->needsToBeRefreshed()) {
             // the key needs to be the refreshed
             dht::Key m = dht::Key::mid(b->minKey(), b->maxKey());
-            NodeLookup* nl = dh_table->refreshBucket(m, *b);
+            NodeLookup *nl = dh_table->refreshBucket(m, *b);
             if (nl)
                 b->setRefreshTask(nl);
         }
     }
 }
 
-void KBucketTable::onTimeout(const net::Address& addr)
+void KBucketTable::onTimeout(const net::Address &addr)
 {
-    for (const KBucket::Ptr& b : qAsConst(buckets)) {
+    for (const KBucket::Ptr &b : qAsConst(buckets)) {
         if (b->onTimeout(addr))
             return;
     }
 }
 
-void KBucketTable::loadTable(const QString& file, RPCServerInterface* srv)
+void KBucketTable::loadTable(const QString &file, RPCServerInterface *srv)
 {
     QFile fptr(file);
     if (!fptr.open(QIODevice::ReadOnly)) {
@@ -147,7 +142,7 @@ void KBucketTable::loadTable(const QString& file, RPCServerInterface* srv)
             return;
 
         for (bt::Uint32 i = 0; i < bucket_list->getNumChildren(); i++) {
-            BDictNode* dict = bucket_list->getDict(i);
+            BDictNode *dict = bucket_list->getDict(i);
             if (!dict)
                 continue;
 
@@ -155,12 +150,12 @@ void KBucketTable::loadTable(const QString& file, RPCServerInterface* srv)
             bucket->load(dict);
             buckets.push_back(bucket);
         }
-    } catch (bt::Error & e) {
+    } catch (bt::Error &e) {
         Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Failed to load bucket table: " << e.toString() << endl;
     }
 }
 
-void KBucketTable::saveTable(const QString& file)
+void KBucketTable::saveTable(const QString &file)
 {
     bt::File fptr;
     if (!fptr.open(file, "wb")) {
@@ -172,18 +167,18 @@ void KBucketTable::saveTable(const QString& file)
 
     try {
         enc.beginList();
-        for (const KBucket::Ptr& b : qAsConst(buckets)) {
+        for (const KBucket::Ptr &b : qAsConst(buckets)) {
             b->save(enc);
         }
         enc.end();
-    } catch (bt::Error & err) {
+    } catch (bt::Error &err) {
         Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Failed to save table to " << file << " : " << err.toString() << endl;
     }
 }
 
-void KBucketTable::findKClosestNodes(KClosestNodesSearch& kns) const
+void KBucketTable::findKClosestNodes(KClosestNodesSearch &kns) const
 {
-    for (const KBucket::Ptr& b : qAsConst(buckets)) {
+    for (const KBucket::Ptr &b : qAsConst(buckets)) {
         b->findKClosestNodes(kns);
     }
 }

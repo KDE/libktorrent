@@ -20,14 +20,13 @@
 #ifndef MSEENCRYPTEDSERVERAUTHENTICATE_H
 #define MSEENCRYPTEDSERVERAUTHENTICATE_H
 
-#include <util/sha1hash.h>
-#include <peer/serverauthenticate.h>
 #include "bigint.h"
+#include <peer/serverauthenticate.h>
+#include <util/sha1hash.h>
 
 namespace mse
 {
 class RC4Encryptor;
-
 
 const Uint32 MAX_SEA_BUF_SIZE = 608 + 20 + 20 + 8 + 4 + 2 + 512 + 2 + 68;
 /**
@@ -71,7 +70,7 @@ private:
     Uint32 crypto_provide, crypto_select;
     Uint16 pad_C_len;
     Uint16 ia_len;
-    RC4Encryptor* our_rc4;
+    RC4Encryptor *our_rc4;
 };
 
 }

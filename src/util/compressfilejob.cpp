@@ -23,20 +23,23 @@
 #include <QFile>
 #include <QThread>
 
-#include <KIO/Global>
 #include <KFilterDev>
+#include <KIO/Global>
 
 #include "fileops.h"
 
 namespace bt
 {
-
-CompressThread::CompressThread(const QString & file) : file(file), canceled(false), err(0)
+CompressThread::CompressThread(const QString &file)
+    : file(file)
+    , canceled(false)
+    , err(0)
 {
 }
 
 CompressThread::~CompressThread()
-{}
+{
+}
 
 void CompressThread::run()
 {
@@ -45,7 +48,9 @@ void CompressThread::run()
     // open input file readonly
     if (!in.open(QIODevice::ReadOnly)) {
         err = KIO::ERR_CANNOT_OPEN_FOR_READING;
-        printf("CompressThread: failed to open input file %s for reading: %s\n", in.fileName().toLocal8Bit().constData(), in.errorString().toLocal8Bit().constData());
+        printf("CompressThread: failed to open input file %s for reading: %s\n",
+               in.fileName().toLocal8Bit().constData(),
+               in.errorString().toLocal8Bit().constData());
         return;
     }
 
@@ -84,7 +89,9 @@ void CompressThread::cancel()
 
 ////////////////////////////////////////////////////////////
 
-CompressFileJob::CompressFileJob(const QString & file) : file(file), compress_thread(0)
+CompressFileJob::CompressFileJob(const QString &file)
+    : file(file)
+    , compress_thread(0)
 {
 }
 
@@ -120,6 +127,5 @@ void CompressFileJob::compressThreadFinished()
     compress_thread = nullptr;
     emitResult();
 }
-
 
 }

@@ -1,30 +1,30 @@
 /***************************************************************************
-*   Copyright (C) 2010 by Joris Guisson                                   *
-*   joris.guisson@gmail.com                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
-***************************************************************************/
+ *   Copyright (C) 2010 by Joris Guisson                                   *
+ *   joris.guisson@gmail.com                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
+ ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
+#include <QtTest>
 #include <ctime>
-#include <util/log.h>
-#include <peer/superseeder.h>
 #include <interfaces/peerinterface.h>
 #include <peer/chunkcounter.h>
+#include <peer/superseeder.h>
+#include <util/log.h>
 
 using namespace bt;
 
@@ -36,7 +36,8 @@ static int peer_cnt = 0;
 class DummyPeer : public PeerInterface
 {
 public:
-    DummyPeer() : PeerInterface(PeerID(), NUM_CHUNKS)
+    DummyPeer()
+        : PeerInterface(PeerID(), NUM_CHUNKS)
     {
         QString name = QStringLiteral("%1").arg(peer_cnt++);
         if (name.size() < 20)
@@ -47,7 +48,8 @@ public:
     }
 
     ~DummyPeer() override
-    {}
+    {
+    }
 
     void reset()
     {
@@ -81,7 +83,7 @@ public:
         allow_called = true;
     }
 
-    void handlePacket(const bt::Uint8* packet, Uint32 size) override
+    void handlePacket(const bt::Uint8 *packet, Uint32 size) override
     {
         Q_UNUSED(packet);
         Q_UNUSED(size);
@@ -91,17 +93,18 @@ public:
     bool allow_called;
 };
 
-
 class SuperSeedTest : public QObject
 {
     Q_OBJECT
 public:
-    SuperSeedTest(QObject* parent = 0) : QObject(parent)
-    {}
-
-    bool allowCalled(PeerInterface* peer)
+    SuperSeedTest(QObject *parent = 0)
+        : QObject(parent)
     {
-        return ((DummyPeer*)peer)->allow_called && ((DummyPeer*)peer)->allowed_chunk != INVALID_CHUNK;
+    }
+
+    bool allowCalled(PeerInterface *peer)
+    {
+        return ((DummyPeer *)peer)->allow_called && ((DummyPeer *)peer)->allowed_chunk != INVALID_CHUNK;
     }
 
 private Q_SLOTS:
@@ -121,7 +124,7 @@ private Q_SLOTS:
         SuperSeeder ss(NUM_CHUNKS);
         // First test, all tree should get a chunk
         for (int i = 0; i < 3; i++) {
-            DummyPeer* p = &peer[i];
+            DummyPeer *p = &peer[i];
             ss.peerAdded(p);
             QVERIFY(allowCalled(p));
             p->allow_called = false;
@@ -129,9 +132,9 @@ private Q_SLOTS:
 
         ss.dump();
 
-        DummyPeer* uploader = &peer[0];
-        DummyPeer* downloader = &peer[1];
-        DummyPeer* next = &peer[2];
+        DummyPeer *uploader = &peer[0];
+        DummyPeer *downloader = &peer[1];
+        DummyPeer *next = &peer[2];
         // Simulate normal superseeding operation
         for (int i = 0; i < 4; i++) {
             Out(SYS_GEN | LOG_DEBUG) << "======================================" << endl;
@@ -163,7 +166,7 @@ private Q_SLOTS:
             }
 
             // Cycle through peers
-            DummyPeer* n = uploader;
+            DummyPeer *n = uploader;
             uploader = downloader;
             downloader = next;
             next = n;
@@ -239,4 +242,3 @@ private:
 QTEST_MAIN(SuperSeedTest)
 
 #include "superseedtest.moc"
-

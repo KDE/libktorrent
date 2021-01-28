@@ -18,32 +18,33 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "socketgroup.h"
-#include <math.h>
-#include <util/log.h>
-#include <util/functions.h>
 #include "trafficshapedsocket.h"
+#include <math.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 using namespace bt;
 
 namespace net
 {
-
-SocketGroup::SocketGroup(Uint32 limit, Uint32 assured_rate) : limit(limit), assured_rate(assured_rate)
+SocketGroup::SocketGroup(Uint32 limit, Uint32 assured_rate)
+    : limit(limit)
+    , assured_rate(assured_rate)
 {
     prev_run_time = bt::CurrentTime();
     group_allowance = 0;
     group_assured = 0;
 }
 
-
 SocketGroup::~SocketGroup()
-{}
+{
+}
 
 void SocketGroup::processUnlimited(bool up, bt::TimeStamp now)
 {
-    std::list<TrafficShapedSocket*>::iterator i = sockets.begin();
+    std::list<TrafficShapedSocket *>::iterator i = sockets.begin();
     while (i != sockets.end()) {
-        TrafficShapedSocket* s = *i;
+        TrafficShapedSocket *s = *i;
         if (s) {
             if (up)
                 s->write(0, now);
@@ -54,11 +55,11 @@ void SocketGroup::processUnlimited(bool up, bt::TimeStamp now)
     }
 }
 
-bool SocketGroup::processLimited(bool up, bt::TimeStamp now, Uint32 & allowance)
+bool SocketGroup::processLimited(bool up, bt::TimeStamp now, Uint32 &allowance)
 {
     Uint32 bslot = allowance / sockets.size() + 1;
 
-    std::list<TrafficShapedSocket*>::iterator itr = sockets.begin();
+    std::list<TrafficShapedSocket *>::iterator itr = sockets.begin();
 
     // while we can send and there are sockets left to send
     while (sockets.size() > 0 && allowance > 0) {
@@ -66,7 +67,7 @@ bool SocketGroup::processLimited(bool up, bt::TimeStamp now, Uint32 & allowance)
         if (as > allowance)
             as = allowance;
 
-        TrafficShapedSocket* s = *itr;
+        TrafficShapedSocket *s = *itr;
         if (s) {
             Uint32 ret = 0;
             if (up)
@@ -99,12 +100,12 @@ bool SocketGroup::processLimited(bool up, bt::TimeStamp now, Uint32 & allowance)
     return sockets.size() > 0;
 }
 
-bool SocketGroup::download(Uint32 & global_allowance, bt::TimeStamp now)
+bool SocketGroup::download(Uint32 &global_allowance, bt::TimeStamp now)
 {
     return process(false, now, global_allowance);
 }
 
-bool SocketGroup::upload(Uint32 & global_allowance, bt::TimeStamp now)
+bool SocketGroup::upload(Uint32 &global_allowance, bt::TimeStamp now)
 {
     return process(true, now, global_allowance);
 }
@@ -124,7 +125,7 @@ void SocketGroup::calcAllowance(bt::TimeStamp now)
     prev_run_time = now;
 }
 
-bool SocketGroup::process(bool up, bt::TimeStamp now, Uint32 & global_allowance)
+bool SocketGroup::process(bool up, bt::TimeStamp now, Uint32 &global_allowance)
 {
     if (limit > 0) {
         if (group_allowance == 0) {
@@ -174,7 +175,5 @@ bool SocketGroup::process(bool up, bt::TimeStamp now, Uint32 & global_allowance)
         return false;
     }
 }
-
-
 
 }

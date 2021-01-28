@@ -18,25 +18,23 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
+#include <QtTest>
 #include <dht/key.h>
-#include <time.h>
 #include <mse/rc4encryptor.h>
-
+#include <time.h>
 
 class RC4EncryptorTest : public QObject
 {
     Q_OBJECT
 public:
-
     bt::SHA1Hash randomKey()
     {
         bt::Uint32 hash[5];
         for (int i = 0; i < 5; i++) {
             hash[i] = QRandomGenerator::global()->generate();
         }
-        return bt::SHA1Hash(reinterpret_cast<Uint8*>(hash));
+        return bt::SHA1Hash(reinterpret_cast<Uint8 *>(hash));
     }
 
 private Q_SLOTS:
@@ -63,8 +61,8 @@ private Q_SLOTS:
                 data[j] = QRandomGenerator::global()->generate();
 
             memcpy(tmp, data, 1024);
-            a.encryptReplace(reinterpret_cast<Uint8*>(data), 1024);
-            b.decrypt(reinterpret_cast<Uint8*>(data), 1024);
+            a.encryptReplace(reinterpret_cast<Uint8 *>(data), 1024);
+            b.decrypt(reinterpret_cast<Uint8 *>(data), 1024);
             QVERIFY(memcmp(tmp, data, 1024) == 0);
         }
     }

@@ -18,41 +18,37 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "packetsocket.h"
-#include <util/log.h>
-#include <net/socketmonitor.h>
 #include "speed.h"
+#include <net/socketmonitor.h>
+#include <util/log.h>
 
 using namespace bt;
 
 namespace net
 {
-
-PacketSocket::PacketSocket(SocketDevice* sock) :
-    TrafficShapedSocket(sock),
-    ctrl_packets_sent(0),
-    uploaded_data_bytes(0)
+PacketSocket::PacketSocket(SocketDevice *sock)
+    : TrafficShapedSocket(sock)
+    , ctrl_packets_sent(0)
+    , uploaded_data_bytes(0)
 {
 }
 
-
-PacketSocket::PacketSocket(int fd, int ip_version) :
-    TrafficShapedSocket(fd, ip_version),
-    ctrl_packets_sent(0),
-    uploaded_data_bytes(0)
+PacketSocket::PacketSocket(int fd, int ip_version)
+    : TrafficShapedSocket(fd, ip_version)
+    , ctrl_packets_sent(0)
+    , uploaded_data_bytes(0)
 {
 }
 
-PacketSocket::PacketSocket(bool tcp, int ip_version) :
-    TrafficShapedSocket(tcp, ip_version),
-    ctrl_packets_sent(0),
-    uploaded_data_bytes(0)
+PacketSocket::PacketSocket(bool tcp, int ip_version)
+    : TrafficShapedSocket(tcp, ip_version)
+    , ctrl_packets_sent(0)
+    , uploaded_data_bytes(0)
 {
 }
-
 
 PacketSocket::~PacketSocket()
 {
-
 }
 
 Packet::Ptr PacketSocket::selectPacket()
@@ -177,7 +173,7 @@ void PacketSocket::clearPieces(bool reject)
     }
 }
 
-void PacketSocket::doNotSendPiece(const bt::Request& req, bool reject)
+void PacketSocket::doNotSendPiece(const bt::Request &req, bool reject)
 {
     QMutexLocker locker(&mutex);
     auto i = data_packets.begin();
@@ -200,6 +196,5 @@ Uint32 PacketSocket::numPendingPieceUploads() const
     QMutexLocker locker(&mutex);
     return data_packets.size();
 }
-
 
 }

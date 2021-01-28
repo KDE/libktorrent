@@ -18,12 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <algorithm>
-#include <QtTest>
 #include <QString>
-#include <util/log.h>
-#include <util/error.h>
+#include <QtTest>
+#include <algorithm>
 #include <dht/key.h>
+#include <util/error.h>
+#include <util/log.h>
 
 using namespace bt;
 
@@ -39,7 +39,7 @@ static bt::Uint8 HexCharToUint8(char c)
         return 0;
 }
 
-static dht::Key KeyFromHexString(const QString & str)
+static dht::Key KeyFromHexString(const QString &str)
 {
     bt::Uint8 result[20];
     std::fill(result, result + 20, 0);
@@ -113,7 +113,6 @@ private Q_SLOTS:
         dht::Key j = KeyFromHexString("0000000100000000000000010000000000000001");
         dht::Key h = g - j;
         QVERIFY(h == KeyFromHexString("FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF"));
-
     }
 
     void testDivision()
@@ -125,7 +124,6 @@ private Q_SLOTS:
         dht::Key c = KeyFromHexString("0000000100000000000000010000000000000001");
         dht::Key d = c / 32;
         QVERIFY(d == KeyFromHexString("0000000008000000000000000800000000000000"));
-
     }
 
     void testConversion()
@@ -134,7 +132,6 @@ private Q_SLOTS:
         QVERIFY(d.toString() == QLatin1String("0102030405060708090afffefdfcfbfaf9f8f7f6"));
     }
 };
-
 
 QTEST_MAIN(KeyTest)
 

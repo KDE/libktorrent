@@ -27,14 +27,13 @@
 
 namespace bt
 {
-
 /**
-* Thread which decompresses a single file
-*/
+ * Thread which decompresses a single file
+ */
 class KTORRENT_EXPORT DecompressThread : public QThread
 {
 public:
-    DecompressThread(const QString & file, const QString & dest_file);
+    DecompressThread(const QString &file, const QString &dest_file);
     ~DecompressThread() override;
 
     /// Run the decompression thread
@@ -63,7 +62,7 @@ class KTORRENT_EXPORT DecompressFileJob : public KIO::Job
 {
     Q_OBJECT
 public:
-    DecompressFileJob(const QString & file, const QString & dest);
+    DecompressFileJob(const QString &file, const QString &dest);
     ~DecompressFileJob() override;
 
     void start() override;
@@ -75,7 +74,7 @@ private Q_SLOTS:
 private:
     QString file;
     QString dest;
-    DecompressThread* decompress_thread;
+    DecompressThread *decompress_thread;
 };
 }
 

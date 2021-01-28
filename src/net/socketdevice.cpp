@@ -22,16 +22,15 @@
 
 namespace net
 {
-
-SocketDevice::SocketDevice(bt::TransportProtocol proto) : m_state(IDLE), remote_addr_override(false), transport_protocol(proto)
+SocketDevice::SocketDevice(bt::TransportProtocol proto)
+    : m_state(IDLE)
+    , remote_addr_override(false)
+    , transport_protocol(proto)
 {
-
 }
 
 SocketDevice::~SocketDevice()
 {
-
 }
 
 }
-

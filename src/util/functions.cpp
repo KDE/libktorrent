@@ -19,16 +19,16 @@
  ***************************************************************************/
 
 #include "functions.h"
+#include <arpa/inet.h>
 #include <errno.h>
-#include <unistd.h>
+#include <gcrypt.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <sys/resource.h>
+#include <sys/socket.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/resource.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <gcrypt.h>
+#include <unistd.h>
 
 #include <QDir>
 #include <QMimeDatabase>
@@ -47,8 +47,7 @@
 
 namespace bt
 {
-
-bool IsMultimediaFile(const QString & filename)
+bool IsMultimediaFile(const QString &filename)
 {
     QMimeType ptr = QMimeDatabase().mimeTypeForFile(filename);
     QString name = ptr.name();
@@ -57,8 +56,8 @@ bool IsMultimediaFile(const QString & filename)
 
 QString DirSeparator()
 {
-    //QString tmp;
-    //tmp.append(QDir::separator());
+    // QString tmp;
+    // tmp.append(QDir::separator());
     return QStringLiteral("/");
 }
 
@@ -120,12 +119,10 @@ bool MaximizeLimits()
     getrlimit(RLIMIT_NOFILE, &lim);
 
     if (lim.rlim_cur != lim.rlim_max) {
-        Out(SYS_GEN | LOG_DEBUG) << "Current limit for number of files : " << lim.rlim_cur
-                                 << " (" << lim.rlim_max << " max)" << endl;
+        Out(SYS_GEN | LOG_DEBUG) << "Current limit for number of files : " << lim.rlim_cur << " (" << lim.rlim_max << " max)" << endl;
         lim.rlim_cur = lim.rlim_max;
         if (setrlimit(RLIMIT_NOFILE, &lim) < 0) {
-            Out(SYS_GEN | LOG_DEBUG) << "Failed to maximize file limit : "
-                                     << QString::fromUtf8(strerror(errno)) << endl;
+            Out(SYS_GEN | LOG_DEBUG) << "Failed to maximize file limit : " << QString::fromUtf8(strerror(errno)) << endl;
             return false;
         }
     } else {
@@ -134,12 +131,10 @@ bool MaximizeLimits()
 
     getrlimit(RLIMIT_DATA, &lim);
     if (lim.rlim_cur != lim.rlim_max) {
-        Out(SYS_GEN | LOG_DEBUG) << "Current limit for data size : " << lim.rlim_cur
-                                 << " (" <<  lim.rlim_max << " max)" << endl;
+        Out(SYS_GEN | LOG_DEBUG) << "Current limit for data size : " << lim.rlim_cur << " (" << lim.rlim_max << " max)" << endl;
         lim.rlim_cur = lim.rlim_max;
         if (setrlimit(RLIMIT_DATA, &lim) < 0) {
-            Out(SYS_GEN | LOG_DEBUG) << "Failed to maximize data limit : "
-                                     << QString::fromUtf8(strerror(errno)) << endl;
+            Out(SYS_GEN | LOG_DEBUG) << "Failed to maximize data limit : " << QString::fromUtf8(strerror(errno)) << endl;
             return false;
         }
     } else {
@@ -151,7 +146,7 @@ bool MaximizeLimits()
 
 static QString net_iface = QString();
 
-void SetNetworkInterface(const QString & iface)
+void SetNetworkInterface(const QString &iface)
 {
     net_iface = iface;
 }
@@ -159,10 +154,9 @@ void SetNetworkInterface(const QString & iface)
 QString NetworkInterface()
 {
     return net_iface;
-
 }
 
-QString NetworkInterfaceIPAddress(const QString & iface)
+QString NetworkInterfaceIPAddress(const QString &iface)
 {
     QNetworkInterface ni = QNetworkInterface::interfaceFromName(iface);
     if (!ni.isValid())
@@ -175,7 +169,7 @@ QString NetworkInterfaceIPAddress(const QString & iface)
         return addr_list.front().ip().toString();
 }
 
-QStringList NetworkInterfaceIPAddresses(const QString& iface)
+QStringList NetworkInterfaceIPAddresses(const QString &iface)
 {
     QNetworkInterface ni = QNetworkInterface::interfaceFromName(iface);
     if (!ni.isValid())
@@ -183,7 +177,7 @@ QStringList NetworkInterfaceIPAddresses(const QString& iface)
 
     QStringList ips;
     const QList<QNetworkAddressEntry> addr_list = ni.addressEntries();
-    for (const QNetworkAddressEntry & entry : addr_list) {
+    for (const QNetworkAddressEntry &entry : addr_list) {
         ips << entry.ip().toString();
     }
 
@@ -195,22 +189,23 @@ QString CurrentIPv6Address()
     QNetworkInterface ni = QNetworkInterface::interfaceFromName(net_iface);
     if (!ni.isValid()) {
         const QList<QHostAddress> addrs = QNetworkInterface::allAddresses();
-        for (const QHostAddress & addr : addrs) {
-            if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6 && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64))
+        for (const QHostAddress &addr : addrs) {
+            if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6
+                && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64))
                 return addr.toString();
         }
     } else {
         const QList<QNetworkAddressEntry> addrs = ni.addressEntries();
-        for (const QNetworkAddressEntry & entry : addrs) {
+        for (const QNetworkAddressEntry &entry : addrs) {
             QHostAddress addr = entry.ip();
-            if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6 && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64))
+            if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6
+                && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64))
                 return addr.toString();
         }
     }
 
     return QString();
 }
-
 
 QString BytesToString(Uint64 bytes)
 {
@@ -229,13 +224,16 @@ QString DurationToString(Uint32 nsecs)
     int ndays = nsecs / 86400;
     QTime t = QTime(0, 0, 0, 0).addSecs(nsecs % 86400);
     QString s;
-    if (ndays > 0)     s = i18np("1 day ", "%1 days ", ndays);
-    else if (t.hour()) s = t.toString();
-    else               s = t.toString(QStringLiteral("mm:ss"));
+    if (ndays > 0)
+        s = i18np("1 day ", "%1 days ", ndays);
+    else if (t.hour())
+        s = t.toString();
+    else
+        s = t.toString(QStringLiteral("mm:ss"));
     return s;
 }
 
-double Percentage(const TorrentStats & s)
+double Percentage(const TorrentStats &s)
 {
     if (s.bytes_left_to_download == 0) {
         return 100.0;

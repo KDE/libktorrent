@@ -19,22 +19,26 @@
  ***************************************************************************/
 
 #include "decompressfilejob.h"
+#include <KFilterDev>
 #include <QFile>
 #include <QMimeDatabase>
 #include <kcompressiondevice.h>
-#include <KFilterDev>
-#include <util/log.h>
 #include <util/fileops.h>
+#include <util/log.h>
 
 namespace bt
 {
-DecompressThread::DecompressThread(const QString & file, const QString & dest_file)
-    : file(file), dest_file(dest_file), canceled(false), err(0)
+DecompressThread::DecompressThread(const QString &file, const QString &dest_file)
+    : file(file)
+    , dest_file(dest_file)
+    , canceled(false)
+    , err(0)
 {
 }
 
 DecompressThread::~DecompressThread()
-{}
+{
+}
 
 void DecompressThread::run()
 {
@@ -82,12 +86,12 @@ void DecompressThread::cancel()
 
 ///////////////////////////////////////////
 
-
-DecompressFileJob::DecompressFileJob(const QString& file, const QString& dest)
-    : file(file), dest(dest), decompress_thread(nullptr)
+DecompressFileJob::DecompressFileJob(const QString &file, const QString &dest)
+    : file(file)
+    , dest(dest)
+    , decompress_thread(nullptr)
 {
 }
-
 
 DecompressFileJob::~DecompressFileJob()
 {

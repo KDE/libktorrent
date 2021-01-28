@@ -18,28 +18,33 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "chunkselector.h"
-#include <stdlib.h>
-#include <vector>
+#include "chunkdownload.h"
+#include "downloader.h"
 #include <algorithm>
-#include <util/log.h>
-#include <util/bitset.h>
-#include <peer/chunkcounter.h>
 #include <diskio/chunkmanager.h>
 #include <interfaces/piecedownloader.h>
+#include <peer/chunkcounter.h>
 #include <peer/peer.h>
 #include <peer/peermanager.h>
+#include <stdlib.h>
 #include <torrent/torrent.h>
-#include "downloader.h"
-#include "chunkdownload.h"
+#include <util/bitset.h>
+#include <util/log.h>
+#include <vector>
 
 namespace bt
 {
 struct RareCmp {
-    ChunkManager* cman;
-    ChunkCounter & cc;
+    ChunkManager *cman;
+    ChunkCounter &cc;
     bool warmup;
 
-    RareCmp(ChunkManager* cman, ChunkCounter & cc, bool warmup) : cman(cman), cc(cc), warmup(warmup) {}
+    RareCmp(ChunkManager *cman, ChunkCounter &cc, bool warmup)
+        : cman(cman)
+        , cc(cc)
+        , warmup(warmup)
+    {
+    }
 
     bool operator()(Uint32 a, Uint32 b)
     {
@@ -70,11 +75,11 @@ ChunkSelector::ChunkSelector()
 {
 }
 
-
 ChunkSelector::~ChunkSelector()
-{}
+{
+}
 
-void ChunkSelector::init(ChunkManager* cman, Downloader* downer, PeerManager* pman)
+void ChunkSelector::init(ChunkManager *cman, Downloader *downer, PeerManager *pman)
 {
     bt::ChunkSelectorInterface::init(cman, downer, pman);
     std::vector<Uint32> tmp;
@@ -90,8 +95,7 @@ void ChunkSelector::init(ChunkManager* cman, Downloader* downer, PeerManager* pm
     sort_timer.update();
 }
 
-
-Uint32 ChunkSelector::leastPeers(const std::list<Uint32> & lp, Uint32 alternative, Uint32 max_peers_per_chunk)
+Uint32 ChunkSelector::leastPeers(const std::list<Uint32> &lp, Uint32 alternative, Uint32 max_peers_per_chunk)
 {
     bool endgame = downer->endgameMode();
 
@@ -106,7 +110,7 @@ Uint32 ChunkSelector::leastPeers(const std::list<Uint32> & lp, Uint32 alternativ
     }
 
     if (!endgame && downer->numDownloadersForChunk(sel) >= max_peers_per_chunk) {
-        ChunkDownload* cd = downer->download(sel);
+        ChunkDownload *cd = downer->download(sel);
         if (!cd)
             return alternative;
 
@@ -121,9 +125,9 @@ Uint32 ChunkSelector::leastPeers(const std::list<Uint32> & lp, Uint32 alternativ
     return sel;
 }
 
-bool ChunkSelector::select(PieceDownloader* pd, Uint32 & chunk)
+bool ChunkSelector::select(PieceDownloader *pd, Uint32 &chunk)
 {
-    const BitSet & bs = cman->getBitSet();
+    const BitSet &bs = cman->getBitSet();
 
     std::list<Uint32> preview;
     std::list<Uint32> normal;
@@ -140,7 +144,7 @@ bool ChunkSelector::select(PieceDownloader* pd, Uint32 & chunk)
     std::list<Uint32>::iterator itr = chunks.begin();
     while (itr != chunks.end()) {
         Uint32 i = *itr;
-        Chunk* c = cman->getChunk(*itr);
+        Chunk *c = cman->getChunk(*itr);
 
         // if we have the chunk remove it from the list
         if (c->isExcludedForDownloading() || c->isExcluded() || bs.get(i)) {
@@ -168,7 +172,6 @@ bool ChunkSelector::select(PieceDownloader* pd, Uint32 & chunk)
             default:
                 break;
             }
-
 
             ++itr;
         } else
@@ -227,7 +230,7 @@ bool ChunkSelector::select(PieceDownloader* pd, Uint32 & chunk)
     return false;
 }
 
-void ChunkSelector::dataChecked(const BitSet & ok_chunks, Uint32 from, Uint32 to)
+void ChunkSelector::dataChecked(const BitSet &ok_chunks, Uint32 from, Uint32 to)
 {
     for (Uint32 i = from; i < ok_chunks.getNumBits() && i <= to; i++) {
         bool in_chunks = std::find(chunks.begin(), chunks.end(), i) != chunks.end();
@@ -270,11 +273,11 @@ struct ChunkRange {
     Uint32 len;
 };
 
-bool ChunkSelector::selectRange(Uint32 & from, Uint32 & to, Uint32 max_len)
+bool ChunkSelector::selectRange(Uint32 &from, Uint32 &to, Uint32 max_len)
 {
     Uint32 max_range_len = max_len;
 
-    const BitSet & bs = cman->getBitSet();
+    const BitSet &bs = cman->getBitSet();
     Uint32 num_chunks = cman->getNumChunks();
     ChunkRange curr = {0, 0};
     ChunkRange best = {0, 0};
@@ -315,4 +318,3 @@ bool ChunkSelector::selectRange(Uint32 & from, Uint32 & to, Uint32 max_len)
     return false;
 }
 }
-

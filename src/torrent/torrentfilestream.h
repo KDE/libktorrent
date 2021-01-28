@@ -22,11 +22,10 @@
 #define BT_TORRENTFILESTREAM_H
 
 #include <QIODevice>
-#include <QWeakPointer>
 #include <QSharedPointer>
+#include <QWeakPointer>
 #include <ktorrent_export.h>
 #include <util/constants.h>
-
 
 namespace bt
 {
@@ -35,7 +34,6 @@ class TorrentControl;
 class TorrentInterface;
 class BitSet;
 
-
 /**
     QIODevice which streams a file of a torrent or the whole torrent (for single file torrents)
     This object should not be manually constructed.
@@ -43,8 +41,8 @@ class BitSet;
 class KTORRENT_EXPORT TorrentFileStream : public QIODevice
 {
 public:
-    TorrentFileStream(TorrentControl* tc, ChunkManager* cman, bool streaming_mode, QObject* parent);
-    TorrentFileStream(TorrentControl* tc, Uint32 file_index, ChunkManager* cman, bool streaming_mode, QObject* parent);
+    TorrentFileStream(TorrentControl *tc, ChunkManager *cman, bool streaming_mode, QObject *parent);
+    TorrentFileStream(TorrentControl *tc, Uint32 file_index, ChunkManager *cman, bool streaming_mode, QObject *parent);
     ~TorrentFileStream() override;
 
     /// Open the device (only readonly access will be allowed)
@@ -81,7 +79,7 @@ public:
     QString path() const;
 
     /// Get a BitSet of all the chunks of this TorrentFileStream
-    const BitSet & chunksBitSet() const;
+    const BitSet &chunksBitSet() const;
 
     /// Get the current chunk relative to the first chunk of the file
     Uint32 currentChunk() const;
@@ -90,15 +88,15 @@ public:
     typedef QWeakPointer<TorrentFileStream> WPtr;
 
 protected:
-    qint64 writeData(const char* data, qint64 len) override;
-    qint64 readData(char* data, qint64 maxlen) override;
+    qint64 writeData(const char *data, qint64 len) override;
+    qint64 readData(char *data, qint64 maxlen) override;
     void emitReadChannelFinished();
 
 private:
-    void chunkDownloaded(bt::TorrentInterface* tc, bt::Uint32 chunk);
+    void chunkDownloaded(bt::TorrentInterface *tc, bt::Uint32 chunk);
 
     class Private;
-    Private* d;
+    Private *d;
 };
 
 }

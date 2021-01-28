@@ -20,14 +20,13 @@
 
 #include "pipe.h"
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <util/log.h>
-#include <util/functions.h>
 #include "net/socket.h"
-
+#include <fcntl.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 namespace bt
 {
@@ -61,7 +60,9 @@ int socketpair(int sockets[2])
 }
 #endif
 
-Pipe::Pipe() : reader(-1), writer(-1)
+Pipe::Pipe()
+    : reader(-1)
+    , writer(-1)
 {
     int sockets[2];
 #ifndef Q_WS_WIN
@@ -93,16 +94,16 @@ Pipe::~Pipe()
 #endif
 }
 
-int Pipe::read(Uint8* buffer, int max_len)
+int Pipe::read(Uint8 *buffer, int max_len)
 {
 #ifndef Q_WS_WIN
     return ::read(reader, buffer, max_len);
 #else
-    return ::recv(reader, (char*)buffer, max_len, 0);
+    return ::recv(reader, (char *)buffer, max_len, 0);
 #endif
 }
 
-int Pipe::write(const bt::Uint8* data, int len)
+int Pipe::write(const bt::Uint8 *data, int len)
 {
 #ifndef Q_WS_WIN
     return ::write(writer, data, len);
@@ -112,4 +113,3 @@ int Pipe::write(const bt::Uint8* data, int len)
 }
 
 }
-

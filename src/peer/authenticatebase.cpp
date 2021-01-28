@@ -18,17 +18,18 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "authenticatebase.h"
-#include <mse/encryptedpacketsocket.h>
-#include <util/sha1hash.h>
-#include <util/log.h>
 #include <dht/dhtbase.h>
-#include <torrent/globals.h>
+#include <mse/encryptedpacketsocket.h>
 #include <peer/peerid.h>
+#include <torrent/globals.h>
+#include <util/log.h>
+#include <util/sha1hash.h>
 
 namespace bt
 {
-
-AuthenticateBase::AuthenticateBase() : finished(false), local(false)
+AuthenticateBase::AuthenticateBase()
+    : finished(false)
+    , local(false)
 {
     connect(&timer, &QTimer::timeout, this, &AuthenticateBase::onTimeout);
     timer.setSingleShot(true);
@@ -38,8 +39,10 @@ AuthenticateBase::AuthenticateBase() : finished(false), local(false)
     ext_support = 0;
 }
 
-
-AuthenticateBase::AuthenticateBase(mse::EncryptedPacketSocket::Ptr  s) : sock(s), finished(false), local(false)
+AuthenticateBase::AuthenticateBase(mse::EncryptedPacketSocket::Ptr s)
+    : sock(s)
+    , finished(false)
+    , local(false)
 {
     connect(&timer, &QTimer::timeout, this, &AuthenticateBase::onTimeout);
     timer.setSingleShot(true);
@@ -48,25 +51,25 @@ AuthenticateBase::AuthenticateBase(mse::EncryptedPacketSocket::Ptr  s) : sock(s)
     bytes_of_handshake_received = 0;
     ext_support = 0;
 }
-
 
 AuthenticateBase::~AuthenticateBase()
 {
 }
 
-void AuthenticateBase::sendHandshake(const SHA1Hash & info_hash, const PeerID & our_peer_id)
+void AuthenticateBase::sendHandshake(const SHA1Hash &info_hash, const PeerID &our_peer_id)
 {
     //  Out() << "AuthenticateBase::sendHandshake" << endl;
-    if (!sock) return;
+    if (!sock)
+        return;
 
     Uint8 hs[68];
     makeHandshake(hs, info_hash, our_peer_id);
     sock->sendData(hs, 68);
 }
 
-void AuthenticateBase::makeHandshake(Uint8* hs, const SHA1Hash & info_hash, const PeerID & our_peer_id)
+void AuthenticateBase::makeHandshake(Uint8 *hs, const SHA1Hash &info_hash, const PeerID &our_peer_id)
 {
-    const char* pstr = "BitTorrent protocol";
+    const char *pstr = "BitTorrent protocol";
     hs[0] = 19;
     memcpy(hs + 1, pstr, 19);
     memset(hs + 20, 0x00, 8);
@@ -116,7 +119,7 @@ void AuthenticateBase::onReadyRead()
         return;
     }
 
-    const char* pstr = "BitTorrent protocol";
+    const char *pstr = "BitTorrent protocol";
     if (memcmp(pstr, handshake + 1, 19) != 0) {
         onFinish(false);
         return;
@@ -151,5 +154,6 @@ void AuthenticateBase::onTimeout()
 }
 
 void AuthenticateBase::onReadyWrite()
-{}
+{
+}
 }

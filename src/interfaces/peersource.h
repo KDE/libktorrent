@@ -20,16 +20,15 @@
 #ifndef BTPEERSOURCE_H
 #define BTPEERSOURCE_H
 
-#include <qobject.h>
-#include <qlist.h>
-#include <util/constants.h>
 #include <ktorrent_export.h>
 #include <net/address.h>
+#include <qlist.h>
+#include <qobject.h>
+#include <util/constants.h>
 
 namespace bt
 {
 class WaitJob;
-
 
 /**
  * @author Joris Guisson <joris.guisson@gmail.com>
@@ -37,15 +36,13 @@ class WaitJob;
  * This class is the base class for all classes who which to provide potential peers
  * for torrents. PeerSources should work independently and should emit a signal when they
  * have peers ready.
-*/
+ */
 class KTORRENT_EXPORT PeerSource : public QObject
 {
     Q_OBJECT
 public:
     PeerSource();
     ~PeerSource() override;
-
-
 
     /**
      * Take the first peer from the list. The item
@@ -54,7 +51,7 @@ public:
      * @param local Is this is a peer on the local network
      * @return true If there was one available, false if not
      */
-    bool takePeer(net::Address & addr, bool & local);
+    bool takePeer(net::Address &addr, bool &local);
 
     /**
      * Add a peer to the list of peers.
@@ -62,7 +59,7 @@ public:
      * @param port The port
      * @param local Whether or not the peer is on the local network
      */
-    void addPeer(const net::Address & addr, bool local = false);
+    void addPeer(const net::Address &addr, bool local = false);
 
 public Q_SLOTS:
     /**
@@ -73,7 +70,7 @@ public Q_SLOTS:
     /**
      * Stop gathering peers.
      */
-    virtual void stop(bt::WaitJob* wjob = 0) = 0;
+    virtual void stop(bt::WaitJob *wjob = 0) = 0;
 
     /**
      * The torrent has finished downloading.
@@ -97,12 +94,11 @@ Q_SIGNALS:
      * This signal should be emitted when a new batch of peers is ready.
      * @param ps The PeerSource
      */
-    void peersReady(PeerSource* ps);
-
+    void peersReady(PeerSource *ps);
 
 private:
     /// List to keep the potential peers in.
-    QList<QPair<net::Address, bool> > peers;
+    QList<QPair<net::Address, bool>> peers;
 };
 
 }

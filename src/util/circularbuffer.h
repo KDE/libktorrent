@@ -27,7 +27,6 @@
 
 namespace bt
 {
-
 /**
     Circular buffer class
 */
@@ -43,7 +42,7 @@ public:
         @param max_len Maximum amount to read
         @return The amount read
     */
-    virtual bt::Uint32 read(bt::Uint8* ptr, bt::Uint32 max_len);
+    virtual bt::Uint32 read(bt::Uint8 *ptr, bt::Uint32 max_len);
 
     /**
         Write up to len bytes from data and store it in the window.
@@ -51,7 +50,7 @@ public:
         @param max_len Amount to write
         @return The amount written
     */
-    virtual bt::Uint32 write(const bt::Uint8* ptr, bt::Uint32 len);
+    virtual bt::Uint32 write(const bt::Uint8 *ptr, bt::Uint32 len);
 
     /// Is the buffer empty
     bool empty() const
@@ -84,14 +83,14 @@ public:
     }
 
 private:
-    typedef std::pair<bt::Uint8*, bt::Uint32> Range;
+    typedef std::pair<bt::Uint8 *, bt::Uint32> Range;
 
     /// Get the first range
     Range firstRange();
     Range secondRange();
 
 private:
-    bt::Uint8* data;
+    bt::Uint8 *data;
     bt::Uint32 buf_capacity;
     bt::Uint32 start;
     bt::Uint32 buf_size;

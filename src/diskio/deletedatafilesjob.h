@@ -21,14 +21,13 @@
 #ifndef BTDELETEDATAFILESJOB_H
 #define BTDELETEDATAFILESJOB_H
 
-#include <util/ptrmap.h>
 #include <QString>
 #include <QUrl>
 #include <torrent/job.h>
+#include <util/ptrmap.h>
 
 namespace bt
 {
-
 /**
  * @author Joris Guisson <joris.guisson@gmail.com>
  * KIO::Job to delete all the files of a torrent.
@@ -40,21 +39,21 @@ public:
     /**
      * @param base Base directory, the data files are in
      */
-    DeleteDataFilesJob(const QString & base);
+    DeleteDataFilesJob(const QString &base);
     ~DeleteDataFilesJob() override;
 
     /**
      * Add a file to delete
      * @param file File
      */
-    void addFile(const QString & file);
+    void addFile(const QString &file);
 
     /**
      * Check all directories in fpath and delete them if they are empty.
      * The base path passed in the constructor, will be prepended to fpath.
      * @param fpath The file path
      */
-    void addEmptyDirectoryCheck(const QString & fpath);
+    void addEmptyDirectoryCheck(const QString &fpath);
 
     /// Start the job
     void start() override;
@@ -63,25 +62,25 @@ public:
     void kill(bool quietly) override;
 
 private Q_SLOTS:
-    void onDeleteJobDone(KJob* j);
+    void onDeleteJobDone(KJob *j);
 
 private:
     struct DirTree {
         QString name;
         bt::PtrMap<QString, DirTree> subdirs;
 
-        DirTree(const QString & name);
+        DirTree(const QString &name);
         ~DirTree();
 
-        void insert(const QString & fpath);
-        void doDeleteOnEmpty(const QString & base);
+        void insert(const QString &fpath);
+        void doDeleteOnEmpty(const QString &base);
     };
 
 private:
     QList<QUrl> files;
     QString base;
-    DirTree* directory_tree;
-    KIO::Job* active_job;
+    DirTree *directory_tree;
+    KIO::Job *active_job;
 };
 
 }

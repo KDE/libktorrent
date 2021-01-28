@@ -24,15 +24,14 @@
 
 namespace utp
 {
-
-UTPServerThread::UTPServerThread(UTPServer* srv): srv(srv)
+UTPServerThread::UTPServerThread(UTPServer *srv)
+    : srv(srv)
 {
     srv->moveToThread(this);
 }
 
 UTPServerThread::~UTPServerThread()
 {
-
 }
 
 void UTPServerThread::run()
@@ -42,4 +41,3 @@ void UTPServerThread::run()
 }
 
 }
-

@@ -34,63 +34,66 @@ using namespace bt;
 
 namespace dht
 {
-
 Key::Key()
-{}
-
-Key::Key(const bt::SHA1Hash & k) : bt::SHA1Hash(k)
 {
 }
 
-Key::Key(const bt::Uint8* d) : bt::SHA1Hash(d)
+Key::Key(const bt::SHA1Hash &k)
+    : bt::SHA1Hash(k)
 {
 }
 
-Key::Key(const QByteArray & ba)
+Key::Key(const bt::Uint8 *d)
+    : bt::SHA1Hash(d)
+{
+}
+
+Key::Key(const QByteArray &ba)
 {
     memcpy(hash, ba.data(), std::min(20, ba.size()));
 }
 
 Key::~Key()
-{}
-
-bool Key::operator == (const Key & other) const
 {
-    return bt::SHA1Hash::operator ==(other);
 }
 
-bool Key::operator != (const Key & other) const
+bool Key::operator==(const Key &other) const
 {
-    return !operator == (other);
+    return bt::SHA1Hash::operator==(other);
 }
 
-bool Key::operator < (const Key & other) const
+bool Key::operator!=(const Key &other) const
+{
+    return !operator==(other);
+}
+
+bool Key::operator<(const Key &other) const
 {
     return memcmp(hash, other.hash, 20) < 0;
 }
 
-bool Key::operator <= (const Key & other) const
+bool Key::operator<=(const Key &other) const
 {
     return memcmp(hash, other.hash, 20) <= 0;
 }
 
-bool Key::operator > (const Key & other) const
+bool Key::operator>(const Key &other) const
 {
     return memcmp(hash, other.hash, 20) > 0;
 }
 
-bool Key::operator >= (const Key & other) const
+bool Key::operator>=(const Key &other) const
 {
     return memcmp(hash, other.hash, 20) >= 0;
 }
 
-Key operator + (const dht::Key& a, const dht::Key& b)
+Key operator+(const dht::Key &a, const dht::Key &b)
 {
     dht::Key result;
     bt::Uint64 sum = 0;
 
     for (int i = 4; i >= 0; i--) {
-        sum += (bt::Uint64) htobe32(a.hash[i]) + htobe32(b.hash[i]);
+        sum += (bt::Uint64)htobe32(a.hash[i]) + htobe32(b.hash[i]);
         result.hash[i] = htobe32(sum & 0xFFFFFFFF);
         sum = sum >> 32;
     }
@@ -98,7 +101,7 @@ Key operator + (const dht::Key& a, const dht::Key& b)
     return result;
 }
 
-Key operator + (const Key & a, bt::Uint8 value)
+Key operator+(const Key &a, bt::Uint8 value)
 {
     dht::Key result(a);
 
@@ -112,22 +115,21 @@ Key operator + (const Key & a, bt::Uint8 value)
     return result;
 }
 
-Key Key::operator / (int value) const
+Key Key::operator/(int value) const
 {
     dht::Key result;
     bt::Uint64 remainder = 0;
 
     for (int i = 0; i < 5; i++) {
         const bt::Uint32 h = htobe32(hash[i]);
-        result.hash[i]    =  htobe32((h + remainder) / value);
+        result.hash[i] = htobe32((h + remainder) / value);
         remainder = ((h + remainder) % value) << 32;
     }
 
     return result;
 }
 
-
-Key Key::distance(const Key & a, const Key & b)
+Key Key::distance(const Key &a, const Key &b)
 {
     return a ^ b;
 }
@@ -135,14 +137,14 @@ Key Key::distance(const Key & a, const Key & b)
 Key Key::random()
 {
     Key k;
-    Uint32* h = k.hash;
+    Uint32 *h = k.hash;
     for (int i = 0; i < 5; i++) {
         h[i] = QRandomGenerator::global()->generate();
     }
     return k;
 }
 
-Key operator - (const Key & a, const Key & b)
+Key operator-(const Key &a, const Key &b)
 {
     dht::Key result;
     bt::Uint32 carry = 0;
@@ -162,7 +164,7 @@ Key operator - (const Key & a, const Key & b)
     return result;
 }
 
-Key Key::mid(const dht::Key& a, const dht::Key& b)
+Key Key::mid(const dht::Key &a, const dht::Key &b)
 {
     if (a <= b)
         return a + (b - a) / 2;
@@ -184,6 +186,5 @@ Key Key::min()
 {
     return Key(val_min);
 }
-
 
 }

@@ -19,19 +19,18 @@
  ***************************************************************************/
 
 #include "bencoder.h"
-#include <util/file.h>
 #include <QByteArray>
 #include <QIODevice>
+#include <util/file.h>
 
 namespace bt
 {
-
-
-BEncoderFileOutput::BEncoderFileOutput(File* fptr) : fptr(fptr)
+BEncoderFileOutput::BEncoderFileOutput(File *fptr)
+    : fptr(fptr)
 {
 }
 
-void BEncoderFileOutput::write(const char* str, Uint32 len)
+void BEncoderFileOutput::write(const char *str, Uint32 len)
 {
     if (fptr)
         fptr->write(str, len);
@@ -39,11 +38,13 @@ void BEncoderFileOutput::write(const char* str, Uint32 len)
 
 ////////////////////////////////////
 
-BEncoderBufferOutput::BEncoderBufferOutput(QByteArray & data) : data(data), ptr(0)
+BEncoderBufferOutput::BEncoderBufferOutput(QByteArray &data)
+    : data(data)
+    , ptr(0)
 {
 }
 
-void BEncoderBufferOutput::write(const char* str, Uint32 len)
+void BEncoderBufferOutput::write(const char *str, Uint32 len)
 {
     if (ptr + len > (Uint32)data.size())
         data.resize(ptr + len);
@@ -54,33 +55,37 @@ void BEncoderBufferOutput::write(const char* str, Uint32 len)
 
 ////////////////////////////////////
 
-
-BEncoderIODeviceOutput::BEncoderIODeviceOutput(QIODevice* dev) : dev(dev)
+BEncoderIODeviceOutput::BEncoderIODeviceOutput(QIODevice *dev)
+    : dev(dev)
 {
 }
 
-void BEncoderIODeviceOutput::write(const char* str, Uint32 len)
+void BEncoderIODeviceOutput::write(const char *str, Uint32 len)
 {
     dev->write(str, len);
 }
 
-
 ////////////////////////////////////
 
-BEncoder::BEncoder(File* fptr) : out(0), del(true)
+BEncoder::BEncoder(File *fptr)
+    : out(0)
+    , del(true)
 {
     out = new BEncoderFileOutput(fptr);
 }
 
-BEncoder::BEncoder(BEncoderOutput* out) : out(out), del(true)
+BEncoder::BEncoder(BEncoderOutput *out)
+    : out(out)
+    , del(true)
 {
 }
 
-BEncoder::BEncoder(QIODevice* dev) : out(0), del(true)
+BEncoder::BEncoder(QIODevice *dev)
+    : out(0)
+    , del(true)
 {
     out = new BEncoderIODeviceOutput(dev);
 }
-
 
 BEncoder::~BEncoder()
 {
@@ -90,21 +95,24 @@ BEncoder::~BEncoder()
 
 void BEncoder::beginDict()
 {
-    if (!out) return;
+    if (!out)
+        return;
 
     out->write("d", 1);
 }
 
 void BEncoder::beginList()
 {
-    if (!out) return;
+    if (!out)
+        return;
 
     out->write("l", 1);
 }
 
 void BEncoder::write(bool val)
 {
-    if (!out) return;
+    if (!out)
+        return;
 
     QByteArray s = QStringLiteral("i%1e").arg(val ? 1 : 0).toUtf8();
     out->write(s.constData(), s.length());
@@ -112,14 +120,16 @@ void BEncoder::write(bool val)
 
 void BEncoder::write(float val)
 {
-    if (!out) return;
+    if (!out)
+        return;
 
     write(QByteArray::number(val, 'f'));
 }
 
 void BEncoder::write(Uint32 val)
 {
-    if (!out) return;
+    if (!out)
+        return;
 
     QByteArray s = QStringLiteral("i%1e").arg(val).toUtf8();
     out->write(s.constData(), s.length());
@@ -127,23 +137,26 @@ void BEncoder::write(Uint32 val)
 
 void BEncoder::write(Uint64 val)
 {
-    if (!out) return;
+    if (!out)
+        return;
 
     QByteArray s = QStringLiteral("i%1e").arg(val).toUtf8();
     out->write(s.constData(), s.length());
 }
 
-void BEncoder::write(const char* str)
+void BEncoder::write(const char *str)
 {
-    if (!out) return;
+    if (!out)
+        return;
 
     QByteArray s = QStringLiteral("%1:%2").arg(strlen(str)).arg(QString::fromUtf8(str)).toUtf8();
     out->write(s.constData(), s.length());
 }
 
-void BEncoder::write(const QByteArray & data)
+void BEncoder::write(const QByteArray &data)
 {
-    if (!out) return;
+    if (!out)
+        return;
 
     QByteArray s = QByteArray::number(data.size());
     out->write(s.constData(), s.length());
@@ -151,19 +164,21 @@ void BEncoder::write(const QByteArray & data)
     out->write(data.constData(), data.size());
 }
 
-void BEncoder::write(const Uint8* data, Uint32 size)
+void BEncoder::write(const Uint8 *data, Uint32 size)
 {
-    if (!out) return;
+    if (!out)
+        return;
 
     QByteArray s = QByteArray::number(size);
     out->write(s.constData(), s.length());
     out->write(":", 1);
-    out->write((const char*)data, size);
+    out->write((const char *)data, size);
 }
 
 void BEncoder::end()
 {
-    if (!out) return;
+    if (!out)
+        return;
 
     out->write("e", 1);
 }

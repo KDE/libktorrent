@@ -18,13 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #ifndef BT_MAGNETLINK_H
 #define BT_MAGNETLINK_H
 
+#include <QUrl>
 #include <ktorrent_export.h>
 #include <util/sha1hash.h>
-#include <QUrl>
 
 namespace bt
 {
@@ -40,18 +39,19 @@ namespace bt
 class KTORRENT_EXPORT MagnetLink
 {
     friend class MagnetDownloader;
+
 public:
     MagnetLink();
-    MagnetLink(const MagnetLink & mlink);
-    MagnetLink(const QUrl& mlink);
-    MagnetLink(const QString & mlink);
+    MagnetLink(const MagnetLink &mlink);
+    MagnetLink(const QUrl &mlink);
+    MagnetLink(const QString &mlink);
     ~MagnetLink();
 
     /// Assignment operator
-    MagnetLink & operator = (const MagnetLink & mlink);
+    MagnetLink &operator=(const MagnetLink &mlink);
 
     /// Equality operator
-    bool operator == (const MagnetLink & mlink) const;
+    bool operator==(const MagnetLink &mlink) const;
 
     /// Is this a valid magnet link
     bool isValid() const
@@ -90,14 +90,14 @@ public:
     }
 
     /// Get the info hash
-    const SHA1Hash & infoHash() const
+    const SHA1Hash &infoHash() const
     {
         return info_hash;
     }
 
 private:
-    void parse(const QUrl& mlink);
-    Uint8 charToHex(const QChar & ch);
+    void parse(const QUrl &mlink);
+    Uint8 charToHex(const QChar &ch);
     QString base32ToHexString(const QString &s);
 
 private:

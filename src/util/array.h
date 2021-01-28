@@ -20,25 +20,26 @@
 #ifndef BTARRAY_H
 #define BTARRAY_H
 
-#include <ktorrent_export.h>
 #include "constants.h"
+#include <ktorrent_export.h>
 
 namespace bt
 {
-
 /**
  * @author Joris Guisson
  *
  * Template array classes, makes creating dynamic buffers easier
  * and safer.
  */
-template<class T>
-class KTORRENT_EXPORT Array
+template<class T> class KTORRENT_EXPORT Array
 {
     Uint32 num;
-    T* data;
+    T *data;
+
 public:
-    Array(Uint32 num = 0) : num(num), data(0)
+    Array(Uint32 num = 0)
+        : num(num)
+        , data(0)
     {
         if (num > 0)
             data = new T[num];
@@ -46,23 +47,23 @@ public:
 
     ~Array()
     {
-        delete [] data;
+        delete[] data;
     }
 
-    T & operator [](Uint32 i)
+    T &operator[](Uint32 i)
     {
         return data[i];
     }
-    const T & operator [](Uint32 i) const
+    const T &operator[](Uint32 i) const
     {
         return data[i];
     }
 
-    operator const T* () const
+    operator const T *() const
     {
         return data;
     }
-    operator T* ()
+    operator T *()
     {
         return data;
     }

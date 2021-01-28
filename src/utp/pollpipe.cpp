@@ -19,17 +19,17 @@
  ***************************************************************************/
 
 #include "pollpipe.h"
-#include <util/log.h>
 #include "connection.h"
+#include <util/log.h>
 
 using namespace bt;
 
 namespace utp
 {
-
-PollPipe::PollPipe(net::Poll::Mode mode) : mode(mode), poll_index(-1)
+PollPipe::PollPipe(net::Poll::Mode mode)
+    : mode(mode)
+    , poll_index(-1)
 {
-
 }
 
 PollPipe::~PollPipe()
@@ -44,4 +44,3 @@ void PollPipe::reset()
 }
 
 }
-

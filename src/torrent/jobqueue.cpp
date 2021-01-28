@@ -18,26 +18,25 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "jobqueue.h"
-#include <util/log.h>
 #include "job.h"
 #include "torrentcontrol.h"
-
+#include <util/log.h>
 
 namespace bt
 {
-
-JobQueue::JobQueue(bt::TorrentControl* parent): QObject(parent), tc(parent), restart(false)
+JobQueue::JobQueue(bt::TorrentControl *parent)
+    : QObject(parent)
+    , tc(parent)
+    , restart(false)
 {
-
 }
-
 
 JobQueue::~JobQueue()
 {
     killAll();
 }
 
-void JobQueue::enqueue(Job* job)
+void JobQueue::enqueue(Job *job)
 {
     queue.append(job);
     if (queue.count() == 1)
@@ -49,7 +48,7 @@ bool JobQueue::runningJobs() const
     return queue.count() > 0;
 }
 
-Job* JobQueue::currentJob()
+Job *JobQueue::currentJob()
 {
     return queue.isEmpty() ? 0 : queue.front();
 }
@@ -59,7 +58,7 @@ void JobQueue::startNextJob()
     if (queue.isEmpty())
         return;
 
-    Job* j = queue.front();
+    Job *j = queue.front();
     connect(j, &Job::result, this, &JobQueue::jobDone);
     if (j->stopTorrent() && tc->getStats().running) {
         // stop the torrent if the job requires it
@@ -69,7 +68,7 @@ void JobQueue::startNextJob()
     j->start();
 }
 
-void JobQueue::jobDone(KJob* job)
+void JobQueue::jobDone(KJob *job)
 {
     if (queue.isEmpty() || queue.front() != job)
         return;
@@ -88,7 +87,6 @@ void JobQueue::jobDone(KJob* job)
     }
 }
 
-
 void JobQueue::killAll()
 {
     if (queue.isEmpty())
@@ -100,4 +98,3 @@ void JobQueue::killAll()
 }
 
 }
-

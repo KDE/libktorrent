@@ -20,12 +20,12 @@
 #ifndef DHTRPCMSG_H
 #define DHTRPCMSG_H
 
-#include <QString>
+#include "database.h"
+#include "key.h"
 #include <QSharedPointer>
+#include <QString>
 #include <ktorrent_export.h>
 #include <util/constants.h>
-#include "key.h"
-#include "database.h"
 
 namespace bt
 {
@@ -34,7 +34,6 @@ class BDictNode;
 
 namespace dht
 {
-
 #define MAX_TOKEN_SIZE 40
 
 class DHT;
@@ -63,12 +62,12 @@ const QByteArray ERR_DHT = "e";
 
 /**
  * Base class for all RPC messages.
-*/
+ */
 class KTORRENT_EXPORT RPCMsg
 {
 public:
     RPCMsg();
-    RPCMsg(const QByteArray & mtid, Method m, Type type, const Key & id);
+    RPCMsg(const QByteArray &mtid, Method m, Type type, const Key &id);
     virtual ~RPCMsg();
 
     typedef QSharedPointer<RPCMsg> Ptr;
@@ -78,7 +77,7 @@ public:
      * The message should then call the appropriate DHT function (double dispatch)
      * @param dh_table Pointer to DHT
      */
-    virtual void apply(DHT* dh_table) = 0;
+    virtual void apply(DHT *dh_table) = 0;
 
     /**
      * Print the message for debugging purposes.
@@ -89,53 +88,53 @@ public:
      * BEncode the message.
      * @param arr Data array
      */
-    virtual void encode(QByteArray & arr) const = 0;
+    virtual void encode(QByteArray &arr) const = 0;
 
     /**
      * Parse the message
      * @param dict Data dictionary
      * @throws bt::Error when something goes wrong
      **/
-    virtual void parse(bt::BDictNode* dict);
+    virtual void parse(bt::BDictNode *dict);
 
     /// Set the origin (i.e. where the message came from)
-    void setOrigin(const net::Address & o)
+    void setOrigin(const net::Address &o)
     {
         origin = o;
     }
 
     /// Get the origin
-    const net::Address & getOrigin() const
+    const net::Address &getOrigin() const
     {
         return origin;
     }
 
     /// Set the origin (i.e. where the message came from)
-    void setDestination(const net::Address & o)
+    void setDestination(const net::Address &o)
     {
         origin = o;
     }
 
     /// Get the origin
-    const net::Address & getDestination() const
+    const net::Address &getDestination() const
     {
         return origin;
     }
 
     /// Get the MTID
-    const QByteArray & getMTID() const
+    const QByteArray &getMTID() const
     {
         return mtid;
     }
 
     /// Set the MTID
-    void setMTID(const QByteArray & m)
+    void setMTID(const QByteArray &m)
     {
         mtid = m;
     }
 
     /// Get the id of the sender
-    const Key & getID() const
+    const Key &getID() const
     {
         return id;
     }
@@ -159,7 +158,6 @@ protected:
     Key id;
     net::Address origin;
 };
-
 
 }
 

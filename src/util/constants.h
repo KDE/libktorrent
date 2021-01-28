@@ -72,19 +72,14 @@ const Uint8 HAVE_ALL = 14;
 const Uint8 HAVE_NONE = 15;
 const Uint8 REJECT_REQUEST = 16;
 const Uint8 ALLOWED_FAST = 17;
-const Uint8 EXTENDED = 20;  // extension protocol message
-
+const Uint8 EXTENDED = 20; // extension protocol message
 
 // flags for things which a peer supports
 const Uint32 DHT_SUPPORT = 0x01;
 const Uint32 EXT_PROT_SUPPORT = 0x10;
 const Uint32 FAST_EXT_SUPPORT = 0x04;
 
-enum TransportProtocol {
-    TCP,
-    UTP
-};
+enum TransportProtocol { TCP, UTP };
 }
-
 
 #endif

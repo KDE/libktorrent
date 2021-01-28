@@ -21,11 +21,10 @@
 #ifndef UTP_UTPPROTOCOL_H
 #define UTP_UTPPROTOCOL_H
 
-#include <QtGlobal>
 #include <QString>
+#include <QtGlobal>
 #include <ktorrent_export.h>
 #include <util/constants.h>
-
 
 namespace utp
 {
@@ -47,8 +46,8 @@ UTP header:
 */
 
 struct KTORRENT_EXPORT Header {
-    unsigned int version: 4;
-    unsigned int type: 4;
+    unsigned int version : 4;
+    unsigned int type : 4;
     bt::Uint8 extension;
     bt::Uint16 connection_id;
     bt::Uint32 timestamp_microseconds;
@@ -57,17 +56,22 @@ struct KTORRENT_EXPORT Header {
     bt::Uint16 seq_nr;
     bt::Uint16 ack_nr;
 
-    void read(const bt::Uint8* data);
-    void write(bt::Uint8* data) const;
+    void read(const bt::Uint8 *data);
+    void write(bt::Uint8 *data) const;
     static bt::Uint32 size();
 };
 
 struct SelectiveAck {
-    bt::Uint8* bitmask;
+    bt::Uint8 *bitmask;
     bt::Uint8 extension;
     bt::Uint8 length;
 
-    SelectiveAck(): bitmask(NULL), extension(0), length(0) {}
+    SelectiveAck()
+        : bitmask(NULL)
+        , extension(0)
+        , length(0)
+    {
+    }
 };
 
 struct ExtensionBits {
@@ -116,7 +120,9 @@ const bt::Uint32 IP_AND_UDP_OVERHEAD = 28;
 /*
  Test if a bit is acked
 UTP standard:
-The bitmask has reverse byte order. The first byte represents packets [ack_nr + 2, ack_nr + 2 + 7] in reverse order. The least significant bit in the byte represents ack_nr + 2, the most significant bit in the byte represents ack_nr + 2 + 7. The next byte in the mask represents [ack_nr + 2 + 8, ack_nr + 2 + 15] in reverse order, and so on. The bitmask is not limited to 32 bits but can be of any size.
+The bitmask has reverse byte order. The first byte represents packets [ack_nr + 2, ack_nr + 2 + 7] in reverse order. The least significant bit in the byte
+represents ack_nr + 2, the most significant bit in the byte represents ack_nr + 2 + 7. The next byte in the mask represents [ack_nr + 2 + 8, ack_nr + 2 + 15] in
+reverse order, and so on. The bitmask is not limited to 32 bits but can be of any size.
 
 Here is the layout of a bitmask representing the first 32 packet acks represented in a selective ACK bitfield:
 
@@ -127,26 +133,26 @@ Here is the layout of a bitmask representing the first 32 packet acks represente
 
 The number in the diagram maps the bit in the bitmask to the offset to add to ack_nr in order to calculate the sequence number that the bit is ACKing.
 */
-inline bool Acked(const SelectiveAck* sack, bt::Uint16 bit)
+inline bool Acked(const SelectiveAck *sack, bt::Uint16 bit)
 {
     // check bounds
     if (bit < 2 || bit > 8 * sack->length + 1)
         return false;
 
-    const bt::Uint8* bitset = sack->bitmask;
+    const bt::Uint8 *bitset = sack->bitmask;
     int byte = (bit - 2) / 8;
     int bit_off = (bit - 2) % 8;
     return bitset[byte] & (0x01 << bit_off);
 }
 
 // Turn on a bit in the SelectiveAck
-inline void Ack(SelectiveAck* sack, bt::Uint16 bit)
+inline void Ack(SelectiveAck *sack, bt::Uint16 bit)
 {
     // check bounds
     if (bit < 2 || bit > 8 * sack->length + 1)
         return;
 
-    bt::Uint8* bitset = sack->bitmask;
+    bt::Uint8 *bitset = sack->bitmask;
     int byte = (bit - 2) / 8;
     int bit_off = (bit - 2) % 8;
     bitset[byte] |= (0x01 << bit_off);
@@ -158,18 +164,18 @@ inline void Ack(SelectiveAck* sack, bt::Uint16 bit)
 class KTORRENT_EXPORT PacketParser
 {
 public:
-    PacketParser(const QByteArray & packet);
-    PacketParser(const bt::Uint8* packet, bt::Uint32 size);
+    PacketParser(const QByteArray &packet);
+    PacketParser(const bt::Uint8 *packet, bt::Uint32 size);
     ~PacketParser();
 
     /// Parses the packet, returns false on error
     bool parse();
 
-    const Header* header() const
+    const Header *header() const
     {
         return &hdr;
     }
-    const SelectiveAck* selectiveAck() const;
+    const SelectiveAck *selectiveAck() const;
     bt::Uint32 dataOffset() const
     {
         return data_off;
@@ -180,7 +186,7 @@ public:
     }
 
 private:
-    const bt::Uint8* packet;
+    const bt::Uint8 *packet;
     Header hdr;
     SelectiveAck sack;
     bool sack_found;

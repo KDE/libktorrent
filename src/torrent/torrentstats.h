@@ -22,9 +22,9 @@
 #define BT_TORRENTSTATS_H
 
 #include <QString>
-#include <util/constants.h>
 #include <ktorrent_export.h>
 #include <qdatetime.h>
+#include <util/constants.h>
 
 #if defined ERROR
 #undef ERROR

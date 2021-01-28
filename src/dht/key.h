@@ -21,13 +21,11 @@
 #define DHTKEY_H
 
 #include <QByteArray>
-#include <util/sha1hash.h>
 #include <ktorrent_export.h>
-
+#include <util/sha1hash.h>
 
 namespace dht
 {
-
 /**
  * @author Joris Guisson
  * @brief Key in the distributed hash table
@@ -48,19 +46,19 @@ public:
      * we just pass a SHA1Hash, Key's are automatically covered by this
      * @param k Hash to copy
      */
-    Key(const bt::SHA1Hash & k);
+    Key(const bt::SHA1Hash &k);
 
     /**
      * Make a key out of a bytearray
      * @param ba The QByteArray
      */
-    Key(const QByteArray & ba);
+    Key(const QByteArray &ba);
 
     /**
      * Make a key out of a 20 byte array.
      * @param d The array
      */
-    Key(const bt::Uint8* d);
+    Key(const bt::Uint8 *d);
 
     /// Destructor.
     ~Key() override;
@@ -82,70 +80,68 @@ public:
      * @param other The key to compare
      * @return true if this key is equal to other
      */
-    bool operator == (const Key & other) const;
+    bool operator==(const Key &other) const;
 
     /**
      * Inequality operator.
      * @param other The key to compare
      * @return true if this key is not equal to other
      */
-    bool operator != (const Key & other) const;
+    bool operator!=(const Key &other) const;
 
     /**
      * Smaller then operator.
      * @param other The key to compare
      * @return rue if this key is smaller then other
      */
-    bool operator < (const Key & other) const;
-
+    bool operator<(const Key &other) const;
 
     /**
      * Smaller then or equal operator.
      * @param other The key to compare
      * @return rue if this key is smaller then or equal to other
      */
-    bool operator <= (const Key & other) const;
-
+    bool operator<=(const Key &other) const;
 
     /**
      * Greater then operator.
      * @param other The key to compare
      * @return rue if this key is greater then other
      */
-    bool operator > (const Key & other) const;
+    bool operator>(const Key &other) const;
 
     /**
      * Greater then or equal operator.
      * @param other The key to compare
      * @return rue if this key is greater then or equal to other
      */
-    bool operator >= (const Key & other) const;
+    bool operator>=(const Key &other) const;
 
     /**
      * Divide by a number operator
      */
-    Key operator / (int value) const;
+    Key operator/(int value) const;
 
     /**
      * Addition for keys
      * @param a The first key
      * @param b The second key
      */
-    friend KTORRENT_EXPORT Key operator + (const Key & a, const Key & b);
+    friend KTORRENT_EXPORT Key operator+(const Key &a, const Key &b);
 
     /**
      * Subtraction for keys
      * @param a The first key
      * @param b The second key
      */
-    friend KTORRENT_EXPORT Key operator - (const Key & a, const Key & b);
+    friend KTORRENT_EXPORT Key operator-(const Key &a, const Key &b);
 
     /**
      * Addition for key and a value
      * @param a The key
      * @param b The value
      */
-    friend KTORRENT_EXPORT Key operator + (const Key & a, bt::Uint8 value);
+    friend KTORRENT_EXPORT Key operator+(const Key &a, bt::Uint8 value);
 
     /**
      * The distance of two keys is the keys xor together.
@@ -153,7 +149,7 @@ public:
      * @param b The second key
      * @return a xor b
      */
-    static Key distance(const Key & a, const Key & b);
+    static Key distance(const Key &a, const Key &b);
 
     /**
      * Calculate the middle between two keys.
@@ -161,7 +157,7 @@ public:
      * @param b The second key
      * @return The middle
      */
-    static Key mid(const Key & a, const Key & b);
+    static Key mid(const Key &a, const Key &b);
 };
 
 }

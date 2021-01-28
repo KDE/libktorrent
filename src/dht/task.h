@@ -20,9 +20,9 @@
 #ifndef DHTTASK_H
 #define DHTTASK_H
 
+#include "kbucket.h"
 #include "rpccall.h"
 #include "rpcserver.h"
-#include "kbucket.h"
 
 namespace net
 {
@@ -53,7 +53,7 @@ public:
      * @param node The node
      * @param parent The parent object
      */
-    Task(RPCServer* rpc, Node* node, QObject* parent);
+    Task(RPCServer *rpc, Node *node, QObject *parent);
     ~Task() override;
 
     /**
@@ -62,8 +62,7 @@ public:
      * @param kns The KClosestNodesSearch object
      * @param queued Is the task queued
      */
-    void start(const KClosestNodesSearch & kns, bool queued);
-
+    void start(const KClosestNodesSearch &kns, bool queued);
 
     /**
      *  Start the task, to be used when a task is queued.
@@ -71,10 +70,10 @@ public:
     void start();
 
     /// Decrements the outstanding_reqs
-    void onResponse(RPCCall* c, RPCMsg::Ptr rsp) override;
+    void onResponse(RPCCall *c, RPCMsg::Ptr rsp) override;
 
     /// Decrements the outstanding_reqs
-    void onTimeout(RPCCall* c) override;
+    void onTimeout(RPCCall *c) override;
 
     /**
      * Will continue the task, this will be called every time we have
@@ -87,13 +86,13 @@ public:
      * @param c The call
      * @param rsp The response
      */
-    virtual void callFinished(RPCCall* c, RPCMsg::Ptr rsp) = 0;
+    virtual void callFinished(RPCCall *c, RPCMsg::Ptr rsp) = 0;
 
     /**
      * A call timedout
      * @param c The call
      */
-    virtual void callTimeout(RPCCall* c) = 0;
+    virtual void callTimeout(RPCCall *c) = 0;
 
     /**
      * Do a call to the rpc server, increments the outstanding_reqs variable.
@@ -138,35 +137,35 @@ public:
      * @param ip The ip or hostname of the node
      * @param port The port
      */
-    void addDHTNode(const QString & ip, bt::Uint16 port);
+    void addDHTNode(const QString &ip, bt::Uint16 port);
 
 Q_SIGNALS:
     /**
      * The task is finsihed.
      * @param t The Task
      */
-    void finished(Task* t);
+    void finished(Task *t);
 
     /**
      * Called by the task when data is ready.
      * Can be overrided if wanted.
      * @param t The Task
      */
-    void dataReady(Task* t);
+    void dataReady(Task *t);
 
 protected:
     void done();
 
 protected Q_SLOTS:
-    void onResolverResults(net::AddressResolver* res);
+    void onResolverResults(net::AddressResolver *res);
 
 protected:
     dht::KBucketEntrySet visited; // nodes visited
     dht::KBucketEntrySet todo; // nodes todo
-    Node* node;
+    Node *node;
 
 private:
-    RPCServer* rpc;
+    RPCServer *rpc;
     bt::Uint32 outstanding_reqs;
     bool task_finished;
     bool queued;
@@ -175,5 +174,3 @@ private:
 }
 
 #endif
-
-

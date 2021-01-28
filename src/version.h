@@ -21,8 +21,8 @@
 #ifndef BTVERSION_H
 #define BTVERSION_H
 
-#include <libktorrent_version.h>
 #include <ktorrent_export.h>
+#include <libktorrent_version.h>
 #include <util/constants.h>
 
 class QString;
@@ -47,7 +47,7 @@ enum VersionType {
  * @param type Which version
  * @param peer_id_code Peer ID code (2 letters identifying the client, KT for KTorrent)
  */
-KTORRENT_EXPORT void SetClientInfo(const QString & name, int major, int minor, int release, VersionType type, const QString & peer_id_code);
+KTORRENT_EXPORT void SetClientInfo(const QString &name, int major, int minor, int release, VersionType type, const QString &peer_id_code);
 
 /**
  * Get the PeerID prefix set by SetClientInfo
@@ -59,7 +59,6 @@ KTORRENT_EXPORT QString PeerIDPrefix();
  * Get the current client version string
  */
 KTORRENT_EXPORT QString GetVersionString();
-
 
 /// Major version number of the ktorrent library
 const Uint32 MAJOR = LIBKTORRENT_VERSION_MAJOR;

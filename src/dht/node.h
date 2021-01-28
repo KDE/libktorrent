@@ -20,10 +20,9 @@
 #ifndef DHTNODE_H
 #define DHTNODE_H
 
-#include <qobject.h>
-#include "key.h"
 #include "kbucket.h"
-
+#include "key.h"
+#include <qobject.h>
 
 using bt::Uint8;
 
@@ -33,7 +32,6 @@ class DHT;
 class RPCMsg;
 class RPCServer;
 class KClosestNodesSearch;
-
 
 const bt::Uint32 WANT_IPV4 = 1;
 const bt::Uint32 WANT_IPV6 = 2;
@@ -46,12 +44,12 @@ const bt::Uint32 WANT_BOTH = WANT_IPV4 | WANT_IPV6;
  * our id and 160 KBucket's.
  * A KBucketEntry is in node i, when the difference between our id and
  * the KBucketEntry's id is between 2 to the power i and 2 to the power i+1.
-*/
+ */
 class Node : public QObject
 {
     Q_OBJECT
 public:
-    Node(RPCServer* srv, const QString & key_file);
+    Node(RPCServer *srv, const QString &key_file);
     ~Node() override;
 
     /**
@@ -61,10 +59,10 @@ public:
      * @param msg The message
      * @param srv The RPCServer to send a ping if necessary
      */
-    void received(DHT* dh_table, const RPCMsg & msg);
+    void received(DHT *dh_table, const RPCMsg &msg);
 
     /// Get our own ID
-    const dht::Key & getOurID() const
+    const dht::Key &getOurID() const
     {
         return our_id;
     }
@@ -75,21 +73,21 @@ public:
      * @param kns The object to storre the search results
      * @param want Which protocol(s) are wanted
      */
-    void findKClosestNodes(KClosestNodesSearch & kns, bt::Uint32 want);
+    void findKClosestNodes(KClosestNodesSearch &kns, bt::Uint32 want);
 
     /**
      * Increase the failed queries count of the bucket entry we sent the message to
-    */
+     */
     void onTimeout(RPCMsg::Ptr msg);
 
     /// Check if a buckets needs to be refreshed, and refresh if necesarry
-    void refreshBuckets(DHT* dh_table);
+    void refreshBuckets(DHT *dh_table);
 
     /// Save the routing table to a file
-    void saveTable(const QString & file);
+    void saveTable(const QString &file);
 
     /// Load the routing table from a file
-    void loadTable(const QString & file);
+    void loadTable(const QString &file);
 
     /// Get the number of entries in the routing table
     bt::Uint32 getNumEntriesInRoutingTable() const
@@ -99,7 +97,7 @@ public:
 
 private:
     class Private;
-    Private* d;
+    Private *d;
     dht::Key our_id;
     bt::Uint32 num_entries;
 };

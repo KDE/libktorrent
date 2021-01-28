@@ -20,9 +20,9 @@
 #ifndef DHTKCLOSESTNODESSEARCH_H
 #define DHTKCLOSESTNODESSEARCH_H
 
-#include <map>
-#include "key.h"
 #include "kbucket.h"
+#include "key.h"
+#include <map>
 
 namespace dht
 {
@@ -33,12 +33,13 @@ class PackedNodeContainer;
  *
  * Class used to store the search results during a K closests nodes search
  * Note: we use a std::map because of lack of functionality in QMap
-*/
+ */
 class KClosestNodesSearch
 {
     dht::Key key;
     std::map<dht::Key, KBucketEntry> emap;
     bt::Uint32 max_entries;
+
 public:
     /**
      * Constructor sets the key to compare with
@@ -46,7 +47,7 @@ public:
      * @param max_entries The maximum number of entries can be in the map
      * @return
      */
-    KClosestNodesSearch(const dht::Key & key, bt::Uint32 max_entries);
+    KClosestNodesSearch(const dht::Key &key, bt::Uint32 max_entries);
     virtual ~KClosestNodesSearch();
 
     typedef std::map<dht::Key, KBucketEntry>::iterator Itr;
@@ -71,7 +72,7 @@ public:
     }
 
     /// Get the target key of the search3
-    const dht::Key & getSearchTarget() const
+    const dht::Key &getSearchTarget() const
     {
         return key;
     }
@@ -86,13 +87,13 @@ public:
      * Try to insert an entry.
      * @param e The entry
      */
-    void tryInsert(const KBucketEntry & e);
+    void tryInsert(const KBucketEntry &e);
 
     /**
      * Pack the search results in a PackedNodeContainer.
      * @param cnt Place to store IPv6 nodes
      */
-    void pack(PackedNodeContainer* cnt);
+    void pack(PackedNodeContainer *cnt);
 };
 
 }

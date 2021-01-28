@@ -22,12 +22,12 @@
 #define UTP_REMOTEWINDOW_H
 
 #include <QList>
-#include <QSharedPointer>
 #include <QMutex>
+#include <QSharedPointer>
 #include <ktorrent_export.h>
 #include <util/constants.h>
-#include <utp/timevalue.h>
 #include <utp/packetbuffer.h>
+#include <utp/timevalue.h>
 
 namespace utp
 {
@@ -35,7 +35,7 @@ struct SelectiveAck;
 struct Header;
 
 struct UnackedPacket {
-    UnackedPacket(const PacketBuffer & packet, bt::Uint16 seq_nr, bt::TimeStamp send_time);
+    UnackedPacket(const PacketBuffer &packet, bt::Uint16 seq_nr, bt::TimeStamp send_time);
     ~UnackedPacket();
 
     PacketBuffer packet;
@@ -50,13 +50,15 @@ struct UnackedPacket {
 class KTORRENT_EXPORT Retransmitter
 {
 public:
-    virtual ~Retransmitter() {}
+    virtual ~Retransmitter()
+    {
+    }
 
     /// Update the RTT time
-    virtual void updateRTT(const Header* hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size) = 0;
+    virtual void updateRTT(const Header *hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size) = 0;
 
     /// Retransmit a packet
-    virtual void retransmit(PacketBuffer & packet, bt::Uint16 p_seq_nr) = 0;
+    virtual void retransmit(PacketBuffer &packet, bt::Uint16 p_seq_nr) = 0;
 
     /// Get the current timeout
     virtual bt::Uint32 currentTimeout() const = 0;
@@ -72,10 +74,10 @@ public:
     virtual ~RemoteWindow();
 
     /// A packet was received (update window size and check for acks)
-    void packetReceived(const Header* hdr, const SelectiveAck* sack, Retransmitter* conn);
+    void packetReceived(const Header *hdr, const SelectiveAck *sack, Retransmitter *conn);
 
     /// Add a packet to the remote window (should include headers)
-    void addPacket(const PacketBuffer & packet, bt::Uint16 seq_nr, bt::TimeStamp send_time);
+    void addPacket(const PacketBuffer &packet, bt::Uint16 seq_nr, bt::TimeStamp send_time);
 
     /// Are we allowed to send
     bool allowedToSend(bt::Uint32 packet_size) const
@@ -106,7 +108,7 @@ public:
     }
 
     /// A timeout occurred
-    void timeout(Retransmitter* conn);
+    void timeout(Retransmitter *conn);
 
     /// Get the window usage factor
     double windowUsageFactor() const
@@ -134,8 +136,8 @@ public:
     void clear();
 
 private:
-    void checkLostPackets(const Header* hdr, const SelectiveAck* sack, Retransmitter* conn);
-    bt::Uint16 lost(const SelectiveAck* sack);
+    void checkLostPackets(const Header *hdr, const SelectiveAck *sack, Retransmitter *conn);
+    bt::Uint16 lost(const SelectiveAck *sack);
 
 private:
     bt::Uint32 cur_window;

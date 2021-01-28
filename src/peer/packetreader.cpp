@@ -18,30 +18,31 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "packetreader.h"
+#include "peer.h"
 #include <QtAlgorithms>
-#include <util/log.h>
 #include <util/file.h>
 #include <util/functions.h>
-#include "peer.h"
-
+#include <util/log.h>
 
 namespace bt
 {
-
-IncomingPacket::IncomingPacket(Uint32 size) : data(new Uint8[size]), size(size), read(0)
+IncomingPacket::IncomingPacket(Uint32 size)
+    : data(new Uint8[size])
+    , size(size)
+    , read(0)
 {
 }
 
 PacketReader::PacketReader(Uint32 max_packet_size)
-    : error(false), len_received(-1), max_packet_size(max_packet_size)
+    : error(false)
+    , len_received(-1)
+    , max_packet_size(max_packet_size)
 {
 }
-
 
 PacketReader::~PacketReader()
 {
 }
-
 
 IncomingPacket::Ptr PacketReader::dequeuePacket()
 {
@@ -57,8 +58,7 @@ IncomingPacket::Ptr PacketReader::dequeuePacket()
     return pck;
 }
 
-
-void PacketReader::update(PeerInterface & peer)
+void PacketReader::update(PeerInterface &peer)
 {
     if (error)
         return;
@@ -70,12 +70,12 @@ void PacketReader::update(PeerInterface & peer)
     }
 }
 
-Uint32 PacketReader::newPacket(Uint8* buf, Uint32 size)
+Uint32 PacketReader::newPacket(Uint8 *buf, Uint32 size)
 {
     Uint32 packet_length = 0;
     Uint32 am_of_len_read = 0;
     if (len_received > 0) {
-        if ((int) size < 4 - len_received) {
+        if ((int)size < 4 - len_received) {
             memcpy(len + len_received, buf, size);
             len_received += size;
             return size;
@@ -84,7 +84,6 @@ Uint32 PacketReader::newPacket(Uint8* buf, Uint32 size)
             am_of_len_read = 4 - len_received;
             len_received = 0;
             packet_length = ReadUint32(len, 0);
-
         }
     } else if (size < 4) {
         memcpy(len, buf, size);
@@ -109,7 +108,7 @@ Uint32 PacketReader::newPacket(Uint8* buf, Uint32 size)
     return am_of_len_read + readPacket(buf + am_of_len_read, size - am_of_len_read);
 }
 
-Uint32 PacketReader::readPacket(Uint8* buf, Uint32 size)
+Uint32 PacketReader::readPacket(Uint8 *buf, Uint32 size)
 {
     if (!size)
         return 0;
@@ -130,8 +129,7 @@ Uint32 PacketReader::readPacket(Uint8* buf, Uint32 size)
     }
 }
 
-
-void PacketReader::onDataReady(Uint8* buf, Uint32 size)
+void PacketReader::onDataReady(Uint8 *buf, Uint32 size)
 {
     if (error)
         return;
@@ -150,7 +148,7 @@ void PacketReader::onDataReady(Uint8* buf, Uint32 size)
         else
             ret = readPacket(buf, size);
 
-        while (ret < size  && !error) {
+        while (ret < size && !error) {
             ret += newPacket(buf + ret, size - ret);
         }
     }

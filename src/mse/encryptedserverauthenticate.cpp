@@ -18,20 +18,21 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "encryptedserverauthenticate.h"
+#include "encryptedpacketsocket.h"
+#include "functions.h"
+#include "rc4encryptor.h"
 #include <stdlib.h>
+#include <torrent/globals.h>
+#include <torrent/server.h>
 #include <util/functions.h>
 #include <util/log.h>
-#include <torrent/server.h>
-#include <torrent/globals.h>
-#include "functions.h"
-#include "encryptedpacketsocket.h"
-#include "rc4encryptor.h"
 
 using namespace bt;
 
 namespace mse
 {
-EncryptedServerAuthenticate::EncryptedServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock): bt::ServerAuthenticate(sock)
+EncryptedServerAuthenticate::EncryptedServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock)
+    : bt::ServerAuthenticate(sock)
 {
     mse::GeneratePublicPrivateKey(xb, yb);
     state = WAITING_FOR_YA;
@@ -41,7 +42,6 @@ EncryptedServerAuthenticate::EncryptedServerAuthenticate(mse::EncryptedPacketSoc
     pad_C_len = 0;
     crypto_provide = crypto_select = 0;
 }
-
 
 EncryptedServerAuthenticate::~EncryptedServerAuthenticate()
 {
@@ -55,9 +55,8 @@ void EncryptedServerAuthenticate::sendYB()
     //  DumpBigInt("Xb",xb);
     //  DumpBigInt("Yb",yb);
     sock->sendData(tmp, 96 + rand() % 512);
-    //Out() << "Sent YB" << endl;
+    // Out() << "Sent YB" << endl;
 }
-
 
 void EncryptedServerAuthenticate::handleYA()
 {
@@ -130,15 +129,14 @@ void EncryptedServerAuthenticate::processVC()
         // calculate the keys
         SHA1Hash enc = mse::EncryptionKey(false, s, info_hash);
         SHA1Hash dec = mse::EncryptionKey(true, s, info_hash);
-        //Out() << "enc = " << enc.toString() << endl;
-        //Out() << "dec = " << dec.toString() << endl;
+        // Out() << "enc = " << enc.toString() << endl;
+        // Out() << "dec = " << dec.toString() << endl;
         our_rc4 = new RC4Encryptor(dec, enc);
     }
 
     // if we do not have everything return
     if (buf_size < req1_off + 40 + 14)
         return;
-
 
     Uint32 off = req1_off + 40;
     // now decrypt the vc and crypto_provide and the length of pad_C
@@ -324,6 +322,5 @@ void EncryptedServerAuthenticate::onReadyRead()
         break;
     }
 }
-
 
 }

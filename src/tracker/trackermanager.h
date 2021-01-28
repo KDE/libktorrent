@@ -21,14 +21,13 @@
 #ifndef BT_TRACKERMANAGER_H
 #define BT_TRACKERMANAGER_H
 
-#include <QTimer>
 #include <QDateTime>
-#include <ktorrent_export.h>
-#include <util/ptrmap.h>
-#include <util/constants.h>
-#include <tracker/tracker.h>
+#include <QTimer>
 #include <interfaces/trackerslist.h>
-
+#include <ktorrent_export.h>
+#include <tracker/tracker.h>
+#include <util/constants.h>
+#include <util/ptrmap.h>
 
 namespace bt
 {
@@ -43,17 +42,17 @@ class KTORRENT_EXPORT TrackerManager : public QObject, public bt::TrackersList, 
 {
     Q_OBJECT
 public:
-    TrackerManager(TorrentControl* tor, PeerManager* pman);
+    TrackerManager(TorrentControl *tor, PeerManager *pman);
     ~TrackerManager() override;
 
-    TrackerInterface* getCurrentTracker() const override;
-    void setCurrentTracker(TrackerInterface* t) override;
+    TrackerInterface *getCurrentTracker() const override;
+    void setCurrentTracker(TrackerInterface *t) override;
     void setCurrentTracker(const QUrl &url) override;
-    QList<TrackerInterface*> getTrackers() override;
-    TrackerInterface* addTracker(const QUrl &url, bool custom = true, int tier = 1) override;
-    bool removeTracker(TrackerInterface* t) override;
+    QList<TrackerInterface *> getTrackers() override;
+    TrackerInterface *addTracker(const QUrl &url, bool custom = true, int tier = 1) override;
+    bool removeTracker(TrackerInterface *t) override;
     bool removeTracker(const QUrl &url) override;
-    bool canRemoveTracker(TrackerInterface* t) override;
+    bool canRemoveTracker(TrackerInterface *t) override;
     void restoreDefault() override;
     void setTrackerEnabled(const QUrl &url, bool on) override;
     bool noTrackersReachable() const override;
@@ -66,29 +65,29 @@ public:
     Uint32 getNumLeechers() const;
 
     /**
-    * Start gathering peers
-    */
+     * Start gathering peers
+     */
     virtual void start();
 
     /**
-    * Stop gathering peers
-    * @param wjob WaitJob to wait at exit for the completion of stopped events to the trackers
-    */
-    virtual void stop(WaitJob* wjob = 0);
+     * Stop gathering peers
+     * @param wjob WaitJob to wait at exit for the completion of stopped events to the trackers
+     */
+    virtual void stop(WaitJob *wjob = 0);
 
     /**
-    * Notify peersources and trackrs that the download is complete.
-    */
+     * Notify peersources and trackrs that the download is complete.
+     */
     virtual void completed();
 
     /**
-    * Do a manual update on all peer sources and trackers.
-    */
+     * Do a manual update on all peer sources and trackers.
+     */
     virtual void manualUpdate();
 
     /**
-    * Do a scrape on the current tracker
-    * */
+     * Do a scrape on the current tracker
+     * */
     virtual void scrape();
 
 protected:
@@ -96,40 +95,40 @@ protected:
     void loadCustomURLs();
     void saveTrackerStatus();
     void loadTrackerStatus();
-    void addTracker(Tracker* trk);
-    void switchTracker(Tracker* trk);
-    Tracker* selectTracker();
+    void addTracker(Tracker *trk);
+    void switchTracker(Tracker *trk);
+    Tracker *selectTracker();
 
     Uint64 bytesDownloaded() const override;
     Uint64 bytesUploaded() const override;
     Uint64 bytesLeft() const override;
-    const SHA1Hash & infoHash() const override;
+    const SHA1Hash &infoHash() const override;
     bool isPartialSeed() const override;
 
 private Q_SLOTS:
     /**
-    * The an error happened contacting the tracker.
-    * @param err The error
-    */
-    void onTrackerError(const QString & err);
+     * The an error happened contacting the tracker.
+     * @param err The error
+     */
+    void onTrackerError(const QString &err);
 
     /**
-    * Tracker update was OK.
-    * @param
-    */
+     * Tracker update was OK.
+     * @param
+     */
     void onTrackerOK();
 
     /**
-    * Update the current tracker manually
-    */
+     * Update the current tracker manually
+     */
     void updateCurrentManually();
 
 protected:
-    TorrentControl* tor;
+    TorrentControl *tor;
     PtrMap<QUrl, Tracker> trackers;
     bool no_save_custom_trackers;
-    PeerManager* pman;
-    Tracker* curr;
+    PeerManager *pman;
+    Tracker *curr;
     QList<QUrl> custom_trackers;
     bool started;
 };

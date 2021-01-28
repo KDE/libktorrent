@@ -22,8 +22,8 @@
 #define BTACCESSMANAGER_H
 
 #include <QStringList>
-#include <net/address.h>
 #include <ktorrent_export.h>
+#include <net/address.h>
 
 namespace bt
 {
@@ -40,33 +40,34 @@ class BadPeersList;
 class KTORRENT_EXPORT AccessManager
 {
     AccessManager();
+
 public:
     virtual ~AccessManager();
 
     /// Get the singleton instance
-    static AccessManager& instance();
+    static AccessManager &instance();
 
     /// Add a blocklist (AccessManager takes ownership unless list is explicitly remove with removeBlockList)
-    void addBlockList(BlockListInterface* bl);
+    void addBlockList(BlockListInterface *bl);
 
     /// Remove a blocklist
-    void removeBlockList(BlockListInterface* bl);
+    void removeBlockList(BlockListInterface *bl);
 
     /// Are we allowed to have a connection with a peer
-    bool allowed(const net::Address& addr) const;
+    bool allowed(const net::Address &addr) const;
 
     /// Ban a peer (i.e. add it to the banned list)
-    void banPeer(const QString& addr);
+    void banPeer(const QString &addr);
 
     /// Add an external IP throuch which we are reacheable
-    void addExternalIP(const QString& addr);
+    void addExternalIP(const QString &addr);
 
 private:
-    bool isOurOwnAddress(const net::Address& addr) const;
+    bool isOurOwnAddress(const net::Address &addr) const;
 
 private:
-    QList<BlockListInterface*> blocklists;
-    BadPeersList* banned;
+    QList<BlockListInterface *> blocklists;
+    BadPeersList *banned;
     QStringList external_addresses;
 };
 

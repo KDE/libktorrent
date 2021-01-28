@@ -18,18 +18,18 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <QtTest>
 #include <QLocale>
-#include <util/log.h>
-#include <util/error.h>
-#include <util/functions.h>
-#include <util/fileops.h>
-#include <testlib/utils.h>
-#include <testlib/dummytorrentcreator.h>
-#include <torrent/torrent.h>
+#include <QtTest>
 #include <diskio/multifilecache.h>
 #include <diskio/preallocationthread.h>
 #include <diskio/singlefilecache.h>
+#include <testlib/dummytorrentcreator.h>
+#include <testlib/utils.h>
+#include <torrent/torrent.h>
+#include <util/error.h>
+#include <util/fileops.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 const bt::Uint64 TEST_FILE_SIZE = 15 * 1024 * 1024;
 
@@ -60,7 +60,7 @@ private Q_SLOTS:
             for (QMap<QString, bt::Uint64>::const_iterator i = files.cbegin(); i != files.cend(); i++) {
                 bt::TruncateFile(multi_creator.dataPath() + i.key(), 0);
             }
-        } catch (bt::Error& err) {
+        } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << multi_creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
@@ -72,7 +72,7 @@ private Q_SLOTS:
 
             // Truncate the file so we can preallocate them again
             bt::TruncateFile(single_creator.dataPath(), 0);
-        } catch (bt::Error& err) {
+        } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << single_creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
@@ -132,7 +132,6 @@ private:
     DummyTorrentCreator single_creator;
     bt::Torrent single_tor;
 };
-
 
 QTEST_MAIN(PreallocationTest)
 

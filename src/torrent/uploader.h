@@ -20,14 +20,13 @@
 #ifndef BTUPLOADER_H
 #define BTUPLOADER_H
 
-#include <peer/peermanager.h>
 #include "globals.h"
+#include <peer/peermanager.h>
 
 namespace bt
 {
 class Peer;
 class ChunkManager;
-
 
 /**
  * @author Joris Guisson
@@ -43,7 +42,7 @@ public:
      * Constructor, sets the ChunkManager.
      * @param cman The ChunkManager
      */
-    Uploader(ChunkManager & cman, PeerManager & pman);
+    Uploader(ChunkManager &cman, PeerManager &pman);
     ~Uploader() override;
 
     /// Get the number of bytes uploaded.
@@ -71,8 +70,8 @@ private:
     void visit(const bt::Peer::Ptr p) override;
 
 private:
-    ChunkManager & cman;
-    PeerManager & pman;
+    ChunkManager &cman;
+    PeerManager &pman;
     Uint64 uploaded;
 };
 

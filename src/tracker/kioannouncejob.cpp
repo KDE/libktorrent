@@ -24,8 +24,9 @@
 
 namespace bt
 {
-
-KIOAnnounceJob::KIOAnnounceJob(const QUrl& url, const KIO::MetaData & md) : error_page(false),  url(url)
+KIOAnnounceJob::KIOAnnounceJob(const QUrl &url, const KIO::MetaData &md)
+    : error_page(false)
+    , url(url)
 {
     get_job = KIO::get(url, KIO::NoReload, KIO::HideProgressInfo);
     get_job->setMetaData(md);
@@ -37,7 +38,7 @@ KIOAnnounceJob::~KIOAnnounceJob()
 {
 }
 
-void KIOAnnounceJob::data(KIO::Job* j, const QByteArray& data)
+void KIOAnnounceJob::data(KIO::Job *j, const QByteArray &data)
 {
     const int MAX_REPLY_SIZE = 1024 * 1024;
     Q_UNUSED(j);
@@ -58,7 +59,7 @@ bool KIOAnnounceJob::doKill()
     return KIO::Job::doKill();
 }
 
-void KIOAnnounceJob::finished(KJob* j)
+void KIOAnnounceJob::finished(KJob *j)
 {
     error_page = get_job->isErrorPage(); // must be called from slot connected to result()
     if (error_page && !j->error()) {
@@ -73,4 +74,3 @@ void KIOAnnounceJob::finished(KJob* j)
     emitResult();
 }
 }
-

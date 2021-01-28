@@ -22,30 +22,29 @@
 #include "datacheckerthread.h"
 #include "multidatachecker.h"
 #include "singledatachecker.h"
+#include <klocalizedstring.h>
 #include <torrent/torrentcontrol.h>
 #include <util/functions.h>
-#include <klocalizedstring.h>
 
 namespace bt
 {
 static ResourceManager data_checker_slot(1);
 
-DataCheckerJob::DataCheckerJob(bool auto_import, bt::TorrentControl* tc, bt::Uint32 from, bt::Uint32 to)
-    : Job(true, tc),
-      Resource(&data_checker_slot, tc->getInfoHash().toString()),
-      dcheck_thread(0),
-      killed(false),
-      auto_import(auto_import),
-      started(false),
-      from(from),
-      to(to)
+DataCheckerJob::DataCheckerJob(bool auto_import, bt::TorrentControl *tc, bt::Uint32 from, bt::Uint32 to)
+    : Job(true, tc)
+    , Resource(&data_checker_slot, tc->getInfoHash().toString())
+    , dcheck_thread(0)
+    , killed(false)
+    , auto_import(auto_import)
+    , started(false)
+    , from(from)
+    , to(to)
 {
     if (this->from >= tc->getStats().total_chunks)
         this->from = 0;
     if (this->to >= tc->getStats().total_chunks)
         this->to = tc->getStats().total_chunks - 1;
 }
-
 
 DataCheckerJob::~DataCheckerJob()
 {
@@ -54,8 +53,8 @@ DataCheckerJob::~DataCheckerJob()
 void DataCheckerJob::start()
 {
     registerWithTracker();
-    DataChecker* dc = 0;
-    const TorrentStats & stats = torrent()->getStats();
+    DataChecker *dc = 0;
+    const TorrentStats &stats = torrent()->getStats();
     if (stats.multi_file_torrent)
         dc = new MultiDataChecker(from, to);
     else
@@ -64,11 +63,12 @@ void DataCheckerJob::start()
     connect(dc, &DataChecker::progress, this, &DataCheckerJob::progress, Qt::QueuedConnection);
     connect(dc, &DataChecker::status, this, &DataCheckerJob::status, Qt::QueuedConnection);
 
-    TorrentControl* tor = torrent();
-    dcheck_thread = new DataCheckerThread(
-        dc, tor->downloadedChunksBitSet(),
-        stats.output_path, tor->getTorrent(),
-        tor->getTorDir() + "dnd" + bt::DirSeparator());
+    TorrentControl *tor = torrent();
+    dcheck_thread = new DataCheckerThread(dc, //
+                                          tor->downloadedChunksBitSet(),
+                                          stats.output_path,
+                                          tor->getTorrent(),
+                                          tor->getTorDir() + "dnd" + bt::DirSeparator());
 
     connect(dcheck_thread, &DataCheckerThread::finished, this, &DataCheckerJob::threadFinished, Qt::QueuedConnection);
 
@@ -99,11 +99,10 @@ void DataCheckerJob::kill(bool quietly)
     bt::Job::kill(quietly);
 }
 
-
 void DataCheckerJob::threadFinished()
 {
     if (!killed) {
-        DataChecker* dc = dcheck_thread->getDataChecker();
+        DataChecker *dc = dcheck_thread->getDataChecker();
         torrent()->afterDataCheck(this, dc->getResult());
         if (!dcheck_thread->getError().isEmpty()) {
             setErrorText(dcheck_thread->getError());

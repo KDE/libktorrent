@@ -21,15 +21,14 @@
 #ifndef BTLOGSYSTEMMANAGER_H
 #define BTLOGSYSTEMMANAGER_H
 
-#include <QObject>
 #include <QMap>
+#include <QObject>
 #include <QScopedPointer>
-#include <util/constants.h>
 #include <ktorrent_export.h>
+#include <util/constants.h>
 
 namespace bt
 {
-
 /**
     Keeps track of all logging system ID's
 */
@@ -37,16 +36,16 @@ class KTORRENT_EXPORT LogSystemManager : public QObject
 {
     Q_OBJECT
 
-
     LogSystemManager();
+
 public:
     ~LogSystemManager() override;
 
     /// Register a system
-    void registerSystem(const QString & name, Uint32 id);
+    void registerSystem(const QString &name, Uint32 id);
 
     /// Unregister a system
-    void unregisterSystem(const QString & name);
+    void unregisterSystem(const QString &name);
 
     typedef QMap<QString, Uint32>::iterator iterator;
     typedef QMap<QString, Uint32>::const_iterator const_iterator;
@@ -69,14 +68,14 @@ public:
         return systems.cend();
     }
 
-    static LogSystemManager & instance();
+    static LogSystemManager &instance();
 
     /// Get the ID of a system
-    Uint32 systemID(const QString & name);
+    Uint32 systemID(const QString &name);
 
 Q_SIGNALS:
-    void registered(const QString & name);
-    void unregisted(const QString & name);
+    void registered(const QString &name);
+    void unregisted(const QString &name);
 
 private:
     QMap<QString, Uint32> systems;

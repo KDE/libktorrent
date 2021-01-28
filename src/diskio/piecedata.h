@@ -21,18 +21,16 @@
 #ifndef BTPIECEDATA_H
 #define BTPIECEDATA_H
 
-#include <ktorrent_export.h>
 #include <QSharedDataPointer>
+#include <ktorrent_export.h>
 #include <util/constants.h>
 #ifndef Q_WS_WIN
 #include <util/signalcatcher.h>
 #endif
 #include <diskio/cachefile.h>
 
-
 namespace bt
 {
-
 class File;
 class Chunk;
 class SHA1Hash;
@@ -45,7 +43,7 @@ class SHA1HashGen;
 class KTORRENT_EXPORT PieceData : public QSharedData, public MMappeable
 {
 public:
-    PieceData(Chunk* chunk, Uint32 off, Uint32 len, Uint8* ptr, CacheFile::Ptr cache_file, bool read_only);
+    PieceData(Chunk *chunk, Uint32 off, Uint32 len, Uint8 *ptr, CacheFile::Ptr cache_file, bool read_only);
     ~PieceData() override;
 
     /// Unload the piece
@@ -76,7 +74,7 @@ public:
     }
 
     /// Get a pointer to the data
-    Uint8* data()
+    Uint8 *data()
     {
         return ptr;
     }
@@ -88,13 +86,13 @@ public:
     }
 
     /// Set the data pointer
-    void setData(Uint8* p)
+    void setData(Uint8 *p)
     {
         ptr = p;
     }
 
     /// Get the parent chunk of the piece
-    Chunk* parentChunk()
+    Chunk *parentChunk()
     {
         return chunk;
     }
@@ -108,7 +106,7 @@ public:
         @return The number of bytes written
         @throw BusError When writing results in a SIGBUS
     */
-    Uint32 write(const Uint8* buf, Uint32 buf_size, Uint32 off = 0);
+    Uint32 write(const Uint8 *buf, Uint32 buf_size, Uint32 off = 0);
 
     /**
         Read data from the PieceData. This function should always be used
@@ -119,7 +117,7 @@ public:
         @return The number of bytes read
         @throw BusError When reading results in a SIGBUS
      */
-    Uint32 read(Uint8* buf, Uint32 to_read, Uint32 off = 0);
+    Uint32 read(Uint8 *buf, Uint32 to_read, Uint32 off = 0);
 
     /**
         Save PieceData to a File. This function protects against bus errors.
@@ -129,7 +127,7 @@ public:
         @return The number of bytes written
         @throw BusError When writing results in a SIGBUS
     */
-    Uint32 writeToFile(File & file, Uint32 size, Uint32 off = 0);
+    Uint32 writeToFile(File &file, Uint32 size, Uint32 off = 0);
 
     /**
         Read PieceData from a File. This function protects against bus errors.
@@ -139,14 +137,14 @@ public:
         @return The number of bytes read
         @throw BusError When reading results in a SIGBUS
     */
-    Uint32 readFromFile(File & file, Uint32 size, Uint32 off = 0);
+    Uint32 readFromFile(File &file, Uint32 size, Uint32 off = 0);
 
     /**
         Update a SHA1HashGen with this PieceData. This function protects against bus errors.
         @param hg The SHA1HashGen to update
         @throw BusError When reading results in a SIGBUS
      */
-    void updateHash(SHA1HashGen & hg);
+    void updateHash(SHA1HashGen &hg);
 
     /**
         Generate a SHA1Hash of this PieceData. This function protects against bus errors.
@@ -167,15 +165,13 @@ private:
     void unmapped() override;
 
 private:
-    Chunk* chunk;
+    Chunk *chunk;
     Uint32 off;
     Uint32 len;
-    Uint8* ptr;
+    Uint8 *ptr;
     CacheFile::Ptr cache_file;
     bool read_only;
 };
-
-
 
 }
 

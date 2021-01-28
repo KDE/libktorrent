@@ -18,53 +18,50 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "kbucket.h"
-#include <netinet/in.h>
-#include <QtAlgorithms>
-#include <QHash>
-#include <util/file.h>
-#include <util/log.h>
-#include <util/functions.h>
-#include <bcodec/bencoder.h>
-#include <bcodec/bnode.h>
 #include "kclosestnodessearch.h"
+#include "pingreq.h"
 #include "rpcserverinterface.h"
 #include "task.h"
-#include "pingreq.h"
-
+#include <QHash>
+#include <QtAlgorithms>
+#include <bcodec/bencoder.h>
+#include <bcodec/bnode.h>
+#include <netinet/in.h>
+#include <util/file.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 using namespace bt;
 
 namespace dht
 {
-KBucket::KBucket(RPCServerInterface* srv, const dht::Key& our_id) :
-    RPCCallListener(0),
-    min_key(Key::min()),
-    max_key(Key::max()),
-    srv(srv),
-    our_id(our_id),
-    last_modified(bt::CurrentTime()),
-    refresh_task(0)
-{
-
-}
-
-
-KBucket::KBucket(const dht::Key & min_key, const dht::Key & max_key, dht::RPCServerInterface* srv, const dht::Key& our_id) :
-    RPCCallListener(0),
-    min_key(min_key),
-    max_key(max_key),
-    srv(srv),
-    our_id(our_id),
-    last_modified(bt::CurrentTime()),
-    refresh_task(0)
+KBucket::KBucket(RPCServerInterface *srv, const dht::Key &our_id)
+    : RPCCallListener(0)
+    , min_key(Key::min())
+    , max_key(Key::max())
+    , srv(srv)
+    , our_id(our_id)
+    , last_modified(bt::CurrentTime())
+    , refresh_task(0)
 {
 }
 
+KBucket::KBucket(const dht::Key &min_key, const dht::Key &max_key, dht::RPCServerInterface *srv, const dht::Key &our_id)
+    : RPCCallListener(0)
+    , min_key(min_key)
+    , max_key(max_key)
+    , srv(srv)
+    , our_id(our_id)
+    , last_modified(bt::CurrentTime())
+    , refresh_task(0)
+{
+}
 
 KBucket::~KBucket()
-{}
+{
+}
 
-bool KBucket::keyInRange(const dht::Key& k) const
+bool KBucket::keyInRange(const dht::Key &k) const
 {
     return min_key <= k && k <= max_key;
 }
@@ -80,7 +77,6 @@ bool KBucket::splitAllowed() const
     return true;
 }
 
-
 std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() noexcept(false)
 {
     dht::Key m = dht::Key::mid(min_key, max_key);
@@ -92,7 +88,7 @@ std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() noexcept(false)
 
     QList<KBucketEntry>::iterator i;
     for (i = entries.begin(); i != entries.end(); ++i) {
-        KBucketEntry & e = *i;
+        KBucketEntry &e = *i;
         if (left->keyInRange(e.getID()))
             left->insert(e);
         else
@@ -102,13 +98,13 @@ std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() noexcept(false)
     return std::make_pair(left, right);
 }
 
-bool KBucket::insert(const KBucketEntry & entry)
+bool KBucket::insert(const KBucketEntry &entry)
 {
     QList<KBucketEntry>::iterator i = std::find(entries.begin(), entries.end(), entry);
 
     // If in the list, move it to the end
     if (i != entries.end()) {
-        KBucketEntry & e = *i;
+        KBucketEntry &e = *i;
         e.hasResponded();
         last_modified = bt::CurrentTime();
         entries.erase(i);
@@ -117,11 +113,11 @@ bool KBucket::insert(const KBucketEntry & entry)
     }
 
     // insert if not already in the list and we still have room
-    if (i == entries.end() && entries.count() < (int) dht::K) {
+    if (i == entries.end() && entries.count() < (int)dht::K) {
         entries.append(entry);
         last_modified = bt::CurrentTime();
     } else if (!replaceBadEntry(entry)) {
-        if (entries.count() == (int) dht::K && splitAllowed()) {
+        if (entries.count() == (int)dht::K && splitAllowed()) {
             // We can split
             return true;
         } else {
@@ -133,7 +129,7 @@ bool KBucket::insert(const KBucketEntry & entry)
     return false;
 }
 
-void KBucket::onResponse(RPCCall* c, RPCMsg::Ptr rsp)
+void KBucket::onResponse(RPCCall *c, RPCMsg::Ptr rsp)
 {
     Q_UNUSED(rsp);
     last_modified = bt::CurrentTime();
@@ -148,12 +144,9 @@ void KBucket::onResponse(RPCCall* c, RPCMsg::Ptr rsp)
     // if we do not have room see if we can get rid of some bad peers
     if (!replaceBadEntry(entry)) // if no bad peers ping a questionable one
         pingQuestionable(entry);
-
 }
 
-
-
-void KBucket::onTimeout(RPCCall* c)
+void KBucket::onTimeout(RPCCall *c)
 {
     if (!pending_entries_busy_pinging.contains(c))
         return;
@@ -163,7 +156,7 @@ void KBucket::onTimeout(RPCCall* c)
     // replace the entry which timed out
     QList<KBucketEntry>::iterator i;
     for (i = entries.begin(); i != entries.end(); ++i) {
-        KBucketEntry & e = *i;
+        KBucketEntry &e = *i;
         if (e.getAddress() == c->getRequest()->getOrigin()) {
             last_modified = bt::CurrentTime();
             entries.erase(i);
@@ -181,7 +174,7 @@ void KBucket::onTimeout(RPCCall* c)
     }
 }
 
-void KBucket::pingQuestionable(const KBucketEntry & replacement_entry)
+void KBucket::pingQuestionable(const KBucketEntry &replacement_entry)
 {
     if (pending_entries_busy_pinging.count() >= 2) {
         pending_entries.append(replacement_entry); // lets not have to many pending_entries calls going on
@@ -191,12 +184,12 @@ void KBucket::pingQuestionable(const KBucketEntry & replacement_entry)
     QList<KBucketEntry>::iterator i;
     // we haven't found any bad ones so try the questionable ones
     for (i = entries.begin(); i != entries.end(); ++i) {
-        KBucketEntry & e = *i;
+        KBucketEntry &e = *i;
         if (e.isQuestionable()) {
             Out(SYS_DHT | LOG_DEBUG) << "Pinging questionable node : " << e.getAddress().toString() << endl;
             RPCMsg::Ptr p(new PingReq(our_id));
             p->setDestination(e.getAddress());
-            RPCCall* c = srv->doCall(p);
+            RPCCall *c = srv->doCall(p);
             if (c) {
                 e.onPingQuestionable();
                 c->addListener(this);
@@ -208,11 +201,11 @@ void KBucket::pingQuestionable(const KBucketEntry & replacement_entry)
     }
 }
 
-bool KBucket::replaceBadEntry(const KBucketEntry & entry)
+bool KBucket::replaceBadEntry(const KBucketEntry &entry)
 {
     QList<KBucketEntry>::iterator i;
     for (i = entries.begin(); i != entries.end(); ++i) {
-        KBucketEntry & e = *i;
+        KBucketEntry &e = *i;
         if (e.isBad()) {
             // bad one get rid of it
             last_modified = bt::CurrentTime();
@@ -224,24 +217,24 @@ bool KBucket::replaceBadEntry(const KBucketEntry & entry)
     return false;
 }
 
-bool KBucket::contains(const KBucketEntry & entry) const
+bool KBucket::contains(const KBucketEntry &entry) const
 {
     return entries.contains(entry);
 }
 
-void KBucket::findKClosestNodes(KClosestNodesSearch & kns) const
+void KBucket::findKClosestNodes(KClosestNodesSearch &kns) const
 {
-    for (const KBucketEntry& i : qAsConst(entries)) {
+    for (const KBucketEntry &i : qAsConst(entries)) {
         kns.tryInsert(i);
     }
 }
 
-bool KBucket::onTimeout(const net::Address & addr)
+bool KBucket::onTimeout(const net::Address &addr)
 {
     QList<KBucketEntry>::iterator i;
 
     for (i = entries.begin(); i != entries.end(); ++i) {
-        KBucketEntry & e = *i;
+        KBucketEntry &e = *i;
         if (e.getAddress() == addr) {
             e.requestTimeout();
             return true;
@@ -266,9 +259,7 @@ void KBucket::updateRefreshTimer()
     last_modified = bt::CurrentTime();
 }
 
-
-
-void KBucket::save(bt::BEncoder & enc)
+void KBucket::save(bt::BEncoder &enc)
 {
     enc.beginDict();
     enc.write(QByteArrayLiteral("min"), min_key.toByteArray());
@@ -278,7 +269,7 @@ void KBucket::save(bt::BEncoder & enc)
     QList<KBucketEntry>::iterator i;
     for (i = entries.begin(); i != entries.end(); ++i) {
         enc.beginDict();
-        KBucketEntry & e = *i;
+        KBucketEntry &e = *i;
 
         enc.write(QByteArrayLiteral("id"), e.getID().toByteArray());
         enc.write(QByteArrayLiteral("address"));
@@ -301,39 +292,38 @@ void KBucket::save(bt::BEncoder & enc)
     enc.end();
 }
 
-void KBucket::load(bt::BDictNode* dict)
+void KBucket::load(bt::BDictNode *dict)
 {
     min_key = dht::Key(dict->getByteArray("min"));
     max_key = dht::Key(dict->getByteArray("max"));
-    BListNode* entry_list = dict->getList("entries");
+    BListNode *entry_list = dict->getList("entries");
     if (!entry_list || entry_list->getNumChildren() == 0)
         return;
 
     for (Uint32 i = 0; i < entry_list->getNumChildren(); i++) {
-        BDictNode* entry = entry_list->getDict(i);
+        BDictNode *entry = entry_list->getDict(i);
         if (!entry)
             continue;
 
         Key id = Key(entry->getByteArray("id"));
         QByteArray addr = entry->getByteArray("address");
         if (addr.size() == 6) {
-            entries.append(KBucketEntry(net::Address(bt::ReadUint32((const Uint8*)addr.data(), 0), bt::ReadUint16((const Uint8*)addr.data(), 4)), id));
+            entries.append(KBucketEntry(net::Address(bt::ReadUint32((const Uint8 *)addr.data(), 0), bt::ReadUint16((const Uint8 *)addr.data(), 4)), id));
         } else {
             Q_IPV6ADDR ip;
             memcpy(ip.c, addr.data(), 16);
-            entries.append(KBucketEntry(net::Address(ip, bt::ReadUint16((const Uint8*)addr.data(), 16)), id));
+            entries.append(KBucketEntry(net::Address(ip, bt::ReadUint16((const Uint8 *)addr.data(), 16)), id));
         }
-
     }
 }
 
-void KBucket::onFinished(Task* t)
+void KBucket::onFinished(Task *t)
 {
     if (t == refresh_task)
         refresh_task = 0;
 }
 
-void KBucket::setRefreshTask(Task* t)
+void KBucket::setRefreshTask(Task *t)
 {
     refresh_task = t;
     if (refresh_task) {
@@ -342,4 +332,3 @@ void KBucket::setRefreshTask(Task* t)
 }
 
 }
-

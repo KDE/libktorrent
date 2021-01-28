@@ -19,26 +19,26 @@
  ***************************************************************************/
 #include "singledatachecker.h"
 #include <klocalizedstring.h>
-#include <util/log.h>
-#include <util/file.h>
-#include <util/error.h>
-#include <util/array.h>
-#include <util/functions.h>
 #include <torrent/globals.h>
 #include <torrent/torrent.h>
+#include <util/array.h>
+#include <util/error.h>
+#include <util/file.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 namespace bt
 {
-
-SingleDataChecker::SingleDataChecker(bt::Uint32 from, bt::Uint32 to): DataChecker(from, to)
-{}
-
+SingleDataChecker::SingleDataChecker(bt::Uint32 from, bt::Uint32 to)
+    : DataChecker(from, to)
+{
+}
 
 SingleDataChecker::~SingleDataChecker()
-{}
+{
+}
 
-
-void SingleDataChecker::check(const QString& path, const Torrent& tor, const QString &, const BitSet & current_status)
+void SingleDataChecker::check(const QString &path, const Torrent &tor, const QString &, const BitSet &current_status)
 {
     // open the file
     Uint32 num_chunks = tor.getNumChunks();

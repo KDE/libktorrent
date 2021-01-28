@@ -18,15 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #include "streamsocket.h"
 #include "socketmonitor.h"
 
 namespace net
 {
-StreamSocket::StreamSocket(bool tcp, int ip_version, StreamSocketListener* listener)
-    : TrafficShapedSocket(tcp, ip_version),
-      listener(listener)
+StreamSocket::StreamSocket(bool tcp, int ip_version, StreamSocketListener *listener)
+    : TrafficShapedSocket(tcp, ip_version)
+    , listener(listener)
 {
 }
 
@@ -34,13 +33,12 @@ StreamSocket::~StreamSocket()
 {
 }
 
-void StreamSocket::addData(const QByteArray& data)
+void StreamSocket::addData(const QByteArray &data)
 {
     QMutexLocker lock(&mutex);
     buffer.append(data);
     net::SocketMonitor::instance().signalPacketReady();
 }
-
 
 bool StreamSocket::bytesReadyToWrite() const
 {
@@ -64,10 +62,9 @@ bt::Uint32 StreamSocket::write(bt::Uint32 max, bt::TimeStamp now)
     if (buffer.isEmpty())
         return 0;
 
-
     // max 0 means unlimited transfer, try to send the entire buffer then
     int to_send = (max == 0) ? buffer.size() : qMin<int>(buffer.size(), max);
-    int ret = sock->send((const bt::Uint8*)buffer.data(), to_send);
+    int ret = sock->send((const bt::Uint8 *)buffer.data(), to_send);
     if (ret == to_send) {
         buffer.clear();
         if (listener)

@@ -18,18 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
-#include <util/log.h>
+#include <QtTest>
 #include <peer/connectionlimit.h>
-
+#include <util/log.h>
 
 class ConnectionLimitTest : public QObject
 {
     Q_OBJECT
 public:
-
-
 private Q_SLOTS:
     void initTestCase()
     {
@@ -124,10 +121,8 @@ private Q_SLOTS:
     }
 
 private:
-
 };
 
 QTEST_MAIN(ConnectionLimitTest)
 
 #include "connectionlimittest.moc"
-

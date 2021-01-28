@@ -20,10 +20,9 @@
 #ifndef DHTDHTPEERSOURCE_H
 #define DHTDHTPEERSOURCE_H
 
-#include <qtimer.h>
-#include <interfaces/peersource.h>
 #include "task.h"
-
+#include <interfaces/peersource.h>
+#include <qtimer.h>
 
 namespace bt
 {
@@ -31,13 +30,10 @@ class WaitJob;
 struct DHTNode;
 }
 
-
 namespace dht
 {
 class DHTBase;
 class AnnounceTask;
-
-
 
 /**
     @author Joris Guisson <joris.guisson@gmail.com>
@@ -45,25 +41,25 @@ class AnnounceTask;
 class KTORRENT_EXPORT DHTPeerSource : public bt::PeerSource
 {
 public:
-    DHTPeerSource(DHTBase & dh_table, const bt::SHA1Hash & info_hash, const QString & torrent_name);
+    DHTPeerSource(DHTBase &dh_table, const bt::SHA1Hash &info_hash, const QString &torrent_name);
     ~DHTPeerSource() override;
 
     void start() override;
-    void stop(bt::WaitJob* wjob = 0) override;
+    void stop(bt::WaitJob *wjob = 0) override;
     void manualUpdate() override;
 
-    void addDHTNode(const bt::DHTNode & node);
+    void addDHTNode(const bt::DHTNode &node);
     void setRequestInterval(bt::Uint32 interval);
 
 private:
     void onTimeout();
     bool doRequest();
-    void onDataReady(Task* t);
-    void onFinished(Task* t);
+    void onDataReady(Task *t);
+    void onFinished(Task *t);
     void dhtStopped();
 
-    DHTBase & dh_table;
-    AnnounceTask* curr_task;
+    DHTBase &dh_table;
+    AnnounceTask *curr_task;
     bt::SHA1Hash info_hash;
     QTimer timer;
     bool started;

@@ -22,7 +22,6 @@
 #include "version.h"
 #include <QString>
 
-
 namespace bt
 {
 static QString g_name = QStringLiteral("KTorrent");
@@ -32,7 +31,7 @@ static int g_release = 0;
 static QString g_peer_id = QStringLiteral("KT");
 
 // TODO: create a function SetClientInfo(const QString &name, QString &version, const QString &peer_id) and  mark this one [[deprecated]]
-void SetClientInfo(const QString & name, int major, int minor, int release, VersionType type, const QString & peer_id)
+void SetClientInfo(const QString &name, int major, int minor, int release, VersionType type, const QString &peer_id)
 {
     Q_UNUSED(type)
     g_name = name;

@@ -24,11 +24,9 @@ namespace dht
 {
 RPCServerInterface::RPCServerInterface()
 {
-
 }
 
 RPCServerInterface::~RPCServerInterface()
 {
-
 }
 }

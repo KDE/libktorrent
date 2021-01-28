@@ -21,13 +21,12 @@
 
 namespace bt
 {
-
 MonitorInterface::MonitorInterface()
-{}
-
+{
+}
 
 MonitorInterface::~MonitorInterface()
-{}
-
+{
+}
 
 }

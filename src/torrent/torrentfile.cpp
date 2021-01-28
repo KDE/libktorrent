@@ -20,25 +20,30 @@
  ***************************************************************************/
 #include "torrentfile.h"
 
-#include <math.h>
-#include <util/log.h>
-#include <util/bitset.h>
-#include <util/functions.h>
-#include <diskio/chunkmanager.h>
 #include <QMimeDatabase>
 #include <QMimeType>
-
+#include <diskio/chunkmanager.h>
+#include <math.h>
+#include <util/bitset.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 namespace bt
 {
 TorrentFile TorrentFile::null(0);
 
-TorrentFile::TorrentFile(Torrent* tor) : TorrentFileInterface(0, QString(), 0), tor(tor), missing(false)
-{}
+TorrentFile::TorrentFile(Torrent *tor)
+    : TorrentFileInterface(0, QString(), 0)
+    , tor(tor)
+    , missing(false)
+{
+}
 
-TorrentFile::TorrentFile(Torrent* tor, Uint32 index, const QString & path,
-                         Uint64 off, Uint64 size, Uint64 chunk_size)
-    : TorrentFileInterface(index, path, size), tor(tor), cache_offset(off), missing(false)
+TorrentFile::TorrentFile(Torrent *tor, Uint32 index, const QString &path, Uint64 off, Uint64 size, Uint64 chunk_size)
+    : TorrentFileInterface(index, path, size)
+    , tor(tor)
+    , cache_offset(off)
+    , missing(false)
 {
     first_chunk = off / chunk_size;
     first_chunk_off = off % chunk_size;
@@ -50,7 +55,7 @@ TorrentFile::TorrentFile(Torrent* tor, Uint32 index, const QString & path,
     priority = old_priority = NORMAL_PRIORITY;
 }
 
-TorrentFile::TorrentFile(const TorrentFile & tf)
+TorrentFile::TorrentFile(const TorrentFile &tf)
     : TorrentFileInterface(tf.getIndex(), QString(), 0)
 {
     setUnencodedPath(tf.unencoded_path);
@@ -69,7 +74,8 @@ TorrentFile::TorrentFile(const TorrentFile & tf)
 }
 
 TorrentFile::~TorrentFile()
-{}
+{
+}
 
 void TorrentFile::setDoNotDownload(bool dnd)
 {
@@ -100,7 +106,6 @@ void TorrentFile::emitDownloadStatusChanged()
         tor->downloadPriorityChanged(this, priority, old_priority);
 }
 
-
 bool TorrentFile::isMultimedia() const
 {
     if (filetype == UNKNOWN) {
@@ -111,7 +116,7 @@ bool TorrentFile::isMultimedia() const
         }
 
         QString name = ptr.name();
-        if (name.startsWith(QLatin1String("audio")) ||  name == QLatin1String("application/ogg"))
+        if (name.startsWith(QLatin1String("audio")) || name == QLatin1String("application/ogg"))
             filetype = AUDIO;
         else if (name.startsWith(QLatin1String("video")))
             filetype = VIDEO;
@@ -144,7 +149,7 @@ void TorrentFile::setPriority(Priority newpriority)
     }
 }
 
-TorrentFile & TorrentFile::operator = (const TorrentFile & tf)
+TorrentFile &TorrentFile::operator=(const TorrentFile &tf)
 {
     index = tf.getIndex();
     path = tf.getPath();
@@ -174,9 +179,9 @@ Uint64 TorrentFile::fileOffset(Uint32 cindex, Uint64 chunk_size) const
     return off;
 }
 
-void TorrentFile::updateNumDownloadedChunks(ChunkManager & cman)
+void TorrentFile::updateNumDownloadedChunks(ChunkManager &cman)
 {
-    const BitSet & bs = cman.getBitSet();
+    const BitSet &bs = cman.getBitSet();
     Uint32 old_chunk_count = num_chunks_downloaded;
     num_chunks_downloaded = 0;
 

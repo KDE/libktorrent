@@ -27,7 +27,6 @@
 
 namespace bt
 {
-
 /**
     Interface for WebSeeds
 */

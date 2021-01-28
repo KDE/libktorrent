@@ -18,35 +18,45 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "torrentcreator.h"
-#include <qdir.h>
-#include <qfileinfo.h>
-#include <klocalizedstring.h>
-#include <time.h>
-#include <util/error.h>
-#include <version.h>
-#include <bcodec/bencoder.h>
-#include <util/file.h>
-#include <util/sha1hash.h>
-#include <util/fileops.h>
-#include <util/log.h>
-#include <util/array.h>
-#include <util/functions.h>
-#include <diskio/chunkmanager.h>
 #include "globals.h"
 #include "statsfile.h"
 #include "torrentcontrol.h"
+#include <bcodec/bencoder.h>
+#include <diskio/chunkmanager.h>
+#include <klocalizedstring.h>
+#include <qdir.h>
+#include <qfileinfo.h>
+#include <time.h>
+#include <util/array.h>
+#include <util/error.h>
+#include <util/file.h>
+#include <util/fileops.h>
+#include <util/functions.h>
+#include <util/log.h>
+#include <util/sha1hash.h>
+#include <version.h>
 
 namespace bt
 {
-
-TorrentCreator::TorrentCreator(const QString& tar,
-                               const QStringList& track,
-                               const QList<QUrl>& webseeds,
+TorrentCreator::TorrentCreator(const QString &tar,
+                               const QStringList &track,
+                               const QList<QUrl> &webseeds,
                                Uint32 cs,
-                               const QString& name,
-                               const QString& comments, bool priv, bool decentralized)
-    : target(tar), trackers(track), webseeds(webseeds), chunk_size(cs),
-      name(name), comments(comments), cur_chunk(0), priv(priv), tot_size(0), decentralized(decentralized), stopped(false)
+                               const QString &name,
+                               const QString &comments,
+                               bool priv,
+                               bool decentralized)
+    : target(tar)
+    , trackers(track)
+    , webseeds(webseeds)
+    , chunk_size(cs)
+    , name(name)
+    , comments(comments)
+    , cur_chunk(0)
+    , priv(priv)
+    , tot_size(0)
+    , decentralized(decentralized)
+    , stopped(false)
 {
     this->chunk_size *= 1024;
     QFileInfo fi(target);
@@ -78,17 +88,17 @@ TorrentCreator::TorrentCreator(const QString& tar,
     Out(SYS_GEN | LOG_DEBUG) << "Last Size : " << last_size << endl;
 }
 
-
 TorrentCreator::~TorrentCreator()
-{}
+{
+}
 
-void TorrentCreator::buildFileList(const QString& dir)
+void TorrentCreator::buildFileList(const QString &dir)
 {
     QDir d(target + dir);
     // first get all files (we ignore symlinks)
     const QStringList dfiles = d.entryList(QDir::Files);
     Uint32 cnt = 0; // counter to keep track of file index
-    for (const QString & s : dfiles) {
+    for (const QString &s : dfiles) {
         // add a TorrentFile to the list
         Uint64 fs = bt::FileSize(target + dir + s);
         TorrentFile f(0, cnt, dir + s, tot_size, fs, chunk_size);
@@ -100,7 +110,7 @@ void TorrentCreator::buildFileList(const QString& dir)
 
     // now for each subdir do a buildFileList
     const QStringList subdirs = d.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-    for (const QString& s : subdirs) {
+    for (const QString &s : subdirs) {
         QString sd = dir + s;
         if (!sd.endsWith(bt::DirSeparator()))
             sd += bt::DirSeparator();
@@ -108,8 +118,7 @@ void TorrentCreator::buildFileList(const QString& dir)
     }
 }
 
-
-void TorrentCreator::saveTorrent(const QString& url)
+void TorrentCreator::saveTorrent(const QString &url)
 {
     File fptr;
     if (!fptr.open(url, "wb"))
@@ -128,32 +137,32 @@ void TorrentCreator::saveTorrent(const QString& url)
         if (trackers.count() > 1) {
             enc.write(QByteArrayLiteral("announce-list"));
             enc.beginList();
-            for (const QString& t : qAsConst(trackers)) {
+            for (const QString &t : qAsConst(trackers)) {
                 enc.beginList();
                 enc.write(t.toUtf8());
                 enc.end();
             }
             enc.end();
-
         }
     }
-
 
     if (comments.length() > 0) {
         enc.write(QByteArrayLiteral("comment"));
         enc.write(comments.toUtf8());
     }
-    enc.write(QByteArrayLiteral("created by")); enc.write(bt::GetVersionString().toLatin1());
-    enc.write(QByteArrayLiteral("creation date")); enc.write((Uint64)time(0));
+    enc.write(QByteArrayLiteral("created by"));
+    enc.write(bt::GetVersionString().toLatin1());
+    enc.write(QByteArrayLiteral("creation date"));
+    enc.write((Uint64)time(0));
     enc.write(QByteArrayLiteral("info"));
     saveInfo(enc);
     // save the nodes list after the info hash, keys must be sorted !
     if (decentralized) {
-        //DHT torrent
+        // DHT torrent
         enc.write(QByteArrayLiteral("nodes"));
         enc.beginList();
 
-        for (const QString& t : qAsConst(trackers)) {
+        for (const QString &t : qAsConst(trackers)) {
             enc.beginList();
             enc.write(t.section(',', 0, 0).toUtf8());
             enc.write((Uint32)t.section(',', 1, 1).toInt());
@@ -177,7 +186,7 @@ void TorrentCreator::saveTorrent(const QString& url)
     enc.end();
 }
 
-void TorrentCreator::saveInfo(BEncoder& enc)
+void TorrentCreator::saveInfo(BEncoder &enc)
 {
     enc.beginDict();
 
@@ -185,16 +194,20 @@ void TorrentCreator::saveInfo(BEncoder& enc)
     if (fi.isDir()) {
         enc.write(QByteArrayLiteral("files"));
         enc.beginList();
-        for (const TorrentFile& file : qAsConst(files))
+        for (const TorrentFile &file : qAsConst(files))
             saveFile(enc, file);
 
         enc.end();
     } else {
-        enc.write(QByteArrayLiteral("length")); enc.write(bt::FileSize(target));
+        enc.write(QByteArrayLiteral("length"));
+        enc.write(bt::FileSize(target));
     }
-    enc.write(QByteArrayLiteral("name")); enc.write(name.toUtf8());
-    enc.write(QByteArrayLiteral("piece length")); enc.write((Uint64)chunk_size);
-    enc.write(QByteArrayLiteral("pieces")); savePieces(enc);
+    enc.write(QByteArrayLiteral("name"));
+    enc.write(name.toUtf8());
+    enc.write(QByteArrayLiteral("piece length"));
+    enc.write((Uint64)chunk_size);
+    enc.write(QByteArrayLiteral("pieces"));
+    savePieces(enc);
     if (priv) {
         enc.write(QByteArrayLiteral("private"));
         enc.write((Uint64)1);
@@ -202,20 +215,21 @@ void TorrentCreator::saveInfo(BEncoder& enc)
     enc.end();
 }
 
-void TorrentCreator::saveFile(BEncoder& enc, const TorrentFile& file)
+void TorrentCreator::saveFile(BEncoder &enc, const TorrentFile &file)
 {
     enc.beginDict();
-    enc.write(QByteArrayLiteral("length")); enc.write(file.getSize());
+    enc.write(QByteArrayLiteral("length"));
+    enc.write(file.getSize());
     enc.write(QByteArrayLiteral("path"));
     enc.beginList();
     const QStringList sl = file.getPath().split(bt::DirSeparator());
-    for (const QString& s : sl)
+    for (const QString &s : sl)
         enc.write(s.toUtf8());
     enc.end();
     enc.end();
 }
 
-void TorrentCreator::savePieces(BEncoder& enc)
+void TorrentCreator::savePieces(BEncoder &enc)
 {
     Array<Uint8> big_hash(num_chunks * 20);
     for (Uint32 i = 0; i < num_chunks; ++i) {
@@ -229,8 +243,7 @@ bool TorrentCreator::calcHashSingle()
     Array<Uint8> buf(chunk_size);
     File fptr;
     if (!fptr.open(target, "rb"))
-        throw Error(i18n("Cannot open file %1: %2",
-                         target, fptr.errorString()));
+        throw Error(i18n("Cannot open file %1: %2", target, fptr.errorString()));
 
     Uint32 s = cur_chunk != num_chunks - 1 ? chunk_size : last_size;
     fptr.seek(File::BEGIN, (Int64)cur_chunk * chunk_size);
@@ -249,7 +262,7 @@ bool TorrentCreator::calcHashMulti()
     QList<TorrentFile> file_list;
     int i = 0;
     while (i < files.size()) {
-        const TorrentFile& tf = files[i];
+        const TorrentFile &tf = files[i];
         if (cur_chunk >= tf.getFirstChunk() && cur_chunk <= tf.getLastChunk()) {
             file_list.append(tf);
         }
@@ -259,11 +272,10 @@ bool TorrentCreator::calcHashMulti()
 
     Uint32 read = 0;
     for (i = 0; i < file_list.count(); i++) {
-        const TorrentFile& f = file_list[i];
+        const TorrentFile &f = file_list[i];
         File fptr;
         if (!fptr.open(target + f.getPath(), "rb")) {
-            throw Error(i18n("Cannot open file %1: %2"
-                             , f.getPath(), fptr.errorString()));
+            throw Error(i18n("Cannot open file %1: %2", f.getPath(), fptr.errorString()));
         }
 
         // first calculate offset into file
@@ -316,7 +328,7 @@ void TorrentCreator::run()
             ;
 }
 
-TorrentControl* TorrentCreator::makeTC(const QString& data_dir)
+TorrentControl *TorrentCreator::makeTC(const QString &data_dir)
 {
     QString dd = data_dir;
     if (!dd.endsWith(bt::DirSeparator()))
@@ -341,7 +353,7 @@ TorrentControl* TorrentCreator::makeTC(const QString& data_dir)
     fptr.close();
 
     // now create the torrentcontrol object
-    TorrentControl* tc = new TorrentControl();
+    TorrentControl *tc = new TorrentControl();
     try {
         // get the parent dir of target
         QFileInfo fi = QFileInfo(target);

@@ -19,26 +19,29 @@
  ***************************************************************************/
 
 #include "pingreq.h"
-#include <util/log.h>
-#include <bcodec/bencoder.h>
 #include "dht.h"
+#include <bcodec/bencoder.h>
+#include <util/log.h>
 
 using namespace bt;
 
 namespace dht
 {
-PingReq::PingReq() : RPCMsg(QByteArray(), PING, REQ_MSG, Key())
+PingReq::PingReq()
+    : RPCMsg(QByteArray(), PING, REQ_MSG, Key())
 {
 }
 
-PingReq::PingReq(const Key & id) : RPCMsg(QByteArray(), PING, REQ_MSG, id)
+PingReq::PingReq(const Key &id)
+    : RPCMsg(QByteArray(), PING, REQ_MSG, id)
 {
 }
 
 PingReq::~PingReq()
-{}
+{
+}
 
-void PingReq::apply(dht::DHT* dh_table)
+void PingReq::apply(dht::DHT *dh_table)
 {
     dh_table->ping(*this);
 }
@@ -48,7 +51,7 @@ void PingReq::print()
     Out(SYS_DHT | LOG_DEBUG) << QString("REQ: %1 %2 : ping").arg(mtid[0]).arg(id.toString()) << endl;
 }
 
-void PingReq::encode(QByteArray & arr) const
+void PingReq::encode(QByteArray &arr) const
 {
     BEncoder enc(new BEncoderBufferOutput(arr));
     enc.beginDict();
@@ -70,4 +73,3 @@ void PingReq::encode(QByteArray & arr) const
     enc.end();
 }
 }
-

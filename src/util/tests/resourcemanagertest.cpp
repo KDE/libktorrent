@@ -23,18 +23,21 @@
 #include <QtTest>
 
 #include <util/functions.h>
-#include <util/resourcemanager.h>
 #include <util/log.h>
+#include <util/resourcemanager.h>
 
 using namespace bt;
 
-static bt::Resource* last_acquired = 0;
+static bt::Resource *last_acquired = 0;
 
 class TestResource : public bt::Resource
 {
 public:
-    TestResource(ResourceManager* rman, const QString& group) : Resource(rman, group), acq(false)
-    {}
+    TestResource(ResourceManager *rman, const QString &group)
+        : Resource(rman, group)
+        , acq(false)
+    {
+    }
 
     void acquired() override
     {
@@ -50,7 +53,6 @@ class ResourceManagerTest : public QObject
 {
     Q_OBJECT
 public:
-
 private Q_SLOTS:
     void initTestCase()
     {
@@ -66,9 +68,9 @@ private Q_SLOTS:
         Out(SYS_GEN | LOG_DEBUG) << "testSingleClass" << endl;
         ResourceManager rm(4);
 
-        QList<TestResource*> tr;
+        QList<TestResource *> tr;
         for (int i = 0; i < 8; i++) {
-            TestResource* r = new TestResource(&rm, "test");
+            TestResource *r = new TestResource(&rm, "test");
             tr.append(r);
             rm.add(r);
             // The first 4 should get acquired
@@ -86,12 +88,12 @@ private Q_SLOTS:
     {
         Out(SYS_GEN | LOG_DEBUG) << "testMultiClass" << endl;
         ResourceManager rm(4);
-        const char* classes[4] = {"aaa", "bbb", "ccc", "ddd"};
+        const char *classes[4] = {"aaa", "bbb", "ccc", "ddd"};
 
         // 4 resources for each class
-        QList<TestResource*> tr;
+        QList<TestResource *> tr;
         for (int i = 0; i < 16; i++) {
-            TestResource* r = new TestResource(&rm, classes[i % 4]);
+            TestResource *r = new TestResource(&rm, classes[i % 4]);
             tr.append(r);
             rm.add(r);
             // The first 4 should get acquired
@@ -100,7 +102,7 @@ private Q_SLOTS:
 
         QString last_group;
         for (int i = 0; i < 12; i++) {
-            Resource* r = tr.takeFirst();
+            Resource *r = tr.takeFirst();
             QString g = r->groupName();
             delete r;
             QVERIFY(tr.at(3)->acq); // The next availabe one should now be acquired
@@ -114,14 +116,14 @@ private Q_SLOTS:
     {
         Out(SYS_GEN | LOG_DEBUG) << "testFullyRandom" << endl;
         ResourceManager rm(4);
-        const char* classes[4] = {"aaa", "bbb", "ccc", "ddd"};
+        const char *classes[4] = {"aaa", "bbb", "ccc", "ddd"};
 
         // A random amount of resources for each class
-        QList<TestResource*> tr;
+        QList<TestResource *> tr;
 
         Uint32 num_acquired = 0;
         for (int i = 0; i < 500; i++) {
-            TestResource* r = new TestResource(&rm, classes[QRandomGenerator::global()->bounded(4)]);
+            TestResource *r = new TestResource(&rm, classes[QRandomGenerator::global()->bounded(4)]);
             tr.append(r);
             rm.add(r);
             if (r->acq)
@@ -132,12 +134,12 @@ private Q_SLOTS:
 
         QString last_acquired_group;
         for (int i = 0; i < 496; i++) {
-            tr.removeAll((TestResource*)last_acquired);
+            tr.removeAll((TestResource *)last_acquired);
             delete last_acquired;
             QVERIFY(last_acquired);
             if (last_acquired->groupName() == last_acquired_group) {
                 // This is only possible if there are no other groups which are still pending
-                for (TestResource* r : qAsConst(tr))
+                for (TestResource *r : qAsConst(tr))
                     if (!r->acq)
                         QVERIFY(r->groupName() == last_acquired_group);
             }
@@ -150,4 +152,3 @@ private Q_SLOTS:
 QTEST_MAIN(ResourceManagerTest)
 
 #include "resourcemanagertest.moc"
-

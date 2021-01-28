@@ -19,12 +19,11 @@
  ***************************************************************************/
 #include "peerdownloader.h"
 
+#include "peer.h"
+#include <download/piece.h>
 #include <math.h>
 #include <util/functions.h>
 #include <util/log.h>
-#include "peer.h"
-#include <download/piece.h>
-
 
 namespace bt
 {
@@ -33,49 +32,53 @@ TimeStampedRequest::TimeStampedRequest()
     time_stamp = bt::CurrentTime();
 }
 
-TimeStampedRequest::TimeStampedRequest(const Request & r) : req(r)
+TimeStampedRequest::TimeStampedRequest(const Request &r)
+    : req(r)
 {
     time_stamp = bt::CurrentTime();
 }
 
-TimeStampedRequest::TimeStampedRequest(const TimeStampedRequest & t)
-    : req(t.req), time_stamp(t.time_stamp)
+TimeStampedRequest::TimeStampedRequest(const TimeStampedRequest &t)
+    : req(t.req)
+    , time_stamp(t.time_stamp)
 {
 }
 
 TimeStampedRequest::~TimeStampedRequest()
-{}
+{
+}
 
-bool TimeStampedRequest::operator == (const Request & r)
+bool TimeStampedRequest::operator==(const Request &r)
 {
     return r == req;
 }
 
-bool TimeStampedRequest::operator == (const TimeStampedRequest & r)
+bool TimeStampedRequest::operator==(const TimeStampedRequest &r)
 {
     return r.req == req;
 }
 
-TimeStampedRequest & TimeStampedRequest::operator = (const Request & r)
+TimeStampedRequest &TimeStampedRequest::operator=(const Request &r)
 {
     time_stamp = bt::CurrentTime();
     req = r;
     return *this;
 }
 
-TimeStampedRequest & TimeStampedRequest::operator = (const TimeStampedRequest & r)
+TimeStampedRequest &TimeStampedRequest::operator=(const TimeStampedRequest &r)
 {
     time_stamp = r.time_stamp;
     req = r.req;
     return *this;
 }
 
-PeerDownloader::PeerDownloader(Peer* peer, Uint32 chunk_size) : peer(peer), chunk_size(chunk_size / MAX_PIECE_LEN)
+PeerDownloader::PeerDownloader(Peer *peer, Uint32 chunk_size)
+    : peer(peer)
+    , chunk_size(chunk_size / MAX_PIECE_LEN)
 {
     connect(peer, &Peer::destroyed, this, &PeerDownloader::peerDestroyed);
     max_wait_queue_size = 25;
 }
-
 
 PeerDownloader::~PeerDownloader()
 {
@@ -101,7 +104,7 @@ Uint32 PeerDownloader::getNumRequests() const
     return reqs.count() /*+ wait_queue.count() */;
 }
 
-void PeerDownloader::download(const Request & req)
+void PeerDownloader::download(const Request &req)
 {
     if (!peer)
         return;
@@ -110,7 +113,7 @@ void PeerDownloader::download(const Request & req)
     update();
 }
 
-void PeerDownloader::cancel(const Request & req)
+void PeerDownloader::cancel(const Request &req)
 {
     if (!peer)
         return;
@@ -121,7 +124,7 @@ void PeerDownloader::cancel(const Request & req)
     }
 }
 
-void PeerDownloader::onRejected(const Request & req)
+void PeerDownloader::onRejected(const Request &req)
 {
     if (!peer)
         return;
@@ -135,7 +138,7 @@ void PeerDownloader::cancelAll()
     if (peer) {
         QList<TimeStampedRequest>::iterator i = reqs.begin();
         while (i != reqs.end()) {
-            TimeStampedRequest & tr = *i;
+            TimeStampedRequest &tr = *i;
             peer->sendCancel(tr.req);
             ++i;
         }
@@ -145,7 +148,7 @@ void PeerDownloader::cancelAll()
     reqs.clear();
 }
 
-void PeerDownloader::piece(const Piece & p)
+void PeerDownloader::piece(const Piece &p)
 {
     Request r(p);
     if (!reqs.removeOne(r))
@@ -217,7 +220,7 @@ void PeerDownloader::choked()
 
     QList<TimeStampedRequest>::iterator i = reqs.begin();
     while (i != reqs.end()) {
-        TimeStampedRequest & tr = *i;
+        TimeStampedRequest &tr = *i;
         rejected(tr.req);
         ++i;
     }
@@ -225,7 +228,7 @@ void PeerDownloader::choked()
 
     QList<Request>::iterator j = wait_queue.begin();
     while (j != wait_queue.end()) {
-        Request & req = *j;
+        Request &req = *j;
         rejected(req);
         ++j;
     }

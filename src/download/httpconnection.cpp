@@ -19,28 +19,26 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "httpconnection.h"
+#include "httpresponseheader.h"
 #include <QTimer>
-#include <QtAlgorithms>
 #include <QUrl>
+#include <QtAlgorithms>
 #include <klocalizedstring.h>
 #include <net/socketmonitor.h>
-#include <util/log.h>
 #include <util/functions.h>
-#include "httpresponseheader.h"
+#include <util/log.h>
 
 #include "version.h"
 
-
 namespace bt
 {
-
-HttpConnection::HttpConnection() :
-    sock(nullptr),
-    state(IDLE),
-    mutex(QMutex::Recursive),
-    request(nullptr),
-    using_proxy(false),
-    response_code(0)
+HttpConnection::HttpConnection()
+    : sock(nullptr)
+    , state(IDLE)
+    , mutex(QMutex::Recursive)
+    , request(nullptr)
+    , using_proxy(false)
+    , response_code(0)
 {
     status = i18n("Not connected");
     connect(&reply_timer, &QTimer::timeout, this, &HttpConnection::replyTimeout);
@@ -52,7 +50,6 @@ HttpConnection::HttpConnection() :
     close_when_finished = false;
     redirected = false;
 }
-
 
 HttpConnection::~HttpConnection()
 {
@@ -104,11 +101,11 @@ bool HttpConnection::ready() const
     return !request;
 }
 
-void HttpConnection::connectToProxy(const QString & proxy, Uint16 proxy_port)
+void HttpConnection::connectToProxy(const QString &proxy, Uint16 proxy_port)
 {
     if (OpenFileAllowed()) {
         using_proxy = true;
-        net::AddressResolver::resolve(proxy, proxy_port, this, SLOT(hostResolved(net::AddressResolver*)));
+        net::AddressResolver::resolve(proxy, proxy_port, this, SLOT(hostResolved(net::AddressResolver *)));
         state = RESOLVING;
         status = i18n("Resolving proxy %1:%2", proxy, proxy_port);
     } else {
@@ -122,8 +119,7 @@ void HttpConnection::connectTo(const QUrl &url)
 {
     if (OpenFileAllowed()) {
         using_proxy = false;
-        net::AddressResolver::resolve(url.host(), url.port() <= 0 ? 80 : url.port(),
-                                      this, SLOT(hostResolved(net::AddressResolver*)));
+        net::AddressResolver::resolve(url.host(), url.port() <= 0 ? 80 : url.port(), this, SLOT(hostResolved(net::AddressResolver *)));
         state = RESOLVING;
         status = i18n("Resolving hostname %1", url.host());
     } else {
@@ -133,7 +129,7 @@ void HttpConnection::connectTo(const QUrl &url)
     }
 }
 
-void HttpConnection::onDataReady(Uint8* buf, Uint32 size)
+void HttpConnection::onDataReady(Uint8 *buf, Uint32 size)
 {
     QMutexLocker locker(&mutex);
 
@@ -175,7 +171,7 @@ void HttpConnection::connectFinished(bool succeeded)
                 request->request_sent = true;
             }
         } else {
-            Out(SYS_CON | LOG_IMPORTANT) << "HttpConnection: failed to connect to webseed "  << endl;
+            Out(SYS_CON | LOG_IMPORTANT) << "HttpConnection: failed to connect to webseed " << endl;
             state = ERROR;
             status = i18n("Error: Failed to connect to webseed");
         }
@@ -183,8 +179,7 @@ void HttpConnection::connectFinished(bool succeeded)
     }
 }
 
-
-void HttpConnection::hostResolved(net::AddressResolver* ar)
+void HttpConnection::hostResolved(net::AddressResolver *ar)
 {
     if (ar->succeeded()) {
         net::Address addr = ar->address();
@@ -220,7 +215,7 @@ void HttpConnection::hostResolved(net::AddressResolver* ar)
     }
 }
 
-bool HttpConnection::get(const QString & host, const QString & path, const QString & query, bt::Uint64 start, bt::Uint64 len)
+bool HttpConnection::get(const QString &host, const QString &path, const QString &query, bt::Uint64 start, bt::Uint64 len)
 {
     QMutexLocker locker(&mutex);
     if (state == ERROR || request)
@@ -234,13 +229,13 @@ bool HttpConnection::get(const QString & host, const QString & path, const QStri
     return true;
 }
 
-bool HttpConnection::getData(QByteArray & data)
+bool HttpConnection::getData(QByteArray &data)
 {
     QMutexLocker locker(&mutex);
     if (!request)
         return false;
 
-    HttpGet* g = request;
+    HttpGet *g = request;
     if (g->redirected) {
         // wait until we have the entire content if we are redirected
         if (g->data_received < g->content_length)
@@ -305,8 +300,16 @@ void HttpConnection::replyTimeout()
 
 ////////////////////////////////////////////
 
-HttpConnection::HttpGet::HttpGet(const QString & host, const QString & path, const QString & query, bt::Uint64 start, bt::Uint64 len, bool using_proxy)
-    : host(host), path(path), query(query), start(start), len(len), data_received(0), response_header_received(false), request_sent(false), response_code(0)
+HttpConnection::HttpGet::HttpGet(const QString &host, const QString &path, const QString &query, bt::Uint64 start, bt::Uint64 len, bool using_proxy)
+    : host(host)
+    , path(path)
+    , query(query)
+    , start(start)
+    , len(len)
+    , data_received(0)
+    , response_header_received(false)
+    , request_sent(false)
+    , response_code(0)
 {
     QUrl url;
     url.setPath(path);
@@ -332,13 +335,14 @@ HttpConnection::HttpGet::HttpGet(const QString & host, const QString & path, con
 }
 
 HttpConnection::HttpGet::~HttpGet()
-{}
+{
+}
 
-bool HttpConnection::HttpGet::onDataReady(Uint8* buf, Uint32 size)
+bool HttpConnection::HttpGet::onDataReady(Uint8 *buf, Uint32 size)
 {
     if (!response_header_received) {
         // append the data
-        buffer.append(QByteArray::fromRawData((char*)buf, size));
+        buffer.append(QByteArray::fromRawData((char *)buf, size));
         // look for the end of the header
         int idx = buffer.indexOf("\r\n\r\n");
         if (idx == -1) // haven't got the full header yet
@@ -378,7 +382,7 @@ bool HttpConnection::HttpGet::onDataReady(Uint8* buf, Uint32 size)
     } else {
         // append the data to the list
         data_received += size;
-        piece_data.append(QByteArray((char*)buf, size));
+        piece_data.append(QByteArray((char *)buf, size));
     }
     return true;
 }

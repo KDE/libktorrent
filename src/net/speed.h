@@ -20,14 +20,13 @@
 #ifndef NETSPEED_H
 #define NETSPEED_H
 
-#include <QPair>
 #include <QLinkedList>
-#include <util/constants.h>
+#include <QPair>
 #include <deque>
+#include <util/constants.h>
 
 namespace net
 {
-
 /**
     @author Joris Guisson <joris.guisson@gmail.com>
 
@@ -38,9 +37,9 @@ class Speed
     QAtomicInt rate;
     bt::Uint32 bytes;
 #ifndef DO_NOT_USE_DEQUE
-    std::deque<QPair<bt::Uint32, bt::TimeStamp> > dlrate;
+    std::deque<QPair<bt::Uint32, bt::TimeStamp>> dlrate;
 #else
-    QLinkedList<QPair<bt::Uint32, bt::TimeStamp> > dlrate;
+    QLinkedList<QPair<bt::Uint32, bt::TimeStamp>> dlrate;
 #endif
 public:
     Speed();

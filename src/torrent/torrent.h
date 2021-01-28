@@ -21,18 +21,17 @@
 #ifndef BTTORRENT_H
 #define BTTORRENT_H
 
+#include "torrentfile.h"
+#include <QList>
 #include <QUrl>
 #include <QVector>
-#include <QList>
-#include <util/sha1hash.h>
-#include <util/constants.h>
 #include <interfaces/torrentinterface.h>
-#include <peer/peerid.h>
 #include <ktorrent_export.h>
-#include "torrentfile.h"
+#include <peer/peerid.h>
+#include <util/constants.h>
+#include <util/sha1hash.h>
 
 class QTextCodec;
-
 
 namespace bt
 {
@@ -40,13 +39,14 @@ class BNode;
 class BDictNode;
 class BListNode;
 
-
 struct TrackerTier {
     QList<QUrl> urls;
-    TrackerTier* next;
+    TrackerTier *next;
 
-    TrackerTier() : next(0)
-    {}
+    TrackerTier()
+        : next(0)
+    {
+    }
 
     ~TrackerTier()
     {
@@ -62,11 +62,12 @@ struct TrackerTier {
 class KTORRENT_EXPORT FilePriorityListener
 {
 public:
-    virtual ~FilePriorityListener() {}
+    virtual ~FilePriorityListener()
+    {
+    }
 
-    virtual void downloadPriorityChanged(TorrentFile* tf, Priority newpriority, Priority oldpriority) = 0;
+    virtual void downloadPriorityChanged(TorrentFile *tf, Priority newpriority, Priority oldpriority) = 0;
 };
-
 
 /**
  * @author Joris Guisson
@@ -79,14 +80,14 @@ class KTORRENT_EXPORT Torrent
 {
 public:
     Torrent();
-    Torrent(const bt::SHA1Hash & hash);
+    Torrent(const bt::SHA1Hash &hash);
     virtual ~Torrent();
 
     /**
      * Set the FilePriorityListener
      * @param l THe listener
      */
-    void setFilePriorityListener(FilePriorityListener* l)
+    void setFilePriorityListener(FilePriorityListener *l)
     {
         file_prio_listener = l;
     }
@@ -97,21 +98,21 @@ public:
      * @param newpriority The old priority
      * @param oldpriority The new priority
      */
-    void downloadPriorityChanged(TorrentFile* tf, Priority newpriority, Priority oldpriority);
+    void downloadPriorityChanged(TorrentFile *tf, Priority newpriority, Priority oldpriority);
 
     /**
      * Called by TorrentFile when the percentage changes
      * @param tf The file
      * @param perc The percentage
      */
-    void filePercentageChanged(TorrentFile* tf, float perc);
+    void filePercentageChanged(TorrentFile *tf, float perc);
 
     /**
      * Called by TorrentFile when the preview state changes
      * @param tf The file
      * @param preview Whether preview is possible or not
      */
-    void filePreviewChanged(TorrentFile* tf, bool preview);
+    void filePreviewChanged(TorrentFile *tf, bool preview);
 
     /**
      * Load a .torrent file.
@@ -119,7 +120,7 @@ public:
      * @param verbose Whether to print information to the log
      * @throw Error if something goes wrong
      */
-    void load(const QByteArray & data, bool verbose);
+    void load(const QByteArray &data, bool verbose);
 
     void debugPrintInfo();
 
@@ -148,13 +149,13 @@ public:
     }
 
     /// Get the info_hash.
-    const SHA1Hash & getInfoHash() const
+    const SHA1Hash &getInfoHash() const
     {
         return info_hash;
     }
 
     /// Get our peer_id.
-    const PeerID & getPeerID() const
+    const PeerID &getPeerID() const
     {
         return peer_id;
     }
@@ -178,7 +179,7 @@ public:
      * @param index The index of the chunk
      * @return true if they match
      */
-    bool verifyHash(const SHA1Hash & h, Uint32 index);
+    bool verifyHash(const SHA1Hash &h, Uint32 index);
 
     /// Get the number of tracker URL's
     unsigned int getNumTrackerURLs() const;
@@ -189,7 +190,7 @@ public:
      * @param idx Index of Chunk
      * @return The SHA1 hash of the chunk
      */
-    const SHA1Hash & getHash(Uint32 idx) const;
+    const SHA1Hash &getHash(Uint32 idx) const;
 
     /// See if we have a multi file torrent.
     bool isMultiFile() const
@@ -210,7 +211,7 @@ public:
      * @param idx Index of the file
      * @param A reference to the file
      */
-    TorrentFile & getFile(Uint32 idx);
+    TorrentFile &getFile(Uint32 idx);
 
     /**
      * Get a TorrentFile. If the index is out of range, or
@@ -218,7 +219,7 @@ public:
      * @param idx Index of the file
      * @param A reference to the file
      */
-    const TorrentFile & getFile(Uint32 idx) const;
+    const TorrentFile &getFile(Uint32 idx) const;
 
     /**
      * Calculate in which file(s) a Chunk lies. A list will
@@ -228,11 +229,11 @@ public:
      * @param chunk The index of the chunk
      * @param file_list This list will be filled with all the indices
      */
-    void calcChunkPos(Uint32 chunk, QList<Uint32> & file_list) const;
+    void calcChunkPos(Uint32 chunk, QList<Uint32> &file_list) const;
 
     /**
-    * Checks if torrent file is audio or video.
-    **/
+     * Checks if torrent file is audio or video.
+     **/
     bool isMultimedia() const;
 
     /// See if the torrent is private
@@ -247,8 +248,8 @@ public:
         return loaded;
     }
 
-    ///Gets a pointer to AnnounceList
-    const TrackerTier* getTrackerList() const
+    /// Gets a pointer to AnnounceList
+    const TrackerTier *getTrackerList() const
     {
         return trackers;
     }
@@ -260,7 +261,7 @@ public:
     }
 
     /// Get a DHT node
-    const DHTNode & getDHTNode(Uint32 i)
+    const DHTNode &getDHTNode(Uint32 i)
     {
         return nodes[i];
     }
@@ -269,52 +270,52 @@ public:
      * Update the percentage of all files.
      * @param cman The ChunkManager
      */
-    void updateFilePercentage(ChunkManager & cman);
+    void updateFilePercentage(ChunkManager &cman);
 
     /**
      * Update the percentage of a all files which have a particular chunk.
      * @param cman The ChunkManager
      */
-    void updateFilePercentage(Uint32 chunk, ChunkManager & cman);
+    void updateFilePercentage(Uint32 chunk, ChunkManager &cman);
 
     /**
      * Get the list with web seed URL's
      */
-    const QList<QUrl>& getWebSeeds() const
+    const QList<QUrl> &getWebSeeds() const
     {
         return web_seeds;
     }
 
     /// Change the text codec
-    void changeTextCodec(QTextCodec* codec);
+    void changeTextCodec(QTextCodec *codec);
 
     /// Get the text codec
-    const QTextCodec* getTextCodec()
+    const QTextCodec *getTextCodec()
     {
         return text_codec;
     }
 
     /// Set the monitor
-    void setMonitor(MonitorInterface* m)
+    void setMonitor(MonitorInterface *m)
     {
         tmon = m;
     }
 
     /// Get the metadata
-    const QByteArray & getMetaData() const
+    const QByteArray &getMetaData() const
     {
         return metadata;
     }
 
 private:
-    void loadInfo(BDictNode* node);
-    void loadTrackerURL(const QString & s);
-    void loadHash(BDictNode* dict);
-    void loadFiles(BListNode* node);
-    void loadNodes(BListNode* node);
-    void loadAnnounceList(BNode* node);
-    void loadWebSeeds(BListNode* node);
-    bool checkPathForDirectoryTraversal(const QString & p);
+    void loadInfo(BDictNode *node);
+    void loadTrackerURL(const QString &s);
+    void loadHash(BDictNode *dict);
+    void loadFiles(BListNode *node);
+    void loadNodes(BListNode *node);
+    void loadAnnounceList(BNode *node);
+    void loadWebSeeds(BListNode *node);
+    bool checkPathForDirectoryTraversal(const QString &p);
 
 private:
     QString name_suggestion;
@@ -329,15 +330,15 @@ private:
     QList<QUrl> web_seeds;
     PeerID peer_id;
 
-    TrackerTier* trackers;
+    TrackerTier *trackers;
     Uint64 chunk_size;
     Uint64 last_chunk_size;
     Uint64 total_size;
-    QTextCodec* text_codec;
-    FilePriorityListener* file_prio_listener;
+    QTextCodec *text_codec;
+    FilePriorityListener *file_prio_listener;
     mutable Uint32 pos_cache_chunk;
     mutable Uint32 pos_cache_file;
-    MonitorInterface* tmon;
+    MonitorInterface *tmon;
     bool priv_torrent;
     bool loaded;
 };

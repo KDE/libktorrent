@@ -2,22 +2,21 @@
 #define QT_GUI_LIB
 #endif
 
-#include <QObject>
 #include <QLocale>
+#include <QObject>
 #include <QRandomGenerator>
 #include <QtTest>
 
-#include <unistd.h>
 #include <ctime>
-#include <util/log.h>
-#include <util/error.h>
-#include <util/sha1hashgen.h>
-#include <util/fileops.h>
+#include <interfaces/queuemanagerinterface.h>
 #include <testlib/dummytorrentcreator.h>
 #include <torrent/torrentcontrol.h>
 #include <torrent/torrentfilestream.h>
-#include <interfaces/queuemanagerinterface.h>
-
+#include <unistd.h>
+#include <util/error.h>
+#include <util/fileops.h>
+#include <util/log.h>
+#include <util/sha1hashgen.h>
 
 using namespace bt;
 
@@ -27,17 +26,18 @@ class TorrentFileStreamTest : public QEventLoop, public bt::QueueManagerInterfac
 {
     Q_OBJECT
 public:
-    TorrentFileStreamTest(QObject* parent = 0) : QEventLoop(parent)
+    TorrentFileStreamTest(QObject *parent = 0)
+        : QEventLoop(parent)
     {
     }
 
-    bool alreadyLoaded(const bt::SHA1Hash& ih) const override
+    bool alreadyLoaded(const bt::SHA1Hash &ih) const override
     {
         Q_UNUSED(ih);
         return false;
     }
 
-    void mergeAnnounceList(const bt::SHA1Hash& ih, const bt::TrackerTier* trk) override
+    void mergeAnnounceList(const bt::SHA1Hash &ih, const bt::TrackerTier *trk) override
     {
         Q_UNUSED(ih);
         Q_UNUSED(trk);
@@ -65,7 +65,7 @@ private Q_SLOTS:
 
             incomplete_tc.init(this, bt::LoadFile(creator2.torrentPath()), creator2.tempPath() + "tor0", creator2.tempPath() + "data/");
             incomplete_tc.createFiles();
-        } catch (bt::Error& err) {
+        } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
             QFAIL("Torrent load failure");
         }
@@ -92,7 +92,7 @@ private Q_SLOTS:
             written += tc.getStats().chunk_size;
 
             // Verify the hash
-            bt::SHA1Hash hash = bt::SHA1Hash::generate((const bt::Uint8*)tmp.data(), tmp.size());
+            bt::SHA1Hash hash = bt::SHA1Hash::generate((const bt::Uint8 *)tmp.data(), tmp.size());
             QVERIFY(hash == tc.getTorrent().getHash(idx));
             idx++;
         }
@@ -137,7 +137,7 @@ private Q_SLOTS:
             written += ret;
 
             // Verify the hash
-            bt::SHA1Hash hash = bt::SHA1Hash::generate((const bt::Uint8*)tmp.data(), tmp.size());
+            bt::SHA1Hash hash = bt::SHA1Hash::generate((const bt::Uint8 *)tmp.data(), tmp.size());
             QVERIFY(hash == tc.getTorrent().getHash(idx));
             idx++;
         }
@@ -194,11 +194,9 @@ private Q_SLOTS:
         Out(SYS_GEN | LOG_DEBUG) << "chunk_idx = " << chunk_idx << endl;
         Out(SYS_GEN | LOG_DEBUG) << "chunk_off = " << chunk_off << endl;
 
-
-
         // Verify the hashes
         for (int i = 0; i < 3; i++) {
-            bt::SHA1Hash hash = bt::SHA1Hash::generate((const bt::Uint8*)range.data() + chunk_off, tc.getStats().chunk_size);
+            bt::SHA1Hash hash = bt::SHA1Hash::generate((const bt::Uint8 *)range.data() + chunk_off, tc.getStats().chunk_size);
 
             Out(SYS_GEN | LOG_DEBUG) << "chash = " << hash.toString() << endl;
             Out(SYS_GEN | LOG_DEBUG) << "whash = " << tc.getTorrent().getHash(chunk_idx).toString() << endl;

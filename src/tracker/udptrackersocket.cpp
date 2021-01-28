@@ -18,24 +18,22 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "udptrackersocket.h"
-#include <time.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <QHostAddress>
 #include <klocalizedstring.h>
-#include <util/array.h>
 #include <net/portlist.h>
-#include <util/log.h>
-#include <util/functions.h>
-#include <net/socket.h>
 #include <net/serversocket.h>
+#include <net/socket.h>
+#include <stdlib.h>
+#include <time.h>
 #include <torrent/globals.h>
+#include <unistd.h>
+#include <util/array.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 #ifdef ERROR
 #undef ERROR
 #endif
-
-
 
 namespace bt
 {
@@ -44,7 +42,8 @@ Uint16 UDPTrackerSocket::port = 4444;
 class UDPTrackerSocket::Private : public net::ServerSocket::DataHandler
 {
 public:
-    Private(UDPTrackerSocket* p) : p(p)
+    Private(UDPTrackerSocket *p)
+        : p(p)
     {
     }
 
@@ -52,14 +51,14 @@ public:
     {
     }
 
-    void listen(const QString & ip, Uint16 port)
+    void listen(const QString &ip, Uint16 port)
     {
         net::ServerSocket::Ptr sock(new net::ServerSocket(this));
         if (sock->bind(ip, port))
             sockets.append(sock);
     }
 
-    bool send(const Uint8* buf, int size, const net::Address & addr)
+    bool send(const Uint8 *buf, int size, const net::Address &addr)
     {
         for (net::ServerSocket::Ptr sock : qAsConst(sockets))
             if (sock->sendTo(buf, size, addr) == size)
@@ -68,7 +67,7 @@ public:
         return false;
     }
 
-    void dataReceived(bt::Buffer::Ptr buffer, const net::Address& addr) override
+    void dataReceived(bt::Buffer::Ptr buffer, const net::Address &addr) override
     {
         Q_UNUSED(addr);
         if (buffer->size() < 4)
@@ -91,24 +90,24 @@ public:
         }
     }
 
-    void readyToWrite(net::ServerSocket* sock) override
+    void readyToWrite(net::ServerSocket *sock) override
     {
         Q_UNUSED(sock);
     }
 
-
     QList<net::ServerSocket::Ptr> sockets;
     QMap<Int32, Action> transactions;
-    UDPTrackerSocket* p;
+    UDPTrackerSocket *p;
 };
 
-UDPTrackerSocket::UDPTrackerSocket() : d(new Private(this))
+UDPTrackerSocket::UDPTrackerSocket()
+    : d(new Private(this))
 {
     if (port == 0)
         port = 4444;
 
     const QStringList ips = NetworkInterfaceIPAddresses(NetworkInterface());
-    for (const QString & ip : ips)
+    for (const QString &ip : ips)
         d->listen(ip, port);
 
     if (d->sockets.count() == 0) {
@@ -124,14 +123,13 @@ UDPTrackerSocket::UDPTrackerSocket() : d(new Private(this))
     }
 }
 
-
 UDPTrackerSocket::~UDPTrackerSocket()
 {
     Globals::instance().getPortList().removePort(port, net::UDP);
     delete d;
 }
 
-void UDPTrackerSocket::sendConnect(Int32 tid, const net::Address & addr)
+void UDPTrackerSocket::sendConnect(Int32 tid, const net::Address &addr)
 {
     Int64 cid = 0x41727101980LL;
     Uint8 buf[16];
@@ -144,13 +142,13 @@ void UDPTrackerSocket::sendConnect(Int32 tid, const net::Address & addr)
     d->transactions.insert(tid, CONNECT);
 }
 
-void UDPTrackerSocket::sendAnnounce(Int32 tid, const Uint8* data, const net::Address & addr)
+void UDPTrackerSocket::sendAnnounce(Int32 tid, const Uint8 *data, const net::Address &addr)
 {
     d->send(data, 98, addr);
     d->transactions.insert(tid, ANNOUNCE);
 }
 
-void UDPTrackerSocket::sendScrape(Int32 tid, const bt::Uint8* data, const net::Address& addr)
+void UDPTrackerSocket::sendScrape(Int32 tid, const bt::Uint8 *data, const net::Address &addr)
 {
     d->send(data, 36, addr);
     d->transactions.insert(tid, SCRAPE);
@@ -237,7 +235,7 @@ void UDPTrackerSocket::handleScrape(bt::Buffer::Ptr buf)
         return;
 
     // Read the transaction_id and check it
-    Int32 tid = ReadInt32((Uint8*)buf.data(), 4);
+    Int32 tid = ReadInt32((Uint8 *)buf.data(), 4);
     QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (i == d->transactions.end())
@@ -273,4 +271,3 @@ Uint16 UDPTrackerSocket::getPort()
     return port;
 }
 }
-

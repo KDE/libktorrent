@@ -22,8 +22,8 @@
 #define DUMMYTORRENTCREATOR_H
 
 #include <QMap>
-#include <QTemporaryDir>
 #include <QStringList>
+#include <QTemporaryDir>
 #include <util/constants.h>
 
 /**
@@ -46,7 +46,7 @@ public:
     virtual ~DummyTorrentCreator();
 
     /// Set the tracker URL's (by default http://localhost:5000/announce is used)
-    void setTrackers(const QStringList & urls)
+    void setTrackers(const QStringList &urls)
     {
         trackers = urls;
     }
@@ -56,14 +56,14 @@ public:
         @param size The size of the torrent
         @param filename The name of the file
     */
-    bool createSingleFileTorrent(bt::Uint64 size, const QString & filename);
+    bool createSingleFileTorrent(bt::Uint64 size, const QString &filename);
 
     /**
         Create a multi file torrent
         @param files Map of files in the torrent, and their respective sizes
         @param name The name of the torrent (will be used for the toplevel directory name)
     */
-    bool createMultiFileTorrent(const QMap<QString, bt::Uint64> & files, const QString & name);
+    bool createMultiFileTorrent(const QMap<QString, bt::Uint64> &files, const QString &name);
 
     /// Get the full path of the torrent file
     QString torrentPath() const;
@@ -78,7 +78,7 @@ public:
     }
 
 private:
-    bool createRandomFile(const QString & path, bt::Uint64 size);
+    bool createRandomFile(const QString &path, bt::Uint64 size);
 
 private:
     QTemporaryDir tmpdir;

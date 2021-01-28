@@ -20,13 +20,12 @@
 #ifndef BTPEERMANAGER_H
 #define BTPEERMANAGER_H
 
-
 #include <interfaces/peersource.h>
 #include <ktorrent_export.h>
-#include <peer/peer.h>
-#include <peer/superseeder.h>
-#include <peer/peerconnector.h>
 #include <mse/encryptedpacketsocket.h>
+#include <peer/peer.h>
+#include <peer/peerconnector.h>
+#include <peer/superseeder.h>
 
 namespace KNetwork
 {
@@ -51,9 +50,11 @@ const Uint32 MAX_SIMULTANIOUS_AUTHS = 20;
 class KTORRENT_EXPORT PieceHandler
 {
 public:
-    virtual ~PieceHandler() {}
+    virtual ~PieceHandler()
+    {
+    }
 
-    virtual void pieceReceived(const Piece & p) = 0;
+    virtual void pieceReceived(const Piece &p) = 0;
 };
 
 /**
@@ -71,11 +72,11 @@ public:
      * Constructor.
      * @param tor The Torrent
      */
-    PeerManager(Torrent & tor);
+    PeerManager(Torrent &tor);
     ~PeerManager() override;
 
     /// Get the connection limits
-    static ConnectionLimit & connectionLimits();
+    static ConnectionLimit &connectionLimits();
 
     /**
      * Check for new connections, update down and upload speed of each Peer.
@@ -111,9 +112,9 @@ public:
      * @param pd The PieceDownloader
      * @return The matching Peer or 0 if none can be found
      */
-    Peer::Ptr findPeer(PieceDownloader* pd);
+    Peer::Ptr findPeer(PieceDownloader *pd);
 
-    void setWantedChunks(const BitSet & bs);
+    void setWantedChunks(const BitSet &bs);
 
     /**
      * Close all Peer connections.
@@ -152,7 +153,7 @@ public:
     bool isStarted() const;
 
     /// Get the Torrent
-    const Torrent & getTorrent() const;
+    const Torrent &getTorrent() const;
 
     /// Get the combined upload rate of all peers in bytes per sec
     Uint32 uploadRate() const;
@@ -163,7 +164,7 @@ public:
      * @param peer_id The Peer's ID
      * @param support What extensions the peer supports
      */
-    void newConnection(mse::EncryptedPacketSocket::Ptr sock, const PeerID & peer_id, Uint32 support);
+    void newConnection(mse::EncryptedPacketSocket::Ptr sock, const PeerID &peer_id, Uint32 support);
 
     /**
      * Add a potential peer
@@ -171,7 +172,7 @@ public:
      * @param local Is it a peer on the local network
      * @return void
      **/
-    void addPotentialPeer(const net::Address & addr, bool local);
+    void addPotentialPeer(const net::Address &addr, bool local);
 
     /**
      * Kills all connections to seeders.
@@ -187,13 +188,13 @@ public:
     void killUninterested();
 
     /// Get a BitSet of all available chunks
-    const BitSet & getAvailableChunksBitSet() const;
+    const BitSet &getAvailableChunksBitSet() const;
 
     /// Get the chunk counter.
-    ChunkCounter & getChunkCounter();
+    ChunkCounter &getChunkCounter();
 
     /// Are we connected to a Peer given it's PeerID ?
-    bool connectedTo(const PeerID & peer_id);
+    bool connectedTo(const PeerID &peer_id);
 
     /**
      * A peer has authenticated.
@@ -202,29 +203,31 @@ public:
      * @param ok Whether or not the attempt was succesfull
      * @param token The ConnectionLimit::Token
      */
-    void peerAuthenticated(Authenticate* auth, PeerConnector::WPtr pcon, bool ok, ConnectionLimit::Token::Ptr token);
+    void peerAuthenticated(Authenticate *auth, PeerConnector::WPtr pcon, bool ok, ConnectionLimit::Token::Ptr token);
 
     /**
      * Save the IP's and port numbers of all peers.
      */
-    void savePeerList(const QString & file);
+    void savePeerList(const QString &file);
 
     /**
      * Load the peer list again and add them to the potential peers
      */
-    void loadPeerList(const QString & file);
+    void loadPeerList(const QString &file);
 
     class PeerVisitor
     {
     public:
-        virtual ~PeerVisitor() {}
+        virtual ~PeerVisitor()
+        {
+        }
 
         /// Called for each Peer
         virtual void visit(const Peer::Ptr p) = 0;
     };
 
     /// Visit all peers
-    void visit(PeerVisitor & visitor);
+    void visit(PeerVisitor &visitor);
 
     /// Is PEX enabled
     bool isPexEnabled() const;
@@ -236,10 +239,10 @@ public:
     void setGroupIDs(Uint32 up, Uint32 down);
 
     /// Have message received by a peer
-    void have(Peer* p, Uint32 index);
+    void have(Peer *p, Uint32 index);
 
     /// Bitset received by a peer
-    void bitSetReceived(Peer* p, const BitSet & bs);
+    void bitSetReceived(Peer *p, const BitSet &bs);
 
     /// Rerun the choker
     void rerunChoker();
@@ -248,19 +251,19 @@ public:
     bool chokerNeedsToRun() const;
 
     /// A PEX message was received
-    void pex(const QByteArray & arr);
+    void pex(const QByteArray &arr);
 
     /// A port packet was received
-    void portPacketReceived(const QString & ip, Uint16 port);
+    void portPacketReceived(const QString &ip, Uint16 port);
 
     /// A Piece was received
-    void pieceReceived(const Piece & p);
+    void pieceReceived(const Piece &p);
 
     /// Set the piece handler
-    void setPieceHandler(PieceHandler* ph);
+    void setPieceHandler(PieceHandler *ph);
 
     /// Enable or disable super seeding
-    void setSuperSeeding(bool on, const BitSet & chunks);
+    void setSuperSeeding(bool on, const BitSet &chunks);
 
     /// Send a have message to all peers
     void sendHave(Uint32 index);
@@ -276,15 +279,15 @@ public Q_SLOTS:
      * A PeerSource, has new potential peers.
      * @param ps The PeerSource
      */
-    void peerSourceReady(PeerSource* ps);
+    void peerSourceReady(PeerSource *ps);
 
 Q_SIGNALS:
-    void newPeer(Peer* p);
-    void peerKilled(Peer* p);
+    void newPeer(Peer *p);
+    void peerKilled(Peer *p);
 
 private:
     class Private;
-    Private* d;
+    Private *d;
 };
 
 }

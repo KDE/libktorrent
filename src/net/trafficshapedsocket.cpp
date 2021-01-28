@@ -18,13 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #include "trafficshapedsocket.h"
 
+#include "socket.h"
+#include "speed.h"
 #include <QStringList>
 #include <util/functions.h>
-#include "speed.h"
-#include "socket.h"
 
 const bt::Uint32 OUTPUT_BUFFER_SIZE = 16393;
 
@@ -32,36 +31,35 @@ using namespace bt;
 
 namespace net
 {
-
-TrafficShapedSocket::TrafficShapedSocket(SocketDevice* sock) :
-    rdr(0),
-    up_gid(0),
-    down_gid(0),
-    sock(sock),
-    mutex(QMutex::Recursive)
+TrafficShapedSocket::TrafficShapedSocket(SocketDevice *sock)
+    : rdr(0)
+    , up_gid(0)
+    , down_gid(0)
+    , sock(sock)
+    , mutex(QMutex::Recursive)
 {
     down_speed = new Speed();
     up_speed = new Speed();
 }
 
-TrafficShapedSocket::TrafficShapedSocket(int fd, int ip_version) :
-    rdr(0),
-    up_gid(0),
-    down_gid(0),
-    mutex(QMutex::Recursive)
+TrafficShapedSocket::TrafficShapedSocket(int fd, int ip_version)
+    : rdr(0)
+    , up_gid(0)
+    , down_gid(0)
+    , mutex(QMutex::Recursive)
 {
     sock = new Socket(fd, ip_version);
     down_speed = new Speed();
     up_speed = new Speed();
 }
 
-TrafficShapedSocket::TrafficShapedSocket(bool tcp, int ip_version) :
-    rdr(0),
-    up_gid(0),
-    down_gid(0),
-    mutex(QMutex::Recursive)
+TrafficShapedSocket::TrafficShapedSocket(bool tcp, int ip_version)
+    : rdr(0)
+    , up_gid(0)
+    , down_gid(0)
+    , mutex(QMutex::Recursive)
 {
-    Socket* socket = new Socket(tcp, ip_version);
+    Socket *socket = new Socket(tcp, ip_version);
 
     QString iface = NetworkInterface();
     QStringList ips = NetworkInterfaceIPAddresses(iface);
@@ -121,7 +119,7 @@ Uint32 TrafficShapedSocket::read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now
         ba = max_bytes_to_read > 0 ? max_bytes_to_read : OUTPUT_BUFFER_SIZE;
     }
 
-    while ((br < max_bytes_to_read || no_limit)  && ba > 0) {
+    while ((br < max_bytes_to_read || no_limit) && ba > 0) {
         Uint32 tr = ba;
         if (tr > OUTPUT_BUFFER_SIZE)
             tr = OUTPUT_BUFFER_SIZE;
@@ -149,8 +147,7 @@ Uint32 TrafficShapedSocket::read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now
     return br;
 }
 
-
-void TrafficShapedSocket::postProcess(Uint8* data, Uint32 size)
+void TrafficShapedSocket::postProcess(Uint8 *data, Uint32 size)
 {
     Q_UNUSED(data);
     Q_UNUSED(size);

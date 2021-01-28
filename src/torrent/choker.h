@@ -20,11 +20,10 @@
 #ifndef BTCHOKER_H
 #define BTCHOKER_H
 
+#include <ktorrent_export.h>
+#include <peer/peer.h>
 #include <qlist.h>
 #include <util/constants.h>
-#include <peer/peer.h>
-#include <ktorrent_export.h>
-
 
 namespace bt
 {
@@ -41,6 +40,7 @@ class ChokeAlgorithm
 {
 protected:
     Uint32 opt_unchoked_peer_id;
+
 public:
     ChokeAlgorithm();
     virtual ~ChokeAlgorithm();
@@ -51,7 +51,7 @@ public:
      * @param cman The ChunkManager
      * @param stats The torrent stats
      */
-    virtual void doChokingLeechingState(PeerManager & pman, ChunkManager & cman, const TorrentStats & stats) = 0;
+    virtual void doChokingLeechingState(PeerManager &pman, ChunkManager &cman, const TorrentStats &stats) = 0;
 
     /**
      * Do the actual choking when we are seeding
@@ -59,7 +59,7 @@ public:
      * @param cman The ChunkManager
      * @param stats The torrent stats
      */
-    virtual void doChokingSeedingState(PeerManager & pman, ChunkManager & cman, const TorrentStats & stats) = 0;
+    virtual void doChokingSeedingState(PeerManager &pman, ChunkManager &cman, const TorrentStats &stats) = 0;
 
     /// Get the optimisticly unchoked peer ID
     Uint32 getOptimisticlyUnchokedPeerID() const
@@ -68,23 +68,22 @@ public:
     }
 };
 
-
-
 /**
  * @author Joris Guisson
  * @brief Handles the choking
  *
  * This class handles the choking and unchoking of Peer's.
  * This class needs to be updated every 10 seconds.
-*/
+ */
 class KTORRENT_EXPORT Choker
 {
-    ChokeAlgorithm* choke;
-    PeerManager & pman;
-    ChunkManager & cman;
+    ChokeAlgorithm *choke;
+    PeerManager &pman;
+    ChunkManager &cman;
     static Uint32 num_upload_slots;
+
 public:
-    Choker(PeerManager & pman, ChunkManager & cman);
+    Choker(PeerManager &pman, ChunkManager &cman);
     virtual ~Choker();
 
     /**
@@ -92,7 +91,7 @@ public:
      * @param have_all Indicates whether we have the entire file
      * @param stats Statistic of the torrent
      */
-    void update(bool have_all, const TorrentStats & stats);
+    void update(bool have_all, const TorrentStats &stats);
 
     /// Get the PeerID of the optimisticly unchoked peer.
     Uint32 getOptimisticlyUnchokedPeerID() const

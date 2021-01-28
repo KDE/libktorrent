@@ -26,7 +26,6 @@
 
 namespace bt
 {
-
 /**
     Blocklist to keep track of bad peers.
 */
@@ -36,10 +35,10 @@ public:
     BadPeersList();
     ~BadPeersList() override;
 
-    bool blocked(const net::Address & addr) const override;
+    bool blocked(const net::Address &addr) const override;
 
     /// Add a bad peer to the list
-    void addBadPeer(const QString & ip);
+    void addBadPeer(const QString &ip);
 
 private:
     QStringList bad_peers;

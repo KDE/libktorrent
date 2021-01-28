@@ -18,15 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #ifndef UTP_LOCALWINDOW_H
 #define UTP_LOCALWINDOW_H
 
-#include <vector>
+#include "packetbuffer.h"
+#include <QSharedPointer>
 #include <ktorrent_export.h>
 #include <util/constants.h>
-#include <QSharedPointer>
-#include "packetbuffer.h"
+#include <vector>
 
 namespace utp
 {
@@ -40,7 +39,7 @@ struct WindowPacket {
     WindowPacket(bt::Uint16 seq_nr, bt::Buffer::Ptr packet, bt::Uint32 data_off);
     ~WindowPacket();
 
-    bt::Uint32 read(bt::Uint8* dst, bt::Uint32 max_len);
+    bt::Uint32 read(bt::Uint8 *dst, bt::Uint32 max_len);
     bool fullyRead() const;
     void set(bt::Buffer::Ptr packet, bt::Uint32 data_off);
 
@@ -48,7 +47,6 @@ struct WindowPacket {
     bt::Buffer::Ptr packet;
     bt::Uint32 bytes_read;
 };
-
 
 /**
     Manages the local window of a UTP connection.
@@ -78,7 +76,7 @@ public:
     }
 
     /// A packet was received
-    bool packetReceived(const Header* hdr, bt::Buffer::Ptr packet, bt::Uint32 data_off);
+    bool packetReceived(const Header *hdr, bt::Buffer::Ptr packet, bt::Uint32 data_off);
 
     /// Set the last sequence number
     void setLastSeqNr(bt::Uint16 lsn);
@@ -96,7 +94,7 @@ public:
     }
 
     /// Read from the local window
-    bt::Uint32 read(bt::Uint8* data, bt::Uint32 max_len);
+    bt::Uint32 read(bt::Uint8 *data, bt::Uint32 max_len);
 
     /// Is there something to read ?
     bool isReadable() const
@@ -114,7 +112,7 @@ public:
     bt::Uint32 selectiveAckBits() const;
 
     /// Fill a SelectiveAck structure
-    void fillSelectiveAck(SelectiveAck* sack);
+    void fillSelectiveAck(SelectiveAck *sack);
 
 private:
     typedef std::vector<WindowPacket> WindowPacketList;

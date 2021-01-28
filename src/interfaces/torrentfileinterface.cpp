@@ -19,13 +19,12 @@
  ***************************************************************************/
 #include "torrentfileinterface.h"
 #include <QTextCodec>
-#include <util/functions.h>
 #include <util/fileops.h>
+#include <util/functions.h>
 
 namespace bt
 {
-
-TorrentFileInterface::TorrentFileInterface(Uint32 index, const QString & path, Uint64 size)
+TorrentFileInterface::TorrentFileInterface(Uint32 index, const QString &path, Uint64 size)
     : index(index)
     , first_chunk(0)
     , last_chunk(0)
@@ -44,9 +43,9 @@ TorrentFileInterface::TorrentFileInterface(Uint32 index, const QString & path, U
 {
 }
 
-
 TorrentFileInterface::~TorrentFileInterface()
-{}
+{
+}
 
 float TorrentFileInterface::getDownloadPercentage() const
 {
@@ -59,11 +58,11 @@ void TorrentFileInterface::setUnencodedPath(const QList<QByteArray> up)
     unencoded_path = up;
 }
 
-void TorrentFileInterface::changeTextCodec(QTextCodec* codec)
+void TorrentFileInterface::changeTextCodec(QTextCodec *codec)
 {
     path.clear();
     int idx = 0;
-    for (const QByteArray & b : qAsConst(unencoded_path)) {
+    for (const QByteArray &b : qAsConst(unencoded_path)) {
         path += codec->toUnicode(b);
         if (idx < unencoded_path.size() - 1)
             path += bt::DirSeparator();
@@ -83,4 +82,3 @@ QString TorrentFileInterface::getMountPoint() const
 }
 
 }
-

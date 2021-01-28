@@ -20,10 +20,8 @@
 #ifndef BTPEERUPLOADER_H
 #define BTPEERUPLOADER_H
 
-#include <qlist.h>
 #include <download/request.h>
-
-
+#include <qlist.h>
 
 namespace bt
 {
@@ -43,28 +41,29 @@ const Uint32 ALLOWED_FAST_SIZE = 8;
  */
 class PeerUploader
 {
-    Peer* peer;
+    Peer *peer;
     QList<Request> requests;
     Uint32 uploaded;
+
 public:
     /**
      * Constructor. Set the Peer.
      * @param peer The Peer
      */
-    PeerUploader(Peer* peer);
+    PeerUploader(Peer *peer);
     virtual ~PeerUploader();
 
     /**
      * Add a Request to the list of Requests.
      * @param r The Request
      */
-    void addRequest(const Request & r);
+    void addRequest(const Request &r);
 
     /**
      * Remove a Request from the list of Requests.
      * @param r The Request
      */
-    void removeRequest(const Request & r);
+    void removeRequest(const Request &r);
 
     /**
      * Update the PeerUploader. This will check if there are Request, and
@@ -72,11 +71,10 @@ public:
      * @param cman The ChunkManager
      * @return The number of bytes uploaded
      */
-    Uint32 handleRequests(bt::ChunkManager& cman);
+    Uint32 handleRequests(bt::ChunkManager &cman);
 
     /// Get the number of requests
     Uint32 getNumRequests() const;
-
 
     void addUploadedBytes(Uint32 bytes)
     {

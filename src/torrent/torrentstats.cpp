@@ -66,15 +66,13 @@ TorrentStats::TorrentStats()
     last_download_activity_time = last_upload_activity_time = bt::CurrentTime();
 }
 
-
 float TorrentStats::shareRatio() const
 {
     if (bytes_downloaded == 0)
         return 0.0f;
     else
-        return (float) bytes_uploaded / (bytes_downloaded /*+ stats.imported_bytes*/);
+        return (float)bytes_uploaded / (bytes_downloaded /*+ stats.imported_bytes*/);
 }
-
 
 bool TorrentStats::overMaxRatio() const
 {
@@ -84,13 +82,13 @@ bool TorrentStats::overMaxRatio() const
 QString TorrentStats::statusToString() const
 {
     switch (status) {
-    case NOT_STARTED :
+    case NOT_STARTED:
         return i18n("Not started");
-    case DOWNLOAD_COMPLETE :
+    case DOWNLOAD_COMPLETE:
         return i18n("Download completed");
-    case SEEDING_COMPLETE :
+    case SEEDING_COMPLETE:
         return i18n("Seeding completed");
-    case SEEDING :
+    case SEEDING:
         return i18nc("Status of a torrent file", "Seeding");
     case DOWNLOADING:
         return i18n("Downloading");
@@ -98,7 +96,7 @@ QString TorrentStats::statusToString() const
         return i18n("Stalled");
     case STOPPED:
         return i18n("Stopped");
-    case ERROR :
+    case ERROR:
         return i18n("Error: %1", error_msg);
     case ALLOCATING_DISKSPACE:
         return i18n("Allocating diskspace");
@@ -117,4 +115,3 @@ QString TorrentStats::statusToString() const
     }
 }
 }
-

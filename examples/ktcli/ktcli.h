@@ -18,16 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #ifndef KTCLI_H
 #define KTCLI_H
 
-#include <QTimer>
-#include <QCoreApplication>
 #include <QCommandLineParser>
+#include <QCoreApplication>
+#include <QTimer>
 #include <boost/scoped_ptr.hpp>
-#include <torrent/torrentcontrol.h>
 #include <interfaces/queuemanagerinterface.h>
+#include <torrent/torrentcontrol.h>
 
 class QUrl;
 
@@ -37,7 +36,7 @@ class KTCLI : public QCoreApplication, public bt::QueueManagerInterface
 {
     Q_OBJECT
 public:
-    KTCLI(int argc, char** argv);
+    KTCLI(int argc, char **argv);
     ~KTCLI() override;
 
     /// Start downloading
@@ -46,16 +45,16 @@ public:
 private:
     QString tempDir();
     bool load(const QUrl &url);
-    bool loadFromFile(const QString & path);
-    bool loadFromDir(const QString & path);
+    bool loadFromFile(const QString &path);
+    bool loadFromDir(const QString &path);
 
-    bool notify(QObject* obj, QEvent* ev) override;
-    bool alreadyLoaded(const bt::SHA1Hash& ih) const override;
-    void mergeAnnounceList(const bt::SHA1Hash& ih, const bt::TrackerTier* trk) override;
+    bool notify(QObject *obj, QEvent *ev) override;
+    bool alreadyLoaded(const bt::SHA1Hash &ih) const override;
+    void mergeAnnounceList(const bt::SHA1Hash &ih, const bt::TrackerTier *trk) override;
 
 public Q_SLOTS:
     void update();
-    void finished(bt::TorrentInterface* tor);
+    void finished(bt::TorrentInterface *tor);
     void shutdown();
 
 private:

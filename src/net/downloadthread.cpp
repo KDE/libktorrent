@@ -18,14 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "downloadthread.h"
-#include <math.h>
-#include <QtGlobal>
-#include <util/functions.h>
-#include <util/log.h>
 #include "socketgroup.h"
 #include "socketmonitor.h"
 #include "trafficshapedsocket.h"
 #include "wakeuppipe.h"
+#include <QtGlobal>
+#include <math.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 using namespace bt;
 
@@ -34,10 +34,11 @@ namespace net
 Uint32 DownloadThread::dcap = 0;
 Uint32 DownloadThread::sleep_time = 50;
 
-DownloadThread::DownloadThread(SocketMonitor* sm) : NetworkThread(sm), wake_up(new WakeUpPipe())
+DownloadThread::DownloadThread(SocketMonitor *sm)
+    : NetworkThread(sm)
+    , wake_up(new WakeUpPipe())
 {
 }
-
 
 DownloadThread::~DownloadThread()
 {
@@ -53,7 +54,7 @@ void DownloadThread::update()
         Uint32 num_ready = 0;
         SocketMonitor::Itr itr = sm->begin();
         while (itr != sm->end()) {
-            TrafficShapedSocket* s = *itr;
+            TrafficShapedSocket *s = *itr;
             if (!s->socketDevice()) {
                 ++itr;
                 continue;
@@ -65,7 +66,7 @@ void DownloadThread::update()
                 if (gid > 0)
                     group_limits = true;
 
-                SocketGroup* g = groups.find(gid);
+                SocketGroup *g = groups.find(gid);
                 if (!g)
                     g = groups.find(0);
 
@@ -89,13 +90,12 @@ void DownloadThread::update()
     }
 }
 
-
 void DownloadThread::setSleepTime(Uint32 stime)
 {
     sleep_time = stime;
 }
 
-bool DownloadThread::doGroup(SocketGroup* g, Uint32 & allowance, bt::TimeStamp now)
+bool DownloadThread::doGroup(SocketGroup *g, Uint32 &allowance, bt::TimeStamp now)
 {
     return g->download(allowance, now);
 }
@@ -111,7 +111,7 @@ int DownloadThread::waitForSocketReady()
     // fill the poll vector with all sockets
     SocketMonitor::Itr itr = sm->begin();
     while (itr != sm->end()) {
-        TrafficShapedSocket* s = *itr;
+        TrafficShapedSocket *s = *itr;
         if (s && s->socketDevice()) {
             s->socketDevice()->prepare(this, Poll::INPUT);
         }

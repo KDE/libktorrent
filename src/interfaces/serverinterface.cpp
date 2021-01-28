@@ -20,20 +20,20 @@
 
 #include "serverinterface.h"
 #include <QHostAddress>
-#include <util/log.h>
-#include <util/sha1hash.h>
-#include <util/functions.h>
-#include <peer/peermanager.h>
-#include <peer/authenticationmonitor.h>
-#include <peer/accessmanager.h>
-#include <peer/serverauthenticate.h>
-#include <torrent/torrent.h>
 #include <mse/encryptedpacketsocket.h>
 #include <mse/encryptedserverauthenticate.h>
+#include <peer/accessmanager.h>
+#include <peer/authenticationmonitor.h>
+#include <peer/peermanager.h>
+#include <peer/serverauthenticate.h>
+#include <torrent/torrent.h>
+#include <util/functions.h>
+#include <util/log.h>
+#include <util/sha1hash.h>
 
 namespace bt
 {
-QList<PeerManager*> ServerInterface::peer_managers;
+QList<PeerManager *> ServerInterface::peer_managers;
 bool ServerInterface::encryption = false;
 bool ServerInterface::allow_unencrypted = true;
 Uint16 ServerInterface::port = 6881;
@@ -41,31 +41,30 @@ bool ServerInterface::utp_enabled = false;
 bool ServerInterface::only_use_utp = false;
 TransportProtocol ServerInterface::primary_transport_protocol = TCP;
 
-ServerInterface::ServerInterface(QObject* parent): QObject(parent)
+ServerInterface::ServerInterface(QObject *parent)
+    : QObject(parent)
 {
-
 }
 
 ServerInterface::~ServerInterface()
 {
-
 }
 
-void ServerInterface::addPeerManager(PeerManager* pman)
+void ServerInterface::addPeerManager(PeerManager *pman)
 {
     peer_managers.append(pman);
 }
 
-void ServerInterface::removePeerManager(PeerManager* pman)
+void ServerInterface::removePeerManager(PeerManager *pman)
 {
     peer_managers.removeAll(pman);
 }
 
-PeerManager* ServerInterface::findPeerManager(const bt::SHA1Hash& hash)
+PeerManager *ServerInterface::findPeerManager(const bt::SHA1Hash &hash)
 {
-    QList<PeerManager*>::iterator i = peer_managers.begin();
+    QList<PeerManager *>::iterator i = peer_managers.begin();
     while (i != peer_managers.end()) {
-        PeerManager* pm = *i;
+        PeerManager *pm = *i;
         if (pm && pm->getTorrent().getInfoHash() == hash) {
             if (!pm->isStarted())
                 return 0;
@@ -77,13 +76,13 @@ PeerManager* ServerInterface::findPeerManager(const bt::SHA1Hash& hash)
     return 0;
 }
 
-bool ServerInterface::findInfoHash(const bt::SHA1Hash& skey, SHA1Hash& info_hash)
+bool ServerInterface::findInfoHash(const bt::SHA1Hash &skey, SHA1Hash &info_hash)
 {
     Uint8 buf[24];
     memcpy(buf, "req2", 4);
-    QList<PeerManager*>::iterator i = peer_managers.begin();
+    QList<PeerManager *>::iterator i = peer_managers.begin();
     while (i != peer_managers.end()) {
-        PeerManager* pm = *i;
+        PeerManager *pm = *i;
         memcpy(buf + 4, pm->getTorrent().getInfoHash().getData(), 20);
         if (SHA1Hash::generate(buf, 24) == skey) {
             info_hash = pm->getTorrent().getInfoHash();
@@ -117,7 +116,6 @@ QStringList ServerInterface::bindAddresses()
     return ips;
 }
 
-
 void ServerInterface::newConnection(mse::EncryptedPacketSocket::Ptr s)
 {
     if (peer_managers.count() == 0) {
@@ -132,7 +130,7 @@ void ServerInterface::newConnection(mse::EncryptedPacketSocket::Ptr s)
         if (!OpenFileAllowed())
             return;
 
-        ServerAuthenticate* auth = 0;
+        ServerAuthenticate *auth = 0;
 
         if (encryption)
             auth = new mse::EncryptedServerAuthenticate(s);
@@ -148,14 +146,10 @@ void ServerInterface::setPrimaryTransportProtocol(TransportProtocol proto)
     primary_transport_protocol = proto;
 }
 
-
 void ServerInterface::setUtpEnabled(bool on, bool only_utp)
 {
     utp_enabled = on;
     only_use_utp = only_utp;
 }
 
-
-
 }
-

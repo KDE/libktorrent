@@ -20,10 +20,10 @@
 #ifndef BTPEERDOWNLOADER_H
 #define BTPEERDOWNLOADER_H
 
+#include <download/request.h>
+#include <interfaces/piecedownloader.h>
 #include <qlist.h>
 #include <qobject.h>
-#include <interfaces/piecedownloader.h>
-#include <download/request.h>
 
 namespace bt
 {
@@ -44,19 +44,19 @@ struct TimeStampedRequest {
      * Constructor, set the request and calculate the timestamp.
      * @param r The Request
      */
-    TimeStampedRequest(const Request & r);
+    TimeStampedRequest(const Request &r);
 
     /**
      * Copy constructor, copy the request and the timestamp
      * @param r The Request
      */
-    TimeStampedRequest(const TimeStampedRequest & t);
+    TimeStampedRequest(const TimeStampedRequest &t);
 
     /// Destructor
     ~TimeStampedRequest();
 
     /// Smaller then operator, uses timestamps to compare
-    bool operator < (const TimeStampedRequest & t) const
+    bool operator<(const TimeStampedRequest &t) const
     {
         return time_stamp < t.time_stamp;
     }
@@ -66,37 +66,36 @@ struct TimeStampedRequest {
      * @param r The Request
      * @return true if equal
      */
-    bool operator == (const Request & r);
+    bool operator==(const Request &r);
 
     /**
      * Equality operator, compares requests only.
      * @param r The Request
      * @return true if equal
      */
-    bool operator == (const TimeStampedRequest & r);
+    bool operator==(const TimeStampedRequest &r);
 
     /**
      * Assignment operator.
      * @param r The Request to copy
      * @return *this
      */
-    TimeStampedRequest & operator = (const Request & r);
+    TimeStampedRequest &operator=(const Request &r);
 
     /**
      * Assignment operator.
      * @param r The TimeStampedRequest to copy
      * @return *this
      */
-    TimeStampedRequest & operator = (const TimeStampedRequest & r);
+    TimeStampedRequest &operator=(const TimeStampedRequest &r);
 };
-
 
 /**
  * @author Joris Guisson
  * @brief Class which downloads pieces from a Peer
  *
  * This class downloads Piece's from a Peer.
-*/
+ */
 class PeerDownloader : public PieceDownloader
 {
     Q_OBJECT
@@ -106,7 +105,7 @@ public:
      * @param peer The Peer
      * @param chunk_size Size of a chunk in bytes
      */
-    PeerDownloader(Peer* peer, Uint32 chunk_size);
+    PeerDownloader(Peer *peer, Uint32 chunk_size);
     ~PeerDownloader() override;
 
     /// See if we can add a request to the wait_queue
@@ -132,7 +131,7 @@ public:
     bool hasChunk(Uint32 idx) const override;
 
     /// Get the Peer
-    const Peer* getPeer() const
+    const Peer *getPeer() const
     {
         return peer;
     }
@@ -158,7 +157,7 @@ public:
      * Called when a piece has arrived.
      * @param p The Piece
      */
-    void piece(const Piece & p);
+    void piece(const Piece &p);
 
 public Q_SLOTS:
     /**
@@ -167,13 +166,13 @@ public Q_SLOTS:
      * be stored temporarely in the unsent_reqs list)
      * @param req The Request
      */
-    void download(const Request & req) override;
+    void download(const Request &req) override;
 
     /**
      * Cancel a Request.
      * @param req The Request
      */
-    void cancel(const Request & req) override;
+    void cancel(const Request &req) override;
 
     /**
      * Cancel all Requests
@@ -184,7 +183,7 @@ public Q_SLOTS:
      * Handles a rejected request.
      * @param req
      */
-    void onRejected(const Request & req);
+    void onRejected(const Request &req);
 
     /**
      * Send requests and manage wait queue
@@ -194,9 +193,8 @@ public Q_SLOTS:
 private Q_SLOTS:
     void peerDestroyed();
 
-
 private:
-    Peer* peer;
+    Peer *peer;
     QList<TimeStampedRequest> reqs;
     QList<Request> wait_queue;
     Uint32 max_wait_queue_size;

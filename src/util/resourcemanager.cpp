@@ -18,12 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #include "resourcemanager.h"
 
 namespace bt
 {
-Resource::Resource(bt::ResourceManager* rman, const QString& group) : rman(rman), group(group)
+Resource::Resource(bt::ResourceManager *rman, const QString &group)
+    : rman(rman)
+    , group(group)
 {
 }
 
@@ -41,8 +42,8 @@ void Resource::release()
     }
 }
 
-
-ResourceManager::ResourceManager(Uint32 max_active_resources) : max_active_resources(max_active_resources)
+ResourceManager::ResourceManager(Uint32 max_active_resources)
+    : max_active_resources(max_active_resources)
 {
 }
 
@@ -50,7 +51,7 @@ ResourceManager::~ResourceManager()
 {
 }
 
-void ResourceManager::add(Resource* r)
+void ResourceManager::add(Resource *r)
 {
     QMap<QString, Resource::List>::iterator i = pending.find(r->groupName());
     if (i == pending.end())
@@ -62,7 +63,7 @@ void ResourceManager::add(Resource* r)
     update();
 }
 
-bool ResourceManager::acquire(Resource* r)
+bool ResourceManager::acquire(Resource *r)
 {
     if ((Uint32)active.size() < max_active_resources && pending.isEmpty()) {
         add(r);
@@ -71,8 +72,7 @@ bool ResourceManager::acquire(Resource* r)
         return false;
 }
 
-
-void ResourceManager::remove(Resource* r)
+void ResourceManager::remove(Resource *r)
 {
     if (active.remove(r)) {
         update();
@@ -96,7 +96,7 @@ void ResourceManager::update()
     Uint32 activated = 0;
     while ((Uint32)active.size() < max_active_resources) {
         if (!i.value().isEmpty()) {
-            Resource* r = i.value().takeFirst();
+            Resource *r = i.value().takeFirst();
             active.insert(r);
             r->acquired();
             activated++;

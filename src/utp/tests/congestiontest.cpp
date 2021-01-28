@@ -1,34 +1,33 @@
 /***************************************************************************
-*   Copyright (C) 2010 by Joris Guisson                                   *
-*   joris.guisson@gmail.com                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
-***************************************************************************/
+ *   Copyright (C) 2010 by Joris Guisson                                   *
+ *   joris.guisson@gmail.com                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
+ ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
+#include <QtTest>
 
-#include <util/log.h>
-#include <utp/connection.h>
-#include <utp/utpsocket.h>
-#include <utp/utpserver.h>
-#include <util/functions.h>
 #include <ctime>
 #include <unistd.h>
-
+#include <util/functions.h>
+#include <util/log.h>
+#include <utp/connection.h>
+#include <utp/utpserver.h>
+#include <utp/utpsocket.h>
 
 #define PACKETS_TO_SEND 20
 #define TEST_DATA "This is the packet loss test\n"
@@ -43,17 +42,21 @@ class CongestionTestServer : public UTPServer
 {
     Q_OBJECT
 public:
-    CongestionTestServer(QObject* parent = nullptr) : UTPServer(parent), congestion_delay(200)
-    {}
-
-    virtual ~CongestionTestServer()
-    {}
-
-    virtual bool sendTo(const QByteArray& data, const net::Address& addr)
+    CongestionTestServer(QObject *parent = nullptr)
+        : UTPServer(parent)
+        , congestion_delay(200)
     {
     }
 
-    virtual bool sendTo(const bt::Uint8* data, const bt::Uint32 size, const net::Address& addr)
+    virtual ~CongestionTestServer()
+    {
+    }
+
+    virtual bool sendTo(const QByteArray &data, const net::Address &addr)
+    {
+    }
+
+    virtual bool sendTo(const bt::Uint8 *data, const bt::Uint32 size, const net::Address &addr)
     {
     }
 
@@ -74,16 +77,18 @@ private:
 class SendThread : public QThread
 {
 public:
-
-    SendThread(Connection::Ptr outgoing, QObject* parent = nullptr) : QThread(parent), outgoing(outgoing)
-    {}
+    SendThread(Connection::Ptr outgoing, QObject *parent = nullptr)
+        : QThread(parent)
+        , outgoing(outgoing)
+    {
+    }
 
     virtual void run()
     {
         char test[] = TEST_DATA;
         int sent = 0;
         while (sent < PACKETS_TO_SEND) {
-            int ret = outgoing->send((const bt::Uint8*)test, strlen(test));
+            int ret = outgoing->send((const bt::Uint8 *)test, strlen(test));
             if (ret > 0) {
                 sent++;
             }
@@ -104,11 +109,12 @@ public:
 class CongestionTest : public QEventLoop
 {
 public:
-    CongestionTest(QObject* parent = 0) : QEventLoop(parent)
+    CongestionTest(QObject *parent = 0)
+        : QEventLoop(parent)
     {
     }
 
-public :
+public:
     void accepted()
     {
         incoming = srv.acceptedConnection().toStrongRef();
@@ -197,8 +203,6 @@ private:
     }
 
 private:
-
-
 private:
     Connection::Ptr incoming;
     Connection::Ptr outgoing;

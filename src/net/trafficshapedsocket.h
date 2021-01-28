@@ -18,7 +18,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-
 #ifndef NET_TRAFFICSHAPEDSOCKET_H
 #define NET_TRAFFICSHAPEDSOCKET_H
 
@@ -33,8 +32,12 @@ class Speed;
 class SocketReader
 {
 public:
-    SocketReader() {}
-    virtual ~SocketReader() {}
+    SocketReader()
+    {
+    }
+    virtual ~SocketReader()
+    {
+    }
 
     /**
      * Function which will be called whenever data has been read from the socket.
@@ -42,34 +45,34 @@ public:
      * @param buf The buffer
      * @param size The size of the buffer
      */
-    virtual void onDataReady(bt::Uint8* buf, bt::Uint32 size) = 0;
+    virtual void onDataReady(bt::Uint8 *buf, bt::Uint32 size) = 0;
 };
 
 /**
  * Socket which supports traffic shaping
  */
-class  TrafficShapedSocket
+class TrafficShapedSocket
 {
 public:
-    TrafficShapedSocket(SocketDevice* sock);
+    TrafficShapedSocket(SocketDevice *sock);
     TrafficShapedSocket(int fd, int ip_version);
     TrafficShapedSocket(bool tcp, int ip_version);
     virtual ~TrafficShapedSocket();
 
     /// Get the SocketDevice
-    SocketDevice* socketDevice()
+    SocketDevice *socketDevice()
     {
         return sock;
     }
 
     /// Get the SocketDevice (const vesion)
-    const SocketDevice* socketDevice() const
+    const SocketDevice *socketDevice() const
     {
         return sock;
     }
 
     /// Set the reader
-    void setReader(SocketReader* r)
+    void setReader(SocketReader *r)
     {
         rdr = r;
     }
@@ -120,21 +123,22 @@ public:
     {
         return up_gid;
     }
+
 protected:
     /**
      * Post process received data. Default implementation does nothing.
      * @param data The data
      * @param size The size of the data
      **/
-    virtual void postProcess(bt::Uint8* data, bt::Uint32 size);
+    virtual void postProcess(bt::Uint8 *data, bt::Uint32 size);
 
 protected:
-    SocketReader* rdr;
-    Speed* down_speed;
-    Speed* up_speed;
+    SocketReader *rdr;
+    Speed *down_speed;
+    Speed *up_speed;
     Uint32 up_gid;
     Uint32 down_gid; // group id which this torrent belongs to, group 0 means the default group
-    SocketDevice* sock;
+    SocketDevice *sock;
     mutable QMutex mutex;
 };
 

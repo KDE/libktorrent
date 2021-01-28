@@ -18,28 +18,26 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
-#include <util/log.h>
-#include <peer/accessmanager.h>
-#include <tracker/tracker.h>
-#include <torrent/server.h>
+#include <QtTest>
 #include <interfaces/blocklistinterface.h>
+#include <peer/accessmanager.h>
+#include <torrent/server.h>
+#include <tracker/tracker.h>
+#include <util/log.h>
 
 class TestBlockList : public bt::BlockListInterface
 {
 public:
     TestBlockList()
     {
-
     }
 
     ~TestBlockList() override
     {
-
     }
 
-    bool blocked(const net::Address& addr) const override
+    bool blocked(const net::Address &addr) const override
     {
         return addr.toString() == "8.8.8.8";
     }
@@ -49,8 +47,6 @@ class AccessManagerTest : public QObject
 {
     Q_OBJECT
 public:
-
-
 private Q_SLOTS:
     void initTestCase()
     {
@@ -77,8 +73,6 @@ private Q_SLOTS:
         QVERIFY(bt::AccessManager::instance().allowed(net::Address("12.12.12.12", 7776)));
     }
 
-
-
     void testBlockList()
     {
         bt::AccessManager::instance().addBlockList(new TestBlockList());
@@ -87,10 +81,8 @@ private Q_SLOTS:
     }
 
 private:
-
 };
 
 QTEST_MAIN(AccessManagerTest)
 
 #include "accessmanagertest.moc"
-

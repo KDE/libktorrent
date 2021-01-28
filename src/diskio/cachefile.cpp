@@ -21,22 +21,22 @@
 
 #include <config-ktorrent.h>
 
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/mman.h>
-#include <unistd.h>
-#include <errno.h>
-#include <qfile.h>
-#include <klocalizedstring.h>
-#include <kfileitem.h>
-#include <util/array.h>
-#include <util/fileops.h>
-#include <util/log.h>
-#include <util/error.h>
-#include <util/functions.h>
-#include "preallocationthread.h"
 #include "cache.h"
+#include "preallocationthread.h"
+#include <errno.h>
+#include <fcntl.h>
+#include <kfileitem.h>
+#include <klocalizedstring.h>
+#include <qfile.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <util/array.h>
+#include <util/error.h>
+#include <util/fileops.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 #include <QStorageInfo>
 
@@ -49,18 +49,17 @@
 #define O_LARGEFILE (0)
 #endif
 
-
-
-
 namespace bt
 {
-
-CacheFile::CacheFile() : fptr(0), max_size(0), file_size(0), mutex(QMutex::Recursive)
+CacheFile::CacheFile()
+    : fptr(0)
+    , max_size(0)
+    , file_size(0)
+    , mutex(QMutex::Recursive)
 {
     read_only = false;
     manual_close = false;
 }
-
 
 CacheFile::~CacheFile()
 {
@@ -68,7 +67,7 @@ CacheFile::~CacheFile()
         close();
 }
 
-void CacheFile::changePath(const QString & npath)
+void CacheFile::changePath(const QString &npath)
 {
     path = npath;
 }
@@ -94,7 +93,7 @@ void CacheFile::openFile(Mode mode)
     file_size = fptr->size();
 }
 
-void CacheFile::open(const QString & path, Uint64 size)
+void CacheFile::open(const QString &path, Uint64 size)
 {
     QMutexLocker lock(&mutex);
     // only set the path and the max size, we only open the file when it is needed
@@ -102,13 +101,13 @@ void CacheFile::open(const QString & path, Uint64 size)
     max_size = size;
 }
 
-void* CacheFile::map(MMappeable* thing, Uint64 off, Uint32 size, Mode mode)
+void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
 {
     QMutexLocker lock(&mutex);
     // reopen the file if necessary
     if (!fptr) {
         //  Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
-        QStorageInfo mount(path); //ntfs cannot handle mmap properly
+        QStorageInfo mount(path); // ntfs cannot handle mmap properly
         if (!OpenFileAllowed() || mount.fileSystemType() == "fuseblk" || mount.fileSystemType().startsWith("ntfs"))
             return 0; // Running out of file descriptors, force buffered mode
         openFile(mode);
@@ -158,9 +157,9 @@ void* CacheFile::map(MMappeable* thing, Uint64 off, Uint32 size, Mode mode)
         Uint64 noff = off - diff;
         //  Out(SYS_DIO|LOG_DEBUG) << "Offsetted mmap : " << diff << endl;
 #ifdef HAVE_MMAP64
-        char* ptr = (char*)mmap64(0, size + diff, mmap_flag, MAP_SHARED, fd, noff);
+        char *ptr = (char *)mmap64(0, size + diff, mmap_flag, MAP_SHARED, fd, noff);
 #else
-        char* ptr = (char*)mmap(0, size + diff, mmap_flag, MAP_SHARED, fd, noff);
+        char *ptr = (char *)mmap(0, size + diff, mmap_flag, MAP_SHARED, fd, noff);
 #endif
         if (ptr == MAP_FAILED) {
             Out(SYS_DIO | LOG_DEBUG) << "mmap failed : " << QString(strerror(errno)) << endl;
@@ -173,14 +172,14 @@ void* CacheFile::map(MMappeable* thing, Uint64 off, Uint32 size, Mode mode)
             e.ptr = ptr;
             e.size = size + diff;
             e.mode = mode;
-            mappings.insert((void*)(ptr + diff), e);
+            mappings.insert((void *)(ptr + diff), e);
             return ptr + diff;
         }
     } else {
 #ifdef HAVE_MMAP64
-        void* ptr = mmap64(0, size, mmap_flag, MAP_SHARED, fd, off);
+        void *ptr = mmap64(0, size, mmap_flag, MAP_SHARED, fd, off);
 #else
-        void* ptr = mmap(0, size, mmap_flag, MAP_SHARED, fd, off);
+        void *ptr = mmap(0, size, mmap_flag, MAP_SHARED, fd, off);
 #endif
         if (ptr == MAP_FAILED) {
             Out(SYS_DIO | LOG_DEBUG) << "mmap failed : " << QString(strerror(errno)) << endl;
@@ -198,7 +197,7 @@ void* CacheFile::map(MMappeable* thing, Uint64 off, Uint32 size, Mode mode)
         }
     }
 #else // Q_WS_WIN
-    char* ptr = (char*)fptr->map(off, size);
+    char *ptr = (char *)fptr->map(off, size);
 
     if (!ptr) {
         Out(SYS_DIO | LOG_DEBUG) << "mmap failed3 : " << fptr->handle() << " " << QString(strerror(errno)) << endl;
@@ -229,7 +228,6 @@ void CacheFile::growFile(Uint64 to_write)
     if (read_only)
         throw Error(i18n("Cannot open %1 for writing: readonly filesystem", path));
 
-
     if (file_size + to_write > max_size) {
         Out(SYS_DIO | LOG_DEBUG) << "Warning : writing past the end of " << path << endl;
         Out(SYS_DIO | LOG_DEBUG) << (file_size + to_write) << " " << max_size << endl;
@@ -242,7 +240,7 @@ void CacheFile::growFile(Uint64 to_write)
     file_size = fptr->size();
 }
 
-void CacheFile::unmap(void* ptr, Uint32 size)
+void CacheFile::unmap(void *ptr, Uint32 size)
 {
     int ret = 0;
     QMutexLocker lock(&mutex);
@@ -251,8 +249,8 @@ void CacheFile::unmap(void* ptr, Uint32 size)
         return;
 
     if (mappings.contains(ptr)) {
-        CacheFile::Entry & e = mappings[ptr];
-        if (!fptr->unmap((uchar*)e.ptr))
+        CacheFile::Entry &e = mappings[ptr];
+        if (!fptr->unmap((uchar *)e.ptr))
             Out(SYS_DIO | LOG_IMPORTANT) << QString("Unmap failed : %1").arg(fptr->errorString()) << endl;
 
         mappings.remove(ptr);
@@ -263,7 +261,7 @@ void CacheFile::unmap(void* ptr, Uint32 size)
 #else
     // see if it wasn't an offsetted mapping
     if (mappings.contains(ptr)) {
-        CacheFile::Entry & e = mappings[ptr];
+        CacheFile::Entry &e = mappings[ptr];
 #ifdef HAVE_MUNMAP64
         ret = munmap64(e.ptr, e.size);
 #else
@@ -285,7 +283,7 @@ void CacheFile::aboutToClose()
     QMutexLocker lock(&mutex);
     if (!fptr)
         return;
-    //Out(SYS_DIO|LOG_NOTICE) << "CacheFile " << path << " : about to be closed" << endl;
+    // Out(SYS_DIO|LOG_NOTICE) << "CacheFile " << path << " : about to be closed" << endl;
     unmapAll();
     if (!manual_close) {
         manual_close = true;
@@ -297,12 +295,12 @@ void CacheFile::aboutToClose()
 
 void CacheFile::unmapAll()
 {
-    QMap<void*, Entry>::iterator i = mappings.begin();
+    QMap<void *, Entry>::iterator i = mappings.begin();
     while (i != mappings.end()) {
         int ret = 0;
-        CacheFile::Entry & e = i.value();
+        CacheFile::Entry &e = i.value();
 #ifdef Q_OS_WIN
-        fptr->unmap((uchar*)e.ptr);
+        fptr->unmap((uchar *)e.ptr);
 #else
 #ifdef HAVE_MUNMAP64
         ret = munmap64(e.ptr, e.size);
@@ -336,7 +334,7 @@ void CacheFile::close()
     manual_close = false;
 }
 
-void CacheFile::read(Uint8* buf, Uint32 size, Uint64 off)
+void CacheFile::read(Uint8 *buf, Uint32 size, Uint64 off)
 {
     QMutexLocker lock(&mutex);
     bool close_again = false;
@@ -357,7 +355,7 @@ void CacheFile::read(Uint8* buf, Uint32 size, Uint64 off)
         throw Error(i18n("Failed to seek file %1: %2", path, fptr->errorString()));
 
     Uint32 sz = 0;
-    if ((sz = fptr->read((char*)buf, size)) != size) {
+    if ((sz = fptr->read((char *)buf, size)) != size) {
         if (close_again)
             closeTemporary();
 
@@ -368,7 +366,7 @@ void CacheFile::read(Uint8* buf, Uint32 size, Uint64 off)
         closeTemporary();
 }
 
-void CacheFile::write(const Uint8* buf, Uint32 size, Uint64 off)
+void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
 {
     QMutexLocker lock(&mutex);
     bool close_again = false;
@@ -390,16 +388,15 @@ void CacheFile::write(const Uint8* buf, Uint32 size, Uint64 off)
     }
 
     if (file_size < off) {
-        //Out(SYS_DIO|LOG_DEBUG) << QString("Writing %1 bytes at %2").arg(size).arg(off) << endl;
+        // Out(SYS_DIO|LOG_DEBUG) << QString("Writing %1 bytes at %2").arg(size).arg(off) << endl;
         growFile(off - file_size);
     }
-
 
     // jump to right position
     if (!fptr->seek(off))
         throw Error(i18n("Failed to seek file %1: %2", path, fptr->errorString()));
 
-    if (fptr->write((const char*)buf, size) != size) {
+    if (fptr->write((const char *)buf, size) != size) {
         throw Error(i18n("Failed to write to file %1: %2", path, fptr->errorString()));
     }
 
@@ -419,9 +416,7 @@ void CacheFile::closeTemporary()
     fptr = 0;
 }
 
-
-
-void CacheFile::preallocate(PreallocationThread* prealloc)
+void CacheFile::preallocate(PreallocationThread *prealloc)
 {
     QMutexLocker lock(&mutex);
 
@@ -455,10 +450,10 @@ void CacheFile::preallocate(PreallocationThread* prealloc)
         }
 #endif
 
-        if (! res) {
+        if (!res) {
             bt::TruncateFile(fd, max_size, !Cache::preallocateFully());
         }
-    } catch (bt::Error & e) {
+    } catch (bt::Error &e) {
         throw Error(i18n("Cannot preallocate diskspace: %1", strerror(errno)));
     }
 

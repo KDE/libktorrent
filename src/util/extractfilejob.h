@@ -26,7 +26,6 @@
 
 #include <ktorrent_export.h>
 
-
 namespace bt
 {
 class ExtractFileThread;
@@ -37,19 +36,20 @@ class ExtractFileThread;
 class KTORRENT_EXPORT ExtractFileJob : public KIO::Job
 {
 public:
-    ExtractFileJob(KArchive* archive, const QString & path, const QString & dest);
+    ExtractFileJob(KArchive *archive, const QString &path, const QString &dest);
     ~ExtractFileJob() override;
 
     void start() override;
     virtual void kill(bool quietly = true);
+
 private:
     void extractThreadDone();
 
 private:
-    KArchive* archive;
+    KArchive *archive;
     QString path;
     QString dest;
-    ExtractFileThread* extract_thread;
+    ExtractFileThread *extract_thread;
 };
 
 }

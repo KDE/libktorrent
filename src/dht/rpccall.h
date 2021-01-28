@@ -20,9 +20,9 @@
 #ifndef DHTRPCCALL_H
 #define DHTRPCCALL_H
 
-#include <qtimer.h>
 #include "key.h"
 #include "rpcmsg.h"
+#include <qtimer.h>
 
 namespace dht
 {
@@ -30,11 +30,11 @@ class RPCCall;
 
 /**
  * Class which objects should derive from, if they want to know the result of a call.
-*/
+ */
 class RPCCallListener : public QObject
 {
 public:
-    RPCCallListener(QObject* parent);
+    RPCCallListener(QObject *parent);
     ~RPCCallListener() override;
 
     /**
@@ -42,13 +42,13 @@ public:
      * @param c The call
      * @param rsp The response
      */
-    virtual void onResponse(RPCCall* c, RPCMsg::Ptr rsp) = 0;
+    virtual void onResponse(RPCCall *c, RPCMsg::Ptr rsp) = 0;
 
     /**
      * The call has timed out.
      * @param c The call
      */
-    virtual void onTimeout(RPCCall* c) = 0;
+    virtual void onTimeout(RPCCall *c) = 0;
 };
 
 /**
@@ -76,7 +76,7 @@ public:
      * Add a listener for this call
      * @param cl The listener
      */
-    void addListener(RPCCallListener* cl);
+    void addListener(RPCCallListener *cl);
 
     /// Get the message type
     Method getMsgMethod() const;
@@ -97,8 +97,8 @@ private Q_SLOTS:
     void onTimeout();
 
 Q_SIGNALS:
-    void response(RPCCall* c, RPCMsg::Ptr rsp);
-    void timeout(RPCCall* c);
+    void response(RPCCall *c, RPCMsg::Ptr rsp);
+    void timeout(RPCCall *c);
 
 private:
     RPCMsg::Ptr msg;

@@ -20,10 +20,10 @@
 #ifndef DHTTASKMANAGER_H
 #define DHTTASKMANAGER_H
 
+#include "task.h"
 #include <QList>
 #include <QPointer>
 #include <util/constants.h>
-#include "task.h"
 
 namespace dht
 {
@@ -33,18 +33,18 @@ class DHT;
  * @author Joris Guisson <joris.guisson@gmail.com>
  *
  * Manages all dht tasks.
-*/
+ */
 class TaskManager : public QObject
 {
 public:
-    TaskManager(const DHT* dh_table);
+    TaskManager(const DHT *dh_table);
     ~TaskManager() override;
 
     /**
      * Add a task to manage.
      * @param task
      */
-    void addTask(Task* task);
+    void addTask(Task *task);
 
     /// Get the number of running tasks
     bt::Uint32 getNumTasks() const
@@ -59,10 +59,10 @@ public:
     }
 
 private:
-    void taskFinished(Task* task);
+    void taskFinished(Task *task);
 
-    const DHT* dh_table;
-    QList<QPointer<Task> > queued;
+    const DHT *dh_table;
+    QList<QPointer<Task>> queued;
     bt::Uint32 num_active;
 };
 

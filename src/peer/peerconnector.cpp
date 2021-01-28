@@ -19,15 +19,14 @@
  ***************************************************************************/
 
 #include "peerconnector.h"
-#include <QSet>
+#include "authenticationmonitor.h"
+#include "peermanager.h"
 #include <QPointer>
+#include <QSet>
 #include <interfaces/serverinterface.h>
 #include <mse/encryptedauthenticate.h>
 #include <torrent/torrent.h>
 #include <util/functions.h>
-#include "peermanager.h"
-#include "authenticationmonitor.h"
-
 
 namespace bt
 {
@@ -36,8 +35,14 @@ static ResourceManager half_open_connections(50);
 class PeerConnector::Private
 {
 public:
-    Private(PeerConnector* p, const net::Address & addr, bool local, PeerManager* pman, ConnectionLimit::Token::Ptr token)
-        : p(p), addr(addr), local(local), pman(pman), stopping(false), do_not_start(false), token(token)
+    Private(PeerConnector *p, const net::Address &addr, bool local, PeerManager *pman, ConnectionLimit::Token::Ptr token)
+        : p(p)
+        , addr(addr)
+        , local(local)
+        , pman(pman)
+        , stopping(false)
+        , do_not_start(false)
+        , token(token)
     {
     }
 
@@ -51,10 +56,10 @@ public:
     }
 
     void start(Method method);
-    void authenticationFinished(Authenticate* auth, bool ok);
+    void authenticationFinished(Authenticate *auth, bool ok);
 
 public:
-    PeerConnector* p;
+    PeerConnector *p;
     QSet<Method> tried_methods;
     Method current_method;
     net::Address addr;
@@ -67,9 +72,9 @@ public:
     ConnectionLimit::Token::Ptr token;
 };
 
-PeerConnector::PeerConnector(const net::Address & addr, bool local, bt::PeerManager* pman, ConnectionLimit::Token::Ptr token)
-    : Resource(&half_open_connections, pman->getTorrent().getInfoHash().toString()),
-      d(new Private(this, addr, local, pman, token))
+PeerConnector::PeerConnector(const net::Address &addr, bool local, bt::PeerManager *pman, ConnectionLimit::Token::Ptr token)
+    : Resource(&half_open_connections, pman->getTorrent().getInfoHash().toString())
+    , d(new Private(this, addr, local, pman, token))
 {
 }
 
@@ -83,7 +88,6 @@ void PeerConnector::setWeakPointer(PeerConnector::WPtr ptr)
     d->self = ptr;
 }
 
-
 void PeerConnector::setMaxActive(Uint32 mc)
 {
     half_open_connections.setMaxActive(mc);
@@ -96,7 +100,7 @@ void PeerConnector::start()
 
 void PeerConnector::acquired()
 {
-    PeerManager* pm = d->pman.data();
+    PeerManager *pm = d->pman.data();
     if (!pm || !pm->isStarted())
         return;
 
@@ -117,18 +121,18 @@ void PeerConnector::acquired()
     }
 }
 
-void PeerConnector::authenticationFinished(Authenticate* auth, bool ok)
+void PeerConnector::authenticationFinished(Authenticate *auth, bool ok)
 {
     d->authenticationFinished(auth, ok);
 }
 
-void PeerConnector::Private::authenticationFinished(Authenticate* auth, bool ok)
+void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
 {
     this->auth.clear();
     if (stopping)
         return;
 
-    PeerManager* pm = pman.data();
+    PeerManager *pm = pman.data();
     if (!pm)
         return;
 
@@ -140,7 +144,7 @@ void PeerConnector::Private::authenticationFinished(Authenticate* auth, bool ok)
     tried_methods.insert(current_method);
 
     bt::TransportProtocol primary = ServerInterface::primaryTransportProtocol();
-//      QList<Method> allowed;
+    //      QList<Method> allowed;
 
     bool tcp_allowed = OpenFileAllowed();
     bool encryption = ServerInterface::isEncryptionEnabled();
@@ -175,12 +179,12 @@ void PeerConnector::Private::authenticationFinished(Authenticate* auth, bool ok)
 
 void PeerConnector::Private::start(PeerConnector::Method method)
 {
-    PeerManager* pm = pman.data();
+    PeerManager *pm = pman.data();
     if (!pm)
         return;
 
     current_method = method;
-    const Torrent & tor = pm->getTorrent();
+    const Torrent &tor = pm->getTorrent();
     TransportProtocol proto = (method == TCP_WITH_ENCRYPTION || method == TCP_WITHOUT_ENCRYPTION) ? TCP : UTP;
     if (method == TCP_WITH_ENCRYPTION || method == UTP_WITH_ENCRYPTION)
         auth = new mse::EncryptedAuthenticate(addr, proto, tor.getInfoHash(), tor.getPeerID(), self);
@@ -194,5 +198,3 @@ void PeerConnector::Private::start(PeerConnector::Method method)
 }
 
 }
-
-

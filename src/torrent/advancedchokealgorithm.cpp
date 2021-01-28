@@ -21,22 +21,19 @@
 
 #include <algorithm>
 
-#include <util/functions.h>
-#include <interfaces/torrentinterface.h>
 #include <diskio/chunkmanager.h>
+#include <interfaces/torrentinterface.h>
 #include <peer/peer.h>
 #include <peer/peermanager.h>
+#include <util/functions.h>
 
 #include <QRandomGenerator>
 
 namespace bt
 {
-
-
 const Uint32 OPT_SEL_INTERVAL = 30 * 1000; // we switch optimistic peer each 30 seconds
 const double NEWBIE_BONUS = 1.0;
 const double SNUB_PENALTY = 10.0;
-
 
 AdvancedChokeAlgorithm::AdvancedChokeAlgorithm()
     : ChokeAlgorithm()
@@ -44,13 +41,13 @@ AdvancedChokeAlgorithm::AdvancedChokeAlgorithm()
     last_opt_sel_time = 0;
 }
 
-
 AdvancedChokeAlgorithm::~AdvancedChokeAlgorithm()
-{}
-
-bool AdvancedChokeAlgorithm::calcACAScore(Peer::Ptr p, ChunkManager & cman, const TorrentStats & stats)
 {
-    const PeerInterface::Stats & s = p->getStats();
+}
+
+bool AdvancedChokeAlgorithm::calcACAScore(Peer::Ptr p, ChunkManager &cman, const TorrentStats &stats)
+{
+    const PeerInterface::Stats &s = p->getStats();
     if (p->isSeeder() || s.partial_seed) {
         p->setACAScore(0.0);
         return false;
@@ -58,8 +55,8 @@ bool AdvancedChokeAlgorithm::calcACAScore(Peer::Ptr p, ChunkManager & cman, cons
 
     bool should_be_interested = false;
     // before we start calculating first check if we have piece that the peer doesn't have
-    const BitSet & ours = cman.getBitSet();
-    const BitSet & theirs = p->getBitSet();
+    const BitSet &ours = cman.getBitSet();
+    const BitSet &theirs = p->getBitSet();
 
     should_be_interested = !theirs.includesBitSet(ours);
 
@@ -68,8 +65,6 @@ bool AdvancedChokeAlgorithm::calcACAScore(Peer::Ptr p, ChunkManager & cman, cons
         p->setACAScore(-50.0);
         return false;
     }
-
-
 
     double nb = 0.0; // newbie bonus
     double cp = 0.0; // choke penalty
@@ -103,8 +98,7 @@ static bool ACAGreaterThan(Peer::Ptr a, Peer::Ptr b)
     return a->getStats().aca_score > b->getStats().aca_score;
 }
 
-
-void AdvancedChokeAlgorithm::doChokingLeechingState(PeerManager & pman, ChunkManager & cman, const TorrentStats & stats)
+void AdvancedChokeAlgorithm::doChokingLeechingState(PeerManager &pman, ChunkManager &cman, const TorrentStats &stats)
 {
     QList<Peer::Ptr> ppl = pman.getPeers();
     for (QList<Peer::Ptr>::iterator i = ppl.begin(); i != ppl.end();) {
@@ -123,7 +117,7 @@ void AdvancedChokeAlgorithm::doChokingLeechingState(PeerManager & pman, ChunkMan
     doUnchoking(ppl, updateOptimisticPeer(pman, ppl));
 }
 
-void AdvancedChokeAlgorithm::doUnchoking(const QList<Peer::Ptr> & ppl, Peer::Ptr poup)
+void AdvancedChokeAlgorithm::doUnchoking(const QList<Peer::Ptr> &ppl, Peer::Ptr poup)
 {
     // Get the number of upload slots
     Uint32 num_slots = Choker::getNumUploadSlots();
@@ -148,7 +142,7 @@ static bool UploadRateGreaterThan(Peer::Ptr a, Peer::Ptr b)
     return a->getStats().upload_rate > b->getStats().upload_rate;
 }
 
-void AdvancedChokeAlgorithm::doChokingSeedingState(PeerManager & pman, ChunkManager & cman, const TorrentStats & stats)
+void AdvancedChokeAlgorithm::doChokingSeedingState(PeerManager &pman, ChunkManager &cman, const TorrentStats &stats)
 {
     QList<Peer::Ptr> ppl = pman.getPeers();
     for (QList<Peer::Ptr>::iterator i = ppl.begin(); i != ppl.end();) {
@@ -166,7 +160,7 @@ void AdvancedChokeAlgorithm::doChokingSeedingState(PeerManager & pman, ChunkMana
     doUnchoking(ppl, updateOptimisticPeer(pman, ppl));
 }
 
-static Uint32 FindPlannedOptimisticUnchokedPeer(const QList<Peer::Ptr> & ppl)
+static Uint32 FindPlannedOptimisticUnchokedPeer(const QList<Peer::Ptr> &ppl)
 {
     Uint32 num_peers = ppl.size();
     if (num_peers == 0)
@@ -186,7 +180,7 @@ static Uint32 FindPlannedOptimisticUnchokedPeer(const QList<Peer::Ptr> & ppl)
     return UNDEFINED_ID;
 }
 
-Peer::Ptr AdvancedChokeAlgorithm::updateOptimisticPeer(PeerManager & pman, const QList<Peer::Ptr> & ppl)
+Peer::Ptr AdvancedChokeAlgorithm::updateOptimisticPeer(PeerManager &pman, const QList<Peer::Ptr> &ppl)
 {
     // get the planned optimistic unchoked peer and change it if necessary
     Peer::Ptr poup = pman.findPeer(opt_unchoked_peer_id);

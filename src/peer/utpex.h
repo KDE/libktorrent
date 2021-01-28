@@ -20,12 +20,12 @@
 #ifndef BTUTPEX_H
 #define BTUTPEX_H
 
-#include <map>
-#include <ktorrent_export.h>
-#include <net/address.h>
-#include <util/constants.h>
-#include <peer/peermanager.h>
 #include "peerprotocolextension.h"
+#include <ktorrent_export.h>
+#include <map>
+#include <net/address.h>
+#include <peer/peermanager.h>
+#include <util/constants.h>
 
 namespace bt
 {
@@ -36,11 +36,11 @@ class BEncoder;
  * @author Joris Guisson <joris.guisson@gmail.com>
  *
  * Class which handles µTorrent's peer exchange
-*/
+ */
 class KTORRENT_EXPORT UTPex : public PeerProtocolExtension, public PeerManager::PeerVisitor
 {
 public:
-    UTPex(Peer* peer, Uint32 id);
+    UTPex(Peer *peer, Uint32 id);
     ~UTPex() override;
 
     /**
@@ -48,7 +48,7 @@ public:
      * @param packet The packet
      * @param size The size of the packet
      */
-    void handlePacket(const Uint8* packet, Uint32 size) override;
+    void handlePacket(const Uint8 *packet, Uint32 size) override;
 
     /// Do we need to update PEX (should happen every minute)
     bool needsUpdate() const override;
@@ -73,9 +73,10 @@ public:
     {
         return pex_enabled;
     }
+
 private:
-    void encode(BEncoder & enc, const std::map<Uint32, net::Address> & ps);
-    void encodeFlags(BEncoder & enc, const std::map<Uint32, Uint8> & flags);
+    void encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps);
+    void encodeFlags(BEncoder &enc, const std::map<Uint32, Uint8> &flags);
     void visit(const bt::Peer::Ptr p) override;
 
 private:

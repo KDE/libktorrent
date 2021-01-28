@@ -21,13 +21,13 @@
 #ifndef BUFFERPOOL_H_
 #define BUFFERPOOL_H_
 
-#include <map>
-#include <list>
-#include <boost/shared_array.hpp>
 #include <QMutex>
-#include <QWeakPointer>
 #include <QSharedPointer>
+#include <QWeakPointer>
+#include <boost/shared_array.hpp>
 #include <ktorrent_export.h>
+#include <list>
+#include <map>
 #include <util/constants.h>
 
 namespace bt
@@ -65,7 +65,7 @@ public:
     }
 
     /// Get a pointer to the data
-    bt::Uint8* get()
+    bt::Uint8 *get()
     {
         return data.get();
     }
@@ -118,7 +118,7 @@ public:
     typedef QSharedPointer<BufferPool> Ptr;
 
 private:
-    typedef std::map<bt::Uint32, std::list<Buffer::Data> > FreeBufferMap;
+    typedef std::map<bt::Uint32, std::list<Buffer::Data>> FreeBufferMap;
     QMutex mutex;
     FreeBufferMap free_buffers;
     QWeakPointer<BufferPool> self;

@@ -20,34 +20,33 @@
 
 #include "peersourcemanager.h"
 
+#include <KLocalizedString>
 #include <QFile>
 #include <QTextStream>
-#include <KLocalizedString>
 
 // #include <functions.h>
-#include <util/log.h>
-#include <torrent/globals.h>
+#include "torrent.h"
+#include "torrentcontrol.h"
 #include <dht/dhtbase.h>
 #include <dht/dhtpeersource.h>
-#include <tracker/tracker.h>
-#include "torrentcontrol.h"
-#include "torrent.h"
 #include <peer/peermanager.h>
+#include <torrent/globals.h>
+#include <tracker/tracker.h>
+#include <util/log.h>
 
 namespace bt
 {
-
-
-PeerSourceManager::PeerSourceManager(TorrentControl* tor, PeerManager* pman)
-    : TrackerManager(tor, pman), m_dht(0)
+PeerSourceManager::PeerSourceManager(TorrentControl *tor, PeerManager *pman)
+    : TrackerManager(tor, pman)
+    , m_dht(0)
 {
 }
 
 PeerSourceManager::~PeerSourceManager()
 {
-    QList<PeerSource*>::iterator itr = additional.begin();
+    QList<PeerSource *>::iterator itr = additional.begin();
     while (itr != additional.end()) {
-        PeerSource* ps = *itr;
+        PeerSource *ps = *itr;
         ps->aboutToBeDestroyed();
         ++itr;
     }
@@ -55,13 +54,13 @@ PeerSourceManager::~PeerSourceManager()
     additional.clear();
 }
 
-void PeerSourceManager::addPeerSource(PeerSource* ps)
+void PeerSourceManager::addPeerSource(PeerSource *ps)
 {
     additional.append(ps);
     connect(ps, &PeerSource::peersReady, pman, &PeerManager::peerSourceReady);
 }
 
-void PeerSourceManager::removePeerSource(PeerSource* ps)
+void PeerSourceManager::removePeerSource(PeerSource *ps)
 {
     disconnect(ps, &PeerSource::peersReady, pman, &PeerManager::peerSourceReady);
     additional.removeAll(ps);
@@ -72,7 +71,7 @@ void PeerSourceManager::start()
     if (started)
         return;
 
-    QList<PeerSource*>::iterator i = additional.begin();
+    QList<PeerSource *>::iterator i = additional.begin();
     while (i != additional.end()) {
         (*i)->start();
         ++i;
@@ -81,12 +80,12 @@ void PeerSourceManager::start()
     TrackerManager::start();
 }
 
-void PeerSourceManager::stop(WaitJob* wjob)
+void PeerSourceManager::stop(WaitJob *wjob)
 {
     if (!started)
         return;
 
-    QList<PeerSource*>::iterator i = additional.begin();
+    QList<PeerSource *>::iterator i = additional.begin();
     while (i != additional.end()) {
         (*i)->stop();
         ++i;
@@ -97,7 +96,7 @@ void PeerSourceManager::stop(WaitJob* wjob)
 
 void PeerSourceManager::completed()
 {
-    QList<PeerSource*>::iterator i = additional.begin();
+    QList<PeerSource *>::iterator i = additional.begin();
     while (i != additional.end()) {
         (*i)->completed();
         ++i;
@@ -106,10 +105,9 @@ void PeerSourceManager::completed()
     TrackerManager::completed();
 }
 
-
 void PeerSourceManager::manualUpdate()
 {
-    QList<PeerSource*>::iterator i = additional.begin();
+    QList<PeerSource *>::iterator i = additional.begin();
     while (i != additional.end()) {
         (*i)->manualUpdate();
         ++i;
@@ -149,4 +147,3 @@ bool PeerSourceManager::dhtStarted()
 }
 
 }
-

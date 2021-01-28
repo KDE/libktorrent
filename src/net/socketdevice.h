@@ -22,9 +22,9 @@
 #define NET_SOCKETDEVICE_H
 
 #include <ktorrent_export.h>
-#include <util/constants.h>
-#include <net/poll.h>
 #include <net/address.h>
+#include <net/poll.h>
+#include <util/constants.h>
 
 namespace net
 {
@@ -44,18 +44,17 @@ public:
 
     virtual int fd() const = 0;
     virtual bool ok() const = 0;
-    virtual int send(const bt::Uint8* buf, int len) = 0;
-    virtual int recv(bt::Uint8* buf, int max_len) = 0;
+    virtual int send(const bt::Uint8 *buf, int len) = 0;
+    virtual int recv(bt::Uint8 *buf, int max_len) = 0;
     virtual void close() = 0;
     virtual void setBlocking(bool on) = 0;
     virtual Uint32 bytesAvailable() const = 0;
     virtual bool setTOS(unsigned char type_of_service) = 0;
-    virtual bool connectTo(const Address & addr) = 0;
+    virtual bool connectTo(const Address &addr) = 0;
     /// See if a connectTo was succesfull in non blocking mode
     virtual bool connectSuccesFull() = 0;
-    virtual const Address & getPeerName() const = 0;
+    virtual const Address &getPeerName() const = 0;
     virtual Address getSockName() const = 0;
-
 
     /// Get the used transport protocol for this SocketDevice
     bt::TransportProtocol transportProtocol() const
@@ -64,10 +63,10 @@ public:
     }
 
     /**
-    * Set the remote address, used by Socks to set the actual address.
-    * @param addr The address
-    */
-    void setRemoteAddress(const Address & a)
+     * Set the remote address, used by Socks to set the actual address.
+     * @param addr The address
+     */
+    void setRemoteAddress(const Address &a)
     {
         addr = a;
         remote_addr_override = true;
@@ -82,10 +81,10 @@ public:
     }
 
     /// Prepare for polling
-    virtual void prepare(Poll* p, Poll::Mode mode) = 0;
+    virtual void prepare(Poll *p, Poll::Mode mode) = 0;
 
     /// Check if the socket is ready according to the poll
-    virtual bool ready(const Poll* p, Poll::Mode mode) const = 0;
+    virtual bool ready(const Poll *p, Poll::Mode mode) const = 0;
 
 protected:
     State m_state;

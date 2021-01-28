@@ -22,13 +22,15 @@
 
 namespace bt
 {
-
-PieceDownloader::PieceDownloader() : grabbed(0), nearly_done(false)
-{}
-
+PieceDownloader::PieceDownloader()
+    : grabbed(0)
+    , nearly_done(false)
+{
+}
 
 PieceDownloader::~PieceDownloader()
-{}
+{
+}
 
 int PieceDownloader::grab()
 {
@@ -44,4 +46,3 @@ void PieceDownloader::release()
 }
 
 }
-

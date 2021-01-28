@@ -39,7 +39,7 @@ struct TrackersStatusInfo {
  * @author Ivan Vasić <ivasic@gmail.com>
  *
  * This interface is used to provide access to AnnounceList object which holds a list of available trackers for a torrent.
-*/
+ */
 class KTORRENT_EXPORT TrackersList
 {
 public:
@@ -50,26 +50,26 @@ public:
      * Get the current tracker (for non private torrents this returns 0, seeing that
      * all trackers are used at the same time)
      */
-    virtual TrackerInterface* getCurrentTracker() const = 0;
+    virtual TrackerInterface *getCurrentTracker() const = 0;
 
     /**
-    * Sets the current tracker and does the announce. For non private torrents, this
-    * does nothing.
-    * @param t The Tracker
-    */
-    virtual void setCurrentTracker(TrackerInterface* t) = 0;
+     * Sets the current tracker and does the announce. For non private torrents, this
+     * does nothing.
+     * @param t The Tracker
+     */
+    virtual void setCurrentTracker(TrackerInterface *t) = 0;
 
     /**
-    * Sets the current tracker and does the announce. For non private torrents, this
-    * does nothing.
-    * @param url Url of the tracker
-    */
+     * Sets the current tracker and does the announce. For non private torrents, this
+     * does nothing.
+     * @param url Url of the tracker
+     */
     virtual void setCurrentTracker(const QUrl &url) = 0;
 
     /**
      * Gets a list of all available trackers.
      */
-    virtual QList<TrackerInterface*> getTrackers() = 0;
+    virtual QList<TrackerInterface *> getTrackers() = 0;
 
     /**
      * Adds a tracker URL to the list.
@@ -79,13 +79,13 @@ public:
      * the main trackers, tier 2 are backups ...
      * @return The Tracker
      */
-    virtual TrackerInterface* addTracker(const QUrl &url, bool custom = true, int tier = 1) = 0;
+    virtual TrackerInterface *addTracker(const QUrl &url, bool custom = true, int tier = 1) = 0;
 
     /**
      * Removes the tracker from the list.
      * @param t The Tracker
      */
-    virtual bool removeTracker(TrackerInterface* t) = 0;
+    virtual bool removeTracker(TrackerInterface *t) = 0;
 
     /**
      * Removes the tracker from the list.
@@ -97,7 +97,7 @@ public:
      * Return true if a tracker can be removed
      * @param t The tracker
      */
-    virtual bool canRemoveTracker(TrackerInterface* t) = 0;
+    virtual bool canRemoveTracker(TrackerInterface *t) = 0;
 
     /**
      * Restores the default tracker and does the announce.
@@ -113,7 +113,7 @@ public:
      * Merge an other tracker list.
      * @param first The first TrackerTier
      */
-    void merge(const bt::TrackerTier* first);
+    void merge(const bt::TrackerTier *first);
 
     /**
      * Returns true if no tracker is reachable

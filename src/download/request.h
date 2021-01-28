@@ -42,7 +42,13 @@ public:
     /**
      * Constructor, set everything to 0.
      */
-    inline Request(): index(0), off(0), len(0), pd(0) {}
+    inline Request()
+        : index(0)
+        , off(0)
+        , len(0)
+        , pd(0)
+    {
+    }
 
     /**
      * Constructor, set the index, offset,length and peer
@@ -51,15 +57,28 @@ public:
      * @param len The length of the piece
      * @param pd Pointer to PieceDownloader of the request
      */
-    inline Request(Uint32 index, Uint32 off, Uint32 len, PieceDownloader* pd)
-        : index(index), off(off), len(len), pd(pd) {}
+    inline Request(Uint32 index, Uint32 off, Uint32 len, PieceDownloader *pd)
+        : index(index)
+        , off(off)
+        , len(len)
+        , pd(pd)
+    {
+    }
 
     /**
      * Copy constructor.
      * @param r Request to copy
      */
-    inline Request(const Request & r): index(r.index), off(r.off), len(r.len), pd(r.pd) {}
-    ~Request() {}
+    inline Request(const Request &r)
+        : index(r.index)
+        , off(r.off)
+        , len(r.len)
+        , pd(r.pd)
+    {
+    }
+    ~Request()
+    {
+    }
 
     /// Get the index of the chunk
     Uint32 getIndex() const
@@ -80,7 +99,7 @@ public:
     }
 
     /// Get the sending Peer
-    inline PieceDownloader* getPieceDownloader() const
+    inline PieceDownloader *getPieceDownloader() const
     {
         return pd;
     }
@@ -89,7 +108,7 @@ public:
      * Assignment operator.
      * @param r The Request to copy
      */
-    inline Request & operator = (const Request & r)
+    inline Request &operator=(const Request &r)
     {
         index = r.index;
         off = r.off;
@@ -98,7 +117,6 @@ public:
         return *this;
     }
 
-
     /**
      * Compare two requests. Return true if they are the same.
      * This only compares the index,offset and length.
@@ -106,13 +124,14 @@ public:
      * @param b The second request
      * @return true if they are equal
      */
-    friend inline bool operator == (const Request & a, const Request & b)
+    friend inline bool operator==(const Request &a, const Request &b)
     {
         return a.index == b.index && a.len == b.len && a.off == b.off;
     }
+
 private:
     Uint32 index, off, len;
-    PieceDownloader* pd;
+    PieceDownloader *pd;
 };
 
 }

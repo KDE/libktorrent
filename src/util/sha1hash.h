@@ -20,9 +20,9 @@
 #ifndef BTSHA1HASH_H
 #define BTSHA1HASH_H
 
+#include "constants.h"
 #include <QByteArray>
 #include <ktorrent_export.h>
-#include "constants.h"
 
 class QString;
 
@@ -36,11 +36,12 @@ class Log;
  *
  * This class keeps track of a SHA1 hash. A SHA1 hash is a 20 byte
  * array of bytes.
-*/
+ */
 class KTORRENT_EXPORT SHA1Hash
 {
 protected:
     Uint32 hash[5];
+
 public:
     /**
      * Constructor, sets every byte in the hash to 0.
@@ -51,13 +52,13 @@ public:
      * Copy constructor.
      * @param other Hash to copy
      */
-    SHA1Hash(const SHA1Hash & other);
+    SHA1Hash(const SHA1Hash &other);
 
     /**
      * Directly set the hash data.
      * @param h The hash data must be 20 bytes large
      */
-    SHA1Hash(const Uint8* h);
+    SHA1Hash(const Uint8 *h);
 
     /**
      * Destructor.
@@ -65,7 +66,7 @@ public:
     virtual ~SHA1Hash();
 
     /// Get the idx'th byte of the hash.
-    Uint8 operator [](const Uint32 idx) const
+    Uint8 operator[](const Uint32 idx) const
     {
         return idx < 20 ? hash[idx] : 0;
     }
@@ -74,23 +75,23 @@ public:
      * Assignment operator.
      * @param other Hash to copy
      */
-    SHA1Hash & operator = (const SHA1Hash & other);
+    SHA1Hash &operator=(const SHA1Hash &other);
 
     /**
      * Test whether another hash is equal to this one.
      * @param other The other hash
      * @return true if equal, false otherwise
      */
-    bool operator == (const SHA1Hash & other) const;
+    bool operator==(const SHA1Hash &other) const;
 
     /**
      * Test whether another hash is not equal to this one.
      * @param other The other hash
      * @return true if not equal, false otherwise
      */
-    bool operator != (const SHA1Hash & other) const
+    bool operator!=(const SHA1Hash &other) const
     {
-        return !operator ==(other);
+        return !operator==(other);
     }
 
     /**
@@ -99,7 +100,7 @@ public:
      * @param len Size in bytes of data
      * @return The generated SHA1 hash
      */
-    static SHA1Hash generate(const Uint8* data, Uint32 len);
+    static SHA1Hash generate(const Uint8 *data, Uint32 len);
 
     /**
      * Convert the hash to a printable string.
@@ -117,9 +118,9 @@ public:
      * Directly get pointer to the data.
      * @return The data
      */
-    const Uint8* getData() const
+    const Uint8 *getData() const
     {
-        return (Uint8*) hash;
+        return (Uint8 *)hash;
     }
 
     /**
@@ -128,8 +129,7 @@ public:
      * @param h The hash
      * @return out
      */
-    KTORRENT_EXPORT friend Log & operator << (Log & out, const SHA1Hash & h);
-
+    KTORRENT_EXPORT friend Log &operator<<(Log &out, const SHA1Hash &h);
 
     /**
      * XOR two SHA1Hashes
@@ -137,7 +137,7 @@ public:
      * @param b The second
      * @return a xor b
      */
-    KTORRENT_EXPORT friend SHA1Hash operator ^ (const SHA1Hash & a, const SHA1Hash & b);
+    KTORRENT_EXPORT friend SHA1Hash operator^(const SHA1Hash &a, const SHA1Hash &b);
 
     /**
      * Function to compare 2 hashes
@@ -145,7 +145,7 @@ public:
      * @param h The second hash
      * @return whether a is smaller then b
      */
-    KTORRENT_EXPORT friend bool operator < (const SHA1Hash & a, const SHA1Hash & b);
+    KTORRENT_EXPORT friend bool operator<(const SHA1Hash &a, const SHA1Hash &b);
 
     /**
      * Function to support the use of SHA1Hash as QHash keys

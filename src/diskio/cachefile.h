@@ -20,9 +20,9 @@
 #ifndef BTCACHEFILE_H
 #define BTCACHEFILE_H
 
+#include <QFile>
 #include <QMap>
 #include <QMutex>
-#include <QFile>
 #include <QSharedPointer>
 #include <util/constants.h>
 
@@ -30,15 +30,16 @@ namespace bt
 {
 class PreallocationThread;
 
-
 /**
  * Interface which classes must implement to be able to map something from a CacheFile
  * It will also be used to notify when things get unmapped or remapped
-*/
+ */
 class MMappeable
 {
 public:
-    virtual ~MMappeable() {}
+    virtual ~MMappeable()
+    {
+    }
 
     /**
      * When a CacheFile is closed, this will be called on all existing mappings.
@@ -70,10 +71,10 @@ public:
      * @param size Max size of the file
      * @throw Error when something goes wrong
      */
-    void open(const QString & path, Uint64 size);
+    void open(const QString &path, Uint64 size);
 
     /// Change the path of the file
-    void changePath(const QString & npath);
+    void changePath(const QString &npath);
 
     /**
      * Map a part of the file into memory, will expand the file
@@ -84,14 +85,14 @@ public:
      * @param mode How the region will be mapped
      * @return A ptr to the mmaped region, or 0 if something goes wrong
      */
-    void* map(MMappeable* thing, Uint64 off, Uint32 size, Mode mode);
+    void *map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode);
 
     /**
      * Unmap a previously mapped region.
      * @param ptr Ptr to the region
      * @param size Size of the region
      */
-    void unmap(void* ptr, Uint32 size);
+    void unmap(void *ptr, Uint32 size);
 
     /**
      * Close the file, everything will be unmapped.
@@ -105,7 +106,7 @@ public:
      * @param size Size to read
      * @param off Offset to read from in file
      */
-    void read(Uint8* buf, Uint32 size, Uint64 off);
+    void read(Uint8 *buf, Uint32 size, Uint64 off);
 
     /**
      * Write to the file.
@@ -113,12 +114,12 @@ public:
      * @param size Size to read
      * @param off Offset to read from in file
      */
-    void write(const Uint8* buf, Uint32 size, Uint64 off);
+    void write(const Uint8 *buf, Uint32 size, Uint64 off);
 
     /**
      * Preallocate disk space
      */
-    void preallocate(PreallocationThread* prealloc);
+    void preallocate(PreallocationThread *prealloc);
 
     /// Get the number of bytes this cache file is taking up
     Uint64 diskUsage();
@@ -136,19 +137,19 @@ private Q_SLOTS:
     void aboutToClose();
 
 private:
-    QFile* fptr;
+    QFile *fptr;
     bool read_only;
     Uint64 max_size, file_size;
     QString path;
     struct Entry {
-        MMappeable* thing;
-        void* ptr;
+        MMappeable *thing;
+        void *ptr;
         Uint32 size;
         Uint64 offset;
         Uint32 diff;
         Mode mode;
     };
-    QMap<void*, Entry> mappings; // mappings where offset wasn't a multiple of 4K
+    QMap<void *, Entry> mappings; // mappings where offset wasn't a multiple of 4K
     mutable QMutex mutex;
     bool manual_close;
 };

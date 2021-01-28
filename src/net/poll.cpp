@@ -31,15 +31,13 @@ using namespace bt;
 
 namespace net
 {
-
-Poll::Poll() : num_sockets(0)
+Poll::Poll()
+    : num_sockets(0)
 {
-
 }
 
 Poll::~Poll()
 {
-
 }
 
 int Poll::add(int fd, Poll::Mode mode)
@@ -53,7 +51,7 @@ int Poll::add(int fd, Poll::Mode mode)
         fd_vec.push_back(pfd);
     } else {
         // use existing slot
-        struct pollfd & pfd = fd_vec[num_sockets];
+        struct pollfd &pfd = fd_vec[num_sockets];
         pfd.fd = fd;
         pfd.revents = 0;
         pfd.events = mode == INPUT ? POLLIN : POLLOUT;
@@ -64,14 +62,12 @@ int Poll::add(int fd, Poll::Mode mode)
     return ret;
 }
 
-
 int Poll::add(PollClient::Ptr pc)
 {
     int idx = add(pc->fd(), INPUT);
     poll_clients[idx] = pc;
     return idx;
 }
-
 
 bool Poll::ready(int index, Poll::Mode mode) const
 {
@@ -110,7 +106,4 @@ int Poll::poll(int timeout)
     return ret;
 }
 
-
-
 }
-

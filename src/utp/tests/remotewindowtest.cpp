@@ -1,29 +1,29 @@
 /***************************************************************************
-*   Copyright (C) 2009 by Joris Guisson                                   *
-*   joris.guisson@gmail.com                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
-***************************************************************************/
+ *   Copyright (C) 2009 by Joris Guisson                                   *
+ *   joris.guisson@gmail.com                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
+ ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
-#include <util/log.h>
-#include <utp/remotewindow.h>
-#include <utp/connection.h>
+#include <QtTest>
 #include <util/functions.h>
+#include <util/log.h>
+#include <utp/connection.h>
+#include <utp/remotewindow.h>
 
 using namespace utp;
 
@@ -35,12 +35,14 @@ public:
     bool update_rtt_called;
     bool retransmit_ok;
 
-
-    RemoteWindowTest(QObject* parent = 0) : QObject(parent), update_rtt_called(false), retransmit_ok(false)
+    RemoteWindowTest(QObject *parent = 0)
+        : QObject(parent)
+        , update_rtt_called(false)
+        , retransmit_ok(false)
     {
     }
 
-    void updateRTT(const Header* hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size) override
+    void updateRTT(const Header *hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size) override
     {
         Q_UNUSED(hdr);
         Q_UNUSED(packet_rtt);
@@ -160,7 +162,7 @@ private Q_SLOTS:
         // Selectively ack 3
         bt::Uint8 sack_data[6];
         memset(sack_data, 0, 6);
-        SelectiveAck sack;;
+        SelectiveAck sack;
         sack.length = 4;
         sack.extension = 0;
         sack.bitmask = sack_data + 2;
@@ -199,7 +201,7 @@ private Q_SLOTS:
         // Selectively ack the last 3 packets
         bt::Uint8 sack_data[6];
         memset(sack_data, 0, 6);
-        SelectiveAck sack;;
+        SelectiveAck sack;
         sack.length = 4;
         sack.extension = 0;
         sack.bitmask = sack_data + 2;
@@ -231,7 +233,7 @@ private Q_SLOTS:
         // Selectively ack the last 3 packets
         bt::Uint8 sack_data[6];
         memset(sack_data, 0, 6);
-        SelectiveAck sack;;
+        SelectiveAck sack;
         sack.length = 4;
         sack.extension = 0;
         sack.bitmask = sack_data + 2;
@@ -263,7 +265,7 @@ private Q_SLOTS:
         // Selectively ack the last 3 packets
         bt::Uint8 sack_data[6];
         memset(sack_data, 0, 6);
-        SelectiveAck sack;;
+        SelectiveAck sack;
         sack.length = 4;
         sack.extension = 0;
         sack.bitmask = sack_data + 2;
@@ -296,7 +298,7 @@ private Q_SLOTS:
         // Selectively ack 3 random packets
         bt::Uint8 sack_data[6];
         memset(sack_data, 0, 6);
-        SelectiveAck sack;;
+        SelectiveAck sack;
         sack.length = 4;
         sack.extension = 0;
         sack.bitmask = sack_data + 2;
@@ -354,4 +356,3 @@ private Q_SLOTS:
 QTEST_MAIN(RemoteWindowTest)
 
 #include "remotewindowtest.moc"
-

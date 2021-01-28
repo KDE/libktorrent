@@ -31,11 +31,11 @@ namespace mse
 {
 class BigInt;
 
-void GeneratePublicPrivateKey(BigInt & pub, BigInt & priv);
-BigInt DHSecret(const BigInt & our_priv, const BigInt & peer_pub);
-bt::SHA1Hash EncryptionKey(bool a, const BigInt & s, const bt::SHA1Hash & skey);
+void GeneratePublicPrivateKey(BigInt &pub, BigInt &priv);
+BigInt DHSecret(const BigInt &our_priv, const BigInt &peer_pub);
+bt::SHA1Hash EncryptionKey(bool a, const BigInt &s, const bt::SHA1Hash &skey);
 
-void DumpBigInt(const QString & name, const BigInt & bi);
+void DumpBigInt(const QString &name, const BigInt &bi);
 }
 
 #endif

@@ -20,8 +20,8 @@
 #ifndef DHTDHTBASE_H
 #define DHTDHTBASE_H
 
-#include <qobject.h>
 #include <qmap.h>
+#include <qobject.h>
 #include <util/constants.h>
 
 class QString;
@@ -55,14 +55,13 @@ public:
     DHTBase();
     ~DHTBase() override;
 
-
     /**
      * Start the DHT
      * @param table File where the save table is located
      * @param key_file Where our DHT key is stored
      * @param port The port to use
      */
-    virtual void start(const QString & table, const QString & key_file, bt::Uint16 port) = 0;
+    virtual void start(const QString &table, const QString &key_file, bt::Uint16 port) = 0;
 
     /**
      * Stop the DHT
@@ -79,7 +78,7 @@ public:
      * @param ip The IP of the peer
      * @param port The port in the PORT message
      */
-    virtual void portReceived(const QString & ip, bt::Uint16 port) = 0;
+    virtual void portReceived(const QString &ip, bt::Uint16 port) = 0;
 
     /**
      * Do an announce on the DHT network
@@ -87,7 +86,7 @@ public:
      * @param port The port
      * @return The task which handles this
      */
-    virtual AnnounceTask* announce(const bt::SHA1Hash & info_hash, bt::Uint16 port) = 0;
+    virtual AnnounceTask *announce(const bt::SHA1Hash &info_hash, bt::Uint16 port) = 0;
 
     /**
      * See if the DHT is running.
@@ -104,7 +103,7 @@ public:
     }
 
     /// Get statistics about the DHT
-    const dht::Stats & getStats() const
+    const dht::Stats &getStats() const
     {
         return stats;
     }
@@ -114,7 +113,7 @@ public:
      * @param host The hostname or ip
      * @param hport The port of the host
      */
-    virtual void addDHTNode(const QString & host, bt::Uint16 hport) = 0;
+    virtual void addDHTNode(const QString &host, bt::Uint16 hport) = 0;
 
     /**
      * Returns maxNodes number of <IP address, port> nodes

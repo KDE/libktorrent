@@ -21,8 +21,8 @@
 #ifndef BTCHUNKSELECTORINTERFACE_H
 #define BTCHUNKSELECTORINTERFACE_H
 
-#include <util/constants.h>
 #include <ktorrent_export.h>
+#include <util/constants.h>
 
 namespace bt
 {
@@ -33,10 +33,10 @@ class ChunkManager;
 class PieceDownloader;
 
 /**
-* @author Joris Guisson
-*
-* Interface class for selecting chunks to download.
-*/
+ * @author Joris Guisson
+ *
+ * Interface class for selecting chunks to download.
+ */
 class KTORRENT_EXPORT ChunkSelectorInterface
 {
 public:
@@ -50,7 +50,7 @@ public:
      * @param downer The Downloader
      * @param pman The PeerManager
      */
-    virtual void init(ChunkManager* cman, Downloader* downer, PeerManager* pman);
+    virtual void init(ChunkManager *cman, Downloader *downer, PeerManager *pman);
 
     /**
      * Select which chunk to download for a PieceDownloader.
@@ -58,7 +58,7 @@ public:
      * @param chunk Index of chunk gets stored here
      * @return true upon succes, false otherwise
      */
-    virtual bool select(PieceDownloader* pd, Uint32 & chunk) = 0;
+    virtual bool select(PieceDownloader *pd, Uint32 &chunk) = 0;
 
     /**
      * Select a range of chunks to download from a webseeder.
@@ -67,7 +67,7 @@ public:
      * @param max_len Maximum length of range
      * @return true if everything is OK
      */
-    virtual bool selectRange(Uint32 & from, Uint32 & to, Uint32 max_len);
+    virtual bool selectRange(Uint32 &from, Uint32 &to, Uint32 max_len);
 
     /**
      * Data has been checked, and these chunks are OK.
@@ -75,7 +75,7 @@ public:
      * @param from First chunk of check
      * @param to Last chunk of check
      */
-    virtual void dataChecked(const BitSet & ok_chunks, Uint32 from, Uint32 to) = 0;
+    virtual void dataChecked(const BitSet &ok_chunks, Uint32 from, Uint32 to) = 0;
 
     /**
      * A range of chunks has been reincluded. This is called when a user
@@ -93,9 +93,9 @@ public:
     virtual void reinsert(Uint32 chunk) = 0;
 
 protected:
-    ChunkManager* cman;
-    Downloader* downer;
-    PeerManager* pman;
+    ChunkManager *cman;
+    Downloader *downer;
+    PeerManager *pman;
 };
 }
 

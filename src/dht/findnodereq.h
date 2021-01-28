@@ -21,12 +21,11 @@
 #ifndef DHT_FINDNODEREQ_H
 #define DHT_FINDNODEREQ_H
 
-#include <QStringList>
 #include "rpcmsg.h"
+#include <QStringList>
 
 namespace dht
 {
-
 /**
  * FindNode request in the DHT protocol
  */
@@ -34,15 +33,15 @@ class KTORRENT_EXPORT FindNodeReq : public RPCMsg
 {
 public:
     FindNodeReq();
-    FindNodeReq(const Key & id, const Key & target);
+    FindNodeReq(const Key &id, const Key &target);
     ~FindNodeReq() override;
 
-    void apply(DHT* dh_table) override;
+    void apply(DHT *dh_table) override;
     void print() override;
-    void encode(QByteArray & arr) const override;
-    void parse(bt::BDictNode* dict) override;
+    void encode(QByteArray &arr) const override;
+    void parse(bt::BDictNode *dict) override;
 
-    const Key & getTarget() const
+    const Key &getTarget() const
     {
         return target;
     }

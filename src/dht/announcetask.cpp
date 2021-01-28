@@ -18,36 +18,30 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "announcetask.h"
-#include <util/log.h>
-#include <torrent/globals.h>
-#include "node.h"
-#include "pack.h"
 #include "announcereq.h"
 #include "getpeersrsp.h"
-
+#include "node.h"
+#include "pack.h"
+#include <torrent/globals.h>
+#include <util/log.h>
 
 using namespace bt;
 
 namespace dht
 {
-
-AnnounceTask::AnnounceTask(Database* db,
-                           RPCServer* rpc,
-                           Node* node,
-                           const dht::Key & info_hash,
-                           bt::Uint16 port,
-                           QObject* parent)
-    : Task(rpc, node, parent),
-      info_hash(info_hash),
-      port(port),
-      db(db)
-{}
-
+AnnounceTask::AnnounceTask(Database *db, RPCServer *rpc, Node *node, const dht::Key &info_hash, bt::Uint16 port, QObject *parent)
+    : Task(rpc, node, parent)
+    , info_hash(info_hash)
+    , port(port)
+    , db(db)
+{
+}
 
 AnnounceTask::~AnnounceTask()
-{}
+{
+}
 
-void AnnounceTask::handleNodes(const QByteArray& nodes, int ip_version)
+void AnnounceTask::handleNodes(const QByteArray &nodes, int ip_version)
 {
     Uint32 address_size = ip_version == 4 ? 26 : 38;
     Uint32 nval = nodes.size() / address_size;
@@ -65,10 +59,9 @@ void AnnounceTask::handleNodes(const QByteArray& nodes, int ip_version)
     }
 }
 
-
-void AnnounceTask::callFinished(RPCCall* c, RPCMsg::Ptr rsp)
+void AnnounceTask::callFinished(RPCCall *c, RPCMsg::Ptr rsp)
 {
-    //Out(SYS_DHT|LOG_DEBUG) << "AnnounceTask::callFinished" << endl;
+    // Out(SYS_DHT|LOG_DEBUG) << "AnnounceTask::callFinished" << endl;
     // if we do not have a get peers response, return
     // announce_peer's response are just empty anyway
     if (c->getMsgMethod() != dht::GET_PEERS)
@@ -79,18 +72,18 @@ void AnnounceTask::callFinished(RPCCall* c, RPCMsg::Ptr rsp)
         return;
 
     if (gpr->containsNodes()) {
-        const QByteArray & n = gpr->getNodes();
+        const QByteArray &n = gpr->getNodes();
         if (n.size() > 0)
             handleNodes(n, 4);
 
-        const QByteArray & n6 = gpr->getNodes6();
+        const QByteArray &n6 = gpr->getNodes6();
         if (n6.size() > 0)
             handleNodes(n6, 6);
     }
 
     // store the items in the database if there are any present
-    const DBItemList & items = gpr->getItemList();
-    for (const DBItem & i : items) {
+    const DBItemList &items = gpr->getItemList();
+    for (const DBItem &i : items) {
         //  Out(SYS_DHT|LOG_DEBUG) << "DHT: GetPeers returned item " << i->getAddress().toString() << endl;
         db->store(info_hash, i);
         // also add the items to the returned_items list
@@ -107,9 +100,9 @@ void AnnounceTask::callFinished(RPCCall* c, RPCMsg::Ptr rsp)
     }
 }
 
-void AnnounceTask::callTimeout(RPCCall*)
+void AnnounceTask::callTimeout(RPCCall *)
 {
-    //Out(SYS_DHT|LOG_DEBUG) << "AnnounceTask::callTimeout " << endl;
+    // Out(SYS_DHT|LOG_DEBUG) << "AnnounceTask::callTimeout " << endl;
 }
 
 void AnnounceTask::update()
@@ -147,7 +140,6 @@ void AnnounceTask::update()
         todo.erase(itr);
     }
 
-
     if (todo.empty() && answered.empty() && getNumOutstandingRequests() == 0 && !isFinished()) {
         Out(SYS_DHT | LOG_NOTICE) << "DHT: AnnounceTask done" << endl;
         done();
@@ -158,7 +150,7 @@ void AnnounceTask::update()
     }
 }
 
-bool AnnounceTask::takeItem(DBItem & item)
+bool AnnounceTask::takeItem(DBItem &item)
 {
     if (returned_items.empty())
         return false;
@@ -168,4 +160,3 @@ bool AnnounceTask::takeItem(DBItem & item)
     return true;
 }
 }
-

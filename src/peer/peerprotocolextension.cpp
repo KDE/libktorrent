@@ -19,22 +19,22 @@
  ***************************************************************************/
 
 #include "peerprotocolextension.h"
-#include <stdio.h>
 #include "peer.h"
+#include <stdio.h>
 
 namespace bt
 {
-
-PeerProtocolExtension::PeerProtocolExtension(Uint32 id, Peer* peer) : id(id), peer(peer)
+PeerProtocolExtension::PeerProtocolExtension(Uint32 id, Peer *peer)
+    : id(id)
+    , peer(peer)
 {
 }
-
 
 PeerProtocolExtension::~PeerProtocolExtension()
 {
 }
 
-void PeerProtocolExtension::sendPacket(const QByteArray& data)
+void PeerProtocolExtension::sendPacket(const QByteArray &data)
 {
     peer->sendExtProtMsg(id, data);
 }
@@ -49,4 +49,3 @@ void PeerProtocolExtension::changeID(Uint32 id)
 }
 
 }
-

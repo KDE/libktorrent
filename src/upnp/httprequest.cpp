@@ -30,9 +30,13 @@
 
 namespace bt
 {
-
-HTTPRequest::HTTPRequest(const QNetworkRequest & hdr, const QString & payload, const QString & host, Uint16 port, bool verbose)
-    : hdr(hdr), m_payload(payload), verbose(verbose), host(host), port(port), success(false)
+HTTPRequest::HTTPRequest(const QNetworkRequest &hdr, const QString &payload, const QString &host, Uint16 port, bool verbose)
+    : hdr(hdr)
+    , m_payload(payload)
+    , verbose(verbose)
+    , host(host)
+    , port(port)
+    , success(false)
 {
     networkAccessManager = new QNetworkAccessManager(this);
     connect(networkAccessManager, &QNetworkAccessManager::finished, this, &HTTPRequest::replyFinished);

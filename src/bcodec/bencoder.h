@@ -37,13 +37,15 @@ class File;
 class KTORRENT_EXPORT BEncoderOutput
 {
 public:
-    virtual ~BEncoderOutput() {}
+    virtual ~BEncoderOutput()
+    {
+    }
     /**
      * Write a string of characters.
      * @param str The string
      * @param len The length of the string
      */
-    virtual void write(const char* str, Uint32 len) = 0;
+    virtual void write(const char *str, Uint32 len) = 0;
 };
 
 /**
@@ -51,11 +53,12 @@ public:
  */
 class KTORRENT_EXPORT BEncoderFileOutput : public BEncoderOutput
 {
-    File* fptr;
-public:
-    BEncoderFileOutput(File* fptr);
+    File *fptr;
 
-    void write(const char* str, Uint32 len) override;
+public:
+    BEncoderFileOutput(File *fptr);
+
+    void write(const char *str, Uint32 len) override;
 };
 
 /**
@@ -63,21 +66,23 @@ public:
  */
 class KTORRENT_EXPORT BEncoderBufferOutput : public BEncoderOutput
 {
-    QByteArray & data;
+    QByteArray &data;
     Uint32 ptr;
-public:
-    BEncoderBufferOutput(QByteArray & data);
 
-    void write(const char* str, Uint32 len) override;
+public:
+    BEncoderBufferOutput(QByteArray &data);
+
+    void write(const char *str, Uint32 len) override;
 };
 
 class KTORRENT_EXPORT BEncoderIODeviceOutput : public BEncoderOutput
 {
-    QIODevice* dev;
-public:
-    BEncoderIODeviceOutput(QIODevice* dev);
+    QIODevice *dev;
 
-    void write(const char* str, Uint32 len) override;
+public:
+    BEncoderIODeviceOutput(QIODevice *dev);
+
+    void write(const char *str, Uint32 len) override;
 };
 
 /**
@@ -90,27 +95,27 @@ public:
  */
 class KTORRENT_EXPORT BEncoder
 {
-    BEncoderOutput* out;
+    BEncoderOutput *out;
     bool del;
+
 public:
     /**
      * Constructor, output gets written to a file.
      * @param fptr The File to write to
      */
-    BEncoder(File* fptr);
-
+    BEncoder(File *fptr);
 
     /**
      * Constructor, output gets written to a BEncoderOutput object.
      * @param out The BEncoderOutput
      */
-    BEncoder(BEncoderOutput* out);
+    BEncoder(BEncoderOutput *out);
 
     /**
-    * Constructor, output gets written to a QIODevice object.
-    * @param dev The QIODevice
-    */
-    BEncoder(QIODevice* dev);
+     * Constructor, output gets written to a QIODevice object.
+     * @param dev The QIODevice
+     */
+    BEncoder(QIODevice *dev);
 
     virtual ~BEncoder();
 
@@ -124,8 +129,7 @@ public:
      */
     void beginList();
 
-    template <class T>
-    void write(const QByteArray& key, T val)
+    template<class T> void write(const QByteArray &key, T val)
     {
         write(key);
         write(val);
@@ -160,21 +164,21 @@ private:
      * Write a string
      * @param str
      */
-    void write(const char* str);
-public:
+    void write(const char *str);
 
+public:
     /**
      * Write a QByteArray
      * @param data
      */
-    void write(const QByteArray & data);
+    void write(const QByteArray &data);
 
     /**
      * Write a data array
      * @param data
      * @param size of data
      */
-    void write(const Uint8* data, Uint32 size);
+    void write(const Uint8 *data, Uint32 size);
 
     /**
      * End a beginDict or beginList call.

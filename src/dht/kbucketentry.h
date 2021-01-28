@@ -21,13 +21,12 @@
 #ifndef DHT_KBUCKETENTRY_H
 #define DHT_KBUCKETENTRY_H
 
-#include <set>
-#include <net/address.h>
 #include <dht/key.h>
+#include <net/address.h>
+#include <set>
 
 namespace dht
 {
-
 /**
  * @author Joris Guisson
  *
@@ -48,14 +47,14 @@ public:
      * @param addr socket address
      * @param id ID of node
      */
-    KBucketEntry(const net::Address & addr, const Key & id);
+    KBucketEntry(const net::Address &addr, const Key &id);
 
     /**
      * Copy constructor.
      * @param other KBucketEntry to copy
      * @return
      */
-    KBucketEntry(const KBucketEntry & other);
+    KBucketEntry(const KBucketEntry &other);
 
     /// Destructor
     virtual ~KBucketEntry();
@@ -65,19 +64,19 @@ public:
      * @param other Node to copy
      * @return this KBucketEntry
      */
-    KBucketEntry & operator = (const KBucketEntry & other);
+    KBucketEntry &operator=(const KBucketEntry &other);
 
     /// Equality operator
-    bool operator == (const KBucketEntry & entry) const;
+    bool operator==(const KBucketEntry &entry) const;
 
     /// Get the socket address of the node
-    const net::Address & getAddress() const
+    const net::Address &getAddress() const
     {
         return addr;
     }
 
     /// Get it's ID
-    const Key & getID() const
+    const Key &getID() const
     {
         return node_id;
     }
@@ -110,7 +109,7 @@ public:
     static KBucketEntry null;
 
     /// < operator
-    bool operator < (const KBucketEntry & entry) const;
+    bool operator<(const KBucketEntry &entry) const;
 
 private:
     net::Address addr;
@@ -123,10 +122,14 @@ private:
 class KBucketEntrySet : public std::set<KBucketEntry>
 {
 public:
-    KBucketEntrySet() {}
-    virtual ~KBucketEntrySet() {}
+    KBucketEntrySet()
+    {
+    }
+    virtual ~KBucketEntrySet()
+    {
+    }
 
-    bool contains(const KBucketEntry & entry) const
+    bool contains(const KBucketEntry &entry) const
     {
         return find(entry) != end();
     }

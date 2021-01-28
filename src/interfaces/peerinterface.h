@@ -21,21 +21,19 @@
 #define BTPEERINTERFACE_H
 
 #include <ktorrent_export.h>
-#include <util/constants.h>
-#include <util/bitset.h>
 #include <peer/peerid.h>
-
+#include <util/bitset.h>
+#include <util/constants.h>
 
 namespace bt
 {
-
 /**
  * @author Joris Guisson
  * @brief Interface for a Peer
  *
  * This is the interface for a Peer, it allows other classes to
  * get statistics about a Peer, and provides some basic functionality provided by a Peer.
-*/
+ */
 class KTORRENT_EXPORT PeerInterface
 {
 public:
@@ -44,7 +42,7 @@ public:
         @param peer_id The PeerID
         @param num_chunks The number of chunks
     */
-    PeerInterface(const PeerID & peer_id, Uint32 num_chunks);
+    PeerInterface(const PeerID &peer_id, Uint32 num_chunks);
     virtual ~PeerInterface();
 
     struct Stats {
@@ -109,7 +107,7 @@ public:
     };
 
     /// Get the Peer's statistics
-    const Stats & getStats() const
+    const Stats &getStats() const
     {
         return stats;
     }
@@ -131,13 +129,13 @@ public:
     virtual bt::Uint32 averageDownloadSpeed() const = 0;
 
     /// Get the Peer's BitSet
-    const BitSet & getBitSet() const
+    const BitSet &getBitSet() const
     {
         return pieces;
     }
 
     /// Get the Peer's ID
-    const PeerID & getPeerID() const
+    const PeerID &getPeerID() const
     {
         return peer_id;
     }
@@ -194,8 +192,7 @@ public:
     virtual void chunkAllowed(bt::Uint32 chunk) = 0;
 
     /// Handle a received packet
-    virtual void handlePacket(const bt::Uint8* packet, bt::Uint32 size) = 0;
-
+    virtual void handlePacket(const bt::Uint8 *packet, bt::Uint32 size) = 0;
 
 protected:
     mutable PeerInterface::Stats stats;

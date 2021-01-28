@@ -19,15 +19,13 @@
  ***************************************************************************/
 
 #include "findnodersp.h"
-#include <util/log.h>
-#include <util/error.h>
-#include <bcodec/bnode.h>
-#include <bcodec/bencoder.h>
 #include "dht.h"
-
+#include <bcodec/bencoder.h>
+#include <bcodec/bnode.h>
+#include <util/error.h>
+#include <util/log.h>
 
 using namespace bt;
-
 
 namespace dht
 {
@@ -36,31 +34,35 @@ FindNodeRsp::FindNodeRsp()
 {
 }
 
-FindNodeRsp::FindNodeRsp(const QByteArray & mtid, const Key & id)
+FindNodeRsp::FindNodeRsp(const QByteArray &mtid, const Key &id)
     : RPCMsg(mtid, FIND_NODE, RSP_MSG, id)
-{}
+{
+}
 
-FindNodeRsp::~FindNodeRsp() {}
+FindNodeRsp::~FindNodeRsp()
+{
+}
 
-void FindNodeRsp::apply(dht::DHT* dh_table)
+void FindNodeRsp::apply(dht::DHT *dh_table)
 {
     dh_table->response(*this);
 }
 
 void FindNodeRsp::print()
 {
-    Out(SYS_DHT | LOG_DEBUG) << QString("RSP: %1 %2 : find_node")
-                             .arg(mtid[0]).arg(id.toString()) << endl;
+    Out(SYS_DHT | LOG_DEBUG) << QString("RSP: %1 %2 : find_node").arg(mtid[0]).arg(id.toString()) << endl;
 }
 
-void FindNodeRsp::encode(QByteArray & arr) const
+void FindNodeRsp::encode(QByteArray &arr) const
 {
     BEncoder enc(new BEncoderBufferOutput(arr));
     enc.beginDict();
     {
-        enc.write(RSP); enc.beginDict();
+        enc.write(RSP);
+        enc.beginDict();
         {
-            enc.write(QByteArrayLiteral("id")); enc.write(id.getData(), 20);
+            enc.write(QByteArrayLiteral("id"));
+            enc.write(id.getData(), 20);
             if (nodes.size() > 0) {
                 enc.write(QByteArrayLiteral("nodes"));
                 enc.write(nodes);
@@ -72,24 +74,25 @@ void FindNodeRsp::encode(QByteArray & arr) const
             }
         }
         enc.end();
-        enc.write(TID); enc.write(mtid);
-        enc.write(TYP); enc.write(RSP);
+        enc.write(TID);
+        enc.write(mtid);
+        enc.write(TYP);
+        enc.write(RSP);
     }
     enc.end();
 }
 
-void FindNodeRsp::parse(BDictNode* dict)
+void FindNodeRsp::parse(BDictNode *dict)
 {
     dht::RPCMsg::parse(dict);
-    BDictNode* args = dict->getDict(RSP);
+    BDictNode *args = dict->getDict(RSP);
     if (!args)
         throw bt::Error("Invalid response, arguments missing");
 
     if (!args->getValue("nodes") && !args->getList("nodes6"))
         throw bt::Error("Missing nodes or nodes6 parameter");
 
-
-    BValueNode* v = args->getValue("nodes");
+    BValueNode *v = args->getValue("nodes");
     if (v)
         nodes = v->data().toByteArray();
 
@@ -99,4 +102,3 @@ void FindNodeRsp::parse(BDictNode* dict)
 }
 
 }
-

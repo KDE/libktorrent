@@ -18,22 +18,22 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "bdecoder.h"
-#include <util/log.h>
-#include <util/error.h>
-#include <klocalizedstring.h>
 #include "bnode.h"
+#include <klocalizedstring.h>
+#include <util/error.h>
+#include <util/log.h>
 
 namespace bt
 {
-BDecoder::BDecoder(const Uint8* ptr, Uint32 size, bool verbose, Uint32 off)
-    : data(QByteArray::fromRawData((const char*)ptr, size))
+BDecoder::BDecoder(const Uint8 *ptr, Uint32 size, bool verbose, Uint32 off)
+    : data(QByteArray::fromRawData((const char *)ptr, size))
     , pos(off)
     , verbose(verbose)
     , level(0)
 {
 }
 
-BDecoder::BDecoder(const QByteArray & data, bool verbose, Uint32 off)
+BDecoder::BDecoder(const QByteArray &data, bool verbose, Uint32 off)
     : data(data)
     , pos(off)
     , verbose(verbose)
@@ -45,9 +45,9 @@ BDecoder::~BDecoder()
 {
 }
 
-BNode* BDecoder::decode()
+BNode *BDecoder::decode()
 {
-    if (pos >= (Uint32) data.size())
+    if (pos >= (Uint32)data.size())
         return 0;
 
     if (data[pos] == 'd') {
@@ -63,13 +63,13 @@ BNode* BDecoder::decode()
     }
 }
 
-BDictNode* BDecoder::decodeDict()
+BDictNode *BDecoder::decodeDict()
 {
-    BNode* n = 0;
+    BNode *n = 0;
     try {
         n = decode();
         if (n && n->getType() == BNode::DICT)
-            return (BDictNode*) n;
+            return (BDictNode *)n;
 
         delete n;
     } catch (...) {
@@ -80,13 +80,13 @@ BDictNode* BDecoder::decodeDict()
     return 0;
 }
 
-BListNode* BDecoder::decodeList()
+BListNode *BDecoder::decodeList()
 {
-    BNode* n = 0;
+    BNode *n = 0;
     try {
         n = decode();
         if (n && n->getType() == BNode::LIST)
-            return (BListNode*) n;
+            return (BListNode *)n;
 
         delete n;
     } catch (...) {
@@ -97,19 +97,19 @@ BListNode* BDecoder::decodeList()
     return 0;
 }
 
-BDictNode* BDecoder::parseDict()
+BDictNode *BDecoder::parseDict()
 {
     Uint32 off = pos;
     // we're now entering a dictionary
-    BDictNode* curr = new BDictNode(off);
+    BDictNode *curr = new BDictNode(off);
     pos++;
     debugMsg(QString("DICT"));
     level++;
     try {
-        while (pos < (Uint32) data.size() && data[pos] != 'e') {
+        while (pos < (Uint32)data.size() && data[pos] != 'e') {
             debugMsg(QString("Key : "));
-            BNode* kn = decode();
-            BValueNode* k = dynamic_cast<BValueNode*>(kn);
+            BNode *kn = decode();
+            BValueNode *k = dynamic_cast<BValueNode *>(kn);
             if (!k || k->data().getType() != Value::STRING) {
                 delete kn;
                 throw Error(i18n("Decode error"));
@@ -118,7 +118,7 @@ BDictNode* BDecoder::parseDict()
             QByteArray key = k->data().toByteArray();
             delete kn;
 
-            BNode* value = decode();
+            BNode *value = decode();
             if (!value)
                 throw Error(i18n("Decode error"));
 
@@ -135,16 +135,16 @@ BDictNode* BDecoder::parseDict()
     return curr;
 }
 
-BListNode* BDecoder::parseList()
+BListNode *BDecoder::parseList()
 {
     Uint32 off = pos;
     debugMsg(QString("LIST"));
     level++;
-    BListNode* curr = new BListNode(off);
+    BListNode *curr = new BListNode(off);
     pos++;
     try {
-        while (pos < (Uint32) data.size() && data[pos] != 'e') {
-            BNode* n = decode();
+        while (pos < (Uint32)data.size() && data[pos] != 'e') {
+            BNode *n = decode();
             if (n)
                 curr->append(n);
         }
@@ -159,19 +159,19 @@ BListNode* BDecoder::parseList()
     return curr;
 }
 
-BValueNode* BDecoder::parseInt()
+BValueNode *BDecoder::parseInt()
 {
     Uint32 off = pos;
     pos++;
     QString n;
     // look for e and add everything between i and e to n
-    while (pos < (Uint32) data.size() && data[pos] != 'e') {
+    while (pos < (Uint32)data.size() && data[pos] != 'e') {
         n += data[pos];
         pos++;
     }
 
     // check if we aren't at the end of the data
-    if (pos >= (Uint32) data.size()) {
+    if (pos >= (Uint32)data.size()) {
         throw Error(i18n("Unexpected end of input"));
     }
 
@@ -182,7 +182,7 @@ BValueNode* BDecoder::parseInt()
     if (ok) {
         pos++;
         debugMsg(QStringLiteral("INT = %1").arg(val));
-        BValueNode* vn = new BValueNode(Value(val), off);
+        BValueNode *vn = new BValueNode(Value(val), off);
         vn->setLength(pos - off);
         return vn;
     } else {
@@ -193,23 +193,23 @@ BValueNode* BDecoder::parseInt()
 
         pos++;
         debugMsg(QStringLiteral("INT64 = %1").arg(n));
-        BValueNode* vn = new BValueNode(Value(bi), off);
+        BValueNode *vn = new BValueNode(Value(bi), off);
         vn->setLength(pos - off);
         return vn;
     }
 }
 
-BValueNode* BDecoder::parseString()
+BValueNode *BDecoder::parseString()
 {
     const Uint32 off = pos;
     // string are encoded 4:spam (length:string)
 
     // first get length by looking for the :
-    while (pos < (Uint32) data.size() && data[pos] != ':') {
+    while (pos < (Uint32)data.size() && data[pos] != ':') {
         pos++;
     }
     // check if we aren't at the end of the data
-    if (pos >= (Uint32) data.size()) {
+    if (pos >= (Uint32)data.size()) {
         throw Error(i18n("Unexpected end of input"));
     }
 
@@ -217,8 +217,8 @@ BValueNode* BDecoder::parseString()
     bool ok = true;
     int len = 0;
     // This is an optimized version of QByteArray::fromRawData(data.constData() + off, pos - off).toInt(&ok)
-    const char* start = data.constData() + off;
-    const char* end = start + pos - off;
+    const char *start = data.constData() + off;
+    const char *end = start + pos - off;
     while (start < end) {
         int n = *start++ - '0';
         if (n < 0 || n > 9) {
@@ -233,7 +233,7 @@ BValueNode* BDecoder::parseString()
     }
     // move pos to the first part of the string
     pos++;
-    if (pos + len > (Uint32) data.size())
+    if (pos + len > (Uint32)data.size())
         throw Error(i18n("Torrent is incomplete."));
 
     const QByteArray arr(data.constData() + pos, len);
@@ -241,7 +241,7 @@ BValueNode* BDecoder::parseString()
     // read the string into n
 
     // pos should be positioned right after the string
-    BValueNode* vn = new BValueNode(Value(arr), off);
+    BValueNode *vn = new BValueNode(Value(arr), off);
     vn->setLength(pos - off);
     if (verbose) {
         if (arr.size() < 200)
@@ -252,12 +252,12 @@ BValueNode* BDecoder::parseString()
     return vn;
 }
 
-void BDecoder::debugMsg(const QString& msg)
+void BDecoder::debugMsg(const QString &msg)
 {
     if (!verbose)
         return;
 
-    Log & log = Out(SYS_GEN | LOG_DEBUG);
+    Log &log = Out(SYS_GEN | LOG_DEBUG);
     for (int i = 0; i < level; i++)
         log << "-";
 
@@ -265,4 +265,3 @@ void BDecoder::debugMsg(const QString& msg)
 }
 
 }
-

@@ -25,21 +25,19 @@
 #include <util/signalcatcher.h>
 #endif
 #include "chunk.h"
+#include <util/error.h>
 #include <util/file.h>
 #include <util/sha1hashgen.h>
-#include <util/error.h>
 
 namespace bt
 {
-
-
-PieceData::PieceData(bt::Chunk* chunk, bt::Uint32 off, bt::Uint32 len, bt::Uint8* ptr, bt::CacheFile::Ptr cache_file, bool read_only) :
-    chunk(chunk),
-    off(off),
-    len(len),
-    ptr(ptr),
-    cache_file(cache_file),
-    read_only(read_only)
+PieceData::PieceData(bt::Chunk *chunk, bt::Uint32 off, bt::Uint32 len, bt::Uint8 *ptr, bt::CacheFile::Ptr cache_file, bool read_only)
+    : chunk(chunk)
+    , off(off)
+    , len(len)
+    , ptr(ptr)
+    , cache_file(cache_file)
+    , read_only(read_only)
 {
 }
 
@@ -54,13 +52,13 @@ void PieceData::unload()
         return;
 
     if (!mapped())
-        delete [] ptr;
+        delete[] ptr;
     else
         cache_file->unmap(ptr, len);
     ptr = 0;
 }
 
-Uint32 PieceData::write(const bt::Uint8* buf, Uint32 buf_size, Uint32 off)
+Uint32 PieceData::write(const bt::Uint8 *buf, Uint32 buf_size, Uint32 off)
 {
     if (off + buf_size > len || !ptr)
         return 0;
@@ -75,8 +73,7 @@ Uint32 PieceData::write(const bt::Uint8* buf, Uint32 buf_size, Uint32 off)
     return buf_size;
 }
 
-
-Uint32 PieceData::read(Uint8* buf, Uint32 to_read, Uint32 off)
+Uint32 PieceData::read(Uint8 *buf, Uint32 to_read, Uint32 off)
 {
     if (off + to_read > len || !ptr)
         return 0;
@@ -88,7 +85,7 @@ Uint32 PieceData::read(Uint8* buf, Uint32 to_read, Uint32 off)
     return to_read;
 }
 
-Uint32 PieceData::writeToFile(File& file, Uint32 size, Uint32 off)
+Uint32 PieceData::writeToFile(File &file, Uint32 size, Uint32 off)
 {
     if (off + size > len || !ptr)
         return 0;
@@ -99,7 +96,7 @@ Uint32 PieceData::writeToFile(File& file, Uint32 size, Uint32 off)
     return file.write(ptr + off, size);
 }
 
-Uint32 PieceData::readFromFile(File& file, Uint32 size, Uint32 off)
+Uint32 PieceData::readFromFile(File &file, Uint32 size, Uint32 off)
 {
     if (off + size > len || !ptr)
         return 0;
@@ -113,7 +110,7 @@ Uint32 PieceData::readFromFile(File& file, Uint32 size, Uint32 off)
     return file.read(ptr + off, size);
 }
 
-void PieceData::updateHash(SHA1HashGen& hg)
+void PieceData::updateHash(SHA1HashGen &hg)
 {
     if (!ptr)
         return;
@@ -134,8 +131,6 @@ SHA1Hash PieceData::generateHash() const
 #endif
     return SHA1Hash::generate(ptr, len);
 }
-
-
 
 void PieceData::unmapped()
 {

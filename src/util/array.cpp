@@ -21,7 +21,4 @@
 
 namespace bt
 {
-
-
-
 }

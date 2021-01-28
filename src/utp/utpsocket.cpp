@@ -20,26 +20,25 @@
 
 #include "utpsocket.h"
 #include "connection.h"
-#include <torrent/globals.h>
 #include "utpserver.h"
+#include <torrent/globals.h>
 
 namespace utp
 {
-
 UTPSocket::UTPSocket()
-    : net::SocketDevice(bt::UTP),
-      blocking(true),
-      polled_for_reading(false),
-      polled_for_writing(false)
+    : net::SocketDevice(bt::UTP)
+    , blocking(true)
+    , polled_for_reading(false)
+    , polled_for_writing(false)
 {
 }
 
 UTPSocket::UTPSocket(Connection::WPtr conn)
-    : net::SocketDevice(bt::UTP),
-      conn(conn),
-      blocking(true),
-      polled_for_reading(false),
-      polled_for_writing(false)
+    : net::SocketDevice(bt::UTP)
+    , conn(conn)
+    , blocking(true)
+    , polled_for_reading(false)
+    , polled_for_writing(false)
 {
     Connection::Ptr ptr = conn.toStrongRef();
     if (ptr) {
@@ -54,7 +53,6 @@ UTPSocket::~UTPSocket()
     close();
     reset();
 }
-
 
 bt::Uint32 UTPSocket::bytesAvailable() const
 {
@@ -88,12 +86,12 @@ bool UTPSocket::connectSuccesFull()
         return false;
 }
 
-bool UTPSocket::connectTo(const net::Address& addr)
+bool UTPSocket::connectTo(const net::Address &addr)
 {
     if (!bt::Globals::instance().isUTPEnabled())
         return false;
 
-    UTPServer & srv = bt::Globals::instance().getUTPServer();
+    UTPServer &srv = bt::Globals::instance().getUTPServer();
     reset();
 
     conn = srv.connectTo(addr);
@@ -119,7 +117,7 @@ int UTPSocket::fd() const
     return -1;
 }
 
-const net::Address& UTPSocket::getPeerName() const
+const net::Address &UTPSocket::getPeerName() const
 {
     Connection::Ptr ptr = conn.toStrongRef();
     if (remote_addr_override)
@@ -143,7 +141,7 @@ bool UTPSocket::ok() const
     return ptr && ptr->connectionState() != CS_CLOSED;
 }
 
-int UTPSocket::recv(bt::Uint8* buf, int max_len)
+int UTPSocket::recv(bt::Uint8 *buf, int max_len)
 {
     Connection::Ptr ptr = conn.toStrongRef();
     if (!ptr || ptr->connectionState() == CS_CLOSED)
@@ -160,7 +158,7 @@ int UTPSocket::recv(bt::Uint8* buf, int max_len)
                 return -1; // No data ready and not blocking so return -1
         } else
             return ptr->recv(buf, max_len);
-    } catch (Connection::TransmissionError & err) {
+    } catch (Connection::TransmissionError &err) {
         close();
         return -1;
     }
@@ -171,7 +169,7 @@ void UTPSocket::reset()
     conn.clear();
 }
 
-int UTPSocket::send(const bt::Uint8* buf, int len)
+int UTPSocket::send(const bt::Uint8 *buf, int len)
 {
     Connection::Ptr ptr = conn.toStrongRef();
     if (!ptr)
@@ -179,7 +177,7 @@ int UTPSocket::send(const bt::Uint8* buf, int len)
 
     try {
         return ptr->send(buf, len);
-    } catch (Connection::TransmissionError & err) {
+    } catch (Connection::TransmissionError &err) {
         close();
         return -1;
     }
@@ -199,11 +197,11 @@ bool UTPSocket::setTOS(unsigned char type_of_service)
     return true;
 }
 
-void UTPSocket::prepare(net::Poll* p, net::Poll::Mode mode)
+void UTPSocket::prepare(net::Poll *p, net::Poll::Mode mode)
 {
     Connection::Ptr ptr = conn.toStrongRef();
     if (ptr && ptr->connectionState() != CS_CLOSED) {
-        UTPServer & srv = bt::Globals::instance().getUTPServer();
+        UTPServer &srv = bt::Globals::instance().getUTPServer();
         srv.preparePolling(p, mode, ptr);
         if (mode == net::Poll::OUTPUT)
             polled_for_writing = true;
@@ -212,7 +210,7 @@ void UTPSocket::prepare(net::Poll* p, net::Poll::Mode mode)
     }
 }
 
-bool UTPSocket::ready(const net::Poll* p, net::Poll::Mode mode) const
+bool UTPSocket::ready(const net::Poll *p, net::Poll::Mode mode) const
 {
     Q_UNUSED(p);
     Connection::Ptr ptr = conn.toStrongRef();
@@ -235,4 +233,3 @@ bool UTPSocket::ready(const net::Poll* p, net::Poll::Mode mode) const
 }
 
 }
-

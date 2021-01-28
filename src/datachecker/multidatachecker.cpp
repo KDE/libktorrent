@@ -19,31 +19,32 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.             *
  ***************************************************************************/
 #include "multidatachecker.h"
-#include <klocalizedstring.h>
-#include <util/log.h>
-#include <util/file.h>
-#include <util/fileops.h>
-#include <util/error.h>
-#include <util/array.h>
-#include <util/functions.h>
 #include <diskio/dndfile.h>
+#include <klocalizedstring.h>
 #include <torrent/globals.h>
 #include <torrent/torrent.h>
 #include <torrent/torrentfile.h>
+#include <util/array.h>
+#include <util/error.h>
+#include <util/file.h>
+#include <util/fileops.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 namespace bt
 {
-
-MultiDataChecker::MultiDataChecker(bt::Uint32 from, bt::Uint32 to): DataChecker(from, to), buf(0)
-{}
-
+MultiDataChecker::MultiDataChecker(bt::Uint32 from, bt::Uint32 to)
+    : DataChecker(from, to)
+    , buf(0)
+{
+}
 
 MultiDataChecker::~MultiDataChecker()
 {
-    delete [] buf;
+    delete[] buf;
 }
 
-void MultiDataChecker::check(const QString& path, const Torrent& tor, const QString & dnddir, const BitSet & current_status)
+void MultiDataChecker::check(const QString &path, const Torrent &tor, const QString &dnddir, const BitSet &current_status)
 {
     Uint32 num_chunks = tor.getNumChunks();
     // initialize the bitset
@@ -53,7 +54,6 @@ void MultiDataChecker::check(const QString& path, const Torrent& tor, const QStr
         from = 0;
     if (to >= tor.getNumChunks())
         to = tor.getNumChunks() - 1;
-
 
     cache = path;
     if (!cache.endsWith(bt::DirSeparator()))
@@ -73,7 +73,7 @@ void MultiDataChecker::check(const QString& path, const Torrent& tor, const QStr
         if (cs == 0)
             cs = chunk_size;
         if (!loadChunk(cur_chunk, cs, tor)) {
-            //Out(SYS_GEN|LOG_DEBUG) << "Failed to load chunk " << cur_chunk << endl;
+            // Out(SYS_GEN|LOG_DEBUG) << "Failed to load chunk " << cur_chunk << endl;
             if (current_status.get(cur_chunk))
                 failed++;
             else
@@ -103,7 +103,7 @@ void MultiDataChecker::check(const QString& path, const Torrent& tor, const QStr
     status(failed, found, downloaded, not_downloaded);
 }
 
-bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent & tor)
+bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
 {
     QList<Uint32> tflist;
     tor.calcChunkPos(ci, tflist);
@@ -112,7 +112,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent & tor)
 
     // one file is simple
     if (tflist.count() == 1) {
-        const TorrentFile & f = tor.getFile(tflist.first());
+        const TorrentFile &f = tor.getFile(tflist.first());
         if (!f.doNotDownload()) {
             File::Ptr fptr = open(tor, tflist.first());
             Uint64 off = f.fileOffset(ci, tor.getChunkSize());
@@ -126,7 +126,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent & tor)
 
     Uint64 read = 0; // number of bytes read
     for (int i = 0; i < tflist.count(); i++) {
-        const TorrentFile & f = tor.getFile(tflist[i]);
+        const TorrentFile &f = tor.getFile(tflist[i]);
 
         // first calculate offset into file
         // only the first file can have an offset
@@ -173,7 +173,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent & tor)
 
                 if (fptr->read(buf + read, to_read) != to_read)
                     return false;
-            } catch (bt::Error & err) {
+            } catch (bt::Error &err) {
                 Out(SYS_GEN | LOG_NOTICE) << err.toString() << endl;
                 return false;
             }
@@ -183,13 +183,13 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent & tor)
     return true;
 }
 
-File::Ptr MultiDataChecker::open(const bt::Torrent& tor, Uint32 idx)
+File::Ptr MultiDataChecker::open(const bt::Torrent &tor, Uint32 idx)
 {
     QMap<Uint32, File::Ptr>::iterator i = files.find(idx);
     if (i != files.end())
         return i.value();
 
-    const TorrentFile & tf = tor.getFile(idx);
+    const TorrentFile &tf = tor.getFile(idx);
     File::Ptr fptr(new File());
     if (!fptr->open(tf.getPathOnDisk(), "rb")) {
         QString err = i18n("Cannot open file %1: %2", tf.getPathOnDisk(), fptr->errorString());
@@ -212,6 +212,5 @@ void MultiDataChecker::closePastFiles(Uint32 min_idx)
         }
     }
 }
-
 
 }

@@ -28,20 +28,19 @@
 #include <KLocalizedString>
 #include <KProtocolManager>
 
-#include <util/log.h>
-#include <util/functions.h>
-#include <util/error.h>
-#include <util/waitjob.h>
+#include "kioannouncejob.h"
+#include "version.h"
+#include <bcodec/bdecoder.h>
+#include <bcodec/bnode.h>
 #include <interfaces/exitoperation.h>
 #include <interfaces/torrentinterface.h>
-#include <bcodec/bnode.h>
-#include <bcodec/bdecoder.h>
 #include <peer/peermanager.h>
-#include <torrent/server.h>
 #include <torrent/globals.h>
-#include "version.h"
-#include "kioannouncejob.h"
-
+#include <torrent/server.h>
+#include <util/error.h>
+#include <util/functions.h>
+#include <util/log.h>
+#include <util/waitjob.h>
 
 namespace bt
 {
@@ -49,7 +48,7 @@ bool HTTPTracker::proxy_on = false;
 QString HTTPTracker::proxy = QString();
 Uint16 HTTPTracker::proxy_port = 8080;
 
-HTTPTracker::HTTPTracker(const QUrl & url, TrackerDataSource* tds, const PeerID & id, int tier)
+HTTPTracker::HTTPTracker(const QUrl &url, TrackerDataSource *tds, const PeerID &id, int tier)
     : Tracker(url, tds, id, tier)
     , active_job(NULL)
     , failures(0)
@@ -70,7 +69,7 @@ void HTTPTracker::start()
     doRequest();
 }
 
-void HTTPTracker::stop(WaitJob* wjob)
+void HTTPTracker::stop(WaitJob *wjob)
 {
     if (!started) {
         announce_queue.clear();
@@ -120,8 +119,9 @@ void HTTPTracker::scrape()
     scrape_url.setPath(url.path(QUrl::FullyEncoded).replace(QStringLiteral("announce"), QStringLiteral("scrape")), QUrl::StrictMode);
 
     QString epq = scrape_url.query(QUrl::FullyEncoded);
-    const SHA1Hash & info_hash = tds->infoHash();
-    if (epq.length()) epq += '&';
+    const SHA1Hash &info_hash = tds->infoHash();
+    if (epq.length())
+        epq += '&';
     epq += QLatin1String("info_hash=") + info_hash.toURLString();
     scrape_url.setQuery(epq, QUrl::StrictMode);
 
@@ -129,7 +129,7 @@ void HTTPTracker::scrape()
     KIO::MetaData md;
     setupMetaData(md);
 
-    KIO::StoredTransferJob* j = KIO::storedGet(scrape_url, KIO::NoReload, KIO::HideProgressInfo);
+    KIO::StoredTransferJob *j = KIO::storedGet(scrape_url, KIO::NoReload, KIO::HideProgressInfo);
     // set the meta data
     j->setMetaData(md);
     KIO::Scheduler::setJobPriority(j, 1);
@@ -137,26 +137,26 @@ void HTTPTracker::scrape()
     connect(j, &KIO::StoredTransferJob::result, this, &HTTPTracker::onScrapeResult);
 }
 
-void HTTPTracker::onScrapeResult(KJob* j)
+void HTTPTracker::onScrapeResult(KJob *j)
 {
     if (j->error()) {
         Out(SYS_TRK | LOG_IMPORTANT) << "Scrape failed : " << j->errorString() << endl;
         return;
     }
 
-    KIO::StoredTransferJob* st = (KIO::StoredTransferJob*)j;
+    KIO::StoredTransferJob *st = (KIO::StoredTransferJob *)j;
     BDecoder dec(st->data(), false, 0);
     QScopedPointer<BNode> n;
 
     try {
         n.reset(dec.decode());
-    } catch (bt::Error & err) {
+    } catch (bt::Error &err) {
         Out(SYS_TRK | LOG_IMPORTANT) << "Invalid scrape data " << err.toString() << endl;
         return;
     }
 
     if (n && n->getType() == BNode::DICT) {
-        BDictNode* d = (BDictNode*)n.data();
+        BDictNode *d = (BDictNode *)n.data();
         d = d->getDict(QByteArrayLiteral("files"));
         if (d) {
             d = d->getDict(tds->infoHash().toByteArray());
@@ -166,10 +166,10 @@ void HTTPTracker::onScrapeResult(KJob* j)
                     leechers = d->getInt(QByteArrayLiteral("incomplete"));
                     total_downloaded = d->getInt(QByteArrayLiteral("downloaded"));
                     supports_partial_seed_extension = d->getValue(QByteArrayLiteral("downloaders")) != 0;
-                    Out(SYS_TRK | LOG_DEBUG) << "Scrape : leechers = " << leechers
-                                             << ", seeders = " << seeders << ", downloaded = " << total_downloaded << endl;
-                } catch (...)
-                {}
+                    Out(SYS_TRK | LOG_DEBUG) << "Scrape : leechers = " << leechers << ", seeders = " << seeders << ", downloaded = " << total_downloaded
+                                             << endl;
+                } catch (...) {
+                }
                 scrapeDone();
                 if (status == bt::TRACKER_ERROR) {
                     status = bt::TRACKER_OK;
@@ -180,7 +180,7 @@ void HTTPTracker::onScrapeResult(KJob* j)
     }
 }
 
-void HTTPTracker::doRequest(WaitJob* wjob)
+void HTTPTracker::doRequest(WaitJob *wjob)
 {
     if (!url.isValid()) {
         requestPending();
@@ -189,7 +189,6 @@ void HTTPTracker::doRequest(WaitJob* wjob)
     }
 
     Uint16 port = ServerInterface::getPort();
-
 
     QUrlQuery query(url);
     query.addQueryItem(QStringLiteral("peer_id"), peer_id.toString());
@@ -222,7 +221,7 @@ void HTTPTracker::doRequest(WaitJob* wjob)
     if (!event.isEmpty())
         query.addQueryItem(QStringLiteral("event"), event);
 
-    const SHA1Hash & info_hash = tds->infoHash();
+    const SHA1Hash &info_hash = tds->infoHash();
     QString epq = query.toString(QUrl::FullyEncoded) + QLatin1String("&info_hash=") + info_hash.toURLString();
 
     QUrl u = url;
@@ -239,7 +238,7 @@ void HTTPTracker::doRequest(WaitJob* wjob)
     }
 }
 
-bool HTTPTracker::updateData(const QByteArray & data)
+bool HTTPTracker::updateData(const QByteArray &data)
 {
 //#define DEBUG_PRINT_RESPONSE
 #ifdef DEBUG_PRINT_RESPONSE
@@ -261,7 +260,7 @@ bool HTTPTracker::updateData(const QByteArray & data)
     }
 
     BDecoder dec(data, false, i);
-    BNode* n = 0;
+    BNode *n = 0;
     try {
         n = dec.decode();
     } catch (...) {
@@ -277,9 +276,9 @@ bool HTTPTracker::updateData(const QByteArray & data)
         return false;
     }
 
-    BDictNode* dict = (BDictNode*)n;
+    BDictNode *dict = (BDictNode *)n;
     if (dict->getData(QByteArrayLiteral("failure reason"))) {
-        BValueNode* vn = dict->getValue(QByteArrayLiteral("failure reason"));
+        BValueNode *vn = dict->getValue(QByteArrayLiteral("failure reason"));
         error = vn->data().toString();
         failures++;
         failed(error);
@@ -288,12 +287,12 @@ bool HTTPTracker::updateData(const QByteArray & data)
     }
 
     if (dict->getData(QByteArrayLiteral("warning message"))) {
-        BValueNode* vn = dict->getValue(QByteArrayLiteral("warning message"));
+        BValueNode *vn = dict->getValue(QByteArrayLiteral("warning message"));
         warning = vn->data().toString();
     } else
         warning.clear();
 
-    BValueNode* vn = dict->getValue(QByteArrayLiteral("interval"));
+    BValueNode *vn = dict->getValue(QByteArrayLiteral("interval"));
 
     // if no interval is specified, use 5 minutes
     if (vn)
@@ -309,7 +308,7 @@ bool HTTPTracker::updateData(const QByteArray & data)
     if (vn)
         seeders = vn->data().toInt();
 
-    BListNode* ln = dict->getList(QByteArrayLiteral("peers"));
+    BListNode *ln = dict->getList(QByteArrayLiteral("peers"));
     if (!ln) {
         // no list, it might however be a compact response
         vn = dict->getValue(QByteArrayLiteral("peers"));
@@ -326,13 +325,13 @@ bool HTTPTracker::updateData(const QByteArray & data)
         }
     } else {
         for (Uint32 i = 0; i < ln->getNumChildren(); i++) {
-            BDictNode* dict = dynamic_cast<BDictNode*>(ln->getChild(i));
+            BDictNode *dict = dynamic_cast<BDictNode *>(ln->getChild(i));
 
             if (!dict)
                 continue;
 
-            BValueNode* ip_node = dict->getValue(QByteArrayLiteral("ip"));
-            BValueNode* port_node = dict->getValue(QByteArrayLiteral("port"));
+            BValueNode *ip_node = dict->getValue(QByteArrayLiteral("ip"));
+            BValueNode *port_node = dict->getValue(QByteArrayLiteral("port"));
 
             if (!ip_node || !port_node)
                 continue;
@@ -349,7 +348,7 @@ bool HTTPTracker::updateData(const QByteArray & data)
         for (int i = 0; i < arr.size(); i += 18) {
             Q_IPV6ADDR ip;
             memcpy(ip.c, arr.data() + i, 16);
-            quint16 port = ReadUint16((const Uint8*)arr.data() + i, 16);
+            quint16 port = ReadUint16((const Uint8 *)arr.data() + i, 16);
 
             addPeer(net::Address(ip, port), false);
         }
@@ -359,17 +358,17 @@ bool HTTPTracker::updateData(const QByteArray & data)
     return true;
 }
 
-void HTTPTracker::onKIOAnnounceResult(KJob* j)
+void HTTPTracker::onKIOAnnounceResult(KJob *j)
 {
-    KIOAnnounceJob* st = (KIOAnnounceJob*)j;
+    KIOAnnounceJob *st = (KIOAnnounceJob *)j;
     onAnnounceResult(st->announceUrl(), st->replyData(), j);
 }
 
-void HTTPTracker::onAnnounceResult(const QUrl& url, const QByteArray& data, KJob* j)
+void HTTPTracker::onAnnounceResult(const QUrl &url, const QByteArray &data, KJob *j)
 {
     timer.stop();
     active_job = 0;
-    KIOAnnounceJob* st = (KIOAnnounceJob*)j;
+    KIOAnnounceJob *st = (KIOAnnounceJob *)j;
     if (st->IsErrorPage() || (j->error() && data.size() == 0)) {
         QString err = error;
         error.clear();
@@ -403,7 +402,7 @@ void HTTPTracker::onAnnounceResult(const QUrl& url, const QByteArray& data, KJob
                         reannounce_timer.start(interval * 1000);
                     requestOK();
                 }
-            } catch (bt::Error & err) {
+            } catch (bt::Error &err) {
                 failures++;
                 failed(i18n("Invalid response from tracker"));
             }
@@ -423,7 +422,7 @@ void HTTPTracker::emitInvalidURLFailure()
     failed(i18n("Invalid tracker URL"));
 }
 
-void HTTPTracker::setupMetaData(KIO::MetaData & md)
+void HTTPTracker::setupMetaData(KIO::MetaData &md)
 {
     md["UserAgent"] = bt::GetVersionString();
     md["SendLanguageSettings"] = "false";
@@ -436,7 +435,7 @@ void HTTPTracker::setupMetaData(KIO::MetaData & md)
             p = "http://" + p;
         // set the proxy if the doNotUseKDEProxy ix enabled (URL must be valid to)
         QUrl url(p);
-        if (url.isValid() && proxy.trimmed().length() >  0) {
+        if (url.isValid() && proxy.trimmed().length() > 0) {
             md["UseProxy"] = p;
             md["ProxyUrls"] = p;
         } else {
@@ -458,13 +457,13 @@ void HTTPTracker::doAnnounceQueue()
     doAnnounce(u);
 }
 
-void HTTPTracker::doAnnounce(const QUrl & u)
+void HTTPTracker::doAnnounce(const QUrl &u)
 {
     Out(SYS_TRK | LOG_NOTICE) << "Doing tracker request to url (via KIO): " << u.toString() << endl;
 
     KIO::MetaData md;
     setupMetaData(md);
-    KIOAnnounceJob* j = new KIOAnnounceJob(u, md);
+    KIOAnnounceJob *j = new KIOAnnounceJob(u, md);
     connect(j, &KIOAnnounceJob::result, this, &HTTPTracker::onKIOAnnounceResult);
     active_job = j;
 
@@ -483,8 +482,7 @@ void HTTPTracker::onTimeout()
     }
 }
 
-
-void HTTPTracker::setProxy(const QString & p, const bt::Uint16 port)
+void HTTPTracker::setProxy(const QString &p, const bt::Uint16 port)
 {
     proxy = p;
     proxy_port = port;
@@ -494,7 +492,6 @@ void HTTPTracker::setProxyEnabled(bool on)
 {
     proxy_on = on;
 }
-
 
 void HTTPTracker::setUseQHttp(bool on)
 {

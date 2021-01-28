@@ -1,32 +1,32 @@
 /***************************************************************************
-*   Copyright (C) 2010 by Joris Guisson                                   *
-*   joris.guisson@gmail.com                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
-***************************************************************************/
+ *   Copyright (C) 2010 by Joris Guisson                                   *
+ *   joris.guisson@gmail.com                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
+ ***************************************************************************/
 
-#include <QtTest>
 #include <QObject>
+#include <QtTest>
+#include <net/poll.h>
+#include <torrent/globals.h>
 #include <unistd.h>
+#include <util/bitset.h>
 #include <util/log.h>
 #include <utp/utpserver.h>
 #include <utp/utpsocket.h>
-#include <net/poll.h>
-#include <torrent/globals.h>
-#include <util/bitset.h>
 
 using namespace utp;
 using namespace net;
@@ -103,14 +103,14 @@ private:
         poller.reset();
 
         // Purge accepted connection
-        utp::UTPServer & srv = bt::Globals::instance().getUTPServer();
+        utp::UTPServer &srv = bt::Globals::instance().getUTPServer();
         srv.acceptedConnection();
     }
 
     void testConnect()
     {
         Out(SYS_UTP | LOG_DEBUG) << "testConnect " << endl;
-        utp::UTPServer & srv = bt::Globals::instance().getUTPServer();
+        utp::UTPServer &srv = bt::Globals::instance().getUTPServer();
         connect(&srv, &UTPServer::accepted, this, &UTPPollTest::accepted, Qt::QueuedConnection);
 
         QTimer::singleShot(0, this, &UTPPollTest::doConnect);
@@ -141,7 +141,7 @@ private:
                 if (bs.get(i) || !outgoing[i]->ready(&poller, net::Poll::OUTPUT))
                     continue;
 
-                int ret = outgoing[i]->send((const bt::Uint8*)test, strlen(test));
+                int ret = outgoing[i]->send((const bt::Uint8 *)test, strlen(test));
                 QVERIFY(ret == (int)strlen(test));
                 bs.set(i, true);
             }
@@ -201,8 +201,8 @@ private:
 
 private:
     int port;
-    utp::UTPSocket* outgoing[NUM_SOCKETS];
-    utp::UTPSocket* incoming[NUM_SOCKETS];
+    utp::UTPSocket *outgoing[NUM_SOCKETS];
+    utp::UTPSocket *incoming[NUM_SOCKETS];
     int num_accepted;
     Poll poller;
 };

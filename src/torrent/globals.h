@@ -20,8 +20,8 @@
 #ifndef BTGLOBALS_H
 #define BTGLOBALS_H
 
-#include <util/constants.h>
 #include <ktorrent_export.h>
+#include <util/constants.h>
 
 namespace utp
 {
@@ -41,8 +41,6 @@ class DHTBase;
 namespace bt
 {
 class Server;
-
-
 
 class KTORRENT_EXPORT Globals
 {
@@ -64,34 +62,35 @@ public:
         return tcp_server != 0;
     }
 
-    Server & getTCPServer()
+    Server &getTCPServer()
     {
         return *tcp_server;
     }
-    dht::DHTBase & getDHT()
+    dht::DHTBase &getDHT()
     {
         return *dh_table;
     }
-    net::PortList & getPortList()
+    net::PortList &getPortList()
     {
         return *plist;
     }
-    utp::UTPServer & getUTPServer()
+    utp::UTPServer &getUTPServer()
     {
         return *utp_server;
     }
 
-    static Globals & instance();
+    static Globals &instance();
     static void cleanup();
+
 private:
     Globals();
 
-    Server* tcp_server;
-    dht::DHTBase* dh_table;
-    net::PortList* plist;
-    utp::UTPServer* utp_server;
+    Server *tcp_server;
+    dht::DHTBase *dh_table;
+    net::PortList *plist;
+    utp::UTPServer *utp_server;
 
-    static Globals* inst;
+    static Globals *inst;
 };
 }
 

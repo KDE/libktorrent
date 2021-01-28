@@ -21,9 +21,9 @@
 #ifndef BT_JOB_H
 #define BT_JOB_H
 
+#include "torrentstats.h"
 #include <KIO/Job>
 #include <ktorrent_export.h>
-#include "torrentstats.h"
 
 class KJobTrackerInterface;
 
@@ -38,7 +38,7 @@ class KTORRENT_EXPORT Job : public KIO::Job
 {
     Q_OBJECT
 public:
-    Job(bool stop_torrent, TorrentControl* tc);
+    Job(bool stop_torrent, TorrentControl *tc);
     ~Job() override;
 
     /// Do we need to stop the torrent when the job is running
@@ -54,29 +54,29 @@ public:
     virtual TorrentStatus torrentStatus() const;
 
     /// Get the torrent associated with this job
-    TorrentControl* torrent()
+    TorrentControl *torrent()
     {
         return tc;
     }
 
     /// Set the torrent associated with this job
-    void setTorrent(TorrentControl* t)
+    void setTorrent(TorrentControl *t)
     {
         tc = t;
     }
 
     /// Set the job tracker
-    static void setJobTracker(KJobTrackerInterface* trk);
+    static void setJobTracker(KJobTrackerInterface *trk);
 
 protected:
     /// Register the job with the tracker
     void registerWithTracker();
 
 private:
-    TorrentControl* tc;
+    TorrentControl *tc;
     bool stop_torrent;
 
-    static KJobTrackerInterface* tracker;
+    static KJobTrackerInterface *tracker;
 };
 
 }

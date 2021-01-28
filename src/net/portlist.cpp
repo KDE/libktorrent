@@ -22,31 +22,40 @@
 
 namespace net
 {
-Port::Port() : number(0), proto(TCP), forward(false)
+Port::Port()
+    : number(0)
+    , proto(TCP)
+    , forward(false)
 {
 }
 
 Port::Port(bt::Uint16 number, Protocol proto, bool forward)
-    : number(number), proto(proto), forward(forward)
+    : number(number)
+    , proto(proto)
+    , forward(forward)
 {
 }
 
-Port::Port(const Port & p) : number(p.number), proto(p.proto), forward(p.forward)
+Port::Port(const Port &p)
+    : number(p.number)
+    , proto(p.proto)
+    , forward(p.forward)
 {
 }
 
-bool Port::operator == (const Port & p) const
+bool Port::operator==(const Port &p) const
 {
     return number == p.number && proto == p.proto;
 }
 
-PortList::PortList() : lst(0)
-{}
-
+PortList::PortList()
+    : lst(0)
+{
+}
 
 PortList::~PortList()
-{}
-
+{
+}
 
 void PortList::addNewPort(bt::Uint16 number, Protocol proto, bool forward)
 {
@@ -55,7 +64,6 @@ void PortList::addNewPort(bt::Uint16 number, Protocol proto, bool forward)
     if (lst)
         lst->portAdded(p);
 }
-
 
 void PortList::removePort(bt::Uint16 number, Protocol proto)
 {
@@ -68,7 +76,5 @@ void PortList::removePort(bt::Uint16 number, Protocol proto)
 
     erase(itr);
 }
-
-
 
 }

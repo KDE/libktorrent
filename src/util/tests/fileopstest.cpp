@@ -17,14 +17,14 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include <QtTest>
 #include <QObject>
+#include <QtTest>
 #include <solid/device.h>
 #include <solid/storageaccess.h>
-#include <util/log.h>
-#include <util/functions.h>
-#include <util/fileops.h>
 #include <util/error.h>
+#include <util/fileops.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 using namespace bt;
 
@@ -32,7 +32,6 @@ class FileOpsTest : public QObject
 {
     Q_OBJECT
 public:
-
 private Q_SLOTS:
     void initTestCase()
     {
@@ -48,8 +47,8 @@ private Q_SLOTS:
         const QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
         QString mountpoint;
 
-        for (const Solid::Device& dev : devs) {
-            const Solid::StorageAccess* sa = dev.as<Solid::StorageAccess>();
+        for (const Solid::Device &dev : devs) {
+            const Solid::StorageAccess *sa = dev.as<Solid::StorageAccess>();
             if (sa->isAccessible()) {
                 QVERIFY(bt::MountPoint(sa->filePath()) == sa->filePath());
 
@@ -61,8 +60,6 @@ private Q_SLOTS:
     }
 };
 
-
 QTEST_MAIN(FileOpsTest)
 
 #include "fileopstest.moc"
-

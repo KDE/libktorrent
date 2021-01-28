@@ -1,34 +1,35 @@
 /***************************************************************************
-*   Copyright (C) 2010 by Joris Guisson                                   *
-*   joris.guisson@gmail.com                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
-***************************************************************************/
+ *   Copyright (C) 2010 by Joris Guisson                                   *
+ *   joris.guisson@gmail.com                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
+ ***************************************************************************/
 
-#include <QtTest>
-#include <QObject>
-#include <ctime>
-#include <util/log.h>
-#include <torrent/statsfile.h>
-#include <KSharedConfig>
 #include <KConfigGroup>
+#include <KSharedConfig>
+#include <QObject>
+#include <QtTest>
+#include <ctime>
+#include <torrent/statsfile.h>
+#include <util/log.h>
 
 using namespace bt;
 
-QString test_data = "ASSURED_DOWNLOAD_SPEED=0\n\
+QString test_data =
+    "ASSURED_DOWNLOAD_SPEED=0\n\
 ASSURED_UPLOAD_SPEED=0\n\
 AUTOSTART=0\n\
 CUSTOM_OUTPUT_NAME=0\n\
@@ -51,13 +52,10 @@ UPLOAD_LIMIT=0\n\
 URL=file:///home/joris/tmp/Killers.torrent\n\
 UT_PEX=1\n";
 
-
 class StatsFileTest : public QEventLoop
 {
     Q_OBJECT
 public:
-
-
 private Q_SLOTS:
     void initTestCase()
     {
@@ -68,7 +66,7 @@ private Q_SLOTS:
         out << test_data;
 
         const QStringList lines = test_data.split("\n");
-        for (const QString & line : lines) {
+        for (const QString &line : lines) {
             QStringList sl = line.split("=");
             if (sl.count() == 2) {
                 keys.append(sl[0]);
@@ -86,7 +84,7 @@ private Q_SLOTS:
         StatsFile st(file.fileName());
 
         int idx = 0;
-        for (const QString & key : qAsConst(keys)) {
+        for (const QString &key : qAsConst(keys)) {
             QVERIFY(st.hasKey(key));
             QVERIFY(st.readString(key) == values[idx++]);
         }
@@ -105,7 +103,6 @@ private Q_SLOTS:
         StatsFile stb(file.fileName());
         QVERIFY(stb.readInt("DINGES") == 1234);
     }
-
 
 private:
     QTemporaryFile file;

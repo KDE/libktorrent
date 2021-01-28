@@ -20,22 +20,21 @@
 #ifndef BTTORRENTFILEINTERFACE_H
 #define BTTORRENTFILEINTERFACE_H
 
+#include <ktorrent_export.h>
 #include <qobject.h>
 #include <qstring.h>
-#include <ktorrent_export.h>
 #include <util/constants.h>
 
 class QTextCodec;
 
 namespace bt
 {
-
 /**
  * @author Joris Guisson
  * @brief Interface for a file in a multifile torrent
  *
  * This class is the interface for a file in a multifile torrent.
-*/
+ */
 class KTORRENT_EXPORT TorrentFileInterface : public QObject
 {
     Q_OBJECT
@@ -46,7 +45,7 @@ public:
      * @param path The path
      * @param size The size
      */
-    TorrentFileInterface(Uint32 index, const QString & path, Uint64 size);
+    TorrentFileInterface(Uint32 index, const QString &path, Uint64 size);
     ~TorrentFileInterface() override;
 
     enum FileType {
@@ -78,7 +77,7 @@ public:
     QString getMountPoint() const;
 
     /// Set the mount point
-    void setMountPoint(const QString & path)
+    void setMountPoint(const QString &path)
     {
         mount_point = path;
     }
@@ -87,7 +86,7 @@ public:
      * Set the actual path of the file on disk.
      * @param p The path
      */
-    void setPathOnDisk(const QString & p)
+    void setPathOnDisk(const QString &p)
     {
         path_on_disk = p;
     }
@@ -99,7 +98,7 @@ public:
     }
 
     /// Set the user modified path
-    void setUserModifiedPath(const QString & p)
+    void setUserModifiedPath(const QString &p)
     {
         user_modified_path = p;
     }
@@ -189,7 +188,7 @@ public:
     void setUnencodedPath(const QList<QByteArray> up);
 
     /// Change the text codec
-    void changeTextCodec(QTextCodec* codec);
+    void changeTextCodec(QTextCodec *codec);
 
     /// Is this a video
     bool isVideo() const

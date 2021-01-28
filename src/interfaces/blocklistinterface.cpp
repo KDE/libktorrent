@@ -23,11 +23,10 @@
 namespace bt
 {
 BlockListInterface::BlockListInterface()
-{}
-
-
-BlockListInterface::~BlockListInterface()
-{}
+{
 }
 
-
+BlockListInterface::~BlockListInterface()
+{
+}
+}

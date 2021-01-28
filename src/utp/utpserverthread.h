@@ -32,13 +32,13 @@ class KTORRENT_EXPORT UTPServerThread : public QThread
 {
     Q_OBJECT
 public:
-    UTPServerThread(UTPServer* srv);
+    UTPServerThread(UTPServer *srv);
     ~UTPServerThread() override;
 
     void run() override;
 
 protected:
-    UTPServer* srv;
+    UTPServer *srv;
 };
 
 }

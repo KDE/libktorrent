@@ -25,10 +25,8 @@
 #include <net/poll.h>
 #include <net/wakeuppipe.h>
 
-
 namespace utp
 {
-
 /**
     Special wake up pipe for UTP polling
 */
@@ -47,7 +45,7 @@ public:
     }
 
     /// Prepare the poll
-    void prepare(net::Poll* p, bt::Uint16 conn_id, PollPipe::Ptr self)
+    void prepare(net::Poll *p, bt::Uint16 conn_id, PollPipe::Ptr self)
     {
         QMutexLocker lock(&mutex);
         conn_ids.set(conn_id, true);
@@ -76,7 +74,6 @@ private:
     int poll_index;
     std::bitset<65536> conn_ids;
 };
-
 
 }
 

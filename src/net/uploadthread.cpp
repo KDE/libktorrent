@@ -18,11 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 #include "uploadthread.h"
-#include <math.h>
-#include <util/functions.h>
+#include "socketgroup.h"
 #include "socketmonitor.h"
 #include "trafficshapedsocket.h"
-#include "socketgroup.h"
+#include <math.h>
+#include <util/functions.h>
 
 using namespace bt;
 
@@ -31,14 +31,15 @@ namespace net
 Uint32 UploadThread::ucap = 0;
 Uint32 UploadThread::sleep_time = 50;
 
-UploadThread::UploadThread(SocketMonitor* sm) : NetworkThread(sm), wake_up(new WakeUpPipe())
+UploadThread::UploadThread(SocketMonitor *sm)
+    : NetworkThread(sm)
+    , wake_up(new WakeUpPipe())
 {
 }
 
-
 UploadThread::~UploadThread()
-{}
-
+{
+}
 
 void UploadThread::update()
 {
@@ -52,7 +53,7 @@ void UploadThread::update()
     Uint32 num_ready = 0;
     SocketMonitor::Itr itr = sm->begin();
     while (itr != sm->end()) {
-        TrafficShapedSocket* s = *itr;
+        TrafficShapedSocket *s = *itr;
         if (!s->socketDevice() || !s->socketDevice()->ok()) {
             ++itr;
             continue;
@@ -64,7 +65,7 @@ void UploadThread::update()
             if (gid > 0)
                 group_limits = true;
 
-            SocketGroup* g = groups.find(gid);
+            SocketGroup *g = groups.find(gid);
             if (!g)
                 g = groups.find(0);
 
@@ -97,11 +98,10 @@ void UploadThread::setSleepTime(Uint32 stime)
     sleep_time = stime;
 }
 
-bool UploadThread::doGroup(SocketGroup* g, Uint32 & allowance, bt::TimeStamp now)
+bool UploadThread::doGroup(SocketGroup *g, Uint32 &allowance, bt::TimeStamp now)
 {
     return g->upload(allowance, now);
 }
-
 
 int UploadThread::waitForSocketsReady()
 {
@@ -113,7 +113,7 @@ int UploadThread::waitForSocketsReady()
     // fill the poll vector with all sockets
     SocketMonitor::Itr itr = sm->begin();
     while (itr != sm->end()) {
-        TrafficShapedSocket* s = *itr;
+        TrafficShapedSocket *s = *itr;
         if (s && s->socketDevice()->ok() && s->bytesReadyToWrite()) {
             s->socketDevice()->prepare(this, Poll::OUTPUT);
         }

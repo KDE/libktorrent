@@ -77,9 +77,9 @@ public:
     }
 
     /**
-    * Get the update interval in ms
-    * @return interval
-    */
+     * Get the update interval in ms
+     * @return interval
+     */
     Uint32 getInterval() const
     {
         return interval;

@@ -24,24 +24,27 @@
 
 #include <algorithm>
 
-#include <util/file.h>
-#include <util/log.h>
-#include <util/array.h>
-#include <util/error.h>
 #include <diskio/chunk.h>
 #include <diskio/piecedata.h>
 #include <download/piece.h>
 #include <interfaces/piecedownloader.h>
+#include <util/array.h>
+#include <util/error.h>
+#include <util/file.h>
+#include <util/log.h>
 
 #include "downloader.h"
 
 namespace bt
 {
-DownloadStatus::DownloadStatus() : timeouts(0)
-{}
+DownloadStatus::DownloadStatus()
+    : timeouts(0)
+{
+}
 
 DownloadStatus::~DownloadStatus()
-{}
+{
+}
 
 void DownloadStatus::add(Uint32 p)
 {
@@ -63,10 +66,10 @@ void DownloadStatus::clear()
     status.clear();
 }
 
-
 ////////////////////////////////////////////////////
 
-ChunkDownload::ChunkDownload(Chunk* chunk) : chunk(chunk)
+ChunkDownload::ChunkDownload(Chunk *chunk)
+    : chunk(chunk)
 {
     num = num_downloaded = 0;
     num = chunk->getSize() / MAX_PIECE_LEN;
@@ -90,10 +93,10 @@ ChunkDownload::ChunkDownload(Chunk* chunk) : chunk(chunk)
 
 ChunkDownload::~ChunkDownload()
 {
-    delete [] piece_data;
+    delete[] piece_data;
 }
 
-bool ChunkDownload::piece(const Piece & p, bool & ok)
+bool ChunkDownload::piece(const Piece &p, bool &ok)
 {
     ok = false;
     timer.update();
@@ -103,8 +106,7 @@ bool ChunkDownload::piece(const Piece & p, bool & ok)
     if (pp >= num || pieces.get(pp) || p.getLength() != len)
         return false;
 
-
-    if (DownloadStatus* ds = dstatus.find(p.getPieceDownloader()))
+    if (DownloadStatus *ds = dstatus.find(p.getPieceDownloader()))
         ds->remove(pp);
 
     PieceData::Ptr buf = chunk->getPiece(p.getOffset(), p.getLength(), false);
@@ -134,7 +136,7 @@ bool ChunkDownload::piece(const Piece & p, bool & ok)
 
 void ChunkDownload::releaseAllPDs()
 {
-    for (PieceDownloader* pd : qAsConst(pdown)) {
+    for (PieceDownloader *pd : qAsConst(pdown)) {
         pd->release();
         sendCancels(pd);
         disconnect(pd, &PieceDownloader::timedout, this, &ChunkDownload::onTimeout);
@@ -144,7 +146,7 @@ void ChunkDownload::releaseAllPDs()
     pdown.clear();
 }
 
-bool ChunkDownload::assign(PieceDownloader* pd)
+bool ChunkDownload::assign(PieceDownloader *pd)
 {
     if (!pd || pdown.contains(pd))
         return false;
@@ -158,7 +160,7 @@ bool ChunkDownload::assign(PieceDownloader* pd)
     return true;
 }
 
-void ChunkDownload::release(PieceDownloader* pd)
+void ChunkDownload::release(PieceDownloader *pd)
 {
     if (!pdown.contains(pd))
         return;
@@ -171,17 +173,16 @@ void ChunkDownload::release(PieceDownloader* pd)
     pdown.removeAll(pd);
 }
 
-
-void ChunkDownload::notDownloaded(const Request & r, bool reject)
+void ChunkDownload::notDownloaded(const Request &r, bool reject)
 {
     // find the peer
-    DownloadStatus* ds = dstatus.find(r.getPieceDownloader());
+    DownloadStatus *ds = dstatus.find(r.getPieceDownloader());
     if (ds) {
         //  Out(SYS_DIO|LOG_DEBUG) << "ds != 0"  << endl;
-        Uint32 p  = r.getOffset() / MAX_PIECE_LEN;
+        Uint32 p = r.getOffset() / MAX_PIECE_LEN;
         ds->remove(p);
 
-        PieceDownloader* pd = r.getPieceDownloader();
+        PieceDownloader *pd = r.getPieceDownloader();
         if (reject) {
             // reject, so release the PieceDownloader
             pd->release();
@@ -202,24 +203,25 @@ void ChunkDownload::notDownloaded(const Request & r, bool reject)
     sendRequests();
 }
 
-void ChunkDownload::onRejected(const Request & r)
+void ChunkDownload::onRejected(const Request &r)
 {
     if (chunk->getIndex() == r.getIndex()) {
         notDownloaded(r, true);
     }
 }
 
-void ChunkDownload::onTimeout(const Request & r)
+void ChunkDownload::onTimeout(const Request &r)
 {
     // see if we are dealing with a piece of ours
     if (chunk->getIndex() == r.getIndex()) {
-        Out(SYS_CON | LOG_DEBUG) << QString("Request timed out %1 %2 %3 %4").arg(r.getIndex()).arg(r.getOffset()).arg(r.getLength()).arg(r.getPieceDownloader()->getName()) << endl;
+        Out(SYS_CON | LOG_DEBUG)
+            << QString("Request timed out %1 %2 %3 %4").arg(r.getIndex()).arg(r.getOffset()).arg(r.getLength()).arg(r.getPieceDownloader()->getName()) << endl;
 
         notDownloaded(r, false);
     }
 }
 
-Uint32 ChunkDownload::bestPiece(PieceDownloader* pd)
+Uint32 ChunkDownload::bestPiece(PieceDownloader *pd)
 {
     Uint32 best = num;
     Uint32 best_count = 0;
@@ -228,12 +230,12 @@ Uint32 ChunkDownload::bestPiece(PieceDownloader* pd)
         if (pieces.get(i))
             continue;
 
-        DownloadStatus* ds = dstatus.find(pd);
+        DownloadStatus *ds = dstatus.find(pd);
         if (ds && ds->contains(i))
             continue;
 
         Uint32 times_downloading = 0;
-        PtrMap<PieceDownloader*, DownloadStatus>::iterator j = dstatus.begin();
+        PtrMap<PieceDownloader *, DownloadStatus>::iterator j = dstatus.begin();
         while (j != dstatus.end()) {
             if (j->first != pd && j->second->contains(i))
                 times_downloading++;
@@ -257,11 +259,11 @@ Uint32 ChunkDownload::bestPiece(PieceDownloader* pd)
 void ChunkDownload::sendRequests()
 {
     timer.update();
-    QList<PieceDownloader*> tmp = pdown;
+    QList<PieceDownloader *> tmp = pdown;
 
     while (tmp.count() > 0) {
-        for (QList<PieceDownloader*>::iterator i = tmp.begin(); i != tmp.end();) {
-            PieceDownloader* pd = *i;
+        for (QList<PieceDownloader *>::iterator i = tmp.begin(); i != tmp.end();) {
+            PieceDownloader *pd = *i;
             if (!pd->isChoked() && pd->canAddRequest() && sendRequest(pd))
                 ++i;
             else
@@ -270,9 +272,9 @@ void ChunkDownload::sendRequests()
     }
 }
 
-bool ChunkDownload::sendRequest(PieceDownloader* pd)
+bool ChunkDownload::sendRequest(PieceDownloader *pd)
 {
-    DownloadStatus* ds = dstatus.find(pd);
+    DownloadStatus *ds = dstatus.find(pd);
     if (!ds || pd->isChoked())
         return false;
 
@@ -297,33 +299,28 @@ void ChunkDownload::update()
     sendRequests();
 }
 
-
-void ChunkDownload::sendCancels(PieceDownloader* pd)
+void ChunkDownload::sendCancels(PieceDownloader *pd)
 {
-    DownloadStatus* ds = dstatus.find(pd);
+    DownloadStatus *ds = dstatus.find(pd);
     if (!ds)
         return;
 
     DownloadStatus::iterator itr = ds->begin();
     while (itr != ds->end()) {
         Uint32 i = *itr;
-        pd->cancel(
-            Request(
-                chunk->getIndex(),
-                i * MAX_PIECE_LEN,
-                i + 1 < num ? MAX_PIECE_LEN : last_size, 0));
+        pd->cancel(Request(chunk->getIndex(), i * MAX_PIECE_LEN, i + 1 < num ? MAX_PIECE_LEN : last_size, 0));
         ++itr;
     }
     ds->clear();
     timer.update();
 }
 
-void ChunkDownload::endgameCancel(const Piece & p)
+void ChunkDownload::endgameCancel(const Piece &p)
 {
     auto i = pdown.constBegin();
     while (i != pdown.constEnd()) {
-        PieceDownloader* pd = *i;
-        DownloadStatus* ds = dstatus.find(pd);
+        PieceDownloader *pd = *i;
+        DownloadStatus *ds = dstatus.find(pd);
         Uint32 pp = p.getOffset() / MAX_PIECE_LEN;
         if (ds && ds->contains(pp)) {
             pd->cancel(Request(p));
@@ -333,7 +330,7 @@ void ChunkDownload::endgameCancel(const Piece & p)
     }
 }
 
-void ChunkDownload::killed(PieceDownloader* pd)
+void ChunkDownload::killed(PieceDownloader *pd)
 {
     if (!pdown.contains(pd))
         return;
@@ -363,15 +360,13 @@ QString ChunkDownload::getPieceDownloaderName() const
 Uint32 ChunkDownload::getDownloadSpeed() const
 {
     Uint32 r = 0;
-    for (PieceDownloader* pd : qAsConst(pdown))
+    for (PieceDownloader *pd : qAsConst(pdown))
         r += pd->getDownloadRate();
 
     return r;
 }
 
-
-
-void ChunkDownload::save(File & file)
+void ChunkDownload::save(File &file)
 {
     ChunkDownloadHeader hdr;
     hdr.index = chunk->getIndex();
@@ -407,7 +402,7 @@ void ChunkDownload::save(File & file)
     }
 }
 
-bool ChunkDownload::load(File & file, ChunkDownloadHeader & hdr, bool update_hash)
+bool ChunkDownload::load(File &file, ChunkDownloadHeader &hdr, bool update_hash)
 {
     // read pieces
     if (hdr.num_bits != num)
@@ -476,7 +471,7 @@ void ChunkDownload::cancelAll()
     }
 }
 
-PieceDownloader* ChunkDownload::getOnlyDownloader()
+PieceDownloader *ChunkDownload::getOnlyDownloader()
 {
     if (piece_providers.size() == 1) {
         return *piece_providers.begin();
@@ -485,7 +480,7 @@ PieceDownloader* ChunkDownload::getOnlyDownloader()
     }
 }
 
-void ChunkDownload::getStats(Stats & s)
+void ChunkDownload::getStats(Stats &s)
 {
     s.chunk_index = chunk->getIndex();
     s.current_peer_id = getPieceDownloaderName();
@@ -497,9 +492,9 @@ void ChunkDownload::getStats(Stats & s)
 
 bool ChunkDownload::isChoked() const
 {
-    QList<PieceDownloader*>::const_iterator i = pdown.begin();
+    QList<PieceDownloader *>::const_iterator i = pdown.begin();
     while (i != pdown.end()) {
-        const PieceDownloader* pd = *i;
+        const PieceDownloader *pd = *i;
         // if there is one which isn't choked
         if (!pd->isChoked())
             return false;

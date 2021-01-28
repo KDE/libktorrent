@@ -23,23 +23,20 @@
 
 namespace bt
 {
-
 BadPeersList::BadPeersList()
 {
 }
-
 
 BadPeersList::~BadPeersList()
 {
 }
 
-
-bool BadPeersList::blocked(const net::Address & addr) const
+bool BadPeersList::blocked(const net::Address &addr) const
 {
     return bad_peers.contains(addr.toString());
 }
 
-void BadPeersList::addBadPeer(const QString & ip)
+void BadPeersList::addBadPeer(const QString &ip)
 {
     bad_peers << ip;
 }

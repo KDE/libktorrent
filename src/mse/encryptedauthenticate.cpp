@@ -22,28 +22,24 @@
 #include <QRandomGenerator>
 #include <algorithm>
 
-#include <util/functions.h>
-#include <util/log.h>
-#include <torrent/globals.h>
-#include <torrent/server.h>
-#include <net/socks.h>
-#include "rc4encryptor.h"
 #include "encryptedpacketsocket.h"
 #include "functions.h"
+#include "rc4encryptor.h"
+#include <net/socks.h>
+#include <torrent/globals.h>
+#include <torrent/server.h>
+#include <util/functions.h>
+#include <util/log.h>
 
 using namespace bt;
 
 namespace mse
 {
-
-
-
-EncryptedAuthenticate::EncryptedAuthenticate(
-    const net::Address & addr,
-    TransportProtocol proto,
-    const SHA1Hash& info_hash,
-    const PeerID& peer_id,
-    PeerConnector::WPtr pcon)
+EncryptedAuthenticate::EncryptedAuthenticate(const net::Address &addr,
+                                             TransportProtocol proto,
+                                             const SHA1Hash &info_hash,
+                                             const PeerID &peer_id,
+                                             PeerConnector::WPtr pcon)
     : Authenticate(addr, proto, info_hash, peer_id, pcon)
 {
     mse::GeneratePublicPrivateKey(xa, ya);
@@ -55,16 +51,13 @@ EncryptedAuthenticate::EncryptedAuthenticate(
     crypto_select = 0;
     pad_D_len = 0;
     end_of_crypto_handshake = 0;
-    //Out(SYS_CON|LOG_DEBUG) << "EncryptedAuthenticate : " << ip << ":" << port << endl;
+    // Out(SYS_CON|LOG_DEBUG) << "EncryptedAuthenticate : " << ip << ":" << port << endl;
 }
-
 
 EncryptedAuthenticate::~EncryptedAuthenticate()
 {
     delete our_rc4;
 }
-
-
 
 void EncryptedAuthenticate::connected()
 {
@@ -82,8 +75,6 @@ void EncryptedAuthenticate::connected()
 4 B->A: ENCRYPT(VC, crypto_select, len(padD), padD), ENCRYPT2(Payload Stream)
 5 A->B: ENCRYPT2(Payload Stream)
 */
-
-
 
 void EncryptedAuthenticate::handleYB()
 {
@@ -248,7 +239,8 @@ void EncryptedAuthenticate::onReadyRead()
             if (sock->bytesAvailable() > 0)
                 onReadyRead();
             break;
-        default: break;
+        default:
+            break;
         }
         return;
     }
@@ -268,7 +260,6 @@ void EncryptedAuthenticate::onReadyRead()
             ba = (vc_off + 14 + pad_D_len) - buf_size;
         // read data
         buf_size += sock->readData(buf + buf_size, ba);
-
     }
 
     switch (state) {
@@ -297,6 +288,4 @@ void EncryptedAuthenticate::onReadyRead()
     };
 }
 
-
 }
-

@@ -23,11 +23,11 @@
 #include <QTimer>
 #include <QUrl>
 
-#include <util/sha1hash.h>
 #include <interfaces/peersource.h>
 #include <interfaces/trackerinterface.h>
-#include <peer/peerid.h>
 #include <ktorrent_export.h>
+#include <peer/peerid.h>
+#include <util/sha1hash.h>
 
 class QUrl;
 
@@ -40,30 +40,32 @@ namespace bt
 class KTORRENT_EXPORT TrackerDataSource
 {
 public:
-    virtual ~TrackerDataSource() {}
+    virtual ~TrackerDataSource()
+    {
+    }
 
     virtual Uint64 bytesDownloaded() const = 0;
     virtual Uint64 bytesUploaded() const = 0;
     virtual Uint64 bytesLeft() const = 0;
-    virtual const SHA1Hash & infoHash() const = 0;
+    virtual const SHA1Hash &infoHash() const = 0;
     virtual bool isPartialSeed() const = 0;
 };
 
 /**
  * Base class for all tracker classes.
-*/
+ */
 class KTORRENT_EXPORT Tracker : public PeerSource, public TrackerInterface
 {
     Q_OBJECT
 public:
-    Tracker(const QUrl &url, TrackerDataSource* tds, const PeerID & id, int tier);
+    Tracker(const QUrl &url, TrackerDataSource *tds, const PeerID &id, int tier);
     ~Tracker() override;
 
     /**
      * Set the custom IP
      * @param str
      */
-    static void setCustomIP(const QString & str);
+    static void setCustomIP(const QString &str);
 
     /// get the tracker url
     QUrl trackerURL() const
@@ -100,6 +102,7 @@ public:
 
     /// Handle a failure
     void handleFailure();
+
 protected:
     /// Reset the tracker stats
     void resetTrackerStats();
@@ -111,7 +114,7 @@ protected:
     Uint64 bytesUploaded() const;
 
     /// Emit the failure signal, and set the error
-    void failed(const QString & err);
+    void failed(const QString &err);
 
 public:
     void manualUpdate() override = 0;
@@ -121,7 +124,7 @@ Q_SIGNALS:
      * Emitted when an error happens.
      * @param failure_reason The reason why we couldn't reach the tracker
      */
-    void requestFailed(const QString & failure_reason);
+    void requestFailed(const QString &failure_reason);
 
     /**
      * Emitted when a stop is done.
@@ -146,7 +149,7 @@ Q_SIGNALS:
 protected:
     int tier;
     PeerID peer_id;
-    TrackerDataSource* tds;
+    TrackerDataSource *tds;
     Uint32 key;
     QTimer reannounce_timer;
     Uint64 bytes_downloaded_at_start;

@@ -41,7 +41,7 @@ public:
      * @param msg The message to send
      * @return The call object
      */
-    virtual RPCCall* doCall(RPCMsg::Ptr msg) = 0;
+    virtual RPCCall *doCall(RPCMsg::Ptr msg) = 0;
 };
 
 }

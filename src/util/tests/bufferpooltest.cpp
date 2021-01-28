@@ -17,16 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
-#include <QtTest>
 #include <QObject>
-#include <util/log.h>
+#include <QtTest>
 #include <util/bufferpool.h>
+#include <util/log.h>
 
 class BufferPoolTest : public QObject
 {
     Q_OBJECT
 public:
-
 private Q_SLOTS:
     void initTestCase()
     {
@@ -36,7 +35,6 @@ private Q_SLOTS:
     void cleanupTestCase()
     {
     }
-
 
     void testPool()
     {

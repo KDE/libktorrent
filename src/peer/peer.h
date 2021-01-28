@@ -20,16 +20,16 @@
 #ifndef BTPEER_H
 #define BTPEER_H
 
-#include <QObject>
-#include <QDateTime>
-#include <util/timer.h>
-#include <interfaces/peerinterface.h>
-#include <util/ptrmap.h>
-#include <mse/encryptedpacketsocket.h>
-#include <ktorrent_export.h>
+#include "connectionlimit.h"
 #include "peerid.h"
 #include "peerprotocolextension.h"
-#include "connectionlimit.h"
+#include <QDateTime>
+#include <QObject>
+#include <interfaces/peerinterface.h>
+#include <ktorrent_export.h>
+#include <mse/encryptedpacketsocket.h>
+#include <util/ptrmap.h>
+#include <util/timer.h>
 
 namespace net
 {
@@ -45,7 +45,6 @@ class PeerDownloader;
 class PeerUploader;
 class PeerManager;
 class BitSet;
-
 
 /**
  * @author Joris Guisson
@@ -72,13 +71,13 @@ public:
      * @param pman The PeerManager
      */
     Peer(mse::EncryptedPacketSocket::Ptr sock,
-         const PeerID & peer_id,
+         const PeerID &peer_id,
          Uint32 num_chunks,
          Uint32 chunk_size,
          Uint32 support,
          bool local,
          ConnectionLimit::Token::Ptr token,
-         PeerManager* pman);
+         PeerManager *pman);
 
     ~Peer() override;
 
@@ -119,19 +118,19 @@ public:
     void unpause();
 
     /// Get the PeerDownloader.
-    PeerDownloader* getPeerDownloader() const
+    PeerDownloader *getPeerDownloader() const
     {
         return downloader;
     }
 
     /// Get the PeerUploader.
-    PeerUploader* getPeerUploader() const
+    PeerUploader *getPeerUploader() const
     {
         return uploader;
     }
 
     /// Get the PeerManager
-    PeerManager* getPeerManager()
+    PeerManager *getPeerManager()
     {
         return pman;
     }
@@ -143,7 +142,7 @@ public:
      * @param proto Indicates whether the packed is data or a protocol message
      * @return Number of bytes written
      */
-    Uint32 sendData(const Uint8* data, Uint32 len);
+    Uint32 sendData(const Uint8 *data, Uint32 len);
 
     /**
      * Reads data from the peer.
@@ -151,7 +150,7 @@ public:
      * @param len The maximum number of bytes to read
      * @return The number of bytes read
      */
-    Uint32 readData(Uint8* buf, Uint32 len);
+    Uint32 readData(Uint8 *buf, Uint32 len);
 
     /// Get the number of bytes available to read.
     Uint32 bytesAvailable() const;
@@ -170,7 +169,7 @@ public:
     Uint32 getTimeSinceLastPiece() const;
 
     /// Get the time the peer connection was established.
-    const QTime & getConnectTime() const
+    const QTime &getConnectTime() const
     {
         return connect_time;
     }
@@ -196,7 +195,7 @@ public:
     /**
      * Emit the pex signal
      */
-    void emitPex(const QByteArray & data);
+    void emitPex(const QByteArray &data);
 
     /// Disable or enable pex
     void setPexEnabled(bool on);
@@ -204,7 +203,7 @@ public:
     /**
      * Emit the metadataDownloaded signal
      */
-    void emitMetadataDownloaded(const QByteArray & data);
+    void emitMetadataDownloaded(const QByteArray &data);
 
     /// Send an extended protocol handshake
     void sendExtProtHandshake(Uint16 port, Uint32 metadata_size, bool partial_seed);
@@ -220,7 +219,7 @@ public:
     static void setResolveHostnames(bool on);
 
     /// Check if the peer has wanted chunks
-    bool hasWantedChunks(const BitSet & wanted_chunks) const;
+    bool hasWantedChunks(const BitSet &wanted_chunks) const;
 
     /**
      * Send a choke packet.
@@ -252,20 +251,19 @@ public:
      * Send a request for data.
      * @param req The Request
      */
-    void sendRequest(const Request & r);
+    void sendRequest(const Request &r);
 
     /**
      * Cancel a request.
      * @param req The Request
      */
-    void sendCancel(const Request & r);
-
+    void sendCancel(const Request &r);
 
     /**
      * Send a reject for a request
      * @param req The Request
      */
-    void sendReject(const Request & r);
+    void sendReject(const Request &r);
 
     /**
      * Send a have packet.
@@ -287,13 +285,13 @@ public:
      * @param ch The Chunk
      * @return true If we satisfy the request, false otherwise
      */
-    bool sendChunk(Uint32 index, Uint32 begin, Uint32 len, Chunk * ch);
+    bool sendChunk(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch);
 
     /**
      * Send a BitSet. The BitSet indicates which chunks we have.
      * @param bs The BitSet
      */
-    void sendBitSet(const BitSet & bs);
+    void sendBitSet(const BitSet &bs);
 
     /**
      * Send a port message
@@ -314,7 +312,7 @@ public:
     void sendSuggestPiece(Uint32 index);
 
     /// Send an extended protocol message
-    void sendExtProtMsg(Uint8 id, const QByteArray & data);
+    void sendExtProtMsg(Uint8 id, const QByteArray &data);
 
     /**
      * Clear all pending piece uploads we are not in the progress of sending.
@@ -322,36 +320,36 @@ public:
     void clearPendingPieceUploads();
 
     void chunkAllowed(Uint32 chunk) override;
-    void handlePacket(const bt::Uint8* packet, bt::Uint32 size) override;
+    void handlePacket(const bt::Uint8 *packet, bt::Uint32 size) override;
 
     typedef QSharedPointer<Peer> Ptr;
     typedef QWeakPointer<Peer> WPtr;
 
 private Q_SLOTS:
-    void resolved(const QString & hinfo);
+    void resolved(const QString &hinfo);
 
 private:
     void handleChoke(Uint32 len);
     void handleUnchoke(Uint32 len);
     void handleInterested(Uint32 len);
     void handleNotInterested(Uint32 len);
-    void handleHave(const Uint8* packet, Uint32 len);
+    void handleHave(const Uint8 *packet, Uint32 len);
     void handleHaveAll(Uint32 len);
     void handleHaveNone(Uint32 len);
-    void handleBitField(const Uint8* packet, Uint32 len);
-    void handleRequest(const Uint8* packet, Uint32 len);
-    void handlePiece(const Uint8* packet, Uint32 len);
-    void handleCancel(const Uint8* packet, Uint32 len);
-    void handleReject(const Uint8* packet, Uint32 len);
-    void handlePort(const Uint8* packet, Uint32 len);
-    void handleExtendedPacket(const Uint8* packet, Uint32 size);
-    void handleExtendedHandshake(const Uint8* packet, Uint32 size);
+    void handleBitField(const Uint8 *packet, Uint32 len);
+    void handleRequest(const Uint8 *packet, Uint32 len);
+    void handlePiece(const Uint8 *packet, Uint32 len);
+    void handleCancel(const Uint8 *packet, Uint32 len);
+    void handleReject(const Uint8 *packet, Uint32 len);
+    void handlePort(const Uint8 *packet, Uint32 len);
+    void handleExtendedPacket(const Uint8 *packet, Uint32 size);
+    void handleExtendedHandshake(const Uint8 *packet, Uint32 size);
 
 Q_SIGNALS:
     /**
      *  Emitted when metadata has been downloaded from the Peer
      */
-    void metadataDownloaded(const QByteArray & data);
+    void metadataDownloaded(const QByteArray &data);
 
 private:
     mse::EncryptedPacketSocket::Ptr sock;
@@ -362,13 +360,13 @@ private:
     Uint32 id;
 
     Timer snub_timer;
-    PacketReader* preader;
-    PeerDownloader* downloader;
-    PeerUploader* uploader;
+    PacketReader *preader;
+    PeerDownloader *downloader;
+    PeerUploader *uploader;
 
     QTime connect_time;
     bool pex_allowed;
-    PeerManager* pman;
+    PeerManager *pman;
     PtrMap<Uint32, PeerProtocolExtension> extensions;
     Uint32 ut_pex_id;
 
@@ -381,4 +379,3 @@ private:
 }
 
 #endif
-

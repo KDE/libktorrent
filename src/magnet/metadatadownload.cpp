@@ -19,14 +19,15 @@
  ***************************************************************************/
 
 #include "metadatadownload.h"
-#include <util/log.h>
 #include <bcodec/bencoder.h>
 #include <peer/utmetadata.h>
+#include <util/log.h>
 
 namespace bt
 {
-
-MetadataDownload::MetadataDownload(UTMetaData* ext, Uint32 size) : ext(ext), total_size(size)
+MetadataDownload::MetadataDownload(UTMetaData *ext, Uint32 size)
+    : ext(ext)
+    , total_size(size)
 {
     metadata.resize(size);
     Uint32 num_pieces = size / METADATA_PIECE_SIZE;
@@ -47,7 +48,7 @@ void MetadataDownload::reject(Uint32 piece)
     downloadNext();
 }
 
-bool MetadataDownload::data(Uint32 piece, const QByteArray& piece_data)
+bool MetadataDownload::data(Uint32 piece, const QByteArray &piece_data)
 {
     // validate data
     if (piece >= pieces.getNumBits()) {
@@ -58,7 +59,7 @@ bool MetadataDownload::data(Uint32 piece, const QByteArray& piece_data)
 
     int size = METADATA_PIECE_SIZE;
     if (piece == pieces.getNumBits() - 1 && total_size % METADATA_PIECE_SIZE > 0)
-        size = total_size % METADATA_PIECE_SIZE ;
+        size = total_size % METADATA_PIECE_SIZE;
 
     if (size != piece_data.size()) {
         Out(SYS_GEN | LOG_NOTICE) << "Metadata download, received piece " << piece << " has the wrong size " << endl;
@@ -67,7 +68,7 @@ bool MetadataDownload::data(Uint32 piece, const QByteArray& piece_data)
     }
 
     // piece fits, so copy into data
-    //Out(SYS_GEN|LOG_NOTICE) << "Metadata download, dowloaded " << piece << endl;
+    // Out(SYS_GEN|LOG_NOTICE) << "Metadata download, dowloaded " << piece << endl;
     Uint32 off = piece * METADATA_PIECE_SIZE;
     if (static_cast<size_t>(metadata.size()) < off + size) {
         Out(SYS_GEN | LOG_NOTICE) << "Metadata download, received large piece " << (off + size) << ", max " << metadata.size() << endl;
@@ -87,8 +88,10 @@ void MetadataDownload::download(Uint32 piece)
     QByteArray request;
     BEncoder enc(new BEncoderBufferOutput(request));
     enc.beginDict();
-    enc.write(QByteArrayLiteral("msg_type")); enc.write((bt::Uint32)0);
-    enc.write(QByteArrayLiteral("piece")); enc.write((bt::Uint32)piece);
+    enc.write(QByteArrayLiteral("msg_type"));
+    enc.write((bt::Uint32)0);
+    enc.write(QByteArrayLiteral("piece"));
+    enc.write((bt::Uint32)piece);
     enc.end();
     ext->sendPacket(request);
 }
@@ -102,4 +105,3 @@ void MetadataDownload::downloadNext()
 }
 
 }
-

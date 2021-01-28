@@ -27,17 +27,16 @@ using namespace bt;
 
 namespace utp
 {
-
-DelayWindow::DelayWindow() : delay_window(100)
+DelayWindow::DelayWindow()
+    : delay_window(100)
 {
 }
 
 DelayWindow::~DelayWindow()
 {
-
 }
 
-bt::Uint32 DelayWindow::update(const utp::Header* hdr, bt::TimeStamp receive_time)
+bt::Uint32 DelayWindow::update(const utp::Header *hdr, bt::TimeStamp receive_time)
 {
     // First cleanup old values at the beginning
     DelayEntryItr itr = delay_window.begin();
@@ -70,9 +69,8 @@ bt::Uint32 DelayWindow::update(const utp::Header* hdr, bt::TimeStamp receive_tim
 
     delay_window.push_back(entry);
 
-    //Out(SYS_GEN|LOG_DEBUG) << "Delay window: " << delay_window.size() << endl;
+    // Out(SYS_GEN|LOG_DEBUG) << "Delay window: " << delay_window.size() << endl;
     return delay_window.front().timestamp_difference_microseconds;
 }
 
 }
-

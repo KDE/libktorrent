@@ -19,15 +19,18 @@
  ***************************************************************************/
 
 #include "extractfilejob.h"
-#include <QThread>
 #include <QFile>
+#include <QThread>
 
 namespace bt
 {
 class ExtractFileThread : public QThread
 {
 public:
-    ExtractFileThread(QIODevice* in_dev, QIODevice* out_dev) : in_dev(in_dev), out_dev(out_dev), canceled(false)
+    ExtractFileThread(QIODevice *in_dev, QIODevice *out_dev)
+        : in_dev(in_dev)
+        , out_dev(out_dev)
+        , canceled(false)
     {
     }
 
@@ -46,13 +49,16 @@ public:
         }
     }
 
-    QIODevice* in_dev;
-    QIODevice* out_dev;
+    QIODevice *in_dev;
+    QIODevice *out_dev;
     bool canceled;
 };
 
-ExtractFileJob::ExtractFileJob(KArchive* archive, const QString& path, const QString& dest)
-    : archive(archive), path(path), dest(dest), extract_thread(0)
+ExtractFileJob::ExtractFileJob(KArchive *archive, const QString &path, const QString &dest)
+    : archive(archive)
+    , path(path)
+    , dest(dest)
+    , extract_thread(0)
 {
 }
 
@@ -65,7 +71,7 @@ void ExtractFileJob::start()
 {
     // first find the file in the archive
     QStringList path_components = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
-    const KArchiveDirectory* dir = archive->directory();
+    const KArchiveDirectory *dir = archive->directory();
     for (int i = 0; i < path_components.count(); i++) {
         // if we can't find it give back an error
         QString pc = path_components.at(i);
@@ -75,7 +81,7 @@ void ExtractFileJob::start()
             return;
         }
 
-        const KArchiveEntry* e = dir->entry(pc);
+        const KArchiveEntry *e = dir->entry(pc);
         if (i < path_components.count() - 1) {
             // if we are not the last entry in the path, e must be a directory
             if (!e->isDirectory()) {
@@ -84,7 +90,7 @@ void ExtractFileJob::start()
                 return;
             }
 
-            dir = (const KArchiveDirectory*)e;
+            dir = (const KArchiveDirectory *)e;
         } else {
             // last in the path, must be a file
             if (!e->isFile()) {
@@ -94,8 +100,8 @@ void ExtractFileJob::start()
             }
 
             // create a device to read the file and start a thread to do the reading
-            KArchiveFile* file = (KArchiveFile*)e;
-            QFile* out_dev = new QFile(dest);
+            KArchiveFile *file = (KArchiveFile *)e;
+            QFile *out_dev = new QFile(dest);
             if (!out_dev->open(QIODevice::WriteOnly)) {
                 delete out_dev;
                 setError(KIO::ERR_CANNOT_OPEN_FOR_WRITING);
@@ -103,7 +109,7 @@ void ExtractFileJob::start()
                 return;
             }
 
-            QIODevice* in_dev = file->createDevice();
+            QIODevice *in_dev = file->createDevice();
             extract_thread = new ExtractFileThread(in_dev, out_dev);
             connect(extract_thread, &ExtractFileThread::finished, this, &ExtractFileJob::extractThreadDone, Qt::QueuedConnection);
             extract_thread->start();
@@ -134,4 +140,3 @@ void ExtractFileJob::extractThreadDone()
 }
 
 }
-
