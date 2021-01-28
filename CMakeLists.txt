@@ -33,12 +33,13 @@ include(FeatureSummary)
 include(GenerateExportHeader)
 include(ECMMarkAsTest)
 include(ECMSetupVersion)
+include(KDEClangFormat)
 include(CMakePackageConfigHelpers)
 
 set(Boost_MIN_VERSION "1.34.0")
 set(LibGMP_MIN_VERSION "6.0.0")
 set(LibGcrypt_MIN_VERSION "1.4.5")
-set(KF5_MIN_VERSION "5.15")
+set(KF5_MIN_VERSION "5.64")
 set(QT_MIN_VERSION "5.14.0")
 
 set(CMAKE_CXX_STANDARD 14)
@@ -137,6 +138,10 @@ install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfig.cmake"
         COMPONENT Devel)
 
 install(EXPORT KF5TorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF5TorrentTargets.cmake NAMESPACE KF5:: )
+
+# add clang-format target for all our real source files
+file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)
+kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
