@@ -37,7 +37,12 @@ namespace bt
 class XMLContentHandler
 {
     enum Status {
-        TOPLEVEL, ROOT, DEVICE, SERVICE, FIELD, OTHER
+        TOPLEVEL,
+        ROOT,
+        DEVICE,
+        SERVICE,
+        FIELD,
+        OTHER,
     };
 
     QString tmp;

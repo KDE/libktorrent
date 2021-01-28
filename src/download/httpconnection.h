@@ -133,7 +133,12 @@ Q_SIGNALS:
 
 private:
     enum State {
-        IDLE, RESOLVING, CONNECTING, ACTIVE, ERROR, CLOSED
+        IDLE,
+        RESOLVING,
+        CONNECTING,
+        ACTIVE,
+        ERROR,
+        CLOSED,
     };
 
     struct HttpGet {

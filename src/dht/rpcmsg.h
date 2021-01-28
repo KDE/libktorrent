@@ -43,7 +43,7 @@ enum Type {
     REQ_MSG,
     RSP_MSG,
     ERR_MSG,
-    INVALID
+    INVALID,
 };
 
 enum Method {
@@ -51,7 +51,7 @@ enum Method {
     FIND_NODE,
     GET_PEERS,
     ANNOUNCE_PEER,
-    NONE
+    NONE,
 };
 
 const QByteArray TID = QByteArrayLiteral("t");

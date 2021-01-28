@@ -28,7 +28,7 @@ namespace net
 {
 enum Protocol {
     TCP,
-    UDP
+    UDP,
 };
 
 struct KTORRENT_EXPORT Port {

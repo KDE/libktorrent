@@ -42,14 +42,14 @@ public:
         CONNECTING_TO_SERVER,
         CONNECTING_TO_HOST,
         CONNECTED,
-        FAILED
+        FAILED,
     };
 
     enum SetupState {
         NONE,
         AUTH_REQUEST_SENT,
         USERNAME_AND_PASSWORD_SENT,
-        CONNECT_REQUEST_SENT
+        CONNECT_REQUEST_SENT,
     };
     Socks(mse::EncryptedPacketSocket::Ptr sock, const Address & dest);
     ~Socks() override;

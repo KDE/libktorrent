@@ -28,7 +28,10 @@
 namespace bt
 {
 enum TrackerStatus {
-    TRACKER_OK, TRACKER_ANNOUNCING, TRACKER_ERROR, TRACKER_IDLE
+    TRACKER_OK,
+    TRACKER_ANNOUNCING,
+    TRACKER_ERROR,
+    TRACKER_IDLE,
 };
 
 /**

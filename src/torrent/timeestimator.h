@@ -39,7 +39,9 @@ public:
     SampleQueue();
     ~SampleQueue();
 
-    enum {SAMPLE_COUNT_MAX = 20};
+    enum {
+        SAMPLE_COUNT_MAX = 20,
+    };
 
     /**
      * Inserts new sample into the queue. The oldest sample is overwritten.

@@ -34,9 +34,10 @@ class KTORRENT_EXPORT Value
 {
 public:
     enum Type {
-        STRING, INT, INT64
+        STRING,
+        INT,
+        INT64,
     };
-
 
     Value();
     Value(int val);

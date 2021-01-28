@@ -47,7 +47,7 @@ enum TorrentStatus {
     NO_SPACE_LEFT,
     PAUSED,
     SUPERSEEDING,
-    INVALID_STATUS
+    INVALID_STATUS,
 };
 
 struct KTORRENT_EXPORT TorrentStats {

@@ -67,7 +67,8 @@ public:
     virtual ~Poll();
 
     enum Mode {
-        INPUT, OUTPUT
+        INPUT,
+        OUTPUT,
     };
 
     /// Add a file descriptor to the poll (returns the index of it)

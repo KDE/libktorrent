@@ -98,7 +98,7 @@ enum ConnectionState {
     CS_SYN_SENT,
     CS_CONNECTED,
     CS_FINISHED,
-    CS_CLOSED
+    CS_CLOSED,
 };
 
 const bt::Uint32 MIN_PACKET_SIZE = 150;

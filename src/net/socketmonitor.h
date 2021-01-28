@@ -78,7 +78,7 @@ public:
 
     enum GroupType {
         UPLOAD_GROUP,
-        DOWNLOAD_GROUP
+        DOWNLOAD_GROUP,
     };
 
     /**

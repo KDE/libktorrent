@@ -52,7 +52,7 @@ class KTORRENT_EXPORT Connection : public QObject, public Retransmitter
 public:
     enum Type {
         INCOMING,
-        OUTGOING
+        OUTGOING,
     };
 
     /// Thrown when a transmission error occurs, server should kill the connection if it happens

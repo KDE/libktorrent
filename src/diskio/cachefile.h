@@ -59,9 +59,10 @@ public:
     ~CacheFile() override;
 
     enum Mode {
-        READ, WRITE, RW
+        READ,
+        WRITE,
+        RW,
     };
-
 
     /**
      * Open the file.

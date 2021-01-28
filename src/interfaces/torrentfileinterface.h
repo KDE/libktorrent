@@ -53,7 +53,7 @@ public:
         UNKNOWN,
         AUDIO,
         VIDEO,
-        NORMAL
+        NORMAL,
     };
 
     /// Get the index of the file

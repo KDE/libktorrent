@@ -39,7 +39,7 @@ public:
         CONNECTING,
         CONNECTED,
         BOUND,
-        CLOSED
+        CLOSED,
     };
 
     virtual int fd() const = 0;

@@ -48,21 +48,19 @@ class WebSeedInterface;
 class JobQueue;
 class ChunkSelectorInterface;
 
-
 enum TorrentStartResponse {
     START_OK,
     USER_CANCELED,
     NOT_ENOUGH_DISKSPACE,
     MAX_SHARE_RATIO_REACHED,
     BUSY_WITH_JOB,
-    QM_LIMITS_REACHED // Max seeds or downloads reached
+    QM_LIMITS_REACHED, // Max seeds or downloads reached
 };
 
 enum AutoStopReason {
     MAX_RATIO_REACHED,
-    MAX_SEED_TIME_REACHED
+    MAX_SEED_TIME_REACHED,
 };
-
 
 struct DHTNode {
     QString ip;
@@ -71,9 +69,8 @@ struct DHTNode {
 
 enum TorrentFeature {
     DHT_FEATURE,
-    UT_PEX_FEATURE // µTorrent peer exchange
+    UT_PEX_FEATURE, // µTorrent peer exchange
 };
-
 
 /**
  * @author Joris Guisson
@@ -185,7 +182,8 @@ public:
     virtual bool changeTorDir(const QString & new_dir) = 0;
 
     enum ChangeOutputFlags {
-        MOVE_FILES = 1, FULL_PATH = 2
+        MOVE_FILES = 1,
+        FULL_PATH = 2,
     };
 
     /**

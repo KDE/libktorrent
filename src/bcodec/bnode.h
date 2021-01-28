@@ -43,7 +43,9 @@ class KTORRENT_EXPORT BNode
 {
 public:
     enum Type {
-        VALUE, DICT, LIST
+        VALUE,
+        DICT,
+        LIST,
     };
 
     /**

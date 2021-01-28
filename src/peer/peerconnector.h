@@ -52,7 +52,7 @@ public:
         TCP_WITH_ENCRYPTION,
         TCP_WITHOUT_ENCRYPTION,
         UTP_WITH_ENCRYPTION,
-        UTP_WITHOUT_ENCRYPTION
+        UTP_WITHOUT_ENCRYPTION,
     };
 
     PeerConnector(const net::Address & addr, bool local, PeerManager* pman, ConnectionLimit::Token::Ptr token);

@@ -43,13 +43,13 @@ typedef enum {
     NORMAL_PRIORITY = 40,
     LAST_PRIORITY = 30,
     ONLY_SEED_PRIORITY = 20,
-    EXCLUDED = 10
+    EXCLUDED = 10,
 } Priority;
 
 enum ConfirmationResult {
     KEEP_DATA,
     THROW_AWAY_DATA,
-    CANCELED
+    CANCELED,
 };
 
 const Uint32 MAX_MSGLEN = 9 + 131072;

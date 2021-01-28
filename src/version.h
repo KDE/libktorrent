@@ -34,7 +34,7 @@ enum VersionType {
     BETA,
     RELEASE_CANDIDATE,
     DEVEL,
-    NORMAL
+    NORMAL,
 };
 
 /**

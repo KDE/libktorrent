@@ -65,7 +65,7 @@ private:
         GOT_YB,
         FOUND_VC,
         WAIT_FOR_PAD_D,
-        NORMAL_HANDSHAKE
+        NORMAL_HANDSHAKE,
     };
 
     BigInt xa, ya, s, skey, yb;

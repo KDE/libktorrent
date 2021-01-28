@@ -88,7 +88,7 @@ public:
     enum SeekPos {
         BEGIN,
         END,
-        CURRENT
+        CURRENT,
     };
 
     /**

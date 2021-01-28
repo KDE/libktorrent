@@ -50,7 +50,7 @@ public:
 
     enum Status {
         ON_DISK,
-        NOT_DOWNLOADED
+        NOT_DOWNLOADED,
     };
 
     /**

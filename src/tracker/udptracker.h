@@ -79,13 +79,13 @@ private:
         NONE = 0,
         COMPLETED = 1,
         STARTED = 2,
-        STOPPED = 3
+        STOPPED = 3,
     };
 
     enum Todo {
         NOTHING = 0,
         SCRAPE_REQUEST = 1,
-        ANNOUNCE_REQUEST = 2
+        ANNOUNCE_REQUEST = 2,
     };
 
 private:

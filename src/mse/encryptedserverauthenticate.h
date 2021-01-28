@@ -60,7 +60,7 @@ private:
         FOUND_INFO_HASH,
         WAIT_FOR_PAD_C,
         WAIT_FOR_IA,
-        NON_ENCRYPTED_HANDSHAKE
+        NON_ENCRYPTED_HANDSHAKE,
     };
     BigInt xb, yb, s, ya;
     bt::SHA1Hash skey, info_hash;
