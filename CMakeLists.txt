@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 cmake_policy(SET CMP0057 NEW)
 
@@ -8,6 +8,13 @@ set (RELEASE_SERVICE_VERSION_MINOR "07")
 set (RELEASE_SERVICE_VERSION_MICRO "70")
 set (RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_VERSION_MINOR}.${RELEASE_SERVICE_VERSION_MICRO}")
 
+
+set(Boost_MIN_VERSION "1.71.0")
+set(LibGMP_MIN_VERSION "6.0.0")
+set(LibGcrypt_MIN_VERSION "1.4.5")
+set(KF5_MIN_VERSION "5.82")
+set(QT_MIN_VERSION "5.15.0")
+
 set (SOVERSION 6)
 
 project(LIBKTORRENT VERSION ${RELEASE_SERVICE_VERSION})
@@ -15,7 +22,7 @@ project(LIBKTORRENT VERSION ${RELEASE_SERVICE_VERSION})
 # set some default settings
 enable_testing()
 
-find_package(ECM 5.15.0  NO_MODULE)
+find_package(ECM ${KF5_MIN_VERSION}  NO_MODULE)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
@@ -34,18 +41,10 @@ include(GenerateExportHeader)
 include(ECMMarkAsTest)
 include(ECMSetupVersion)
 include(KDEClangFormat)
-if(ECM_VERSION VERSION_GREATER_EQUAL 5.79)
-    include(KDEGitCommitHooks)
-endif()
+include(KDEGitCommitHooks)
 include(CMakePackageConfigHelpers)
 
-set(Boost_MIN_VERSION "1.34.0")
-set(LibGMP_MIN_VERSION "6.0.0")
-set(LibGcrypt_MIN_VERSION "1.4.5")
-set(KF5_MIN_VERSION "5.64")
-set(QT_MIN_VERSION "5.14.0")
-
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ecm_setup_version(${RELEASE_SERVICE_VERSION} VARIABLE_PREFIX LIBKTORRENT
@@ -88,7 +87,7 @@ add_definitions(
 )
 add_definitions(-DTRANSLATION_DOMAIN="libktorrent5")
 
-include_directories(${Boost_INCLUDE_DIR})
+include_directories(Boost::boost)
 
 #XFS prealloc
 check_include_files(xfs/xfs.h HAVE_XFS_XFS_H)
@@ -145,9 +144,7 @@ install(EXPORT KF5TorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE K
 # add clang-format target for all our real source files
 file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)
 kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})
-if(ECM_VERSION VERSION_GREATER_EQUAL 5.79)
-    kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
-endif()
+kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

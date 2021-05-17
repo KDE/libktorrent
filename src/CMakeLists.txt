@@ -236,6 +236,7 @@ PUBLIC
     KF5::Solid
     KF5::I18n
     Qt5::Xml
+    Boost::boost
     LibGcrypt::LibGcrypt
     LibGMP::LibGMP
 )
