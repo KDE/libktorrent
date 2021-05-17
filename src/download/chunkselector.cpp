@@ -21,6 +21,7 @@
 #include "chunkdownload.h"
 #include "downloader.h"
 #include <algorithm>
+#include <random>
 #include <diskio/chunkmanager.h>
 #include <interfaces/piecedownloader.h>
 #include <peer/chunkcounter.h>
