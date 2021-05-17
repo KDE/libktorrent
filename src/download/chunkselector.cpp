@@ -83,12 +83,15 @@ void ChunkSelector::init(ChunkManager *cman, Downloader *downer, PeerManager *pm
 {
     bt::ChunkSelectorInterface::init(cman, downer, pman);
     std::vector<Uint32> tmp;
+    std::random_device rd;
+    std::mt19937 g(rd());
+
     for (Uint32 i = 0; i < cman->getNumChunks(); i++) {
         if (!cman->getBitSet().get(i)) {
             tmp.push_back(i);
         }
     }
-    std::random_shuffle(tmp.begin(), tmp.end());
+    std::shuffle(tmp.begin(),tmp.end(), g);
     // std::list does not support random_shuffle so we use a vector as a temporary storage
     // for the random_shuffle
     chunks.insert(chunks.begin(), tmp.begin(), tmp.end());
