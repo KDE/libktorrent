@@ -1,6 +1,3 @@
-set(magnetlinktest_SRCS magnetlinktest.cpp)
+include(ECMAddTests)
+ecm_add_test(magnetlinktest.cpp LINK_LIBRARIES testlib KF5::Torrent Qt5::Test)
 
-add_executable(magnetlinktest ${magnetlinktest_SRCS})
-add_test(magnetlinktest magnetlinktest)
-ecm_mark_as_test(magnetlinktest)
-target_link_libraries( magnetlinktest Qt5::Test KF5::Torrent)

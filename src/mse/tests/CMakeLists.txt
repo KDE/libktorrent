@@ -1,5 +1,2 @@
-set(rc4encryptortest_SRCS rc4encryptortest.cpp)
-add_executable(rc4encryptortest ${rc4encryptortest_SRCS})
-add_test(rc4encryptortest rc4encryptortest)
-ecm_mark_as_test(rc4encryptortest)
-target_link_libraries( rc4encryptortest Qt5::Test KF5::Torrent)
+include(ECMAddTests)
+ecm_add_test(rc4encryptortest.cpp LINK_LIBRARIES KF5::Torrent Qt5::Test)
