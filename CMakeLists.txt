@@ -18,7 +18,7 @@ set(QT_MIN_VERSION "5.15.0")
 set (SOVERSION 6)
 
 project(LIBKTORRENT VERSION ${RELEASE_SERVICE_VERSION})
-cmake_policy(SET CMP0115 OLD)
+
 # set some default settings
 enable_testing()
 
