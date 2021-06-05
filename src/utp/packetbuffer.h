@@ -29,7 +29,7 @@
 
 namespace utp
 {
-class Header;
+struct Header;
 
 /**
  * Special packet buffer for UTP packets

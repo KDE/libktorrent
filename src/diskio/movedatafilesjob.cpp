@@ -151,7 +151,7 @@ void MoveDataFilesJob::startMoving()
     active_dst = i.value();
     Out(SYS_GEN | LOG_DEBUG) << "Moving " << active_src << " -> " << active_dst << endl;
     connect(active_job, &KIO::Job::result, this, &MoveDataFilesJob::onJobDone);
-    connect(active_job, qOverload<KJob *, KJob::Unit, qulonglong>(&KIO::Job::processedAmount), this, &MoveDataFilesJob::onTransferred);
+    connect(active_job, &KIO::Job::processedAmountChanged, this, &MoveDataFilesJob::onTransferred);
     connect(active_job, &KIO::Job::speed, this, &MoveDataFilesJob::onSpeed);
     todo.erase(i);
 
