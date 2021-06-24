@@ -346,6 +346,34 @@ void ChunkManager::prioritise(Uint32 from, Uint32 to, Priority priority)
     updateStats();
 }
 
+void ChunkManager::prioritisePreview(Uint32 from, Uint32 to)
+{
+    if (from > to)
+        std::swap(from, to);
+
+    for (Uint32 i = from; i <= to && i < (Uint32)d->chunks.size(); ++i) {
+        Chunk *c = d->chunks[i];
+        Priority priority = c->getPriority();
+
+        switch (priority) {
+        case FIRST_PRIORITY:
+            priority = FIRST_PREVIEW_PRIORITY;
+            break;
+        case NORMAL_PRIORITY:
+            priority = NORMAL_PREVIEW_PRIORITY;
+            break;
+        case LAST_PRIORITY:
+            priority = LAST_PREVIEW_PRIORITY;
+            break;
+        default:
+            continue;
+        }
+
+        c->setPriority(priority);
+    }
+    updateStats();
+}
+
 void ChunkManager::exclude(Uint32 from, Uint32 to)
 {
     if (from > to)
@@ -816,9 +844,9 @@ void ChunkManager::Private::setupPriorities()
     } else if (tor.isMultimedia()) {
         Uint32 nchunks = p->previewChunkRangeSize();
 
-        p->prioritise(0, nchunks, PREVIEW_PRIORITY);
+        p->prioritisePreview(0, nchunks);
         if (tor.getNumChunks() > nchunks) {
-            p->prioritise(tor.getNumChunks() - nchunks, tor.getNumChunks() - 1, PREVIEW_PRIORITY);
+            p->prioritisePreview(tor.getNumChunks() - nchunks, tor.getNumChunks() - 1);
         }
     }
 }
@@ -958,7 +986,7 @@ void ChunkManager::Private::doPreviewPriority(TorrentFile &file)
 
     if (file.getFirstChunk() == file.getLastChunk()) {
         // prioritise whole file
-        p->prioritise(file.getFirstChunk(), file.getLastChunk(), PREVIEW_PRIORITY);
+        p->prioritisePreview(file.getFirstChunk(), file.getLastChunk());
         return;
     }
 
@@ -966,9 +994,9 @@ void ChunkManager::Private::doPreviewPriority(TorrentFile &file)
     if (!nchunks)
         return;
 
-    p->prioritise(file.getFirstChunk(), file.getFirstChunk() + nchunks, PREVIEW_PRIORITY);
+    p->prioritisePreview(file.getFirstChunk(), file.getFirstChunk() + nchunks);
     if (file.getLastChunk() - file.getFirstChunk() > nchunks) {
-        p->prioritise(file.getLastChunk() - nchunks, file.getLastChunk(), PREVIEW_PRIORITY);
+        p->prioritisePreview(file.getLastChunk() - nchunks, file.getLastChunk());
     }
 }
 
@@ -993,8 +1021,20 @@ void ChunkManager::Private::dumpPriority(TorrentFile *tf)
     for (Uint32 i = first; i <= last; i++) {
         QString prio;
         switch (chunks[i]->getPriority()) {
+        case FIRST_PREVIEW_PRIORITY:
+            prio = "First (Preview)";
+            break;
         case FIRST_PRIORITY:
             prio = "First";
+            break;
+        case NORMAL_PREVIEW_PRIORITY:
+            prio = "Normal (Preview)";
+            break;
+        case NORMAL_PRIORITY:
+            prio = "Normal";
+            break;
+        case LAST_PREVIEW_PRIORITY:
+            prio = "Last (Preview)";
             break;
         case LAST_PRIORITY:
             prio = "Last";
@@ -1005,11 +1045,8 @@ void ChunkManager::Private::dumpPriority(TorrentFile *tf)
         case EXCLUDED:
             prio = "Excluded";
             break;
-        case PREVIEW_PRIORITY:
-            prio = "Preview";
-            break;
         default:
-            prio = "Normal";
+            prio = "(invalid)";
             break;
         }
         Out(SYS_DIO | LOG_DEBUG) << i << " prio " << prio << endl;

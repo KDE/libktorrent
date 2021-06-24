@@ -254,6 +254,13 @@ public:
     void prioritise(Uint32 from, Uint32 to, Priority priority);
 
     /**
+     * Increases the priority of a range to preview priority.
+     * @param from First chunk in range
+     * @param to Last chunk in range
+     */
+    void prioritisePreview(Uint32 from, Uint32 to);
+
+    /**
      * Make sure that a range will not be downloaded.
      * @param from First chunk in range
      * @param to Last chunk in range

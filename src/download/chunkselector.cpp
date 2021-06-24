@@ -133,10 +133,9 @@ bool ChunkSelector::select(PieceDownloader *pd, Uint32 &chunk)
 {
     const BitSet &bs = cman->getBitSet();
 
-    std::list<Uint32> preview;
-    std::list<Uint32> normal;
-    std::list<Uint32> first;
-    Uint32 sel = cman->getNumChunks() + 1;
+    Uint32 sel = ~Uint32();
+    Uint32 sel_dl = ~Uint32();
+    Priority sel_prio = EXCLUDED;
 
     // sort the chunks every 2 seconds
     if (sort_timer.getElapsedSinceUpdate() > 2000) {
@@ -155,28 +154,33 @@ bool ChunkSelector::select(PieceDownloader *pd, Uint32 &chunk)
             std::list<Uint32>::iterator tmp = itr;
             ++itr;
             chunks.erase(tmp);
+        } else if (c->getPriority() < sel_prio) {
+            // we've already found a suitable chunk at a higher priority, so select that one
+            break;
         } else if (pd->hasChunk(i)) {
             // pd has to have the selected chunk and it needs to be not excluded
-            if (!downer->downloading(i)) {
-                // we have a chunk
+            Uint32 dl = downer->numDownloadersForChunk(i);
+            if (dl == 0) {
+                // we found a chunk that has no downloaders, so select it
                 sel = i;
                 break;
             }
-
-            switch (cman->getChunk(i)->getPriority()) {
-            case PREVIEW_PRIORITY:
-                preview.push_back(i);
-                break;
-            case FIRST_PRIORITY:
-                first.push_back(i);
-                break;
-            case NORMAL_PRIORITY:
-                normal.push_back(i);
-                break;
-            default:
-                break;
+            // we found a chunk that has downloaders; remember it if it has fewer
+            // downloaders than the chunk we're already remembering (if any) and:
+            //   - it has fewer than max_peers_per_chunk downloaders, or
+            //   - we're in endgame mode, or
+            //   - it is downloading very slowly
+            if (dl < sel_dl) {
+                const Uint32 max_peers_per_chunk = c->isPreview() ? 3 : 2;
+                ChunkDownload *cd;
+                if (dl < max_peers_per_chunk || downer->endgameMode() ||
+                        ((cd = downer->download(i)) && cd->getDownloadSpeed() < 100))
+                {
+                    sel = i;
+                    sel_dl = dl;
+                    sel_prio = c->getPriority();
+                }
             }
-
             ++itr;
         } else
             ++itr;
@@ -185,53 +189,8 @@ bool ChunkSelector::select(PieceDownloader *pd, Uint32 &chunk)
     if (sel >= cman->getNumChunks())
         return false;
 
-    // we have found one, now try to see if we cannot assign this PieceDownloader to a higher priority chunk
-    switch (cman->getChunk(sel)->getPriority()) {
-    case PREVIEW_PRIORITY:
-        chunk = sel;
-        return true;
-    case FIRST_PRIORITY:
-        if (preview.size() > 0) {
-            chunk = leastPeers(preview, sel, 3);
-            return true;
-        } else {
-            chunk = sel;
-            return true;
-        }
-        break;
-    case NORMAL_PRIORITY:
-        if (preview.size() > 0) {
-            chunk = leastPeers(preview, sel, 3);
-            return true;
-        } else if (first.size() > 0) {
-            chunk = leastPeers(first, sel, 2);
-            return true;
-        } else {
-            chunk = sel;
-            return true;
-        }
-        break;
-    case LAST_PRIORITY:
-        if (preview.size() > 0) {
-            chunk = leastPeers(preview, sel, 3);
-            return true;
-        } else if (first.size() > 0) {
-            chunk = leastPeers(first, sel, 2);
-            return true;
-        } else if (normal.size() > 0) {
-            chunk = leastPeers(normal, sel, 2);
-            return true;
-        } else {
-            chunk = sel;
-            return true;
-        }
-        break;
-    default:
-        chunk = sel;
-        return true;
-    }
-
-    return false;
+    chunk = sel;
+    return true;
 }
 
 void ChunkSelector::dataChecked(const BitSet &ok_chunks, Uint32 from, Uint32 to)

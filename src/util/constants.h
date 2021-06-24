@@ -38,9 +38,11 @@ typedef Uint64 TimeStamp;
 
 typedef enum {
     // also leave some room if we want to add new priorities in the future
-    PREVIEW_PRIORITY = 60,
+    FIRST_PREVIEW_PRIORITY = 55,
     FIRST_PRIORITY = 50,
+    NORMAL_PREVIEW_PRIORITY = 45,
     NORMAL_PRIORITY = 40,
+    LAST_PREVIEW_PRIORITY = 35,
     LAST_PRIORITY = 30,
     ONLY_SEED_PRIORITY = 20,
     EXCLUDED = 10,

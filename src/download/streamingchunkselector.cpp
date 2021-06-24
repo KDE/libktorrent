@@ -50,7 +50,7 @@ void StreamingChunkSelector::init(ChunkManager *cman, Downloader *downer, PeerMa
 
     preview_chunks.clear();
     for (Uint32 i = 0; i <= range_end; i++)
-        if (cman->getChunk(i)->getPriority() == bt::PREVIEW_PRIORITY)
+        if (cman->getChunk(i)->isPreview())
             preview_chunks.insert(i);
 }
 
@@ -191,13 +191,13 @@ void StreamingChunkSelector::reincluded(bt::Uint32 from, bt::Uint32 to)
     initRange();
 
     for (Uint32 chunk = from; chunk <= to; chunk++)
-        if (cman->getChunk(chunk)->getPriority() == bt::PREVIEW_PRIORITY)
+        if (cman->getChunk(chunk)->isPreview())
             preview_chunks.insert(chunk);
 }
 
 void StreamingChunkSelector::reinsert(bt::Uint32 chunk)
 {
-    if (cman->getChunk(chunk)->getPriority() == bt::PREVIEW_PRIORITY)
+    if (cman->getChunk(chunk)->isPreview())
         preview_chunks.insert(chunk);
 
     bt::ChunkSelector::reinsert(chunk);
