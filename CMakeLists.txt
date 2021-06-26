@@ -87,8 +87,6 @@ add_definitions(
 )
 add_definitions(-DTRANSLATION_DOMAIN="libktorrent5")
 
-include_directories(Boost::boost)
-
 #XFS prealloc
 check_include_files(xfs/xfs.h HAVE_XFS_XFS_H)
 if(HAVE_XFS_XFS_H)
