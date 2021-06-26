@@ -8,13 +8,11 @@ set (RELEASE_SERVICE_VERSION_MINOR "07")
 set (RELEASE_SERVICE_VERSION_MICRO "70")
 set (RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_VERSION_MINOR}.${RELEASE_SERVICE_VERSION_MICRO}")
 
-
 set(Boost_MIN_VERSION "1.71.0")
 set(LibGMP_MIN_VERSION "6.0.0")
 set(LibGcrypt_MIN_VERSION "1.4.5")
 set(KF5_MIN_VERSION "5.82")
 set(QT_MIN_VERSION "5.15.0")
-
 set (SOVERSION 6)
 
 project(LIBKTORRENT VERSION ${RELEASE_SERVICE_VERSION})
@@ -32,7 +30,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ECM_MODULE_PATH} ${ECM
 include(CheckIncludeFiles)
 include(CheckFunctionExists)
 include(CheckTypeSize) #XFS
-
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings  NO_POLICY_SCOPE)
@@ -86,8 +83,6 @@ add_definitions(
   -DQT_USE_FAST_OPERATOR_PLUS
 )
 add_definitions(-DTRANSLATION_DOMAIN="libktorrent5")
-
-include_directories(Boost::boost)
 
 #XFS prealloc
 check_include_files(xfs/xfs.h HAVE_XFS_XFS_H)
