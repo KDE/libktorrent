@@ -2,7 +2,15 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-ktorrent.h.cmake ${CMAKE_BINAR
 
 remove_definitions(-DQT_NO_HTTP)
 
-set(libktorrent_SRC
+add_library(KF5Torrent)
+add_library(KF5::Torrent ALIAS KF5Torrent)
+set_target_properties(KF5Torrent PROPERTIES
+    VERSION     ${RELEASE_SERVICE_VERSION}
+    SOVERSION   ${SOVERSION}
+    EXPORT_NAME Torrent
+)
+
+target_sources(KF5Torrent PRIVATE
     util/bitset.cpp
     util/timer.cpp
     util/urlencoder.cpp
@@ -210,19 +218,17 @@ set(libktorrent_SRC
 
 if(NOT WIN32)
 # Add signalcatcher.cpp for all builds except WIN32
-set(libktorrent_SRC ${libktorrent_SRC} util/signalcatcher.cpp)
+    target_sources(KF5Torrent PRIVATE util/signalcatcher.cpp)
 endif(NOT WIN32)
 
 if(WIN32)
 # Compile stuff for windows
-set(libktorrent_SRC ${libktorrent_SRC} util/win32.cpp)
+    target_sources(KF5Torrent PRIVATE util/win32.cpp)
 endif(WIN32)
 
 
-# ki18n_wrap_ui(libktorrent_SRC ${libktorrent_UI})
-# kconfig_add_kcfg_files(libktorrent_SRC settings.kcfgc)
-add_library(KF5Torrent ${libktorrent_SRC})
-add_library(KF5::Torrent ALIAS KF5Torrent)
+# ki18n_wrap_ui(KF5Torrent ${libktorrent_UI})
+# kconfig_add_kcfg_files(KF5Torrent settings.kcfgc)
 
 generate_export_header(KF5Torrent BASE_NAME ktorrent)
 
@@ -248,7 +254,6 @@ target_include_directories(KF5Torrent INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTA
 target_include_directories(KF5Torrent PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOURCE_DIR}/src;${LIBKTORRENT_BINARY_DIR}/src;${LIBKTORRENT_BINARY_DIR}>")
 
 
-set_target_properties(KF5Torrent PROPERTIES VERSION ${RELEASE_SERVICE_VERSION} SOVERSION ${SOVERSION} EXPORT_NAME Torrent)
 install(TARGETS KF5Torrent EXPORT KF5TorrentTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
 
 set (interfaces_HDR
