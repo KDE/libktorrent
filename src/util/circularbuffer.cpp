@@ -26,7 +26,7 @@
 namespace bt
 {
 CircularBuffer::CircularBuffer(Uint32 cap)
-    : data(0)
+    : data(nullptr)
     , buf_capacity(cap)
     , start(0)
     , buf_size(0)
@@ -99,7 +99,7 @@ CircularBuffer::Range CircularBuffer::secondRange()
     if (start + buf_size > buf_capacity)
         return Range(data, buf_size - (buf_capacity - start));
     else
-        return Range((bt::Uint8 *)0, 0);
+        return Range((bt::Uint8 *)nullptr, 0);
 }
 
 }

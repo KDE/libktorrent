@@ -43,7 +43,7 @@ namespace bt
 {
 SingleFileCache::SingleFileCache(Torrent &tor, const QString &tmpdir, const QString &datadir)
     : Cache(tor, tmpdir, datadir)
-    , fd(0)
+    , fd(nullptr)
 {
     cache_file = tmpdir + "cache";
     QFileInfo fi(cache_file);
@@ -106,7 +106,7 @@ Job *SingleFileCache::moveDataFiles(const QString &ndir)
 
     dst += output_file.mid(output_file.lastIndexOf(bt::DirSeparator()) + 1);
     if (output_file == dst)
-        return 0;
+        return nullptr;
 
     move_data_files_dst = dst;
     MoveDataFilesJob *job = new MoveDataFilesJob();
@@ -129,14 +129,14 @@ PieceData::Ptr SingleFileCache::createPiece(Chunk *c, Uint64 off, Uint32 length,
         open();
 
     Uint64 piece_off = c->getIndex() * tor.getChunkSize() + off;
-    Uint8 *buf = 0;
+    Uint8 *buf = nullptr;
     if (mmap_failures >= 3) {
         buf = new Uint8[length];
         PieceData::Ptr cp(new PieceData(c, off, length, buf, CacheFile::Ptr(), read_only));
         insertPiece(c, cp);
         return cp;
     } else {
-        PieceData::Ptr cp(new PieceData(c, off, length, 0, fd, read_only));
+        PieceData::Ptr cp(new PieceData(c, off, length, nullptr, fd, read_only));
         buf = (Uint8 *)fd->map(cp.data(), piece_off, length, read_only ? CacheFile::READ : CacheFile::RW);
         if (buf) {
             cp->setData(buf);

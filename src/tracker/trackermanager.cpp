@@ -34,7 +34,7 @@ namespace bt
 TrackerManager::TrackerManager(bt::TorrentControl *tor, PeerManager *pman)
     : tor(tor)
     , pman(pman)
-    , curr(0)
+    , curr(nullptr)
     , started(false)
 {
     trackers.setAutoDelete(true);
@@ -164,15 +164,15 @@ QList<TrackerInterface *> TrackerManager::getTrackers()
 TrackerInterface *TrackerManager::addTracker(const QUrl &url, bool custom, int tier)
 {
     if (trackers.contains(url))
-        return 0;
+        return nullptr;
 
-    Tracker *trk = 0;
+    Tracker *trk = nullptr;
     if (url.scheme() == QLatin1String("udp"))
         trk = new UDPTracker(url, this, tor->getTorrent().getPeerID(), tier);
     else if (url.scheme() == QLatin1String("http") || url.scheme() == QLatin1String("https"))
         trk = new HTTPTracker(url, this, tor->getTorrent().getPeerID(), tier);
     else
-        return 0;
+        return nullptr;
 
     addTracker(trk);
     if (custom) {
@@ -235,7 +235,7 @@ void TrackerManager::restoreDefault()
                 t->stop();
 
             if (curr == t && tor->getStats().priv_torrent) {
-                curr = 0;
+                curr = nullptr;
                 trackers.erase(*i);
             } else {
                 trackers.erase(*i);
@@ -246,7 +246,7 @@ void TrackerManager::restoreDefault()
 
     custom_trackers.clear();
     saveCustomURLs();
-    if (tor->getStats().priv_torrent && curr == 0)
+    if (tor->getStats().priv_torrent && curr == nullptr)
         switchTracker(selectTracker());
 }
 
@@ -406,7 +406,7 @@ void TrackerManager::loadTrackerStatus()
 
 Tracker *TrackerManager::selectTracker()
 {
-    Tracker *n = 0;
+    Tracker *n = nullptr;
     PtrMap<QUrl, Tracker>::iterator i = trackers.begin();
     while (i != trackers.end()) {
         Tracker *t = i->second;

@@ -99,7 +99,7 @@ void UTPServer::Private::stop()
         utp_thread->exit();
         utp_thread->wait();
         delete utp_thread;
-        utp_thread = 0;
+        utp_thread = nullptr;
     }
 
     connections.clear();

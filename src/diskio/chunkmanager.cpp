@@ -82,7 +82,7 @@ public:
 };
 
 ChunkManager::ChunkManager(Torrent &tor, const QString &tmpdir, const QString &datadir, bool custom_output_name, CacheFactory *fac)
-    : d(0)
+    : d(nullptr)
     , tor(tor)
     , bitset(tor.getNumChunks())
     , excluded_chunks(tor.getNumChunks())
@@ -169,7 +169,7 @@ bool ChunkManager::isStorageMounted(QStringList &missing)
 Chunk *ChunkManager::getChunk(unsigned int i)
 {
     if (i >= (Uint32)d->chunks.size())
-        return 0;
+        return nullptr;
     else
         return d->chunks[i];
 }

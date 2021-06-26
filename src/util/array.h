@@ -39,7 +39,7 @@ template<class T> class KTORRENT_EXPORT Array
 public:
     Array(Uint32 num = 0)
         : num(num)
-        , data(0)
+        , data(nullptr)
     {
         if (num > 0)
             data = new T[num];

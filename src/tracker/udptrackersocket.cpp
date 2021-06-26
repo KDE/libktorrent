@@ -255,7 +255,7 @@ void UDPTrackerSocket::handleScrape(bt::Buffer::Ptr buf)
 
 Int32 UDPTrackerSocket::newTransactionID()
 {
-    Int32 transaction_id = rand() * time(0);
+    Int32 transaction_id = rand() * time(nullptr);
     while (d->transactions.contains(transaction_id))
         transaction_id++;
     return transaction_id;

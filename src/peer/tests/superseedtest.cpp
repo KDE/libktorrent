@@ -97,7 +97,7 @@ class SuperSeedTest : public QObject
 {
     Q_OBJECT
 public:
-    SuperSeedTest(QObject *parent = 0)
+    SuperSeedTest(QObject *parent = nullptr)
         : QObject(parent)
     {
     }

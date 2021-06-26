@@ -67,7 +67,7 @@ class KTORRENT_EXPORT SignalCatcher : public QObject
 {
     Q_OBJECT
 public:
-    SignalCatcher(QObject *parent = 0);
+    SignalCatcher(QObject *parent = nullptr);
     ~SignalCatcher() override;
 
     /**

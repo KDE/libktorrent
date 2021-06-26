@@ -32,19 +32,19 @@ class ServerSocket::Private
 {
 public:
     Private(ConnectionHandler *chandler)
-        : sock(0)
-        , rsn(0)
-        , wsn(0)
+        : sock(nullptr)
+        , rsn(nullptr)
+        , wsn(nullptr)
         , chandler(chandler)
-        , dhandler(0)
+        , dhandler(nullptr)
     {
     }
 
     Private(DataHandler *dhandler)
-        : sock(0)
-        , rsn(0)
-        , wsn(0)
-        , chandler(0)
+        : sock(nullptr)
+        , rsn(nullptr)
+        , wsn(nullptr)
+        , chandler(nullptr)
         , dhandler(dhandler)
         , pool(new BufferPool())
     {
@@ -61,16 +61,16 @@ public:
     void reset()
     {
         delete rsn;
-        rsn = 0;
+        rsn = nullptr;
         delete wsn;
-        wsn = 0;
+        wsn = nullptr;
         delete sock;
-        sock = 0;
+        sock = nullptr;
     }
 
     bool isTCP() const
     {
-        return chandler != 0;
+        return chandler != nullptr;
     }
 
     net::Socket *sock;

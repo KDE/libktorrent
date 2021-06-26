@@ -35,7 +35,7 @@ namespace bt
 {
 MultiDataChecker::MultiDataChecker(bt::Uint32 from, bt::Uint32 to)
     : DataChecker(from, to)
-    , buf(0)
+    , buf(nullptr)
 {
 }
 

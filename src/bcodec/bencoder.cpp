@@ -68,7 +68,7 @@ void BEncoderIODeviceOutput::write(const char *str, Uint32 len)
 ////////////////////////////////////
 
 BEncoder::BEncoder(File *fptr)
-    : out(0)
+    : out(nullptr)
     , del(true)
 {
     out = new BEncoderFileOutput(fptr);
@@ -81,7 +81,7 @@ BEncoder::BEncoder(BEncoderOutput *out)
 }
 
 BEncoder::BEncoder(QIODevice *dev)
-    : out(0)
+    : out(nullptr)
     , del(true)
 {
     out = new BEncoderIODeviceOutput(dev);

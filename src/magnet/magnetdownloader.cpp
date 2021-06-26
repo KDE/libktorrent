@@ -38,8 +38,8 @@ namespace bt
 MagnetDownloader::MagnetDownloader(const bt::MagnetLink &mlink, QObject *parent)
     : QObject(parent)
     , mlink(mlink)
-    , pman(0)
-    , dht_ps(0)
+    , pman(nullptr)
+    , dht_ps(nullptr)
     , tor(mlink.infoHash())
     , found(false)
 {
@@ -104,12 +104,12 @@ void MagnetDownloader::stop()
     if (dht_ps) {
         dht_ps->stop();
         delete dht_ps;
-        dht_ps = 0;
+        dht_ps = nullptr;
     }
 
     pman->stop();
     delete pman;
-    pman = 0;
+    pman = nullptr;
 }
 
 void MagnetDownloader::update()
@@ -120,7 +120,7 @@ void MagnetDownloader::update()
 
 bool MagnetDownloader::running() const
 {
-    return pman != 0;
+    return pman != nullptr;
 }
 
 Uint32 MagnetDownloader::numPeers() const
@@ -223,7 +223,7 @@ void MagnetDownloader::dhtStopped()
     if (running() && dht_ps) {
         dht_ps->stop();
         delete dht_ps;
-        dht_ps = 0;
+        dht_ps = nullptr;
     }
 }
 

@@ -52,7 +52,7 @@ public:
     /// Is it a mapped into memory
     bool mapped() const
     {
-        return cache_file != 0;
+        return cache_file != nullptr;
     }
 
     /// Is this writeable
@@ -82,7 +82,7 @@ public:
     /// Check if the data pointer is OK
     bool ok() const
     {
-        return ptr != 0;
+        return ptr != nullptr;
     }
 
     /// Set the data pointer

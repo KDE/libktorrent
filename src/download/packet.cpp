@@ -39,7 +39,7 @@ static Uint8 *AllocPacket(Uint32 size, Uint8 type)
 }
 
 Packet::Packet(Uint8 type)
-    : data(0)
+    : data(nullptr)
     , size(5)
     , written(0)
     , type(type)
@@ -48,7 +48,7 @@ Packet::Packet(Uint8 type)
 }
 
 Packet::Packet(Uint16 port)
-    : data(0)
+    : data(nullptr)
     , size(7)
     , written(0)
     , type(PORT)
@@ -58,7 +58,7 @@ Packet::Packet(Uint16 port)
 }
 
 Packet::Packet(Uint32 chunk, Uint8 type)
-    : data(0)
+    : data(nullptr)
     , size(9)
     , written(0)
     , type(type)
@@ -68,7 +68,7 @@ Packet::Packet(Uint32 chunk, Uint8 type)
 }
 
 Packet::Packet(const BitSet &bs)
-    : data(0)
+    : data(nullptr)
     , size(5 + bs.getNumBytes())
     , written(0)
     , type(BITFIELD)
@@ -78,7 +78,7 @@ Packet::Packet(const BitSet &bs)
 }
 
 Packet::Packet(const Request &r, Uint8 type)
-    : data(0)
+    : data(nullptr)
     , size(17)
     , written(0)
     , type(type)
@@ -90,7 +90,7 @@ Packet::Packet(const Request &r, Uint8 type)
 }
 
 Packet::Packet(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch)
-    : data(0)
+    : data(nullptr)
     , size(13 + len)
     , written(0)
     , type(PIECE)
@@ -102,7 +102,7 @@ Packet::Packet(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch)
 }
 
 Packet::Packet(Uint8 ext_id, const QByteArray &ext_data)
-    : data(0)
+    : data(nullptr)
     , size(6 + ext_data.size())
     , written(0)
     , type(EXTENDED)
@@ -125,14 +125,14 @@ bool Packet::isPiece(const Request &req) const
 Packet *Packet::makeRejectOfPiece()
 {
     if (getType() != PIECE)
-        return 0;
+        return nullptr;
 
     Uint32 idx = bt::ReadUint32(data, 5);
     Uint32 off = bt::ReadUint32(data, 9);
     Uint32 len = size - 13;
 
     //  Out(SYS_CON|LOG_DEBUG) << "Packet::makeRejectOfPiece " << idx << " " << off << " " << len << endl;
-    return new Packet(Request(idx, off, len, 0), bt::REJECT_REQUEST);
+    return new Packet(Request(idx, off, len, nullptr), bt::REJECT_REQUEST);
 }
 
 /*

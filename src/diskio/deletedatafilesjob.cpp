@@ -29,9 +29,9 @@
 namespace bt
 {
 DeleteDataFilesJob::DeleteDataFilesJob(const QString &base)
-    : Job(true, 0)
+    : Job(true, nullptr)
     , base(base)
-    , directory_tree(0)
+    , directory_tree(nullptr)
 {
 }
 
@@ -66,7 +66,7 @@ void DeleteDataFilesJob::onDeleteJobDone(KJob *j)
 
     if (active_job->error())
         active_job->uiDelegate()->showErrorMessage();
-    active_job = 0;
+    active_job = nullptr;
 
     if (directory_tree)
         directory_tree->doDeleteOnEmpty(base);

@@ -91,7 +91,7 @@ void CompressThread::cancel()
 
 CompressFileJob::CompressFileJob(const QString &file)
     : file(file)
-    , compress_thread(0)
+    , compress_thread(nullptr)
 {
 }
 

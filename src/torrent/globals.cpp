@@ -27,13 +27,13 @@
 
 namespace bt
 {
-Globals *Globals::inst = 0;
+Globals *Globals::inst = nullptr;
 
 Globals::Globals()
 {
     plist = new net::PortList();
-    tcp_server = 0;
-    utp_server = 0;
+    tcp_server = nullptr;
+    utp_server = nullptr;
     dh_table = new dht::DHT();
 }
 
@@ -57,7 +57,7 @@ Globals &Globals::instance()
 void Globals::cleanup()
 {
     delete inst;
-    inst = 0;
+    inst = nullptr;
 }
 
 bool Globals::initTCPServer(Uint16 port)
@@ -75,7 +75,7 @@ bool Globals::initTCPServer(Uint16 port)
 void Globals::shutdownTCPServer()
 {
     delete tcp_server;
-    tcp_server = 0;
+    tcp_server = nullptr;
 }
 
 bool Globals::initUTPServer(Uint16 port)
@@ -96,7 +96,7 @@ void Globals::shutdownUTPServer()
     if (utp_server) {
         utp_server->stop();
         delete utp_server;
-        utp_server = 0;
+        utp_server = nullptr;
     }
 }
 

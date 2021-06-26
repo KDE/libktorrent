@@ -33,7 +33,7 @@ namespace bt
 static ResourceManager move_data_files_slot(1);
 
 MoveDataFilesJob::MoveDataFilesJob()
-    : Job(true, 0)
+    : Job(true, nullptr)
     , Resource(&move_data_files_slot, "MoveDataFilesJob")
     , err(false)
     , active_job(nullptr)
@@ -45,7 +45,7 @@ MoveDataFilesJob::MoveDataFilesJob()
 }
 
 MoveDataFilesJob::MoveDataFilesJob(const QMap<TorrentFileInterface *, QString> &fmap)
-    : Job(true, 0)
+    : Job(true, nullptr)
     , Resource(&move_data_files_slot, "MoveDataFilesJob")
     , err(false)
     , active_job(nullptr)
@@ -90,7 +90,7 @@ void MoveDataFilesJob::onJobDone(KJob *j)
         if (!err)
             setError(KIO::ERR_INTERNAL);
 
-        active_job = 0;
+        active_job = nullptr;
         if (j->error())
             ((KIO::Job *)j)->uiDelegate()->showErrorMessage();
 
@@ -102,7 +102,7 @@ void MoveDataFilesJob::onJobDone(KJob *j)
         bytes_moved_current_file = 0;
         success.insert(active_src, active_dst);
         active_src = active_dst = QString();
-        active_job = 0;
+        active_job = nullptr;
         startMoving();
     }
 }

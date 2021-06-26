@@ -53,7 +53,7 @@ private Q_SLOTS:
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
-            tc.init(0, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
+            tc.init(nullptr, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
         } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
@@ -86,7 +86,7 @@ private Q_SLOTS:
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
-            tc.init(0, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
+            tc.init(nullptr, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
         } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
@@ -119,7 +119,7 @@ private Q_SLOTS:
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
-            tc.init(0, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
+            tc.init(nullptr, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
         } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;

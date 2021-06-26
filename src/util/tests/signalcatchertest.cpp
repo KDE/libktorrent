@@ -104,7 +104,7 @@ private Q_SLOTS:
             QFAIL(msg.toLocal8Bit().constData());
         }
 
-        char *ptr = (char *)mmap(0, 4096, PROT_WRITE, MAP_SHARED, fd, 0);
+        char *ptr = (char *)mmap(nullptr, 4096, PROT_WRITE, MAP_SHARED, fd, 0);
         QVERIFY(ptr);
 
         // First try a write which should not fail

@@ -28,7 +28,7 @@ class PacketReaderTest : public QObject, public bt::PeerInterface
 {
     Q_OBJECT
 public:
-    PacketReaderTest(QObject *parent = 0)
+    PacketReaderTest(QObject *parent = nullptr)
         : QObject(parent)
         , bt::PeerInterface(bt::PeerID(), 100)
     {

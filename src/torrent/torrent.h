@@ -44,7 +44,7 @@ struct TrackerTier {
     TrackerTier *next;
 
     TrackerTier()
-        : next(0)
+        : next(nullptr)
     {
     }
 

@@ -30,7 +30,7 @@
 
 namespace bt
 {
-TorrentFile TorrentFile::null(0);
+TorrentFile TorrentFile::null(nullptr);
 
 TorrentFile::TorrentFile(Torrent *tor)
     : TorrentFileInterface(0, QString(), 0)

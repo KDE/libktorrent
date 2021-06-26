@@ -53,7 +53,7 @@ RPCMsg::Ptr RPCMsgFactory::buildRequest(BDictNode *dict)
         throw bt::Error("Invalid request, arguments missing");
 
     RPCMsg::Ptr msg;
-    QString str = dict->getString(REQ, 0);
+    QString str = dict->getString(REQ, nullptr);
     if (str == "ping") {
         msg = RPCMsg::Ptr(new PingReq());
         msg->parse(dict);
@@ -119,7 +119,7 @@ RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver
 
 RPCMsg::Ptr RPCMsgFactory::build(bt::BDictNode *dict, RPCMethodResolver *method_resolver)
 {
-    QString t = dict->getString(TYP, 0);
+    QString t = dict->getString(TYP, nullptr);
     if (t == REQ) {
         return buildRequest(dict);
     } else if (t == RSP) {

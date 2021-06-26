@@ -73,7 +73,7 @@ public:
      * Stop gathering peers
      * @param wjob WaitJob to wait at exit for the completion of stopped events to the trackers
      */
-    virtual void stop(WaitJob *wjob = 0);
+    virtual void stop(WaitJob *wjob = nullptr);
 
     /**
      * Notify peersources and trackrs that the download is complete.

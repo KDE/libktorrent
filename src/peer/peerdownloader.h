@@ -121,7 +121,7 @@ public:
     /// Is NULL (is the Peer set)
     bool isNull() const
     {
-        return peer == 0;
+        return peer == nullptr;
     }
 
     /**

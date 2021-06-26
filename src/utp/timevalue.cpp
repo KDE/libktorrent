@@ -26,7 +26,7 @@ namespace utp
 TimeValue::TimeValue()
 {
     struct timeval tv;
-    gettimeofday(&tv, 0);
+    gettimeofday(&tv, nullptr);
     seconds = tv.tv_sec;
     microseconds = tv.tv_usec;
 }

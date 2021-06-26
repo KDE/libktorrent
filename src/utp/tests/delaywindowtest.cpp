@@ -37,7 +37,7 @@ class DelayWindowTest : public QObject
 {
     Q_OBJECT
 public:
-    DelayWindowTest(QObject *parent = 0)
+    DelayWindowTest(QObject *parent = nullptr)
         : QObject(parent)
     {
     }

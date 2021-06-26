@@ -76,7 +76,7 @@ private:
         bt::Globals::instance().getUTPServer().setCreateSockets(false);
         num_accepted = 0;
         for (int i = 0; i < NUM_SOCKETS; i++) {
-            outgoing[i] = incoming[i] = 0;
+            outgoing[i] = incoming[i] = nullptr;
         }
     }
 

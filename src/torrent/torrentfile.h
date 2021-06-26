@@ -50,7 +50,7 @@ public:
     /**
      * Default constructor. Creates a null TorrentFile.
      */
-    TorrentFile(Torrent *tor = 0);
+    TorrentFile(Torrent *tor = nullptr);
 
     /**
      * Constructor.

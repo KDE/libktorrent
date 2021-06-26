@@ -36,24 +36,24 @@ using namespace bt;
 namespace dht
 {
 KBucket::KBucket(RPCServerInterface *srv, const dht::Key &our_id)
-    : RPCCallListener(0)
+    : RPCCallListener(nullptr)
     , min_key(Key::min())
     , max_key(Key::max())
     , srv(srv)
     , our_id(our_id)
     , last_modified(bt::CurrentTime())
-    , refresh_task(0)
+    , refresh_task(nullptr)
 {
 }
 
 KBucket::KBucket(const dht::Key &min_key, const dht::Key &max_key, dht::RPCServerInterface *srv, const dht::Key &our_id)
-    : RPCCallListener(0)
+    : RPCCallListener(nullptr)
     , min_key(min_key)
     , max_key(max_key)
     , srv(srv)
     , our_id(our_id)
     , last_modified(bt::CurrentTime())
-    , refresh_task(0)
+    , refresh_task(nullptr)
 {
 }
 
@@ -320,7 +320,7 @@ void KBucket::load(bt::BDictNode *dict)
 void KBucket::onFinished(Task *t)
 {
     if (t == refresh_task)
-        refresh_task = 0;
+        refresh_task = nullptr;
 }
 
 void KBucket::setRefreshTask(Task *t)

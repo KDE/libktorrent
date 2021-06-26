@@ -46,7 +46,7 @@ class RPCServer : public QObject, public RPCServerInterface
 {
     Q_OBJECT
 public:
-    RPCServer(DHT *dh_table, Uint16 port, QObject *parent = 0);
+    RPCServer(DHT *dh_table, Uint16 port, QObject *parent = nullptr);
     ~RPCServer() override;
 
     /// Start the server

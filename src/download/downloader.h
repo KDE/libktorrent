@@ -93,13 +93,13 @@ public:
     /// Get a webseed
     const WebSeed *getWebSeed(Uint32 i) const
     {
-        return i < (Uint32)webseeds.count() ? webseeds[i] : 0;
+        return i < (Uint32)webseeds.count() ? webseeds[i] : nullptr;
     }
 
     /// Get a webseed
     WebSeed *getWebSeed(Uint32 i)
     {
-        return i < (Uint32)webseeds.count() ? webseeds[i] : 0;
+        return i < (Uint32)webseeds.count() ? webseeds[i] : nullptr;
     }
 
     /// Add a webseed

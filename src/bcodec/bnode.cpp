@@ -105,7 +105,7 @@ BNode *BDictNode::getData(const QByteArray &key)
             return e.node;
         i++;
     }
-    return 0;
+    return nullptr;
 }
 
 BDictNode *BDictNode::getDict(const QByteArray &key)
@@ -117,7 +117,7 @@ BDictNode *BDictNode::getDict(const QByteArray &key)
             return dynamic_cast<BDictNode *>(e.node);
         ++i;
     }
-    return 0;
+    return nullptr;
 }
 
 BListNode *BDictNode::getList(const QByteArray &key)

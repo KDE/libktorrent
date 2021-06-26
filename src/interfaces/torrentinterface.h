@@ -123,7 +123,7 @@ public:
      * @param wjob WaitJob, used when KT is shutting down,
      * so that we can wait for all stopped events to reach the tracker
      */
-    virtual void stop(bt::WaitJob *wjob = 0) = 0;
+    virtual void stop(bt::WaitJob *wjob = nullptr) = 0;
 
     /**
      * Update the tracker, this should normally handled internally.

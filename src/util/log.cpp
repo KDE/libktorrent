@@ -59,11 +59,11 @@ public:
 public:
     Private(Log *parent)
         : parent(parent)
-        , out(0)
-        , fptr(0)
+        , out(nullptr)
+        , fptr(nullptr)
         , to_cout(false)
         , filter(0)
-        , rotate_job(0)
+        , rotate_job(nullptr)
     {
     }
 
@@ -75,10 +75,10 @@ public:
     void cleanup()
     {
         delete out;
-        out = 0;
+        out = nullptr;
 
         delete fptr;
-        fptr = 0;
+        fptr = nullptr;
     }
 
     void setFilter(unsigned int f)
@@ -139,7 +139,7 @@ public:
 
         // only add stuff when we are not rotating the logs
         // this could result in the loss of some messages
-        if (!rotate_job && fptr != 0) {
+        if (!rotate_job && fptr != nullptr) {
             if (out)
                 *out << final << Qt::endl;
 
@@ -168,7 +168,7 @@ public:
             finishLine();
             QString file = fptr->fileName();
             fptr->close(); // close the log file
-            out->setDevice(0);
+            out->setDevice(nullptr);
             rotateLogs(file);
             logRotateDone();
         }
@@ -178,7 +178,7 @@ public:
     {
         fptr->open(QIODevice::WriteOnly);
         out->setDevice(fptr);
-        rotate_job = 0;
+        rotate_job = nullptr;
     }
 };
 
@@ -189,7 +189,7 @@ Log::Log()
 
 Log::~Log()
 {
-    qInstallMessageHandler(0);
+    qInstallMessageHandler(nullptr);
     delete priv;
 }
 

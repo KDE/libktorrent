@@ -38,7 +38,7 @@ EncryptedServerAuthenticate::EncryptedServerAuthenticate(mse::EncryptedPacketSoc
     state = WAITING_FOR_YA;
     buf_size = 0;
     req1_off = 0;
-    our_rc4 = 0;
+    our_rc4 = nullptr;
     pad_C_len = 0;
     crypto_provide = crypto_select = 0;
 }
@@ -221,7 +221,7 @@ void EncryptedServerAuthenticate::handleIA()
 
     if (crypto_select & 0x0000002) {
         sock->setRC4Encryptor(our_rc4);
-        our_rc4 = 0;
+        our_rc4 = nullptr;
     } else if (!allow_unenc && crypto_select & 0x00000001) {
         // if no encrypted connections
         Out(SYS_CON | LOG_DEBUG) << "Unencrypted connections not allowed" << endl;
@@ -229,7 +229,7 @@ void EncryptedServerAuthenticate::handleIA()
         return;
     } else {
         delete our_rc4;
-        our_rc4 = 0;
+        our_rc4 = nullptr;
     }
 
     // hand it over to ServerAuthenticate

@@ -41,7 +41,7 @@ class ReverseResolver : public QObject
 {
     Q_OBJECT
 public:
-    ReverseResolver(QObject *parent = 0);
+    ReverseResolver(QObject *parent = nullptr);
     ~ReverseResolver() override;
 
     /**

@@ -157,7 +157,7 @@ void PeerDownloader::piece(const Piece &p)
 
 void PeerDownloader::peerDestroyed()
 {
-    peer = 0;
+    peer = nullptr;
 }
 
 bool PeerDownloader::isChoked() const

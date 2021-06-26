@@ -55,7 +55,7 @@ private Q_SLOTS:
             bt::BDecoder dec(QByteArray(msg), false);
 
             QScopedPointer<bt::BDictNode> dict(dec.decodeDict());
-            dht::RPCMsg::Ptr msg = factory.build(dict.data(), 0);
+            dht::RPCMsg::Ptr msg = factory.build(dict.data(), nullptr);
 
             QVERIFY(msg->getType() == dht::ERR_MSG);
             dht::ErrMsg::Ptr err = msg.dynamicCast<dht::ErrMsg>();
@@ -70,7 +70,7 @@ private Q_SLOTS:
 
     void testWrongErrMsg()
     {
-        const char *msg[] = {"d1:t2:aa1:y1:ee", "d1:eli201e1:t2:aa1:y1:ee", 0};
+        const char *msg[] = {"d1:t2:aa1:y1:ee", "d1:eli201e1:t2:aa1:y1:ee", nullptr};
 
         int idx = 0;
         while (msg[idx]) {
@@ -88,7 +88,7 @@ private Q_SLOTS:
 
     void testPing()
     {
-        const char *msg[] = {"d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe", "d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re", 0};
+        const char *msg[] = {"d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe", "d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re", nullptr};
         current_method = dht::PING;
 
         int idx = 0;
@@ -111,7 +111,7 @@ private Q_SLOTS:
     {
         const char *msg[] = {"d1:ad2:id20:abcdefghij01234567896:target20:mnopqrstuvwxyz123456e1:q9:find_node1:t2:aa1:y1:qe",
                              "d1:rd2:id20:0123456789abcdefghij5:nodes9:def456...e1:t2:aa1:y1:re",
-                             0};
+                             nullptr};
 
         current_method = dht::FIND_NODE;
 
@@ -136,7 +136,7 @@ private Q_SLOTS:
         const char *msg[] = {"d1:ad2:id20:abcdefghij01234567899:info_hash20:mnopqrstuvwxyz123456e1:q9:get_peers1:t2:aa1:y1:qe",
                              "d1:rd2:id20:abcdefghij01234567895:token8:aoeusnth6:valuesl6:axje.u6:idhtnmee1:t2:aa1:y1:re",
                              "d1:rd2:id20:abcdefghij01234567895:nodes9:def456...5:token8:aoeusnthe1:t2:aa1:y1:re",
-                             0};
+                             nullptr};
         current_method = dht::GET_PEERS;
 
         int idx = 0;
@@ -160,7 +160,7 @@ private Q_SLOTS:
         const char *msg[] = {
             "d1:ad2:id20:abcdefghij01234567899:info_hash20:mnopqrstuvwxyz1234564:porti6881e5:token8:aoeusnthe1:q13:announce_peer1:t2:aa1:y1:qe",
             "d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re",
-            0};
+            nullptr};
         current_method = dht::ANNOUNCE_PEER;
         int idx = 0;
         while (msg[idx]) {

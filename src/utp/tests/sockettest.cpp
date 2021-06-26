@@ -46,7 +46,7 @@ private:
     void initTestCase()
     {
         bt::InitLog("sockettest.log");
-        incoming = outgoing = 0;
+        incoming = outgoing = nullptr;
 
         port = 50000;
         while (port < 60000) {
@@ -75,7 +75,7 @@ private:
         outgoing->connectTo(addr);
         QTimer::singleShot(5000, this, &SocketTest::endEventLoop); // use a 5 second timeout
         exec();
-        QVERIFY(incoming != 0);
+        QVERIFY(incoming != nullptr);
         QVERIFY(incoming->connectSuccesFull());
         QVERIFY(outgoing->connectSuccesFull());
     }

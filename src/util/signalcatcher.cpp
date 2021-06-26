@@ -47,13 +47,13 @@ static bool InstallBusHandler()
 
     memset(&act, 0, sizeof(act));
 
-    if (sigaction(SIGBUS, 0, &act) != -1 && act.sa_sigaction == sigbus_handler)
+    if (sigaction(SIGBUS, nullptr, &act) != -1 && act.sa_sigaction == sigbus_handler)
         return true;
 
     act.sa_sigaction = sigbus_handler;
     act.sa_flags = SA_SIGINFO;
 
-    if (sigaction(SIGBUS, &act, 0) == -1) {
+    if (sigaction(SIGBUS, &act, nullptr) == -1) {
         Out(SYS_GEN | LOG_IMPORTANT) << "Failed to set SIGBUS handler" << endl;
         return false;
     }
@@ -111,7 +111,7 @@ bool SignalCatcher::catchSignal(int sig)
     act.sa_sigaction = SignalCatcher::signalHandler;
     act.sa_flags = SA_SIGINFO;
 
-    if (sigaction(sig, &act, 0) == -1) {
+    if (sigaction(sig, &act, nullptr) == -1) {
         Out(SYS_GEN | LOG_IMPORTANT) << "Failed to set signal handler for " << sig << endl;
         return false;
     }

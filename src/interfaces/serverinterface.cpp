@@ -67,13 +67,13 @@ PeerManager *ServerInterface::findPeerManager(const bt::SHA1Hash &hash)
         PeerManager *pm = *i;
         if (pm && pm->getTorrent().getInfoHash() == hash) {
             if (!pm->isStarted())
-                return 0;
+                return nullptr;
             else
                 return pm;
         }
         ++i;
     }
-    return 0;
+    return nullptr;
 }
 
 bool ServerInterface::findInfoHash(const bt::SHA1Hash &skey, SHA1Hash &info_hash)
@@ -130,7 +130,7 @@ void ServerInterface::newConnection(mse::EncryptedPacketSocket::Ptr s)
         if (!OpenFileAllowed())
             return;
 
-        ServerAuthenticate *auth = 0;
+        ServerAuthenticate *auth = nullptr;
 
         if (encryption)
             auth = new mse::EncryptedServerAuthenticate(s);

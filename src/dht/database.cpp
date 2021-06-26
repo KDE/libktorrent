@@ -197,7 +197,7 @@ bool Database::checkToken(const QByteArray &token, const net::Address &addr)
 
 bool Database::contains(const dht::Key &key) const
 {
-    return items.find(key) != 0;
+    return items.find(key) != nullptr;
 }
 
 void Database::insert(const dht::Key &key)

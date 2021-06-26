@@ -27,7 +27,7 @@ BitSet BitSet::null;
 
 BitSet::BitSet(Uint32 num_bits)
     : num_bits(num_bits)
-    , data(0)
+    , data(nullptr)
 {
     num_bytes = (num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0);
     data = new Uint8[num_bytes];
@@ -37,7 +37,7 @@ BitSet::BitSet(Uint32 num_bits)
 
 BitSet::BitSet(const Uint8 *d, Uint32 num_bits)
     : num_bits(num_bits)
-    , data(0)
+    , data(nullptr)
 {
     num_bytes = (num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0);
     data = new Uint8[num_bytes];
@@ -49,7 +49,7 @@ BitSet::BitSet(const Uint8 *d, Uint32 num_bits)
 BitSet::BitSet(const BitSet &bs)
     : num_bits(bs.num_bits)
     , num_bytes(bs.num_bytes)
-    , data(0)
+    , data(nullptr)
     , num_on(bs.num_on)
 {
     data = new Uint8[num_bytes];

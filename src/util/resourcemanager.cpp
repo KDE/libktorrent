@@ -38,7 +38,7 @@ void Resource::release()
 {
     if (rman) {
         rman->remove(this);
-        rman = 0;
+        rman = nullptr;
     }
 }
 

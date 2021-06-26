@@ -48,7 +48,7 @@ void UTPex::handlePacket(const Uint8 *packet, Uint32 size)
         return;
 
     QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
-    BNode *node = 0;
+    BNode *node = nullptr;
     try {
         BDecoder dec(tmp, false, 2);
         node = dec.decode();

@@ -29,7 +29,7 @@ namespace bt
 PreallocationJob::PreallocationJob(ChunkManager *cman, TorrentControl *tc)
     : Job(false, tc)
     , cman(cman)
-    , prealloc_thread(0)
+    , prealloc_thread(nullptr)
 {
 }
 
@@ -51,7 +51,7 @@ void PreallocationJob::kill(bool quietly)
         prealloc_thread->stop();
         prealloc_thread->wait();
         prealloc_thread->deleteLater();
-        prealloc_thread = 0;
+        prealloc_thread = nullptr;
     }
     bt::Job::kill(quietly);
 }
@@ -61,7 +61,7 @@ void PreallocationJob::finished()
     if (prealloc_thread) {
         torrent()->preallocFinished(prealloc_thread->errorMessage(), !prealloc_thread->isStopped());
         prealloc_thread->deleteLater();
-        prealloc_thread = 0;
+        prealloc_thread = nullptr;
     } else
         torrent()->preallocFinished(QString(), false);
 

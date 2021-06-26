@@ -36,7 +36,7 @@ class KTORRENT_EXPORT UTPServer : public bt::ServerInterface, public Transmitter
 {
     Q_OBJECT
 public:
-    UTPServer(QObject *parent = 0);
+    UTPServer(QObject *parent = nullptr);
     ~UTPServer() override;
 
     /// Enabled creating sockets (tests need to have this disabled)

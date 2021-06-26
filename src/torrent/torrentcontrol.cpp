@@ -89,7 +89,7 @@ TorrentControl::TorrentControl()
     cache_factory = nullptr;
     istats.session_bytes_uploaded = 0;
     old_tordir = QString();
-    stats_file = 0;
+    stats_file = nullptr;
     loading_stats = false;
 
     istats.running_time_dl = istats.running_time_ul = 0;
@@ -468,7 +468,7 @@ void TorrentControl::stop(WaitJob *wjob)
     cman->stop();
 
     stats.running = false;
-    stats.autostart = wjob != 0;
+    stats.autostart = wjob != nullptr;
     stats.queued = false;
     stats.paused = false;
     saveStats();
@@ -502,7 +502,7 @@ void TorrentControl::init(QueueManagerInterface *qman, const QByteArray &data, c
     } catch (bt::Error &err) {
         Out(SYS_GEN | LOG_NOTICE) << "Failed to load torrent: " << err.toString() << endl;
         delete tor;
-        tor = 0;
+        tor = nullptr;
         throw Error(i18n("An error occurred while loading <b>%1</b>:<br/><b>%2</b>", loadUrl().toString(), err.toString()));
     }
 
@@ -647,7 +647,7 @@ void TorrentControl::setDisplayName(const QString &n)
 
 bool TorrentControl::announceAllowed()
 {
-    return psman != 0 && stats.running;
+    return psman != nullptr && stats.running;
 }
 
 void TorrentControl::updateTracker()
@@ -757,7 +757,7 @@ bool TorrentControl::changeOutputDir(const QString &ndir, int flags)
 
         if (stats.output_path != nd) {
             move_data_files_destination_path = nd;
-            Job *j = 0;
+            Job *j = nullptr;
             if (flags & bt::TorrentInterface::MOVE_FILES) {
                 if (stats.multi_file_torrent)
                     j = cman->moveDataFiles(nd);
@@ -771,7 +771,7 @@ bool TorrentControl::changeOutputDir(const QString &ndir, int flags)
                 job_queue->enqueue(j);
                 return true;
             } else {
-                moveDataFilesFinished(0);
+                moveDataFilesFinished(nullptr);
             }
         } else {
             Out(SYS_GEN | LOG_NOTICE) << "Source is the same as destination, so doing nothing" << endl;
@@ -1622,7 +1622,7 @@ void TorrentControl::preallocFinished(const QString &error, bool completed)
 const QTextCodec *TorrentControl::getTextCodec() const
 {
     if (!tor)
-        return 0;
+        return nullptr;
     else
         return tor->getTextCodec();
 }
@@ -1662,7 +1662,7 @@ bool TorrentControl::addWebSeed(const QUrl &url)
         downloader->saveWebSeeds(tordir + "webseeds");
         ws->setGroupIDs(upload_gid, download_gid); // make sure webseed has proper group ID
     }
-    return ws != 0;
+    return ws != nullptr;
 }
 
 bool TorrentControl::removeWebSeed(const QUrl &url)
@@ -1736,7 +1736,7 @@ void TorrentControl::setChunkSelector(ChunkSelectorInterface *csel)
     if (csel)
         downloader->setChunkSelector(csel);
     else
-        downloader->setChunkSelector(0);
+        downloader->setChunkSelector(nullptr);
 }
 
 void TorrentControl::networkUp()
@@ -1796,11 +1796,11 @@ void TorrentControl::setSuperSeeding(bool on)
 TorrentFileStream::Ptr TorrentControl::createTorrentFileStream(Uint32 index, bool streaming_mode, QObject *parent)
 {
     if (streaming_mode && !stream.toStrongRef().isNull())
-        return TorrentFileStream::Ptr(0);
+        return TorrentFileStream::Ptr(nullptr);
 
     if (stats.multi_file_torrent) {
         if (index >= tor->getNumFiles())
-            return TorrentFileStream::Ptr(0);
+            return TorrentFileStream::Ptr(nullptr);
 
         TorrentFileStream::Ptr ptr(new TorrentFileStream(this, index, cman, streaming_mode, parent));
         if (streaming_mode)

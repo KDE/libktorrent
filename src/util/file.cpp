@@ -32,7 +32,7 @@
 namespace bt
 {
 File::File()
-    : fptr(0)
+    : fptr(nullptr)
 {
 }
 
@@ -52,14 +52,14 @@ bool File::open(const QString &file, const QString &mode)
 #else
     fptr = fopen(QFile::encodeName(file).constData(), mode.toUtf8().constData());
 #endif
-    return fptr != 0;
+    return fptr != nullptr;
 }
 
 void File::close()
 {
     if (fptr) {
         fclose(fptr);
-        fptr = 0;
+        fptr = nullptr;
     }
 }
 

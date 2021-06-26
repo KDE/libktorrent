@@ -47,11 +47,11 @@ using namespace bt;
 namespace dht
 {
 DHT::DHT()
-    : node(0)
-    , srv(0)
-    , db(0)
-    , tman(0)
-    , our_node_lookup(0)
+    : node(nullptr)
+    , srv(nullptr)
+    , db(nullptr)
+    , tman(nullptr)
+    , our_node_lookup(nullptr)
 {
     connect(&update_timer, &QTimer::timeout, this, &DHT::update);
     connect(&expire_timer, &QTimer::timeout, this, &DHT::expireDatabaseItems);
@@ -107,13 +107,13 @@ void DHT::stop()
     running = false;
     stopped();
     delete tman;
-    tman = 0;
+    tman = nullptr;
     delete db;
-    db = 0;
+    db = nullptr;
     delete node;
-    node = 0;
+    node = nullptr;
     delete srv;
-    srv = 0;
+    srv = nullptr;
 }
 
 void DHT::ping(const PingReq &r)
@@ -173,7 +173,7 @@ NodeLookup *DHT::findOwnNode()
 void DHT::ownNodeLookupFinished(Task *t)
 {
     if (our_node_lookup == t)
-        our_node_lookup = 0;
+        our_node_lookup = nullptr;
 }
 
 void DHT::announce(const AnnounceReq &r)
@@ -270,7 +270,7 @@ bool DHT::canStartTask() const
 AnnounceTask *DHT::announce(const bt::SHA1Hash &info_hash, bt::Uint16 port)
 {
     if (!running)
-        return 0;
+        return nullptr;
 
     KClosestNodesSearch kns(info_hash, K);
     node->findKClosestNodes(kns, WANT_BOTH);
@@ -284,13 +284,13 @@ AnnounceTask *DHT::announce(const bt::SHA1Hash &info_hash, bt::Uint16 port)
         return at;
     }
 
-    return 0;
+    return nullptr;
 }
 
 NodeLookup *DHT::refreshBucket(const dht::Key &id, KBucket &bucket)
 {
     if (!running)
-        return 0;
+        return nullptr;
 
     KClosestNodesSearch kns(id, K);
     bucket.findKClosestNodes(kns);
@@ -303,13 +303,13 @@ NodeLookup *DHT::refreshBucket(const dht::Key &id, KBucket &bucket)
         return nl;
     }
 
-    return 0;
+    return nullptr;
 }
 
 NodeLookup *DHT::findNode(const dht::Key &id)
 {
     if (!running)
-        return 0;
+        return nullptr;
 
     KClosestNodesSearch kns(id, K);
     node->findKClosestNodes(kns, WANT_BOTH);
@@ -321,7 +321,7 @@ NodeLookup *DHT::findNode(const dht::Key &id)
         return at;
     }
 
-    return 0;
+    return nullptr;
 }
 
 void DHT::expireDatabaseItems()

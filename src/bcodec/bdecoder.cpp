@@ -48,7 +48,7 @@ BDecoder::~BDecoder()
 BNode *BDecoder::decode()
 {
     if (pos >= (Uint32)data.size())
-        return 0;
+        return nullptr;
 
     if (data[pos] == 'd') {
         return parseDict();
@@ -65,7 +65,7 @@ BNode *BDecoder::decode()
 
 BDictNode *BDecoder::decodeDict()
 {
-    BNode *n = 0;
+    BNode *n = nullptr;
     try {
         n = decode();
         if (n && n->getType() == BNode::DICT)
@@ -77,12 +77,12 @@ BDictNode *BDecoder::decodeDict()
         throw;
     }
 
-    return 0;
+    return nullptr;
 }
 
 BListNode *BDecoder::decodeList()
 {
-    BNode *n = 0;
+    BNode *n = nullptr;
     try {
         n = decode();
         if (n && n->getType() == BNode::LIST)
@@ -94,7 +94,7 @@ BListNode *BDecoder::decodeList()
         throw;
     }
 
-    return 0;
+    return nullptr;
 }
 
 BDictNode *BDecoder::parseDict()

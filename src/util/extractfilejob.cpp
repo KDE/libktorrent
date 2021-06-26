@@ -58,7 +58,7 @@ ExtractFileJob::ExtractFileJob(KArchive *archive, const QString &path, const QSt
     : archive(archive)
     , path(path)
     , dest(dest)
-    , extract_thread(0)
+    , extract_thread(nullptr)
 {
 }
 

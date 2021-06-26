@@ -47,9 +47,9 @@ WebSeed::WebSeed(const QUrl &url, bool user, const Torrent &tor, ChunkManager &c
 {
     first_chunk = last_chunk = tor.getNumChunks() + 1;
     num_failures = 0;
-    conn = 0;
+    conn = nullptr;
     downloaded = 0;
-    current = 0;
+    current = nullptr;
     status = i18n("Not connected");
     up_gid = down_gid = 0;
     cur_chunk = -1;
@@ -90,7 +90,7 @@ void WebSeed::reset()
 
     if (conn) {
         conn->deleteLater();
-        conn = 0;
+        conn = nullptr;
     }
 
     first_chunk = last_chunk = tor.getNumChunks() + 1;
@@ -176,7 +176,7 @@ void WebSeed::download(Uint32 first, Uint32 last)
         return;
     }
 
-    cur_piece = PieceData::Ptr(0);
+    cur_piece = PieceData::Ptr(nullptr);
     first_chunk = first;
     last_chunk = last;
     cur_chunk = first;
@@ -279,7 +279,7 @@ void WebSeed::chunkStopped()
     if (current) {
         chunkDownloadFinished(current, current->chunk);
         delete current;
-        current = 0;
+        current = nullptr;
     }
 }
 
@@ -300,7 +300,7 @@ Uint32 WebSeed::update()
                 retryLater();
             }
             delete conn;
-            conn = 0;
+            conn = nullptr;
             token.clear();
             chunkStopped();
             first_chunk = last_chunk = cur_chunk = tor.getNumChunks() + 1;
@@ -314,7 +314,7 @@ Uint32 WebSeed::update()
 
             Out(SYS_CON | LOG_DEBUG) << "WebSeed: connection closed" << endl;
             delete conn;
-            conn = 0;
+            conn = nullptr;
             token.clear();
 
             status = i18n("Connection closed");
@@ -415,7 +415,7 @@ void WebSeed::handleData(const QByteArray &tmp)
             }
 
             chunkStopped();
-            cur_piece = PieceData::Ptr(0);
+            cur_piece = PieceData::Ptr(nullptr);
             if (cur_chunk <= last_chunk) {
                 c = cman.getChunk(cur_chunk);
                 cur_piece = c->getPiece(0, c->getSize(), false);
@@ -489,7 +489,7 @@ void WebSeed::setEnabled(bool on)
 void WebSeed::redirected(const QUrl &to_url)
 {
     delete conn;
-    conn = 0;
+    conn = nullptr;
     token.clear();
     if (to_url.isValid() && to_url.scheme() == QLatin1String("http")) {
         redirected_url = to_url;

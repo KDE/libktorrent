@@ -50,7 +50,7 @@ Uint16 HTTPTracker::proxy_port = 8080;
 
 HTTPTracker::HTTPTracker(const QUrl &url, TrackerDataSource *tds, const PeerID &id, int tier)
     : Tracker(url, tds, id, tier)
-    , active_job(NULL)
+    , active_job(nullptr)
     , failures(0)
     , supports_partial_seed_extension(false)
 {
@@ -76,7 +76,7 @@ void HTTPTracker::stop(WaitJob *wjob)
         reannounce_timer.stop();
         if (active_job) {
             active_job->kill();
-            active_job = 0;
+            active_job = nullptr;
             status = TRACKER_IDLE;
             requestOK();
         }
@@ -165,7 +165,7 @@ void HTTPTracker::onScrapeResult(KJob *j)
                     seeders = d->getInt(QByteArrayLiteral("complete"));
                     leechers = d->getInt(QByteArrayLiteral("incomplete"));
                     total_downloaded = d->getInt(QByteArrayLiteral("downloaded"));
-                    supports_partial_seed_extension = d->getValue(QByteArrayLiteral("downloaders")) != 0;
+                    supports_partial_seed_extension = d->getValue(QByteArrayLiteral("downloaders")) != nullptr;
                     Out(SYS_TRK | LOG_DEBUG) << "Scrape : leechers = " << leechers << ", seeders = " << seeders << ", downloaded = " << total_downloaded
                                              << endl;
                 } catch (...) {
@@ -260,7 +260,7 @@ bool HTTPTracker::updateData(const QByteArray &data)
     }
 
     BDecoder dec(data, false, i);
-    BNode *n = 0;
+    BNode *n = nullptr;
     try {
         n = dec.decode();
     } catch (...) {
@@ -367,7 +367,7 @@ void HTTPTracker::onKIOAnnounceResult(KJob *j)
 void HTTPTracker::onAnnounceResult(const QUrl &url, const QByteArray &data, KJob *j)
 {
     timer.stop();
-    active_job = 0;
+    active_job = nullptr;
     KIOAnnounceJob *st = (KIOAnnounceJob *)j;
     if (st->IsErrorPage() || (j->error() && data.size() == 0)) {
         QString err = error;

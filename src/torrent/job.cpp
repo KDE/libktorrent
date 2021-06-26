@@ -24,7 +24,7 @@
 
 namespace bt
 {
-KJobTrackerInterface *Job::tracker = 0;
+KJobTrackerInterface *Job::tracker = nullptr;
 
 Job::Job(bool stop_torrent, bt::TorrentControl *tc)
     : tc(tc)

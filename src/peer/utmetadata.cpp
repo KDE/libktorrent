@@ -34,7 +34,7 @@ UTMetaData::UTMetaData(const Torrent &tor, bt::Uint32 id, Peer *peer)
     : PeerProtocolExtension(id, peer)
     , tor(tor)
     , reported_metadata_size(0)
-    , download(0)
+    , download(nullptr)
 {
 }
 
@@ -45,7 +45,7 @@ UTMetaData::~UTMetaData()
 void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
 {
     QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
-    BNode *node = 0;
+    BNode *node = nullptr;
     try {
         BDecoder dec(tmp, false, 2);
         node = dec.decode();

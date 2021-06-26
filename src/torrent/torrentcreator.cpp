@@ -101,7 +101,7 @@ void TorrentCreator::buildFileList(const QString &dir)
     for (const QString &s : dfiles) {
         // add a TorrentFile to the list
         Uint64 fs = bt::FileSize(target + dir + s);
-        TorrentFile f(0, cnt, dir + s, tot_size, fs, chunk_size);
+        TorrentFile f(nullptr, cnt, dir + s, tot_size, fs, chunk_size);
         files.append(f);
         // update total size
         tot_size += fs;
@@ -153,7 +153,7 @@ void TorrentCreator::saveTorrent(const QString &url)
     enc.write(QByteArrayLiteral("created by"));
     enc.write(bt::GetVersionString().toLatin1());
     enc.write(QByteArrayLiteral("creation date"));
-    enc.write((Uint64)time(0));
+    enc.write((Uint64)time(nullptr));
     enc.write(QByteArrayLiteral("info"));
     saveInfo(enc);
     // save the nodes list after the info hash, keys must be sorted !
@@ -376,7 +376,7 @@ TorrentControl *TorrentCreator::makeTC(const QString &data_dir)
         st.write("IMPORTED", QString::number(tot_size));
         st.sync();
 
-        tc->init(0, bt::LoadFile(dd + "torrent"), dd, odir);
+        tc->init(nullptr, bt::LoadFile(dd + "torrent"), dd, odir);
         tc->createFiles();
     } catch (...) {
         bt::Delete(dd, true);

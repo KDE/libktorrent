@@ -71,7 +71,7 @@ TimeStamp global_time_stamp = 0;
 Uint64 Now()
 {
     struct timeval tv;
-    gettimeofday(&tv, 0);
+    gettimeofday(&tv, nullptr);
     global_time_stamp = (Uint64)tv.tv_sec * 1000 + (Uint64)tv.tv_usec * 0.001;
     return global_time_stamp;
 }

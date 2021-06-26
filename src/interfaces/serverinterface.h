@@ -39,7 +39,7 @@ class KTORRENT_EXPORT ServerInterface : public QObject
 {
     Q_OBJECT
 public:
-    ServerInterface(QObject *parent = 0);
+    ServerInterface(QObject *parent = nullptr);
     ~ServerInterface() override;
 
     /**

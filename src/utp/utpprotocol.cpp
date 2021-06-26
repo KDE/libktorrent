@@ -124,7 +124,7 @@ bool PacketParser::parse()
 
 const utp::SelectiveAck *PacketParser::selectiveAck() const
 {
-    return sack_found ? &sack : 0;
+    return sack_found ? &sack : nullptr;
 }
 
 }

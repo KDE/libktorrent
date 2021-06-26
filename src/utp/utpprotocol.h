@@ -67,7 +67,7 @@ struct SelectiveAck {
     bt::Uint8 length;
 
     SelectiveAck()
-        : bitmask(NULL)
+        : bitmask(nullptr)
         , extension(0)
         , length(0)
     {

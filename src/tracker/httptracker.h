@@ -47,7 +47,7 @@ public:
     ~HTTPTracker() override;
 
     void start() override;
-    void stop(WaitJob *wjob = 0) override;
+    void stop(WaitJob *wjob = nullptr) override;
     void completed() override;
     Uint32 failureCount() const override
     {
@@ -67,7 +67,7 @@ private Q_SLOTS:
     void manualUpdate() override;
 
 private:
-    void doRequest(WaitJob *wjob = 0);
+    void doRequest(WaitJob *wjob = nullptr);
     bool updateData(const QByteArray &data);
     void setupMetaData(KIO::MetaData &md);
     void doAnnounceQueue();

@@ -242,7 +242,7 @@ Job *MultiFileCache::moveDataFiles(const QString &ndir)
 
     if (nmoves == 0) {
         delete job;
-        return 0;
+        return nullptr;
     } else {
         return job;
     }
@@ -267,7 +267,7 @@ void MultiFileCache::moveDataFilesFinished(Job *job)
 Job *MultiFileCache::moveDataFiles(const QMap<TorrentFileInterface *, QString> &files)
 {
     if (files.count() == 0)
-        return 0;
+        return nullptr;
 
     MoveDataFilesJob *job = new MoveDataFilesJob(files);
     return job;
@@ -374,7 +374,7 @@ PieceData::Ptr MultiFileCache::createPiece(Chunk *c, Uint32 off, Uint32 length, 
 
         if (Cache::mappedModeAllowed() && mmap_failures < 3) {
             Uint64 offset = FileOffset(c, f, tor.getChunkSize()) + off;
-            PieceData::Ptr piece(new PieceData(c, off, length, 0, fd, read_only));
+            PieceData::Ptr piece(new PieceData(c, off, length, nullptr, fd, read_only));
             Uint8 *buf = (Uint8 *)fd->map(piece.data(), offset, length, read_only ? CacheFile::READ : CacheFile::RW);
             if (buf) {
                 piece->setData(buf);

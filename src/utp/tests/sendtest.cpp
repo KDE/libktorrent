@@ -45,7 +45,7 @@ private:
     {
         bt::InitLog("sendtest.log");
 
-        incoming = 0;
+        incoming = nullptr;
         port = 50000;
         while (port < 60000) {
             if (!bt::Globals::instance().initUTPServer(port))
@@ -77,7 +77,7 @@ private:
 
         QTimer::singleShot(5000, this, &SendTest::endEventLoop); // use a 5 second timeout
         exec();
-        QVERIFY(incoming != 0);
+        QVERIFY(incoming != nullptr);
 
         // Wait until connection is complete
         int times = 0;

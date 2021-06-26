@@ -342,7 +342,7 @@ QString UPnPRouter::getError() const
 void UPnPRouter::visit(UPnPRouter::Visitor *visitor) const
 {
     for (const Forwarding &fwd : qAsConst(d->fwds)) {
-        visitor->forwarding(fwd.port, fwd.pending_req != 0, fwd.service);
+        visitor->forwarding(fwd.port, fwd.pending_req != nullptr, fwd.service);
     }
 }
 
@@ -431,7 +431,7 @@ void UPnPRouter::UPnPRouterPrivate::forward(const UPnPService *srv, const net::P
     QString action = "AddPortMapping";
     QString comm = SOAP::createCommand(action, srv->servicetype, args);
 
-    Forwarding fw = {port, 0, srv};
+    Forwarding fw = {port, nullptr, srv};
     // erase old forwarding if one exists
     QList<Forwarding>::iterator itr = fwds.begin();
     while (itr != fwds.end()) {
@@ -467,7 +467,7 @@ void UPnPRouter::UPnPRouterPrivate::undoForward(const UPnPService *srv, const ne
 
     QString action = "DeletePortMapping";
     QString comm = SOAP::createCommand(action, srv->servicetype, args);
-    HTTPRequest *r = sendSoapQuery(comm, srv->servicetype + "#" + action, srv->controlurl, waitjob != 0);
+    HTTPRequest *r = sendSoapQuery(comm, srv->servicetype + "#" + action, srv->controlurl, waitjob != nullptr);
 
     if (waitjob)
         waitjob->addExitOperation(r);
@@ -502,7 +502,7 @@ void UPnPRouter::UPnPRouterPrivate::httpRequestDone(HTTPRequest *r, bool erase_f
 
     if (found) {
         Forwarding &fw = fwds[idx];
-        fw.pending_req = 0;
+        fw.pending_req = nullptr;
         if (erase_fwd)
             fwds.removeAt(idx);
     }

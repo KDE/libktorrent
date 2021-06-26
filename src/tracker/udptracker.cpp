@@ -32,7 +32,7 @@
 
 namespace bt
 {
-UDPTrackerSocket *UDPTracker::socket = 0;
+UDPTrackerSocket *UDPTracker::socket = nullptr;
 Uint32 UDPTracker::num_instances = 0;
 
 UDPTracker::UDPTracker(const QUrl &url, TrackerDataSource *tds, const PeerID &id, int tier)
@@ -65,7 +65,7 @@ UDPTracker::~UDPTracker()
     num_instances--;
     if (num_instances == 0) {
         delete socket;
-        socket = 0;
+        socket = nullptr;
     }
 }
 

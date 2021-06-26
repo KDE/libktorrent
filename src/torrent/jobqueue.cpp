@@ -50,7 +50,7 @@ bool JobQueue::runningJobs() const
 
 Job *JobQueue::currentJob()
 {
-    return queue.isEmpty() ? 0 : queue.front();
+    return queue.isEmpty() ? nullptr : queue.front();
 }
 
 void JobQueue::startNextJob()

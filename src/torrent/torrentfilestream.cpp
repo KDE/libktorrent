@@ -200,7 +200,7 @@ TorrentFileStream::Private::Private(TorrentControl *tc, ChunkManager *cman, bool
     , bytes_readable(0)
     , opened(false)
     , current_chunk_offset(0)
-    , csel(0)
+    , csel(nullptr)
     , bitset(cman->getNumChunks())
 {
     current_chunk = firstChunk();
@@ -222,7 +222,7 @@ TorrentFileStream::Private::Private(TorrentControl *tc, Uint32 file_index, Chunk
     , bytes_readable(0)
     , opened(false)
     , current_chunk_offset(0)
-    , csel(0)
+    , csel(nullptr)
 {
     current_chunk = firstChunk();
     current_chunk_offset = firstChunkOffset();
@@ -238,7 +238,7 @@ TorrentFileStream::Private::Private(TorrentControl *tc, Uint32 file_index, Chunk
 TorrentFileStream::Private::~Private()
 {
     if (csel && tc)
-        tc->setChunkSelector(0); // Force creation of new chunk selector
+        tc->setChunkSelector(nullptr); // Force creation of new chunk selector
 }
 
 void TorrentFileStream::Private::reset()

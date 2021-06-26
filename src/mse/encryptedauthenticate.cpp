@@ -45,7 +45,7 @@ EncryptedAuthenticate::EncryptedAuthenticate(const net::Address &addr,
     mse::GeneratePublicPrivateKey(xa, ya);
     state = NOT_CONNECTED;
     buf_size = 0;
-    our_rc4 = 0;
+    our_rc4 = nullptr;
     vc_off = 0;
     dec_bytes = 0;
     crypto_select = 0;
@@ -201,10 +201,10 @@ void EncryptedAuthenticate::handlePadD()
 
     if (crypto_select & 0x00000001) { // plain_text selected
         delete our_rc4;
-        our_rc4 = 0;
+        our_rc4 = nullptr;
     } else if (crypto_select & 0x00000002) { // now it must be rc4 if not exit
         sock->setRC4Encryptor(our_rc4);
-        our_rc4 = 0;
+        our_rc4 = nullptr;
     } else { // we don't support anything else so error out
         onFinish(false);
         return;
@@ -234,7 +234,7 @@ void EncryptedAuthenticate::onReadyRead()
         case net::Socks::CONNECTED:
             // connection established, so get rid of socks shit
             delete socks;
-            socks = 0;
+            socks = nullptr;
             connected();
             if (sock->bytesAvailable() > 0)
                 onReadyRead();

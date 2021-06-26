@@ -156,7 +156,7 @@ public:
      * @param waitjob When this is set the jobs needs to be added to the waitjob,
      * so we can wait for their completeion at exit
      */
-    void undoForward(const net::Port &port, bt::WaitJob *waitjob = 0);
+    void undoForward(const net::Port &port, bt::WaitJob *waitjob = nullptr);
 
     /**
         In order to iterate over all forwardings, the visitor pattern must be used.

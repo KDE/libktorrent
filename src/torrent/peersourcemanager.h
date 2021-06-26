@@ -74,7 +74,7 @@ public:
     }
 
     void start() override;
-    void stop(WaitJob *wjob = 0) override;
+    void stop(WaitJob *wjob = nullptr) override;
     void completed() override;
     void manualUpdate() override;
 

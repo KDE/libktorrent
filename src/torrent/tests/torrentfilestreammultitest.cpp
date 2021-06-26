@@ -32,7 +32,7 @@ class TorrentFileStreamMultiTest : public QEventLoop, public bt::QueueManagerInt
 {
     Q_OBJECT
 public:
-    TorrentFileStreamMultiTest(QObject *parent = 0)
+    TorrentFileStreamMultiTest(QObject *parent = nullptr)
         : QEventLoop(parent)
     {
     }

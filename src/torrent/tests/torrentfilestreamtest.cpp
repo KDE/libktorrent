@@ -26,7 +26,7 @@ class TorrentFileStreamTest : public QEventLoop, public bt::QueueManagerInterfac
 {
     Q_OBJECT
 public:
-    TorrentFileStreamTest(QObject *parent = 0)
+    TorrentFileStreamTest(QObject *parent = nullptr)
         : QEventLoop(parent)
     {
     }

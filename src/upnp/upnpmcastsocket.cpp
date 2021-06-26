@@ -298,9 +298,9 @@ UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteAr
     if (!line.contains(QLatin1String("HTTP"))) {
         // it is either a 200 OK or a NOTIFY
         if (!line.contains(QLatin1String("NOTIFY")) && !line.contains(QLatin1String("200")))
-            return 0;
+            return nullptr;
     } else if (line.contains(QLatin1String("M-SEARCH"))) // ignore M-SEARCH
-        return 0;
+        return nullptr;
 
     // quick check that the response being parsed is valid
     bool validDevice = false;
@@ -312,7 +312,7 @@ UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteAr
     }
     if (!validDevice) {
         //  Out(SYS_PNP|LOG_IMPORTANT) << "Not a valid Internet Gateway Device" << endl;
-        return 0;
+        return nullptr;
     }
 
     // read all lines and try to find the server and location fields
@@ -321,16 +321,16 @@ UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteAr
         if (line.startsWith(QLatin1String("location"), Qt::CaseInsensitive)) {
             location = QUrl(line.mid(line.indexOf(':') + 1).trimmed().toString()); // TODO fromLocalFile()?
             if (!location.isValid())
-                return 0;
+                return nullptr;
         } else if (line.startsWith(QLatin1String("server"), Qt::CaseInsensitive)) {
             server = line.mid(line.indexOf(':') + 1).trimmed().toString();
             if (server.length() == 0)
-                return 0;
+                return nullptr;
         }
     }
 
     if (findDevice(location)) {
-        return 0;
+        return nullptr;
     } else {
         Out(SYS_PNP | LOG_NOTICE) << "Detected IGD " << server << endl;
         // everything OK, make a new UPnPRouter
@@ -345,7 +345,7 @@ UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::findDevice(const QUrl &loca
             return r;
     }
 
-    return 0;
+    return nullptr;
 }
 
 }

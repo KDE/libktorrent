@@ -46,7 +46,7 @@ public:
         : index(0)
         , off(0)
         , len(0)
-        , pd(0)
+        , pd(nullptr)
     {
     }
 

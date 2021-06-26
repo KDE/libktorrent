@@ -49,7 +49,7 @@ bool Port::operator==(const Port &p) const
 }
 
 PortList::PortList()
-    : lst(0)
+    : lst(nullptr)
 {
 }
 

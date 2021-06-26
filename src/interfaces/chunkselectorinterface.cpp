@@ -24,9 +24,9 @@
 namespace bt
 {
 ChunkSelectorInterface::ChunkSelectorInterface()
-    : cman(0)
-    , downer(0)
-    , pman(0)
+    : cman(nullptr)
+    , downer(nullptr)
+    , pman(nullptr)
 {
 }
 

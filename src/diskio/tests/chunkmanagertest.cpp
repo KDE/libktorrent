@@ -68,7 +68,7 @@ private Q_SLOTS:
 
     void testPieceDataLoading()
     {
-        ChunkManager cman(tor, creator.tempPath(), creator.dataPath(), true, 0);
+        ChunkManager cman(tor, creator.tempPath(), creator.dataPath(), true, nullptr);
         Chunk *c = cman.getChunk(0);
         QVERIFY(c);
 
@@ -97,7 +97,7 @@ private Q_SLOTS:
 #ifndef Q_CC_MSVC
     void testBusErrorHandling()
     {
-        ChunkManager cman(tor, creator.tempPath(), creator.dataPath(), true, 0);
+        ChunkManager cman(tor, creator.tempPath(), creator.dataPath(), true, nullptr);
         Chunk *c = cman.getChunk(0);
         QVERIFY(c);
 

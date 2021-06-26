@@ -308,7 +308,7 @@ void ChunkDownload::sendCancels(PieceDownloader *pd)
     DownloadStatus::iterator itr = ds->begin();
     while (itr != ds->end()) {
         Uint32 i = *itr;
-        pd->cancel(Request(chunk->getIndex(), i * MAX_PIECE_LEN, i + 1 < num ? MAX_PIECE_LEN : last_size, 0));
+        pd->cancel(Request(chunk->getIndex(), i * MAX_PIECE_LEN, i + 1 < num ? MAX_PIECE_LEN : last_size, nullptr));
         ++itr;
     }
     ds->clear();
@@ -446,7 +446,7 @@ bool ChunkDownload::load(File &file, ChunkDownloadHeader &hdr, bool update_hash)
     // add a 0 downloader, so that pieces downloaded
     // in a previous session cannot get a peer banned in this session
     if (num_downloaded)
-        piece_providers.insert(0);
+        piece_providers.insert(nullptr);
 
     return true;
 }
@@ -476,7 +476,7 @@ PieceDownloader *ChunkDownload::getOnlyDownloader()
     if (piece_providers.size() == 1) {
         return *piece_providers.begin();
     } else {
-        return 0;
+        return nullptr;
     }
 }
 

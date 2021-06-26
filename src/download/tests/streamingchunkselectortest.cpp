@@ -116,7 +116,7 @@ private Q_SLOTS:
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
-            tc.init(0, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
+            tc.init(nullptr, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
         } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
@@ -125,7 +125,7 @@ private Q_SLOTS:
 
         ExtendedStreamingChunkSelector *csel = new ExtendedStreamingChunkSelector();
         tc.setChunkSelector(csel);
-        QVERIFY(csel != 0);
+        QVERIFY(csel != nullptr);
         csel->setSequentialRange(0, 50);
 
         for (Uint32 i = 0; i < 50; i++) {
@@ -138,7 +138,7 @@ private Q_SLOTS:
         }
 
         // cleanup
-        tc.setChunkSelector(0);
+        tc.setChunkSelector(nullptr);
     }
 
     void testCriticalChunkSpread()
@@ -149,7 +149,7 @@ private Q_SLOTS:
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
-            tc.init(0, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
+            tc.init(nullptr, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
             tc.createFiles();
         } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
@@ -158,9 +158,9 @@ private Q_SLOTS:
 
         ExtendedStreamingChunkSelector *csel = new ExtendedStreamingChunkSelector();
         tc.setChunkSelector(csel);
-        QVERIFY(csel != 0);
+        QVERIFY(csel != nullptr);
         Downloader *downer = csel->downloader();
-        QVERIFY(downer != 0);
+        QVERIFY(downer != nullptr);
 
         // Check that critical chunks are spread over multiple peers
         csel->setSequentialRange(20, 60);
@@ -184,7 +184,7 @@ private Q_SLOTS:
             downer->removePieceDownloader(&dd[i]);
         }
         // cleanup
-        tc.setChunkSelector(0);
+        tc.setChunkSelector(nullptr);
     }
 };
 

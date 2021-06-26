@@ -46,36 +46,36 @@ Uint8 EncryptedPacketSocket::tos = IPTOS_THROUGHPUT;
 
 EncryptedPacketSocket::EncryptedPacketSocket(int ip_version)
     : net::PacketSocket(true, ip_version)
-    , enc(0)
+    , enc(nullptr)
     , monitored(false)
 {
     sock->setBlocking(false);
     sock->setTOS(tos);
-    reinserted_data = 0;
+    reinserted_data = nullptr;
     reinserted_data_size = 0;
     reinserted_data_read = 0;
 }
 
 EncryptedPacketSocket::EncryptedPacketSocket(int fd, int ip_version)
     : net::PacketSocket(fd, ip_version)
-    , enc(0)
+    , enc(nullptr)
     , monitored(false)
 {
     sock->setBlocking(false);
     sock->setTOS(tos);
-    reinserted_data = 0;
+    reinserted_data = nullptr;
     reinserted_data_size = 0;
     reinserted_data_read = 0;
 }
 
 EncryptedPacketSocket::EncryptedPacketSocket(net::SocketDevice *sd)
     : net::PacketSocket(sd)
-    , enc(0)
+    , enc(nullptr)
     , monitored(false)
 {
     sd->setBlocking(false);
     sd->setTOS(tos);
-    reinserted_data = 0;
+    reinserted_data = nullptr;
     reinserted_data_size = 0;
     reinserted_data_read = 0;
 }
@@ -100,7 +100,7 @@ void EncryptedPacketSocket::startMonitoring(net::SocketReader *rdr)
 
         rdr->onDataReady(reinserted_data + reinserted_data_read, reinserted_data_size - reinserted_data_read);
         delete[] reinserted_data;
-        reinserted_data = 0;
+        reinserted_data = nullptr;
         reinserted_data_size = 0;
     }
 }
@@ -109,7 +109,7 @@ void EncryptedPacketSocket::stopMonitoring()
 {
     SocketMonitor::instance().remove(this);
     monitored = false;
-    rdr = 0;
+    rdr = nullptr;
 }
 
 Uint32 EncryptedPacketSocket::sendData(const Uint8 *data, Uint32 len)
@@ -144,7 +144,7 @@ Uint32 EncryptedPacketSocket::readData(Uint8 *buf, Uint32 len)
         if (tr < len) {
             memcpy(buf, reinserted_data + reinserted_data_read, tr);
             delete[] reinserted_data;
-            reinserted_data = 0;
+            reinserted_data = nullptr;
             reinserted_data_size = reinserted_data_read = 0;
             ret2 = tr;
             if (enc)
@@ -212,7 +212,7 @@ void EncryptedPacketSocket::initCrypt(const bt::SHA1Hash &dkey, const bt::SHA1Ha
 void EncryptedPacketSocket::disableCrypt()
 {
     delete enc;
-    enc = 0;
+    enc = nullptr;
 }
 
 bool EncryptedPacketSocket::ok() const

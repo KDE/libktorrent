@@ -38,7 +38,7 @@ namespace bt
 {
 PeerSourceManager::PeerSourceManager(TorrentControl *tor, PeerManager *pman)
     : TrackerManager(tor, pman)
-    , m_dht(0)
+    , m_dht(nullptr)
 {
 }
 
@@ -138,12 +138,12 @@ void PeerSourceManager::removeDHT()
 
     removePeerSource(m_dht);
     delete m_dht;
-    m_dht = 0;
+    m_dht = nullptr;
 }
 
 bool PeerSourceManager::dhtStarted()
 {
-    return m_dht != 0;
+    return m_dht != nullptr;
 }
 
 }

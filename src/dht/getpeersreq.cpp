@@ -89,7 +89,7 @@ void GetPeersReq::parse(BDictNode *dict)
     BListNode *ln = args->getList("want");
     if (ln) {
         for (bt::Uint32 i = 0; i < ln->getNumChildren(); i++)
-            want.append(ln->getString(i, 0));
+            want.append(ln->getString(i, nullptr));
     }
 }
 

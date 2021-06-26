@@ -70,7 +70,7 @@ public Q_SLOTS:
     /**
      * Stop gathering peers.
      */
-    virtual void stop(bt::WaitJob *wjob = 0) = 0;
+    virtual void stop(bt::WaitJob *wjob = nullptr) = 0;
 
     /**
      * The torrent has finished downloading.

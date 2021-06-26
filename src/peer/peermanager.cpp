@@ -423,7 +423,7 @@ void PeerManager::setSuperSeeding(bool on, const BitSet &chunks)
     if ((d->superseeder && on) || (!d->superseeder && !on))
         return;
 
-    d->superseeder.reset(on ? new SuperSeeder(d->cnt.getNumChunks()) : 0);
+    d->superseeder.reset(on ? new SuperSeeder(d->cnt.getNumChunks()) : nullptr);
 
     // When entering or exiting superseeding mode kill all peers
     // but first add the current list to the potential_peers list, so we can reconnect later.
@@ -555,7 +555,7 @@ PeerManager::Private::Private(PeerManager *p, Torrent &tor)
     wanted_chunks.setAll(true);
     wanted_changed = false;
     pex_on = !tor.isPrivate();
-    piece_handler = 0;
+    piece_handler = nullptr;
     paused = false;
 }
 

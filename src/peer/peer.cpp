@@ -389,7 +389,7 @@ void Peer::handleExtendedPacket(const Uint8 *packet, Uint32 size)
 void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
 {
     QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
-    BNode *node = 0;
+    BNode *node = nullptr;
     try {
         BDecoder dec(tmp, false, 2);
         node = dec.decode();
@@ -405,7 +405,7 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
             return;
         }
 
-        BValueNode *val = 0;
+        BValueNode *val = nullptr;
 
         if ((val = mdict->getValue(QByteArrayLiteral("ut_pex"))) && UTPex::isEnabled()) {
             // ut_pex packet

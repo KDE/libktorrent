@@ -35,7 +35,7 @@ public:
     bool update_rtt_called;
     bool retransmit_ok;
 
-    RemoteWindowTest(QObject *parent = 0)
+    RemoteWindowTest(QObject *parent = nullptr)
         : QObject(parent)
         , update_rtt_called(false)
         , retransmit_ok(false)
@@ -102,19 +102,19 @@ private Q_SLOTS:
         Header hdr;
         hdr.ack_nr = 1;
         hdr.wnd_size = 5000;
-        wnd.packetReceived(&hdr, 0, this);
+        wnd.packetReceived(&hdr, nullptr, this);
         QVERIFY(wnd.numUnackedPackets() == 2);
         QVERIFY(update_rtt_called);
 
         reset();
         hdr.ack_nr = 2;
-        wnd.packetReceived(&hdr, 0, this);
+        wnd.packetReceived(&hdr, nullptr, this);
         QVERIFY(wnd.numUnackedPackets() == 1);
         QVERIFY(update_rtt_called);
 
         reset();
         hdr.ack_nr = 3;
-        wnd.packetReceived(&hdr, 0, this);
+        wnd.packetReceived(&hdr, nullptr, this);
         QVERIFY(wnd.numUnackedPackets() == 0);
         QVERIFY(update_rtt_called);
     }
@@ -138,7 +138,7 @@ private Q_SLOTS:
         Header hdr;
         hdr.ack_nr = 3;
         hdr.wnd_size = 5000;
-        wnd.packetReceived(&hdr, 0, this);
+        wnd.packetReceived(&hdr, nullptr, this);
         QVERIFY(wnd.numUnackedPackets() == 0);
         QVERIFY(update_rtt_called);
     }
@@ -180,7 +180,7 @@ private Q_SLOTS:
         // Ack the rest
         hdr.ack_nr = 3;
         hdr.wnd_size = 5000;
-        wnd.packetReceived(&hdr, 0, this);
+        wnd.packetReceived(&hdr, nullptr, this);
         QVERIFY(wnd.numUnackedPackets() == 0);
         QVERIFY(update_rtt_called);
     }

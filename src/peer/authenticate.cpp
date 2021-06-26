@@ -32,7 +32,7 @@ Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, co
     , our_peer_id(peer_id)
     , addr(addr)
     , pcon(pcon)
-    , socks(0)
+    , socks(nullptr)
 {
     finished = succes = false;
     if (proto == TCP)
@@ -52,7 +52,7 @@ Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, co
             break;
         case net::Socks::CONNECTED:
             delete socks;
-            socks = 0;
+            socks = nullptr;
             connected();
             break;
         default:
@@ -89,7 +89,7 @@ void Authenticate::onReadyWrite()
             break;
         case net::Socks::CONNECTED:
             delete socks;
-            socks = 0;
+            socks = nullptr;
             connected();
             break;
         default:
@@ -118,7 +118,7 @@ void Authenticate::onReadyRead()
         case net::Socks::CONNECTED:
             // connection established, so get rid of socks shit
             delete socks;
-            socks = 0;
+            socks = nullptr;
             connected();
             if (sock->bytesAvailable() > 0)
                 AuthenticateBase::onReadyRead();

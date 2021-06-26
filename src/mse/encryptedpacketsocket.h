@@ -74,7 +74,7 @@ public:
     /// Are we using encryption
     bool encrypted() const
     {
-        return enc != 0;
+        return enc != nullptr;
     }
 
     /**

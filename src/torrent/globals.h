@@ -55,11 +55,11 @@ public:
 
     bool isUTPEnabled() const
     {
-        return utp_server != 0;
+        return utp_server != nullptr;
     }
     bool isTCPEnabled() const
     {
-        return tcp_server != 0;
+        return tcp_server != nullptr;
     }
 
     Server &getTCPServer()

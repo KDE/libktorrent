@@ -32,7 +32,7 @@ using namespace bt;
 namespace net
 {
 TrafficShapedSocket::TrafficShapedSocket(SocketDevice *sock)
-    : rdr(0)
+    : rdr(nullptr)
     , up_gid(0)
     , down_gid(0)
     , sock(sock)
@@ -43,7 +43,7 @@ TrafficShapedSocket::TrafficShapedSocket(SocketDevice *sock)
 }
 
 TrafficShapedSocket::TrafficShapedSocket(int fd, int ip_version)
-    : rdr(0)
+    : rdr(nullptr)
     , up_gid(0)
     , down_gid(0)
     , mutex(QMutex::Recursive)
@@ -54,7 +54,7 @@ TrafficShapedSocket::TrafficShapedSocket(int fd, int ip_version)
 }
 
 TrafficShapedSocket::TrafficShapedSocket(bool tcp, int ip_version)
-    : rdr(0)
+    : rdr(nullptr)
     , up_gid(0)
     , down_gid(0)
     , mutex(QMutex::Recursive)

@@ -24,7 +24,7 @@
 
 namespace net
 {
-ReverseResolverThread *ReverseResolver::worker = 0;
+ReverseResolverThread *ReverseResolver::worker = nullptr;
 
 ReverseResolver::ReverseResolver(QObject *parent)
     : QObject(parent)
@@ -75,7 +75,7 @@ void ReverseResolver::shutdown()
         worker->stop();
         worker->wait();
         delete worker;
-        worker = 0;
+        worker = nullptr;
     }
 }
 

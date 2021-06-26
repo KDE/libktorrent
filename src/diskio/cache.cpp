@@ -82,7 +82,7 @@ bool Cache::mappedModeAllowed()
 Job *Cache::moveDataFiles(const QMap<TorrentFileInterface *, QString> &files)
 {
     Q_UNUSED(files);
-    return 0;
+    return nullptr;
 }
 
 void Cache::moveDataFilesFinished(const QMap<TorrentFileInterface *, QString> &files, Job *job)

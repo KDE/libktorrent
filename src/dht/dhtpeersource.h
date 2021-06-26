@@ -45,7 +45,7 @@ public:
     ~DHTPeerSource() override;
 
     void start() override;
-    void stop(bt::WaitJob *wjob = 0) override;
+    void stop(bt::WaitJob *wjob = nullptr) override;
     void manualUpdate() override;
 
     void addDHTNode(const bt::DHTNode &node);

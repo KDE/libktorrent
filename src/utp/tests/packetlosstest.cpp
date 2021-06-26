@@ -83,7 +83,7 @@ private:
 class SendThread : public QThread
 {
 public:
-    SendThread(Connection::Ptr outgoing, QObject *parent = 0)
+    SendThread(Connection::Ptr outgoing, QObject *parent = nullptr)
         : QThread(parent)
         , outgoing(outgoing)
     {

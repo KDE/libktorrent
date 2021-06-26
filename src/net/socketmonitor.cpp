@@ -38,8 +38,8 @@ class SocketMonitor::Private
 public:
     Private(SocketMonitor *p)
         : mutex(QMutex::Recursive)
-        , ut(0)
-        , dt(0)
+        , ut(nullptr)
+        , dt(nullptr)
         , next_group_id(1)
     {
         dt = new DownloadThread(p);
@@ -96,8 +96,8 @@ void SocketMonitor::Private::shutdown()
 
     delete ut;
     delete dt;
-    ut = 0;
-    dt = 0;
+    ut = nullptr;
+    dt = nullptr;
 }
 
 void SocketMonitor::lock()

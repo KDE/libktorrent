@@ -239,7 +239,7 @@ public:
      * Stop the download, closes all connections.
      * @param wjob WaitJob to wait at exit for the completion of stopped requests
      */
-    void stop(WaitJob *wjob = 0) override;
+    void stop(WaitJob *wjob = nullptr) override;
 
     /**
      * Update the tracker, this should normally handled internally.

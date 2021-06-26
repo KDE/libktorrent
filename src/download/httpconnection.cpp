@@ -257,7 +257,7 @@ bool HttpConnection::getData(QByteArray &data)
     // remove the current request from the queue
     if (g->piece_data.size() == 0 && g->finished()) {
         delete g;
-        request = 0;
+        request = nullptr;
         if (close_when_finished) {
             state = CLOSED;
             Out(SYS_CON | LOG_DEBUG) << "HttpConnection: closing connection due to redirection" << endl;

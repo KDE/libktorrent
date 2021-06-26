@@ -26,7 +26,7 @@ using namespace bt;
 namespace dht
 {
 RPCMsg::RPCMsg()
-    : mtid(0)
+    : mtid(nullptr)
     , method(NONE)
     , type(INVALID)
 {
@@ -50,7 +50,7 @@ void RPCMsg::parse(bt::BDictNode *dict)
     if (mtid.isEmpty())
         throw bt::Error("Invalid DHT transaction ID");
 
-    QString t = dict->getString(TYP, 0);
+    QString t = dict->getString(TYP, nullptr);
     if (t == REQ) {
         type = REQ_MSG;
         BDictNode *args = dict->getDict(ARG);

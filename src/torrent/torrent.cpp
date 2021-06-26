@@ -63,15 +63,15 @@ static QString SanityzeName(const QString &name)
 }
 
 Torrent::Torrent()
-    : trackers(NULL)
+    : trackers(nullptr)
     , chunk_size(0)
     , last_chunk_size(0)
     , total_size(0)
     , text_codec(QTextCodec::codecForName("utf-8"))
-    , file_prio_listener(NULL)
+    , file_prio_listener(nullptr)
     , pos_cache_chunk(0)
     , pos_cache_file(0)
-    , tmon(NULL)
+    , tmon(nullptr)
     , priv_torrent(false)
     , loaded(false)
 {
@@ -79,15 +79,15 @@ Torrent::Torrent()
 
 Torrent::Torrent(const bt::SHA1Hash &hash)
     : info_hash(hash)
-    , trackers(NULL)
+    , trackers(nullptr)
     , chunk_size(0)
     , last_chunk_size(0)
     , total_size(0)
     , text_codec(QTextCodec::codecForName("utf-8"))
-    , file_prio_listener(NULL)
+    , file_prio_listener(nullptr)
     , pos_cache_chunk(0)
     , pos_cache_file(0)
-    , tmon(NULL)
+    , tmon(nullptr)
     , priv_torrent(false)
     , loaded(false)
 {
@@ -100,7 +100,7 @@ Torrent::~Torrent()
 
 void Torrent::load(const QByteArray &data, bool verbose)
 {
-    BNode *node = 0;
+    BNode *node = nullptr;
 
     try {
         BDecoder decoder(data, verbose);
@@ -281,7 +281,7 @@ void Torrent::loadAnnounceList(BNode *node)
         BListNode *url_list = ml->getList(i);
         if (url_list) {
             for (Uint32 j = 0; j < url_list->getNumChildren(); j++)
-                tier->urls.append(QUrl(url_list->getString(j, 0)));
+                tier->urls.append(QUrl(url_list->getString(j, nullptr)));
             tier->next = new TrackerTier();
             tier = tier->next;
         }
@@ -298,7 +298,7 @@ void Torrent::loadNodes(BListNode *node)
         // first child is the IP, second the port
         // add the DHT node
         DHTNode n;
-        n.ip = c->getString(0, 0);
+        n.ip = c->getString(0, nullptr);
         n.port = c->getInt(1);
         nodes.append(n);
     }

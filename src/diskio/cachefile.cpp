@@ -52,7 +52,7 @@
 namespace bt
 {
 CacheFile::CacheFile()
-    : fptr(0)
+    : fptr(nullptr)
     , max_size(0)
     , file_size(0)
     , mutex(QMutex::Recursive)
@@ -86,7 +86,7 @@ void CacheFile::openFile(Mode mode)
 
     if (!ok) {
         delete fptr;
-        fptr = 0;
+        fptr = nullptr;
         throw Error(i18n("Cannot open %1: %2", path, strerror(errno)));
     }
 
@@ -109,7 +109,7 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
         //  Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
         QStorageInfo mount(path); // ntfs cannot handle mmap properly
         if (!OpenFileAllowed() || mount.fileSystemType() == "fuseblk" || mount.fileSystemType().startsWith("ntfs"))
-            return 0; // Running out of file descriptors, force buffered mode
+            return nullptr; // Running out of file descriptors, force buffered mode
         openFile(mode);
     }
 
@@ -157,13 +157,13 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
         Uint64 noff = off - diff;
         //  Out(SYS_DIO|LOG_DEBUG) << "Offsetted mmap : " << diff << endl;
 #ifdef HAVE_MMAP64
-        char *ptr = (char *)mmap64(0, size + diff, mmap_flag, MAP_SHARED, fd, noff);
+        char *ptr = (char *)mmap64(nullptr, size + diff, mmap_flag, MAP_SHARED, fd, noff);
 #else
         char *ptr = (char *)mmap(0, size + diff, mmap_flag, MAP_SHARED, fd, noff);
 #endif
         if (ptr == MAP_FAILED) {
             Out(SYS_DIO | LOG_DEBUG) << "mmap failed : " << QString(strerror(errno)) << endl;
-            return 0;
+            return nullptr;
         } else {
             CacheFile::Entry e;
             e.thing = thing;
@@ -177,13 +177,13 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
         }
     } else {
 #ifdef HAVE_MMAP64
-        void *ptr = mmap64(0, size, mmap_flag, MAP_SHARED, fd, off);
+        void *ptr = mmap64(nullptr, size, mmap_flag, MAP_SHARED, fd, off);
 #else
         void *ptr = mmap(0, size, mmap_flag, MAP_SHARED, fd, off);
 #endif
         if (ptr == MAP_FAILED) {
             Out(SYS_DIO | LOG_DEBUG) << "mmap failed : " << QString(strerror(errno)) << endl;
-            return 0;
+            return nullptr;
         } else {
             CacheFile::Entry e;
             e.thing = thing;
@@ -288,7 +288,7 @@ void CacheFile::aboutToClose()
     if (!manual_close) {
         manual_close = true;
         fptr->deleteLater();
-        fptr = 0;
+        fptr = nullptr;
         manual_close = false;
     }
 }
@@ -330,7 +330,7 @@ void CacheFile::close()
     manual_close = true;
     fptr->close();
     delete fptr;
-    fptr = 0;
+    fptr = nullptr;
     manual_close = false;
 }
 
@@ -413,7 +413,7 @@ void CacheFile::closeTemporary()
         return;
 
     delete fptr;
-    fptr = 0;
+    fptr = nullptr;
 }
 
 void CacheFile::preallocate(PreallocationThread *prealloc)

@@ -29,9 +29,9 @@ namespace utp
 bt::BufferPool::Ptr PacketBuffer::pool;
 
 PacketBuffer::PacketBuffer()
-    : header(0)
-    , extension(0)
-    , payload(0)
+    : header(nullptr)
+    , extension(nullptr)
+    , payload(nullptr)
     , size(0)
 {
     if (!pool) {

@@ -55,7 +55,7 @@ void PieceData::unload()
         delete[] ptr;
     else
         cache_file->unmap(ptr, len);
-    ptr = 0;
+    ptr = nullptr;
 }
 
 Uint32 PieceData::write(const bt::Uint8 *buf, Uint32 buf_size, Uint32 off)
@@ -134,6 +134,6 @@ SHA1Hash PieceData::generateHash() const
 
 void PieceData::unmapped()
 {
-    ptr = 0;
+    ptr = nullptr;
 }
 }

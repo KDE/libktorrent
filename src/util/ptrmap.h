@@ -102,7 +102,7 @@ public:
         if (autodel) {
             for (iterator i = pmap.begin(); i != pmap.end(); i++) {
                 delete i->second;
-                i->second = 0;
+                i->second = nullptr;
             }
         }
         pmap.clear();
@@ -141,7 +141,7 @@ public:
     Data *find(const Key &k)
     {
         iterator i = pmap.find(k);
-        return (i == pmap.end()) ? 0 : i->second;
+        return (i == pmap.end()) ? nullptr : i->second;
     }
 
     /**
@@ -152,7 +152,7 @@ public:
     const Data *find(const Key &k) const
     {
         const_iterator i = pmap.find(k);
-        return (i == pmap.end()) ? 0 : i->second;
+        return (i == pmap.end()) ? nullptr : i->second;
     }
 
     /**

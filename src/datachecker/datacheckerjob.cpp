@@ -33,7 +33,7 @@ static ResourceManager data_checker_slot(1);
 DataCheckerJob::DataCheckerJob(bool auto_import, bt::TorrentControl *tc, bt::Uint32 from, bt::Uint32 to)
     : Job(true, tc)
     , Resource(&data_checker_slot, tc->getInfoHash().toString())
-    , dcheck_thread(0)
+    , dcheck_thread(nullptr)
     , killed(false)
     , auto_import(auto_import)
     , started(false)
@@ -53,7 +53,7 @@ DataCheckerJob::~DataCheckerJob()
 void DataCheckerJob::start()
 {
     registerWithTracker();
-    DataChecker *dc = 0;
+    DataChecker *dc = nullptr;
     const TorrentStats &stats = torrent()->getStats();
     if (stats.multi_file_torrent)
         dc = new MultiDataChecker(from, to);
@@ -94,7 +94,7 @@ void DataCheckerJob::kill(bool quietly)
         dcheck_thread->getDataChecker()->stop();
         dcheck_thread->wait();
         dcheck_thread->deleteLater();
-        dcheck_thread = 0;
+        dcheck_thread = nullptr;
     }
     bt::Job::kill(quietly);
 }
@@ -113,7 +113,7 @@ void DataCheckerJob::threadFinished()
         setError(0);
 
     dcheck_thread->deleteLater();
-    dcheck_thread = 0;
+    dcheck_thread = nullptr;
     if (!killed) // Job::kill already emitted the result
         emitResult();
 

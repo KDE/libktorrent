@@ -28,7 +28,7 @@
 
 using namespace bt;
 
-static bt::Resource *last_acquired = 0;
+static bt::Resource *last_acquired = nullptr;
 
 class TestResource : public bt::Resource
 {

@@ -33,7 +33,7 @@ namespace dht
 {
 DHTPeerSource::DHTPeerSource(DHTBase &dh_table, const bt::SHA1Hash &info_hash, const QString &torrent_name)
     : dh_table(dh_table)
-    , curr_task(0)
+    , curr_task(nullptr)
     , info_hash(info_hash)
     , torrent_name(torrent_name)
 {
@@ -60,8 +60,8 @@ void DHTPeerSource::start()
 
 void DHTPeerSource::dhtStopped()
 {
-    stop(0);
-    curr_task = 0;
+    stop(nullptr);
+    curr_task = nullptr;
 }
 
 void DHTPeerSource::stop(bt::WaitJob *)
@@ -105,7 +105,7 @@ void DHTPeerSource::onFinished(Task *t)
 {
     if (curr_task == t) {
         onDataReady(curr_task);
-        curr_task = 0;
+        curr_task = nullptr;
         timer.start(request_interval);
     }
 }

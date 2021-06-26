@@ -54,8 +54,8 @@ Downloader::Downloader(Torrent &tor, PeerManager &pman, ChunkManager &cman)
     , pman(pman)
     , cman(cman)
     , bytes_downloaded(0)
-    , tmon(0)
-    , chunk_selector(0)
+    , tmon(nullptr)
+    , chunk_selector(nullptr)
     , webseed_endgame_mode(false)
 {
     webseeds_on = use_webseeds;
@@ -233,7 +233,7 @@ void Downloader::normalUpdate()
 
 ChunkDownload *Downloader::selectCD(PieceDownloader *pd, Uint32 n)
 {
-    ChunkDownload *sel = 0;
+    ChunkDownload *sel = nullptr;
     Uint32 sel_left = 0xFFFFFFFF;
 
     for (CurChunkItr j = current_chunks.begin(); j != current_chunks.end(); ++j) {
@@ -254,7 +254,7 @@ ChunkDownload *Downloader::selectCD(PieceDownloader *pd, Uint32 n)
 
 bool Downloader::findDownloadForPD(PieceDownloader *pd)
 {
-    ChunkDownload *sel = 0;
+    ChunkDownload *sel = nullptr;
 
     // See if there are ChunkDownload's which need a PieceDownloader
     sel = selectCD(pd, 0);
@@ -267,7 +267,7 @@ bool Downloader::findDownloadForPD(PieceDownloader *pd)
 
 ChunkDownload *Downloader::selectWorst(PieceDownloader *pd)
 {
-    ChunkDownload *cdmin = NULL;
+    ChunkDownload *cdmin = nullptr;
     for (CurChunkItr j = current_chunks.begin(); j != current_chunks.end(); ++j) {
         ChunkDownload *cd = j->second;
         if (!pd->hasChunk(cd->getChunk()->getIndex()) || cd->containsPeer(pd))
@@ -332,7 +332,7 @@ void Downloader::downloadFrom(WebSeed *ws)
 
 bool Downloader::downloading(Uint32 chunk) const
 {
-    return current_chunks.find(chunk) != 0;
+    return current_chunks.find(chunk) != nullptr;
 }
 
 bool Downloader::canDownloadFromWebSeed(Uint32 chunk) const
@@ -731,7 +731,7 @@ WebSeed *Downloader::addWebSeed(const QUrl &url)
     // Check for dupes
     for (WebSeed *ws : qAsConst(webseeds)) {
         if (ws->getUrl() == url)
-            return 0;
+            return nullptr;
     }
 
     WebSeed *ws = new WebSeed(url, true, tor, cman);

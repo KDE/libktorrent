@@ -54,7 +54,7 @@ PacketSocket::~PacketSocket()
 Packet::Ptr PacketSocket::selectPacket()
 {
     QMutexLocker locker(&mutex);
-    Packet::Ptr ret(0);
+    Packet::Ptr ret(nullptr);
     // this function should ensure that between
     // each data packet at least 3 control packets are sent
     // so requests can get through
