@@ -134,7 +134,7 @@ public:
      * Add a service to the router.
      * @param s The service
      */
-    void addService(const UPnPService &s);
+    void addService(UPnPService s);
 
 #if 0
     /**

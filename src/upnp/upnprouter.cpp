@@ -149,11 +149,17 @@ UPnPRouter::~UPnPRouter()
     delete d;
 }
 
-void UPnPRouter::addService(const UPnPService &s)
+void UPnPRouter::addService(UPnPService s)
 {
     for (const UPnPService &os : qAsConst(d->services)) {
         if (s.servicetype == os.servicetype)
             return;
+    }
+    if (s.controlurl.startsWith("/")) {
+        s.controlurl = "http://" + d->location.host() + ":" + QString::number(d->location.port()) + s.controlurl;
+    }
+    if (s.eventsuburl.startsWith("/")) {
+        s.controlurl = "http://" + d->location.host() + ":" + QString::number(d->location.port()) + s.eventsuburl;
     }
     d->services.append(s);
 }
