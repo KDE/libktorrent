@@ -392,6 +392,7 @@ HTTPRequest *UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString &query, 
         // Only listen for results when we are not exiting
         active_reqs.append(r);
     }
+    r->start();
     return r;
 }
 

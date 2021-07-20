@@ -39,7 +39,6 @@ HTTPRequest::HTTPRequest(const QNetworkRequest &hdr, const QString &payload, con
     , success(false)
 {
     networkAccessManager = new QNetworkAccessManager(this);
-    connect(networkAccessManager, &QNetworkAccessManager::finished, this, &HTTPRequest::replyFinished);
     networkAccessManager->connectToHost(host, port);
 
     QTcpSocket socket;
@@ -63,10 +62,11 @@ HTTPRequest::HTTPRequest(const QNetworkRequest &hdr, const QString &payload, con
 
 void HTTPRequest::start()
 {
-    networkAccessManager->post(hdr, m_payload.toLatin1());
+    networkReply = networkAccessManager->post(hdr, m_payload.toLatin1());
+    connect(networkReply, &QNetworkReply::finished, this, &HTTPRequest::replyFinished);
 }
 
-void HTTPRequest::replyFinished(QNetworkReply *networkReply)
+void HTTPRequest::replyFinished()
 {
     if (networkReply->error()) {
         error = networkReply->errorString();
@@ -76,6 +76,7 @@ void HTTPRequest::replyFinished(QNetworkReply *networkReply)
         return;
     }
     reply = networkReply->readAll();
+    networkReply->deleteLater();
     success = true;
     Q_EMIT result(this);
     operationFinished(this);

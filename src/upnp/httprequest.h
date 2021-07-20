@@ -85,13 +85,14 @@ Q_SIGNALS:
     void result(HTTPRequest *r);
 
 public:
-    void replyFinished(QNetworkReply *networkReply);
+    void replyFinished();
 
 private:
     void parseReply(int eoh);
 
 private:
     QNetworkRequest hdr;
+    QNetworkReply *networkReply;
     QString m_payload;
     bool verbose;
     QString host;
