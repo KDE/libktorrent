@@ -66,7 +66,7 @@ UPnPMCastSocket::UPnPMCastSocket(bool verbose)
     : d(new UPnPMCastSocketPrivate(verbose))
 {
     QObject::connect(this, &UPnPMCastSocket::readyRead, this, &UPnPMCastSocket::onReadyRead);
-    QObject::connect(this, &UPnPMCastSocket::error, this, &UPnPMCastSocket::error);
+    QObject::connect(this, &UPnPMCastSocket::errorOccurred, this, &UPnPMCastSocket::error);
 
     for (Uint32 i = 0; i < 10; i++) {
         if (!bind(1900 + i, QUdpSocket::ShareAddress))
