@@ -50,6 +50,15 @@ enum VersionType {
 KTORRENT_EXPORT void SetClientInfo(const QString &name, int major, int minor, int release, VersionType type, const QString &peer_id_code);
 
 /**
+ * Set the client info. This information is used to create
+ * the PeerID and the version string (used in HTTP announces for example).
+ * @param name Name of the client
+ * @param version Version
+ * @param peer_id_code Peer ID code (2 letters identifying the client, KT for KTorrent)
+ */
+KTORRENT_EXPORT void SetClientInfo(const QString &name, const QString &version, const QString &peer_id_code);
+
+/**
  * Get the PeerID prefix set by SetClientInfo
  * @return The PeerID prefix
  */
