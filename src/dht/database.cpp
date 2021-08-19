@@ -118,7 +118,22 @@ void Database::expire(bt::TimeStamp now)
         while (dbl->count() > 0 && dbl->first().expired(now)) {
             dbl->pop_front();
         }
-        ++itr;
+        if (dbl->count() == 0) {
+            // PtrMap::erase(PtrMap::iterator) does not auto-delete
+            delete dbl;
+            itr = items.erase(itr);
+        } else {
+            ++itr;
+        }
+    }
+
+    QMap<QByteArray, bt::TimeStamp>::iterator token_itr = tokens.begin();
+    while (token_itr != tokens.end()) {
+        if (now - token_itr.value() >= MAX_ITEM_AGE) {
+            token_itr = tokens.erase(token_itr);
+        } else {
+            ++token_itr;
+        }
     }
 }
 
