@@ -163,7 +163,13 @@ void KBucket::onTimeout(RPCCall *c)
 void KBucket::pingQuestionable(const KBucketEntry &replacement_entry)
 {
     if (pending_entries_busy_pinging.count() >= 2) {
-        pending_entries.append(replacement_entry); // lets not have to many pending_entries calls going on
+        // let's not have too many pending_entries calls going on
+        pending_entries.removeOne(replacement_entry); // drop any existing duplicate
+        while (pending_entries.count() >= (int)dht::K) { // limit number of pending entries
+            pending_entries.removeLast(); // drop stalest
+        }
+        // insert replacement entry at front to keep freshest first
+        pending_entries.prepend(replacement_entry);
         return;
     }
 
