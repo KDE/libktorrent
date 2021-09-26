@@ -10,3 +10,6 @@ CMakeLists.txt.user*
 /.clang-format
 cmake-build-debug*
 .idea
+.clangd
+.cache
+compile_commands.json
