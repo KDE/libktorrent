@@ -1,6 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2012 Digia Plc and /or its subsidiary(-ies).
-    Contact: http://www.qt-project.org/legal
+    SPDX-FileCopyrightText: 2012 Digia Plc and /or its subsidiary(-ies) <http://www.qt-project.org/legal>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
