@@ -1,7 +1,6 @@
 /*
-    SPDX-FileCopyrightText: 2005 by
-    Joris Guisson <joris.guisson@gmail.com>
-    Ivan Vasic <ivasic@gmail.com>
+    SPDX-FileCopyrightText: 2005 Joris Guisson <joris.guisson@gmail.com>
+    SPDX-FileCopyrightText: 2005 Ivan Vasic <ivasic@gmail.com>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
