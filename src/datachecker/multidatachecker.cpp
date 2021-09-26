@@ -1,6 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2005 Joris Guisson & Maggioni Marcello
-    joris.guisson@gmail.com
+    SPDX-FileCopyrightText: 2005 Joris Guisson & Maggioni Marcello <joris.guisson@gmail.com>
     marcello.maggioni@gmail.com
 
     SPDX-License-Identifier: GPL-2.0-or-later
