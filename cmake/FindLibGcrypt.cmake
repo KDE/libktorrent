@@ -29,7 +29,9 @@
 # Since 1.9.50.
 
 #=============================================================================
-# SPDX-FileCopyrightText: 2007 Charles Connell <charles@connells.org> (This was based upon FindKopete.cmake)
+# This was based upon FindKopete.cmake:
+# SPDX-FileCopyrightText: 2007 Charles Connell <charles@connells.org>
+#
 # SPDX-FileCopyrightText: 2010 Joris Guisson <joris.guisson@gmail.com>
 # SPDX-FileCopyrightText: 2016 Christophe Giboudeaux <cgiboudeaux@gmx.com>
 #
