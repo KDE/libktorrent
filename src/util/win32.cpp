@@ -1,6 +1,6 @@
 /*
-Copyright (c) 2006 by Dan Kennedy.
-Copyright (c) 2006 by Juliusz Chroboczek.
+SPDX-FileCopyrightText: 2006 Dan Kennedy.
+SPDX-FileCopyrightText: 2006 Juliusz Chroboczek.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
