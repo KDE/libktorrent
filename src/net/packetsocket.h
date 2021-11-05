@@ -61,6 +61,9 @@ public:
     /// Get the number of pending piece uploads
     Uint32 numPendingPieceUploads() const;
 
+    /// Get the number of pending piece upload bytes (including message headers)
+    Uint32 numPendingPieceUploadBytes() const;
+
 protected:
     /**
      * Preprocess the packet data, before it is sent. Default implementation does nothing.
@@ -77,6 +80,7 @@ protected:
     bt::Packet::Ptr curr_packet;
     Uint32 ctrl_packets_sent;
 
+    Uint32 pending_upload_data_bytes;
     Uint32 uploaded_data_bytes;
 };
 
