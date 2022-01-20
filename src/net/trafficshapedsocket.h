@@ -7,7 +7,7 @@
 #ifndef NET_TRAFFICSHAPEDSOCKET_H
 #define NET_TRAFFICSHAPEDSOCKET_H
 
-#include <QMutex>
+#include <QRecursiveMutex>
 #include <net/socketdevice.h>
 #include <util/constants.h>
 
@@ -125,7 +125,7 @@ protected:
     Uint32 up_gid;
     Uint32 down_gid; // group id which this torrent belongs to, group 0 means the default group
     SocketDevice *sock;
-    mutable QMutex mutex;
+    mutable QRecursiveMutex mutex;
 };
 
 }

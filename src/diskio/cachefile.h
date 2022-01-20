@@ -8,7 +8,7 @@
 
 #include <QFile>
 #include <QMap>
-#include <QMutex>
+#include <QRecursiveMutex>
 #include <QSharedPointer>
 #include <util/constants.h>
 
@@ -136,7 +136,7 @@ private:
         Mode mode;
     };
     QMap<void *, Entry> mappings; // mappings where offset wasn't a multiple of 4K
-    mutable QMutex mutex;
+    mutable QRecursiveMutex mutex;
     bool manual_close;
 };
 

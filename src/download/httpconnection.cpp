@@ -21,7 +21,7 @@ namespace bt
 HttpConnection::HttpConnection()
     : sock(nullptr)
     , state(IDLE)
-    , mutex(QMutex::Recursive)
+    , mutex()
     , request(nullptr)
     , using_proxy(false)
     , response_code(0)

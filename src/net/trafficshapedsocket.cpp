@@ -22,7 +22,7 @@ TrafficShapedSocket::TrafficShapedSocket(SocketDevice *sock)
     , up_gid(0)
     , down_gid(0)
     , sock(sock)
-    , mutex(QMutex::Recursive)
+    , mutex()
 {
     down_speed = new Speed();
     up_speed = new Speed();
@@ -32,7 +32,7 @@ TrafficShapedSocket::TrafficShapedSocket(int fd, int ip_version)
     : rdr(nullptr)
     , up_gid(0)
     , down_gid(0)
-    , mutex(QMutex::Recursive)
+    , mutex()
 {
     sock = new Socket(fd, ip_version);
     down_speed = new Speed();
@@ -43,7 +43,7 @@ TrafficShapedSocket::TrafficShapedSocket(bool tcp, int ip_version)
     : rdr(nullptr)
     , up_gid(0)
     , down_gid(0)
-    , mutex(QMutex::Recursive)
+    , mutex()
 {
     Socket *socket = new Socket(tcp, ip_version);
 

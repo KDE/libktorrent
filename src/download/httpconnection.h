@@ -7,7 +7,7 @@
 #ifndef BTHTTPCONNECTION_H
 #define BTHTTPCONNECTION_H
 
-#include <QMutex>
+#include <QRecursiveMutex>
 #include <QTimer>
 #include <QUrl>
 #include <net/addressresolver.h>
@@ -155,7 +155,7 @@ private:
 
     net::StreamSocket *sock;
     State state;
-    mutable QMutex mutex;
+    mutable QRecursiveMutex mutex;
     HttpGet *request;
     bool using_proxy;
     QString status;

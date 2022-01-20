@@ -7,11 +7,14 @@
 #include "downloadthread.h"
 #include "trafficshapedsocket.h"
 #include "uploadthread.h"
-#include <math.h>
+
 #include <torrent/globals.h>
 #include <unistd.h>
 #include <util/functions.h>
 #include <util/log.h>
+
+#include <QRecursiveMutex>
+#include <cmath>
 
 using namespace bt;
 
@@ -23,7 +26,7 @@ class SocketMonitor::Private
 {
 public:
     Private(SocketMonitor *p)
-        : mutex(QMutex::Recursive)
+        : mutex()
         , ut(nullptr)
         , dt(nullptr)
         , next_group_id(1)
@@ -39,7 +42,7 @@ public:
 
     void shutdown();
 
-    QMutex mutex;
+    QRecursiveMutex mutex;
     UploadThread *ut;
     DownloadThread *dt;
     Uint32 next_group_id;

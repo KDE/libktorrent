@@ -8,7 +8,6 @@
 
 #include <ktorrent_export.h>
 #include <list>
-#include <qmutex.h>
 #include <util/constants.h>
 
 namespace net

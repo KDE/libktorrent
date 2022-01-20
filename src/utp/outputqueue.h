@@ -9,7 +9,10 @@
 
 #include "connection.h"
 #include "packetbuffer.h"
+
 #include <QList>
+#include <QRecursiveMutex>
+
 #include <deque>
 #include <net/serversocket.h>
 
@@ -55,7 +58,7 @@ private:
 #else
     QList<Entry> queue;
 #endif
-    QMutex mutex;
+    QRecursiveMutex mutex;
 };
 
 }

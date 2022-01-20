@@ -21,9 +21,9 @@
 #include "utpprotocol.h"
 #include "utpserverthread.h"
 #include "utpsocket.h"
+#include <ctime>
 #include <mse/encryptedpacketsocket.h>
 #include <net/portlist.h>
-#include <time.h>
 #include <torrent/globals.h>
 #include <util/constants.h>
 #include <util/log.h>
@@ -56,7 +56,7 @@ UTPServer::Private::Private(UTPServer *p)
     : p(p)
     , running(false)
     , utp_thread(nullptr)
-    , mutex(QMutex::Recursive)
+    , mutex()
     , create_sockets(true)
     , tos(0)
     , mtc(new MainThreadCall(p))

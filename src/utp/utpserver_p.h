@@ -12,9 +12,12 @@
 #include "pollpipe.h"
 #include "utpserver.h"
 #include "utpsocket.h"
+
 #include <QMap>
+#include <QRecursiveMutex>
 #include <QSocketNotifier>
 #include <QTimer>
+
 #include <ktorrent_export.h>
 #include <net/poll.h>
 #include <net/serversocket.h>
@@ -84,7 +87,7 @@ public:
     bool running;
     QMap<quint16, Connection::Ptr> connections;
     UTPServerThread *utp_thread;
-    QMutex mutex;
+    QRecursiveMutex mutex;
     bt::PtrMap<net::Poll *, PollPipePair> poll_pipes;
     bool create_sockets;
     bt::Uint8 tos;

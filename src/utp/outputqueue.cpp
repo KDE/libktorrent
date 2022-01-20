@@ -14,7 +14,7 @@ using namespace bt;
 namespace utp
 {
 OutputQueue::OutputQueue()
-    : mutex(QMutex::Recursive)
+    : mutex()
 {
 }
 

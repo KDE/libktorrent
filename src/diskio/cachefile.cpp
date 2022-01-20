@@ -41,7 +41,7 @@ CacheFile::CacheFile()
     : fptr(nullptr)
     , max_size(0)
     , file_size(0)
-    , mutex(QMutex::Recursive)
+    , mutex()
 {
     read_only = false;
     manual_close = false;
