@@ -35,7 +35,8 @@ include(CheckTypeSize) #XFS
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
-include(KDECompilerSettings  NO_POLICY_SCOPE)
+set(KDE_COMPILERSETTINGS_LEVEL "5.82")
+include(KDECompilerSettings NO_POLICY_SCOPE)
 include(FeatureSummary)
 include(GenerateExportHeader)
 include(ECMMarkAsTest)
