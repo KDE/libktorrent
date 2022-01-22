@@ -118,7 +118,6 @@ void HTTPTracker::scrape()
     KIO::StoredTransferJob *j = KIO::storedGet(scrape_url, KIO::NoReload, KIO::HideProgressInfo);
     // set the meta data
     j->setMetaData(md);
-    KIO::Scheduler::setJobPriority(j, 1);
 
     connect(j, &KIO::StoredTransferJob::result, this, &HTTPTracker::onScrapeResult);
 }
