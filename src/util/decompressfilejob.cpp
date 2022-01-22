@@ -5,10 +5,12 @@
 */
 
 #include "decompressfilejob.h"
-#include <KFilterDev>
+
 #include <QFile>
 #include <QMimeDatabase>
-#include <kcompressiondevice.h>
+
+#include <KCompressionDevice>
+
 #include <util/fileops.h>
 #include <util/log.h>
 
@@ -38,7 +40,7 @@ void DecompressThread::run()
     }
 
     // open output file
-    KCompressionDevice dev(file, KFilterDev::compressionTypeForMimeType(QMimeDatabase().mimeTypeForFile(file).name()));
+    KCompressionDevice dev(file, KCompressionDevice::compressionTypeForMimeType(QMimeDatabase().mimeTypeForFile(file).name()));
     if (!dev.open(QIODevice::ReadOnly)) {
         err = KIO::ERR_CANNOT_OPEN_FOR_READING;
         Out(SYS_GEN | LOG_NOTICE) << "Failed to open " << file << " : " << dev.errorString() << endl;
