@@ -140,6 +140,8 @@ install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfig.cmake"
 
 install(EXPORT KF5TorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF5TorrentTargets.cmake NAMESPACE KF5:: )
 
+ki18n_install(po)
+
 # add clang-format target for all our real source files
 file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)
 kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})
