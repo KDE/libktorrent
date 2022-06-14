@@ -11,12 +11,11 @@
 #include <QObject>
 #include <QSet>
 #include <QString>
+#include <QStringList>
 #include <ktorrent_export.h>
 #include <torrent/torrent.h>
 #include <util/bitset.h>
 #include <vector>
-
-class QStringList;
 
 namespace bt
 {

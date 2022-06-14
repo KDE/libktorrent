@@ -9,6 +9,7 @@
 
 #include <QDateTime>
 #include <QObject>
+#include <QStringList>
 #include <QTimer>
 #include <QUrl>
 
@@ -19,7 +20,6 @@
 #include <ktorrent_export.h>
 #include <util/timer.h>
 
-class QStringList;
 class QString;
 class KJob;
 
