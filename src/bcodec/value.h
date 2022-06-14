@@ -6,10 +6,10 @@
 #ifndef BTVALUE_H
 #define BTVALUE_H
 
+#include <QTextCodec>
 #include <ktorrent_export.h>
 #include <qstring.h>
 #include <util/constants.h>
-
 namespace bt
 {
 /**

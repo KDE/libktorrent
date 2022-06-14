@@ -13,7 +13,7 @@ bool HttpResponseHeader::parseLine(const QString &line, int number)
         if (i == -1)
             return false;
 
-        values[line.leftRef(i).trimmed().toString().toLower()] = line.midRef(i + 1).trimmed().toString();
+        values[QStringView(line).left(i).trimmed().toString().toLower()] = QStringView(line).mid(i + 1).trimmed().toString();
 
         return true;
     }
@@ -29,9 +29,17 @@ bool HttpResponseHeader::parseLine(const QString &line, int number)
         int pos = l.indexOf(QLatin1Char(' '), 9);
         if (pos != -1) {
             _reasonPhr = l.mid(pos + 1);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
             _statCode = l.midRef(9, pos - 9).toInt();
+#else
+            _statCode = QStringView(l).mid(9, pos - 9).toInt();
+#endif
         } else {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
             _statCode = l.midRef(9).toInt();
+#else
+            _statCode = QStringView(l).mid(9).toInt();
+#endif
             _reasonPhr.clear();
         }
     } else {

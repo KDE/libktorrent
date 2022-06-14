@@ -9,7 +9,7 @@
 #include <QFile>
 #include <QThread>
 
-#include <KFilterDev>
+#include <KCompressionDevice>
 #include <KIO/Global>
 
 #include "fileops.h"

@@ -284,7 +284,7 @@ QString PeerID::identifyClient() const
         name = Map[QStringLiteral("SP")] + ' ' + peer_id.at(2) + '.' + peer_id.at(3) + '.' + peer_id.at(4) + '.' + peer_id.at(5);
     } else if (peer_id.startsWith(QLatin1String("FG"))) {
         name = Map[QStringLiteral("FG")] + ' ' + peer_id.at(2) + '.' + peer_id.at(3) + '.' + peer_id.at(4) + '.' + peer_id.at(5);
-    } else if (peer_id.midRef(2, 2) == QLatin1String("RS")) {
+    } else if (QStringView(peer_id).mid(2, 2) == QLatin1String("RS")) {
         name = Map[QStringLiteral("RS")];
     } else if (peer_id.startsWith(QLatin1String("Q1"))) {
         name = Map[QStringLiteral("Q1")];

@@ -9,12 +9,11 @@
 #include <QMultiMap>
 #include <QSet>
 #include <QString>
+#include <QStringList>
 #include <diskio/piecedata.h>
 #include <ktorrent_export.h>
 #include <torrent/torrent.h>
 #include <util/constants.h>
-
-class QStringList;
 
 namespace bt
 {

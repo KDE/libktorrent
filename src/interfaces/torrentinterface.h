@@ -8,6 +8,7 @@
 
 #include <QPointer>
 #include <QSharedPointer>
+#include <QTextCodec>
 #include <QUrl>
 
 #include <interfaces/trackerslist.h>
