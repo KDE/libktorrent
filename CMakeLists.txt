@@ -53,7 +53,7 @@ ecm_setup_version(${RELEASE_SERVICE_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfigVersion.cmake"
                         SOVERSION "${SOVERSION}")
 
-find_package(Qt5 "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENTS
+find_package(Qt${QT_MAJOR_VERSION} "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENTS
     Core
     Network
     Xml
@@ -72,7 +72,7 @@ find_package(KF5 "${KF5_MIN_VERSION}" REQUIRED COMPONENTS
 find_package(Boost "${Boost_MIN_VERSION}" MODULE REQUIRED)
 find_package(LibGMP "${LibGMP_MIN_VERSION}" REQUIRED)
 find_package(LibGcrypt "${LibGcrypt_MIN_VERSION}" REQUIRED)
-find_package(Qca-qt5 CONFIG REQUIRED)
+find_package(Qca-qt${QT_MAJOR_VERSION} CONFIG REQUIRED)
 
 kde_enable_exceptions()
 add_definitions(
@@ -127,7 +127,7 @@ set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF5Torrent")
 configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KF5TorrentConfig.cmake.in"
                               "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfig.cmake"
                               INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
-                              PATH_VARS INCLUDE_INSTALL_DIR
+                              PATH_VARS KDE_INSTALL_INCLUDEDIR
                               )
 
 # Install the CMake modules needed to use libktorrent

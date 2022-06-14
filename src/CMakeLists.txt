@@ -234,14 +234,14 @@ generate_export_header(KF5Torrent BASE_NAME ktorrent)
 
 target_link_libraries(KF5Torrent
 PRIVATE
-    qca-qt5
+    qca-qt${QT_MAJOR_VERSION}
 PUBLIC
     KF5::Archive
     KF5::KIOCore
     KF5::KIOWidgets
     KF5::Solid
     KF5::I18n
-    Qt5::Xml
+    Qt::Xml
     Boost::boost
     LibGcrypt::LibGcrypt
     LibGMP::LibGMP
