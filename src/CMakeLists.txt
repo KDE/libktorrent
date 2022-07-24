@@ -247,6 +247,10 @@ PUBLIC
     LibGMP::LibGMP
 )
 
+if (QT_MAJOR_VERSION EQUAL "6")
+    target_link_libraries(KF5Torrent PUBLIC Qt6::Core5Compat)
+endif()
+
 if(WIN32)
 target_link_libraries(KF5Torrent ws2_32)
 endif(WIN32)
