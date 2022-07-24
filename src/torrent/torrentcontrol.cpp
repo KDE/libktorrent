@@ -941,7 +941,7 @@ void TorrentControl::saveStats()
     stats_file->write("DISPLAY_NAME", display_name);
     stats_file->write("URL", url.toDisplayString());
 
-    stats_file->write("TIME_ADDED", QString("%1").arg(stats.time_added.toTime_t()));
+    stats_file->write("TIME_ADDED", QString("%1").arg(stats.time_added.toSecsSinceEpoch()));
     stats_file->write("SUPERSEEDING", stats.superseeding ? "1" : "0");
 
     stats_file->sync();
@@ -1030,7 +1030,7 @@ void TorrentControl::loadStats()
     url = QUrl(stats_file->readString("URL"));
 
     if (stats_file->hasKey("TIME_ADDED"))
-        stats.time_added.setTime_t(stats_file->readULong("TIME_ADDED"));
+        stats.time_added.setSecsSinceEpoch(stats_file->readULong("TIME_ADDED"));
     else
         stats.time_added = QDateTime::currentDateTime();
 
