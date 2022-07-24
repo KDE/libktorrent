@@ -8,12 +8,17 @@
 
 #include <QFile>
 #include <QStack>
-#include <QStringRef>
 #include <QXmlStreamReader>
 
 #include "upnprouter.h"
 #include <util/fileops.h>
 #include <util/log.h>
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+using StringView = QStringView;
+#else
+using StringView = QStringRef;
+#endif
 
 using namespace bt;
 
@@ -43,12 +48,12 @@ public:
 
     bool startDocument();
     bool endDocument();
-    bool startElement(const QStringRef &namespaceUri, const QStringRef &localName, const QStringRef &qName, const QXmlStreamAttributes &atts);
-    bool endElement(const QStringRef &namespaceUri, const QStringRef &localName, const QStringRef &qName);
-    bool characters(const QStringRef &chars);
+    bool startElement(const StringView &namespaceUri, const StringView &localName, const StringView &qName, const QXmlStreamAttributes &atts);
+    bool endElement(const StringView &namespaceUri, const StringView &localName, const StringView &qName);
+    bool characters(const StringView &chars);
 
-    bool interestingDeviceField(const QStringRef &name);
-    bool interestingServiceField(const QStringRef &name);
+    bool interestingDeviceField(const StringView &name);
+    bool interestingServiceField(const StringView &name);
 };
 
 UPnPDescriptionParser::UPnPDescriptionParser()
@@ -160,17 +165,19 @@ bool XMLContentHandler::endDocument()
     return true;
 }
 
-bool XMLContentHandler::interestingDeviceField(const QStringRef &name)
+bool XMLContentHandler::interestingDeviceField(const StringView &name)
 {
-    return name == "friendlyName" || name == "manufacturer" || name == "modelDescription" || name == "modelName" || name == "modelNumber";
+    return name == QLatin1String("friendlyName") || name == QLatin1String("manufacturer") || name == QLatin1String("modelDescription")
+        || name == QLatin1String("modelName") || name == QLatin1String("modelNumber");
 }
 
-bool XMLContentHandler::interestingServiceField(const QStringRef &name)
+bool XMLContentHandler::interestingServiceField(const StringView &name)
 {
-    return name == "serviceType" || name == "serviceId" || name == "SCPDURL" || name == "controlURL" || name == "eventSubURL";
+    return name == QLatin1String("serviceType") || name == QLatin1String("serviceId") || name == QLatin1String("SCPDURL") || name == QLatin1String("controlURL")
+        || name == QLatin1String("eventSubURL");
 }
 
-bool XMLContentHandler::startElement(const QStringRef &namespaceUri, const QStringRef &localName, const QStringRef &qName, const QXmlStreamAttributes &atts)
+bool XMLContentHandler::startElement(const StringView &namespaceUri, const StringView &localName, const StringView &qName, const QXmlStreamAttributes &atts)
 {
     Q_UNUSED(namespaceUri)
     Q_UNUSED(qName)
@@ -180,7 +187,7 @@ bool XMLContentHandler::startElement(const QStringRef &namespaceUri, const QStri
     switch (status_stack.top()) {
     case TOPLEVEL:
         // from toplevel we can only go to root
-        if (localName == "root")
+        if (localName == QLatin1String("root"))
             status_stack.push(ROOT);
         else
             return false;
@@ -188,7 +195,7 @@ bool XMLContentHandler::startElement(const QStringRef &namespaceUri, const QStri
     case ROOT:
         // from the root we can go to device or specVersion
         // we are not interested in the specVersion
-        if (localName == "device")
+        if (localName == QLatin1String("device"))
             status_stack.push(DEVICE);
         else
             status_stack.push(OTHER);
@@ -207,9 +214,9 @@ bool XMLContentHandler::startElement(const QStringRef &namespaceUri, const QStri
             status_stack.push(OTHER);
         break;
     case OTHER:
-        if (localName == "service")
+        if (localName == QLatin1String("service"))
             status_stack.push(SERVICE);
-        else if (localName == "device")
+        else if (localName == QLatin1String("device"))
             status_stack.push(DEVICE);
         else
             status_stack.push(OTHER);
@@ -220,7 +227,7 @@ bool XMLContentHandler::startElement(const QStringRef &namespaceUri, const QStri
     return true;
 }
 
-bool XMLContentHandler::endElement(const QStringRef &namespaceUri, const QStringRef &localName, const QStringRef &qName)
+bool XMLContentHandler::endElement(const StringView &namespaceUri, const StringView &localName, const StringView &qName)
 {
     Q_UNUSED(namespaceUri)
     Q_UNUSED(qName)
@@ -254,7 +261,7 @@ bool XMLContentHandler::endElement(const QStringRef &namespaceUri, const QString
     return true;
 }
 
-bool XMLContentHandler::characters(const QStringRef &chars)
+bool XMLContentHandler::characters(const StringView &chars)
 {
     tmp.append(chars);
     return true;

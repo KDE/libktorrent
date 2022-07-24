@@ -269,7 +269,11 @@ void UPnPMCastSocket::UPnPMCastSocketPrivate::leaveUPnPMCastGroup(int fd)
 UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteArray &arr)
 {
     const QString response = QString::fromLatin1(arr);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QVector<QStringView> lines = QStringView(response).split(QStringLiteral("\r\n"));
+#else
     QVector<QStringRef> lines = response.splitRef("\r\n");
+#endif
     QString server;
     QUrl location;
 
@@ -280,7 +284,7 @@ UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteAr
     */
 
     // first read first line and see if contains a HTTP 200 OK message
-    QStringRef line = lines.first();
+    auto line = lines.first();
     if (!line.contains(QLatin1String("HTTP"))) {
         // it is either a 200 OK or a NOTIFY
         if (!line.contains(QLatin1String("NOTIFY")) && !line.contains(QLatin1String("200")))
