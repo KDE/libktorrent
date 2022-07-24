@@ -52,14 +52,14 @@ struct TimeStampedRequest {
      * @param r The Request
      * @return true if equal
      */
-    bool operator==(const Request &r);
+    bool operator==(const Request &r) const;
 
     /**
      * Equality operator, compares requests only.
      * @param r The Request
      * @return true if equal
      */
-    bool operator==(const TimeStampedRequest &r);
+    bool operator==(const TimeStampedRequest &r) const;
 
     /**
      * Assignment operator.

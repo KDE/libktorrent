@@ -34,12 +34,12 @@ TimeStampedRequest::~TimeStampedRequest()
 {
 }
 
-bool TimeStampedRequest::operator==(const Request &r)
+bool TimeStampedRequest::operator==(const Request &r) const
 {
     return r == req;
 }
 
-bool TimeStampedRequest::operator==(const TimeStampedRequest &r)
+bool TimeStampedRequest::operator==(const TimeStampedRequest &r) const
 {
     return r.req == req;
 }
