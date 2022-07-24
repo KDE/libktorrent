@@ -5,6 +5,7 @@
 */
 
 #include "magnetlink.h"
+#include <QRegularExpression>
 #include <QStringList>
 #include <QUrlQuery>
 #include <util/error.h>
@@ -78,14 +79,17 @@ void MagnetLink::parse(const QUrl &url)
     path = QUrlQuery(url).queryItemValue(QStringLiteral("pt"));
     if (path.isEmpty() && url.path() != QLatin1String("/")) {
         // TODO find out why RemoveTrailingSlash does not work
-        path = url.adjusted(QUrl::StripTrailingSlash).path().remove(QRegExp(QLatin1String("^/")));
+        path = url.adjusted(QUrl::StripTrailingSlash).path().remove(QRegularExpression(QLatin1String("^/")));
     }
 
     QString xt = QUrlQuery(url).queryItemValue(QLatin1String("xt"));
     if (xt.isEmpty() || !xt.startsWith(QLatin1String("urn:btih:"))) {
-        QRegExp btihHash(QLatin1String("([^\\.]+).btih"));
-        if (btihHash.indexIn(url.host()) != -1) {
-            QString primaryHash = btihHash.cap(1).split('-')[0];
+        static QRegularExpression btihHash(QLatin1String("([^\\.]+).btih"));
+
+        const QRegularExpressionMatch match = btihHash.match(url.host());
+
+        if (match.hasMatch()) {
+            QString primaryHash = match.captured(1).split('-')[0];
             xt = QLatin1String("urn:btih:") + primaryHash;
         } else {
             Out(SYS_GEN | LOG_NOTICE) << "No hash found in magnet link " << url << endl;
