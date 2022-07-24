@@ -8,6 +8,8 @@
 #include <kio/job.h>
 #include <util/log.h>
 
+#include <kio_version.h>
+
 namespace bt
 {
 KIOAnnounceJob::KIOAnnounceJob(const QUrl &url, const KIO::MetaData &md)
@@ -50,7 +52,11 @@ void KIOAnnounceJob::finished(KJob *j)
     error_page = get_job->isErrorPage(); // must be called from slot connected to result()
     if (error_page && !j->error()) {
         QString err_code = get_job->metaData().value(QStringLiteral("responsecode"));
+#if KIO_VERSION >= QT_VERSION_CHECK(5, 96, 0)
+        setError(KIO::ERR_WORKER_DEFINED);
+#else
         setError(KIO::ERR_SLAVE_DEFINED);
+#endif
         setErrorText(QString("HTTP %1").arg(err_code));
     } else {
         setError(j->error());
