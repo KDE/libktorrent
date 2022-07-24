@@ -36,7 +36,7 @@ Key::Key(const bt::Uint8 *d)
 
 Key::Key(const QByteArray &ba)
 {
-    memcpy(hash, ba.data(), std::min(20, ba.size()));
+    memcpy(hash, ba.data(), std::min(20, static_cast<int>(ba.size())));
 }
 
 Key::~Key()
