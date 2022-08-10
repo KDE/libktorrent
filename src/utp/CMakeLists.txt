@@ -12,7 +12,7 @@ set(utp_HDR
     packetbuffer.h
 )
 
-install(FILES ${utp_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/utp COMPONENT Devel)
+install(FILES ${utp_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent/utp COMPONENT Devel)
 if(BUILD_TESTING)
     add_subdirectory(tests)
 endif()

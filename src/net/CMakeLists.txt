@@ -24,4 +24,4 @@ set(net_HDR
     serversocket.h
 )
 
-install(FILES ${net_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/libktorrent/net COMPONENT Devel)
+install(FILES ${net_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent/net COMPONENT Devel)
