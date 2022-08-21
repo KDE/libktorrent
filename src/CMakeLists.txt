@@ -258,7 +258,7 @@ target_include_directories(KF5Torrent INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTA
 target_include_directories(KF5Torrent PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOURCE_DIR}/src;${LIBKTORRENT_BINARY_DIR}/src;${LIBKTORRENT_BINARY_DIR}>")
 
 
-install(TARGETS KF5Torrent EXPORT KF5TorrentTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS KF5Torrent EXPORT KF5TorrentTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 set (interfaces_HDR
     interfaces/peerinterface.h
