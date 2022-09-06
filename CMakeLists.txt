@@ -24,7 +24,7 @@ enable_testing()
 
 find_package(ECM ${KF5_MIN_VERSION} NO_MODULE)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
 #
 # checks for functions and stuff
