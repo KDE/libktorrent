@@ -1,0 +1,2375 @@
+# translation of ktorrent.po to Hindi
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Ravishankar Shrivastava <raviratlami@yahoo.com>, 2008.
+# Raghavendra Kamath <raghu@raghukamath.com>, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: ktorrent\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-01-23 00:45+0000\n"
+"PO-Revision-Date: 2021-09-17 20:07+0530\n"
+"Last-Translator: Raghavendra Kamath <raghu@raghukamath.com>\n"
+"Language-Team: kde-hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Lokalize 21.08.1\n"
+
+#: src/bcodec/bdecoder.cpp:48
+#, kde-format
+msgid "Illegal token: %1"
+msgstr ""
+
+#: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
+#, kde-format
+msgid "Decode error"
+msgstr ""
+
+#: src/bcodec/bdecoder.cpp:161 src/bcodec/bdecoder.cpp:199
+#, kde-format
+msgid "Unexpected end of input"
+msgstr ""
+
+#: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
+#, kde-format
+msgid "Cannot convert %1 to an int"
+msgstr ""
+
+#: src/bcodec/bdecoder.cpp:223
+#, fuzzy, kde-format
+#| msgid "KTorrent"
+msgid "Torrent is incomplete."
+msgstr "केटोरेंट"
+
+#: src/datachecker/datacheckerjob.cpp:66
+#, kde-format
+msgid "Waiting for other data checks to finish"
+msgstr ""
+
+#: src/datachecker/datacheckerjob.cpp:72 src/torrent/torrentstats.cpp:92
+#, kde-format
+msgid "Checking data"
+msgstr ""
+
+#: src/datachecker/datacheckerjob.cpp:119
+#, kde-format
+msgid "Checking Data"
+msgstr ""
+
+#: src/datachecker/multidatachecker.cpp:181
+#: src/datachecker/singledatachecker.cpp:34 src/diskio/multifilecache.cpp:621
+#: src/diskio/multifilecache.cpp:656 src/torrent/torrentcreator.cpp:111
+#: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
+#, kde-format
+msgid "Cannot open file %1: %2"
+msgstr ""
+
+#: src/diskio/cache.cpp:148 src/diskio/multifilecache.cpp:95
+#: src/diskio/singlefilecache.cpp:67
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Failed to create %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:312
+#: src/util/fileops.cpp:354
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot open %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/diskio/cachefile.cpp:103 src/diskio/cachefile.cpp:215
+#: src/diskio/cachefile.cpp:368 src/diskio/cachefile.cpp:427
+#, kde-format
+msgid "Cannot open %1 for writing: readonly filesystem"
+msgstr ""
+
+#: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
+#, kde-format
+msgid "Attempting to write beyond the maximum size of %1"
+msgstr ""
+
+#: src/diskio/cachefile.cpp:220
+#, kde-format
+msgid ""
+"Cannot expand file %1: attempting to grow the file beyond the maximum size"
+msgstr ""
+
+#: src/diskio/cachefile.cpp:224
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot expand file %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/diskio/cachefile.cpp:336
+#, kde-format
+msgid "Error: Reading past the end of the file %1"
+msgstr ""
+
+#: src/diskio/cachefile.cpp:341 src/diskio/cachefile.cpp:383
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Failed to seek file %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/diskio/cachefile.cpp:348
+#, kde-format
+msgid "Error reading from %1"
+msgstr "%1 से पढ़ने में त्रुटि"
+
+#: src/diskio/cachefile.cpp:386
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Failed to write to file %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/diskio/cachefile.cpp:443
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot preallocate diskspace: %1"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/diskio/chunkmanager.cpp:844 src/diskio/chunkmanager.cpp:867
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot open index file %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/diskio/dndfile.cpp:72
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot create file %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/diskio/dndfile.cpp:114
+#, kde-format
+msgid "Failed to write first chunk to DND file: %1"
+msgstr ""
+
+#: src/diskio/dndfile.cpp:129
+#, kde-format
+msgid "Failed to write last chunk to DND file: %1"
+msgstr ""
+
+#: src/diskio/movedatafilesjob.cpp:109
+#, kde-format
+msgid "Waiting for other move jobs to finish"
+msgstr ""
+
+#: src/diskio/movedatafilesjob.cpp:110 src/diskio/movedatafilesjob.cpp:146
+#, fuzzy, kde-format
+#| msgid "Add Folder"
+msgctxt "The source of a file operation"
+msgid "Source"
+msgstr "फ़ोल्डर जोड़ें"
+
+#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#, fuzzy, kde-format
+#| msgid "Encryption"
+msgctxt "The destination of a file operation"
+msgid "Destination"
+msgstr "एनक्रिप्शन"
+
+#: src/diskio/movedatafilesjob.cpp:145
+#, kde-format
+msgctxt "@title job"
+msgid "Moving"
+msgstr ""
+
+#: src/diskio/multifilecache.cpp:70 src/diskio/singlefilecache.cpp:57
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Failed to open %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
+#, kde-format
+msgid "Unable to write to a piece mapped read only"
+msgstr ""
+
+#: src/download/chunkdownload.cpp:342
+#, kde-format
+msgid "1 peer"
+msgid_plural "%1 peers"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/download/downloader.cpp:693
+#, kde-format
+msgid "Disabled because webseed does not match torrent"
+msgstr ""
+
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
+#: src/download/webseed.cpp:84
+#, fuzzy, kde-format
+#| msgid "Connections"
+msgid "Not connected"
+msgstr "कनेक्शन्स"
+
+#: src/download/httpconnection.cpp:96
+#, kde-format
+msgid "Resolving proxy %1:%2"
+msgstr ""
+
+#: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
+#, kde-format
+msgid "Not enough system resources available"
+msgstr ""
+
+#: src/download/httpconnection.cpp:110
+#, kde-format
+msgid "Resolving hostname %1"
+msgstr ""
+
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
+#, fuzzy, kde-format
+#| msgid "Connections"
+msgid "Connection closed"
+msgstr "कनेक्शन्स"
+
+#: src/download/httpconnection.cpp:130
+#, kde-format
+msgid "Error: request failed: %1"
+msgstr ""
+
+#: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
+#, fuzzy, kde-format
+#| msgid "Connections"
+msgid "Connected"
+msgstr "कनेक्शन्स"
+
+#: src/download/httpconnection.cpp:162
+#, kde-format
+msgid "Error: Failed to connect to webseed"
+msgstr ""
+
+#: src/download/httpconnection.cpp:186
+#, fuzzy, kde-format
+#| msgid "Connections"
+msgid "Connecting"
+msgstr "कनेक्शन्स"
+
+#: src/download/httpconnection.cpp:195
+#, kde-format
+msgid "Failed to connect to webseed"
+msgstr ""
+
+#: src/download/httpconnection.cpp:200
+#, kde-format
+msgid "Failed to resolve hostname of webseed"
+msgstr ""
+
+#: src/download/httpconnection.cpp:271
+#, kde-format
+msgid "Error: failed to connect, server not responding"
+msgstr ""
+
+#: src/download/httpconnection.cpp:281
+#, kde-format
+msgid "Error: request timed out"
+msgstr ""
+
+#: src/download/httpconnection.cpp:351
+#, kde-format
+msgid "Redirected without a new location."
+msgstr ""
+
+#: src/download/webseed.cpp:493
+#, kde-format
+msgid "Unused for %1 second (Too many connection failures)"
+msgid_plural "Unused for %1 seconds (Too many connection failures)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/interfaces/trackerinterface.cpp:45
+#, kde-format
+msgid "OK"
+msgstr "ठीक है"
+
+#: src/interfaces/trackerinterface.cpp:45
+#, kde-format
+msgid "Warning: %1"
+msgstr ""
+
+#: src/interfaces/trackerinterface.cpp:47
+#, fuzzy, kde-format
+#| msgid "Connections"
+msgid "Announcing"
+msgstr "कनेक्शन्स"
+
+#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
+#, fuzzy, kde-format
+#| msgid "Error: "
+msgid "Error: %1"
+msgstr "त्रुटि:"
+
+#: src/peer/peerid.cpp:299
+#, kde-format
+msgid "Unknown client"
+msgstr "अज्ञात क्लाएंट"
+
+#: src/torrent/torrent.cpp:96 src/torrent/torrent.cpp:153
+#: src/torrent/torrent.cpp:180 src/torrent/torrent.cpp:187
+#: src/torrent/torrent.cpp:194 src/torrent/torrent.cpp:198
+#: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
+#, fuzzy, kde-format
+#| msgid "KTorrent"
+msgid "Corrupted torrent."
+msgstr "केटोरेंट"
+
+#: src/torrent/torrentcontrol.cpp:277
+#, kde-format
+msgid "Error writing to disk, do you have enough diskspace?"
+msgstr ""
+
+#: src/torrent/torrentcontrol.cpp:492
+#, kde-format
+msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
+msgstr ""
+
+#: src/torrent/torrentcontrol.cpp:502
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Unable to create %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/torrent/torrentcontrol.cpp:515
+#, kde-format
+msgid ""
+"You are already downloading the torrent <b>%1</b>. The tracker lists from "
+"both torrents have been merged."
+msgstr ""
+
+#: src/torrent/torrentcontrol.cpp:519
+#, kde-format
+msgid "You are already downloading the torrent <b>%1</b>."
+msgstr ""
+
+#: src/torrent/torrentcreator.cpp:332
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot create index file: %1"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/torrent/torrentstats.cpp:72
+#, kde-format
+msgid "Not started"
+msgstr "प्रारंभ नहीं हुआ"
+
+#: src/torrent/torrentstats.cpp:74
+#, fuzzy, kde-format
+#| msgid "Downloaded"
+msgid "Download completed"
+msgstr "डाउनलोडेड"
+
+#: src/torrent/torrentstats.cpp:76
+#, kde-format
+msgid "Seeding completed"
+msgstr ""
+
+#: src/torrent/torrentstats.cpp:78
+#, fuzzy, kde-format
+#| msgid "Speed"
+msgctxt "Status of a torrent file"
+msgid "Seeding"
+msgstr "गति"
+
+#: src/torrent/torrentstats.cpp:80
+#, kde-format
+msgid "Downloading"
+msgstr "डाउनलोड किया जा रहा है"
+
+#: src/torrent/torrentstats.cpp:82
+#, kde-format
+msgid "Stalled"
+msgstr "रुका हुआ"
+
+#: src/torrent/torrentstats.cpp:84
+#, kde-format
+msgid "Stopped"
+msgstr "रुक गया"
+
+#: src/torrent/torrentstats.cpp:88
+#, kde-format
+msgid "Allocating diskspace"
+msgstr ""
+
+#: src/torrent/torrentstats.cpp:90
+#, fuzzy, kde-format
+#| msgid "Downloading"
+msgid "Queued for seeding"
+msgstr "डाउनलोड किया जा रहा है"
+
+#: src/torrent/torrentstats.cpp:90
+#, fuzzy, kde-format
+#| msgid "Downloading"
+msgid "Queued for downloading"
+msgstr "डाउनलोड किया जा रहा है"
+
+#: src/torrent/torrentstats.cpp:94
+#, kde-format
+msgid "Stopped. No space left on device."
+msgstr ""
+
+#: src/torrent/torrentstats.cpp:96
+#, kde-format
+msgid "Paused"
+msgstr "ठहरा"
+
+#: src/torrent/torrentstats.cpp:98
+#, fuzzy, kde-format
+#| msgid "Speed"
+msgid "Superseeding"
+msgstr "गति"
+
+#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
+#: src/tracker/httptracker.cpp:392
+#, kde-format
+msgid "Invalid response from tracker"
+msgstr ""
+
+#: src/tracker/httptracker.cpp:253
+#, fuzzy, kde-format
+#| msgid "Invalid URL: %1"
+msgid "Invalid data from tracker"
+msgstr "अवैध यूआरएल: %1"
+
+#: src/tracker/httptracker.cpp:407
+#, fuzzy, kde-format
+#| msgid "Invalid URL: %1"
+msgid "Invalid tracker URL"
+msgstr "अवैध यूआरएल: %1"
+
+#: src/tracker/httptracker.cpp:465 src/tracker/udptracker.cpp:315
+#: src/tracker/udptracker.cpp:322
+#, kde-format
+msgid "Timeout contacting tracker %1"
+msgstr ""
+
+#: src/tracker/udptracker.cpp:343
+#, kde-format
+msgid "Unable to resolve hostname %1"
+msgstr ""
+
+#: src/upnp/httprequest.cpp:39
+#, kde-format
+msgid "Operation timed out"
+msgstr ""
+
+#: src/upnp/upnprouter.cpp:156
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Failed to download %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/upnp/upnprouter.cpp:166
+#, kde-format
+msgid "Error parsing router description."
+msgstr ""
+
+#: src/upnp/upnprouter.cpp:200
+#, kde-format
+msgid ""
+"Forwarding failed:\n"
+"Device does not have a WANIPConnection or WANPPPConnection."
+msgstr ""
+
+#: src/upnp/upnprouter.cpp:279
+#, kde-format
+msgid "Cannot find port forwarding service in the device's description."
+msgstr ""
+
+#: src/util/file.cpp:68
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot write to %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/file.cpp:81
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot read from %1"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/fileops.cpp:91
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot create directory %1"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/fileops.cpp:149
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot symlink %1 to %2: %3"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/fileops.cpp:162
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot move %1 to %2: %3"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/fileops.cpp:173 src/util/fileops.cpp:184
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot copy %1 to %2: %3"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/fileops.cpp:238
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot delete %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/fileops.cpp:254
+#, kde-format
+msgid "Cannot create %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/fileops.cpp:271
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot calculate the filesize of %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/fileops.cpp:287
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot calculate the filesize: %1"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/fileops.cpp:332 src/util/fileops.cpp:336 src/util/fileops.cpp:339
+#: src/util/fileops.cpp:342 src/util/fileops.cpp:345
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot expand file: %1"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/fileops.cpp:372
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Cannot seek in file: %1"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/fileops.cpp:613
+#, fuzzy, kde-format
+#| msgid "Cannot create %1: %2"
+msgid "Unable to open file %1: %2"
+msgstr "बना नहीं सकता %1: %2"
+
+#: src/util/functions.cpp:205
+#, fuzzy, kde-format
+#| msgid "%1 %"
+msgid "%1/s"
+msgstr "%1 %"
+
+#: src/util/functions.cpp:214
+#, fuzzy, kde-format
+#| msgid "Day:"
+msgid "1 day "
+msgid_plural "%1 days "
+msgstr[0] "दिन:"
+msgstr[1] "दिन:"
+
+#: src/util/logsystemmanager.cpp:19
+#, kde-format
+msgid "General"
+msgstr ""
+
+#: src/util/logsystemmanager.cpp:20
+#, kde-format
+msgid "Connections"
+msgstr "कनेक्शन्स"
+
+#: src/util/logsystemmanager.cpp:21
+#, kde-format
+msgid "Tracker"
+msgstr ""
+
+#: src/util/logsystemmanager.cpp:22
+#, kde-format
+msgid "DHT"
+msgstr ""
+
+#: src/util/logsystemmanager.cpp:23
+#, kde-format
+msgid "Disk Input/Output"
+msgstr ""
+
+#: src/util/logsystemmanager.cpp:24
+#, kde-format
+msgid "µTP"
+msgstr ""
+
+#: src/util/signalcatcher.cpp:62
+#, kde-format
+msgid "Error when writing to disk"
+msgstr ""
+
+#: src/util/signalcatcher.cpp:62
+#, fuzzy, kde-format
+#| msgid "Error reading from %1"
+msgid "Error when reading from disk"
+msgstr "%1 से पढ़ने में त्रुटि"
+
+#~ msgid "The directory %1 does not exist"
+#~ msgstr "डिरेक्ट्री %1 मौजूद नहीं है"
+
+#, fuzzy
+#~| msgid "Connections"
+#~ msgid "Connection closed unexpectedly"
+#~ msgstr "कनेक्शन्स"
+
+#, fuzzy
+#~| msgid "Document to open"
+#~ msgid "Torrent to open"
+#~ msgstr "दस्तावेज़ जिसे खोलना है"
+
+#, fuzzy
+#~| msgid "Notice"
+#~ msgid "Port to use"
+#~ msgstr "सूचना"
+
+#~ msgid "Parse Error"
+#~ msgstr "व्याख्या त्रुटि"
+
+#, fuzzy
+#~| msgid "Notice"
+#~ msgid "Not in use"
+#~ msgstr "सूचना"
+
+#, fuzzy
+#~| msgid "Free disk space:"
+#~ msgid "Not enough diskspace"
+#~ msgstr "डिस्क में खाली जगहः"
+
+#, fuzzy
+#~| msgid "Cannot create %1: %2"
+#~ msgid "Cannot open file : %1 : %2"
+#~ msgstr "बना नहीं सकता %1: %2"
+
+#, fuzzy
+#~| msgid "Cannot create %1: %2"
+#~ msgid "Cannot open log file %1 : %2"
+#~ msgstr "बना नहीं सकता %1: %2"
+
+#, fuzzy
+#~| msgid "UDP"
+#~ msgid "UTP"
+#~ msgstr "यूडीपी"
+
+#, fuzzy
+#~| msgid "Scan Folder"
+#~ msgctxt "plugin name"
+#~ msgid "Scan Folder"
+#~ msgstr "फ़ोल्डर स्कैन करें"
+
+#~ msgid "loaded"
+#~ msgstr "लोड हो गया"
+
+#~ msgid "Device"
+#~ msgstr "उपकरण"
+
+#, fuzzy
+#~| msgid "Application"
+#~ msgid "Syndication"
+#~ msgstr "अनुप्रयोग"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "New Filter"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Add New Filter"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Add Feed"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Remove Item"
+#~ msgid "Remove Feed"
+#~ msgstr "वस्तु मिटाएँ"
+
+#, fuzzy
+#~| msgid "Speed"
+#~ msgid "Show Feed"
+#~ msgstr "गति"
+
+#, fuzzy
+#~| msgid "Remove Folder"
+#~ msgid "Add/Remove Filters"
+#~ msgstr "फ़ोल्डर मिटाएँ"
+
+#, fuzzy
+#~| msgid "Username:"
+#~ msgid "Rename"
+#~ msgstr "उपयोक्ता नाम:"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Add Filter"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Remove Folder"
+#~ msgid "Remove Filter"
+#~ msgstr "फ़ोल्डर मिटाएँ"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Edit Filter"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "<b>Download Failed</b>"
+#~ msgstr "डाउनलोडेड"
+
+#, fuzzy
+#~| msgid "Downloading"
+#~ msgid "<b>Downloading</b>"
+#~ msgstr "डाउनलोड किया जा रहा है"
+
+#, fuzzy
+#~| msgid "File"
+#~ msgid "Title"
+#~ msgstr "फ़ाइल"
+
+#, fuzzy
+#~| msgctxt "Preview available"
+#~| msgid "Available"
+#~ msgid "Available"
+#~ msgstr "उपलब्ध "
+
+#, fuzzy
+#~| msgid "Left:"
+#~ msgid "Length"
+#~ msgstr "बायाँ:"
+
+#, fuzzy
+#~| msgid "Clear"
+#~ msgid "Year"
+#~ msgstr "साफ करें"
+
+#, fuzzy
+#~| msgid "All Files"
+#~ msgid "Single File"
+#~ msgstr "सभी फ़ाइलें"
+
+#~ msgid "Remove"
+#~ msgstr "हटाएँ"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Add Media"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Files"
+#~ msgid "Play List"
+#~ msgstr "फ़ाइल"
+
+#~ msgid "Pause"
+#~ msgstr "ठहरें"
+
+#~ msgid "Stop"
+#~ msgstr "रूकें"
+
+#, fuzzy
+#~| msgid "Preview"
+#~ msgid "Previous"
+#~ msgstr "पूर्वावलोकन"
+
+#, fuzzy
+#~| msgid "Move File"
+#~ msgid "Movie player"
+#~ msgstr "फ़ाइल खिसकाएँ"
+
+#, fuzzy
+#~| msgid "Connections"
+#~ msgid "Collection:"
+#~ msgstr "कनेक्शन्स"
+
+#, fuzzy
+#~| msgid "Unknown client"
+#~ msgid "Unknown"
+#~ msgstr "अज्ञात क्लाएंट"
+
+#, fuzzy
+#~| msgid "Rescan"
+#~ msgid "Rescale"
+#~ msgstr "री-स्कैन"
+
+#, fuzzy
+#~| msgid "Resume"
+#~ msgid "Reset"
+#~ msgstr "पुनरारंभ"
+
+#, fuzzy
+#~| msgid " KB"
+#~ msgid "KiB/s"
+#~ msgstr "कि.बा."
+
+#, fuzzy
+#~| msgid "Status"
+#~ msgid "Statistics"
+#~ msgstr "स्थिति"
+
+#, fuzzy
+#~| msgid "%1 KB"
+#~ msgid "(= %1 ms)"
+#~ msgstr "%1 कि.बा."
+
+#~ msgid "Tasks"
+#~ msgstr "कार्य"
+
+#, fuzzy
+#~| msgid "Time limit:"
+#~ msgid "Speed limit"
+#~ msgstr "समय सीमा:"
+
+#, fuzzy
+#~| msgid "Connections"
+#~ msgid "Connections charts"
+#~ msgstr "कनेक्शन्स"
+
+#~ msgid "Display"
+#~ msgstr "प्रदर्शक"
+
+#~ msgctxt "Choked"
+#~ msgid "Yes"
+#~ msgstr "हाँ"
+
+#~ msgctxt "Not choked"
+#~ msgid "No"
+#~ msgstr "नहीं"
+
+#~ msgctxt "Snubbed"
+#~ msgid "Yes"
+#~ msgstr "हाँ"
+
+#~ msgctxt "Not snubbed"
+#~ msgid "No"
+#~ msgstr "नहीं"
+
+#, fuzzy
+#~| msgctxt "Choked"
+#~| msgid "Yes"
+#~ msgctxt "Interested"
+#~ msgid "Yes"
+#~ msgstr "हाँ"
+
+#, fuzzy
+#~| msgctxt "Not choked"
+#~| msgid "No"
+#~ msgctxt "Not Interested"
+#~ msgid "No"
+#~ msgstr "नहीं"
+
+#, fuzzy
+#~| msgctxt "Choked"
+#~| msgid "Yes"
+#~ msgctxt "Interesting"
+#~ msgid "Yes"
+#~ msgstr "हाँ"
+
+#, fuzzy
+#~| msgctxt "Not choked"
+#~| msgid "No"
+#~ msgctxt "Not Interesting"
+#~ msgid "No"
+#~ msgstr "नहीं"
+
+#, fuzzy
+#~| msgid "IP Address"
+#~ msgid "Address"
+#~ msgstr "आईपी पता"
+
+#~ msgid "Country"
+#~ msgstr "देश"
+
+#~ msgid "Client"
+#~ msgstr "क्लाएंट"
+
+#~ msgid "Availability"
+#~ msgstr "उपलब्धता"
+
+#~ msgid "Score"
+#~ msgstr "अंक"
+
+#~ msgid "Requests"
+#~ msgstr "निवेदन"
+
+#~ msgid "Downloaded"
+#~ msgstr "डाउनलोडेड"
+
+#~ msgid "Uploaded"
+#~ msgstr "अपलोडेड"
+
+#, fuzzy
+#~| msgid "Uploaded"
+#~ msgid "Upload speed"
+#~ msgstr "अपलोडेड"
+
+#, fuzzy
+#~| msgid "Status"
+#~ msgctxt "@title:tab"
+#~ msgid "Status"
+#~ msgstr "स्थिति"
+
+#, fuzzy
+#~| msgid "Files"
+#~ msgctxt "@title:tab"
+#~ msgid "Files"
+#~ msgstr "फ़ाइल"
+
+#~ msgid "Progress"
+#~ msgstr "प्रगति"
+
+#~ msgid "Files"
+#~ msgstr "फ़ाइल"
+
+#~ msgid "URL"
+#~ msgstr "यूआरएल"
+
+#~ msgid "Speed"
+#~ msgstr "गति"
+
+#~ msgid "Status"
+#~ msgstr "स्थिति"
+
+#, fuzzy
+#~| msgid "File"
+#~ msgid "Filter"
+#~ msgstr "फ़ाइल"
+
+#~ msgctxt "Open file"
+#~ msgid "Open"
+#~ msgstr "खोलें"
+
+#~ msgid "Do Not Download"
+#~ msgstr "डाउनलोड नहीं करें"
+
+#~ msgid "Move File"
+#~ msgstr "फ़ाइल खिसकाएँ"
+
+#, fuzzy
+#~| msgid "Scan Folder"
+#~ msgid "Expand Folder Tree"
+#~ msgstr "फ़ोल्डर स्कैन करें"
+
+#, fuzzy
+#~| msgid "File"
+#~ msgid "File Tree"
+#~ msgstr "फ़ाइल"
+
+#, fuzzy
+#~| msgid "File Exists"
+#~ msgid "File List"
+#~ msgstr "फ़ाइल अस्तित्व में है"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Show Filter"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Downloaded:"
+#~ msgid "Times Downloaded"
+#~ msgstr "डाउनलोडेड:"
+
+#, fuzzy
+#~| msgid "Update"
+#~ msgid "Next Update"
+#~ msgstr "अद्यतन"
+
+#~ msgid "Priority"
+#~ msgstr "प्राथमिकता"
+
+#, fuzzy
+#~| msgid "Preview"
+#~ msgctxt "@title:column"
+#~ msgid "Preview"
+#~ msgstr "पूर्वावलोकन"
+
+#~ msgctxt "Download first"
+#~ msgid "First"
+#~ msgstr "प्रथम"
+
+#~ msgctxt "Download last"
+#~ msgid "Last"
+#~ msgstr "अंतिम"
+
+#~ msgctxt "Download normally(not as first or last)"
+#~ msgid "Normal"
+#~ msgstr "सामान्य"
+
+#~ msgctxt "preview available"
+#~ msgid "Available"
+#~ msgstr "उपलब्ध "
+
+#~ msgctxt "No preview available"
+#~ msgid "No"
+#~ msgstr "नहीं"
+
+#~ msgid "%1 %"
+#~ msgstr "%1 %"
+
+#~ msgctxt "Preview available"
+#~ msgid "Available"
+#~ msgstr "उपलब्ध "
+
+#, fuzzy
+#~| msgctxt "Preview available"
+#~| msgid "Available"
+#~ msgid "Add Trackers"
+#~ msgstr "उपलब्ध "
+
+#~ msgctxt "Download Normal (not as first or last)"
+#~ msgid "Normal"
+#~ msgstr "सामान्य"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Add Script"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Remove Group"
+#~ msgid "Remove Script"
+#~ msgstr "समूह हटाएँ"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Run Script"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Stop Script"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Edit Script"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Progress"
+#~ msgid "Properties"
+#~ msgstr "प्रगति"
+
+#, fuzzy
+#~| msgid "Encryption"
+#~ msgid "Scripting"
+#~ msgstr "एनक्रिप्शन"
+
+#~ msgid "All files"
+#~ msgstr "सभी फ़ाइलें"
+
+#, fuzzy
+#~| msgid "Invalid URL: %1"
+#~ msgid "Invalid archive."
+#~ msgstr "अवैध यूआरएल: %1"
+
+#~ msgid "System"
+#~ msgstr "तंत्र"
+
+#~ msgid "Debug"
+#~ msgstr "दोषसुधार"
+
+#~ msgid "Notice"
+#~ msgstr "सूचना"
+
+#~ msgid "Important"
+#~ msgstr "महत्वपूर्ण"
+
+#~ msgid "All"
+#~ msgstr "सभी"
+
+#~ msgid "None"
+#~ msgstr "कुछ नहीं"
+
+#, fuzzy
+#~| msgid "Downloaded:"
+#~ msgid "File Download Order"
+#~ msgstr "डाउनलोडेड:"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Copy URL"
+#~ msgstr "केटोरेंट"
+
+#~ msgid "Search finished"
+#~ msgstr "ढूंढना सम्पन्न"
+
+#, fuzzy
+#~| msgid "Search"
+#~ msgctxt "plugin name"
+#~ msgid "Search"
+#~ msgstr "ढूंढें"
+
+#, fuzzy
+#~| msgid "Search Engine"
+#~ msgid "Add a Search Engine"
+#~ msgstr "खोज इंजिन"
+
+#, fuzzy
+#~| msgid "Search Toolbar"
+#~ msgid "Search for %1"
+#~ msgstr "ढूंढने के लिए औज़ार पट्टी"
+
+#~ msgid "Search"
+#~ msgstr "ढूंढें"
+
+#~ msgid "KTorrent"
+#~ msgstr "केटोरेंट"
+
+#~ msgid "Search Engine"
+#~ msgstr "खोज इंजिन"
+
+#~ msgid "Download"
+#~ msgstr "डाउनलोड"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Add an item"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#~ msgid "New Item"
+#~ msgstr "नई वस्तु"
+
+#~ msgid "Remove Item"
+#~ msgstr "वस्तु मिटाएँ"
+
+#~ msgid "Edit Item"
+#~ msgstr "वस्तु का संपादन करें"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "Current schedule: suspended"
+#~ msgstr "डाउनलोडेड"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "Current schedule: %1/s download, %2/s upload"
+#~ msgstr "डाउनलोडेड"
+
+#, fuzzy
+#~| msgid "Speed"
+#~ msgid "Suspended"
+#~ msgstr "गति"
+
+#~ msgid "Unlimited"
+#~ msgstr "असीमित"
+
+#, fuzzy
+#~| msgid "Downloading"
+#~ msgid "Downloading finishes"
+#~ msgstr "डाउनलोड किया जा रहा है"
+
+#, fuzzy
+#~| msgid "Search finished"
+#~ msgid "Seeding finishes"
+#~ msgstr "ढूंढना सम्पन्न"
+
+#~ msgid "File Exists"
+#~ msgstr "फ़ाइल अस्तित्व में है"
+
+#, fuzzy
+#~| msgid "Server:"
+#~ msgid "Never"
+#~ msgstr "सर्वरः"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Copy Magnet URI"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "Downloaded:"
+#~ msgid "KTMagnetDownloader"
+#~ msgstr "डाउनलोडेड:"
+
+#~ msgid "Proxy"
+#~ msgstr "प्रॉक्सी"
+
+#~ msgid "Network"
+#~ msgstr "नेटवर्क"
+
+#~ msgid "Advanced"
+#~ msgstr "विस्तृत"
+
+#~ msgid "Application"
+#~ msgstr "अनुप्रयोग"
+
+#, fuzzy
+#~| msgid "%1 KB"
+#~ msgid "(= %1/s)"
+#~ msgstr "%1 कि.बा."
+
+#~ msgid "Name"
+#~ msgstr "नाम"
+
+#, fuzzy
+#~| msgid "Stalled"
+#~ msgid "Time Stalled"
+#~ msgstr "रुका हुआ"
+
+#~ msgid "Running"
+#~ msgstr "चल रहा है"
+
+#~ msgid "Queued"
+#~ msgstr "क़तार-बद्ध"
+
+#, fuzzy
+#~| msgid "%1 %"
+#~ msgid "%1"
+#~ msgstr "%1 %"
+
+#, fuzzy
+#~| msgid "Search"
+#~ msgid "Show Search"
+#~ msgstr "ढूंढें"
+
+#, fuzzy
+#~| msgid "Move Up"
+#~ msgid "Move Top"
+#~ msgstr "ऊपर जाएँ"
+
+#~ msgid "Move Up"
+#~ msgstr "ऊपर जाएँ"
+
+#~ msgid "Move Down"
+#~ msgstr "नीचे जाएँ"
+
+#, fuzzy
+#~| msgid "Move Down"
+#~ msgid "Move Bottom"
+#~ msgstr "नीचे जाएँ"
+
+#, fuzzy
+#~| msgid "Remove Item"
+#~ msgid "Remove Magnet"
+#~ msgstr "वस्तु मिटाएँ"
+
+#, fuzzy
+#~| msgid "Start"
+#~ msgctxt "@action Start all selected torrents in the current tab"
+#~ msgid "Start"
+#~ msgstr "प्रारंभ"
+
+#, fuzzy
+#~| msgid "Stop"
+#~ msgctxt "@action Stop all selected torrents in the current tab"
+#~ msgid "Stop"
+#~ msgstr "रूकें"
+
+#, fuzzy
+#~| msgid "Pause"
+#~ msgctxt "@action Pause all selected torrents in the current tab"
+#~ msgid "Pause"
+#~ msgstr "ठहरें"
+
+#, fuzzy
+#~| msgid "Remove"
+#~ msgctxt "@action Remove all selected torrents in the current tab"
+#~ msgid "Remove"
+#~ msgstr "हटाएँ"
+
+#, fuzzy
+#~| msgid "Start"
+#~ msgctxt "@action Start all torrents in the current tab"
+#~ msgid "Start All"
+#~ msgstr "प्रारंभ"
+
+#, fuzzy
+#~| msgid "Stop All"
+#~ msgctxt "@action Stop all torrents in the current tab"
+#~ msgid "Stop All"
+#~ msgstr "सभी बन्द करें"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Rename Torrent"
+#~ msgstr "केटोरेंट"
+
+#~ msgid "Preview"
+#~ msgstr "पूर्वावलोकन"
+
+#~ msgid "Temporary Directory"
+#~ msgstr "अस्थाई डिरेक्ट्री"
+
+#~ msgid "New Group"
+#~ msgstr "नया समूह"
+
+#~ msgid "Open Directory"
+#~ msgstr "ओपन डिरेक्ट्री"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Copy Torrent URL"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "Important"
+#~ msgid "Export Torrent"
+#~ msgstr "महत्वपूर्ण"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Torrents (*.torrent)"
+#~ msgstr "केटोरेंट"
+
+#~ msgid "Columns"
+#~ msgstr "स्तम्भ"
+
+#~ msgid "Size"
+#~ msgstr "आकार"
+
+#~ msgid "Time Left"
+#~ msgstr "समय बाकी"
+
+#~ msgid "Location"
+#~ msgstr "स्थान"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Added"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "Current download speed"
+#~ msgstr "डाउनलोडेड"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "Current upload speed"
+#~ msgstr "डाउनलोडेड"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "When this torrent was added"
+#~ msgstr "डाउनलोडेड"
+
+#~ msgid "Remove Group"
+#~ msgstr "समूह हटाएँ"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "Assured Download Speed"
+#~ msgstr "डाउनलोडेड"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Create A Torrent"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "Invalid URL: %1"
+#~ msgid "Invalid url %1"
+#~ msgstr "अवैध यूआरएल: %1"
+
+#, fuzzy
+#~| msgid "Choose a file"
+#~ msgid "Show a file tree"
+#~ msgstr "एक फ़ाइल चुनें"
+
+#, fuzzy
+#~| msgid "Choose a file"
+#~ msgid "Show a file list"
+#~ msgstr "एक फ़ाइल चुनें"
+
+#, fuzzy
+#~| msgid "The directory %1 does not exist"
+#~ msgid "The directory %1 does not exist, do you want to create it?"
+#~ msgstr "डिरेक्ट्री %1 मौजूद नहीं है"
+
+#, fuzzy
+#~| msgid " KB"
+#~ msgid " KiB/s"
+#~ msgstr "कि.बा."
+
+#, fuzzy
+#~| msgid "Important"
+#~ msgid "Importing 1 torrent ..."
+#~ msgid_plural "Importing %1 torrents ..."
+#~ msgstr[0] "महत्वपूर्ण"
+#~ msgstr[1] "महत्वपूर्ण"
+
+#~ msgid "Invalid URL: %1"
+#~ msgstr "अवैध यूआरएल: %1"
+
+#, fuzzy
+#~| msgid "Files"
+#~ msgid "IP Filter List"
+#~ msgstr "फ़ाइल"
+
+#~ msgid "Choose a file"
+#~ msgstr "एक फ़ाइल चुनें"
+
+#~ msgid "Adam Treat"
+#~ msgstr "एडम ट्रीट"
+
+#~ msgid "Danny Allen"
+#~ msgstr "डैनी एलन"
+
+#~ msgid "Andreas Kling"
+#~ msgstr "आंद्रेयास क्लिंग"
+
+#~ msgid "Alexander Dymo"
+#~ msgstr "अलेक्ज़ेंडर दायमो"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "Feature which adds the date a torrent was added"
+#~ msgstr "डाउनलोडेड"
+
+#~ msgid "All Files"
+#~ msgstr "सभी फ़ाइलें"
+
+#~ msgid "Open Location"
+#~ msgstr "स्थान खोलें"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Create a new torrent"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Open a torrent"
+#~ msgstr "केटोरेंट"
+
+#~ msgid "Stop All"
+#~ msgstr "सभी बन्द करें"
+
+#, fuzzy
+#~| msgctxt "Open file"
+#~| msgid "Open"
+#~ msgid "Open URL"
+#~ msgstr "खोलें"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Suspend KTorrent"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Suspend all running torrents"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "Important"
+#~ msgid "Import a torrent"
+#~ msgstr "महत्वपूर्ण"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Torrents"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "Invalid URL: %1"
+#~ msgid "Invalid IP address %1"
+#~ msgstr "अवैध यूआरएल: %1"
+
+#, fuzzy
+#~| msgid "Invalid URL: %1"
+#~ msgid "Duplicate IP address %1"
+#~ msgstr "अवैध यूआरएल: %1"
+
+#, fuzzy
+#~| msgid "Apply"
+#~ msgid "Applet"
+#~ msgstr "लागू करें"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "No torrents loaded."
+#~ msgstr "डाउनलोडेड"
+
+#~ msgid "Uploads"
+#~ msgstr "अपलोड"
+
+#, fuzzy
+#~| msgid "Running"
+#~ msgid "Running Uploads"
+#~ msgstr "चल रहा है"
+
+#~ msgid "Downloads"
+#~ msgstr "डाउनलोड्स"
+
+#, fuzzy
+#~| msgid "Downloads"
+#~ msgid "Running Downloads"
+#~ msgstr "डाउनलोड्स"
+
+#, fuzzy
+#~| msgid "Do Not Download"
+#~ msgid "Not Running Downloads"
+#~ msgstr "डाउनलोड नहीं करें"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Active Torrents"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "Downloads"
+#~ msgid "Active Downloads"
+#~ msgstr "डाउनलोड्स"
+
+#, fuzzy
+#~| msgid "Uploads"
+#~ msgid "Active Uploads"
+#~ msgstr "अपलोड"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Passive Torrents"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "Downloads"
+#~ msgid "Passive Downloads"
+#~ msgstr "डाउनलोड्स"
+
+#, fuzzy
+#~| msgid "Downloads"
+#~ msgid "Passive Uploads"
+#~ msgstr "डाउनलोड्स"
+
+#, fuzzy
+#~| msgctxt "Download Normal (not as first or last)"
+#~| msgid "Normal"
+#~ msgid "Normal icons"
+#~ msgstr "सामान्य"
+
+#, fuzzy
+#~| msgid "Text encoding:"
+#~ msgid "Text only"
+#~ msgstr "पाठ एनकोडिंग:"
+
+#, fuzzy
+#~| msgid "Left:"
+#~ msgid "Left"
+#~ msgstr "बायाँ:"
+
+#~ msgid "Top"
+#~ msgstr "ऊपर"
+
+#~ msgid "File"
+#~ msgstr "फ़ाइल"
+
+#~ msgid "Error"
+#~ msgstr "त्रुटि"
+
+#~ msgid "Plugins"
+#~ msgstr "प्लगइन्स"
+
+#~ msgctxt "NAME OF TRANSLATORS"
+#~ msgid "Your names"
+#~ msgstr "रविशंकर श्रीवास्तव, जी. करूणाकर"
+
+#~ msgctxt "EMAIL OF TRANSLATORS"
+#~ msgid "Your emails"
+#~ msgstr "raviratlami@aol.in"
+
+#~ msgid "Add Folder"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#~ msgid "Remove Folder"
+#~ msgstr "फ़ोल्डर मिटाएँ"
+
+#~ msgid "Options"
+#~ msgstr "विकल्प"
+
+#~ msgid "Forward"
+#~ msgstr "आगे"
+
+#~ msgid "Rescan"
+#~ msgstr "री-स्कैन"
+
+#, fuzzy
+#~| msgid "Main Toolbar"
+#~ msgid "Syndication Toolbar"
+#~ msgstr "मुख्य औज़ार पट्टी"
+
+#, fuzzy
+#~| msgid "Name"
+#~ msgid "Name:"
+#~ msgstr "नाम"
+
+#~ msgid "URL:"
+#~ msgstr "यूआरएल:"
+
+#~ msgid "Status:"
+#~ msgstr "स्थिति:"
+
+#, fuzzy
+#~| msgid "Recreate"
+#~ msgid "Refresh every:"
+#~ msgstr "फिर से बनाएँ"
+
+#, fuzzy
+#~| msgid "Recreate"
+#~ msgid "Refresh"
+#~ msgstr "फिर से बनाएँ"
+
+#, fuzzy
+#~| msgid "File"
+#~ msgid "Filters"
+#~ msgstr "फ़ाइल"
+
+#, fuzzy
+#~| msgid "File"
+#~ msgid "Manage Filters"
+#~ msgstr "फ़ाइल"
+
+#, fuzzy
+#~| msgid "Speed"
+#~ msgid "Feed:"
+#~ msgstr "गति"
+
+#~ msgid "Add"
+#~ msgstr "जोड़ें"
+
+#, fuzzy
+#~| msgctxt "Preview available"
+#~| msgid "Available"
+#~ msgid "Available filters:"
+#~ msgstr "उपलब्ध "
+
+#, fuzzy
+#~| msgid "R&emove All"
+#~ msgid "Remove All"
+#~ msgstr "सभी मिटाएँ (&e)"
+
+#, fuzzy
+#~| msgid "Search Toolbar"
+#~ msgid "Media Player Toolbar"
+#~ msgstr "ढूंढने के लिए औज़ार पट्टी"
+
+#~ msgid "Username:"
+#~ msgstr "उपयोक्ता नाम:"
+
+#~ msgid "Password:"
+#~ msgstr "पासवर्ड: "
+
+#, fuzzy
+#~| msgid "Server:"
+#~ msgid "Web Server"
+#~ msgstr "सर्वरः"
+
+#~ msgid "Port:"
+#~ msgstr "पोर्टः"
+
+#, fuzzy
+#~| msgid "Forward"
+#~ msgid "forward Port"
+#~ msgstr "आगे"
+
+#, fuzzy
+#~| msgid "Username:"
+#~ msgid "username"
+#~ msgstr "उपयोक्ता नाम:"
+
+#, fuzzy
+#~| msgid "Password:"
+#~ msgid "password"
+#~ msgstr "पासवर्ड: "
+
+#, fuzzy
+#~| msgid "Speed"
+#~ msgctxt "@title:window"
+#~ msgid "Speed"
+#~ msgstr "गति"
+
+#~ msgid "Upload"
+#~ msgstr "अपलोड"
+
+#~ msgid "Colors"
+#~ msgstr "रंग"
+
+#~ msgid "Average"
+#~ msgstr "औसत"
+
+#~ msgid "Native"
+#~ msgstr "नेटिव"
+
+#~ msgid "KDE"
+#~ msgstr "केडीई"
+
+#~ msgid "Settings"
+#~ msgstr "विन्यास"
+
+#~ msgid "Update"
+#~ msgstr "अद्यतन"
+
+#~ msgid "milliseconds"
+#~ msgstr "मि.से."
+
+#~ msgid "Maximum"
+#~ msgstr "अधिकतम"
+
+#~ msgid "Exact"
+#~ msgstr "सटीक"
+
+#, fuzzy
+#~| msgctxt "Preview available"
+#~| msgid "Available"
+#~ msgid "Update Trackers"
+#~ msgstr "उपलब्ध "
+
+#~ msgid "Restore Defaults"
+#~ msgstr "डिफ़ॉल्ट बहाल करें"
+
+#~ msgid "Info"
+#~ msgstr "जानकारी "
+
+#~ msgid "Comments:"
+#~ msgstr "टिप्पणियाँ:"
+
+#~ msgid "Sharing"
+#~ msgstr "साझेदारी"
+
+#~ msgid "Time limit:"
+#~ msgstr "समय सीमा:"
+
+#, fuzzy
+#~| msgid "Remove Item"
+#~ msgid "Remove Webseed"
+#~ msgstr "वस्तु मिटाएँ"
+
+#, fuzzy
+#~| msgid "Tasks"
+#~ msgid "Tabs"
+#~ msgstr "कार्य"
+
+#, fuzzy
+#~| msgid "Priority"
+#~ msgid "First priority:"
+#~ msgstr "प्राथमिकता"
+
+#, fuzzy
+#~| msgid "Priority"
+#~ msgid "Last priority:"
+#~ msgstr "प्राथमिकता"
+
+#~ msgid "Total:"
+#~ msgstr "कुलः"
+
+#~ msgid "Downloaded:"
+#~ msgstr "डाउनलोडेड:"
+
+#~ msgid "Left:"
+#~ msgstr "बायाँ:"
+
+#~ msgid "Size:"
+#~ msgstr "आकारः"
+
+#, fuzzy
+#~| msgid "Settings"
+#~ msgid "EMail Settings"
+#~ msgstr "विन्यास"
+
+#, fuzzy
+#~| msgid "Server:"
+#~ msgid "SMTP Server"
+#~ msgstr "सर्वरः"
+
+#, fuzzy
+#~| msgid "Server:"
+#~ msgid "SMTP server:"
+#~ msgstr "सर्वरः"
+
+#, fuzzy
+#~| msgid "Add"
+#~ msgid "Add CC:"
+#~ msgstr "जोड़ें"
+
+#, fuzzy
+#~| msgid "milliseconds"
+#~ msgid " seconds"
+#~ msgstr "मि.से."
+
+#, fuzzy
+#~| msgid "Encryption"
+#~ msgid "Description:"
+#~ msgstr "एनक्रिप्शन"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Torrent activity"
+#~ msgstr "केटोरेंट"
+
+#~ msgid "Search Toolbar"
+#~ msgstr "ढूंढने के लिए औज़ार पट्टी"
+
+#, fuzzy
+#~| msgid "Search Engine"
+#~ msgid "Current search engine"
+#~ msgstr "खोज इंजिन"
+
+#, fuzzy
+#~| msgid "Search Engine"
+#~ msgid "Add a new search engine."
+#~ msgstr "खोज इंजिन"
+
+#~ msgid "&Remove"
+#~ msgstr "मिटाएँ (&R)"
+
+#, fuzzy
+#~| msgid "Search Engine"
+#~ msgid "Remove all search engines."
+#~ msgstr "खोज इंजिन"
+
+#~ msgid "R&emove All"
+#~ msgstr "सभी मिटाएँ (&e)"
+
+#, fuzzy
+#~| msgid "Search Engine"
+#~ msgid "Add all default search engines."
+#~ msgstr "खोज इंजिन"
+
+#, fuzzy
+#~| msgid "Time limit:"
+#~ msgid "Special Limits"
+#~ msgstr "समय सीमा:"
+
+#~ msgid "Time"
+#~ msgstr "समय"
+
+#~ msgid "From:"
+#~ msgstr "सेः"
+
+#~ msgid "hh:mm"
+#~ msgstr "घंघं:मिमि"
+
+#~ msgid "To:"
+#~ msgstr "को:"
+
+#~ msgid "Day:"
+#~ msgstr "दिन:"
+
+#~ msgid "Limits"
+#~ msgstr "सीमाएँ"
+
+#, fuzzy
+#~| msgid "Connections"
+#~ msgid "Connection Limits"
+#~ msgstr "कनेक्शन्स"
+
+#, fuzzy
+#~| msgid "Connections"
+#~ msgid "Set connection limits"
+#~ msgstr "कनेक्शन्स"
+
+#, fuzzy
+#~| msgid "Day:"
+#~ msgid "Days:"
+#~ msgstr "दिन:"
+
+#, fuzzy
+#~| msgid "Main Toolbar"
+#~ msgid "Shutdown Toolbar"
+#~ msgstr "मुख्य औज़ार पट्टी"
+
+#, fuzzy
+#~| msgid "Settings"
+#~ msgid "Shutdown Settings"
+#~ msgstr "विन्यास"
+
+#, fuzzy
+#~| msgid "Remove Folder"
+#~ msgid "Level1 filter url"
+#~ msgstr "फ़ोल्डर मिटाएँ"
+
+#~ msgid "C&ancel"
+#~ msgstr "रद्द करें (&a)"
+
+#, fuzzy
+#~| msgctxt "Preview available"
+#~| msgid "Available"
+#~ msgid "Add tracker"
+#~ msgstr "उपलब्ध "
+
+#, fuzzy
+#~| msgctxt "Preview available"
+#~| msgid "Available"
+#~ msgid "Tracker:"
+#~ msgstr "उपलब्ध "
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Add name"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Speed"
+#~ msgid "Show dn"
+#~ msgstr "गति"
+
+#~ msgid "Protocol:"
+#~ msgstr "प्रोटोकॉल:"
+
+#~ msgid "UDP"
+#~ msgstr "यूडीपी"
+
+#~ msgid "TCP"
+#~ msgstr "टीसीपी"
+
+#, fuzzy
+#~| msgid "Remove Item"
+#~ msgid "Use webseeds"
+#~ msgstr "वस्तु मिटाएँ"
+
+#~ msgid "Encryption"
+#~ msgstr "एनक्रिप्शन"
+
+#, fuzzy
+#~| msgid " KB"
+#~ msgid " KiB"
+#~ msgstr "कि.बा."
+
+#~ msgid "Performance"
+#~ msgstr "परफार्मेंस"
+
+#~ msgid " ms"
+#~ msgstr "मि.से."
+
+#~ msgid "Miscellaneous"
+#~ msgstr "विविध"
+
+#~ msgid "Folders"
+#~ msgstr "फ़ोल्डर"
+
+#~ msgid "System Tray Icon"
+#~ msgstr "तंत्र तश्तरी प्रतीक"
+
+#~ msgid "Show system tray icon"
+#~ msgstr "तंत्र तश्तरी प्रतीक दिखाएँ"
+
+#, fuzzy
+#~| msgid " MB"
+#~ msgid " MiB"
+#~ msgstr "मे.बा."
+
+#, fuzzy
+#~| msgid "Stalled"
+#~ msgid "Stalled timer:"
+#~ msgstr "रुका हुआ"
+
+#, fuzzy
+#~| msgid "Speed"
+#~ msgctxt "@title:group Options regarging Seeding"
+#~ msgid "Seeding"
+#~ msgstr "गति"
+
+#, fuzzy
+#~| msgid "%1 KB"
+#~ msgid "(= 32 KiB/s)"
+#~ msgstr "%1 कि.बा."
+
+#, fuzzy
+#~| msgid "%1 KB"
+#~ msgid "(= 500 KiB/s)"
+#~ msgstr "%1 कि.बा."
+
+#, fuzzy
+#~| msgid "Performance"
+#~ msgid "Preferences"
+#~ msgstr "परफार्मेंस"
+
+#, fuzzy
+#~| msgid "Proxy"
+#~ msgid "Proxy:"
+#~ msgstr "प्रॉक्सी"
+
+#~ msgid "Server:"
+#~ msgstr "सर्वरः"
+
+#~ msgid "Version:"
+#~ msgstr "संस्करणः"
+
+#, fuzzy
+#~| msgid "Open..."
+#~ msgid "..."
+#~ msgstr "खोलें..."
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#, fuzzy
+#~| msgid "File"
+#~ msgid "Failed:"
+#~ msgstr "फ़ाइल"
+
+#, fuzzy
+#~| msgid "Downloaded:"
+#~ msgid "Not downloaded:"
+#~ msgstr "डाउनलोडेड:"
+
+#~ msgid "Cancel"
+#~ msgstr "रद्द करें"
+
+#~ msgid "Close"
+#~ msgstr "बंद करें"
+
+#~ msgid "Dialog"
+#~ msgstr "संवाद"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Torrent Limits"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid " KB"
+#~ msgid "32 KiB"
+#~ msgstr "कि.बा."
+
+#, fuzzy
+#~| msgid " KB"
+#~ msgid "64 KiB"
+#~ msgstr "कि.बा."
+
+#, fuzzy
+#~| msgid "%1 KB"
+#~ msgid "128 KiB"
+#~ msgstr "%1 कि.बा."
+
+#, fuzzy
+#~| msgid " KB"
+#~ msgid "256 KiB"
+#~ msgstr "कि.बा."
+
+#, fuzzy
+#~| msgid "%1 KB"
+#~ msgid "512 KiB"
+#~ msgstr "%1 कि.बा."
+
+#, fuzzy
+#~| msgid "%1 MB"
+#~ msgid "1 MiB"
+#~ msgstr "%1 मे.बा."
+
+#, fuzzy
+#~| msgid "2 MB"
+#~ msgid "2 MiB"
+#~ msgstr "2 MB"
+
+#, fuzzy
+#~| msgid "4 MB"
+#~ msgid "4 MiB"
+#~ msgstr "4 मे.बा."
+
+#, fuzzy
+#~| msgid "8 MB"
+#~ msgid "8 MiB"
+#~ msgstr "8 मे.बा."
+
+#~ msgid "Port"
+#~ msgstr "पोर्ट"
+
+#~ msgid "Text encoding:"
+#~ msgstr "पाठ एनकोडिंग:"
+
+#~ msgid "Select &All"
+#~ msgstr "सभी चुनें (&A)"
+
+#~ msgid "Select &None"
+#~ msgstr "कुछ नहीं चुनें (&N)"
+
+#~ msgid "Invert Selection"
+#~ msgstr "चयन पलटें"
+
+#, fuzzy
+#~| msgid "Stop All"
+#~ msgid "Collapse All"
+#~ msgstr "सभी बन्द करें"
+
+#~ msgid "Group:"
+#~ msgstr "समूहः"
+
+#, fuzzy
+#~| msgid "Free disk space:"
+#~ msgid "Disk Space"
+#~ msgstr "डिस्क में खाली जगहः"
+
+#, fuzzy
+#~| msgctxt "Preview available"
+#~| msgid "Available"
+#~ msgid "Available:"
+#~ msgstr "उपलब्ध "
+
+#, fuzzy
+#~| msgid "File"
+#~ msgid "Filter:"
+#~ msgstr "फ़ाइल"
+
+#~ msgid "127.0.0.1"
+#~ msgstr "127.0.0.1"
+
+#~ msgid "Recreate"
+#~ msgstr "फिर से बनाएँ"
+
+#, fuzzy
+#~| msgid "Important"
+#~ msgid "Importing ..."
+#~ msgstr "महत्वपूर्ण"
+
+#~ msgid "Data:"
+#~ msgstr "डाटा:"
+
+#~ msgid "&Import"
+#~ msgstr "आयात (&I)"
+
+#~ msgid "&File"
+#~ msgstr "फ़ाइल (&F)"
+
+#, fuzzy
+#~| msgid "&File"
+#~ msgid "&View"
+#~ msgstr "फ़ाइल (&F)"
+
+#, fuzzy
+#~| msgid "Groups"
+#~ msgid "GroupsMenu"
+#~ msgstr "समूह"
+
+#~ msgid "Clear"
+#~ msgstr "साफ करें"
+
+#~ msgid "Open..."
+#~ msgstr "खोलें..."
+
+#~ msgid "Save As..."
+#~ msgstr "ऐसे सहेजें..."
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Torrent to display:"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "Show system tray icon"
+#~ msgid "Show a system tray icon"
+#~ msgstr "तंत्र तश्तरी प्रतीक दिखाएँ"
+
+#, fuzzy
+#~| msgid "Show system tray icon"
+#~ msgid "Show speed bar in tray icon"
+#~ msgstr "तंत्र तश्तरी प्रतीक दिखाएँ"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Resume KTorrent"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Resume suspended torrents"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "KTorrent"
+#~ msgid "Creating Torrent"
+#~ msgstr "केटोरेंट"
+
+#, fuzzy
+#~| msgid "Downloaded:"
+#~ msgid "Chunks not downloaded:"
+#~ msgstr "डाउनलोडेड:"
+
+#, fuzzy
+#~| msgid "Downloaded:"
+#~ msgid "Chunks downloaded:"
+#~ msgstr "डाउनलोडेड:"
+
+#~ msgid "Quit"
+#~ msgstr "बाहर जाएँ"
+
+#, fuzzy
+#~| msgid "From:"
+#~ msgid "Form"
+#~ msgstr "सेः"
+
+#~ msgid "Error: "
+#~ msgstr "त्रुटि:"
+
+#~ msgid "Apply"
+#~ msgstr "लागू करें"
+
+#~ msgid "Basic"
+#~ msgstr "मूल"
+
+#~ msgid "Groups"
+#~ msgstr "समूह"
+
+#, fuzzy
+#~| msgid "Speed"
+#~ msgid "Feed %1"
+#~ msgstr "गति"
+
+#, fuzzy
+#~| msgid "Do Not Download"
+#~ msgid "User Controlled Downloads"
+#~ msgstr "डाउनलोड नहीं करें"
+
+#, fuzzy
+#~| msgid "Groups"
+#~ msgid "Group"
+#~ msgstr "समूह"
+
+#, fuzzy
+#~| msgid "Settings"
+#~ msgid "Test String"
+#~ msgstr "विन्यास"
+
+#, fuzzy
+#~| msgid "Recreate"
+#~ msgid "Rerelease"
+#~ msgstr "फिर से बनाएँ"
+
+#, fuzzy
+#~| msgid "Recreate"
+#~ msgid "Rerelease Terms"
+#~ msgstr "फिर से बनाएँ"
+
+#, fuzzy
+#~| msgctxt "Preview available"
+#~| msgid "Available"
+#~ msgid "Variables"
+#~ msgstr "उपलब्ध "
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "Add Capture"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Remove Group"
+#~ msgid "Remove Capture"
+#~ msgstr "समूह हटाएँ"
+
+#, fuzzy
+#~| msgctxt "Preview available"
+#~| msgid "Available"
+#~ msgid "Add Variable"
+#~ msgstr "उपलब्ध "
+
+#, fuzzy
+#~| msgid "Remove Folder"
+#~ msgid "Remove Variable"
+#~ msgstr "फ़ोल्डर मिटाएँ"
+
+#, fuzzy
+#~| msgid "Move File"
+#~ msgid "Move Variable Up"
+#~ msgstr "फ़ाइल खिसकाएँ"
+
+#, fuzzy
+#~| msgid "Move Down"
+#~ msgid "Move Variable Down"
+#~ msgstr "नीचे जाएँ"
+
+#, fuzzy
+#~| msgid "Add Folder"
+#~ msgid "No Capture"
+#~ msgstr "फ़ोल्डर जोड़ें"
+
+#, fuzzy
+#~| msgid "Remove Group"
+#~ msgid "Remove Expression"
+#~ msgstr "समूह हटाएँ"
+
+#, fuzzy
+#~| msgid "Remove Group"
+#~ msgid "Remove Source"
+#~ msgstr "समूह हटाएँ"
+
+#, fuzzy
+#~| msgid "Move File"
+#~ msgid "Move Filter Up"
+#~ msgstr "फ़ाइल खिसकाएँ"
+
+#, fuzzy
+#~| msgid "Move Down"
+#~ msgid "Move Filter Down"
+#~ msgstr "नीचे जाएँ"
+
+#, fuzzy
+#~| msgid "Speed"
+#~ msgid "RSS Feed"
+#~ msgstr "गति"
+
+#, fuzzy
+#~| msgid "Files"
+#~ msgid "BF Filters"
+#~ msgstr "फ़ाइल"
+
+#~ msgid "%1 GB"
+#~ msgstr "%1 गी.बा."
+
+#~ msgid "%1 B"
+#~ msgstr "%1 बा."
+
+#~ msgid "%1 does not exist"
+#~ msgstr "%1 अस्तित्व में नहीं है"
+
+#, fuzzy
+#~| msgid "%1 KB"
+#~ msgid "Up: %1 KB/s"
+#~ msgstr "%1 कि.बा."
+
+#, fuzzy
+#~| msgid "%1 KB"
+#~ msgid "Down: %1 KB/s"
+#~ msgstr "%1 कि.बा."
+
+#~ msgid "&Add"
+#~ msgstr "जोड़ें (&A)"
+
+#~ msgid "Engine"
+#~ msgstr "इंजिन"
+
+#, fuzzy
+#~| msgid "Search Toolbar"
+#~ msgid "Mediaplayer:"
+#~ msgstr "ढूंढने के लिए औज़ार पट्टी"
+
+#~ msgid "Search:"
+#~ msgstr "ढूंढें:"
+
+#, fuzzy
+#~| msgid "Open Directory"
+#~ msgid "Toplevel directory:"
+#~ msgstr "ओपन डिरेक्ट्री"
+
+#~ msgid "Ok"
+#~ msgstr "ठीक"
+
+#~ msgid "Reload"
+#~ msgstr "री-लोड"
+
+#~ msgid "Back"
+#~ msgstr "पीछे"
+
+#~ msgid "&OK"
+#~ msgstr "ठीक (&O)"
+
+#~ msgid "&Cancel"
+#~ msgstr "रद्द करें (&C)"

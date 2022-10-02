@@ -1,0 +1,4511 @@
+# Translation of libktorrent.po to Euskara/Basque (eu).
+# Copyright (C) 2010, 2011, Free Software Foundation.
+#
+# Marcos  <marcos@euskalgnu.org>, 2006.
+# Ion Gaztañaga <igaztanaga@gmail.com>, 2006.
+# Iñigo Salvador Azurmendi <xalba@euskalnet.net>, 2009.
+# Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ktorrent\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-01-23 00:45+0000\n"
+"PO-Revision-Date: 2013-02-02 17:29+0100\n"
+"Last-Translator: Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>\n"
+"Language-Team: Basque <itzulpena@euskalgnu.org>\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.4\n"
+"X-Project-Style: kde\n"
+
+#: src/bcodec/bdecoder.cpp:48
+#, kde-format
+msgid "Illegal token: %1"
+msgstr "Token ez-baliozkoa: %1"
+
+#: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
+#, kde-format
+msgid "Decode error"
+msgstr "Deskodetze-errorea"
+
+#: src/bcodec/bdecoder.cpp:161 src/bcodec/bdecoder.cpp:199
+#, kde-format
+msgid "Unexpected end of input"
+msgstr "Ustekabeko sarrera-amaiera"
+
+#: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
+#, kde-format
+msgid "Cannot convert %1 to an int"
+msgstr "%1 ezin da osoko zenbaki bihurtu"
+
+#: src/bcodec/bdecoder.cpp:223
+#, kde-format
+msgid "Torrent is incomplete."
+msgstr "Torrent-a osatu gabe dago."
+
+#: src/datachecker/datacheckerjob.cpp:66
+#, kde-format
+msgid "Waiting for other data checks to finish"
+msgstr "Beste datu-egiaztapen batzuk amaitzeko zain"
+
+#: src/datachecker/datacheckerjob.cpp:72 src/torrent/torrentstats.cpp:92
+#, kde-format
+msgid "Checking data"
+msgstr "Datuak egiaztatzen"
+
+#: src/datachecker/datacheckerjob.cpp:119
+#, kde-format
+msgid "Checking Data"
+msgstr "Datuak egiaztatzen"
+
+#: src/datachecker/multidatachecker.cpp:181
+#: src/datachecker/singledatachecker.cpp:34 src/diskio/multifilecache.cpp:621
+#: src/diskio/multifilecache.cpp:656 src/torrent/torrentcreator.cpp:111
+#: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
+#, kde-format
+msgid "Cannot open file %1: %2"
+msgstr "%1 fitxategia ezin da ireki: %2"
+
+#: src/diskio/cache.cpp:148 src/diskio/multifilecache.cpp:95
+#: src/diskio/singlefilecache.cpp:67
+#, kde-format
+msgid "Failed to create %1: %2"
+msgstr "Huts egin du %1 sortzean: %2"
+
+#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:312
+#: src/util/fileops.cpp:354
+#, kde-format
+msgid "Cannot open %1: %2"
+msgstr "Ezin da %1 ireki : %2"
+
+#: src/diskio/cachefile.cpp:103 src/diskio/cachefile.cpp:215
+#: src/diskio/cachefile.cpp:368 src/diskio/cachefile.cpp:427
+#, kde-format
+msgid "Cannot open %1 for writing: readonly filesystem"
+msgstr "%1 ezin da idazteko ireki: fitxategi-sistema irakurtzeko soilik"
+
+#: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
+#, kde-format
+msgid "Attempting to write beyond the maximum size of %1"
+msgstr "%1 gehienezko neurritik gora idaztea saiatzen"
+
+#: src/diskio/cachefile.cpp:220
+#, kde-format
+msgid ""
+"Cannot expand file %1: attempting to grow the file beyond the maximum size"
+msgstr ""
+"%1 fitxategia ezin da zabaldu: fitxategia gehienezko neurritik gora "
+"handitzea saiatzen"
+
+#: src/diskio/cachefile.cpp:224
+#, kde-format
+msgid "Cannot expand file %1: %2"
+msgstr "%1 fitxategia ezin da zabaldu: %2"
+
+#: src/diskio/cachefile.cpp:336
+#, kde-format
+msgid "Error: Reading past the end of the file %1"
+msgstr "Errorea: %1 fitxategiaren amaieratik harago irakurtzen"
+
+#: src/diskio/cachefile.cpp:341 src/diskio/cachefile.cpp:383
+#, kde-format
+msgid "Failed to seek file %1: %2"
+msgstr "Huts egin du %1 fitxategia bilatzean: %2"
+
+#: src/diskio/cachefile.cpp:348
+#, kde-format
+msgid "Error reading from %1"
+msgstr "Errorea gertatu da %1(e)tik irakurtzean"
+
+#: src/diskio/cachefile.cpp:386
+#, kde-format
+msgid "Failed to write to file %1: %2"
+msgstr "Huts egin du %1 fitxategian idaztean: %2"
+
+#: src/diskio/cachefile.cpp:443
+#, kde-format
+msgid "Cannot preallocate diskspace: %1"
+msgstr "Diskoko lekua ezin da aurretiaz esleitu: %1"
+
+#: src/diskio/chunkmanager.cpp:844 src/diskio/chunkmanager.cpp:867
+#, kde-format
+msgid "Cannot open index file %1: %2"
+msgstr "%1 indize-fitxategia ezin da ireki: %2"
+
+#: src/diskio/dndfile.cpp:72
+#, kde-format
+msgid "Cannot create file %1: %2"
+msgstr "%1 fitxategia ezin da sortu: %2"
+
+#: src/diskio/dndfile.cpp:114
+#, kde-format
+msgid "Failed to write first chunk to DND file: %1"
+msgstr "Huts egin du lehen zatia DND fitxategian idaztean: %1"
+
+#: src/diskio/dndfile.cpp:129
+#, kde-format
+msgid "Failed to write last chunk to DND file: %1"
+msgstr "Huts egin du azken zatia DND fitxategian idaztean: %1"
+
+#: src/diskio/movedatafilesjob.cpp:109
+#, kde-format
+msgid "Waiting for other move jobs to finish"
+msgstr "Beste eramate-lan batzuk amaitzeko zain"
+
+#: src/diskio/movedatafilesjob.cpp:110 src/diskio/movedatafilesjob.cpp:146
+#, kde-format
+msgctxt "The source of a file operation"
+msgid "Source"
+msgstr "Iturburua"
+
+#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#, kde-format
+msgctxt "The destination of a file operation"
+msgid "Destination"
+msgstr "Helburua"
+
+#: src/diskio/movedatafilesjob.cpp:145
+#, kde-format
+msgctxt "@title job"
+msgid "Moving"
+msgstr "Eramaten"
+
+#: src/diskio/multifilecache.cpp:70 src/diskio/singlefilecache.cpp:57
+#, kde-format
+msgid "Failed to open %1: %2"
+msgstr "Huts egin du %1 irekitzean: %2"
+
+#: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
+#, kde-format
+msgid "Unable to write to a piece mapped read only"
+msgstr "Ezin izan da idatzi irakurtzeko soilik mapatutako zati batean"
+
+#: src/download/chunkdownload.cpp:342
+#, kde-format
+msgid "1 peer"
+msgid_plural "%1 peers"
+msgstr[0] "Pare 1"
+msgstr[1] "%1 pare"
+
+#: src/download/downloader.cpp:693
+#, kde-format
+msgid "Disabled because webseed does not match torrent"
+msgstr "Desgaituta, web-hazia eta torrent-a bat ez datozelako"
+
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
+#: src/download/webseed.cpp:84
+#, kde-format
+msgid "Not connected"
+msgstr "Konektatu gabe"
+
+#: src/download/httpconnection.cpp:96
+#, kde-format
+msgid "Resolving proxy %1:%2"
+msgstr "%1 proxya ebazten:%2"
+
+#: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
+#, kde-format
+msgid "Not enough system resources available"
+msgstr "Ez dago nahikoa sistema-baliabide erabilgarri"
+
+#: src/download/httpconnection.cpp:110
+#, kde-format
+msgid "Resolving hostname %1"
+msgstr "%1 ostalari-izena ebazten"
+
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
+#, kde-format
+msgid "Connection closed"
+msgstr "Konexioa itxi da"
+
+#: src/download/httpconnection.cpp:130
+#, kde-format
+msgid "Error: request failed: %1"
+msgstr "Errorea: eskaerak huts egin du: %1"
+
+#: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
+#, kde-format
+msgid "Connected"
+msgstr "Konektatuta"
+
+#: src/download/httpconnection.cpp:162
+#, kde-format
+msgid "Error: Failed to connect to webseed"
+msgstr "Errorea: huts egin du web-hazira konektatzean"
+
+#: src/download/httpconnection.cpp:186
+#, kde-format
+msgid "Connecting"
+msgstr "Konektatzen"
+
+#: src/download/httpconnection.cpp:195
+#, kde-format
+msgid "Failed to connect to webseed"
+msgstr "Huts egin du web-hazira konektatzean"
+
+#: src/download/httpconnection.cpp:200
+#, kde-format
+msgid "Failed to resolve hostname of webseed"
+msgstr "Huts egin du web-haziaren ostalari-izena ebaztean"
+
+#: src/download/httpconnection.cpp:271
+#, kde-format
+msgid "Error: failed to connect, server not responding"
+msgstr "Errorea: huts egin du konektatzean, zerbitzariak ez du erantzuten"
+
+#: src/download/httpconnection.cpp:281
+#, kde-format
+msgid "Error: request timed out"
+msgstr "Errorea: eskaerak denbora-muga gainditu du"
+
+#: src/download/httpconnection.cpp:351
+#, kde-format
+msgid "Redirected without a new location."
+msgstr "Kokaleku berririk gabe birbideratu da."
+
+#: src/download/webseed.cpp:493
+#, kde-format
+msgid "Unused for %1 second (Too many connection failures)"
+msgid_plural "Unused for %1 seconds (Too many connection failures)"
+msgstr[0] "Ez da erabili segundu 1ean (konexio-hutsegite gehiegi)"
+msgstr[1] "Ez da erabili %1 segunduan (konexio-hutsegite gehiegi)"
+
+#: src/interfaces/trackerinterface.cpp:45
+#, kde-format
+msgid "OK"
+msgstr "Ados"
+
+#: src/interfaces/trackerinterface.cpp:45
+#, kde-format
+msgid "Warning: %1"
+msgstr "Abisua: %1"
+
+#: src/interfaces/trackerinterface.cpp:47
+#, kde-format
+msgid "Announcing"
+msgstr "Iragartzen"
+
+#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
+#, kde-format
+msgid "Error: %1"
+msgstr "Errorea: %1"
+
+#: src/peer/peerid.cpp:299
+#, kde-format
+msgid "Unknown client"
+msgstr "Bezero ezezaguna"
+
+#: src/torrent/torrent.cpp:96 src/torrent/torrent.cpp:153
+#: src/torrent/torrent.cpp:180 src/torrent/torrent.cpp:187
+#: src/torrent/torrent.cpp:194 src/torrent/torrent.cpp:198
+#: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
+#, kde-format
+msgid "Corrupted torrent."
+msgstr "Torrent hondatua."
+
+#: src/torrent/torrentcontrol.cpp:277
+#, kde-format
+msgid "Error writing to disk, do you have enough diskspace?"
+msgstr "Errorea diskora idaztean, diskoan lekurik gelditzen da?"
+
+#: src/torrent/torrentcontrol.cpp:492
+#, kde-format
+msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
+msgstr "Errore bat gertatu da <b>%1</b> kargatzean:<br/><b>%2</b>"
+
+#: src/torrent/torrentcontrol.cpp:502
+#, kde-format
+msgid "Unable to create %1: %2"
+msgstr "Ezin da %1 sortu: %2"
+
+#: src/torrent/torrentcontrol.cpp:515
+#, kde-format
+msgid ""
+"You are already downloading the torrent <b>%1</b>. The tracker lists from "
+"both torrents have been merged."
+msgstr ""
+"Dagoeneko <b>%1</b> torrent-a deskargatzen ari zara. Bi torrent-en "
+"kontrolatzaile-zerrendak fusionatu egin dira."
+
+#: src/torrent/torrentcontrol.cpp:519
+#, kde-format
+msgid "You are already downloading the torrent <b>%1</b>."
+msgstr "Dagoeneko <b>%1</b> torrent-a deskargatzen ari zara."
+
+#: src/torrent/torrentcreator.cpp:332
+#, kde-format
+msgid "Cannot create index file: %1"
+msgstr "Ezin da sortu indize-fitxategia: %1"
+
+#: src/torrent/torrentstats.cpp:72
+#, kde-format
+msgid "Not started"
+msgstr "Abiarazi gabe"
+
+#: src/torrent/torrentstats.cpp:74
+#, kde-format
+msgid "Download completed"
+msgstr "Deskarga osatuta"
+
+#: src/torrent/torrentstats.cpp:76
+#, kde-format
+msgid "Seeding completed"
+msgstr "Ereitea osatuta"
+
+#: src/torrent/torrentstats.cpp:78
+#, kde-format
+msgctxt "Status of a torrent file"
+msgid "Seeding"
+msgstr "Ereiten"
+
+#: src/torrent/torrentstats.cpp:80
+#, kde-format
+msgid "Downloading"
+msgstr "Deskargatzen"
+
+#: src/torrent/torrentstats.cpp:82
+#, kde-format
+msgid "Stalled"
+msgstr "Trabatuta"
+
+#: src/torrent/torrentstats.cpp:84
+#, kde-format
+msgid "Stopped"
+msgstr "Geldituta"
+
+#: src/torrent/torrentstats.cpp:88
+#, kde-format
+msgid "Allocating diskspace"
+msgstr "Diskoko lekua esleitzen"
+
+#: src/torrent/torrentstats.cpp:90
+#, kde-format
+msgid "Queued for seeding"
+msgstr "Ereiteko ilaran"
+
+#: src/torrent/torrentstats.cpp:90
+#, kde-format
+msgid "Queued for downloading"
+msgstr "Deskargatzeko ilaran"
+
+#: src/torrent/torrentstats.cpp:94
+#, kde-format
+msgid "Stopped. No space left on device."
+msgstr "Geldituta. Gailuan ez da lekurik geratzen."
+
+#: src/torrent/torrentstats.cpp:96
+#, kde-format
+msgid "Paused"
+msgstr "Pausarazita"
+
+#: src/torrent/torrentstats.cpp:98
+#, kde-format
+msgid "Superseeding"
+msgstr "Superereiten"
+
+#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
+#: src/tracker/httptracker.cpp:392
+#, kde-format
+msgid "Invalid response from tracker"
+msgstr "Kontrolatzailearen erantzun baliogabea"
+
+#: src/tracker/httptracker.cpp:253
+#, kde-format
+msgid "Invalid data from tracker"
+msgstr "Datu baliogabeak kontrolatzailearengandik"
+
+#: src/tracker/httptracker.cpp:407
+#, kde-format
+msgid "Invalid tracker URL"
+msgstr "Kontrolatzaile-URL baliogabea"
+
+#: src/tracker/httptracker.cpp:465 src/tracker/udptracker.cpp:315
+#: src/tracker/udptracker.cpp:322
+#, kde-format
+msgid "Timeout contacting tracker %1"
+msgstr "Denbora-mugara iritsi da %1 kontrolatzailea kontaktatzean"
+
+#: src/tracker/udptracker.cpp:343
+#, kde-format
+msgid "Unable to resolve hostname %1"
+msgstr "Ezin da ebatzi %1 ostalari-izena"
+
+#: src/upnp/httprequest.cpp:39
+#, kde-format
+msgid "Operation timed out"
+msgstr "Eragiketaren denbora-muga gainditu da"
+
+#: src/upnp/upnprouter.cpp:156
+#, kde-format
+msgid "Failed to download %1: %2"
+msgstr "Huts egin du %1 deskargatzean: %2"
+
+#: src/upnp/upnprouter.cpp:166
+#, kde-format
+msgid "Error parsing router description."
+msgstr "Errorea gertatu da bideratzailearen deskribapena analizatzean."
+
+#: src/upnp/upnprouter.cpp:200
+#, kde-format
+msgid ""
+"Forwarding failed:\n"
+"Device does not have a WANIPConnection or WANPPPConnection."
+msgstr ""
+"Birbideratzeak huts egin du:\n"
+"Gailuak ez du ez WANIPConnection-ik ez WANPPPConnection-ik."
+
+#: src/upnp/upnprouter.cpp:279
+#, kde-format
+msgid "Cannot find port forwarding service in the device's description."
+msgstr ""
+"Ezin da aurkitu ataka birbideratzeko zerbitzua gailuaren deskribapenean."
+
+#: src/util/file.cpp:68
+#, kde-format
+msgid "Cannot write to %1: %2"
+msgstr "Ezin da %1(e)(a)n idatzi: %2"
+
+#: src/util/file.cpp:81
+#, kde-format
+msgid "Cannot read from %1"
+msgstr "Ezin da %1 irakurri"
+
+#: src/util/fileops.cpp:91
+#, kde-format
+msgid "Cannot create directory %1"
+msgstr "Ezin da %1 direktorioa sortu"
+
+#: src/util/fileops.cpp:149
+#, kde-format
+msgid "Cannot symlink %1 to %2: %3"
+msgstr "Ezin da esteka sinbolikoa sortu %1(e)tik %2(e)ra: %3"
+
+#: src/util/fileops.cpp:162
+#, kde-format
+msgid "Cannot move %1 to %2: %3"
+msgstr "%1 ezin da %2(e)ra eraman: %3"
+
+#: src/util/fileops.cpp:173 src/util/fileops.cpp:184
+#, kde-format
+msgid "Cannot copy %1 to %2: %3"
+msgstr "%1 ezin da %2(e)(a)n kopiatu: %3"
+
+#: src/util/fileops.cpp:238
+#, kde-format
+msgid "Cannot delete %1: %2"
+msgstr "Ezin da %1 ezabatu: %2"
+
+#: src/util/fileops.cpp:254
+#, kde-format
+msgid "Cannot create %1: %2"
+msgstr "Ezin da %1 sortu: %2"
+
+#: src/util/fileops.cpp:271
+#, kde-format
+msgid "Cannot calculate the filesize of %1: %2"
+msgstr "Ezin da kalkulatu %1(r)en fitxategi-neurria: %2"
+
+#: src/util/fileops.cpp:287
+#, kde-format
+msgid "Cannot calculate the filesize: %1"
+msgstr "Ezin da kalkulatu fitxategi-neurria: %1"
+
+#: src/util/fileops.cpp:332 src/util/fileops.cpp:336 src/util/fileops.cpp:339
+#: src/util/fileops.cpp:342 src/util/fileops.cpp:345
+#, kde-format
+msgid "Cannot expand file: %1"
+msgstr "Fitxategia ezin da zabaldu: %1"
+
+#: src/util/fileops.cpp:372
+#, kde-format
+msgid "Cannot seek in file: %1"
+msgstr "Ezin da fitxategian bilatu: %1"
+
+#: src/util/fileops.cpp:613
+#, kde-format
+msgid "Unable to open file %1: %2"
+msgstr "Ezin da %1 fitxategia ireki : %2"
+
+#: src/util/functions.cpp:205
+#, kde-format
+msgid "%1/s"
+msgstr "%1/s"
+
+#: src/util/functions.cpp:214
+#, kde-format
+msgid "1 day "
+msgid_plural "%1 days "
+msgstr[0] "egun 1 "
+msgstr[1] "%1 egun "
+
+#: src/util/logsystemmanager.cpp:19
+#, kde-format
+msgid "General"
+msgstr "Orokorra"
+
+#: src/util/logsystemmanager.cpp:20
+#, kde-format
+msgid "Connections"
+msgstr "Konexioak"
+
+#: src/util/logsystemmanager.cpp:21
+#, kde-format
+msgid "Tracker"
+msgstr "Kontrolatzailea"
+
+#: src/util/logsystemmanager.cpp:22
+#, kde-format
+msgid "DHT"
+msgstr "DHT"
+
+#: src/util/logsystemmanager.cpp:23
+#, kde-format
+msgid "Disk Input/Output"
+msgstr "Diskoaren sarrera/irteera"
+
+#: src/util/logsystemmanager.cpp:24
+#, kde-format
+msgid "µTP"
+msgstr "µTP"
+
+#: src/util/signalcatcher.cpp:62
+#, kde-format
+msgid "Error when writing to disk"
+msgstr "Errorea gertatu da diskora idaztean."
+
+#: src/util/signalcatcher.cpp:62
+#, kde-format
+msgid "Error when reading from disk"
+msgstr "Errorea diskotik irakurtzerakoan"
+
+#~ msgid "The directory %1 does not exist"
+#~ msgstr "%1 direktorioa ez da existitzen."
+
+#~ msgid "Connection closed unexpectedly"
+#~ msgstr "Konexioa ustekabean itxi da"
+
+#~ msgid "Torrent to open"
+#~ msgstr "Ireki beharreko torrent-a"
+
+#~ msgid "Port to use"
+#~ msgstr "Erabili beharreko ataka"
+
+#~ msgid "Whether or not to enable encryption"
+#~ msgstr "Zifratzea gaitu edo ez"
+
+#~ msgid "Whether or not to enable peer exchange"
+#~ msgstr "Pare-trukea gaitu edo ez"
+
+#~ msgid "Whether or not to use utp"
+#~ msgstr "UTP erabili edo ez"
+
+#~ msgid "ktcli"
+#~ msgstr "ktcli"
+
+#~ msgid "Redirect without a redirect location"
+#~ msgstr "Birbideratu birbideratzeko kokalekurik gabe"
+
+#, fuzzy
+#~| msgid ""
+#~| "An error occurred while loading the torrent. The torrent is probably "
+#~| "corrupt or is not a torrent file."
+#~ msgid ""
+#~ "An error occurred while loading the torrent <b>%1</b>:<br/><b>%2</b><br/"
+#~ ">The torrent is probably corrupt or is not a valid torrent file."
+#~ msgstr ""
+#~ "Errore bat gertatu da uholdea kargatzean. Uholdea seguruenik hondatuta "
+#~ "dago edo ez da holde fitxategi bat."
+
+#~ msgid "Parse Error"
+#~ msgstr "Sintaxi errorea"
+
+#, fuzzy
+#~| msgid "Not loaded"
+#~ msgid "Not in use"
+#~ msgstr "Kargatu gabe"
+
+#, fuzzy
+#~ msgid "Not enough diskspace"
+#~ msgstr "Ezin da indize-fitxategia sortu: %1"
+
+#~ msgid "Cannot open file %1 : %2"
+#~ msgstr "Ezin da %1 ireki : %2"
+
+#~ msgid "Cannot open file : %1 : %2"
+#~ msgstr "Ezin da da fitxategia ireki : %1 : %2"
+
+#, fuzzy
+#~| msgid ""
+#~| "An error occurred while loading the torrent. The torrent is probably "
+#~| "corrupt or is not a torrent file."
+#~ msgid ""
+#~ "An error occurred while loading the torrent:<br/><b>%1</b><br/>The "
+#~ "torrent is probably corrupt or is not a valid torrent file."
+#~ msgstr ""
+#~ "Errore bat gertatu da uholdea kargatzean. Uholdea seguruenik hondatuta "
+#~ "dago edo ez da holde fitxategi bat."
+
+#~ msgid "Cannot open log file %1 : %2"
+#~ msgstr "Ezin da %1 egunkari-fitxategia ireki: %2"
+
+#~ msgid "Cannot bind to udp port %1 or the 10 following ports."
+#~ msgstr "Ezin da %1 udp atakari edo hurerngo 10 atakei lotu."
+
+#, fuzzy
+#~ msgctxt "plugin name"
+#~ msgid "Scan Folder"
+#~ msgstr "Fitxategiaren aukerak"
+
+#, fuzzy
+#~| msgid "Uploaded"
+#~ msgid "loaded"
+#~ msgstr "Kargatuta"
+
+#~ msgid "Device"
+#~ msgstr "Dispositiboa"
+
+#, fuzzy
+#~| msgid "Ports Forwarded"
+#~ msgid "Port Forwarded"
+#~ msgstr "Birbidalitako atakak"
+
+#~ msgid "UPnP"
+#~ msgstr "UPnP"
+
+#, fuzzy
+#~ msgid ""
+#~ "%2\n"
+#~ "1 active filter"
+#~ msgid_plural ""
+#~ "%2\n"
+#~ "%1 active filters"
+#~ msgstr[0] "Fitxategi guztiak"
+#~ msgstr[1] "Fitxategi guztiak"
+
+#, fuzzy
+#~| msgid "1.0 application icon"
+#~ msgid "Syndication"
+#~ msgstr "1.0 aplikazioaren ikonoa"
+
+#, fuzzy
+#~| msgid "Cannot open %1 : %2"
+#~ msgid "Failed to load feed %1."
+#~ msgstr "Ezin da %1 ireki : %2"
+
+#, fuzzy
+#~ msgid "Failed to create directory for feed %1 : %2"
+#~ msgstr " Ezin da %1 uholde fitxategia ireki : %2"
+
+#, fuzzy
+#~ msgid "New Filter"
+#~ msgstr "Fi&txategiak"
+
+#, fuzzy
+#~ msgid "Add New Filter"
+#~ msgstr "Fi&txategiak"
+
+#, fuzzy
+#~| msgid "Seeders:"
+#~ msgid "Add Feed"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~| msgid "R&emove All"
+#~ msgid "Remove Feed"
+#~ msgstr "K&endu guztiak"
+
+#, fuzzy
+#~| msgid "Up Speed"
+#~ msgid "Show Feed"
+#~ msgstr "Abiadura beherakorra"
+
+#, fuzzy
+#~| msgid "Remove Download"
+#~ msgid "Add/Remove Filters"
+#~ msgstr "Kendu deskarga"
+
+#, fuzzy
+#~ msgid "Rename"
+#~ msgstr "Erabiltzailea"
+
+#, fuzzy
+#~ msgid "Add Filter"
+#~ msgstr "Fi&txategiak"
+
+#, fuzzy
+#~| msgid "Remove Download"
+#~ msgid "Remove Filter"
+#~ msgstr "Kendu deskarga"
+
+#, fuzzy
+#~ msgid "Edit Filter"
+#~ msgstr "Fi&txategiak"
+
+#, fuzzy
+#~ msgid "Feed: <b>%1</b>"
+#~ msgstr "Errorea %1 idaztean"
+
+#, fuzzy
+#~ msgid "<b>OK</b>"
+#~ msgstr "Errorea %1 idaztean"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "<b>Download Failed</b>"
+#~ msgstr "Deskargatuta"
+
+#, fuzzy
+#~| msgid "Downloading"
+#~ msgid "<b>Downloading</b>"
+#~ msgstr "Deskargatzen"
+
+#, fuzzy
+#~ msgid "Title"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#~ msgid "Torrent"
+#~ msgstr "Uholdea"
+
+#, fuzzy
+#~| msgid "Available"
+#~ msgid "Available"
+#~ msgstr "Eskuragarri"
+
+#, fuzzy
+#~| msgid "Pending"
+#~ msgid "Pending"
+#~ msgstr "Burutu gabea"
+
+#, fuzzy
+#~| msgid "Time Left"
+#~ msgid "Length"
+#~ msgstr "Gelditzen den denbora"
+
+#, fuzzy
+#~| msgid "Search"
+#~ msgid "Year"
+#~ msgstr "Bilatu"
+
+#, fuzzy
+#~ msgid "Mode:"
+#~ msgstr "Izena:"
+
+#, fuzzy
+#~| msgid "All Files"
+#~ msgid "Single File"
+#~ msgstr "Fitxategi guztiak"
+
+#, fuzzy
+#~| msgid "R&emove All"
+#~ msgid "Remove"
+#~ msgstr "K&endu guztiak"
+
+#, fuzzy
+#~| msgid "Seeders:"
+#~ msgid "Add Media"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~ msgid "Playing: <b>%1</b>"
+#~ msgstr "Errorea %1 idaztean"
+
+#, fuzzy
+#~| msgid "IP Filter List"
+#~ msgid "Play List"
+#~ msgstr "IP iragazki zerrenda"
+
+#, fuzzy
+#~| msgid "Stopped"
+#~ msgid "Stop"
+#~ msgstr "Geldituta"
+
+#, fuzzy
+#~| msgid "Preview"
+#~ msgid "Previous"
+#~ msgstr "Aurrebista"
+
+#, fuzzy
+#~| msgid "Torrent Files"
+#~ msgid "Movie player"
+#~ msgstr "Uholde fitxategiak"
+
+#, fuzzy
+#~| msgid "Converting..."
+#~ msgid "Collection:"
+#~ msgstr "Bihurtzen..."
+
+#, fuzzy
+#~| msgid "Torrent is incomplete!"
+#~ msgid "KTorrent is playing a video."
+#~ msgstr "Uholdea osatu gabe dago!"
+
+#, fuzzy
+#~ msgid "Cannot find web interface skins."
+#~ msgstr "Aukera orokorrak"
+
+#, fuzzy
+#~ msgid "Web Interface"
+#~ msgstr "Aukera orokorrak"
+
+#, fuzzy
+#~ msgid "Invalid data received"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~| msgid "Folder to store temporary files"
+#~ msgid "Failed to open temporary file"
+#~ msgstr "Behin-behineko fitxategiak gordetzeko karpeta"
+
+#, fuzzy
+#~| msgid "Unknown client"
+#~ msgid "Unknown"
+#~ msgstr "Bezero ezezaguna"
+
+#, fuzzy
+#~| msgid "Rescan"
+#~ msgid "Rescale"
+#~ msgstr "Berreskaneatu"
+
+#, fuzzy
+#~| msgid "R&emove All"
+#~ msgid "Reset"
+#~ msgstr "K&endu guztiak"
+
+#, fuzzy
+#~| msgid " KiB/s"
+#~ msgid "KiB/s"
+#~ msgstr " KiB/s"
+
+#, fuzzy
+#~| msgid "Status"
+#~ msgid "Statistics"
+#~ msgstr "Egoera"
+
+#, fuzzy
+#~| msgid "(= %1/s)"
+#~ msgid "(= %1 ms)"
+#~ msgstr "(= %1/s)"
+
+#, fuzzy
+#~| msgid "Leechers:"
+#~ msgid "Leechers connected"
+#~ msgstr "Izainak:"
+
+#, fuzzy
+#~| msgid "Leechers:"
+#~ msgid "Leechers in swarms"
+#~ msgstr "Izainak:"
+
+#, fuzzy
+#~ msgid "Seeds connected"
+#~ msgstr "Deskarga osatuta"
+
+#, fuzzy
+#~ msgid "Seeds in swarms"
+#~ msgstr "Erakutsi s&istemaren bandejako ikonoa"
+
+#, fuzzy
+#~ msgid "Average leechers connected per torrent"
+#~ msgstr "Deskargako konexio kopuru maximoa:"
+
+#, fuzzy
+#~ msgid "Average seeds connected per torrent"
+#~ msgstr "Deskargako konexio kopuru maximoa:"
+
+#, fuzzy
+#~ msgid "Average leechers connected per running torrent"
+#~ msgstr "Deskargako konexio kopuru maximoa:"
+
+#, fuzzy
+#~ msgid "Average seeds connected per running torrent"
+#~ msgstr "Deskargako konexio kopuru maximoa:"
+
+#, fuzzy
+#~ msgid "Nodes"
+#~ msgstr "Izena:"
+
+#, fuzzy
+#~| msgid "Trackers"
+#~ msgid "Tasks"
+#~ msgstr "Kontrolatzaileak"
+
+#, fuzzy
+#~| msgid "Current search engine"
+#~ msgid "Current speed"
+#~ msgstr "Uneko bilaketa-motorea"
+
+#, fuzzy
+#~ msgid "Average speed"
+#~ msgstr "Batez besteko abiadura"
+
+#, fuzzy
+#~ msgid "Speed limit"
+#~ msgstr "Deskargatu guztiak"
+
+#, fuzzy
+#~ msgid "Average from leechers"
+#~ msgstr "Batez besteko abiadura"
+
+#, fuzzy
+#~ msgid "Average to leechers"
+#~ msgstr "Batez besteko abiadura"
+
+#, fuzzy
+#~ msgid "Average from seeds"
+#~ msgstr "Batez besteko abiadura"
+
+#, fuzzy
+#~| msgid "Leechers:"
+#~ msgid "From leechers"
+#~ msgstr "Izainak:"
+
+#, fuzzy
+#~ msgid "From seeds"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~| msgid "Seeders"
+#~ msgid "Speed charts"
+#~ msgstr "Ereileak"
+
+#, fuzzy
+#~| msgid "yes"
+#~ msgctxt "Choked"
+#~ msgid "Yes"
+#~ msgstr "bai"
+
+#, fuzzy
+#~| msgid "yes"
+#~ msgctxt "Snubbed"
+#~ msgid "Yes"
+#~ msgstr "bai"
+
+#, fuzzy
+#~| msgid "yes"
+#~ msgctxt "Interested"
+#~ msgid "Yes"
+#~ msgstr "bai"
+
+#, fuzzy
+#~| msgid "yes"
+#~ msgctxt "Interesting"
+#~ msgid "Yes"
+#~ msgstr "bai"
+
+#, fuzzy
+#~| msgid "Add Peers"
+#~ msgid "Address"
+#~ msgstr "Kideak erantsi"
+
+#, fuzzy
+#~ msgid "Country"
+#~ msgstr "Honek kontrolatua:"
+
+#~ msgid "Client"
+#~ msgstr "Bezeroa"
+
+#~ msgid "Down Speed"
+#~ msgstr "Beheranzko abiadura"
+
+#~ msgid "Up Speed"
+#~ msgstr "Goranzko abiadura"
+
+#~ msgid "Choked"
+#~ msgstr "Mutututa"
+
+#~ msgid "Snubbed"
+#~ msgstr "Ukatuta"
+
+#~ msgid "Availability"
+#~ msgstr "Eskuragarritasuna"
+
+#, fuzzy
+#~ msgid "Upload Slot"
+#~ msgstr "Deskargatu guztiak"
+
+#~ msgid "Downloaded"
+#~ msgstr "Deskargatuta"
+
+#~ msgid "Uploaded"
+#~ msgstr "Kargatuta"
+
+#, fuzzy
+#~| msgid "IP to pass to the tracker"
+#~ msgid "IP address of the peer"
+#~ msgstr "Kontrolatzaileari pasatzeko IP-a"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "Download speed"
+#~ msgstr "Deskargatuta"
+
+#, fuzzy
+#~| msgid "Uploaded"
+#~ msgid "Upload speed"
+#~ msgstr "Kargatuta"
+
+#, fuzzy
+#~| msgid "Do you want to download or save the torrent?"
+#~ msgid "How much data we have downloaded from this peer"
+#~ msgstr "Uholdea deskargatu edo gorde nahi duzu?"
+
+#, fuzzy
+#~| msgid "Do you want to download or save the torrent?"
+#~ msgid "How much data we have uploaded to this peer"
+#~ msgstr "Uholdea deskargatu edo gorde nahi duzu?"
+
+#~ msgid "No limit"
+#~ msgstr "Mugarik ez"
+
+#~ msgid "Info Widget"
+#~ msgstr "Informazio-trepeta"
+
+#, fuzzy
+#~| msgid "Status"
+#~ msgctxt "@title:tab"
+#~ msgid "Status"
+#~ msgstr "Egoera"
+
+#, fuzzy
+#~ msgctxt "@title:tab"
+#~ msgid "Files"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~| msgid "Choose File to Save Torrent"
+#~ msgid "Shows all the files in a torrent"
+#~ msgstr "Hautatu uholdea gordetzeko fitxategia"
+
+#, fuzzy
+#~ msgid "Bandwidth Scheduler"
+#~ msgstr "Ereileak:"
+
+#~ msgid "Peers"
+#~ msgstr "Pareak"
+
+#~ msgid "Chunks"
+#~ msgstr "Zatiak"
+
+#~ msgid "Trackers"
+#~ msgstr "Kontrolatzaileak"
+
+#, fuzzy
+#~| msgid "Seeders:"
+#~ msgid "Webseeds"
+#~ msgstr "Ereileak:"
+
+#~ msgid "Chunk"
+#~ msgstr "Zatia"
+
+#~ msgid "Progress"
+#~ msgstr "Aurrerapena"
+
+#~ msgid "Peer"
+#~ msgstr "Parea"
+
+#, fuzzy
+#~ msgid "Files"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~| msgid "Size of each chunk:"
+#~ msgid "Number of the chunk"
+#~ msgstr "Zati bakoitzaren tamaina:"
+
+#, fuzzy
+#~| msgid "Downloaded:"
+#~ msgid "Download progress of the chunk"
+#~ msgstr "Deskargatuta:"
+
+#, fuzzy
+#~| msgid "Downloaded:"
+#~ msgid "Download speed of the chunk"
+#~ msgstr "Deskargatuta:"
+
+#~ msgid "URL"
+#~ msgstr "URL-a"
+
+#, fuzzy
+#~| msgid "Up Speed"
+#~ msgid "Speed"
+#~ msgstr "Abiadura beherakorra"
+
+#~ msgid "Status"
+#~ msgstr "Egoera"
+
+#, fuzzy
+#~| msgid "Peer"
+#~ msgid "Kick Peer"
+#~ msgstr "Parea"
+
+#, fuzzy
+#~ msgid "Ban Peer"
+#~ msgstr "Esleitutako pareak"
+
+#, fuzzy
+#~ msgid "Filter"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~ msgid "Download first"
+#~ msgstr "Deskargak"
+
+#, fuzzy
+#~ msgid "Download normally"
+#~ msgstr "Deskarga osatuta"
+
+#, fuzzy
+#~ msgid "Download last"
+#~ msgstr "Deskargak"
+
+#, fuzzy
+#~ msgid "Do Not Download"
+#~ msgstr "Deskargatu"
+
+#, fuzzy
+#~ msgid "Delete File(s)"
+#~ msgstr "Fitxategi guztiak"
+
+#, fuzzy
+#~| msgid "Torrent Files"
+#~ msgid "Move File"
+#~ msgstr "Uholde fitxategiak"
+
+#, fuzzy
+#~ msgid "Expand Folder Tree"
+#~ msgstr "Fitxategiaren aukerak"
+
+#, fuzzy
+#~ msgid "File Tree"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~| msgid "File Exists"
+#~ msgid "File List"
+#~ msgstr "Fitxategia lehendik dago."
+
+#, fuzzy
+#~ msgid "Show Filter"
+#~ msgstr "Fi&txategiak"
+
+#, fuzzy
+#~| msgid "The file or folder of which you want to create a torrent:"
+#~ msgid "Select a directory to move the data to."
+#~ msgstr "Uholdearen iturburu izango den fitxategi edo karpeta:"
+
+#~ msgid "Seeders"
+#~ msgstr "Ereileak"
+
+#~ msgid "Leechers"
+#~ msgstr "Izainak"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "Times Downloaded"
+#~ msgstr "Deskargatuta"
+
+#, fuzzy
+#~| msgid "Next update in:"
+#~ msgid "Next Update"
+#~ msgstr "Hurrengo eguneraketa:"
+
+#, fuzzy
+#~| msgid "Port"
+#~ msgid "Priority"
+#~ msgstr "Ataka"
+
+#, fuzzy
+#~| msgid "Preview"
+#~ msgctxt "@title:column"
+#~ msgid "Preview"
+#~ msgstr "Aurrebista"
+
+#, fuzzy
+#~| msgid "% Complete"
+#~ msgctxt "Percent of File Downloaded"
+#~ msgid "% Complete"
+#~ msgstr "Osatutako %-koa"
+
+#, fuzzy
+#~ msgctxt "Download first"
+#~ msgid "First"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~| msgid "Available"
+#~ msgctxt "preview available"
+#~ msgid "Available"
+#~ msgstr "Eskuragarri"
+
+#, fuzzy
+#~| msgid "Pending"
+#~ msgctxt "Preview pending"
+#~ msgid "Pending"
+#~ msgstr "Burutu gabea"
+
+#~ msgid "%1 %"
+#~ msgstr "%1 %"
+
+#, fuzzy
+#~| msgid "Available"
+#~ msgctxt "Preview available"
+#~ msgid "Available"
+#~ msgstr "Eskuragarri"
+
+#, fuzzy
+#~ msgid "Add Trackers"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~ msgid "Enter the URL's of the trackers, one per line:"
+#~ msgstr "Kontrolatzaileari pasatzeko IP-a"
+
+#~ msgid ""
+#~ "<img src=\"available_color\">&nbsp; - Available Chunks<br><img src="
+#~ "\"unavailable_color\">&nbsp; - Unavailable Chunks<br><img src="
+#~ "\"excluded_color\">&nbsp; - Excluded Chunks"
+#~ msgstr ""
+#~ "<img src=\"available_color\">&nbsp; - Zati eskuragarriak<br><img src="
+#~ "\"unavailable_color\">&nbsp; - Zati eskuragaitzak<br><img src="
+#~ "\"excluded_color\">&nbsp; - Kanporatutako zatiak"
+
+#, fuzzy
+#~ msgid "Add Script"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~ msgid "Remove Script"
+#~ msgstr "K&endu guztiak"
+
+#, fuzzy
+#~ msgid "Run Script"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~ msgid "Stop Script"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~ msgid "Edit Script"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~| msgid "Progress"
+#~ msgid "Properties"
+#~ msgstr "Aurrerapena"
+
+#, fuzzy
+#~| msgid "Description"
+#~ msgid "Scripting"
+#~ msgstr "Deskribapena"
+
+#, fuzzy
+#~ msgid "KTorrent Script Packages"
+#~ msgstr "Uholde fitxategiak"
+
+#~ msgid "All files"
+#~ msgstr "Fitxategi guztiak"
+
+#, fuzzy
+#~ msgid "Invalid archive."
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~ msgid "Log Level"
+#~ msgstr "Fitxategiaren aukerak"
+
+#, fuzzy
+#~ msgid "Debug"
+#~ msgstr "Arazketa modua"
+
+#, fuzzy
+#~ msgid "Important"
+#~ msgstr "Inpo&rtatu"
+
+#, fuzzy
+#~| msgid "Low"
+#~ msgid "Log"
+#~ msgstr "Baxua"
+
+#, fuzzy
+#~ msgid "Log Viewer"
+#~ msgstr "Fitxategiaren aukerak"
+
+#, fuzzy
+#~| msgid "Downloaded"
+#~ msgid "File Download Order"
+#~ msgstr "Deskargatuta"
+
+#, fuzzy
+#~ msgid "File download order for <b>%1</b>:"
+#~ msgstr "Errorea %1 idaztean"
+
+#, fuzzy
+#~| msgid "Engines"
+#~ msgid " Engine:"
+#~ msgstr "Motoreak"
+
+#, fuzzy
+#~| msgid "Copy Torrent URL"
+#~ msgid "Copy URL"
+#~ msgstr "Kopiatu torrent URL"
+
+#, fuzzy
+#~ msgid "Searching for %1..."
+#~ msgstr "%1 bilatzen..."
+
+#~ msgid "torrent files"
+#~ msgstr "uholde-fitxategiak"
+
+#~ msgid "Search finished"
+#~ msgstr "Bilaketa amaituta"
+
+#, fuzzy
+#~| msgid "Search"
+#~ msgctxt "plugin name"
+#~ msgid "Search"
+#~ msgstr "Bilatu"
+
+#, fuzzy
+#~| msgid "Search Engines"
+#~ msgid "Add a Search Engine"
+#~ msgstr "Bilaketa motoreak"
+
+#, fuzzy
+#~ msgid "Search for %1"
+#~ msgstr "%1 bilatzen..."
+
+#~ msgid "Search"
+#~ msgstr "Bilatu"
+
+#~ msgid "KTorrent"
+#~ msgstr "KTorrent"
+
+#, fuzzy
+#~| msgid "Folder to store temporary files:"
+#~ msgid "Search the web for torrents."
+#~ msgstr "Behin-behineko fitxategiak gordetzeko karpeta:"
+
+#, fuzzy
+#~| msgid "Cannot open %1 : %2"
+#~ msgid "Failed to parse %1"
+#~ msgstr "Ezin da %1 ireki : %2"
+
+#, fuzzy
+#~ msgid "Url: <b>%1</b>"
+#~ msgstr "Errorea %1 idaztean"
+
+#, fuzzy
+#~| msgid "Search"
+#~ msgid "Search Text"
+#~ msgstr "Bilatu"
+
+#, fuzzy
+#~| msgid "Search Engines"
+#~ msgid "Search Engine"
+#~ msgstr "Bilaketa motoreak"
+
+#, fuzzy
+#~| msgid "Search engine name:"
+#~ msgid "Search Engine Label"
+#~ msgstr "Bilaketa motorearen izena:"
+
+#, fuzzy
+#~| msgid "Engines"
+#~ msgid " Engine: "
+#~ msgstr "Motoreak"
+
+#, fuzzy
+#~| msgid "Do you want to download or save the torrent?"
+#~ msgid "Do you want to download this magnet link?"
+#~ msgstr "Uholdea deskargatu edo gorde nahi duzu?"
+
+#~ msgid "Do you want to download or save the torrent?"
+#~ msgstr "Uholdea deskargatu edo gorde nahi duzu?"
+
+#~ msgid "Download Torrent"
+#~ msgstr "Deskargatu uholdea"
+
+#~ msgid "Download"
+#~ msgstr "Deskargatu"
+
+#, fuzzy
+#~ msgid "Add an item"
+#~ msgstr "Izena"
+
+#, fuzzy
+#~ msgid ""
+#~ "Bandwidth\n"
+#~ "Schedule"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~ msgid "Edit the bandwidth schedule"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~ msgid "Load Schedule"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~ msgid "Save Schedule"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~| msgid "R&emove All"
+#~ msgid "Remove Item"
+#~ msgstr "K&endu guztiak"
+
+#, fuzzy
+#~ msgid "Edit Item"
+#~ msgstr "Izena"
+
+#, fuzzy
+#~ msgid "Clear Schedule"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~ msgid "Scheduler Active"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~| msgid "Torrent files"
+#~ msgid "KTorrent scheduler files"
+#~ msgstr "Uholde fitxategiak"
+
+#, fuzzy
+#~| msgid "Torrent files"
+#~ msgid "Current schedule: suspended"
+#~ msgstr "Uholde fitxategiak"
+
+#, fuzzy
+#~| msgid "Torrent files"
+#~ msgid "Current schedule: %1/s download, %2/s upload"
+#~ msgstr "Uholde fitxategiak"
+
+#, fuzzy
+#~| msgid "Torrent files"
+#~ msgid "Current schedule: %1/s download, unlimited upload"
+#~ msgstr "Uholde fitxategiak"
+
+#, fuzzy
+#~| msgid "Torrent files"
+#~ msgid " (scheduler disabled)"
+#~ msgstr "Uholde fitxategiak"
+
+#, fuzzy
+#~| msgid "Current search engine"
+#~ msgid "Current schedule:"
+#~ msgstr "Uneko bilaketa-motorea"
+
+#, fuzzy
+#~ msgid "Edit an item"
+#~ msgstr "Izena"
+
+#, fuzzy
+#~| msgid "Up Speed"
+#~ msgid "Suspended"
+#~ msgstr "Abiadura beherakorra"
+
+#, fuzzy
+#~| msgid "Lucke"
+#~ msgid "Lock"
+#~ msgstr "Lucke"
+
+#, fuzzy
+#~ msgid "When all torrents finish downloading"
+#~ msgstr ""
+#~ "Ez da %1 uholdearen deskarga amaitu, osatu gabeko datuak ere ezabatu nahi "
+#~ "dituzu?"
+
+#, fuzzy
+#~| msgid "Downloading"
+#~ msgid "Downloading finishes"
+#~ msgstr "Deskargatzen"
+
+#, fuzzy
+#~| msgid "Search finished"
+#~ msgid "Seeding finishes"
+#~ msgstr "Bilaketa amaituta"
+
+#~ msgid "Loading txt file..."
+#~ msgstr "Txt fitxategia kargatzen..."
+
+#~ msgid "Converting..."
+#~ msgstr "Bihurtzen..."
+
+#, fuzzy
+#~| msgid "Cannot open file %1: %2"
+#~ msgid "Cannot open zip file %1."
+#~ msgstr "Ezin da %1 fitxategia ireki: %2"
+
+#, fuzzy
+#~ msgid "Cannot find blocklist in zip file %1."
+#~ msgstr "Ezin da indize-fitxategia sortu: %1"
+
+#~ msgid ""
+#~ "Filter file (level1.dat) already exists, do you want to convert it again?"
+#~ msgstr ""
+#~ "Iragazki-fitxategia (level1.dat) dagoeneko lehendik dago. Berriro bihurtu "
+#~ "nahi duzu?"
+
+#~ msgid "File Exists"
+#~ msgstr "Fitxategia lehendik dago."
+
+#, fuzzy
+#~ msgid "IP Filter"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#~ msgid "Status: Loaded and running."
+#~ msgstr "Egoera: Kargatuta eta martxan."
+
+#~ msgid "Status: Not loaded."
+#~ msgstr "Egoera: Kargatu gabe."
+
+#, fuzzy
+#~| msgid "Peer"
+#~ msgid "Never"
+#~ msgstr "Parea"
+
+#, fuzzy
+#~| msgid "Copy Torrent URL"
+#~ msgid "Copy Magnet URI"
+#~ msgstr "Kopiatu torrent URL"
+
+#, fuzzy
+#~| msgid "KTorrent's UPnP plugin"
+#~ msgid "KTorrent's UPnP test application"
+#~ msgstr "KTorrent-en UPnP plugina"
+
+#, fuzzy
+#~| msgid "Time Downloaded"
+#~ msgid "KTMagnetDownloader"
+#~ msgstr "Jaitsiera denbora"
+
+#, fuzzy
+#~| msgid "Joris Guisson"
+#~ msgid "(C) 2009 Joris Guisson"
+#~ msgstr "Joris Guisson"
+
+#, fuzzy
+#~| msgid "Port"
+#~ msgid "Proxy"
+#~ msgstr "Ataka"
+
+#, fuzzy
+#~ msgid "All interfaces"
+#~ msgstr "Guztiak desautatu"
+
+#, fuzzy
+#~| msgid "Torrent"
+#~ msgid "BitTorrent"
+#~ msgstr "Uholdea"
+
+#~ msgid "Application"
+#~ msgstr "Aplikazioa"
+
+#~ msgid "Queue Manager"
+#~ msgstr "Ilara kudeatzailea"
+
+#~ msgid "Calculate Recommended Settings"
+#~ msgstr "Kalkulatu gomendatutako ezarpenak"
+
+#~ msgid "(= %1/s)"
+#~ msgstr "(= %1/s)"
+
+#~ msgid "Name"
+#~ msgstr "Izena"
+
+#, fuzzy
+#~| msgid "Stalled"
+#~ msgid "Time Stalled"
+#~ msgstr "Blokeatuta"
+
+#, fuzzy
+#~| msgid "Not loaded"
+#~ msgid "Not queued"
+#~ msgstr "Kargatu gabe"
+
+#, fuzzy
+#~| msgid "%1 %"
+#~ msgid "%1"
+#~ msgstr "% %1"
+
+#, fuzzy
+#~| msgid "Search"
+#~ msgid "Show Search"
+#~ msgstr "Bilatu"
+
+#, fuzzy
+#~ msgid "Move Top"
+#~ msgstr "Mugitu &gorantz"
+
+#~ msgid "Move a torrent to the top of the queue"
+#~ msgstr "Torrent bat ilararen hasierara mugitu"
+
+#, fuzzy
+#~ msgid "Move Up"
+#~ msgstr "Mugitu &gorantz"
+
+#~ msgid "Move a torrent up in the queue"
+#~ msgstr "Mugitu torrent bat ilaran gora"
+
+#, fuzzy
+#~| msgid "Move dow&n"
+#~ msgid "Move Down"
+#~ msgstr "Mugitu &behera"
+
+#~ msgid "Move a torrent down in the queue"
+#~ msgstr "Mugitu torrent bat ilaran behera"
+
+#, fuzzy
+#~ msgid "Move Bottom"
+#~ msgstr "Mugitu &gorantz"
+
+#~ msgid "Move a torrent to the bottom of the queue"
+#~ msgstr "Torrent bat ilararen amaierara mugitu"
+
+#, fuzzy
+#~| msgid "Create Torrent"
+#~ msgid "Start Magnet"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~ msgid "Remove Magnet"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~| msgid "Status"
+#~ msgctxt "@action Start all selected torrents in the current tab"
+#~ msgid "Start"
+#~ msgstr "Egoera"
+
+#, fuzzy
+#~| msgid "Stopped"
+#~ msgctxt "@action Stop all selected torrents in the current tab"
+#~ msgid "Stop"
+#~ msgstr "Geldituta"
+
+#, fuzzy
+#~| msgid "Data transferred during the current session"
+#~ msgid "Pause all selected torrents in the current tab"
+#~ msgstr "Uneko saioan transferitutako datuak"
+
+#, fuzzy
+#~| msgid "R&emove All"
+#~ msgctxt "@action Remove all selected torrents in the current tab"
+#~ msgid "Remove"
+#~ msgstr "K&endu guztiak"
+
+#, fuzzy
+#~| msgid "Stalled"
+#~ msgctxt "@action Start all torrents in the current tab"
+#~ msgid "Start All"
+#~ msgstr "Blokeatuta"
+
+#, fuzzy
+#~| msgid "Data transferred during the current session"
+#~ msgid "Start all torrents in the current tab"
+#~ msgstr "Uneko saioan transferitutako datuak"
+
+#, fuzzy
+#~| msgid "Select &All"
+#~ msgctxt "@action Stop all torrents in the current tab"
+#~ msgid "Stop All"
+#~ msgstr "Hautatu &guztiak"
+
+#, fuzzy
+#~| msgid "Start seedin&g the torrent"
+#~ msgid "Stop all torrents in the current tab"
+#~ msgstr "Hasi uholdea erei&ten"
+
+#~ msgid "Remove Torrent and Data"
+#~ msgstr "Ezabatu torrent eta datuak"
+
+#~ msgid "Rename Torrent"
+#~ msgstr "Torrent berrizendatu"
+
+#~ msgid "Add Peers"
+#~ msgstr "Kideak erantsi"
+
+#~ msgid "Manual Announce"
+#~ msgstr "Eskuzko berri-ematea"
+
+#~ msgid "Preview"
+#~ msgstr "Aurrebista"
+
+#~ msgid "Data Directory"
+#~ msgstr "Datu direktorioa"
+
+#~ msgid "Temporary Directory"
+#~ msgstr "Aldiuneko direktorioa"
+
+#~ msgid "Move Data"
+#~ msgstr "Datuak mugitu"
+
+#~ msgid "Remove from Group"
+#~ msgstr "Taldetik ezabatu"
+
+#~ msgid "New Group"
+#~ msgstr "Talde berria"
+
+#, fuzzy
+#~ msgid "Check all the data of a torrent"
+#~ msgstr "Errorea %1 idaztean"
+
+#~ msgid "Open Directory"
+#~ msgstr "Direktorioa ireki"
+
+#~ msgid "Add to Group"
+#~ msgstr "Taldera erantsi"
+
+#~ msgid "Copy Torrent URL"
+#~ msgstr "Kopiatu torrent URL"
+
+#, fuzzy
+#~ msgid "Export Torrent"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~| msgid "Start seedin&g the torrent"
+#~ msgid "Set the speed limits of individual torrents"
+#~ msgstr "Hasi uholdea erei&ten"
+
+#, fuzzy
+#~| msgid "Torrent Files (*.torrent)"
+#~ msgid "Torrents (*.torrent)"
+#~ msgstr "Torrent fitxategiak (*.torrent)"
+
+#, fuzzy
+#~| msgid "Comments:"
+#~ msgid "Columns"
+#~ msgstr "Iruzkinak:"
+
+#, fuzzy
+#~ msgid ""
+#~ "The torrent <b>%1</b> has not finished downloading, do you want to delete "
+#~ "the incomplete data, too?"
+#~ msgstr ""
+#~ "Ez da %1 uholdearen deskarga amaitu, osatu gabeko datuak ere ezabatu nahi "
+#~ "dituzu?"
+
+#~ msgid "Remove Download"
+#~ msgstr "Kendu deskarga"
+
+#, fuzzy
+#~ msgid "Remove Torrent"
+#~ msgstr "Sortu uholdea"
+
+#~ msgid "Size"
+#~ msgstr "Neurria"
+
+#~ msgid "Time Left"
+#~ msgstr "Gelditzen den denbora"
+
+#~ msgid "% Complete"
+#~ msgstr "Osatutako %"
+
+#~ msgid "Share Ratio"
+#~ msgstr "Partekatze tasa"
+
+#~ msgid "Time Downloaded"
+#~ msgstr "Jaitsiera denbora"
+
+#~ msgid "Time Seeded"
+#~ msgstr "Ereiteko denbora"
+
+#~ msgid "Location"
+#~ msgstr "Kokalekua"
+
+#, fuzzy
+#~| msgid "Seeders:"
+#~ msgid "Added"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~| msgid "Do you want to download or save the torrent?"
+#~ msgid "How much data we have downloaded of the torrent"
+#~ msgstr "Uholdea deskargatu edo gorde nahi duzu?"
+
+#, fuzzy
+#~ msgid "Current download speed"
+#~ msgstr "Deskarga-tasa maximoa:"
+
+#, fuzzy
+#~| msgid "Current search engine"
+#~ msgid "Current upload speed"
+#~ msgstr "Uneko bilaketa-motorea"
+
+#, fuzzy
+#~ msgid "How long we have been downloading the torrent"
+#~ msgstr "Dagoeneko uholde hau deskargatzen ari zara."
+
+#, fuzzy
+#~| msgid "torrent files"
+#~ msgid "When this torrent was added"
+#~ msgstr "uholde-fitxategiak"
+
+#, fuzzy
+#~ msgid "%1<br>Url: <b>%2</b>"
+#~ msgstr "Errorea %1 idaztean"
+
+#~ msgid "Policy for the %1 group"
+#~ msgstr "%1 taldearentzako politika"
+
+#~ msgid "Edit Name"
+#~ msgstr "Izena editatu"
+
+#~ msgid "Remove Group"
+#~ msgstr "Taldea ezabatu"
+
+#~ msgid "Please enter the group name."
+#~ msgstr "Mesedez, sartu talde izena."
+
+#~ msgid "The group %1 already exists."
+#~ msgstr "%1 taldea dagoeneko existitzen da."
+
+#, fuzzy
+#~ msgid "Download Limit"
+#~ msgstr "Deskargak"
+
+#, fuzzy
+#~ msgid "Upload Limit"
+#~ msgstr "Deskargatu guztiak"
+
+#, fuzzy
+#~| msgid "Download completed"
+#~ msgid "Assured Download Speed"
+#~ msgstr "Deskarga osatuta"
+
+#, fuzzy
+#~ msgid "Assured Upload Speed"
+#~ msgstr "Karga-tasa maximoa:"
+
+#~ msgid "No assured speed"
+#~ msgstr "Abiadura ez da bermatzen"
+
+#~ msgid "Create A Torrent"
+#~ msgstr "Torrent bat sortu"
+
+#~ msgid "All Torrents"
+#~ msgstr "Torrent guztiak"
+
+#~ msgid "Invalid url %1"
+#~ msgstr "Baliogabeko url %1"
+
+#~ msgid "You must select a file or a folder."
+#~ msgstr "Fitxategi edo karpeta bat hautatu behar duzu."
+
+#, fuzzy
+#~ msgid "You must add at least one node."
+#~ msgstr "Gutxienez kontrolatzaile bat gehitu behar duzu."
+
+#~ msgid "Torrent Files (*.torrent)"
+#~ msgstr "Torrent fitxategiak (*.torrent)"
+
+#, fuzzy
+#~| msgid "Choose File to Save Torrent"
+#~ msgid "Choose a file to save the torrent"
+#~ msgstr "Hautatu uholdea gordetzeko fitxategia"
+
+#, fuzzy
+#~| msgid "Choose File to Save Torrent"
+#~ msgid "Show a file tree"
+#~ msgstr "Hautatu uholdea gordetzeko fitxategia"
+
+#, fuzzy
+#~| msgid "Choose a file"
+#~ msgid "Show a file list"
+#~ msgstr "Fitxategi bat hautatu"
+
+#, fuzzy
+#~ msgid ""
+#~ "Some files of this torrent have been found in the completed downloads "
+#~ "directory. Do you want to import these files and use the completed "
+#~ "downloads directory as the location?"
+#~ msgstr ""
+#~ "Ez da %1 uholdearen deskarga amaitu, osatu gabeko datuak ere ezabatu nahi "
+#~ "dituzu?"
+
+#, fuzzy
+#~ msgid ""
+#~ "All files of this torrent have been found in the completed downloads "
+#~ "directory. Do you want to import these files and use the completed "
+#~ "downloads directory as the location?"
+#~ msgstr ""
+#~ "Ez da %1 uholdearen deskarga amaitu, osatu gabeko datuak ere ezabatu nahi "
+#~ "dituzu?"
+
+#, fuzzy
+#~ msgid ""
+#~ "The file <b>%1</b> was found in the completed downloads directory. Do you "
+#~ "want to import this file?"
+#~ msgstr ""
+#~ "Ez da %1 uholdearen deskarga amaitu, osatu gabeko datuak ere ezabatu nahi "
+#~ "dituzu?"
+
+#, fuzzy
+#~| msgid "The directory %1 does not exist"
+#~ msgid "The directory %1 does not exist, do you want to create it?"
+#~ msgstr "%1 direktorio ez da existitzen"
+
+#~ msgid " KiB/s"
+#~ msgstr " KiB/s"
+
+#, fuzzy
+#~| msgid "The file or folder of which you want to create a torrent:"
+#~ msgid "Select the directory where the data now is."
+#~ msgstr "Uholdearen iturburu izango den fitxategi edo karpeta:"
+
+#~ msgid "Importing 1 torrent ..."
+#~ msgid_plural "Importing %1 torrents ..."
+#~ msgstr[0] "Torrent 1 inportatzen ..."
+#~ msgstr[1] "%1 torrent inportatzen ..."
+
+#~ msgid "Importing <b>%1</b> ..."
+#~ msgstr "<b>%1</b> inportatzen ..."
+
+#, fuzzy
+#~| msgid "Finished import !"
+#~ msgid "Finished import."
+#~ msgstr "Inportaketa amaituta!"
+
+#, fuzzy
+#~| msgid "Torrent <b>%1</b> already loaded !"
+#~ msgid "Torrent <b>%1</b> already loaded."
+#~ msgstr "<b>%1</b> torrent dagoeneko zamatuta!"
+
+#, fuzzy
+#~ msgid "Failed to import <b>%1</b> : %2"
+#~ msgstr " Ezin da %1 uholde fitxategia ireki : %2"
+
+#~ msgid "Imported <b>%1</b>"
+#~ msgstr "<b>%1</b> inportatuta"
+
+#~ msgid "Torrent files"
+#~ msgstr "Torrent fitxategiak"
+
+#~ msgid "Cannot verify data : %1"
+#~ msgstr "Ezin dira datuak egiaztatu: %1"
+
+#~ msgid "Cannot load the torrent file : %1"
+#~ msgstr "Ezin da torrent fitxategia zamatu: %1"
+
+#~ msgid "Open an URL"
+#~ msgstr "URL bat ireki"
+
+#, fuzzy
+#~ msgid "Invalid URL: %1"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~ msgid "Speed down: %1 / up: %2"
+#~ msgstr "Abiadura, gorantz: %1 / behera: %2"
+
+#, fuzzy
+#~ msgid "Transferred down: %1 / up: %2"
+#~ msgstr "Transferituta: gorantz: %1 / behera: %2"
+
+#~ msgid "IP Filter List"
+#~ msgstr "IP iragazki zerrenda"
+
+#, fuzzy
+#~| msgid ""
+#~| "Invalid IP address %1. You must enter an IP address in the format 'XXX."
+#~| "XXX.XXX.XXX'. You can also use wildcards for ranges like '127.0.0.*'."
+#~ msgid ""
+#~ "Invalid IP address <b>%1</b>. IP addresses must be in the format 'XXX.XXX."
+#~ "XXX.XXX'.<br/><br/>You can also use wildcards like '127.0.0.*' or specify "
+#~ "ranges like '200.10.10.0-200.10.10.40'."
+#~ msgstr ""
+#~ "%1 IP helbide baliogabea. IP helbidea 'XXX.XXX.XXX.XXX' formatuan sartu "
+#~ "behar duzu. Barrutietarako zernahitarako karaktereak erabili ditzakezu, "
+#~ "esaterako '127.0.0.*'."
+
+#~ msgid "Choose a file"
+#~ msgstr "Fitxategi bat hautatu"
+
+#~ msgid "Bittorrent client for KDE"
+#~ msgstr "KDE-ren BitTorrent bezeroa"
+
+#, fuzzy
+#~| msgid "(C) 2005 - 2008 Joris Guisson and Ivan Vasic"
+#~ msgid "(C) 2005 - 2010 Joris Guisson and Ivan Vasic"
+#~ msgstr "(C) 2005 - 2008 Joris Guisson and Ivan Vasic"
+
+#~ msgid "Joris Guisson"
+#~ msgstr "Joris Guisson"
+
+#~ msgid "Ivan Vasic"
+#~ msgstr "Ivan Vasic"
+
+#~ msgid "Alan Jones"
+#~ msgstr "Alan Jones"
+
+#~ msgid "BitFinder Plugin"
+#~ msgstr "BitFinder plugina"
+
+#~ msgid "Diego R. Brogna"
+#~ msgstr "Diego R. Brogna"
+
+#~ msgid "Webinterface Plugin"
+#~ msgstr "Web interfaze plugina"
+
+#~ msgid "Krzysztof Kundzicz"
+#~ msgstr "Krzysztof Kundzicz"
+
+#~ msgid "Application icon and a couple of others"
+#~ msgstr "Aplikazioaren ikonoa eta beste batzuk"
+
+#~ msgid "Adam Treat"
+#~ msgstr "Adam Treat"
+
+#~ msgid "1.0 application icon"
+#~ msgstr "1.0 aplikazioaren ikonoa"
+
+#~ msgid "ChunkBar's tooltip and IWFileTreeItem sorting"
+#~ msgstr "Zati-barraren argibideak eta IWFileTreeItem ordenazioa"
+
+#~ msgid "Thomas Bernard"
+#~ msgstr "Thomas Bernard"
+
+#~ msgid "Athantor"
+#~ msgstr "Athantor"
+
+#~ msgid "Lucke"
+#~ msgstr "Lucke"
+
+#~ msgid "Modestas Vainius"
+#~ msgstr "Modestas Vainius"
+
+#~ msgid "Several patches"
+#~ msgstr "Zenbait adabaki"
+
+#~ msgid "Stefan Monov"
+#~ msgstr "Stefan Monov"
+
+#~ msgid "Several webgui patches"
+#~ msgstr "Zenbait webgui adabaki"
+
+#~ msgid "Ozzi"
+#~ msgstr "Ozzi"
+
+#, fuzzy
+#~ msgid "Patch to load torrents silently from the command line"
+#~ msgstr " Ezin da %1 uholde fitxategia ireki : %2"
+
+#~ msgid "Lee Olson"
+#~ msgstr "Lee Olson"
+
+#~ msgid "New set of icons"
+#~ msgstr "Ikono multzo berria"
+
+#~ msgid "Aaron J. Seigo"
+#~ msgstr "Aaron J. Seigo"
+
+#, fuzzy
+#~| msgid "torrent files"
+#~ msgid "Feature which adds the date a torrent was added"
+#~ msgstr "uholde-fitxategiak"
+
+#, fuzzy
+#~| msgid " Unable to open torrent file %1 : %2"
+#~ msgid "Silently open torrent given on URL"
+#~ msgstr " Ezin da %1 uholde fitxategia ireki : %2"
+
+#~ msgid "Torrent Files"
+#~ msgstr "Uholde fitxategiak"
+
+#~ msgid "All Files"
+#~ msgstr "Fitxategi guztiak"
+
+#~ msgid "Open Location"
+#~ msgstr "Ireki kokalekua"
+
+#, fuzzy
+#~| msgid "Create Torrent"
+#~ msgid "Create a new torrent"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~| msgid "Create Torrent"
+#~ msgid "Open a torrent"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~ msgid "Open Silently"
+#~ msgstr "uholde-fitxategiak"
+
+#, fuzzy
+#~| msgid "Stalled"
+#~ msgid "Start All"
+#~ msgstr "Blokeatuta"
+
+#, fuzzy
+#~| msgid "Start seedin&g the torrent"
+#~ msgid "Start all torrents"
+#~ msgstr "Hasi uholdea erei&ten"
+
+#, fuzzy
+#~| msgid "Select &All"
+#~ msgid "Stop All"
+#~ msgstr "Hautatu &guztiak"
+
+#, fuzzy
+#~| msgid "Start seedin&g the torrent"
+#~ msgid "Stop all torrents"
+#~ msgstr "Hasi uholdea erei&ten"
+
+#, fuzzy
+#~| msgid "Create Torrent"
+#~ msgid "Suspend KTorrent"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~| msgid "Start seedin&g the torrent"
+#~ msgid "Suspend all running torrents"
+#~ msgstr "Hasi uholdea erei&ten"
+
+#, fuzzy
+#~ msgid "Show the list of blocked IP addresses"
+#~ msgstr "Erakutsi pareen zerrenda"
+
+#, fuzzy
+#~ msgid "Import Torrent"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~ msgid "Import a torrent"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~ msgid "Import KDE3 Torrents"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~| msgid "Download Torrent"
+#~ msgid "Show/Hide KTorrent"
+#~ msgstr "Deskargatu uholdea"
+
+#, fuzzy
+#~ msgid "Torrents"
+#~ msgstr "Uholdea"
+
+#, fuzzy
+#~| msgid "Invalid IP address %1 !"
+#~ msgid "Invalid IP address %1"
+#~ msgstr "Baliogabeko IP helbidea %1 !"
+
+#, fuzzy
+#~| msgid "Duplicate IP address %1 !"
+#~ msgid "Duplicate IP address %1"
+#~ msgstr "Bikoiztutako IP helbidea %1 !"
+
+#, fuzzy
+#~ msgid "Set max upload speed"
+#~ msgstr "Karga-tasa maximoa:"
+
+#, fuzzy
+#~ msgid "Set max download speed"
+#~ msgstr "Deskarga-tasa maximoa:"
+
+#~ msgid ""
+#~ "<b>%1</b> has completed downloading.<br>Average speed: %2 DL / %3 UL."
+#~ msgstr ""
+#~ "<b>%1</b>-(r)en deskarga amaitu da. <br>Batez besteko abiadura: %2 "
+#~ "(deskarga) / %3 (karga)."
+
+#~ msgid "<b>%1</b> has been stopped with the following error: <br>%2"
+#~ msgstr "<b>%1</b> gelditu egin da ondorengo errorearekin: <br>%2"
+
+#, fuzzy
+#~ msgid "Cannot start <b>%1</b> : <br>"
+#~ msgstr "Errorea %1 idaztean"
+
+#, fuzzy
+#~| msgid "Cannot create torrent: %1"
+#~ msgid "Cannot seed more than 1 torrent. <br>"
+#~ msgid_plural "Cannot seed more than %1 torrents. <br>"
+#~ msgstr[0] "Ezin da uholdea sortu: %1"
+#~ msgstr[1] "Ezin da uholdea sortu: %1"
+
+#, fuzzy
+#~| msgid "Do you want to download or save the torrent?"
+#~ msgid "Cannot download more than 1 torrent. <br>"
+#~ msgid_plural "Cannot download more than %1 torrents. <br>"
+#~ msgstr[0] "Uholdea deskargatu edo gorde nahi duzu?"
+#~ msgstr[1] "Uholdea deskargatu edo gorde nahi duzu?"
+
+#~ msgid "Cannot create torrent: %1"
+#~ msgstr "Ezin da uholdea sortu: %1"
+
+#, fuzzy
+#~ msgid "Cannot deselect missing files: %1"
+#~ msgstr "Ezin da indize-fitxategia sortu: %1"
+
+#, fuzzy
+#~ msgid "Cannot recreate missing files: %1"
+#~ msgstr "Ezin da indize-fitxategia sortu: %1"
+
+#, fuzzy
+#~ msgid "Cannot recreate data file: %1"
+#~ msgstr "Ezin da indize-fitxategia sortu: %1"
+
+#, fuzzy
+#~| msgid "Torrent is incomplete!"
+#~ msgid "KTorrent is not running."
+#~ msgstr "Uholdea osatu gabe dago!"
+
+#, fuzzy
+#~| msgid "torrent files"
+#~ msgid "No torrents loaded."
+#~ msgstr "uholde-fitxategiak"
+
+#, fuzzy
+#~ msgid "Selected torrent is unavailable."
+#~ msgstr "Eskuragarri dauden fitxategiaren zatiak:"
+
+#, fuzzy
+#~| msgid "Corrupted torrent!"
+#~ msgid "Ungrouped Torrents"
+#~ msgstr "Hondatutako uholdea!"
+
+#, fuzzy
+#~ msgid "Uploads"
+#~ msgstr "Kargatuta"
+
+#, fuzzy
+#~ msgid "Running Uploads"
+#~ msgstr "Kargatuta"
+
+#~ msgid "Downloads"
+#~ msgstr "Deskargak"
+
+#, fuzzy
+#~| msgid "Downloads"
+#~ msgid "Running Downloads"
+#~ msgstr "Deskargak"
+
+#, fuzzy
+#~ msgid "Not Running Downloads"
+#~ msgstr "Deskargatu"
+
+#, fuzzy
+#~ msgid "Active Torrents"
+#~ msgstr "Uholdea"
+
+#, fuzzy
+#~ msgid "Active Downloads"
+#~ msgstr "Deskargatu"
+
+#, fuzzy
+#~ msgid "Active Uploads"
+#~ msgstr "Kargatuta"
+
+#, fuzzy
+#~| msgid "Create Torrent"
+#~ msgid "Passive Torrents"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~ msgid "Passive Downloads"
+#~ msgstr "Deskargatu"
+
+#, fuzzy
+#~ msgid "Passive Uploads"
+#~ msgstr "Kargatuta"
+
+#, fuzzy
+#~| msgid "Time Left"
+#~ msgid "Left"
+#~ msgstr "Gelditzen den denbora"
+
+#, fuzzy
+#~| msgid "High"
+#~ msgid "Right"
+#~ msgstr "Handia"
+
+#, fuzzy
+#~ msgid "Maximum share ratio reached."
+#~ msgstr "Partekatze-tasa:"
+
+#, fuzzy
+#~| msgid "Maximum seeds:"
+#~ msgid "Maximum seed time reached."
+#~ msgstr "Hazi maximoak:"
+
+#, fuzzy
+#~ msgid "File"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#~ msgid "Error starting torrent %1 : %2"
+#~ msgstr "Errorea %1 uholdea abiatzean: %2"
+
+#, fuzzy
+#~| msgid "Error: "
+#~ msgid "Error"
+#~ msgstr "Errorea: "
+
+#~ msgid "Error stopping torrent %1 : %2"
+#~ msgstr "Errorea %1 uholdea gelditzean: %2"
+
+#~ msgid ""
+#~ "<img src=\"available_color\">&nbsp; - Downloaded Chunks<br><img src="
+#~ "\"unavailable_color\">&nbsp; - Chunks to Download<br><img src="
+#~ "\"excluded_color\">&nbsp; - Excluded Chunks"
+#~ msgstr ""
+#~ "<img src=\"available_color\">&nbsp; - Deskargatutako zatiak<br><img src="
+#~ "\"unavailable_color\">&nbsp; - Deskargatzko zatiak<br><img src="
+#~ "\"excluded_color\">&nbsp; - Kanporatutako zatiak"
+
+#, fuzzy
+#~ msgid "Cannot write beyond end of the mmap buffer."
+#~ msgstr "Ezin da memoria mapatutako buffer-a baina harago idatzi !"
+
+#~ msgid "Plugins"
+#~ msgstr "Pluginak"
+
+#~ msgctxt "NAME OF TRANSLATORS"
+#~ msgid "Your names"
+#~ msgstr "Marcos , Ion Gaztañaga, Iñigo Salvador Azurmendi"
+
+#~ msgctxt "EMAIL OF TRANSLATORS"
+#~ msgid "Your emails"
+#~ msgstr "marcos@euskalgnu.org, igaztanaga@gmail.com, xalba@euskalnet.net"
+
+#, fuzzy
+#~| msgid "Folder to store temporary files:"
+#~ msgid "Folders to scan for torrents:"
+#~ msgstr "Behin-behineko fitxategiak gordetzeko karpeta:"
+
+#, fuzzy
+#~ msgid "Add Folder"
+#~ msgstr "Fi&txategiak"
+
+#, fuzzy
+#~| msgid "Remove Download"
+#~ msgid "Remove Folder"
+#~ msgstr "Kendu deskarga"
+
+#, fuzzy
+#~| msgid "File Options"
+#~ msgid "Options"
+#~ msgstr "Fitxategiaren aukerak"
+
+#, fuzzy
+#~ msgid "Open silently"
+#~ msgstr "uholde-fitxategiak"
+
+#, fuzzy
+#~ msgid "Scan subfolders"
+#~ msgstr "Fitxategiaren aukerak"
+
+#, fuzzy
+#~| msgid "torrent files"
+#~ msgid "Remove torrent file after loading"
+#~ msgstr "uholde-fitxategiak"
+
+#, fuzzy
+#~| msgid "Start seedin&g the torrent"
+#~ msgid "Group to add torrents to."
+#~ msgstr "Hasi uholdea erei&ten"
+
+#, fuzzy
+#~ msgid "Whether to open torrent silently or not."
+#~ msgstr "uholde-fitxategiak"
+
+#, fuzzy
+#~ msgid "Forward"
+#~ msgstr "Birbidali atakak"
+
+#, fuzzy
+#~| msgid "Undo Port Forwarding"
+#~ msgid "Undo Forward"
+#~ msgstr "Desegin ataken birbidaltzea"
+
+#~ msgid "Rescan"
+#~ msgstr "Berreskaneatu"
+
+#~ msgid "Default UPnP device to use"
+#~ msgstr "Erabiliko den UPnP dispositiboa"
+
+#, fuzzy
+#~| msgid "Download Toolbar"
+#~ msgid "Syndication Toolbar"
+#~ msgstr "Deskargarako tresna-barra"
+
+#, fuzzy
+#~| msgid "Name"
+#~ msgid "Name:"
+#~ msgstr "Izena"
+
+#, fuzzy
+#~ msgid "Seasons: "
+#~ msgstr "Partekatze-tasa:"
+
+#, fuzzy
+#~| msgid "Download"
+#~ msgid "Download to:"
+#~ msgstr "Deskargatu"
+
+#, fuzzy
+#~ msgid "Open torrents silently"
+#~ msgstr "uholde-fitxategiak"
+
+#, fuzzy
+#~| msgid "IP filter file:"
+#~ msgid "filter on feed:"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#~ msgid "URL:"
+#~ msgstr "URL-a:"
+
+#~ msgid "Status:"
+#~ msgstr "Egoera:"
+
+#, fuzzy
+#~ msgid "Refresh every:"
+#~ msgstr "So&rtu"
+
+#, fuzzy
+#~ msgid " minutes"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~ msgid "Refresh"
+#~ msgstr "So&rtu"
+
+#, fuzzy
+#~ msgid "Filters"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~ msgid "Manage Filters"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~| msgid "Seeders:"
+#~ msgid "Feed:"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~ msgid "Active filters:"
+#~ msgstr "Fitxategi guztiak"
+
+#, fuzzy
+#~| msgid "&Add"
+#~ msgid "Add"
+#~ msgstr "&Gehitu"
+
+#, fuzzy
+#~| msgid "Available"
+#~ msgid "Available filters:"
+#~ msgstr "Eskuragarri"
+
+#, fuzzy
+#~| msgid "R&emove All"
+#~ msgid "Remove All"
+#~ msgstr "K&endu guztiak"
+
+#, fuzzy
+#~| msgid "Download Toolbar"
+#~ msgid "Media Player Toolbar"
+#~ msgstr "Deskargarako tresna-barra"
+
+#~ msgid "Search Preferences"
+#~ msgstr "Bilatu hobespenak"
+
+#, fuzzy
+#~ msgid "Web interface skin:"
+#~ msgstr "Aukera orokorrak"
+
+#, fuzzy
+#~ msgid "Username:"
+#~ msgstr "Erabiltzailea"
+
+#, fuzzy
+#~| msgid "Seeders:"
+#~ msgid "Web Server"
+#~ msgstr "Ereileak:"
+
+#~ msgid "Port:"
+#~ msgstr "Ataka:"
+
+#, fuzzy
+#~ msgid "Forward port"
+#~ msgstr "Birbidali atakak"
+
+#, fuzzy
+#~ msgid "forward Port"
+#~ msgstr "Birbidali atakak"
+
+#, fuzzy
+#~ msgid "interface skin"
+#~ msgstr "Aukera orokorrak"
+
+#, fuzzy
+#~ msgid "username"
+#~ msgstr "Erabiltzailea"
+
+#, fuzzy
+#~ msgid "Update charts every n gui updates"
+#~ msgstr "Kontrolatzaileari pasatzeko IP-a"
+
+#, fuzzy
+#~ msgid "Whether to show seeds in swarms"
+#~ msgstr "Erakutsi s&istemaren bandejako ikonoa"
+
+#, fuzzy
+#~| msgid "Leechers:"
+#~ msgid "Whether to show leachers in swarms"
+#~ msgstr "Izainak:"
+
+#, fuzzy
+#~| msgid "Up Speed"
+#~ msgctxt "@title:window"
+#~ msgid "Speed"
+#~ msgstr "Abiadura beherakorra"
+
+#, fuzzy
+#~ msgid "Upload"
+#~ msgstr "Kargatuta"
+
+#, fuzzy
+#~ msgid "Colors"
+#~ msgstr "Fi&txategiak"
+
+#, fuzzy
+#~| msgid "(0 is no limit)"
+#~ msgid "Limit"
+#~ msgstr "(0 = mugarik ez)"
+
+#, fuzzy
+#~| msgid "Name"
+#~ msgid "Native"
+#~ msgstr "Izena"
+
+#, fuzzy
+#~| msgid "Seeding"
+#~ msgid "Settings"
+#~ msgstr "Ereiten"
+
+#, fuzzy
+#~ msgid "Update"
+#~ msgstr "Kontrolatzaileari pasatzeko IP-a"
+
+#, fuzzy
+#~ msgid "Update charts every"
+#~ msgstr "Kontrolatzaileari pasatzeko IP-a"
+
+#, fuzzy
+#~| msgid "GUI update interval"
+#~ msgid "GUI updates"
+#~ msgstr "GUI eguneraketa tartea"
+
+#, fuzzy
+#~| msgid "Maximum seeds:"
+#~ msgid "Maximum"
+#~ msgstr "Hazi maximoak:"
+
+#, fuzzy
+#~| msgid "Maximum seeds:"
+#~ msgid "Maximum speed scale mode: "
+#~ msgstr "Hazi maximoak:"
+
+#, fuzzy
+#~ msgid "Show seeds in swarms"
+#~ msgstr "Erakutsi s&istemaren bandejako ikonoa"
+
+#~ msgid "Show peer view tab in main window"
+#~ msgstr "Erakutsi parearen ikuspegiaren fitxa lehio nagusian"
+
+#~ msgid "Show chunk download view tab in main window"
+#~ msgstr "Erakutsi zatiaren deskargaren fitxa lehio nagusian"
+
+#, fuzzy
+#~ msgid "Show trackers view tab in main window"
+#~ msgstr "Erakutsi parearen ikuspegiaren fitxa lehio nagusian"
+
+#, fuzzy
+#~ msgid "Remove Tracker"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~ msgid "Change Tracker"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~ msgid "Update Trackers"
+#~ msgstr "Kontrolatzaileari pasatzeko IP-a"
+
+#~ msgid "Info"
+#~ msgstr "Informazioa"
+
+#, fuzzy
+#~ msgid "Average down speed:"
+#~ msgstr "Batez besteko abiadura"
+
+#, fuzzy
+#~ msgid "Average up speed:"
+#~ msgstr "Batez besteko abiadura"
+
+#~ msgid "Comments:"
+#~ msgstr "Iruzkinak:"
+
+#, fuzzy
+#~| msgid "Downloaded:"
+#~ msgid "Downloaded chunks:"
+#~ msgstr "Deskargatuta:"
+
+#, fuzzy
+#~| msgid "Available"
+#~ msgid "Available chunks:"
+#~ msgstr "Eskuragarri"
+
+#~ msgid "Sharing"
+#~ msgstr "Partekatzea"
+
+#~ msgid "Share ratio:"
+#~ msgstr "Partekatze-tasa:"
+
+#, fuzzy
+#~| msgid "Time Left"
+#~ msgid "Time limit:"
+#~ msgstr "Gelditzen den denbora"
+
+#, fuzzy
+#~| msgid "Seeders:"
+#~ msgid "Add Webseed"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~| msgid "R&emove All"
+#~ msgid "Remove Webseed"
+#~ msgstr "K&endu guztiak"
+
+#, fuzzy
+#~| msgid "Load All"
+#~ msgid "Enable All"
+#~ msgstr "Kargatu guztiak"
+
+#, fuzzy
+#~| msgid "Trackers"
+#~ msgid "Tabs"
+#~ msgstr "Kontrolatzaileak"
+
+#~ msgid "Show list of peers"
+#~ msgstr "Erakutsi pareen zerrenda"
+
+#, fuzzy
+#~| msgid "Show list of chunks currentl&y downloading"
+#~ msgid "Show list of chunks currently downloading"
+#~ msgstr "Erakutsi une &honetan deskargatutako zatien zerrenda"
+
+#, fuzzy
+#~ msgid "Show list of trackers"
+#~ msgstr "Erakutsi pareen zerrenda"
+
+#, fuzzy
+#~| msgid "Show list of peers"
+#~ msgid "Show list of webseeds"
+#~ msgstr "Erakutsi pareen zerrenda"
+
+#, fuzzy
+#~ msgid "File Priority Colors"
+#~ msgstr "Fitxategiaren aukerak"
+
+#, fuzzy
+#~| msgid "Port"
+#~ msgid "First priority:"
+#~ msgstr "Ataka"
+
+#, fuzzy
+#~| msgid "Port"
+#~ msgid "Last priority:"
+#~ msgstr "Ataka"
+
+#~ msgid "Total:"
+#~ msgstr "Guztira:"
+
+#~ msgid "Currently downloading:"
+#~ msgstr "Une honetan deskargatzen:"
+
+#~ msgid "Downloaded:"
+#~ msgstr "Deskargatuta:"
+
+#~ msgid "Excluded:"
+#~ msgstr "Kanporatuta:"
+
+#, fuzzy
+#~ msgid "Size:"
+#~ msgstr "Tamaina"
+
+#, fuzzy
+#~| msgid "Seeding"
+#~ msgid "EMail Settings"
+#~ msgstr "Ereiten"
+
+#, fuzzy
+#~| msgid "Peer"
+#~ msgid "SMTP Server"
+#~ msgstr "Parea"
+
+#, fuzzy
+#~| msgid "Peer"
+#~ msgid "SMTP server:"
+#~ msgstr "Parea"
+
+#, fuzzy
+#~| msgid "&Add"
+#~ msgid "Add CC:"
+#~ msgstr "&Gehitu"
+
+#, fuzzy
+#~| msgid "Create Torrent"
+#~ msgid "Auto remove a torrent when:"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~ msgid "The torrent finishes downloading"
+#~ msgstr ""
+#~ "Ez da %1 uholdearen deskarga amaitu, osatu gabeko datuak ere ezabatu nahi "
+#~ "dituzu?"
+
+#, fuzzy
+#~ msgid "The torrent finishes seeding"
+#~ msgstr ""
+#~ "Ez da %1 uholdearen deskarga amaitu, osatu gabeko datuak ere ezabatu nahi "
+#~ "dituzu?"
+
+#, fuzzy
+#~| msgid "Description"
+#~ msgid "Description:"
+#~ msgstr "Deskribapena"
+
+#, fuzzy
+#~| msgid "Author"
+#~ msgid "Author:"
+#~ msgstr "Egilea"
+
+#, fuzzy
+#~ msgid "Website:"
+#~ msgstr "Guztiak desautatu"
+
+#, fuzzy
+#~| msgid "Torrent files"
+#~ msgid "Torrent activity"
+#~ msgstr "Uholde fitxategiak"
+
+#, fuzzy
+#~| msgid "Cannot open %1 : %2"
+#~ msgid "File download order for:"
+#~ msgstr "Ezin da %1 ireki : %2"
+
+#, fuzzy
+#~| msgid "Download Toolbar"
+#~ msgid "Search Toolbar"
+#~ msgstr "Deskargarako tresna-barra"
+
+#, fuzzy
+#~| msgid "KTorrent's search plugin"
+#~ msgid "Current search engine"
+#~ msgstr "KTorrent-en bilaketarako plugina"
+
+#~ msgid "Search Engines"
+#~ msgstr "Bilaketa motoreak"
+
+#, fuzzy
+#~| msgid "Search Engines"
+#~ msgid "Add a new search engine."
+#~ msgstr "Bilaketa motoreak"
+
+#, fuzzy
+#~| msgid "R&emove All"
+#~ msgid "&Remove"
+#~ msgstr "K&endu guztiak"
+
+#, fuzzy
+#~| msgid "Search Engines"
+#~ msgid "Remove all search engines."
+#~ msgstr "Bilaketa motoreak"
+
+#~ msgid "R&emove All"
+#~ msgstr "K&endu guztiak"
+
+#, fuzzy
+#~| msgid "Search Engines"
+#~ msgid "Add all default search engines."
+#~ msgstr "Bilaketa motoreak"
+
+#~ msgid "Add Defau&lt"
+#~ msgstr "Gehitu &lehenetsia"
+
+#, fuzzy
+#~ msgid "Special Limits"
+#~ msgstr "Deskargatu guztiak"
+
+#~ msgid "Maximum upload speed:"
+#~ msgstr "Igotzeko abiadura handiena:"
+
+#~ msgid "Maximum download speed:"
+#~ msgstr "Jaisteko abiadura handiena:"
+
+#, fuzzy
+#~ msgid "Schedule line color:"
+#~ msgstr "Pluginen aukerak"
+
+#, fuzzy
+#~ msgid "Schedule Item color:"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~ msgid "Suspended schedule item color:"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~ msgid "Time"
+#~ msgstr "Gelditzen den denbora"
+
+#, fuzzy
+#~| msgid "Total:"
+#~ msgid "To:"
+#~ msgstr "Guztira:"
+
+#, fuzzy
+#~ msgid "Day:"
+#~ msgstr "Datuak"
+
+#, fuzzy
+#~| msgid "(0 is no limit)"
+#~ msgid "Limits"
+#~ msgstr "(0 = mugarik ez)"
+
+#, fuzzy
+#~ msgid "Download limit:"
+#~ msgstr "Deskargak"
+
+#, fuzzy
+#~ msgid "Upload limit:"
+#~ msgstr "Deskargatu guztiak"
+
+#, fuzzy
+#~| msgid "Converting..."
+#~ msgid "Connection Limits"
+#~ msgstr "Bihurtzen..."
+
+#~ msgid "Maximum connections per torrent:"
+#~ msgstr "Torrent bakoitzeko lotura kopuru handiena:"
+
+#~ msgid "Global connection limit:"
+#~ msgstr "Lotura muga osotara:"
+
+#, fuzzy
+#~ msgid "Days:"
+#~ msgstr "Datuak"
+
+#, fuzzy
+#~| msgid "Seeders:"
+#~ msgid "Weekend"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~| msgid "Download Toolbar"
+#~ msgid "Shutdown Toolbar"
+#~ msgstr "Deskargarako tresna-barra"
+
+#, fuzzy
+#~| msgid "Seeding"
+#~ msgid "Shutdown Settings"
+#~ msgstr "Ereiten"
+
+#~ msgid "Level1 filter url"
+#~ msgstr "1. mailako iragazkiaren url-a"
+
+#~ msgid "Use level1 filter?"
+#~ msgstr "Erabili 1. mailako iragazkia?"
+
+#~ msgid "IPBlocking Preferences"
+#~ msgstr "IP blokeoaren hobespenak"
+
+#, fuzzy
+#~ msgid "PeerGuardian Filter File "
+#~ msgstr "Erabili KTorrent iragazkia?<"
+
+#, fuzzy
+#~ msgid "Use PeerGuardian filter"
+#~ msgstr "Erabili KTorrent iragazkia?<"
+
+#~ msgid "IP filter file:"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#~ msgid "Dow&nload/Convert"
+#~ msgstr "Des&kargatu/Bihurtu"
+
+#, fuzzy
+#~ msgid "Update file every:"
+#~ msgstr "Kontrolatzaileari pasatzeko IP-a"
+
+#, fuzzy
+#~| msgid "GUI update interval:"
+#~ msgid "Update interval in days."
+#~ msgstr "GUI eguneratze-tartea:"
+
+#, fuzzy
+#~| msgid "Next update in:"
+#~ msgid "Last updated:"
+#~ msgstr "Hurrengo eguneraketa:"
+
+#, fuzzy
+#~| msgid "Next update in:"
+#~ msgid "Next update:"
+#~ msgstr "Hurrengo eguneraketa:"
+
+#, fuzzy
+#~| msgid "C&ancel"
+#~ msgid "C&ancel"
+#~ msgstr "&Utzi"
+
+#, fuzzy
+#~| msgid "Search Preferences"
+#~ msgid "Magnet Generator Preferences"
+#~ msgstr "Bilatu hobespenak"
+
+#, fuzzy
+#~ msgid "Add tracker"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~ msgid "Tracker:"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~| msgid "Move a torrent down in the queue"
+#~ msgid "Add the torrent name in the URI"
+#~ msgstr "Mugitu torrent bat ilaran behera"
+
+#, fuzzy
+#~ msgid "Add name"
+#~ msgstr "Izena"
+
+#, fuzzy
+#~| msgid "Tracker"
+#~ msgid "Toggles tracker"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~ msgid "The default tracker"
+#~ msgstr "Erakutsi pareen zerrenda"
+
+#, fuzzy
+#~| msgid "Up Speed"
+#~ msgid "Show dn"
+#~ msgstr "Abiadura beherakorra"
+
+#, fuzzy
+#~ msgid "No routers found."
+#~ msgstr "Fitxategia bihurtuta."
+
+#, fuzzy
+#~ msgid "Find Routers"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~| msgid "Debug mode"
+#~ msgid "Verbose mode"
+#~ msgstr "Arazketa modua"
+
+#~ msgid "UDP tracker port:"
+#~ msgstr "UDP kontrolatzailearen ataka:"
+
+#, fuzzy
+#~ msgid "The maximum number of connections allowed per torrent."
+#~ msgstr "Deskargako konexio kopuru maximoa (0 = mugarik ez)"
+
+#, fuzzy
+#~| msgid "Current speed of all torrents combined"
+#~ msgid "The global connection limit for all torrents combined."
+#~ msgstr "Uneko uholde guztien konbinatutako abiadura"
+
+#, fuzzy
+#~| msgid "Maximum downloads:"
+#~ msgid "The maximum download speed in KiB/s."
+#~ msgstr "Deskarga maximoak:"
+
+#, fuzzy
+#~| msgid "Maximum upload rate:"
+#~ msgid "The maximum upload speed in KiB/s"
+#~ msgstr "Karga-tasa maximoa:"
+
+#, fuzzy
+#~ msgid "Maximum number of connection setups:"
+#~ msgstr "Deskargako konexio kopuru maximoa (0 = mugarik ez)"
+
+#, fuzzy
+#~ msgid "Network interface:"
+#~ msgstr "Guztiak desautatu"
+
+#, fuzzy
+#~| msgid "Recommended Settings"
+#~ msgid "Recommended Settings..."
+#~ msgstr "Gomendatutako ezarpenak"
+
+#, fuzzy
+#~| msgid "Seeders:"
+#~ msgid "Use webseeds"
+#~ msgstr "Ereileak:"
+
+#, fuzzy
+#~ msgid "Encryption"
+#~ msgstr "Deskribapena"
+
+#, fuzzy
+#~ msgid "Send the tracker a custom IP address or hostname"
+#~ msgstr "Bidali kontrolatzaileari IP edo ostalari-izen &pertsonalizatua"
+
+#, fuzzy
+#~| msgid "Custom IP or hostname:"
+#~ msgid "Custom IP address or hostname:"
+#~ msgstr "IP edo ostalari-izen pertsonalizatua:"
+
+#, fuzzy
+#~| msgid "KB"
+#~ msgid " KiB"
+#~ msgstr "KB"
+
+#, fuzzy
+#~ msgid ""
+#~ "When a torrent has finished downloading, do a full data check on the "
+#~ "torrent."
+#~ msgstr ""
+#~ "Ez da %1 uholdearen deskarga amaitu, osatu gabeko datuak ere ezabatu nahi "
+#~ "dituzu?"
+
+#, fuzzy
+#~| msgid "&Keep seeding after download is finished"
+#~ msgid "Check data when download is finished"
+#~ msgstr "&Jarraitu ereiten deskarga amaitu ondoren"
+
+#, fuzzy
+#~ msgid "Performance"
+#~ msgstr "Hobespenak"
+
+#~ msgid "GUI update interval:"
+#~ msgstr "GUI eguneratze-tartea:"
+
+#, fuzzy
+#~| msgid "Miscelanious"
+#~ msgid "Miscellaneous"
+#~ msgstr "Hainbat"
+
+#, fuzzy
+#~ msgid "Folders"
+#~ msgstr "Fi&txategiak"
+
+#, fuzzy
+#~| msgid "Folder to store temporary files:"
+#~ msgid "Folder to store torrent information:"
+#~ msgstr "Behin-behineko fitxategiak gordetzeko karpeta:"
+
+#, fuzzy
+#~ msgid "Move completed downloads to:"
+#~ msgstr "Deskargatu"
+
+#, fuzzy
+#~| msgid "torrent files"
+#~ msgid "Copy torrent files to:"
+#~ msgstr "uholde-fitxategiak"
+
+#, fuzzy
+#~ msgid "System Tray Icon"
+#~ msgstr "Erakutsi s&istemaren bandejako ikonoa"
+
+#, fuzzy
+#~ msgid "Whether or not to show an icon in the system tray."
+#~ msgstr "Erakutsi s&istemaren bandejako ikonoa"
+
+#, fuzzy
+#~| msgid "Show s&ystem tray icon"
+#~ msgid "Show system tray icon"
+#~ msgstr "Erakutsi s&istemaren bandejako ikonoa"
+
+#, fuzzy
+#~ msgid "Show system tray popup messages"
+#~ msgstr "Erakutsi s&istemaren bandejako ikonoa"
+
+#~ msgid "Maximum downloads:"
+#~ msgstr "Gehienezko jaitsierak:"
+
+#, fuzzy
+#~| msgid "Download Torrent"
+#~ msgid "Don't start torrents"
+#~ msgstr "Deskargatu uholdea"
+
+#, fuzzy
+#~| msgid "Start seedin&g the torrent"
+#~ msgid "Start torrents"
+#~ msgstr "Hasi uholdea erei&ten"
+
+#, fuzzy
+#~| msgid "%1 MB"
+#~ msgid " MiB"
+#~ msgstr "%1 MB"
+
+#, fuzzy
+#~| msgid "Stalled"
+#~ msgid "Stalled timer:"
+#~ msgstr "Blokeatuta"
+
+#, fuzzy
+#~ msgid " Minutes"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~| msgid "Seeding"
+#~ msgctxt "@title:group Options regarging Seeding"
+#~ msgid "Seeding"
+#~ msgstr "Ereiten"
+
+#, fuzzy
+#~| msgid "&Keep seeding after download is finished"
+#~ msgid "Keep seeding after download is finished"
+#~ msgstr "&Jarraitu ereiten deskarga amaitu ondoren"
+
+#, fuzzy
+#~ msgid "Default maximum share ratio:"
+#~ msgstr "Partekatze-tasa:"
+
+#, fuzzy
+#~| msgid "Maximum seeds:"
+#~ msgid "Default maximum seed time:"
+#~ msgstr "Hazi maximoak:"
+
+#~ msgid "Recommended Settings"
+#~ msgstr "Gomendatutako ezarpenak"
+
+#~ msgid "Available upload bandwidth:"
+#~ msgstr "Igotzeko eskuragarri dagoen banda zabalera:"
+
+#~ msgid " Kbps"
+#~ msgstr " Kbps"
+
+#~ msgid " kb/s"
+#~ msgstr " kb/s"
+
+#~ msgid "Available download bandwidth:"
+#~ msgstr "Jaisteko eskuragarri dagoen banda zabalera:"
+
+#~ msgid "(= 32 KiB/s)"
+#~ msgstr "(= 32 KiB/s)"
+
+#~ msgid "(= 500 KiB/s)"
+#~ msgstr "(= 500 KiB/s)"
+
+#~ msgid "Calculate"
+#~ msgstr "Kalkulatu"
+
+#~ msgid "Preferences"
+#~ msgstr "Hobespenak"
+
+#, fuzzy
+#~ msgid "Average speed per slot:"
+#~ msgstr "Batez besteko abiadura"
+
+#~ msgid "Number of torrents you usually download simultaneously:"
+#~ msgstr "Normalean batera jaisten duzun torrent kopurua:"
+
+#, fuzzy
+#~| msgid "Create Torrent"
+#~ msgid "Slots per torrent:"
+#~ msgstr "Sortu uholdea"
+
+#~ msgid "Recommended settings:"
+#~ msgstr "Gomendatutako ezarpenak:"
+
+#, fuzzy
+#~| msgid "Port"
+#~ msgid "Proxy:"
+#~ msgstr "Ataka"
+
+#, fuzzy
+#~| msgid "Peer"
+#~ msgid "Server:"
+#~ msgstr "Parea"
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#, fuzzy
+#~ msgid "Failed:"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~| msgid "Downloaded:"
+#~ msgid "Not downloaded:"
+#~ msgstr "Deskargatuta:"
+
+#~ msgid "Cancel"
+#~ msgstr "Utzi"
+
+#, fuzzy
+#~| msgid "Torrent files"
+#~ msgid "Torrent Limits"
+#~ msgstr "Uholde fitxategiak"
+
+#, fuzzy
+#~| msgid "Maximum download rate:"
+#~ msgid "Maximum download rate:"
+#~ msgstr "Deskarga-tasa maximoa:"
+
+#, fuzzy
+#~| msgid "Maximum upload rate:"
+#~ msgid "Maximum upload rate:"
+#~ msgstr "Karga-tasa maximoa:"
+
+#, fuzzy
+#~| msgid "Maximum seeds:"
+#~ msgid "Maximum seed time:"
+#~ msgstr "Hazi maximoak:"
+
+#, fuzzy
+#~ msgid "Maximum share ratio:"
+#~ msgstr "Partekatze-tasa:"
+
+#, fuzzy
+#~| msgid "Create Torrent"
+#~ msgid "Create a torrent"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~| msgid "The file or folder of which you want to create a torrent:"
+#~ msgid "File or directory to create torrent from:"
+#~ msgstr "Uholdearen iturburu izango den fitxategi edo karpeta:"
+
+#~ msgid "Size of each chunk:"
+#~ msgstr "Zati bakoitzaren tamaina:"
+
+#, fuzzy
+#~| msgid "%1 KB"
+#~ msgid "32 KiB"
+#~ msgstr "%1 KB"
+
+#, fuzzy
+#~| msgid "%1 KB"
+#~ msgid "64 KiB"
+#~ msgstr "%1 KB"
+
+#, fuzzy
+#~| msgid "%1 KB"
+#~ msgid "128 KiB"
+#~ msgstr "%1 KB"
+
+#, fuzzy
+#~| msgid "256"
+#~ msgid "256 KiB"
+#~ msgstr "256"
+
+#, fuzzy
+#~| msgid "%1 KB"
+#~ msgid "512 KiB"
+#~ msgstr "%1 KB"
+
+#, fuzzy
+#~| msgid "%1 MB"
+#~ msgid "1 MiB"
+#~ msgstr "%1 MB"
+
+#, fuzzy
+#~| msgid "%1 MB"
+#~ msgid "2 MiB"
+#~ msgstr "%1 MB"
+
+#, fuzzy
+#~| msgid "%1 MB"
+#~ msgid "4 MiB"
+#~ msgstr "%1 MB"
+
+#, fuzzy
+#~| msgid "%1 MB"
+#~ msgid "8 MiB"
+#~ msgstr "%1 MB"
+
+#, fuzzy
+#~| msgid "Seeding"
+#~ msgid "Start seeding"
+#~ msgstr "Ereiten"
+
+#, fuzzy
+#~ msgid "Node:"
+#~ msgstr "Izena:"
+
+#, fuzzy
+#~ msgid "IP or Hostname"
+#~ msgstr "IP edo ostalari-izen pertsonalizatua:"
+
+#~ msgid "Port"
+#~ msgstr "Ataka"
+
+#, fuzzy
+#~| msgid "Seeders:"
+#~ msgid "Web Seeds"
+#~ msgstr "Ereileak:"
+
+#~ msgid "Select Which Files You Want to Download"
+#~ msgstr "Hautatu deskargatu nahi dituzun fitxategiak"
+
+#~ msgid "Select &All"
+#~ msgstr "Hautatu &guztiak"
+
+#~ msgid "Select &None"
+#~ msgstr "Guztiak desautatu"
+
+#~ msgid "Invert Selection"
+#~ msgstr "Alderanztu hautapena"
+
+#, fuzzy
+#~| msgid "Select &All"
+#~ msgid "Collapse All"
+#~ msgstr "Hautatu &guztiak"
+
+#, fuzzy
+#~| msgid "Load All"
+#~ msgid "Expand All"
+#~ msgstr "Kargatu guztiak"
+
+#, fuzzy
+#~| msgid "Create Torrent"
+#~ msgid "Start torrent"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~| msgid "Available"
+#~ msgid "Available:"
+#~ msgstr "Eskuragarri"
+
+#, fuzzy
+#~ msgid "After download:"
+#~ msgstr "Deskargatu"
+
+#, fuzzy
+#~| msgid "Start seedin&g the torrent"
+#~ msgid "Speed limits for individual torrents (double click to edit):"
+#~ msgstr "Hasi uholdea erei&ten"
+
+#, fuzzy
+#~ msgid "Filter:"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~| msgid "Peer"
+#~ msgid "Peer:"
+#~ msgstr "Parea"
+
+#, fuzzy
+#~ msgid "Recreate"
+#~ msgstr "So&rtu"
+
+#, fuzzy
+#~| msgid "Select &None"
+#~ msgid "Select New Location"
+#~ msgstr "Guztiak desautatu"
+
+#, fuzzy
+#~| msgid "Converting..."
+#~ msgid "Importing ..."
+#~ msgstr "Bihurtzen..."
+
+#, fuzzy
+#~| msgid "Import an existing download"
+#~ msgid "Import an existing torrent"
+#~ msgstr "Inportatu lehendik dagoen deskarga"
+
+#, fuzzy
+#~ msgid "Torrent:"
+#~ msgstr "Uholdea"
+
+#, fuzzy
+#~ msgid "Data:"
+#~ msgstr "Datuak"
+
+#, fuzzy
+#~ msgid "&Import"
+#~ msgstr "Inpo&rtatu"
+
+#~ msgid "Ca&ncel"
+#~ msgstr "&Utzi"
+
+#, fuzzy
+#~ msgid "&File"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~ msgid "&View"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#~ msgid "Download Toolbar"
+#~ msgstr "Deskargarako tresna-barra"
+
+#, fuzzy
+#~ msgid "KTorrent Blacklisted Peers"
+#~ msgstr "Uholde fitxategiak"
+
+#, fuzzy
+#~| msgid ""
+#~| "Invalid IP address %1. You must enter an IP address in the format 'XXX."
+#~| "XXX.XXX.XXX'. You can also use wildcards for ranges like '127.0.0.*'."
+#~ msgid ""
+#~ "IP addresses must be in the format 'XXX.XXX.XXX.XXX'.\n"
+#~ "                                        \n"
+#~ "You can also use wildcards like '127.0.0.*' or specify ranges like "
+#~ "'200.10.10.0-200.10.10.40'."
+#~ msgstr ""
+#~ "%1 IP helbide baliogabea. IP helbidea 'XXX.XXX.XXX.XXX' formatuan sartu "
+#~ "behar duzu. Barrutietarako zernahitarako karaktereak erabili ditzakezu, "
+#~ "esaterako '127.0.0.*'."
+
+#, fuzzy
+#~| msgid "Torrent files"
+#~ msgid "Torrent to display:"
+#~ msgstr "Uholde fitxategiak"
+
+#~ msgid "Maximum number of downloads (0 = no limit)"
+#~ msgstr "Deskarga kopuru maximoa (0 = mugarik ez)"
+
+#~ msgid "Maximum number of seeds (0 = no limit)"
+#~ msgstr "Hazi kopuru maximoa (0 = mugarik ez)"
+
+#, fuzzy
+#~ msgid "Maximum number of connections per torrent (0 = no limit)"
+#~ msgstr "Deskargako konexio kopuru maximoa (0 = mugarik ez)"
+
+#, fuzzy
+#~ msgid "Maximum number of connections for all torrents (0 = no limit) "
+#~ msgstr "Deskargako konexio kopuru maximoa (0 = mugarik ez)"
+
+#, fuzzy
+#~| msgid "Maximum upload speed in KB/sec (0 = no limit)"
+#~ msgid "Maximum upload speed in KiB/sec (0 = no limit)"
+#~ msgstr "Kargen abiadura maximoa KB/s-tan (0 = mugarik ez)"
+
+#, fuzzy
+#~| msgid "Maximum download speed in KB/sec (0 = no limit)"
+#~ msgid "Maximum download speed in KiB/sec (0 = no limit)"
+#~ msgstr "Deskargen abiadura maximoa KB/s-tan (0 = mugarik ez)"
+
+#, fuzzy
+#~ msgid "Maximum share ratio (0 = no limit)"
+#~ msgstr "Hazi kopuru maximoa (0 = mugarik ez)"
+
+#~ msgid "Show a system tray icon"
+#~ msgstr "Erakutsi sistemaren bandejako ikono bat"
+
+#, fuzzy
+#~ msgid "Show speed bar in tray icon"
+#~ msgstr "Erakutsi s&istemaren bandejako ikonoa"
+
+#, fuzzy
+#~| msgid "Available download bandwidth:"
+#~ msgid "Download bandwidth (in kb/s):"
+#~ msgstr "Jaisteko eskuragarri dagoen banda zabalera:"
+
+#~ msgid "Keep seeding after download has finished"
+#~ msgstr "Jarraitu ereiten deskarga amaitu ondoren"
+
+#~ msgid "Folder to store temporary files"
+#~ msgstr "Behin-behineko fitxategiak gordetzeko karpeta"
+
+#, fuzzy
+#~ msgid "Whether to automatically save downloads to saveDir"
+#~ msgstr "&Automatikoki deskargak hemen gorde:"
+
+#~ msgid "Folder to store downloaded files"
+#~ msgstr "Deskargatutako fitxategiak gordetzeko karpeta"
+
+#, fuzzy
+#~ msgid "Whether to automatically copy .torrent files to torrentCopyDir"
+#~ msgstr "&Automatikoki deskargak hemen gorde:"
+
+#, fuzzy
+#~| msgid "torrent files"
+#~ msgid "Folder to copy .torrent files to"
+#~ msgstr "uholde-fitxategiak"
+
+#, fuzzy
+#~ msgid "Whether to use a custom IP to pass to the tracker"
+#~ msgstr "Kontrolatzaileari pasatzeko IP-a"
+
+#, fuzzy
+#~ msgid "IP to pass to the tracker"
+#~ msgstr "Kontrolatzaileari pasatzeko IP-a"
+
+#, fuzzy
+#~| msgid "GUI update interval:"
+#~ msgid "GUI update interval"
+#~ msgstr "GUI eguneratze-tartea:"
+
+#, fuzzy
+#~ msgid "Whether to automatically move completed downloads to completedDir"
+#~ msgstr "&Automatikoki deskargak hemen gorde:"
+
+#, fuzzy
+#~| msgid "Folder to store downloaded files"
+#~ msgid "Folder to move completed downloaded files to"
+#~ msgstr "Deskargatutako fitxategiak gordetzeko karpeta"
+
+#, fuzzy
+#~ msgid "Maximum seed time in hours (0 = no limit)"
+#~ msgstr "Hazi kopuru maximoa (0 = mugarik ez)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Specified port (%1) is unavailable or in use by another application. "
+#~ "KTorrent is now using port %2."
+#~ msgstr ""
+#~ "Zehaztutako ataka (%1) ez dago eskuragarri edo beste aplikazio batek "
+#~ "darabil. KTorrent %2 atakara lotu da."
+
+#, fuzzy
+#~ msgid "Resume KTorrent"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~| msgid "Create Torrent"
+#~ msgid "Resume suspended torrents"
+#~ msgstr "Sortu uholdea"
+
+#~ msgid "Creating Torrent"
+#~ msgstr "Torrent sortzen"
+
+#~ msgid "Creating %1..."
+#~ msgstr "%1 sortzen..."
+
+#~ msgid "Error scanning data: %1"
+#~ msgstr "Akatsa datuak aztertzerakoan: %1"
+
+#~ msgid "Scanning data of <b>%1</b> :"
+#~ msgstr "<b>%1</b>-en datuak aztertzen :"
+
+#~ msgid "Scanning data of torrent:"
+#~ msgstr "Torrentaren datuak aztertzen:"
+
+#~ msgid "Chunks found:"
+#~ msgstr "Aurkitutako pusketak:"
+
+#~ msgid "Chunks failed:"
+#~ msgstr "Huts egin duten pusketak:"
+
+#~ msgid "Chunks not downloaded:"
+#~ msgstr "Jaitsi ez diren pusketak:"
+
+#~ msgid "Chunks downloaded:"
+#~ msgstr "Jaitsi diren pusketak:"
+
+#~ msgid "Invalid URL: "
+#~ msgstr "Baliogabeko URL:"
+
+#~ msgid "Malformed URL."
+#~ msgstr "Gaizki osatutako URL-a"
+
+#, fuzzy
+#~ msgid "Cannot expand file : %1"
+#~ msgstr "Ezin da %1 zabaldu"
+
+#~ msgid "Cannot migrate %1 : %2"
+#~ msgstr "Ezin da %1 migratu : %2"
+
+#~ msgid ""
+#~ "The torrent %1 was started with a previous version of KTorrent. To make "
+#~ "sure this torrent still works with this version of KTorrent, we will "
+#~ "migrate this torrent. You will be asked for a location to save the "
+#~ "torrent to. If you press cancel, we will select your home directory."
+#~ msgstr ""
+#~ "%1 uholdea aurreko KTorrent bertsio batekin abiatu zen. Uholde hau "
+#~ "KTorrent-en bertsio honekin dabilela ziurtatzeko, uholde hau migratuko "
+#~ "dugu. Uholdea gordetzeko kokaleku bat eskatuko zaizu. Utzi sakatzen "
+#~ "baduzu, zure direktorio nagusia hautatuko da."
+
+#~ msgid "Select Folder to Save To"
+#~ msgstr "Hautatu gordetzeko karpeta"
+
+#~ msgid "Error: "
+#~ msgstr "Errorea: "
+
+#, fuzzy
+#~| msgid ""
+#~| "An error occurred while loading the torrent. The torrent is probably "
+#~| "corrupt or is not a torrent file."
+#~ msgid ""
+#~ "An error occurred while loading the torrent.\n"
+#~ "The torrent is probably corrupt or is not a torrent file."
+#~ msgstr ""
+#~ "Errore bat gertatu da uholdea kargatzean. Uholdea seguruenik hondatuta "
+#~ "dago edo ez da holde fitxategi bat."
+
+#, fuzzy
+#~ msgid "Current Tracker"
+#~ msgstr "Kontrolatzailea"
+
+#~ msgid "Seeders:"
+#~ msgstr "Ereileak:"
+
+#~ msgid "Leechers:"
+#~ msgstr "Izainak:"
+
+#, fuzzy
+#~| msgid "Next update in:"
+#~ msgid "Next Update In:"
+#~ msgstr "Hurrengo eguneraketa:"
+
+#, fuzzy
+#~| msgid "Available"
+#~ msgid "Available Trackers"
+#~ msgstr "Eskuragarri"
+
+#, fuzzy
+#~ msgid "Tracker status:"
+#~ msgstr "Kontrolatzaileak"
+
+#~ msgid "Next update in:"
+#~ msgstr "Hurrengo eguneraketa:"
+
+#, fuzzy
+#~ msgid "Cannot remove torrent default tracker."
+#~ msgstr "Ezin da uholdea sortu: %1"
+
+#, fuzzy
+#~| msgid "Torrent is incomplete!"
+#~ msgid "KTorrent Plasma Applet"
+#~ msgstr "Uholdea osatu gabe dago!"
+
+#, fuzzy
+#~| msgid "Seeders:"
+#~ msgid "Feed %1"
+#~ msgstr "Ereileak:"
+
+#~ msgid "Enqueue or dequeue a torrent"
+#~ msgstr "Torrent bat ilaran jarri edo ilaratik kendu"
+
+#, fuzzy
+#~ msgid "User Controlled"
+#~ msgstr "&Erabiltzaileak kontrolatua"
+
+#, fuzzy
+#~ msgid "User Controlled Uploads"
+#~ msgstr "&Erabiltzaileak kontrolatua"
+
+#, fuzzy
+#~ msgid "User Controlled Downloads"
+#~ msgstr "Deskargatu"
+
+#, fuzzy
+#~| msgid "Queue Manager"
+#~ msgid "Queue Manager Controlled"
+#~ msgstr "Ilara-kudeatzailea"
+
+#, fuzzy
+#~ msgid "Queue Manager Controlled Downloads"
+#~ msgstr "Deskargen ikonoa"
+
+#, fuzzy
+#~ msgid "&User controlled"
+#~ msgstr "&Erabiltzaileak kontrolatua"
+
+#, fuzzy
+#~| msgid "Seeding"
+#~ msgid "Test String"
+#~ msgstr "Ereiten"
+
+#, fuzzy
+#~ msgid "Rerelease"
+#~ msgstr "So&rtu"
+
+#, fuzzy
+#~ msgid "Rerelease Terms"
+#~ msgstr "So&rtu"
+
+#, fuzzy
+#~| msgid "Available"
+#~ msgid "Variables"
+#~ msgstr "Eskuragarri"
+
+#, fuzzy
+#~ msgid "Add Capture"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~ msgid "Remove Capture"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~| msgid "Available"
+#~ msgid "Add Variable"
+#~ msgstr "Eskuragarri"
+
+#, fuzzy
+#~| msgid "Remove Download"
+#~ msgid "Remove Variable"
+#~ msgstr "Kendu deskarga"
+
+#, fuzzy
+#~| msgid "Torrent Files"
+#~ msgid "Move Variable Up"
+#~ msgstr "Uholde fitxategiak"
+
+#, fuzzy
+#~| msgid "Move dow&n"
+#~ msgid "Move Variable Down"
+#~ msgstr "Mugitu &behera"
+
+#, fuzzy
+#~ msgid "No Capture"
+#~ msgstr "Kontrolatzailea"
+
+#, fuzzy
+#~ msgid "Remove Expression"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~ msgid "Remove Source"
+#~ msgstr "Sortu uholdea"
+
+#, fuzzy
+#~| msgid "Torrent Files"
+#~ msgid "Move Filter Up"
+#~ msgstr "Uholde fitxategiak"
+
+#, fuzzy
+#~| msgid "Move dow&n"
+#~ msgid "Move Filter Down"
+#~ msgstr "Mugitu &behera"
+
+#, fuzzy
+#~| msgid "Up Speed"
+#~ msgid "RSS Feed"
+#~ msgstr "Abiadura beherakorra"
+
+#, fuzzy
+#~ msgid "BitFinder"
+#~ msgstr "Aukera orokorrak"
+
+#, fuzzy
+#~ msgid "BF Filters"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~ msgid "%1 KB/s"
+#~ msgstr "%1 KB/s"
+
+#~ msgid "%1 GB"
+#~ msgstr "%1 GB"
+
+#~ msgid "%1 MB"
+#~ msgstr "%1 MB"
+
+#~ msgid "%1 KB"
+#~ msgstr "%1 KB"
+
+#~ msgid "%1 B"
+#~ msgstr "%1 B"
+
+#, fuzzy
+#~ msgid "Select interface:"
+#~ msgstr "Guztiak desautatu"
+
+#, fuzzy
+#~ msgid "%1 does not exist"
+#~ msgstr "%1 direktorio ez da existitzen"
+
+#, fuzzy
+#~ msgid "User uploads"
+#~ msgstr "Kargatuta"
+
+#, fuzzy
+#~ msgid ""
+#~ "%1\n"
+#~ "%2 active filters"
+#~ msgstr "Fitxategi guztiak"
+
+#, fuzzy
+#~ msgid "Up: %1 KB/s"
+#~ msgstr "%1 KB/s"
+
+#, fuzzy
+#~ msgid "Down: %1 KB/s"
+#~ msgstr "%1 KB/s"
+
+#~ msgid "Assigned Peers"
+#~ msgstr "Esleitutako pareak"
+
+#, fuzzy
+#~| msgid ""
+#~| "An error occurred while loading the torrent. The torrent is probably "
+#~| "corrupt or is not a torrent file."
+#~ msgid ""
+#~ "An error occurred while loading the torrent.<br/>The torrent is probably "
+#~ "corrupt or is not a torrent file."
+#~ msgstr ""
+#~ "Errore bat gertatu da uholdea kargatzean. Uholdea seguruenik hondatuta "
+#~ "dago edo ez da holde fitxategi bat."
+
+#, fuzzy
+#~| msgid "Cannot open %1 : %2"
+#~ msgid "Cannot open %s : %s"
+#~ msgstr "Ezin da %1 ireki : %2"
+
+#~ msgid "Search engine name:"
+#~ msgstr "Bilaketa motorearen izena:"
+
+#~ msgid "&Add"
+#~ msgstr "&Gehitu"
+
+#, fuzzy
+#~| msgid "Engines"
+#~ msgid "Engine"
+#~ msgstr "Motoreak"
+
+#, fuzzy
+#~| msgid ""
+#~| "Use your web browser to search for the string %1 (capital letters) on "
+#~| "the search engine you want to add. Then copy the URL in the addressbar "
+#~| "after the search is finished, and paste it here.<br>Searching for %2 on "
+#~| "Google for example, will result in http://www.google.com/search?"
+#~| "q=FOOBAR&ie=UTF-8&oe=UTF-8. If you add this URL here, ktorrent can "
+#~| "search using Google."
+#~ msgid ""
+#~ "Use your web browser to search for the string %1 (capital letters) on the "
+#~ "search engine you want to add. <br> Then copy the URL in the addressbar "
+#~ "after the search is finished, and paste it here.<br><br>Searching for %1 "
+#~ "on Google for example, will result in http://www.google.com/search?"
+#~ "q=FOOBAR&ie=UTF-8&oe=UTF-8. <br> If you add this URL here, ktorrent can "
+#~ "search using Google."
+#~ msgstr ""
+#~ "Erabili zure web arakatzailea gehitu nahid uzun bilaketa-motorean %1 "
+#~ "katea (maiuskulak) bilatzeko. Kopiatu URL-a helbide-barran bilakea amaitu "
+#~ "ondoren eta itsatsi hemen. <br>%2 Google-en bilatzen baduzu, http://www."
+#~ "google.com/search?q=FOOBAR&ie=UTF-8&oe=UTF-8 eskuratuko duzu. Hau hemen "
+#~ "gehitzen baduzu, ktorrent-ek Google erabiliz bila dezake."
+
+#~ msgid "You must enter the search engine's name and URL"
+#~ msgstr "Bilaketa-motorearen izena eta URL-a sartu behar duzu"
+
+#~ msgid ""
+#~ "A search engine with the same name already exists. Please use a different "
+#~ "name."
+#~ msgstr ""
+#~ "Izen bereko bilaketa-motore bat lehendik dago. Erabili izen ezberdin bat."
+
+#~ msgid ""
+#~ "Bad URL. You should search for FOOBAR with your Internet browser and copy/"
+#~ "paste the exact URL here."
+#~ msgstr ""
+#~ "URL okerra. FOOBAR zure arakatzailean bilatu beharko zenuke eta URL "
+#~ "zehatza hemen kopiatu/itsatsi beharko zenuke."
+
+#, fuzzy
+#~ msgid "General:"
+#~ msgstr "Orokorra"
+
+#, fuzzy
+#~ msgid "Infowidget:"
+#~ msgstr "Informazio-trepeta"
+
+#, fuzzy
+#~ msgid "IP Filter:"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~| msgid "Download Toolbar"
+#~ msgid "Mediaplayer:"
+#~ msgstr "Deskargarako tresna-barra"
+
+#, fuzzy
+#~ msgid "Scanfolder:"
+#~ msgstr "Fitxategiaren aukerak"
+
+#, fuzzy
+#~ msgid "Search:"
+#~ msgstr "Bilatu"
+
+#, fuzzy
+#~ msgid "UPnP:"
+#~ msgstr "UPnP"
+
+#, fuzzy
+#~ msgid "Toplevel directory:"
+#~ msgstr "Direktorioak"
+
+#~ msgid ""
+#~ "http://www.bluetack.co.uk/modules.php?name=Downloads&d_op=getit&lid=8"
+#~ msgstr ""
+#~ "http://www.bluetack.co.uk/modules.php?name=Downloads&d_op=getit&lid=8"
+
+#, fuzzy
+#~ msgid "Banned Peers"
+#~ msgstr "Esleitutako pareak"
+
+#, fuzzy
+#~ msgid "Ok"
+#~ msgstr "&Ados"
+
+#~ msgid "Detected devices:"
+#~ msgstr "Hautatutako dispositiboak:"
+
+#, fuzzy
+#~ msgid "Reload"
+#~ msgstr "Kargatuta"
+
+#, fuzzy
+#~| msgid "Cannot expand file %1"
+#~ msgid "Cannot expand file %1 : incomplete write"
+#~ msgstr "Ezin da %1 zabaldu"
+
+#~ msgid "Cannot expand file %1"
+#~ msgstr "Ezin da %1 zabaldu"
+
+#~ msgid "Error writing to %1 : %2"
+#~ msgstr "Errorea %1 idaztean : %2"
+
+#, fuzzy
+#~| msgid "Plugins"
+#~ msgid "RSS Plugin"
+#~ msgstr "Pluginak"
+
+#, fuzzy
+#~| msgid "O&K"
+#~ msgid "&OK"
+#~ msgstr "A&dos"
+
+#, fuzzy
+#~| msgid "C&ancel"
+#~ msgid "&Cancel"
+#~ msgstr "&Utzi"
+
+#, fuzzy
+#~ msgid "Import:"
+#~ msgstr "Inpo&rtatu"
+
+#, fuzzy
+#~ msgid "IP filter:"
+#~ msgstr "IP iragazki-fitxategia:"
+
+#, fuzzy
+#~| msgid "Cannot expand file %1"
+#~ msgid "Cannot expand file"
+#~ msgstr "Ezin da %1 zabaldu"
+
+#, fuzzy
+#~ msgid "HTTP tracker proxy:"
+#~ msgstr "UDP kontrolatzailearen ataka:"
+
+#, fuzzy
+#~ msgid "Show speedbar in tray icon"
+#~ msgstr "Erakutsi s&istemaren bandejako ikonoa"
+
+#~ msgid "Cannot load chunk %1"
+#~ msgstr "Ezin da %1 zatia kargatu"
+
+#~ msgid "Search engine:"
+#~ msgstr "Bilaketa-motorea:"
+
+#~ msgid "Plugin Manager"
+#~ msgstr "Plugin kudeatzailea"
+
+#~ msgid "Load"
+#~ msgstr "Kargatu"
+
+#~ msgid "U&nload"
+#~ msgstr "D&eskargatu"
+
+#~ msgid "Unload All"
+#~ msgstr "Deskargatu guztiak"
+
+#, fuzzy
+#~| msgid "Queue Manager"
+#~ msgid "Open Queue Manager..."
+#~ msgstr "Ilara-kudeatzailea"
+
+#~ msgid "Loaded"
+#~ msgstr "Kargatuta"
+
+#~ msgid ""
+#~ "_: to start\n"
+#~ "Start"
+#~ msgstr "Hasi"
+
+#~ msgid ""
+#~ "_: to stop\n"
+#~ "Stop"
+#~ msgstr "Gelditu"
+
+#~ msgid ""
+#~ "_: to start all\n"
+#~ "Start All"
+#~ msgstr "Hasi guztiak"
+
+#~ msgid ""
+#~ "_: to stop all\n"
+#~ "Stop All"
+#~ msgstr "Gelditu guztiak"
+
+#~ msgid ""
+#~ "_: to paste torrent URL\n"
+#~ "Paste Torrent URL..."
+#~ msgstr "Itsatsi uholde URL-a"
+
+#, fuzzy
+#~ msgid ""
+#~ "_: to open Queue Manager\n"
+#~ "Open Queue Manager..."
+#~ msgstr "Ireki ilara-kudeatzailea..."
+
+#, fuzzy
+#~ msgid "Downloads %1/%2"
+#~ msgstr "Deskargak"
+
+#~ msgid "The downloads icon"
+#~ msgstr "Deskargen ikonoa"
+
+#~ msgid "You must add at least one tracker."
+#~ msgstr "Gutxienez kontrolatzaile bat gehitu behar duzu."
+
+#, fuzzy
+#~ msgid "Malformed IP address."
+#~ msgstr "Gaizki osatutako URL-a"
+
+#~ msgid "Download Options"
+#~ msgstr "Deskargarako aukerak"
+
+#, fuzzy
+#~ msgid ""
+#~ "Cannot lookup %1: %2\n"
+#~ "Please provide a valid IP address or hostname."
+#~ msgstr ""
+#~ "Ezin da %1 aurkitu: %2\n"
+#~ "Sartu baliozko IP helbide edo ostalari-izen bat."
+
+#, fuzzy
+#~ msgid "Advanced Options"
+#~ msgstr "Fitxategiaren aukerak"
+
+#, fuzzy
+#~ msgid ""
+#~ "_n: and 1 seed. \n"
+#~ "and %n seeds. "
+#~ msgstr ""
+#~ "Pare 1\n"
+#~ "%n pare"
+
+#, fuzzy
+#~ msgid "You are already checking the data of the torrent %1 !"
+#~ msgstr "Dagoeneko uholde hau deskargatzen ari zara."
+
+#~ msgid "User"
+#~ msgstr "Erabiltzailea"
+
+#, fuzzy
+#~ msgid "No (private torrent)"
+#~ msgstr "Sortu uholdea"
+
+#~ msgid ""
+#~ "_: NAME OF TRANSLATORS\n"
+#~ "Your names"
+#~ msgstr "Ion Gaztañaga"
+
+#~ msgid ""
+#~ "_: EMAIL OF TRANSLATORS\n"
+#~ "Your emails"
+#~ msgstr "igaztanaga@gmail.com"
+
+#~ msgid "&Automatically save downloads to:"
+#~ msgstr "&Automatikoki deskargak hemen gorde:"
+
+#~ msgid "Custom IP"
+#~ msgstr "IP pertsonalizatua"
+
+#, fuzzy
+#~ msgid "Peer IP:"
+#~ msgstr "Parea"
+
+#~ msgid "Attention"
+#~ msgstr "Oharra"
+
+#, fuzzy
+#~ msgid ""
+#~ "The above ports must also be forwarded if you are behind a router. The "
+#~ "UPnP plugin can do this for you."
+#~ msgstr ""
+#~ "Goiko atakak birbidali egin behar dira bideratzaile baten atzean bazaude. "
+#~ "UPnP pluginak automatikoki egin dezake."
+
+#~ msgid "KB/sec (0 is no limit)"
+#~ msgstr "KB/s (0 = mugarik ez)"
+
+#~ msgid "KT Queue Dialog"
+#~ msgstr "KT ilararen elkarrizketa"
+
+#~ msgid "Controlled by"
+#~ msgstr "Honek kontrolatua:"
+
+#, fuzzy
+#~ msgid "Upload&s"
+#~ msgstr "Kargatuta"
+
+#, fuzzy
+#~ msgid "&QM Controlled"
+#~ msgstr "&Ilara-kudeatzaileak kontrolatua"
+
+#~ msgid "Paste URL"
+#~ msgstr "Itsatsi URL-a"
+
+#, fuzzy
+#~ msgid "You must add at least one tracker or node."
+#~ msgstr "Gutxienez kontrolatzaile bat gehitu behar duzu."
+
+#~ msgid "32"
+#~ msgstr "32"
+
+#~ msgid "64"
+#~ msgstr "64"
+
+#~ msgid "128"
+#~ msgstr "128"
+
+#~ msgid "512"
+#~ msgstr "512"
+
+#~ msgid "1024"
+#~ msgstr "1024"
+
+#, fuzzy
+#~ msgid "&Create"
+#~ msgstr "So&rtu"
+
+#, fuzzy
+#~ msgid "Advanced Preferences"
+#~ msgstr "Bilatu hobespenak"
+
+#~ msgid "Memory usage:"
+#~ msgstr "Memoria erabilera:"
+
+#~ msgid "Medium"
+#~ msgstr "Ertaina"
+
+#~ msgid "500ms"
+#~ msgstr "500ms"
+
+#~ msgid "1s"
+#~ msgstr "1s"
+
+#~ msgid "2s"
+#~ msgstr "2s"
+
+#~ msgid "5s"
+#~ msgstr "5s"
+
+#~ msgid "Memory usage"
+#~ msgstr "Memoriaren erabilera"
+
+#, fuzzy
+#~ msgid "Forw&ard Ports"
+#~ msgstr "Birbidali atakak"
+
+#, fuzzy
+#~ msgid "ScanFolder Preferences"
+#~ msgstr "Bilatu hobespenak"
+
+#~ msgid "Alt+1"
+#~ msgstr "Alt+1"
+
+#, fuzzy
+#~ msgid "Alt+2"
+#~ msgstr "Alt+U"
+
+#, fuzzy
+#~ msgid "Alt+3"
+#~ msgstr "Alt+U"
+
+#, fuzzy
+#~ msgid "TrackerViewBase"
+#~ msgstr "Kontrolatzaileak"
+
+#, fuzzy
+#~ msgid "Tracker URL:"
+#~ msgstr "Kontrolatzailea"
+
+#~ msgid "Alt+U"
+#~ msgstr "Alt+U"
+
+#~ msgid "St&atus"
+#~ msgstr "E&goera"
+
+#, fuzzy
+#~ msgid "Tracker Status:"
+#~ msgstr "Kontrolatzaileak"
+
+#, fuzzy
+#~ msgid "Parts of the torrent which have been downloaded:"
+#~ msgstr "Deskargatu diren fitxategiaren zatiak:"
+
+#, fuzzy
+#~ msgid "Max ratio:"
+#~ msgstr "Partekatze-tasa:"
+
+#~ msgid ""
+#~ "Please specify the torrent and the data already downloaded for that "
+#~ "torrent."
+#~ msgstr ""
+#~ "Zehaztu uholde horrentzat dagoeneko deskargatutako uholde eta datuak."
+
+#, fuzzy
+#~ msgid "default"
+#~ msgstr "Gehitu &lehenetsia"
+
+#, fuzzy
+#~ msgid "&URL"
+#~ msgstr "URL-a"
+
+#, fuzzy
+#~ msgid "Process"
+#~ msgstr "Aurrerapena"
+
+#, fuzzy
+#~ msgid "Max Season"
+#~ msgstr "Partekatze-tasa:"
+
+#, fuzzy
+#~ msgid "Download \"Proper\" ReReleases"
+#~ msgstr "Deskarga osatuta"
+
+#, fuzzy
+#~ msgid "download:"
+#~ msgstr "Deskargatu"
+
+#, fuzzy
+#~ msgid "upload:"
+#~ msgstr "Kargatuta"
+
+#, fuzzy
+#~ msgid "* zero means no limit"
+#~ msgstr "(0 = mugarik ez)"
+
+#, fuzzy
+#~ msgid "LogViewer Options"
+#~ msgstr "Fitxategiaren aukerak"
+
+#, fuzzy
+#~ msgid "Alt+X"
+#~ msgstr "Alt+1"
+
+#, fuzzy
+#~ msgid "Search Engine:"
+#~ msgstr "Bilaketa motoreak"
+
+#~ msgid ""
+#~ "_n: 1 day \n"
+#~ "%n days "
+#~ msgstr ""
+#~ "Egun 1 \n"
+#~ "%n egun "
+
+#~ msgid "Plugin Options"
+#~ msgstr "Pluginen aukerak"
+
+#~ msgid ""
+#~ "_n: 1 peer\n"
+#~ "%n peers"
+#~ msgstr ""
+#~ "Pare 1\n"
+#~ "%n pare"
+
+#~ msgid ""
+#~ "Specified udp port (%1) is unavailable or in use by another application. "
+#~ "KTorrent is bound to port %2."
+#~ msgstr ""
+#~ "Zehaztutako udp ataka (%1) eskuragaitz dago edo beste aplikazio batek "
+#~ "darabil. KTorrent %2 atakari lotuta dago."
+
+#~ msgid "UPnP Devices"
+#~ msgstr "UPnP dispositiboak"
+
+#~ msgid "IP"
+#~ msgstr "IP-a"
+
+#, fuzzy
+#~ msgid ""
+#~ "_: to ban\n"
+#~ "Ban peer"
+#~ msgstr "Debekatu parea"
+
+#~ msgid "Information Widget Options"
+#~ msgstr "Informazio-trepetaren aukerak"
+
+#~ msgid "Convert"
+#~ msgstr "Bihurtu"
+
+#~ msgid "File converted."
+#~ msgstr "Fitxategia bihurtuta."
+
+#~ msgid "Could not load filter:"
+#~ msgstr "Ezin da iragazkia kargatu:"
+
+#~ msgid "Bad filter file. It may be corrupted or has a bad format."
+#~ msgstr ""
+#~ "Iragazki-fitxategi okerra. Hondatuta dago edo ez du formatu zuzenik."
+
+#~ msgid ""
+#~ "Status: <font color=\"#ff0000\">Filter file not found.</font> Download "
+#~ "and convert filter file."
+#~ msgstr ""
+#~ "Status: <font color=\"#ff0000\">Iragazki-fitxategia ez da aurkitu.</font> "
+#~ "Deskargatu eta bihurtu iragazki-fitxategia."
+
+#~ msgid "Selected file already exists, do you want to download it again?"
+#~ msgstr "Hautatutako fitxategia lehendik dago, berriro deskargatu nahi duzu?"
+
+#~ msgid "IPBlocking Filter"
+#~ msgstr "IP-ak blokeatzeko iragazkia"
+
+#~ msgid "IPBlocking Filter Options"
+#~ msgstr "IP-ak blokeatzeko iragazkiaren aukerak"
+
+#, fuzzy
+#~ msgid "Imports partially or fully downloaded torrents from other clients"
+#~ msgstr ""
+#~ "KTorrent-en fitxategi partzialak inportatzeko pluginak beste bezeroetatik "
+#~ "guztiz edo partzialki deskargatutako uholdeak inportatzeko aukera ematen "
+#~ "du"
+
+#~ msgid "Import existing download"
+#~ msgstr "Inportatu lehendik dagoen deskarga"
+
+#~ msgid ""
+#~ "_: a noun\n"
+#~ "Search"
+#~ msgstr "Bilaketa"
+
+#~ msgid "Search Engine Options"
+#~ msgstr "Bilaketa-motorearen aukerak"
+
+#~ msgid ""
+#~ "_: to download\n"
+#~ "Download"
+#~ msgstr "Deskargatu"
+
+#~ msgid "Alt+A"
+#~ msgstr "Alt+A"
+
+#~ msgid "Cannot bind to port %1 or the 10 following ports."
+#~ msgstr "Ezin da %1 atakara edo hurrengo 10 ataketara lotu."
+
+#~ msgid "finished"
+#~ msgstr "amaituta"
+
+#~ msgid "infinity"
+#~ msgstr "infinito"
+
+#~ msgid "You must fill in the name field."
+#~ msgstr "Izenaren eremua bete behar duzu."
+
+#~ msgid ""
+#~ "_n: Cannot start more than 1 download. Go to Settings -> Configure "
+#~ "KTorrent, if you want to change the limit.\n"
+#~ "Cannot start more than %n downloads. Go to Settings -> Configure "
+#~ "KTorrent, if you want to change the limit."
+#~ msgstr ""
+#~ "Ezin da deskarga 1 baina gehiago hasi. Joan Ezarpenak -> Konfiguratu "
+#~ "KTorrent aukerara, muga aldatu nahi baduzu.\n"
+#~ "Ezin dira %n deskarga baina gehiago hasi. Joan Ezarpenak -> Konfiguratu "
+#~ "KTorrent aukerara, muga aldatu nahi baduzu."
+
+#~ msgid ""
+#~ "_n: Cannot start more than 1 seed. Go to Settings -> Configure KTorrent, "
+#~ "if you want to change the limit.\n"
+#~ "Cannot start more than %n seeds. Go to Settings -> Configure KTorrent, if "
+#~ "you want to change the limit."
+#~ msgstr ""
+#~ "Ezin da hazi 1 baina gehiago abiatu. Joan Ezarpenak -> Konfiguratu "
+#~ "KTorrent aukerara, muga aldatu nahi baduzu.\n"
+#~ "Ezin dira %n hazi baina gehiago abiatu. Joan Ezarpenak -> Konfiguratu "
+#~ "KTorrent aukerara, muga aldatu nahi baduzu."
+
+#~ msgid "Select Filter File with IP Ranges in KTorrent Format"
+#~ msgstr "Hautatu KTorrent formatudun IP barrutiak dituen iragazki fitxategia"
+
+#~ msgid "Use &KTorrent filter?"
+#~ msgstr "Erabili &KTorrent iragazkia?"
+
+#~ msgid "Select Level1 Filter File (from Bluetack.co.uk or Openmedia.info)"
+#~ msgstr ""
+#~ "Hautatu 1. mailako iragazkiaren fitxategia (Bluetack.co.uk edo Openmedia."
+#~ "info-tik)"
+
+#~ msgid "Use level&1 filter?"
+#~ msgstr "Erabili &1. mailako iragazkia?"
+
+#~ msgid "IP filter file"
+#~ msgstr "IP iragazki-fitxategia"
+
+#~ msgid "Unreachable"
+#~ msgstr "Eskuragaitz"
+
+#~ msgid "Completed"
+#~ msgstr "Osatuta"
+
+#~ msgid "Parse error"
+#~ msgstr "Sintaxi errorea"
+
+#, fuzzy
+#~ msgid "Alt+R"
+#~ msgstr "Alt+U"
+
+#~ msgid "Alt+N"
+#~ msgstr "Alt+N"
+
+#~ msgid "InfoWidgetBase"
+#~ msgstr "InfoWidgetBase"
+
+#~ msgid "Alt+Y"
+#~ msgstr "Alt+Y"
+
+#~ msgid "DownloadPref"
+#~ msgstr "DownloadPref"
+
+#~ msgid "Alt+Q"
+#~ msgstr "Alt+Q"
+
+#~ msgid "Alt+C"
+#~ msgstr "Alt+C"
+
+#~ msgid "Alt+O"
+#~ msgstr "Alt+O"
+
+#~ msgid "Alt+K"
+#~ msgstr "Alt+K"
+
+#~ msgid "Down:"
+#~ msgstr "Behera:"
+
+#~ msgid "Up:"
+#~ msgstr "Gora:"
+
+#~ msgid ""
+#~ "KTorrent's information widget plugin, it shows additional information "
+#~ "about a download."
+#~ msgstr ""
+#~ "KTorrent-en informaziorako trepetaren plugina, deskarga bati buruzko "
+#~ "informazio gehigarria erakusten du."
+
+#~ msgid "no"
+#~ msgstr "ez"
+
+#~ msgid "This could take a couple of minutes. Please wait..."
+#~ msgstr "Honek agian minutu batzuk behar ditu. Itxaron..."
+
+#~ msgid "KTorrent's IP filter plugin"
+#~ msgstr "KTorrent-en IP-ak iragazteko plugina"
+
+#~ msgid "KTorrent's log viewer plugin"
+#~ msgstr "KTorrent-en egunkari-ikustailearen plugina"

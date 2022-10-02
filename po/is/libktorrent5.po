@@ -1,0 +1,6948 @@
+# translation of ktorrent.po to
+# íslenskun ktorrent.po
+# Copyright (C) 2009 This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Arnar Leosson <leosson@frisurf.no>, 2005.
+# Sveinn í Felli <sveinki@nett.is>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: ktorrent\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-01-23 00:45+0000\n"
+"PO-Revision-Date: 2009-11-10 11:27+0000\n"
+"Last-Translator: \n"
+"Language-Team:  <is@li.org>\n"
+"Language: is\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=n != 1;\n"
+"\n"
+"\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: src/bcodec/bdecoder.cpp:48
+#, fuzzy, kde-format
+msgid "Illegal token: %1"
+msgstr "Ógilt skráningarmerki (token): %1"
+
+#: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
+#, fuzzy, kde-format
+msgid "Decode error"
+msgstr "Afkóðunarvilla"
+
+#: src/bcodec/bdecoder.cpp:161 src/bcodec/bdecoder.cpp:199
+#, fuzzy, kde-format
+msgid "Unexpected end of input"
+msgstr "Óvænt ending á inntaki"
+
+#: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
+#, fuzzy, kde-format
+msgid "Cannot convert %1 to an int"
+msgstr "Gat ekki umbreytt %1 í heiltölu (int)"
+
+#: src/bcodec/bdecoder.cpp:223
+#, fuzzy, kde-format
+msgid "Torrent is incomplete."
+msgstr "er ókláraður."
+
+#: src/datachecker/datacheckerjob.cpp:66
+#, kde-format
+msgid "Waiting for other data checks to finish"
+msgstr ""
+
+#: src/datachecker/datacheckerjob.cpp:72 src/torrent/torrentstats.cpp:92
+#, fuzzy, kde-format
+msgid "Checking data"
+msgstr "Yfirfer gögn"
+
+#: src/datachecker/datacheckerjob.cpp:119
+#, fuzzy, kde-format
+msgid "Checking Data"
+msgstr "Yfirfer gögn"
+
+#: src/datachecker/multidatachecker.cpp:181
+#: src/datachecker/singledatachecker.cpp:34 src/diskio/multifilecache.cpp:621
+#: src/diskio/multifilecache.cpp:656 src/torrent/torrentcreator.cpp:111
+#: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
+#, fuzzy, kde-format
+msgid "Cannot open file %1: %2"
+msgstr "Gat ekki opnað skrá %1: %2"
+
+#: src/diskio/cache.cpp:148 src/diskio/multifilecache.cpp:95
+#: src/diskio/singlefilecache.cpp:67
+#, fuzzy, kde-format
+#| msgid "Failed to create %1 : %2"
+msgid "Failed to create %1: %2"
+msgstr "Gat ekki búið til %1 : %2"
+
+#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:312
+#: src/util/fileops.cpp:354
+#, fuzzy, kde-format
+#| msgid "Cannot open %1 : %2"
+msgid "Cannot open %1: %2"
+msgstr "Gat ekki opnað %1 : %2"
+
+#: src/diskio/cachefile.cpp:103 src/diskio/cachefile.cpp:215
+#: src/diskio/cachefile.cpp:368 src/diskio/cachefile.cpp:427
+#, fuzzy, kde-format
+msgid "Cannot open %1 for writing: readonly filesystem"
+msgstr "Gat ekki opnað %1 til skrifunar : skrifvarið skráakerfi (readonly)"
+
+#: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
+#, kde-format
+msgid "Attempting to write beyond the maximum size of %1"
+msgstr ""
+
+#: src/diskio/cachefile.cpp:220
+#, kde-format
+msgid ""
+"Cannot expand file %1: attempting to grow the file beyond the maximum size"
+msgstr ""
+
+#: src/diskio/cachefile.cpp:224
+#, fuzzy, kde-format
+msgid "Cannot expand file %1: %2"
+msgstr "Gat ekki afþjappað skrá %1 : %2"
+
+#: src/diskio/cachefile.cpp:336
+#, fuzzy, kde-format
+msgid "Error: Reading past the end of the file %1"
+msgstr "Villa : las framyfir enda skráarinnar %1"
+
+#: src/diskio/cachefile.cpp:341 src/diskio/cachefile.cpp:383
+#, fuzzy, kde-format
+msgid "Failed to seek file %1: %2"
+msgstr "Gat ekki leitað að skrá %1 : %2"
+
+#: src/diskio/cachefile.cpp:348
+#, fuzzy, kde-format
+msgid "Error reading from %1"
+msgstr "Villa við lestur frá %1"
+
+#: src/diskio/cachefile.cpp:386
+#, fuzzy, kde-format
+msgid "Failed to write to file %1: %2"
+msgstr "Gat ekki skrifað í skrá %1 : %2"
+
+#: src/diskio/cachefile.cpp:443
+#, fuzzy, kde-format
+msgid "Cannot preallocate diskspace: %1"
+msgstr "Gat ekki tekið frá diskpláss : %1"
+
+#: src/diskio/chunkmanager.cpp:844 src/diskio/chunkmanager.cpp:867
+#, fuzzy, kde-format
+msgid "Cannot open index file %1: %2"
+msgstr "Get ekki opnað yfirlitsskrá %1 : %2"
+
+#: src/diskio/dndfile.cpp:72
+#, fuzzy, kde-format
+msgid "Cannot create file %1: %2"
+msgstr "Gat ekki búið til skrána %1 : %2"
+
+#: src/diskio/dndfile.cpp:114
+#, fuzzy, kde-format
+msgid "Failed to write first chunk to DND file: %1"
+msgstr "Gat ekki skrifað fyrsta bútinn í DND skrá: %1"
+
+#: src/diskio/dndfile.cpp:129
+#, fuzzy, kde-format
+msgid "Failed to write last chunk to DND file: %1"
+msgstr "Gat ekki skrifað síðasta bútinn í DND skrá: %1"
+
+#: src/diskio/movedatafilesjob.cpp:109
+#, kde-format
+msgid "Waiting for other move jobs to finish"
+msgstr ""
+
+#: src/diskio/movedatafilesjob.cpp:110 src/diskio/movedatafilesjob.cpp:146
+#, fuzzy, kde-format
+#| msgid "Score"
+msgctxt "The source of a file operation"
+msgid "Source"
+msgstr "Stig"
+
+#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#, fuzzy, kde-format
+msgctxt "The destination of a file operation"
+msgid "Destination"
+msgstr "Áfangastaður"
+
+#: src/diskio/movedatafilesjob.cpp:145
+#, fuzzy, kde-format
+msgctxt "@title job"
+msgid "Moving"
+msgstr "Færi"
+
+#: src/diskio/multifilecache.cpp:70 src/diskio/singlefilecache.cpp:57
+#, fuzzy, kde-format
+msgid "Failed to open %1: %2"
+msgstr "Mistókst að opna %1 : %2"
+
+#: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
+#, kde-format
+msgid "Unable to write to a piece mapped read only"
+msgstr ""
+
+#: src/download/chunkdownload.cpp:342
+#, fuzzy, kde-format
+msgid "1 peer"
+msgid_plural "%1 peers"
+msgstr[0] "1 jafningi"
+msgstr[1] "1 jafningi"
+
+#: src/download/downloader.cpp:693
+#, fuzzy, kde-format
+msgid "Disabled because webseed does not match torrent"
+msgstr "allir af a"
+
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
+#: src/download/webseed.cpp:84
+#, kde-format
+msgid "Not connected"
+msgstr "Ótengd(ur)"
+
+#: src/download/httpconnection.cpp:96
+#, fuzzy, kde-format
+msgid "Resolving proxy %1:%2"
+msgstr "Greini milliþjón (proxy) %1:%2"
+
+#: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
+#, fuzzy, kde-format
+msgid "Not enough system resources available"
+msgstr "er ekki."
+
+#: src/download/httpconnection.cpp:110
+#, fuzzy, kde-format
+msgid "Resolving hostname %1"
+msgstr "Greini vélarheiti %1"
+
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
+#, fuzzy, kde-format
+msgid "Connection closed"
+msgstr "Tengingu lokað"
+
+#: src/download/httpconnection.cpp:130
+#, fuzzy, kde-format
+msgid "Error: request failed: %1"
+msgstr "Villa: fyrirspurn mistókst: %1"
+
+#: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
+#, kde-format
+msgid "Connected"
+msgstr "Tengd(ur)"
+
+#: src/download/httpconnection.cpp:162
+#, fuzzy, kde-format
+msgid "Error: Failed to connect to webseed"
+msgstr "Villa: tókst ekki að tengjast vefsáningu"
+
+#: src/download/httpconnection.cpp:186
+#, kde-format
+msgid "Connecting"
+msgstr "Tengist"
+
+#: src/download/httpconnection.cpp:195
+#, fuzzy, kde-format
+msgid "Failed to connect to webseed"
+msgstr "Gat ekki tengst vefsáningu"
+
+#: src/download/httpconnection.cpp:200
+#, fuzzy, kde-format
+msgid "Failed to resolve hostname of webseed"
+msgstr "Mistókst að greina vélarheiti vefsáningarinnar"
+
+#: src/download/httpconnection.cpp:271
+#, fuzzy, kde-format
+msgid "Error: failed to connect, server not responding"
+msgstr "Villa: tókst ekki að tengjast, þjónn svarar ekki"
+
+#: src/download/httpconnection.cpp:281
+#, fuzzy, kde-format
+msgid "Error: request timed out"
+msgstr "Villa: fyrirspurn rann út á tíma"
+
+#: src/download/httpconnection.cpp:351
+#, fuzzy, kde-format
+msgid "Redirected without a new location."
+msgstr "a nýtt."
+
+#: src/download/webseed.cpp:493
+#, kde-format
+msgid "Unused for %1 second (Too many connection failures)"
+msgid_plural "Unused for %1 seconds (Too many connection failures)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/interfaces/trackerinterface.cpp:45
+#, fuzzy, kde-format
+msgid "OK"
+msgstr "Í lagi"
+
+#: src/interfaces/trackerinterface.cpp:45
+#, fuzzy, kde-format
+msgid "Warning: %1"
+msgstr "1"
+
+#: src/interfaces/trackerinterface.cpp:47
+#, fuzzy, kde-format
+msgid "Announcing"
+msgstr "Tilkynni"
+
+#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
+#, fuzzy, kde-format
+msgid "Error: %1"
+msgstr "Villa: %1"
+
+#: src/peer/peerid.cpp:299
+#, fuzzy, kde-format
+msgid "Unknown client"
+msgstr "Óþekktur biðlari"
+
+#: src/torrent/torrent.cpp:96 src/torrent/torrent.cpp:153
+#: src/torrent/torrent.cpp:180 src/torrent/torrent.cpp:187
+#: src/torrent/torrent.cpp:194 src/torrent/torrent.cpp:198
+#: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
+#, fuzzy, kde-format
+msgid "Corrupted torrent."
+msgstr "Búa til a"
+
+#: src/torrent/torrentcontrol.cpp:277
+#, kde-format
+msgid "Error writing to disk, do you have enough diskspace?"
+msgstr ""
+
+#: src/torrent/torrentcontrol.cpp:492
+#, kde-format
+msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
+msgstr ""
+
+#: src/torrent/torrentcontrol.cpp:502
+#, fuzzy, kde-format
+msgid "Unable to create %1: %2"
+msgstr "Gat ekki búið til %1 : %2"
+
+#: src/torrent/torrentcontrol.cpp:515
+#, fuzzy, kde-format
+msgid ""
+"You are already downloading the torrent <b>%1</b>. The tracker lists from "
+"both torrents have been merged."
+msgstr ""
+"Þú ert nú þegar að ná í þennan torrent staum %1, listi skrásetjara beggja "
+"straumanna hefur verið sameinaður."
+
+#: src/torrent/torrentcontrol.cpp:519
+#, fuzzy, kde-format
+msgid "You are already downloading the torrent <b>%1</b>."
+msgstr "Þú ert nú þegar að ná í torrent stauminn %1"
+
+#: src/torrent/torrentcreator.cpp:332
+#, fuzzy, kde-format
+msgid "Cannot create index file: %1"
+msgstr "Gat ekki búið til yfirlitsskrá: %1"
+
+#: src/torrent/torrentstats.cpp:72
+#, fuzzy, kde-format
+msgid "Not started"
+msgstr "Ekki byrjað"
+
+#: src/torrent/torrentstats.cpp:74
+#, fuzzy, kde-format
+msgid "Download completed"
+msgstr "Niðurhali lokið"
+
+#: src/torrent/torrentstats.cpp:76
+#, fuzzy, kde-format
+msgid "Seeding completed"
+msgstr "Sáningu lokið"
+
+#: src/torrent/torrentstats.cpp:78
+#, fuzzy, kde-format
+msgctxt "Status of a torrent file"
+msgid "Seeding"
+msgstr "Sái"
+
+#: src/torrent/torrentstats.cpp:80
+#, fuzzy, kde-format
+msgid "Downloading"
+msgstr "Sæki"
+
+#: src/torrent/torrentstats.cpp:82
+#, fuzzy, kde-format
+msgid "Stalled"
+msgstr "Töf"
+
+#: src/torrent/torrentstats.cpp:84
+#, fuzzy, kde-format
+msgid "Stopped"
+msgstr "Stöðvað"
+
+#: src/torrent/torrentstats.cpp:88
+#, fuzzy, kde-format
+msgid "Allocating diskspace"
+msgstr "Úthluta diskplássi"
+
+#: src/torrent/torrentstats.cpp:90
+#, fuzzy, kde-format
+msgid "Queued for seeding"
+msgstr "Í biðröð fyrir"
+
+#: src/torrent/torrentstats.cpp:90
+#, fuzzy, kde-format
+msgid "Queued for downloading"
+msgstr "Í biðröð fyrir"
+
+#: src/torrent/torrentstats.cpp:94
+#, fuzzy, kde-format
+msgid "Stopped. No space left on device."
+msgstr "Stöðvað. Ekkert pláss eftir á tækinu."
+
+#: src/torrent/torrentstats.cpp:96
+#, kde-format
+msgid "Paused"
+msgstr "Í bið"
+
+#: src/torrent/torrentstats.cpp:98
+#, fuzzy, kde-format
+msgid "Superseeding"
+msgstr "Sái"
+
+#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
+#: src/tracker/httptracker.cpp:392
+#, kde-format
+msgid "Invalid response from tracker"
+msgstr "Ógilt svar frá skrásetjara (tracker)"
+
+#: src/tracker/httptracker.cpp:253
+#, kde-format
+msgid "Invalid data from tracker"
+msgstr "Ógild gögn frá skrásetjara (tracker)"
+
+#: src/tracker/httptracker.cpp:407
+#, kde-format
+msgid "Invalid tracker URL"
+msgstr "Ógild slóð á skrásetjara (tracker)"
+
+#: src/tracker/httptracker.cpp:465 src/tracker/udptracker.cpp:315
+#: src/tracker/udptracker.cpp:322
+#, kde-format
+msgid "Timeout contacting tracker %1"
+msgstr ""
+
+#: src/tracker/udptracker.cpp:343
+#, kde-format
+msgid "Unable to resolve hostname %1"
+msgstr "Tókst ekki að greina vélarheiti %1"
+
+#: src/upnp/httprequest.cpp:39
+#, kde-format
+msgid "Operation timed out"
+msgstr ""
+
+#: src/upnp/upnprouter.cpp:156
+#, fuzzy, kde-format
+msgid "Failed to download %1: %2"
+msgstr "Mistókst til 2"
+
+#: src/upnp/upnprouter.cpp:166
+#, fuzzy, kde-format
+msgid "Error parsing router description."
+msgstr "Villa lýsing."
+
+#: src/upnp/upnprouter.cpp:200
+#, fuzzy, kde-format
+msgid ""
+"Forwarding failed:\n"
+"Device does not have a WANIPConnection or WANPPPConnection."
+msgstr "mistókst ekki a eða."
+
+#: src/upnp/upnprouter.cpp:279
+#, fuzzy, kde-format
+msgid "Cannot find port forwarding service in the device's description."
+msgstr "\" s lýsing."
+
+#: src/util/file.cpp:68
+#, fuzzy, kde-format
+msgid "Cannot write to %1: %2"
+msgstr "Get ekki skrifað í %1 : %2"
+
+#: src/util/file.cpp:81
+#, fuzzy, kde-format
+msgid "Cannot read from %1"
+msgstr "Get ekki lesið frá %1"
+
+#: src/util/fileops.cpp:91
+#, fuzzy, kde-format
+msgid "Cannot create directory %1"
+msgstr "Get ekki búið til möppuna %1"
+
+#: src/util/fileops.cpp:149
+#, fuzzy, kde-format
+msgid "Cannot symlink %1 to %2: %3"
+msgstr "Get ekki gert tákntengi (symlink) fyrir %1 til %2: %3"
+
+#: src/util/fileops.cpp:162
+#, fuzzy, kde-format
+msgid "Cannot move %1 to %2: %3"
+msgstr "Get ekki fært %1 í %2: %3"
+
+#: src/util/fileops.cpp:173 src/util/fileops.cpp:184
+#, fuzzy, kde-format
+msgid "Cannot copy %1 to %2: %3"
+msgstr "Get ekki afritað %1 í %2: %3"
+
+#: src/util/fileops.cpp:238
+#, fuzzy, kde-format
+msgid "Cannot delete %1: %2"
+msgstr "Get ekki eytt %1: %2"
+
+#: src/util/fileops.cpp:254
+#, fuzzy, kde-format
+msgid "Cannot create %1: %2"
+msgstr "Get ekki búið til %1: %2"
+
+#: src/util/fileops.cpp:271
+#, fuzzy, kde-format
+msgid "Cannot calculate the filesize of %1: %2"
+msgstr "Gat ekki reiknað skráarstærð %1: %2"
+
+#: src/util/fileops.cpp:287
+#, fuzzy, kde-format
+msgid "Cannot calculate the filesize: %1"
+msgstr "Gat ekki reiknað skráarstærð : %1"
+
+#: src/util/fileops.cpp:332 src/util/fileops.cpp:336 src/util/fileops.cpp:339
+#: src/util/fileops.cpp:342 src/util/fileops.cpp:345
+#, fuzzy, kde-format
+msgid "Cannot expand file: %1"
+msgstr "Gat ekki afþjappað skrána: %1"
+
+#: src/util/fileops.cpp:372
+#, fuzzy, kde-format
+msgid "Cannot seek in file: %1"
+msgstr "Gat ekki leitað í skránni: %1"
+
+#: src/util/fileops.cpp:613
+#, fuzzy, kde-format
+msgid "Unable to open file %1: %2"
+msgstr "Gat ekki opnað torrent skrá %1 : %2"
+
+#: src/util/functions.cpp:205
+#, fuzzy, kde-format
+msgid "%1/s"
+msgstr "%1/s"
+
+#: src/util/functions.cpp:214
+#, fuzzy, kde-format
+msgid "1 day "
+msgid_plural "%1 days "
+msgstr[0] "1 dagur"
+msgstr[1] "1 dagur"
+
+#: src/util/logsystemmanager.cpp:19
+#, kde-format
+msgid "General"
+msgstr "Almennt"
+
+#: src/util/logsystemmanager.cpp:20
+#, fuzzy, kde-format
+msgid "Connections"
+msgstr "Tengingar"
+
+#: src/util/logsystemmanager.cpp:21
+#, fuzzy, kde-format
+msgid "Tracker"
+msgstr "Skrásetjari (tracker)"
+
+#: src/util/logsystemmanager.cpp:22
+#, fuzzy, kde-format
+msgid "DHT"
+msgstr "DHT"
+
+#: src/util/logsystemmanager.cpp:23
+#, kde-format
+msgid "Disk Input/Output"
+msgstr "Inntak/Úttak disks"
+
+#: src/util/logsystemmanager.cpp:24
+#, kde-format
+msgid "µTP"
+msgstr ""
+
+#: src/util/signalcatcher.cpp:62
+#, kde-format
+msgid "Error when writing to disk"
+msgstr ""
+
+#: src/util/signalcatcher.cpp:62
+#, fuzzy, kde-format
+msgid "Error when reading from disk"
+msgstr "Villa við lestur frá %1"
+
+#, fuzzy
+#~ msgid "The directory %1 does not exist"
+#~ msgstr "Mappan %1 er ekki til"
+
+#, fuzzy
+#~ msgid "Connection closed unexpectedly"
+#~ msgstr "Tenging."
+
+#, fuzzy
+#~ msgid "Torrent to open"
+#~ msgstr "Skjal sem á að opna"
+
+#, fuzzy
+#~| msgid "Not in use"
+#~ msgid "Port to use"
+#~ msgstr "Ekki í notkun"
+
+#, fuzzy
+#~ msgid "Whether or not to enable encryption"
+#~ msgstr "eða ekki til a sérsniðið."
+
+#, fuzzy
+#~ msgid "Whether or not to enable peer exchange"
+#~ msgstr "eða ekki til."
+
+#, fuzzy
+#~ msgid "Whether or not to use utp"
+#~ msgstr "eða ekki til a sérsniðið."
+
+#, fuzzy
+#~ msgid "Redirect without a redirect location"
+#~ msgstr "a nýtt."
+
+#, fuzzy
+#~ msgid ""
+#~ "An error occurred while loading the torrent <b>%1</b>:<br/><b>%2</b><br/"
+#~ ">The torrent is probably corrupt or is not a valid torrent file."
+#~ msgstr ""
+#~ "Villa kom upp vi að hlaða inn straumnum <b>%1</b>:<br/><b>%2</b><br/> "
+#~ "Torrent straumurinn er líklega skemmdur eða er ekki gild torrent skrá."
+
+#, fuzzy
+#~ msgid "Parse Error"
+#~ msgstr "Þáttunarvilla"
+
+#~ msgid "Not in use"
+#~ msgstr "Ekki í notkun"
+
+#, fuzzy
+#~ msgid "Not enough diskspace"
+#~ msgstr "diskur fyrir 1"
+
+#, fuzzy
+#~ msgid "Cannot open file %1 : %2"
+#~ msgstr "Gat ekki opnað skrá %1 : %2"
+
+#~ msgid "Cannot open file : %1 : %2"
+#~ msgstr "Gat ekki opnað skrá : %1 : %2"
+
+#, fuzzy
+#~ msgid ""
+#~ "An error occurred while loading the torrent:<br/><b>%1</b><br/>The "
+#~ "torrent is probably corrupt or is not a valid torrent file."
+#~ msgstr ""
+#~ "Villa kom upp vi að hlaða inn straumnum:<br/><b>%1</b><br/>Torrent "
+#~ "straumurinn er líklega skemmdur eða er ekki gild torrent skrá."
+
+#, fuzzy
+#~ msgid "Cannot open log file %1 : %2"
+#~ msgstr "Get ekki opnað annálsskrá %1 : %2"
+
+#, fuzzy
+#~ msgid "Timeout occurred"
+#~ msgstr "Timeout"
+
+#~ msgid "Cannot bind to udp port %1 or the 10 following ports."
+#~ msgstr "Get ekki bundist udp gátt %1 eða 10 gáttum þar á eftir."
+
+#, fuzzy
+#~ msgctxt "plugin name"
+#~ msgid "Scan Folder"
+#~ msgstr "Leita í möppu"
+
+#, fuzzy
+#~ msgid "loaded"
+#~ msgstr "hlaðið"
+
+#, fuzzy
+#~ msgid "Device"
+#~ msgstr "Tæki"
+
+#, fuzzy
+#~ msgid "Port Forwarded"
+#~ msgstr "Gátt Áframsent"
+
+#, fuzzy
+#~ msgid "WAN Connection"
+#~ msgstr "Tenging"
+
+#, fuzzy
+#~ msgid ""
+#~ "Model Name: <b>%1</b><br/>Manufacturer: <b>%2</b><br/>Model Description: "
+#~ "<b>%3</b><br/>"
+#~ msgstr ""
+#~ "Tegund Nafn<b></b><br/> Framleiðandi<b></b><br/> Tegund Lýsing<b></b><br/>"
+
+#, fuzzy
+#~ msgid "Shows the status of the UPnP plugin"
+#~ msgstr "staða af íforrit"
+
+#, fuzzy
+#~ msgid ""
+#~ "%2\n"
+#~ "1 active filter"
+#~ msgid_plural ""
+#~ "%2\n"
+#~ "%1 active filters"
+#~ msgstr[0] "germynd sía"
+#~ msgstr[1] "germynd sía"
+
+#, fuzzy
+#~ msgid "<b>%1</b><br/><br/>%2"
+#~ msgstr "<b></b><br/><br/> 2"
+
+#, fuzzy
+#~ msgid "Manages RSS and Atom feeds"
+#~ msgstr "RSS og"
+
+#, fuzzy
+#~ msgid "Enter the URL"
+#~ msgstr "Sláðu inn vefslóð"
+
+#, fuzzy
+#~ msgid "Please enter the URL of the RSS or Atom feed."
+#~ msgstr "Slóð af RSS eða."
+
+#, fuzzy
+#~ msgid "Failed to load feed %1."
+#~ msgstr "Mistókst til."
+
+#, fuzzy
+#~ msgid "Failed to create directory for feed %1 : %2"
+#~ msgstr "Mistókst til fyrir 2"
+
+#, fuzzy
+#~ msgid "New Filter"
+#~ msgstr "Ný sía"
+
+#, fuzzy
+#~ msgid "Add New Filter"
+#~ msgstr "Bæta við Nýtt Sía"
+
+#, fuzzy
+#~ msgid "Add Feed"
+#~ msgstr "Bæta við straumi"
+
+#, fuzzy
+#~ msgid "Remove Feed"
+#~ msgstr "Fjarlægja straum"
+
+#, fuzzy
+#~ msgid "Show Feed"
+#~ msgstr "Sýna Straumur"
+
+#, fuzzy
+#~ msgid "Add/Remove Filters"
+#~ msgstr "Bæta við Fjarlægja Síur"
+
+#, fuzzy
+#~ msgid "Rename"
+#~ msgstr "Endurnefna"
+
+#, fuzzy
+#~ msgid "Add Filter"
+#~ msgstr "Bæta síu við"
+
+#, fuzzy
+#~ msgid "Remove Filter"
+#~ msgstr "Fjarlægja síu"
+
+#, fuzzy
+#~ msgid "Edit Filter"
+#~ msgstr "Breyta síu"
+
+#, fuzzy
+#~ msgid "Feed: <b>%1</b>"
+#~ msgstr "Straumur<b></b>"
+
+#, fuzzy
+#~ msgid "<b>OK</b>"
+#~ msgstr "<b> Í lagi</b>"
+
+#, fuzzy
+#~ msgid "<b>Not Loaded</b>"
+#~ msgstr "<b> Ekki Lesið inn</b>"
+
+#, fuzzy
+#~ msgid "<b>Download Failed</b>"
+#~ msgstr "<b> Hlaða niður Mistókst</b>"
+
+#, fuzzy
+#~ msgid "<b>Downloading</b>"
+#~ msgstr ""
+#~ "Copy text   \t\n"
+#~ "<b>Niðurhal</b>"
+
+#, fuzzy
+#~ msgid "Could not find a valid link to a torrent on %1"
+#~ msgstr "ekki a tengill til a á 1"
+
+#, fuzzy
+#~ msgid "Title"
+#~ msgstr "Titill"
+
+#, fuzzy
+#~ msgid "Date Published"
+#~ msgstr "Dagsetning"
+
+#, fuzzy
+#~ msgid "There already is a filter named %1, filter names must be unique."
+#~ msgstr "er a sía sía."
+
+#~ msgid "ZeroConf"
+#~ msgstr "ZeroConf"
+
+#, fuzzy
+#~ msgid "Available"
+#~ msgstr "Tiltækt"
+
+#, fuzzy
+#~ msgid "Pending"
+#~ msgstr "Í bið"
+
+#, fuzzy
+#~ msgid "<b>%1</b><br/>Preview: %2<br/>Downloaded: %3 %"
+#~ msgstr "<b></b><br/> Forsýn<br/>"
+
+#, fuzzy
+#~ msgid "Artist"
+#~ msgstr "Flytjandi"
+
+#, fuzzy
+#~ msgid "Album"
+#~ msgstr "Plata"
+
+#, fuzzy
+#~ msgid "Length"
+#~ msgstr "Lengd"
+
+#, fuzzy
+#~ msgid "Year"
+#~ msgstr "Ár"
+
+#, fuzzy
+#~ msgid "Ready to play"
+#~ msgstr "Tilbúinn til spila"
+
+#, fuzzy
+#~ msgid "Mode:"
+#~ msgstr "Hamur:"
+
+#, fuzzy
+#~ msgid "Single File"
+#~ msgstr "Ein skrá"
+
+#, fuzzy
+#~ msgid "Playlist"
+#~ msgstr "Lagalisti"
+
+#, fuzzy
+#~ msgid "Random"
+#~ msgstr "Slembið"
+
+#, fuzzy
+#~ msgid "Remove"
+#~ msgstr "Fjarlægja"
+
+#, fuzzy
+#~ msgid "Add Media"
+#~ msgstr "Bæta við Miðill"
+
+#, fuzzy
+#~ msgid "Clear Playlist"
+#~ msgstr "Hreinsa Lagalisti"
+
+#, fuzzy
+#~ msgid "Title: <b>%1</b><br/>Artist: <b>%2</b><br/>Album: <b>%3</b>"
+#~ msgstr "Titill<b></b><br/> Flytjandi<b></b><br/> Plata<b></b>"
+
+#, fuzzy
+#~ msgid ""
+#~ "Playing: <b>%1</b><br/>\n"
+#~ "%2"
+#~ msgstr "Spila<b></b><br/> n 2"
+
+#, fuzzy
+#~ msgid "Title: <b>%1</b><br/>Artist: <b>%2</b>"
+#~ msgstr "Titill<b></b><br/> Flytjandi<b></b>"
+
+#, fuzzy
+#~ msgid "Title: <b>%1</b>"
+#~ msgstr "Titill<b></b>"
+
+#, fuzzy
+#~ msgid "Playing: <b>%1</b>"
+#~ msgstr "Spila<b></b>"
+
+#, fuzzy
+#~ msgid "Media Player"
+#~ msgstr "Margmiðlunarspilari"
+
+#, fuzzy
+#~ msgid "Play List"
+#~ msgstr "Spila Listi"
+
+#, fuzzy
+#~ msgid "Play"
+#~ msgstr "Spila"
+
+#, fuzzy
+#~ msgid "Pause"
+#~ msgstr "Bíða"
+
+#, fuzzy
+#~ msgid "Stop"
+#~ msgstr "Stöðva"
+
+#, fuzzy
+#~ msgid "Previous"
+#~ msgstr "Fyrri"
+
+#, fuzzy
+#~ msgid "Next"
+#~ msgstr "Næsta"
+
+#, fuzzy
+#~ msgid "Show Video"
+#~ msgstr "Sýna Vídeó"
+
+#, fuzzy
+#~ msgid "Movie player"
+#~ msgstr "Kvikmynd"
+
+#, fuzzy
+#~ msgid "Collection:"
+#~ msgstr "Safn:"
+
+#, fuzzy
+#~ msgid "Toggle Fullscreen"
+#~ msgstr "Skipta heilskjá"
+
+#, fuzzy
+#~ msgid "KTorrent is playing a video."
+#~ msgstr "er spila a."
+
+#, fuzzy
+#~ msgid "Cannot find web interface skins."
+#~ msgstr "Vefur:"
+
+#, fuzzy
+#~ msgid "Web Interface"
+#~ msgstr "Vefviðmót"
+
+#, fuzzy
+#~ msgid "Invalid data received"
+#~ msgstr "Ógilt."
+
+#, fuzzy
+#~ msgid "Failed to open temporary file"
+#~ msgstr "Gat ekki opnað tímabundna skrá"
+
+#~ msgid "Unknown"
+#~ msgstr "Óþekkt"
+
+#, fuzzy
+#~ msgid ""
+#~ "<h1 align='center' style='font-size: large; text-decoration: "
+#~ "underline'>Legend:</h1><ul type='square'>"
+#~ msgstr ""
+#~ "<h1 align='center' style='font-size: large; text-decoration: underline'> "
+#~ "Skýring</h1><ul type='square'>"
+
+#~ msgid "Save as image…"
+#~ msgstr "Vista sem mynd..."
+
+#, fuzzy
+#~ msgid "Reset"
+#~ msgstr "Frumstilla"
+
+#, fuzzy
+#~ msgid "Select path to save image…"
+#~ msgstr "Velja til mynd"
+
+#, fuzzy
+#~ msgid "KiB/s"
+#~ msgstr "KiB/s"
+
+#~ msgid "Statistics"
+#~ msgstr "Tölfræði"
+
+#~ msgid "(= %1 ms)"
+#~ msgstr "(= %1 ms)"
+
+#, fuzzy
+#~ msgid "Leechers connected"
+#~ msgstr "tengd(ur)"
+
+#, fuzzy
+#~ msgid "Leechers in swarms"
+#~ msgstr "\""
+
+#, fuzzy
+#~ msgid "Seeds connected"
+#~ msgstr "Fræ tengd(ur)"
+
+#, fuzzy
+#~ msgid "Seeds in swarms"
+#~ msgstr "Fræ \""
+
+#, fuzzy
+#~ msgid "Average leechers connected per torrent"
+#~ msgstr "Meðaltal tengd(ur)"
+
+#, fuzzy
+#~ msgid "Average seeds connected per torrent"
+#~ msgstr "Meðaltal tengd(ur)"
+
+#, fuzzy
+#~ msgid "Average leechers connected per running torrent"
+#~ msgstr "Meðaltal tengd(ur) keyri"
+
+#, fuzzy
+#~ msgid "Average seeds connected per running torrent"
+#~ msgstr "Meðaltal tengd(ur) keyri"
+
+#, fuzzy
+#~ msgid "Tasks"
+#~ msgstr "Verkefni"
+
+#, fuzzy
+#~ msgid "Current speed"
+#~ msgstr "Núverandi"
+
+#, fuzzy
+#~ msgid "Average speed"
+#~ msgstr "Meðaltal"
+
+#~ msgid "Speed limit"
+#~ msgstr "Hraðtakmörk"
+
+#, fuzzy
+#~ msgid "Average from leechers"
+#~ msgstr "Meðaltal frá"
+
+#, fuzzy
+#~ msgid "Average to leechers"
+#~ msgstr "Meðaltal til"
+
+#, fuzzy
+#~ msgid "Average from seeds"
+#~ msgstr "Meðaltal frá"
+
+#, fuzzy
+#~ msgid "From leechers"
+#~ msgstr "Frá"
+
+#, fuzzy
+#~ msgid "From seeds"
+#~ msgstr "Frá"
+
+#, fuzzy
+#~ msgid "Speed charts"
+#~ msgstr "Hraði"
+
+#, fuzzy
+#~ msgid "Displays charts about download and upload speed"
+#~ msgstr "og"
+
+#, fuzzy
+#~ msgid "Display"
+#~ msgstr "Skjár"
+
+#, fuzzy
+#~ msgctxt "Choked"
+#~ msgid "Yes"
+#~ msgstr "Já"
+
+#, fuzzy
+#~ msgctxt "Not choked"
+#~ msgid "No"
+#~ msgstr "Nei"
+
+#, fuzzy
+#~ msgctxt "Snubbed"
+#~ msgid "Yes"
+#~ msgstr "Já"
+
+#, fuzzy
+#~ msgctxt "Not snubbed"
+#~ msgid "No"
+#~ msgstr "Nei"
+
+#, fuzzy
+#~ msgctxt "Interested"
+#~ msgid "Yes"
+#~ msgstr "Já"
+
+#, fuzzy
+#~ msgctxt "Not Interested"
+#~ msgid "No"
+#~ msgstr "Nei"
+
+#, fuzzy
+#~ msgctxt "Interesting"
+#~ msgid "Yes"
+#~ msgstr "Já"
+
+#, fuzzy
+#~ msgctxt "Not Interesting"
+#~ msgid "No"
+#~ msgstr "Nei"
+
+#, fuzzy
+#~ msgid "Address"
+#~ msgstr "Vistfang"
+
+#, fuzzy
+#~ msgid "Country"
+#~ msgstr "Land"
+
+#, fuzzy
+#~ msgid "Client"
+#~ msgstr "Biðlari"
+
+#, fuzzy
+#~ msgid "Down Speed"
+#~ msgstr "Innhraði"
+
+#, fuzzy
+#~ msgid "Up Speed"
+#~ msgstr "Upphraði"
+
+#, fuzzy
+#~ msgid "Choked"
+#~ msgstr "Yfirfylltist"
+
+#, fuzzy
+#~ msgid "Snubbed"
+#~ msgstr "Sniðgengið"
+
+#, fuzzy
+#~ msgid "Availability"
+#~ msgstr "Aðgengi"
+
+#~ msgid "Upload Slot"
+#~ msgstr "Senda hólf"
+
+#~ msgid "Requests"
+#~ msgstr "Beiðnir"
+
+#, fuzzy
+#~ msgid "Downloaded"
+#~ msgstr "Hlaðið inn"
+
+#, fuzzy
+#~ msgid "Uploaded"
+#~ msgstr "Hlaðið inn"
+
+#~ msgid "Interested"
+#~ msgstr "Áhugasamur"
+
+#, fuzzy
+#~ msgid "Interesting"
+#~ msgstr "Áhugavert"
+
+#, fuzzy
+#~ msgid "IP address of the peer"
+#~ msgstr "IP vistfang jafningja"
+
+#, fuzzy
+#~ msgid "Country the peer is in"
+#~ msgstr "Land er \""
+
+#, fuzzy
+#~ msgid "Which client the peer is using"
+#~ msgstr "Hvaða forrit jafningi notar"
+
+#~ msgid "Download speed"
+#~ msgstr "Niðurhalshraði"
+
+#~ msgid "Upload speed"
+#~ msgstr "Sendingarhraði"
+
+#, fuzzy
+#~ msgid ""
+#~ "Whether or not the peer has choked us - when we are choked the peer will "
+#~ "not send us any data"
+#~ msgstr "eða ekki euro ekki euro"
+
+#, fuzzy
+#~ msgid ""
+#~ "Snubbed means the peer has not sent us any data in the last 2 minutes"
+#~ msgstr ""
+#~ "Að vera sniðgenginn þýðir að jafninginn hefur ekki sent okkur nein gögn "
+#~ "síðustu 2 mínúturnar"
+
+#, fuzzy
+#~ msgid "How much data the peer has of the torrent"
+#~ msgstr "af"
+
+#, fuzzy
+#~ msgid "Whether or not the peer has DHT enabled"
+#~ msgstr "Hvort jafninginn sé með DHT virkjað"
+
+#, fuzzy
+#~ msgid ""
+#~ "The score of the peer, KTorrent uses this to determine who to upload to"
+#~ msgstr "stig af til til til"
+
+#, fuzzy
+#~ msgid "Only peers which have an upload slot will get data from us"
+#~ msgstr "Einungis jafningjar sem eiga sendingarhólf fá gögn frá okkur"
+
+#, fuzzy
+#~ msgid "The number of download and upload requests"
+#~ msgstr "Fjöldi fyrirspurna um niðurhal og sendingar"
+
+#, fuzzy
+#~ msgid "How much data we have downloaded from this peer"
+#~ msgstr "Hversu mikið af gögnum við erum búin að ná í frá þessum jafningja"
+
+#, fuzzy
+#~ msgid "How much data we have uploaded to this peer"
+#~ msgstr "Hversu mikið af gögnum við erum búin að senda til þessa jafningja"
+
+#, fuzzy
+#~ msgid "Whether the peer is interested in downloading data from us"
+#~ msgstr "Hvort jafninginn hefur áhuga á gögnum frá okkur"
+
+#, fuzzy
+#~ msgid "Whether we are interested in downloading from this peer"
+#~ msgstr "Hvort við höfum áhuga á gögnum frá þessum jafningja"
+
+#~ msgid "No limit"
+#~ msgstr "Engin mörk"
+
+#, fuzzy
+#~ msgid "Private"
+#~ msgstr "Prívat"
+
+#, fuzzy
+#~ msgid "Public"
+#~ msgstr "Almenn"
+
+#, fuzzy
+#~ msgid "Info Widget"
+#~ msgstr "Upplýsingar"
+
+#, fuzzy
+#~ msgctxt "@title:tab"
+#~ msgid "Status"
+#~ msgstr "Staða"
+
+#, fuzzy
+#~ msgid "Displays status information about a torrent"
+#~ msgstr "staða a"
+
+#, fuzzy
+#~| msgid "Files"
+#~ msgctxt "@title:tab"
+#~ msgid "Files"
+#~ msgstr "Skrár"
+
+#, fuzzy
+#~ msgid "Shows all the files in a torrent"
+#~ msgstr "allir \" a"
+
+#, fuzzy
+#~ msgid "Peers"
+#~ msgstr "Jafningjar"
+
+#, fuzzy
+#~ msgid "Displays all the peers you are connected to for a torrent"
+#~ msgstr "allir tengd(ur) til fyrir a"
+
+#, fuzzy
+#~ msgid "Chunks"
+#~ msgstr "Bútar"
+
+#, fuzzy
+#~ msgid "Displays all the chunks you are downloading, of a torrent"
+#~ msgstr "allir af a"
+
+#, fuzzy
+#~ msgid "Trackers"
+#~ msgstr "Skrásetjarar (trackers)"
+
+#, fuzzy
+#~ msgid "Displays information about all the trackers of a torrent"
+#~ msgstr "allir af a"
+
+#, fuzzy
+#~ msgid "Webseeds"
+#~ msgstr "Vefsáningar"
+
+#, fuzzy
+#~ msgid "Chunk"
+#~ msgstr "Bútur"
+
+#~ msgid "Progress"
+#~ msgstr "Framvinda"
+
+#~ msgid "Peer"
+#~ msgstr "Jafningi"
+
+#~ msgid "Files"
+#~ msgstr "Skrár"
+
+#, fuzzy
+#~ msgid "Number of the chunk"
+#~ msgstr "Númer búts"
+
+#, fuzzy
+#~ msgid "Download progress of the chunk"
+#~ msgstr "Sóknarframvinda búts"
+
+#, fuzzy
+#~ msgid "Which peer we are downloading it from"
+#~ msgstr "Frá hvaða jafningja er verið að sækja"
+
+#, fuzzy
+#~ msgid "Download speed of the chunk"
+#~ msgstr "Sóknarhraði búts"
+
+#, fuzzy
+#~ msgid "Which files the chunk is located in"
+#~ msgstr "Í hvaða skrám búturinn er staðsettur"
+
+#~ msgid "URL"
+#~ msgstr "Slóð "
+
+#, fuzzy
+#~ msgid "Speed"
+#~ msgstr "Hraði"
+
+#, fuzzy
+#~ msgid "Status"
+#~ msgstr "Staða"
+
+#~ msgid "Kick Peer"
+#~ msgstr "Sparka jafningja"
+
+#~ msgid "Ban Peer"
+#~ msgstr "Banna jafningja"
+
+#, fuzzy
+#~ msgid ""
+#~ "Cannot add the webseed %1, it is already part of the list of webseeds."
+#~ msgstr ""
+#~ "Get ekki bætt við vefsáningunni %1, hún er nú þegar hluti listans yfir "
+#~ "vefsáningar."
+
+#, fuzzy
+#~ msgid "Cannot remove webseed %1, it is part of the torrent."
+#~ msgstr "Get ekki fjarlægt vefsáninguna %1, hún er hluti af straumnum."
+
+#, fuzzy
+#~ msgid "Filter"
+#~ msgstr "Sía"
+
+#, fuzzy
+#~ msgctxt "Open file"
+#~ msgid "Open"
+#~ msgstr "Opna"
+
+#, fuzzy
+#~ msgid "Download first"
+#~ msgstr "Hala niður fyrst"
+
+#, fuzzy
+#~ msgid "Download normally"
+#~ msgstr "Hala niður eðlilega"
+
+#, fuzzy
+#~ msgid "Download last"
+#~ msgstr "Hala niður síðast"
+
+#, fuzzy
+#~ msgid "Do Not Download"
+#~ msgstr "Ekki sækja"
+
+#, fuzzy
+#~ msgid "Delete File(s)"
+#~ msgstr "Eyða skrá(m)"
+
+#, fuzzy
+#~ msgid "Move File"
+#~ msgstr "Færa skrá"
+
+#, fuzzy
+#~ msgid "Collapse Folder Tree"
+#~ msgstr "Fella saman möppugrein"
+
+#, fuzzy
+#~ msgid "Expand Folder Tree"
+#~ msgstr "Fella út möppugrein"
+
+#, fuzzy
+#~ msgid "File Tree"
+#~ msgstr "Skráatré"
+
+#, fuzzy
+#~| msgid "File Exists"
+#~ msgid "File List"
+#~ msgstr "Skráarlisti"
+
+#, fuzzy
+#~ msgid "Show Filter"
+#~ msgstr "Ný sía"
+
+#, fuzzy
+#~ msgid ""
+#~ "You will lose all data in this file, are you sure you want to do this?"
+#~ msgid_plural ""
+#~ "You will lose all data in these files, are you sure you want to do this?"
+#~ msgstr[0] ""
+#~ "Þú munt tapa öllum gögnum í þessari skrá, ertu viss um að þú viljir gera "
+#~ "þetta?"
+#~ msgstr[1] ""
+#~ "Þú munt tapa öllum gögnum í þessari skrá, ertu viss um að þú viljir gera "
+#~ "þetta?"
+
+#, fuzzy
+#~ msgid "Select a directory to move the data to."
+#~ msgstr "Veldu möppu til að gæra gögnin yfir í."
+
+#~ msgid "Url"
+#~ msgstr "Slóð"
+
+#~ msgid "Times Downloaded"
+#~ msgstr "Fjöldi niðurhala"
+
+#~ msgid "Next Update"
+#~ msgstr "Næsta uppfærsla"
+
+#, fuzzy
+#~ msgid "Priority"
+#~ msgstr "Forgangur"
+
+#, fuzzy
+#~ msgctxt "@title:column"
+#~ msgid "Preview"
+#~ msgstr "Forsýn"
+
+#~ msgctxt "Percent of File Downloaded"
+#~ msgid "% Complete"
+#~ msgstr "% lokið"
+
+#~ msgctxt "Download first"
+#~ msgid "First"
+#~ msgstr "Fyrst"
+
+#~ msgctxt "Download last"
+#~ msgid "Last"
+#~ msgstr "Síðast"
+
+#~ msgctxt "Download normally(not as first or last)"
+#~ msgid "Normal"
+#~ msgstr "Venjulega"
+
+#~ msgctxt "preview available"
+#~ msgid "Available"
+#~ msgstr "Tiltækt"
+
+#~ msgctxt "Preview pending"
+#~ msgid "Pending"
+#~ msgstr "Í bið"
+
+#~ msgctxt "No preview available"
+#~ msgid "No"
+#~ msgstr "Nei"
+
+#, fuzzy
+#~ msgid "%1 %"
+#~ msgstr "%1 %"
+
+#~ msgctxt "Preview available"
+#~ msgid "Available"
+#~ msgstr "Tiltækt"
+
+#, fuzzy
+#~ msgid "Add Trackers"
+#~ msgstr "Bæta við"
+
+#, fuzzy
+#~ msgid "Enter the URL's of the trackers, one per line:"
+#~ msgstr "Enter Slóð af:"
+
+#, fuzzy
+#~ msgid "There already is a tracker named <b>%1</b>."
+#~ msgstr "Þegar er til staðar skrásetjari (tracker) með heitinu <b>%1</b>."
+
+#, fuzzy
+#~ msgid ""
+#~ "<img src=\"available_color\">&nbsp; - Available Chunks<br><img src="
+#~ "\"unavailable_color\">&nbsp; - Unavailable Chunks<br><img src="
+#~ "\"excluded_color\">&nbsp; - Excluded Chunks"
+#~ msgstr ""
+#~ "<img src=\"available_color\">&nbsp; Tiltækt<br><img src="
+#~ "\"unavailable_color\">&nbsp;<br><img src=\"excluded_color\">&nbsp; Hafnað"
+
+#~ msgctxt "Download Normal (not as first or last)"
+#~ msgid "Normal"
+#~ msgstr "Venjulega"
+
+#, fuzzy
+#~ msgid "Scripts"
+#~ msgstr "Skriftur"
+
+#, fuzzy
+#~ msgid "Widget to start, stop and manage scripts"
+#~ msgstr "til byrja stöðva og"
+
+#~ msgid "Add Script"
+#~ msgstr "Bæta við skriftu"
+
+#~ msgid "Remove Script"
+#~ msgstr "Fjarlægja skriftu"
+
+#~ msgid "Run Script"
+#~ msgstr "Keyra skriftu"
+
+#~ msgid "Stop Script"
+#~ msgstr "Stöðva skriftu"
+
+#~ msgid "Edit Script"
+#~ msgstr "Breyta skriftu"
+
+#~ msgid "Properties"
+#~ msgstr "Eiginleikar"
+
+#~ msgid "Configure"
+#~ msgstr "Stilla"
+
+#~ msgid "Scripting"
+#~ msgstr "Skriftun"
+
+#, fuzzy
+#~ msgid "KTorrent Script Packages"
+#~ msgstr "Skrifta Pakkar"
+
+#~ msgid "All files"
+#~ msgstr "Allar skrár"
+
+#, fuzzy
+#~ msgid ""
+#~ "Removing these scripts will fully delete them from your disk. Are you "
+#~ "sure you want to do this ?"
+#~ msgstr "frá diskur til?"
+
+#, fuzzy
+#~ msgid "Script Properties"
+#~ msgstr "Skrifta Eiginleikar"
+
+#, fuzzy
+#~ msgid "Cannot open archive for reading."
+#~ msgstr "fyrir."
+
+#, fuzzy
+#~ msgid "Invalid archive."
+#~ msgstr "Ógilt."
+
+#, fuzzy
+#~ msgid "There is already a script package named %1 installed."
+#~ msgstr "er a."
+
+#, fuzzy
+#~ msgid ""
+#~ "Failed to load script from archive. There is something wrong with the "
+#~ "desktop file."
+#~ msgstr "Mistókst til frá er með."
+
+#, fuzzy
+#~ msgid "No script found in archive."
+#~ msgstr "Nei \"."
+
+#, fuzzy
+#~ msgid "System"
+#~ msgstr "Kerfi"
+
+#, fuzzy
+#~ msgid "Log Level"
+#~ msgstr "Annálar Borð"
+
+#, fuzzy
+#~ msgid "Debug"
+#~ msgstr "Aflúsa"
+
+#, fuzzy
+#~ msgid "Notice"
+#~ msgstr "Athugaðu"
+
+#, fuzzy
+#~ msgid "Important"
+#~ msgstr "Mikilvægt"
+
+#, fuzzy
+#~ msgid "All"
+#~ msgstr "Allt"
+
+#, fuzzy
+#~ msgid "None"
+#~ msgstr "Ekkert"
+
+#, fuzzy
+#~ msgid "Log"
+#~ msgstr "Annálar"
+
+#, fuzzy
+#~ msgid "View the logging output generated by KTorrent"
+#~ msgstr "Skoða úttak"
+
+#, fuzzy
+#~ msgid "Log Viewer"
+#~ msgstr "Annálar Skoðari"
+
+#, fuzzy
+#~ msgid "File Download Order"
+#~ msgstr "Skrá Hlaða niður Uppröðun"
+
+#, fuzzy
+#~ msgid "File download order for <b>%1</b>:"
+#~ msgstr "Skrá fyrir<b></b>:"
+
+#~ msgid " Engine:"
+#~ msgstr " Vél:"
+
+#~ msgid "Open in New Tab"
+#~ msgstr "Opna í nýjum flipa"
+
+#, fuzzy
+#~ msgid "Copy URL"
+#~ msgstr "Afrita Slóð"
+
+#~ msgid "Searching for %1..."
+#~ msgstr "Leita að %1..."
+
+#~ msgid "torrent files"
+#~ msgstr "Torrent skrár"
+
+#~ msgid "Search finished"
+#~ msgstr "Leit lokið"
+
+#, fuzzy
+#~ msgctxt "plugin name"
+#~ msgid "Search"
+#~ msgstr "Leita"
+
+#, fuzzy
+#~ msgid "Add a Search Engine"
+#~ msgstr "Bæta við a Leita Vél"
+
+#, fuzzy
+#~ msgid ""
+#~ "Enter the hostname of the search engine (for example www.google.com) :"
+#~ msgstr "Enter af fyrir:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Opensearch is not supported by %1, you will need to enter the search URL "
+#~ "manually. The URL should contain {searchTerms}, ktorrent will replace "
+#~ "this by the thing you are searching for."
+#~ msgstr "er ekki til Slóð Slóð innihalda fyrir."
+
+#, fuzzy
+#~ msgid "The URL %1 does not contain {searchTerms}."
+#~ msgstr "Slóð ekki innihalda."
+
+#~ msgid "Search for %1"
+#~ msgstr "Leita eftir %1"
+
+#, fuzzy
+#~ msgid "Search"
+#~ msgstr "Leita"
+
+#~ msgid "Home"
+#~ msgstr "Heim"
+
+#, fuzzy
+#~ msgid "KTorrent"
+#~ msgstr "KTorrent"
+
+#, fuzzy
+#~ msgctxt "KDE 4 tag line, see http://kde.org/img/kde40.png"
+#~ msgid "Be free."
+#~ msgstr "Vertu frjáls."
+
+#, fuzzy
+#~ msgid "Search the web for torrents."
+#~ msgstr "Möppur til fyrir:"
+
+#, fuzzy
+#~ msgid "Failed to parse %1"
+#~ msgstr "Mistókst til 1"
+
+#, fuzzy
+#~ msgid "Url: <b>%1</b>"
+#~ msgstr "Slóð<b></b>"
+
+#~ msgid "Search Text"
+#~ msgstr "Leita í texta"
+
+#, fuzzy
+#~ msgid "Search Engine"
+#~ msgstr "Leitarvél"
+
+#, fuzzy
+#~ msgid "Search Engine Label"
+#~ msgstr "Leita Vél Merki"
+
+#~ msgid " Engine: "
+#~ msgstr " Vél: "
+
+#, fuzzy
+#~ msgid "Do you want to download this magnet link?"
+#~ msgstr "Framkvæma til eða?"
+
+#, fuzzy
+#~ msgid "Do you want to download or save the torrent?"
+#~ msgstr "Framkvæma til eða?"
+
+#~ msgid "Download Torrent"
+#~ msgstr "Hlaða niður Torrent straumi"
+
+#, fuzzy
+#~ msgid "Download"
+#~ msgstr "Hlaða niður"
+
+#~ msgid "Add an item"
+#~ msgstr "Bæta við hlut"
+
+#, fuzzy
+#~ msgid "No day has been selected."
+#~ msgstr "Nei daginn."
+
+#, fuzzy
+#~ msgid ""
+#~ "Failed to add item, because it conflicts with another item on the "
+#~ "schedule."
+#~ msgstr "Mistókst til árekstur við með á."
+
+#, fuzzy
+#~ msgid ""
+#~ "This item could not be added to all selected days, because it conflicts "
+#~ "with another item on the schedule."
+#~ msgstr "ekki til allir dagar árekstur við með á."
+
+#, fuzzy
+#~ msgid "Edit the bandwidth schedule"
+#~ msgstr "Breyta"
+
+#, fuzzy
+#~ msgid "Load Schedule"
+#~ msgstr "Hlaða Vinnuáætlun"
+
+#, fuzzy
+#~ msgid "Save Schedule"
+#~ msgstr "Vista Vinnuáætlun"
+
+#~ msgid "New Item"
+#~ msgstr "Nýr hlutur"
+
+#~ msgid "Remove Item"
+#~ msgstr "Fjarlægja hlut"
+
+#~ msgid "Edit Item"
+#~ msgstr "Sýsla með hlut"
+
+#, fuzzy
+#~ msgid "Clear Schedule"
+#~ msgstr "Hreinsa Vinnuáætlun"
+
+#, fuzzy
+#~ msgid "Scheduler Active"
+#~ msgstr "Vinnuáætlun lína:"
+
+#, fuzzy
+#~ msgid "Activate or deactivate the scheduler"
+#~ msgstr "Bæta við a nýtt til"
+
+#, fuzzy
+#~ msgid ""
+#~ "This item conflicts with another item in the schedule, we cannot change "
+#~ "it."
+#~ msgstr "árekstur við með \"."
+
+#, fuzzy
+#~ msgid "Current schedule: suspended"
+#~ msgstr "Núverandi í bið"
+
+#, fuzzy
+#~ msgid "Current schedule: %1/s download, %2/s upload"
+#~ msgstr "Núverandi KiB s KiB s"
+
+#, fuzzy
+#~ msgid "Current schedule: unlimited download, %1/s upload"
+#~ msgstr "Núverandi ótakmarkað KiB s"
+
+#, fuzzy
+#~ msgid "Current schedule: %1/s download, unlimited upload"
+#~ msgstr "Núverandi KiB s ótakmarkað"
+
+#, fuzzy
+#~ msgid "Current schedule: unlimited upload and download"
+#~ msgstr "Núverandi ótakmarkað og"
+
+#, fuzzy
+#~ msgid "Current schedule:"
+#~ msgstr "Núverandi:"
+
+#, fuzzy
+#~ msgid "Edit an item"
+#~ msgstr "Breyta"
+
+#, fuzzy
+#~ msgid "The file %1 is corrupted or not a proper KTorrent schedule file."
+#~ msgstr "er eða ekki a."
+
+#, fuzzy
+#~ msgid "Suspended"
+#~ msgstr "Hraði"
+
+#, fuzzy
+#~ msgid "Unlimited"
+#~ msgstr "Ótakmarkað"
+
+#, fuzzy
+#~ msgid ""
+#~ "%1 Down\n"
+#~ "%2 Up"
+#~ msgstr "Niður n Upp"
+
+#, fuzzy
+#~ msgctxt "@title:window"
+#~ msgid "Configure Shutdown"
+#~ msgstr "Stilla Slökkva"
+
+#, fuzzy
+#~ msgid "Shutdown"
+#~ msgstr "Slökkva"
+
+#, fuzzy
+#~ msgid "Lock"
+#~ msgstr "Læsa"
+
+#, fuzzy
+#~ msgid "Standby"
+#~ msgstr "Í bið"
+
+#, fuzzy
+#~ msgid "Sleep (suspend to RAM)"
+#~ msgstr "Svæfa (setja í bið í RAM)"
+
+#, fuzzy
+#~ msgid "Hibernate (suspend to disk)"
+#~ msgstr "Leggja í dvala (setja í bið á diski)"
+
+#, fuzzy
+#~ msgid "When all torrents finish downloading"
+#~ msgstr "allir yfirborð"
+
+#, fuzzy
+#~ msgid "When all torrents finish seeding"
+#~ msgstr "allir yfirborð"
+
+#, fuzzy
+#~ msgid "Shutdown Enabled"
+#~ msgstr "Slökkva Virkt"
+
+#, fuzzy
+#~ msgid "Configure Shutdown"
+#~ msgstr "Stilla Slökkva"
+
+#, fuzzy
+#~ msgid "Downloading finishes"
+#~ msgstr "Sæki"
+
+#, fuzzy
+#~ msgid "Event"
+#~ msgstr "Atburður"
+
+#~ msgid "Loading txt file..."
+#~ msgstr "Hleð inn textaskrá..."
+
+#, fuzzy
+#~ msgid "There are no IP addresses to convert in %1"
+#~ msgstr "nei IP til \" 1"
+
+#, fuzzy
+#~ msgid "Converting..."
+#~ msgstr "Umbreyting..."
+
+#, fuzzy
+#~ msgid "Cannot open zip file %1."
+#~ msgstr "2"
+
+#, fuzzy
+#~ msgid "Cannot find blocklist in zip file %1."
+#~ msgstr "1"
+
+#, fuzzy
+#~ msgid ""
+#~ "Filter file (level1.dat) already exists, do you want to convert it again?"
+#~ msgstr "Sía til?"
+
+#~ msgid "File Exists"
+#~ msgstr "Skráin er þegar til"
+
+#, fuzzy
+#~ msgid "IP Filter"
+#~ msgstr "IP Sía"
+
+#~ msgid "Status: Loaded and running."
+#~ msgstr "Staða: Hlaðið inn og í keyrslu."
+
+#~ msgid "Status: Not loaded."
+#~ msgstr "Staða: Ekki hlaðið."
+
+#, fuzzy
+#~ msgid "Status: Downloading and converting new block list..."
+#~ msgstr "Staða Sæki og nýtt."
+
+#, fuzzy
+#~ msgid "No update done yet."
+#~ msgstr "Nei lokið."
+
+#, fuzzy
+#~ msgid "%1 (Last update attempt failed.)"
+#~ msgstr "Síðasta mistókst"
+
+#~ msgid "Never"
+#~ msgstr "Aldrei"
+
+#, fuzzy
+#~ msgid "Copy Magnet URI"
+#~ msgstr "Afrita Slóð"
+
+#, fuzzy
+#~ msgid "KTorrent's UPnP test application"
+#~ msgstr "s"
+
+#, fuzzy
+#~ msgid "(C) 2005 - 2007 Joris Guisson and Ivan Vasic"
+#~ msgstr "C og"
+
+#, fuzzy
+#~ msgid "KTMagnetDownloader"
+#~ msgstr "Tími"
+
+#, fuzzy
+#~ msgid "(C) 2009 Joris Guisson"
+#~ msgstr "Joris Guisson"
+
+#, fuzzy
+#~ msgid "Proxy"
+#~ msgstr "Milliþjónn"
+
+#, fuzzy
+#~ msgid "Network"
+#~ msgstr "Netkerfi"
+
+#, fuzzy
+#~ msgid "All interfaces"
+#~ msgstr "Allt"
+
+#~ msgid "BitTorrent"
+#~ msgstr "BitTorrent"
+
+#, fuzzy
+#~ msgid "Advanced"
+#~ msgstr "Nánar"
+
+#, fuzzy
+#~ msgid "Application"
+#~ msgstr "Forrit"
+
+#, fuzzy
+#~ msgid "Queue Manager"
+#~ msgstr "Biðraðarstjóri"
+
+#, fuzzy
+#~ msgid "Calculate Recommended Settings"
+#~ msgstr "Reikna Stillingar"
+
+#, fuzzy
+#~ msgid "(= %1/s)"
+#~ msgstr "s"
+
+#, fuzzy
+#~ msgid "Order"
+#~ msgstr "Röð"
+
+#, fuzzy
+#~ msgid "Name"
+#~ msgstr "Nafn"
+
+#, fuzzy
+#~ msgid "Time Stalled"
+#~ msgstr "Tími Töf"
+
+#, fuzzy
+#~ msgid "Running"
+#~ msgstr "Keyrandi"
+
+#, fuzzy
+#~ msgid "Queued"
+#~ msgstr "Í biðröð"
+
+#, fuzzy
+#~ msgid "Not queued"
+#~ msgstr "Ekki"
+
+#, fuzzy
+#~ msgid "%1"
+#~ msgstr "%1"
+
+#, fuzzy
+#~ msgid ""
+#~ "Order of a torrent in the queue.\n"
+#~ "Use drag and drop or the move up and down buttons on the right to change "
+#~ "the order."
+#~ msgstr "Uppröðun af a \" og eða og á hægri til."
+
+#, fuzzy
+#~ msgid "Show Search"
+#~ msgstr "Leita"
+
+#, fuzzy
+#~ msgid "Move Top"
+#~ msgstr "Færa upp"
+
+#, fuzzy
+#~ msgid "Move a torrent to the top of the queue"
+#~ msgstr "Flytja a til toppur af"
+
+#, fuzzy
+#~ msgid "Move Up"
+#~ msgstr "Færa upp"
+
+#, fuzzy
+#~ msgid "Move a torrent up in the queue"
+#~ msgstr "Flytja a \""
+
+#, fuzzy
+#~ msgid "Move Down"
+#~ msgstr "Færa niður"
+
+#, fuzzy
+#~ msgid "Move a torrent down in the queue"
+#~ msgstr "Flytja a \""
+
+#, fuzzy
+#~ msgid "Move Bottom"
+#~ msgstr "Neðst"
+
+#, fuzzy
+#~ msgid "Move a torrent to the bottom of the queue"
+#~ msgstr "Flytja a til botn af"
+
+#, fuzzy
+#~ msgid "Start Magnet"
+#~ msgstr "Ræsa"
+
+#, fuzzy
+#~ msgid "Remove Magnet"
+#~ msgstr "Fjarlægja"
+
+#, fuzzy
+#~| msgid "Start"
+#~ msgctxt "@action Start all selected torrents in the current tab"
+#~ msgid "Start"
+#~ msgstr "Ræsa"
+
+#, fuzzy
+#~ msgid "Start all selected torrents in the current tab"
+#~ msgstr "Ræsa allir \""
+
+#, fuzzy
+#~ msgctxt "@action Stop all selected torrents in the current tab"
+#~ msgid "Stop"
+#~ msgstr "Stöðva"
+
+#, fuzzy
+#~ msgid "Stop all selected torrents in the current tab"
+#~ msgstr "Stöðva allir \""
+
+#, fuzzy
+#~ msgctxt "@action Pause all selected torrents in the current tab"
+#~ msgid "Pause"
+#~ msgstr "Bíða"
+
+#, fuzzy
+#~ msgid "Pause all selected torrents in the current tab"
+#~ msgstr "Ræsa allir \""
+
+#, fuzzy
+#~ msgctxt "@action Remove all selected torrents in the current tab"
+#~ msgid "Remove"
+#~ msgstr "Fjarlægja"
+
+#, fuzzy
+#~ msgid "Remove all selected torrents in the current tab"
+#~ msgstr "Fjarlægja allir \""
+
+#, fuzzy
+#~ msgctxt "@action Start all torrents in the current tab"
+#~ msgid "Start All"
+#~ msgstr "Ræsa Allt"
+
+#, fuzzy
+#~ msgid "Start all torrents in the current tab"
+#~ msgstr "Ræsa allir \""
+
+#, fuzzy
+#~ msgctxt "@action Stop all torrents in the current tab"
+#~ msgid "Stop All"
+#~ msgstr "Stöðva allt"
+
+#, fuzzy
+#~ msgid "Stop all torrents in the current tab"
+#~ msgstr "Stöðva allir \""
+
+#, fuzzy
+#~ msgid "Remove Torrent and Data"
+#~ msgstr "Fjarlægja og Gögn"
+
+#, fuzzy
+#~ msgid "Rename Torrent"
+#~ msgstr "Endurnefna"
+
+#, fuzzy
+#~ msgid "Add Peers"
+#~ msgstr "Bæta við"
+
+#, fuzzy
+#~ msgid "Peer Exchange"
+#~ msgstr "Exchange"
+
+#, fuzzy
+#~ msgid "Manual Announce"
+#~ msgstr "Handvirk tilkynning"
+
+#, fuzzy
+#~ msgid "Scrape"
+#~ msgstr "Fá stöðu"
+
+#, fuzzy
+#~ msgid "Preview"
+#~ msgstr "Forsýn"
+
+#, fuzzy
+#~ msgid "Data Directory"
+#~ msgstr "Gögn Mappa"
+
+#, fuzzy
+#~ msgid "Temporary Directory"
+#~ msgstr "Vinnumappa"
+
+#, fuzzy
+#~ msgid "Move Data"
+#~ msgstr "Flytja Gögn"
+
+#, fuzzy
+#~ msgid "Remove from Group"
+#~ msgstr "Fjarlægja frá Hópur"
+
+#~ msgid "New Group"
+#~ msgstr "Nýr hópur"
+
+#, fuzzy
+#~ msgid "Check Data"
+#~ msgstr "Virkja Gögn"
+
+#, fuzzy
+#~ msgid "Check all the data of a torrent"
+#~ msgstr "Virkja allir af a"
+
+#, fuzzy
+#~ msgid "Open Directory"
+#~ msgstr "Open Directory"
+
+#, fuzzy
+#~ msgid "Add to Group"
+#~ msgstr "Bæta við til Hópur"
+
+#, fuzzy
+#~ msgid "Copy Torrent URL"
+#~ msgstr "Afrita Slóð"
+
+#, fuzzy
+#~ msgid "Export Torrent"
+#~ msgstr "Flytja út"
+
+#, fuzzy
+#~ msgid "Speed Limits"
+#~ msgstr "Hraði Takmörk"
+
+#, fuzzy
+#~ msgid "Set the speed limits of individual torrents"
+#~ msgstr "Setja af"
+
+#, fuzzy
+#~ msgid "Columns"
+#~ msgstr "Dálkar"
+
+#, fuzzy
+#~ msgid ""
+#~ "The torrent <b>%1</b> has not finished downloading, do you want to delete "
+#~ "the incomplete data, too?"
+#~ msgstr "<b></b> ekki búið til ókláraður?"
+
+#, fuzzy
+#~ msgid "Remove Download"
+#~ msgstr "Fjarlægja Hlaða niður"
+
+#, fuzzy
+#~ msgid "Delete Data"
+#~ msgstr "Eyða Gögn"
+
+#, fuzzy
+#~ msgid "Keep Data"
+#~ msgstr "Halda Gögn"
+
+#, fuzzy
+#~ msgid ""
+#~ "You will lose all the downloaded data. Are you sure you want to do this?"
+#~ msgstr "Þú allir til?"
+
+#, fuzzy
+#~ msgid "Remove Torrent"
+#~ msgstr "Fjarlægja"
+
+#, fuzzy
+#~ msgid "Size"
+#~ msgstr "Stærð"
+
+#, fuzzy
+#~ msgid "Time Left"
+#~ msgstr "Tími Vinstri"
+
+#, fuzzy
+#~ msgid "% Complete"
+#~ msgstr "% lokið"
+
+#, fuzzy
+#~ msgid "Share Ratio"
+#~ msgstr "Deila Hlutfall"
+
+#, fuzzy
+#~ msgid "Time Downloaded"
+#~ msgstr "Tími"
+
+#, fuzzy
+#~ msgid "Time Seeded"
+#~ msgstr "Tími"
+
+#, fuzzy
+#~ msgid "Location"
+#~ msgstr "Staðsetning"
+
+#, fuzzy
+#~ msgid "Added"
+#~ msgstr "Bæta við straumi"
+
+#, fuzzy
+#~ msgid "How much data we have downloaded of the torrent"
+#~ msgstr "af"
+
+#, fuzzy
+#~ msgid "Total size of the torrent, excluded files are not included"
+#~ msgstr "Samtals stærð af ekki"
+
+#, fuzzy
+#~ msgid "Current download speed"
+#~ msgstr "Núverandi"
+
+#, fuzzy
+#~ msgid "Current upload speed"
+#~ msgstr "Núverandi"
+
+#, fuzzy
+#~ msgid ""
+#~ "How much time is left before the torrent is finished or before the "
+#~ "maximum share ratio is reached, if that is enabled"
+#~ msgstr "Tími er vinstri er búið eða hlutfall er er virkt"
+
+#, fuzzy
+#~ msgid ""
+#~ "How many seeders we are connected to (How many seeders there are "
+#~ "according to the tracker)"
+#~ msgstr "tengd(ur) til til"
+
+#, fuzzy
+#~ msgid ""
+#~ "How many leechers we are connected to (How many leechers there are "
+#~ "according to the tracker)"
+#~ msgstr "tengd(ur) til til"
+
+#, fuzzy
+#~ msgid ""
+#~ "The percentage of data we have of the whole torrent, not including "
+#~ "excluded files"
+#~ msgstr "af af ekki"
+
+#, fuzzy
+#~ msgid ""
+#~ "Share ratio is the number of bytes uploaded divided by the number of "
+#~ "bytes downloaded"
+#~ msgstr "Deila hlutfall er af bæti af bæti"
+
+#, fuzzy
+#~ msgid "The location of the torrent's data on disk"
+#~ msgstr "af s á diskur"
+
+#, fuzzy
+#~ msgid "When this torrent was added"
+#~ msgstr "allir yfirborð"
+
+#, fuzzy
+#~ msgid "%1<br>Url: <b>%2</b>"
+#~ msgstr "<br> Slóð<b></b>"
+
+#, fuzzy
+#~ msgid "Policy for the %1 group"
+#~ msgstr "Stefna fyrir flokkur"
+
+#~ msgid "Custom Groups"
+#~ msgstr "Sérsniðnir hópar"
+
+#~ msgid "Edit Name"
+#~ msgstr "Breyta nafni"
+
+#~ msgid "Remove Group"
+#~ msgstr "Fjarlægja hóp"
+
+#~ msgid "Open Tab"
+#~ msgstr "Opna flipa"
+
+#~ msgid "Group Policy"
+#~ msgstr "Hópastefna (group policy)"
+
+#~ msgid "Please enter the group name."
+#~ msgstr "Gefðu upp heiti hóps."
+
+#~ msgid "The group %1 already exists."
+#~ msgstr "Hópurinn %1 er þegar til."
+
+#, fuzzy
+#~ msgid "Download Limit"
+#~ msgstr "Niðurhalstakmörk"
+
+#, fuzzy
+#~ msgid "Upload Limit"
+#~ msgstr "Sendingartakmörk"
+
+#, fuzzy
+#~ msgid "Assured Download Speed"
+#~ msgstr "Hlaða niður Hraði"
+
+#, fuzzy
+#~ msgid "Assured Upload Speed"
+#~ msgstr "Senda Hraði"
+
+#~ msgid "No assured speed"
+#~ msgstr "Enginn tryggur hraði"
+
+#, fuzzy
+#~ msgid "Create A Torrent"
+#~ msgstr "Búa til A"
+
+#, fuzzy
+#~ msgid "All Torrents"
+#~ msgstr "Allt"
+
+#, fuzzy
+#~ msgid "Invalid url %1"
+#~ msgstr "Ógilt slóð 1"
+
+#, fuzzy
+#~ msgid "Only HTTP is supported for webseeding."
+#~ msgstr "Aðeins HTTP er fyrir."
+
+#, fuzzy
+#~ msgid "You must select a file or a folder."
+#~ msgstr "Þú a eða a."
+
+#, fuzzy
+#~ msgid ""
+#~ "You have not added a tracker, are you sure you want to create this "
+#~ "torrent ?"
+#~ msgstr "Þú ekki a til?"
+
+#, fuzzy
+#~ msgid "You must add at least one node."
+#~ msgstr "Þú einn."
+
+#, fuzzy
+#~ msgid "Torrent Files (*.torrent)"
+#~ msgstr "Skrár"
+
+#, fuzzy
+#~ msgid "Choose a file to save the torrent"
+#~ msgstr "a til"
+
+#, fuzzy
+#~ msgid "Show a file tree"
+#~ msgstr "allir \" a"
+
+#, fuzzy
+#~| msgid "Choose a file"
+#~ msgid "Show a file list"
+#~ msgstr "Veldu skrá"
+
+#, fuzzy
+#~ msgid ""
+#~ "Some files of this torrent have been found in the completed downloads "
+#~ "directory. Do you want to import these files and use the completed "
+#~ "downloads directory as the location?"
+#~ msgstr "Skrár af \" Framkvæma til og til?"
+
+#, fuzzy
+#~ msgid ""
+#~ "All files of this torrent have been found in the completed downloads "
+#~ "directory. Do you want to import these files and use the completed "
+#~ "downloads directory as the location?"
+#~ msgstr "Skrár af \" Framkvæma til og til?"
+
+#, fuzzy
+#~ msgid ""
+#~ "The file <b>%1</b> was found in the completed downloads directory. Do you "
+#~ "want to import this file?"
+#~ msgstr "Skrár af \" Framkvæma til og til?"
+
+#, fuzzy
+#~ msgid "The directory %1 does not exist, do you want to create it?"
+#~ msgstr "ekki til?"
+
+#, fuzzy
+#~ msgid ""
+#~ "You have deselected the following existing files. You will lose all data "
+#~ "in these files, are you sure you want to do this?"
+#~ msgstr "Þú Þú allir \" til?"
+
+#, fuzzy
+#~ msgid "Yes, delete the files"
+#~ msgstr "Já"
+
+#, fuzzy
+#~ msgid "No, keep the files"
+#~ msgstr "Nei halda"
+
+#, fuzzy
+#~ msgctxt "We are %1 bytes short of what we need"
+#~ msgid "%1 short"
+#~ msgstr "short"
+
+#, fuzzy
+#~ msgid "Existing files: <b>None</b>"
+#~ msgstr "Titill<b></b>"
+
+#, fuzzy
+#~ msgid "Existing files: <b>All</b>"
+#~ msgstr "Titill<b></b>"
+
+#, fuzzy
+#~ msgid "Existing files: <b>%1</b> of <b>%2</b>"
+#~ msgstr "Titill<b></b><br/> Flytjandi<b></b>"
+
+#, fuzzy
+#~ msgid "Existing file: <b>No</b>"
+#~ msgstr "Titill<b></b>"
+
+#, fuzzy
+#~ msgid "Existing file: <b>Yes</b>"
+#~ msgstr "Titill<b></b>"
+
+#~ msgid " KiB/s"
+#~ msgstr " KiB/s"
+
+#, fuzzy
+#~ msgid "Select the directory where the data now is."
+#~ msgstr "Velja núna er."
+
+#, fuzzy
+#~ msgid ""
+#~ "The data files are not present in the location you selected. Do you want "
+#~ "to create all the files in the selected directory?"
+#~ msgstr "ekki nútíð \" Framkvæma til allir \"?"
+
+#, fuzzy
+#~ msgid ""
+#~ "Not all files were found in the new location; some are still missing. Do "
+#~ "you want to create the missing files in the selected directory?"
+#~ msgstr "Ekki allir \" nýtt eitthvað Framkvæma til \"?"
+
+#, fuzzy
+#~ msgid ""
+#~ "The data file is not present in the location you selected. Do you want to "
+#~ "create the file in the selected directory?"
+#~ msgstr "er ekki nútíð \" Framkvæma til \"?"
+
+#~ msgid "Importing <b>%1</b> ..."
+#~ msgstr "Flyt inn <b>%1</b> ..."
+
+#~ msgid "Finished import."
+#~ msgstr "Innflutningi lokið."
+
+#~ msgid "Torrent <b>%1</b> already loaded."
+#~ msgstr "Torrent straumurinn <b>%1</b> hefur þegar verið hlaðið inn."
+
+#~ msgid "Failed to load <b>%1</b>"
+#~ msgstr "Mistókst að hlaða inn <b>%1</b>"
+
+#~ msgid "Failed to import <b>%1</b> : %2"
+#~ msgstr "Mistókst að flytja inn <b>%1</b> : %2"
+
+#~ msgid "Imported <b>%1</b>"
+#~ msgstr "Flutti inn <b>%1</b>"
+
+#~ msgid "Torrent files"
+#~ msgstr "Torrent skrár"
+
+#, fuzzy
+#~ msgid "Cannot verify data : %1"
+#~ msgstr "1"
+
+#, fuzzy
+#~ msgid "Cannot load the torrent file : %1"
+#~ msgstr "1"
+
+#~ msgid "Open an URL"
+#~ msgstr "Opna slóð"
+
+#, fuzzy
+#~ msgid "Invalid URL: %1"
+#~ msgstr "Ógild slóð: %1"
+
+#, fuzzy
+#~ msgid "Speed down: %1 / up: %2"
+#~ msgstr "Hraði 2"
+
+#, fuzzy
+#~ msgid "Transferred down: %1 / up: %2"
+#~ msgstr "2"
+
+#, fuzzy
+#~ msgid "DHT: off"
+#~ msgstr "af"
+
+#~ msgid "IP Filter List"
+#~ msgstr "IP síulisti"
+
+#, fuzzy
+#~| msgid ""
+#~| "Invalid IP address %1. You must enter an IP address in the format 'XXX."
+#~| "XXX.XXX.XXX'. You can also use wildcards for ranges like '127.0.0.*'."
+#~ msgid ""
+#~ "Invalid IP address <b>%1</b>. IP addresses must be in the format 'XXX.XXX."
+#~ "XXX.XXX'.<br/><br/>You can also use wildcards like '127.0.0.*' or specify "
+#~ "ranges like '200.10.10.0-200.10.10.40'."
+#~ msgstr ""
+#~ "Ógilt IP vistfang %1. Þú verður að setja IP vistföng inn á sniðinu 'XXX."
+#~ "XXX.XXX.XXX'. Þú getur líka notað útskiptitákn við tilgreiningu breiðari "
+#~ "sviða eins og '127.0.0.*'."
+
+#~ msgid "Choose a file"
+#~ msgstr "Veldu skrá"
+
+#~ msgid "Choose a filename to save under"
+#~ msgstr "Veldu skráarnafn til að vista undir"
+
+#, fuzzy
+#~ msgid "Bittorrent client for KDE"
+#~ msgstr "Bittorrent fyrir KDE"
+
+#, fuzzy
+#~ msgid "(C) 2005 - 2010 Joris Guisson and Ivan Vasic"
+#~ msgstr "C og"
+
+#, fuzzy
+#~ msgid "Joris Guisson"
+#~ msgstr "Joris Guisson"
+
+#, fuzzy
+#~ msgid "Ivan Vasic"
+#~ msgstr "Ivan Vasic"
+
+#, fuzzy
+#~ msgid "Alan Jones"
+#~ msgstr "Alan Jones"
+
+#, fuzzy
+#~ msgid "BitFinder Plugin"
+#~ msgstr "Íforrit"
+
+#, fuzzy
+#~ msgid "Diego R. Brogna"
+#~ msgstr "Diego R. Brogna"
+
+#, fuzzy
+#~ msgid "Webinterface Plugin"
+#~ msgstr "Vefviðmót Íforrit"
+
+#, fuzzy
+#~ msgid "Krzysztof Kundzicz"
+#~ msgstr "Krzysztof Kundzicz"
+
+#, fuzzy
+#~ msgid "Statistics Plugin"
+#~ msgstr "Tölfræði Íforrit"
+
+#, fuzzy
+#~ msgid "Mladen Babic"
+#~ msgstr "Mladen Babic"
+
+#, fuzzy
+#~ msgid "Application icon and a couple of others"
+#~ msgstr "Forrit og a af"
+
+#, fuzzy
+#~ msgid "Adam Treat"
+#~ msgstr "Adam Treat"
+
+#, fuzzy
+#~ msgid "Danny Allen"
+#~ msgstr "Danny Allen"
+
+#, fuzzy
+#~ msgid "Vincent Wagelaar"
+#~ msgstr "Vincent Wagelaar"
+
+#, fuzzy
+#~ msgid "Felix Berger"
+#~ msgstr "Felix Berger"
+
+#, fuzzy
+#~ msgid "ChunkBar's tooltip and IWFileTreeItem sorting"
+#~ msgstr "s og"
+
+#, fuzzy
+#~ msgid "Andreas Kling"
+#~ msgstr "Andreas Kling"
+
+#, fuzzy
+#~ msgid "Felipe Sateler"
+#~ msgstr "Felipe Sateler"
+
+#, fuzzy
+#~ msgid ""
+#~ "Country locator for InfoWidget plugin. Flags are taken from http://flags."
+#~ "blogpotato.de/ so thanks to them too."
+#~ msgstr "Land fyrir íforrit Flögg fráhttp://flags.blogpotato.de/ til."
+
+#, fuzzy
+#~ msgid "Adam Forsyth"
+#~ msgstr "Adam Forsyth"
+
+#, fuzzy
+#~ msgid "File prioritization and some other patches"
+#~ msgstr "Skrá og eitthvað annað"
+
+#, fuzzy
+#~ msgid "Thomas Bernard"
+#~ msgstr "Thomas Bernard"
+
+#, fuzzy
+#~ msgid "Miniupnp was used as an example for our own UPnP implementation"
+#~ msgstr "sem fyrir"
+
+#, fuzzy
+#~ msgid "Diego Rosario Brogna"
+#~ msgstr "Diego Rosario Brogna"
+
+#, fuzzy
+#~ msgid "Global max share ratio patch"
+#~ msgstr "Víðvært max hlutfall"
+
+#, fuzzy
+#~ msgid "Lesly Weyts"
+#~ msgstr "Lesly Weyts"
+
+#, fuzzy
+#~ msgid "Kevin Andre"
+#~ msgstr "Kevin Andre"
+
+#, fuzzy
+#~ msgid "Dagur Valberg Johannsson"
+#~ msgstr "Dagur Valberg Johannsson"
+
+#, fuzzy
+#~ msgid "Alexander Dymo"
+#~ msgstr "Alexander Dymo"
+
+#, fuzzy
+#~ msgid "IDEAl code from KDevelop"
+#~ msgstr "frá KDevelop"
+
+#, fuzzy
+#~ msgid "Scott Wolchok"
+#~ msgstr "Scott Wolchok"
+
+#, fuzzy
+#~ msgid "Conversion speed improvement in ipfilter plugin"
+#~ msgstr "Umbreyting \" íforrit"
+
+#, fuzzy
+#~ msgid "Bryan Burns of Juniper Networks"
+#~ msgstr "Bryan Burns frá Juniper Networks"
+
+#, fuzzy
+#~ msgid "Discovered 2 security vulnerabilities (both are fixed)"
+#~ msgstr "lagað"
+
+#, fuzzy
+#~ msgid "Goten Xiao"
+#~ msgstr "Goten Xiao"
+
+#, fuzzy
+#~ msgid "Patch to load silently with a save location"
+#~ msgstr "til með a"
+
+#, fuzzy
+#~ msgid "Rapsys"
+#~ msgstr "Rapsys"
+
+#, fuzzy
+#~ msgid "Fixes in PHP code of webinterface"
+#~ msgstr "\" PHP af"
+
+#, fuzzy
+#~ msgid "Athantor"
+#~ msgstr "Athantor"
+
+#, fuzzy
+#~ msgid "XFS specific disk preallocation"
+#~ msgstr "diskur"
+
+#, fuzzy
+#~ msgid "twisted_fall"
+#~ msgstr "twisted_fall"
+
+#, fuzzy
+#~ msgid "Patch to not show very low speeds"
+#~ msgstr "til ekki lár"
+
+#, fuzzy
+#~ msgid "Lucke"
+#~ msgstr "Lucke"
+
+#, fuzzy
+#~ msgid "Patch to show potentially firewalled status"
+#~ msgstr "til staða"
+
+#, fuzzy
+#~ msgid "Modestas Vainius"
+#~ msgstr "Modestas Vainius"
+
+#, fuzzy
+#~ msgid "Stefan Monov"
+#~ msgstr "Stefan Monov"
+
+#, fuzzy
+#~ msgid "Patch to hide menu bar"
+#~ msgstr "til"
+
+#, fuzzy
+#~ msgid "The_Kernel"
+#~ msgstr "The_Kernel"
+
+#, fuzzy
+#~ msgid "Patch to change file priorities in the webgui"
+#~ msgstr "til \""
+
+#, fuzzy
+#~ msgid "Rafał Miłecki"
+#~ msgstr "Rafał Miłecki"
+
+#, fuzzy
+#~ msgid "Ozzi"
+#~ msgstr "Ozzi"
+
+#, fuzzy
+#~ msgid "Fixes for several warnings"
+#~ msgstr "fyrir"
+
+#, fuzzy
+#~ msgid "Markus Brueffer"
+#~ msgstr "Markus Brueffer"
+
+#, fuzzy
+#~ msgid "Patch to fix free diskspace calculation on FreeBSD"
+#~ msgstr "til á"
+
+#, fuzzy
+#~ msgid "Lukas Appelhans"
+#~ msgstr "Lukas Appelhans"
+
+#, fuzzy
+#~ msgid "Patch to fix a crash in ChunkDownloadView"
+#~ msgstr "til a \""
+
+#, fuzzy
+#~ msgid "Rickard Närström"
+#~ msgstr "Rickard Närström"
+
+#, fuzzy
+#~ msgid "A couple of bugfixes"
+#~ msgstr "A af"
+
+#, fuzzy
+#~ msgid "caruccio"
+#~ msgstr "caruccio"
+
+#, fuzzy
+#~ msgid "Patch to load torrents silently from the command line"
+#~ msgstr "til frá lína"
+
+#, fuzzy
+#~ msgid "Lee Olson"
+#~ msgstr "Lee Olson"
+
+#, fuzzy
+#~ msgid "New set of icons"
+#~ msgstr "Nýtt af táknmyndir"
+
+#, fuzzy
+#~ msgid "Aaron J. Seigo"
+#~ msgstr "Aaron J. Seigo"
+
+#, fuzzy
+#~ msgid "Drag and drop support for plasma applet"
+#~ msgstr "Draga og fyrir"
+
+#, fuzzy
+#~ msgid "Patch to cleanup the plugin list"
+#~ msgstr "til íforrit"
+
+#, fuzzy
+#~ msgid "Patch to make the plasma applet a popup applet"
+#~ msgstr "til a"
+
+#, fuzzy
+#~ msgid "Feature which adds the date a torrent was added"
+#~ msgstr "allir yfirborð"
+
+#, fuzzy
+#~ msgid "Silently open torrent given on URL"
+#~ msgstr "á Slóð"
+
+#, fuzzy
+#~ msgid "Torrent Files"
+#~ msgstr "Skrár"
+
+#, fuzzy
+#~ msgid "All Files"
+#~ msgstr "Allar skrár"
+
+#, fuzzy
+#~ msgid "Open Location"
+#~ msgstr "Opna slóð"
+
+#, fuzzy
+#~ msgid "Create a new torrent"
+#~ msgstr "Búa til a nýtt"
+
+#, fuzzy
+#~ msgid "Open a torrent"
+#~ msgstr "Opna a"
+
+#, fuzzy
+#~ msgid "Open Silently"
+#~ msgstr "Opna"
+
+#, fuzzy
+#~ msgid "Open a torrent without asking any questions"
+#~ msgstr "Opna a"
+
+#, fuzzy
+#~ msgid "Start All"
+#~ msgstr "Ræsa Allt"
+
+#, fuzzy
+#~ msgid "Start all torrents"
+#~ msgstr "Ræsa allir"
+
+#, fuzzy
+#~ msgid "Stop All"
+#~ msgstr "Stöðva allt"
+
+#, fuzzy
+#~ msgid "Stop all torrents"
+#~ msgstr "Stöðva allir"
+
+#, fuzzy
+#~ msgid "Open URL"
+#~ msgstr "Opna slóð"
+
+#, fuzzy
+#~ msgid "Open a URL which points to a torrent, magnet links are supported"
+#~ msgstr "Opna a Slóð punktar til a"
+
+#, fuzzy
+#~ msgid "Suspend KTorrent"
+#~ msgstr "Bíða"
+
+#, fuzzy
+#~ msgid "Suspend all running torrents"
+#~ msgstr "Bíða allir keyri"
+
+#, fuzzy
+#~ msgid "Show the list of blocked IP addresses"
+#~ msgstr "Sýna af IP"
+
+#, fuzzy
+#~ msgid "Import Torrent"
+#~ msgstr "Flytja inn"
+
+#, fuzzy
+#~ msgid "Import a torrent"
+#~ msgstr "Flytja inn a"
+
+#, fuzzy
+#~ msgid "Import KDE3 Torrents"
+#~ msgstr "Flytja inn"
+
+#, fuzzy
+#~ msgid "Import all torrents from the KDE3 version of KTorrent"
+#~ msgstr "Flytja inn allir frá útgáfa af"
+
+#, fuzzy
+#~ msgid "Show/Hide KTorrent"
+#~ msgstr "Sýna Fela"
+
+#, fuzzy
+#~ msgid "Widget to manage the torrent queue"
+#~ msgstr "til"
+
+#, fuzzy
+#~ msgid "Displays the currently downloading magnet links"
+#~ msgstr "allir af a"
+
+#, fuzzy
+#~ msgid "Invalid IP address %1"
+#~ msgstr "Ógilt IP heimilisfang 1"
+
+#, fuzzy
+#~ msgid "Duplicate IP address %1"
+#~ msgstr "Klóna IP heimilisfang 1"
+
+#, fuzzy
+#~ msgid "Set max upload speed"
+#~ msgstr "Setja max"
+
+#, fuzzy
+#~ msgid "Set max download speed"
+#~ msgstr "Setja max"
+
+#, fuzzy
+#~ msgid ""
+#~ "<table cellpadding='2' cellspacing='2' align='center'><tr><td><b>Speed:</"
+#~ "b></td><td></td></tr><tr><td>Download: <font color='#1c9a1c'>%1</font></"
+#~ "td><td>Upload: <font color='#990000'>%2</font></td></"
+#~ "tr><tr><td><b>Transfer:</b></td><td></td></tr><tr><td>Download: <font "
+#~ "color='#1c9a1c'>%3</font></td><td>Upload: <font color='#990000'>%4</"
+#~ "font></td></tr></table>"
+#~ msgstr ""
+#~ "<table cellpadding='2' cellspacing='2' align='center'><tr><td><b> Hraði</"
+#~ "b></td><td></td></tr><tr><td> Hlaða niður<font color='#1c9a1c'></font></"
+#~ "td><td> Senda<font color='#990000'></font></td></tr><tr><td><b> "
+#~ "Flutningur</b></td><td></td></tr><tr><td> Hlaða niður<font "
+#~ "color='#1c9a1c'></font></td><td> Senda<font color='#990000'></font></td></"
+#~ "tr></table>"
+
+#, fuzzy
+#~ msgid ""
+#~ "<b>%1</b> has completed downloading.<br>Average speed: %2 DL / %3 UL."
+#~ msgstr "<b></b><br> Meðaltal DL."
+
+#, fuzzy
+#~ msgid ""
+#~ "<b>%1</b> has reached its maximum share ratio of %2 and has been stopped."
+#~ "<br>Uploaded %3 at an average speed of %4."
+#~ msgstr "<b></b> hlutfall af og stöðvað<br> Hlaðið inn af."
+
+#, fuzzy
+#~ msgid ""
+#~ "<b>%1</b> has reached its maximum seed time of %2 hours and has been "
+#~ "stopped.<br>Uploaded %3 at an average speed of %4."
+#~ msgstr "<b></b> Tími af klukkustundir og stöðvað<br> Hlaðið inn af."
+
+#, fuzzy
+#~ msgid "<b>%1</b> has been stopped with the following error: <br>%2"
+#~ msgstr "<b></b> stöðvað með villa<br> 2"
+
+#, fuzzy
+#~ msgid ""
+#~ "Corrupted data has been found in the torrent <b>%1</b><br>It would be a "
+#~ "good idea to do a data integrity check on the torrent."
+#~ msgstr "\"<b></b><br> a til a á."
+
+#, fuzzy
+#~ msgid ""
+#~ "<b>%1</b> has reached its maximum share ratio of %2 and cannot be "
+#~ "enqueued. <br>Remove the limit manually if you want to continue seeding."
+#~ msgstr "<b></b> hlutfall af og<br> Fjarlægja til."
+
+#, fuzzy
+#~ msgid ""
+#~ "<b>%1</b> has reached its maximum seed time of %2 hours and cannot be "
+#~ "enqueued. <br>Remove the limit manually if you want to continue seeding."
+#~ msgstr "<b></b> Tími af klukkustundir og<br> Fjarlægja til."
+
+#, fuzzy
+#~ msgid "Cannot start <b>%1</b> : <br>"
+#~ msgstr "byrja<b></b><br>"
+
+#, fuzzy
+#~ msgid "Cannot seed more than 1 torrent. <br>"
+#~ msgid_plural "Cannot seed more than %1 torrents. <br>"
+#~ msgstr[0] "fleiri<br>"
+#~ msgstr[1] "fleiri<br>"
+
+#, fuzzy
+#~ msgid "Cannot download more than 1 torrent. <br>"
+#~ msgid_plural "Cannot download more than %1 torrents. <br>"
+#~ msgstr[0] "fleiri<br>"
+#~ msgstr[1] "fleiri<br>"
+
+#, fuzzy
+#~ msgid ""
+#~ "Go to Settings -> Configure KTorrent, if you want to change the limits."
+#~ msgstr "Fara til Stillingar Stilla til."
+
+#, fuzzy
+#~ msgid ""
+#~ "Your disk is running out of space.<br /><b>%1</b> is being downloaded to "
+#~ "'%2'."
+#~ msgstr "diskur er keyri af<br /><b></b> er til."
+
+#, fuzzy
+#~ msgid "Torrent has been stopped.<br />"
+#~ msgstr "stöðvað<br />"
+
+#, fuzzy
+#~ msgid "Speed limit in KiB/s"
+#~ msgstr "Hraði \" KiB s"
+
+#, fuzzy
+#~ msgid ""
+#~ "KTorrent is unable to accept connections because the TCP ports %1 is "
+#~ "already in use by another program."
+#~ msgstr "er til til \"."
+
+#, fuzzy
+#~ msgid ""
+#~ "KTorrent is unable to accept connections because the UDP port %1 is "
+#~ "already in use by another program."
+#~ msgstr "er til til \"."
+
+#, fuzzy
+#~ msgid "KTorrent is running one or more torrents"
+#~ msgstr "er keyri einn eða fleiri"
+
+#, fuzzy
+#~ msgid "Cannot create torrent: %1"
+#~ msgstr "1"
+
+#, fuzzy
+#~ msgid ""
+#~ "Several data files of the torrent \"%1\" are missing. \n"
+#~ "Do you want to recreate them, or do you want to not download them?"
+#~ msgstr "af til eða til ekki?"
+
+#, fuzzy
+#~ msgid "Data files are missing"
+#~ msgstr "Gögn"
+
+#, fuzzy
+#~ msgid "Cannot deselect missing files: %1"
+#~ msgstr "1"
+
+#, fuzzy
+#~ msgid "Cannot recreate missing files: %1"
+#~ msgstr "1"
+
+#, fuzzy
+#~ msgid ""
+#~ "The file where the data is saved of the torrent \"%1\" is missing. \n"
+#~ "Do you want to recreate it?"
+#~ msgstr "er af er til?"
+
+#, fuzzy
+#~ msgid "Data file is missing"
+#~ msgstr "Gögn er"
+
+#, fuzzy
+#~ msgid "Cannot recreate data file: %1"
+#~ msgstr "1"
+
+#, fuzzy
+#~ msgid ""
+#~ "KTorrent has found a torrent from the KDE3 version of KTorrent, do you "
+#~ "want to import it?"
+#~ msgid_plural ""
+#~ "KTorrent has found %1 torrents from the KDE3 version of KTorrent, do you "
+#~ "want to import them?"
+#~ msgstr[0] "a frá útgáfa af til?"
+#~ msgstr[1] "a frá útgáfa af til?"
+
+#, fuzzy
+#~ msgid "No torrents from the KDE3 version were found."
+#~ msgstr "Nei frá útgáfa."
+
+#, fuzzy
+#~ msgid "Applet"
+#~ msgstr "Smáforrit"
+
+#, fuzzy
+#~ msgid ""
+#~ "<table>\t\t\t\t<tr><td>Download Speed:</td><td>%5 </td><td>Seeders: </"
+#~ "td><td>%1 (%2)</td></tr>\t\t\t\t<tr><td>Upload Speed:</td><td>%6 </"
+#~ "td><td>Leechers: </td><td>%3 (%4)</td></tr>"
+#~ msgstr ""
+#~ "<table><tr><td> Hlaða niður Hraði</td><td></td><td></td><td></td></"
+#~ "tr><tr><td> Senda Hraði</td><td></td><td></td><td></td></tr>"
+
+#, fuzzy
+#~ msgid ""
+#~ "<tr><td>Downloaded:</td><td>%1 </td><td>Size: </td><td>%2</td></tr>\t\t\t"
+#~ "\t<tr><td>Uploaded:</td><td>%3 </td><td>Complete: </td><td>%4 %</td></tr>"
+#~ "\t\t\t\t</table>"
+#~ msgstr ""
+#~ "<tr><td></td><td></td><td> Stærð</td><td></td></tr><tr><td> Hlaðið inn</"
+#~ "td><td></td><td> Lokið</td><td></td></tr></table>"
+
+#, fuzzy
+#~ msgid "<b>%1</b><br/>%2 (Share Ratio: <font color=\"%4\">%3</font>)"
+#~ msgstr "<b></b><br/> Deila Hlutfall<font color=\"%4\"></font>"
+
+#, fuzzy
+#~ msgid "KTorrent is not running."
+#~ msgstr "er ekki keyri."
+
+#, fuzzy
+#~ msgid "No torrents loaded."
+#~ msgstr "Nei hlaðið."
+
+#, fuzzy
+#~ msgid "Selected torrent is unavailable."
+#~ msgstr "Valið er ónothæft."
+
+#, fuzzy
+#~ msgid "Running Uploads"
+#~ msgstr "Keyrandi"
+
+#, fuzzy
+#~ msgid "Not Running Uploads"
+#~ msgstr "Ekki Keyrandi"
+
+#, fuzzy
+#~ msgid "Downloads"
+#~ msgstr "Niðurhöl"
+
+#, fuzzy
+#~ msgid "Running Downloads"
+#~ msgstr "Keyrandi Fjöldi niðurhala"
+
+#, fuzzy
+#~ msgid "Not Running Downloads"
+#~ msgstr "Ekki Keyrandi Fjöldi niðurhala"
+
+#, fuzzy
+#~ msgid "Active Torrents"
+#~ msgstr "Virk"
+
+#, fuzzy
+#~ msgid "Active Downloads"
+#~ msgstr "Virk Fjöldi niðurhala"
+
+#, fuzzy
+#~ msgid "Active Uploads"
+#~ msgstr "Virk"
+
+#, fuzzy
+#~ msgid "Passive Torrents"
+#~ msgstr "Þolmynd"
+
+#, fuzzy
+#~ msgid "Passive Downloads"
+#~ msgstr "Þolmynd Fjöldi niðurhala"
+
+#, fuzzy
+#~ msgid "Passive Uploads"
+#~ msgstr "Þolmynd"
+
+#, fuzzy
+#~ msgid "Little icons"
+#~ msgstr "táknmyndir"
+
+#, fuzzy
+#~ msgid "Normal icons"
+#~ msgstr "Venjulegt táknmyndir"
+
+#, fuzzy
+#~ msgid "Big icons"
+#~ msgstr "Stór táknmyndir"
+
+#, fuzzy
+#~ msgid "Icons only"
+#~ msgstr "Aðeins táknmyndir"
+
+#, fuzzy
+#~ msgid "Text only"
+#~ msgstr "Bara texti"
+
+#, fuzzy
+#~ msgid "Icons and text"
+#~ msgstr "Táknmyndir og texti"
+
+#, fuzzy
+#~ msgid "Left"
+#~ msgstr "Vinstri"
+
+#, fuzzy
+#~ msgid "Right"
+#~ msgstr "Hægri"
+
+#, fuzzy
+#~ msgid "Top"
+#~ msgstr "Efst"
+
+#, fuzzy
+#~ msgid "Bottom"
+#~ msgstr "Neðst"
+
+#, fuzzy
+#~ msgid "Maximum share ratio reached."
+#~ msgstr "hlutfall."
+
+#, fuzzy
+#~ msgid "Maximum seed time reached."
+#~ msgstr "Tími."
+
+#, fuzzy
+#~ msgid "File"
+#~ msgstr "Skrá"
+
+#, fuzzy
+#~ msgid ""
+#~ "The torrent \"%1\" has reached its maximum share ratio and its maximum "
+#~ "seed time. Ignore the limit and start seeding anyway?"
+#~ msgstr "hlutfall og Tími Hunsa og byrja?"
+
+#, fuzzy
+#~ msgid ""
+#~ "The torrent \"%1\" has reached its maximum share ratio. Ignore the limit "
+#~ "and start seeding anyway?"
+#~ msgstr "hlutfall Hunsa og byrja?"
+
+#, fuzzy
+#~ msgid ""
+#~ "The torrent \"%1\" has reached its maximum seed time. Ignore the limit "
+#~ "and start seeding anyway?"
+#~ msgstr "Tími Hunsa og byrja?"
+
+#, fuzzy
+#~ msgid ""
+#~ "You don't have enough disk space to download this torrent. Are you sure "
+#~ "you want to continue?"
+#~ msgstr "Þú diskur til til?"
+
+#, fuzzy
+#~ msgid "Insufficient disk space for %1"
+#~ msgstr "diskur fyrir 1"
+
+#, fuzzy
+#~ msgid ""
+#~ "Not enough disk space for the following torrents. Do you want to start "
+#~ "them anyway ?"
+#~ msgstr "Ekki diskur fyrir Framkvæma til byrja?"
+
+#, fuzzy
+#~ msgid ""
+#~ "The following torrents have reached their maximum seed time. Do you want "
+#~ "to start them anyway ?"
+#~ msgstr "Tími Framkvæma til byrja?"
+
+#, fuzzy
+#~ msgid ""
+#~ "The following torrents have reached their maximum share ratio. Do you "
+#~ "want to start them anyway ?"
+#~ msgstr "hlutfall Framkvæma til byrja?"
+
+#, fuzzy
+#~ msgid "Error starting torrent %1 : %2"
+#~ msgstr "Villa 2"
+
+#, fuzzy
+#~ msgid "Error"
+#~ msgstr "Villa"
+
+#, fuzzy
+#~ msgid "Error stopping torrent %1 : %2"
+#~ msgstr "Villa 2"
+
+#, fuzzy
+#~ msgid ""
+#~ "<img src=\"available_color\">&nbsp; - Downloaded Chunks<br><img src="
+#~ "\"unavailable_color\">&nbsp; - Chunks to Download<br><img src="
+#~ "\"excluded_color\">&nbsp; - Excluded Chunks"
+#~ msgstr ""
+#~ "<img src=\"available_color\">&nbsp;<br><img src=\"unavailable_color"
+#~ "\">&nbsp; til Hlaða niður<br><img src=\"excluded_color\">&nbsp; Hafnað"
+
+#, fuzzy
+#~ msgid "Cannot write beyond end of the mmap buffer."
+#~ msgstr "af."
+
+#, fuzzy
+#~ msgid "Plugins"
+#~ msgstr "Íforrit"
+
+#, fuzzy
+#~ msgctxt "NAME OF TRANSLATORS"
+#~ msgid "Your names"
+#~ msgstr "Sveinn í Felli"
+
+#, fuzzy
+#~ msgctxt "EMAIL OF TRANSLATORS"
+#~ msgid "Your emails"
+#~ msgstr "sveinki@nett.is"
+
+#, fuzzy
+#~ msgid "Folders to scan for torrents:"
+#~ msgstr "Möppur til fyrir:"
+
+#, fuzzy
+#~ msgid "List of folders which will be scanned for torrents by this plugin."
+#~ msgstr "Listi af fyrir íforrit."
+
+#, fuzzy
+#~ msgid "Add a new folder to be scanned."
+#~ msgstr "Bæta við a nýtt til."
+
+#, fuzzy
+#~ msgid "Add Folder"
+#~ msgstr "Bæta við möppu"
+
+#, fuzzy
+#~ msgid "Remove a folder from the list."
+#~ msgstr "Fjarlægja a frá."
+
+#, fuzzy
+#~ msgid "Remove Folder"
+#~ msgstr "Fjarlægja möppu"
+
+#, fuzzy
+#~ msgid "Options"
+#~ msgstr "Valkostir"
+
+#, fuzzy
+#~ msgid "Open the torrents without asking any questions."
+#~ msgstr "Opna."
+
+#, fuzzy
+#~ msgid "Open silently"
+#~ msgstr "Opna"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Scan the folder "
+#~ "recursively for torrents.</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\">Note: "
+#~ "<span style=\" font-weight:400;\">This will not be done for any folder "
+#~ "named loaded.</span></p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Leita fyrir</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"> "
+#~ "Athugsemd<span style=\" font-weight:400;\"> ekki lokið fyrir hlaðið</"
+#~ "span></p></body></html>"
+
+#, fuzzy
+#~ msgid "Scan subfolders"
+#~ msgstr "Leita"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">When a torrent file has "
+#~ "been found and loaded, delete it.</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"
+#~ "\">Warning:<span style=\" font-weight:400;\"> you will permanently lose "
+#~ "this file.</span></p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> a og hlaðið</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"> "
+#~ "Aðvörun<span style=\" font-weight:400;\"></span></p></body></html>"
+
+#, fuzzy
+#~ msgid "Remove torrent file after loading"
+#~ msgstr "Fjarlægja"
+
+#, fuzzy
+#~ msgid ""
+#~ "When a torrent file is loaded, move it to a subdirectory named loaded. If "
+#~ "the folder does not exist, it will be created."
+#~ msgstr "a er hlaðið til a hlaðið ekki."
+
+#, fuzzy
+#~ msgid "Move torrent file to loaded directory"
+#~ msgstr "Flytja til hlaðið"
+
+#, fuzzy
+#~ msgid "Add torrents opened with this plugin to a group."
+#~ msgstr "Bæta við með íforrit til a flokkur."
+
+#, fuzzy
+#~ msgid "Add torrent to group:"
+#~ msgstr "Bæta við til flokkur:"
+
+#, fuzzy
+#~ msgid "Group to add torrents to."
+#~ msgstr "Hópur til til."
+
+#, fuzzy
+#~ msgid "Whether to open torrent silently or not."
+#~ msgstr "til eða ekki."
+
+#, fuzzy
+#~ msgid "Delete action checked."
+#~ msgstr "Eyða."
+
+#, fuzzy
+#~ msgid "Move action checked."
+#~ msgstr "Flytja."
+
+#, fuzzy
+#~ msgid "Scan directories recursively."
+#~ msgstr "Leita."
+
+#, fuzzy
+#~ msgid "Forward"
+#~ msgstr "Áfram"
+
+#, fuzzy
+#~ msgid "Undo Forward"
+#~ msgstr "Afturkalla Áfram"
+
+#, fuzzy
+#~ msgid "Rescan"
+#~ msgstr "Skanna aftur"
+
+#, fuzzy
+#~ msgid "Default UPnP device to use"
+#~ msgstr "Sjálfgefið til"
+
+#, fuzzy
+#~ msgid "Syndication Toolbar"
+#~ msgstr "Tækjaslá"
+
+#, fuzzy
+#~ msgid "Name:"
+#~ msgstr "Nafn:"
+
+#, fuzzy
+#~ msgid "String Matching"
+#~ msgstr "Strengur"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">The string to find in "
+#~ "the title of an item. Simple wildcard syntax is supported :</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<table border=\"0\" style=\" margin-top:0px; margin-bottom:0px; margin-"
+#~ "left:0px; margin-right:0px;\" align=\"center\" cellspacing=\"1\" "
+#~ "cellpadding=\"2\">\n"
+#~ "<tr>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"><span "
+#~ "style=\" font-weight:600;\">c</span></p></td>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Any character "
+#~ "represents itself apart from those mentioned below. Thus <span style=\" "
+#~ "font-weight:600;\">c</span> matches the character <span style=\" font-"
+#~ "style:italic;\">c</span>.</p></td></tr>\n"
+#~ "<tr>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"><span "
+#~ "style=\" font-weight:600;\">?</span></p></td>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\">Matches "
+#~ "any single character. </p></td></tr>\n"
+#~ "<tr>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"><span "
+#~ "style=\" font-weight:600;\">*</span></p></td>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\">Matches "
+#~ "zero or more of any characters.</p></td></tr>\n"
+#~ "<tr>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"><span "
+#~ "style=\" font-weight:600;\">[...]</span></p></td>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\">Sets of "
+#~ "characters can be represented in square brackets. Within the character "
+#~ "class, like outside, backslash has no special meaning.</p></td></tr></"
+#~ "table>\n"
+#~ "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\">For "
+#~ "example the *.torrent will match any item which ends in .torrent. </p></"
+#~ "body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> til \" titill af "
+#~ "Einfalt er</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<table border=\"0\" style=\" margin-top:0px; margin-bottom:0px; margin-"
+#~ "left:0px; margin-right:0px;\" align=\"center\" cellspacing=\"1\" "
+#~ "cellpadding=\"2\">\n"
+#~ "<tr>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"><span "
+#~ "style=\" font-weight:600;\"></span></p></td>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Hvað sem er frá<span "
+#~ "style=\" font-weight:600;\"></span><span style=\" font-style:italic;\"></"
+#~ "span></p></td></tr>\n"
+#~ "<tr>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"><span "
+#~ "style=\" font-weight:600;\"></span></p></td>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"> Matches "
+#~ "single</p></td></tr>\n"
+#~ "<tr>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"><span "
+#~ "style=\" font-weight:600;\"></span></p></td>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"> Matches "
+#~ "eða fleiri af</p></td></tr>\n"
+#~ "<tr>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"><span "
+#~ "style=\" font-weight:600;\"></span></p></td>\n"
+#~ "<td style=\" vertical-align:top;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"> af \" "
+#~ "klasi nei</p></td></tr></table>\n"
+#~ "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"> Fyrir "
+#~ "passa við \"</p></body></html>"
+
+#, fuzzy
+#~ msgid ""
+#~ "By default strings will use wildcard matching. If you want to use regular "
+#~ "expressions, this needs to be enabled."
+#~ msgstr "sjálfgefið til regluleg til virkt."
+
+#, fuzzy
+#~ msgid "Strings are regular expressions"
+#~ msgstr "Strengir regluleg"
+
+#, fuzzy
+#~ msgid "Item must match all strings"
+#~ msgstr "Hlutur passa við allir"
+
+#, fuzzy
+#~ msgid "Case sensitive matching"
+#~ msgstr "Stafstaða"
+
+#, fuzzy
+#~ msgid "Use season and episode matching"
+#~ msgstr "Nota og"
+
+#, fuzzy
+#~ msgid ""
+#~ "Specify the seasons to download, multiple seasons can be separated by a , "
+#~ "and you can also use ranges by using a -\n"
+#~ "\n"
+#~ "For example: 1, 3-6, 9\n"
+#~ "\n"
+#~ "Will download seasons 1, 3, 4, 5, 6 and 9"
+#~ msgstr "til a og a n n og 9"
+
+#, fuzzy
+#~ msgid ""
+#~ "Specify the episodes to download, multiple episodes can be separated by "
+#~ "a , and you can also use ranges by using a -\n"
+#~ "\n"
+#~ "For example: 1, 3-6, 9\n"
+#~ "\n"
+#~ "Will download episodes 1, 3, 4, 5, 6 and 9"
+#~ msgstr "til a og a n n og 9"
+
+#, fuzzy
+#~ msgid "Do not download multiple items with the same season and episode"
+#~ msgstr "Framkvæma ekki hlutir með og"
+
+#, fuzzy
+#~ msgid "Download torrents of matching items"
+#~ msgstr "Hlaða niður af hlutir"
+
+#, fuzzy
+#~ msgid "Download torrents of non matching items"
+#~ msgstr "Hlaða niður af hlutir"
+
+#, fuzzy
+#~ msgid "Add to group:"
+#~ msgstr "Bæta við til flokkur:"
+
+#, fuzzy
+#~ msgid "Download to:"
+#~ msgstr "Hlaða niður í:"
+
+#, fuzzy
+#~ msgid "Open torrents silently"
+#~ msgstr "Opna"
+
+#, fuzzy
+#~ msgid "Test"
+#~ msgstr "Prófa"
+
+#, fuzzy
+#~ msgid "filter on feed:"
+#~ msgstr "sía á:"
+
+#, fuzzy
+#~ msgid "URL:"
+#~ msgstr "Slóð:"
+
+#, fuzzy
+#~ msgid "Status:"
+#~ msgstr "Staða:"
+
+#, fuzzy
+#~ msgid "Refresh every:"
+#~ msgstr "Endurlesa"
+
+#, fuzzy
+#~ msgid " minutes"
+#~ msgstr " mínútur"
+
+#, fuzzy
+#~ msgid "Refresh"
+#~ msgstr "Endurlesa"
+
+#, fuzzy
+#~ msgid "Filters"
+#~ msgstr "Síur"
+
+#, fuzzy
+#~ msgid "Manage Filters"
+#~ msgstr "Síur"
+
+#, fuzzy
+#~ msgid "Feed:"
+#~ msgstr "Straumur:"
+
+#, fuzzy
+#~ msgid "Active filters:"
+#~ msgstr "Virk:"
+
+#, fuzzy
+#~ msgid "Add"
+#~ msgstr "Bæta við"
+
+#, fuzzy
+#~ msgid "Available filters:"
+#~ msgstr "Tiltækt:"
+
+#, fuzzy
+#~ msgid "Remove All"
+#~ msgstr "Fjarlægja allt"
+
+#, fuzzy
+#~ msgid "Media Player Menu"
+#~ msgstr "Miðill Leikmaður Valmynd"
+
+#, fuzzy
+#~ msgid "Media Player Toolbar"
+#~ msgstr "Miðill Leikmaður Tækjaslá"
+
+#, fuzzy
+#~ msgid "Search Preferences"
+#~ msgstr "Leitarstillingar"
+
+#, fuzzy
+#~ msgid "Web interface skin:"
+#~ msgstr "Vefur:"
+
+#, fuzzy
+#~ msgid "Which interface to use."
+#~ msgstr "til."
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">If login required is "
+#~ "enabled, you need to enter a username and a password.</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Attention: </span>You should not disable this when the "
+#~ "webinterface is accessible from the internet. It will allow anybody "
+#~ "access to it.</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Leita fyrir</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"> "
+#~ "Athugsemd<span style=\" font-weight:400;\"> ekki lokið fyrir hlaðið</"
+#~ "span></p></body></html>"
+
+#, fuzzy
+#~ msgid "Login required"
+#~ msgstr "Nauðsynlegt diskur:"
+
+#, fuzzy
+#~ msgid "Username:"
+#~ msgstr "Notandanafn:"
+
+#, fuzzy
+#~ msgid "Username you need to use in the login page of the webinterface."
+#~ msgstr "Notandanafn til \" af."
+
+#, fuzzy
+#~ msgid "Password:"
+#~ msgstr "Lykilorð:"
+
+#, fuzzy
+#~ msgid ""
+#~ "The password for the webinterface login page. By default this is set to "
+#~ "ktorrent."
+#~ msgstr "fyrir sjálfgefið er til."
+
+#, fuzzy
+#~ msgid "Web Server"
+#~ msgstr "Vefmiðlari"
+
+#, fuzzy
+#~ msgid "Port:"
+#~ msgstr "Gátt:"
+
+#, fuzzy
+#~ msgid "The port the webinterface listens on."
+#~ msgstr "á."
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">If you are behind a "
+#~ "router and you want to access the webinterface from somewhere on the "
+#~ "Internet you need to forward the correct port.</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">This checkbox will "
+#~ "ensure that the UPnP plugin automatically forwards the port. The UPnP "
+#~ "plugin needs to be loaded for this to work.</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> a og til frá á "
+#~ "Internetið til</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> íforrit íforrit til "
+#~ "hlaðið fyrir til</p></body></html>"
+
+#, fuzzy
+#~ msgid "Forward port"
+#~ msgstr "Áfram"
+
+#, fuzzy
+#~ msgid "Session TTL:"
+#~ msgstr "Seta:"
+
+#, fuzzy
+#~ msgid "How long a session is valid (in seconds)."
+#~ msgstr "a er \" sekúndur."
+
+#, fuzzy
+#~ msgid " secs"
+#~ msgstr "sek"
+
+#, fuzzy
+#~ msgid "Port number"
+#~ msgstr "Gátt"
+
+#, fuzzy
+#~ msgid "forward Port"
+#~ msgstr "Gátt"
+
+#, fuzzy
+#~ msgid "Session time to live"
+#~ msgstr "Seta Tími til"
+
+#, fuzzy
+#~ msgid "Update charts every n gui updates"
+#~ msgstr "Uppfæra n"
+
+#, fuzzy
+#~ msgid "Interval in milliseconds between data gathering"
+#~ msgstr "Bil \" á milli"
+
+#, fuzzy
+#~ msgid "Method of determining maximum value of the scale"
+#~ msgstr "Aðferð af af skali"
+
+#, fuzzy
+#~ msgid "Whether to show seeds in swarms"
+#~ msgstr "til \""
+
+#, fuzzy
+#~ msgid "Whether to show leachers in swarms"
+#~ msgstr "til \""
+
+#, fuzzy
+#~ msgid "Samples to show on download chart"
+#~ msgstr "Sýni til á"
+
+#, fuzzy
+#~ msgid "Samples to show on peers chart"
+#~ msgstr "Sýni til á"
+
+#, fuzzy
+#~ msgid "Samples to show on upload chart"
+#~ msgstr "Sýni til á"
+
+#, fuzzy
+#~ msgid "Samples to show on connections chart"
+#~ msgstr "Sýni til á"
+
+#, fuzzy
+#~ msgid "Samples to show on DHT chart"
+#~ msgstr "Sýni til á"
+
+#, fuzzy
+#~ msgid "Color of the speed on dl chart"
+#~ msgstr "Litur af á"
+
+#, fuzzy
+#~ msgid "Color of the average on dl chart"
+#~ msgstr "Litur af á"
+
+#, fuzzy
+#~ msgid "Color of the limit on dl chart"
+#~ msgstr "Litur af á"
+
+#, fuzzy
+#~ msgid "Color of the avg from leecher on peers chart"
+#~ msgstr "Litur af frá á"
+
+#, fuzzy
+#~ msgid "Color of the avg to leecher on peers chart"
+#~ msgstr "Litur af til á"
+
+#, fuzzy
+#~ msgid "Color of the avg from seeds on peers chart"
+#~ msgstr "Litur af frá á"
+
+#, fuzzy
+#~ msgid "Color of the leechers on peers chart"
+#~ msgstr "Litur af á"
+
+#, fuzzy
+#~ msgid "Color of the seeds on peers chart"
+#~ msgstr "Litur af á"
+
+#, fuzzy
+#~ msgid "Color of the speed on upload chart"
+#~ msgstr "Litur af á"
+
+#, fuzzy
+#~ msgid "Color of the avg on upload chart"
+#~ msgstr "Litur af á"
+
+#, fuzzy
+#~ msgid "Color of the limit on upload chart"
+#~ msgstr "Litur af á"
+
+#, fuzzy
+#~ msgid "Color of the connected leechers on connections chart"
+#~ msgstr "Litur af tengd(ur) á"
+
+#, fuzzy
+#~ msgid "Color of the leechers in swarms on connections chart"
+#~ msgstr "Litur af \" á"
+
+#, fuzzy
+#~ msgid "Color of the connected seeds on connections chart"
+#~ msgstr "Litur af tengd(ur) á"
+
+#, fuzzy
+#~ msgid "Color of the seeds in swarms on connections chart"
+#~ msgstr "Litur af \" á"
+
+#, fuzzy
+#~ msgid "Color of the avg connected leecher per torrent on connections chart"
+#~ msgstr "Litur af tengd(ur) á"
+
+#, fuzzy
+#~ msgid "Color of the avg connected seeds per torrent on connections chart"
+#~ msgstr "Litur af tengd(ur) á"
+
+#, fuzzy
+#~ msgid ""
+#~ "Color of the avg connected leechers per running torrent on connections "
+#~ "chart"
+#~ msgstr "Litur af tengd(ur) keyri á"
+
+#, fuzzy
+#~ msgid ""
+#~ "Color of the avg connected seeds per running torrent on connections chart"
+#~ msgstr "Litur af tengd(ur) keyri á"
+
+#, fuzzy
+#~ msgid "Color of the nodes on DHT chart"
+#~ msgstr "Litur af á"
+
+#, fuzzy
+#~ msgid "Color of the tasks on DHT chart"
+#~ msgstr "Litur af á"
+
+#, fuzzy
+#~ msgid "Use anti aliasing on charts?"
+#~ msgstr "Nota á?"
+
+#, fuzzy
+#~ msgid "Draw ugly grey background grid?"
+#~ msgstr "Jafntefli bakgrunnur?"
+
+#, fuzzy
+#~ msgid "Type of widget used for chart drawing"
+#~ msgstr "Tegund af fyrir"
+
+#, fuzzy
+#~ msgctxt "@title:window"
+#~ msgid "Speed"
+#~ msgstr "Hraði"
+
+#, fuzzy
+#~ msgid "Upload"
+#~ msgstr "Senda"
+
+#, fuzzy
+#~ msgid "Colors"
+#~ msgstr "Litir"
+
+#, fuzzy
+#~ msgid "Average"
+#~ msgstr "Meðaltal"
+
+#, fuzzy
+#~ msgid "Limit"
+#~ msgstr "Takmörk"
+
+#, fuzzy
+#~ msgid "Seeds  in swarms"
+#~ msgstr "Fræ \""
+
+#, fuzzy
+#~ msgid "Avg. leechers connected per running torr."
+#~ msgstr "tengd(ur) keyri."
+
+#, fuzzy
+#~ msgid "Avg. seeds connected per running torrent"
+#~ msgstr "tengd(ur) keyri"
+
+#, fuzzy
+#~ msgid "Use anti-aliasing"
+#~ msgstr "Nota"
+
+#, fuzzy
+#~ msgid "Draw background grid"
+#~ msgstr "Jafntefli bakgrunnur"
+
+#, fuzzy
+#~ msgid "Widget type:"
+#~ msgstr "tegund:"
+
+#, fuzzy
+#~ msgid "KDE"
+#~ msgstr "KDE"
+
+#, fuzzy
+#~ msgid "(plugin reload is needed after change)"
+#~ msgstr "íforrit endurlesa er"
+
+#, fuzzy
+#~ msgid "Settings"
+#~ msgstr "Stillingar"
+
+#, fuzzy
+#~ msgid "Update"
+#~ msgstr "Uppfæra"
+
+#, fuzzy
+#~ msgid "Update charts every"
+#~ msgstr "Uppfæra"
+
+#, fuzzy
+#~ msgid "Gather data every"
+#~ msgstr "Safna"
+
+#, fuzzy
+#~ msgid "milliseconds"
+#~ msgstr "millisekúndur"
+
+#, fuzzy
+#~ msgid "Maximum"
+#~ msgstr "Hámark"
+
+#, fuzzy
+#~ msgid "Maximum speed scale mode: "
+#~ msgstr "skali "
+
+#, fuzzy
+#~ msgid "Exact"
+#~ msgstr "Nákvæmt"
+
+#, fuzzy
+#~ msgid "Show seeds in swarms"
+#~ msgstr "Sýna \""
+
+#, fuzzy
+#~ msgid "Show leechers in swarms"
+#~ msgstr "Sýna \""
+
+#, fuzzy
+#~ msgid "Show peer view tab in main window"
+#~ msgstr "Sýna \""
+
+#, fuzzy
+#~ msgid "Show chunk download view tab in main window"
+#~ msgstr "Sýna \""
+
+#, fuzzy
+#~ msgid "Show trackers view tab in main window"
+#~ msgstr "Sýna \""
+
+#, fuzzy
+#~ msgid "Remove Tracker"
+#~ msgstr "Fjarlægja skrásetjara (tracker)"
+
+#, fuzzy
+#~ msgid "Change Tracker"
+#~ msgstr "Skipta um skrásetjara (tracker)"
+
+#, fuzzy
+#~ msgid "Update Trackers"
+#~ msgstr "Uppfæra"
+
+#, fuzzy
+#~ msgid "Restore Defaults"
+#~ msgstr "Endurheimta sjálfgefið"
+
+#, fuzzy
+#~ msgid "Info"
+#~ msgstr "Upplýsingar"
+
+#, fuzzy
+#~ msgid "Average down speed:"
+#~ msgstr "Meðaltal:"
+
+#, fuzzy
+#~ msgid "Type:"
+#~ msgstr "Tegund:"
+
+#, fuzzy
+#~ msgid "Average up speed:"
+#~ msgstr "Meðaltal:"
+
+#, fuzzy
+#~ msgid "Comments:"
+#~ msgstr "Athugasemdir:"
+
+#, fuzzy
+#~ msgid "Available chunks:"
+#~ msgstr "Tiltækt:"
+
+#, fuzzy
+#~ msgid "Sharing"
+#~ msgstr "Deiling"
+
+#, fuzzy
+#~ msgid "Share ratio:"
+#~ msgstr "Deila hlutfall:"
+
+#, fuzzy
+#~ msgid "Ratio limit:"
+#~ msgstr "Hlutfall:"
+
+#, fuzzy
+#~ msgid "Time limit:"
+#~ msgstr "Tímatakmark:"
+
+#, fuzzy
+#~ msgid " Hours"
+#~ msgstr "Klukkustundir"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Webseed to add to the "
+#~ "torrent.</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Note: </span>Only http webseeds are supported.</p></body></"
+#~ "html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Vefsáningar sem bæta á "
+#~ "við torrent strauminn.</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Note: </span>Einungis http vefsáningar eru studdar.</p></"
+#~ "body></html>"
+
+#, fuzzy
+#~ msgid "Add Webseed"
+#~ msgstr "Bæta við vefsáningu"
+
+#, fuzzy
+#~ msgid "Remove Webseed"
+#~ msgstr "Fjarlægja vefsáningu"
+
+#, fuzzy
+#~ msgid "Enable All"
+#~ msgstr "Virkja allar"
+
+#, fuzzy
+#~ msgid "Disable All"
+#~ msgstr "Slökkva á Allt"
+
+#, fuzzy
+#~ msgid "Tabs"
+#~ msgstr "Flipar"
+
+#, fuzzy
+#~ msgid "Whether or not to show the peers tab in the bottom of the window."
+#~ msgstr "eða ekki til \" botn af."
+
+#, fuzzy
+#~ msgid "Show list of peers"
+#~ msgstr "Sýna af"
+
+#, fuzzy
+#~ msgid "Whether or not to show the chunks tab in the bottom of the window."
+#~ msgstr "eða ekki til \" botn af."
+
+#, fuzzy
+#~ msgid "Show list of chunks currently downloading"
+#~ msgstr "Sýna af"
+
+#, fuzzy
+#~ msgid "Whether or not to show the trackers tab in the bottom of the window."
+#~ msgstr "eða ekki til \" botn af."
+
+#, fuzzy
+#~ msgid "Show list of trackers"
+#~ msgstr "Sýna af"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Whether or not to show "
+#~ "the webseeds tab at the bottom of the window.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> eða ekki til botn af</"
+#~ "p></body></html>"
+
+#, fuzzy
+#~ msgid "Show list of webseeds"
+#~ msgstr "Sýna af"
+
+#, fuzzy
+#~ msgid "File Priority Colors"
+#~ msgstr "Skrá Forgangur Litir"
+
+#, fuzzy
+#~ msgid "First priority:"
+#~ msgstr "Fyrsti forgangur:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Color to use for first "
+#~ "priority files.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Litur til fyrir 1. "
+#~ "forgangur</p></body></html>"
+
+#, fuzzy
+#~ msgid "Last priority:"
+#~ msgstr "Síðasta forgangur:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Color to use for last "
+#~ "priority files.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Litur til fyrir "
+#~ "forgangur</p></body></html>"
+
+#, fuzzy
+#~ msgid "Total:"
+#~ msgstr "Samtals:"
+
+#, fuzzy
+#~ msgid "Currently downloading:"
+#~ msgstr "Í niðurhali núna:"
+
+#, fuzzy
+#~ msgid "Downloaded:"
+#~ msgstr "Hlaðið inn:"
+
+#, fuzzy
+#~ msgid "Excluded:"
+#~ msgstr "Útilokaðir:"
+
+#, fuzzy
+#~ msgid "Left:"
+#~ msgstr "Vinstri:"
+
+#, fuzzy
+#~ msgid "Size:"
+#~ msgstr "Stærð:"
+
+#, fuzzy
+#~ msgid "EMail Settings"
+#~ msgstr "Stillingar"
+
+#, fuzzy
+#~ msgid "SMTP Server"
+#~ msgstr "Þjónn"
+
+#, fuzzy
+#~ msgid "SMTP server:"
+#~ msgstr "SMTP miðlari:"
+
+#, fuzzy
+#~ msgid "Use SSL/TLS encryption"
+#~ msgstr "Nota SSL TLS"
+
+#, fuzzy
+#~ msgid "Send mails to:"
+#~ msgstr "Senda til:"
+
+#, fuzzy
+#~ msgid "Add CC:"
+#~ msgstr "Bæta við CC:"
+
+#, fuzzy
+#~ msgid "Add BCC:"
+#~ msgstr "Bæta við BCC:"
+
+#, fuzzy
+#~ msgid "Auto Resume Settings"
+#~ msgstr "Sjálfvirkt Halda áfram Stillingar"
+
+#, fuzzy
+#~ msgid "Auto remove a torrent when:"
+#~ msgstr "Sjálfvirkt a:"
+
+#, fuzzy
+#~ msgid "Auto resume after:"
+#~ msgstr "Sjálfvirkt:"
+
+#, fuzzy
+#~ msgid " hours"
+#~ msgstr "klukkustundir"
+
+#, fuzzy
+#~ msgid " seconds"
+#~ msgstr " sekúndur"
+
+#, fuzzy
+#~ msgid "Description:"
+#~ msgstr "Lýsing:"
+
+#, fuzzy
+#~ msgid "License:"
+#~ msgstr "Leyfi:"
+
+#, fuzzy
+#~ msgid "Author:"
+#~ msgstr "Höfundur:"
+
+#, fuzzy
+#~ msgid "E-Mail:"
+#~ msgstr "Tölvupóstur:"
+
+#, fuzzy
+#~ msgid "Website:"
+#~ msgstr "Vefsvæði:"
+
+#, fuzzy
+#~ msgid "Use rich log text"
+#~ msgstr "Nota texti"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Double click on the log "
+#~ "level to alter it. The possible levels are :</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">All: </span>All messages are shown</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Important: </span>Only important messages are shown</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Notice: </span>Only notice and important messages are "
+#~ "shown</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Debug: </span>Debug, notice and important messages are "
+#~ "shown</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">None:</span> No messages are shown</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Tvöföld á til</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Allt</span> Allt</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Mikilvægt</span> Aðeins</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Athugaðu</span> Aðeins og</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Aflúsa</span> Aflúsa og</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Ekkert</span> Nei</p></body></html>"
+
+#, fuzzy
+#~ msgid ""
+#~ "Whether or not to use rich text or just plain text, for the logging "
+#~ "output shown in the logviewer."
+#~ msgstr "eða ekki til texti eða venjuleg texti fyrir úttak \"."
+
+#, fuzzy
+#~ msgid "Use rich text for logging output"
+#~ msgstr "Nota texti fyrir úttak"
+
+#, fuzzy
+#~ msgid "Log widget position:"
+#~ msgstr "Annálar:"
+
+#, fuzzy
+#~ msgid "Dockable widget"
+#~ msgstr "Tengjanlegt"
+
+#, fuzzy
+#~ msgid "File download order for:"
+#~ msgstr "Skrá fyrir:"
+
+#, fuzzy
+#~ msgid "Custom file download order enabled"
+#~ msgstr "Sérsniðið virkt"
+
+#, fuzzy
+#~ msgid ""
+#~ "Order in which to download the files of a torrent. The file at the top "
+#~ "will be downloaded first, followed by the second, then the third ..."
+#~ msgstr "Uppröðun \" til af a toppur 1. 2. 3.."
+
+#, fuzzy
+#~ msgid "Search Toolbar"
+#~ msgstr "Leitar tækjaslá"
+
+#, fuzzy
+#~ msgid "Current search engine"
+#~ msgstr "Núverandi"
+
+#, fuzzy
+#~ msgid "Use default browser"
+#~ msgstr "Nota sjálfgefið"
+
+#, fuzzy
+#~ msgid "Use custom browser"
+#~ msgstr "Nota sérsniðið"
+
+#, fuzzy
+#~ msgid "Custom browser executable path"
+#~ msgstr "Sérsniðið"
+
+#, fuzzy
+#~ msgid "Clear the search history combo boxes."
+#~ msgstr "Hreinsa."
+
+#, fuzzy
+#~ msgid "Clear Search History"
+#~ msgstr "Hreinsa Leita Ferill"
+
+#, fuzzy
+#~ msgid "Whether or not to open searches in an external browser."
+#~ msgstr "eða ekki til \"."
+
+#, fuzzy
+#~ msgid "Open searches in external browser"
+#~ msgstr "Opna \""
+
+#, fuzzy
+#~ msgid "Use the default browser configured in the system settings."
+#~ msgstr "Nota sjálfgefið \"."
+
+#, fuzzy
+#~ msgid "Use a custom browser."
+#~ msgstr "Nota a sérsniðið."
+
+#, fuzzy
+#~ msgid "Custom browser path:"
+#~ msgstr "Sérsniðið:"
+
+#, fuzzy
+#~ msgid "Path of the custom browser."
+#~ msgstr "Slóð af sérsniðið."
+
+#, fuzzy
+#~ msgid "Search Engines"
+#~ msgstr "Leitarvélar"
+
+#, fuzzy
+#~ msgid "Add a new search engine."
+#~ msgstr "Bæta við a nýtt."
+
+#, fuzzy
+#~ msgid "Remove all selected search engines."
+#~ msgstr "Fjarlægja allir."
+
+#, fuzzy
+#~ msgid "&Remove"
+#~ msgstr "&Fjarlægja"
+
+#, fuzzy
+#~ msgid "Remove all search engines."
+#~ msgstr "Fjarlægja allir."
+
+#, fuzzy
+#~ msgid "R&emove All"
+#~ msgstr "Fj&arlægja allt"
+
+#, fuzzy
+#~ msgid "Add all default search engines."
+#~ msgstr "Bæta við allir sjálfgefið."
+
+#, fuzzy
+#~ msgid "Add Defau&lt"
+#~ msgstr "Bæta við Sjá&lfgefið"
+
+#, fuzzy
+#~ msgid "Special Limits"
+#~ msgstr "Sérstakt Takmörk"
+
+#, fuzzy
+#~ msgid ""
+#~ "Use these global limits when the screensaver is activated, instead of the "
+#~ "ones configured in the network settings."
+#~ msgstr "Nota er af \"."
+
+#, fuzzy
+#~ msgid "Use different speed limits when the screensaver is activated"
+#~ msgstr "Nota er"
+
+#, fuzzy
+#~ msgid "Maximum upload speed:"
+#~ msgstr "Mesti sendingarhraði:"
+
+#, fuzzy
+#~ msgid "Global upload limit when the screensaver is activated."
+#~ msgstr "Víðvært er."
+
+#, fuzzy
+#~ msgid "Maximum download speed:"
+#~ msgstr "Mesti sóknarhraði:"
+
+#, fuzzy
+#~ msgid "Global download limit when the screensaver is activated."
+#~ msgstr "Víðvært er."
+
+#, fuzzy
+#~ msgid "Schedule background color:"
+#~ msgstr "Vinnuáætlun bakgrunnur:"
+
+#, fuzzy
+#~ msgid "Color of the schedule background."
+#~ msgstr "Litur af bakgrunnur."
+
+#, fuzzy
+#~ msgid "Schedule line color:"
+#~ msgstr "Vinnuáætlun lína:"
+
+#, fuzzy
+#~ msgid "Color of all lines on the schedule."
+#~ msgstr "Litur af allir línur á."
+
+#, fuzzy
+#~ msgid "Schedule Item color:"
+#~ msgstr "Vinnuáætlun Hlutur:"
+
+#, fuzzy
+#~ msgid "Color of each normal item on the schedule."
+#~ msgstr "Litur af samræmt á."
+
+#, fuzzy
+#~ msgid "Suspended schedule item color:"
+#~ msgstr "Í bið:"
+
+#, fuzzy
+#~ msgid "Color of each suspended item on the schedule."
+#~ msgstr "Litur af í bið á."
+
+#, fuzzy
+#~ msgid "Time"
+#~ msgstr "Tími"
+
+#, fuzzy
+#~ msgid "From:"
+#~ msgstr "Frá:"
+
+#, fuzzy
+#~ msgid "hh:mm"
+#~ msgstr "kl:mi"
+
+#, fuzzy
+#~ msgid "To:"
+#~ msgstr "Til:"
+
+#, fuzzy
+#~ msgid "Day:"
+#~ msgstr "Dagur:"
+
+#, fuzzy
+#~ msgid "Limits"
+#~ msgstr "Takmörk"
+
+#, fuzzy
+#~ msgid "Download limit:"
+#~ msgstr "Sóknartakmörk:"
+
+#, fuzzy
+#~ msgid "Upload limit:"
+#~ msgstr "Sendingartakmörk:"
+
+#, fuzzy
+#~ msgid "When screensaver is activated:"
+#~ msgstr "er:"
+
+#, fuzzy
+#~ msgid "Connection Limits"
+#~ msgstr "Tenging Takmörk"
+
+#, fuzzy
+#~ msgid "Set connection limits"
+#~ msgstr "Setja"
+
+#, fuzzy
+#~ msgid "Global connection limit:"
+#~ msgstr "Víðvært:"
+
+#, fuzzy
+#~ msgid "Add a new item to the schedule"
+#~ msgstr "Bæta við a nýtt til"
+
+#, fuzzy
+#~ msgid "Days:"
+#~ msgstr "Dagar:"
+
+#, fuzzy
+#~ msgid "Entire Week"
+#~ msgstr "Vika"
+
+#, fuzzy
+#~ msgid "Weekdays Only"
+#~ msgstr "Aðeins"
+
+#, fuzzy
+#~ msgid "Weekend"
+#~ msgstr "Helgi"
+
+#, fuzzy
+#~ msgid "Shutdown Toolbar"
+#~ msgstr "Slökkva Tækjaslá"
+
+#, fuzzy
+#~ msgid "Shutdown Settings"
+#~ msgstr "Slökkva Stillingar"
+
+#, fuzzy
+#~ msgid "Action to execute:"
+#~ msgstr "Aðgerð til:"
+
+#, fuzzy
+#~ msgid "Execute action when:"
+#~ msgstr "Keyra:"
+
+#, fuzzy
+#~ msgid "Level1 filter url"
+#~ msgstr "sía slóð"
+
+#, fuzzy
+#~ msgid "Use level1 filter?"
+#~ msgstr "Nota sía?"
+
+#, fuzzy
+#~ msgid "IPBlocking Preferences"
+#~ msgstr "Stillingar"
+
+#, fuzzy
+#~ msgid "PeerGuardian Filter File "
+#~ msgstr "Sía Skrá "
+
+#, fuzzy
+#~ msgid "Enable this if you want the IP filter plugin to work."
+#~ msgstr "Virkja IP sía íforrit til."
+
+#, fuzzy
+#~ msgid "Use PeerGuardian filter"
+#~ msgstr "Nota sía"
+
+#, fuzzy
+#~ msgid "IP filter file:"
+#~ msgstr "IP sía:"
+
+#, fuzzy
+#~ msgid "Filter file to use, this can be a local file or a remote file."
+#~ msgstr "Sía til a staðvært eða a."
+
+#, fuzzy
+#~ msgid "Download and convert the IP filter file."
+#~ msgstr "Hlaða niður og IP sía."
+
+#, fuzzy
+#~ msgid "Dow&nload/Convert"
+#~ msgstr "Hlaða &niður Umbreyta"
+
+#, fuzzy
+#~ msgid ""
+#~ "Download PeerGuardian filter from bluetack.co.uk or blocklist.org.\n"
+#~ "NOTE: ZIP file from bluetack.co.uk is supported."
+#~ msgstr "Hlaða niður sía frá eða frá er."
+
+#, fuzzy
+#~ msgid "Automatic Update"
+#~ msgstr "Sjálfvirk Uppfæra"
+
+#, fuzzy
+#~ msgid "Enable this if you want to automatically update the filter file."
+#~ msgstr "Virkja til sía."
+
+#, fuzzy
+#~ msgid "Update file every:"
+#~ msgstr "Uppfæra:"
+
+#, fuzzy
+#~ msgid "Update interval in days."
+#~ msgstr "Uppfæra \" dagar."
+
+#, fuzzy
+#~ msgid " days"
+#~ msgstr " dagar"
+
+#, fuzzy
+#~ msgid "Last updated:"
+#~ msgstr "Síðasta:"
+
+#, fuzzy
+#~ msgid "Next update:"
+#~ msgstr "Næsta:"
+
+#, fuzzy
+#~ msgid "Converting block list to KTorrent format. This might take some time."
+#~ msgstr "til forsníða eitthvað Tími."
+
+#, fuzzy
+#~ msgid "C&ancel"
+#~ msgstr "Hætt&a við"
+
+#, fuzzy
+#~ msgid "Magnet Generator Preferences"
+#~ msgstr "Leitarstillingar"
+
+#, fuzzy
+#~ msgid "Add tracker"
+#~ msgstr "Bæta við"
+
+#, fuzzy
+#~ msgid "Tracker:"
+#~ msgstr "Skrásetjari (tracker)"
+
+#, fuzzy
+#~ msgid "Add the torrent name in the URI"
+#~ msgstr "Flytja a \""
+
+#, fuzzy
+#~| msgid "Add an item"
+#~ msgid "Add name"
+#~ msgstr "Bæta við hlut"
+
+#, fuzzy
+#~ msgid "Show popup"
+#~ msgstr "Sýna Vídeó"
+
+#, fuzzy
+#~ msgid "Toggles tracker"
+#~ msgstr "Skrásetjari (tracker)"
+
+#, fuzzy
+#~ msgid "The default tracker"
+#~ msgstr "Nota sjálfgefið"
+
+#, fuzzy
+#~ msgid "Show dn"
+#~ msgstr "Sýna Straumur"
+
+#, fuzzy
+#~ msgid "UPnP Test Application"
+#~ msgstr "Prófa Forrit"
+
+#, fuzzy
+#~ msgid "No routers found."
+#~ msgstr "Nei."
+
+#, fuzzy
+#~ msgid "Find Routers"
+#~ msgstr "Finna"
+
+#, fuzzy
+#~ msgid "Protocol:"
+#~ msgstr "Samskiptamáti:"
+
+#, fuzzy
+#~ msgid "Ports && Limits"
+#~ msgstr "Port Takmörk"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'OpenSymbol'; "
+#~ "font-size:9pt;\"><span style=\" font-size:8pt;\">Port used for the "
+#~ "bittorrent protocol.</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+#~ "font-family:'OpenSymbol';\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'OpenSymbol';"
+#~ "\"><span style=\" font-weight:600;\">Attention:</span> If you are behind "
+#~ "a router, this port needs to be forwarded to accept incoming connections. "
+#~ "The UPnP plugin can do this for you.</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'OpenSymbol'; "
+#~ "font-size:9pt;\"><span style=\" font-size:8pt;\"> Gátt fyrir</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+#~ "font-family:'OpenSymbol';\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'OpenSymbol';"
+#~ "\"><span style=\" font-weight:600;\"> Takið eftir</span> a til til "
+#~ "íforrit fyrir</p></body></html>"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'OpenSymbol'; "
+#~ "font-size:9pt;\"><span style=\" font-size:8pt;\">Port used for the UDP "
+#~ "tracker protocol.</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+#~ "font-family:'OpenSymbol';\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'OpenSymbol';"
+#~ "\"><span style=\" font-weight:600;\">Attention:</span> If you are behind "
+#~ "a router, this port needs to be forwarded. The UPnP plugin can do this "
+#~ "for you.</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'OpenSymbol'; "
+#~ "font-size:9pt;\"><span style=\" font-size:8pt;\"> Gátt fyrir</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+#~ "font-family:'OpenSymbol';\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'OpenSymbol';"
+#~ "\"><span style=\" font-weight:600;\"> Takið eftir</span> a til íforrit "
+#~ "fyrir</p></body></html>"
+
+#, fuzzy
+#~ msgid "The maximum number of connections allowed per torrent."
+#~ msgstr "af."
+
+#, fuzzy
+#~ msgid "The global connection limit for all torrents combined."
+#~ msgstr "fyrir allir."
+
+#, fuzzy
+#~ msgid "The maximum download speed in KiB/s."
+#~ msgstr "\" KiB s."
+
+#, fuzzy
+#~ msgid "The maximum upload speed in KiB/s"
+#~ msgstr "\" KiB s"
+
+#, fuzzy
+#~ msgid "DSCP value for IP packets:"
+#~ msgstr "fyrir IP:"
+
+#, fuzzy
+#~ msgid ""
+#~ "This value will be filled in the DSCP field of all the IP packets sent "
+#~ "for the bittorrent protocol."
+#~ msgstr "\" af allir IP fyrir."
+
+#, fuzzy
+#~ msgid "Maximum number of connection setups:"
+#~ msgstr "af:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">The maximum number of "
+#~ "outgoing connections ktorrent will try to setup simultaneously.</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+#~ "font-family:'OpenSymbol';\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'OpenSymbol';"
+#~ "\">If you are having trouble with ktorrent blocking other internet "
+#~ "traffic, try setting this number a bit lower.</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> af til</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+#~ "font-family:'OpenSymbol';\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'OpenSymbol';"
+#~ "\"> með annað a</p></body></html>"
+
+#, fuzzy
+#~ msgid "Network interface:"
+#~ msgstr "Net:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Which network interface "
+#~ "to use for all network traffic.</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+#~ "font-family:'OpenSymbol';\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'OpenSymbol';"
+#~ "\"><span style=\" font-weight:600;\">Note: </span>Requires a restart to "
+#~ "take effect.</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> til fyrir allir</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+#~ "font-family:'OpenSymbol';\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'OpenSymbol';"
+#~ "\"><span style=\" font-weight:600;\"> Athugsemd</span> a endurræsing til</"
+#~ "p></body></html>"
+
+#, fuzzy
+#~ msgid "Recommended Settings..."
+#~ msgstr "Stillingar"
+
+#, fuzzy
+#~ msgid "Features"
+#~ msgstr "Virkni"
+
+#, fuzzy
+#~ msgid ""
+#~ "DHT is a trackerless protocol to find peers sharing the same torrents as "
+#~ "you do."
+#~ msgstr "er a til sem."
+
+#, fuzzy
+#~ msgid "Use DHT to get additional peers"
+#~ msgstr "Nota til"
+
+#, fuzzy
+#~ msgid "UDP port for DHT communications:"
+#~ msgstr "fyrir:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;  font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\">UDP port to use for the DHT protocol.</span></"
+#~ "p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; \"><span style=\" font-"
+#~ "weight:600;\">Attention:</span> If you are behind a router, this port "
+#~ "needs to be forwarded to accept incoming DHT requests. The UPnP plugin "
+#~ "can do this for you.</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\"> til fyrir</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; \"><span style=\" font-"
+#~ "weight:600;\"> Takið eftir</span> a til til íforrit fyrir</p></body></"
+#~ "html>"
+
+#, fuzzy
+#~ msgid "Use peer exchange"
+#~ msgstr "Nota"
+
+#, fuzzy
+#~ msgid ""
+#~ "Enable or disable the use of webseeds when they are present in a torrent."
+#~ msgstr "Virkja eða slökkva af nútíð \" a."
+
+#, fuzzy
+#~ msgid "Use webseeds"
+#~ msgstr "Nota"
+
+#, fuzzy
+#~ msgid "Encryption"
+#~ msgstr "Dulritun"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Protocol encryption is "
+#~ "useful when your ISP is slowing down bittorrent connections. </p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">The encryption will "
+#~ "prevent your bittorrent traffic to be flagged as bittorrent traffic, and "
+#~ "so the ISP will not slow it down.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Samskiptaregla er er</"
+#~ "p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> til sem og ekki hægt</"
+#~ "p></body></html>"
+
+#, fuzzy
+#~ msgid "Use protocol encryption"
+#~ msgstr "Nota"
+
+#, fuzzy
+#~ msgid ""
+#~ "Not all clients support encryption, and some people have encryption "
+#~ "disabled. If you want to connect to those peers, you need to have this "
+#~ "option enabled."
+#~ msgstr "Ekki allir og eitthvað óvirkt til til til virkt."
+
+#, fuzzy
+#~ msgid "Allow unencrypted connections"
+#~ msgstr "Leyfa"
+
+#, fuzzy
+#~ msgid ""
+#~ "Instead of allowing the tracker to determine your IP address, tell the "
+#~ "tracker which IP address to use. Use this when you are behind a proxy."
+#~ msgstr "af til IP heimilisfang IP heimilisfang til Nota a."
+
+#, fuzzy
+#~ msgid "Send the tracker a custom IP address or hostname"
+#~ msgstr "Senda a sérsniðið IP heimilisfang eða"
+
+#, fuzzy
+#~ msgid "Custom IP address or hostname:"
+#~ msgstr "Sérsniðið IP heimilisfang eða:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Custom IP address or hostname to send to the tracker. Hostnames will be "
+#~ "resolved at runtime and the resolved IP address will be sent to the "
+#~ "tracker."
+#~ msgstr "Sérsniðið IP heimilisfang eða til til og IP heimilisfang til."
+
+#, fuzzy
+#~ msgid "Data Checking"
+#~ msgstr "Gögn"
+
+#, fuzzy
+#~ msgid ""
+#~ "During uploading when a chunk is loaded into memory automatically recheck "
+#~ "this chunk, to see if it still is OK."
+#~ msgstr "a er hlaðið til er Í lagi."
+
+#, fuzzy
+#~ msgid ""
+#~ "Because rechecking big chunks can take a lot of time, the recheck can be "
+#~ "disabled when the chunks are bigger then a certain size."
+#~ msgstr "stór a af Tími óvirkt a stærð."
+
+#, fuzzy
+#~ msgid "Do not recheck when chunks are bigger than"
+#~ msgstr "Framkvæma ekki"
+
+#, fuzzy
+#~ msgid "The maximum size a chunk can be for rechecking during uploading."
+#~ msgstr "stærð a fyrir."
+
+#, fuzzy
+#~ msgid " KiB"
+#~ msgstr " KiB"
+
+#, fuzzy
+#~ msgid ""
+#~ "Automatically do a full data check when we find to many corrupted chunks."
+#~ msgstr "a til."
+
+#, fuzzy
+#~ msgid "Do a full data check after "
+#~ msgstr "Framkvæma a "
+
+#, fuzzy
+#~ msgid "The number of corrupted chunks before a full data check is done"
+#~ msgstr "af a er lokið"
+
+#, fuzzy
+#~ msgid ""
+#~ "When a torrent has finished downloading, do a full data check on the "
+#~ "torrent."
+#~ msgstr "a búið a á."
+
+#, fuzzy
+#~ msgid "Check data when download is finished"
+#~ msgstr "Virkja er búið"
+
+#, fuzzy
+#~ msgid ""
+#~ "Whether or not diskspace should be reserved before starting to download a "
+#~ "torrent."
+#~ msgstr "eða ekki til a."
+
+#, fuzzy
+#~ msgid "Reserve disk space before starting a torrent"
+#~ msgstr "diskur a"
+
+#, fuzzy
+#~ msgid ""
+#~ "Instead of doing a quick reservation, do a full reservation. This is "
+#~ "slower than the quick way, but avoids fragmentation on the disk."
+#~ msgstr "af a a er á diskur."
+
+#, fuzzy
+#~ msgid "Fully reserve disk space (avoids fragmentation)"
+#~ msgstr "Fyllilega diskur"
+
+#, fuzzy
+#~ msgid "Performance"
+#~ msgstr "Afköst"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\">The interval in milliseconds between GUI "
+#~ "updates.</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Note: </span>Increasing this will decrease CPU usage.</p></"
+#~ "body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\"> \" millisekúndur á milli</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Athugsemd</span> Örgjörvi notkun</p></body></html>"
+
+#, fuzzy
+#~ msgid " ms"
+#~ msgstr " ms"
+
+#, fuzzy
+#~ msgid "Network sleep interval:"
+#~ msgstr "Net:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\">Amount of time the network threads will sleep "
+#~ "when they are speed limited. This has absolutely no effect when there are "
+#~ "no speed limits.</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Note:</span> The lower this is the more CPU is used. "
+#~ "Setting it high can lead to lower speeds in high bandwith situations. </"
+#~ "p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">For example on an 100 "
+#~ "Mbit LAN, if you set a limit of 3000 KiB/s, you might not actually reach "
+#~ "this speed when this value is too high. Without a limit you can easily "
+#~ "get above 3000 KiB/s on a LAN.</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\"> Upphæð af Tími nei nei</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Athugsemd</span> er fleiri Örgjörvi er Stilling hár til \" "
+#~ "hár</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Fyrir á a af KiB s "
+#~ "ekki er hár a KiB s á a</p></body></html>"
+
+#, fuzzy
+#~ msgid "Miscellaneous"
+#~ msgstr "Ýmislegt"
+
+#, fuzzy
+#~ msgid "Time estimation algorithm:"
+#~ msgstr "Tími:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><span "
+#~ "style=\" font-size:8pt;\">Select which algorithm to use for estimating "
+#~ "the time left :</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">KTorrent:</span> Mix of other algorithms, we use the one "
+#~ "which fits best in the current situation.</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Current speed:</span> Bytes left to download / current "
+#~ "speed</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Average speed: </span>Bytes left to download / average "
+#~ "speed</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Window of X:</span> Average of the last X samples (X = 20)</"
+#~ "p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Moving average:</span>  Moving average of the last 20 "
+#~ "samples</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><span "
+#~ "style=\" font-size:8pt;\"> Velja til fyrir Tími vinstri</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"></span> Mix af annað einn \"</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Núverandi</span> Bæti vinstri til</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Meðaltal</span> Bæti vinstri til</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Gluggi af X</span> Meðaltal af X hljoð X</p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Færi</span> Færi af hljoð</p></body></html>"
+
+#, fuzzy
+#~ msgid "Window of X"
+#~ msgstr "Gluggi af X"
+
+#, fuzzy
+#~ msgid "Preview size for audio files:"
+#~ msgstr "Forsýn stærð fyrir:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">The amount of data at "
+#~ "the beginning and end of an audio file, which will be prioritized for "
+#~ "previewing.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> af og af fyrir</p></"
+#~ "body></html>"
+
+#, fuzzy
+#~ msgid "Preview size for video files:"
+#~ msgstr "Forsýn stærð fyrir:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">The amount of data at "
+#~ "the beginning and end of a video file, which will be prioritized for "
+#~ "previewing.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> af og af a fyrir</p></"
+#~ "body></html>"
+
+#, fuzzy
+#~ msgid ""
+#~ "Disables the use of KDE's KIO library for tracker announces.\n"
+#~ "\n"
+#~ "This is experimental and should only be used if you are getting a lot of "
+#~ "connection to host broken errors."
+#~ msgstr "af KDE s KIO fyrir n er og a af til."
+
+#, fuzzy
+#~ msgid "Do not use KIO for tracker announces"
+#~ msgstr "Framkvæma ekki KIO fyrir"
+
+#, fuzzy
+#~ msgid "Resolve hostnames of peers"
+#~ msgstr "1"
+
+#, fuzzy
+#~ msgid "Folders"
+#~ msgstr "Möppur"
+
+#, fuzzy
+#~ msgid "Folder to store torrent information:"
+#~ msgstr "Mappa til:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Directory to store information about all torrents currently opened in "
+#~ "KTorrent."
+#~ msgstr "Mappa til allir \"."
+
+#, fuzzy
+#~ msgid "Directory to use as a default save location for all data."
+#~ msgstr "Mappa til sem a sjálfgefið fyrir allir."
+
+#, fuzzy
+#~ msgid "Default save location:"
+#~ msgstr "Sjálfgefið:"
+
+#, fuzzy
+#~ msgid "Directory to move data to when a torrent has finished downloading."
+#~ msgstr "Mappa til til a búið."
+
+#, fuzzy
+#~ msgid "Move completed downloads to:"
+#~ msgstr "Flytja til:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Directory to copy all torrent files in, which are opened by KTorrent."
+#~ msgstr "Mappa til afrita allir \"."
+
+#, fuzzy
+#~ msgid "Copy torrent files to:"
+#~ msgstr "Afrita til:"
+
+#, fuzzy
+#~ msgid "System Tray Icon"
+#~ msgstr "Táknmynd í kerfisbakka"
+
+#, fuzzy
+#~ msgid "Whether or not to show an icon in the system tray."
+#~ msgstr "eða ekki til \"."
+
+#, fuzzy
+#~ msgid "Show system tray icon"
+#~ msgstr "Sýna táknmynd í kerfisbakka"
+
+#, fuzzy
+#~ msgid "Whether or not to show system tray popup messages."
+#~ msgstr "eða ekki til."
+
+#, fuzzy
+#~ msgid "Show system tray popup messages"
+#~ msgstr "Sýna"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">When you select "
+#~ "multiple torrents to be opened at the same time, open them silently.</p></"
+#~ "body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> til Tími</p></body></"
+#~ "html>"
+
+#, fuzzy
+#~ msgid "Open multiple torrents silently"
+#~ msgstr "Opna"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Prevent computer from "
+#~ "going into a sleep state when torrents are running.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> frá a keyri</p></"
+#~ "body></html>"
+
+#, fuzzy
+#~ msgid "Suppress sleep when torrents are running"
+#~ msgstr "keyri"
+
+#, fuzzy
+#~ msgid ""
+#~ "When enabled, the queue manager will be totally disabled, allowing you to "
+#~ "fully control all torrents manually."
+#~ msgstr "virkt óvirkt til allir."
+
+#, fuzzy
+#~ msgid "Control torrents manually"
+#~ msgstr "Control"
+
+#, fuzzy
+#~ msgid ""
+#~ "The maximum number of simultaneous downloads the queue manager will run."
+#~ msgstr "af."
+
+#, fuzzy
+#~ msgid "The maximum number of simultaneous seeds the queue manager will run."
+#~ msgstr "af."
+
+#, fuzzy
+#~ msgid "When diskspace is running low:"
+#~ msgstr "er keyri lár:"
+
+#, fuzzy
+#~ msgid ""
+#~ "What to do when the diskspace is running low and the queue manager wants "
+#~ "to start a torrent."
+#~ msgstr "Hvað til er keyri lár og til byrja a."
+
+#, fuzzy
+#~ msgid "Don't start torrents"
+#~ msgstr "byrja"
+
+#, fuzzy
+#~ msgid "Ask if torrents can be started"
+#~ msgstr "Spyrja"
+
+#, fuzzy
+#~ msgid "Start torrents"
+#~ msgstr "Ræsa"
+
+#, fuzzy
+#~ msgid "Stop torrents when free disk space is lower than:"
+#~ msgstr "Stöðva diskur er:"
+
+#, fuzzy
+#~ msgid ""
+#~ "When the free diskspace drops below this value, stop all torrents "
+#~ "downloading."
+#~ msgstr "stöðva allir."
+
+#, fuzzy
+#~ msgid " MiB"
+#~ msgstr "MiB"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-size:8pt; font-weight:400; font-style:"
+#~ "normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">With this enabled, the "
+#~ "queue manager will decrease the priority of a torrent which has been "
+#~ "stalled for too long. </p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">This will allow the "
+#~ "queue manager to run other torrents, when a torrent is doing nothing.</"
+#~ "p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-size:8pt; font-weight:400; font-style:"
+#~ "normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> virkt forgangur af a "
+#~ "fyrir</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> til annað a er ekkert</"
+#~ "p></body></html>"
+
+#, fuzzy
+#~ msgid "Decrease priority of torrents which are stalled for too long"
+#~ msgstr "Lækkandi forgangur af fyrir"
+
+#, fuzzy
+#~ msgid "Stalled timer:"
+#~ msgstr "Töf:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Bitstream "
+#~ "Vera Sans';\">Time used for the stall timer. When a torrent is stalled "
+#~ "longer than this, its priority will be decreased.</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Bitstream "
+#~ "Vera Sans';\"> Tími fyrir a er forgangur</p></body></html>"
+
+#, fuzzy
+#~ msgid " Minutes"
+#~ msgstr "Mínútur"
+
+#, fuzzy
+#~ msgctxt "@title:group Options regarging Seeding"
+#~ msgid "Seeding"
+#~ msgstr "Sái"
+
+#, fuzzy
+#~ msgid ""
+#~ "When a download is finished, continue seeding it. If this is disabled, "
+#~ "the torrent will be stopped."
+#~ msgstr "a er búið er óvirkt stöðvað."
+
+#, fuzzy
+#~ msgid "Keep seeding after download is finished"
+#~ msgstr "Halda er búið"
+
+#, fuzzy
+#~ msgid "Number of upload slots:"
+#~ msgstr "Tala af:"
+
+#, fuzzy
+#~ msgid ""
+#~ "The number of upload slots, this determines the number of peers you can "
+#~ "upload to simultaneously for one torrent."
+#~ msgstr "af af til fyrir einn."
+
+#, fuzzy
+#~ msgid "Default maximum share ratio:"
+#~ msgstr "hlutfall:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\">The maximum share ratio, if this value is "
+#~ "reached seeding will be stopped. This is only applied to newly opened "
+#~ "torrents, existing torrents will not be affected by changing this.</"
+#~ "span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Attention: </span>This is not used when downloading, only "
+#~ "when seeding.</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\"> hlutfall er stöðvað er til ekki</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Takið eftir</span> er ekki</p></body></html>"
+
+#, fuzzy
+#~ msgid "Default maximum seed time:"
+#~ msgstr "Tími:"
+
+#, fuzzy
+#~ msgid ""
+#~ "The maximum seed time in hours. Once you reach this time, the torrent "
+#~ "will be stopped. This is only applied to newly opened torrents, existing "
+#~ "torrents will not be affected by changing this."
+#~ msgstr "Tími \" klukkustundir Einu sinni Tími stöðvað er til ekki."
+
+#, fuzzy
+#~ msgid "Recommended Settings"
+#~ msgstr "Stillingar"
+
+#, fuzzy
+#~ msgid "Available upload bandwidth:"
+#~ msgstr "Tiltækt:"
+
+#, fuzzy
+#~ msgid " kb/s"
+#~ msgstr "s"
+
+#, fuzzy
+#~ msgid "Available download bandwidth:"
+#~ msgstr "Tiltækt:"
+
+#, fuzzy
+#~ msgid "(= 32 KiB/s)"
+#~ msgstr "KiB s"
+
+#, fuzzy
+#~ msgid "(= 500 KiB/s)"
+#~ msgstr "KiB s"
+
+#, fuzzy
+#~ msgid "Calculate"
+#~ msgstr "Reikna"
+
+#, fuzzy
+#~ msgid "Preferences"
+#~ msgstr "Stillingar"
+
+#, fuzzy
+#~ msgid "Average speed per slot:"
+#~ msgstr "Meðaltal hólf:"
+
+#, fuzzy
+#~ msgid "Number of torrents you usually download simultaneously:"
+#~ msgstr "Tala af:"
+
+#, fuzzy
+#~ msgid "HTTP"
+#~ msgstr "HTTP"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\">Use the HTTP proxy settings configured in the "
+#~ "settings of KDE.</span></p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\"> Nota HTTP \" af KDE</span></p></body></html>"
+
+#, fuzzy
+#~ msgid "Use KDE proxy settings"
+#~ msgstr "Nota KDE"
+
+#, fuzzy
+#~ msgid "Proxy:"
+#~ msgstr "Vefsel:"
+
+#, fuzzy
+#~ msgid "IP address or hostname of the HTTP proxy to use. "
+#~ msgstr "IP heimilisfang eða af HTTP til "
+
+#, fuzzy
+#~ msgid "Port of the HTTP proxy."
+#~ msgstr "Gátt af HTTP."
+
+#, fuzzy
+#~ msgid "Whether or not to use the HTTP proxy for webseed connections."
+#~ msgstr "eða ekki til HTTP fyrir."
+
+#, fuzzy
+#~ msgid "Use proxy for webseed connections"
+#~ msgstr "Nota fyrir"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Whether or not to use "
+#~ "the HTTP proxy for tracker connections.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> eða ekki til HTTP "
+#~ "fyrir</p></body></html>"
+
+#, fuzzy
+#~ msgid "Use proxy for tracker connections"
+#~ msgstr "Nota fyrir"
+
+#, fuzzy
+#~ msgid "SOCKS"
+#~ msgstr "SOCKS"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\">Use a SOCKS proxy server for bittorrent "
+#~ "connections.</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" font-family:'OpenSymbol'; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"><span style=\" font-weight:600;\">Note: </span>This is not used for "
+#~ "tracker connections</p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\"> Nota a SOCKS fyrir</span></p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" font-family:'OpenSymbol'; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"><span style=\" font-weight:600;\"> Athugsemd</span> er ekki fyrir</p></"
+#~ "body></html>"
+
+#, fuzzy
+#~ msgid "Use a SOCKS proxy server:"
+#~ msgstr "Nota a SOCKS:"
+
+#, fuzzy
+#~ msgid "Server:"
+#~ msgstr "Þjónn:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\">IP address or hostname of the SOCKS server</"
+#~ "span></p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\"> IP heimilisfang eða af SOCKS</span></p></"
+#~ "body></html>"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\">Port used by the SOCKS server</span></p></"
+#~ "body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><span "
+#~ "style=\" font-size:8pt;\"> Gátt SOCKS</span></p></body></html>"
+
+#, fuzzy
+#~ msgid "Version:"
+#~ msgstr "Útgáfa:"
+
+#, fuzzy
+#~ msgid ""
+#~ "If the SOCKS server requires authentication via a username and a "
+#~ "password, enable this box."
+#~ msgstr "SOCKS a og a kassi."
+
+#, fuzzy
+#~ msgid "Username and password required"
+#~ msgstr "Notandanafn og"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><span "
+#~ "style=\" font-size:8pt;\">Username for the SOCKS proxy server.</span></"
+#~ "p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><span "
+#~ "style=\" font-size:8pt;\"> Notandanafn fyrir SOCKS</span></p></body></"
+#~ "html>"
+
+#, fuzzy
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><span "
+#~ "style=\" font-size:8pt;\">Password for the SOCKS proxy server.</span></"
+#~ "p></body></html>"
+#~ msgstr ""
+#~ "HTML DTD HTMLhttp://www.w3.org/TR/REC-html40/strict.dtd\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:8pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><span "
+#~ "style=\" font-size:8pt;\"> Lykilorð fyrir SOCKS</span></p></body></html>"
+
+#, fuzzy
+#~ msgid "..."
+#~ msgstr "..."
+
+#, fuzzy
+#~ msgid "Found:"
+#~ msgstr "Fannst:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">The number of chunks "
+#~ "which were not downloaded but have been found anyway.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> af ekki</p></body></"
+#~ "html>"
+
+#, fuzzy
+#~ msgid "0"
+#~ msgstr "0"
+
+#, fuzzy
+#~ msgid "Failed:"
+#~ msgstr "Mistókst:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">The number of chunks "
+#~ "which have been downloaded, and which are not OK.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> af og ekki Í lagi</p></"
+#~ "body></html>"
+
+#, fuzzy
+#~ msgid "Not downloaded:"
+#~ msgstr "Hlaðið inn:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">The number of chunks "
+#~ "which have not been downloaded.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> af ekki</p></body></"
+#~ "html>"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">The number of chunks "
+#~ "which have been downloaded, and which are OK.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> af og Í lagi</p></"
+#~ "body></html>"
+
+#, fuzzy
+#~ msgid "Cancel"
+#~ msgstr "Hætta við"
+
+#, fuzzy
+#~ msgid "Close"
+#~ msgstr "Loka"
+
+#, fuzzy
+#~ msgid "Dialog"
+#~ msgstr "Samskiptagluggi"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Default save location "
+#~ "for torrents from this group. </p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Note:</span> This is only used in the file selection "
+#~ "dialog, when you change the group, the download location in the dialog "
+#~ "will be set to this. You can still override it, if you want to. </p></"
+#~ "body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Sjálfgefið fyrir frá "
+#~ "flokkur</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Athugsemd</span> er \" flokkur \" til Þú til</p></body></"
+#~ "html>"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Default save location "
+#~ "for torrents from this group. </p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Note: </span>This is only used in the file selection "
+#~ "dialog, when you change the group, the download location in the dialog "
+#~ "will be set to this. You can still override it, if you want to.</p></"
+#~ "body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Sjálfgefið fyrir frá "
+#~ "flokkur</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Athugsemd</span> er \" flokkur \" til Þú til</p></body></"
+#~ "html>"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Default settings for "
+#~ "torrents which are added to the group.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Sjálfgefið fyrir til "
+#~ "flokkur</p></body></html>"
+
+#, fuzzy
+#~ msgid "Torrent Limits"
+#~ msgstr "Takmörk"
+
+#, fuzzy
+#~ msgid "Maximum seed time:"
+#~ msgstr "Tími:"
+
+#, fuzzy
+#~ msgid "Maximum share ratio:"
+#~ msgstr "Mesta skiptihlutfall:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">When this is enabled, "
+#~ "these settings will only be applied when a torrent is added to the group "
+#~ "in the file selection dialog or the torrent creation dialog.</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">If this is not enabled, "
+#~ "the settings will always be applied when you add a torrent to this group. "
+#~ "</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> er virkt a er til "
+#~ "flokkur \" eða</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> er ekki virkt a til "
+#~ "flokkur</p></body></html>"
+
+#, fuzzy
+#~ msgid "Apply settings only for newly opened or created torrents"
+#~ msgstr "Virkja fyrir eða"
+
+#, fuzzy
+#~ msgid "File or directory to create torrent from:"
+#~ msgstr "Skrá eða til frá:"
+
+#, fuzzy
+#~ msgid "Size of each chunk:"
+#~ msgstr "Stærð af:"
+
+#, fuzzy
+#~ msgid "32 KiB"
+#~ msgstr "KiB"
+
+#, fuzzy
+#~ msgid "64 KiB"
+#~ msgstr "KiB"
+
+#, fuzzy
+#~ msgid "128 KiB"
+#~ msgstr "KiB"
+
+#, fuzzy
+#~ msgid "256 KiB"
+#~ msgstr "KiB"
+
+#, fuzzy
+#~ msgid "512 KiB"
+#~ msgstr "KiB"
+
+#, fuzzy
+#~ msgid "1 MiB"
+#~ msgstr "MiB"
+
+#, fuzzy
+#~ msgid "2 MiB"
+#~ msgstr "MiB"
+
+#, fuzzy
+#~ msgid "4 MiB"
+#~ msgstr "MiB"
+
+#, fuzzy
+#~ msgid "8 MiB"
+#~ msgstr "MiB"
+
+#, fuzzy
+#~ msgid "Start seeding"
+#~ msgstr "Ræsa"
+
+#, fuzzy
+#~ msgid "Private torrent (DHT not allowed)"
+#~ msgstr "Prívat ekki"
+
+#, fuzzy
+#~ msgid "IP or Hostname"
+#~ msgstr "IP eða Vélarheiti"
+
+#, fuzzy
+#~ msgid "Port"
+#~ msgstr "Gátt"
+
+#, fuzzy
+#~ msgid "Web Seeds"
+#~ msgstr "Vefur Fræ"
+
+#, fuzzy
+#~ msgid "Select Which Files You Want to Download"
+#~ msgstr "Velja Skrár Þú til Hlaða niður"
+
+#, fuzzy
+#~ msgid "Text encoding:"
+#~ msgstr "Texti:"
+
+#, fuzzy
+#~ msgid ""
+#~ "All files in the torrent, you can change them by double clicking on them."
+#~ msgstr "Allt \" double á."
+
+#, fuzzy
+#~ msgid "Select &All"
+#~ msgstr "Velja &allt"
+
+#, fuzzy
+#~ msgid "Select &None"
+#~ msgstr "Velja e&kkert"
+
+#, fuzzy
+#~ msgid "Invert Selection"
+#~ msgstr "Umhverfa vali"
+
+#, fuzzy
+#~ msgid "Collapse All"
+#~ msgstr "Fella allt saman"
+
+#, fuzzy
+#~ msgid "Expand All"
+#~ msgstr "Opna allt"
+
+#, fuzzy
+#~ msgid "No existing files are found"
+#~ msgstr "Sleppa"
+
+#, fuzzy
+#~ msgid "Group:"
+#~ msgstr "Hópur:"
+
+#, fuzzy
+#~ msgid "Start torrent"
+#~ msgstr "Ræsa"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">When existing files "
+#~ "have been found, skip the data check and assume that the files are fully "
+#~ "downloaded.</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Note: </span>only do this when you are absolutely sure.</"
+#~ "p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> og</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Athugsemd</span></p></body></html>"
+
+#, fuzzy
+#~ msgid "Skip data check if existing files are found"
+#~ msgstr "Sleppa"
+
+#, fuzzy
+#~ msgid "Disk Space"
+#~ msgstr "Diskpláss"
+
+#, fuzzy
+#~ msgid "Required:"
+#~ msgstr "Nauðsynlegt diskur:"
+
+#, fuzzy
+#~ msgid "Available:"
+#~ msgstr "Tiltækt:"
+
+#, fuzzy
+#~ msgid "After download:"
+#~ msgstr "Eftir:"
+
+#, fuzzy
+#~ msgid "Speed limits for individual torrents (double click to edit):"
+#~ msgstr "Hraði fyrir allir double til:"
+
+#, fuzzy
+#~ msgid "Filter:"
+#~ msgstr "Sía:"
+
+#, fuzzy
+#~ msgid "Global Limits"
+#~ msgstr "Víðvært Takmörk"
+
+#, fuzzy
+#~ msgid ""
+#~ "Enter the IP address or hostname and port number of the peer you wish to "
+#~ "add:"
+#~ msgstr "Enter IP heimilisfang eða og af til:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:9pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">The IP address or "
+#~ "hostname of the peer you want to connect to, should be put here.</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\">Note:</span> We accept both IPv4 and IPv6 addresses</p></"
+#~ "body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:9pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> IP heimilisfang eða af "
+#~ "til til</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#~ "\"></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#~ "weight:600;\"> Athugsemd</span> og</p></body></html>"
+
+#, fuzzy
+#~ msgid "127.0.0.1"
+#~ msgstr "1"
+
+#, fuzzy
+#~ msgid "Files are missing"
+#~ msgstr "Skrár"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:10pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">They are no longer "
+#~ "there, recreate them.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:10pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> nei</p></body></html>"
+
+#, fuzzy
+#~ msgid "Recreate"
+#~ msgstr "Endurskrifa"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:10pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Do not download the "
+#~ "missing files.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:10pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Framkvæma ekki</p></"
+#~ "body></html>"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:10pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">The files have been "
+#~ "moved to another location, select the new location.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:10pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> til nýtt</p></body></"
+#~ "html>"
+
+#, fuzzy
+#~ msgid "Select New Location"
+#~ msgstr "Velja Nýtt Staðsetning"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:10pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Cancel, do not start "
+#~ "the torrent.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'OpenSymbol'; font-size:10pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Hætta við ekki byrja</"
+#~ "p></body></html>"
+
+#, fuzzy
+#~ msgid "Importing torrents from KDE3 version:"
+#~ msgstr "frá útgáfa:"
+
+#, fuzzy
+#~ msgid "Import an existing torrent"
+#~ msgstr "Flytja inn"
+
+#, fuzzy
+#~ msgid "Data:"
+#~ msgstr "Gögn:"
+
+#, fuzzy
+#~ msgid "Select the torrent file and the data which belongs with it."
+#~ msgstr "Velja og með."
+
+#, fuzzy
+#~ msgid "&Import"
+#~ msgstr "&Flytja inn"
+
+#, fuzzy
+#~ msgid "Ca&ncel"
+#~ msgstr "Hætt&a við"
+
+#, fuzzy
+#~ msgid "&File"
+#~ msgstr "&Skrá"
+
+#, fuzzy
+#~ msgid "&View"
+#~ msgstr "S&koða"
+
+#, fuzzy
+#~ msgid "Additional Peer Sources"
+#~ msgstr "Kóði"
+
+#, fuzzy
+#~ msgid "Configure Columns"
+#~ msgstr "Stilla Dálkar"
+
+#, fuzzy
+#~ msgid "Download Toolbar"
+#~ msgstr "Hlaða niður Tækjaslá"
+
+#, fuzzy
+#~ msgid "Add peer:"
+#~ msgstr "Bæta við:"
+
+#, fuzzy
+#~| msgid ""
+#~| "Invalid IP address %1. You must enter an IP address in the format 'XXX."
+#~| "XXX.XXX.XXX'. You can also use wildcards for ranges like '127.0.0.*'."
+#~ msgid ""
+#~ "IP addresses must be in the format 'XXX.XXX.XXX.XXX'.\n"
+#~ "                                        \n"
+#~ "You can also use wildcards like '127.0.0.*' or specify ranges like "
+#~ "'200.10.10.0-200.10.10.40'."
+#~ msgstr ""
+#~ "Ógilt IP vistfang %1. Þú verður að setja IP vistföng inn á sniðinu 'XXX."
+#~ "XXX.XXX.XXX'. Þú getur líka notað útskiptitákn við tilgreiningu breiðari "
+#~ "sviða eins og '127.0.0.*'."
+
+#, fuzzy
+#~ msgid "Clear"
+#~ msgstr "Hreinsa"
+
+#, fuzzy
+#~ msgid "Open..."
+#~ msgstr "Opna..."
+
+#, fuzzy
+#~ msgid "Save As..."
+#~ msgstr "Vista sem..."
+
+#, fuzzy
+#~ msgid "Torrent to display:"
+#~ msgstr "til:"
+
+#, fuzzy
+#~ msgid "Maximum number of downloads (0 = no limit)"
+#~ msgstr "af nei"
+
+#, fuzzy
+#~ msgid "Maximum number of seeds (0 = no limit)"
+#~ msgstr "af nei"
+
+#, fuzzy
+#~ msgid "Start downloads on low disk space?"
+#~ msgstr "Ræsa á lár diskur?"
+
+#, fuzzy
+#~ msgid "Maximum number of connections per torrent (0 = no limit)"
+#~ msgstr "af nei"
+
+#, fuzzy
+#~ msgid "Maximum number of connections for all torrents (0 = no limit) "
+#~ msgstr "af fyrir allir nei "
+
+#, fuzzy
+#~ msgid "Maximum upload speed in KiB/sec (0 = no limit)"
+#~ msgstr "\" KiB sek nei"
+
+#, fuzzy
+#~ msgid "Maximum download speed in KiB/sec (0 = no limit)"
+#~ msgstr "\" KiB sek nei"
+
+#, fuzzy
+#~ msgid "Maximum share ratio (0 = no limit)"
+#~ msgstr "hlutfall nei"
+
+#, fuzzy
+#~ msgid "Show a system tray icon"
+#~ msgstr "Sýna a"
+
+#, fuzzy
+#~ msgid "Show speed bar in tray icon"
+#~ msgstr "Sýna \""
+
+#, fuzzy
+#~ msgid "Download bandwidth (in kb/s):"
+#~ msgstr "Hlaða niður \" s:"
+
+#, fuzzy
+#~ msgid "Upload bandwidth (in kb/s):"
+#~ msgstr "Senda \" s:"
+
+#, fuzzy
+#~ msgid "Show popup messages when torrent is finished."
+#~ msgstr "Sýna er búið."
+
+#, fuzzy
+#~ msgid "Keep seeding after download has finished"
+#~ msgstr "Halda búið"
+
+#, fuzzy
+#~ msgid "Folder to store temporary files"
+#~ msgstr "Mappa til"
+
+#, fuzzy
+#~ msgid "Whether to automatically save downloads to saveDir"
+#~ msgstr "til til"
+
+#, fuzzy
+#~ msgid "Folder to store downloaded files"
+#~ msgstr "Mappa til"
+
+#, fuzzy
+#~ msgid "Whether to automatically copy .torrent files to torrentCopyDir"
+#~ msgstr "til afrita til"
+
+#, fuzzy
+#~ msgid "Folder to copy .torrent files to"
+#~ msgstr "Mappa til afrita til"
+
+#, fuzzy
+#~ msgid "Whether to use a custom IP to pass to the tracker"
+#~ msgstr "til a sérsniðið IP til til"
+
+#, fuzzy
+#~ msgid "Directory which was used as the last save directory"
+#~ msgstr "Mappa sem"
+
+#, fuzzy
+#~ msgid "IP to pass to the tracker"
+#~ msgstr "IP til til"
+
+#, fuzzy
+#~ msgid "Support for DHT"
+#~ msgstr "fyrir"
+
+#, fuzzy
+#~ msgid "Number of upload slots"
+#~ msgstr "Tala af"
+
+#, fuzzy
+#~ msgid "Columns shown in KTorrentView"
+#~ msgstr "Dálkar \""
+
+#, fuzzy
+#~ msgid "Algorithm to estimate the time when a torrent is finished"
+#~ msgstr "Algrím til Tími a er búið"
+
+#, fuzzy
+#~ msgid ""
+#~ "When there is no space left to complete download, and the available disk "
+#~ "space is less than this value, the torrent will be stopped."
+#~ msgstr "er nei vinstri til kláraður og diskur er minna stöðvað."
+
+#, fuzzy
+#~ msgid "Whether to automatically move completed downloads to completedDir"
+#~ msgstr "til til"
+
+#, fuzzy
+#~ msgid "Folder to move completed downloaded files to"
+#~ msgstr "Mappa til til"
+
+#, fuzzy
+#~ msgid "Maximum seed time in hours (0 = no limit)"
+#~ msgstr "Tími \" klukkustundir nei"
+
+#, fuzzy
+#~ msgid "Maximum share ratio limit reached."
+#~ msgstr "hlutfall."
+
+#, fuzzy
+#~ msgid "(C) 2005 - 2008 Joris Guisson and Ivan Vasic"
+#~ msgstr "(C) 2005 - 2008 Joris Guisson and Ivan Vasic"
+
+#, fuzzy
+#~ msgid ""
+#~ "Specified port (%1) is unavailable or in use by another application. "
+#~ "KTorrent is now using port %2."
+#~ msgstr "er ónothæft eða \" er núna."
+
+#, fuzzy
+#~ msgid "Resume KTorrent"
+#~ msgstr "Halda áfram"
+
+#, fuzzy
+#~ msgid "Resume suspended torrents"
+#~ msgstr "Halda áfram í bið"
+
+#, fuzzy
+#~ msgid "KSqueezedTextLabel"
+#~ msgstr "KSqueezedTextLabel"
+
+#, fuzzy
+#~ msgid "Creating Torrent"
+#~ msgstr "Bý til"
+
+#, fuzzy
+#~ msgid "Creating %1..."
+#~ msgstr "Bý til."
+
+#~ msgid "Checking Data ..."
+#~ msgstr "Yfirfer gögn ..."
+
+#~ msgid "Error scanning data: %1"
+#~ msgstr "Villa við skönnun gagna: %1"
+
+#~ msgid "Scanning data of <b>%1</b> :"
+#~ msgstr "Yfirferð á gögnum frá <b>%1</b>:"
+
+#, fuzzy
+#~ msgid "Scanning data of torrent:"
+#~ msgstr "Yfirfer gögn straums:"
+
+#, fuzzy
+#~ msgid "Chunks failed:"
+#~ msgstr "mistókst:"
+
+#, fuzzy
+#~ msgid "Chunks not downloaded:"
+#~ msgstr "ekki:"
+
+#~ msgid "Invalid URL: "
+#~ msgstr "Ógild slóð: "
+
+#, fuzzy
+#~ msgid "Normal priority:"
+#~ msgstr "Venjulegt forgangur:"
+
+#, fuzzy
+#~ msgid ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Color to use for normal "
+#~ "priority files.</p></body></html>"
+#~ msgstr ""
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\"> hvítur\n"
+#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-"
+#~ "size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> Litur til fyrir "
+#~ "samræmt forgangur</p></body></html>"

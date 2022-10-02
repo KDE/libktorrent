@@ -1,0 +1,601 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Sairan Kikkarin <sairan@computer.org>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-01-23 00:45+0000\n"
+"PO-Revision-Date: 2013-03-25 04:38+0600\n"
+"Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
+"Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
+"Language: kk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 1.2\n"
+
+#: src/bcodec/bdecoder.cpp:48
+#, kde-format
+msgid "Illegal token: %1"
+msgstr "Жарамсыз өрнек: %1"
+
+#: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
+#, kde-format
+msgid "Decode error"
+msgstr "Кодын шешу қатесі"
+
+#: src/bcodec/bdecoder.cpp:161 src/bcodec/bdecoder.cpp:199
+#, kde-format
+msgid "Unexpected end of input"
+msgstr "Күтпеген енгізу соңы"
+
+#: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
+#, kde-format
+msgid "Cannot convert %1 to an int"
+msgstr "%1 бүтін санға аударылмады"
+
+#: src/bcodec/bdecoder.cpp:223
+#, kde-format
+msgid "Torrent is incomplete."
+msgstr "Торрент бітпеген."
+
+#: src/datachecker/datacheckerjob.cpp:66
+#, kde-format
+msgid "Waiting for other data checks to finish"
+msgstr "Аяқтау үшін басқа деректерін тексеруде"
+
+#: src/datachecker/datacheckerjob.cpp:72 src/torrent/torrentstats.cpp:92
+#, kde-format
+msgid "Checking data"
+msgstr "Деректі тексеру"
+
+#: src/datachecker/datacheckerjob.cpp:119
+#, kde-format
+msgid "Checking Data"
+msgstr "Деректі тексеру"
+
+#: src/datachecker/multidatachecker.cpp:181
+#: src/datachecker/singledatachecker.cpp:34 src/diskio/multifilecache.cpp:621
+#: src/diskio/multifilecache.cpp:656 src/torrent/torrentcreator.cpp:111
+#: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
+#, kde-format
+msgid "Cannot open file %1: %2"
+msgstr "%1 файлы ашылмады: %2"
+
+#: src/diskio/cache.cpp:148 src/diskio/multifilecache.cpp:95
+#: src/diskio/singlefilecache.cpp:67
+#, kde-format
+msgid "Failed to create %1: %2"
+msgstr "%1 құрылмады: %2"
+
+#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:312
+#: src/util/fileops.cpp:354
+#, kde-format
+msgid "Cannot open %1: %2"
+msgstr "%1 ашылмады: %2"
+
+#: src/diskio/cachefile.cpp:103 src/diskio/cachefile.cpp:215
+#: src/diskio/cachefile.cpp:368 src/diskio/cachefile.cpp:427
+#, kde-format
+msgid "Cannot open %1 for writing: readonly filesystem"
+msgstr "%1 деген жазу үшін ашылмады: тек оқуға арналған файл жүйесі"
+
+#: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
+#, kde-format
+msgid "Attempting to write beyond the maximum size of %1"
+msgstr "%1 дегеннің максимум өлшемінен асырып жазу талпынысы"
+
+#: src/diskio/cachefile.cpp:220
+#, kde-format
+msgid ""
+"Cannot expand file %1: attempting to grow the file beyond the maximum size"
+msgstr "%1 файлы тарқатылмады: өлшемі шегінен шығып кетеді."
+
+#: src/diskio/cachefile.cpp:224
+#, kde-format
+msgid "Cannot expand file %1: %2"
+msgstr "%1 файлы тарқатылмады: %2"
+
+#: src/diskio/cachefile.cpp:336
+#, kde-format
+msgid "Error: Reading past the end of the file %1"
+msgstr "Қате: %1 файлының соңынан кейін оқу "
+
+#: src/diskio/cachefile.cpp:341 src/diskio/cachefile.cpp:383
+#, kde-format
+msgid "Failed to seek file %1: %2"
+msgstr "%1 файлда іздеу жаңылысы: %2"
+
+#: src/diskio/cachefile.cpp:348
+#, kde-format
+msgid "Error reading from %1"
+msgstr "%1 дегеннен оқу қатесі"
+
+#: src/diskio/cachefile.cpp:386
+#, kde-format
+msgid "Failed to write to file %1: %2"
+msgstr "%1 файлына жазу жаңылысы: %2"
+
+#: src/diskio/cachefile.cpp:443
+#, kde-format
+msgid "Cannot preallocate diskspace: %1"
+msgstr "Дискіде орын арнап бөлінбеді: %1"
+
+#: src/diskio/chunkmanager.cpp:844 src/diskio/chunkmanager.cpp:867
+#, kde-format
+msgid "Cannot open index file %1: %2"
+msgstr "%1 индекс файлы ашылмады: %2"
+
+#: src/diskio/dndfile.cpp:72
+#, kde-format
+msgid "Cannot create file %1: %2"
+msgstr "%1 файлы құрылмады: %2"
+
+#: src/diskio/dndfile.cpp:114
+#, kde-format
+msgid "Failed to write first chunk to DND file: %1"
+msgstr "DND файлына алғашқы тілімін жазу жаңылысы: %1"
+
+#: src/diskio/dndfile.cpp:129
+#, kde-format
+msgid "Failed to write last chunk to DND file: %1"
+msgstr "DND файлына соңғы тілімін жазу жаңылысы: %1"
+
+#: src/diskio/movedatafilesjob.cpp:109
+#, kde-format
+msgid "Waiting for other move jobs to finish"
+msgstr "Басқа жылжыту тапсырмалар аяқтауын күтуде"
+
+#: src/diskio/movedatafilesjob.cpp:110 src/diskio/movedatafilesjob.cpp:146
+#, kde-format
+msgctxt "The source of a file operation"
+msgid "Source"
+msgstr "Алатын көзі"
+
+#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#, kde-format
+msgctxt "The destination of a file operation"
+msgid "Destination"
+msgstr "Баратын жері"
+
+#: src/diskio/movedatafilesjob.cpp:145
+#, kde-format
+msgctxt "@title job"
+msgid "Moving"
+msgstr "Жылжыту"
+
+#: src/diskio/multifilecache.cpp:70 src/diskio/singlefilecache.cpp:57
+#, kde-format
+msgid "Failed to open %1: %2"
+msgstr "%1 ашу жаңылысы: %2"
+
+#: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
+#, kde-format
+msgid "Unable to write to a piece mapped read only"
+msgstr "Тек оқуға арналған бөліміне жазуға болмайды"
+
+#: src/download/chunkdownload.cpp:342
+#, kde-format
+msgid "1 peer"
+msgid_plural "%1 peers"
+msgstr[0] "%1 қатарлас"
+
+#: src/download/downloader.cpp:693
+#, kde-format
+msgid "Disabled because webseed does not match torrent"
+msgstr "Веб-таратуы торентке сәйкеспеген соң бұғатталды"
+
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
+#: src/download/webseed.cpp:84
+#, kde-format
+msgid "Not connected"
+msgstr "Байланыспаған"
+
+#: src/download/httpconnection.cpp:96
+#, kde-format
+msgid "Resolving proxy %1:%2"
+msgstr "%1 проксиін талдау: %2"
+
+#: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
+#, kde-format
+msgid "Not enough system resources available"
+msgstr "Жүйе ресурстары жетпейді"
+
+#: src/download/httpconnection.cpp:110
+#, kde-format
+msgid "Resolving hostname %1"
+msgstr "%1 хост атауын анықтау"
+
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
+#, kde-format
+msgid "Connection closed"
+msgstr "Байланыс доғарылды"
+
+#: src/download/httpconnection.cpp:130
+#, kde-format
+msgid "Error: request failed: %1"
+msgstr "Қате: талап жаңылысы: %1"
+
+#: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
+#, kde-format
+msgid "Connected"
+msgstr "Байланысқан"
+
+#: src/download/httpconnection.cpp:162
+#, kde-format
+msgid "Error: Failed to connect to webseed"
+msgstr "Қате: Веб-таратушымен байланыс жаңылысы"
+
+#: src/download/httpconnection.cpp:186
+#, kde-format
+msgid "Connecting"
+msgstr "Байланысып жатыр"
+
+#: src/download/httpconnection.cpp:195
+#, kde-format
+msgid "Failed to connect to webseed"
+msgstr "Веб-таратушымен байланыс жаңылысы"
+
+#: src/download/httpconnection.cpp:200
+#, kde-format
+msgid "Failed to resolve hostname of webseed"
+msgstr "Веб-таратушы хост атүауын анықтау жаңылысы"
+
+#: src/download/httpconnection.cpp:271
+#, kde-format
+msgid "Error: failed to connect, server not responding"
+msgstr "Қате: Байланыс болмады, сервері жауап бермеді"
+
+#: src/download/httpconnection.cpp:281
+#, kde-format
+msgid "Error: request timed out"
+msgstr "Қате: жауапты күту уақыты өті"
+
+#: src/download/httpconnection.cpp:351
+#, kde-format
+msgid "Redirected without a new location."
+msgstr "Жаңа адрессіз қайта бағытталған."
+
+#: src/download/webseed.cpp:493
+#, fuzzy, kde-format
+#| msgid "Unused for %1 seconds (Too many connection failures)"
+msgid "Unused for %1 second (Too many connection failures)"
+msgid_plural "Unused for %1 seconds (Too many connection failures)"
+msgstr[0] "%1 секунд пайдаланбаған (Тым көп байланыс жаңылысы)"
+
+#: src/interfaces/trackerinterface.cpp:45
+#, kde-format
+msgid "OK"
+msgstr "ОК"
+
+#: src/interfaces/trackerinterface.cpp:45
+#, kde-format
+msgid "Warning: %1"
+msgstr "Ескерту: %1"
+
+#: src/interfaces/trackerinterface.cpp:47
+#, kde-format
+msgid "Announcing"
+msgstr "Жариялау"
+
+#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
+#, kde-format
+msgid "Error: %1"
+msgstr "Қате: %1"
+
+#: src/peer/peerid.cpp:299
+#, kde-format
+msgid "Unknown client"
+msgstr "Беймәлім клиенті"
+
+#: src/torrent/torrent.cpp:96 src/torrent/torrent.cpp:153
+#: src/torrent/torrent.cpp:180 src/torrent/torrent.cpp:187
+#: src/torrent/torrent.cpp:194 src/torrent/torrent.cpp:198
+#: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
+#, kde-format
+msgid "Corrupted torrent."
+msgstr "Бүлінген торрент."
+
+#: src/torrent/torrentcontrol.cpp:277
+#, kde-format
+msgid "Error writing to disk, do you have enough diskspace?"
+msgstr "Дискіге жазу қатесі, жеткілікті орын бар ма?"
+
+#: src/torrent/torrentcontrol.cpp:492
+#, kde-format
+msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
+msgstr "<b>%1</b> жүктелгенде қате орын алды:<br/><b>%2</b>"
+
+#: src/torrent/torrentcontrol.cpp:502
+#, kde-format
+msgid "Unable to create %1: %2"
+msgstr "%1 құрылмады: %2"
+
+#: src/torrent/torrentcontrol.cpp:515
+#, kde-format
+msgid ""
+"You are already downloading the torrent <b>%1</b>. The tracker lists from "
+"both torrents have been merged."
+msgstr ""
+"<b>%1</b> деген торрент жүктеліп жатыр екен. Екі торренттің трекер тізімдері "
+"біріктірілді."
+
+#: src/torrent/torrentcontrol.cpp:519
+#, kde-format
+msgid "You are already downloading the torrent <b>%1</b>."
+msgstr "<b>%1</b> деген торрент жүктеліп жатыр екен."
+
+#: src/torrent/torrentcreator.cpp:332
+#, kde-format
+msgid "Cannot create index file: %1"
+msgstr "Индекс файлы құрылмады: %1"
+
+#: src/torrent/torrentstats.cpp:72
+#, kde-format
+msgid "Not started"
+msgstr "Басталмаған"
+
+#: src/torrent/torrentstats.cpp:74
+#, kde-format
+msgid "Download completed"
+msgstr "Жүктеп алу аяқталды"
+
+#: src/torrent/torrentstats.cpp:76
+#, kde-format
+msgid "Seeding completed"
+msgstr "Тарату біткен"
+
+#: src/torrent/torrentstats.cpp:78
+#, kde-format
+msgctxt "Status of a torrent file"
+msgid "Seeding"
+msgstr "Тарату"
+
+#: src/torrent/torrentstats.cpp:80
+#, kde-format
+msgid "Downloading"
+msgstr "Жүктеп алуда"
+
+#: src/torrent/torrentstats.cpp:82
+#, kde-format
+msgid "Stalled"
+msgstr "Тоқтап қалған"
+
+#: src/torrent/torrentstats.cpp:84
+#, kde-format
+msgid "Stopped"
+msgstr "Тоқтатылған"
+
+#: src/torrent/torrentstats.cpp:88
+#, kde-format
+msgid "Allocating diskspace"
+msgstr "Дискіде орын арнап жатыр"
+
+#: src/torrent/torrentstats.cpp:90
+#, kde-format
+msgid "Queued for seeding"
+msgstr "Тарату кезегінде"
+
+#: src/torrent/torrentstats.cpp:90
+#, kde-format
+msgid "Queued for downloading"
+msgstr "Жүктеп алу кезегінде"
+
+#: src/torrent/torrentstats.cpp:94
+#, kde-format
+msgid "Stopped. No space left on device."
+msgstr "Тоқтатылған. Құрылғыда орын қалған жоқ."
+
+#: src/torrent/torrentstats.cpp:96
+#, kde-format
+msgid "Paused"
+msgstr "Аялдаған"
+
+#: src/torrent/torrentstats.cpp:98
+#, kde-format
+msgid "Superseeding"
+msgstr "Супертарату режімінде"
+
+#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
+#: src/tracker/httptracker.cpp:392
+#, kde-format
+msgid "Invalid response from tracker"
+msgstr "Трекердің жауабы дұрыс емес"
+
+#: src/tracker/httptracker.cpp:253
+#, kde-format
+msgid "Invalid data from tracker"
+msgstr "Трекердің дерегі дұрыс емес"
+
+#: src/tracker/httptracker.cpp:407
+#, kde-format
+msgid "Invalid tracker URL"
+msgstr "Трекердің URL-і дұрыс емес"
+
+#: src/tracker/httptracker.cpp:465 src/tracker/udptracker.cpp:315
+#: src/tracker/udptracker.cpp:322
+#, kde-format
+msgid "Timeout contacting tracker %1"
+msgstr "%1 трекерді күту уақыты өтті"
+
+#: src/tracker/udptracker.cpp:343
+#, kde-format
+msgid "Unable to resolve hostname %1"
+msgstr "%1 деген хост атауы анықталмады"
+
+#: src/upnp/httprequest.cpp:39
+#, kde-format
+msgid "Operation timed out"
+msgstr "Амалды күту мерзімі бітті"
+
+#: src/upnp/upnprouter.cpp:156
+#, kde-format
+msgid "Failed to download %1: %2"
+msgstr "%1 дегенді жүктеп алу жаңылысы: %2"
+
+#: src/upnp/upnprouter.cpp:166
+#, kde-format
+msgid "Error parsing router description."
+msgstr "Маршруттауыш сипаттамасын талдау қатесі."
+
+#: src/upnp/upnprouter.cpp:200
+#, kde-format
+msgid ""
+"Forwarding failed:\n"
+"Device does not have a WANIPConnection or WANPPPConnection."
+msgstr ""
+"Бағыттау жаңылысы:\n"
+"Құрылғыда WANIPConnection не WANPPPConnection жоқ."
+
+#: src/upnp/upnprouter.cpp:279
+#, kde-format
+msgid "Cannot find port forwarding service in the device's description."
+msgstr "Кұрылғының сипаттамасында порт бағыттауы табылған жоқ."
+
+#: src/util/file.cpp:68
+#, kde-format
+msgid "Cannot write to %1: %2"
+msgstr "%1 дегенге жазылмады: %2"
+
+#: src/util/file.cpp:81
+#, kde-format
+msgid "Cannot read from %1"
+msgstr "%1 дегеннен оқылмады"
+
+#: src/util/fileops.cpp:91
+#, kde-format
+msgid "Cannot create directory %1"
+msgstr "%1 қапшығы құрылмады"
+
+#: src/util/fileops.cpp:149
+#, kde-format
+msgid "Cannot symlink %1 to %2: %3"
+msgstr "%1 -> %2 символды сілтеме жасалмады: %3"
+
+#: src/util/fileops.cpp:162
+#, kde-format
+msgid "Cannot move %1 to %2: %3"
+msgstr "%1 деген %2 дегенге жылжымады: %3"
+
+#: src/util/fileops.cpp:173 src/util/fileops.cpp:184
+#, kde-format
+msgid "Cannot copy %1 to %2: %3"
+msgstr "%1 деген %2 дегенге көшірілмеді: %3"
+
+#: src/util/fileops.cpp:238
+#, kde-format
+msgid "Cannot delete %1: %2"
+msgstr "%1 өшірілмеді: %2"
+
+#: src/util/fileops.cpp:254
+#, kde-format
+msgid "Cannot create %1: %2"
+msgstr "%1 құрылмады: %2"
+
+#: src/util/fileops.cpp:271
+#, kde-format
+msgid "Cannot calculate the filesize of %1: %2"
+msgstr "%1 файл өлшемі есептеуге келмеді: %2"
+
+#: src/util/fileops.cpp:287
+#, kde-format
+msgid "Cannot calculate the filesize: %1"
+msgstr "Файл өлшемі есептеуге келмеді: %1"
+
+#: src/util/fileops.cpp:332 src/util/fileops.cpp:336 src/util/fileops.cpp:339
+#: src/util/fileops.cpp:342 src/util/fileops.cpp:345
+#, kde-format
+msgid "Cannot expand file: %1"
+msgstr "Файл тарқатылмады: %1"
+
+#: src/util/fileops.cpp:372
+#, kde-format
+msgid "Cannot seek in file: %1"
+msgstr "Файлда іздеу болмады: %1"
+
+#: src/util/fileops.cpp:613
+#, fuzzy, kde-format
+#| msgid "Cannot open file %1: %2"
+msgid "Unable to open file %1: %2"
+msgstr "%1 файлы ашылмады: %2"
+
+#: src/util/functions.cpp:205
+#, kde-format
+msgid "%1/s"
+msgstr "%1/сек"
+
+#: src/util/functions.cpp:214
+#, kde-format
+msgid "1 day "
+msgid_plural "%1 days "
+msgstr[0] "%1 күн "
+
+#: src/util/logsystemmanager.cpp:19
+#, kde-format
+msgid "General"
+msgstr "Жалпы"
+
+#: src/util/logsystemmanager.cpp:20
+#, kde-format
+msgid "Connections"
+msgstr "Байланыстар"
+
+#: src/util/logsystemmanager.cpp:21
+#, kde-format
+msgid "Tracker"
+msgstr "Трекер"
+
+#: src/util/logsystemmanager.cpp:22
+#, kde-format
+msgid "DHT"
+msgstr "DHT"
+
+#: src/util/logsystemmanager.cpp:23
+#, kde-format
+msgid "Disk Input/Output"
+msgstr "Дискі қіріс/шығысы"
+
+#: src/util/logsystemmanager.cpp:24
+#, kde-format
+msgid "µTP"
+msgstr "µTP"
+
+#: src/util/signalcatcher.cpp:62
+#, kde-format
+msgid "Error when writing to disk"
+msgstr "Дискіге жазу қатесі"
+
+#: src/util/signalcatcher.cpp:62
+#, kde-format
+msgid "Error when reading from disk"
+msgstr "Дискіден оқу қатесі"
+
+#~ msgid "The directory %1 does not exist"
+#~ msgstr "%1 деген қапшық жоқ"
+
+#~ msgid "Connection closed unexpectedly"
+#~ msgstr "Байланыс кенеттен үзілді"
+
+#~ msgid "Torrent to open"
+#~ msgstr "Ашатын торрент"
+
+#~ msgid "Port to use"
+#~ msgstr "Қолданатын порты"
+
+#~ msgid "Whether or not to enable encryption"
+#~ msgstr "Шифрлауды рұқсат ету/етпеу"
+
+#~ msgid "Whether or not to enable peer exchange"
+#~ msgstr "Қатарластармен алмасуы болсын ба, жоқ па"
+
+#~ msgid "Whether or not to use utp"
+#~ msgstr "UTP қолдану керек пе, жоқ па"
+
+#~ msgid "ktcli"
+#~ msgstr "ktcli"
+
+#~ msgid "Redirect without a redirect location"
+#~ msgstr "Адрессіз қайта бағыттау"

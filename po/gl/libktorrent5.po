@@ -1,0 +1,623 @@
+# translation of ktorrent.po to Galician
+# Copyright (C) 2007 This_file_is_part_of_KDE
+# This file is distributed under the same license as the ktorrent package.
+#
+# mvillarino <mvillarino@users.sourceforge.net>, 2007, 2008, 2009.
+# mvillarino <mvillarino@gmail.com>, 2008.
+# Marce Villarino <mvillarino@users.sourceforge.net>, 2008, 2009.
+# Xosé <xosecalvo@gmail.com>, 2009.
+# Marce Villarino <mvillarino@gmail.com>, 2009, 2013, 2014.
+# Xosé <xosecalvo@edu.xunta.es>, 2009.
+# Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2012.
+# Miguel Branco <mgl.branco@gmail.com>, 2013.
+# Adrián Chaves (Gallaecio) <adrian@chaves.io>, 2017, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: ktorrent\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-01-23 00:45+0000\n"
+"PO-Revision-Date: 2019-03-03 20:45+0100\n"
+"Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
+"Language-Team: Galician <kde-i18n-doc@kde.org>\n"
+"Language: gl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: src/bcodec/bdecoder.cpp:48
+#, kde-format
+msgid "Illegal token: %1"
+msgstr "Elemento inaceptábel: %1"
+
+#: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
+#, kde-format
+msgid "Decode error"
+msgstr "Erro de descodificación"
+
+#: src/bcodec/bdecoder.cpp:161 src/bcodec/bdecoder.cpp:199
+#, kde-format
+msgid "Unexpected end of input"
+msgstr "Fin de datos inesperado"
+
+#: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
+#, kde-format
+msgid "Cannot convert %1 to an int"
+msgstr "Non foi posíbel converter %1 nun enteiro"
+
+#: src/bcodec/bdecoder.cpp:223
+#, kde-format
+msgid "Torrent is incomplete."
+msgstr "O torrent está incompleto."
+
+#: src/datachecker/datacheckerjob.cpp:66
+#, kde-format
+msgid "Waiting for other data checks to finish"
+msgstr "Agardando a que rematen outras comprobacións de datos."
+
+#: src/datachecker/datacheckerjob.cpp:72 src/torrent/torrentstats.cpp:92
+#, kde-format
+msgid "Checking data"
+msgstr "Estanse a comprobar os datos"
+
+#: src/datachecker/datacheckerjob.cpp:119
+#, kde-format
+msgid "Checking Data"
+msgstr "Comprobando os datos"
+
+#: src/datachecker/multidatachecker.cpp:181
+#: src/datachecker/singledatachecker.cpp:34 src/diskio/multifilecache.cpp:621
+#: src/diskio/multifilecache.cpp:656 src/torrent/torrentcreator.cpp:111
+#: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
+#, kde-format
+msgid "Cannot open file %1: %2"
+msgstr "Non foi posíbel acceder ao ficheiro %1 : %2"
+
+#: src/diskio/cache.cpp:148 src/diskio/multifilecache.cpp:95
+#: src/diskio/singlefilecache.cpp:67
+#, kde-format
+msgid "Failed to create %1: %2"
+msgstr "Non foi posíbel crear %1: %2"
+
+#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:312
+#: src/util/fileops.cpp:354
+#, kde-format
+msgid "Cannot open %1: %2"
+msgstr "Non é posíbel abrir %1: %2"
+
+#: src/diskio/cachefile.cpp:103 src/diskio/cachefile.cpp:215
+#: src/diskio/cachefile.cpp:368 src/diskio/cachefile.cpp:427
+#, kde-format
+msgid "Cannot open %1 for writing: readonly filesystem"
+msgstr ""
+"Non é posíbel abrir %1 para escritura: o sistema de ficheiros só admite "
+"lectura."
+
+#: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
+#, kde-format
+msgid "Attempting to write beyond the maximum size of %1"
+msgstr "Intentáronse gardar máis datos do límite de %1."
+
+#: src/diskio/cachefile.cpp:220
+#, kde-format
+msgid ""
+"Cannot expand file %1: attempting to grow the file beyond the maximum size"
+msgstr ""
+"Non é posíbel expandir o ficheiro %1: intentouse aumentar o tamaño do "
+"ficheiro alén do límite."
+
+#: src/diskio/cachefile.cpp:224
+#, kde-format
+msgid "Cannot expand file %1: %2"
+msgstr "Non é posíbel expandir o ficheiro %1: %2"
+
+#: src/diskio/cachefile.cpp:336
+#, kde-format
+msgid "Error: Reading past the end of the file %1"
+msgstr "Produciuse un erro: intentouse ler alén da fin do ficheiro %1."
+
+#: src/diskio/cachefile.cpp:341 src/diskio/cachefile.cpp:383
+#, kde-format
+msgid "Failed to seek file %1: %2"
+msgstr "Non foi posíbel buscar no ficheiro %1: %2"
+
+#: src/diskio/cachefile.cpp:348
+#, kde-format
+msgid "Error reading from %1"
+msgstr "Aconteceu un erro ao ler de %1"
+
+#: src/diskio/cachefile.cpp:386
+#, kde-format
+msgid "Failed to write to file %1: %2"
+msgstr "Non foi posíbel gardar datos no ficheiro %1: %2"
+
+#: src/diskio/cachefile.cpp:443
+#, kde-format
+msgid "Cannot preallocate diskspace: %1"
+msgstr "Non é posíbel reservar espazo de almacenamento: %1"
+
+#: src/diskio/chunkmanager.cpp:844 src/diskio/chunkmanager.cpp:867
+#, kde-format
+msgid "Cannot open index file %1: %2"
+msgstr "Non é posíbel abrir o ficheiro do índice %1: %2"
+
+#: src/diskio/dndfile.cpp:72
+#, kde-format
+msgid "Cannot create file %1: %2"
+msgstr "Non é posíbel crear o ficheiro %1: %2"
+
+#: src/diskio/dndfile.cpp:114
+#, kde-format
+msgid "Failed to write first chunk to DND file: %1"
+msgstr "Non foi posíbel gardar o primeiro anaco no ficheiro DND: %1"
+
+#: src/diskio/dndfile.cpp:129
+#, kde-format
+msgid "Failed to write last chunk to DND file: %1"
+msgstr "Non foi posíbel gardar o último anaco no ficheiro DND: %1"
+
+#: src/diskio/movedatafilesjob.cpp:109
+#, kde-format
+msgid "Waiting for other move jobs to finish"
+msgstr "Agardando a que rematen outras operacións de movemento."
+
+#: src/diskio/movedatafilesjob.cpp:110 src/diskio/movedatafilesjob.cpp:146
+#, kde-format
+msgctxt "The source of a file operation"
+msgid "Source"
+msgstr "Orixe"
+
+#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#, kde-format
+msgctxt "The destination of a file operation"
+msgid "Destination"
+msgstr "Destino"
+
+#: src/diskio/movedatafilesjob.cpp:145
+#, kde-format
+msgctxt "@title job"
+msgid "Moving"
+msgstr "Movendo"
+
+#: src/diskio/multifilecache.cpp:70 src/diskio/singlefilecache.cpp:57
+#, kde-format
+msgid "Failed to open %1: %2"
+msgstr "Non foi posíbel abrir %1: %2"
+
+#: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
+#, kde-format
+msgid "Unable to write to a piece mapped read only"
+msgstr "Non é posíbel escribir nunha peza asociada como de só lectura"
+
+#: src/download/chunkdownload.cpp:342
+#, kde-format
+msgid "1 peer"
+msgid_plural "%1 peers"
+msgstr[0] "1 parceiro"
+msgstr[1] "%1 parceiros"
+
+#: src/download/downloader.cpp:693
+#, kde-format
+msgid "Disabled because webseed does not match torrent"
+msgstr "Desactivado porque as sementes web non coinciden co torrent."
+
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
+#: src/download/webseed.cpp:84
+#, kde-format
+msgid "Not connected"
+msgstr "Non conectado"
+
+#: src/download/httpconnection.cpp:96
+#, kde-format
+msgid "Resolving proxy %1:%2"
+msgstr "Estase a resolver o proxy %1:%2"
+
+#: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
+#, kde-format
+msgid "Not enough system resources available"
+msgstr "Non se dispón de recursos do sistema dabondo."
+
+#: src/download/httpconnection.cpp:110
+#, kde-format
+msgid "Resolving hostname %1"
+msgstr "Estase a resolver o nome de servidor %1"
+
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
+#, kde-format
+msgid "Connection closed"
+msgstr "Pechouse a conexión"
+
+#: src/download/httpconnection.cpp:130
+#, kde-format
+msgid "Error: request failed: %1"
+msgstr "Aconteceu un erro: fallou o pedido: %1"
+
+#: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
+#, kde-format
+msgid "Connected"
+msgstr "Conectado"
+
+#: src/download/httpconnection.cpp:162
+#, kde-format
+msgid "Error: Failed to connect to webseed"
+msgstr "Aconteceu un erro: Non foi posíbel conectar coa semente web"
+
+#: src/download/httpconnection.cpp:186
+#, kde-format
+msgid "Connecting"
+msgstr "Estase a conectar"
+
+#: src/download/httpconnection.cpp:195
+#, kde-format
+msgid "Failed to connect to webseed"
+msgstr "Non foi posíbel conectar coa semente web"
+
+#: src/download/httpconnection.cpp:200
+#, kde-format
+msgid "Failed to resolve hostname of webseed"
+msgstr "Non foi posíbel resolver o nome do servidor da semente web"
+
+#: src/download/httpconnection.cpp:271
+#, kde-format
+msgid "Error: failed to connect, server not responding"
+msgstr "Aconteceu un erro: fallou a conexión, o servidor non responde"
+
+#: src/download/httpconnection.cpp:281
+#, kde-format
+msgid "Error: request timed out"
+msgstr "Aconteceu un erro: o pedido esgotou o tempo límite"
+
+#: src/download/httpconnection.cpp:351
+#, kde-format
+msgid "Redirected without a new location."
+msgstr "Redirixido sen unha nova localización."
+
+#: src/download/webseed.cpp:493
+#, kde-format
+msgid "Unused for %1 second (Too many connection failures)"
+msgid_plural "Unused for %1 seconds (Too many connection failures)"
+msgstr[0] "Ignorado durante %1 segundo (demasiados erros de conexión)."
+msgstr[1] "Ignorado durante %1 segundos (demasiados erros de conexión)."
+
+#: src/interfaces/trackerinterface.cpp:45
+#, kde-format
+msgid "OK"
+msgstr "Aceptar"
+
+#: src/interfaces/trackerinterface.cpp:45
+#, kde-format
+msgid "Warning: %1"
+msgstr "Advertencia: %1"
+
+#: src/interfaces/trackerinterface.cpp:47
+#, kde-format
+msgid "Announcing"
+msgstr "Estase a anunciar"
+
+#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
+#, kde-format
+msgid "Error: %1"
+msgstr "Erro: %1"
+
+#: src/peer/peerid.cpp:299
+#, kde-format
+msgid "Unknown client"
+msgstr "Cliente descoñecido"
+
+#: src/torrent/torrent.cpp:96 src/torrent/torrent.cpp:153
+#: src/torrent/torrent.cpp:180 src/torrent/torrent.cpp:187
+#: src/torrent/torrent.cpp:194 src/torrent/torrent.cpp:198
+#: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
+#, kde-format
+msgid "Corrupted torrent."
+msgstr "Torrent corrompido."
+
+#: src/torrent/torrentcontrol.cpp:277
+#, kde-format
+msgid "Error writing to disk, do you have enough diskspace?"
+msgstr "Produciuse un erro ao almacenar datos, dispón de espazo dabondo?"
+
+#: src/torrent/torrentcontrol.cpp:492
+#, kde-format
+msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
+msgstr "Produciuse un erro ao cargar <b>%1</b>:<br/><b>%2</b>"
+
+#: src/torrent/torrentcontrol.cpp:502
+#, kde-format
+msgid "Unable to create %1: %2"
+msgstr "Non é posíbel crear %1: %2"
+
+#: src/torrent/torrentcontrol.cpp:515
+#, kde-format
+msgid ""
+"You are already downloading the torrent <b>%1</b>. The tracker lists from "
+"both torrents have been merged."
+msgstr ""
+"Xa está a descargar o torrent <b>%1</b>. Xuntáronse as listas de "
+"localizadores de ambos os dous torrents."
+
+#: src/torrent/torrentcontrol.cpp:519
+#, kde-format
+msgid "You are already downloading the torrent <b>%1</b>."
+msgstr "Xa está a descargar o torrent <b>%1</b>."
+
+#: src/torrent/torrentcreator.cpp:332
+#, kde-format
+msgid "Cannot create index file: %1"
+msgstr "Non foi posíbel crear o ficheiro índice : %1"
+
+#: src/torrent/torrentstats.cpp:72
+#, kde-format
+msgid "Not started"
+msgstr "Non iniciado"
+
+#: src/torrent/torrentstats.cpp:74
+#, kde-format
+msgid "Download completed"
+msgstr "Descarga completa"
+
+#: src/torrent/torrentstats.cpp:76
+#, kde-format
+msgid "Seeding completed"
+msgstr "Completou a sementeira"
+
+#: src/torrent/torrentstats.cpp:78
+#, kde-format
+msgctxt "Status of a torrent file"
+msgid "Seeding"
+msgstr "Estase a espallar"
+
+#: src/torrent/torrentstats.cpp:80
+#, kde-format
+msgid "Downloading"
+msgstr "Descargando"
+
+#: src/torrent/torrentstats.cpp:82
+#, kde-format
+msgid "Stalled"
+msgstr "Á espera"
+
+#: src/torrent/torrentstats.cpp:84
+#, kde-format
+msgid "Stopped"
+msgstr "Detido"
+
+#: src/torrent/torrentstats.cpp:88
+#, kde-format
+msgid "Allocating diskspace"
+msgstr "Estase a reservar o espazo en disco"
+
+#: src/torrent/torrentstats.cpp:90
+#, kde-format
+msgid "Queued for seeding"
+msgstr "Na fila para espallar"
+
+#: src/torrent/torrentstats.cpp:90
+#, kde-format
+msgid "Queued for downloading"
+msgstr "Na fila para descargar"
+
+#: src/torrent/torrentstats.cpp:94
+#, kde-format
+msgid "Stopped. No space left on device."
+msgstr "Detido. Non queda espazo no dispositivo."
+
+#: src/torrent/torrentstats.cpp:96
+#, kde-format
+msgid "Paused"
+msgstr "Detido"
+
+#: src/torrent/torrentstats.cpp:98
+#, kde-format
+msgid "Superseeding"
+msgstr "Propagando"
+
+#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
+#: src/tracker/httptracker.cpp:392
+#, kde-format
+msgid "Invalid response from tracker"
+msgstr "A resposta do localizador é incorrecta"
+
+#: src/tracker/httptracker.cpp:253
+#, kde-format
+msgid "Invalid data from tracker"
+msgstr "Os datos do localizador son incorrectos"
+
+#: src/tracker/httptracker.cpp:407
+#, kde-format
+msgid "Invalid tracker URL"
+msgstr "O URL do localizador é incorrecto"
+
+#: src/tracker/httptracker.cpp:465 src/tracker/udptracker.cpp:315
+#: src/tracker/udptracker.cpp:322
+#, kde-format
+msgid "Timeout contacting tracker %1"
+msgstr "Esgotouse o tempo límite para contactar co localizador %1."
+
+#: src/tracker/udptracker.cpp:343
+#, kde-format
+msgid "Unable to resolve hostname %1"
+msgstr "Non foi posíbel resolver o nome do servidor %1"
+
+#: src/upnp/httprequest.cpp:39
+#, kde-format
+msgid "Operation timed out"
+msgstr "Esgotouse o tempo límite da operación."
+
+#: src/upnp/upnprouter.cpp:156
+#, kde-format
+msgid "Failed to download %1: %2"
+msgstr "Non foi posíbel descargar %1: %2"
+
+#: src/upnp/upnprouter.cpp:166
+#, kde-format
+msgid "Error parsing router description."
+msgstr "Aconteceu un erro ao procesar a descrición do router."
+
+#: src/upnp/upnprouter.cpp:200
+#, kde-format
+msgid ""
+"Forwarding failed:\n"
+"Device does not have a WANIPConnection or WANPPPConnection."
+msgstr ""
+"Non se puido realizar o reenvío: \n"
+"O dispositivo carece dunha WANIPConnection ou dunha WANPPPConnection."
+
+#: src/upnp/upnprouter.cpp:279
+#, kde-format
+msgid "Cannot find port forwarding service in the device's description."
+msgstr ""
+"Non foi posíbel atopar o servizo de encamiñamento na descrición do "
+"dispositivo."
+
+#: src/util/file.cpp:68
+#, kde-format
+msgid "Cannot write to %1: %2"
+msgstr "Non é posíbel almacenar datos en %1: %2"
+
+#: src/util/file.cpp:81
+#, kde-format
+msgid "Cannot read from %1"
+msgstr "Non foi posíbel ler de %1"
+
+#: src/util/fileops.cpp:91
+#, kde-format
+msgid "Cannot create directory %1"
+msgstr "Non foi posíbel crear o directorio %1"
+
+#: src/util/fileops.cpp:149
+#, kde-format
+msgid "Cannot symlink %1 to %2: %3"
+msgstr "Non foi posíbel crear unha ligazón simbólica de %1 para %2: %3"
+
+#: src/util/fileops.cpp:162
+#, kde-format
+msgid "Cannot move %1 to %2: %3"
+msgstr "Non foi posíbel mover de %1 para %2: %3"
+
+#: src/util/fileops.cpp:173 src/util/fileops.cpp:184
+#, kde-format
+msgid "Cannot copy %1 to %2: %3"
+msgstr "Non foi posíbel copiar de %1 para %2: %3"
+
+#: src/util/fileops.cpp:238
+#, kde-format
+msgid "Cannot delete %1: %2"
+msgstr "Non foi posíbel borrar %1: %2"
+
+#: src/util/fileops.cpp:254
+#, kde-format
+msgid "Cannot create %1: %2"
+msgstr "Non foi posíbel crear %1: %2"
+
+#: src/util/fileops.cpp:271
+#, kde-format
+msgid "Cannot calculate the filesize of %1: %2"
+msgstr "Non foi posíbel calcular o tamaño do ficheiro %1: %2"
+
+#: src/util/fileops.cpp:287
+#, kde-format
+msgid "Cannot calculate the filesize: %1"
+msgstr "Non é posíbel calcular o tamaño do ficheiro: %1"
+
+#: src/util/fileops.cpp:332 src/util/fileops.cpp:336 src/util/fileops.cpp:339
+#: src/util/fileops.cpp:342 src/util/fileops.cpp:345
+#, kde-format
+msgid "Cannot expand file: %1"
+msgstr "Non foi posíbel expandir o ficheiro: %1"
+
+#: src/util/fileops.cpp:372
+#, kde-format
+msgid "Cannot seek in file: %1"
+msgstr "Non é posíbel buscar no ficheiro: %1"
+
+#: src/util/fileops.cpp:613
+#, kde-format
+msgid "Unable to open file %1: %2"
+msgstr "Non foi posíbel abrir o ficheiro %1: %2"
+
+#: src/util/functions.cpp:205
+#, kde-format
+msgid "%1/s"
+msgstr "%1/s"
+
+#: src/util/functions.cpp:214
+#, kde-format
+msgid "1 day "
+msgid_plural "%1 days "
+msgstr[0] "1 día"
+msgstr[1] "%1 días"
+
+#: src/util/logsystemmanager.cpp:19
+#, kde-format
+msgid "General"
+msgstr "Xeral"
+
+#: src/util/logsystemmanager.cpp:20
+#, kde-format
+msgid "Connections"
+msgstr "Conexións"
+
+#: src/util/logsystemmanager.cpp:21
+#, kde-format
+msgid "Tracker"
+msgstr "Localizador"
+
+#: src/util/logsystemmanager.cpp:22
+#, kde-format
+msgid "DHT"
+msgstr "DHT"
+
+#: src/util/logsystemmanager.cpp:23
+#, kde-format
+msgid "Disk Input/Output"
+msgstr "E/S do disco"
+
+#: src/util/logsystemmanager.cpp:24
+#, kde-format
+msgid "µTP"
+msgstr "µTP"
+
+#: src/util/signalcatcher.cpp:62
+#, kde-format
+msgid "Error when writing to disk"
+msgstr "Produciuse un erro ao escribir no espazo de almacenamento."
+
+#: src/util/signalcatcher.cpp:62
+#, kde-format
+msgid "Error when reading from disk"
+msgstr "Produciuse un erro ao ler do espazo de almacenamento."
+
+#~ msgid "The directory %1 does not exist"
+#~ msgstr "O directorio %1 non existe"
+
+#~ msgid "Connection closed unexpectedly"
+#~ msgstr "A conexión pechouse inesperadamente."
+
+#~ msgid "Torrent to open"
+#~ msgstr "Torrent para abrir"
+
+#~ msgid "Port to use"
+#~ msgstr "Porto a empregar"
+
+#~ msgid "Whether or not to enable encryption"
+#~ msgstr "Márquese para activar o cifrado."
+
+#~ msgid "Whether or not to enable peer exchange"
+#~ msgstr "Márquese para activar o intercambio con parceiros."
+
+#~ msgid "Whether or not to use utp"
+#~ msgstr "Márquese para empregar µTP."
+
+#~ msgid "ktcli"
+#~ msgstr "ktcli"
+
+#~ msgid "Redirect without a redirect location"
+#~ msgstr "Redirixido sen unha localización de redirección"
+
+#~ msgid ""
+#~ "An error occurred while loading the torrent <b>%1</b>:<br/><b>%2</b><br/"
+#~ ">The torrent is probably corrupt or is not a valid torrent file."
+#~ msgstr ""
+#~ "Aconteceu un erro ao cargar o torrent <b>%1</b>:<br/><b>%2</b><br/>Poida "
+#~ "que estea corrompido, ou que non sexa un ficheiro de torrent válido."
