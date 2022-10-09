@@ -40,12 +40,8 @@ void Speed::update(bt::TimeStamp now)
                 bytes -= p.first; // subtract bytes
             else
                 bytes = 0;
-#ifndef DO_NOT_USE_DEQUE
             dlrate.pop_front();
             i = dlrate.begin();
-#else
-            i = dlrate.erase(i);
-#endif
         } else {
             // seeing that newer entries are appended, they are in the list chronologically
             // so once we hit an entry which is in the interval, we can just break out of the loop

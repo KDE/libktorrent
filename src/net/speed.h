@@ -22,11 +22,8 @@ class Speed
 {
     QAtomicInt rate;
     bt::Uint32 bytes;
-#ifndef DO_NOT_USE_DEQUE
     std::deque<QPair<bt::Uint32, bt::TimeStamp>> dlrate;
-#else
-    QLinkedList<QPair<bt::Uint32, bt::TimeStamp>> dlrate;
-#endif
+
 public:
     Speed();
     virtual ~Speed();
