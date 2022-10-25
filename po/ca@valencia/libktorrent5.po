@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-01-23 00:45+0000\n"
-"PO-Revision-Date: 2022-08-17 17:41+0200\n"
+"PO-Revision-Date: 2022-10-23 20:25+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
@@ -42,7 +42,7 @@ msgstr "Final inesperat de l'entrada"
 #: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
 #, kde-format
 msgid "Cannot convert %1 to an int"
-msgstr "No es pot convertir %1 a un sencer"
+msgstr "No es pot convertir %1 a un enter"
 
 #: src/bcodec/bdecoder.cpp:223
 #, kde-format
