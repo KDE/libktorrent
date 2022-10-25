@@ -6,7 +6,9 @@
 #include "job.h"
 #include "torrentcontrol.h"
 #include <KIO/JobUiDelegate>
+#include <KIO/JobUiDelegateFactory>
 #include <KJobTrackerInterface>
+#include <kio_version.h>
 
 namespace bt
 {
@@ -16,7 +18,11 @@ Job::Job(bool stop_torrent, bt::TorrentControl *tc)
     : tc(tc)
     , stop_torrent(stop_torrent)
 {
+#if KIO_VERSION < QT_VERSION_CHECK(5, 98, 0)
     setUiDelegate(new KIO::JobUiDelegate());
+#else
+    setUiDelegate(KIO::createDefaultJobUiDelegate());
+#endif
 }
 
 Job::~Job()
