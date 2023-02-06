@@ -236,11 +236,11 @@ target_link_libraries(KF5Torrent
 PRIVATE
     qca-qt${QT_MAJOR_VERSION}
 PUBLIC
-    KF5::Archive
-    KF5::KIOCore
-    KF5::KIOWidgets
-    KF5::Solid
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::Archive
+    KF${KF_MAJOR_VERSION}::KIOCore
+    KF${KF_MAJOR_VERSION}::KIOWidgets
+    KF${KF_MAJOR_VERSION}::Solid
+    KF${KF_MAJOR_VERSION}::I18n
     Qt::Xml
     Boost::boost
     LibGcrypt::LibGcrypt

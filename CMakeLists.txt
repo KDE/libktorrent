@@ -47,7 +47,13 @@ include(CMakePackageConfigHelpers)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+if (QT_MAJOR_VERSION STREQUAL "6")
+    set(QT_REQUIRED_VERSION "6.4.0")
+    set(KF_MIN_VERSION "5.240.0")
+    set(KF_MAJOR_VERSION "6")
+else()
+    set(KF_MAJOR_VERSION "5")
+endif()
 ecm_setup_version(${RELEASE_SERVICE_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/libktorrent_version.h"
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfigVersion.cmake"
@@ -61,7 +67,7 @@ find_package(Qt${QT_MAJOR_VERSION} "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENT
 )
 
 # Load the frameworks we need
-find_package(KF5 "${KF5_MIN_VERSION}" REQUIRED COMPONENTS
+find_package(KF${KF_MAJOR_VERSION} "${KF5_MIN_VERSION}" REQUIRED COMPONENTS
     Archive
     Crash
     I18n
