@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-01-23 00:45+0000\n"
-"PO-Revision-Date: 2023-02-07 11:05\n"
+"PO-Revision-Date: 2023-02-15 11:07\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -81,7 +81,7 @@ msgstr "无法打开 %1：%2"
 #: src/diskio/cachefile.cpp:368 src/diskio/cachefile.cpp:427
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
-msgstr "无法打开 %1 以供写入：只读文件系统"
+msgstr "无法打开 %1 进行写入：只读文件系统"
 
 #: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
 #, kde-format
