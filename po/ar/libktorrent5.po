@@ -2117,7 +2117,7 @@ msgstr "خطأ أثناء القراءة من القرص"
 
 #, fuzzy
 #~ msgid "Bittorrent client for KDE"
-#~ msgstr "عميل لـ كدي"
+#~ msgstr "عميل لـ كِيدِي"
 
 #, fuzzy
 #~ msgid "(C) 2005 - 2010 Joris Guisson and Ivan Vasic"
@@ -4210,7 +4210,7 @@ msgstr "خطأ أثناء القراءة من القرص"
 #, fuzzy
 #~ msgid "Do not use KIO for tracker announces"
 #~ msgstr ""
-#~ "تنفيذ ليس استخدام كدي وكيل\n"
+#~ "تنفيذ ليس استخدام كِيدِي وكيل\n"
 #~ "مفوض خصائص لـ HTTP متتبع"
 
 #, fuzzy
@@ -4514,13 +4514,13 @@ msgstr "خطأ أثناء القراءة من القرص"
 #, fuzzy
 #~ msgid "Whether or not to use the HTTP proxy for webseed connections."
 #~ msgstr ""
-#~ "تنفيذ ليس استخدام كدي وكيل\n"
+#~ "تنفيذ ليس استخدام كِيدِي وكيل\n"
 #~ "مفوض خصائص لـ HTTP متتبع"
 
 #, fuzzy
 #~ msgid "Use proxy for webseed connections"
 #~ msgstr ""
-#~ "تنفيذ ليس استخدام كدي وكيل\n"
+#~ "تنفيذ ليس استخدام كِيدِي وكيل\n"
 #~ "مفوض خصائص لـ HTTP متتبع"
 
 #, fuzzy
@@ -4545,7 +4545,7 @@ msgstr "خطأ أثناء القراءة من القرص"
 #, fuzzy
 #~ msgid "Use proxy for tracker connections"
 #~ msgstr ""
-#~ "تنفيذ ليس استخدام كدي وكيل\n"
+#~ "تنفيذ ليس استخدام كِيدِي وكيل\n"
 #~ "مفوض خصائص لـ HTTP متتبع"
 
 #, fuzzy
@@ -5574,7 +5574,7 @@ msgstr "خطأ أثناء القراءة من القرص"
 #~ "</style></head><body style=\" font-family:'Sans Serif'; font-size:9pt; "
 #~ "font-weight:400; font-style:normal;\">\n"
 #~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> بدلا من ذلك من كدي "
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> بدلا من ذلك من كِيدِي "
 #~ "وكيل\n"
 #~ "مفوض خصائص استخدام HTTP وكيل\n"
 #~ "مفوض أسفل</p></body></html>"
@@ -6458,7 +6458,7 @@ msgstr "خطأ أثناء القراءة من القرص"
 #~ "</style></head><body style=\" font-family:'Sans Serif'; font-size:9pt; "
 #~ "font-weight:400; font-style:normal;\">\n"
 #~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> بدلا من ذلك من كدي "
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"> بدلا من ذلك من كِيدِي "
 #~ "وكيل\n"
 #~ "مفوض خصائص استخدام HTTP وكيل\n"
 #~ "مفوض أسفل</p></body></html>"
