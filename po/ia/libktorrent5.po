@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-01-23 00:45+0000\n"
-"PO-Revision-Date: 2023-05-08 12:44+0200\n"
+"PO-Revision-Date: 2023-05-09 12:05+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -545,7 +545,7 @@ msgstr "Connexiones"
 #: src/util/logsystemmanager.cpp:21
 #, kde-format
 msgid "Tracker"
-msgstr ""
+msgstr "Traciator"
 
 #: src/util/logsystemmanager.cpp:22
 #, kde-format
@@ -560,7 +560,7 @@ msgstr ""
 #: src/util/logsystemmanager.cpp:24
 #, kde-format
 msgid "µTP"
-msgstr ""
+msgstr "µTP"
 
 #: src/util/signalcatcher.cpp:62
 #, kde-format
