@@ -14,7 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
@@ -199,8 +199,7 @@ msgstr ""
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
-msgstr[0] "1 ピア"
-msgstr[1] "%1 ピア"
+msgstr[0] "%1 ピア"
 
 #: src/download/downloader.cpp:693
 #, kde-format
@@ -283,7 +282,6 @@ msgstr "新しい場所なしでリダイレクトされました。"
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
 msgstr[0] ""
-msgstr[1] ""
 
 #: src/interfaces/trackerinterface.cpp:45
 #, kde-format
@@ -559,8 +557,7 @@ msgstr "%1/秒"
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
-msgstr[0] "1 日"
-msgstr[1] "%1 日"
+msgstr[0] "%1 日"
 
 #: src/util/logsystemmanager.cpp:19
 #, kde-format
