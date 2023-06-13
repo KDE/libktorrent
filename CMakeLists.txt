@@ -66,6 +66,10 @@ find_package(Qt${QT_MAJOR_VERSION} "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENT
     Test
 )
 
+if (QT_MAJOR_VERSION STREQUAL "6")
+    find_package(Qt6Core5Compat REQUIRED)
+endif()
+
 # Load the frameworks we need
 find_package(KF${KF_MAJOR_VERSION} "${KF5_MIN_VERSION}" REQUIRED COMPONENTS
     Archive
