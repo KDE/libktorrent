@@ -1,7 +1,6 @@
 # translation of ktorrent.po to Galician
 # Copyright (C) 2007 This_file_is_part_of_KDE
 # This file is distributed under the same license as the ktorrent package.
-#
 # mvillarino <mvillarino@users.sourceforge.net>, 2007, 2008, 2009.
 # mvillarino <mvillarino@gmail.com>, 2008.
 # Marce Villarino <mvillarino@users.sourceforge.net>, 2008, 2009.
@@ -10,20 +9,22 @@
 # Xosé <xosecalvo@edu.xunta.es>, 2009.
 # Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2012.
 # Miguel Branco <mgl.branco@gmail.com>, 2013.
-# Adrián Chaves (Gallaecio) <adrian@chaves.io>, 2017, 2019.
+# Adrián Chaves (Gallaecio) <adrian@chaves.io>, 2017, 2019, 2023.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-01-23 00:45+0000\n"
-"PO-Revision-Date: 2019-03-03 20:45+0100\n"
+"PO-Revision-Date: 2023-06-17 13:57+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
-"Language-Team: Galician <kde-i18n-doc@kde.org>\n"
+"Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 23.04.2\n"
 
 #: src/bcodec/bdecoder.cpp:48
 #, kde-format
@@ -503,7 +504,7 @@ msgstr "Non foi posíbel copiar de %1 para %2: %3"
 #: src/util/fileops.cpp:238
 #, kde-format
 msgid "Cannot delete %1: %2"
-msgstr "Non foi posíbel borrar %1: %2"
+msgstr "Non foi posíbel eliminar %1: %2"
 
 #: src/util/fileops.cpp:254
 #, kde-format
