@@ -211,7 +211,7 @@ msgstr "Non conectado"
 #: src/download/httpconnection.cpp:96
 #, kde-format
 msgid "Resolving proxy %1:%2"
-msgstr "Estase a resolver o proxy %1:%2"
+msgstr "Estase a resolver o mandatario %1:%2"
 
 #: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
 #, kde-format
