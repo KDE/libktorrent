@@ -69,3 +69,5 @@ void HTTPRequest::replyFinished()
 }
 
 }
+
+#include "moc_httprequest.cpp"

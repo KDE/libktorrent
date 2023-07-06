@@ -139,3 +139,5 @@ void ServerInterface::setUtpEnabled(bool on, bool only_utp)
 }
 
 }
+
+#include "moc_serverinterface.cpp"

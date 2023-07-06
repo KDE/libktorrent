@@ -257,3 +257,5 @@ Uint16 UDPTrackerSocket::getPort()
     return port;
 }
 }
+
+#include "moc_udptrackersocket.cpp"

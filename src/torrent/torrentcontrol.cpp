@@ -1801,3 +1801,5 @@ TorrentFileStream::Ptr TorrentControl::createTorrentFileStream(Uint32 index, boo
 }
 
 }
+
+#include "moc_torrentcontrol.cpp"

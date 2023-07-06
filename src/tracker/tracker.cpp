@@ -128,3 +128,5 @@ Uint64 Tracker::bytesUploaded() const
 }
 
 }
+
+#include "moc_tracker.cpp"

@@ -32,3 +32,5 @@ void PieceDownloader::release()
 }
 
 }
+
+#include "moc_piecedownloader.cpp"

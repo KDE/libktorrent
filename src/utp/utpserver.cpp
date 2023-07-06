@@ -482,3 +482,6 @@ PollPipePair::PollPipePair()
 {
 }
 }
+
+#include "moc_utpserver.cpp"
+#include "moc_utpserver_p.cpp"

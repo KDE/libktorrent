@@ -373,3 +373,5 @@ bool HttpConnection::HttpGet::onDataReady(Uint8 *buf, Uint32 size)
     return true;
 }
 }
+
+#include "moc_httpconnection.cpp"

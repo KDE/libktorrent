@@ -1153,3 +1153,5 @@ void ChunkManager::Private::downloadStatusChanged(TorrentFile *tf, bool download
 }
 
 }
+
+#include "moc_chunkmanager.cpp"

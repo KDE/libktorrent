@@ -833,3 +833,5 @@ void Downloader::setUseWebSeeds(bool on)
     use_webseeds = on;
 }
 }
+
+#include "moc_downloader.cpp"

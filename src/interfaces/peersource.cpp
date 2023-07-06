@@ -44,3 +44,5 @@ bool PeerSource::takePeer(net::Address &addr, bool &local)
 }
 
 }
+
+#include "moc_peersource.cpp"

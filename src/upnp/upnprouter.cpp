@@ -504,3 +504,5 @@ void UPnPRouter::UPnPRouterPrivate::httpRequestDone(HTTPRequest *r, bool erase_f
     r->deleteLater();
 }
 }
+
+#include "moc_upnprouter.cpp"

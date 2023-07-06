@@ -116,4 +116,6 @@ void SignalCatcher::handleInput(int fd)
 
 }
 
+#include "moc_signalcatcher.cpp"
+
 #endif

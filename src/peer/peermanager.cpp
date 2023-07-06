@@ -679,3 +679,5 @@ void PeerManager::Private::connectToPeers()
 }
 
 }
+
+#include "moc_peermanager.cpp"

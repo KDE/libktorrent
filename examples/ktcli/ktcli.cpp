@@ -211,3 +211,5 @@ void KTCLI::shutdown()
     Globals::instance().shutdownUTPServer();
     quit();
 }
+
+#include "moc_ktcli.cpp"

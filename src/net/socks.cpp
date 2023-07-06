@@ -432,3 +432,5 @@ Socks::State Socks::handleConnectReply()
     }
 }
 }
+
+#include "moc_socks.cpp"

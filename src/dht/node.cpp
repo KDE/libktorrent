@@ -153,3 +153,5 @@ void Node::loadTable(const QString &file)
     }
 }
 }
+
+#include "moc_node.cpp"

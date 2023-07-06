@@ -244,3 +244,5 @@ void PeerDownloader::update()
         max_wait_queue_size = 10;
 }
 }
+
+#include "moc_peerdownloader.cpp"

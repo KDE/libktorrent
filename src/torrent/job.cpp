@@ -58,3 +58,5 @@ void Job::registerWithTracker()
 }
 
 }
+
+#include "moc_job.cpp"

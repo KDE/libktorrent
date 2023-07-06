@@ -66,3 +66,5 @@ void KIOAnnounceJob::finished(KJob *j)
     emitResult();
 }
 }
+
+#include "moc_kioannouncejob.cpp"

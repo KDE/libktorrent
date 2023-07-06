@@ -56,3 +56,5 @@ void PreallocationJob::finished()
 }
 
 }
+
+#include "moc_preallocationjob.cpp"

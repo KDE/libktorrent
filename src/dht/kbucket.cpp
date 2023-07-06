@@ -324,3 +324,5 @@ void KBucket::setRefreshTask(Task *t)
 }
 
 }
+
+#include "moc_kbucket.cpp"

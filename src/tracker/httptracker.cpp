@@ -484,3 +484,5 @@ void HTTPTracker::setUseQHttp(bool on)
 }
 
 }
+
+#include "moc_httptracker.cpp"

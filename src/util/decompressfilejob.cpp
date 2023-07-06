@@ -115,3 +115,5 @@ void DecompressFileJob::decompressThreadFinished()
 }
 
 }
+
+#include "moc_decompressfilejob.cpp"

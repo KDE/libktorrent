@@ -19,3 +19,5 @@ DHTBase::~DHTBase()
 {
 }
 }
+
+#include "moc_dhtbase.cpp"

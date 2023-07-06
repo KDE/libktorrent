@@ -68,3 +68,5 @@ QString TorrentFileInterface::getMountPoint() const
 }
 
 }
+
+#include "moc_torrentfileinterface.cpp"

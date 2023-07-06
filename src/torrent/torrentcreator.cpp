@@ -373,3 +373,5 @@ TorrentControl *TorrentCreator::makeTC(const QString &data_dir)
     return tc;
 }
 }
+
+#include "moc_torrentcreator.cpp"

@@ -628,3 +628,5 @@ Transmitter::~Transmitter()
 {
 }
 }
+
+#include "moc_connection.cpp"

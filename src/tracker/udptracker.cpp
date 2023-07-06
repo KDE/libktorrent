@@ -345,3 +345,5 @@ void UDPTracker::onResolverResults(net::AddressResolver *ar)
 }
 
 }
+
+#include "moc_udptracker.cpp"

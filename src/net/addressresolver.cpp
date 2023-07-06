@@ -54,3 +54,5 @@ Address AddressResolver::resolve(const QString &host, Uint16 port)
 }
 
 }
+
+#include "moc_addressresolver.cpp"

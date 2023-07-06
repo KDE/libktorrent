@@ -520,3 +520,5 @@ void WebSeedChunkDownload::getStats(Stats &s)
 }
 
 }
+
+#include "moc_webseed.cpp"

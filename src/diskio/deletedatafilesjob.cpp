@@ -111,3 +111,5 @@ void DeleteDataFilesJob::DirTree::doDeleteOnEmpty(const QString &base)
     }
 }
 }
+
+#include "moc_deletedatafilesjob.cpp"

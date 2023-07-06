@@ -850,3 +850,5 @@ void Peer::chunkAllowed(Uint32 chunk)
 }
 
 }
+
+#include "moc_peer.cpp"

@@ -57,3 +57,5 @@ Uint32 LogSystemManager::systemID(const QString &name)
 }
 
 }
+
+#include "moc_logsystemmanager.cpp"

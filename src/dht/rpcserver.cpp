@@ -286,3 +286,5 @@ Uint32 RPCServer::getNumActiveRPCCalls() const
     return d->calls.count();
 }
 }
+
+#include "moc_rpcserver.cpp"

@@ -214,3 +214,5 @@ void MagnetDownloader::dhtStopped()
 }
 
 }
+
+#include "moc_magnetdownloader.cpp"

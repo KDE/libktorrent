@@ -143,3 +143,5 @@ void AuthenticateBase::onReadyWrite()
 {
 }
 }
+
+#include "moc_authenticatebase.cpp"

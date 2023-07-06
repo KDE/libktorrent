@@ -310,3 +310,5 @@ void EncryptedServerAuthenticate::onReadyRead()
 }
 
 }
+
+#include "moc_encryptedserverauthenticate.cpp"

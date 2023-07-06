@@ -112,3 +112,5 @@ void ReverseResolverThread::stop()
 }
 
 }
+
+#include "moc_reverseresolver.cpp"

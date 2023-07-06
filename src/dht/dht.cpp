@@ -399,3 +399,5 @@ void DHT::bootstrap()
 }
 
 }
+
+#include "moc_dht.cpp"

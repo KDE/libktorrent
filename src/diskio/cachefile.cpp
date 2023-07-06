@@ -470,3 +470,5 @@ bool CacheFile::allocateBytes(Uint64 off, Uint64 size)
 }
 
 }
+
+#include "moc_cachefile.cpp"

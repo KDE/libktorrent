@@ -115,3 +115,5 @@ void Task::onResolverResults(net::AddressResolver *ar)
 }
 
 }
+
+#include "moc_task.cpp"

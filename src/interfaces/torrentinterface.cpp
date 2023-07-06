@@ -16,3 +16,5 @@ TorrentInterface::~TorrentInterface()
 }
 
 }
+
+#include "moc_torrentinterface.cpp"

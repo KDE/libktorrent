@@ -180,3 +180,5 @@ bool ServerSocket::setTOS(unsigned char type_of_service)
 }
 
 }
+
+#include "moc_serversocket.cpp"

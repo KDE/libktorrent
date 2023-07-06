@@ -177,3 +177,5 @@ void Authenticate::stop()
 }
 
 }
+
+#include "moc_authenticate.cpp"

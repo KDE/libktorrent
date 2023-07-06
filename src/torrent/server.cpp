@@ -100,3 +100,5 @@ bool Server::changePort(Uint16 p)
 }
 
 }
+
+#include "moc_server.cpp"

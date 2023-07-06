@@ -41,3 +41,5 @@ Uint32 Uploader::uploadRate() const
 }
 
 }
+
+#include "moc_uploader.cpp"

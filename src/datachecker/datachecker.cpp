@@ -20,3 +20,5 @@ DataChecker::~DataChecker()
 }
 
 }
+
+#include "moc_datachecker.cpp"

@@ -63,3 +63,5 @@ void RPCCall::addListener(RPCCallListener *cl)
 }
 
 }
+
+#include "moc_rpccall.cpp"

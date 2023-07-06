@@ -88,3 +88,5 @@ void ServerAuthenticate::handshakeReceived(bool full)
     }
 }
 }
+
+#include "moc_serverauthenticate.cpp"

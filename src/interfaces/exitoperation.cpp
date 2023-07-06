@@ -30,3 +30,5 @@ void ExitJobOperation::onResult(KJob *)
 }
 
 }
+
+#include "moc_exitoperation.cpp"

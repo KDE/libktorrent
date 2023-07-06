@@ -552,3 +552,5 @@ bool TrackerManager::isPartialSeed() const
 }
 
 }
+
+#include "moc_trackermanager.cpp"

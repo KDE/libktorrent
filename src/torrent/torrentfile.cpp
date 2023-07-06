@@ -191,3 +191,5 @@ void TorrentFile::updateNumDownloadedChunks(ChunkManager &cman)
 }
 
 }
+
+#include "moc_torrentfile.cpp"

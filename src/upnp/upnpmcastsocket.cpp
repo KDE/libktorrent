@@ -339,3 +339,5 @@ UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::findDevice(const QUrl &loca
 }
 
 }
+
+#include "moc_upnpmcastsocket.cpp"

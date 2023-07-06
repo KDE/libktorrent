@@ -27,3 +27,5 @@ void UTPServerThread::run()
 }
 
 }
+
+#include "moc_utpserverthread.cpp"

@@ -275,3 +275,5 @@ void EncryptedAuthenticate::onReadyRead()
 }
 
 }
+
+#include "moc_encryptedauthenticate.cpp"
