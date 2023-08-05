@@ -233,8 +233,6 @@ endif(WIN32)
 generate_export_header(KF5Torrent BASE_NAME ktorrent)
 
 target_link_libraries(KF5Torrent
-PRIVATE
-    qca-qt${QT_MAJOR_VERSION}
 PUBLIC
     KF${KF_MAJOR_VERSION}::Archive
     KF${KF_MAJOR_VERSION}::KIOCore

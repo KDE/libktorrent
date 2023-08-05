@@ -10,10 +10,7 @@
 #include "sha1hash.h"
 #include <ktorrent_export.h>
 
-namespace QCA
-{
-class Hash;
-}
+class QCryptographicHash;
 
 namespace bt
 {
@@ -65,7 +62,7 @@ public:
     SHA1Hash get() const;
 
 private:
-    QCA::Hash *h;
+    QCryptographicHash *h;
     Uint8 result[20];
 };
 

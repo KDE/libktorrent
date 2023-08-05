@@ -105,6 +105,7 @@ public:
         Out(SYS_UTP | LOG_DEBUG) << "Transmitted " << sent << endl;
         outgoing->dumpStats();
         outgoing->close();
+        hgen.end();
         sent_hash = hgen.get();
     }
 
@@ -115,6 +116,7 @@ public:
 
 class TransmitTest : public QEventLoop
 {
+    Q_OBJECT
 public:
     TransmitTest(QObject *parent = nullptr)
         : QEventLoop(parent)
@@ -140,7 +142,7 @@ public:
         exit();
     }
 
-private:
+private Q_SLOTS:
     void initTestCase()
     {
         bt::InitLog("transmittest.log", false, true, false);
@@ -216,13 +218,13 @@ private:
         QVERIFY(outgoing->allDataSent());
         QVERIFY(received >= BYTES_TO_SEND);
 
+        hgen.end();
         SHA1Hash rhash = hgen.get();
         Out(SYS_UTP | LOG_DEBUG) << "Received data hash: " << rhash.toString() << endl;
         Out(SYS_UTP | LOG_DEBUG) << "Sent data hash:     " << st.sent_hash.toString() << endl;
         QVERIFY(rhash == st.sent_hash);
     }
 
-private:
 private:
     Connection::Ptr incoming;
     Connection::Ptr outgoing;
@@ -231,3 +233,5 @@ private:
 };
 
 QTEST_MAIN(TransmitTest)
+
+#include "transmittest.moc"

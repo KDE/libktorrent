@@ -82,7 +82,6 @@ find_package(KF${KF_MAJOR_VERSION} "${KF5_MIN_VERSION}" REQUIRED COMPONENTS
 find_package(Boost "${Boost_MIN_VERSION}" MODULE REQUIRED)
 find_package(LibGMP "${LibGMP_MIN_VERSION}" REQUIRED)
 find_package(LibGcrypt "${LibGcrypt_MIN_VERSION}" REQUIRED)
-find_package(Qca-qt${QT_MAJOR_VERSION} CONFIG REQUIRED)
 
 kde_enable_exceptions()
 add_definitions(
