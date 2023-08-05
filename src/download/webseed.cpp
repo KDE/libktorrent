@@ -12,11 +12,16 @@
 #include <diskio/chunkmanager.h>
 #include <diskio/piecedata.h>
 #include <klocalizedstring.h>
-#include <kprotocolmanager.h>
 #include <net/socketmonitor.h>
 #include <peer/peermanager.h>
 #include <torrent/torrent.h>
 #include <util/log.h>
+
+#if QT_VERSION_MAJOR == 6
+#include <QNetworkProxyFactory>
+#else
+#include <kprotocolmanager.h>
+#endif
 
 namespace bt
 {
@@ -124,6 +129,21 @@ void WebSeed::connectToServer()
         dst = redirected_url;
 
     if (!proxy_enabled) {
+#if QT_VERSION_MAJOR == 6
+        QList<QNetworkProxy> proxyList = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(dst));
+
+        if (proxyList.isEmpty()) {
+            conn->connectTo(dst); // direct connection
+        } else {
+            QNetworkProxy proxy = proxyList.first();
+
+            if (proxy.type() == QNetworkProxy::NoProxy) {
+                conn->connectTo(dst); // direct connection
+            } else {
+                conn->connectToProxy(proxy.hostName(), proxy.port());
+            }
+        }
+#else
         QString proxy = KProtocolManager::proxyForUrl(dst); // Use KDE settings
         if (proxy.isNull() || proxy == QLatin1String("DIRECT"))
             conn->connectTo(dst); // direct connection
@@ -131,6 +151,7 @@ void WebSeed::connectToServer()
             QUrl proxy_url(proxy);
             conn->connectToProxy(proxy_url.host(), proxy_url.port() <= 0 ? 80 : proxy_url.port());
         }
+#endif
     } else {
         if (proxy_host.isNull())
             conn->connectTo(dst); // direct connection
