@@ -10,9 +10,7 @@
 #include <QUrlQuery>
 
 #include <KIO/Job>
-#include <KIO/Scheduler>
 #include <KLocalizedString>
-#include <KProtocolManager>
 
 #include "kioannouncejob.h"
 #include "version.h"
