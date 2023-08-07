@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-01-23 00:45+0000\n"
+"POT-Creation-Date: 2023-08-07 00:48+0000\n"
 "PO-Revision-Date: 2013-04-03 15:56+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -402,23 +402,23 @@ msgstr "Paus"
 msgid "Superseeding"
 msgstr "Supererbjudning"
 
-#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
-#: src/tracker/httptracker.cpp:392
+#: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
+#: src/tracker/httptracker.cpp:390
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Ogiltigt svar från spårare"
 
-#: src/tracker/httptracker.cpp:253
+#: src/tracker/httptracker.cpp:251
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Ogiltig data från spårare"
 
-#: src/tracker/httptracker.cpp:407
+#: src/tracker/httptracker.cpp:405
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Ogiltig webbadress för spårare"
 
-#: src/tracker/httptracker.cpp:465 src/tracker/udptracker.cpp:315
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:315
 #: src/tracker/udptracker.cpp:322
 #, kde-format
 msgid "Timeout contacting tracker %1"

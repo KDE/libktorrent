@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-01-23 00:45+0000\n"
+"POT-Creation-Date: 2023-08-07 00:48+0000\n"
 "PO-Revision-Date: 2010-09-11 19:26+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -441,23 +441,23 @@ msgstr "Pauzēts"
 msgid "Superseeding"
 msgstr "Piedāvā"
 
-#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
-#: src/tracker/httptracker.cpp:392
+#: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
+#: src/tracker/httptracker.cpp:390
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Nepareiza atbilde no trakera"
 
-#: src/tracker/httptracker.cpp:253
+#: src/tracker/httptracker.cpp:251
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Nederīgi dati no trakera"
 
-#: src/tracker/httptracker.cpp:407
+#: src/tracker/httptracker.cpp:405
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Nederīgs trakera URL"
 
-#: src/tracker/httptracker.cpp:465 src/tracker/udptracker.cpp:315
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:315
 #: src/tracker/udptracker.cpp:322
 #, kde-format
 msgid "Timeout contacting tracker %1"

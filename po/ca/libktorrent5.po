@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-01-23 00:45+0000\n"
+"POT-Creation-Date: 2023-08-07 00:48+0000\n"
 "PO-Revision-Date: 2022-10-23 20:25+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -410,23 +410,23 @@ msgstr "En pausa"
 msgid "Superseeding"
 msgstr "Supersembrat"
 
-#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
-#: src/tracker/httptracker.cpp:392
+#: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
+#: src/tracker/httptracker.cpp:390
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Resposta no vàlida del seguidor"
 
-#: src/tracker/httptracker.cpp:253
+#: src/tracker/httptracker.cpp:251
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Dades no vàlides des del seguidor"
 
-#: src/tracker/httptracker.cpp:407
+#: src/tracker/httptracker.cpp:405
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "URL no vàlid del seguidor"
 
-#: src/tracker/httptracker.cpp:465 src/tracker/udptracker.cpp:315
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:315
 #: src/tracker/udptracker.cpp:322
 #, kde-format
 msgid "Timeout contacting tracker %1"
