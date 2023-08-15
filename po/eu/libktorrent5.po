@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-07 00:48+0000\n"
+"POT-Creation-Date: 2023-08-15 00:45+0000\n"
 "PO-Revision-Date: 2013-02-02 17:29+0100\n"
 "Last-Translator: Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -196,8 +196,8 @@ msgstr[1] "%1 pare"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Desgaituta, web-hazia eta torrent-a bat ez datozelako"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
-#: src/download/webseed.cpp:84
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
+#: src/download/webseed.cpp:89
 #, kde-format
 msgid "Not connected"
 msgstr "Konektatu gabe"
@@ -217,7 +217,7 @@ msgstr "Ez dago nahikoa sistema-baliabide erabilgarri"
 msgid "Resolving hostname %1"
 msgstr "%1 ostalari-izena ebazten"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
 #, kde-format
 msgid "Connection closed"
 msgstr "Konexioa itxi da"
@@ -267,7 +267,7 @@ msgstr "Errorea: eskaerak denbora-muga gainditu du"
 msgid "Redirected without a new location."
 msgstr "Kokaleku berririk gabe birbideratu da."
 
-#: src/download/webseed.cpp:493
+#: src/download/webseed.cpp:514
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

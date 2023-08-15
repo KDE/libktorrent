@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-07 00:48+0000\n"
+"POT-Creation-Date: 2023-08-15 00:45+0000\n"
 "PO-Revision-Date: 2012-07-04 08:47+0700\n"
 "Last-Translator: Sophea <sophea@khmeros.info>\n"
 "Language-Team: Khmer <>\n"
@@ -194,8 +194,8 @@ msgstr[0] "ម៉ាស៊ីន​ដូចគ្នា %1"
 msgid "Disabled because webseed does not match torrent"
 msgstr "បាន​បិទ​ពីព្រោះ webseed មិន​ផ្គូផ្គង​នឹង torrent"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
-#: src/download/webseed.cpp:84
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
+#: src/download/webseed.cpp:89
 #, kde-format
 msgid "Not connected"
 msgstr "មិនបាន​តភ្ជាប់"
@@ -215,7 +215,7 @@ msgstr "មិន​មាន​ធនធាន​ប្រព័ន្ធ​គ
 msgid "Resolving hostname %1"
 msgstr "ដោះស្រាយ​ឈ្មោះ​ម៉ាស៊ីន %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
 #, kde-format
 msgid "Connection closed"
 msgstr "បាន​បិទ​ការ​តភ្ជាប់"
@@ -265,7 +265,7 @@ msgstr "កំហុស ៖ សំណើ​អស់​ពេល"
 msgid "Redirected without a new location."
 msgstr "បាន​ប្ដូរ​ទិស​​ដោយ​គ្មាន​ទីតាំង​ថ្មី !"
 
-#: src/download/webseed.cpp:493
+#: src/download/webseed.cpp:514
 #, fuzzy, kde-format
 #| msgid "Unused for %1 seconds (Too many connection failures)"
 msgid "Unused for %1 second (Too many connection failures)"

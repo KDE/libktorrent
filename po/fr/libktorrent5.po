@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-07 00:48+0000\n"
+"POT-Creation-Date: 2023-08-15 00:45+0000\n"
 "PO-Revision-Date: 2023-01-05 12:47+0100\n"
 "Last-Translator: Xavier BESNARD <xavier.besnard]neuf.fr>\n"
 "Language-Team: fr\n"
@@ -230,8 +230,8 @@ msgstr[1] "%1 pairs"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Désactivé parce que la source Web ne correspond pas au torrent"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
-#: src/download/webseed.cpp:84
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
+#: src/download/webseed.cpp:89
 #, kde-format
 msgid "Not connected"
 msgstr "Non connecté"
@@ -252,7 +252,7 @@ msgstr "Pas assez de ressources système disponibles"
 msgid "Resolving hostname %1"
 msgstr "Résolution du nom de machine %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
 #, kde-format
 msgid "Connection closed"
 msgstr "Connexion fermée"
@@ -306,7 +306,7 @@ msgstr "Erreur : le délai alloué à la requête a expiré"
 msgid "Redirected without a new location."
 msgstr "Redirigé sans un nouvel emplacement."
 
-#: src/download/webseed.cpp:493
+#: src/download/webseed.cpp:514
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-07 00:48+0000\n"
+"POT-Creation-Date: 2023-08-15 00:45+0000\n"
 "PO-Revision-Date: 2022-09-06 20:49+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -195,8 +195,8 @@ msgstr[5] "%1 ند"
 msgid "Disabled because webseed does not match torrent"
 msgstr "معطّل لأن مُزوِّد الوِب لا يطابق السيل"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
-#: src/download/webseed.cpp:84
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
+#: src/download/webseed.cpp:89
 #, kde-format
 msgid "Not connected"
 msgstr "غير متّصل"
@@ -216,7 +216,7 @@ msgstr "لا موارد نظام كافية متوفّرة"
 msgid "Resolving hostname %1"
 msgstr "يحلّ اسم المضيف %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
 #, kde-format
 msgid "Connection closed"
 msgstr "أُغلق الاتصال"
@@ -266,7 +266,7 @@ msgstr "خطأ: انتهت مهلة الطلب"
 msgid "Redirected without a new location."
 msgstr ""
 
-#: src/download/webseed.cpp:493
+#: src/download/webseed.cpp:514
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

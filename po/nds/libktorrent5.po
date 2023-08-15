@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-07 00:48+0000\n"
+"POT-Creation-Date: 2023-08-15 00:45+0000\n"
 "PO-Revision-Date: 2014-06-05 17:38+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -193,8 +193,8 @@ msgstr[1] "%1 Partners"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Utmaakt, wiel de Nettverdelen nich to den Torrent passt"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
-#: src/download/webseed.cpp:84
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
+#: src/download/webseed.cpp:89
 #, kde-format
 msgid "Not connected"
 msgstr "Nich tokoppelt"
@@ -214,7 +214,7 @@ msgstr "Nich noog Systemressourcen verföögbor"
 msgid "Resolving hostname %1"
 msgstr "Reeknernaam \"%1\" warrt nakeken"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
 #, kde-format
 msgid "Connection closed"
 msgstr "Afkoppelt"
@@ -264,7 +264,7 @@ msgstr "Fehler: Anfraagtiet aflopen"
 msgid "Redirected without a new location."
 msgstr "Ahn nieg Teel wiederleddt."
 
-#: src/download/webseed.cpp:493
+#: src/download/webseed.cpp:514
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

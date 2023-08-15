@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-07 00:48+0000\n"
+"POT-Creation-Date: 2023-08-15 00:45+0000\n"
 "PO-Revision-Date: 2013-04-03 15:56+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -191,8 +191,8 @@ msgstr[1] "%1 deltagare"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Inaktiverad eftersom webberbjudande inte stämmer med dataflöde"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
-#: src/download/webseed.cpp:84
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
+#: src/download/webseed.cpp:89
 #, kde-format
 msgid "Not connected"
 msgstr "Inte ansluten"
@@ -212,7 +212,7 @@ msgstr "Tillräckliga systemresurser ej tillgängliga"
 msgid "Resolving hostname %1"
 msgstr "Upplösning av värddatornamn %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
 #, kde-format
 msgid "Connection closed"
 msgstr "Anslutning stängd"
@@ -262,7 +262,7 @@ msgstr "Fel: Tidsgräns för begäran gick ut"
 msgid "Redirected without a new location."
 msgstr "Omdirigerad utan en ny plats."
 
-#: src/download/webseed.cpp:493
+#: src/download/webseed.cpp:514
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
