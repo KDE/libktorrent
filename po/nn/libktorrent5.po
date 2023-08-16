@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-07 00:48+0000\n"
+"POT-Creation-Date: 2023-08-15 00:45+0000\n"
 "PO-Revision-Date: 2020-08-30 20:07+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -193,8 +193,8 @@ msgstr[1] "%1 deltakarar"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Slått av, då vevkjelde ikkje stemmer med torrenten"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
-#: src/download/webseed.cpp:84
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
+#: src/download/webseed.cpp:89
 #, kde-format
 msgid "Not connected"
 msgstr "Ikkje tilkopla"
@@ -214,7 +214,7 @@ msgstr "Ikkje nok systemressurar tilgjengeleg"
 msgid "Resolving hostname %1"
 msgstr "Gjer namneoppslag på vertsnamnet «%1»"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
 #, kde-format
 msgid "Connection closed"
 msgstr "Tilkoplinga er avslutta"
@@ -264,7 +264,7 @@ msgstr "Feil: Førespurnaden vart tidsavbroten"
 msgid "Redirected without a new location."
 msgstr "Omdirigert utan ny plassering."
 
-#: src/download/webseed.cpp:493
+#: src/download/webseed.cpp:514
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
