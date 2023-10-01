@@ -211,7 +211,7 @@ msgstr "Non conectado"
 #: src/download/httpconnection.cpp:96
 #, kde-format
 msgid "Resolving proxy %1:%2"
-msgstr "Estase a resolver o mandatario %1:%2"
+msgstr "Resolvendo o mandatario %1:%2"
 
 #: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
 #, kde-format
@@ -221,7 +221,7 @@ msgstr "Non se dispón de recursos do sistema dabondo."
 #: src/download/httpconnection.cpp:110
 #, kde-format
 msgid "Resolving hostname %1"
-msgstr "Estase a resolver o nome de servidor %1"
+msgstr "Resolvendo o nome de servidor %1"
 
 #: src/download/httpconnection.cpp:126 src/download/webseed.cpp:306
 #, kde-format
@@ -246,7 +246,7 @@ msgstr "Aconteceu un erro: Non foi posíbel conectar coa semente web"
 #: src/download/httpconnection.cpp:186
 #, kde-format
 msgid "Connecting"
-msgstr "Estase a conectar"
+msgstr "Conectando"
 
 #: src/download/httpconnection.cpp:195
 #, kde-format
@@ -293,7 +293,7 @@ msgstr "Advertencia: %1"
 #: src/interfaces/trackerinterface.cpp:47
 #, kde-format
 msgid "Announcing"
-msgstr "Estase a anunciar"
+msgstr "Anunciando"
 
 #: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
 #, kde-format
@@ -366,7 +366,7 @@ msgstr "Completou a sementeira"
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
-msgstr "Estase a espallar"
+msgstr "Espallando"
 
 #: src/torrent/torrentstats.cpp:80
 #, kde-format
@@ -386,7 +386,7 @@ msgstr "Detido"
 #: src/torrent/torrentstats.cpp:88
 #, kde-format
 msgid "Allocating diskspace"
-msgstr "Estase a reservar o espazo en disco"
+msgstr "Reservando o espazo en disco"
 
 #: src/torrent/torrentstats.cpp:90
 #, kde-format
@@ -461,7 +461,7 @@ msgid ""
 "Forwarding failed:\n"
 "Device does not have a WANIPConnection or WANPPPConnection."
 msgstr ""
-"Non se puido realizar o reenvío: \n"
+"Non foi posíbel realizar o reenvío: \n"
 "O dispositivo carece dunha WANIPConnection ou dunha WANPPPConnection."
 
 #: src/upnp/upnprouter.cpp:279
