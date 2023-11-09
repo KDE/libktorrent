@@ -664,7 +664,7 @@ void Peer::sendExtProtHandshake(Uint16 port, Uint32 metadata_size, bool partial_
         enc.write(metadata_size);
     }
 
-    enc.write(QByteArrayLiteral("upload_only"), partial_seed ? QByteArrayLiteral("1") : QByteArrayLiteral("0"));
+    enc.write(QByteArrayLiteral("upload_only"), partial_seed);
     enc.write(QByteArrayLiteral("v"));
     enc.write(bt::GetVersionString().toLatin1());
     enc.end();
