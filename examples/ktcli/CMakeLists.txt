@@ -5,4 +5,4 @@ target_sources(ktcli PRIVATE
     main.cpp
 )
 
-target_link_libraries(ktcli KF6::Torrent)
+target_link_libraries(ktcli KTorrent6)

@@ -51,7 +51,7 @@ set(QT_REQUIRED_VERSION "6.5.0")
 set(KF_MIN_VERSION "5.240.0")
 ecm_setup_version(${RELEASE_SERVICE_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/libktorrent_version.h"
-                        PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF6TorrentConfigVersion.cmake"
+                        PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KTorrent6ConfigVersion.cmake"
                         SOVERSION "${SOVERSION}")
 
 find_package(Qt6 "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENTS
@@ -124,10 +124,10 @@ endif()
 add_subdirectory(examples)
 add_subdirectory(doc)
 
-set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF6Torrent")
+set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KTorrent6")
 
-configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KF6TorrentConfig.cmake.in"
-                              "${CMAKE_CURRENT_BINARY_DIR}/KF6TorrentConfig.cmake"
+configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KTorrent6Config.cmake.in"
+                              "${CMAKE_CURRENT_BINARY_DIR}/KTorrent6Config.cmake"
                               INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
                               PATH_VARS KDE_INSTALL_INCLUDEDIR
                               )
@@ -135,12 +135,12 @@ configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KF6TorrentConfig.cmak
 # Install the CMake modules needed to use libktorrent
 add_subdirectory(cmake)
 
-install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/KF6TorrentConfig.cmake"
-               "${CMAKE_CURRENT_BINARY_DIR}/KF6TorrentConfigVersion.cmake"
+install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/KTorrent6Config.cmake"
+               "${CMAKE_CURRENT_BINARY_DIR}/KTorrent6ConfigVersion.cmake"
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
         COMPONENT Devel)
 
-install(EXPORT KF6TorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF6TorrentTargets.cmake NAMESPACE KF6::)
+install(EXPORT KTorrent6Targets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KTorrent6Targets.cmake)
 
 ki18n_install(po)
 

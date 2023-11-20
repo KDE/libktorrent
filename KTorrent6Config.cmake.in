@@ -13,4 +13,4 @@ find_dependency(Boost "@Boost_MIN_VERSION@")
 find_dependency(LibGMP "@LibGMP_MIN_VERSION@")
 find_dependency(LibGcrypt "@LibGcrypt_MIN_VERSION@")
 
-include("${CMAKE_CURRENT_LIST_DIR}/KF6TorrentTargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/KTorrent6Targets.cmake")
