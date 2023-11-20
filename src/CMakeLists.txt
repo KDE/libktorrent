@@ -2,15 +2,15 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-ktorrent.h.cmake ${CMAKE_BINAR
 
 remove_definitions(-DQT_NO_HTTP)
 
-add_library(KF5Torrent)
-add_library(KF5::Torrent ALIAS KF5Torrent)
-set_target_properties(KF5Torrent PROPERTIES
+add_library(KF6Torrent)
+add_library(KF6::Torrent ALIAS KF6Torrent)
+set_target_properties(KF6Torrent PROPERTIES
     VERSION     ${RELEASE_SERVICE_VERSION}
     SOVERSION   ${SOVERSION}
     EXPORT_NAME Torrent
 )
 
-target_sources(KF5Torrent PRIVATE
+target_sources(KF6Torrent PRIVATE
     util/bitset.cpp
     util/timer.cpp
     util/urlencoder.cpp
@@ -218,45 +218,43 @@ target_sources(KF5Torrent PRIVATE
 
 if(NOT WIN32)
 # Add signalcatcher.cpp for all builds except WIN32
-    target_sources(KF5Torrent PRIVATE util/signalcatcher.cpp)
+    target_sources(KF6Torrent PRIVATE util/signalcatcher.cpp)
 endif(NOT WIN32)
 
 if(WIN32)
 # Compile stuff for windows
-    target_sources(KF5Torrent PRIVATE util/win32.cpp)
+    target_sources(KF6Torrent PRIVATE util/win32.cpp)
 endif(WIN32)
 
 
-# ki18n_wrap_ui(KF5Torrent ${libktorrent_UI})
-# kconfig_add_kcfg_files(KF5Torrent settings.kcfgc)
+# ki18n_wrap_ui(KF6Torrent ${libktorrent_UI})
+# kconfig_add_kcfg_files(KF6Torrent settings.kcfgc)
 
-generate_export_header(KF5Torrent BASE_NAME ktorrent)
+generate_export_header(KF6Torrent BASE_NAME ktorrent)
 
-target_link_libraries(KF5Torrent
+target_link_libraries(KF6Torrent
 PUBLIC
-    KF${KF_MAJOR_VERSION}::Archive
-    KF${KF_MAJOR_VERSION}::KIOCore
-    KF${KF_MAJOR_VERSION}::KIOWidgets
-    KF${KF_MAJOR_VERSION}::Solid
-    KF${KF_MAJOR_VERSION}::I18n
-    Qt::Xml
+    KF6::Archive
+    KF6::KIOCore
+    KF6::KIOWidgets
+    KF6::Solid
+    KF6::I18n
+    Qt6::Xml
     Boost::boost
     LibGcrypt::LibGcrypt
     LibGMP::LibGMP
 )
 
-if (QT_MAJOR_VERSION EQUAL "6")
-    target_link_libraries(KF5Torrent PUBLIC Qt6::Core5Compat)
-endif()
+target_link_libraries(KF6Torrent PUBLIC Qt6::Core5Compat)
 
 if(WIN32)
-target_link_libraries(KF5Torrent ws2_32)
+target_link_libraries(KF6Torrent ws2_32)
 endif(WIN32)
-target_include_directories(KF5Torrent INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent>")
-target_include_directories(KF5Torrent PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOURCE_DIR}/src;${LIBKTORRENT_BINARY_DIR}/src;${LIBKTORRENT_BINARY_DIR}>")
+target_include_directories(KF6Torrent INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent>")
+target_include_directories(KF6Torrent PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOURCE_DIR}/src;${LIBKTORRENT_BINARY_DIR}/src;${LIBKTORRENT_BINARY_DIR}>")
 
 
-install(TARGETS KF5Torrent EXPORT KF5TorrentTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS KF6Torrent EXPORT KF6TorrentTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 set (interfaces_HDR
     interfaces/peerinterface.h

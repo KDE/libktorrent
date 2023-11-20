@@ -10,12 +10,3 @@ Dependencies:
     'frameworks/kcrash' : '@latest-kf6'
     'frameworks/solid' : '@latest-kf6'
     'frameworks/kio' : '@latest-kf6'
-
-- 'on': ['Linux/Qt5', 'FreeBSD/Qt5']
-  'require':
-    'frameworks/extra-cmake-modules': '@stable'
-    'frameworks/ki18n' : '@stable'
-    'frameworks/karchive' : '@stable'
-    'frameworks/kcrash' : '@stable'
-    'frameworks/solid' : '@stable'
-    'frameworks/kio' : '@stable'

@@ -1,2 +1,2 @@
 include(ECMAddTests)
-ecm_add_test(datacheckertest.cpp LINK_LIBRARIES testlib KF5::Torrent Qt::Test)
+ecm_add_test(datacheckertest.cpp LINK_LIBRARIES testlib KF6::Torrent Qt6::Test)

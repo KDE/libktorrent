@@ -12,8 +12,8 @@ set (RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE
 set(Boost_MIN_VERSION "1.71.0")
 set(LibGMP_MIN_VERSION "6.0.0")
 set(LibGcrypt_MIN_VERSION "1.4.5")
-set(KF5_MIN_VERSION "5.85")
-set(QT_MIN_VERSION "5.15.0")
+set(KF_MIN_VERSION "5.240.0")
+set(QT_MIN_VERSION "6.5.0")
 
 set (SOVERSION 6)
 
@@ -22,7 +22,7 @@ project(LIBKTORRENT VERSION ${RELEASE_SERVICE_VERSION})
 # set some default settings
 enable_testing()
 
-find_package(ECM ${KF5_MIN_VERSION} NO_MODULE)
+find_package(ECM ${KF_MIN_VERSION} NO_MODULE)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ECM_MODULE_PATH} ${CMAKE_MODULE_PATH})
 
@@ -47,31 +47,24 @@ include(CMakePackageConfigHelpers)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-if (QT_MAJOR_VERSION STREQUAL "6")
-    set(QT_REQUIRED_VERSION "6.4.0")
-    set(KF_MIN_VERSION "5.240.0")
-    set(KF_MAJOR_VERSION "6")
-else()
-    set(KF_MAJOR_VERSION "5")
-endif()
+set(QT_REQUIRED_VERSION "6.5.0")
+set(KF_MIN_VERSION "5.240.0")
 ecm_setup_version(${RELEASE_SERVICE_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/libktorrent_version.h"
-                        PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfigVersion.cmake"
+                        PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF6TorrentConfigVersion.cmake"
                         SOVERSION "${SOVERSION}")
 
-find_package(Qt${QT_MAJOR_VERSION} "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENTS
+find_package(Qt6 "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENTS
     Core
     Network
     Xml
     Test
 )
 
-if (QT_MAJOR_VERSION STREQUAL "6")
-    find_package(Qt6Core5Compat REQUIRED)
-endif()
+find_package(Qt6Core5Compat REQUIRED)
 
 # Load the frameworks we need
-find_package(KF${KF_MAJOR_VERSION} "${KF5_MIN_VERSION}" REQUIRED COMPONENTS
+find_package(KF6 "${KF_MIN_VERSION}" REQUIRED COMPONENTS
     Archive
     Crash
     I18n
@@ -131,10 +124,10 @@ endif()
 add_subdirectory(examples)
 add_subdirectory(doc)
 
-set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF5Torrent")
+set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF6Torrent")
 
-configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KF5TorrentConfig.cmake.in"
-                              "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfig.cmake"
+configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KF6TorrentConfig.cmake.in"
+                              "${CMAKE_CURRENT_BINARY_DIR}/KF6TorrentConfig.cmake"
                               INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
                               PATH_VARS KDE_INSTALL_INCLUDEDIR
                               )
@@ -142,12 +135,12 @@ configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KF5TorrentConfig.cmak
 # Install the CMake modules needed to use libktorrent
 add_subdirectory(cmake)
 
-install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfig.cmake"
-               "${CMAKE_CURRENT_BINARY_DIR}/KF5TorrentConfigVersion.cmake"
+install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/KF6TorrentConfig.cmake"
+               "${CMAKE_CURRENT_BINARY_DIR}/KF6TorrentConfigVersion.cmake"
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
         COMPONENT Devel)
 
-install(EXPORT KF5TorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF5TorrentTargets.cmake NAMESPACE KF5:: )
+install(EXPORT KF6TorrentTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF6TorrentTargets.cmake NAMESPACE KF6::)
 
 ki18n_install(po)
 
