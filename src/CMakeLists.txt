@@ -6,7 +6,7 @@ add_library(KTorrent6)
 set_target_properties(KTorrent6 PROPERTIES
     VERSION     ${RELEASE_SERVICE_VERSION}
     SOVERSION   ${SOVERSION}
-    EXPORT_NAME Torrent
+    EXPORT_NAME KTorrent6
 )
 
 target_sources(KTorrent6 PRIVATE
