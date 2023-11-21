@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2019-11-13 02:46+0100\n"
+"POT-Creation-Date: 2023-11-05 12:33+0000\n"
 "PO-Revision-Date: 2013-04-05 17:54+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -22,169 +22,169 @@ msgstr ""
 "X-Environment: kde\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: src/bcodec/bdecoder.cpp:71
+#: src/bcodec/bdecoder.cpp:48
 #, kde-format
 msgid "Illegal token: %1"
 msgstr "Недозвољен токен: %1"
 
-#: src/bcodec/bdecoder.cpp:133 src/bcodec/bdecoder.cpp:141
+#: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
 #, kde-format
 msgid "Decode error"
 msgstr "Грешка декодирања"
 
-#: src/bcodec/bdecoder.cpp:201 src/bcodec/bdecoder.cpp:244
+#: src/bcodec/bdecoder.cpp:161 src/bcodec/bdecoder.cpp:199
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Неочекиван крај улаза"
 
-#: src/bcodec/bdecoder.cpp:221 src/bcodec/bdecoder.cpp:254
+#: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "Не могу да претворим %1 у цео број"
 
-#: src/bcodec/bdecoder.cpp:259
+#: src/bcodec/bdecoder.cpp:223
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Торент није завршен."
 
-#: src/datachecker/datacheckerjob.cpp:82
+#: src/datachecker/datacheckerjob.cpp:66
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr "Чекам да се заврше друге провере података"
 
-#: src/datachecker/datacheckerjob.cpp:88 src/torrent/torrentstats.cpp:109
+#: src/datachecker/datacheckerjob.cpp:72 src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Checking data"
 msgstr "Проверавам податке"
 
-#: src/datachecker/datacheckerjob.cpp:141
+#: src/datachecker/datacheckerjob.cpp:119
 #, kde-format
 msgid "Checking Data"
 msgstr "Проверавам податке"
 
-#: src/datachecker/multidatachecker.cpp:209
-#: src/datachecker/singledatachecker.cpp:49 src/diskio/multifilecache.cpp:706
-#: src/diskio/multifilecache.cpp:745 src/torrent/torrentcreator.cpp:124
-#: src/torrent/torrentcreator.cpp:255 src/torrent/torrentcreator.cpp:292
+#: src/datachecker/multidatachecker.cpp:181
+#: src/datachecker/singledatachecker.cpp:34 src/diskio/multifilecache.cpp:621
+#: src/diskio/multifilecache.cpp:656 src/torrent/torrentcreator.cpp:111
+#: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "Не могу да отворим фајл %1: %2"
 
-#: src/diskio/cache.cpp:170 src/diskio/multifilecache.cpp:118
-#: src/diskio/singlefilecache.cpp:85
+#: src/diskio/cache.cpp:148 src/diskio/multifilecache.cpp:95
+#: src/diskio/singlefilecache.cpp:67
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "Не могу да направим %1: %2"
 
-#: src/diskio/cachefile.cpp:93 src/util/fileops.cpp:371
-#: src/util/fileops.cpp:416
+#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:312
+#: src/util/fileops.cpp:354
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Не могу да отворим %1: %2"
 
-#: src/diskio/cachefile.cpp:122 src/diskio/cachefile.cpp:250
-#: src/diskio/cachefile.cpp:414 src/diskio/cachefile.cpp:482
+#: src/diskio/cachefile.cpp:103 src/diskio/cachefile.cpp:215
+#: src/diskio/cachefile.cpp:368 src/diskio/cachefile.cpp:427
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "Не могу да отворим %1 ради уписа: фајл систем само за читање"
 
-#: src/diskio/cachefile.cpp:129 src/diskio/cachefile.cpp:420
+#: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "Покушај уписивања преко највеће величине %1"
 
-#: src/diskio/cachefile.cpp:257
+#: src/diskio/cachefile.cpp:220
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
 msgstr ""
 "Не могу да проширим фајл %1: покушај ширења фајла преко највеће величине."
 
-#: src/diskio/cachefile.cpp:261
+#: src/diskio/cachefile.cpp:224
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "Не могу да раширим фајл %1: %2"
 
-#: src/diskio/cachefile.cpp:380
+#: src/diskio/cachefile.cpp:336
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "Грешка: Читање је прошло преко краја фајла %1"
 
-#: src/diskio/cachefile.cpp:385 src/diskio/cachefile.cpp:432
+#: src/diskio/cachefile.cpp:341 src/diskio/cachefile.cpp:383
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "Неуспело премотавање фајла %1: %2"
 
-#: src/diskio/cachefile.cpp:393
+#: src/diskio/cachefile.cpp:348
 #, kde-format
 msgid "Error reading from %1"
 msgstr "Грешка при читању из %1"
 
-#: src/diskio/cachefile.cpp:436
+#: src/diskio/cachefile.cpp:386
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "Не могу да пишем у %1: %2"
 
-#: src/diskio/cachefile.cpp:503
+#: src/diskio/cachefile.cpp:443
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Не могу да резервишем простор на диску: %1"
 
-#: src/diskio/chunkmanager.cpp:937 src/diskio/chunkmanager.cpp:963
+#: src/diskio/chunkmanager.cpp:844 src/diskio/chunkmanager.cpp:867
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "Не могу да отворим фајл индекса %1: %2"
 
-#: src/diskio/dndfile.cpp:89
+#: src/diskio/dndfile.cpp:72
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "Не могу да направим фајл %1: %2"
 
-#: src/diskio/dndfile.cpp:137
+#: src/diskio/dndfile.cpp:114
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Не могу да упишем прво парче у ДНД фајл: %1"
 
-#: src/diskio/dndfile.cpp:155
+#: src/diskio/dndfile.cpp:129
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Не могу да упишем последње парче у ДНД фајл: %1"
 
-#: src/diskio/movedatafilesjob.cpp:132
+#: src/diskio/movedatafilesjob.cpp:109
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr "Чекам да се заврше други послови премештања"
 
-#: src/diskio/movedatafilesjob.cpp:133 src/diskio/movedatafilesjob.cpp:172
+#: src/diskio/movedatafilesjob.cpp:110 src/diskio/movedatafilesjob.cpp:146
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "Извор"
 
-#: src/diskio/movedatafilesjob.cpp:134 src/diskio/movedatafilesjob.cpp:173
+#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "Одредиште"
 
-#: src/diskio/movedatafilesjob.cpp:171
+#: src/diskio/movedatafilesjob.cpp:145
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
 msgstr "Премештање"
 
-#: src/diskio/multifilecache.cpp:91 src/diskio/singlefilecache.cpp:74
+#: src/diskio/multifilecache.cpp:70 src/diskio/singlefilecache.cpp:57
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr "Не могу да отворим %1: %2"
 
 # >? Wth?
-#: src/diskio/piecedata.cpp:69 src/diskio/piecedata.cpp:108
+#: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
 msgstr "Не могу да пишем у подеоно мапирани само за читање"
 
-#: src/download/chunkdownload.cpp:382
+#: src/download/chunkdownload.cpp:342
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
@@ -193,83 +193,83 @@ msgstr[1] "%1 вршњака"
 msgstr[2] "%1 вршњака"
 msgstr[3] "1 вршњак"
 
-#: src/download/downloader.cpp:807
+#: src/download/downloader.cpp:693
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "Искључен јер се веб сејање не поклапа са торентом"
 
-#: src/download/httpconnection.cpp:45 src/download/webseed.cpp:52
-#: src/download/webseed.cpp:99
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
+#: src/download/webseed.cpp:89
 #, kde-format
 msgid "Not connected"
 msgstr "Неповезан"
 
-#: src/download/httpconnection.cpp:116
+#: src/download/httpconnection.cpp:96
 #, kde-format
 msgid "Resolving proxy %1:%2"
 msgstr "Разрешавам прокси %1:%2"
 
-#: src/download/httpconnection.cpp:122 src/download/httpconnection.cpp:140
+#: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
 #, kde-format
 msgid "Not enough system resources available"
 msgstr "Недовољно системских ресурса"
 
-#: src/download/httpconnection.cpp:134
+#: src/download/httpconnection.cpp:110
 #, kde-format
 msgid "Resolving hostname %1"
 msgstr "Разрешавам име домаћина %1"
 
-#: src/download/httpconnection.cpp:154 src/download/webseed.cpp:350
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
 #, kde-format
 msgid "Connection closed"
 msgstr "Веза затворена"
 
-#: src/download/httpconnection.cpp:161
+#: src/download/httpconnection.cpp:130
 #, kde-format
 msgid "Error: request failed: %1"
 msgstr "Грешка: неуспешан захтев: %1"
 
-#: src/download/httpconnection.cpp:189 src/download/httpconnection.cpp:223
+#: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
 #, kde-format
 msgid "Connected"
 msgstr "Повезан"
 
-#: src/download/httpconnection.cpp:200
+#: src/download/httpconnection.cpp:162
 #, kde-format
 msgid "Error: Failed to connect to webseed"
 msgstr "Грешка: Неуспело повезивање на веб сејање"
 
-#: src/download/httpconnection.cpp:230
+#: src/download/httpconnection.cpp:186
 #, kde-format
 msgid "Connecting"
 msgstr "Повезујем"
 
-#: src/download/httpconnection.cpp:241
+#: src/download/httpconnection.cpp:195
 #, kde-format
 msgid "Failed to connect to webseed"
 msgstr "Неуспело повезивање на веб сејање"
 
-#: src/download/httpconnection.cpp:248
+#: src/download/httpconnection.cpp:200
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
 msgstr "Неуспешно разрешавање имена домаћина за веб сејање"
 
-#: src/download/httpconnection.cpp:326
+#: src/download/httpconnection.cpp:271
 #, kde-format
 msgid "Error: failed to connect, server not responding"
 msgstr "Грешка: неуспело повезивање, сервер не одговара"
 
-#: src/download/httpconnection.cpp:337
+#: src/download/httpconnection.cpp:281
 #, kde-format
 msgid "Error: request timed out"
 msgstr "Грешка: истекло је време за захтев"
 
-#: src/download/httpconnection.cpp:401
+#: src/download/httpconnection.cpp:351
 #, kde-format
 msgid "Redirected without a new location."
 msgstr "Преусмерен без нове локације."
 
-#: src/download/webseed.cpp:561
+#: src/download/webseed.cpp:514
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
@@ -278,60 +278,55 @@ msgstr[1] "Некоришћен %1 секунде (превише неуспел
 msgstr[2] "Некоришћен %1 секунди (превише неуспелих повезивања)"
 msgstr[3] "Некоришћен %1 секунду (превише неуспелих повезивања)"
 
-#: src/interfaces/trackerinterface.cpp:59
+#: src/interfaces/trackerinterface.cpp:45
 #, kde-format
 msgid "OK"
 msgstr "У реду"
 
-#: src/interfaces/trackerinterface.cpp:59
+#: src/interfaces/trackerinterface.cpp:45
 #, kde-format
 msgid "Warning: %1"
 msgstr "Упозорење: %1"
 
-#: src/interfaces/trackerinterface.cpp:60
+#: src/interfaces/trackerinterface.cpp:47
 #, kde-format
 msgid "Announcing"
 msgstr "Објављујем"
 
-#: src/interfaces/trackerinterface.cpp:61 src/torrent/torrentstats.cpp:103
+#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
 #, kde-format
 msgid "Error: %1"
 msgstr "Грешка: %1"
 
-#: src/migrate/migrate.cpp:44
-#, kde-format
-msgid "The directory %1 does not exist"
-msgstr "Фасцикла %1 не постоји"
-
-#: src/peer/peerid.cpp:351
+#: src/peer/peerid.cpp:299
 #, kde-format
 msgid "Unknown client"
 msgstr "Непознат клијент"
 
-#: src/torrent/torrent.cpp:95 src/torrent/torrent.cpp:159
-#: src/torrent/torrent.cpp:187 src/torrent/torrent.cpp:194
-#: src/torrent/torrent.cpp:202 src/torrent/torrent.cpp:206
-#: src/torrent/torrent.cpp:227 src/torrent/torrent.cpp:295
+#: src/torrent/torrent.cpp:96 src/torrent/torrent.cpp:153
+#: src/torrent/torrent.cpp:180 src/torrent/torrent.cpp:187
+#: src/torrent/torrent.cpp:194 src/torrent/torrent.cpp:198
+#: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Оштећен торент."
 
-#: src/torrent/torrentcontrol.cpp:301
+#: src/torrent/torrentcontrol.cpp:277
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Грешка при писању на диск, има ли довољно простора?"
 
-#: src/torrent/torrentcontrol.cpp:542
+#: src/torrent/torrentcontrol.cpp:492
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "Грешка при учитавању <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:553
+#: src/torrent/torrentcontrol.cpp:502
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Не могу да направим %1: %2"
 
-#: src/torrent/torrentcontrol.cpp:568
+#: src/torrent/torrentcontrol.cpp:515
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -339,126 +334,126 @@ msgid ""
 msgstr ""
 "Торент <b>%1</b> се већ преузима. Спискови пратилаца оба торента су стопљени."
 
-#: src/torrent/torrentcontrol.cpp:573
+#: src/torrent/torrentcontrol.cpp:519
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Већ преузимате торент <b>%1</b>."
 
-#: src/torrent/torrentcreator.cpp:361
+#: src/torrent/torrentcreator.cpp:332
 #, kde-format
 msgid "Cannot create index file: %1"
 msgstr "Не могу да направим индексни фајл: %1"
 
-#: src/torrent/torrentstats.cpp:89
+#: src/torrent/torrentstats.cpp:72
 #, kde-format
 msgid "Not started"
 msgstr "Није покренут"
 
-#: src/torrent/torrentstats.cpp:91
+#: src/torrent/torrentstats.cpp:74
 #, kde-format
 msgid "Download completed"
 msgstr "Преузимање завршено"
 
-#: src/torrent/torrentstats.cpp:93
+#: src/torrent/torrentstats.cpp:76
 #, kde-format
 msgid "Seeding completed"
 msgstr "Сејање завршено"
 
-#: src/torrent/torrentstats.cpp:95
+#: src/torrent/torrentstats.cpp:78
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
 msgstr "Сејем"
 
-#: src/torrent/torrentstats.cpp:97
+#: src/torrent/torrentstats.cpp:80
 #, kde-format
 msgid "Downloading"
 msgstr "Преузимам"
 
-#: src/torrent/torrentstats.cpp:99
+#: src/torrent/torrentstats.cpp:82
 #, kde-format
 msgid "Stalled"
 msgstr "Застој"
 
-#: src/torrent/torrentstats.cpp:101
+#: src/torrent/torrentstats.cpp:84
 #, kde-format
 msgid "Stopped"
 msgstr "Заустављен"
 
-#: src/torrent/torrentstats.cpp:105
+#: src/torrent/torrentstats.cpp:88
 #, kde-format
 msgid "Allocating diskspace"
 msgstr "Резервишем простор на диску"
 
-#: src/torrent/torrentstats.cpp:107
+#: src/torrent/torrentstats.cpp:90
 #, kde-format
 msgid "Queued for seeding"
 msgstr "У реду за сејање"
 
-#: src/torrent/torrentstats.cpp:107
+#: src/torrent/torrentstats.cpp:90
 #, kde-format
 msgid "Queued for downloading"
 msgstr "У реду за преузимање"
 
-#: src/torrent/torrentstats.cpp:111
+#: src/torrent/torrentstats.cpp:94
 #, kde-format
 msgid "Stopped. No space left on device."
 msgstr "Заустављен. Нема слободног простора."
 
-#: src/torrent/torrentstats.cpp:113
+#: src/torrent/torrentstats.cpp:96
 #, kde-format
 msgid "Paused"
 msgstr "Паузирано"
 
-#: src/torrent/torrentstats.cpp:115
+#: src/torrent/torrentstats.cpp:98
 #, kde-format
 msgid "Superseeding"
 msgstr "Суперсејање"
 
-#: src/tracker/httptracker.cpp:283 src/tracker/httptracker.cpp:303
-#: src/tracker/httptracker.cpp:467
+#: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
+#: src/tracker/httptracker.cpp:390
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Неисправан одговор са пратиоца"
 
-#: src/tracker/httptracker.cpp:296
+#: src/tracker/httptracker.cpp:251
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Неисправни подаци са пратиоца"
 
-#: src/tracker/httptracker.cpp:484
+#: src/tracker/httptracker.cpp:405
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Неисправан УРЛ пратиоца"
 
 # rewrite-msgid: /Timeout/Timed out while/
-#: src/tracker/httptracker.cpp:572 src/tracker/udptracker.cpp:363
-#: src/tracker/udptracker.cpp:373
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:315
+#: src/tracker/udptracker.cpp:322
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "Истекло време при контактирању пратиоца %1"
 
-#: src/tracker/udptracker.cpp:400
+#: src/tracker/udptracker.cpp:343
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "Не могу да разрешим име домаћина %1"
 
-#: src/upnp/httprequest.cpp:51
+#: src/upnp/httprequest.cpp:39
 #, kde-format
 msgid "Operation timed out"
 msgstr "Истекло време поступку"
 
-#: src/upnp/upnprouter.cpp:174
+#: src/upnp/upnprouter.cpp:156
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "Не могу да преузмем %1: %2"
 
-#: src/upnp/upnprouter.cpp:185
+#: src/upnp/upnprouter.cpp:166
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Грешка при рашчлањивању описа рутера."
 
-#: src/upnp/upnprouter.cpp:227
+#: src/upnp/upnprouter.cpp:200
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -467,83 +462,83 @@ msgstr ""
 "Преусмеравање пропало:\n"
 "Уређај нема ни WANIPConnection ни WANPPPConnection."
 
-#: src/upnp/upnprouter.cpp:327
+#: src/upnp/upnprouter.cpp:279
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "Не могу да нађем сервис прослеђивања у опису уређаја."
 
-#: src/util/file.cpp:84
+#: src/util/file.cpp:68
 #, kde-format
 msgid "Cannot write to %1: %2"
 msgstr "Не могу да пишем у %1: %2"
 
-#: src/util/file.cpp:98
+#: src/util/file.cpp:81
 #, kde-format
 msgid "Cannot read from %1"
 msgstr "Не могу да читам из %1"
 
-#: src/util/fileops.cpp:108
+#: src/util/fileops.cpp:91
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "Не могу да направим фасциклу %1"
 
-#: src/util/fileops.cpp:175
+#: src/util/fileops.cpp:149
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "Не могу да симболички повежем %1 на %2: %3"
 
-#: src/util/fileops.cpp:193
+#: src/util/fileops.cpp:162
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "Не могу да преместим %1 у %2: %3"
 
-#: src/util/fileops.cpp:210 src/util/fileops.cpp:227
+#: src/util/fileops.cpp:173 src/util/fileops.cpp:184
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "Не могу да копирам %1 у %2: %3"
 
-#: src/util/fileops.cpp:292
+#: src/util/fileops.cpp:238
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Не могу да обришем %1: %2"
 
-#: src/util/fileops.cpp:310
+#: src/util/fileops.cpp:254
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Не могу да направим %1: %2"
 
-#: src/util/fileops.cpp:328
+#: src/util/fileops.cpp:271
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Не могу да прорачунам величину за %1: %2"
 
-#: src/util/fileops.cpp:344
+#: src/util/fileops.cpp:287
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Не могу да прорачунам величину: %1"
 
-#: src/util/fileops.cpp:392 src/util/fileops.cpp:398 src/util/fileops.cpp:401
-#: src/util/fileops.cpp:404 src/util/fileops.cpp:407
+#: src/util/fileops.cpp:332 src/util/fileops.cpp:336 src/util/fileops.cpp:339
+#: src/util/fileops.cpp:342 src/util/fileops.cpp:345
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Не могу да раширим фајл: %1"
 
-#: src/util/fileops.cpp:437
+#: src/util/fileops.cpp:372
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Не могу да премотавам у фајлу: %1"
 
-#: src/util/fileops.cpp:695
+#: src/util/fileops.cpp:613
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Не могу да отворим фајл %1: %2"
 
-#: src/util/functions.cpp:239
+#: src/util/functions.cpp:205
 #, kde-format
 msgid "%1/s"
 msgstr "%1/s"
 
-#: src/util/functions.cpp:247
+#: src/util/functions.cpp:214
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
@@ -552,42 +547,45 @@ msgstr[1] "%1 дана "
 msgstr[2] "%1 дана "
 msgstr[3] "1 дан "
 
-#: src/util/logsystemmanager.cpp:33
+#: src/util/logsystemmanager.cpp:19
 #, kde-format
 msgid "General"
 msgstr "Опште"
 
-#: src/util/logsystemmanager.cpp:34
+#: src/util/logsystemmanager.cpp:20
 #, kde-format
 msgid "Connections"
 msgstr "Везе"
 
-#: src/util/logsystemmanager.cpp:35
+#: src/util/logsystemmanager.cpp:21
 #, kde-format
 msgid "Tracker"
 msgstr "Пратилац"
 
-#: src/util/logsystemmanager.cpp:36
+#: src/util/logsystemmanager.cpp:22
 #, kde-format
 msgid "DHT"
 msgstr "ДХТ"
 
-#: src/util/logsystemmanager.cpp:37
+#: src/util/logsystemmanager.cpp:23
 #, kde-format
 msgid "Disk Input/Output"
 msgstr "Улаз/излаз диска"
 
-#: src/util/logsystemmanager.cpp:38
+#: src/util/logsystemmanager.cpp:24
 #, kde-format
 msgid "µTP"
 msgstr "µТП"
 
-#: src/util/signalcatcher.cpp:80
+#: src/util/signalcatcher.cpp:62
 #, kde-format
 msgid "Error when writing to disk"
 msgstr "Грешка при писању на диск"
 
-#: src/util/signalcatcher.cpp:80
+#: src/util/signalcatcher.cpp:62
 #, kde-format
 msgid "Error when reading from disk"
 msgstr "Грешка при читању са диска"
+
+#~ msgid "The directory %1 does not exist"
+#~ msgstr "Фасцикла %1 не постоји"
