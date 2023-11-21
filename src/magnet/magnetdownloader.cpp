@@ -81,7 +81,7 @@ void MagnetDownloader::stop()
     if (!running())
         return;
 
-    for (Tracker *tracker : qAsConst(trackers)) {
+    for (Tracker *tracker : std::as_const(trackers)) {
         tracker->stop();
         delete tracker;
     }

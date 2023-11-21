@@ -97,7 +97,7 @@ void PeerManager::pause()
     if (d->paused)
         return;
 
-    for (Peer::Ptr p : qAsConst(d->peer_map)) {
+    for (Peer::Ptr p : std::as_const(d->peer_map)) {
         p->pause();
     }
     d->paused = true;
@@ -108,7 +108,7 @@ void PeerManager::unpause()
     if (!d->paused)
         return;
 
-    for (Peer::Ptr p : qAsConst(d->peer_map)) {
+    for (Peer::Ptr p : std::as_const(d->peer_map)) {
         p->unpause();
         if (p->hasWantedChunks(d->wanted_chunks)) // send interested when it has wanted chunks
             p->sendInterested();
@@ -151,7 +151,7 @@ void PeerManager::addPotentialPeer(const net::Address &addr, bool local)
 
 void PeerManager::killSeeders()
 {
-    for (Peer::Ptr peer : qAsConst(d->peer_map)) {
+    for (Peer::Ptr peer : std::as_const(d->peer_map)) {
         if (peer->isSeeder())
             peer->kill();
     }
@@ -160,7 +160,7 @@ void PeerManager::killSeeders()
 void PeerManager::killUninterested()
 {
     QTime now = QTime::currentTime();
-    for (Peer::Ptr peer : qAsConst(d->peer_map)) {
+    for (Peer::Ptr peer : std::as_const(d->peer_map)) {
         if (!peer->isInterested() && (peer->getConnectTime().secsTo(now) > 30))
             peer->kill();
     }
@@ -221,7 +221,7 @@ bool PeerManager::connectedTo(const PeerID &peer_id)
     if (!d->started)
         return false;
 
-    for (const Peer::Ptr &p : qAsConst(d->peer_map)) {
+    for (const Peer::Ptr &p : std::as_const(d->peer_map)) {
         if (p->getPeerID() == peer_id)
             return true;
     }
@@ -245,7 +245,7 @@ void PeerManager::savePeerList(const QString &file)
 
         QTextStream out(&fptr);
         // first the active peers
-        for (const Peer::Ptr &p : qAsConst(d->peer_map)) {
+        for (const Peer::Ptr &p : std::as_const(d->peer_map)) {
             const net::Address &addr = p->getAddress();
             out << addr.toString() << " " << (unsigned short)addr.port() << Qt::endl;
         }
@@ -317,7 +317,7 @@ Peer::Ptr PeerManager::findPeer(Uint32 peer_id)
 
 Peer::Ptr PeerManager::findPeer(PieceDownloader *pd)
 {
-    for (Peer::Ptr p : qAsConst(d->peer_map)) {
+    for (Peer::Ptr p : std::as_const(d->peer_map)) {
         if ((PieceDownloader *)p->getPeerDownloader() == pd)
             return p;
     }
@@ -362,7 +362,7 @@ void PeerManager::setPexEnabled(bool on)
     if (d->pex_on == on)
         return;
 
-    for (Peer::Ptr p : qAsConst(d->peer_map)) {
+    for (Peer::Ptr p : std::as_const(d->peer_map)) {
         if (!p->isKilled()) {
             p->setPexEnabled(on);
             bt::Uint16 port = ServerInterface::getPort();
@@ -374,7 +374,7 @@ void PeerManager::setPexEnabled(bool on)
 
 void PeerManager::setGroupIDs(Uint32 up, Uint32 down)
 {
-    for (Peer::Ptr p : qAsConst(d->peer_map))
+    for (Peer::Ptr p : std::as_const(d->peer_map))
         p->setGroupIDs(up, down);
 }
 
@@ -397,7 +397,7 @@ void PeerManager::setPieceHandler(PieceHandler *ph)
 
 void PeerManager::killStalePeers()
 {
-    for (Peer::Ptr p : qAsConst(d->peer_map)) {
+    for (Peer::Ptr p : std::as_const(d->peer_map)) {
         if (p->getDownloadRate() == 0 && p->getUploadRate() == 0)
             p->kill();
     }
@@ -413,7 +413,7 @@ void PeerManager::setSuperSeeding(bool on, const BitSet &chunks)
 
     // When entering or exiting superseeding mode kill all peers
     // but first add the current list to the potential_peers list, so we can reconnect later.
-    for (Peer::Ptr p : qAsConst(d->peer_map)) {
+    for (Peer::Ptr p : std::as_const(d->peer_map)) {
         const net::Address &addr = p->getAddress();
         addPotentialPeer(addr, false);
         p->kill();
@@ -425,7 +425,7 @@ void PeerManager::sendHave(Uint32 index)
     if (d->superseeder)
         return;
 
-    for (Peer::Ptr peer : qAsConst(d->peer_map)) {
+    for (Peer::Ptr peer : std::as_const(d->peer_map)) {
         peer->sendHave(index);
     }
 }
@@ -438,7 +438,7 @@ Uint32 PeerManager::getNumConnectedPeers() const
 Uint32 PeerManager::getNumConnectedLeechers() const
 {
     Uint32 cnt = 0;
-    for (const Peer::Ptr &peer : qAsConst(d->peer_map)) {
+    for (const Peer::Ptr &peer : std::as_const(d->peer_map)) {
         if (!peer->isSeeder())
             cnt++;
     }
@@ -449,7 +449,7 @@ Uint32 PeerManager::getNumConnectedLeechers() const
 Uint32 PeerManager::getNumConnectedSeeders() const
 {
     Uint32 cnt = 0;
-    for (const Peer::Ptr &peer : qAsConst(d->peer_map)) {
+    for (const Peer::Ptr &peer : std::as_const(d->peer_map)) {
         if (peer->isSeeder())
             cnt++;
     }
@@ -489,7 +489,7 @@ bool PeerManager::isStarted() const
 
 void PeerManager::visit(PeerManager::PeerVisitor &visitor)
 {
-    for (const Peer::Ptr &p : qAsConst(d->peer_map)) {
+    for (const Peer::Ptr &p : std::as_const(d->peer_map)) {
         visitor.visit(p);
     }
 }
@@ -497,7 +497,7 @@ void PeerManager::visit(PeerManager::PeerVisitor &visitor)
 Uint32 PeerManager::uploadRate() const
 {
     Uint32 rate = 0;
-    for (const Peer::Ptr &p : qAsConst(d->peer_map)) {
+    for (const Peer::Ptr &p : std::as_const(d->peer_map)) {
         rate += p->getUploadRate();
     }
     return rate;
@@ -515,7 +515,7 @@ void PeerManager::setPartialSeed(bool partial_seed)
 
         // If partial seeding status changes, update all peers
         bt::Uint16 port = ServerInterface::getPort();
-        for (Peer::Ptr peer : qAsConst(d->peer_map)) {
+        for (Peer::Ptr peer : std::as_const(d->peer_map)) {
             peer->sendExtProtHandshake(port, d->tor.getMetaData().size(), d->partial_seed);
         }
     }
@@ -611,7 +611,7 @@ void PeerManager::Private::updateAvailableChunks()
 
 bool PeerManager::Private::killBadPeer()
 {
-    for (Peer::Ptr peer : qAsConst(peer_map)) {
+    for (Peer::Ptr peer : std::as_const(peer_map)) {
         if (peer->getStats().aca_score <= -5.0 && peer->getStats().aca_score > -50.0) {
             Out(SYS_GEN | LOG_DEBUG) << "Killing bad peer, to make room for other peers" << endl;
             peer->kill();

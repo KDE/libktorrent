@@ -73,7 +73,7 @@ void KBucketTable::insert(const dht::KBucketEntry &entry, dht::RPCServerInterfac
 int KBucketTable::numEntries() const
 {
     int count = 0;
-    for (const KBucket::Ptr &b : qAsConst(buckets)) {
+    for (const KBucket::Ptr &b : std::as_const(buckets)) {
         count += b->getNumEntries();
     }
 
@@ -92,7 +92,7 @@ KBucketTable::KBucketList::iterator KBucketTable::findBucket(const dht::Key &id)
 
 void KBucketTable::refreshBuckets(DHT *dh_table)
 {
-    for (const KBucket::Ptr &b : qAsConst(buckets)) {
+    for (const KBucket::Ptr &b : std::as_const(buckets)) {
         if (b->needsToBeRefreshed()) {
             // the key needs to be the refreshed
             dht::Key m = dht::Key::mid(b->minKey(), b->maxKey());
@@ -105,7 +105,7 @@ void KBucketTable::refreshBuckets(DHT *dh_table)
 
 void KBucketTable::onTimeout(const net::Address &addr)
 {
-    for (const KBucket::Ptr &b : qAsConst(buckets)) {
+    for (const KBucket::Ptr &b : std::as_const(buckets)) {
         if (b->onTimeout(addr))
             return;
     }
@@ -153,7 +153,7 @@ void KBucketTable::saveTable(const QString &file)
 
     try {
         enc.beginList();
-        for (const KBucket::Ptr &b : qAsConst(buckets)) {
+        for (const KBucket::Ptr &b : std::as_const(buckets)) {
             b->save(enc);
         }
         enc.end();
@@ -164,7 +164,7 @@ void KBucketTable::saveTable(const QString &file)
 
 void KBucketTable::findKClosestNodes(KClosestNodesSearch &kns) const
 {
-    for (const KBucket::Ptr &b : qAsConst(buckets)) {
+    for (const KBucket::Ptr &b : std::as_const(buckets)) {
         b->findKClosestNodes(kns);
     }
 }

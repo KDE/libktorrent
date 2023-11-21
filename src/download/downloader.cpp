@@ -128,7 +128,7 @@ void Downloader::pieceReceived(const Piece &p)
             current_chunks.erase(p.getIndex());
         } else {
             current_chunks.erase(p.getIndex());
-            for (WebSeed *ws : qAsConst(webseeds)) {
+            for (WebSeed *ws : std::as_const(webseeds)) {
                 if (ws->inCurrentRange(p.getIndex()))
                     ws->chunkDownloaded(p.getIndex());
             }
@@ -160,18 +160,18 @@ void Downloader::update()
     normalUpdate();
 
     // now see if there aren't any timed out pieces
-    for (PieceDownloader *pd : qAsConst(piece_downloaders)) {
+    for (PieceDownloader *pd : std::as_const(piece_downloaders)) {
         pd->checkTimeouts();
     }
 
     if (use_webseeds) {
-        for (WebSeed *ws : qAsConst(webseeds)) {
+        for (WebSeed *ws : std::as_const(webseeds)) {
             ws->update();
         }
     }
 
     if (isFinished() && webseeds_on) {
-        for (WebSeed *ws : qAsConst(webseeds)) {
+        for (WebSeed *ws : std::as_const(webseeds)) {
             ws->cancel();
         }
     }
@@ -190,7 +190,7 @@ void Downloader::normalUpdate()
         }
     }
 
-    for (PieceDownloader *pd : qAsConst(piece_downloaders)) {
+    for (PieceDownloader *pd : std::as_const(piece_downloaders)) {
         if (!pd->isChoked()) {
             while (pd->canDownloadChunk()) {
                 if (!downloadFrom(pd))
@@ -201,7 +201,7 @@ void Downloader::normalUpdate()
     }
 
     if (use_webseeds) {
-        for (WebSeed *ws : qAsConst(webseeds)) {
+        for (WebSeed *ws : std::as_const(webseeds)) {
             if (!ws->busy() && ws->isEnabled() && ws->failedAttempts() < 3) {
                 downloadFrom(ws);
             }
@@ -209,7 +209,7 @@ void Downloader::normalUpdate()
     } else if (webseeds_on != use_webseeds) {
         // reset all webseeds, webseeds have been disabled
         webseeds_on = use_webseeds;
-        for (WebSeed *ws : qAsConst(webseeds)) {
+        for (WebSeed *ws : std::as_const(webseeds)) {
             if (ws->busy() && ws->isEnabled()) {
                 ws->cancel();
             }
@@ -326,7 +326,7 @@ bool Downloader::canDownloadFromWebSeed(Uint32 chunk) const
     if (webseed_endgame_mode)
         return true;
 
-    for (WebSeed *ws : qAsConst(webseeds)) {
+    for (WebSeed *ws : std::as_const(webseeds)) {
         if (ws->busy() && ws->inCurrentRange(chunk))
             return false;
     }
@@ -366,7 +366,7 @@ bool Downloader::finished(ChunkDownload *cd)
     if (tor.verifyHash(h, c->getIndex())) {
         // hash ok so save it
         try {
-            for (WebSeed *ws : qAsConst(webseeds)) {
+            for (WebSeed *ws : std::as_const(webseeds)) {
                 // tell all webseeds a chunk is downloaded
                 if (ws->inCurrentRange(c->getIndex()))
                     ws->chunkDownloaded(c->getIndex());
@@ -413,7 +413,7 @@ void Downloader::clearDownloads()
     current_chunks.clear();
     piece_downloaders.clear();
 
-    for (WebSeed *ws : qAsConst(webseeds))
+    for (WebSeed *ws : std::as_const(webseeds))
         ws->cancel();
 }
 
@@ -427,7 +427,7 @@ void Downloader::pause()
     }
 
     current_chunks.clear();
-    for (WebSeed *ws : qAsConst(webseeds))
+    for (WebSeed *ws : std::as_const(webseeds))
         ws->reset();
 }
 
@@ -435,11 +435,11 @@ Uint32 Downloader::downloadRate() const
 {
     // sum of the download rate of each peer
     Uint32 rate = 0;
-    for (PieceDownloader *pd : qAsConst(piece_downloaders))
+    for (PieceDownloader *pd : std::as_const(piece_downloaders))
         if (pd)
             rate += pd->getDownloadRate();
 
-    for (WebSeed *ws : qAsConst(webseeds)) {
+    for (WebSeed *ws : std::as_const(webseeds)) {
         rate += ws->getDownloadRate();
     }
 
@@ -457,7 +457,7 @@ void Downloader::setMonitor(MonitorInterface *tmo)
         tmon->downloadStarted(cd);
     }
 
-    for (WebSeed *ws : qAsConst(webseeds)) {
+    for (WebSeed *ws : std::as_const(webseeds)) {
         WebSeedChunkDownload *cd = ws->currentChunkDownload();
         if (cd)
             tmon->downloadStarted(cd);
@@ -611,7 +611,7 @@ void Downloader::onExcluded(Uint32 from, Uint32 to)
         cman.resetChunk(i); // reset chunk it is not fully downloaded yet
     }
 
-    for (WebSeed *ws : qAsConst(webseeds)) {
+    for (WebSeed *ws : std::as_const(webseeds)) {
         ws->onExcluded(from, to);
     }
 }
@@ -658,7 +658,7 @@ void Downloader::onChunkReady(Chunk *c)
         try {
             bytes_downloaded += c->getSize();
 
-            for (WebSeed *ws : qAsConst(webseeds)) {
+            for (WebSeed *ws : std::as_const(webseeds)) {
                 // tell all webseeds a chunk is downloaded
                 if (ws->inCurrentRange(c->getIndex()))
                     ws->chunkDownloaded(c->getIndex());
@@ -715,7 +715,7 @@ void Downloader::chunkDownloadFinished(WebSeedChunkDownload *cd, Uint32 chunk)
 WebSeed *Downloader::addWebSeed(const QUrl &url)
 {
     // Check for dupes
-    for (WebSeed *ws : qAsConst(webseeds)) {
+    for (WebSeed *ws : std::as_const(webseeds)) {
         if (ws->getUrl() == url)
             return nullptr;
     }
@@ -730,7 +730,7 @@ WebSeed *Downloader::addWebSeed(const QUrl &url)
 
 bool Downloader::removeWebSeed(const QUrl &url)
 {
-    for (WebSeed *ws : qAsConst(webseeds)) {
+    for (WebSeed *ws : std::as_const(webseeds)) {
         if (ws->getUrl() == url && ws->isUserCreated()) {
             PtrMap<Uint32, WebSeed>::iterator i = webseeds_chunks.begin();
             while (i != webseeds_chunks.end()) {
@@ -762,12 +762,12 @@ void Downloader::saveWebSeeds(const QString &file)
     }
 
     QTextStream out(&fptr);
-    for (WebSeed *ws : qAsConst(webseeds)) {
+    for (WebSeed *ws : std::as_const(webseeds)) {
         if (ws->isUserCreated())
             out << ws->getUrl().toDisplayString() << Qt::endl;
     }
     out << "====disabled====" << Qt::endl;
-    for (WebSeed *ws : qAsConst(webseeds)) {
+    for (WebSeed *ws : std::as_const(webseeds)) {
         if (!ws->isEnabled())
             out << ws->getUrl().toDisplayString() << Qt::endl;
     }
@@ -795,7 +795,7 @@ void Downloader::loadWebSeeds(const QString &file)
             continue;
 
         if (disabled_list_found) {
-            for (WebSeed *ws : qAsConst(webseeds)) {
+            for (WebSeed *ws : std::as_const(webseeds)) {
                 if (ws->getUrl() == url) {
                     ws->setEnabled(false);
                     break;
@@ -813,7 +813,7 @@ void Downloader::loadWebSeeds(const QString &file)
 
 void Downloader::setGroupIDs(Uint32 up, Uint32 down)
 {
-    for (WebSeed *ws : qAsConst(webseeds)) {
+    for (WebSeed *ws : std::as_const(webseeds)) {
         ws->setGroupIDs(up, down);
     }
 }

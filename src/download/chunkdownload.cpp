@@ -122,7 +122,7 @@ bool ChunkDownload::piece(const Piece &p, bool &ok)
 
 void ChunkDownload::releaseAllPDs()
 {
-    for (PieceDownloader *pd : qAsConst(pdown)) {
+    for (PieceDownloader *pd : std::as_const(pdown)) {
         pd->release();
         sendCancels(pd);
         disconnect(pd, &PieceDownloader::timedout, this, &ChunkDownload::onTimeout);
@@ -346,7 +346,7 @@ QString ChunkDownload::getPieceDownloaderName() const
 Uint32 ChunkDownload::getDownloadSpeed() const
 {
     Uint32 r = 0;
-    for (PieceDownloader *pd : qAsConst(pdown))
+    for (PieceDownloader *pd : std::as_const(pdown))
         r += pd->getDownloadRate();
 
     return r;

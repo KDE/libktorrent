@@ -303,7 +303,7 @@ void Torrent::debugPrintInfo()
 {
     Out(SYS_GEN | LOG_DEBUG) << "Name : " << name_suggestion << endl;
 
-    //      for (cost QUrl & url : qAsConst(tracker_urls) )
+    //      for (cost QUrl & url : std::as_const(tracker_urls) )
     //          Out(SYS_GEN|LOG_DEBUG) << "Tracker URL : " << url << endl;
 
     Out(SYS_GEN | LOG_DEBUG) << "Piece Length : " << chunk_size << endl;

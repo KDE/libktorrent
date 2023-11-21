@@ -99,7 +99,7 @@ void ReverseResolverThread::run()
     }
 
     // cleanup if necessary
-    for (ReverseResolver *rr : qAsConst(todo_list))
+    for (ReverseResolver *rr : std::as_const(todo_list))
         rr->deleteLater();
     todo_list.clear();
 }

@@ -48,7 +48,7 @@ void TorrentFileInterface::changeTextCodec(QTextCodec *codec)
 {
     path.clear();
     int idx = 0;
-    for (const QByteArray &b : qAsConst(unencoded_path)) {
+    for (const QByteArray &b : std::as_const(unencoded_path)) {
         path += codec->toUnicode(b);
         if (idx < unencoded_path.size() - 1)
             path += bt::DirSeparator();

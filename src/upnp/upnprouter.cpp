@@ -137,7 +137,7 @@ UPnPRouter::~UPnPRouter()
 
 void UPnPRouter::addService(UPnPService s)
 {
-    for (const UPnPService &os : qAsConst(d->services)) {
+    for (const UPnPService &os : std::as_const(d->services)) {
         if (s.servicetype == os.servicetype)
             return;
     }
@@ -189,7 +189,7 @@ void UPnPRouter::forward(const net::Port &port)
     bool found = false;
     Out(SYS_PNP | LOG_NOTICE) << "Forwarding port " << port.number << " (" << (port.proto == UDP ? "UDP" : "TCP") << ")" << endl;
     // first find the right service
-    for (const UPnPService &s : qAsConst(d->services)) {
+    for (const UPnPService &s : std::as_const(d->services)) {
         if (s.servicetype.contains("WANIPConnection") || s.servicetype.contains("WANPPPConnection")) {
             d->forward(&s, port);
             found = true;
@@ -333,7 +333,7 @@ QString UPnPRouter::getError() const
 
 void UPnPRouter::visit(UPnPRouter::Visitor *visitor) const
 {
-    for (const Forwarding &fwd : qAsConst(d->fwds)) {
+    for (const Forwarding &fwd : std::as_const(d->fwds)) {
         visitor->forwarding(fwd.port, fwd.pending_req != nullptr, fwd.service);
     }
 }
@@ -350,7 +350,7 @@ UPnPRouter::UPnPRouterPrivate::UPnPRouterPrivate(const QString &server, const QU
 
 UPnPRouter::UPnPRouterPrivate::~UPnPRouterPrivate()
 {
-    for (HTTPRequest *r : qAsConst(active_reqs)) {
+    for (HTTPRequest *r : std::as_const(active_reqs)) {
         r->deleteLater();
     }
 }
@@ -470,7 +470,7 @@ void UPnPRouter::UPnPRouterPrivate::undoForward(const UPnPService *srv, const ne
 
 void UPnPRouter::UPnPRouterPrivate::getExternalIP()
 {
-    for (const UPnPService &s : qAsConst(services)) {
+    for (const UPnPService &s : std::as_const(services)) {
         if (s.servicetype.contains("WANIPConnection") || s.servicetype.contains("WANPPPConnection")) {
             QString action = "GetExternalIPAddress";
             QString comm = SOAP::createCommand(action, s.servicetype);
@@ -485,7 +485,7 @@ void UPnPRouter::UPnPRouterPrivate::httpRequestDone(HTTPRequest *r, bool erase_f
 {
     int idx = 0;
     bool found = false;
-    for (const Forwarding &fw : qAsConst(fwds)) {
+    for (const Forwarding &fw : std::as_const(fwds)) {
         if (fw.pending_req == r) {
             found = true;
             break;

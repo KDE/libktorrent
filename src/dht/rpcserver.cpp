@@ -118,7 +118,7 @@ public:
 
     void send(const net::Address &addr, const QByteArray &msg)
     {
-        for (net::ServerSocket::Ptr sock : qAsConst(sockets)) {
+        for (net::ServerSocket::Ptr sock : std::as_const(sockets)) {
             if (sock->sendTo((const bt::Uint8 *)msg.data(), msg.size(), addr) == msg.size())
                 break;
         }

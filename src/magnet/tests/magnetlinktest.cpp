@@ -43,7 +43,7 @@ private Q_SLOTS:
         invalid << "magnet:?xt=urn:btih:fe377e017ef52ef";
         invalid << "magnet:?xt=urn:btih:fe377e017ef52efa83251231b5b991ffae0e77--";
 
-        for (const QString &data : qAsConst(invalid)) {
+        for (const QString &data : std::as_const(invalid)) {
             bt::MagnetLink mlink(data);
             QVERIFY(!mlink.isValid());
         }

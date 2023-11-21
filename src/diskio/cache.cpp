@@ -148,7 +148,7 @@ void Cache::saveMountPoints(const QSet<QString> &mp)
         throw Error(i18n("Failed to create %1: %2", mp_file, fptr.errorString()));
 
     QTextStream out(&fptr);
-    for (const QString &mount_point : qAsConst(mount_points)) {
+    for (const QString &mount_point : std::as_const(mount_points)) {
         out << mount_point << Qt::endl;
     }
 }
@@ -179,7 +179,7 @@ bool Cache::isStorageMounted(QStringList &missing)
         return true;
 
     missing.clear();
-    for (const QString &mount_point : qAsConst(mount_points)) {
+    for (const QString &mount_point : std::as_const(mount_points)) {
         if (!IsMounted(mount_point))
             missing.append(mount_point);
     }

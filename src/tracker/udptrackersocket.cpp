@@ -46,7 +46,7 @@ public:
 
     bool send(const Uint8 *buf, int size, const net::Address &addr)
     {
-        for (net::ServerSocket::Ptr sock : qAsConst(sockets))
+        for (net::ServerSocket::Ptr sock : std::as_const(sockets))
             if (sock->sendTo(buf, size, addr) == size)
                 return true;
 

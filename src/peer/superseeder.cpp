@@ -45,7 +45,7 @@ void SuperSeeder::have(PeerInterface *peer, Uint32 chunk)
             ++i;
     }
 
-    for (PeerInterface *p : qAsConst(peers)) {
+    for (PeerInterface *p : std::as_const(peers)) {
         sendChunk(p);
     }
 }

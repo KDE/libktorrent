@@ -47,7 +47,7 @@ bool AccessManager::allowed(const net::Address &addr) const
     if (isOurOwnAddress(addr))
         return false;
 
-    for (const BlockListInterface *bl : qAsConst(blocklists)) {
+    for (const BlockListInterface *bl : std::as_const(blocklists)) {
         if (bl->blocked(addr))
             return false;
     }
@@ -70,7 +70,7 @@ bool AccessManager::isOurOwnAddress(const net::Address &addr) const
     if (!Tracker::getCustomIP().isEmpty() && net::Address(Tracker::getCustomIP(), port) == addr)
         return true;
 
-    for (const QString &ip : qAsConst(external_addresses)) {
+    for (const QString &ip : std::as_const(external_addresses)) {
         net::Address address(ip, port);
         if (address == addr)
             return true;

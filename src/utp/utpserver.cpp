@@ -218,7 +218,7 @@ void UTPServer::handlePendingConnections()
         d->pending.clear();
     }
 
-    for (const mse::EncryptedPacketSocket::Ptr &s : qAsConst(p)) {
+    for (const mse::EncryptedPacketSocket::Ptr &s : std::as_const(p)) {
         newConnection(s);
     }
 }
@@ -252,14 +252,14 @@ bool UTPServer::changePort(bt::Uint16 p)
 void UTPServer::setTOS(Uint8 type_of_service)
 {
     d->tos = type_of_service;
-    for (net::ServerSocket::Ptr sock : qAsConst(d->sockets))
+    for (net::ServerSocket::Ptr sock : std::as_const(d->sockets))
         sock->setTOS(d->tos);
 }
 
 void UTPServer::threadStarted()
 {
     d->timer->start(500);
-    for (net::ServerSocket::Ptr sock : qAsConst(d->sockets)) {
+    for (net::ServerSocket::Ptr sock : std::as_const(d->sockets)) {
         sock->setReadNotificationsEnabled(true);
     }
 }
@@ -345,7 +345,7 @@ bool UTPServer::sendTo(utp::Connection::Ptr conn, const PacketBuffer &packet)
         if (QThread::currentThread() != d->utp_thread) {
             QCoreApplication::postEvent(this, new QEvent(QEvent::User));
         } else {
-            for (net::ServerSocket::Ptr sock : qAsConst(d->sockets))
+            for (net::ServerSocket::Ptr sock : std::as_const(d->sockets))
                 sock->setWriteNotificationsEnabled(true);
         }
     }
@@ -355,7 +355,7 @@ bool UTPServer::sendTo(utp::Connection::Ptr conn, const PacketBuffer &packet)
 void UTPServer::customEvent(QEvent *ev)
 {
     if (ev->type() == QEvent::User) {
-        for (net::ServerSocket::Ptr sock : qAsConst(d->sockets))
+        for (net::ServerSocket::Ptr sock : std::as_const(d->sockets))
             sock->setWriteNotificationsEnabled(true);
     }
 }
@@ -393,7 +393,7 @@ void UTPServer::start()
 {
     if (!d->utp_thread) {
         d->utp_thread = new UTPServerThread(this);
-        for (const net::ServerSocket::Ptr &sock : qAsConst(d->sockets))
+        for (const net::ServerSocket::Ptr &sock : std::as_const(d->sockets))
             sock->moveToThread(d->utp_thread);
         d->timer->moveToThread(d->utp_thread);
         d->utp_thread->start();

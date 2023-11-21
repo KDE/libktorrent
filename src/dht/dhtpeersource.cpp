@@ -76,7 +76,7 @@ bool DHTPeerSource::doRequest()
     Uint16 port = ServerInterface::getPort();
     curr_task = dh_table.announce(info_hash, port);
     if (curr_task) {
-        for (const bt::DHTNode &n : qAsConst(nodes))
+        for (const bt::DHTNode &n : std::as_const(nodes))
             curr_task->addDHTNode(n.ip, n.port);
 
         connect(curr_task, &AnnounceTask::dataReady, this, &DHTPeerSource::onDataReady);

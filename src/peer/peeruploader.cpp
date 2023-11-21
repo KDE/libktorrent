@@ -72,7 +72,7 @@ void PeerUploader::clearAllRequests()
         // reject all requests
         // if the peer supports fast extensions,
         // choke doesn't mean reject all
-        for (const Request &r : qAsConst(requests))
+        for (const Request &r : std::as_const(requests))
             peer->sendReject(r);
     }
     requests.clear();

@@ -125,7 +125,7 @@ private Q_SLOTS:
             QVERIFY(last_acquired);
             if (last_acquired->groupName() == last_acquired_group) {
                 // This is only possible if there are no other groups which are still pending
-                for (TestResource *r : qAsConst(tr))
+                for (TestResource *r : std::as_const(tr))
                     if (!r->acq)
                         QVERIFY(r->groupName() == last_acquired_group);
             }

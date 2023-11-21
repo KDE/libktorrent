@@ -216,7 +216,7 @@ bool KBucket::contains(const KBucketEntry &entry) const
 
 void KBucket::findKClosestNodes(KClosestNodesSearch &kns) const
 {
-    for (const KBucketEntry &i : qAsConst(entries)) {
+    for (const KBucketEntry &i : std::as_const(entries)) {
         kns.tryInsert(i);
     }
 }

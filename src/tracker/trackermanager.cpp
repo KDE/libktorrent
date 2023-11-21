@@ -332,7 +332,7 @@ void TrackerManager::saveCustomURLs()
         return;
 
     QTextStream stream(&file);
-    for (const QUrl &url : qAsConst(custom_trackers))
+    for (const QUrl &url : std::as_const(custom_trackers))
         stream << url.toDisplayString() << Qt::endl;
 }
 

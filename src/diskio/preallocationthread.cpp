@@ -43,7 +43,7 @@ void PreallocationThread::add(CacheFile::Ptr cache_file)
 void PreallocationThread::run()
 {
     try {
-        for (CacheFile::Ptr cache_file : qAsConst(todo)) {
+        for (CacheFile::Ptr cache_file : std::as_const(todo)) {
             if (!isStopped()) {
                 cache_file->preallocate(this);
             } else {

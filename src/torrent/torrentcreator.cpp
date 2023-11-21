@@ -123,7 +123,7 @@ void TorrentCreator::saveTorrent(const QString &url)
         if (trackers.count() > 1) {
             enc.write(QByteArrayLiteral("announce-list"));
             enc.beginList();
-            for (const QString &t : qAsConst(trackers)) {
+            for (const QString &t : std::as_const(trackers)) {
                 enc.beginList();
                 enc.write(t.toUtf8());
                 enc.end();
@@ -148,7 +148,7 @@ void TorrentCreator::saveTorrent(const QString &url)
         enc.write(QByteArrayLiteral("nodes"));
         enc.beginList();
 
-        for (const QString &t : qAsConst(trackers)) {
+        for (const QString &t : std::as_const(trackers)) {
             enc.beginList();
             enc.write(t.section(',', 0, 0).toUtf8());
             enc.write((Uint32)t.section(',', 1, 1).toInt());
@@ -163,7 +163,7 @@ void TorrentCreator::saveTorrent(const QString &url)
     } else if (webseeds.count() > 0) {
         enc.write(QByteArrayLiteral("url-list"));
         enc.beginList();
-        for (const QUrl &u : qAsConst(webseeds)) {
+        for (const QUrl &u : std::as_const(webseeds)) {
             enc.write(u.toDisplayString().toUtf8());
         }
         enc.end();
@@ -180,7 +180,7 @@ void TorrentCreator::saveInfo(BEncoder &enc)
     if (fi.isDir()) {
         enc.write(QByteArrayLiteral("files"));
         enc.beginList();
-        for (const TorrentFile &file : qAsConst(files))
+        for (const TorrentFile &file : std::as_const(files))
             saveFile(enc, file);
 
         enc.end();

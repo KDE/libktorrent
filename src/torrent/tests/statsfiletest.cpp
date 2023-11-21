@@ -70,7 +70,7 @@ private Q_SLOTS:
         StatsFile st(file.fileName());
 
         int idx = 0;
-        for (const QString &key : qAsConst(keys)) {
+        for (const QString &key : std::as_const(keys)) {
             QVERIFY(st.hasKey(key));
             QVERIFY(st.readString(key) == values[idx++]);
         }

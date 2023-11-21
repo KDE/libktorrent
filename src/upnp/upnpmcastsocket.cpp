@@ -170,7 +170,7 @@ void UPnPMCastSocket::saveRouters(const QString &file)
     // file format is simple : 2 lines per router,
     // one containing the server, the other the location
     QTextStream fout(&fptr);
-    for (UPnPRouter *r : qAsConst(d->routers)) {
+    for (UPnPRouter *r : std::as_const(d->routers)) {
         fout << r->getServer() << Qt::endl;
         fout << r->getLocation().toString() << Qt::endl;
     }
@@ -326,7 +326,7 @@ UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteAr
 
 UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::findDevice(const QUrl &location)
 {
-    for (UPnPRouter *r : qAsConst(routers)) {
+    for (UPnPRouter *r : std::as_const(routers)) {
         if (UrlCompare(r->getLocation(), location))
             return r;
     }
