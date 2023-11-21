@@ -17,11 +17,7 @@
 #include <torrent/torrent.h>
 #include <util/log.h>
 
-#if QT_VERSION_MAJOR == 6
 #include <QNetworkProxyFactory>
-#else
-#include <kprotocolmanager.h>
-#endif
 
 namespace bt
 {
@@ -129,7 +125,6 @@ void WebSeed::connectToServer()
         dst = redirected_url;
 
     if (!proxy_enabled) {
-#if QT_VERSION_MAJOR == 6
         QList<QNetworkProxy> proxyList = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(dst));
 
         if (proxyList.isEmpty()) {
@@ -143,15 +138,6 @@ void WebSeed::connectToServer()
                 conn->connectToProxy(proxy.hostName(), proxy.port());
             }
         }
-#else
-        QString proxy = KProtocolManager::proxyForUrl(dst); // Use KDE settings
-        if (proxy.isNull() || proxy == QLatin1String("DIRECT"))
-            conn->connectTo(dst); // direct connection
-        else {
-            QUrl proxy_url(proxy);
-            conn->connectToProxy(proxy_url.host(), proxy_url.port() <= 0 ? 80 : proxy_url.port());
-        }
-#endif
     } else {
         if (proxy_host.isNull())
             conn->connectTo(dst); // direct connection

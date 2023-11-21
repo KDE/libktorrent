@@ -269,11 +269,7 @@ void UPnPMCastSocket::UPnPMCastSocketPrivate::leaveUPnPMCastGroup(int fd)
 UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteArray &arr)
 {
     const QString response = QString::fromLatin1(arr);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QVector<QStringView> lines = QStringView(response).split(QStringLiteral("\r\n"));
-#else
-    QVector<QStringRef> lines = response.splitRef("\r\n");
-#endif
     QString server;
     QUrl location;
 

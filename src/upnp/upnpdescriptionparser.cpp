@@ -14,11 +14,7 @@
 #include <util/fileops.h>
 #include <util/log.h>
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 using StringView = QStringView;
-#else
-using StringView = QStringRef;
-#endif
 
 using namespace bt;
 
