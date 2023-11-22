@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:33+0000\n"
+"POT-Creation-Date: 2023-11-22 01:35+0000\n"
 "PO-Revision-Date: 2015-02-04 15:43+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: bosanski <bs@li.org>\n"
@@ -199,8 +199,8 @@ msgstr[2] "%1 vršnjaka"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Onemogućeno jer se web sjeme ne slaže s torrentom"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
-#: src/download/webseed.cpp:89
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
+#: src/download/webseed.cpp:85
 #, kde-format
 msgid "Not connected"
 msgstr "Nepovezan"
@@ -220,7 +220,7 @@ msgstr "Nedovoljno sistemskih resursa dostupno"
 msgid "Resolving hostname %1"
 msgstr "Razrješavam ime domaćina %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
 #, kde-format
 msgid "Connection closed"
 msgstr "Veza zatvorena"
@@ -271,7 +271,7 @@ msgid "Redirected without a new location."
 msgstr "Preusmeren bez nove lokacije."
 
 #         translations.
-#: src/download/webseed.cpp:514
+#: src/download/webseed.cpp:500
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

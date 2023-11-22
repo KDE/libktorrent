@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:33+0000\n"
+"POT-Creation-Date: 2023-11-22 01:35+0000\n"
 "PO-Revision-Date: 2008-08-05 22:26+0200\n"
 "Last-Translator: Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan (lengadocian) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
@@ -196,8 +196,8 @@ msgstr[1] ""
 msgid "Disabled because webseed does not match torrent"
 msgstr ""
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
-#: src/download/webseed.cpp:89
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
+#: src/download/webseed.cpp:85
 #, kde-format
 msgid "Not connected"
 msgstr "Pas connectat"
@@ -217,7 +217,7 @@ msgstr ""
 msgid "Resolving hostname %1"
 msgstr ""
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
 #, fuzzy, kde-format
 #| msgid "Connections"
 msgid "Connection closed"
@@ -270,7 +270,7 @@ msgstr ""
 msgid "Redirected without a new location."
 msgstr ""
 
-#: src/download/webseed.cpp:514
+#: src/download/webseed.cpp:500
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

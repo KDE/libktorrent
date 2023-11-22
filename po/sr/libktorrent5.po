@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:33+0000\n"
+"POT-Creation-Date: 2023-11-22 01:35+0000\n"
 "PO-Revision-Date: 2013-04-05 17:54+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -198,8 +198,8 @@ msgstr[3] "1 вршњак"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Искључен јер се веб сејање не поклапа са торентом"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
-#: src/download/webseed.cpp:89
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
+#: src/download/webseed.cpp:85
 #, kde-format
 msgid "Not connected"
 msgstr "Неповезан"
@@ -219,7 +219,7 @@ msgstr "Недовољно системских ресурса"
 msgid "Resolving hostname %1"
 msgstr "Разрешавам име домаћина %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
 #, kde-format
 msgid "Connection closed"
 msgstr "Веза затворена"
@@ -269,7 +269,7 @@ msgstr "Грешка: истекло је време за захтев"
 msgid "Redirected without a new location."
 msgstr "Преусмерен без нове локације."
 
-#: src/download/webseed.cpp:514
+#: src/download/webseed.cpp:500
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

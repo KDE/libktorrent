@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:33+0000\n"
+"POT-Creation-Date: 2023-11-22 01:35+0000\n"
 "PO-Revision-Date: 2009-10-31 23:24+0900\n"
 "Last-Translator: Yukiko Bando <ybando@k6.dion.ne.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -206,8 +206,8 @@ msgstr[0] "%1 ピア"
 msgid "Disabled because webseed does not match torrent"
 msgstr ""
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
-#: src/download/webseed.cpp:89
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
+#: src/download/webseed.cpp:85
 #, kde-format
 msgid "Not connected"
 msgstr "接続していません"
@@ -227,7 +227,7 @@ msgstr ""
 msgid "Resolving hostname %1"
 msgstr "ホスト名 %1 を解決"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
 #, kde-format
 msgid "Connection closed"
 msgstr "接続が閉じられました"
@@ -277,7 +277,7 @@ msgstr "エラー: 要求がタイムアウトしました"
 msgid "Redirected without a new location."
 msgstr "新しい場所なしでリダイレクトされました。"
 
-#: src/download/webseed.cpp:514
+#: src/download/webseed.cpp:500
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

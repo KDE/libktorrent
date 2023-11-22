@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KTorrent 3.1\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:33+0000\n"
+"POT-Creation-Date: 2023-11-22 01:35+0000\n"
 "PO-Revision-Date: 2013-07-03 19:36+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -194,8 +194,8 @@ msgstr[1] "%1 partner"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Letiltva, mert a webfeltöltés nem egyezik a torrenttel"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
-#: src/download/webseed.cpp:89
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
+#: src/download/webseed.cpp:85
 #, kde-format
 msgid "Not connected"
 msgstr "Nincs kapcsolat"
@@ -215,7 +215,7 @@ msgstr "Nincs elég elérhető rendszer erőforrás"
 msgid "Resolving hostname %1"
 msgstr "Gépnév feloldása: %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
 #, kde-format
 msgid "Connection closed"
 msgstr "A kapcsolat bezárva"
@@ -265,7 +265,7 @@ msgstr "Hiba történt, időtúllépés"
 msgid "Redirected without a new location."
 msgstr "Átirányítva új hely nélkül."
 
-#: src/download/webseed.cpp:514
+#: src/download/webseed.cpp:500
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

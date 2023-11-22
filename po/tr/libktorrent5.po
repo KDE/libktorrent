@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-network-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:33+0000\n"
+"POT-Creation-Date: 2023-11-22 01:35+0000\n"
 "PO-Revision-Date: 2023-03-07 20:24+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -201,8 +201,8 @@ msgstr[1] "%1 paylaşımcı"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Webseed torrent ile eşleşmediğinden devre dışı bırakıldı"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
-#: src/download/webseed.cpp:89
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
+#: src/download/webseed.cpp:85
 #, kde-format
 msgid "Not connected"
 msgstr "Bağlı değil"
@@ -222,7 +222,7 @@ msgstr "Yeterince kullanılabilir sistem kaynağı yok"
 msgid "Resolving hostname %1"
 msgstr "%1 makine adı çözümleniyor"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
 #, kde-format
 msgid "Connection closed"
 msgstr "Bağlantı kapatıldı"
@@ -272,7 +272,7 @@ msgstr "Hata: İstek zaman aşımına uğradı"
 msgid "Redirected without a new location."
 msgstr "Bir konum olmadan yeniden yönlendirildi."
 
-#: src/download/webseed.cpp:514
+#: src/download/webseed.cpp:500
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

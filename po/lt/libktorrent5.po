@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:33+0000\n"
+"POT-Creation-Date: 2023-11-22 01:35+0000\n"
 "PO-Revision-Date: 2012-04-06 14:49+0300\n"
 "Last-Translator: Andrius Štikonas <andrius@stikonas.eu>\n"
 "Language-Team: Lithuanian <kde-i18n-doc@kde.org>\n"
@@ -195,8 +195,8 @@ msgstr[3] "%1 lygiavertis mazgas"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Išjungta nes dalinami failai neatitinka torento"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:44
-#: src/download/webseed.cpp:89
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
+#: src/download/webseed.cpp:85
 #, kde-format
 msgid "Not connected"
 msgstr "Neprisijungta"
@@ -216,7 +216,7 @@ msgstr "Nepakanka sistemos resursų"
 msgid "Resolving hostname %1"
 msgstr "Nustatomas mazgo pavadinimas %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:327
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
 #, kde-format
 msgid "Connection closed"
 msgstr "Prisijungimas baigtas"
@@ -266,7 +266,7 @@ msgstr "Klaida: baigėsi užklausai skirtas laikas"
 msgid "Redirected without a new location."
 msgstr "Nukreipti be naujos vietos"
 
-#: src/download/webseed.cpp:514
+#: src/download/webseed.cpp:500
 #, fuzzy, kde-format
 #| msgid "Unused for %1 seconds (Too many connection failures)"
 msgid "Unused for %1 second (Too many connection failures)"
