@@ -442,7 +442,7 @@ msgstr "No s'ha pogut resoldre el nom de la màquina %1"
 #: src/upnp/httprequest.cpp:39
 #, kde-format
 msgid "Operation timed out"
-msgstr "L'operació ha excedit el temps límit"
+msgstr "L'operació ha excedit el temps"
 
 #: src/upnp/upnprouter.cpp:156
 #, kde-format
