@@ -88,7 +88,7 @@ add_definitions(
   -DQT_NO_KEYWORDS
   -DQT_USE_FAST_OPERATOR_PLUS
 )
-add_definitions(-DTRANSLATION_DOMAIN="libktorrent5")
+add_definitions(-DTRANSLATION_DOMAIN="libktorrent6")
 
 #XFS prealloc
 check_include_files(xfs/xfs.h HAVE_XFS_XFS_H)
