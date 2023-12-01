@@ -1,4 +1,4 @@
-# Translation of libktorrent5 to Norwegian Bokmål
+# Translation of libktorrent6 to Norwegian Bokmål
 #
 # Bjørn Steensrud <bjornst@skogkatt.homelinux.org>, 2010, 2011, 2013.
 msgid ""
