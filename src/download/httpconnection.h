@@ -107,7 +107,6 @@ public:
     const QString getStatusString() const;
 
 private:
-    void hostResolved(net::AddressResolver *ar);
     void connectTimeout();
     void replyTimeout();
 
@@ -115,6 +114,9 @@ Q_SIGNALS:
     void startReplyTimer(int timeout);
     void stopReplyTimer();
     void stopConnectTimer();
+
+private Q_SLOTS:
+    void hostResolved(net::AddressResolver *ar);
 
 private:
     enum State {
