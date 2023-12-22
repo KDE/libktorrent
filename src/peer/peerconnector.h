@@ -14,13 +14,6 @@
 #include <util/constants.h>
 #include <util/resourcemanager.h>
 
-#if (QT_VERSION < QT_VERSION_CHECK(4, 7, 0))
-template<class T> uint qHash(const QSharedPointer<T> &ptr)
-{
-    return qHash<T>(ptr.data());
-}
-#endif
-
 namespace bt
 {
 class Authenticate;

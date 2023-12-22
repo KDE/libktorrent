@@ -96,8 +96,8 @@ bool operator<(const SHA1Hash &a, const SHA1Hash &b)
     return memcmp(a.hash, b.hash, 20) < 0;
 }
 
-uint qHash(const SHA1Hash &key)
+size_t qHash(const SHA1Hash &key, size_t seed = 0) noexcept
 {
-    return qHash(key.toByteArray());
+    return qHash(key.toByteArray(), seed);
 }
 }

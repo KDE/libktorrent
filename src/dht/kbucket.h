@@ -147,9 +147,10 @@ private:
 };
 }
 
-template<class T> inline uint qHash(const T &e)
+template<class T>
+inline size_t qHash(const T &e, size_t seed = 0) noexcept
 {
-    return e.hash();
+    return e.hash(seed);
 }
 
 #endif

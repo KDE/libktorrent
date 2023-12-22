@@ -95,9 +95,9 @@ public:
 
 #ifdef Q_CC_MSVC
 #include <QHash>
-inline uint qHash(const net::Port &port)
+inline size_t qHash(const net::Port &port, size_t seed = 0) noexcept
 {
-    return qHash((uint)port.number);
+    return qHash((uint)port.number, seed);
 }
 #endif
 

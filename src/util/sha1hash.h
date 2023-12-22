@@ -138,7 +138,7 @@ public:
      * @param key SHA1Hash used to compute a hash key
      * @return hash key
      */
-    KTORRENT_EXPORT friend uint qHash(const SHA1Hash &key);
+    KTORRENT_EXPORT friend size_t qHash(const SHA1Hash &key, size_t seed) noexcept;
 
     /**
      * Convert the hash to a byte array.
