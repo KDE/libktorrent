@@ -11,7 +11,7 @@
 #include <QNetworkRequest>
 #include <QStringList>
 
-#include <KIO/Job>
+#include <KIO/StoredTransferJob>
 #include <KLocalizedString>
 
 #include "httprequest.h"

@@ -7,12 +7,13 @@
 #include "magnetdownloader.h"
 #include <dht/dhtbase.h>
 #include <dht/dhtpeersource.h>
-#include <kio/jobclasses.h>
 #include <peer/peer.h>
 #include <peer/peermanager.h>
 #include <torrent/globals.h>
 #include <tracker/httptracker.h>
 #include <tracker/udptracker.h>
+
+#include <KIO/StoredTransferJob>
 
 #include "bcodec/bdecoder.h"
 #include "bcodec/bnode.h"

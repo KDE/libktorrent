@@ -5,6 +5,7 @@
 */
 
 #include "extractfilejob.h"
+#include <KIO/Global>
 #include <QFile>
 #include <QThread>
 

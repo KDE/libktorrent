@@ -4,6 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "movedatafilesjob.h"
+#include <KIO/FileCopyJob>
 #include <QFileInfo>
 #include <QUrl>
 #include <interfaces/torrentfileinterface.h>

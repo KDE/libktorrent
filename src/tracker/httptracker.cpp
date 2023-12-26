@@ -9,7 +9,7 @@
 #include <QHostAddress>
 #include <QUrlQuery>
 
-#include <KIO/Job>
+#include <KIO/StoredTransferJob>
 #include <KLocalizedString>
 
 #include "kioannouncejob.h"
@@ -223,7 +223,7 @@ void HTTPTracker::doRequest(WaitJob *wjob)
 
 bool HTTPTracker::updateData(const QByteArray &data)
 {
-//#define DEBUG_PRINT_RESPONSE
+// #define DEBUG_PRINT_RESPONSE
 #ifdef DEBUG_PRINT_RESPONSE
     Out(SYS_TRK | LOG_DEBUG) << "Data : " << endl;
     Out(SYS_TRK | LOG_DEBUG) << QString(data) << endl;

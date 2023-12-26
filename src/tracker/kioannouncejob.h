@@ -7,8 +7,8 @@
 #ifndef BT_KIOANNOUNCEJOB_H
 #define BT_KIOANNOUNCEJOB_H
 
+#include <KIO/TransferJob>
 #include <QUrl>
-#include <kio/jobclasses.h>
 #include <ktorrent_export.h>
 
 namespace bt

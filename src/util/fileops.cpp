@@ -21,6 +21,7 @@
 #include <QStringList>
 
 #include <KIO/CopyJob>
+#include <KIO/FileCopyJob>
 #include <KIO/Job>
 #include <KLocalizedString>
 #include <Solid/Device>

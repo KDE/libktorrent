@@ -6,6 +6,7 @@
 
 #include "autorotatelogjob.h"
 
+#include <KIO/FileCopyJob>
 #include <QUrl>
 
 #include "compressfilejob.h"

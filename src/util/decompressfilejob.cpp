@@ -10,6 +10,7 @@
 #include <QMimeDatabase>
 
 #include <KCompressionDevice>
+#include <KIO/Global>
 
 #include <util/fileops.h>
 #include <util/log.h>
