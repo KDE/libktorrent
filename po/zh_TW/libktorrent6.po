@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-22 01:35+0000\n"
+"POT-Creation-Date: 2023-12-28 01:33+0000\n"
 "PO-Revision-Date: 2013-06-14 11:04+0800\n"
 "Last-Translator: Franklin Weng <franklin at goodhorse dot idv dot tw>\n"
 "Language-Team: Chinese Traditional <kde-tw@googlegroups.com>\n"
@@ -46,17 +46,17 @@ msgstr "無法轉換 %1 為整數"
 msgid "Torrent is incomplete."
 msgstr "不完整的 torrent。"
 
-#: src/datachecker/datacheckerjob.cpp:66
+#: src/datachecker/datacheckerjob.cpp:67
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr "等待其它的資料檢查完成"
 
-#: src/datachecker/datacheckerjob.cpp:72 src/torrent/torrentstats.cpp:92
+#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Checking data"
 msgstr "檢查資料中"
 
-#: src/datachecker/datacheckerjob.cpp:119
+#: src/datachecker/datacheckerjob.cpp:120
 #, kde-format
 msgid "Checking Data"
 msgstr "檢查資料中"
@@ -75,8 +75,8 @@ msgstr "無法開啟檔案 %1：%2"
 msgid "Failed to create %1: %2"
 msgstr "無法建立 %1:%2"
 
-#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:312
-#: src/util/fileops.cpp:354
+#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:313
+#: src/util/fileops.cpp:355
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "無法開啟 %1：%2"
@@ -148,24 +148,24 @@ msgstr "寫入 DND 檔的第一個區塊失敗：%1"
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "寫入 DND 檔的最後一個區塊失敗：%1"
 
-#: src/diskio/movedatafilesjob.cpp:109
+#: src/diskio/movedatafilesjob.cpp:110
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr "等待其它的移動的工作完成"
 
-#: src/diskio/movedatafilesjob.cpp:110 src/diskio/movedatafilesjob.cpp:146
+#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "來源"
 
-#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#: src/diskio/movedatafilesjob.cpp:112 src/diskio/movedatafilesjob.cpp:148
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "目的地"
 
-#: src/diskio/movedatafilesjob.cpp:145
+#: src/diskio/movedatafilesjob.cpp:146
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
@@ -466,58 +466,58 @@ msgstr "無法寫入到 %1：%2"
 msgid "Cannot read from %1"
 msgstr "無法讀取 %1"
 
-#: src/util/fileops.cpp:91
+#: src/util/fileops.cpp:92
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "無法建立目錄 %1"
 
-#: src/util/fileops.cpp:149
+#: src/util/fileops.cpp:150
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "無法產生到 %2 的符號連結 %1：%3"
 
-#: src/util/fileops.cpp:162
+#: src/util/fileops.cpp:163
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "無法將 %1 移動到 %2：%3"
 
-#: src/util/fileops.cpp:173 src/util/fileops.cpp:184
+#: src/util/fileops.cpp:174 src/util/fileops.cpp:185
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "無法將 %1 複製到 %2：%3"
 
-#: src/util/fileops.cpp:238
+#: src/util/fileops.cpp:239
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "無法刪除 %1 : %2"
 
-#: src/util/fileops.cpp:254
+#: src/util/fileops.cpp:255
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "無法創建 %1 : %2"
 
-#: src/util/fileops.cpp:271
+#: src/util/fileops.cpp:272
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "無法計算 %1 的檔案大小：%2"
 
-#: src/util/fileops.cpp:287
+#: src/util/fileops.cpp:288
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "無法計算檔案大小：%1"
 
-#: src/util/fileops.cpp:332 src/util/fileops.cpp:336 src/util/fileops.cpp:339
-#: src/util/fileops.cpp:342 src/util/fileops.cpp:345
+#: src/util/fileops.cpp:333 src/util/fileops.cpp:337 src/util/fileops.cpp:340
+#: src/util/fileops.cpp:343 src/util/fileops.cpp:346
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "無法展開檔案：%1"
 
-#: src/util/fileops.cpp:372
+#: src/util/fileops.cpp:373
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "無法在檔案中搜尋：%1"
 
-#: src/util/fileops.cpp:613
+#: src/util/fileops.cpp:614
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "無法開啟檔案 %1：%2"

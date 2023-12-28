@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-22 01:35+0000\n"
+"POT-Creation-Date: 2023-12-28 01:33+0000\n"
 "PO-Revision-Date: 2009-09-22 21:25+0300\n"
 "Last-Translator: Yasen Pramatarov <yasen@lindeas.com>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -43,17 +43,17 @@ msgstr "%1 не може да се преобразува в цяло число
 msgid "Torrent is incomplete."
 msgstr "Торентът е незавършен!"
 
-#: src/datachecker/datacheckerjob.cpp:66
+#: src/datachecker/datacheckerjob.cpp:67
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr ""
 
-#: src/datachecker/datacheckerjob.cpp:72 src/torrent/torrentstats.cpp:92
+#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Checking data"
 msgstr "Проверка на данните"
 
-#: src/datachecker/datacheckerjob.cpp:119
+#: src/datachecker/datacheckerjob.cpp:120
 #, fuzzy, kde-format
 msgid "Checking Data"
 msgstr "Проверка на данните"
@@ -72,8 +72,8 @@ msgstr "Не може да бъде отворен файл %1: %2"
 msgid "Failed to create %1: %2"
 msgstr "Невъзможно създаване на %1 : %2"
 
-#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:312
-#: src/util/fileops.cpp:354
+#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:313
+#: src/util/fileops.cpp:355
 #, fuzzy, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Не може да бъде отворен %1: %2"
@@ -145,24 +145,24 @@ msgstr "Неуспешен запис на първото парче в DND фа
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Неуспешен запис на последното парче в DND файл : %1"
 
-#: src/diskio/movedatafilesjob.cpp:109
+#: src/diskio/movedatafilesjob.cpp:110
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr ""
 
-#: src/diskio/movedatafilesjob.cpp:110 src/diskio/movedatafilesjob.cpp:146
+#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
 #, fuzzy, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "Точки"
 
-#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#: src/diskio/movedatafilesjob.cpp:112 src/diskio/movedatafilesjob.cpp:148
 #, fuzzy, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "Описание"
 
-#: src/diskio/movedatafilesjob.cpp:145
+#: src/diskio/movedatafilesjob.cpp:146
 #, fuzzy, kde-format
 msgctxt "@title job"
 msgid "Moving"
@@ -465,58 +465,58 @@ msgstr "Невъзможен запис в %1 : %2"
 msgid "Cannot read from %1"
 msgstr "Не може да се чете от %1"
 
-#: src/util/fileops.cpp:91
+#: src/util/fileops.cpp:92
 #, fuzzy, kde-format
 msgid "Cannot create directory %1"
 msgstr "Не може да се създаде директория %1: %2"
 
-#: src/util/fileops.cpp:149
+#: src/util/fileops.cpp:150
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "Не може да се създаде препратка на %1 в %2: %3"
 
-#: src/util/fileops.cpp:162
+#: src/util/fileops.cpp:163
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "Не може да се премести %1 в %2: %3"
 
-#: src/util/fileops.cpp:173 src/util/fileops.cpp:184
+#: src/util/fileops.cpp:174 src/util/fileops.cpp:185
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "Не може да се копира %1 в %2: %3"
 
-#: src/util/fileops.cpp:238
+#: src/util/fileops.cpp:239
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Не може да се изтрие %1: %2"
 
-#: src/util/fileops.cpp:254
+#: src/util/fileops.cpp:255
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Не може да бъде създаден %1: %2"
 
-#: src/util/fileops.cpp:271
+#: src/util/fileops.cpp:272
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Размерът на файла %1 не може да бъде изчислен: %2"
 
-#: src/util/fileops.cpp:287
+#: src/util/fileops.cpp:288
 #, fuzzy, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Размерът на файла не може да бъде изчислен : %2"
 
-#: src/util/fileops.cpp:332 src/util/fileops.cpp:336 src/util/fileops.cpp:339
-#: src/util/fileops.cpp:342 src/util/fileops.cpp:345
+#: src/util/fileops.cpp:333 src/util/fileops.cpp:337 src/util/fileops.cpp:340
+#: src/util/fileops.cpp:343 src/util/fileops.cpp:346
 #, fuzzy, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Файл %1 не може да бъде разширен"
 
-#: src/util/fileops.cpp:372
+#: src/util/fileops.cpp:373
 #, fuzzy, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Не може да се търси във файл: %1"
 
-#: src/util/fileops.cpp:613
+#: src/util/fileops.cpp:614
 #, fuzzy, kde-format
 msgid "Unable to open file %1: %2"
 msgstr " Не може да бъде отворен торент файл %1 : %2"

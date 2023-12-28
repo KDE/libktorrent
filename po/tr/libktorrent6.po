@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-network-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-22 01:35+0000\n"
+"POT-Creation-Date: 2023-12-28 01:33+0000\n"
 "PO-Revision-Date: 2023-03-07 20:24+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -52,17 +52,17 @@ msgstr "%1 bir tamsayıya dönüştürülemiyor"
 msgid "Torrent is incomplete."
 msgstr "Torrent tamamlanmamış."
 
-#: src/datachecker/datacheckerjob.cpp:66
+#: src/datachecker/datacheckerjob.cpp:67
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr "Tamamlamak için diğer veri denetimleri bekleniyor"
 
-#: src/datachecker/datacheckerjob.cpp:72 src/torrent/torrentstats.cpp:92
+#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Checking data"
 msgstr "Veri denetleniyor"
 
-#: src/datachecker/datacheckerjob.cpp:119
+#: src/datachecker/datacheckerjob.cpp:120
 #, kde-format
 msgid "Checking Data"
 msgstr "Veri denetleniyor"
@@ -81,8 +81,8 @@ msgstr "%1 dosyası açılamıyor: %2"
 msgid "Failed to create %1: %2"
 msgstr "%1 oluşturulamıyor: %2"
 
-#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:312
-#: src/util/fileops.cpp:354
+#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:313
+#: src/util/fileops.cpp:355
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "%1 açılamıyor: %2"
@@ -156,24 +156,24 @@ msgstr "İlk parça DND dosyasına yazılamadı: %1"
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Son parça DND dosyasına yazılamadı: %1"
 
-#: src/diskio/movedatafilesjob.cpp:109
+#: src/diskio/movedatafilesjob.cpp:110
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr "Tamamlamak için diğer taşıma işlemleri bekleniyor"
 
-#: src/diskio/movedatafilesjob.cpp:110 src/diskio/movedatafilesjob.cpp:146
+#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "Kaynak"
 
-#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#: src/diskio/movedatafilesjob.cpp:112 src/diskio/movedatafilesjob.cpp:148
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "Hedef"
 
-#: src/diskio/movedatafilesjob.cpp:145
+#: src/diskio/movedatafilesjob.cpp:146
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
@@ -479,58 +479,58 @@ msgstr "%1 dosyasına yazılamıyor: %2"
 msgid "Cannot read from %1"
 msgstr "%1 adresinden okunamıyor"
 
-#: src/util/fileops.cpp:91
+#: src/util/fileops.cpp:92
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "%1 dizini oluşturulamıyor"
 
-#: src/util/fileops.cpp:149
+#: src/util/fileops.cpp:150
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "%1 konumundan %2 konumuna sembolik bağ oluşturulamıyor: %3"
 
-#: src/util/fileops.cpp:162
+#: src/util/fileops.cpp:163
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "%1, %2 konumuna taşınamıyor: %3"
 
-#: src/util/fileops.cpp:173 src/util/fileops.cpp:184
+#: src/util/fileops.cpp:174 src/util/fileops.cpp:185
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "%1, %2 konumuna kopyalanamıyor: %3"
 
-#: src/util/fileops.cpp:238
+#: src/util/fileops.cpp:239
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "%1 silinemiyor: %2"
 
-#: src/util/fileops.cpp:254
+#: src/util/fileops.cpp:255
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "%1 oluşturulamıyor: %2"
 
-#: src/util/fileops.cpp:271
+#: src/util/fileops.cpp:272
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "%1 dosyasının boyutu hesaplanamıyor: %2"
 
-#: src/util/fileops.cpp:287
+#: src/util/fileops.cpp:288
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Dosya boyutu hesaplanamıyor: %1"
 
-#: src/util/fileops.cpp:332 src/util/fileops.cpp:336 src/util/fileops.cpp:339
-#: src/util/fileops.cpp:342 src/util/fileops.cpp:345
+#: src/util/fileops.cpp:333 src/util/fileops.cpp:337 src/util/fileops.cpp:340
+#: src/util/fileops.cpp:343 src/util/fileops.cpp:346
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Dosya genişletilemiyor: %1"
 
-#: src/util/fileops.cpp:372
+#: src/util/fileops.cpp:373
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Dosyada aranamıyor: %1"
 
-#: src/util/fileops.cpp:613
+#: src/util/fileops.cpp:614
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "%1 dosyası açılamıyor: %2"

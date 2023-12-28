@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-22 01:35+0000\n"
+"POT-Creation-Date: 2023-12-28 01:33+0000\n"
 "PO-Revision-Date: 2013-02-02 17:29+0100\n"
 "Last-Translator: Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -47,17 +47,17 @@ msgstr "%1 ezin da osoko zenbaki bihurtu"
 msgid "Torrent is incomplete."
 msgstr "Torrent-a osatu gabe dago."
 
-#: src/datachecker/datacheckerjob.cpp:66
+#: src/datachecker/datacheckerjob.cpp:67
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr "Beste datu-egiaztapen batzuk amaitzeko zain"
 
-#: src/datachecker/datacheckerjob.cpp:72 src/torrent/torrentstats.cpp:92
+#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Checking data"
 msgstr "Datuak egiaztatzen"
 
-#: src/datachecker/datacheckerjob.cpp:119
+#: src/datachecker/datacheckerjob.cpp:120
 #, kde-format
 msgid "Checking Data"
 msgstr "Datuak egiaztatzen"
@@ -76,8 +76,8 @@ msgstr "%1 fitxategia ezin da ireki: %2"
 msgid "Failed to create %1: %2"
 msgstr "Huts egin du %1 sortzean: %2"
 
-#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:312
-#: src/util/fileops.cpp:354
+#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:313
+#: src/util/fileops.cpp:355
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Ezin da %1 ireki : %2"
@@ -151,24 +151,24 @@ msgstr "Huts egin du lehen zatia DND fitxategian idaztean: %1"
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Huts egin du azken zatia DND fitxategian idaztean: %1"
 
-#: src/diskio/movedatafilesjob.cpp:109
+#: src/diskio/movedatafilesjob.cpp:110
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr "Beste eramate-lan batzuk amaitzeko zain"
 
-#: src/diskio/movedatafilesjob.cpp:110 src/diskio/movedatafilesjob.cpp:146
+#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "Iturburua"
 
-#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#: src/diskio/movedatafilesjob.cpp:112 src/diskio/movedatafilesjob.cpp:148
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "Helburua"
 
-#: src/diskio/movedatafilesjob.cpp:145
+#: src/diskio/movedatafilesjob.cpp:146
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
@@ -474,58 +474,58 @@ msgstr "Ezin da %1(e)(a)n idatzi: %2"
 msgid "Cannot read from %1"
 msgstr "Ezin da %1 irakurri"
 
-#: src/util/fileops.cpp:91
+#: src/util/fileops.cpp:92
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "Ezin da %1 direktorioa sortu"
 
-#: src/util/fileops.cpp:149
+#: src/util/fileops.cpp:150
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "Ezin da esteka sinbolikoa sortu %1(e)tik %2(e)ra: %3"
 
-#: src/util/fileops.cpp:162
+#: src/util/fileops.cpp:163
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "%1 ezin da %2(e)ra eraman: %3"
 
-#: src/util/fileops.cpp:173 src/util/fileops.cpp:184
+#: src/util/fileops.cpp:174 src/util/fileops.cpp:185
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "%1 ezin da %2(e)(a)n kopiatu: %3"
 
-#: src/util/fileops.cpp:238
+#: src/util/fileops.cpp:239
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Ezin da %1 ezabatu: %2"
 
-#: src/util/fileops.cpp:254
+#: src/util/fileops.cpp:255
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Ezin da %1 sortu: %2"
 
-#: src/util/fileops.cpp:271
+#: src/util/fileops.cpp:272
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Ezin da kalkulatu %1(r)en fitxategi-neurria: %2"
 
-#: src/util/fileops.cpp:287
+#: src/util/fileops.cpp:288
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Ezin da kalkulatu fitxategi-neurria: %1"
 
-#: src/util/fileops.cpp:332 src/util/fileops.cpp:336 src/util/fileops.cpp:339
-#: src/util/fileops.cpp:342 src/util/fileops.cpp:345
+#: src/util/fileops.cpp:333 src/util/fileops.cpp:337 src/util/fileops.cpp:340
+#: src/util/fileops.cpp:343 src/util/fileops.cpp:346
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Fitxategia ezin da zabaldu: %1"
 
-#: src/util/fileops.cpp:372
+#: src/util/fileops.cpp:373
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Ezin da fitxategian bilatu: %1"
 
-#: src/util/fileops.cpp:613
+#: src/util/fileops.cpp:614
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Ezin da %1 fitxategia ireki : %2"

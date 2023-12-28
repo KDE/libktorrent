@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent(2)\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-22 01:35+0000\n"
+"POT-Creation-Date: 2023-12-28 01:33+0000\n"
 "PO-Revision-Date: 2020-09-24 22:03+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian\n"
@@ -44,17 +44,17 @@ msgstr "Nu se poate converti %1 la un număr întreg"
 msgid "Torrent is incomplete."
 msgstr "Torentul este incomplet."
 
-#: src/datachecker/datacheckerjob.cpp:66
+#: src/datachecker/datacheckerjob.cpp:67
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr "Se așteaptă încheierea altor verificări de date"
 
-#: src/datachecker/datacheckerjob.cpp:72 src/torrent/torrentstats.cpp:92
+#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Checking data"
 msgstr "Se verifică datele"
 
-#: src/datachecker/datacheckerjob.cpp:119
+#: src/datachecker/datacheckerjob.cpp:120
 #, kde-format
 msgid "Checking Data"
 msgstr "Se verifică datele"
@@ -73,8 +73,8 @@ msgstr "Nu se poate deschide fișierul %1: %2"
 msgid "Failed to create %1: %2"
 msgstr "Crearea %1 a eșuat: %2"
 
-#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:312
-#: src/util/fileops.cpp:354
+#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:313
+#: src/util/fileops.cpp:355
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Nu se poate deschide %1: %2"
@@ -150,24 +150,24 @@ msgstr "Nu s-a putut scrie prima bucată în fișierul DND: %1"
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Nu s-a putut scrie ultima bucată în fișierul DND: %1"
 
-#: src/diskio/movedatafilesjob.cpp:109
+#: src/diskio/movedatafilesjob.cpp:110
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr "Se așteaptă încheierea altor sarcini de mutare"
 
-#: src/diskio/movedatafilesjob.cpp:110 src/diskio/movedatafilesjob.cpp:146
+#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "Sursă"
 
-#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#: src/diskio/movedatafilesjob.cpp:112 src/diskio/movedatafilesjob.cpp:148
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "Destinație"
 
-#: src/diskio/movedatafilesjob.cpp:145
+#: src/diskio/movedatafilesjob.cpp:146
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
@@ -476,58 +476,58 @@ msgstr "Nu se poate scrie în %1: %2"
 msgid "Cannot read from %1"
 msgstr "Nu se poate citi din %1"
 
-#: src/util/fileops.cpp:91
+#: src/util/fileops.cpp:92
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "Dosarul %1 nu a putut fi creat"
 
-#: src/util/fileops.cpp:149
+#: src/util/fileops.cpp:150
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "Nu s poate crea legătura %1 spre %2: %3"
 
-#: src/util/fileops.cpp:162
+#: src/util/fileops.cpp:163
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "Nu se poate muta %1 în %2: %3"
 
-#: src/util/fileops.cpp:173 src/util/fileops.cpp:184
+#: src/util/fileops.cpp:174 src/util/fileops.cpp:185
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "Nu se poate copia %1 în %2: %3"
 
-#: src/util/fileops.cpp:238
+#: src/util/fileops.cpp:239
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Nu se poate șterge %1: %2"
 
-#: src/util/fileops.cpp:254
+#: src/util/fileops.cpp:255
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Nu se poate crea %1: %2"
 
-#: src/util/fileops.cpp:271
+#: src/util/fileops.cpp:272
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Nu se poate calcula dimensiunea fișierului %1: %2"
 
-#: src/util/fileops.cpp:287
+#: src/util/fileops.cpp:288
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Nu se poate calcula dimensiunea fișierului: %1"
 
-#: src/util/fileops.cpp:332 src/util/fileops.cpp:336 src/util/fileops.cpp:339
-#: src/util/fileops.cpp:342 src/util/fileops.cpp:345
+#: src/util/fileops.cpp:333 src/util/fileops.cpp:337 src/util/fileops.cpp:340
+#: src/util/fileops.cpp:343 src/util/fileops.cpp:346
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Fișierul nu poate fi extins: %1"
 
-#: src/util/fileops.cpp:372
+#: src/util/fileops.cpp:373
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Nu se poate căuta în fișier: %1"
 
-#: src/util/fileops.cpp:613
+#: src/util/fileops.cpp:614
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Nu s-a putut deschide fișierul %1: %2"
