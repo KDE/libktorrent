@@ -32,7 +32,7 @@ void AddressResolver::hostResolved(const QHostInfo &res)
     if (!succesfull) {
         Q_EMIT resolved(this);
     } else {
-        result = net::Address(res.addresses().first(), result.port());
+        result = net::Address(res.addresses().constFirst(), result.port());
         Q_EMIT resolved(this);
     }
 
@@ -48,7 +48,7 @@ Address AddressResolver::resolve(const QString &host, Uint16 port)
 {
     QHostInfo info = QHostInfo::fromName(host);
     if (info.error() == QHostInfo::NoError && info.addresses().size() > 0)
-        return net::Address(info.addresses().first(), port);
+        return net::Address(info.addresses().constFirst(), port);
     else
         return net::Address();
 }
