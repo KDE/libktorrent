@@ -70,7 +70,7 @@ void UDPTracker::stop(WaitJob *)
             socket->cancelTransaction(transaction_id);
             transaction_id = 0;
             status = TRACKER_IDLE;
-            requestOK();
+            Q_EMIT requestOK();
         }
         reannounce_timer.stop();
     } else {
@@ -137,7 +137,7 @@ void UDPTracker::announceReceived(Int32 tid, const bt::Uint8 *buf, bt::Uint32 si
         addPeer(net::Address(ip, ReadUint16(buf, i + 4)), false);
     }
 
-    peersReady(this);
+    Q_EMIT peersReady(this);
     connection_id = 0;
     conn_timer.stop();
     if (event != STOPPED) {
@@ -145,13 +145,13 @@ void UDPTracker::announceReceived(Int32 tid, const bt::Uint8 *buf, bt::Uint32 si
             started = true;
         event = NONE;
         status = TRACKER_OK;
-        requestOK();
+        Q_EMIT requestOK();
         if (started)
             reannounce_timer.start(interval * 1000);
     } else {
-        stopDone();
+        Q_EMIT stopDone();
         status = TRACKER_IDLE;
-        requestOK();
+        Q_EMIT requestOK();
     }
     request_time = QDateTime::currentDateTime();
 }
@@ -180,7 +180,7 @@ bool UDPTracker::doRequest()
     }
 
     status = TRACKER_ANNOUNCING;
-    requestPending();
+    Q_EMIT requestPending();
     return true;
 }
 
@@ -315,7 +315,7 @@ void UDPTracker::onConnTimeout()
             onError(transaction_id, i18n("Timeout contacting tracker %1", url.toDisplayString()));
         else {
             status = TRACKER_IDLE;
-            stopDone();
+            Q_EMIT stopDone();
         }
     } else {
         failures++;

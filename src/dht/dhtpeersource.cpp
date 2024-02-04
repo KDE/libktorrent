@@ -112,7 +112,7 @@ void DHTPeerSource::onDataReady(Task *t)
 
         if (cnt) {
             Out(SYS_DHT | LOG_NOTICE) << QString("DHT: Got %1 potential peers for torrent %2").arg(cnt).arg(torrent_name) << endl;
-            peersReady(this);
+            Q_EMIT peersReady(this);
         }
     }
 }

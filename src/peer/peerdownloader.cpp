@@ -116,7 +116,7 @@ void PeerDownloader::onRejected(const Request &req)
         return;
 
     if (reqs.removeAll(req))
-        rejected(req);
+        Q_EMIT rejected(req);
 }
 
 void PeerDownloader::cancelAll()
@@ -180,7 +180,7 @@ void PeerDownloader::checkTimeouts()
     // oldest requests at the front, so we simply pop off requests
     // until we find one that shouldn't be expired
     while (!reqs.isEmpty() && (now - reqs.first().time_stamp > MAX_INTERVAL))
-        timedout(reqs.takeFirst().req);
+        Q_EMIT timedout(reqs.takeFirst().req);
 }
 
 Uint32 PeerDownloader::getMaxChunkDownloads() const
@@ -207,7 +207,7 @@ void PeerDownloader::choked()
     QList<TimeStampedRequest>::iterator i = reqs.begin();
     while (i != reqs.end()) {
         TimeStampedRequest &tr = *i;
-        rejected(tr.req);
+        Q_EMIT rejected(tr.req);
         ++i;
     }
     reqs.clear();
@@ -215,7 +215,7 @@ void PeerDownloader::choked()
     QList<Request>::iterator j = wait_queue.begin();
     while (j != wait_queue.end()) {
         Request &req = *j;
-        rejected(req);
+        Q_EMIT rejected(req);
         ++j;
     }
     wait_queue.clear();

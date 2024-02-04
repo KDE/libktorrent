@@ -78,7 +78,7 @@ void Tracker::failed(const QString &err)
 {
     error = err;
     status = TRACKER_ERROR;
-    requestFailed(err);
+    Q_EMIT requestFailed(err);
 }
 
 void Tracker::handleFailure()

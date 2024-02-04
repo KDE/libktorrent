@@ -26,7 +26,7 @@ ExitJobOperation::~ExitJobOperation()
 
 void ExitJobOperation::onResult(KJob *)
 {
-    operationFinished(this);
+    Q_EMIT operationFinished(this);
 }
 
 }

@@ -69,7 +69,7 @@ void DHT::start(const QString &table, const QString &key_file, bt::Uint16 port)
     node->loadTable(table);
     update_timer.start(1000);
     expire_timer.start(5 * 60 * 1000);
-    started();
+    Q_EMIT started();
     if (node->getNumEntriesInRoutingTable() > 0) {
         // refresh the DHT table by looking for our own ID
         findOwnNode();
@@ -91,7 +91,7 @@ void DHT::stop()
     srv->stop();
     node->saveTable(table_file);
     running = false;
-    stopped();
+    Q_EMIT stopped();
     delete tman;
     tman = nullptr;
     delete db;

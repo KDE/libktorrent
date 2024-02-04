@@ -117,7 +117,7 @@ void UPnPMCastSocket::onXmlFileDownloaded(UPnPRouter *r, bool success)
             r->deleteLater();
         } else {
             d->routers.insert(r);
-            discovered(r);
+            Q_EMIT discovered(r);
         }
     }
 }

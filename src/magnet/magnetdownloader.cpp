@@ -190,7 +190,7 @@ void MagnetDownloader::onMetadataDownloaded(const QByteArray &data)
 
     found = true;
     Out(SYS_GEN | LOG_IMPORTANT) << "Metadata downloaded" << endl;
-    foundMetadata(this, data);
+    Q_EMIT foundMetadata(this, data);
     QTimer::singleShot(0, this, &MagnetDownloader::stop);
 }
 

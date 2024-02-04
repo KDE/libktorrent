@@ -329,7 +329,7 @@ void ChunkManager::prioritise(Uint32 from, Uint32 to, Priority priority)
 
         i++;
     }
-    updateStats();
+    Q_EMIT updateStats();
 }
 
 void ChunkManager::prioritisePreview(Uint32 from, Uint32 to)
@@ -357,7 +357,7 @@ void ChunkManager::prioritisePreview(Uint32 from, Uint32 to)
 
         c->setPriority(priority);
     }
-    updateStats();
+    Q_EMIT updateStats();
 }
 
 void ChunkManager::exclude(Uint32 from, Uint32 to)
@@ -376,8 +376,8 @@ void ChunkManager::exclude(Uint32 from, Uint32 to)
         i++;
     }
     d->recalc_chunks_left = true;
-    excluded(from, to);
-    updateStats();
+    Q_EMIT excluded(from, to);
+    Q_EMIT updateStats();
 }
 
 void ChunkManager::include(Uint32 from, Uint32 to)
@@ -395,8 +395,8 @@ void ChunkManager::include(Uint32 from, Uint32 to)
         i++;
     }
     d->recalc_chunks_left = true;
-    updateStats();
-    included(from, to);
+    Q_EMIT updateStats();
+    Q_EMIT included(from, to);
 }
 
 void ChunkManager::Private::savePriorityInfo()
@@ -526,7 +526,7 @@ void ChunkManager::downloadPriorityChanged(TorrentFile *tf, Priority newpriority
             prioritise(first, first, newpriority);
 
         if (newpriority == ONLY_SEED_PRIORITY)
-            excluded(first, last);
+            Q_EMIT excluded(first, last);
     } else {
         // if the first one is a border chunk use setBorderChunkPriority and make the range smaller
         if (d->isBorderChunk(first)) {
@@ -544,7 +544,7 @@ void ChunkManager::downloadPriorityChanged(TorrentFile *tf, Priority newpriority
         if (first <= last) {
             prioritise(first, last, newpriority);
             if (newpriority == ONLY_SEED_PRIORITY)
-                excluded(first, last);
+                Q_EMIT excluded(first, last);
         }
     }
 
@@ -1053,7 +1053,7 @@ void ChunkManager::Private::setBorderChunkPriority(Uint32 idx, Priority prio)
     }
     p->prioritise(idx, idx, highest);
     if (highest == ONLY_SEED_PRIORITY)
-        p->excluded(idx, idx);
+        Q_EMIT p->excluded(idx, idx);
 }
 
 bool ChunkManager::Private::resetBorderChunk(Uint32 idx, TorrentFile *tf)

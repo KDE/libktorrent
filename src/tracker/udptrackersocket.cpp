@@ -160,13 +160,13 @@ void UDPTrackerSocket::handleConnect(bt::Buffer::Ptr buf)
     // check whether the transaction is a CONNECT
     if (i.value() != CONNECT) {
         d->transactions.erase(i);
-        error(tid, QString());
+        Q_EMIT error(tid, QString());
         return;
     }
 
     // everything ok, emit signal
     d->transactions.erase(i);
-    connectReceived(tid, ReadInt64(buf->get(), 8));
+    Q_EMIT connectReceived(tid, ReadInt64(buf->get(), 8));
 }
 
 void UDPTrackerSocket::handleAnnounce(bt::Buffer::Ptr buf)
@@ -184,13 +184,13 @@ void UDPTrackerSocket::handleAnnounce(bt::Buffer::Ptr buf)
     // check whether the transaction is a ANNOUNCE
     if (i.value() != ANNOUNCE) {
         d->transactions.erase(i);
-        error(tid, QString());
+        Q_EMIT error(tid, QString());
         return;
     }
 
     // everything ok, emit signal
     d->transactions.erase(i);
-    announceReceived(tid, buf->get(), buf->size());
+    Q_EMIT announceReceived(tid, buf->get(), buf->size());
 }
 
 void UDPTrackerSocket::handleError(bt::Buffer::Ptr buf)
@@ -212,7 +212,7 @@ void UDPTrackerSocket::handleError(bt::Buffer::Ptr buf)
         msg += (char)buf->get()[i];
 
     // emit signal
-    error(tid, msg);
+    Q_EMIT error(tid, msg);
 }
 
 void UDPTrackerSocket::handleScrape(bt::Buffer::Ptr buf)
@@ -230,13 +230,13 @@ void UDPTrackerSocket::handleScrape(bt::Buffer::Ptr buf)
     // check whether the transaction is a SCRAPE
     if (i.value() != SCRAPE) {
         d->transactions.erase(i);
-        error(tid, QString());
+        Q_EMIT error(tid, QString());
         return;
     }
 
     // everything ok, emit signal
     d->transactions.erase(i);
-    scrapeReceived(tid, buf->get(), buf->size());
+    Q_EMIT scrapeReceived(tid, buf->get(), buf->size());
 }
 
 Int32 UDPTrackerSocket::newTransactionID()

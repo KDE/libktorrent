@@ -80,13 +80,13 @@ void MultiDataChecker::check(const QString &path, const Torrent &tor, const QStr
 
         TimeStamp now = Now();
         if (now - last_emitted > 1000 || cur_chunk == num_chunks - 1) { // Emit signals once every second
-            status(failed, found, downloaded, not_downloaded);
-            progress(cur_chunk - from, from - to + 1);
+            Q_EMIT status(failed, found, downloaded, not_downloaded);
+            Q_EMIT progress(cur_chunk - from, from - to + 1);
             last_emitted = now;
         }
     }
 
-    status(failed, found, downloaded, not_downloaded);
+    Q_EMIT status(failed, found, downloaded, not_downloaded);
 }
 
 bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)

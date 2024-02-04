@@ -30,10 +30,10 @@ void AddressResolver::hostResolved(const QHostInfo &res)
     ongoing = false;
     succesfull = res.error() == QHostInfo::NoError && res.addresses().count() > 0;
     if (!succesfull) {
-        resolved(this);
+        Q_EMIT resolved(this);
     } else {
         result = net::Address(res.addresses().first(), result.port());
-        resolved(this);
+        Q_EMIT resolved(this);
     }
 
     deleteLater();

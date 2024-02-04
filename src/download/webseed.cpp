@@ -259,18 +259,18 @@ void WebSeed::chunkStarted(Uint32 chunk)
 
     if (!current) {
         current = new WebSeedChunkDownload(this, url.toDisplayString(), chunk, pieces_count);
-        chunkDownloadStarted(current, chunk);
+        Q_EMIT chunkDownloadStarted(current, chunk);
     } else if (current->chunk != chunk) {
         chunkStopped();
         current = new WebSeedChunkDownload(this, url.toDisplayString(), chunk, pieces_count);
-        chunkDownloadStarted(current, chunk);
+        Q_EMIT chunkDownloadStarted(current, chunk);
     }
 }
 
 void WebSeed::chunkStopped()
 {
     if (current) {
-        chunkDownloadFinished(current, current->chunk);
+        Q_EMIT chunkDownloadFinished(current, current->chunk);
         delete current;
         current = nullptr;
     }
@@ -370,7 +370,7 @@ void WebSeed::readData()
         // if the current chunk moves past the last chunk, we are done
         first_chunk = last_chunk = tor.getNumChunks() + 1;
         num_failures = 0;
-        finished();
+        Q_EMIT finished();
     }
 }
 
@@ -401,7 +401,7 @@ void WebSeed::handleData(const QByteArray &tmp)
             bytes_of_cur_chunk = 0;
             cur_chunk++;
             if (c->getStatus() != Chunk::ON_DISK) {
-                chunkReady(c);
+                Q_EMIT chunkReady(c);
                 // It is possible that the webseed has been disabled due receiving a bad chunk
                 if (!isEnabled())
                     throw AutoDisabled();

@@ -166,7 +166,7 @@ void UPnPRouter::downloadFinished(KJob *j)
         d->error = i18n("Error parsing router description.");
     }
 
-    xmlFileDownloaded(this, ret);
+    Q_EMIT xmlFileDownloaded(this, ret);
     d->getExternalIP();
 }
 
@@ -183,7 +183,7 @@ void UPnPRouter::forward(const net::Port &port)
 {
     if (!d->error.isEmpty()) {
         d->error = QString();
-        stateChanged();
+        Q_EMIT stateChanged();
     }
 
     bool found = false;
@@ -199,7 +199,7 @@ void UPnPRouter::forward(const net::Port &port)
     if (!found) {
         d->error = i18n("Forwarding failed:\nDevice does not have a WANIPConnection or WANPPPConnection.");
         Out(SYS_PNP | LOG_IMPORTANT) << d->error << endl;
-        stateChanged();
+        Q_EMIT stateChanged();
     }
 }
 
@@ -218,7 +218,7 @@ void UPnPRouter::undoForward(const net::Port &port, bt::WaitJob *waitjob)
         }
     }
 
-    stateChanged();
+    Q_EMIT stateChanged();
 }
 
 void UPnPRouter::forwardResult(HTTPRequest *r)
@@ -229,7 +229,7 @@ void UPnPRouter::forwardResult(HTTPRequest *r)
         d->httpRequestDone(r, true);
         if (d->fwds.count() == 0) {
             d->error = r->errorString();
-            stateChanged();
+            Q_EMIT stateChanged();
         }
     }
 }

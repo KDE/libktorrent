@@ -572,7 +572,7 @@ void PeerManager::Private::update()
             cnt.decBitSet(peer->getBitSet());
             updateAvailableChunks();
             i = peer_map.erase(i);
-            p->peerKilled(peer.data());
+            Q_EMIT p->peerKilled(peer.data());
             if (superseeder)
                 superseeder->peerRemoved(peer.data());
             num_cleared++;
@@ -629,7 +629,7 @@ void PeerManager::Private::createPeer(mse::EncryptedPacketSocket::Ptr sock,
 {
     Peer::Ptr peer(new Peer(sock, peer_id, tor.getNumChunks(), tor.getChunkSize(), support, local, token, p));
     peer_map.insert(peer->getID(), peer);
-    p->newPeer(peer.data());
+    Q_EMIT p->newPeer(peer.data());
     peer->setPexEnabled(pex_on);
     // send extension protocol handshake
     bt::Uint16 port = ServerInterface::getPort();

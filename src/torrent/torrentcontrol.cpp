@@ -171,7 +171,7 @@ void TorrentControl::update()
                 psman->completed();
             pman->setPartialSeed(!cman->haveAllChunks() && cman->chunksLeft() == 0);
 
-            finished(this);
+            Q_EMIT finished(this);
 
             // Move completed download to specified directory if needed
             moveCompleted = !completed_dir.isEmpty();
@@ -189,7 +189,7 @@ void TorrentControl::update()
                 psman->manualUpdate();
             istats.time_started_dl = QDateTime::currentDateTime();
             // Tell QM to redo queue
-            updateQueue();
+            Q_EMIT updateQueue();
             if (stats.superseeding)
                 pman->setSuperSeeding(false, cman->getBitSet());
         }
@@ -289,7 +289,7 @@ void TorrentControl::onIOError(const QString &msg)
     stats.status = ERROR;
     stats.error_msg = msg;
     istats.io_error = true;
-    statusChanged(this);
+    Q_EMIT statusChanged(this);
 }
 
 void TorrentControl::pause()
@@ -314,7 +314,7 @@ void TorrentControl::pause()
     stats.paused = true;
     updateRunningTimes();
     saveStats();
-    statusChanged(this);
+    Q_EMIT statusChanged(this);
 
     Out(SYS_GEN | LOG_NOTICE) << "Paused " << tor->getNameSuggestion() << endl;
 }
@@ -339,7 +339,7 @@ void TorrentControl::unpause()
     loadStats();
     istats.time_started_ul = istats.time_started_dl = QDateTime::currentDateTime();
     stats.paused = false;
-    statusChanged(this);
+    Q_EMIT statusChanged(this);
     Out(SYS_GEN | LOG_NOTICE) << "Unpaused " << tor->getNameSuggestion() << endl;
 }
 
@@ -360,7 +360,7 @@ void TorrentControl::start()
     istats.diskspace_warning_emitted = false;
     try {
         bool ret = true;
-        aboutToBeStarted(this, ret);
+        Q_EMIT aboutToBeStarted(this, ret);
         if (!ret)
             return;
     } catch (Error &err) {
@@ -852,7 +852,7 @@ void TorrentControl::updateStatus()
         stats.status = downloader->downloadRate() > 100 ? DOWNLOADING : STALLED;
 
     if (old != stats.status)
-        statusChanged(this);
+        Q_EMIT statusChanged(this);
 }
 
 const BitSet &TorrentControl::downloadedChunksBitSet() const
@@ -1258,7 +1258,7 @@ void TorrentControl::beforeDataCheck()
 {
     stats.status = CHECKING_DATA;
     stats.num_corrupted_chunks = 0; // reset the number of corrupted chunks found
-    statusChanged(this);
+    Q_EMIT statusChanged(this);
 }
 
 void TorrentControl::afterDataCheck(DataCheckerJob *job, const BitSet &result)
@@ -1288,7 +1288,7 @@ void TorrentControl::afterDataCheck(DataCheckerJob *job, const BitSet &result)
     updateStats();
     Out(SYS_GEN | LOG_NOTICE) << "Data check finished" << endl;
     updateStatus();
-    dataCheckFinished();
+    Q_EMIT dataCheckFinished();
 
     if (stats.completed != completed) {
         // Tell QM to redo queue and emit finished signal
@@ -1303,7 +1303,7 @@ void TorrentControl::afterDataCheck(DataCheckerJob *job, const BitSet &result)
 
 void TorrentControl::emitFinished()
 {
-    finished(this);
+    Q_EMIT finished(this);
 }
 
 void TorrentControl::markExistingFilesAsDownloaded()
@@ -1349,7 +1349,7 @@ void TorrentControl::dndMissingFiles()
     try {
         cman->dndMissingFiles();
         prealloc = true; // set prealloc to true so files will be truncated again
-        missingFilesMarkedDND(this);
+        Q_EMIT missingFilesMarkedDND(this);
         downloader->dataChecked(cman->getBitSet(), 0, tor->getNumChunks() - 1); // update chunk selector
     } catch (Error &err) {
         onIOError(err.toString());
@@ -1408,7 +1408,7 @@ void TorrentControl::corrupted(Uint32 chunk)
 
     // emit signal to show a systray message
     stats.num_corrupted_chunks++;
-    corruptedDataFound(this);
+    Q_EMIT corruptedDataFound(this);
 }
 
 int TorrentControl::getETA()
@@ -1500,7 +1500,7 @@ bool TorrentControl::checkDiskSpace(bool emit_sig)
 
             if (!stats.running) {
                 stats.status = NO_SPACE_LEFT;
-                statusChanged(this);
+                Q_EMIT statusChanged(this);
             }
 
             return false;
@@ -1601,7 +1601,7 @@ void TorrentControl::preallocFinished(const QString &error, bool completed)
         stats.status = NOT_STARTED;
         saveStats();
         continueStart();
-        statusChanged(this);
+        Q_EMIT statusChanged(this);
     }
 }
 
@@ -1673,7 +1673,7 @@ void TorrentControl::setUserModifiedFileName(const QString &n)
 
 void TorrentControl::downloaded(Uint32 chunk)
 {
-    chunkDownloaded(this, chunk);
+    Q_EMIT chunkDownloaded(this, chunk);
 }
 
 void TorrentControl::moveToCompletedDir()
@@ -1710,8 +1710,8 @@ void TorrentControl::allJobsDone()
 {
     updateStatus();
     // update the QM to be sure
-    updateQueue();
-    runningJobsDone(this);
+    Q_EMIT updateQueue();
+    Q_EMIT runningJobsDone(this);
 }
 
 void TorrentControl::setChunkSelector(ChunkSelectorInterface *csel)
@@ -1759,7 +1759,7 @@ void TorrentControl::downloadPriorityChanged(TorrentFile *tf, Priority newpriori
         updateStatus();
         updateStats();
         // Trigger an update of the queue, so it can be restarted again, if it was auto stopped
-        updateQueue();
+        Q_EMIT updateQueue();
     }
 }
 

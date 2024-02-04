@@ -40,12 +40,12 @@ void RPCCall::start()
 
 void RPCCall::onTimeout()
 {
-    timeout(this);
+    Q_EMIT timeout(this);
 }
 
 void RPCCall::response(RPCMsg::Ptr rsp)
 {
-    response(this, rsp);
+    Q_EMIT response(this, rsp);
 }
 
 Method RPCCall::getMsgMethod() const

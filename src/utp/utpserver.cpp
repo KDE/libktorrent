@@ -132,10 +132,10 @@ void UTPServer::Private::syn(const PacketParser &parser, bt::Buffer::Ptr buffer,
                     QMutexLocker lock(&pending_mutex);
                     pending.append(ss);
                 }
-                p->handlePendingConnectionsDelayed();
+                Q_EMIT p->handlePendingConnectionsDelayed();
             } else {
                 last_accepted.append(conn);
-                p->accepted();
+                Q_EMIT p->accepted();
             }
         } catch (Connection::TransmissionError &err) {
             Out(SYS_UTP | LOG_NOTICE) << "UTP: " << err.location << endl;

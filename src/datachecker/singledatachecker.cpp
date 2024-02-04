@@ -74,13 +74,13 @@ void SingleDataChecker::check(const QString &path, const Torrent &tor, const QSt
 
         TimeStamp now = Now();
         if (now - last_emitted > 1000 || i == num_chunks - 1) { // Emit signals once every second
-            status(failed, found, downloaded, not_downloaded);
-            progress(i - from, from - to + 1);
+            Q_EMIT status(failed, found, downloaded, not_downloaded);
+            Q_EMIT progress(i - from, from - to + 1);
             last_emitted = now;
         }
     }
 
-    status(failed, found, downloaded, not_downloaded);
+    Q_EMIT status(failed, found, downloaded, not_downloaded);
 }
 
 }

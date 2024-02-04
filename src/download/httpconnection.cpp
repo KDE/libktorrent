@@ -130,7 +130,7 @@ void HttpConnection::onDataReady(Uint8 *buf, Uint32 size)
                 status = i18n("Error: request failed: %1", request->failure_reason);
                 response_code = request->response_code;
             } else if (request->response_header_received)
-                stopReplyTimer();
+                Q_EMIT stopReplyTimer();
         }
     }
 }
@@ -141,7 +141,7 @@ void HttpConnection::dataSent()
     if (state == ACTIVE && request) {
         request->buffer.clear();
         // wait 60 seconds for a reply
-        startReplyTimer(60 * 1000);
+        Q_EMIT startReplyTimer(60 * 1000);
     }
 }
 
@@ -161,7 +161,7 @@ void HttpConnection::connectFinished(bool succeeded)
             state = ERROR;
             status = i18n("Error: Failed to connect to webseed");
         }
-        stopConnectTimer();
+        Q_EMIT stopConnectTimer();
     }
 }
 

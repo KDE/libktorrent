@@ -82,18 +82,18 @@ bool Task::rpcCall(dht::RPCMsg::Ptr req)
 void Task::done()
 {
     task_finished = true;
-    finished(this);
+    Q_EMIT finished(this);
 }
 
 void Task::emitDataReady()
 {
-    dataReady(this);
+    Q_EMIT dataReady(this);
 }
 
 void Task::kill()
 {
     task_finished = true;
-    finished(this);
+    Q_EMIT finished(this);
 }
 
 void Task::addDHTNode(const QString &ip, bt::Uint16 port)

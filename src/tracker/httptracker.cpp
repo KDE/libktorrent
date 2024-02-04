@@ -62,7 +62,7 @@ void HTTPTracker::stop(WaitJob *wjob)
             active_job->kill();
             active_job = nullptr;
             status = TRACKER_IDLE;
-            requestOK();
+            Q_EMIT requestOK();
         }
     } else {
         reannounce_timer.stop();
@@ -153,7 +153,7 @@ void HTTPTracker::onScrapeResult(KJob *j)
                                              << endl;
                 } catch (...) {
                 }
-                scrapeDone();
+                Q_EMIT scrapeDone();
                 if (status == bt::TRACKER_ERROR) {
                     status = bt::TRACKER_OK;
                     failures = 0;
@@ -166,7 +166,7 @@ void HTTPTracker::onScrapeResult(KJob *j)
 void HTTPTracker::doRequest(WaitJob *wjob)
 {
     if (!url.isValid()) {
-        requestPending();
+        Q_EMIT requestPending();
         QTimer::singleShot(500, this, &HTTPTracker::emitInvalidURLFailure);
         return;
     }
@@ -369,21 +369,21 @@ void HTTPTracker::onAnnounceResult(const QUrl &url, const QByteArray &data, KJob
             failed(err);
         } else {
             status = TRACKER_IDLE;
-            stopDone();
+            Q_EMIT stopDone();
         }
     } else {
         if (QUrlQuery(url).queryItemValue(QStringLiteral("event")) != QLatin1String("stopped")) {
             try {
                 if (updateData(data)) {
                     failures = 0;
-                    peersReady(this);
+                    Q_EMIT peersReady(this);
                     request_time = QDateTime::currentDateTime();
                     status = TRACKER_OK;
                     if (QUrlQuery(url).queryItemValue(QStringLiteral("event")) == QLatin1String("started"))
                         started = true;
                     if (started)
                         reannounce_timer.start(interval * 1000);
-                    requestOK();
+                    Q_EMIT requestOK();
                 }
             } catch (bt::Error &err) {
                 failures++;
@@ -393,7 +393,7 @@ void HTTPTracker::onAnnounceResult(const QUrl &url, const QByteArray &data, KJob
         } else {
             status = TRACKER_IDLE;
             failures = 0;
-            stopDone();
+            Q_EMIT stopDone();
         }
     }
     doAnnounceQueue();
@@ -453,7 +453,7 @@ void HTTPTracker::doAnnounce(const QUrl &u)
     time_out = false;
     timer.start(60 * 1000);
     status = TRACKER_ANNOUNCING;
-    requestPending();
+    Q_EMIT requestPending();
 }
 
 void HTTPTracker::onTimeout()

@@ -64,13 +64,13 @@ void DataCheckerJob::start()
     setTotalAmount(Bytes, to - from + 1);
     data_checker_slot.add(this);
     if (!started)
-        infoMessage(this, i18n("Waiting for other data checks to finish"));
+        Q_EMIT infoMessage(this, i18n("Waiting for other data checks to finish"));
 }
 
 void DataCheckerJob::acquired()
 {
     started = true;
-    description(this, i18n("Checking data"));
+    Q_EMIT description(this, i18n("Checking data"));
     dcheck_thread->start(QThread::IdlePriority);
 }
 
@@ -117,6 +117,6 @@ void DataCheckerJob::status(quint32 num_failed, quint32 num_found, quint32 num_d
 {
     QPair<QString, QString> field1 = qMakePair(QString::number(num_failed), QString::number(num_found));
     QPair<QString, QString> field2 = qMakePair(QString::number(num_downloaded), QString::number(num_not_downloaded));
-    description(this, i18n("Checking Data"), field1, field2);
+    Q_EMIT description(this, i18n("Checking Data"), field1, field2);
 }
 }

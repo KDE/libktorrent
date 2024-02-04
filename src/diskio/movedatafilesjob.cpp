@@ -106,10 +106,10 @@ void MoveDataFilesJob::start()
     setTotalAmount(KJob::Bytes, total_bytes);
     move_data_files_slot.add(this);
     if (!active_job) {
-        description(this,
-                    i18n("Waiting for other move jobs to finish"),
-                    qMakePair(i18nc("The source of a file operation", "Source"), active_src),
-                    qMakePair(i18nc("The destination of a file operation", "Destination"), active_dst));
+        Q_EMIT description(this,
+                           i18n("Waiting for other move jobs to finish"),
+                           qMakePair(i18nc("The source of a file operation", "Source"), active_src),
+                           qMakePair(i18nc("The destination of a file operation", "Destination"), active_dst));
         emitSpeed(0);
     }
 }
@@ -142,10 +142,10 @@ void MoveDataFilesJob::startMoving()
     connect(active_job, &KIO::Job::speed, this, &MoveDataFilesJob::onSpeed);
     todo.erase(i);
 
-    description(this,
-                i18nc("@title job", "Moving"),
-                qMakePair(i18nc("The source of a file operation", "Source"), active_src),
-                qMakePair(i18nc("The destination of a file operation", "Destination"), active_dst));
+    Q_EMIT description(this,
+                       i18nc("@title job", "Moving"),
+                       qMakePair(i18nc("The source of a file operation", "Source"), active_src),
+                       qMakePair(i18nc("The destination of a file operation", "Destination"), active_dst));
     addSubjob(active_job);
 }
 

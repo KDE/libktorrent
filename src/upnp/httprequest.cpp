@@ -39,7 +39,7 @@ HTTPRequest::HTTPRequest(const QNetworkRequest &hdr, const QString &payload, con
         error = i18n("Operation timed out");
         success = false;
         Q_EMIT result(this);
-        operationFinished(this);
+        Q_EMIT operationFinished(this);
         return;
     }
 
@@ -58,14 +58,14 @@ void HTTPRequest::replyFinished()
         error = networkReply->errorString();
         success = false;
         Q_EMIT result(this);
-        operationFinished(this);
+        Q_EMIT operationFinished(this);
         return;
     }
     reply = networkReply->readAll();
     networkReply->deleteLater();
     success = true;
     Q_EMIT result(this);
-    operationFinished(this);
+    Q_EMIT operationFinished(this);
 }
 
 }

@@ -38,13 +38,13 @@ LogSystemManager &LogSystemManager::instance()
 void LogSystemManager::registerSystem(const QString &name, Uint32 id)
 {
     systems.insert(name, id);
-    registered(name);
+    Q_EMIT registered(name);
 }
 
 void LogSystemManager::unregisterSystem(const QString &name)
 {
     if (systems.remove(name))
-        unregisted(name);
+        Q_EMIT unregisted(name);
 }
 
 Uint32 LogSystemManager::systemID(const QString &name)
