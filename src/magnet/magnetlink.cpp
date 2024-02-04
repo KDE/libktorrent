@@ -79,7 +79,8 @@ void MagnetLink::parse(const QUrl &url)
     path = QUrlQuery(url).queryItemValue(QStringLiteral("pt"));
     if (path.isEmpty() && url.path() != QLatin1String("/")) {
         // TODO find out why RemoveTrailingSlash does not work
-        path = url.adjusted(QUrl::StripTrailingSlash).path().remove(QRegularExpression(QLatin1String("^/")));
+        static const QRegularExpression rx{QLatin1String("^/")};
+        path = url.adjusted(QUrl::StripTrailingSlash).path().remove(rx);
     }
 
     QString xt = QUrlQuery(url).queryItemValue(QLatin1String("xt"));
