@@ -4,7 +4,8 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#include <QtTest>
+#include <QTest>
+
 #include <util/circularbuffer.h>
 #include <util/log.h>
 #include <utp/packetbuffer.h>

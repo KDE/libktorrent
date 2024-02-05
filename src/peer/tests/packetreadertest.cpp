@@ -5,7 +5,8 @@
 */
 
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+
 #include <interfaces/peerinterface.h>
 #include <peer/packetreader.h>
 #include <util/log.h>

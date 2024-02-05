@@ -6,7 +6,7 @@
 
 #include <QObject>
 #include <QRandomGenerator>
-#include <QtTest>
+#include <QTest>
 
 #include <util/functions.h>
 #include <util/log.h>

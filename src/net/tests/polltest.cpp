@@ -5,7 +5,8 @@
 */
 
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+
 #include <net/poll.h>
 #include <net/socket.h>
 #include <util/log.h>

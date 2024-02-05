@@ -4,7 +4,8 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+
 #include <solid/device.h>
 #include <solid/storageaccess.h>
 #include <util/error.h>

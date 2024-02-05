@@ -5,7 +5,8 @@
 */
 
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+
 #include <interfaces/blocklistinterface.h>
 #include <peer/accessmanager.h>
 #include <torrent/server.h>

@@ -5,7 +5,9 @@
 */
 
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+#include <QTimer>
+
 #include <net/poll.h>
 #include <torrent/globals.h>
 #include <unistd.h>

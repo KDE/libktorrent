@@ -5,7 +5,8 @@
 */
 
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+
 #include <util/functions.h>
 #include <util/log.h>
 #include <utp/connection.h>

@@ -4,7 +4,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+#include <QTimer>
+
 #include <torrent/globals.h>
 #include <util/log.h>
 #include <utp/utpserver.h>

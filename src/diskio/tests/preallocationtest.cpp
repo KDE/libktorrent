@@ -5,7 +5,8 @@
 */
 
 #include <QLocale>
-#include <QtTest>
+#include <QTest>
+
 #include <diskio/multifilecache.h>
 #include <diskio/preallocationthread.h>
 #include <diskio/singlefilecache.h>

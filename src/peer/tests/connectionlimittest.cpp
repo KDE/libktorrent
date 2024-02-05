@@ -5,7 +5,8 @@
 */
 
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+
 #include <peer/connectionlimit.h>
 #include <util/log.h>
 

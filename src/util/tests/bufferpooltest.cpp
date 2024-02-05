@@ -3,8 +3,10 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
+
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+
 #include <util/bufferpool.h>
 #include <util/log.h>
 

@@ -6,7 +6,7 @@
 
 #include <QEventLoop>
 #include <QLocale>
-#include <QtTest>
+#include <QTest>
 
 #include "testlib/dummytorrentcreator.h"
 #include <diskio/chunkmanager.h>

@@ -5,7 +5,7 @@
 #include <QLocale>
 #include <QObject>
 #include <QRandomGenerator64>
-#include <QtTest>
+#include <QTest>
 
 #include <ctime>
 #include <interfaces/queuemanagerinterface.h>

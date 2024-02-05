@@ -1,5 +1,6 @@
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+
 #include <magnet/magnetlink.h>
 #include <util/log.h>
 

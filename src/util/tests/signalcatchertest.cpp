@@ -6,7 +6,8 @@
 
 #include <QObject>
 #include <QTemporaryFile>
-#include <QtTest>
+#include <QTest>
+
 #include <ctime>
 #include <setjmp.h>
 #include <signal.h>

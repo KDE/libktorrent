@@ -6,8 +6,11 @@
 
 #include <KConfigGroup>
 #include <KSharedConfig>
+
 #include <QObject>
-#include <QtTest>
+#include <QTemporaryFile>
+#include <QTest>
+
 #include <ctime>
 #include <torrent/statsfile.h>
 #include <util/log.h>

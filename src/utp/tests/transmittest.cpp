@@ -6,8 +6,10 @@
 
 #include <QFile>
 #include <QObject>
+#include <QTest>
 #include <QTextStream>
-#include <QtTest>
+#include <QTimer>
+
 #include <unistd.h>
 #include <util/functions.h>
 #include <util/log.h>

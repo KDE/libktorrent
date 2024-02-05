@@ -4,7 +4,8 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#include <QtTest>
+#include <QTest>
+
 #include <bcodec/bdecoder.h>
 #include <bcodec/bnode.h>
 #include <dht/errmsg.h>

@@ -5,7 +5,9 @@
 */
 
 #include <QObject>
-#include <QtTest>
+#include <QRandomGenerator>
+#include <QTest>
+
 #include <dht/key.h>
 #include <mse/rc4encryptor.h>
 #include <time.h>

@@ -5,7 +5,9 @@
 */
 
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+#include <QTimer>
+
 #include <boost/concept_check.hpp>
 #include <torrent/globals.h>
 #include <util/log.h>

@@ -8,7 +8,7 @@
 #include <QEventLoop>
 #include <QLocale>
 #include <QRandomGenerator64>
-#include <QtTest>
+#include <QTest>
 
 #include <datachecker/multidatachecker.h>
 #include <datachecker/singledatachecker.h>

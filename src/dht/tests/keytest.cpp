@@ -5,7 +5,8 @@
 */
 
 #include <QString>
-#include <QtTest>
+#include <QTest>
+
 #include <algorithm>
 #include <dht/key.h>
 #include <util/error.h>

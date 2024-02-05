@@ -5,7 +5,8 @@
 */
 
 #include <QLocale>
-#include <QtTest>
+#include <QTest>
+
 #include <diskio/chunkmanager.h>
 #include <diskio/piecedata.h>
 #include <testlib/dummytorrentcreator.h>

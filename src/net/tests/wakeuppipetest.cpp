@@ -5,7 +5,8 @@
 */
 
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+
 #include <net/wakeuppipe.h>
 #include <util/log.h>
 #include <util/pipe.h>

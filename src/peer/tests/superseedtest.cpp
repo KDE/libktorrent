@@ -5,7 +5,8 @@
 */
 
 #include <QObject>
-#include <QtTest>
+#include <QTest>
+
 #include <ctime>
 #include <interfaces/peerinterface.h>
 #include <peer/chunkcounter.h>
