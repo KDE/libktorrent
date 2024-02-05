@@ -37,7 +37,7 @@ void FindNodeReq::apply(dht::DHT *dh_table)
 
 void FindNodeReq::print()
 {
-    Out(SYS_DHT | LOG_NOTICE) << QString("REQ: %1 %2 : find_node %3").arg(mtid[0]).arg(id.toString()).arg(target.toString()) << endl;
+    Out(SYS_DHT | LOG_NOTICE) << QString("REQ: %1 %2 : find_node %3").arg(mtid[0]).arg(id.toString(), target.toString()) << endl;
 }
 
 void FindNodeReq::encode(QByteArray &arr) const

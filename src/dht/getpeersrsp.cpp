@@ -45,7 +45,7 @@ void GetPeersRsp::apply(dht::DHT *dh_table)
 
 void GetPeersRsp::print()
 {
-    Out(SYS_DHT | LOG_DEBUG) << QString("RSP: %1 %2 : get_peers(%3)").arg(mtid[0]).arg(id.toString()).arg(nodes.size() > 0 ? "nodes" : "values") << endl;
+    Out(SYS_DHT | LOG_DEBUG) << QString("RSP: %1 %2 : get_peers(%3)").arg(mtid[0]).arg(id.toString(), nodes.size() > 0 ? "nodes" : "values") << endl;
 }
 
 void GetPeersRsp::encode(QByteArray &arr) const

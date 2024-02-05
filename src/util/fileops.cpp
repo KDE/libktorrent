@@ -149,8 +149,8 @@ void SymLink(const QString &link_to, const QString &link_url, bool nothrow)
         if (!nothrow)
             throw Error(i18n("Cannot symlink %1 to %2: %3", link_url, link_to, QString::fromUtf8(strerror(errno))));
         else
-            Out(SYS_DIO | LOG_NOTICE)
-                << QStringLiteral("Error : Cannot symlink %1 to %2: %3").arg(link_url).arg(link_to).arg(QString::fromUtf8(strerror(errno))) << endl;
+            Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot symlink %1 to %2: %3").arg(link_url, link_to, QString::fromUtf8(strerror(errno)))
+                                      << endl;
     }
 }
 
@@ -162,7 +162,7 @@ void Move(const QString &src, const QString &dst, bool nothrow, bool silent)
         if (!nothrow)
             throw Error(i18n("Cannot move %1 to %2: %3", src, dst, mv->errorString()));
         else
-            Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot move %1 to %2: %3").arg(src).arg(dst).arg(mv->errorString()) << endl;
+            Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot move %1 to %2: %3").arg(src, dst, mv->errorString()) << endl;
     }
 }
 
@@ -173,7 +173,7 @@ void CopyFile(const QString &src, const QString &dst, bool nothrow)
         if (!nothrow)
             throw Error(i18n("Cannot copy %1 to %2: %3", src, dst, copy->errorString()));
         else
-            Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot copy %1 to %2: %3").arg(src).arg(dst).arg(copy->errorString()) << endl;
+            Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot copy %1 to %2: %3").arg(src, dst, copy->errorString()) << endl;
     }
 }
 
@@ -184,7 +184,7 @@ void CopyDir(const QString &src, const QString &dst, bool nothrow)
         if (!nothrow)
             throw Error(i18n("Cannot copy %1 to %2: %3", src, dst, copy->errorString()));
         else
-            Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot copy %1 to %2: %3").arg(src).arg(dst).arg(copy->errorString()) << endl;
+            Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot copy %1 to %2: %3").arg(src, dst, copy->errorString()) << endl;
     }
 }
 

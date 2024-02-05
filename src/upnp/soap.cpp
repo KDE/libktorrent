@@ -17,8 +17,7 @@ QString SOAP::createCommand(const QString &action, const QString &service)
                        "<SOAP-ENV:Body>"
                        "<m:%1 xmlns:m=\"%2\"/>"
                        "</SOAP-ENV:Body></SOAP-ENV:Envelope>")
-                       .arg(action)
-                       .arg(service);
+                       .arg(action, service);
 
     return comm;
 }
@@ -31,8 +30,7 @@ QString SOAP::createCommand(const QString &action, const QString &service, const
                        "SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
                        "<SOAP-ENV:Body>"
                        "<m:%1 xmlns:m=\"%2\">")
-                       .arg(action)
-                       .arg(service);
+                       .arg(action, service);
 
     for (const Arg &a : args)
         comm += "<" + a.element + ">" + a.value + "</" + a.element + ">";

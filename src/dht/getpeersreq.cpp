@@ -37,7 +37,7 @@ void GetPeersReq::apply(dht::DHT *dh_table)
 
 void GetPeersReq::print()
 {
-    Out(SYS_DHT | LOG_DEBUG) << QString("REQ: %1 %2 : get_peers %3").arg(mtid[0]).arg(id.toString()).arg(info_hash.toString()) << endl;
+    Out(SYS_DHT | LOG_DEBUG) << QString("REQ: %1 %2 : get_peers %3").arg(mtid[0]).arg(id.toString(), info_hash.toString()) << endl;
 }
 
 void GetPeersReq::encode(QByteArray &arr) const

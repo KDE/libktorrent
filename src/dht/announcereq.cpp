@@ -41,8 +41,7 @@ void AnnounceReq::print()
 {
     Out(SYS_DHT | LOG_DEBUG) << QString("REQ: %1 %2 : announce_peer %3 %4 %5")
                                     .arg(mtid[0])
-                                    .arg(id.toString())
-                                    .arg(info_hash.toString())
+                                    .arg(id.toString(), info_hash.toString())
                                     .arg(port)
                                     .arg(QString::fromLatin1(token.toHex()))
                              << endl;

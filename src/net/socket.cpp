@@ -161,7 +161,7 @@ bool Socket::connectTo(const Address &a)
             m_state = CONNECTING;
             return false;
         } else {
-            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Cannot connect to host %1 : %2").arg(a.toString()).arg(QString::fromUtf8(strerror(errno))) << endl;
+            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Cannot connect to host %1 : %2").arg(a.toString(), QString::fromUtf8(strerror(errno))) << endl;
             return false;
         }
     }
