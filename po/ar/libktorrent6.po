@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Safa Alfulaij <safaalfulaij@hotmail.com>, 2013.
-# Zayed Al-Saidi <zayed.alsaidi@gmail.com>, 2022.
+# SPDX-FileCopyrightText: 2022, 2024 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-12-28 01:33+0000\n"
-"PO-Revision-Date: 2022-09-06 20:49+0400\n"
+"PO-Revision-Date: 2024-02-12 14:04+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 23.08.1\n"
 
 #: src/bcodec/bdecoder.cpp:48
-#, fuzzy, kde-format
+#, kde-format
 msgid "Illegal token: %1"
-msgstr "غير شرعي رمز مميز 1"
+msgstr "رمز غير قانوني: %1"
 
 #: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
 #, kde-format
@@ -88,13 +88,15 @@ msgstr "تعذّر فتح %1 للكتابة: نظام ملفات للقراءة 
 #: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
-msgstr ""
+msgstr "محاولة الكتابة بما يتجاوز الحد الأقصى للحجم %1"
 
 #: src/diskio/cachefile.cpp:220
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
 msgstr ""
+"لا يمكن توسيع الملف %1: محاولة تكبير الملف إلى ما هو أبعد من الحد الأقصى "
+"للحجم"
 
 #: src/diskio/cachefile.cpp:224
 #, kde-format
@@ -102,14 +104,14 @@ msgid "Cannot expand file %1: %2"
 msgstr "تعذّر توسيع الملف %1: %2"
 
 #: src/diskio/cachefile.cpp:336
-#, fuzzy, kde-format
+#, kde-format
 msgid "Error: Reading past the end of the file %1"
-msgstr "خطأ جاري القراءة end من ملفّ 1"
+msgstr "خطأ: القراءة بعد نهاية الملف %1"
 
 #: src/diskio/cachefile.cpp:341 src/diskio/cachefile.cpp:383
-#, fuzzy, kde-format
+#, kde-format
 msgid "Failed to seek file %1: %2"
-msgstr "غير قادر على إنشاء %1 : %2"
+msgstr "فشل البحث عن الملف %1: %2"
 
 #: src/diskio/cachefile.cpp:348
 #, kde-format
@@ -122,9 +124,9 @@ msgid "Failed to write to file %1: %2"
 msgstr "فشل الكتابة إلى الملف %1: %2"
 
 #: src/diskio/cachefile.cpp:443
-#, fuzzy, kde-format
+#, kde-format
 msgid "Cannot preallocate diskspace: %1"
-msgstr "لا يستطيع 1"
+msgstr "لا يمكن تخصيص مساحة القرص مسبقًا: %1"
 
 #: src/diskio/chunkmanager.cpp:844 src/diskio/chunkmanager.cpp:867
 #, kde-format
@@ -177,7 +179,7 @@ msgstr "فشل فتح %1: %2"
 #: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
-msgstr ""
+msgstr "غير قادر على الكتابة إلى قطعة معينة للقراءة فقط"
 
 #: src/download/chunkdownload.cpp:342
 #, kde-format
@@ -204,7 +206,7 @@ msgstr "غير متّصل"
 #: src/download/httpconnection.cpp:96
 #, kde-format
 msgid "Resolving proxy %1:%2"
-msgstr ""
+msgstr "يحل الوكيل %1:%2"
 
 #: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
 #, kde-format
@@ -247,9 +249,9 @@ msgid "Failed to connect to webseed"
 msgstr "فشل الاتصال بمُزوِّد الوِب"
 
 #: src/download/httpconnection.cpp:200
-#, fuzzy, kde-format
+#, kde-format
 msgid "Failed to resolve hostname of webseed"
-msgstr "غير قادر على إنشاء %1 : %2"
+msgstr "فشل في حل اسم المضيف لبذور الويب"
 
 #: src/download/httpconnection.cpp:271
 #, kde-format
@@ -264,18 +266,18 @@ msgstr "خطأ: انتهت مهلة الطلب"
 #: src/download/httpconnection.cpp:351
 #, kde-format
 msgid "Redirected without a new location."
-msgstr ""
+msgstr "إعادة التوجيه دون موقع جديد."
 
 #: src/download/webseed.cpp:500
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "غير مستخدم لمدة %1 ثانية (حالات فشل الاتصال كثيرة جدًا)"
+msgstr[1] "غير مستخدم لمدة ثانية (حالات فشل الاتصال كثيرة جدًا)"
+msgstr[2] "غير مستخدم لمدة ثانيتين (حالات فشل الاتصال كثيرة جدًا)"
+msgstr[3] "غير مستخدم لمدة %1 ثواني (حالات فشل الاتصال كثيرة جدًا)"
+msgstr[4] "غير مستخدم لمدة %1 ثانية (حالات فشل الاتصال كثيرة جدًا)"
+msgstr[5] "غير مستخدم لمدة %1 ثانية (حالات فشل الاتصال كثيرة جدًا)"
 
 #: src/interfaces/trackerinterface.cpp:45
 #, kde-format
@@ -404,9 +406,9 @@ msgid "Paused"
 msgstr "أُلبِث"
 
 #: src/torrent/torrentstats.cpp:98
-#, fuzzy, kde-format
+#, kde-format
 msgid "Superseeding"
-msgstr "البذر"
+msgstr "التزويد الخارق"
 
 #: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
 #: src/tracker/httptracker.cpp:390
@@ -431,9 +433,9 @@ msgid "Timeout contacting tracker %1"
 msgstr "انتهت مهلة الاتصال بالمتتبّع %1"
 
 #: src/tracker/udptracker.cpp:343
-#, fuzzy, kde-format
+#, kde-format
 msgid "Unable to resolve hostname %1"
-msgstr "غير قادر على إنشاء %1 : %2"
+msgstr "غير قادر على حل اسم المضيف %1"
 
 #: src/upnp/httprequest.cpp:39
 #, kde-format
@@ -456,11 +458,13 @@ msgid ""
 "Forwarding failed:\n"
 "Device does not have a WANIPConnection or WANPPPConnection."
 msgstr ""
+"فشل إعادة التوجيه:\n"
+"لا يحتوي الجهاز على WANIPConnection أو WANPPPConnection."
 
 #: src/upnp/upnprouter.cpp:279
-#, fuzzy, kde-format
+#, kde-format
 msgid "Cannot find port forwarding service in the device's description."
-msgstr "لا يستطيع ابحث منفذ خدمة بوصة جهاز s الوصف!"
+msgstr "لا يمكن العثور على خدمة إعادة توجيه المنفذ في وصف الجهاز."
 
 #: src/util/file.cpp:68
 #, kde-format
@@ -478,9 +482,9 @@ msgid "Cannot create directory %1"
 msgstr "تعذّر إنشاء الدليل %1"
 
 #: src/util/fileops.cpp:150
-#, fuzzy, kde-format
+#, kde-format
 msgid "Cannot symlink %1 to %2: %3"
-msgstr "لا يستطيع إلى 3"
+msgstr "لا يمكن ربط %1 بـ %2: %3"
 
 #: src/util/fileops.cpp:163
 #, kde-format
@@ -519,9 +523,9 @@ msgid "Cannot expand file: %1"
 msgstr "تعذّر توسيع الملف: %1"
 
 #: src/util/fileops.cpp:373
-#, fuzzy, kde-format
+#, kde-format
 msgid "Cannot seek in file: %1"
-msgstr "لا يستطيع استدعاء بوصة ملفّ 1"
+msgstr "لا يمكن البحث في الملف: %1"
 
 #: src/util/fileops.cpp:614
 #, kde-format
