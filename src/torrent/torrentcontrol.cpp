@@ -1126,6 +1126,14 @@ void TorrentControl::trackerScrapeDone()
     stats.leechers_total = psman->getNumLeechers();
 }
 
+void TorrentControl::afterRename()
+{
+    stats_file->write("OUTPUTDIR", cman->getDataDir());
+    stats_file->write("USER_MODIFIED_NAME", user_modified_name);
+    stats_file->sync();
+    cman->saveFileMap();
+}
+
 void TorrentControl::getSeederInfo(Uint32 &total, Uint32 &connected_to) const
 {
     total = 0;
@@ -1662,12 +1670,26 @@ bool TorrentControl::removeWebSeed(const QUrl &url)
 void TorrentControl::setUserModifiedFileName(const QString &n)
 {
     TorrentInterface::setUserModifiedFileName(n);
-    QString path = getDataDir();
-    if (!path.endsWith(bt::DirSeparator()))
+    QString path = stats.output_path;
+    if (path.endsWith(bt::DirSeparator())) {
+        // remove trailing dir separator or QFileInfo::absolutePath used below
+        // will only remove the trailing separator
+        path.removeLast();
+    }
+    QFileInfo fi(path);
+    path = fi.absolutePath();
+    if (!path.endsWith(bt::DirSeparator())) {
+        // re-add the trailing dir separator
         path += bt::DirSeparator();
+    }
 
     cman->changeOutputPath(path + n);
-    outputdir = stats.output_path = path + n;
+    fi.setFile(path + n);
+    if (fi.isDir() && !fi.absoluteFilePath().endsWith(bt::DirSeparator())) {
+        outputdir = stats.output_path = path + n + bt::DirSeparator();
+    } else {
+        outputdir = stats.output_path = path + n;
+    }
     istats.custom_output_name = true;
 }
 

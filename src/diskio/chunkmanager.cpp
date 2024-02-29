@@ -152,6 +152,11 @@ bool ChunkManager::isStorageMounted(QStringList &missing)
     return d->cache->isStorageMounted(missing);
 }
 
+void ChunkManager::saveFileMap()
+{
+    return d->cache->saveFileMap();
+}
+
 Chunk *ChunkManager::getChunk(unsigned int i)
 {
     if (i >= (Uint32)d->chunks.size())
