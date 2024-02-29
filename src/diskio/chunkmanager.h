@@ -305,8 +305,6 @@ public:
     /// Is the storage mounted ?
     bool isStorageMounted(QStringList &missing);
 
-    void saveFileMap();
-
 Q_SIGNALS:
     /**
      * Emitted when a range of chunks has been excluded

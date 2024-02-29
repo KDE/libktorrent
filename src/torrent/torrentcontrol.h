@@ -243,8 +243,6 @@ public:
      * */
     void trackerScrapeDone();
 
-    void afterRename();
-
     /**
      * Enable or disable data check upon completion
      * @param on
