@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-28 01:33+0000\n"
+"POT-Creation-Date: 2024-03-14 00:37+0000\n"
 "PO-Revision-Date: 2013-04-04 06:04+0200\n"
 "Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -131,7 +131,7 @@ msgid "Cannot preallocate diskspace: %1"
 msgstr ""
 "Der benötigte Speicherplatz auf dem Medium kann nicht reserviert werden: %1"
 
-#: src/diskio/chunkmanager.cpp:844 src/diskio/chunkmanager.cpp:867
+#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "Indexdatei %1 kann nicht geöffnet werden: %2"

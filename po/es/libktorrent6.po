@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-28 01:33+0000\n"
+"POT-Creation-Date: 2024-03-14 00:37+0000\n"
 "PO-Revision-Date: 2016-01-07 12:58+0100\n"
 "Last-Translator: Javier Vinal <fjvinal@gmail.com>\n"
 "Language-Team: Spanish <l10n-kde-es@kde.org>\n"
@@ -137,7 +137,7 @@ msgstr "Ha fallado al escribir en el archivo %1: %2"
 msgid "Cannot preallocate diskspace: %1"
 msgstr "No se puede preasignar espacio en disco: %1"
 
-#: src/diskio/chunkmanager.cpp:844 src/diskio/chunkmanager.cpp:867
+#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "No se puede abrir el archivo índice %1: %2"

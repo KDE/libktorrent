@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-28 01:33+0000\n"
+"POT-Creation-Date: 2024-03-14 00:37+0000\n"
 "PO-Revision-Date: 2009-06-07 23:54+0800\n"
 "Last-Translator: Sharuzzaman Ahmat Raslan <sharuzzaman@myrealbox.com>\n"
 "Language-Team: Malay <kedidiemas@yahoogroups.com>\n"
@@ -125,7 +125,7 @@ msgstr "Tidak menjumpai fail comps."
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Pilih direktori baru"
 
-#: src/diskio/chunkmanager.cpp:844 src/diskio/chunkmanager.cpp:867
+#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
 #, fuzzy, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "Ralat mengimport fail %s"

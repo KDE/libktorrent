@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-28 01:33+0000\n"
+"POT-Creation-Date: 2024-03-14 00:37+0000\n"
 "PO-Revision-Date: 2023-02-12 18:47+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -128,7 +128,7 @@ msgstr "Malsukcesis skribi al dosiero %1: %2"
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Ne povas antaŭasigni diskspacon: %1"
 
-#: src/diskio/chunkmanager.cpp:844 src/diskio/chunkmanager.cpp:867
+#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "Ne povas malfermi indeksan dosieron %1: %2"
