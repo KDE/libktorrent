@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: extragear-network-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-03-14 00:37+0000\n"
-"PO-Revision-Date: 2024-02-09 19:17+0300\n"
+"PO-Revision-Date: 2024-03-16 14:01+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.01.95\n"
+"X-Generator: Lokalize 24.02.0\n"
 
 #: src/bcodec/bdecoder.cpp:48
 #, kde-format
@@ -427,7 +427,7 @@ msgstr "İzleyiciden geçersiz veri"
 #: src/tracker/httptracker.cpp:405
 #, kde-format
 msgid "Invalid tracker URL"
-msgstr "Geçersiz izleyici URL'si"
+msgstr "Geçersiz izleyici URL’si"
 
 #: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:315
 #: src/tracker/udptracker.cpp:322
@@ -462,7 +462,7 @@ msgid ""
 "Device does not have a WANIPConnection or WANPPPConnection."
 msgstr ""
 "Yönlendirme başarısız oldu:\n"
-"Aygıt bir WANIPConnection veya WANPPPConnection'a sahip değil."
+"Aygıt bir WANIPConnection veya WANPPPConnection’a sahip değil."
 
 #: src/upnp/upnprouter.cpp:279
 #, kde-format
