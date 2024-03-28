@@ -1,61 +1,61 @@
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the libktorrent package.
+#
+# SPDX-FileCopyrightText: 2024 Enol P. <enolp@softastur.org>
 msgid ""
 msgstr ""
-"Project-Id-Version: kdeorg\n"
+"Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-03-14 00:37+0000\n"
-"PO-Revision-Date: 2024-03-27 19:45\n"
-"Last-Translator: \n"
-"Language-Team: Chinese Simplified\n"
-"Language: zh_CN\n"
+"PO-Revision-Date: 2024-03-27 22:38+0100\n"
+"Last-Translator: Enol P. <enolp@softastur.org>\n"
+"Language-Team: Asturian <alministradores@softastur.org>\n"
+"Language: ast_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: kdeorg\n"
-"X-Crowdin-Project-ID: 269464\n"
-"X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-trunk/messages/libktorrent/libktorrent6.pot\n"
-"X-Crowdin-File-ID: 48712\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 24.02.1\n"
 
 #: src/bcodec/bdecoder.cpp:48
 #, kde-format
 msgid "Illegal token: %1"
-msgstr "非法标记：%1"
+msgstr ""
 
 #: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
 #, kde-format
 msgid "Decode error"
-msgstr "解码错误"
+msgstr ""
 
 #: src/bcodec/bdecoder.cpp:161 src/bcodec/bdecoder.cpp:199
 #, kde-format
 msgid "Unexpected end of input"
-msgstr "意外的输入结尾"
+msgstr ""
 
 #: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
 #, kde-format
 msgid "Cannot convert %1 to an int"
-msgstr "无法将 %1 转换为整型"
+msgstr ""
 
 #: src/bcodec/bdecoder.cpp:223
 #, kde-format
 msgid "Torrent is incomplete."
-msgstr "种子不完整。"
+msgstr ""
 
 #: src/datachecker/datacheckerjob.cpp:67
 #, kde-format
 msgid "Waiting for other data checks to finish"
-msgstr "正在等待其他数据块完成"
+msgstr ""
 
 #: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Checking data"
-msgstr "正在检查数据"
+msgstr ""
 
 #: src/datachecker/datacheckerjob.cpp:120
 #, kde-format
 msgid "Checking Data"
-msgstr "正在检查数据"
+msgstr ""
 
 #: src/datachecker/multidatachecker.cpp:181
 #: src/datachecker/singledatachecker.cpp:34 src/diskio/multifilecache.cpp:621
@@ -63,232 +63,234 @@ msgstr "正在检查数据"
 #: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
 #, kde-format
 msgid "Cannot open file %1: %2"
-msgstr "无法打开文件 %1：%2"
+msgstr ""
 
 #: src/diskio/cache.cpp:148 src/diskio/multifilecache.cpp:95
 #: src/diskio/singlefilecache.cpp:67
 #, kde-format
 msgid "Failed to create %1: %2"
-msgstr "创建 %1 失败：%2"
+msgstr ""
 
 #: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:313
 #: src/util/fileops.cpp:355
 #, kde-format
 msgid "Cannot open %1: %2"
-msgstr "无法打开 %1：%2"
+msgstr ""
 
 #: src/diskio/cachefile.cpp:103 src/diskio/cachefile.cpp:215
 #: src/diskio/cachefile.cpp:368 src/diskio/cachefile.cpp:427
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
-msgstr "无法打开 %1 进行写入：只读文件系统"
+msgstr ""
 
 #: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
-msgstr "试图写入超过 %1 的最大大小的数据"
+msgstr ""
 
 #: src/diskio/cachefile.cpp:220
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
-msgstr "无法展开文件 %1：试图展开的文件超过了最大大小"
+msgstr ""
 
 #: src/diskio/cachefile.cpp:224
 #, kde-format
 msgid "Cannot expand file %1: %2"
-msgstr "无法展开文件 %1：%2"
+msgstr ""
 
 #: src/diskio/cachefile.cpp:336
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
-msgstr "错误：读取超出了文件 %1 的结尾"
+msgstr ""
 
 #: src/diskio/cachefile.cpp:341 src/diskio/cachefile.cpp:383
 #, kde-format
 msgid "Failed to seek file %1: %2"
-msgstr "在文件 %1 中定位失败：%2"
+msgstr ""
 
 #: src/diskio/cachefile.cpp:348
 #, kde-format
 msgid "Error reading from %1"
-msgstr "无法从 %1 读取"
+msgstr ""
 
 #: src/diskio/cachefile.cpp:386
 #, kde-format
 msgid "Failed to write to file %1: %2"
-msgstr "写入文件 %1 失败：%2"
+msgstr ""
 
 #: src/diskio/cachefile.cpp:443
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
-msgstr "无法预分配磁盘空间：%1"
+msgstr ""
 
 #: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
 #, kde-format
 msgid "Cannot open index file %1: %2"
-msgstr "无法打开索引文件 %1：%2"
+msgstr ""
 
 #: src/diskio/dndfile.cpp:72
 #, kde-format
 msgid "Cannot create file %1: %2"
-msgstr "无法创建文件 %1：%2"
+msgstr ""
 
 #: src/diskio/dndfile.cpp:114
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
-msgstr "将第一个数据块写入到 DND 文件失败：%1"
+msgstr ""
 
 #: src/diskio/dndfile.cpp:129
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
-msgstr "将最后一个数据块写入到 DND 文件失败：%1"
+msgstr ""
 
 #: src/diskio/movedatafilesjob.cpp:110
 #, kde-format
 msgid "Waiting for other move jobs to finish"
-msgstr "正在等待其他移动任务完成"
+msgstr ""
 
 #: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
-msgstr "原因"
+msgstr ""
 
 #: src/diskio/movedatafilesjob.cpp:112 src/diskio/movedatafilesjob.cpp:148
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
-msgstr "目的地"
+msgstr ""
 
 #: src/diskio/movedatafilesjob.cpp:146
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
-msgstr "移动中"
+msgstr ""
 
 #: src/diskio/multifilecache.cpp:70 src/diskio/singlefilecache.cpp:57
 #, kde-format
 msgid "Failed to open %1: %2"
-msgstr "打开 %1 失败：%2"
+msgstr ""
 
 #: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
-msgstr "无法写入只读映射的块"
+msgstr ""
 
 #: src/download/chunkdownload.cpp:342
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
-msgstr[0] "%1 个对等点"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/download/downloader.cpp:693
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
-msgstr "因为网络种子不匹配种子文件而禁用"
+msgstr ""
 
 #: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
 #: src/download/webseed.cpp:85
 #, kde-format
 msgid "Not connected"
-msgstr "未联机"
+msgstr ""
 
 #: src/download/httpconnection.cpp:96
 #, kde-format
 msgid "Resolving proxy %1:%2"
-msgstr "正在解析代理 %1：%2"
+msgstr ""
 
 #: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
 #, kde-format
 msgid "Not enough system resources available"
-msgstr "系统资源不足"
+msgstr ""
 
 #: src/download/httpconnection.cpp:110
 #, kde-format
 msgid "Resolving hostname %1"
-msgstr "正在解析主机名 %1"
+msgstr ""
 
 #: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
 #, kde-format
 msgid "Connection closed"
-msgstr "连接关闭"
+msgstr ""
 
 #: src/download/httpconnection.cpp:130
 #, kde-format
 msgid "Error: request failed: %1"
-msgstr "错误：请求失败：%1"
+msgstr ""
 
 #: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
 #, kde-format
 msgid "Connected"
-msgstr "已连接"
+msgstr ""
 
 #: src/download/httpconnection.cpp:162
 #, kde-format
 msgid "Error: Failed to connect to webseed"
-msgstr "错误：连接到网络种子失败"
+msgstr ""
 
 #: src/download/httpconnection.cpp:186
 #, kde-format
 msgid "Connecting"
-msgstr "正在连接"
+msgstr ""
 
 #: src/download/httpconnection.cpp:195
 #, kde-format
 msgid "Failed to connect to webseed"
-msgstr "连接到网络种子失败"
+msgstr ""
 
 #: src/download/httpconnection.cpp:200
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
-msgstr "解析网络种子主机名失败"
+msgstr ""
 
 #: src/download/httpconnection.cpp:271
 #, kde-format
 msgid "Error: failed to connect, server not responding"
-msgstr "错误：连接失败，服务器没有响应"
+msgstr ""
 
 #: src/download/httpconnection.cpp:281
 #, kde-format
 msgid "Error: request timed out"
-msgstr "错误：请求超时"
+msgstr ""
 
 #: src/download/httpconnection.cpp:351
 #, kde-format
 msgid "Redirected without a new location."
-msgstr "没有新位置就重定向。"
+msgstr ""
 
 #: src/download/webseed.cpp:500
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
-msgstr[0] "不使用 %1 秒(连接失败次数太多)"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/interfaces/trackerinterface.cpp:45
 #, kde-format
 msgid "OK"
-msgstr "确定"
+msgstr ""
 
 #: src/interfaces/trackerinterface.cpp:45
 #, kde-format
 msgid "Warning: %1"
-msgstr "警告：%1"
+msgstr ""
 
 #: src/interfaces/trackerinterface.cpp:47
 #, kde-format
 msgid "Announcing"
-msgstr "正在宣告"
+msgstr ""
 
 #: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
 #, kde-format
 msgid "Error: %1"
-msgstr "错误：%1"
+msgstr ""
 
 #: src/peer/peerid.cpp:299
 #, kde-format
 msgid "Unknown client"
-msgstr "未知客户端"
+msgstr ""
 
 #: src/torrent/torrent.cpp:96 src/torrent/torrent.cpp:153
 #: src/torrent/torrent.cpp:180 src/torrent/torrent.cpp:187
@@ -296,147 +298,147 @@ msgstr "未知客户端"
 #: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
 #, kde-format
 msgid "Corrupted torrent."
-msgstr "损坏的种子。"
+msgstr ""
 
 #: src/torrent/torrentcontrol.cpp:277
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
-msgstr "写入磁盘出错，是否有足够的磁盘空间？"
+msgstr ""
 
 #: src/torrent/torrentcontrol.cpp:492
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
-msgstr "加载 <b>%1</b> 时出错：<br/><b>%2</b>"
+msgstr ""
 
 #: src/torrent/torrentcontrol.cpp:502
 #, kde-format
 msgid "Unable to create %1: %2"
-msgstr "无法创建 %1：%2"
+msgstr ""
 
 #: src/torrent/torrentcontrol.cpp:515
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
 "both torrents have been merged."
-msgstr "您已经在下载这个种子 <b>%1</b>，两个种子的追踪器列表已经被合并。"
+msgstr ""
 
 #: src/torrent/torrentcontrol.cpp:519
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
-msgstr "您已经在下载这个种子 <b>%1</b>。"
+msgstr ""
 
 #: src/torrent/torrentcreator.cpp:332
 #, kde-format
 msgid "Cannot create index file: %1"
-msgstr "无法创建索引文件：%1"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:72
 #, kde-format
 msgid "Not started"
-msgstr "未开始"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:74
 #, kde-format
 msgid "Download completed"
-msgstr "下载完成"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:76
 #, kde-format
 msgid "Seeding completed"
-msgstr "做种完成"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:78
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
-msgstr "做种中"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:80
 #, kde-format
 msgid "Downloading"
-msgstr "下载中"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:82
 #, kde-format
 msgid "Stalled"
-msgstr "已停顿"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:84
 #, kde-format
 msgid "Stopped"
-msgstr "已停止"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:88
 #, kde-format
 msgid "Allocating diskspace"
-msgstr "正在分配磁盘空间"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:90
 #, kde-format
 msgid "Queued for seeding"
-msgstr "排队做种"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:90
 #, kde-format
 msgid "Queued for downloading"
-msgstr "排队下载"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:94
 #, kde-format
 msgid "Stopped. No space left on device."
-msgstr "已停止。设备上已经没有空间。"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:96
 #, kde-format
 msgid "Paused"
-msgstr "已暂停"
+msgstr ""
 
 #: src/torrent/torrentstats.cpp:98
 #, kde-format
 msgid "Superseeding"
-msgstr "超级种子"
+msgstr ""
 
 #: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
 #: src/tracker/httptracker.cpp:390
 #, kde-format
 msgid "Invalid response from tracker"
-msgstr "无效的追踪器响应"
+msgstr ""
 
 #: src/tracker/httptracker.cpp:251
 #, kde-format
 msgid "Invalid data from tracker"
-msgstr "无效的追踪器数据"
+msgstr ""
 
 #: src/tracker/httptracker.cpp:405
 #, kde-format
 msgid "Invalid tracker URL"
-msgstr "无效的追踪器 URL"
+msgstr ""
 
 #: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:315
 #: src/tracker/udptracker.cpp:322
 #, kde-format
 msgid "Timeout contacting tracker %1"
-msgstr "与追踪器 %1 通讯超时"
+msgstr ""
 
 #: src/tracker/udptracker.cpp:343
 #, kde-format
 msgid "Unable to resolve hostname %1"
-msgstr "无法解析主机名 %1"
+msgstr ""
 
 #: src/upnp/httprequest.cpp:39
 #, kde-format
 msgid "Operation timed out"
-msgstr "操作超时"
+msgstr ""
 
 #: src/upnp/upnprouter.cpp:156
 #, kde-format
 msgid "Failed to download %1: %2"
-msgstr "下载 %1 失败：%2"
+msgstr ""
 
 #: src/upnp/upnprouter.cpp:166
 #, kde-format
 msgid "Error parsing router description."
-msgstr "解析路由描述出错。"
+msgstr ""
 
 #: src/upnp/upnprouter.cpp:200
 #, kde-format
@@ -444,115 +446,114 @@ msgid ""
 "Forwarding failed:\n"
 "Device does not have a WANIPConnection or WANPPPConnection."
 msgstr ""
-"转发失败：\n"
-"设备没有 WANIP 连接或 WANPPP 连接。"
 
 #: src/upnp/upnprouter.cpp:279
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
-msgstr "无法在设备描述中找到端口转发服务。"
+msgstr ""
 
 #: src/util/file.cpp:68
 #, kde-format
 msgid "Cannot write to %1: %2"
-msgstr "无法写入 %1：%2"
+msgstr ""
 
 #: src/util/file.cpp:81
 #, kde-format
 msgid "Cannot read from %1"
-msgstr "无法从 %1 读取"
+msgstr ""
 
 #: src/util/fileops.cpp:92
 #, kde-format
 msgid "Cannot create directory %1"
-msgstr "无法创建文件夹 %1"
+msgstr ""
 
 #: src/util/fileops.cpp:150
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
-msgstr "无法创建符号链接 %1 到 %2：%3"
+msgstr ""
 
 #: src/util/fileops.cpp:163
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
-msgstr "无法移动 %1 到 %2：%3"
+msgstr ""
 
 #: src/util/fileops.cpp:174 src/util/fileops.cpp:185
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
-msgstr "无法复制 %1 到 %2：%3"
+msgstr ""
 
 #: src/util/fileops.cpp:239
 #, kde-format
 msgid "Cannot delete %1: %2"
-msgstr "无法删除 %1：%2"
+msgstr ""
 
 #: src/util/fileops.cpp:255
 #, kde-format
 msgid "Cannot create %1: %2"
-msgstr "无法创建 %1：%2"
+msgstr ""
 
 #: src/util/fileops.cpp:272
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
-msgstr "无法计算 %1 的文件大小：%2"
+msgstr ""
 
 #: src/util/fileops.cpp:288
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
-msgstr "无法计算文件大小：%1"
+msgstr ""
 
 #: src/util/fileops.cpp:333 src/util/fileops.cpp:337 src/util/fileops.cpp:340
 #: src/util/fileops.cpp:343 src/util/fileops.cpp:346
 #, kde-format
 msgid "Cannot expand file: %1"
-msgstr "无法展开文件：%1"
+msgstr ""
 
 #: src/util/fileops.cpp:373
 #, kde-format
 msgid "Cannot seek in file: %1"
-msgstr "无法在文件中定位：%1"
+msgstr ""
 
 #: src/util/fileops.cpp:614
 #, kde-format
 msgid "Unable to open file %1: %2"
-msgstr "无法打开文件“%1”：%2"
+msgstr ""
 
 #: src/util/functions.cpp:205
 #, kde-format
 msgid "%1/s"
-msgstr "%1/s"
+msgstr ""
 
 #: src/util/functions.cpp:214
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
-msgstr[0] "%1 天 "
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/util/logsystemmanager.cpp:19
 #, kde-format
 msgid "General"
-msgstr "常规"
+msgstr ""
 
 #: src/util/logsystemmanager.cpp:20
 #, kde-format
 msgid "Connections"
-msgstr "连接"
+msgstr ""
 
 #: src/util/logsystemmanager.cpp:21
 #, kde-format
 msgid "Tracker"
-msgstr "跟踪"
+msgstr ""
 
 #: src/util/logsystemmanager.cpp:22
 #, kde-format
 msgid "DHT"
-msgstr "DHT"
+msgstr ""
 
 #: src/util/logsystemmanager.cpp:23
 #, kde-format
 msgid "Disk Input/Output"
-msgstr "磁盘输入/输出"
+msgstr ""
 
 #: src/util/logsystemmanager.cpp:24
 #, kde-format
@@ -562,9 +563,9 @@ msgstr "µTP"
 #: src/util/signalcatcher.cpp:62
 #, kde-format
 msgid "Error when writing to disk"
-msgstr "写入磁盘出错"
+msgstr ""
 
 #: src/util/signalcatcher.cpp:62
 #, kde-format
 msgid "Error when reading from disk"
-msgstr "从磁盘读取出错"
+msgstr ""
