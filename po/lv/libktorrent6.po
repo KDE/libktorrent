@@ -9,14 +9,15 @@
 # Maris Nartiss <maris.kde@gmail.com>, 2008.
 # Viesturs Zariņš <viesturs.zarins@mii.lu.lv>, 2009.
 # Einars Sprugis <einars8@gmail.com>, 2010.
+# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-03-14 00:37+0000\n"
-"PO-Revision-Date: 2010-09-11 19:26+0300\n"
-"Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
-"Language-Team: Latvian <locale@laka.lv>\n"
+"PO-Revision-Date: 2024-04-03 17:19+0300\n"
+"Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,12 +25,12 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 "X-Launchpad-Export-Date: 2008-02-07 18:04+0000\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: src/bcodec/bdecoder.cpp:48
 #, kde-format
 msgid "Illegal token: %1"
-msgstr "Nederīga iezīme: %1"
+msgstr "Nederīgs marķieris: %1"
 
 #: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
 #, kde-format
@@ -44,17 +45,17 @@ msgstr "Negaidītas ievada beigas"
 #: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
 #, kde-format
 msgid "Cannot convert %1 to an int"
-msgstr "Neizdevās pārveidot %1 par int"
+msgstr "Neizdevās pārveidot %1 par „int“"
 
 #: src/bcodec/bdecoder.cpp:223
 #, kde-format
 msgid "Torrent is incomplete."
-msgstr "Torrents ir nepilnīgs."
+msgstr "Torents ir nepilnīgs."
 
 #: src/datachecker/datacheckerjob.cpp:67
 #, kde-format
 msgid "Waiting for other data checks to finish"
-msgstr ""
+msgstr "Gaida citas datu pārbaudes, lai pabeigtu"
 
 #: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
 #, kde-format
@@ -62,8 +63,7 @@ msgid "Checking data"
 msgstr "Pārbauda datus"
 
 #: src/datachecker/datacheckerjob.cpp:120
-#, fuzzy, kde-format
-#| msgid "Checking data"
+#, kde-format
 msgid "Checking Data"
 msgstr "Pārbauda datus"
 
@@ -73,142 +73,122 @@ msgstr "Pārbauda datus"
 #: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
 #, kde-format
 msgid "Cannot open file %1: %2"
-msgstr "Neizdevās atvērt failu %1: %2"
+msgstr "Neizdevās atvērt datni „%1“: %2"
 
 #: src/diskio/cache.cpp:148 src/diskio/multifilecache.cpp:95
 #: src/diskio/singlefilecache.cpp:67
-#, fuzzy, kde-format
-#| msgid "Failed to create %1 : %2"
+#, kde-format
 msgid "Failed to create %1: %2"
-msgstr "Neizdevās izveidot %1: %2"
+msgstr "Neizdevās izveidot „%1“: %2"
 
 #: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:313
 #: src/util/fileops.cpp:355
-#, fuzzy, kde-format
-#| msgid "Cannot open %1 : %2"
+#, kde-format
 msgid "Cannot open %1: %2"
-msgstr "Neizdevās atvērt %1 : %2"
+msgstr "Neizdevās atvērt „%1“: %2"
 
 #: src/diskio/cachefile.cpp:103 src/diskio/cachefile.cpp:215
 #: src/diskio/cachefile.cpp:368 src/diskio/cachefile.cpp:427
-#, fuzzy, kde-format
-#| msgid "Cannot open %1 for writing : readonly filesystem"
+#, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr ""
-"Neizdevās atvērt failu %1 rakstīšanas režīmā: failu sistēma neatbalsta "
-"rakstīšanu"
+"Neizdevās atvērt „%1“ rakstīšanas režīmā: datņu sistēma ir tikai lasāma"
 
 #: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
-msgstr "Mēģinājums rakstīt aiz %1 maksimālā izmēra"
+msgstr "Mēģinājums rakstīt aiz „%1“ maksimālā izmēra"
 
 #: src/diskio/cachefile.cpp:220
-#, fuzzy, kde-format
-#| msgid ""
-#| "Cannot expand file %1 : attempting to grow the file beyond the maximum "
-#| "size"
+#, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
 msgstr ""
-"Neizdevās paplašināt failu %1: mēģinājums pieaudzēt failu aiz maksimālā "
+"Neizdevās paplašināt datni „%1“: mēģinājums pieaudzēt datni aiz maksimālā "
 "izmēra"
 
 #: src/diskio/cachefile.cpp:224
-#, fuzzy, kde-format
-#| msgid "Cannot expand file %1 : %2"
+#, kde-format
 msgid "Cannot expand file %1: %2"
-msgstr "Nevar paplašināt failu %1: %2"
+msgstr "Nevar paplašināt datni „%1“: %2"
 
 #: src/diskio/cachefile.cpp:336
-#, fuzzy, kde-format
-#| msgid "Error : Reading past the end of the file %1"
+#, kde-format
 msgid "Error: Reading past the end of the file %1"
-msgstr "Kļūda: lasīts ārpus faila %1beigām"
+msgstr "Kļūda: lasīts ārpus datnes „%1“ beigām"
 
 #: src/diskio/cachefile.cpp:341 src/diskio/cachefile.cpp:383
-#, fuzzy, kde-format
-#| msgid "Failed to seek file %1 : %2"
+#, kde-format
 msgid "Failed to seek file %1: %2"
-msgstr "Neizdevās uzstādīt pozīciju failā %1: %2"
+msgstr "Neizdevās atrast pozīciju datnē „%1“: %2"
 
 #: src/diskio/cachefile.cpp:348
 #, kde-format
 msgid "Error reading from %1"
-msgstr "Kļūda lasot no %1"
+msgstr "Kļūda, lasot no „%1“"
 
 #: src/diskio/cachefile.cpp:386
-#, fuzzy, kde-format
-#| msgid "Failed to write to file %1 : %2"
+#, kde-format
 msgid "Failed to write to file %1: %2"
-msgstr "Neizdevās ierakstīt failā %1: %2"
+msgstr "Neizdevās rakstīt datnē „%1“: %2"
 
 #: src/diskio/cachefile.cpp:443
-#, fuzzy, kde-format
-#| msgid "Cannot preallocate diskspace : %1"
+#, kde-format
 msgid "Cannot preallocate diskspace: %1"
-msgstr "Neizdevās rezervēt vietu uz diska : %1"
+msgstr "Neizdevās rezervēt vietu diskā: %1"
 
 #: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
-#, fuzzy, kde-format
-#| msgid "Cannot open index file %1 : %2"
+#, kde-format
 msgid "Cannot open index file %1: %2"
-msgstr "Neizdevās atvērt indeksa failu %1 : %2"
+msgstr "Neizdevās atvērt indeksa datni „%1“: %2"
 
 #: src/diskio/dndfile.cpp:72
-#, fuzzy, kde-format
-#| msgid "Cannot create file %1 : %2"
+#, kde-format
 msgid "Cannot create file %1: %2"
-msgstr "Neizdevās izveidot failu %1 : %2"
+msgstr "Neizdevās izveidot datni %1: %2"
 
 #: src/diskio/dndfile.cpp:114
-#, fuzzy, kde-format
-#| msgid "Failed to write first chunk to DND file : %1"
+#, kde-format
 msgid "Failed to write first chunk to DND file: %1"
-msgstr "Neizdevās ierakstīt pirmo gabalu DND failā : %1"
+msgstr "Neizdevās ierakstīt pirmo gabalu DND datnē: %1"
 
 #: src/diskio/dndfile.cpp:129
-#, fuzzy, kde-format
-#| msgid "Failed to write last chunk to DND file : %1"
+#, kde-format
 msgid "Failed to write last chunk to DND file: %1"
-msgstr "Neizdevās ierakstīt pēdējo gabalu DND failā : %1"
+msgstr "Neizdevās ierakstīt pēdējo gabalu DND datnē: %1"
 
 #: src/diskio/movedatafilesjob.cpp:110
 #, kde-format
 msgid "Waiting for other move jobs to finish"
-msgstr ""
+msgstr "Gaida, kad beigsies citi pārvietošanas uzdevumi"
 
 #: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
-#, fuzzy, kde-format
-#| msgid "Add Source"
+#, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
-msgstr "Pievienot avotu"
+msgstr "Avots"
 
 #: src/diskio/movedatafilesjob.cpp:112 src/diskio/movedatafilesjob.cpp:148
-#, fuzzy, kde-format
-#| msgid "Destination"
+#, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
-msgstr "Mērķis"
+msgstr "Galamērķis"
 
 #: src/diskio/movedatafilesjob.cpp:146
-#, fuzzy, kde-format
-#| msgid "Moving average"
+#, kde-format
 msgctxt "@title job"
 msgid "Moving"
-msgstr "Slīdošais vidējais"
+msgstr "Pārvieto"
 
 #: src/diskio/multifilecache.cpp:70 src/diskio/singlefilecache.cpp:57
-#, fuzzy, kde-format
-#| msgid "Failed to open %1 : %2"
+#, kde-format
 msgid "Failed to open %1: %2"
-msgstr "Neizdevās atvērt %1 : %2"
+msgstr "Neizdevās atvērt „%1“: %2"
 
 #: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
-msgstr ""
+msgstr "Neizdevās rakstīt gabalā, kas ir atzīmēts kā tikai lasāms"
 
 #: src/download/chunkdownload.cpp:342
 #, kde-format
@@ -219,10 +199,9 @@ msgstr[1] "%1 dalībnieki"
 msgstr[2] "%1 dalībnieku"
 
 #: src/download/downloader.cpp:693
-#, fuzzy, kde-format
-#| msgid "Displays all the webseeds of a torrent"
+#, kde-format
 msgid "Disabled because webseed does not match torrent"
-msgstr "Rāda visus torrenta tīmekļa devējus"
+msgstr "Izslēgts, jo tīmekļa došana neatbilst torentam"
 
 #: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
 #: src/download/webseed.cpp:85
@@ -233,18 +212,17 @@ msgstr "Nav savienots"
 #: src/download/httpconnection.cpp:96
 #, kde-format
 msgid "Resolving proxy %1:%2"
-msgstr "Atrod starpniekserveri %1:%2"
+msgstr "Atrod starpniekserveri „%1“:%2"
 
 #: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
-#, fuzzy, kde-format
-#| msgid "There is not enough diskspace available."
+#, kde-format
 msgid "Not enough system resources available"
-msgstr "Nepietiek brīvas vietas uz diska."
+msgstr "Nepietiek pieejamo sistēmas resursu"
 
 #: src/download/httpconnection.cpp:110
 #, kde-format
 msgid "Resolving hostname %1"
-msgstr "Atrod datoru %1"
+msgstr "Atrod resursdatoru „%1“"
 
 #: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
 #, kde-format
@@ -259,32 +237,32 @@ msgstr "Kļūda: neveiksmīgs pieprasījums: %1"
 #: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
 #, kde-format
 msgid "Connected"
-msgstr "Pieslēdzies"
+msgstr "Savienojies"
 
 #: src/download/httpconnection.cpp:162
 #, kde-format
 msgid "Error: Failed to connect to webseed"
-msgstr "Kļūda: neizdevās pieslēgties tīmekļa devējam"
+msgstr "Kļūda: neizdevās savienoties tīmekļa došanai"
 
 #: src/download/httpconnection.cpp:186
 #, kde-format
 msgid "Connecting"
-msgstr "Pieslēdzas"
+msgstr "Savienojas"
 
 #: src/download/httpconnection.cpp:195
 #, kde-format
 msgid "Failed to connect to webseed"
-msgstr "Neizdevās pieslēgties tīmekļa devējam"
+msgstr "Neizdevās savienoties tīmekļa došanai"
 
 #: src/download/httpconnection.cpp:200
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
-msgstr "Neizdevās atpazīt tīmekļa devēja datora nosaukumu"
+msgstr "Neizdevās atpazīt tīmekļa došanas resursdatora nosaukumu"
 
 #: src/download/httpconnection.cpp:271
 #, kde-format
 msgid "Error: failed to connect, server not responding"
-msgstr "Kļūda: neizdevās pieslēgties, serveris neatbild"
+msgstr "Kļūda: neizdevās savienoties, serveris neatbild"
 
 #: src/download/httpconnection.cpp:281
 #, kde-format
@@ -300,9 +278,9 @@ msgstr "Pārsūtīts bez jaunas vietas."
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Neizmantots %1 sekundi (par daudz neizdevušos savienojumu)"
+msgstr[1] "Neizmantots %1 sekundes (par daudz neizdevušos savienojumu)"
+msgstr[2] "Neizmantots %1 sekunžu (par daudz neizdevušos savienojumu)"
 
 #: src/interfaces/trackerinterface.cpp:45
 #, kde-format
@@ -310,10 +288,9 @@ msgid "OK"
 msgstr "Labi"
 
 #: src/interfaces/trackerinterface.cpp:45
-#, fuzzy, kde-format
-#| msgid "Opening %1"
+#, kde-format
 msgid "Warning: %1"
-msgstr "Atver %1"
+msgstr "Brīdinājums: %1"
 
 #: src/interfaces/trackerinterface.cpp:47
 #, kde-format
@@ -336,23 +313,22 @@ msgstr "Nepazīstama programma"
 #: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
 #, kde-format
 msgid "Corrupted torrent."
-msgstr "Bojāts torrents."
+msgstr "Bojāts torents."
 
 #: src/torrent/torrentcontrol.cpp:277
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
-msgstr ""
+msgstr "Kļūda, rakstot diskā. Vai tajā pietiek vietas?"
 
 #: src/torrent/torrentcontrol.cpp:492
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
-msgstr ""
+msgstr "Ielādes laikā ir notikusi kļūda <b>%1</b>:<br/><b>%2</b>"
 
 #: src/torrent/torrentcontrol.cpp:502
-#, fuzzy, kde-format
-#| msgid "Unable to create %1 : %2"
+#, kde-format
 msgid "Unable to create %1: %2"
-msgstr "Neizdevās izveidot %1 : %2"
+msgstr "Neizdevās izveidot „%1“: %2"
 
 #: src/torrent/torrentcontrol.cpp:515
 #, kde-format
@@ -360,18 +336,18 @@ msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
 "both torrents have been merged."
 msgstr ""
-"Jūs jau ielādējat torrentu <b>%1</b>. Abu torrentu trakeru saraksti tika "
+"Jūs jau lejupielādējat torentu <b>%1</b>. Abu torentu sekotāju saraksti ir "
 "apvienoti."
 
 #: src/torrent/torrentcontrol.cpp:519
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
-msgstr "Jūs jau ielādējat torrentu <b>%1</b>."
+msgstr "Jūs jau lejupielādējat torentu <b>%1</b>."
 
 #: src/torrent/torrentcreator.cpp:332
 #, kde-format
 msgid "Cannot create index file: %1"
-msgstr "Nevar izveidot indeksa failu: %1"
+msgstr "Nevar izveidot indeksa datni: %1"
 
 #: src/torrent/torrentstats.cpp:72
 #, kde-format
@@ -381,18 +357,18 @@ msgstr "Nav sākts"
 #: src/torrent/torrentstats.cpp:74
 #, kde-format
 msgid "Download completed"
-msgstr "Lejupielāde pabeigta"
+msgstr "Lejupielāde ir pabeigta"
 
 #: src/torrent/torrentstats.cpp:76
 #, kde-format
 msgid "Seeding completed"
-msgstr "Piedāvāšana pabeigta"
+msgstr "Došana ir pabeigta"
 
 #: src/torrent/torrentstats.cpp:78
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
-msgstr "Piedāvā"
+msgstr "Dod"
 
 #: src/torrent/torrentstats.cpp:80
 #, kde-format
@@ -412,12 +388,12 @@ msgstr "Apturēts"
 #: src/torrent/torrentstats.cpp:88
 #, kde-format
 msgid "Allocating diskspace"
-msgstr "Rezervē viedu uz diska"
+msgstr "Rezervē vietu diskā"
 
 #: src/torrent/torrentstats.cpp:90
 #, kde-format
 msgid "Queued for seeding"
-msgstr "Ierindots piedāvāšanai"
+msgstr "Ierindots došanai"
 
 #: src/torrent/torrentstats.cpp:90
 #, kde-format
@@ -427,7 +403,7 @@ msgstr "Ierindots lejupielādei"
 #: src/torrent/torrentstats.cpp:94
 #, kde-format
 msgid "Stopped. No space left on device."
-msgstr "Apturēts. Vairs nav vietas uz diska."
+msgstr "Apturēts. Nepietiek vietas diskā."
 
 #: src/torrent/torrentstats.cpp:96
 #, kde-format
@@ -435,66 +411,60 @@ msgid "Paused"
 msgstr "Pauzēts"
 
 #: src/torrent/torrentstats.cpp:98
-#, fuzzy, kde-format
-#| msgctxt "Status of a torrent file"
-#| msgid "Seeding"
+#, kde-format
 msgid "Superseeding"
-msgstr "Piedāvā"
+msgstr "Superdošana"
 
 #: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
 #: src/tracker/httptracker.cpp:390
 #, kde-format
 msgid "Invalid response from tracker"
-msgstr "Nepareiza atbilde no trakera"
+msgstr "Nepareiza atbilde no sekotāja"
 
 #: src/tracker/httptracker.cpp:251
 #, kde-format
 msgid "Invalid data from tracker"
-msgstr "Nederīgi dati no trakera"
+msgstr "Nederīgi dati no sekotāja"
 
 #: src/tracker/httptracker.cpp:405
 #, kde-format
 msgid "Invalid tracker URL"
-msgstr "Nederīgs trakera URL"
+msgstr "Nederīgs sekotāja URL"
 
 #: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:315
 #: src/tracker/udptracker.cpp:322
 #, kde-format
 msgid "Timeout contacting tracker %1"
-msgstr "Noildze sazinoties ar trakeri %1"
+msgstr "Noildze sazinoties ar sekotāju „%1“"
 
 #: src/tracker/udptracker.cpp:343
 #, kde-format
 msgid "Unable to resolve hostname %1"
-msgstr "Neizdevās atpazīt datora nosaukumu %1"
+msgstr "Neizdevās atrisināt datora nosaukumu „%1“"
 
 #: src/upnp/httprequest.cpp:39
 #, kde-format
 msgid "Operation timed out"
-msgstr ""
+msgstr "Darbības noildze"
 
 #: src/upnp/upnprouter.cpp:156
-#, fuzzy, kde-format
-#| msgid "Failed to download %1 : %2"
+#, kde-format
 msgid "Failed to download %1: %2"
-msgstr "Neizdevās lejupielādēt %1 : %2"
+msgstr "Neizdevās lejupielādēt „%1“: %2"
 
 #: src/upnp/upnprouter.cpp:166
 #, kde-format
 msgid "Error parsing router description."
-msgstr "Kļūda analizējot maršutētāja aprakstu."
+msgstr "Kļūda, analizējot maršrutētāja aprakstu."
 
 #: src/upnp/upnprouter.cpp:200
-#, fuzzy, kde-format
-#| msgid ""
-#| "Forwarding failed: \n"
-#| "Device does not have a WANIPConnection or WANPPPConnection."
+#, kde-format
 msgid ""
 "Forwarding failed:\n"
 "Device does not have a WANIPConnection or WANPPPConnection."
 msgstr ""
-"Neizdevās pārsūtīt: \n"
-"Ierīcei nav WANIPConnection vai WANPPPConnection."
+"Neizdevās pārsūtīt:\n"
+"Ierīcei nav „WANIPConnection“ vai „WANPPPConnection“."
 
 #: src/upnp/upnprouter.cpp:279
 #, kde-format
@@ -502,79 +472,75 @@ msgid "Cannot find port forwarding service in the device's description."
 msgstr "Neizdevās ierīces aprakstā atrast portu pāradresēšanas servisu."
 
 #: src/util/file.cpp:68
-#, fuzzy, kde-format
-#| msgid "Cannot write to %1 : %2"
+#, kde-format
 msgid "Cannot write to %1: %2"
-msgstr "Neizdevās ierakstīt failā %1 : %2"
+msgstr "Neizdevās rakstīt datnē „%1“: %2"
 
 #: src/util/file.cpp:81
 #, kde-format
 msgid "Cannot read from %1"
-msgstr "Neizdevās nolasīt no %1"
+msgstr "Neizdevās nolasīt no „%1“"
 
 #: src/util/fileops.cpp:92
 #, kde-format
 msgid "Cannot create directory %1"
-msgstr "Neizdevās izveidot mapi %1"
+msgstr "Neizdevās izveidot mapi „%1“"
 
 #: src/util/fileops.cpp:150
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
-msgstr "Neizdevās saitēt %1 uz %2: %3"
+msgstr "Neizdevās saitēt „%1“ uz „%2“: %3"
 
 #: src/util/fileops.cpp:163
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
-msgstr "Neizdevās pārvietot %1 uz %2: %3"
+msgstr "Neizdevās pārvietot „%1“ uz „%2“: %3"
 
 #: src/util/fileops.cpp:174 src/util/fileops.cpp:185
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
-msgstr "Neizdevās nokopēt %1 uz %2: %3"
+msgstr "Neizdevās nokopēt „%1“ uz „%2“: %3"
 
 #: src/util/fileops.cpp:239
 #, kde-format
 msgid "Cannot delete %1: %2"
-msgstr "Neizdevās izdzēst %1: %2"
+msgstr "Neizdevās izdzēst „%1“: %2"
 
 #: src/util/fileops.cpp:255
 #, kde-format
 msgid "Cannot create %1: %2"
-msgstr "Neizdevās izveidot %1: %2"
+msgstr "Neizdevās izveidot „%1“: %2"
 
 #: src/util/fileops.cpp:272
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
-msgstr "Neizdevās aprēķināt izmēru failam %1 : %2"
+msgstr "Neizdevās aprēķināt izmēru datnei „%1“: %2"
 
 #: src/util/fileops.cpp:288
-#, fuzzy, kde-format
-#| msgid "Cannot calculate the filesize : %1"
+#, kde-format
 msgid "Cannot calculate the filesize: %1"
-msgstr "Neizdevās aprēķināt faila izmēru : %1"
+msgstr "Neizdevās aprēķināt datnes izmēru: %1"
 
 #: src/util/fileops.cpp:333 src/util/fileops.cpp:337 src/util/fileops.cpp:340
 #: src/util/fileops.cpp:343 src/util/fileops.cpp:346
 #, kde-format
 msgid "Cannot expand file: %1"
-msgstr "Neizdevās paplašināt failu: %1"
+msgstr "Neizdevās paplašināt datni: %1"
 
 #: src/util/fileops.cpp:373
-#, fuzzy, kde-format
-#| msgid "Cannot seek in file : %1"
+#, kde-format
 msgid "Cannot seek in file: %1"
-msgstr "Neizdevās meklēt failā : %1"
+msgstr "Neizdevās meklēt datnē: %1"
 
 #: src/util/fileops.cpp:614
-#, fuzzy, kde-format
-#| msgid " Unable to open torrent file %1 : %2"
+#, kde-format
 msgid "Unable to open file %1: %2"
-msgstr " Neizdevās atvērt torrenta failu %1 : %2"
+msgstr "Neizdevās atvērt datni „%1“: %2"
 
 #: src/util/functions.cpp:205
 #, kde-format
 msgid "%1/s"
-msgstr "%1/s"
+msgstr "%1/sek."
 
 #: src/util/functions.cpp:214
 #, kde-format
@@ -597,7 +563,7 @@ msgstr "Savienojumi"
 #: src/util/logsystemmanager.cpp:21
 #, kde-format
 msgid "Tracker"
-msgstr "Trakeris"
+msgstr "Sekotājs"
 
 #: src/util/logsystemmanager.cpp:22
 #, kde-format
@@ -615,16 +581,14 @@ msgid "µTP"
 msgstr "µTP"
 
 #: src/util/signalcatcher.cpp:62
-#, fuzzy, kde-format
-#| msgid "Error reading from %1"
+#, kde-format
 msgid "Error when writing to disk"
-msgstr "Kļūda lasot no %1"
+msgstr "Kļūda, lasot diskā"
 
 #: src/util/signalcatcher.cpp:62
-#, fuzzy, kde-format
-#| msgid "Error reading from %1"
+#, kde-format
 msgid "Error when reading from disk"
-msgstr "Kļūda lasot no %1"
+msgstr "Kļūda, lasot no diska"
 
 #~ msgid "The directory %1 does not exist"
 #~ msgstr "Mape %1 nepastāv"
