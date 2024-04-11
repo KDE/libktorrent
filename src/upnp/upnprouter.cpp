@@ -387,6 +387,8 @@ void UPnPRouter::UPnPRouterPrivate::forward(const UPnPService *srv, const net::P
     // add all the arguments for the command
     QList<SOAP::Arg> args;
     SOAP::Arg a;
+    a.element = "NewRemoteHost";
+    args.append(a);
 
     // the external port
     a.element = "NewExternalPort";
@@ -445,8 +447,8 @@ void UPnPRouter::UPnPRouterPrivate::undoForward(const UPnPService *srv, const ne
     // add all the arguments for the command
     QList<SOAP::Arg> args;
     SOAP::Arg a;
-    // a.element = "NewRemoteHost";
-    // args.append(a);
+    a.element = "NewRemoteHost";
+    args.append(a);
 
     // the external port
     a.element = "NewExternalPort";
