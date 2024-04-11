@@ -371,7 +371,7 @@ HTTPRequest *UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString &query, 
     networkReq.setRawHeader("Host", host.toLatin1() + QByteArrayLiteral(":") + QByteArray::number(port));
     networkReq.setRawHeader("User-Agent", bt::GetVersionString().toLatin1());
     networkReq.setHeader(QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml"));
-    networkReq.setRawHeader("SOAPAction", soapact.toLatin1());
+    networkReq.setRawHeader("SOAPAction", QByteArrayLiteral("\"") + soapact.toLatin1() + QByteArrayLiteral("\""));
 
     HTTPRequest *r = new HTTPRequest(networkReq, query, host, port, verbose);
     if (!at_exit) {
