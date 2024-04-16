@@ -1,0 +1,581 @@
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the libktorrent package.
+#
+# SPDX-FileCopyrightText: 2024 Yaron Shahrabani <sh.yaron@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: libktorrent\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2024-03-14 00:37+0000\n"
+"PO-Revision-Date: 2024-04-15 15:59+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: צוות התרגום של KDE ישראל\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
+"2 : 3);\n"
+"X-Generator: Lokalize 23.08.5\n"
+
+#: src/bcodec/bdecoder.cpp:48
+#, kde-format
+msgid "Illegal token: %1"
+msgstr "אסימון בלתי חוקי: %1"
+
+#: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
+#, kde-format
+msgid "Decode error"
+msgstr "שגיאת פענוח"
+
+#: src/bcodec/bdecoder.cpp:161 src/bcodec/bdecoder.cpp:199
+#, kde-format
+msgid "Unexpected end of input"
+msgstr "סוף קלט מפתיע"
+
+#: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
+#, kde-format
+msgid "Cannot convert %1 to an int"
+msgstr "לא ניתן להמיר את %1 למספר שלם"
+
+#: src/bcodec/bdecoder.cpp:223
+#, kde-format
+msgid "Torrent is incomplete."
+msgstr "הטורנט חלקי."
+
+#: src/datachecker/datacheckerjob.cpp:67
+#, kde-format
+msgid "Waiting for other data checks to finish"
+msgstr "בהמתנה לסיום בדיקות נתונים אחרות"
+
+#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
+#, kde-format
+msgid "Checking data"
+msgstr "הנתונים נבדקים"
+
+#: src/datachecker/datacheckerjob.cpp:120
+#, kde-format
+msgid "Checking Data"
+msgstr "הנתונים נבדקים"
+
+#: src/datachecker/multidatachecker.cpp:181
+#: src/datachecker/singledatachecker.cpp:34 src/diskio/multifilecache.cpp:621
+#: src/diskio/multifilecache.cpp:656 src/torrent/torrentcreator.cpp:111
+#: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
+#, kde-format
+msgid "Cannot open file %1: %2"
+msgstr "לא ניתן לפתוח את הקובץ %1: %2"
+
+#: src/diskio/cache.cpp:148 src/diskio/multifilecache.cpp:95
+#: src/diskio/singlefilecache.cpp:67
+#, kde-format
+msgid "Failed to create %1: %2"
+msgstr "היצירה של %1 נכשלה: %2"
+
+#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:313
+#: src/util/fileops.cpp:355
+#, kde-format
+msgid "Cannot open %1: %2"
+msgstr "לא ניתן לפתוח את %1: %2"
+
+#: src/diskio/cachefile.cpp:103 src/diskio/cachefile.cpp:215
+#: src/diskio/cachefile.cpp:368 src/diskio/cachefile.cpp:427
+#, kde-format
+msgid "Cannot open %1 for writing: readonly filesystem"
+msgstr "לא ניתן לפתוח את %1 לכתיבה: מערכת קבצים לקריאה בלבד"
+
+#: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
+#, kde-format
+msgid "Attempting to write beyond the maximum size of %1"
+msgstr "מתבצע ניסיון לכתוב מעבר לגודל המרבי על סך %1"
+
+#: src/diskio/cachefile.cpp:220
+#, kde-format
+msgid ""
+"Cannot expand file %1: attempting to grow the file beyond the maximum size"
+msgstr ""
+"לא ניתן להרחיב את הקובץ %1: מתבצע ניסיון להגדיל את הקובץ מעבר לגודל המרבי"
+
+#: src/diskio/cachefile.cpp:224
+#, kde-format
+msgid "Cannot expand file %1: %2"
+msgstr "לא ניתן להרחיב את הקובץ %1: %2"
+
+#: src/diskio/cachefile.cpp:336
+#, kde-format
+msgid "Error: Reading past the end of the file %1"
+msgstr "שגיאה: ניסיון קריאה אחרי סוף הקובץ %1"
+
+#: src/diskio/cachefile.cpp:341 src/diskio/cachefile.cpp:383
+#, kde-format
+msgid "Failed to seek file %1: %2"
+msgstr "החתירה בקובץ %1 נכשלה: %2"
+
+#: src/diskio/cachefile.cpp:348
+#, kde-format
+msgid "Error reading from %1"
+msgstr "שגיאה בקריאה מתוך %1"
+
+#: src/diskio/cachefile.cpp:386
+#, kde-format
+msgid "Failed to write to file %1: %2"
+msgstr "הכתיבה לקובץ %1 נכשלה: %2"
+
+#: src/diskio/cachefile.cpp:443
+#, kde-format
+msgid "Cannot preallocate diskspace: %1"
+msgstr "לא ניתן להקצות את המקום מראש: %1"
+
+#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
+#, kde-format
+msgid "Cannot open index file %1: %2"
+msgstr "לא ניתן לפתוח את קובץ המפתח %1: %2"
+
+#: src/diskio/dndfile.cpp:72
+#, kde-format
+msgid "Cannot create file %1: %2"
+msgstr "לא ניתן ליצור את הקובץ %1: %2"
+
+#: src/diskio/dndfile.cpp:114
+#, kde-format
+msgid "Failed to write first chunk to DND file: %1"
+msgstr ""
+
+#: src/diskio/dndfile.cpp:129
+#, kde-format
+msgid "Failed to write last chunk to DND file: %1"
+msgstr ""
+
+#: src/diskio/movedatafilesjob.cpp:110
+#, kde-format
+msgid "Waiting for other move jobs to finish"
+msgstr "בהמתנה לסיום משימות העברה אחרות"
+
+#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#, kde-format
+msgctxt "The source of a file operation"
+msgid "Source"
+msgstr "מקור"
+
+#: src/diskio/movedatafilesjob.cpp:112 src/diskio/movedatafilesjob.cpp:148
+#, kde-format
+msgctxt "The destination of a file operation"
+msgid "Destination"
+msgstr "יעד"
+
+#: src/diskio/movedatafilesjob.cpp:146
+#, kde-format
+msgctxt "@title job"
+msgid "Moving"
+msgstr "מועבר"
+
+#: src/diskio/multifilecache.cpp:70 src/diskio/singlefilecache.cpp:57
+#, kde-format
+msgid "Failed to open %1: %2"
+msgstr "הפתיחה של %1 נכשלה: %2"
+
+#: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
+#, kde-format
+msgid "Unable to write to a piece mapped read only"
+msgstr "לא ניתן לכתוב לחלק שממופה לקריאה בלבד"
+
+#: src/download/chunkdownload.cpp:342
+#, kde-format
+msgid "1 peer"
+msgid_plural "%1 peers"
+msgstr[0] "עמית"
+msgstr[1] "שני עמיתים"
+msgstr[2] "%1 עמיתים"
+msgstr[3] "%1 עמיתים"
+
+#: src/download/downloader.cpp:693
+#, kde-format
+msgid "Disabled because webseed does not match torrent"
+msgstr ""
+
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
+#: src/download/webseed.cpp:85
+#, kde-format
+msgid "Not connected"
+msgstr "לא מחובר"
+
+#: src/download/httpconnection.cpp:96
+#, kde-format
+msgid "Resolving proxy %1:%2"
+msgstr "המתווך %1 נפתר: %2"
+
+#: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
+#, kde-format
+msgid "Not enough system resources available"
+msgstr "אין מספיק משאבי מערכת זמינים"
+
+#: src/download/httpconnection.cpp:110
+#, kde-format
+msgid "Resolving hostname %1"
+msgstr "שם המארח %1 נפתר"
+
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
+#, kde-format
+msgid "Connection closed"
+msgstr "החיבור נסגר"
+
+#: src/download/httpconnection.cpp:130
+#, kde-format
+msgid "Error: request failed: %1"
+msgstr "שגיאה: הבקשה נכשלה: %1"
+
+#: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
+#, kde-format
+msgid "Connected"
+msgstr "מחובר"
+
+#: src/download/httpconnection.cpp:162
+#, kde-format
+msgid "Error: Failed to connect to webseed"
+msgstr ""
+
+#: src/download/httpconnection.cpp:186
+#, kde-format
+msgid "Connecting"
+msgstr "מתבצעת התחברות"
+
+#: src/download/httpconnection.cpp:195
+#, kde-format
+msgid "Failed to connect to webseed"
+msgstr ""
+
+#: src/download/httpconnection.cpp:200
+#, kde-format
+msgid "Failed to resolve hostname of webseed"
+msgstr ""
+
+#: src/download/httpconnection.cpp:271
+#, kde-format
+msgid "Error: failed to connect, server not responding"
+msgstr "שגיאה: החיבור נכשל, השרת לא מגיב"
+
+#: src/download/httpconnection.cpp:281
+#, kde-format
+msgid "Error: request timed out"
+msgstr "שגיאה: הזמן שהוקצב לבקשה תם"
+
+#: src/download/httpconnection.cpp:351
+#, kde-format
+msgid "Redirected without a new location."
+msgstr "התבצעה הפנייה בלי מקום חדש."
+
+#: src/download/webseed.cpp:500
+#, kde-format
+msgid "Unused for %1 second (Too many connection failures)"
+msgid_plural "Unused for %1 seconds (Too many connection failures)"
+msgstr[0] "לא היה בשימוש במשך שנייה (יותר מדי שגיאות חיבור)"
+msgstr[1] "לא היה בשימוש במשך שתי שניות (יותר מדי שגיאות חיבור)"
+msgstr[2] "לא היה בשימוש במשך %1 שניות (יותר מדי שגיאות חיבור)"
+msgstr[3] "לא היה בשימוש במשך %1 שניות (יותר מדי שגיאות חיבור)"
+
+#: src/interfaces/trackerinterface.cpp:45
+#, kde-format
+msgid "OK"
+msgstr "תקין"
+
+#: src/interfaces/trackerinterface.cpp:45
+#, kde-format
+msgid "Warning: %1"
+msgstr "אזהרה: %1"
+
+#: src/interfaces/trackerinterface.cpp:47
+#, kde-format
+msgid "Announcing"
+msgstr "נשלחת הכרזה"
+
+#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
+#, kde-format
+msgid "Error: %1"
+msgstr "שגיאה: %1"
+
+#: src/peer/peerid.cpp:299
+#, kde-format
+msgid "Unknown client"
+msgstr "לקוח לא מוכר"
+
+#: src/torrent/torrent.cpp:96 src/torrent/torrent.cpp:153
+#: src/torrent/torrent.cpp:180 src/torrent/torrent.cpp:187
+#: src/torrent/torrent.cpp:194 src/torrent/torrent.cpp:198
+#: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
+#, kde-format
+msgid "Corrupted torrent."
+msgstr "טורנט פגום."
+
+#: src/torrent/torrentcontrol.cpp:277
+#, kde-format
+msgid "Error writing to disk, do you have enough diskspace?"
+msgstr "שגיאת כתיבה לכונן, יש לך מספיק מקום פנוי?"
+
+#: src/torrent/torrentcontrol.cpp:492
+#, kde-format
+msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
+msgstr "אירעה שגיאה בטעינת<b>%1</b>‏:<br/><b>%2</b>"
+
+#: src/torrent/torrentcontrol.cpp:502
+#, kde-format
+msgid "Unable to create %1: %2"
+msgstr "לא ניתן ליצור את %1: %2"
+
+#: src/torrent/torrentcontrol.cpp:515
+#, kde-format
+msgid ""
+"You are already downloading the torrent <b>%1</b>. The tracker lists from "
+"both torrents have been merged."
+msgstr "הטורנט <b>%1</b> כבר בהורדה. רשימות העוקבים משני הטורנטים מוזגו."
+
+#: src/torrent/torrentcontrol.cpp:519
+#, kde-format
+msgid "You are already downloading the torrent <b>%1</b>."
+msgstr "הטורנט <b>%1</b> כבר בהורדה."
+
+#: src/torrent/torrentcreator.cpp:332
+#, kde-format
+msgid "Cannot create index file: %1"
+msgstr "לא ניתן ליצור קובץ מפתח: %1"
+
+#: src/torrent/torrentstats.cpp:72
+#, kde-format
+msgid "Not started"
+msgstr "לא התחיל"
+
+#: src/torrent/torrentstats.cpp:74
+#, kde-format
+msgid "Download completed"
+msgstr "ההורדה הושלמה"
+
+#: src/torrent/torrentstats.cpp:76
+#, kde-format
+msgid "Seeding completed"
+msgstr "השיתוף הושלם"
+
+#: src/torrent/torrentstats.cpp:78
+#, kde-format
+msgctxt "Status of a torrent file"
+msgid "Seeding"
+msgstr "משותף"
+
+#: src/torrent/torrentstats.cpp:80
+#, kde-format
+msgid "Downloading"
+msgstr "בהורדה"
+
+#: src/torrent/torrentstats.cpp:82
+#, kde-format
+msgid "Stalled"
+msgstr "תקוע"
+
+#: src/torrent/torrentstats.cpp:84
+#, kde-format
+msgid "Stopped"
+msgstr "נעצר"
+
+#: src/torrent/torrentstats.cpp:88
+#, kde-format
+msgid "Allocating diskspace"
+msgstr "המקום בכונן מוקצה"
+
+#: src/torrent/torrentstats.cpp:90
+#, kde-format
+msgid "Queued for seeding"
+msgstr "במתנה בתור לשיתוף"
+
+#: src/torrent/torrentstats.cpp:90
+#, kde-format
+msgid "Queued for downloading"
+msgstr "בהמתנה בתור להורדה"
+
+#: src/torrent/torrentstats.cpp:94
+#, kde-format
+msgid "Stopped. No space left on device."
+msgstr "נעצר. לא נשאר מקום פנוי בהתקן."
+
+#: src/torrent/torrentstats.cpp:96
+#, kde-format
+msgid "Paused"
+msgstr "מושהה"
+
+#: src/torrent/torrentstats.cpp:98
+#, kde-format
+msgid "Superseeding"
+msgstr "שיתוף על"
+
+#: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
+#: src/tracker/httptracker.cpp:390
+#, kde-format
+msgid "Invalid response from tracker"
+msgstr "תגובה שגויה מהעוקב"
+
+#: src/tracker/httptracker.cpp:251
+#, kde-format
+msgid "Invalid data from tracker"
+msgstr "נתונים שגויים מהעוקב"
+
+#: src/tracker/httptracker.cpp:405
+#, kde-format
+msgid "Invalid tracker URL"
+msgstr "כתובת עוקב שגויה"
+
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:315
+#: src/tracker/udptracker.cpp:322
+#, kde-format
+msgid "Timeout contacting tracker %1"
+msgstr "הזמן שהוקצב ליצירת קשר עם העוקב %1 תם"
+
+#: src/tracker/udptracker.cpp:343
+#, kde-format
+msgid "Unable to resolve hostname %1"
+msgstr "לא ניתן לפתור את שם המארח %1"
+
+#: src/upnp/httprequest.cpp:39
+#, kde-format
+msgid "Operation timed out"
+msgstr "הזמן שהוקצב לפעולה תם"
+
+#: src/upnp/upnprouter.cpp:156
+#, kde-format
+msgid "Failed to download %1: %2"
+msgstr "ההורדה של %1 נכשלה: %2"
+
+#: src/upnp/upnprouter.cpp:166
+#, kde-format
+msgid "Error parsing router description."
+msgstr "שגיאה בפענוח תיאור הנתב."
+
+#: src/upnp/upnprouter.cpp:200
+#, kde-format
+msgid ""
+"Forwarding failed:\n"
+"Device does not have a WANIPConnection or WANPPPConnection."
+msgstr ""
+"ההעברה נכשלה:\n"
+"להתקין אין WANIPConnection או WANPPPConnection."
+
+#: src/upnp/upnprouter.cpp:279
+#, kde-format
+msgid "Cannot find port forwarding service in the device's description."
+msgstr "לא ניתן למצוא שירות העברת פתחות בתיאור ההתקן."
+
+#: src/util/file.cpp:68
+#, kde-format
+msgid "Cannot write to %1: %2"
+msgstr "לא ניתן לכתוב אל %1: %2"
+
+#: src/util/file.cpp:81
+#, kde-format
+msgid "Cannot read from %1"
+msgstr "לא ניתן לקרוא מתוך %1"
+
+#: src/util/fileops.cpp:92
+#, kde-format
+msgid "Cannot create directory %1"
+msgstr "לא ניתן ליצור את התיקייה %1"
+
+#: src/util/fileops.cpp:150
+#, kde-format
+msgid "Cannot symlink %1 to %2: %3"
+msgstr "לא ניתן ליצור קישור סמלי בין %1 לבין %2: %3"
+
+#: src/util/fileops.cpp:163
+#, kde-format
+msgid "Cannot move %1 to %2: %3"
+msgstr "לא ניתן להעביר את %1 אל %2: %3"
+
+#: src/util/fileops.cpp:174 src/util/fileops.cpp:185
+#, kde-format
+msgid "Cannot copy %1 to %2: %3"
+msgstr "לא ניתן להעתיק את %1 אל %2: %3"
+
+#: src/util/fileops.cpp:239
+#, kde-format
+msgid "Cannot delete %1: %2"
+msgstr "לא ניתן למחוק את %1: %2"
+
+#: src/util/fileops.cpp:255
+#, kde-format
+msgid "Cannot create %1: %2"
+msgstr "לא ניתן ליצור את %1: %2"
+
+#: src/util/fileops.cpp:272
+#, kde-format
+msgid "Cannot calculate the filesize of %1: %2"
+msgstr "לא ניתן לחשב את גודל הקובץ %1: %2"
+
+#: src/util/fileops.cpp:288
+#, kde-format
+msgid "Cannot calculate the filesize: %1"
+msgstr "לא ניתן לחשב את גודל הקובץ: %1"
+
+#: src/util/fileops.cpp:333 src/util/fileops.cpp:337 src/util/fileops.cpp:340
+#: src/util/fileops.cpp:343 src/util/fileops.cpp:346
+#, kde-format
+msgid "Cannot expand file: %1"
+msgstr "לא ניתן להרחיב את הקובץ: %1"
+
+#: src/util/fileops.cpp:373
+#, kde-format
+msgid "Cannot seek in file: %1"
+msgstr "לא ניתן לחתור בקובץ: %1"
+
+#: src/util/fileops.cpp:614
+#, kde-format
+msgid "Unable to open file %1: %2"
+msgstr "לא ניתן לפתוח את הקובץ %1: %2"
+
+#: src/util/functions.cpp:205
+#, kde-format
+msgid "%1/s"
+msgstr "%1 לשנייה"
+
+#: src/util/functions.cpp:214
+#, kde-format
+msgid "1 day "
+msgid_plural "%1 days "
+msgstr[0] "יום"
+msgstr[1] "יומיים"
+msgstr[2] "%1 יום"
+msgstr[3] "%1 ימים "
+
+#: src/util/logsystemmanager.cpp:19
+#, kde-format
+msgid "General"
+msgstr "כללי"
+
+#: src/util/logsystemmanager.cpp:20
+#, kde-format
+msgid "Connections"
+msgstr "חיבורים"
+
+#: src/util/logsystemmanager.cpp:21
+#, kde-format
+msgid "Tracker"
+msgstr "עוקב"
+
+#: src/util/logsystemmanager.cpp:22
+#, kde-format
+msgid "DHT"
+msgstr "DHT"
+
+#: src/util/logsystemmanager.cpp:23
+#, kde-format
+msgid "Disk Input/Output"
+msgstr "קלט/פלט כונן"
+
+#: src/util/logsystemmanager.cpp:24
+#, kde-format
+msgid "µTP"
+msgstr "µTP"
+
+#: src/util/signalcatcher.cpp:62
+#, kde-format
+msgid "Error when writing to disk"
+msgstr "שגיאה בכתיבה לכונן"
+
+#: src/util/signalcatcher.cpp:62
+#, kde-format
+msgid "Error when reading from disk"
+msgstr "שגיאה בקריאה מהכונן"
