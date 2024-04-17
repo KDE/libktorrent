@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-03-14 00:37+0000\n"
-"PO-Revision-Date: 2024-04-15 18:58+0000\n"
+"PO-Revision-Date: 2024-04-16 08:21+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
@@ -91,13 +91,14 @@ msgstr "Gat ekki opnað %1 til skrifunar : skrifvarið skráakerfi (readonly)"
 #: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
-msgstr ""
+msgstr "Reyni að skrifa fram yfir hámarksstærðina %1"
 
 #: src/diskio/cachefile.cpp:220
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
 msgstr ""
+"Get ekki útvíkkað skrána %1: reyni að stækka skrána fram yfir hámarksstærðina"
 
 #: src/diskio/cachefile.cpp:224
 #, kde-format
@@ -180,7 +181,7 @@ msgstr "Mistókst að opna %1: %2"
 #: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
-msgstr ""
+msgstr "Gat ekki skrifað í hluta sem skilgreindur er sem skrifvarinn"
 
 #: src/download/chunkdownload.cpp:342
 #, kde-format
