@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-03-14 00:37+0000\n"
-"PO-Revision-Date: 2024-04-15 15:59+0300\n"
+"PO-Revision-Date: 2024-04-17 10:13+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -139,12 +139,12 @@ msgstr "לא ניתן ליצור את הקובץ %1: %2"
 #: src/diskio/dndfile.cpp:114
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
-msgstr ""
+msgstr "כתיבת החלק הראשון לקובץ DND (לא להפריע) נכשל: %1"
 
 #: src/diskio/dndfile.cpp:129
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
-msgstr ""
+msgstr "כתיבת החלק האחרון לקובץ DND (לא להפריע) נכשל: %1"
 
 #: src/diskio/movedatafilesjob.cpp:110
 #, kde-format
@@ -191,7 +191,7 @@ msgstr[3] "%1 עמיתים"
 #: src/download/downloader.cpp:693
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
-msgstr ""
+msgstr "מושבת כי אין התאמה של הטורנט בשרת השיתוף"
 
 #: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
 #: src/download/webseed.cpp:85
@@ -232,7 +232,7 @@ msgstr "מחובר"
 #: src/download/httpconnection.cpp:162
 #, kde-format
 msgid "Error: Failed to connect to webseed"
-msgstr ""
+msgstr "שגיאה: ההתחברות לשרת השיתוף נכשלה"
 
 #: src/download/httpconnection.cpp:186
 #, kde-format
@@ -242,12 +242,12 @@ msgstr "מתבצעת התחברות"
 #: src/download/httpconnection.cpp:195
 #, kde-format
 msgid "Failed to connect to webseed"
-msgstr ""
+msgstr "ההתחברות לשרת השיתוף נכשלה"
 
 #: src/download/httpconnection.cpp:200
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
-msgstr ""
+msgstr "פתרון שם המארח של שרת השיתוף נכשל"
 
 #: src/download/httpconnection.cpp:271
 #, kde-format
