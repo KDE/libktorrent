@@ -3129,7 +3129,7 @@ msgstr "Eroare la citirea de pe disc"
 
 #~ msgctxt "EMAIL OF TRANSLATORS"
 #~ msgid "Your emails"
-#~ msgstr "cristian.tarsoaga@gmail.com,sergiu@ase.md"
+#~ msgstr "cristian.tarsoaga@gmail.com,sergiu@cip.md"
 
 #~ msgid "Folders to scan for torrents:"
 #~ msgstr "Directoare de citit pentru găsirea torentelor:"
