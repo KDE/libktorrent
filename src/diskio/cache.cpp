@@ -58,7 +58,7 @@ void Cache::changeTmpDir(const QString &ndir)
 
 bool Cache::mappedModeAllowed()
 {
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     return MaxOpenFiles() - bt::PeerManager::connectionLimits().totalConnections() > 100;
 #else
     return true; // there isn't a file handle limit on windows

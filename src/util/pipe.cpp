@@ -16,7 +16,7 @@
 
 namespace bt
 {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 int socketpair(int sockets[2])
 {
     sockets[0] = sockets[1] = -1;
@@ -51,7 +51,7 @@ Pipe::Pipe()
     , writer(-1)
 {
     int sockets[2];
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     if (socketpair(AF_UNIX, SOCK_STREAM, 0, sockets) == 0) {
         reader = sockets[1];
         writer = sockets[0];
@@ -71,7 +71,7 @@ Pipe::Pipe()
 
 Pipe::~Pipe()
 {
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     ::close(reader);
     ::close(writer);
 #else
@@ -82,7 +82,7 @@ Pipe::~Pipe()
 
 int Pipe::read(Uint8 *buffer, int max_len)
 {
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     return ::read(reader, buffer, max_len);
 #else
     return ::recv(reader, (char *)buffer, max_len, 0);
@@ -91,7 +91,7 @@ int Pipe::read(Uint8 *buffer, int max_len)
 
 int Pipe::write(const bt::Uint8 *data, int len)
 {
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     return ::write(writer, data, len);
 #else
     return ::send(writer, (char *)data, len, 0);

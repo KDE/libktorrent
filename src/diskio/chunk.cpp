@@ -8,7 +8,7 @@
 #include "cache.h"
 #include "piecedata.h"
 #include <util/sha1hash.h>
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #include <util/signalcatcher.h>
 #endif
 

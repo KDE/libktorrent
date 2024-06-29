@@ -11,7 +11,7 @@ namespace bt
 {
 static bt::Uint32 SystemConnectionLimit()
 {
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     return bt::MaxOpenFiles() - 50; // leave about 50 free for regular files
 #else
     return 9999; // there isn't a real limit on windows

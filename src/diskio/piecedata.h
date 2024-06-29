@@ -10,7 +10,7 @@
 #include <QSharedDataPointer>
 #include <ktorrent_export.h>
 #include <util/constants.h>
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #include <util/signalcatcher.h>
 #endif
 #include <diskio/cachefile.h>

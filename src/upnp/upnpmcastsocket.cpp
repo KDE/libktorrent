@@ -13,7 +13,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #include <netinet/in_systm.h>
 #include <netinet/ip.h>
 #endif
@@ -238,7 +238,7 @@ void UPnPMCastSocket::UPnPMCastSocketPrivate::joinUPnPMCastGroup(int fd)
     inet_aton("239.255.255.250", &mreq.imr_multiaddr);
     mreq.imr_interface.s_addr = htonl(INADDR_ANY);
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     if (setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(struct ip_mreq)) < 0)
 #else
     if (setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char *)&mreq, sizeof(struct ip_mreq)) < 0)
@@ -256,7 +256,7 @@ void UPnPMCastSocket::UPnPMCastSocketPrivate::leaveUPnPMCastGroup(int fd)
     inet_aton("239.255.255.250", &mreq.imr_multiaddr);
     mreq.imr_interface.s_addr = htonl(INADDR_ANY);
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     if (setsockopt(fd, IPPROTO_IP, IP_DROP_MEMBERSHIP, &mreq, sizeof(struct ip_mreq)) < 0)
 #else
     if (setsockopt(fd, IPPROTO_IP, IP_DROP_MEMBERSHIP, (char *)&mreq, sizeof(struct ip_mreq)) < 0)

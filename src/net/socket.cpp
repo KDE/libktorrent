@@ -34,7 +34,7 @@
 
 #include <util/log.h>
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include <util/win32.h>
 #define SHUT_RDWR SD_BOTH
 #undef errno
@@ -92,7 +92,7 @@ Socket::~Socket()
 {
     if (m_fd >= 0) {
         shutdown(m_fd, SHUT_RDWR);
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         ::closesocket(m_fd);
 #else
         ::close(m_fd);
@@ -121,7 +121,7 @@ void Socket::close()
 {
     if (m_fd >= 0) {
         shutdown(m_fd, SHUT_RDWR);
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         ::closesocket(m_fd);
 #else
         ::close(m_fd);
@@ -133,7 +133,7 @@ void Socket::close()
 
 void Socket::setBlocking(bool on)
 {
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     int flag = fcntl(m_fd, F_GETFL, 0);
     if (!on)
         fcntl(m_fd, F_SETFL, flag | O_NONBLOCK);
@@ -151,7 +151,7 @@ bool Socket::connectTo(const Address &a)
     struct sockaddr_storage ss;
     a.toSocketAddress(&ss, len);
     if (::connect(m_fd, (struct sockaddr *)&ss, len) < 0) {
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
         if (errno == EINPROGRESS)
 #else
         if (errno == WSAEINVAL || errno == WSAEALREADY || errno == WSAEWOULDBLOCK)
@@ -178,7 +178,7 @@ bool Socket::bind(const QString &ip, Uint16 port, bool also_listen)
 bool Socket::bind(const net::Address &addr, bool also_listen)
 {
     int val = 1;
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     if (setsockopt(m_fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(int)) < 0)
 #else
     if (setsockopt(m_fd, SOL_SOCKET, SO_REUSEADDR, (char *)&val, sizeof(int)) < 0)
@@ -208,7 +208,7 @@ bool Socket::bind(const net::Address &addr, bool also_listen)
 
 int Socket::send(const bt::Uint8 *buf, int len)
 {
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     int ret = ::send(m_fd, buf, len, MSG_NOSIGNAL);
 #else
     int ret = ::send(m_fd, (char *)buf, len, MSG_NOSIGNAL);
@@ -225,7 +225,7 @@ int Socket::send(const bt::Uint8 *buf, int len)
 
 int Socket::recv(bt::Uint8 *buf, int max_len)
 {
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     int ret = ::recv(m_fd, buf, max_len, 0);
 #else
     int ret = ::recv(m_fd, (char *)buf, max_len, 0);
@@ -267,7 +267,7 @@ int Socket::recvFrom(bt::Uint8 *buf, int max_len, Address &a)
 {
     struct sockaddr_storage ss;
     socklen_t slen = sizeof(ss);
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     int ret = ::recvfrom(m_fd, buf, max_len, 0, (struct sockaddr *)&ss, &slen);
 #else
     int ret = ::recvfrom(m_fd, (char *)buf, max_len, 0, (struct sockaddr *)&ss, &slen);
@@ -308,7 +308,7 @@ bool Socket::setTOS(unsigned char type_of_service)
 #else
         unsigned char c = type_of_service;
 #endif
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
         if (setsockopt(m_fd, IPPROTO_IP, IP_TOS, &c, sizeof(c)) < 0)
 #else
         if (setsockopt(m_fd, IPPROTO_IP, IP_TOS, (char *)&c, sizeof(c)) < 0)
@@ -335,7 +335,7 @@ bool Socket::setTOS(unsigned char type_of_service)
 Uint32 Socket::bytesAvailable() const
 {
     int ret = 0;
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     if (ioctl(m_fd, FIONREAD, &ret) < 0)
 #else
     if (ioctlsocket(m_fd, FIONREAD, (u_long *)&ret) < 0)
@@ -352,7 +352,7 @@ bool Socket::connectSuccesFull()
 
     int err = 0;
     socklen_t len = sizeof(int);
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     if (getsockopt(m_fd, SOL_SOCKET, SO_ERROR, &err, &len) < 0)
 #else
     if (getsockopt(m_fd, SOL_SOCKET, SO_ERROR, (char *)&err, &len) < 0)

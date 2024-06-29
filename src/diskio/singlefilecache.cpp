@@ -14,7 +14,7 @@
 #include <util/fileops.h>
 #include <util/functions.h>
 #include <util/log.h>
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include <util/win32.h>
 #endif
 #include "cachefile.h"

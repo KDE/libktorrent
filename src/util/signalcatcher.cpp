@@ -9,7 +9,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 
 namespace bt
 {

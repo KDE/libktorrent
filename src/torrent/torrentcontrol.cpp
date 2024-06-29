@@ -268,7 +268,7 @@ void TorrentControl::update()
         if (moveCompleted)
             moveToCompletedDir();
     }
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     catch (BusError &e) {
         Out(SYS_DIO | LOG_IMPORTANT) << "Caught SIGBUS " << endl;
         if (!e.write_operation)

@@ -13,7 +13,7 @@
 #include <util/constants.h>
 #include <vector>
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include <util/win32.h>
 #endif
 

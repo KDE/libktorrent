@@ -34,7 +34,7 @@
 #include "file.h"
 #include "functions.h"
 #include "log.h"
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include "win32.h"
 #endif
 
@@ -69,7 +69,7 @@ typedef int64_t __s64;
 #define O_LARGEFILE 0
 #endif
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #ifdef Q_OS_LINUX
 #include <mntent.h>
 #endif
@@ -100,7 +100,7 @@ void MakePath(const QString &dir, bool nothrow)
 {
     QStringList sl = dir.split(bt::DirSeparator(), Qt::SkipEmptyParts);
     QString ctmp;
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     ctmp += bt::DirSeparator();
 #endif
 
@@ -124,7 +124,7 @@ void MakeFilePath(const QString &file, bool nothrow)
 {
     QStringList sl = file.split(bt::DirSeparator());
     QString ctmp;
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     ctmp += bt::DirSeparator();
 #endif
 
@@ -394,7 +394,7 @@ bool FreeDiskSpace(const QString &path, Uint64 &bytes_free)
 
         return false;
     }
-#elif defined(Q_WS_WIN)
+#elif defined(Q_OS_WIN)
 #ifdef UNICODE
     LPCWSTR tpath = (LPCWSTR)path.utf16();
 #else
@@ -518,7 +518,7 @@ QString ShortenFileName(const QString &path, int extra_number)
 Uint64 DiskUsage(const QString &filename)
 {
     Uint64 ret = 0;
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #ifdef HAVE_STAT64
     struct stat64 sb;
     if (stat64(QFile::encodeName(filename).constData(), &sb) == 0)
@@ -541,7 +541,7 @@ Uint64 DiskUsage(const QString &filename)
 Uint64 DiskUsage(int fd)
 {
     Uint64 ret = 0;
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #ifdef HAVE_FSTAT64
     struct stat64 sb;
     if (fstat64(fd, &sb) == 0)

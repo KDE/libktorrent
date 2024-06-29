@@ -7,7 +7,7 @@
 #ifndef BT_SIGNALCATCHER_H
 #define BT_SIGNALCATCHER_H
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 
 #include <QObject>
 #include <QSocketNotifier>

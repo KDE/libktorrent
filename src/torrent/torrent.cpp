@@ -26,7 +26,7 @@ namespace bt
 static QString SanityzeName(const QString &name)
 {
     QString ret = name;
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     char invalid[] = {'<', '>', ':', '"', '/', '\\', '|', '?', '*'};
     for (int i = 0; i < 9; i++) {
         if (ret.contains(invalid[i]))

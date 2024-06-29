@@ -16,7 +16,7 @@
 #include <util/fileops.h>
 #include <util/functions.h>
 #include <util/log.h>
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include <util/win32.h>
 #endif
 #include "cache.h"
@@ -300,7 +300,7 @@ void MultiFileCache::create()
     QSet<QString> shortened_names;
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
         TorrentFile &tf = tor.getFile(i);
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
         // check if the filename is to long
         if (FileNameToLong(tf.getPathOnDisk())) {
             QString s = ShortenFileName(tf.getPathOnDisk());

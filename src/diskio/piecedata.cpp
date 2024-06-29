@@ -7,7 +7,7 @@
 #include "piecedata.h"
 #include <klocalizedstring.h>
 #include <util/log.h>
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #include <util/signalcatcher.h>
 #endif
 #include "chunk.h"
@@ -52,7 +52,7 @@ Uint32 PieceData::write(const bt::Uint8 *buf, Uint32 buf_size, Uint32 off)
     if (read_only)
         throw bt::Error(i18n("Unable to write to a piece mapped read only"));
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     BUS_ERROR_WPROTECT();
 #endif
     memcpy(ptr + off, buf, buf_size);
@@ -64,7 +64,7 @@ Uint32 PieceData::read(Uint8 *buf, Uint32 to_read, Uint32 off)
     if (off + to_read > len || !ptr)
         return 0;
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     BUS_ERROR_RPROTECT();
 #endif
     memcpy(buf, ptr + off, to_read);
@@ -76,7 +76,7 @@ Uint32 PieceData::writeToFile(File &file, Uint32 size, Uint32 off)
     if (off + size > len || !ptr)
         return 0;
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     BUS_ERROR_RPROTECT();
 #endif
     return file.write(ptr + off, size);
@@ -90,7 +90,7 @@ Uint32 PieceData::readFromFile(File &file, Uint32 size, Uint32 off)
     if (read_only)
         throw bt::Error(i18n("Unable to write to a piece mapped read only"));
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     BUS_ERROR_WPROTECT();
 #endif
     return file.read(ptr + off, size);
@@ -101,7 +101,7 @@ void PieceData::updateHash(SHA1HashGen &hg)
     if (!ptr)
         return;
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     BUS_ERROR_RPROTECT();
 #endif
     hg.update(ptr, len);
@@ -112,7 +112,7 @@ SHA1Hash PieceData::generateHash() const
     if (!ptr)
         return SHA1Hash();
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     BUS_ERROR_RPROTECT();
 #endif
     return SHA1Hash::generate(ptr, len);

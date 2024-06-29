@@ -12,7 +12,7 @@
 #include <util/log.h>
 #include <version.h>
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #include <signal.h>
 
 void signalhandler(int sig)
@@ -28,7 +28,7 @@ using namespace bt;
 
 int main(int argc, char **argv)
 {
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     signal(SIGINT, signalhandler);
 #endif
     try {

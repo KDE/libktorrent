@@ -240,7 +240,7 @@ double Percentage(const TorrentStats &s)
     }
 }
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 static bool InitWindowsSocketsAPI()
 {
     static bool initialized = false;
@@ -285,7 +285,7 @@ bool InitLibKTorrent()
 {
     MaximizeLimits();
     bool ret = InitGCrypt();
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     ret = InitWindowsSocketsAPI() && ret;
 #endif
     return ret;

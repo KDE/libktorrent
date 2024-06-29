@@ -133,7 +133,7 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
         growFile(to_write);
     }
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     int fd = fptr->handle();
     Uint32 page_size = sysconf(_SC_PAGESIZE);
     if (off % page_size > 0) {
@@ -182,7 +182,7 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
             return ptr;
         }
     }
-#else // Q_WS_WIN
+#else // Q_OS_WIN
     char *ptr = (char *)fptr->map(off, size);
 
     if (!ptr) {

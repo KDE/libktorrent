@@ -7,7 +7,7 @@
 #include "poll.h"
 #include <util/log.h>
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #include <sys/poll.h>
 #else
 #include <util/win32.h>
@@ -74,7 +74,7 @@ int Poll::poll(int timeout)
         return 0;
 
     int ret = 0;
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     ret = ::poll(&fd_vec[0], num_sockets, timeout);
 #else
     ret = ::mingw_poll(&fd_vec[0], num_sockets, timeout);

@@ -28,7 +28,7 @@
 #include <util/constants.h>
 #include <util/log.h>
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include <util/win32.h>
 #endif
 

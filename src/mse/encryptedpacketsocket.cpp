@@ -11,7 +11,7 @@
 #include <sys/types.h>
 #include <util/log.h>
 #include <util/sha1hash.h>
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #include <netinet/in.h>
 #include <netinet/in_systm.h>
 #include <netinet/ip.h>
