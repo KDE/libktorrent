@@ -33,56 +33,38 @@
 # SPDX-FileCopyrightText: 2007 Charles Connell <charles@connells.org>
 #
 # SPDX-FileCopyrightText: 2010 Joris Guisson <joris.guisson@gmail.com>
+# SPDX-FileCopyrightText: 2014 Nicolás Alvarez <nicolas.alvarez@gmail.com>
 # SPDX-FileCopyrightText: 2016 Christophe Giboudeaux <cgiboudeaux@gmx.com>
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #=============================================================================
 
-find_path(LibGcrypt_INCLUDE_DIRS
-    NAMES gcrypt.h
-    PATH_SUFFIXES libgcrypt
-)
-
-find_library(LibGcrypt_LIBRARIES
-    NAMES gcrypt
-)
-
-if(MSVC)
-    find_library(LibGcrypt_LIBRARIES_DEBUG
-        NAMES gcryptd
+find_program(LIBGCRYPTCONFIG_SCRIPT NAMES libgcrypt-config)
+if(LIBGCRYPTCONFIG_SCRIPT)
+    execute_process(
+        COMMAND "${LIBGCRYPTCONFIG_SCRIPT}" --prefix
+        RESULT_VARIABLE CONFIGSCRIPT_RESULT
+        OUTPUT_VARIABLE PREFIX
+        OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-
-    if(NOT LibGcrypt_LIBRARIES_DEBUG)
-        unset(LibGcrypt_LIBRARIES CACHE)
-    endif()
-
-    if(MSVC_IDE)
-        if(NOT (LibGcrypt_LIBRARIES_DEBUG AND LibGcrypt_LIBRARIES))
-            message(STATUS
-                "\nCould NOT find the debug AND release version of the libgcrypt library.\n
-                You need to have both to use MSVC projects.\n
-                Please build and install both libgcrypt libraries first.\n"
-            )
-            unset(LibGcrypt_LIBRARIES CACHE)
-        endif()
-    else()
-        string(TOLOWER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_TOLOWER)
-        if(CMAKE_BUILD_TYPE_TOLOWER MATCHES debug)
-            set(LibGcrypt_LIBRARIES ${LibGcrypt_LIBRARIES_DEBUG})
-        endif()
+    if (CONFIGSCRIPT_RESULT EQUAL 0)
+        set(LIBGCRYPT_LIB_HINT "${PREFIX}/lib")
+        set(LIBGCRYPT_INCLUDE_HINT "${PREFIX}/include")
     endif()
 endif()
 
-# Get version from gcrypt.h
-# #define GCRYPT_VERSION "1.6.4"
-if(LibGcrypt_INCLUDE_DIRS AND LibGcrypt_LIBRARIES)
-    file(STRINGS ${LibGcrypt_INCLUDE_DIRS}/gcrypt.h _GCRYPT_H REGEX "^#define GCRYPT_VERSION[ ]+.*$")
-    string(REGEX REPLACE "^.*GCRYPT_VERSION[ ]+\"([0-9]+).([0-9]+).([0-9]+).*\".*$" "\\1" LibGcrypt_MAJOR_VERSION "${_GCRYPT_H}")
-    string(REGEX REPLACE "^.*GCRYPT_VERSION[ ]+\"([0-9]+).([0-9]+).([0-9]+).*\".*$" "\\2" LibGcrypt_MINOR_VERSION "${_GCRYPT_H}")
-    string(REGEX REPLACE "^.*GCRYPT_VERSION[ ]+\"([0-9]+).([0-9]+).([0-9]+).*\".*$" "\\3" LibGcrypt_PATCH_VERSION "${_GCRYPT_H}")
+find_library(LibGcrypt_LIBRARIES
+    NAMES gcrypt
+    HINTS ${LIBGCRYPT_LIB_HINT}
+)
+find_path(LibGcrypt_INCLUDE_DIRS
+    NAMES gcrypt.h
+    HINTS ${LIBGCRYPT_INCLUDE_HINT}
+)
 
-    set(LibGcrypt_VERSION "${LibGcrypt_MAJOR_VERSION}.${LibGcrypt_MINOR_VERSION}.${LibGcrypt_PATCH_VERSION}")
-    unset(_GCRYPT_H)
+if(LibGcrypt_INCLUDE_DIRS)
+    file(STRINGS ${LibGcrypt_INCLUDE_DIRS}/gcrypt.h GCRYPT_H REGEX "^#define GCRYPT_VERSION ")
+    string(REGEX REPLACE "^#define GCRYPT_VERSION \"(.*)\".*$" "\\1" LibGcrypt_VERSION "${GCRYPT_H}")
 endif()
 
 include(FindPackageHandleStandardArgs)
