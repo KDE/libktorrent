@@ -247,7 +247,7 @@ PUBLIC
 target_link_libraries(KTorrent6 PUBLIC Qt6::Core5Compat)
 
 if(WIN32)
-target_link_libraries(KTorrent6 ws2_32)
+target_link_libraries(KTorrent6 PUBLIC ws2_32)
 endif(WIN32)
 target_include_directories(KTorrent6 INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent>")
 target_include_directories(KTorrent6 PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOURCE_DIR}/src;${LIBKTORRENT_BINARY_DIR}/src;${LIBKTORRENT_BINARY_DIR}>")
