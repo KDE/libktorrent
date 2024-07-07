@@ -7,7 +7,6 @@
 #include <QtGlobal>
 #include <errno.h>
 #include <stdlib.h>
-#include <sys/socket.h>
 #include <sys/types.h>
 #include <util/log.h>
 #include <util/sha1hash.h>
@@ -20,7 +19,6 @@
 #endif
 #include "rc4encryptor.h"
 #include <net/socketmonitor.h>
-#include <netinet/tcp.h>
 #include <util/functions.h>
 
 using namespace bt;

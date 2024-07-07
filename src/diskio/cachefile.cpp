@@ -14,15 +14,17 @@
 #include <kfileitem.h>
 #include <klocalizedstring.h>
 #include <qfile.h>
-#include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <util/array.h>
 #include <util/error.h>
 #include <util/fileops.h>
 #include <util/functions.h>
 #include <util/log.h>
+
+#ifndef Q_OS_WIN
+#include <sys/mman.h>
+#endif
 
 #include <QStorageInfo>
 

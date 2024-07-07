@@ -11,12 +11,15 @@
 #include <ctime>
 #include <setjmp.h>
 #include <signal.h>
-#include <sys/mman.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <util/fileops.h>
 #include <util/log.h>
 #include <util/signalcatcher.h>
+
+#ifndef Q_OS_WIN
+#include <sys/mman.h>
+#include <unistd.h>
+#endif
 
 using namespace bt;
 

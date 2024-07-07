@@ -5,8 +5,13 @@
 */
 
 #include "reverseresolver.h"
+
+#ifndef Q_OS_WIN
 #include <netdb.h>
 #include <sys/socket.h>
+#else
+#include <ws2tcpip.h>
+#endif
 
 namespace net
 {

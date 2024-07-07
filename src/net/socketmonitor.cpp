@@ -9,7 +9,6 @@
 #include "uploadthread.h"
 
 #include <torrent/globals.h>
-#include <unistd.h>
 #include <util/functions.h>
 #include <util/log.h>
 

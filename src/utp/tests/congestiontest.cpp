@@ -8,7 +8,6 @@
 #include <QtTest>
 
 #include <ctime>
-#include <unistd.h>
 #include <util/functions.h>
 #include <util/log.h>
 #include <utp/connection.h>

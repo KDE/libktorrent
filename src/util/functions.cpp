@@ -5,15 +5,21 @@
 */
 
 #include "functions.h"
-#include <arpa/inet.h>
+
 #include <errno.h>
 #include <gcrypt.h>
+#include <sys/types.h>
+
+#ifndef Q_OS_WIN
+#include <arpa/inet.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <sys/resource.h>
 #include <sys/socket.h>
-#include <sys/types.h>
 #include <unistd.h>
+#else
+#include <Winsock2.h>
+#endif
 
 #include <chrono>
 

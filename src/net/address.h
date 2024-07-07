@@ -8,8 +8,13 @@
 
 #include <QHostAddress>
 #include <ktorrent_export.h>
-#include <netinet/in.h>
 #include <util/constants.h>
+
+#ifndef Q_OS_WIN
+#include <netinet/in.h>
+#else
+#include <Winsock2.h>
+#endif
 
 namespace net
 {

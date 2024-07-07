@@ -12,6 +12,7 @@
 #include <peer/peermanager.h>
 #include <torrent/job.h>
 #include <torrent/torrent.h>
+#include <util/error.h>
 #include <util/fileops.h>
 #include <util/functions.h>
 #include <util/log.h>

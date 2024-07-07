@@ -12,7 +12,6 @@
 #include <QtAlgorithms>
 #include <bcodec/bencoder.h>
 #include <bcodec/bnode.h>
-#include <netinet/in.h>
 #include <util/file.h>
 #include <util/functions.h>
 #include <util/log.h>

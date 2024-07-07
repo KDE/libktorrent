@@ -4,7 +4,6 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "pack.h"
-#include <arpa/inet.h>
 #include <util/error.h>
 #include <util/functions.h>
 

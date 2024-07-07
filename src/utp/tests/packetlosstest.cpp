@@ -16,7 +16,6 @@
 #include <utp/utpsocket.h>
 
 #include <ctime>
-#include <unistd.h>
 
 #define PACKETS_TO_SEND 20
 #define TEST_DATA "This is the packet loss test\n"

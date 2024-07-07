@@ -8,7 +8,6 @@
 #include "peerconnector.h"
 #include <math.h>
 #include <mse/encryptedpacketsocket.h>
-#include <unistd.h>
 #include <util/functions.h>
 #include <util/log.h>
 

@@ -5,7 +5,6 @@
 */
 #include "udptracker.h"
 #include "udptrackersocket.h"
-#include <arpa/inet.h>
 #include <interfaces/torrentinterface.h>
 #include <klocalizedstring.h>
 #include <net/addressresolver.h>

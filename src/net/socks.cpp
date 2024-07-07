@@ -5,8 +5,6 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "socks.h"
-#include <netinet/in.h>
-#include <sys/socket.h>
 #include <sys/types.h>
 
 #include <mse/encryptedpacketsocket.h>

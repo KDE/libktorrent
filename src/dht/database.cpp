@@ -4,7 +4,6 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "database.h"
-#include <arpa/inet.h>
 #include <torrent/globals.h>
 #include <util/functions.h>
 #include <util/log.h>

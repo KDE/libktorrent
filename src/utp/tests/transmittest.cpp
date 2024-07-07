@@ -10,7 +10,6 @@
 #include <QTextStream>
 #include <QTimer>
 
-#include <unistd.h>
 #include <util/functions.h>
 #include <util/log.h>
 #include <util/sha1hash.h>

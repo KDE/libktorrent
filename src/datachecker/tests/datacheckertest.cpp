@@ -3,7 +3,6 @@
 #endif
 
 #include <time.h>
-#include <unistd.h>
 
 #include <QEventLoop>
 #include <QLocale>

@@ -21,7 +21,6 @@
 #include <net/serversocket.h>
 #include <string.h>
 #include <torrent/globals.h>
-#include <unistd.h>
 #include <util/error.h>
 #include <util/functions.h>
 #include <util/log.h>

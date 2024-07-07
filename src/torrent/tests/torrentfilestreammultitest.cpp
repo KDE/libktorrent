@@ -12,7 +12,6 @@
 #include <testlib/dummytorrentcreator.h>
 #include <torrent/torrentcontrol.h>
 #include <torrent/torrentfilestream.h>
-#include <unistd.h>
 #include <util/error.h>
 #include <util/fileops.h>
 #include <util/log.h>

@@ -7,16 +7,9 @@
 #include "socket.h"
 #include <QtGlobal>
 
-#include <arpa/inet.h>
 #include <errno.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
 #include <string.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
 #include <sys/types.h>
-#include <unistd.h>
 
 #if defined(Q_OS_LINUX) && !defined(__FreeBSD_kernel__)
 #include <asm/ioctls.h>
@@ -34,8 +27,17 @@
 
 #include <util/log.h>
 
-#ifdef Q_OS_WIN
+#ifndef Q_OS_WIN
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#else
 #include <util/win32.h>
+#include <ws2tcpip.h>
 #define SHUT_RDWR SD_BOTH
 #undef errno
 #define errno WSAGetLastError()

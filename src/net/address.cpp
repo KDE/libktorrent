@@ -5,8 +5,14 @@
 */
 
 #include "address.h"
-#include <sys/socket.h>
+
 #include <util/log.h>
+
+#ifndef Q_OS_WIN
+#include <sys/socket.h>
+#else
+#include <Ws2tcpip.h>
+#endif
 
 using namespace bt;
 

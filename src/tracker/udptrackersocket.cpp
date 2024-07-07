@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <torrent/globals.h>
-#include <unistd.h>
 #include <util/array.h>
 #include <util/functions.h>
 #include <util/log.h>

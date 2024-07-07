@@ -3,13 +3,13 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
+
+#ifndef Q_OS_WIN
 #include "signalcatcher.h"
 #include "log.h"
 #include <klocalizedstring.h>
 #include <sys/socket.h>
 #include <unistd.h>
-
-#ifndef Q_OS_WIN
 
 namespace bt
 {

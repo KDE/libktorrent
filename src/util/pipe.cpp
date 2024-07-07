@@ -8,11 +8,16 @@
 
 #include "net/socket.h"
 #include <fcntl.h>
-#include <sys/socket.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <util/functions.h>
 #include <util/log.h>
+
+#ifndef Q_OS_WIN
+#include <sys/socket.h>
+#include <unistd.h>
+#else
+#include <Winsock2.h>
+#endif
 
 namespace bt
 {

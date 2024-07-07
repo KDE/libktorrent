@@ -5,7 +5,6 @@
 */
 #include "sha1hashgen.h"
 #include "functions.h"
-#include <arpa/inet.h>
 #include <stdio.h>
 #include <string.h>
 

@@ -10,7 +10,6 @@
 
 #include <net/poll.h>
 #include <torrent/globals.h>
-#include <unistd.h>
 #include <util/bitset.h>
 #include <util/log.h>
 #include <utp/utpserver.h>
