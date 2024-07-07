@@ -145,12 +145,16 @@ void MakeFilePath(const QString &file, bool nothrow)
 
 void SymLink(const QString &link_to, const QString &link_url, bool nothrow)
 {
-    if (symlink(QFile::encodeName(link_to).constData(), QFile::encodeName(link_url).constData()) != 0) {
+    const QFile symlink_file{link_to};
+    const QFile target_file{link_url};
+    std::error_code error;
+    std::filesystem::create_directory_symlink(target_file.filesystemFileName(), symlink_file.filesystemFileName(), error);
+    if (error) {
+        const auto error_msg = QString::fromStdString(error.message());
         if (!nothrow)
-            throw Error(i18n("Cannot symlink %1 to %2: %3", link_url, link_to, QString::fromUtf8(strerror(errno))));
+            throw Error(i18n("Cannot symlink %1 to %2: %3", link_url, link_to, error_msg));
         else
-            Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot symlink %1 to %2: %3").arg(link_url, link_to, QString::fromUtf8(strerror(errno)))
-                                      << endl;
+            Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot symlink %1 to %2: %3").arg(link_url, link_to, error_msg) << endl;
     }
 }
 
