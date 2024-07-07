@@ -19,6 +19,7 @@
 #include <unistd.h>
 #else
 #include <Winsock2.h>
+#include <stdio.h>
 #endif
 
 #include <chrono>
@@ -71,9 +72,13 @@ Uint32 MaxOpenFiles()
 {
     static Uint32 max_open = 0;
     if (max_open == 0) {
+#ifndef Q_OS_WIN
         struct rlimit lim;
         getrlimit(RLIMIT_NOFILE, &lim);
         max_open = lim.rlim_cur;
+#else
+        max_open = static_cast<Uint32>(_getmaxstdio());
+#endif
     }
 
     return max_open;
@@ -106,13 +111,24 @@ bool OpenFileAllowed()
 bool MaximizeLimits()
 {
     // first get the current limits
+#ifndef Q_OS_WIN
     struct rlimit lim;
     getrlimit(RLIMIT_NOFILE, &lim);
+    const auto current_limit = lim.rlim_cur;
+    const auto max_limit = lim.rlim_max;
+#else
+    const auto current_limit = _getmaxstdio();
+    constexpr auto max_limit = 8192;
+#endif
 
-    if (lim.rlim_cur != lim.rlim_max) {
-        Out(SYS_GEN | LOG_DEBUG) << "Current limit for number of files : " << lim.rlim_cur << " (" << lim.rlim_max << " max)" << endl;
+    if (current_limit != max_limit) {
+        Out(SYS_GEN | LOG_DEBUG) << "Current limit for number of files : " << current_limit << " (" << max_limit << " max)" << endl;
+#ifndef Q_OS_WIN
         lim.rlim_cur = lim.rlim_max;
         if (setrlimit(RLIMIT_NOFILE, &lim) < 0) {
+#else
+        if (_setmaxstdio(max_limit) == -1) {
+#endif
             Out(SYS_GEN | LOG_DEBUG) << "Failed to maximize file limit : " << QString::fromUtf8(strerror(errno)) << endl;
             return false;
         }
@@ -120,6 +136,10 @@ bool MaximizeLimits()
         Out(SYS_GEN | LOG_DEBUG) << "File limit already at maximum " << endl;
     }
 
+#ifdef Q_OS_WIN
+    // It is not possible to increase stack/heap size on Windows
+    return false;
+#else
     getrlimit(RLIMIT_DATA, &lim);
     if (lim.rlim_cur != lim.rlim_max) {
         Out(SYS_GEN | LOG_DEBUG) << "Current limit for data size : " << lim.rlim_cur << " (" << lim.rlim_max << " max)" << endl;
@@ -133,6 +153,7 @@ bool MaximizeLimits()
     }
 
     return true;
+#endif
 }
 
 static QString net_iface = QString();
