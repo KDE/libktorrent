@@ -9,6 +9,7 @@
 
 #include <net/poll.h>
 #include <net/socket.h>
+#include <util/functions.h>
 #include <util/log.h>
 #include <util/pipe.h>
 
@@ -24,6 +25,7 @@ public Q_SLOTS:
 private Q_SLOTS:
     void initTestCase()
     {
+        bt::InitLibKTorrent();
         bt::InitLog("polltest.log");
     }
 

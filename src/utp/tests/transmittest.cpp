@@ -146,6 +146,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
+        bt::InitLibKTorrent();
         bt::InitLog("transmittest.log", false, true, false);
 
         port = 50000;
