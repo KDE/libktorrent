@@ -12,9 +12,10 @@
 #include <netinet/in.h>
 #include <sys/resource.h>
 #include <sys/socket.h>
-#include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+#include <chrono>
 
 #include <QDir>
 #include <QMimeDatabase>
@@ -56,10 +57,8 @@ TimeStamp global_time_stamp = 0;
 
 Uint64 Now()
 {
-    struct timeval tv;
-    gettimeofday(&tv, nullptr);
-    global_time_stamp = (Uint64)tv.tv_sec * 1000 + (Uint64)tv.tv_usec * 0.001;
-    return global_time_stamp;
+    using namespace std::chrono;
+    return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
 
 Uint32 MaxOpenFiles()

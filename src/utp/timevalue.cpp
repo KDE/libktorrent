@@ -5,16 +5,17 @@
 */
 
 #include "timevalue.h"
-#include <sys/time.h>
+#include <chrono>
 
 namespace utp
 {
 TimeValue::TimeValue()
 {
-    struct timeval tv;
-    gettimeofday(&tv, nullptr);
-    seconds = tv.tv_sec;
-    microseconds = tv.tv_usec;
+    const auto since_epoch = std::chrono::system_clock::now().time_since_epoch();
+    const auto seconds_since_epoch = std::chrono::duration_cast<std::chrono::seconds>(since_epoch);
+    const auto microseconds_remainder = std::chrono::duration_cast<std::chrono::microseconds>(since_epoch - seconds_since_epoch);
+    seconds = seconds_since_epoch.count();
+    microseconds = microseconds_remainder.count();
 }
 
 TimeValue::TimeValue(bt::Uint64 secs, bt::Uint64 usecs)

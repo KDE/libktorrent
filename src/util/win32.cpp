@@ -17,7 +17,6 @@
 // #undef getpeername
 // #undef sleep
 // #undef inet_aton
-// #undef gettimeofday
 // #undef stat
 /* Windows needs this header file for the implementation of inet_aton() */
 #include <ctype.h>
@@ -130,35 +129,6 @@ unsigned int
 mingw_sleep(unsigned int seconds)
 {
     Sleep(seconds * 1000);
-    return 0;
-}
-
-int
-mingw_gettimeofday(struct timeval *tv, char *tz)
-{
-    const long long EPOCHFILETIME = (116444736000000000LL);
-    FILETIME        ft;
-    LARGE_INTEGER   li;
-    long long        t;
-
-    /* This implementation doesn't support the timezone parameter. That's Ok,
-     * as at present polipo always passed NULL as the second arg. We
-     * also need to make sure that we have at least 8 bytes of space to
-     * do the math in - otherwise there will be overflow errors.
-     */
-    assert(tz == NULL);
-    assert(sizeof(t) == 8);
-
-    if (tv) {
-        GetSystemTimeAsFileTime(&ft);
-        li.LowPart  = ft.dwLowDateTime;
-        li.HighPart = ft.dwHighDateTime;
-        t  = li.QuadPart;       /* In 100-nanosecond intervals */
-        t -= EPOCHFILETIME;     /* Offset to the Epoch time */
-        t /= 10;                /* In microseconds */
-        tv->tv_sec  = (long)(t / 1000000);
-        tv->tv_usec = (long)(t % 1000000);
-    }
     return 0;
 }
 #endif

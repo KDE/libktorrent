@@ -86,7 +86,6 @@ struct KTORRENT_EXPORT pollfd {
 /* Wrapper macros to call misc. functions mingw is missing */
 // #define sleep(x)             mingw_sleep(x)
 // #define inet_aton(x, y)      mingw_inet_aton(x, y)
-// #define gettimeofday(x, y)   mingw_gettimeofday(x, y)
 // #define stat(x, y)           mingw_stat(x, y)
 //
 // #define mkdir(x, y) mkdir(x)
@@ -97,7 +96,6 @@ struct KTORRENT_EXPORT pollfd {
 /* Function prototypes for functions in mingw.c */
 // unsigned int mingw_sleep(unsigned int);
 // int     mingw_inet_aton(const char *, struct in_addr *);
-// int     mingw_gettimeofday(struct timeval *, char *);
 KTORRENT_EXPORT int mingw_poll(struct pollfd *, unsigned int, int);
 // SOCKET  mingw_socket(int, int, int);
 // int     mingw_connect(SOCKET, struct sockaddr*, socklen_t);
