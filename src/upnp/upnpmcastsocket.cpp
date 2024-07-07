@@ -10,14 +10,18 @@
 #include <QTextStream>
 #include <QUrl>
 
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>
 #ifndef Q_OS_WIN
-#include <netinet/in_systm.h>
-#include <netinet/ip.h>
-#endif
 #include <arpa/inet.h>
+#include <netinet/in_systm.h>
+#include <netinet/in.h>
+#include <netinet/ip.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+#else
+#include <Ws2tcpip.h>
+#endif
+
 #include <util/log.h>
 
 namespace bt
@@ -235,7 +239,7 @@ void UPnPMCastSocket::UPnPMCastSocketPrivate::joinUPnPMCastGroup(int fd)
     struct ip_mreq mreq;
     memset(&mreq, 0, sizeof(struct ip_mreq));
 
-    inet_aton("239.255.255.250", &mreq.imr_multiaddr);
+    inet_pton(AF_INET, "239.255.255.250", &mreq.imr_multiaddr);
     mreq.imr_interface.s_addr = htonl(INADDR_ANY);
 
 #ifndef Q_OS_WIN
@@ -253,7 +257,7 @@ void UPnPMCastSocket::UPnPMCastSocketPrivate::leaveUPnPMCastGroup(int fd)
     struct ip_mreq mreq;
     memset(&mreq, 0, sizeof(struct ip_mreq));
 
-    inet_aton("239.255.255.250", &mreq.imr_multiaddr);
+    inet_pton(AF_INET, "239.255.255.250", &mreq.imr_multiaddr);
     mreq.imr_interface.s_addr = htonl(INADDR_ANY);
 
 #ifndef Q_OS_WIN
