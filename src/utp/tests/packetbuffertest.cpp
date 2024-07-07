@@ -42,6 +42,7 @@ private Q_SLOTS:
         QVERIFY(memcmp(pbuf.data(), tmp, 200) == 0);
 
         utp::Header hdr;
+        memset(&hdr, 0, sizeof(utp::Header));
         hdr.ack_nr = 600;
         hdr.connection_id = 1777;
         hdr.extension = 0;
@@ -57,6 +58,7 @@ private Q_SLOTS:
         QVERIFY(pbuf.payloadSize() == 200);
 
         utp::Header hdr2;
+        memset(&hdr2, 0, sizeof(utp::Header));
         hdr2.read(pbuf.data());
         QVERIFY(memcmp(&hdr, &hdr2, sizeof(utp::Header)) == 0);
 
@@ -66,6 +68,7 @@ private Q_SLOTS:
         QVERIFY(pbuf.payloadSize() == 200);
 
         utp::Header hdr3;
+        memset(&hdr3, 0, sizeof(utp::Header));
         hdr3.read(pbuf.data());
         QVERIFY(memcmp(&hdr, &hdr3, sizeof(utp::Header)) == 0);
     }
