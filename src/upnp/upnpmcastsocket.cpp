@@ -134,7 +134,11 @@ void UPnPMCastSocket::onReadyRead()
         // so we need to deal with it oursleves
         int fd = socketDescriptor();
         char tmp;
+#ifndef Q_OS_WIN
         ::read(fd, &tmp, 1);
+#else
+        recv(fd, &tmp, 1, 0);
+#endif
         return;
     }
 
