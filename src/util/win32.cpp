@@ -9,6 +9,7 @@
 #include <assert.h>
 #include <errno.h>
 #include <malloc.h>
+#include <stdlib.h>
 // #undef poll
 // #undef socket
 // #undef connect
