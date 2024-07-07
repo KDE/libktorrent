@@ -12,6 +12,7 @@
 #include <testlib/dummytorrentcreator.h>
 #include <testlib/utils.h>
 #include <torrent/torrentcontrol.h>
+#include <util/error.h>
 #include <util/fileops.h>
 #include <util/functions.h>
 #include <util/log.h>
@@ -81,9 +82,9 @@ private Q_SLOTS:
         }
     }
 
-#ifndef Q_CC_MSVC
     void testBusErrorHandling()
     {
+#ifndef Q_CC_MSVC
         ChunkManager cman(tor, creator.tempPath(), creator.dataPath(), true, nullptr);
         Chunk *c = cman.getChunk(0);
         QVERIFY(c);
@@ -105,9 +106,8 @@ private Q_SLOTS:
         } catch (bt::Error &err) {
             QFAIL("Truncate failed\n");
         }
-    }
-
 #endif
+    }
 
 private:
     DummyTorrentCreator creator;
