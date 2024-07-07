@@ -116,6 +116,13 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
         throw Error(i18n("Not enough free disk space for %1",path));
     */
 
+    if (off + size > file_size) {
+        Uint64 to_write = (off + size) - file_size;
+        //  Out(SYS_DIO|LOG_DEBUG) << "Growing file with " << to_write << " bytes" << endl;
+        growFile(to_write);
+    }
+
+#ifndef Q_OS_WIN
     int mmap_flag = 0;
     switch (mode) {
     case READ:
@@ -129,13 +136,6 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
         break;
     }
 
-    if (off + size > file_size) {
-        Uint64 to_write = (off + size) - file_size;
-        //  Out(SYS_DIO|LOG_DEBUG) << "Growing file with " << to_write << " bytes" << endl;
-        growFile(to_write);
-    }
-
-#ifndef Q_OS_WIN
     int fd = fptr->handle();
     Uint32 page_size = sysconf(_SC_PAGESIZE);
     if (off % page_size > 0) {
