@@ -10,10 +10,10 @@
 #include <algorithm>
 #include <util/constants.h>
 
-#if defined(Q_OS_FREEBSD) || defined(Q_OS_NETBSD)
-#include <sys/endian.h>
+#ifndef Q_OS_WIN
+#include <arpa/inet.h>
 #else
-#include <endian.h>
+#include <Winsock2.h>
 #endif
 
 using namespace bt;
@@ -79,8 +79,8 @@ Key operator+(const dht::Key &a, const dht::Key &b)
     bt::Uint64 sum = 0;
 
     for (int i = 4; i >= 0; i--) {
-        sum += (bt::Uint64)htobe32(a.hash[i]) + htobe32(b.hash[i]);
-        result.hash[i] = htobe32(sum & 0xFFFFFFFF);
+        sum += (bt::Uint64)htonl(a.hash[i]) + htonl(b.hash[i]);
+        result.hash[i] = htonl(sum & 0xFFFFFFFF);
         sum = sum >> 32;
     }
 
@@ -93,8 +93,8 @@ Key operator+(const Key &a, bt::Uint8 value)
 
     bt::Uint64 sum = value;
     for (int i = 4; i >= 0 && sum != 0; i--) {
-        sum += htobe32(result.hash[i]);
-        result.hash[i] = htobe32(sum & 0xFFFFFFFF);
+        sum += htonl(result.hash[i]);
+        result.hash[i] = htonl(sum & 0xFFFFFFFF);
         sum = sum >> 32;
     }
 
@@ -107,8 +107,8 @@ Key Key::operator/(int value) const
     bt::Uint64 remainder = 0;
 
     for (int i = 0; i < 5; i++) {
-        const bt::Uint32 h = htobe32(hash[i]);
-        result.hash[i] = htobe32((h + remainder) / value);
+        const bt::Uint32 h = htonl(hash[i]);
+        result.hash[i] = htonl((h + remainder) / value);
         remainder = ((h + remainder) % value) << 32;
     }
 
@@ -135,14 +135,14 @@ Key operator-(const Key &a, const Key &b)
     dht::Key result;
     bt::Uint32 carry = 0;
     for (int i = 4; i >= 0; i--) {
-        const bt::Uint32 a32 = htobe32(a.hash[i]);
-        const bt::Uint32 b32 = htobe32(b.hash[i]);
+        const bt::Uint32 a32 = htonl(a.hash[i]);
+        const bt::Uint32 b32 = htonl(b.hash[i]);
         if (a32 >= ((bt::Uint64)b32 + carry)) {
-            result.hash[i] = htobe32(a32 - b32 - carry);
+            result.hash[i] = htonl(a32 - b32 - carry);
             carry = 0;
         } else {
             const bt::Uint64 max = 0xFFFFFFFF + 1;
-            result.hash[i] = htobe32((bt::Uint32)(max - (b32 - a32) - carry));
+            result.hash[i] = htonl((bt::Uint32)(max - (b32 - a32) - carry));
             carry = 1;
         }
     }
