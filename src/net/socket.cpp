@@ -322,7 +322,11 @@ bool Socket::setTOS(unsigned char type_of_service)
         }
     } else {
 #if defined(IPV6_TCLASS)
+#ifndef Q_OS_WIN
         int c = type_of_service;
+#else
+        char c = type_of_service;
+#endif
         if (setsockopt(m_fd, IPPROTO_IPV6, IPV6_TCLASS, &c, sizeof(c)) < 0) {
             Out(SYS_CON | LOG_NOTICE)
                 << QStringLiteral("Failed to set traffic class to %1 : %2").arg((int)type_of_service).arg(QString::fromUtf8(strerror(errno))) << endl;
