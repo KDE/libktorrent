@@ -89,7 +89,7 @@ void DataCheckerJob::kill(bool quietly)
 void DataCheckerJob::threadFinished()
 {
     if (!killed) {
-        DataChecker *dc = dcheck_thread->getDataChecker();
+        const DataChecker *dc = dcheck_thread->getDataChecker();
         torrent()->afterDataCheck(this, dc->getResult());
         if (!dcheck_thread->getError().isEmpty()) {
             setErrorText(dcheck_thread->getError());

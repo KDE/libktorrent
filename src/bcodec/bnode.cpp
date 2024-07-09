@@ -120,7 +120,7 @@ BValueNode *BDictNode::getValue(const QByteArray &key)
 
 int BDictNode::getInt(const QByteArray &key)
 {
-    BValueNode *v = getValue(key);
+    const BValueNode *v = getValue(key);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -132,7 +132,7 @@ int BDictNode::getInt(const QByteArray &key)
 
 qint64 BDictNode::getInt64(const QByteArray &key)
 {
-    BValueNode *v = getValue(key);
+    const BValueNode *v = getValue(key);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -144,7 +144,7 @@ qint64 BDictNode::getInt64(const QByteArray &key)
 
 QString BDictNode::getString(const QByteArray &key, QTextCodec *tc)
 {
-    BValueNode *v = getValue(key);
+    const BValueNode *v = getValue(key);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -159,7 +159,7 @@ QString BDictNode::getString(const QByteArray &key, QTextCodec *tc)
 
 QByteArray BDictNode::getByteArray(const QByteArray &key)
 {
-    BValueNode *v = getValue(key);
+    const BValueNode *v = getValue(key);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -219,7 +219,7 @@ BValueNode *BListNode::getValue(Uint32 idx)
 
 int BListNode::getInt(Uint32 idx)
 {
-    BValueNode *v = getValue(idx);
+    const BValueNode *v = getValue(idx);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -231,7 +231,7 @@ int BListNode::getInt(Uint32 idx)
 
 qint64 BListNode::getInt64(Uint32 idx)
 {
-    BValueNode *v = getValue(idx);
+    const BValueNode *v = getValue(idx);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -243,7 +243,7 @@ qint64 BListNode::getInt64(Uint32 idx)
 
 QString BListNode::getString(Uint32 idx, QTextCodec *tc)
 {
-    BValueNode *v = getValue(idx);
+    const BValueNode *v = getValue(idx);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 
@@ -258,7 +258,7 @@ QString BListNode::getString(Uint32 idx, QTextCodec *tc)
 
 QByteArray BListNode::getByteArray(Uint32 idx)
 {
-    BValueNode *v = getValue(idx);
+    const BValueNode *v = getValue(idx);
     if (!v)
         throw bt::Error(QStringLiteral("Key not found in dict"));
 

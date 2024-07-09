@@ -170,7 +170,7 @@ void UPnPMCastSocket::saveRouters(const QString &file)
     // file format is simple : 2 lines per router,
     // one containing the server, the other the location
     QTextStream fout(&fptr);
-    for (UPnPRouter *r : std::as_const(d->routers)) {
+    for (const UPnPRouter *r : std::as_const(d->routers)) {
         fout << r->getServer() << Qt::endl;
         fout << r->getLocation().toString() << Qt::endl;
     }

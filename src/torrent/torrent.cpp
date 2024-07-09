@@ -109,7 +109,7 @@ void Torrent::load(const QByteArray &data, bool verbose)
         if (c)
             comments = c->data().toString(text_codec);
 
-        BValueNode *announce = dict->getValue(QByteArrayLiteral("announce"));
+        const BValueNode *announce = dict->getValue(QByteArrayLiteral("announce"));
         BListNode *nodes = dict->getList(QByteArrayLiteral("nodes"));
         // if (!announce && !nodes)
         //  throw Error(i18n("Torrent has no announce or nodes field."));

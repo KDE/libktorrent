@@ -95,7 +95,7 @@ BDictNode *BDecoder::parseDict()
         while (pos < (Uint32)data.size() && data[pos] != 'e') {
             debugMsg(QString("Key : "));
             BNode *kn = decode();
-            BValueNode *k = dynamic_cast<BValueNode *>(kn);
+            const BValueNode *k = dynamic_cast<BValueNode *>(kn);
             if (!k || k->data().getType() != Value::STRING) {
                 delete kn;
                 throw Error(i18n("Decode error"));
