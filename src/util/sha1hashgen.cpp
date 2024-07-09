@@ -27,7 +27,7 @@ SHA1HashGen::~SHA1HashGen()
 
 SHA1Hash SHA1HashGen::generate(const Uint8 *data, Uint32 len)
 {
-    h->addData((const char *)data, len);
+    h->addData(QByteArrayView((const char *)data, len));
     return SHA1Hash((const bt::Uint8 *)h->result().constData());
 }
 
@@ -38,7 +38,7 @@ void SHA1HashGen::start()
 
 void SHA1HashGen::update(const Uint8 *data, Uint32 len)
 {
-    h->addData((const char *)data, len);
+    h->addData(QByteArrayView((const char *)data, len));
 }
 
 void SHA1HashGen::end()
