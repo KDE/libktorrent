@@ -10,14 +10,15 @@ namespace bt
 {
 TrackerInterface::TrackerInterface(const QUrl &url)
     : url(url)
+    , interval(5 * 60 * 1000) // default 5 minute interval
+    , seeders(-1)
+    , leechers(-1)
+    , total_downloaded(-1)
+    , enabled(true)
+    , status(TRACKER_IDLE)
+    , time_out(false)
+    , started(false)
 {
-    // default 5 minute interval
-    interval = 5 * 60 * 1000;
-    seeders = leechers = total_downloaded = -1;
-    enabled = true;
-    started = false;
-    status = TRACKER_IDLE;
-    time_out = false;
 }
 
 TrackerInterface::~TrackerInterface()

@@ -40,8 +40,8 @@ MoveDataFilesJob::MoveDataFilesJob(const QMap<TorrentFileInterface *, QString> &
     , bytes_moved(0)
     , total_bytes(0)
     , bytes_moved_current_file(0)
+    , file_map(fmap)
 {
-    file_map = fmap;
     QMap<TorrentFileInterface *, QString>::const_iterator i = file_map.constBegin();
     while (i != file_map.constEnd()) {
         TorrentFileInterface *tf = i.key();

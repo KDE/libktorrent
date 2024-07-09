@@ -16,10 +16,10 @@ namespace net
 SocketGroup::SocketGroup(Uint32 limit, Uint32 assured_rate)
     : limit(limit)
     , assured_rate(assured_rate)
+    , prev_run_time(bt::CurrentTime())
+    , group_allowance(0)
+    , group_assured(0)
 {
-    prev_run_time = bt::CurrentTime();
-    group_allowance = 0;
-    group_assured = 0;
 }
 
 SocketGroup::~SocketGroup()

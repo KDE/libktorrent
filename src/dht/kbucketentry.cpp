@@ -11,19 +11,19 @@
 namespace dht
 {
 KBucketEntry::KBucketEntry()
+    : last_responded(bt::CurrentTime())
+    , failed_queries(0)
+    , questionable_pings(0)
 {
-    last_responded = bt::CurrentTime();
-    failed_queries = 0;
-    questionable_pings = 0;
 }
 
 KBucketEntry::KBucketEntry(const net::Address &addr, const Key &id)
     : addr(addr)
     , node_id(id)
+    , last_responded(bt::CurrentTime())
+    , failed_queries(0)
+    , questionable_pings(0)
 {
-    last_responded = bt::CurrentTime();
-    failed_queries = 0;
-    questionable_pings = 0;
 }
 
 KBucketEntry::KBucketEntry(const KBucketEntry &other)

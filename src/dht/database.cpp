@@ -14,20 +14,20 @@ using namespace bt;
 namespace dht
 {
 DBItem::DBItem()
+    : time_stamp(bt::CurrentTime())
 {
-    time_stamp = bt::CurrentTime();
 }
 
 DBItem::DBItem(const net::Address &addr)
     : addr(addr)
+    , time_stamp(bt::CurrentTime())
 {
-    time_stamp = bt::CurrentTime();
 }
 
 DBItem::DBItem(const DBItem &it)
+    : addr(it.addr)
+    , time_stamp(it.time_stamp)
 {
-    addr = it.addr;
-    time_stamp = it.time_stamp;
 }
 
 DBItem::~DBItem()

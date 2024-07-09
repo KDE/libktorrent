@@ -15,8 +15,8 @@
 using namespace bt;
 
 DummyTorrentCreator::DummyTorrentCreator()
+    : chunk_size(256)
 {
-    chunk_size = 256;
     trackers.append(QStringLiteral("http://localhost:5000/announce"));
     tmpdir.setAutoRemove(true);
 }

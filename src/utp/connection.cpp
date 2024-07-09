@@ -22,8 +22,8 @@ using namespace bt;
 namespace utp
 {
 Connection::TransmissionError::TransmissionError(const char *file, int line)
+    : location(QString("TransmissionError in %1 at line %2\n").arg(file).arg(line))
 {
-    location = QString("TransmissionError in %1 at line %2\n").arg(file).arg(line);
     Out(SYS_GEN | LOG_DEBUG) << location << endl;
 }
 

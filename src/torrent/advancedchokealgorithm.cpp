@@ -23,8 +23,8 @@ const double SNUB_PENALTY = 10.0;
 
 AdvancedChokeAlgorithm::AdvancedChokeAlgorithm()
     : ChokeAlgorithm()
+    , last_opt_sel_time(0)
 {
-    last_opt_sel_time = 0;
 }
 
 AdvancedChokeAlgorithm::~AdvancedChokeAlgorithm()

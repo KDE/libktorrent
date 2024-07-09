@@ -48,8 +48,9 @@ TorrentStats::TorrentStats()
     , max_share_ratio(0.0f)
     , max_seed_time(0.0f)
     , num_corrupted_chunks(0)
+    , last_download_activity_time(bt::CurrentTime())
+    , last_upload_activity_time(last_download_activity_time)
 {
-    last_download_activity_time = last_upload_activity_time = bt::CurrentTime();
 }
 
 float TorrentStats::shareRatio() const

@@ -8,11 +8,14 @@
 namespace bt
 {
 DataChecker::DataChecker(bt::Uint32 from, bt::Uint32 to)
-    : need_to_stop(false)
+    : failed(0)
+    , found(0)
+    , downloaded(0)
+    , not_downloaded(0)
+    , need_to_stop(false)
     , from(from)
     , to(to)
 {
-    failed = found = downloaded = not_downloaded = 0;
 }
 
 DataChecker::~DataChecker()

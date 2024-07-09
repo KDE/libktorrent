@@ -12,8 +12,8 @@
 namespace bt
 {
 StatsFile::StatsFile(const QString &filename)
+    : cfg(KSharedConfig::openConfig(filename))
 {
-    cfg = KSharedConfig::openConfig(filename);
 }
 
 StatsFile::~StatsFile()

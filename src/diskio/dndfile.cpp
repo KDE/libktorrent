@@ -25,9 +25,9 @@ struct DNDFileHeader {
 
 DNDFile::DNDFile(const QString &path, const TorrentFile *tf, Uint32 chunk_size)
     : path(path)
+    , first_size(chunk_size - tf->getFirstChunkOffset())
+    , last_size(tf->getLastChunkSize())
 {
-    last_size = tf->getLastChunkSize();
-    first_size = chunk_size - tf->getFirstChunkOffset();
 }
 
 DNDFile::~DNDFile()

@@ -10,9 +10,9 @@
 namespace bt
 {
 Timer::Timer()
-    : elapsed(0)
+    : last(Now())
+    , elapsed(0)
 {
-    last = Now();
 }
 
 Timer::Timer(const Timer &t)

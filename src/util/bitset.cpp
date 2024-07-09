@@ -13,32 +13,29 @@ BitSet BitSet::null;
 
 BitSet::BitSet(Uint32 num_bits)
     : num_bits(num_bits)
-    , data(nullptr)
+    , num_bytes((num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0))
+    , data(new Uint8[num_bytes])
+    , num_on(0)
 {
-    num_bytes = (num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0);
-    data = new Uint8[num_bytes];
     std::fill(data, data + num_bytes, 0x00);
-    num_on = 0;
 }
 
 BitSet::BitSet(const Uint8 *d, Uint32 num_bits)
     : num_bits(num_bits)
-    , data(nullptr)
+    , num_bytes((num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0))
+    , data(new Uint8[num_bytes])
+    , num_on(0)
 {
-    num_bytes = (num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0);
-    data = new Uint8[num_bytes];
     memcpy(data, d, num_bytes);
-    num_on = 0;
     updateNumOnBits();
 }
 
 BitSet::BitSet(const BitSet &bs)
     : num_bits(bs.num_bits)
     , num_bytes(bs.num_bytes)
-    , data(nullptr)
+    , data(new Uint8[num_bytes])
     , num_on(bs.num_on)
 {
-    data = new Uint8[num_bytes];
     std::copy(bs.data, bs.data + num_bytes, data);
 }
 
