@@ -142,7 +142,19 @@ void Socket::setBlocking(bool on)
     else
         fcntl(m_fd, F_SETFL, flag & ~O_NONBLOCK);
 #else
-    u_long b = on ? 1 : 0;
+    /** This makes no sense...
+
+        > FIONBIO
+        > -------
+        > The lpvInBuffer parameter points at an unsigned long (QoS), which is
+        > nonzero if non-blocking mode is to be enabled and zero if it is to be
+        > disabled.
+
+        https://learn.microsoft.com/en-us/windows/win32/winsock/winsock-ioctls#fionbio
+
+        But here we have to pass a pointer to 0 to enable the non-blocking mode?
+    */
+    u_long b = on ? 0 : 1;
     ioctlsocket(m_fd, FIONBIO, &b);
 #endif
 }
