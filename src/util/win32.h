@@ -43,31 +43,6 @@
 // #define EINPROGRESS     WSAEINPROGRESS
 // #define EISCONN         WSAEISCONN
 
-#if (_WIN32_WINNT < 0x0600) // If VC++ 8.0 or older OR Windows older than Vista
-
-/* winsock doesn't feature poll(), so there is a version implemented
- * in terms of select() in win32.cpp. The following definitions
- * are copied from linux man pages. A poll() macro is defined to
- * call the version in win32.cpp.
- * pollfd is defined in Windows SDK 6.0A and newer if using
- * MSVC2008, in what seems to be a blatant bug (MSVC2008 reports
- * Windows XP as 0x0600 instead of 0x501)
- */
-#define POLLIN 0x0001 /* There is data to read */
-#define POLLPRI 0x0002 /* There is urgent data to read */
-#define POLLOUT 0x0004 /* Writing now will not block */
-#define POLLERR 0x0008 /* Error condition */
-#define POLLHUP 0x0010 /* Hung up */
-#define POLLNVAL 0x0020 /* Invalid request: fd not open */
-
-struct KTORRENT_EXPORT pollfd {
-    SOCKET fd; /* file descriptor */
-    short events; /* requested events */
-    short revents; /* returned events */
-};
-// #define poll(x, y, z)        mingw_poll(x, y, z)
-#endif
-
 #ifndef NAME_MAX
 #define NAME_MAX 255
 #endif
@@ -94,7 +69,6 @@ struct KTORRENT_EXPORT pollfd {
 
 /* Function prototypes for functions in mingw.c */
 // unsigned int mingw_sleep(unsigned int);
-KTORRENT_EXPORT int mingw_poll(struct pollfd *, unsigned int, int);
 // SOCKET  mingw_socket(int, int, int);
 // int     mingw_connect(SOCKET, struct sockaddr*, socklen_t);
 // SOCKET  mingw_accept(SOCKET, struct sockaddr*, socklen_t *);
@@ -115,50 +89,6 @@ KTORRENT_EXPORT int mingw_poll(struct pollfd *, unsigned int, int);
 #define strerror(e) mingw_strerror(e)
 
 KTORRENT_EXPORT char *mingw_strerror(int error);
-
-#if 0
-#ifdef POLLRDNORM
-#undef POLLRDNORM
-#undef POLLRDBAND
-#undef POLLIN
-#undef POLLPRI
-#undef POLLWRNORM
-#undef POLLOUT
-#undef POLLWRBAND
-#undef POLLERR
-#undef POLLHUP
-#undef POLLNVAL
-struct _pollfd {
-    SOCKET fd;
-    short  events;
-    short  revents;
-};
-#define pollfd _pollfd
-#else
-struct pollfd {
-    SOCKET fd;
-    short  events;
-    short  revents;
-};
-#endif
-
-typedef unsigned int nfds_t;
-
-#define POLLIN (FD_READ | FD_ACCEPT | FD_CLOSE)
-#define POLLPRI (FD_OOB)
-#define POLLOUT (FD_WRITE | FD_CONNECT | FD_CLOSE)
-#define POLLRDHUP (FD_CLOSE)
-#define POLLHUP (FD_CLOSE)
-#define POLLRDNORM (POLLIN)
-#define POLLRDBAND (POLLIN | POLLPRI)
-#define POLLWRNORM (POLLOUT)
-#define POLLWRBAND (POLLOUT | POLLPRI)
-// POLLERR, POLLNVAL not defined
-
-KTORRENT_EXPORT int poll(struct pollfd *fds, nfds_t nfds, int timeout);
-
-#define mingw_poll(a, b, c) poll(a, b, c)
-#endif
 
 #undef ERROR
 #undef CopyFile

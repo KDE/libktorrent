@@ -10,7 +10,7 @@
 #ifndef Q_OS_WIN
 #include <sys/poll.h>
 #else
-#include <util/win32.h>
+#include <Winsock2.h>
 #endif
 
 using namespace bt;
@@ -77,7 +77,7 @@ int Poll::poll(int timeout)
 #ifndef Q_OS_WIN
     ret = ::poll(&fd_vec[0], num_sockets, timeout);
 #else
-    ret = ::mingw_poll(&fd_vec[0], num_sockets, timeout);
+    ret = ::WSAPoll(&fd_vec[0], num_sockets, timeout);
 #endif
 
     std::map<int, PollClient::Ptr>::iterator itr = poll_clients.begin();
