@@ -93,7 +93,7 @@ msgstr "Essayante a scriber ultra le dimension maxime de %1"
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
 msgstr ""
-"Nonpote expander file %1: essayante a cresce le file ultra le dimension "
+"Non pote expander file %1: essayante a cresce le file ultra le dimension "
 "maxime"
 
 #: src/diskio/cachefile.cpp:224
