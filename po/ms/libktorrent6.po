@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-14 00:37+0000\n"
+"POT-Creation-Date: 2024-08-18 00:39+0000\n"
 "PO-Revision-Date: 2009-06-07 23:54+0800\n"
 "Last-Translator: Sharuzzaman Ahmat Raslan <sharuzzaman@myrealbox.com>\n"
 "Language-Team: Malay <kedidiemas@yahoogroups.com>\n"
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Waiting for other data checks to finish"
 msgstr ""
 
-#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
+#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:93
 #, fuzzy, kde-format
 msgid "Checking data"
 msgstr "Visualisasi Data"
@@ -268,22 +268,22 @@ msgid_plural "Unused for %1 seconds (Too many connection failures)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/interfaces/trackerinterface.cpp:45
+#: src/interfaces/trackerinterface.cpp:46
 #, fuzzy, kde-format
 msgid "OK"
 msgstr "OK"
 
-#: src/interfaces/trackerinterface.cpp:45
+#: src/interfaces/trackerinterface.cpp:46
 #, kde-format
 msgid "Warning: %1"
 msgstr ""
 
-#: src/interfaces/trackerinterface.cpp:47
+#: src/interfaces/trackerinterface.cpp:48
 #, fuzzy, kde-format
 msgid "Announcing"
 msgstr "Membuat sambungan"
 
-#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
+#: src/interfaces/trackerinterface.cpp:50 src/torrent/torrentstats.cpp:87
 #, fuzzy, kde-format
 msgid "Error: %1"
 msgstr "Ralat:"
@@ -333,70 +333,70 @@ msgstr ""
 msgid "Cannot create index file: %1"
 msgstr "Tidak dapat cipta %1: %2"
 
-#: src/torrent/torrentstats.cpp:72
+#: src/torrent/torrentstats.cpp:73
 #, kde-format
 msgid "Not started"
 msgstr ""
 
-#: src/torrent/torrentstats.cpp:74
+#: src/torrent/torrentstats.cpp:75
 #, fuzzy, kde-format
 #| msgid "Download Torrent"
 msgid "Download completed"
 msgstr "Muatturun Torrent"
 
-#: src/torrent/torrentstats.cpp:76
+#: src/torrent/torrentstats.cpp:77
 #, kde-format
 msgid "Seeding completed"
 msgstr ""
 
-#: src/torrent/torrentstats.cpp:78
+#: src/torrent/torrentstats.cpp:79
 #, fuzzy, kde-format
 #| msgid "Pending"
 msgctxt "Status of a torrent file"
 msgid "Seeding"
 msgstr "Tertangguh"
 
-#: src/torrent/torrentstats.cpp:80
+#: src/torrent/torrentstats.cpp:81
 #, fuzzy, kde-format
 msgid "Downloading"
 msgstr "Memuat turun"
 
-#: src/torrent/torrentstats.cpp:82
+#: src/torrent/torrentstats.cpp:83
 #, fuzzy, kde-format
 msgid "Stalled"
 msgstr "Tergantung"
 
-#: src/torrent/torrentstats.cpp:84
+#: src/torrent/torrentstats.cpp:85
 #, kde-format
 msgid "Stopped"
 msgstr "Dihentikan"
 
-#: src/torrent/torrentstats.cpp:88
+#: src/torrent/torrentstats.cpp:89
 #, kde-format
 msgid "Allocating diskspace"
 msgstr ""
 
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:91
 #, fuzzy, kde-format
 msgid "Queued for seeding"
 msgstr "Tiada icon"
 
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:91
 #, fuzzy, kde-format
 msgid "Queued for downloading"
 msgstr "Tiada icon"
 
-#: src/torrent/torrentstats.cpp:94
+#: src/torrent/torrentstats.cpp:95
 #, kde-format
 msgid "Stopped. No space left on device."
 msgstr ""
 
-#: src/torrent/torrentstats.cpp:96
+#: src/torrent/torrentstats.cpp:97
 #, fuzzy, kde-format
 msgid "Paused"
 msgstr "Jeda"
 
-#: src/torrent/torrentstats.cpp:98
+#: src/torrent/torrentstats.cpp:99
 #, fuzzy, kde-format
 #| msgid "Pending"
 msgid "Superseeding"

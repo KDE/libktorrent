@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-14 00:37+0000\n"
+"POT-Creation-Date: 2024-08-18 00:39+0000\n"
 "PO-Revision-Date: 2023-01-05 12:47+0100\n"
 "Last-Translator: Xavier BESNARD <xavier.besnard]neuf.fr>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
@@ -69,7 +69,7 @@ msgstr "Le torrent est incomplet."
 msgid "Waiting for other data checks to finish"
 msgstr "Attente de la fin des autres vérifications de données"
 
-#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
+#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:93
 #, kde-format
 msgid "Checking data"
 msgstr "Vérification des données"
@@ -313,23 +313,23 @@ msgid_plural "Unused for %1 seconds (Too many connection failures)"
 msgstr[0] "Non utilisé depuis %1 seconde (trop d'échecs de connexion)"
 msgstr[1] "Non utilisé depuis %1 secondes (trop d'échecs de connexion)"
 
-#: src/interfaces/trackerinterface.cpp:45
+#: src/interfaces/trackerinterface.cpp:46
 #, kde-format
 msgid "OK"
 msgstr "Ok"
 
-#: src/interfaces/trackerinterface.cpp:45
+#: src/interfaces/trackerinterface.cpp:46
 #, kde-format
 msgid "Warning: %1"
 msgstr "Avertissement : %1"
 
-#: src/interfaces/trackerinterface.cpp:47
+#: src/interfaces/trackerinterface.cpp:48
 #, kde-format
 msgid "Announcing"
 msgstr "Annonce"
 
 # unreviewed-context
-#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
+#: src/interfaces/trackerinterface.cpp:50 src/torrent/torrentstats.cpp:87
 #, kde-format
 msgid "Error: %1"
 msgstr "Erreur : %1"
@@ -387,70 +387,70 @@ msgstr "Vous téléchargez déjà actuellement le torrent <b>%1</b>."
 msgid "Cannot create index file: %1"
 msgstr "Impossible de créer le fichier d'index : %1"
 
-#: src/torrent/torrentstats.cpp:72
+#: src/torrent/torrentstats.cpp:73
 #, kde-format
 msgid "Not started"
 msgstr "Non démarré"
 
-#: src/torrent/torrentstats.cpp:74
+#: src/torrent/torrentstats.cpp:75
 #, kde-format
 msgid "Download completed"
 msgstr "Téléchargement terminé"
 
-#: src/torrent/torrentstats.cpp:76
+#: src/torrent/torrentstats.cpp:77
 #, kde-format
 msgid "Seeding completed"
 msgstr "Ensemencement terminé"
 
-#: src/torrent/torrentstats.cpp:78
+#: src/torrent/torrentstats.cpp:79
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
 msgstr "Ensemencement"
 
-#: src/torrent/torrentstats.cpp:80
+#: src/torrent/torrentstats.cpp:81
 #, kde-format
 msgid "Downloading"
 msgstr "Téléchargement"
 
-#: src/torrent/torrentstats.cpp:82
+#: src/torrent/torrentstats.cpp:83
 #, kde-format
 msgid "Stalled"
 msgstr "En pause"
 
-#: src/torrent/torrentstats.cpp:84
+#: src/torrent/torrentstats.cpp:85
 #, kde-format
 msgid "Stopped"
 msgstr "Stoppé"
 
-#: src/torrent/torrentstats.cpp:88
+#: src/torrent/torrentstats.cpp:89
 #, kde-format
 msgid "Allocating diskspace"
 msgstr "Allocation d'espace disque"
 
 # unreviewed-context
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:91
 #, kde-format
 msgid "Queued for seeding"
 msgstr "Mis en file d'attente pour partage"
 
 # unreviewed-context
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:91
 #, kde-format
 msgid "Queued for downloading"
 msgstr "Mis en file d'attente pour téléchargement"
 
-#: src/torrent/torrentstats.cpp:94
+#: src/torrent/torrentstats.cpp:95
 #, kde-format
 msgid "Stopped. No space left on device."
 msgstr "Stoppé. Plus aucun espace sur le disque dur."
 
-#: src/torrent/torrentstats.cpp:96
+#: src/torrent/torrentstats.cpp:97
 #, kde-format
 msgid "Paused"
 msgstr "En pause"
 
-#: src/torrent/torrentstats.cpp:98
+#: src/torrent/torrentstats.cpp:99
 #, kde-format
 msgid "Superseeding"
 msgstr "Super-partage"

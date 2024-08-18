@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-14 00:37+0000\n"
+"POT-Creation-Date: 2024-08-18 00:39+0000\n"
 "PO-Revision-Date: 2015-01-05 02:08+0200\n"
 "Last-Translator: Lasse Liehu <lasse.liehu@gmail.com>\n"
 "Language-Team: Finnish <lokalisointi@lists.coss.fi>\n"
@@ -51,7 +51,7 @@ msgstr "Torrent on vajaa."
 msgid "Waiting for other data checks to finish"
 msgstr "Odotetaan muiden datan tarkistusten valmistumista"
 
-#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
+#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:93
 #, kde-format
 msgid "Checking data"
 msgstr "Tarkistetaan dataa"
@@ -273,22 +273,22 @@ msgid_plural "Unused for %1 seconds (Too many connection failures)"
 msgstr[0] "Käyttämättömänä %1 sekunnin (Liian monta yhteysvirhettä)"
 msgstr[1] "Käyttämättömänä %1 sekuntia (Liian monta yhteysvirhettä)"
 
-#: src/interfaces/trackerinterface.cpp:45
+#: src/interfaces/trackerinterface.cpp:46
 #, kde-format
 msgid "OK"
 msgstr "OK"
 
-#: src/interfaces/trackerinterface.cpp:45
+#: src/interfaces/trackerinterface.cpp:46
 #, kde-format
 msgid "Warning: %1"
 msgstr "Varoitus: %1"
 
-#: src/interfaces/trackerinterface.cpp:47
+#: src/interfaces/trackerinterface.cpp:48
 #, kde-format
 msgid "Announcing"
 msgstr "Ilmoittaa"
 
-#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
+#: src/interfaces/trackerinterface.cpp:50 src/torrent/torrentstats.cpp:87
 #, kde-format
 msgid "Error: %1"
 msgstr "Virhe: %1"
@@ -340,68 +340,68 @@ msgstr "Lataat jo torrentia <b>%1</b>."
 msgid "Cannot create index file: %1"
 msgstr "Ei voi luoda indeksitiedostoa: %1"
 
-#: src/torrent/torrentstats.cpp:72
+#: src/torrent/torrentstats.cpp:73
 #, kde-format
 msgid "Not started"
 msgstr "Ei käynnistetty"
 
-#: src/torrent/torrentstats.cpp:74
+#: src/torrent/torrentstats.cpp:75
 #, kde-format
 msgid "Download completed"
 msgstr "Lataus valmis"
 
-#: src/torrent/torrentstats.cpp:76
+#: src/torrent/torrentstats.cpp:77
 #, kde-format
 msgid "Seeding completed"
 msgstr "Jakaminen valmis"
 
-#: src/torrent/torrentstats.cpp:78
+#: src/torrent/torrentstats.cpp:79
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
 msgstr "Jaetaan"
 
-#: src/torrent/torrentstats.cpp:80
+#: src/torrent/torrentstats.cpp:81
 #, kde-format
 msgid "Downloading"
 msgstr "Ladataan"
 
-#: src/torrent/torrentstats.cpp:82
+#: src/torrent/torrentstats.cpp:83
 #, kde-format
 msgid "Stalled"
 msgstr "Pysähtynyt"
 
-#: src/torrent/torrentstats.cpp:84
+#: src/torrent/torrentstats.cpp:85
 #, kde-format
 msgid "Stopped"
 msgstr "Pysäytetty"
 
-#: src/torrent/torrentstats.cpp:88
+#: src/torrent/torrentstats.cpp:89
 #, kde-format
 msgid "Allocating diskspace"
 msgstr "Varataan levytilaa"
 
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:91
 #, kde-format
 msgid "Queued for seeding"
 msgstr "Jonossa jaettavaksi"
 
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:91
 #, kde-format
 msgid "Queued for downloading"
 msgstr "Jonossa ladattavaksi"
 
-#: src/torrent/torrentstats.cpp:94
+#: src/torrent/torrentstats.cpp:95
 #, kde-format
 msgid "Stopped. No space left on device."
 msgstr "Pysäytetty. Laitteessa ei ole tilaa vapaana."
 
-#: src/torrent/torrentstats.cpp:96
+#: src/torrent/torrentstats.cpp:97
 #, kde-format
 msgid "Paused"
 msgstr "Keskeytetty"
 
-#: src/torrent/torrentstats.cpp:98
+#: src/torrent/torrentstats.cpp:99
 #, kde-format
 msgid "Superseeding"
 msgstr "Alkujaetaan"

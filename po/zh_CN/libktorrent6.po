@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-14 00:37+0000\n"
+"POT-Creation-Date: 2024-08-18 00:39+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -47,7 +47,7 @@ msgstr "种子不完整。"
 msgid "Waiting for other data checks to finish"
 msgstr "正在等待其他数据块完成"
 
-#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
+#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:93
 #, kde-format
 msgid "Checking data"
 msgstr "正在检查数据"
@@ -265,22 +265,22 @@ msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
 msgstr[0] "不使用 %1 秒(连接失败次数太多)"
 
-#: src/interfaces/trackerinterface.cpp:45
+#: src/interfaces/trackerinterface.cpp:46
 #, kde-format
 msgid "OK"
 msgstr "确定"
 
-#: src/interfaces/trackerinterface.cpp:45
+#: src/interfaces/trackerinterface.cpp:46
 #, kde-format
 msgid "Warning: %1"
 msgstr "警告：%1"
 
-#: src/interfaces/trackerinterface.cpp:47
+#: src/interfaces/trackerinterface.cpp:48
 #, kde-format
 msgid "Announcing"
 msgstr "正在宣告"
 
-#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
+#: src/interfaces/trackerinterface.cpp:50 src/torrent/torrentstats.cpp:87
 #, kde-format
 msgid "Error: %1"
 msgstr "错误：%1"
@@ -330,68 +330,68 @@ msgstr "您已经在下载这个种子 <b>%1</b>。"
 msgid "Cannot create index file: %1"
 msgstr "无法创建索引文件：%1"
 
-#: src/torrent/torrentstats.cpp:72
+#: src/torrent/torrentstats.cpp:73
 #, kde-format
 msgid "Not started"
 msgstr "未开始"
 
-#: src/torrent/torrentstats.cpp:74
+#: src/torrent/torrentstats.cpp:75
 #, kde-format
 msgid "Download completed"
 msgstr "下载完成"
 
-#: src/torrent/torrentstats.cpp:76
+#: src/torrent/torrentstats.cpp:77
 #, kde-format
 msgid "Seeding completed"
 msgstr "做种完成"
 
-#: src/torrent/torrentstats.cpp:78
+#: src/torrent/torrentstats.cpp:79
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
 msgstr "做种中"
 
-#: src/torrent/torrentstats.cpp:80
+#: src/torrent/torrentstats.cpp:81
 #, kde-format
 msgid "Downloading"
 msgstr "下载中"
 
-#: src/torrent/torrentstats.cpp:82
+#: src/torrent/torrentstats.cpp:83
 #, kde-format
 msgid "Stalled"
 msgstr "已停顿"
 
-#: src/torrent/torrentstats.cpp:84
+#: src/torrent/torrentstats.cpp:85
 #, kde-format
 msgid "Stopped"
 msgstr "已停止"
 
-#: src/torrent/torrentstats.cpp:88
+#: src/torrent/torrentstats.cpp:89
 #, kde-format
 msgid "Allocating diskspace"
 msgstr "正在分配磁盘空间"
 
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:91
 #, kde-format
 msgid "Queued for seeding"
 msgstr "排队做种"
 
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:91
 #, kde-format
 msgid "Queued for downloading"
 msgstr "排队下载"
 
-#: src/torrent/torrentstats.cpp:94
+#: src/torrent/torrentstats.cpp:95
 #, kde-format
 msgid "Stopped. No space left on device."
 msgstr "已停止。设备上已经没有空间。"
 
-#: src/torrent/torrentstats.cpp:96
+#: src/torrent/torrentstats.cpp:97
 #, kde-format
 msgid "Paused"
 msgstr "已暂停"
 
-#: src/torrent/torrentstats.cpp:98
+#: src/torrent/torrentstats.cpp:99
 #, kde-format
 msgid "Superseeding"
 msgstr "超级种子"

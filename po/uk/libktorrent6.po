@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent5\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-14 00:37+0000\n"
+"POT-Creation-Date: 2024-08-18 00:39+0000\n"
 "PO-Revision-Date: 2015-06-25 19:31+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -50,7 +50,7 @@ msgstr "Торент не повний."
 msgid "Waiting for other data checks to finish"
 msgstr "Очікування на завершення інших перевірок даних"
 
-#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
+#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:93
 #, kde-format
 msgid "Checking data"
 msgstr "Перевірка даних"
@@ -285,22 +285,22 @@ msgstr[3] ""
 "Не використовується одну секунду (занадто багато помилок під час спроби "
 "з’єднання)"
 
-#: src/interfaces/trackerinterface.cpp:45
+#: src/interfaces/trackerinterface.cpp:46
 #, kde-format
 msgid "OK"
 msgstr "Гаразд"
 
-#: src/interfaces/trackerinterface.cpp:45
+#: src/interfaces/trackerinterface.cpp:46
 #, kde-format
 msgid "Warning: %1"
 msgstr "Попередження: %1"
 
-#: src/interfaces/trackerinterface.cpp:47
+#: src/interfaces/trackerinterface.cpp:48
 #, kde-format
 msgid "Announcing"
 msgstr "Оголошення"
 
-#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
+#: src/interfaces/trackerinterface.cpp:50 src/torrent/torrentstats.cpp:87
 #, kde-format
 msgid "Error: %1"
 msgstr "Помилка: %1"
@@ -353,68 +353,68 @@ msgstr "Ви вже отримуєте торент <b>%1</b>."
 msgid "Cannot create index file: %1"
 msgstr "Не вдалося створити індексний файл: %1"
 
-#: src/torrent/torrentstats.cpp:72
+#: src/torrent/torrentstats.cpp:73
 #, kde-format
 msgid "Not started"
 msgstr "Не запущено"
 
-#: src/torrent/torrentstats.cpp:74
+#: src/torrent/torrentstats.cpp:75
 #, kde-format
 msgid "Download completed"
 msgstr "Отримання завершено"
 
-#: src/torrent/torrentstats.cpp:76
+#: src/torrent/torrentstats.cpp:77
 #, kde-format
 msgid "Seeding completed"
 msgstr "Поширення завершено"
 
-#: src/torrent/torrentstats.cpp:78
+#: src/torrent/torrentstats.cpp:79
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
 msgstr "Поширення"
 
-#: src/torrent/torrentstats.cpp:80
+#: src/torrent/torrentstats.cpp:81
 #, kde-format
 msgid "Downloading"
 msgstr "Отримання"
 
-#: src/torrent/torrentstats.cpp:82
+#: src/torrent/torrentstats.cpp:83
 #, kde-format
 msgid "Stalled"
 msgstr "Пауза"
 
-#: src/torrent/torrentstats.cpp:84
+#: src/torrent/torrentstats.cpp:85
 #, kde-format
 msgid "Stopped"
 msgstr "Зупинено"
 
-#: src/torrent/torrentstats.cpp:88
+#: src/torrent/torrentstats.cpp:89
 #, kde-format
 msgid "Allocating diskspace"
 msgstr "Виділення простору на диску"
 
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:91
 #, kde-format
 msgid "Queued for seeding"
 msgstr "Поставлено у чергу розповсюдження"
 
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:91
 #, kde-format
 msgid "Queued for downloading"
 msgstr "Поставлено у чергу отримання"
 
-#: src/torrent/torrentstats.cpp:94
+#: src/torrent/torrentstats.cpp:95
 #, kde-format
 msgid "Stopped. No space left on device."
 msgstr "Зупинка. На пристрої не залишилось вільного місця."
 
-#: src/torrent/torrentstats.cpp:96
+#: src/torrent/torrentstats.cpp:97
 #, kde-format
 msgid "Paused"
 msgstr "Призупинено"
 
-#: src/torrent/torrentstats.cpp:98
+#: src/torrent/torrentstats.cpp:99
 #, kde-format
 msgid "Superseeding"
 msgstr "Суперпоширення"

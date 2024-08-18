@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-14 00:37+0000\n"
+"POT-Creation-Date: 2024-08-18 00:39+0000\n"
 "PO-Revision-Date: 2012-07-04 08:47+0700\n"
 "Last-Translator: Sophea <sophea@khmeros.info>\n"
 "Language-Team: Khmer <>\n"
@@ -53,7 +53,7 @@ msgstr "Torrent មិន​ពេញ​លេញ​ ។"
 msgid "Waiting for other data checks to finish"
 msgstr "រង់ចាំ​ការ​ពិនិត្យ​មើល​ទិន្នន័យ​ផ្សេង​ៗ​ទៀត​ត្រូវ​បញ្ចប់​"
 
-#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:92
+#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:93
 #, kde-format
 msgid "Checking data"
 msgstr "ពិនិត្យ​ទិន្នន័យ​"
@@ -272,22 +272,22 @@ msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
 msgstr[0] "មិន​អាច​ប្រើ​បាន​សម្រាប់​រយៈពេល %1 វិនាទី (បរាជ័យ​ក្នុង​ការ​តភ្ជាប់​ច្រើន​ពេក)"
 
-#: src/interfaces/trackerinterface.cpp:45
+#: src/interfaces/trackerinterface.cpp:46
 #, kde-format
 msgid "OK"
 msgstr "យល់​​ព្រម​"
 
-#: src/interfaces/trackerinterface.cpp:45
+#: src/interfaces/trackerinterface.cpp:46
 #, kde-format
 msgid "Warning: %1"
 msgstr "ការ​ព្រមាន​ ៖​​ %1"
 
-#: src/interfaces/trackerinterface.cpp:47
+#: src/interfaces/trackerinterface.cpp:48
 #, kde-format
 msgid "Announcing"
 msgstr "ការ​ប្រកាស"
 
-#: src/interfaces/trackerinterface.cpp:49 src/torrent/torrentstats.cpp:86
+#: src/interfaces/trackerinterface.cpp:50 src/torrent/torrentstats.cpp:87
 #, kde-format
 msgid "Error: %1"
 msgstr "កំហុស​ ៖​​ %1"
@@ -339,68 +339,68 @@ msgstr "អ្នក​កំពុងតែ​ទាញ​យក torrent <b>%1<
 msgid "Cannot create index file: %1"
 msgstr "មិន​អាច​បង្កើត​ឯកសារ​លិបិក្រម ៖ %1"
 
-#: src/torrent/torrentstats.cpp:72
+#: src/torrent/torrentstats.cpp:73
 #, kde-format
 msgid "Not started"
 msgstr "មិន​បាន​ចាប់ផ្ដើម"
 
-#: src/torrent/torrentstats.cpp:74
+#: src/torrent/torrentstats.cpp:75
 #, kde-format
 msgid "Download completed"
 msgstr "បាន​បញ្ចប់​ការ​ទាញ​យក​ទាំងស្រុង"
 
-#: src/torrent/torrentstats.cpp:76
+#: src/torrent/torrentstats.cpp:77
 #, kde-format
 msgid "Seeding completed"
 msgstr "បាន​បញ្ចប់​ការ​បណ្ដុះ"
 
-#: src/torrent/torrentstats.cpp:78
+#: src/torrent/torrentstats.cpp:79
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
 msgstr "បណ្ដុះ​"
 
-#: src/torrent/torrentstats.cpp:80
+#: src/torrent/torrentstats.cpp:81
 #, kde-format
 msgid "Downloading"
 msgstr "ការ​ទាញ​យក"
 
-#: src/torrent/torrentstats.cpp:82
+#: src/torrent/torrentstats.cpp:83
 #, kde-format
 msgid "Stalled"
 msgstr "អាក់"
 
-#: src/torrent/torrentstats.cpp:84
+#: src/torrent/torrentstats.cpp:85
 #, kde-format
 msgid "Stopped"
 msgstr "បាន​បញ្ឈប់"
 
-#: src/torrent/torrentstats.cpp:88
+#: src/torrent/torrentstats.cpp:89
 #, kde-format
 msgid "Allocating diskspace"
 msgstr "បម្រុងទុក​ទំហំ​ថាស"
 
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:91
 #, kde-format
 msgid "Queued for seeding"
 msgstr "បាន​រៀប​ជាជួរ​ សម្រាប់​ការ​បណ្ដុះ​"
 
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:91
 #, kde-format
 msgid "Queued for downloading"
 msgstr "បាន​រៀប​ជាជួរ​ សម្រាប់​ការ​ទាញ​យក​"
 
-#: src/torrent/torrentstats.cpp:94
+#: src/torrent/torrentstats.cpp:95
 #, kde-format
 msgid "Stopped. No space left on device."
 msgstr "បាន​បញ្ឈប់ ដោយ​សារ​ឧបករណ៍​មិន​មាន​នៅ​សល់​ទំហំ ។"
 
-#: src/torrent/torrentstats.cpp:96
+#: src/torrent/torrentstats.cpp:97
 #, kde-format
 msgid "Paused"
 msgstr "បាន​ផ្អាក"
 
-#: src/torrent/torrentstats.cpp:98
+#: src/torrent/torrentstats.cpp:99
 #, kde-format
 msgid "Superseeding"
 msgstr "ការ​បណ្ដុះ​ពិសេស​"
