@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-18 00:39+0000\n"
+"POT-Creation-Date: 2024-08-19 00:39+0000\n"
 "PO-Revision-Date: 2020-08-30 20:07+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -68,62 +68,62 @@ msgstr "Sjekkar data"
 msgid "Cannot open file %1: %2"
 msgstr "Klarar ikkje opna fila «%1»: %2"
 
-#: src/diskio/cache.cpp:148 src/diskio/multifilecache.cpp:95
+#: src/diskio/cache.cpp:149 src/diskio/multifilecache.cpp:95
 #: src/diskio/singlefilecache.cpp:67
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "Klarte ikkje laga %1: %2"
 
-#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:313
-#: src/util/fileops.cpp:355
+#: src/diskio/cachefile.cpp:78 src/util/fileops.cpp:322
+#: src/util/fileops.cpp:365
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Klarte ikkje opna %1: %2"
 
-#: src/diskio/cachefile.cpp:103 src/diskio/cachefile.cpp:215
-#: src/diskio/cachefile.cpp:368 src/diskio/cachefile.cpp:427
+#: src/diskio/cachefile.cpp:105 src/diskio/cachefile.cpp:217
+#: src/diskio/cachefile.cpp:370 src/diskio/cachefile.cpp:429
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "Klarar ikkje opna «%1» for skriving. Filsystemet er skriveverna."
 
-#: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
+#: src/diskio/cachefile.cpp:111 src/diskio/cachefile.cpp:375
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "Prøvde å skriva lenger enn makslengda %1"
 
-#: src/diskio/cachefile.cpp:220
+#: src/diskio/cachefile.cpp:222
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
 msgstr ""
 "Klarte ikkje utvida fila %1: Prøver å auka filstorleiken over maksgrensa"
 
-#: src/diskio/cachefile.cpp:224
+#: src/diskio/cachefile.cpp:226
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "Klarte ikkje utvida fila «%1»: %2"
 
-#: src/diskio/cachefile.cpp:336
+#: src/diskio/cachefile.cpp:338
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "Feil: Det vert lese forbi slutten av fila «%1»"
 
-#: src/diskio/cachefile.cpp:341 src/diskio/cachefile.cpp:383
+#: src/diskio/cachefile.cpp:343 src/diskio/cachefile.cpp:385
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "Klarte ikkje søkja i fila «%1»: %2"
 
-#: src/diskio/cachefile.cpp:348
+#: src/diskio/cachefile.cpp:350
 #, kde-format
 msgid "Error reading from %1"
 msgstr "Feil ved lesing frå «%1»"
 
-#: src/diskio/cachefile.cpp:386
+#: src/diskio/cachefile.cpp:388
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "Klarte ikkje skriva til fila «%1»: %2"
 
-#: src/diskio/cachefile.cpp:443
+#: src/diskio/cachefile.cpp:445
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Klarar ikkje førehandstildela diskplass: %1"
@@ -420,13 +420,13 @@ msgstr "Ugyldig data frå deltakarsentralen"
 msgid "Invalid tracker URL"
 msgstr "Ugyldig nettadresse til deltakarsentral"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:315
-#: src/tracker/udptracker.cpp:322
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:314
+#: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "Tidsavbrot ved kontakt med deltakarsentralen %1"
 
-#: src/tracker/udptracker.cpp:343
+#: src/tracker/udptracker.cpp:342
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "Klarte ikkje gjera namneoppslag på vertsnamnet «%1»"
@@ -472,68 +472,67 @@ msgstr "Klarte ikkje skriva til %1: %2"
 msgid "Cannot read from %1"
 msgstr "Klarte ikkje lesa frå «%1»"
 
-#: src/util/fileops.cpp:92
+#: src/util/fileops.cpp:97
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "Klarte ikkje oppretta mappa «%1»"
 
-#: src/util/fileops.cpp:150
+#: src/util/fileops.cpp:160
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "Klarte ikkje oppretta symbolsk lenkje frå «%1» til «%2»: %3"
 
-#: src/util/fileops.cpp:163
+#: src/util/fileops.cpp:172
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "Klarte ikkje flytta «%1» til «%2»: %3"
 
-#: src/util/fileops.cpp:174 src/util/fileops.cpp:185
+#: src/util/fileops.cpp:183 src/util/fileops.cpp:194
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "Klarte ikkje kopiera «%1» til «%2»: %3"
 
-#: src/util/fileops.cpp:239
+#: src/util/fileops.cpp:248
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Klarte ikkje sletta %1: %2"
 
-#: src/util/fileops.cpp:255
+#: src/util/fileops.cpp:264
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Klarte ikkje oppretta %1: %2"
 
-#: src/util/fileops.cpp:272
+#: src/util/fileops.cpp:281
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Klarte ikkje rekna ut storleiken på fila «%1»: %2"
 
-#: src/util/fileops.cpp:288
+#: src/util/fileops.cpp:297
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Klarte ikkje rekna ut storleiken på fila: %1"
 
-#: src/util/fileops.cpp:333 src/util/fileops.cpp:337 src/util/fileops.cpp:340
-#: src/util/fileops.cpp:343 src/util/fileops.cpp:346
+#: src/util/fileops.cpp:344 src/util/fileops.cpp:357
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Klarte ikkje utvida fila: %1"
 
-#: src/util/fileops.cpp:373
+#: src/util/fileops.cpp:383
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Klarte ikkje søkja i fila: %1"
 
-#: src/util/fileops.cpp:614
+#: src/util/fileops.cpp:624
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Klarte ikkje opna fila %1: %2"
 
-#: src/util/functions.cpp:205
+#: src/util/functions.cpp:231
 #, kde-format
 msgid "%1/s"
 msgstr "%1/s"
 
-#: src/util/functions.cpp:214
+#: src/util/functions.cpp:240
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "

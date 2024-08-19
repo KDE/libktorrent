@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KTorrent 3.1\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-18 00:39+0000\n"
+"POT-Creation-Date: 2024-08-19 00:39+0000\n"
 "PO-Revision-Date: 2013-07-03 19:36+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -69,62 +69,62 @@ msgstr "Adatellenőrzés"
 msgid "Cannot open file %1: %2"
 msgstr "Nem sikerült megnyitni ezt a fájlt: %1. %2"
 
-#: src/diskio/cache.cpp:148 src/diskio/multifilecache.cpp:95
+#: src/diskio/cache.cpp:149 src/diskio/multifilecache.cpp:95
 #: src/diskio/singlefilecache.cpp:67
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "%1 létrehozása nem sikerült: %2"
 
-#: src/diskio/cachefile.cpp:76 src/util/fileops.cpp:313
-#: src/util/fileops.cpp:355
+#: src/diskio/cachefile.cpp:78 src/util/fileops.cpp:322
+#: src/util/fileops.cpp:365
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "A(z) %1 nem nyitható meg: %2"
 
-#: src/diskio/cachefile.cpp:103 src/diskio/cachefile.cpp:215
-#: src/diskio/cachefile.cpp:368 src/diskio/cachefile.cpp:427
+#: src/diskio/cachefile.cpp:105 src/diskio/cachefile.cpp:217
+#: src/diskio/cachefile.cpp:370 src/diskio/cachefile.cpp:429
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "%1 nem nyitható meg írásra: a fájlrendszer csak olvasható"
 
-#: src/diskio/cachefile.cpp:109 src/diskio/cachefile.cpp:373
+#: src/diskio/cachefile.cpp:111 src/diskio/cachefile.cpp:375
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "A(z) %1 maximális méretén túli írás kísérlete"
 
-#: src/diskio/cachefile.cpp:220
+#: src/diskio/cachefile.cpp:222
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
 msgstr ""
 "A(z) %1 fájl nem növelhető meg: fájlnövelés próba a maximális méreten túl"
 
-#: src/diskio/cachefile.cpp:224
+#: src/diskio/cachefile.cpp:226
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "A(z) %1 fájl nem bővíthető: %2"
 
-#: src/diskio/cachefile.cpp:336
+#: src/diskio/cachefile.cpp:338
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "Hiba a(z) %1 fájl végének olvasásakor"
 
-#: src/diskio/cachefile.cpp:341 src/diskio/cachefile.cpp:383
+#: src/diskio/cachefile.cpp:343 src/diskio/cachefile.cpp:385
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "Nem sikerült pozicionálni a(z) %1 fájlban: %2"
 
-#: src/diskio/cachefile.cpp:348
+#: src/diskio/cachefile.cpp:350
 #, kde-format
 msgid "Error reading from %1"
 msgstr "Hiba történt %1 olvasása közben"
 
-#: src/diskio/cachefile.cpp:386
+#: src/diskio/cachefile.cpp:388
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "Nem sikerült írni a(z) %1 fájlba: %2"
 
-#: src/diskio/cachefile.cpp:443
+#: src/diskio/cachefile.cpp:445
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Nem sikerült előre lefoglalni lemezterületet: %1"
@@ -421,13 +421,13 @@ msgstr "Érvénytelen adat érkezett a követőtől"
 msgid "Invalid tracker URL"
 msgstr "Érvénytelen követő-URL"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:315
-#: src/tracker/udptracker.cpp:322
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:314
+#: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "Időtúllépés a követőhöz való kapcsolódás közben: %1"
 
-#: src/tracker/udptracker.cpp:343
+#: src/tracker/udptracker.cpp:342
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "%1 hosztnév nem oldható fel"
@@ -472,68 +472,67 @@ msgstr "Nem sikerült írni a(z) %1 fájlba: %2"
 msgid "Cannot read from %1"
 msgstr "Nem sikerült olvasni: %1"
 
-#: src/util/fileops.cpp:92
+#: src/util/fileops.cpp:97
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "A(z) %1 könyvtár nem hozható létre"
 
-#: src/util/fileops.cpp:150
+#: src/util/fileops.cpp:160
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "Nem sikerült létrehozni ezt a linket: %1 -> %2 - %3"
 
-#: src/util/fileops.cpp:163
+#: src/util/fileops.cpp:172
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "Nem sikerült áthelyezni: %1 -> %2 - %3"
 
-#: src/util/fileops.cpp:174 src/util/fileops.cpp:185
+#: src/util/fileops.cpp:183 src/util/fileops.cpp:194
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "Nem sikerült átmásolni: %1 -> %2 - %3"
 
-#: src/util/fileops.cpp:239
+#: src/util/fileops.cpp:248
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Nem sikerült törölni: %1 - %2"
 
-#: src/util/fileops.cpp:255
+#: src/util/fileops.cpp:264
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Nem sikerült létrehozni: %1 - %2"
 
-#: src/util/fileops.cpp:272
+#: src/util/fileops.cpp:281
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Nem sikerült lekérdezni a fájlméretet: %1 - %2"
 
-#: src/util/fileops.cpp:288
+#: src/util/fileops.cpp:297
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Nem sikerült kiszámolni a fájlméretet: %1"
 
-#: src/util/fileops.cpp:333 src/util/fileops.cpp:337 src/util/fileops.cpp:340
-#: src/util/fileops.cpp:343 src/util/fileops.cpp:346
+#: src/util/fileops.cpp:344 src/util/fileops.cpp:357
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Nem sikerült kitömöríteni ezt a fájlt: %1"
 
-#: src/util/fileops.cpp:373
+#: src/util/fileops.cpp:383
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Nem sikerült pozicionálni a fájlban: %1"
 
-#: src/util/fileops.cpp:614
+#: src/util/fileops.cpp:624
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Nem sikerült megnyitni a fájlt (%1): %2"
 
-#: src/util/functions.cpp:205
+#: src/util/functions.cpp:231
 #, kde-format
 msgid "%1/s"
 msgstr "%1/s"
 
-#: src/util/functions.cpp:214
+#: src/util/functions.cpp:240
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
