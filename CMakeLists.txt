@@ -90,13 +90,19 @@ add_definitions(
 )
 add_definitions(-DTRANSLATION_DOMAIN="libktorrent6")
 
-#XFS prealloc
-check_include_files(xfs/xfs.h HAVE_XFS_XFS_H)
-if(HAVE_XFS_XFS_H)
-    set(CMAKE_EXTRA_INCLUDE_FILES xfs/xfs.h)
-    check_type_size(__u64 HAVE___U64)
-    check_type_size(__s64 HAVE___S64)
-    set(CMAKE_EXTRA_INCLUDE_FILES)
+option(WITH_XFS "Support for XFS specific disk preallocation" ON)
+if(WITH_XFS)
+    #XFS prealloc
+    check_include_files(xfs/xfs.h HAVE_XFS_XFS_H)
+    if(HAVE_XFS_XFS_H)
+        set(CMAKE_EXTRA_INCLUDE_FILES xfs/xfs.h)
+        check_type_size(__u64 HAVE___U64)
+        check_type_size(__s64 HAVE___S64)
+        set(CMAKE_EXTRA_INCLUDE_FILES)
+        message(STATUS "xfsprogs found, building with XFS specific disk preallocation support")
+    else()
+        message(STATUS "xfsprogs NOT found, XFS specific disk preallocation unavailable")
+    endif()
 endif()
 
 # check for 64 bit file I/O functions
