@@ -9,7 +9,7 @@
 # Frederik Schwarzer <schwarzer@kde.org>, 2011, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: libktorrent\n"
+"Project-Id-Version: libktorrent6\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-19 00:39+0000\n"
 "PO-Revision-Date: 2013-04-04 06:04+0200\n"
