@@ -42,10 +42,19 @@ void UTPex::handlePacket(const Uint8 *packet, Uint32 size)
             BDictNode *dict = (BDictNode *)node;
 
             // ut_pex packet, emit signal to notify PeerManager
-            BValueNode *val = dict->getValue("added");
-            if (val) {
-                QByteArray data = val->data().toByteArray();
-                peer->emitPex(data);
+            BValueNode *peers4 = dict->getValue("added");
+            if (peers4) {
+                QByteArray data = peers4->data().toByteArray();
+                if (!data.isEmpty()) {
+                    peer->emitPex(data, 4);
+                }
+            }
+            BValueNode *peers6 = dict->getValue("added6");
+            if (peers6) {
+                QByteArray data = peers6->data().toByteArray();
+                if (!data.isEmpty()) {
+                    peer->emitPex(data, 6);
+                }
             }
         }
     } catch (...) {
@@ -62,20 +71,33 @@ bool UTPex::needsUpdate() const
 
 void UTPex::visit(const bt::Peer::Ptr p)
 {
+    const auto ip_version = p->getAddress().ipVersion();
+
+    if (ip_version == 4) {
+        visit(p, peers4, added4, flags4, npeers4);
+    } else if (ip_version == 6) {
+        visit(p, peers6, added6, flags6, npeers6);
+    }
+}
+
+void UTPex::visit(const bt::Peer::Ptr p,
+                  std::map<Uint32, net::Address> &peers,
+                  std::map<Uint32, net::Address> &added,
+                  std::map<Uint32, Uint8> &flags,
+                  std::map<Uint32, net::Address> &npeers)
+{
     if (p.data() != peer) {
         npeers.insert(std::make_pair(p->getID(), p->getAddress()));
         if (peers.count(p->getID()) == 0) {
             // new one, add to added
             added.insert(std::make_pair(p->getID(), p->getAddress()));
 
-            if (p->getAddress().ipVersion() == 4) {
-                Uint8 flag = 0;
-                if (p->isSeeder())
-                    flag |= 0x02;
-                if (p->getStats().fast_extensions)
-                    flag |= 0x01;
-                flags.insert(std::make_pair(p->getID(), flag));
-            }
+            Uint8 flag = 0;
+            if (p->isSeeder())
+                flag |= 0x02;
+            if (p->getStats().fast_extensions)
+                flag |= 0x01;
+            flags.insert(std::make_pair(p->getID(), flag));
         } else {
             // erase from old list, so only the dropped ones are left
             peers.erase(p->getID());
@@ -90,52 +112,84 @@ void UTPex::update()
 
     pman->visit(*this);
 
-    if (!(peers.size() == 0 && added.size() == 0)) {
-        // encode the whole lot
-        QByteArray data;
-        BEncoder enc(new BEncoderBufferOutput(data));
-        enc.beginDict();
-        enc.write(QByteArrayLiteral("added"));
-        encode(enc, added);
-        enc.write(QByteArrayLiteral("added.f"));
-        if (added.size() == 0) {
-            enc.write(QByteArray());
-        } else {
-            encodeFlags(enc, flags);
-        }
-        enc.write(QByteArrayLiteral("dropped"));
-        encode(enc, peers);
-        enc.end();
+    QByteArray data;
+    BEncoder enc(new BEncoderBufferOutput(data));
+    enc.beginDict();
 
+    encodePeers(enc, peers4, added4, flags4, 4);
+    encodePeers(enc, peers6, added6, flags6, 6);
+
+    enc.end();
+
+    // No peers means bencode result is just "de"
+    if (data.size() > 2) {
         peer->sendExtProtMsg(id, data);
     }
 
-    peers = npeers;
-    added.clear();
-    flags.clear();
-    npeers.clear();
+    peers4 = std::move(npeers4);
+    added4.clear();
+    flags4.clear();
+    npeers4.clear();
+
+    peers6 = std::move(npeers6);
+    added6.clear();
+    flags6.clear();
+    npeers6.clear();
 }
 
-void UTPex::encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps)
+void UTPex::encodePeers(BEncoder &enc,
+                        const std::map<Uint32, net::Address> &dropped,
+                        const std::map<Uint32, net::Address> &added,
+                        const std::map<Uint32, Uint8> &flags,
+                        int ip_version)
+{
+    if (!added.empty()) {
+        // encode the whole lot
+        enc.write(ip_version == 4 ? QByteArrayLiteral("added") : QByteArrayLiteral("added6"));
+        encode(enc, added, ip_version);
+
+        enc.write(ip_version == 4 ? QByteArrayLiteral("added.f") : QByteArrayLiteral("added6.f"));
+        encodeFlags(enc, flags);
+    }
+
+    if (!dropped.empty()) {
+        enc.write(ip_version == 4 ? QByteArrayLiteral("dropped") : QByteArrayLiteral("dropped6"));
+        encode(enc, dropped, ip_version);
+    }
+}
+
+void UTPex::encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps, int ip_version)
 {
     if (ps.size() == 0) {
         enc.write(QByteArray());
         return;
     }
 
-    Uint8 *buf = new Uint8[ps.size() * 6];
+    Uint8 *buf = nullptr;
+    if (ip_version == 4) {
+        buf = new Uint8[ps.size() * 6];
+    } else if (ip_version == 6) {
+        buf = new Uint8[ps.size() * 18];
+    }
+
     Uint32 size = 0;
 
-    std::map<Uint32, net::Address>::const_iterator i = ps.begin();
-    while (i != ps.end()) {
-        const net::Address &addr = i->second;
-        if (addr.ipVersion() == 4) {
+    for (const auto &[id, addr] : ps) {
+        if (addr.ipVersion() != ip_version) {
+            continue;
+        }
+        if (ip_version == 4) {
             quint32 ip = htonl(addr.toIPv4Address());
             memcpy(buf + size, &ip, 4);
             WriteUint16(buf, size + 4, addr.port());
             size += 6;
+        } else if (ip_version == 6) {
+            const Q_IPV6ADDR ip6 = addr.toIPv6Address();
+            const quint8 *ip = ip6.c;
+            memcpy(buf + size, ip, 16);
+            WriteUint16(buf, size + 16, addr.port());
+            size += 18;
         }
-        ++i;
     }
 
     enc.write(buf, size);

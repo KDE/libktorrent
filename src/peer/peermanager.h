@@ -237,7 +237,7 @@ public:
     bool chokerNeedsToRun() const;
 
     /// A PEX message was received
-    void pex(const QByteArray &arr);
+    void pex(const QByteArray &arr, int ip_version);
 
     /// A port packet was received
     void portPacketReceived(const QString &ip, Uint16 port);

@@ -61,18 +61,32 @@ public:
     }
 
 private:
-    void encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps);
+    void encodePeers(BEncoder &enc,
+                     const std::map<Uint32, net::Address> &dropped,
+                     const std::map<Uint32, net::Address> &added,
+                     const std::map<Uint32, Uint8> &flags,
+                     int ip_version);
+    void encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps, int ipVersion);
     void encodeFlags(BEncoder &enc, const std::map<Uint32, Uint8> &flags);
     void visit(const bt::Peer::Ptr p) override;
+    void visit(const bt::Peer::Ptr p,
+               std::map<Uint32, net::Address> &peers,
+               std::map<Uint32, net::Address> &added,
+               std::map<Uint32, Uint8> &flags,
+               std::map<Uint32, net::Address> &npeers);
 
 private:
-    std::map<Uint32, net::Address> peers;
+    std::map<Uint32, net::Address> peers4;
+    std::map<Uint32, net::Address> peers6;
     TimeStamp last_updated;
     static bool pex_enabled;
 
-    std::map<Uint32, net::Address> added;
-    std::map<Uint32, Uint8> flags;
-    std::map<Uint32, net::Address> npeers;
+    std::map<Uint32, net::Address> added4;
+    std::map<Uint32, net::Address> added6;
+    std::map<Uint32, Uint8> flags4;
+    std::map<Uint32, Uint8> flags6;
+    std::map<Uint32, net::Address> npeers4;
+    std::map<Uint32, net::Address> npeers6;
 };
 
 }

@@ -181,7 +181,7 @@ public:
     /**
      * Emit the pex signal
      */
-    void emitPex(const QByteArray &data);
+    void emitPex(const QByteArray &data, int ip_version);
 
     /// Disable or enable pex
     void setPexEnabled(bool on);

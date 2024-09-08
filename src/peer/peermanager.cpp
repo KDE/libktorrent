@@ -342,15 +342,25 @@ void PeerManager::peerSourceReady(PeerSource *ps)
         addPotentialPeer(addr, local);
 }
 
-void PeerManager::pex(const QByteArray &arr)
+void PeerManager::pex(const QByteArray &arr, int ip_version)
 {
     if (!d->pex_on)
         return;
 
-    Out(SYS_CON | LOG_NOTICE) << "PEX: found " << (arr.size() / 6) << " peers" << endl;
-    for (int i = 0; i + 6 <= arr.size(); i += 6) {
-        const Uint8 *tmp = (const Uint8 *)arr.data() + i;
-        addPotentialPeer(net::Address(ReadUint32(tmp, 0), ReadUint16(tmp, 4)), false);
+    if (ip_version == 4) {
+        Out(SYS_CON | LOG_NOTICE) << "PEX: found " << (arr.size() / 6) << " IPv4 peers" << endl;
+        for (int i = 0; i + 6 <= arr.size(); i += 6) {
+            const Uint8 *tmp = (const Uint8 *)arr.data() + i;
+            addPotentialPeer(net::Address(ReadUint32(tmp, 0), ReadUint16(tmp, 4)), false);
+        }
+    } else if (ip_version == 6) {
+        Out(SYS_CON | LOG_NOTICE) << "PEX: found " << (arr.size() / 18) << " IPv6 peers" << endl;
+        for (int i = 0; i < arr.size(); i += 18) {
+            Q_IPV6ADDR ip;
+            memcpy(ip.c, arr.data() + i, 16);
+            quint16 port = ReadUint16((const Uint8 *)arr.data() + i, 16);
+            addPotentialPeer(net::Address(ip, port), false);
+        }
     }
 }
 
