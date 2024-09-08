@@ -19,6 +19,8 @@
 
 #include <QNetworkProxyFactory>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 QString WebSeed::proxy_host;
@@ -484,7 +486,7 @@ void WebSeed::redirected(const QUrl &to_url)
     delete conn;
     conn = nullptr;
     token.clear();
-    if (to_url.isValid() && to_url.scheme() == QLatin1String("http")) {
+    if (to_url.isValid() && (to_url.scheme() == "http"_L1 || to_url.scheme() == "https"_L1)) {
         redirected_url = to_url;
         download(cur_chunk, last_chunk);
         status = conn->getStatusString();

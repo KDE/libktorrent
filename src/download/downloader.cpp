@@ -31,6 +31,8 @@
 #include <util/log.h>
 #include <util/sha1hash.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 bool Downloader::use_webseeds = true;
@@ -59,7 +61,7 @@ Downloader::Downloader(Torrent &tor, PeerManager &pman, ChunkManager &cman)
     active_webseed_downloads = 0;
     const QList<QUrl> &urls = tor.getWebSeeds();
     for (const QUrl &u : urls) {
-        if (u.scheme() == QLatin1String("http")) {
+        if (u.scheme() == "http"_L1 || u.scheme() == "https"_L1) {
             WebSeed *ws = new WebSeed(u, false, tor, cman);
             webseeds.append(ws);
             connect(ws, &WebSeed::chunkReady, this, &Downloader::onChunkReady);
@@ -791,7 +793,7 @@ void Downloader::loadWebSeeds(const QString &file)
         }
 
         QUrl url(line);
-        if (!url.isValid() || url.scheme() != QLatin1String("http"))
+        if (!url.isValid() || (url.scheme() != "http"_L1 && url.scheme() != "https"_L1))
             continue;
 
         if (disabled_list_found) {
