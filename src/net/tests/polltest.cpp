@@ -97,13 +97,26 @@ private Q_SLOTS:
         QVERIFY(p.poll(100) == 0);
     }
 
+    void testSocket_data()
+    {
+        QTest::addColumn<int>("writer_ip_version");
+        QTest::addColumn<int>("reader_ip_version");
+
+        QTest::newRow("IPv4 -> IPv4") << 4 << 4;
+        QTest::newRow("IPv6 -> IPv4") << 6 << 4;
+        QTest::newRow("IPv6 -> IPv6") << 6 << 6;
+    }
+
     void testSocket()
     {
-        net::Socket sock(true, 4);
-        QVERIFY(sock.bind("127.0.0.1", 0, true));
+        QFETCH(int, writer_ip_version);
+        QFETCH(int, reader_ip_version);
+
+        net::Socket sock(true, reader_ip_version);
+        QVERIFY(sock.bind(reader_ip_version == 4 ? "127.0.0.1" : "::1", 0, true));
 
         net::Address local_addr = sock.getSockName();
-        net::Socket writer(true, 4);
+        net::Socket writer(true, writer_ip_version);
         writer.setBlocking(false);
         writer.connectTo(local_addr);
 
@@ -118,7 +131,7 @@ private Q_SLOTS:
         poll.reset();
         QVERIFY(writer.connectSuccesFull());
 
-        net::Socket reader(fd, 6);
+        net::Socket reader(fd, reader_ip_version);
 
         bt::Uint8 data[20];
         memset(data, 0xFF, 20);

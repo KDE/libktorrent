@@ -81,9 +81,9 @@ Address::~Address()
 {
 }
 
-void Address::toSocketAddress(sockaddr_storage *ss, int &length) const
+void Address::toSocketAddress(sockaddr_storage *ss, int &length, bool as_ipv6) const
 {
-    if (protocol() == QAbstractSocket::IPv4Protocol) {
+    if (protocol() == QAbstractSocket::IPv4Protocol && !as_ipv6) {
         struct sockaddr_in *addr = (struct sockaddr_in *)ss;
         memset(addr, 0, sizeof(struct sockaddr_in));
         addr->sin_family = AF_INET;

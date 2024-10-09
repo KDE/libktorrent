@@ -42,7 +42,9 @@
 #undef errno
 #define errno WSAGetLastError()
 #endif
+
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace net
 {
@@ -81,6 +83,21 @@ Socket::Socket(bool tcp, int ip_version)
     if (fd < 0)
         Out(SYS_GEN | LOG_IMPORTANT) << QStringLiteral("Cannot create socket : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
     m_fd = fd;
+
+    // Try using dual-stack for IPv6
+    if (m_fd != -1 && m_ip_version == 6) {
+        const int no = 0;
+#ifndef Q_OS_WIN
+        int err = setsockopt(m_fd, IPPROTO_IPV6, IPV6_V6ONLY, &no, sizeof(no));
+#else
+        int err = setsockopt(m_fd, IPPROTO_IPV6, IPV6_V6ONLY, reinterpret_cast<const char *>(&no), sizeof(no));
+#endif
+        if (err < 0) {
+            Out(SYS_GEN | LOG_IMPORTANT) << u"Failed to set dual-stack option for IPv6 socket : %1"_s.arg(QString::fromUtf8(strerror(errno))) << endl;
+        } else {
+            dualstack = true;
+        }
+    }
 
 #if defined(Q_OS_MACX) || defined(Q_OS_DARWIN)
     int val = 1;
@@ -163,7 +180,7 @@ bool Socket::connectTo(const Address &a)
 {
     int len = 0;
     struct sockaddr_storage ss;
-    a.toSocketAddress(&ss, len);
+    a.toSocketAddress(&ss, len, dualstack);
     if (::connect(m_fd, (struct sockaddr *)&ss, len) < 0) {
 #ifndef Q_OS_WIN
         if (errno == EINPROGRESS)
@@ -264,7 +281,7 @@ int Socket::sendTo(const bt::Uint8 *buf, int len, const Address &a)
 {
     int alen = 0;
     struct sockaddr_storage ss;
-    a.toSocketAddress(&ss, alen);
+    a.toSocketAddress(&ss, alen, dualstack);
     int ret = ::sendto(m_fd, (char *)buf, len, 0, (struct sockaddr *)&ss, alen);
     if (ret < 0) {
         if (errno == EAGAIN || errno == EWOULDBLOCK)

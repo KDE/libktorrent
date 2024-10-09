@@ -52,8 +52,15 @@ public:
         port_number = p;
     }
 
-    /// Convert to a struct sockaddr_storage
-    void toSocketAddress(struct sockaddr_storage *ss, int &length) const;
+    /**
+     * Convert to a struct sockaddr_storage
+     *
+     * @param ss the returned sockaddr_storage
+     * @param length the size of the returned address
+     * @param as_ipv6 if the address is IPv4 this parameter determines whether to return an IPv4 address or an IPv4-mapped IPv6 address. If the address is
+     * already IPv6 then this parameter is unused.
+     */
+    void toSocketAddress(struct sockaddr_storage *ss, int &length, bool as_ipv6 = false) const;
 
     /// Return the IP protocol version (4 or 6)
     int ipVersion() const

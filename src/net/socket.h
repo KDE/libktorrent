@@ -81,6 +81,7 @@ private:
     int m_ip_version;
     int r_poll_index;
     int w_poll_index;
+    bool dualstack = false;
 };
 
 }
