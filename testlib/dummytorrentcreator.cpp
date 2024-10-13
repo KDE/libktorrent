@@ -42,7 +42,7 @@ bool DummyTorrentCreator::createMultiFileTorrent(const QMap<QString, bt::Uint64>
             ++i;
         }
 
-        bt::TorrentCreator creator(dpath, trackers, QList<QUrl>(), chunk_size, name, "", false, false);
+        bt::TorrentCreator creator(dpath, trackers, QList<QUrl>(), chunk_size, name, QString(), false, false);
         // Start the hashing thread and wait until it is done
         creator.start();
         creator.wait();
@@ -65,7 +65,7 @@ bool DummyTorrentCreator::createSingleFileTorrent(bt::Uint64 size, const QString
         if (!createRandomFile(dpath, size))
             return false;
 
-        bt::TorrentCreator creator(dpath, trackers, QList<QUrl>(), chunk_size, filename, "", false, false);
+        bt::TorrentCreator creator(dpath, trackers, QList<QUrl>(), chunk_size, filename, QString(), false, false);
         // Start the hashing thread and wait until it is done
         creator.start();
         creator.wait();

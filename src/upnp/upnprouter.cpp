@@ -94,7 +94,7 @@ void UPnPService::setProperty(const QString &name, const QString &value)
 
 void UPnPService::clear()
 {
-    servicetype = controlurl = eventsuburl = scpdurl = serviceid = "";
+    servicetype = controlurl = eventsuburl = scpdurl = serviceid = QString();
 }
 
 UPnPService &UPnPService::operator=(const UPnPService &s)

@@ -51,7 +51,7 @@ TorrentCreator::TorrentCreator(const QString &tar,
             this->target += bt::DirSeparator();
 
         tot_size = 0;
-        buildFileList("");
+        buildFileList(QString());
         num_chunks = tot_size / chunk_size;
         if (tot_size % chunk_size > 0)
             num_chunks++;

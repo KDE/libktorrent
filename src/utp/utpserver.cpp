@@ -274,7 +274,7 @@ static void Dump(const QByteArray & data, const net::Address& addr)
     for (int i = 0; i < data.size(); i++) {
         if (i > 0 && i % 32 == 0) {
             Out(SYS_UTP | LOG_DEBUG) << line << endl;
-            line = "";
+            line = QString();
         }
 
         uint val = pkt[i];

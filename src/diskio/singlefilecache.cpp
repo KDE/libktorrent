@@ -244,7 +244,7 @@ bool SingleFileCache::hasMissingFiles(QStringList &sl)
 
 Job *SingleFileCache::deleteDataFiles()
 {
-    DeleteDataFilesJob *job = new DeleteDataFilesJob("");
+    DeleteDataFilesJob *job = new DeleteDataFilesJob(QString());
     job->addFile(output_file);
     return job;
 }

@@ -179,7 +179,7 @@ bool XMLContentHandler::startElement(const StringView &namespaceUri, const Strin
     Q_UNUSED(qName)
     Q_UNUSED(atts)
 
-    tmp = "";
+    tmp = QString();
     switch (status_stack.top()) {
     case TOPLEVEL:
         // from toplevel we can only go to root
@@ -253,7 +253,7 @@ bool XMLContentHandler::endElement(const StringView &namespaceUri, const StringV
     }
 
     // reset tmp
-    tmp = "";
+    tmp = QString();
     return true;
 }
 

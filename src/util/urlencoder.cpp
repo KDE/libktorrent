@@ -23,7 +23,7 @@ QString hex[] = {"%00", "%01", "%02", "%03", "%04", "%05", "%06", "%07", "%08", 
 
 QString URLEncoder::encode(const char *buf, Uint32 size)
 {
-    QString res = "";
+    QString res;
 
     for (Uint32 i = 0; i < size; i++) {
         Uint8 ch = buf[i];
