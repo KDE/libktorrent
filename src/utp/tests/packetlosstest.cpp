@@ -22,6 +22,7 @@
 
 using namespace utp;
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 /**
     Server which simulates packet loss
@@ -120,7 +121,7 @@ public:
 private:
     void initTestCase()
     {
-        bt::InitLog("packetlosstest.log");
+        bt::InitLog(u"packetlosstest.log"_s);
 
         port = 50000;
         while (port < 60000) {
@@ -140,7 +141,7 @@ private:
 
     void testConnect()
     {
-        net::Address addr("127.0.0.1", port);
+        net::Address addr(u"127.0.0.1"_s, port);
         connect(&srv, &PacketLossServer::accepted, this, &PacketLoss::accepted, Qt::QueuedConnection);
         outgoing = srv.connectTo(addr).toStrongRef();
         QVERIFY(outgoing);

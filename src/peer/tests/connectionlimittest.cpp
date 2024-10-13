@@ -10,6 +10,8 @@
 #include <peer/connectionlimit.h>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 class ConnectionLimitTest : public QObject
 {
     Q_OBJECT
@@ -17,7 +19,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("connectionlimittest.log");
+        bt::InitLog(u"connectionlimittest.log"_s);
     }
 
     void cleanupTestCase()

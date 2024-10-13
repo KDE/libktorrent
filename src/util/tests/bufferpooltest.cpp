@@ -10,6 +10,8 @@
 #include <util/bufferpool.h>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 class BufferPoolTest : public QObject
 {
     Q_OBJECT
@@ -17,7 +19,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("bufferpooltest.log");
+        bt::InitLog(u"bufferpooltest.log"_s);
     }
 
     void cleanupTestCase()

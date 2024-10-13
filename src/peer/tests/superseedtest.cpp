@@ -14,6 +14,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 #define NUM_CHUNKS 10
 #define INVALID_CHUNK 0xFFFFFFFF
@@ -97,7 +98,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("superseedtest.log");
+        bt::InitLog(u"superseedtest.log"_s);
         allow_called = false;
     }
 

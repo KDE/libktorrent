@@ -19,6 +19,7 @@
 
 using namespace utp;
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 /**
     Server which simulates packet loss
@@ -114,7 +115,7 @@ public:
 private:
     void initTestCase()
     {
-        bt::InitLog("congestiontest.log");
+        bt::InitLog(u"congestiontest.log"_s);
 
         incoming = outgoing = 0;
         port = 50000;
@@ -136,7 +137,7 @@ private:
 
     void testConnect()
     {
-        net::Address addr("127.0.0.1", port);
+        net::Address addr(u"127.0.0.1"_s, port);
         connect(&srv, &CongestionTestServer::accepted, this, &CongestionTest::accepted, Qt::QueuedConnection);
         outgoing = srv.connectTo(addr);
         QVERIFY(outgoing != 0);

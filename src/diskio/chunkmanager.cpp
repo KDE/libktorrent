@@ -188,7 +188,7 @@ void ChunkManager::resetChunk(unsigned int i)
     bitset.set(i, false);
     d->todo.set(i, !excluded_chunks.get(i) && !only_seed_chunks.get(i));
     tor.updateFilePercentage(i, *this);
-    Out(SYS_DIO | LOG_DEBUG) << QString("Reset chunk %1").arg(i) << endl;
+    Out(SYS_DIO | LOG_DEBUG) << u"Reset chunk %1"_s.arg(i) << endl;
 }
 
 void ChunkManager::checkMemoryUsage()
@@ -1015,31 +1015,31 @@ void ChunkManager::Private::dumpPriority(TorrentFile *tf)
         QString prio;
         switch (chunks[i]->getPriority()) {
         case FIRST_PREVIEW_PRIORITY:
-            prio = "First (Preview)";
+            prio = u"First (Preview)"_s;
             break;
         case FIRST_PRIORITY:
-            prio = "First";
+            prio = u"First"_s;
             break;
         case NORMAL_PREVIEW_PRIORITY:
-            prio = "Normal (Preview)";
+            prio = u"Normal (Preview)"_s;
             break;
         case NORMAL_PRIORITY:
-            prio = "Normal";
+            prio = u"Normal"_s;
             break;
         case LAST_PREVIEW_PRIORITY:
-            prio = "Last (Preview)";
+            prio = u"Last (Preview)"_s;
             break;
         case LAST_PRIORITY:
-            prio = "Last";
+            prio = u"Last"_s;
             break;
         case ONLY_SEED_PRIORITY:
-            prio = "Only Seed";
+            prio = u"Only Seed"_s;
             break;
         case EXCLUDED:
-            prio = "Excluded";
+            prio = u"Excluded"_s;
             break;
         default:
-            prio = "(invalid)";
+            prio = u"(invalid)"_s;
             break;
         }
         Out(SYS_DIO | LOG_DEBUG) << i << " prio " << prio << endl;

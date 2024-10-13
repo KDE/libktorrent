@@ -14,6 +14,7 @@
 #include <utp/utpsocket.h>
 
 using namespace utp;
+using namespace Qt::Literals::StringLiterals;
 
 class SocketTest : public QEventLoop
 {
@@ -32,7 +33,7 @@ public:
 private:
     void initTestCase()
     {
-        bt::InitLog("sockettest.log");
+        bt::InitLog(u"sockettest.log"_s);
         incoming = outgoing = nullptr;
 
         port = 50000;
@@ -56,7 +57,7 @@ private:
     void testConnect()
     {
         UTPServer &srv = bt::Globals::instance().getUTPServer();
-        net::Address addr("127.0.0.1", port);
+        net::Address addr(u"127.0.0.1"_s, port);
         connect(&srv, &UTPServer::accepted, this, &SocketTest::accepted, Qt::QueuedConnection);
         outgoing = new UTPSocket();
         outgoing->connectTo(addr);
@@ -100,7 +101,7 @@ private:
     void testConnectionTimeout()
     {
         UTPSocket sock;
-        net::Address addr("127.0.0.1", port + 1);
+        net::Address addr(u"127.0.0.1"_s, port + 1);
         sock.setBlocking(true);
         QVERIFY(sock.connectTo(addr) == false);
     }
@@ -108,7 +109,7 @@ private:
     void testInvalidAddress()
     {
         UTPSocket sock;
-        net::Address addr("127.0.0.1", 0);
+        net::Address addr(u"127.0.0.1"_s, 0);
         sock.setBlocking(true);
         QVERIFY(sock.connectTo(addr) == false);
     }

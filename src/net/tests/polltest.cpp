@@ -15,6 +15,7 @@
 
 using namespace net;
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 class PollTest : public QEventLoop
 {
@@ -26,7 +27,7 @@ private Q_SLOTS:
     void initTestCase()
     {
         bt::InitLibKTorrent();
-        bt::InitLog("polltest.log");
+        bt::InitLog(u"polltest.log"_s);
     }
 
     void cleanupTestCase()
@@ -113,7 +114,7 @@ private Q_SLOTS:
         QFETCH(int, reader_ip_version);
 
         net::Socket sock(true, reader_ip_version);
-        QVERIFY(sock.bind(reader_ip_version == 4 ? "127.0.0.1" : "::1", 0, true));
+        QVERIFY(sock.bind(reader_ip_version == 4 ? u"127.0.0.1"_s : u"::1"_s, 0, true));
 
         net::Address local_addr = sock.getSockName();
         net::Socket writer(true, writer_ip_version);

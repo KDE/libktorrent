@@ -14,6 +14,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -111,7 +112,7 @@ void DHTPeerSource::onDataReady(Task *t)
         }
 
         if (cnt) {
-            Out(SYS_DHT | LOG_NOTICE) << QString("DHT: Got %1 potential peers for torrent %2").arg(cnt).arg(torrent_name) << endl;
+            Out(SYS_DHT | LOG_NOTICE) << u"DHT: Got %1 potential peers for torrent %2"_s.arg(cnt).arg(torrent_name) << endl;
             Q_EMIT peersReady(this);
         }
     }

@@ -25,6 +25,7 @@ void signalhandler(int sig)
 #endif
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 int main(int argc, char **argv)
 {
@@ -37,7 +38,7 @@ int main(int argc, char **argv)
             return -1;
         }
 
-        QCoreApplication::setApplicationName("ktcli");
+        QCoreApplication::setApplicationName(u"ktcli"_s);
         QCoreApplication::setApplicationVersion(bt::GetVersionString());
 
         KTCLI app(argc, argv);

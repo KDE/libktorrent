@@ -13,6 +13,7 @@
 #include <utp/utpserver.h>
 
 using namespace utp;
+using namespace Qt::Literals::StringLiterals;
 
 class ConnectTest : public QEventLoop
 {
@@ -30,7 +31,7 @@ public:
 
     void startConnect()
     {
-        net::Address addr("127.0.0.1", port);
+        net::Address addr(u"127.0.0.1"_s, port);
         srv.connectTo(addr);
         QTimer::singleShot(5000, this, &ConnectTest::endEventLoop); // use a 5 second timeout
     }
@@ -38,7 +39,7 @@ public:
 private:
     void initTestCase()
     {
-        bt::InitLog("connecttest.log");
+        bt::InitLog(u"connecttest.log"_s);
 
         port = 50000;
         while (port < 60000) {

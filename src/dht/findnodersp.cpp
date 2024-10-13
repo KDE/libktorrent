@@ -12,6 +12,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -36,7 +37,7 @@ void FindNodeRsp::apply(dht::DHT *dh_table)
 
 void FindNodeRsp::print()
 {
-    Out(SYS_DHT | LOG_DEBUG) << QString("RSP: %1 %2 : find_node").arg(mtid[0]).arg(id.toString()) << endl;
+    Out(SYS_DHT | LOG_DEBUG) << u"RSP: %1 %2 : find_node"_s.arg(mtid[0]).arg(id.toString()) << endl;
 }
 
 void FindNodeRsp::encode(QByteArray &arr) const
@@ -73,10 +74,10 @@ void FindNodeRsp::parse(BDictNode *dict)
     dht::RPCMsg::parse(dict);
     BDictNode *args = dict->getDict(RSP);
     if (!args)
-        throw bt::Error("Invalid response, arguments missing");
+        throw bt::Error(u"Invalid response, arguments missing"_s);
 
     if (!args->getValue("nodes") && !args->getList("nodes6"))
-        throw bt::Error("Missing nodes or nodes6 parameter");
+        throw bt::Error(u"Missing nodes or nodes6 parameter"_s);
 
     BValueNode *v = args->getValue("nodes");
     if (v)

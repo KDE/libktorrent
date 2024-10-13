@@ -12,13 +12,14 @@
 #include <utp/utpserver.h>
 
 using namespace utp;
+using namespace Qt::Literals::StringLiterals;
 
 class ConnectionTest : public QEventLoop, public Transmitter
 {
 public:
     ConnectionTest(QObject *parent = nullptr)
         : QEventLoop(parent)
-        , remote("127.0.0.1", 50000)
+        , remote(u"127.0.0.1"_s, 50000)
     {
     }
 
@@ -62,7 +63,7 @@ public:
 private:
     void initTestCase()
     {
-        bt::InitLog("connectiontest.log");
+        bt::InitLog(u"connectiontest.log"_s);
         pool = bt::BufferPool::Ptr(new bt::BufferPool());
         pool->setWeakPointer(pool.toWeakRef());
     }

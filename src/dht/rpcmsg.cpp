@@ -8,6 +8,7 @@
 #include <util/error.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -34,7 +35,7 @@ void RPCMsg::parse(bt::BDictNode *dict)
 {
     mtid = dict->getByteArray(TID);
     if (mtid.isEmpty())
-        throw bt::Error("Invalid DHT transaction ID");
+        throw bt::Error(u"Invalid DHT transaction ID"_s);
 
     const auto t = dict->getByteArray(TYP);
     if (t == REQ) {
@@ -54,6 +55,6 @@ void RPCMsg::parse(bt::BDictNode *dict)
     } else if (t == ERR_DHT)
         type = ERR_MSG;
     else
-        throw bt::Error(QString("Unknown message type %1").arg(QLatin1StringView(t)));
+        throw bt::Error(u"Unknown message type %1"_s.arg(QLatin1StringView(t)));
 }
 }

@@ -46,10 +46,10 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        QLocale::setDefault(QLocale("main"));
-        bt::InitLog("torrentfilestreamtest.log", false, false);
-        QVERIFY(creator.createSingleFileTorrent(TEST_FILE_SIZE, "test.avi"));
-        QVERIFY(creator2.createSingleFileTorrent(TEST_FILE_SIZE, "test2.avi"));
+        QLocale::setDefault(QLocale(u"main"_s));
+        bt::InitLog(u"torrentfilestreamtest.log"_s, false, false);
+        QVERIFY(creator.createSingleFileTorrent(TEST_FILE_SIZE, u"test.avi"_s));
+        QVERIFY(creator2.createSingleFileTorrent(TEST_FILE_SIZE, u"test2.avi"_s));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator2.torrentPath() << endl;

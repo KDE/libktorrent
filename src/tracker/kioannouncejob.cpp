@@ -8,6 +8,8 @@
 #include <KIO/Job>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 KIOAnnounceJob::KIOAnnounceJob(const QUrl &url, const KIO::MetaData &md)

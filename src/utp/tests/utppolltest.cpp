@@ -18,6 +18,7 @@
 using namespace utp;
 using namespace net;
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 #define NUM_SOCKETS 20
 
@@ -38,7 +39,7 @@ public:
         for (int i = 0; i < NUM_SOCKETS; i++) {
             outgoing[i] = new UTPSocket();
             outgoing[i]->setBlocking(false);
-            outgoing[i]->connectTo(net::Address("127.0.0.1", port));
+            outgoing[i]->connectTo(net::Address(u"127.0.0.1"_s, port));
         }
     }
 
@@ -50,7 +51,7 @@ public:
 private:
     void initTestCase()
     {
-        bt::InitLog("utppolltest.log");
+        bt::InitLog(u"utppolltest.log"_s);
 
         port = 50000;
         while (port < 60000) {
@@ -82,7 +83,7 @@ private:
         Out(SYS_UTP | LOG_DEBUG) << "testPollConnect " << endl;
         utp::UTPSocket s;
         s.setBlocking(false);
-        s.connectTo(net::Address("127.0.0.1", port));
+        s.connectTo(net::Address(u"127.0.0.1"_s, port));
         s.prepare(&poller, Poll::OUTPUT);
         QVERIFY(poller.poll() > 0);
         QVERIFY(s.ready(&poller, Poll::OUTPUT));

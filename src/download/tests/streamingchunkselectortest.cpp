@@ -21,6 +21,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 const bt::Uint64 TEST_FILE_SIZE = 15 * 1024 * 1024;
 
@@ -57,7 +58,7 @@ public:
     }
     QString getName() const override
     {
-        return "foobar";
+        return u"foobar"_s;
     }
     bool isChoked() const override
     {
@@ -103,16 +104,16 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        QLocale::setDefault(QLocale("main"));
+        QLocale::setDefault(QLocale(u"main"_s));
         bt::InitLibKTorrent();
-        bt::InitLog("streamingchunkselectortest.log", false, true);
+        bt::InitLog(u"streamingchunkselectortest.log"_s, false, true);
     }
 
     void testSimple()
     {
         DummyTorrentCreator creator;
         bt::TorrentControl tc;
-        QVERIFY(creator.createSingleFileTorrent(TEST_FILE_SIZE, "test.avi"));
+        QVERIFY(creator.createSingleFileTorrent(TEST_FILE_SIZE, u"test.avi"_s));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
@@ -145,7 +146,7 @@ private Q_SLOTS:
     {
         DummyTorrentCreator creator;
         bt::TorrentControl tc;
-        QVERIFY(creator.createSingleFileTorrent(2 * TEST_FILE_SIZE, "test2.avi"));
+        QVERIFY(creator.createSingleFileTorrent(2 * TEST_FILE_SIZE, u"test2.avi"_s));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {

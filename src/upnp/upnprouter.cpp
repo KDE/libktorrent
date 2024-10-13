@@ -249,7 +249,7 @@ void UPnPRouter::getExternalIPResult(HTTPRequest *r)
         if (!doc.setContent(r->replyData())) {
             Out(SYS_PNP | LOG_DEBUG) << "UPnP: GetExternalIP failed: invalid reply" << endl;
         } else {
-            QDomNodeList nodes = doc.elementsByTagName("NewExternalIPAddress");
+            QDomNodeList nodes = doc.elementsByTagName(u"NewExternalIPAddress"_s);
             if (nodes.count() > 0) {
                 d->external_ip = nodes.item(0).firstChild().nodeValue();
                 Out(SYS_PNP | LOG_DEBUG) << "UPnP: External IP: " << d->external_ip << endl;
@@ -388,43 +388,43 @@ void UPnPRouter::UPnPRouterPrivate::forward(const UPnPService *srv, const net::P
     // add all the arguments for the command
     QList<SOAP::Arg> args;
     SOAP::Arg a;
-    a.element = "NewRemoteHost";
+    a.element = u"NewRemoteHost"_s;
     args.append(a);
 
     // the external port
-    a.element = "NewExternalPort";
+    a.element = u"NewExternalPort"_s;
     a.value = QString::number(port.number);
     args.append(a);
 
     // the protocol
-    a.element = "NewProtocol";
-    a.value = port.proto == net::TCP ? "TCP" : "UDP";
+    a.element = u"NewProtocol"_s;
+    a.value = port.proto == net::TCP ? u"TCP"_s : u"UDP"_s;
     args.append(a);
 
     // the local port
-    a.element = "NewInternalPort";
+    a.element = u"NewInternalPort"_s;
     a.value = QString::number(port.number);
     args.append(a);
 
     // the local IP address
-    a.element = "NewInternalClient";
-    a.value = "$LOCAL_IP"; // will be replaced by our local ip in HTTPRequest
+    a.element = u"NewInternalClient"_s;
+    a.value = u"$LOCAL_IP"_s; // will be replaced by our local ip in HTTPRequest
     args.append(a);
 
-    a.element = "NewEnabled";
-    a.value = "1";
+    a.element = u"NewEnabled"_s;
+    a.value = u"1"_s;
     args.append(a);
 
-    a.element = "NewPortMappingDescription";
+    a.element = u"NewPortMappingDescription"_s;
     static Uint32 cnt = 0;
-    a.value = QString("KTorrent UPNP %1").arg(cnt++); // TODO: change this
+    a.value = u"KTorrent UPNP %1"_s.arg(cnt++); // TODO: change this
     args.append(a);
 
-    a.element = "NewLeaseDuration";
-    a.value = "0";
+    a.element = u"NewLeaseDuration"_s;
+    a.value = u"0"_s;
     args.append(a);
 
-    QString action = "AddPortMapping";
+    QString action = u"AddPortMapping"_s;
     QString comm = SOAP::createCommand(action, srv->servicetype, args);
 
     Forwarding fw = {port, nullptr, srv};
@@ -448,20 +448,20 @@ void UPnPRouter::UPnPRouterPrivate::undoForward(const UPnPService *srv, const ne
     // add all the arguments for the command
     QList<SOAP::Arg> args;
     SOAP::Arg a;
-    a.element = "NewRemoteHost";
+    a.element = u"NewRemoteHost"_s;
     args.append(a);
 
     // the external port
-    a.element = "NewExternalPort";
+    a.element = u"NewExternalPort"_s;
     a.value = QString::number(port.number);
     args.append(a);
 
     // the protocol
-    a.element = "NewProtocol";
-    a.value = port.proto == net::TCP ? "TCP" : "UDP";
+    a.element = u"NewProtocol"_s;
+    a.value = port.proto == net::TCP ? u"TCP"_s : u"UDP"_s;
     args.append(a);
 
-    QString action = "DeletePortMapping";
+    QString action = u"DeletePortMapping"_s;
     QString comm = SOAP::createCommand(action, srv->servicetype, args);
     HTTPRequest *r = sendSoapQuery(comm, srv->servicetype + '#'_L1 + action, srv->controlurl, waitjob != nullptr);
 
@@ -475,7 +475,7 @@ void UPnPRouter::UPnPRouterPrivate::getExternalIP()
 {
     for (const UPnPService &s : std::as_const(services)) {
         if (s.servicetype.contains("WANIPConnection"_L1) || s.servicetype.contains("WANPPPConnection"_L1)) {
-            QString action = "GetExternalIPAddress";
+            QString action = u"GetExternalIPAddress"_s;
             QString comm = SOAP::createCommand(action, s.servicetype);
             HTTPRequest *r = sendSoapQuery(comm, s.servicetype + '#'_L1 + action, s.controlurl);
             connect(r, &HTTPRequest::result, parent, &UPnPRouter::getExternalIPResult);

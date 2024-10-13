@@ -12,6 +12,7 @@
 #include <utp/utpprotocol.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 class PacketBufferTest : public QObject
 {
@@ -19,7 +20,7 @@ class PacketBufferTest : public QObject
 public:
     void initTestCase()
     {
-        bt::InitLog("packetbuffertest.log");
+        bt::InitLog(u"packetbuffertest.log"_s);
     }
 
     void cleanupTestCase()

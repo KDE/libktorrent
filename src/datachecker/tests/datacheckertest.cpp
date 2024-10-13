@@ -37,9 +37,9 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        QLocale::setDefault(QLocale("main"));
+        QLocale::setDefault(QLocale(u"main"_s));
         bt::InitLibKTorrent();
-        bt::InitLog("datacheckertest.log", false, true);
+        bt::InitLog(u"datacheckertest.log"_s, false, true);
     }
 
     void testSingleFile()
@@ -47,7 +47,7 @@ private Q_SLOTS:
         Out(SYS_GEN | LOG_DEBUG) << "testSingleFile" << endl;
         DummyTorrentCreator creator;
         bt::TorrentControl tc;
-        QVERIFY(creator.createSingleFileTorrent(TEST_FILE_SIZE, "test.avi"));
+        QVERIFY(creator.createSingleFileTorrent(TEST_FILE_SIZE, u"test.avi"_s));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
@@ -74,13 +74,13 @@ private Q_SLOTS:
         Out(SYS_GEN | LOG_DEBUG) << "testMultiFile" << endl;
         QMap<QString, bt::Uint64> files;
 
-        files["aaa.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["bbb.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["ccc.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"aaa.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"bbb.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"ccc.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
 
         DummyTorrentCreator creator;
         bt::TorrentControl tc;
-        QVERIFY(creator.createMultiFileTorrent(files, "movies"));
+        QVERIFY(creator.createMultiFileTorrent(files, u"movies"_s));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
@@ -106,14 +106,14 @@ private Q_SLOTS:
     {
         QMap<QString, bt::Uint64> files;
 
-        files["aaa.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["bbb.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["ccc.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["ddd.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"aaa.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"bbb.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"ccc.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"ddd.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
 
         DummyTorrentCreator creator;
         bt::TorrentControl tc;
-        QVERIFY(creator.createMultiFileTorrent(files, "movies"));
+        QVERIFY(creator.createMultiFileTorrent(files, u"movies"_s));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {

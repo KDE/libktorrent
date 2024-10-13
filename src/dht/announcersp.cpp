@@ -12,6 +12,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -36,7 +37,7 @@ void AnnounceRsp::apply(dht::DHT *dh_table)
 
 void AnnounceRsp::print()
 {
-    Out(SYS_DHT | LOG_DEBUG) << QString("RSP: %1 %2 : announce_peer").arg(mtid[0]).arg(id.toString()) << endl;
+    Out(SYS_DHT | LOG_DEBUG) << u"RSP: %1 %2 : announce_peer"_s.arg(mtid[0]).arg(id.toString()) << endl;
 }
 
 void AnnounceRsp::encode(QByteArray &arr) const
@@ -64,7 +65,7 @@ void AnnounceRsp::parse(BDictNode *dict)
     dht::RPCMsg::parse(dict);
     BDictNode *args = dict->getDict(RSP);
     if (!args)
-        throw bt::Error("Invalid response, arguments missing");
+        throw bt::Error(u"Invalid response, arguments missing"_s);
 }
 
 }

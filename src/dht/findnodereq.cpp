@@ -12,6 +12,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -37,7 +38,7 @@ void FindNodeReq::apply(dht::DHT *dh_table)
 
 void FindNodeReq::print()
 {
-    Out(SYS_DHT | LOG_NOTICE) << QString("REQ: %1 %2 : find_node %3").arg(mtid[0]).arg(id.toString(), target.toString()) << endl;
+    Out(SYS_DHT | LOG_NOTICE) << u"REQ: %1 %2 : find_node %3"_s.arg(mtid[0]).arg(id.toString(), target.toString()) << endl;
 }
 
 void FindNodeReq::encode(QByteArray &arr) const
@@ -69,7 +70,7 @@ void FindNodeReq::parse(BDictNode *dict)
     dht::RPCMsg::parse(dict);
     BDictNode *args = dict->getDict(ARG);
     if (!args)
-        throw bt::Error("Invalid request, arguments missing");
+        throw bt::Error(u"Invalid request, arguments missing"_s);
 
     target = Key(args->getByteArray("target"));
     BListNode *ln = args->getList("want");
@@ -81,7 +82,7 @@ void FindNodeReq::parse(BDictNode *dict)
 
 bool FindNodeReq::wants(int ip_version) const
 {
-    return want.contains(QString("n%1").arg(ip_version));
+    return want.contains(u"n%1"_s.arg(ip_version));
 }
 
 }

@@ -21,6 +21,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -36,7 +37,7 @@ RPCMsg::Ptr RPCMsgFactory::buildRequest(BDictNode *dict)
 {
     BDictNode *args = dict->getDict(ARG);
     if (!args)
-        throw bt::Error("Invalid request, arguments missing");
+        throw bt::Error(u"Invalid request, arguments missing"_s);
 
     RPCMsg::Ptr msg;
     const auto str = dict->getByteArray(REQ);
@@ -60,19 +61,19 @@ RPCMsg::Ptr RPCMsgFactory::buildRequest(BDictNode *dict)
         // Some µTorrent extension to rate torrents, just ignore
         return msg;
     } else
-        throw bt::Error(QString("Invalid request type %1").arg(QLatin1StringView(str)));
+        throw bt::Error(u"Invalid request type %1"_s.arg(QLatin1StringView(str)));
 }
 
 RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver *method_resolver)
 {
     BDictNode *args = dict->getDict(RSP);
     if (!args)
-        throw bt::Error("Arguments missing for DHT response");
+        throw bt::Error(u"Arguments missing for DHT response"_s);
 
     QByteArray mtid = dict->getByteArray(TID);
     // check for empty byte arrays should prevent 144416
     if (mtid.size() == 0)
-        throw bt::Error("Empty transaction ID in DHT response");
+        throw bt::Error(u"Empty transaction ID in DHT response"_s);
 
     RPCMsg::Ptr msg;
 
@@ -97,7 +98,7 @@ RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver
         break;
     case NONE:
     default:
-        throw bt::Error(QString("Unknown DHT rpc call (transaction id = %1)").arg(mtid[0]));
+        throw bt::Error(u"Unknown DHT rpc call (transaction id = %1)"_s.arg(mtid[0]));
     }
 
     return msg;
@@ -115,7 +116,7 @@ RPCMsg::Ptr RPCMsgFactory::build(bt::BDictNode *dict, RPCMethodResolver *method_
         msg->parse(dict);
         return msg;
     } else
-        throw bt::Error(QString("Unknown message type %1").arg(QLatin1StringView(t)));
+        throw bt::Error(u"Unknown message type %1"_s.arg(QLatin1StringView(t)));
 }
 
 }

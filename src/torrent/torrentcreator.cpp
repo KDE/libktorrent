@@ -349,19 +349,19 @@ TorrentControl *TorrentCreator::makeTC(const QString &data_dir)
         QString odir;
         StatsFile st(dd + QLatin1String("stats"));
         if (fi.fileName() == name) {
-            st.write("OUTPUTDIR", fi.path());
+            st.write(u"OUTPUTDIR"_s, fi.path());
             odir = fi.path();
         } else {
-            st.write("CUSTOM_OUTPUT_NAME", "1");
-            st.write("OUTPUTDIR", target);
+            st.write(u"CUSTOM_OUTPUT_NAME"_s, u"1"_s);
+            st.write(u"OUTPUTDIR"_s, target);
             odir = target;
         }
-        st.write("UPLOADED", "0");
-        st.write("RUNNING_TIME_DL", "0");
-        st.write("RUNNING_TIME_UL", "0");
-        st.write("PRIORITY", "0");
-        st.write("AUTOSTART", "1");
-        st.write("IMPORTED", QString::number(tot_size));
+        st.write(u"UPLOADED"_s, u"0"_s);
+        st.write(u"RUNNING_TIME_DL"_s, u"0"_s);
+        st.write(u"RUNNING_TIME_UL"_s, u"0"_s);
+        st.write(u"PRIORITY"_s, u"0"_s);
+        st.write(u"AUTOSTART"_s, u"1"_s);
+        st.write(u"IMPORTED"_s, QString::number(tot_size));
         st.sync();
 
         tc->init(nullptr, bt::LoadFile(dd + "torrent"_L1), dd, odir);

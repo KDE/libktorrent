@@ -22,6 +22,7 @@
 
 using namespace utp;
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 static QByteArray Generate(int size)
 {
@@ -133,7 +134,7 @@ public:
 
     void startConnect()
     {
-        net::Address addr("127.0.0.1", port);
+        net::Address addr(u"127.0.0.1"_s, port);
         outgoing = srv.connectTo(addr);
         outgoing->setBlocking(true);
     }
@@ -147,7 +148,7 @@ private Q_SLOTS:
     void initTestCase()
     {
         bt::InitLibKTorrent();
-        bt::InitLog("transmittest.log", false, true, false);
+        bt::InitLog(u"transmittest.log"_s, false, true, false);
 
         port = 50000;
         while (port < 60000) {

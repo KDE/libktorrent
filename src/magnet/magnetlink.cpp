@@ -62,7 +62,7 @@ bool MagnetLink::operator==(const bt::MagnetLink &mlink) const
 static QList<QUrl> GetTrackers(const QUrl &url)
 {
     QList<QUrl> result;
-    for (QString tr : QUrlQuery(url).allQueryItemValues("tr", QUrl::FullyDecoded))
+    for (QString tr : QUrlQuery(url).allQueryItemValues(u"tr"_s, QUrl::FullyDecoded))
         result << QUrl(tr.replace(QLatin1Char('+'), QLatin1Char(' ')));
     return result;
 }
@@ -133,7 +133,7 @@ Uint8 MagnetLink::charToHex(const QChar &ch)
         return ch.digitValue();
 
     if (!ch.isLetter())
-        throw bt::Error("Invalid char");
+        throw bt::Error(u"Invalid char"_s);
 
     if (ch.isLower())
         return 10 + ch.toLatin1() - 'a';
@@ -155,7 +155,7 @@ QString MagnetLink::base32ToHexString(const QString &s)
         for (int j = 0; j < 4; j++) {
             ch = str[i * 4 + j];
             if (ch.isDigit() && (ch.digitValue() < 2 || ch.digitValue() > 7))
-                throw bt::Error("Invalid char");
+                throw bt::Error(u"Invalid char"_s);
 
             if (ch.isDigit())
                 tmp = ch.digitValue() + 24;

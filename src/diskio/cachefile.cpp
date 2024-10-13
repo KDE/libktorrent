@@ -38,6 +38,8 @@
 #define O_LARGEFILE (0)
 #endif
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 CacheFile::CacheFile()
@@ -240,7 +242,7 @@ void CacheFile::unmap(void *ptr)
     if (mappings.contains(ptr)) {
         CacheFile::Entry &e = mappings[ptr];
         if (!fptr->unmap((uchar *)e.ptr))
-            Out(SYS_DIO | LOG_IMPORTANT) << QString("Unmap failed : %1").arg(fptr->errorString()) << endl;
+            Out(SYS_DIO | LOG_IMPORTANT) << u"Unmap failed : %1"_s.arg(fptr->errorString()) << endl;
 
         mappings.remove(ptr);
         // no mappings, close temporary
@@ -257,7 +259,7 @@ void CacheFile::unmap(void *ptr)
         ret = munmap(e.ptr, e.size);
 #endif
         if (ret < 0)
-            Out(SYS_DIO | LOG_IMPORTANT) << QString("Munmap failed with error %1 : %2").arg(errno).arg(strerror(errno)) << endl;
+            Out(SYS_DIO | LOG_IMPORTANT) << u"Munmap failed with error %1 : %2"_s.arg(errno).arg(strerror(errno)) << endl;
 
         mappings.remove(ptr);
         // no mappings, close temporary
@@ -303,7 +305,7 @@ void CacheFile::unmapAll()
         ++i;
         mappings.remove(e.ptr);
         if (ret < 0) {
-            Out(SYS_DIO | LOG_IMPORTANT) << QString("Munmap failed with error %1 : %2").arg(errno).arg(strerror(errno)) << endl;
+            Out(SYS_DIO | LOG_IMPORTANT) << u"Munmap failed with error %1 : %2"_s.arg(errno).arg(strerror(errno)) << endl;
         }
     }
 }

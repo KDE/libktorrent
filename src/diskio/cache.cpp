@@ -17,6 +17,8 @@
 #include <util/functions.h>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 bool Cache::preallocate_files = true;
@@ -143,7 +145,7 @@ void Cache::saveMountPoints(const QSet<QString> &mp)
 {
     mount_points = mp;
 
-    QString mp_file = tmpdir + "mount_points";
+    QString mp_file = tmpdir + u"mount_points"_s;
     QFile fptr(mp_file);
     if (!fptr.open(QIODevice::WriteOnly))
         throw Error(i18n("Failed to create %1: %2", mp_file, fptr.errorString()));
@@ -156,7 +158,7 @@ void Cache::saveMountPoints(const QSet<QString> &mp)
 
 void Cache::loadMountPoints()
 {
-    QString mp_file = tmpdir + "mount_points";
+    QString mp_file = tmpdir + u"mount_points"_s;
     QFile fptr(mp_file);
     if (!fptr.open(QIODevice::ReadOnly)) {
         Out(SYS_DIO | LOG_NOTICE) << "Failed to load " << mp_file << ": " << fptr.errorString() << endl;

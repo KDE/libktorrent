@@ -13,6 +13,7 @@
 #include <utp/remotewindow.h>
 
 using namespace utp;
+using namespace Qt::Literals::StringLiterals;
 
 class RemoteWindowTest : public QObject, public utp::Retransmitter
 {
@@ -58,7 +59,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("remotewindowtest.log");
+        bt::InitLog(u"remotewindowtest.log"_s);
     }
 
     void cleanupTestCase()

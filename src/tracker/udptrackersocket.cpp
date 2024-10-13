@@ -20,6 +20,8 @@
 #undef ERROR
 #endif
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 Uint16 UDPTrackerSocket::port = 4444;
@@ -102,7 +104,7 @@ UDPTrackerSocket::UDPTrackerSocket()
     }
 
     if (d->sockets.count() == 0) {
-        Out(SYS_TRK | LOG_IMPORTANT) << QString("Cannot bind to udp port %1").arg(port) << endl;
+        Out(SYS_TRK | LOG_IMPORTANT) << u"Cannot bind to udp port %1"_s.arg(port) << endl;
     } else {
         Globals::instance().getPortList().addNewPort(port, net::UDP, true);
     }

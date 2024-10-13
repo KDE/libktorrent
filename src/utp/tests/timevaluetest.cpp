@@ -10,6 +10,7 @@
 
 using namespace utp;
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 class TimeValueTest : public QObject
 {
@@ -18,7 +19,7 @@ class TimeValueTest : public QObject
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("timevaluetest.log");
+        bt::InitLog(u"timevaluetest.log"_s);
     }
 
     void cleanupTestCase()

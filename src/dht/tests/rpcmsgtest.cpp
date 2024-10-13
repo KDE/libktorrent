@@ -29,7 +29,7 @@ private:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("rpcmsgtest.log", false, true);
+        bt::InitLog(u"rpcmsgtest.log"_s, false, true);
     }
 
     void cleanupTestCase()

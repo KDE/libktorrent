@@ -19,6 +19,8 @@
 #include <Winsock2.h>
 #endif
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 #ifdef Q_OS_WIN
@@ -27,7 +29,7 @@ int socketpair(int sockets[2])
     sockets[0] = sockets[1] = -1;
 
     net::Socket sock(true, 4);
-    if (!sock.bind("127.0.0.1", 0, true))
+    if (!sock.bind(u"127.0.0.1"_s, 0, true))
         return -1;
 
     net::Address local_addr = sock.getSockName();

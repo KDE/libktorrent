@@ -21,6 +21,8 @@
 
 #include "downloader.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 DownloadStatus::DownloadStatus()
@@ -201,7 +203,7 @@ void ChunkDownload::onTimeout(const Request &r)
     // see if we are dealing with a piece of ours
     if (chunk->getIndex() == r.getIndex()) {
         Out(SYS_CON | LOG_DEBUG)
-            << QString("Request timed out %1 %2 %3 %4").arg(r.getIndex()).arg(r.getOffset()).arg(r.getLength()).arg(r.getPieceDownloader()->getName()) << endl;
+            << u"Request timed out %1 %2 %3 %4"_s.arg(r.getIndex()).arg(r.getOffset()).arg(r.getLength()).arg(r.getPieceDownloader()->getName()) << endl;
 
         notDownloaded(r, false);
     }

@@ -8,6 +8,7 @@
 #include <util/functions.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -20,7 +21,7 @@ void PackBucketEntry(const KBucketEntry &e, QByteArray &ba, Uint32 off)
     if (addr.ipVersion() == 4) {
         // first check size
         if ((int)off + 26 > ba.size())
-            throw bt::Error("Not enough room in buffer");
+            throw bt::Error(u"Not enough room in buffer"_s);
 
         // copy ID, IP address and port into the buffer
         memcpy(ptr, e.getID().getData(), 20);
@@ -29,7 +30,7 @@ void PackBucketEntry(const KBucketEntry &e, QByteArray &ba, Uint32 off)
     } else {
         // first check size
         if ((int)off + 38 > ba.size())
-            throw bt::Error("Not enough room in buffer");
+            throw bt::Error(u"Not enough room in buffer"_s);
 
         // copy ID, IP address and port into the buffer
         memcpy(ptr, e.getID().getData(), 20);
@@ -42,7 +43,7 @@ KBucketEntry UnpackBucketEntry(const QByteArray &ba, Uint32 off, int ip_version)
 {
     if (ip_version == 4) {
         if ((int)off + 26 > ba.size())
-            throw bt::Error("Not enough room in buffer");
+            throw bt::Error(u"Not enough room in buffer"_s);
 
         const Uint8 *data = (Uint8 *)ba.data();
         const Uint8 *ptr = data + off;
@@ -56,7 +57,7 @@ KBucketEntry UnpackBucketEntry(const QByteArray &ba, Uint32 off, int ip_version)
         return KBucketEntry(net::Address(ip, port), dht::Key(key));
     } else {
         if ((int)off + 38 > ba.size())
-            throw bt::Error("Not enough room in buffer");
+            throw bt::Error(u"Not enough room in buffer"_s);
 
         const Uint8 *data = (Uint8 *)ba.data();
         const Uint8 *ptr = data + off;

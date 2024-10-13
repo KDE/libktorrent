@@ -52,14 +52,14 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        QLocale::setDefault(QLocale("main"));
-        bt::InitLog("torrentfilestreammultitest.log", false, false);
+        QLocale::setDefault(QLocale(u"main"_s));
+        bt::InitLog(u"torrentfilestreammultitest.log"_s, false, false);
 
-        files["aaa.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["bbb.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["ccc.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"aaa.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"bbb.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"ccc.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
 
-        QVERIFY(creator.createMultiFileTorrent(files, "movies"));
+        QVERIFY(creator.createMultiFileTorrent(files, u"movies"_s));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {

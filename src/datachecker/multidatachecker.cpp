@@ -136,7 +136,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
 
         // read part of data
         if (f.doNotDownload()) {
-            QString dnd_path = QString("file%1.dnd").arg(f.getIndex());
+            QString dnd_path = u"file%1.dnd"_s.arg(f.getIndex());
             QString dnd_file = dnd_dir + dnd_path;
             if (!bt::Exists(dnd_file)) // could be an old style dnd dir
                 dnd_file = dnd_dir + f.getUserModifiedPath() + ".dnd"_L1;

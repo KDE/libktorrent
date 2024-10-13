@@ -23,7 +23,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("fileopstest.log");
+        bt::InitLog(u"fileopstest.log"_s);
     }
 
     void cleanupTestCase()

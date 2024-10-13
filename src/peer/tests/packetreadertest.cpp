@@ -11,6 +11,8 @@
 #include <peer/packetreader.h>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 class PacketReaderTest : public QObject, public bt::PeerInterface
 {
     Q_OBJECT
@@ -56,7 +58,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("packetreadertest.log");
+        bt::InitLog(u"packetreadertest.log"_s);
     }
 
     void cleanupTestCase()
@@ -147,7 +149,7 @@ private Q_SLOTS:
 
     void testUnicodeLiteral()
     {
-        QString a = QString("%1Torrent").arg(QChar(0x00B5));
+        QString a = u"%1Torrent"_s.arg(QChar(0x00B5));
         QVERIFY(a == QStringLiteral("µTorrent"));
     }
 

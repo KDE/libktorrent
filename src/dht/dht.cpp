@@ -29,6 +29,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -392,10 +393,10 @@ QMap<QString, int> DHT::getClosestGoodNodes(int maxNodes)
 void DHT::bootstrap()
 {
     Out(SYS_DHT | LOG_DEBUG) << "DHT: Adding well-known bootstrap nodes" << endl;
-    addDHTNode(QString("router.bittorrent.com"), 6881);
-    addDHTNode(QString("router.utorrent.com"), 6881);
-    addDHTNode(QString("dht.libtorrent.org"), 25401);
-    addDHTNode(QString("dht.transmissionbt.com"), 6881);
+    addDHTNode(u"router.bittorrent.com"_s, 6881);
+    addDHTNode(u"router.utorrent.com"_s, 6881);
+    addDHTNode(u"dht.libtorrent.org"_s, 25401);
+    addDHTNode(u"dht.transmissionbt.com"_s, 6881);
 }
 
 }

@@ -13,6 +13,7 @@
 #include <util/resourcemanager.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 static bt::Resource *last_acquired = nullptr;
 
@@ -42,7 +43,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("resourcemanagertest.log");
+        bt::InitLog(u"resourcemanagertest.log"_s);
     }
 
     void cleanupTestCase()
@@ -56,7 +57,7 @@ private Q_SLOTS:
 
         QList<TestResource *> tr;
         for (int i = 0; i < 8; i++) {
-            TestResource *r = new TestResource(&rm, "test");
+            TestResource *r = new TestResource(&rm, u"test"_s);
             tr.append(r);
             rm.add(r);
             // The first 4 should get acquired
@@ -74,7 +75,7 @@ private Q_SLOTS:
     {
         Out(SYS_GEN | LOG_DEBUG) << "testMultiClass" << endl;
         ResourceManager rm(4);
-        const char *classes[4] = {"aaa", "bbb", "ccc", "ddd"};
+        const QStringList classes = {u"aaa"_s, u"bbb"_s, u"ccc"_s, u"ddd"_s};
 
         // 4 resources for each class
         QList<TestResource *> tr;
@@ -102,7 +103,7 @@ private Q_SLOTS:
     {
         Out(SYS_GEN | LOG_DEBUG) << "testFullyRandom" << endl;
         ResourceManager rm(4);
-        const char *classes[4] = {"aaa", "bbb", "ccc", "ddd"};
+        const QStringList classes = {u"aaa"_s, u"bbb"_s, u"ccc"_s, u"ddd"_s};
 
         // A random amount of resources for each class
         QList<TestResource *> tr;

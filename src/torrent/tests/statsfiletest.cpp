@@ -19,7 +19,7 @@ using namespace bt;
 using namespace Qt::Literals::StringLiterals;
 
 QString test_data =
-    "ASSURED_DOWNLOAD_SPEED=0\n\
+    u"ASSURED_DOWNLOAD_SPEED=0\n\
 ASSURED_UPLOAD_SPEED=0\n\
 AUTOSTART=0\n\
 CUSTOM_OUTPUT_NAME=0\n\
@@ -40,7 +40,7 @@ TIME_ADDED=1265650102\n\
 UPLOADED=0\n\
 UPLOAD_LIMIT=0\n\
 URL=file:///home/joris/tmp/Killers.torrent\n\
-UT_PEX=1\n";
+UT_PEX=1\n"_s;
 
 class StatsFileTest : public QEventLoop
 {
@@ -49,7 +49,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("statsfiletest.log", false, false);
+        bt::InitLog(u"statsfiletest.log"_s, false, false);
         QVERIFY(file.open());
         file.setAutoRemove(true);
         QTextStream out(&file);
@@ -79,19 +79,19 @@ private Q_SLOTS:
             QVERIFY(st.readString(key) == values[idx++]);
         }
 
-        QVERIFY(st.readInt("RUNNING_TIME_DL") == 7042);
-        QVERIFY(st.readInt("RUNNING_TIME_UL") == 7042);
-        QVERIFY(st.readBoolean("DHT") == true);
+        QVERIFY(st.readInt(u"RUNNING_TIME_DL"_s) == 7042);
+        QVERIFY(st.readInt(u"RUNNING_TIME_UL"_s) == 7042);
+        QVERIFY(st.readBoolean(u"DHT"_s) == true);
     }
 
     void testWrite()
     {
         StatsFile sta(file.fileName());
-        sta.write("DINGES", "1234");
+        sta.write(u"DINGES"_s, u"1234"_s);
         sta.sync();
 
         StatsFile stb(file.fileName());
-        QVERIFY(stb.readInt("DINGES") == 1234);
+        QVERIFY(stb.readInt(u"DINGES"_s) == 1234);
     }
 
 private:

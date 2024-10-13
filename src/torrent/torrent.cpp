@@ -329,7 +329,7 @@ bool Torrent::verifyHash(const SHA1Hash &h, Uint32 index)
 const SHA1Hash &Torrent::getHash(Uint32 idx) const
 {
     if (idx >= (Uint32)hash_pieces.count())
-        throw Error(QString("Torrent::getHash %1 is out of bounds").arg(idx));
+        throw Error(u"Torrent::getHash %1 is out of bounds"_s.arg(idx));
 
     return hash_pieces[idx];
 }

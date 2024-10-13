@@ -12,6 +12,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -39,12 +40,9 @@ void AnnounceReq::apply(dht::DHT *dh_table)
 
 void AnnounceReq::print()
 {
-    Out(SYS_DHT | LOG_DEBUG) << QString("REQ: %1 %2 : announce_peer %3 %4 %5")
-                                    .arg(mtid[0])
-                                    .arg(id.toString(), info_hash.toString())
-                                    .arg(port)
-                                    .arg(QString::fromLatin1(token.toHex()))
-                             << endl;
+    Out(SYS_DHT | LOG_DEBUG)
+        << u"REQ: %1 %2 : announce_peer %3 %4 %5"_s.arg(mtid[0]).arg(id.toString(), info_hash.toString()).arg(port).arg(QString::fromLatin1(token.toHex()))
+        << endl;
 }
 
 void AnnounceReq::encode(QByteArray &arr) const
@@ -81,7 +79,7 @@ void AnnounceReq::parse(BDictNode *dict)
     dht::GetPeersReq::parse(dict);
     BDictNode *args = dict->getDict(ARG);
     if (!args)
-        throw bt::Error("Invalid request, arguments missing");
+        throw bt::Error(u"Invalid request, arguments missing"_s);
 
     info_hash = Key(args->getByteArray("info_hash"));
     port = args->getInt("port");

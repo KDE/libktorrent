@@ -14,6 +14,7 @@
 
 using namespace net;
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 class WakeUpPipeTest : public QEventLoop
 {
@@ -25,7 +26,7 @@ private Q_SLOTS:
     void initTestCase()
     {
         bt::InitLibKTorrent();
-        bt::InitLog("wakeuppipetest.log");
+        bt::InitLog(u"wakeuppipetest.log"_s);
     }
 
     void cleanupTestCase()

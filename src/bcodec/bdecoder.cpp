@@ -9,6 +9,8 @@
 #include <util/error.h>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 BDecoder::BDecoder(const Uint8 *ptr, Uint32 size, bool verbose, Uint32 off)
@@ -89,11 +91,11 @@ BDictNode *BDecoder::parseDict()
     // we're now entering a dictionary
     BDictNode *curr = new BDictNode(off);
     pos++;
-    debugMsg(QString("DICT"));
+    debugMsg(u"DICT"_s);
     level++;
     try {
         while (pos < (Uint32)data.size() && data[pos] != 'e') {
-            debugMsg(QString("Key : "));
+            debugMsg(u"Key : "_s);
             BNode *kn = decode();
             const BValueNode *k = dynamic_cast<BValueNode *>(kn);
             if (!k || k->data().getType() != Value::STRING) {
@@ -116,7 +118,7 @@ BDictNode *BDecoder::parseDict()
         throw;
     }
     level--;
-    debugMsg(QString("END"));
+    debugMsg(u"END"_s);
     curr->setLength(pos - off);
     return curr;
 }
@@ -124,7 +126,7 @@ BDictNode *BDecoder::parseDict()
 BListNode *BDecoder::parseList()
 {
     Uint32 off = pos;
-    debugMsg(QString("LIST"));
+    debugMsg(u"LIST"_s);
     level++;
     BListNode *curr = new BListNode(off);
     pos++;
@@ -140,7 +142,7 @@ BListNode *BDecoder::parseList()
         throw;
     }
     level--;
-    debugMsg(QString("END"));
+    debugMsg(u"END"_s);
     curr->setLength(pos - off);
     return curr;
 }

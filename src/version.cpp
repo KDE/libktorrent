@@ -30,14 +30,14 @@ void SetClientInfo(const QString &name, const QString &version, const QString &p
 {
     Q_UNUSED(type)
     g_name = name;
-    g_version = QString("%1.%2.%3").arg(major).arg(minor).arg(release);
+    g_version = u"%1.%2.%3"_s.arg(major).arg(minor).arg(release);
     g_peer_id = peer_id;
-    g_version_without_dots = QString("%1%2%3").arg(major).arg(minor).arg(release);
+    g_version_without_dots = u"%1%2%3"_s.arg(major).arg(minor).arg(release);
 }
 
 QString PeerIDPrefix()
 {
-    return QString("-%1%2-").arg(g_peer_id, g_version_without_dots);
+    return u"-%1%2-"_s.arg(g_peer_id, g_version_without_dots);
 }
 
 QString GetVersionString()

@@ -13,6 +13,7 @@
 
 using namespace utp;
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 class LocalWindowTest : public QObject
 {
@@ -21,7 +22,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("localwindowtest.log");
+        bt::InitLog(u"localwindowtest.log"_s);
     }
 
     void testSeqNr()

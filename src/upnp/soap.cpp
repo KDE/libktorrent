@@ -12,7 +12,7 @@ namespace bt
 {
 QString SOAP::createCommand(const QString &action, const QString &service)
 {
-    QString comm = QString(
+    QString comm = QStringLiteral(
                        "<?xml version=\"1.0\"?>"
                        "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" "
                        "SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
@@ -26,7 +26,7 @@ QString SOAP::createCommand(const QString &action, const QString &service)
 
 QString SOAP::createCommand(const QString &action, const QString &service, const QList<Arg> &args)
 {
-    QString comm = QString(
+    QString comm = QStringLiteral(
                        "<?xml version=\"1.0\"?>"
                        "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" "
                        "SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
@@ -37,7 +37,7 @@ QString SOAP::createCommand(const QString &action, const QString &service, const
     for (const Arg &a : args)
         comm += '<'_L1 + a.element + '>'_L1 + a.value + "</"_L1 + a.element + '>'_L1;
 
-    comm += QString("</m:%1></SOAP-ENV:Body></SOAP-ENV:Envelope>").arg(action);
+    comm += u"</m:%1></SOAP-ENV:Body></SOAP-ENV:Envelope>"_s.arg(action);
     return comm;
 }
 }

@@ -22,6 +22,7 @@
 #endif
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 /*
 static sigjmp_buf sj_env;
@@ -62,7 +63,7 @@ class SignalCatcherTest : public QObject
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("signalcatchertest.log");
+        bt::InitLog(u"signalcatchertest.log"_s);
     }
 
     void cleanupTestCase()
@@ -76,7 +77,7 @@ private Q_SLOTS:
             kill(getpid(), SIGBUS);
             QFAIL("Didn't catch SIGBUS");
         } catch (bt::BusError &e) {
-            Out(SYS_GEN | LOG_DEBUG) << QString("Caught signal: %1").arg(e.toString()) << endl;
+            Out(SYS_GEN | LOG_DEBUG) << u"Caught signal: %1"_s.arg(e.toString()) << endl;
         } catch (...) {
             QFAIL("Didn't catch SIGBUS");
         }
@@ -90,7 +91,7 @@ private Q_SLOTS:
         try {
             TruncateFile(fd, 4096, true);
         } catch (bt::Error &err) {
-            QString msg = QString("Exception thrown: %s").arg(err.toString());
+            QString msg = u"Exception thrown: %s"_s.arg(err.toString());
             QFAIL(msg.toLocal8Bit().constData());
         }
 
@@ -102,7 +103,7 @@ private Q_SLOTS:
             BUS_ERROR_WPROTECT();
             memcpy(ptr, "Testing", 7);
         } catch (bt::BusError &e) {
-            QString msg = QString("Caught signal: %s").arg(e.toString());
+            QString msg = u"Caught signal: %s"_s.arg(e.toString());
             QFAIL(msg.toLocal8Bit().constData());
         }
 
@@ -113,7 +114,7 @@ private Q_SLOTS:
             memcpy(ptr, "Testing", 7);
             QFAIL("Didn't catch SIGBUS");
         } catch (bt::BusError &e) {
-            Out(SYS_GEN | LOG_DEBUG) << QString("Caught signal: %1").arg(e.toString()) << endl;
+            Out(SYS_GEN | LOG_DEBUG) << u"Caught signal: %1"_s.arg(e.toString()) << endl;
         }
     }
 };

@@ -13,6 +13,7 @@
 #include <utp/utpsocket.h>
 
 using namespace utp;
+using namespace Qt::Literals::StringLiterals;
 
 class SendTest : public QEventLoop
 {
@@ -31,7 +32,7 @@ public:
 private:
     void initTestCase()
     {
-        bt::InitLog("sendtest.log");
+        bt::InitLog(u"sendtest.log"_s);
 
         incoming = nullptr;
         port = 50000;
@@ -56,7 +57,7 @@ private:
     {
         bt::Out(SYS_UTP | LOG_DEBUG) << "testConnect" << bt::endl;
 
-        net::Address addr("127.0.0.1", port);
+        net::Address addr(u"127.0.0.1"_s, port);
         utp::UTPServer &srv = bt::Globals::instance().getUTPServer();
         connect(&srv, &utp::UTPServer::accepted, this, &SendTest::accepted, Qt::QueuedConnection);
         outgoing = new utp::UTPSocket();

@@ -19,6 +19,8 @@
 #include <util/sha1hashgen.h>
 #include <util/signalcatcher.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 using namespace bt;
 
 const bt::Uint64 TEST_FILE_SIZE = 15 * 1024 * 1024;
@@ -30,16 +32,16 @@ class ChunkManagerTest : public QObject
 private Q_SLOTS:
     void initTestCase()
     {
-        QLocale::setDefault(QLocale("main"));
+        QLocale::setDefault(QLocale(u"main"_s));
         bt::InitLibKTorrent();
-        bt::InitLog("chunkmanagertest.log", false, true);
+        bt::InitLog(u"chunkmanagertest.log"_s, false, true);
         QMap<QString, bt::Uint64> files;
 
-        files["aaa.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["bbb.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["ccc.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"aaa.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"bbb.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"ccc.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
 
-        QVERIFY(creator.createMultiFileTorrent(files, "movies"));
+        QVERIFY(creator.createMultiFileTorrent(files, u"movies"_s));
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {

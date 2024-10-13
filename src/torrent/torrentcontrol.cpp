@@ -551,7 +551,7 @@ void TorrentControl::setupStats()
     if (!stats_file)
         stats_file = new StatsFile(tordir + "stats"_L1);
 
-    if (stats_file->hasKey("CUSTOM_OUTPUT_NAME") && stats_file->readULong("CUSTOM_OUTPUT_NAME") == 1) {
+    if (stats_file->hasKey(u"CUSTOM_OUTPUT_NAME"_s) && stats_file->readULong(u"CUSTOM_OUTPUT_NAME"_s) == 1) {
         istats.custom_output_name = true;
     }
 
@@ -895,53 +895,53 @@ void TorrentControl::saveStats()
     if (!stats_file)
         stats_file = new StatsFile(tordir + "stats"_L1);
 
-    stats_file->write("OUTPUTDIR", cman->getDataDir());
-    stats_file->write("COMPLETEDDIR", completed_dir);
+    stats_file->write(u"OUTPUTDIR"_s, cman->getDataDir());
+    stats_file->write(u"COMPLETEDDIR"_s, completed_dir);
 
     if (cman->getDataDir() != outputdir)
         outputdir = cman->getDataDir();
 
-    stats_file->write("UPLOADED", QString::number(uploader->bytesUploaded()));
+    stats_file->write(u"UPLOADED"_s, QString::number(uploader->bytesUploaded()));
 
     if (stats.running) {
         QDateTime now = QDateTime::currentDateTime();
         if (!stats.completed)
-            stats_file->write("RUNNING_TIME_DL", QString("%1").arg(istats.running_time_dl + istats.time_started_dl.secsTo(now)));
+            stats_file->write(u"RUNNING_TIME_DL"_s, QString::number(istats.running_time_dl + istats.time_started_dl.secsTo(now)));
         else
-            stats_file->write("RUNNING_TIME_DL", QString("%1").arg(istats.running_time_dl));
-        stats_file->write("RUNNING_TIME_UL", QString("%1").arg(istats.running_time_ul + istats.time_started_ul.secsTo(now)));
+            stats_file->write(u"RUNNING_TIME_DL"_s, QString::number(istats.running_time_dl));
+        stats_file->write(u"RUNNING_TIME_UL"_s, QString::number(istats.running_time_ul + istats.time_started_ul.secsTo(now)));
     } else {
-        stats_file->write("RUNNING_TIME_DL", QString("%1").arg(istats.running_time_dl));
-        stats_file->write("RUNNING_TIME_UL", QString("%1").arg(istats.running_time_ul));
+        stats_file->write(u"RUNNING_TIME_DL"_s, QString::number(istats.running_time_dl));
+        stats_file->write(u"RUNNING_TIME_UL"_s, QString::number(istats.running_time_ul));
     }
 
-    stats_file->write("QM_CAN_START", stats.qm_can_start ? "1" : "0");
-    stats_file->write("PRIORITY", QString("%1").arg(istats.priority));
-    stats_file->write("AUTOSTART", QString("%1").arg(stats.autostart));
-    stats_file->write("IMPORTED", QString("%1").arg(stats.imported_bytes));
-    stats_file->write("CUSTOM_OUTPUT_NAME", istats.custom_output_name ? "1" : "0");
-    stats_file->write("MAX_RATIO", QString("%1").arg(stats.max_share_ratio, 0, 'f', 2));
-    stats_file->write("MAX_SEED_TIME", QString::number(stats.max_seed_time));
-    stats_file->write("RESTART_DISK_PREALLOCATION", prealloc ? "1" : "0");
-    stats_file->write("AUTO_STOPPED", stats.auto_stopped ? "1" : "0");
+    stats_file->write(u"QM_CAN_START"_s, stats.qm_can_start ? u"1"_s : u"0"_s);
+    stats_file->write(u"PRIORITY"_s, QString::number(istats.priority));
+    stats_file->write(u"AUTOSTART"_s, QString::number(stats.autostart));
+    stats_file->write(u"IMPORTED"_s, QString::number(stats.imported_bytes));
+    stats_file->write(u"CUSTOM_OUTPUT_NAME"_s, istats.custom_output_name ? u"1"_s : u"0"_s);
+    stats_file->write(u"MAX_RATIO"_s, u"%1"_s.arg(stats.max_share_ratio, 0, 'f', 2));
+    stats_file->write(u"MAX_SEED_TIME"_s, QString::number(stats.max_seed_time));
+    stats_file->write(u"RESTART_DISK_PREALLOCATION"_s, prealloc ? u"1"_s : u"0"_s);
+    stats_file->write(u"AUTO_STOPPED"_s, stats.auto_stopped ? u"1"_s : u"0"_s);
 
     if (!stats.priv_torrent) {
         // save dht and pex
-        stats_file->write("DHT", isFeatureEnabled(DHT_FEATURE) ? "1" : "0");
-        stats_file->write("UT_PEX", isFeatureEnabled(UT_PEX_FEATURE) ? "1" : "0");
+        stats_file->write(u"DHT"_s, isFeatureEnabled(DHT_FEATURE) ? u"1"_s : u"0"_s);
+        stats_file->write(u"UT_PEX"_s, isFeatureEnabled(UT_PEX_FEATURE) ? u"1"_s : u"0"_s);
     }
 
-    stats_file->write("UPLOAD_LIMIT", QString::number(upload_limit));
-    stats_file->write("DOWNLOAD_LIMIT", QString::number(download_limit));
-    stats_file->write("ASSURED_UPLOAD_SPEED", QString::number(assured_upload_speed));
-    stats_file->write("ASSURED_DOWNLOAD_SPEED", QString::number(assured_download_speed));
+    stats_file->write(u"UPLOAD_LIMIT"_s, QString::number(upload_limit));
+    stats_file->write(u"DOWNLOAD_LIMIT"_s, QString::number(download_limit));
+    stats_file->write(u"ASSURED_UPLOAD_SPEED"_s, QString::number(assured_upload_speed));
+    stats_file->write(u"ASSURED_DOWNLOAD_SPEED"_s, QString::number(assured_download_speed));
     if (!user_modified_name.isEmpty())
-        stats_file->write("USER_MODIFIED_NAME", user_modified_name);
-    stats_file->write("DISPLAY_NAME", display_name);
-    stats_file->write("URL", url.toDisplayString());
+        stats_file->write(u"USER_MODIFIED_NAME"_s, user_modified_name);
+    stats_file->write(u"DISPLAY_NAME"_s, display_name);
+    stats_file->write(u"URL"_s, url.toDisplayString());
 
-    stats_file->write("TIME_ADDED", QString("%1").arg(stats.time_added.toSecsSinceEpoch()));
-    stats_file->write("SUPERSEEDING", stats.superseeding ? "1" : "0");
+    stats_file->write(u"TIME_ADDED"_s, QString::number(stats.time_added.toSecsSinceEpoch()));
+    stats_file->write(u"SUPERSEEDING"_s, stats.superseeding ? u"1"_s : u"0"_s);
 
     stats_file->sync();
 }
@@ -958,75 +958,75 @@ void TorrentControl::loadStats()
     if (!stats_file)
         stats_file = new StatsFile(tordir + "stats"_L1);
 
-    Uint64 val = stats_file->readUint64("UPLOADED");
+    Uint64 val = stats_file->readUint64(u"UPLOADED"_s);
     // stats.session_bytes_uploaded will be calculated based upon prev_bytes_ul
     // seeing that this will change here, we need to save it
     istats.session_bytes_uploaded = stats.session_bytes_uploaded;
     istats.prev_bytes_ul = val;
     uploader->setBytesUploaded(val);
 
-    istats.running_time_dl = stats_file->readULong("RUNNING_TIME_DL");
-    istats.running_time_ul = stats_file->readULong("RUNNING_TIME_UL");
+    istats.running_time_dl = stats_file->readULong(u"RUNNING_TIME_DL"_s);
+    istats.running_time_ul = stats_file->readULong(u"RUNNING_TIME_UL"_s);
     // make sure runtime ul is always equal or largen then running time dl
     // in case something got corrupted
     if (istats.running_time_ul < istats.running_time_dl)
         istats.running_time_ul = istats.running_time_dl;
 
-    outputdir = stats_file->readString("OUTPUTDIR").trimmed();
-    if (stats_file->hasKey("CUSTOM_OUTPUT_NAME") && stats_file->readULong("CUSTOM_OUTPUT_NAME") == 1) {
+    outputdir = stats_file->readString(u"OUTPUTDIR"_s).trimmed();
+    if (stats_file->hasKey(u"CUSTOM_OUTPUT_NAME"_s) && stats_file->readULong(u"CUSTOM_OUTPUT_NAME"_s) == 1) {
         istats.custom_output_name = true;
     }
 
-    if (stats_file->hasKey("COMPLETEDDIR")) {
-        completed_dir = stats_file->readString("COMPLETEDDIR");
+    if (stats_file->hasKey(u"COMPLETEDDIR"_s)) {
+        completed_dir = stats_file->readString(u"COMPLETEDDIR"_s);
         if (completed_dir == outputdir)
             completed_dir = QString();
     }
 
-    if (stats_file->hasKey("USER_MODIFIED_NAME"))
-        user_modified_name = stats_file->readString("USER_MODIFIED_NAME");
+    if (stats_file->hasKey(u"USER_MODIFIED_NAME"_s))
+        user_modified_name = stats_file->readString(u"USER_MODIFIED_NAME"_s);
 
-    if (stats_file->hasKey("DISPLAY_NAME"))
-        display_name = stats_file->readString("DISPLAY_NAME");
+    if (stats_file->hasKey(u"DISPLAY_NAME"_s))
+        display_name = stats_file->readString(u"DISPLAY_NAME"_s);
 
-    istats.priority = stats_file->readInt("PRIORITY");
-    stats.autostart = stats_file->readBoolean("AUTOSTART");
-    stats.imported_bytes = stats_file->readUint64("IMPORTED");
-    stats.max_share_ratio = stats_file->readFloat("MAX_RATIO");
-    stats.max_seed_time = stats_file->readFloat("MAX_SEED_TIME");
-    stats.qm_can_start = stats_file->readBoolean("QM_CAN_START");
-    stats.auto_stopped = stats_file->readBoolean("AUTO_STOPPED");
+    istats.priority = stats_file->readInt(u"PRIORITY"_s);
+    stats.autostart = stats_file->readBoolean(u"AUTOSTART"_s);
+    stats.imported_bytes = stats_file->readUint64(u"IMPORTED"_s);
+    stats.max_share_ratio = stats_file->readFloat(u"MAX_RATIO"_s);
+    stats.max_seed_time = stats_file->readFloat(u"MAX_SEED_TIME"_s);
+    stats.qm_can_start = stats_file->readBoolean(u"QM_CAN_START"_s);
+    stats.auto_stopped = stats_file->readBoolean(u"AUTO_STOPPED"_s);
 
-    if (stats_file->hasKey("RESTART_DISK_PREALLOCATION"))
-        prealloc = stats_file->readString("RESTART_DISK_PREALLOCATION") == '1'_L1;
+    if (stats_file->hasKey(u"RESTART_DISK_PREALLOCATION"_s))
+        prealloc = stats_file->readString(u"RESTART_DISK_PREALLOCATION"_s) == '1'_L1;
 
     if (!stats.priv_torrent) {
-        if (stats_file->hasKey("DHT"))
-            istats.dht_on = stats_file->readBoolean("DHT");
+        if (stats_file->hasKey(u"DHT"_s))
+            istats.dht_on = stats_file->readBoolean(u"DHT"_s);
         else
             istats.dht_on = true;
 
         setFeatureEnabled(DHT_FEATURE, istats.dht_on);
-        if (stats_file->hasKey("UT_PEX"))
-            setFeatureEnabled(UT_PEX_FEATURE, stats_file->readBoolean("UT_PEX"));
+        if (stats_file->hasKey(u"UT_PEX"_s))
+            setFeatureEnabled(UT_PEX_FEATURE, stats_file->readBoolean(u"UT_PEX"_s));
     }
 
-    Uint32 aup = stats_file->readInt("ASSURED_UPLOAD_SPEED");
-    Uint32 adown = stats_file->readInt("ASSURED_DOWNLOAD_SPEED");
-    Uint32 up = stats_file->readInt("UPLOAD_LIMIT");
-    Uint32 down = stats_file->readInt("DOWNLOAD_LIMIT");
+    Uint32 aup = stats_file->readInt(u"ASSURED_UPLOAD_SPEED"_s);
+    Uint32 adown = stats_file->readInt(u"ASSURED_DOWNLOAD_SPEED"_s);
+    Uint32 up = stats_file->readInt(u"UPLOAD_LIMIT"_s);
+    Uint32 down = stats_file->readInt(u"DOWNLOAD_LIMIT"_s);
     setDownloadProps(down, adown);
     setUploadProps(up, aup);
     pman->setGroupIDs(upload_gid, download_gid);
 
-    url = QUrl(stats_file->readString("URL"));
+    url = QUrl(stats_file->readString(u"URL"_s));
 
-    if (stats_file->hasKey("TIME_ADDED"))
-        stats.time_added.setSecsSinceEpoch(stats_file->readULong("TIME_ADDED"));
+    if (stats_file->hasKey(u"TIME_ADDED"_s))
+        stats.time_added.setSecsSinceEpoch(stats_file->readULong(u"TIME_ADDED"_s));
     else
         stats.time_added = QDateTime::currentDateTime();
 
-    bool ss = stats_file->hasKey("SUPERSEEDING") && stats_file->readBoolean("SUPERSEEDING");
+    bool ss = stats_file->hasKey(u"SUPERSEEDING"_s) && stats_file->readBoolean(u"SUPERSEEDING"_s);
     setSuperSeeding(ss);
 }
 
@@ -1035,11 +1035,11 @@ void TorrentControl::loadOutputDir()
     if (!stats_file)
         stats_file = new StatsFile(tordir + "stats"_L1);
 
-    if (!stats_file->hasKey("OUTPUTDIR"))
+    if (!stats_file->hasKey(u"OUTPUTDIR"_s))
         return;
 
-    outputdir = stats_file->readString("OUTPUTDIR").trimmed();
-    if (stats_file->hasKey("CUSTOM_OUTPUT_NAME") && stats_file->readULong("CUSTOM_OUTPUT_NAME") == 1) {
+    outputdir = stats_file->readString(u"OUTPUTDIR"_s).trimmed();
+    if (stats_file->hasKey(u"CUSTOM_OUTPUT_NAME"_s) && stats_file->readULong(u"CUSTOM_OUTPUT_NAME"_s) == 1) {
         istats.custom_output_name = true;
     }
 }
@@ -1105,8 +1105,8 @@ void TorrentControl::trackerScrapeDone()
 
 void TorrentControl::afterRename()
 {
-    stats_file->write("OUTPUTDIR", cman->getDataDir());
-    stats_file->write("USER_MODIFIED_NAME", user_modified_name);
+    stats_file->write(u"OUTPUTDIR"_s, cman->getDataDir());
+    stats_file->write(u"USER_MODIFIED_NAME"_s, user_modified_name);
     stats_file->sync();
     cman->saveFileMap();
 }
@@ -1183,7 +1183,7 @@ void TorrentControl::setPriority(int p)
     if (!stats_file)
         stats_file = new StatsFile(tordir + "stats"_L1);
 
-    stats_file->write("PRIORITY", QString("%1").arg(istats.priority));
+    stats_file->write(u"PRIORITY"_s, QString::number(istats.priority));
     updateStatus();
 }
 

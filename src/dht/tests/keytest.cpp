@@ -53,7 +53,7 @@ class KeyTest : public QObject
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("keytest.log", false, true);
+        bt::InitLog(u"keytest.log"_s, false, true);
     }
 
     void cleanupTestCase()
@@ -62,61 +62,61 @@ private Q_SLOTS:
 
     void testAddition()
     {
-        dht::Key a = KeyFromHexString("14455");
-        dht::Key b = KeyFromHexString("FFEEDD");
+        dht::Key a = KeyFromHexString(u"14455"_s);
+        dht::Key b = KeyFromHexString(u"FFEEDD"_s);
         dht::Key c = a + b;
-        QVERIFY(c == KeyFromHexString("1013332"));
+        QVERIFY(c == KeyFromHexString(u"1013332"_s));
 
         dht::Key d = a + 1;
-        QVERIFY(d == KeyFromHexString("14456"));
+        QVERIFY(d == KeyFromHexString(u"14456"_s));
 
-        dht::Key e = KeyFromHexString("FFFF") + 1;
-        QVERIFY(e == KeyFromHexString("10000"));
+        dht::Key e = KeyFromHexString(u"FFFF"_s) + 1;
+        QVERIFY(e == KeyFromHexString(u"10000"_s));
 
-        dht::Key f = KeyFromHexString("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF") + 1;
-        QVERIFY(f == KeyFromHexString("0000000000000000000000000000000000000000"));
+        dht::Key f = KeyFromHexString(u"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"_s) + 1;
+        QVERIFY(f == KeyFromHexString(u"0000000000000000000000000000000000000000"_s));
 
-        dht::Key h = KeyFromHexString("FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF");
-        dht::Key j = KeyFromHexString("0000000100000000000000010000000000000001");
+        dht::Key h = KeyFromHexString(u"FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF"_s);
+        dht::Key j = KeyFromHexString(u"0000000100000000000000010000000000000001"_s);
         dht::Key g = j + h;
-        QVERIFY(g == KeyFromHexString("0000000000000001000000000000000100000000"));
+        QVERIFY(g == KeyFromHexString(u"0000000000000001000000000000000100000000"_s));
     }
 
     void testSubtraction()
     {
-        dht::Key a = KeyFromHexString("556677");
-        dht::Key b = KeyFromHexString("3384E6");
+        dht::Key a = KeyFromHexString(u"556677"_s);
+        dht::Key b = KeyFromHexString(u"3384E6"_s);
         dht::Key c = a - b;
-        QVERIFY(c == KeyFromHexString("21E191"));
+        QVERIFY(c == KeyFromHexString(u"21E191"_s));
 
-        dht::Key d = KeyFromHexString("550077");
-        dht::Key e = KeyFromHexString("3384E6");
+        dht::Key d = KeyFromHexString(u"550077"_s);
+        dht::Key e = KeyFromHexString(u"3384E6"_s);
         dht::Key f = d - e;
-        QVERIFY(f == KeyFromHexString("217B91"));
+        QVERIFY(f == KeyFromHexString(u"217B91"_s));
 
         f = e - d;
-        QVERIFY(f == KeyFromHexString("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDE846F"));
+        QVERIFY(f == KeyFromHexString(u"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDE846F"_s));
 
-        dht::Key g = KeyFromHexString("0000000000000001000000000000000100000000");
-        dht::Key j = KeyFromHexString("0000000100000000000000010000000000000001");
+        dht::Key g = KeyFromHexString(u"0000000000000001000000000000000100000000"_s);
+        dht::Key j = KeyFromHexString(u"0000000100000000000000010000000000000001"_s);
         dht::Key h = g - j;
-        QVERIFY(h == KeyFromHexString("FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF"));
+        QVERIFY(h == KeyFromHexString(u"FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF"_s));
     }
 
     void testDivision()
     {
-        dht::Key a = KeyFromHexString("550078");
+        dht::Key a = KeyFromHexString(u"550078"_s);
         dht::Key b = a / 2;
-        QVERIFY(b == KeyFromHexString("2A803C"));
+        QVERIFY(b == KeyFromHexString(u"2A803C"_s));
 
-        dht::Key c = KeyFromHexString("0000000100000000000000010000000000000001");
+        dht::Key c = KeyFromHexString(u"0000000100000000000000010000000000000001"_s);
         dht::Key d = c / 32;
-        QVERIFY(d == KeyFromHexString("0000000008000000000000000800000000000000"));
+        QVERIFY(d == KeyFromHexString(u"0000000008000000000000000800000000000000"_s));
     }
 
     void testConversion()
     {
-        dht::Key d = KeyFromHexString("0102030405060708090AFFFEFDFCFBFAF9F8F7F6");
+        dht::Key d = KeyFromHexString(u"0102030405060708090AFFFEFDFCFBFAF9F8F7F6"_s);
         QVERIFY(d.toString() == QLatin1String("0102030405060708090afffefdfcfbfaf9f8f7f6"));
     }
 };

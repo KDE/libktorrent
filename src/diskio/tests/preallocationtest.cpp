@@ -21,6 +21,7 @@
 const bt::Uint64 TEST_FILE_SIZE = 15 * 1024 * 1024;
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 class PreallocationTest : public QObject
 {
@@ -29,17 +30,17 @@ class PreallocationTest : public QObject
 private Q_SLOTS:
     void initTestCase()
     {
-        QLocale::setDefault(QLocale("main"));
+        QLocale::setDefault(QLocale(u"main"_s));
         bt::InitLibKTorrent();
-        bt::InitLog("preallocationtest.log", false, true);
+        bt::InitLog(u"preallocationtest.log"_s, false, true);
         QMap<QString, bt::Uint64> files;
 
-        files["aaa.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["bbb.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
-        files["ccc.avi"] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"aaa.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"bbb.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
+        files[u"ccc.avi"_s] = RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE);
 
         try {
-            QVERIFY(multi_creator.createMultiFileTorrent(files, "movies"));
+            QVERIFY(multi_creator.createMultiFileTorrent(files, u"movies"_s));
             Out(SYS_GEN | LOG_DEBUG) << "Created " << multi_creator.torrentPath() << endl;
             multi_tor.load(bt::LoadFile(multi_creator.torrentPath()), false);
 
@@ -53,7 +54,7 @@ private Q_SLOTS:
         }
 
         try {
-            QVERIFY(single_creator.createSingleFileTorrent(RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE), "bla.avi"));
+            QVERIFY(single_creator.createSingleFileTorrent(RandomSize(TEST_FILE_SIZE / 2, TEST_FILE_SIZE), u"bla.avi"_s));
             Out(SYS_GEN | LOG_DEBUG) << "Created " << single_creator.torrentPath() << endl;
             single_tor.load(bt::LoadFile(single_creator.torrentPath()), false);
 

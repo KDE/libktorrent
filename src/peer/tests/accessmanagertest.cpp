@@ -13,6 +13,8 @@
 #include <tracker/tracker.h>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 class TestBlockList : public bt::BlockListInterface
 {
 public:
@@ -26,7 +28,7 @@ public:
 
     bool blocked(const net::Address &addr) const override
     {
-        return addr.toString() == "8.8.8.8";
+        return addr.toString() == u"8.8.8.8"_s;
     }
 };
 
@@ -37,7 +39,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("accessmanagertest.log");
+        bt::InitLog(u"accessmanagertest.log"_s);
     }
 
     void cleanupTestCase()
@@ -46,25 +48,25 @@ private Q_SLOTS:
 
     void testCustomIP()
     {
-        bt::Tracker::setCustomIP("123.123.123.123");
+        bt::Tracker::setCustomIP(u"123.123.123.123"_s);
         bt::Server::setPort(7777);
-        QVERIFY(!bt::AccessManager::instance().allowed(net::Address("123.123.123.123", 7777)));
-        QVERIFY(bt::AccessManager::instance().allowed(net::Address("123.123.123.123", 7776)));
+        QVERIFY(!bt::AccessManager::instance().allowed(net::Address(u"123.123.123.123"_s, 7777)));
+        QVERIFY(bt::AccessManager::instance().allowed(net::Address(u"123.123.123.123"_s, 7776)));
     }
 
     void testExternalAddress()
     {
         bt::Server::setPort(7777);
-        bt::AccessManager::instance().addExternalIP("12.12.12.12");
-        QVERIFY(!bt::AccessManager::instance().allowed(net::Address("12.12.12.12", 7777)));
-        QVERIFY(bt::AccessManager::instance().allowed(net::Address("12.12.12.12", 7776)));
+        bt::AccessManager::instance().addExternalIP(u"12.12.12.12"_s);
+        QVERIFY(!bt::AccessManager::instance().allowed(net::Address(u"12.12.12.12"_s, 7777)));
+        QVERIFY(bt::AccessManager::instance().allowed(net::Address(u"12.12.12.12"_s, 7776)));
     }
 
     void testBlockList()
     {
         bt::AccessManager::instance().addBlockList(new TestBlockList());
-        QVERIFY(!bt::AccessManager::instance().allowed(net::Address("8.8.8.8", 7777)));
-        QVERIFY(bt::AccessManager::instance().allowed(net::Address("8.8.8.9", 7776)));
+        QVERIFY(!bt::AccessManager::instance().allowed(net::Address(u"8.8.8.8"_s, 7777)));
+        QVERIFY(bt::AccessManager::instance().allowed(net::Address(u"8.8.8.9"_s, 7776)));
     }
 
 private:

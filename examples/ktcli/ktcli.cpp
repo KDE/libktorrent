@@ -30,16 +30,16 @@ KTCLI::KTCLI(int argc, char **argv)
     , tc(new TorrentControl())
     , updates(0)
 {
-    parser.addPositionalArgument("url", tr("Torrent to open"));
-    parser.addOption(QCommandLineOption("port", tr("Port to use"), "<port>", "6881"));
-    parser.addOption(QCommandLineOption("tmpdir", tr("Port to use"), "<tmpdir>", QDir::tempPath()));
-    parser.addOption(QCommandLineOption("encryption", tr("Whether or not to enable encryption")));
-    parser.addOption(QCommandLineOption("pex", tr("Whether or not to enable peer exchange")));
-    parser.addOption(QCommandLineOption("utp", tr("Whether or not to use utp")));
+    parser.addPositionalArgument(u"url"_s, tr("Torrent to open"));
+    parser.addOption(QCommandLineOption(u"port"_s, tr("Port to use"), u"<port>"_s, u"6881"_s));
+    parser.addOption(QCommandLineOption(u"tmpdir"_s, tr("Port to use"), u"<tmpdir>"_s, QDir::tempPath()));
+    parser.addOption(QCommandLineOption(u"encryption"_s, tr("Whether or not to enable encryption")));
+    parser.addOption(QCommandLineOption(u"pex"_s, tr("Whether or not to enable peer exchange")));
+    parser.addOption(QCommandLineOption(u"utp"_s, tr("Whether or not to use utp")));
     parser.process(*this);
 
-    bt::SetClientInfo("ktcli", bt::MAJOR, bt::MINOR, bt::RELEASE, bt::NORMAL, "KT");
-    bt::InitLog("ktcli.log", false, true, false);
+    bt::SetClientInfo(u"ktcli"_s, bt::MAJOR, bt::MINOR, bt::RELEASE, bt::NORMAL, u"KT"_s);
+    bt::InitLog(u"ktcli.log"_s, false, true, false);
     connect(tc.get(), &TorrentInterface::finished, this, &KTCLI::finished);
     connect(this, &QCoreApplication::aboutToQuit, this, &KTCLI::shutdown);
 }
@@ -51,21 +51,21 @@ KTCLI::~KTCLI()
 bool KTCLI::start()
 {
     bool ok = false;
-    quint16 port = parser.value("port").toInt(&ok);
+    quint16 port = parser.value(u"port"_s).toInt(&ok);
     if (!ok)
         port = 1024 + QRandomGenerator::global()->bounded((1 << 16) - 1 - 1024); // Use non-root ports
 
-    if (parser.isSet("encryption")) {
+    if (parser.isSet(u"encryption"_s)) {
         Out(SYS_GEN | LOG_NOTICE) << "Enabled encryption" << endl;
         ServerInterface::enableEncryption(false);
     }
 
-    if (parser.isSet("pex")) {
+    if (parser.isSet(u"pex"_s)) {
         Out(SYS_GEN | LOG_NOTICE) << "Enabled PEX" << endl;
         UTPex::setEnabled(true);
     }
 
-    if (parser.isSet("utp")) {
+    if (parser.isSet(u"utp"_s)) {
         Out(SYS_GEN | LOG_NOTICE) << "Enabled UTP" << endl;
         if (!bt::Globals::instance().initUTPServer(port)) {
             Out(SYS_GEN | LOG_NOTICE) << "Failed to listen on port " << port << endl;
@@ -90,7 +90,7 @@ bool KTCLI::start()
 bool KTCLI::load(const QUrl &url)
 {
     QDir dir(url.toLocalFile());
-    if (dir.exists() && dir.exists("torrent") && dir.exists("stats")) {
+    if (dir.exists() && dir.exists(u"torrent"_s) && dir.exists(u"stats"_s)) {
         // Load existing torrent
         if (loadFromDir(dir.absolutePath())) {
             tc->start();
@@ -115,14 +115,14 @@ bool KTCLI::load(const QUrl &url)
 
 QString KTCLI::tempDir()
 {
-    QDir tmpdir = QDir(parser.value("tmpdir"));
+    QDir tmpdir = QDir(parser.value(u"tmpdir"_s));
     int i = 0;
-    while (tmpdir.exists(QString("tor%1").arg(i)))
+    while (tmpdir.exists(u"tor%1"_s.arg(i)))
         i++;
 
-    QString sd = QString("tor%1").arg(i);
+    QString sd = u"tor%1"_s.arg(i);
     if (!tmpdir.mkdir(sd))
-        throw bt::Error(QString("Failed to create temporary directory %1").arg(sd));
+        throw bt::Error(u"Failed to create temporary directory %1"_s.arg(sd));
 
     tmpdir.cd(sd);
     return tmpdir.absolutePath();

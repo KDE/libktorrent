@@ -404,26 +404,26 @@ void HTTPTracker::emitInvalidURLFailure()
 
 void HTTPTracker::setupMetaData(KIO::MetaData &md)
 {
-    md["UserAgent"] = bt::GetVersionString();
-    md["SendLanguageSettings"] = "false";
-    md["cookies"] = "none";
-    //  md["accept"] = "text/plain";
-    md["accept"] = "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2";
+    md[u"UserAgent"_s] = bt::GetVersionString();
+    md[u"SendLanguageSettings"_s] = u"false"_s;
+    md[u"cookies"_s] = u"none"_s;
+    //  md[u"accept"_s] = u"text/plain"_s;
+    md[u"accept"_s] = u"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2"_s;
     if (proxy_on) {
-        QString p = QString("%1:%2").arg(proxy).arg(proxy_port);
+        QString p = u"%1:%2"_s.arg(proxy).arg(proxy_port);
         if (!p.startsWith(QLatin1String("http://")))
             p = "http://"_L1 + p;
         // set the proxy if the doNotUseKDEProxy ix enabled (URL must be valid to)
         QUrl url(p);
         if (url.isValid() && proxy.trimmed().length() > 0) {
-            md["UseProxy"] = p;
-            md["ProxyUrls"] = p;
+            md[u"UseProxy"_s] = p;
+            md[u"ProxyUrls"_s] = p;
         } else {
-            md["UseProxy"] = QString();
-            md["ProxyUrls"] = QString();
+            md[u"UseProxy"_s] = QString();
+            md[u"ProxyUrls"_s] = QString();
         }
 
-        Out(SYS_TRK | LOG_DEBUG) << "Using proxy : " << md["UseProxy"] << endl;
+        Out(SYS_TRK | LOG_DEBUG) << "Using proxy : " << md[u"UseProxy"_s] << endl;
     }
 }
 

@@ -16,6 +16,8 @@
 
 #include "version.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 HttpConnection::HttpConnection()
@@ -337,8 +339,8 @@ bool HttpConnection::HttpGet::onDataReady(Uint8 *buf, Uint32 size)
         response_header_received = true;
         HttpResponseHeader hdr(QString::fromLatin1(buffer.mid(0, idx + 4)));
 
-        if (hdr.hasKey("Content-Length"))
-            content_length = hdr.value("Content-Length").toInt();
+        if (hdr.hasKey(u"Content-Length"_s))
+            content_length = hdr.value(u"Content-Length"_s).toInt();
         else
             content_length = 0;
 
@@ -347,13 +349,13 @@ bool HttpConnection::HttpGet::onDataReady(Uint8 *buf, Uint32 size)
         response_code = hdr.statusCode();
         if ((hdr.statusCode() >= 300 && hdr.statusCode() <= 303) || hdr.statusCode() == 307) {
             // we got redirected to somewhere else
-            if (!hdr.hasKey("Location")) {
+            if (!hdr.hasKey(u"Location"_s)) {
                 failure_reason = i18n("Redirected without a new location.");
                 return false;
             } else {
-                Out(SYS_CON | LOG_DEBUG) << "Redirected to " << hdr.value("Location") << endl;
+                Out(SYS_CON | LOG_DEBUG) << "Redirected to " << hdr.value(u"Location"_s) << endl;
                 redirected = true;
-                redirected_to = QUrl(hdr.value("Location"));
+                redirected_to = QUrl(hdr.value(u"Location"_s));
             }
         } else if (!(hdr.statusCode() == 200 || hdr.statusCode() == 206)) {
             failure_reason = hdr.reasonPhrase();

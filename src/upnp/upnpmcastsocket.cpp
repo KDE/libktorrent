@@ -105,8 +105,8 @@ void UPnPMCastSocket::discover()
         Out(SYS_PNP | LOG_NOTICE) << tr64_data << endl;
     }
 
-    writeDatagram(upnp_data, strlen(upnp_data), QHostAddress("239.255.255.250"), 1900);
-    writeDatagram(tr64_data, strlen(tr64_data), QHostAddress("239.255.255.250"), 1900);
+    writeDatagram(upnp_data, strlen(upnp_data), QHostAddress(u"239.255.255.250"_s), 1900);
+    writeDatagram(tr64_data, strlen(tr64_data), QHostAddress(u"239.255.255.250"_s), 1900);
 }
 
 void UPnPMCastSocket::onXmlFileDownloaded(UPnPRouter *r, bool success)

@@ -16,6 +16,7 @@
 
 using namespace utp;
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 class DelayWindowTest : public QObject
 {
@@ -29,7 +30,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLog("delaywindowtest.log", false, true);
+        bt::InitLog(u"delaywindowtest.log"_s, false, true);
     }
 
     void cleanupTestCase()

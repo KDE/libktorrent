@@ -10,6 +10,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -34,7 +35,7 @@ void PingReq::apply(dht::DHT *dh_table)
 
 void PingReq::print()
 {
-    Out(SYS_DHT | LOG_DEBUG) << QString("REQ: %1 %2 : ping").arg(mtid[0]).arg(id.toString()) << endl;
+    Out(SYS_DHT | LOG_DEBUG) << u"REQ: %1 %2 : ping"_s.arg(mtid[0]).arg(id.toString()) << endl;
 }
 
 void PingReq::encode(QByteArray &arr) const

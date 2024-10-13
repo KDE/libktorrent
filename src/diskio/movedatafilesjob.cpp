@@ -18,13 +18,15 @@
 #include <util/functions.h>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 static ResourceManager move_data_files_slot(1);
 
 MoveDataFilesJob::MoveDataFilesJob()
     : Job(true, nullptr)
-    , Resource(&move_data_files_slot, "MoveDataFilesJob")
+    , Resource(&move_data_files_slot, u"MoveDataFilesJob"_s)
     , err(false)
     , active_job(nullptr)
     , running_recovery_jobs(0)
@@ -36,7 +38,7 @@ MoveDataFilesJob::MoveDataFilesJob()
 
 MoveDataFilesJob::MoveDataFilesJob(const QMap<TorrentFileInterface *, QString> &fmap)
     : Job(true, nullptr)
-    , Resource(&move_data_files_slot, "MoveDataFilesJob")
+    , Resource(&move_data_files_slot, u"MoveDataFilesJob"_s)
     , err(false)
     , active_job(nullptr)
     , running_recovery_jobs(0)

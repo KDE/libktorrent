@@ -13,6 +13,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -45,7 +46,7 @@ void GetPeersRsp::apply(dht::DHT *dh_table)
 
 void GetPeersRsp::print()
 {
-    Out(SYS_DHT | LOG_DEBUG) << QString("RSP: %1 %2 : get_peers(%3)").arg(mtid[0]).arg(id.toString(), nodes.size() > 0 ? "nodes" : "values") << endl;
+    Out(SYS_DHT | LOG_DEBUG) << u"RSP: %1 %2 : get_peers(%3)"_s.arg(mtid[0]).arg(id.toString(), nodes.size() > 0 ? u"nodes"_s : u"values"_s) << endl;
 }
 
 void GetPeersRsp::encode(QByteArray &arr) const
@@ -100,7 +101,7 @@ void GetPeersRsp::parse(BDictNode *dict)
     dht::RPCMsg::parse(dict);
     BDictNode *args = dict->getDict(RSP);
     if (!args)
-        throw bt::Error("Invalid response, arguments missing");
+        throw bt::Error(u"Invalid response, arguments missing"_s);
 
     token = args->getByteArray("token").left(MAX_TOKEN_SIZE);
 

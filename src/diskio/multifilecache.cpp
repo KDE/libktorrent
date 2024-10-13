@@ -149,7 +149,7 @@ void MultiFileCache::open()
             if (dnd_files.contains(i))
                 dnd_files.remove(i);
 
-            QString dnd_path = QString("file%1.dnd").arg(tf.getIndex());
+            QString dnd_path = u"file%1.dnd"_s.arg(tf.getIndex());
             QString dnd_file = dnd_dir + dnd_path;
             if (bt::Exists(dnd_dir + tf.getUserModifiedPath() + ".dnd"_L1)) {
                 // old style dnd dir, move the file so that we can keep working
@@ -177,7 +177,7 @@ void MultiFileCache::changeTmpDir(const QString &ndir)
         if (tf.doNotDownload()) {
             DNDFile::Ptr dfd = dnd_files[i];
             if (dfd) {
-                QString dnd_path = QString("file%1.dnd").arg(tf.getIndex());
+                QString dnd_path = u"file%1.dnd"_s.arg(tf.getIndex());
                 dfd->changePath(dnd_dir + dnd_path);
             }
         }
@@ -575,7 +575,7 @@ void MultiFileCache::downloadStatusChanged(TorrentFile *tf, bool download)
 {
     bool dnd = !download;
     QString dnd_dir = tmpdir + "dnd"_L1 + bt::DirSeparator();
-    QString dnd_path = QString("file%1.dnd").arg(tf->getIndex());
+    QString dnd_path = u"file%1.dnd"_s.arg(tf->getIndex());
     QString dnd_file = dnd_dir + dnd_path;
     // if it is dnd and it is already in the dnd tree do nothing
     if (dnd && bt::Exists(dnd_dir + dnd_path))

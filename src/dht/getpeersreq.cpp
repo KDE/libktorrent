@@ -12,6 +12,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -37,7 +38,7 @@ void GetPeersReq::apply(dht::DHT *dh_table)
 
 void GetPeersReq::print()
 {
-    Out(SYS_DHT | LOG_DEBUG) << QString("REQ: %1 %2 : get_peers %3").arg(mtid[0]).arg(id.toString(), info_hash.toString()) << endl;
+    Out(SYS_DHT | LOG_DEBUG) << u"REQ: %1 %2 : get_peers %3"_s.arg(mtid[0]).arg(id.toString(), info_hash.toString()) << endl;
 }
 
 void GetPeersReq::encode(QByteArray &arr) const
@@ -69,7 +70,7 @@ void GetPeersReq::parse(BDictNode *dict)
     dht::RPCMsg::parse(dict);
     BDictNode *args = dict->getDict(ARG);
     if (!args)
-        throw bt::Error("Invalid request, arguments missing");
+        throw bt::Error(u"Invalid request, arguments missing"_s);
 
     info_hash = Key(args->getByteArray("info_hash"));
     BListNode *ln = args->getList("want");
@@ -81,7 +82,7 @@ void GetPeersReq::parse(BDictNode *dict)
 
 bool GetPeersReq::wants(int ip_version) const
 {
-    return want.contains(QString("n%1").arg(ip_version));
+    return want.contains(u"n%1"_s.arg(ip_version));
 }
 
 }
