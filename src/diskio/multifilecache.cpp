@@ -729,10 +729,7 @@ static void DeleteEmptyDirs(const QString &output_dir, const QString &fpath)
             path += s + bt::DirSeparator();
 
         QDir dir(path);
-        QStringList el = dir.entryList(QDir::AllEntries | QDir::System | QDir::Hidden);
-        el.removeAll(".");
-        el.removeAll("..");
-        if (el.count() == 0 && dir.exists()) {
+        if (dir.exists() && dir.isEmpty(QDir::AllEntries | QDir::System | QDir::Hidden | QDir::NoDotAndDotDot)) {
             // no childern so delete the directory
             Out(SYS_GEN | LOG_DEBUG) << "Deleting empty directory : " << path << endl;
             bt::Delete(path, true);
@@ -745,10 +742,7 @@ static void DeleteEmptyDirs(const QString &output_dir, const QString &fpath)
 
     // now the output_dir itself
     QDir dir(output_dir);
-    QStringList el = dir.entryList(QDir::AllEntries | QDir::System | QDir::Hidden);
-    el.removeAll(".");
-    el.removeAll("..");
-    if (el.count() == 0 && dir.exists()) {
+    if (dir.exists() && dir.isEmpty(QDir::AllEntries | QDir::System | QDir::Hidden | QDir::NoDotAndDotDot)) {
         Out(SYS_GEN | LOG_DEBUG) << "Deleting empty directory : " << output_dir << endl;
         bt::Delete(output_dir, true);
     }

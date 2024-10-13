@@ -101,10 +101,7 @@ void DeleteDataFilesJob::DirTree::doDeleteOnEmpty(const QString &base)
     }
 
     QDir dir(base);
-    QStringList el = dir.entryList(QDir::AllEntries | QDir::System | QDir::Hidden);
-    el.removeAll(".");
-    el.removeAll("..");
-    if (el.count() == 0) {
+    if (dir.isEmpty(QDir::AllEntries | QDir::System | QDir::Hidden | QDir::NoDotAndDotDot)) {
         // no childern so delete the directory
         Out(SYS_DIO | LOG_DEBUG) << "Deleting empty directory : " << base << endl;
         bt::Delete(base, true);
