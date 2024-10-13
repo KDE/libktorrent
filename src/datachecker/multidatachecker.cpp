@@ -181,7 +181,7 @@ File::Ptr MultiDataChecker::open(const bt::Torrent &tor, Uint32 idx)
 
     const TorrentFile &tf = tor.getFile(idx);
     File::Ptr fptr(new File());
-    if (!fptr->open(tf.getPathOnDisk(), "rb")) {
+    if (!fptr->open(tf.getPathOnDisk(), u"rb"_s)) {
         QString err = i18n("Cannot open file %1: %2", tf.getPathOnDisk(), fptr->errorString());
         Out(SYS_GEN | LOG_DEBUG) << err << endl;
         throw Error(err);

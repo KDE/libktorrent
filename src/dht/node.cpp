@@ -42,7 +42,7 @@ public:
     void saveKey(const dht::Key &key, const QString &key_file)
     {
         bt::File fptr;
-        if (!fptr.open(key_file, "wb")) {
+        if (!fptr.open(key_file, u"wb"_s)) {
             Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Cannot open file " << key_file << " : " << fptr.errorString() << endl;
             return;
         }
@@ -54,7 +54,7 @@ public:
     dht::Key loadKey(const QString &key_file)
     {
         bt::File fptr;
-        if (!fptr.open(key_file, "rb")) {
+        if (!fptr.open(key_file, u"rb"_s)) {
             Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Cannot open file " << key_file << " : " << fptr.errorString() << endl;
             dht::Key r = dht::Key::random();
             saveKey(r, key_file);

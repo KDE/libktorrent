@@ -16,6 +16,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -144,7 +145,7 @@ void KBucketTable::loadTable(const QString &file, RPCServerInterface *srv)
 void KBucketTable::saveTable(const QString &file)
 {
     bt::File fptr;
-    if (!fptr.open(file, "wb")) {
+    if (!fptr.open(file, u"wb"_s)) {
         Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Cannot open file " << file << " : " << fptr.errorString() << endl;
         return;
     }

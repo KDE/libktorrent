@@ -623,7 +623,7 @@ void MultiFileCache::saveFirstAndLastChunk(TorrentFile *tf, const QString &src_f
 {
     DNDFile out(dst_file, tf, tor.getChunkSize());
     File fptr;
-    if (!fptr.open(src_file, "rb"))
+    if (!fptr.open(src_file, u"rb"_s))
         throw Error(i18n("Cannot open file %1: %2", src_file, fptr.errorString()));
 
     Uint32 cs = (tf->getFirstChunk() == tor.getNumChunks() - 1) ? tor.getLastChunkSize() : tor.getChunkSize();
@@ -658,7 +658,7 @@ void MultiFileCache::recreateFile(TorrentFile *tf, const QString &dnd_file, cons
     Uint32 cs = (tf->getFirstChunk() == tor.getNumChunks() - 1) ? tor.getLastChunkSize() : tor.getChunkSize();
 
     File fptr;
-    if (!fptr.open(output_file, "r+b"))
+    if (!fptr.open(output_file, u"r+b"_s))
         throw Error(i18n("Cannot open file %1: %2", output_file, fptr.errorString()));
 
     Uint32 ts = cs - tf->getFirstChunkOffset() > tf->getLastChunkSize() ? cs - tf->getFirstChunkOffset() : tf->getLastChunkSize();

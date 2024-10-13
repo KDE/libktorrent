@@ -12,6 +12,8 @@
 #include <util/log.h>
 #include <util/sha1hash.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 const Uint32 DND_FILE_HDR_MAGIC = 0xD1234567;
@@ -42,7 +44,7 @@ void DNDFile::changePath(const QString &npath)
 void DNDFile::checkIntegrity()
 {
     File fptr;
-    if (!fptr.open(path, "rb")) {
+    if (!fptr.open(path, u"rb"_s)) {
         create();
         return;
     }
@@ -68,7 +70,7 @@ void DNDFile::create()
     memset(hdr.data_sha1, 0, 20);
 
     File fptr;
-    if (!fptr.open(path, "wb"))
+    if (!fptr.open(path, u"wb"_s))
         throw Error(i18n("Cannot create file %1: %2", path, fptr.errorString()));
 
     fptr.write(&hdr, sizeof(DNDFileHeader));
@@ -78,7 +80,7 @@ void DNDFile::create()
 Uint32 DNDFile::readFirstChunk(Uint8 *buf, Uint32 off, Uint32 size)
 {
     File fptr;
-    if (!fptr.open(path, "rb")) {
+    if (!fptr.open(path, u"rb"_s)) {
         create();
         return 0;
     }
@@ -93,7 +95,7 @@ Uint32 DNDFile::readFirstChunk(Uint8 *buf, Uint32 off, Uint32 size)
 Uint32 DNDFile::readLastChunk(Uint8 *buf, Uint32 off, Uint32 size)
 {
     File fptr;
-    if (!fptr.open(path, "rb")) {
+    if (!fptr.open(path, u"rb"_s)) {
         create();
         return 0;
     }
@@ -108,9 +110,9 @@ Uint32 DNDFile::readLastChunk(Uint8 *buf, Uint32 off, Uint32 size)
 void DNDFile::writeFirstChunk(const Uint8 *buf, Uint32 off, Uint32 size)
 {
     File fptr;
-    if (!fptr.open(path, "r+b")) {
+    if (!fptr.open(path, u"r+b"_s)) {
         create();
-        if (!fptr.open(path, "r+b")) {
+        if (!fptr.open(path, u"r+b"_s)) {
             throw Error(i18n("Failed to write first chunk to DND file: %1", fptr.errorString()));
         }
     }
@@ -123,9 +125,9 @@ void DNDFile::writeFirstChunk(const Uint8 *buf, Uint32 off, Uint32 size)
 void DNDFile::writeLastChunk(const Uint8 *buf, Uint32 off, Uint32 size)
 {
     File fptr;
-    if (!fptr.open(path, "r+b")) {
+    if (!fptr.open(path, u"r+b"_s)) {
         create();
-        if (!fptr.open(path, "r+b")) {
+        if (!fptr.open(path, u"r+b"_s)) {
             throw Error(i18n("Failed to write last chunk to DND file: %1", fptr.errorString()));
         }
     }

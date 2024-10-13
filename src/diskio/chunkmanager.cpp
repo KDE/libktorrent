@@ -127,7 +127,7 @@ void ChunkManager::createFiles(bool check_priority)
 {
     if (!bt::Exists(d->index_file)) {
         File fptr;
-        fptr.open(d->index_file, "wb");
+        fptr.open(d->index_file, u"wb"_s);
     }
     d->cache->create();
 
@@ -414,7 +414,7 @@ void ChunkManager::Private::savePriorityInfo()
     // save priority info and call saveFileInfo
     saveFileInfo();
     File fptr;
-    if (!fptr.open(file_priority_file, "wb")) {
+    if (!fptr.open(file_priority_file, u"wb"_s)) {
         Out(SYS_DIO | LOG_IMPORTANT) << "Warning : Can not save chunk_info file : " << fptr.errorString() << endl;
         return;
     }
@@ -448,7 +448,7 @@ void ChunkManager::Private::loadPriorityInfo()
 {
     // load priority info and if that fails load file info
     File fptr;
-    if (!fptr.open(file_priority_file, "rb")) {
+    if (!fptr.open(file_priority_file, u"rb"_s)) {
         loadFileInfo();
         return;
     }
@@ -847,7 +847,7 @@ void ChunkManager::Private::setupPriorities()
 void ChunkManager::Private::saveIndexFile()
 {
     File fptr;
-    if (!fptr.open(index_file, "wb"))
+    if (!fptr.open(index_file, u"wb"_s))
         throw Error(i18n("Cannot open index file %1: %2", index_file, fptr.errorString()));
 
     for (unsigned int i = 0; i < p->getNumChunks(); i++) {
@@ -864,12 +864,12 @@ void ChunkManager::Private::saveIndexFile()
 void ChunkManager::Private::writeIndexFileEntry(Chunk *c)
 {
     File fptr;
-    if (!fptr.open(index_file, "r+b")) {
+    if (!fptr.open(index_file, u"r+b"_s)) {
         // no index file, so assume it's empty
         bt::Touch(index_file, true);
         Out(SYS_DIO | LOG_IMPORTANT) << "Can not open index file : " << fptr.errorString() << endl;
         // try again
-        if (!fptr.open(index_file, "r+b"))
+        if (!fptr.open(index_file, u"r+b"_s))
             // panick if it failes
             throw Error(i18n("Cannot open index file %1: %2", index_file, fptr.errorString()));
     }
@@ -886,7 +886,7 @@ void ChunkManager::Private::loadIndexFile()
     loadPriorityInfo();
 
     File fptr;
-    if (!fptr.open(index_file, "rb")) {
+    if (!fptr.open(index_file, u"rb"_s)) {
         // no index file, so assume it's empty
         bt::Touch(index_file, true);
         Out(SYS_DIO | LOG_IMPORTANT) << "Can not open index file : " << fptr.errorString() << endl;
@@ -920,7 +920,7 @@ void ChunkManager::Private::saveFileInfo()
 
     // saves which TorrentFiles do not need to be downloaded
     File fptr;
-    if (!fptr.open(file_info_file, "wb")) {
+    if (!fptr.open(file_info_file, u"wb"_s)) {
         Out(SYS_DIO | LOG_IMPORTANT) << "Warning : Can not save chunk_info file : " << fptr.errorString() << endl;
         return;
     }
@@ -948,7 +948,7 @@ void ChunkManager::Private::saveFileInfo()
 void ChunkManager::Private::loadFileInfo()
 {
     File fptr;
-    if (!fptr.open(file_info_file, "rb"))
+    if (!fptr.open(file_info_file, u"rb"_s))
         return;
 
     Uint32 num = 0, tmp = 0;

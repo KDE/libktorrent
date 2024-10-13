@@ -15,6 +15,8 @@
 #include <util/functions.h>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 SingleDataChecker::SingleDataChecker(bt::Uint32 from, bt::Uint32 to)
@@ -32,7 +34,7 @@ void SingleDataChecker::check(const QString &path, const Torrent &tor, const QSt
     Uint32 num_chunks = tor.getNumChunks();
     Uint32 chunk_size = tor.getChunkSize();
     File fptr;
-    if (!fptr.open(path, "rb")) {
+    if (!fptr.open(path, u"rb"_s)) {
         throw Error(i18n("Cannot open file %1: %2", path, fptr.errorString()));
     }
 

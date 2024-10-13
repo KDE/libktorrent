@@ -469,7 +469,7 @@ void Downloader::setMonitor(MonitorInterface *tmo)
 void Downloader::saveDownloads(const QString &file)
 {
     File fptr;
-    if (!fptr.open(file, "wb"))
+    if (!fptr.open(file, u"wb"_s))
         return;
 
     // See bug 219019, don't know why, but it is possible that we get 0 pointers in the map
@@ -504,7 +504,7 @@ void Downloader::loadDownloads(const QString &file)
 
     // Load all partial downloads
     File fptr;
-    if (!fptr.open(file, "rb"))
+    if (!fptr.open(file, u"rb"_s))
         return;
 
     // recalculate downloaded bytes
@@ -561,7 +561,7 @@ Uint32 Downloader::getDownloadedBytesOfCurrentChunksFile(const QString &file)
 {
     // Load all partial downloads
     File fptr;
-    if (!fptr.open(file, "rb"))
+    if (!fptr.open(file, u"rb"_s))
         return 0;
 
     // read the number of chunks

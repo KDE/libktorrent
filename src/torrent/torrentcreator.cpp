@@ -109,7 +109,7 @@ void TorrentCreator::buildFileList(const QString &dir)
 void TorrentCreator::saveTorrent(const QString &url)
 {
     File fptr;
-    if (!fptr.open(url, "wb"))
+    if (!fptr.open(url, u"wb"_s))
         throw Error(i18n("Cannot open file %1: %2", url, fptr.errorString()));
 
     BEncoder enc(&fptr);
@@ -230,7 +230,7 @@ bool TorrentCreator::calcHashSingle()
 {
     Array<Uint8> buf(chunk_size);
     File fptr;
-    if (!fptr.open(target, "rb"))
+    if (!fptr.open(target, u"rb"_s))
         throw Error(i18n("Cannot open file %1: %2", target, fptr.errorString()));
 
     Uint32 s = cur_chunk != num_chunks - 1 ? chunk_size : last_size;
@@ -262,7 +262,7 @@ bool TorrentCreator::calcHashMulti()
     for (i = 0; i < file_list.count(); i++) {
         const TorrentFile &f = file_list[i];
         File fptr;
-        if (!fptr.open(target + f.getPath(), "rb")) {
+        if (!fptr.open(target + f.getPath(), u"rb"_s)) {
             throw Error(i18n("Cannot open file %1: %2", f.getPath(), fptr.errorString()));
         }
 
@@ -330,7 +330,7 @@ TorrentControl *TorrentCreator::makeTC(const QString &data_dir)
     saveTorrent(dd + QLatin1String("torrent"));
     // write full index file
     File fptr;
-    if (!fptr.open(dd + QLatin1String("index"), "wb"))
+    if (!fptr.open(dd + QLatin1String("index"), u"wb"_s))
         throw Error(i18n("Cannot create index file: %1", fptr.errorString()));
 
     for (Uint32 i = 0; i < num_chunks; i++) {
