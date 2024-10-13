@@ -39,7 +39,7 @@ RPCMsg::Ptr RPCMsgFactory::buildRequest(BDictNode *dict)
         throw bt::Error("Invalid request, arguments missing");
 
     RPCMsg::Ptr msg;
-    QString str = dict->getString(REQ);
+    const auto str = dict->getByteArray(REQ);
     if (str == "ping") {
         msg = RPCMsg::Ptr(new PingReq());
         msg->parse(dict);
@@ -60,7 +60,7 @@ RPCMsg::Ptr RPCMsgFactory::buildRequest(BDictNode *dict)
         // Some µTorrent extension to rate torrents, just ignore
         return msg;
     } else
-        throw bt::Error(QString("Invalid request type %1").arg(str));
+        throw bt::Error(QString("Invalid request type %1").arg(QLatin1StringView(str)));
 }
 
 RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver *method_resolver)
@@ -105,7 +105,7 @@ RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver
 
 RPCMsg::Ptr RPCMsgFactory::build(bt::BDictNode *dict, RPCMethodResolver *method_resolver)
 {
-    QString t = dict->getString(TYP);
+    const auto t = dict->getByteArray(TYP);
     if (t == REQ) {
         return buildRequest(dict);
     } else if (t == RSP) {
@@ -115,7 +115,7 @@ RPCMsg::Ptr RPCMsgFactory::build(bt::BDictNode *dict, RPCMethodResolver *method_
         msg->parse(dict);
         return msg;
     } else
-        throw bt::Error(QString("Unknown message type %1").arg(t));
+        throw bt::Error(QString("Unknown message type %1").arg(QLatin1StringView(t)));
 }
 
 }

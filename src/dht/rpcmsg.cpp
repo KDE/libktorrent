@@ -36,7 +36,7 @@ void RPCMsg::parse(bt::BDictNode *dict)
     if (mtid.isEmpty())
         throw bt::Error("Invalid DHT transaction ID");
 
-    QString t = dict->getString(TYP);
+    const auto t = dict->getByteArray(TYP);
     if (t == REQ) {
         type = REQ_MSG;
         BDictNode *args = dict->getDict(ARG);
@@ -54,6 +54,6 @@ void RPCMsg::parse(bt::BDictNode *dict)
     } else if (t == ERR_DHT)
         type = ERR_MSG;
     else
-        throw bt::Error(QString("Unknown message type %1").arg(t));
+        throw bt::Error(QString("Unknown message type %1").arg(QLatin1StringView(t)));
 }
 }
