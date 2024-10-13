@@ -15,6 +15,8 @@
 #include <tracker/udptracker.h>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 TrackerManager::TrackerManager(bt::TorrentControl *tor, PeerManager *pman)
@@ -382,7 +384,7 @@ void TrackerManager::loadTrackerStatus()
         if (line.size() < 2)
             continue;
 
-        if (line[0] == '0') {
+        if (line[0] == '0'_L1) {
             Tracker *trk = trackers.find(QUrl(line.mid(2))); // url starts at the second char
             if (trk)
                 trk->setEnabled(false);

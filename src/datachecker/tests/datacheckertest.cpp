@@ -19,6 +19,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 const bt::Uint64 TEST_FILE_SIZE = 15 * 1024 * 1024;
 
@@ -50,7 +51,7 @@ private Q_SLOTS:
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
-            tc.init(nullptr, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
+            tc.init(nullptr, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0"_L1, creator.tempPath() + "data/"_L1);
             tc.createFiles();
         } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
@@ -59,7 +60,7 @@ private Q_SLOTS:
 
         SingleDataChecker dc(0, tc.getStats().total_chunks);
         try {
-            QString dnd = tc.getTorDir() + "dnd" + bt::DirSeparator();
+            QString dnd = tc.getTorDir() + "dnd"_L1 + bt::DirSeparator();
             dc.check(tc.getStats().output_path, tc.getTorrent(), dnd, tc.downloadedChunksBitSet());
             QVERIFY(dc.getResult().allOn());
         } catch (bt::Error &err) {
@@ -83,7 +84,7 @@ private Q_SLOTS:
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
-            tc.init(nullptr, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
+            tc.init(nullptr, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0"_L1, creator.tempPath() + "data/"_L1);
             tc.createFiles();
         } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
@@ -92,7 +93,7 @@ private Q_SLOTS:
 
         MultiDataChecker dc(0, tc.getStats().total_chunks);
         try {
-            QString dnd = tc.getTorDir() + "dnd" + bt::DirSeparator();
+            QString dnd = tc.getTorDir() + "dnd"_L1 + bt::DirSeparator();
             dc.check(tc.getStats().output_path, tc.getTorrent(), dnd, tc.downloadedChunksBitSet());
             QVERIFY(dc.getResult().allOn());
         } catch (bt::Error &err) {
@@ -116,7 +117,7 @@ private Q_SLOTS:
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
-            tc.init(nullptr, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
+            tc.init(nullptr, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0"_L1, creator.tempPath() + "data/"_L1);
             tc.createFiles();
         } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;
@@ -127,7 +128,7 @@ private Q_SLOTS:
             const bt::TorrentFileInterface &fi = tc.getTorrentFile(file);
             MultiDataChecker dc(fi.getFirstChunk(), fi.getLastChunk());
             try {
-                QString dnd = tc.getTorDir() + "dnd" + bt::DirSeparator();
+                QString dnd = tc.getTorDir() + "dnd"_L1 + bt::DirSeparator();
                 dc.check(tc.getStats().output_path, tc.getTorrent(), dnd, tc.downloadedChunksBitSet());
                 for (Uint32 i = 0; i < tc.getStats().total_chunks; i++)
                     QVERIFY(dc.getResult().get(i) == (i >= fi.getFirstChunk() && i <= fi.getLastChunk()));

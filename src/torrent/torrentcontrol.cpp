@@ -53,6 +53,8 @@
 #include <util/log.h>
 #include <util/waitjob.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 bool TorrentControl::completed_datacheck = false;
@@ -107,7 +109,7 @@ TorrentControl::~TorrentControl()
         tmon->destroyed();
 
     if (downloader)
-        downloader->saveWebSeeds(tordir + "webseeds");
+        downloader->saveWebSeeds(tordir + "webseeds"_L1);
 
     delete job_queue;
     delete choke;
@@ -299,7 +301,7 @@ void TorrentControl::pause()
     pman->pause();
 
     try {
-        downloader->saveDownloads(tordir + "current_chunks");
+        downloader->saveDownloads(tordir + "current_chunks"_L1);
     } catch (Error &e) {
         // print out warning in case of failure
         // it doesn't corrupt the data, so just a couple of lost chunks
@@ -307,7 +309,7 @@ void TorrentControl::pause()
     }
 
     downloader->pause();
-    downloader->saveWebSeeds(tordir + "webseeds");
+    downloader->saveWebSeeds(tordir + "webseeds"_L1);
     downloader->removeAllWebSeeds();
     cman->stop();
     stats.paused = true;
@@ -326,14 +328,14 @@ void TorrentControl::unpause()
     cman->start();
 
     try {
-        downloader->loadDownloads(tordir + "current_chunks");
+        downloader->loadDownloads(tordir + "current_chunks"_L1);
     } catch (Error &e) {
         // print out warning in case of failure
         // we can still continue the download
         Out(SYS_GEN | LOG_NOTICE) << "Warning : " << e.toString() << endl;
     }
 
-    downloader->loadWebSeeds(tordir + "webseeds");
+    downloader->loadWebSeeds(tordir + "webseeds"_L1);
     pman->unpause();
     loadStats();
     istats.time_started_ul = istats.time_started_dl = QDateTime::currentDateTime();
@@ -389,9 +391,9 @@ void TorrentControl::continueStart()
 {
     // continues start after the prealloc_thread has finished preallocation
     pman->start(stats.completed && stats.superseeding);
-    pman->loadPeerList(tordir + "peer_list");
+    pman->loadPeerList(tordir + "peer_list"_L1);
     try {
-        downloader->loadDownloads(tordir + "current_chunks");
+        downloader->loadDownloads(tordir + "current_chunks"_L1);
     } catch (Error &e) {
         // print out warning in case of failure
         // we can still continue the download
@@ -438,7 +440,7 @@ void TorrentControl::stop(WaitJob *wjob)
             tmon->stopped();
 
         try {
-            downloader->saveDownloads(tordir + "current_chunks");
+            downloader->saveDownloads(tordir + "current_chunks"_L1);
         } catch (Error &e) {
             // print out warning in case of failure
             // it doesn't corrupt the data, so just a couple of lost chunks
@@ -448,7 +450,7 @@ void TorrentControl::stop(WaitJob *wjob)
         downloader->clearDownloads();
     }
 
-    pman->savePeerList(tordir + "peer_list");
+    pman->savePeerList(tordir + "peer_list"_L1);
     pman->stop();
     cman->stop();
 
@@ -495,7 +497,7 @@ void TorrentControl::init(QueueManagerInterface *qman, const QByteArray &data, c
     initInternal(qman, tmpdir, ddir);
 
     // copy data into torrent file
-    QString tor_copy = tordir + "torrent";
+    QString tor_copy = tordir + "torrent"_L1;
     QFile fptr(tor_copy);
     if (!fptr.open(QIODevice::WriteOnly))
         throw Error(i18n("Unable to create %1: %2", tor_copy, fptr.errorString()));
@@ -547,7 +549,7 @@ void TorrentControl::setupStats()
 
     // check the stats file for the custom_output_name variable
     if (!stats_file)
-        stats_file = new StatsFile(tordir + "stats");
+        stats_file = new StatsFile(tordir + "stats"_L1);
 
     if (stats_file->hasKey("CUSTOM_OUTPUT_NAME") && stats_file->readULong("CUSTOM_OUTPUT_NAME") == 1) {
         istats.custom_output_name = true;
@@ -571,7 +573,7 @@ void TorrentControl::setupData()
     // Create chunkmanager, load the index file if it exists
     // else create all the necesarry files
     cman = new ChunkManager(*tor, tordir, outputdir, istats.custom_output_name, cache_factory);
-    if (bt::Exists(tordir + "index"))
+    if (bt::Exists(tordir + "index"_L1))
         cman->loadIndexFile();
 
     connect(cman, &ChunkManager::updateStats, this, &TorrentControl::updateStats);
@@ -580,7 +582,7 @@ void TorrentControl::setupData()
 
     // create downloader, uploader and choker
     downloader = new Downloader(*tor, *pman, *cman);
-    downloader->loadWebSeeds(tordir + "webseeds");
+    downloader->loadWebSeeds(tordir + "webseeds"_L1);
     connect(downloader, &Downloader::ioError, this, &TorrentControl::onIOError);
     connect(downloader, &Downloader::chunkDownloaded, this, &TorrentControl::downloaded);
     uploader = new Uploader(*cman, *pman);
@@ -605,7 +607,7 @@ void TorrentControl::initInternal(QueueManagerInterface *qman, const QString &tm
     // the data from downloads already in progress
     try {
         Uint64 db = downloader->bytesDownloaded();
-        Uint64 cb = downloader->getDownloadedBytesOfCurrentChunksFile(tordir + "current_chunks");
+        Uint64 cb = downloader->getDownloadedBytesOfCurrentChunksFile(tordir + "current_chunks"_L1);
         istats.prev_bytes_dl = db + cb;
 
         //  Out() << "Downloaded : " << BytesToString(db) << endl;
@@ -891,7 +893,7 @@ void TorrentControl::saveStats()
         return;
 
     if (!stats_file)
-        stats_file = new StatsFile(tordir + "stats");
+        stats_file = new StatsFile(tordir + "stats"_L1);
 
     stats_file->write("OUTPUTDIR", cman->getDataDir());
     stats_file->write("COMPLETEDDIR", completed_dir);
@@ -946,7 +948,7 @@ void TorrentControl::saveStats()
 
 void TorrentControl::loadStats()
 {
-    if (!bt::Exists(tordir + "stats")) {
+    if (!bt::Exists(tordir + "stats"_L1)) {
         setFeatureEnabled(DHT_FEATURE, true);
         setFeatureEnabled(UT_PEX_FEATURE, true);
         return;
@@ -954,7 +956,7 @@ void TorrentControl::loadStats()
 
     RecursiveEntryGuard guard(&loading_stats);
     if (!stats_file)
-        stats_file = new StatsFile(tordir + "stats");
+        stats_file = new StatsFile(tordir + "stats"_L1);
 
     Uint64 val = stats_file->readUint64("UPLOADED");
     // stats.session_bytes_uploaded will be calculated based upon prev_bytes_ul
@@ -996,7 +998,7 @@ void TorrentControl::loadStats()
     stats.auto_stopped = stats_file->readBoolean("AUTO_STOPPED");
 
     if (stats_file->hasKey("RESTART_DISK_PREALLOCATION"))
-        prealloc = stats_file->readString("RESTART_DISK_PREALLOCATION") == "1";
+        prealloc = stats_file->readString("RESTART_DISK_PREALLOCATION") == '1'_L1;
 
     if (!stats.priv_torrent) {
         if (stats_file->hasKey("DHT"))
@@ -1031,7 +1033,7 @@ void TorrentControl::loadStats()
 void TorrentControl::loadOutputDir()
 {
     if (!stats_file)
-        stats_file = new StatsFile(tordir + "stats");
+        stats_file = new StatsFile(tordir + "stats"_L1);
 
     if (!stats_file->hasKey("OUTPUTDIR"))
         return;
@@ -1179,7 +1181,7 @@ void TorrentControl::setPriority(int p)
 {
     istats.priority = p;
     if (!stats_file)
-        stats_file = new StatsFile(tordir + "stats");
+        stats_file = new StatsFile(tordir + "stats"_L1);
 
     stats_file->write("PRIORITY", QString("%1").arg(istats.priority));
     updateStatus();
@@ -1612,7 +1614,7 @@ bool TorrentControl::addWebSeed(const QUrl &url)
 {
     WebSeed *ws = downloader->addWebSeed(url);
     if (ws) {
-        downloader->saveWebSeeds(tordir + "webseeds");
+        downloader->saveWebSeeds(tordir + "webseeds"_L1);
         ws->setGroupIDs(upload_gid, download_gid); // make sure webseed has proper group ID
     }
     return ws != nullptr;
@@ -1622,7 +1624,7 @@ bool TorrentControl::removeWebSeed(const QUrl &url)
 {
     bool ret = downloader->removeWebSeed(url);
     if (ret)
-        downloader->saveWebSeeds(tordir + "webseeds");
+        downloader->saveWebSeeds(tordir + "webseeds"_L1);
     return ret;
 }
 

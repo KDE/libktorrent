@@ -14,6 +14,8 @@
 #include <util/error.h>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 class RPCMsgTest : public QObject, public dht::RPCMethodResolver
 {
     Q_OBJECT
@@ -47,7 +49,7 @@ private Q_SLOTS:
             QVERIFY(msg->getType() == dht::ERR_MSG);
             dht::ErrMsg::Ptr err = msg.dynamicCast<dht::ErrMsg>();
             QVERIFY(err);
-            QVERIFY(err->message() == "A Generic Error Ocurred");
+            QCOMPARE(err->message(), "A Generic Error Ocurred"_L1);
             QVERIFY(err->getMTID() == QByteArray("aa"));
 
         } catch (bt::Error &e) {

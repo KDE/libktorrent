@@ -11,6 +11,8 @@
 #include <util/error.h>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 MagnetLink::MagnetLink()
@@ -90,7 +92,7 @@ void MagnetLink::parse(const QUrl &url)
         const QRegularExpressionMatch match = btihHash.match(url.host());
 
         if (match.hasMatch()) {
-            QString primaryHash = match.captured(1).split('-')[0];
+            QString primaryHash = match.captured(1).split('-'_L1)[0];
             xt = QLatin1String("urn:btih:") + primaryHash;
         } else {
             Out(SYS_GEN | LOG_NOTICE) << "No hash found in magnet link " << url << endl;
@@ -118,7 +120,7 @@ void MagnetLink::parse(const QUrl &url)
 
         info_hash = SHA1Hash(hash);
         tracker_urls = GetTrackers(url);
-        name = QUrlQuery(url).queryItemValue(QLatin1String("dn")).replace('+', ' ');
+        name = QUrlQuery(url).queryItemValue(QLatin1String("dn")).replace('+'_L1, ' '_L1);
         magnet_string = url.toString();
     } catch (...) {
         Out(SYS_GEN | LOG_NOTICE) << "Invalid magnet link " << url << endl;

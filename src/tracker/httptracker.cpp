@@ -26,6 +26,8 @@
 #include <util/log.h>
 #include <util/waitjob.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 bool HTTPTracker::proxy_on = false;
@@ -105,7 +107,7 @@ void HTTPTracker::scrape()
     QString epq = scrape_url.query(QUrl::FullyEncoded);
     const SHA1Hash &info_hash = tds->infoHash();
     if (epq.length())
-        epq += '&';
+        epq += '&'_L1;
     epq += QLatin1String("info_hash=") + info_hash.toURLString();
     scrape_url.setQuery(epq, QUrl::StrictMode);
 
@@ -410,7 +412,7 @@ void HTTPTracker::setupMetaData(KIO::MetaData &md)
     if (proxy_on) {
         QString p = QString("%1:%2").arg(proxy).arg(proxy_port);
         if (!p.startsWith(QLatin1String("http://")))
-            p = "http://" + p;
+            p = "http://"_L1 + p;
         // set the proxy if the doNotUseKDEProxy ix enabled (URL must be valid to)
         QUrl url(p);
         if (url.isValid() && proxy.trimmed().length() > 0) {

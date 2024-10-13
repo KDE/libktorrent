@@ -12,6 +12,8 @@
 
 #include "version.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 char RandomLetterOrNumber()
@@ -27,9 +29,9 @@ char RandomLetterOrNumber()
 
 QString charToNumber(QChar c)
 {
-    if (c >= 'A' && c <= 'F')
+    if (c >= 'A'_L1 && c <= 'F'_L1)
         return QString::number(c.toLatin1() - 'A' + 10);
-    else if (c >= 'z' && c <= 'f')
+    else if (c >= 'z'_L1 && c <= 'f'_L1)
         return QString::number(c.toLatin1() - 'a' + 10);
     else
         return c;
@@ -97,7 +99,7 @@ QString PeerID::toString() const
     QString r;
     r.reserve(20);
     for (int i = 0; i < 20; i++)
-        r += id[i] == 0 ? ' ' : id[i];
+        r += id[i] == 0 ? ' '_L1 : QLatin1Char(id[i]);
     return r;
 }
 
@@ -243,28 +245,28 @@ QString PeerID::identifyClient() const
     }
 
     QString name;
-    if (peer_id.at(0) == '-' && peer_id.at(1).isLetter() && peer_id.at(2).isLetter()) { // AZ style
+    if (peer_id.at(0) == '-'_L1 && peer_id.at(1).isLetter() && peer_id.at(2).isLetter()) { // AZ style
         QString ID(peer_id.mid(1, 2));
         if (ID == QLatin1String("ML")) {
             name = Map[ID];
-            const int dash_pos = peer_id.indexOf('-', 3);
+            const int dash_pos = peer_id.indexOf('-'_L1, 3);
             if (dash_pos != -1)
-                name += ' ' + peer_id.mid(3, dash_pos - 3);
+                name += ' '_L1 + peer_id.mid(3, dash_pos - 3);
         } else if (Map.contains(ID)) {
-            if (peer_id.at(9) == '-') {
-                name = Map[ID] + ' ' + charToNumber(peer_id.at(3)) + charToNumber(peer_id.at(4)) + '.' + charToNumber(peer_id.at(5))
-                    + charToNumber(peer_id.at(6)) + '.' + charToNumber(peer_id.at(7)) + charToNumber(peer_id.at(8));
+            if (peer_id.at(9) == '-'_L1) {
+                name = Map[ID] + ' '_L1 + charToNumber(peer_id.at(3)) + charToNumber(peer_id.at(4)) + '.'_L1 + charToNumber(peer_id.at(5))
+                    + charToNumber(peer_id.at(6)) + '.'_L1 + charToNumber(peer_id.at(7)) + charToNumber(peer_id.at(8));
             } else {
-                name = Map[ID] + ' ' + charToNumber(peer_id.at(3)) + '.' + charToNumber(peer_id.at(4)) + '.' + charToNumber(peer_id.at(5));
+                name = Map[ID] + ' '_L1 + charToNumber(peer_id.at(3)) + '.'_L1 + charToNumber(peer_id.at(4)) + '.'_L1 + charToNumber(peer_id.at(5));
             }
         }
     } else if (peer_id.at(0).isLetter() && peer_id.at(1).isDigit() && peer_id.at(2).isDigit()) { // Shadow's style
         QString ID = QString(peer_id.at(0));
         if (Map.contains(ID))
-            name = Map[ID] + ' ' + peer_id.at(1) + '.' + peer_id.at(2) + '.' + peer_id.at(3);
-    } else if (peer_id.at(0) == 'M' && peer_id.at(2) == '-' && (peer_id.at(4) == '-' || peer_id.at(5) == '-')) {
-        name = Map[QStringLiteral("M")] + ' ' + peer_id.at(1) + '.' + peer_id.at(3);
-        if (peer_id.at(4) == '-')
+            name = Map[ID] + ' '_L1 + peer_id.at(1) + '.'_L1 + peer_id.at(2) + '.'_L1 + peer_id.at(3);
+    } else if (peer_id.at(0) == 'M'_L1 && peer_id.at(2) == '-'_L1 && (peer_id.at(4) == '-'_L1 || peer_id.at(5) == '-'_L1)) {
+        name = Map[QStringLiteral("M")] + ' '_L1 + peer_id.at(1) + '.'_L1 + peer_id.at(3);
+        if (peer_id.at(4) == '-'_L1)
             name += QStringLiteral(".%1").arg(peer_id.at(5));
         else
             name += QStringLiteral("%1.%2").arg(peer_id.at(4)).arg(peer_id.at(6));
@@ -277,13 +279,13 @@ QString PeerID::identifyClient() const
     } else if (peer_id.startsWith(QLatin1String("Plus"))) {
         name = Map[QStringLiteral("Plus")];
     } else if (peer_id.startsWith(QLatin1String("Mbrst"))) {
-        name = Map[QStringLiteral("Mbrst")] + ' ' + peer_id.at(5) + '.' + peer_id.at(7);
+        name = Map[QStringLiteral("Mbrst")] + ' '_L1 + peer_id.at(5) + '.'_L1 + peer_id.at(7);
     } else if (peer_id.startsWith(QLatin1String("XBT"))) {
-        name = Map[QStringLiteral("XBT")] + ' ' + peer_id.at(3) + '.' + peer_id.at(4) + '.' + peer_id.at(5);
+        name = Map[QStringLiteral("XBT")] + ' '_L1 + peer_id.at(3) + '.'_L1 + peer_id.at(4) + '.'_L1 + peer_id.at(5);
     } else if (peer_id.startsWith(QLatin1String("SP"))) {
-        name = Map[QStringLiteral("SP")] + ' ' + peer_id.at(2) + '.' + peer_id.at(3) + '.' + peer_id.at(4) + '.' + peer_id.at(5);
+        name = Map[QStringLiteral("SP")] + ' '_L1 + peer_id.at(2) + '.'_L1 + peer_id.at(3) + '.'_L1 + peer_id.at(4) + '.'_L1 + peer_id.at(5);
     } else if (peer_id.startsWith(QLatin1String("FG"))) {
-        name = Map[QStringLiteral("FG")] + ' ' + peer_id.at(2) + '.' + peer_id.at(3) + '.' + peer_id.at(4) + '.' + peer_id.at(5);
+        name = Map[QStringLiteral("FG")] + ' '_L1 + peer_id.at(2) + '.'_L1 + peer_id.at(3) + '.'_L1 + peer_id.at(4) + '.'_L1 + peer_id.at(5);
     } else if (QStringView(peer_id).mid(2, 2) == QLatin1String("RS")) {
         name = Map[QStringLiteral("RS")];
     } else if (peer_id.startsWith(QLatin1String("Q1"))) {
@@ -293,7 +295,7 @@ QString PeerID::identifyClient() const
     } else if (peer_id.startsWith(QLatin1String("QVOD"))) {
         name = Map[QStringLiteral("QVOD")];
     } else if (peer_id.startsWith(QLatin1String("TIX"))) {
-        name = Map[QStringLiteral("TIX")] + ' ' + peer_id.at(3) + peer_id.at(4) + '.' + peer_id.at(5) + peer_id.at(6);
+        name = Map[QStringLiteral("TIX")] + ' '_L1 + peer_id.at(3) + peer_id.at(4) + '.'_L1 + peer_id.at(5) + peer_id.at(6);
     }
     if (name.isEmpty()) {
         name = i18n("Unknown client");

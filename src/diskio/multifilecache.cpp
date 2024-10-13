@@ -33,6 +33,8 @@
 #include "preallocationthread.h"
 #include <torrent/torrent.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 static Uint64 FileOffset(Chunk *c, const TorrentFile &f, Uint64 chunk_size);
@@ -43,7 +45,7 @@ MultiFileCache::MultiFileCache(Torrent &tor, const QString &tmpdir, const QStrin
     : Cache(tor, tmpdir, datadir)
     , opened(false)
 {
-    cache_dir = tmpdir + "cache" + bt::DirSeparator();
+    cache_dir = tmpdir + "cache"_L1 + bt::DirSeparator();
 
     if (!custom_output_name)
         output_dir = this->datadir + tor.getNameSuggestion() + bt::DirSeparator();
@@ -58,7 +60,7 @@ MultiFileCache::~MultiFileCache()
 
 void MultiFileCache::loadFileMap()
 {
-    QString file_map = tmpdir + "file_map";
+    QString file_map = tmpdir + "file_map"_L1;
     if (!bt::Exists(file_map)) {
         // file map doesn't exist, so just set the path on disk if it has not happened yet
         Uint32 num = tor.getNumFiles();
@@ -69,7 +71,7 @@ void MultiFileCache::loadFileMap()
         }
         saveFileMap();
     } else {
-        QFile fptr(tmpdir + "file_map");
+        QFile fptr(tmpdir + "file_map"_L1);
         if (!fptr.open(QIODevice::ReadOnly))
             throw Error(i18n("Failed to open %1: %2", file_map, fptr.errorString()));
 
@@ -93,7 +95,7 @@ void MultiFileCache::loadFileMap()
 
 void MultiFileCache::saveFileMap()
 {
-    QString file_map = tmpdir + "file_map";
+    QString file_map = tmpdir + "file_map"_L1;
     QFile fptr(file_map);
     if (!fptr.open(QIODevice::WriteOnly))
         throw Error(i18n("Failed to create %1: %2", file_map, fptr.errorString()));
@@ -132,7 +134,7 @@ void MultiFileCache::open()
     if (opened)
         return;
 
-    QString dnd_dir = tmpdir + "dnd" + bt::DirSeparator();
+    QString dnd_dir = tmpdir + "dnd"_L1 + bt::DirSeparator();
     // open all files
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
         TorrentFile &tf = tor.getFile(i);
@@ -149,10 +151,10 @@ void MultiFileCache::open()
 
             QString dnd_path = QString("file%1.dnd").arg(tf.getIndex());
             QString dnd_file = dnd_dir + dnd_path;
-            if (bt::Exists(dnd_dir + tf.getUserModifiedPath() + ".dnd")) {
+            if (bt::Exists(dnd_dir + tf.getUserModifiedPath() + ".dnd"_L1)) {
                 // old style dnd dir, move the file so that we can keep working
                 // with the old file
-                bt::Move(dnd_dir + tf.getUserModifiedPath() + ".dnd", dnd_file, true, true);
+                bt::Move(dnd_dir + tf.getUserModifiedPath() + ".dnd"_L1, dnd_file, true, true);
             }
             DNDFile::Ptr dfd(new DNDFile(dnd_file, &tf, tor.getChunkSize()));
             dfd->checkIntegrity();
@@ -166,7 +168,7 @@ void MultiFileCache::open()
 void MultiFileCache::changeTmpDir(const QString &ndir)
 {
     Cache::changeTmpDir(ndir);
-    QString dnd_dir = tmpdir + "dnd" + bt::DirSeparator();
+    QString dnd_dir = tmpdir + "dnd"_L1 + bt::DirSeparator();
 
     // change paths for individual files, it should not
     // be a problem to move these files when they are open
@@ -297,8 +299,8 @@ void MultiFileCache::create()
 {
     if (!bt::Exists(output_dir))
         MakeDir(output_dir);
-    if (!bt::Exists(tmpdir + "dnd"))
-        bt::MakeDir(tmpdir + "dnd");
+    if (!bt::Exists(tmpdir + "dnd"_L1))
+        bt::MakeDir(tmpdir + "dnd"_L1);
 
     QSet<QString> mount_points;
     QSet<QString> shortened_names;
@@ -572,16 +574,16 @@ void MultiFileCache::savePiece(PieceData::Ptr piece)
 void MultiFileCache::downloadStatusChanged(TorrentFile *tf, bool download)
 {
     bool dnd = !download;
-    QString dnd_dir = tmpdir + "dnd" + bt::DirSeparator();
+    QString dnd_dir = tmpdir + "dnd"_L1 + bt::DirSeparator();
     QString dnd_path = QString("file%1.dnd").arg(tf->getIndex());
     QString dnd_file = dnd_dir + dnd_path;
     // if it is dnd and it is already in the dnd tree do nothing
     if (dnd && bt::Exists(dnd_dir + dnd_path))
         return;
-    else if (dnd && bt::Exists(dnd_dir + tf->getUserModifiedPath() + ".dnd")) {
+    else if (dnd && bt::Exists(dnd_dir + tf->getUserModifiedPath() + ".dnd"_L1)) {
         // old style dnd dir, move the file so that we can keep working
         // with the old file
-        bt::Move(dnd_dir + tf->getUserModifiedPath() + ".dnd", dnd_file, true, true);
+        bt::Move(dnd_dir + tf->getUserModifiedPath() + ".dnd"_L1, dnd_file, true, true);
         return;
     }
 

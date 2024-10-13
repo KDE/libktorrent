@@ -28,13 +28,15 @@
 #include "preallocationthread.h"
 #include <torrent/torrent.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 SingleFileCache::SingleFileCache(Torrent &tor, const QString &tmpdir, const QString &datadir)
     : Cache(tor, tmpdir, datadir)
     , fd(nullptr)
 {
-    cache_file = tmpdir + "cache";
+    cache_file = tmpdir + "cache"_L1;
     QFileInfo fi(cache_file);
     if (fi.isSymLink()) // old style symlink
         output_file = fi.symLinkTarget();
@@ -49,7 +51,7 @@ SingleFileCache::~SingleFileCache()
 
 void SingleFileCache::loadFileMap()
 {
-    QString file_map = tmpdir + "file_map";
+    QString file_map = tmpdir + "file_map"_L1;
     if (!bt::Exists(file_map)) {
         saveFileMap();
         return;
@@ -64,7 +66,7 @@ void SingleFileCache::loadFileMap()
 
 void SingleFileCache::saveFileMap()
 {
-    QString file_map = tmpdir + "file_map";
+    QString file_map = tmpdir + "file_map"_L1;
     QFile fptr(file_map);
     if (!fptr.open(QIODevice::WriteOnly))
         throw Error(i18n("Failed to create %1: %2", file_map, fptr.errorString()));
@@ -76,7 +78,7 @@ void SingleFileCache::saveFileMap()
 void SingleFileCache::changeTmpDir(const QString &ndir)
 {
     Cache::changeTmpDir(ndir);
-    cache_file = tmpdir + "cache";
+    cache_file = tmpdir + "cache"_L1;
 }
 
 void SingleFileCache::changeOutputPath(const QString &outputpath)

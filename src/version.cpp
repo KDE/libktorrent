@@ -8,6 +8,8 @@
 #include "version.h"
 #include <QString>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 static QString g_name = QStringLiteral("KTorrent");
@@ -21,7 +23,7 @@ void SetClientInfo(const QString &name, const QString &version, const QString &p
     g_version = version;
     g_peer_id = peer_id;
     g_version_without_dots = g_version;
-    g_version_without_dots = g_version_without_dots.remove(QChar('.'));
+    g_version_without_dots = g_version_without_dots.remove('.'_L1);
 }
 
 [[deprecated]] void SetClientInfo(const QString &name, int major, int minor, int release, VersionType type, const QString &peer_id)
@@ -40,7 +42,7 @@ QString PeerIDPrefix()
 
 QString GetVersionString()
 {
-    QString str = g_name + QString("/%1").arg(g_version);
+    QString str = g_name + '/'_L1 + g_version;
     return str;
 }
 }

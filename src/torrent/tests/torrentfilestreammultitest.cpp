@@ -18,6 +18,7 @@
 #include <util/sha1hashgen.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 const bt::Uint32 TEST_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -62,7 +63,7 @@ private Q_SLOTS:
 
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         try {
-            tc.init(this, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
+            tc.init(this, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0"_L1, creator.tempPath() + "data/"_L1);
             tc.createFiles();
             QVERIFY(tc.hasExistingFiles());
             tc.startDataCheck(false, 0, tc.getStats().total_chunks);

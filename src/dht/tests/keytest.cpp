@@ -13,6 +13,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 static bt::Uint8 HexCharToUint8(char c)
 {
@@ -33,7 +34,7 @@ static dht::Key KeyFromHexString(const QString &str)
 
     QString s = str.toLower();
     if (s.size() % 2 != 0)
-        s.prepend('0');
+        s.prepend('0'_L1);
 
     int j = 19;
 

@@ -14,6 +14,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 class FileOpsTest : public QObject
 {
@@ -39,7 +40,7 @@ private Q_SLOTS:
             if (sa->isAccessible()) {
                 QVERIFY(bt::MountPoint(sa->filePath()) == sa->filePath());
 
-                QString path = sa->filePath() + "/some/random/path/test.foobar";
+                QString path = sa->filePath() + "/some/random/path/test.foobar"_L1;
                 Out(SYS_GEN | LOG_DEBUG) << "Testing " << path << endl;
                 QVERIFY(bt::MountPoint(path) == sa->filePath());
             }

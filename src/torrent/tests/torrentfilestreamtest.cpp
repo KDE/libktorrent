@@ -18,6 +18,7 @@
 #include <util/sha1hashgen.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 const bt::Uint32 TEST_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -53,7 +54,7 @@ private Q_SLOTS:
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator.torrentPath() << endl;
         Out(SYS_GEN | LOG_DEBUG) << "Created " << creator2.torrentPath() << endl;
         try {
-            tc.init(this, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0", creator.tempPath() + "data/");
+            tc.init(this, bt::LoadFile(creator.torrentPath()), creator.tempPath() + "tor0"_L1, creator.tempPath() + "data/"_L1);
             tc.createFiles();
             QVERIFY(tc.hasExistingFiles());
             tc.startDataCheck(false, 0, tc.getStats().total_chunks);
@@ -62,7 +63,7 @@ private Q_SLOTS:
             } while (tc.getStats().status == bt::CHECKING_DATA);
             QVERIFY(tc.getStats().completed);
 
-            incomplete_tc.init(this, bt::LoadFile(creator2.torrentPath()), creator2.tempPath() + "tor0", creator2.tempPath() + "data/");
+            incomplete_tc.init(this, bt::LoadFile(creator2.torrentPath()), creator2.tempPath() + "tor0"_L1, creator2.tempPath() + "data/"_L1);
             incomplete_tc.createFiles();
         } catch (bt::Error &err) {
             Out(SYS_GEN | LOG_DEBUG) << "Failed to load torrent: " << creator.torrentPath() << endl;

@@ -36,7 +36,7 @@
 #include <util/log.h>
 #include <util/ptrmap.h>
 
-using namespace KNetwork;
+using namespace Qt::Literals::StringLiterals;
 
 namespace bt
 {
@@ -271,7 +271,7 @@ void PeerManager::loadPeerList(const QString &file)
         Out(SYS_GEN | LOG_DEBUG) << "Loading list of peers from " << file << endl;
 
         while (!fptr.atEnd()) {
-            QStringList sl = QString(fptr.readLine()).split(" ");
+            QStringList sl = QString(fptr.readLine()).split(' '_L1);
             if (sl.count() != 2)
                 continue;
 

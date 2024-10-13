@@ -24,6 +24,8 @@
 
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 static bool UrlCompare(const QUrl &a, const QUrl &b)
@@ -313,11 +315,11 @@ UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteAr
     for (int i = 1; i < lines.count(); i++) {
         line = lines[i];
         if (line.startsWith(QLatin1String("location"), Qt::CaseInsensitive)) {
-            location = QUrl(line.mid(line.indexOf(':') + 1).trimmed().toString()); // TODO fromLocalFile()?
+            location = QUrl(line.mid(line.indexOf(':'_L1) + 1).trimmed().toString()); // TODO fromLocalFile()?
             if (!location.isValid())
                 return nullptr;
         } else if (line.startsWith(QLatin1String("server"), Qt::CaseInsensitive)) {
-            server = line.mid(line.indexOf(':') + 1).trimmed().toString();
+            server = line.mid(line.indexOf(':'_L1) + 1).trimmed().toString();
             if (server.length() == 0)
                 return nullptr;
         }

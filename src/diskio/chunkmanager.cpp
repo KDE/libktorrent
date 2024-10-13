@@ -24,6 +24,8 @@
 #include <util/log.h>
 #include <util/timer.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 Uint32 ChunkManager::preview_size_audio = 256 * 1024; // 256 KB for audio files
@@ -91,9 +93,9 @@ QString ChunkManager::getDataDir() const
 void ChunkManager::changeDataDir(const QString &data_dir)
 {
     d->cache->changeTmpDir(data_dir);
-    d->index_file = data_dir + "index";
-    d->file_info_file = data_dir + "file_info";
-    d->file_priority_file = data_dir + "file_priority";
+    d->index_file = data_dir + "index"_L1;
+    d->file_info_file = data_dir + "file_info"_L1;
+    d->file_priority_file = data_dir + "file_priority"_L1;
 }
 
 void ChunkManager::changeOutputPath(const QString &output_path)

@@ -23,6 +23,7 @@
 #include <version.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 KTCLI::KTCLI(int argc, char **argv)
     : QCoreApplication(argc, argv)
@@ -143,7 +144,7 @@ bool KTCLI::loadFromFile(const QString &path)
 bool KTCLI::loadFromDir(const QString &path)
 {
     try {
-        tc->init(this, bt::LoadFile(path + "/torrent"), path, QString());
+        tc->init(this, bt::LoadFile(path + "/torrent"_L1), path, QString());
         tc->createFiles();
         return true;
     } catch (bt::Error &err) {

@@ -23,6 +23,8 @@
 #include <interfaces/logmonitorinterface.h>
 #include <util/fileops.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 const Uint32 MAX_LOG_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
@@ -74,8 +76,8 @@ public:
 
     void rotateLogs(const QString &file)
     {
-        if (bt::Exists(file + QStringLiteral("-10.gz")))
-            bt::Delete(file + QStringLiteral("-10.gz"), true);
+        if (bt::Exists(file + "-10.gz"_L1))
+            bt::Delete(file + "-10.gz"_L1, true);
 
         // move all log files one up
         for (Uint32 i = 10; i > 1; i--) {
@@ -86,8 +88,8 @@ public:
         }
 
         // move current log to 1 and zip it
-        QFile::rename(file, file + QStringLiteral("-1"));
-        CompressFileJob *gzip = new CompressFileJob(file + QStringLiteral("-1"));
+        QFile::rename(file, file + "-1"_L1);
+        CompressFileJob *gzip = new CompressFileJob(file + "-1"_L1);
         gzip->start();
     }
 
@@ -121,7 +123,7 @@ public:
 
     void finishLine()
     {
-        QString final = QDateTime::currentDateTime().toString() + QStringLiteral(": ") + tmp;
+        QString final = QDateTime::currentDateTime().toString() + ": "_L1 + tmp;
 
         // only add stuff when we are not rotating the logs
         // this could result in the loss of some messages

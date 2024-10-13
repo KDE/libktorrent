@@ -22,25 +22,27 @@
 
 #include <KLocalizedString>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 static QString SanityzeName(const QString &name)
 {
     QString ret = name;
 #ifdef Q_OS_WIN
-    char invalid[] = {'<', '>', ':', '"', '/', '\\', '|', '?', '*'};
+    const QLatin1Char invalid[] = {'<'_L1, '>'_L1, ':'_L1, '"'_L1, '/'_L1, '\\'_L1, '|'_L1, '?'_L1, '*'_L1};
     for (int i = 0; i < 9; i++) {
         if (ret.contains(invalid[i]))
-            ret = ret.replace(invalid[i], '_');
+            ret = ret.replace(invalid[i], '_'_L1);
     }
 #else
-    if (ret.endsWith('/'))
+    if (ret.endsWith('/'_L1))
         ret.chop(1);
-    if (ret.startsWith('/'))
+    if (ret.startsWith('/'_L1))
         ret = ret.mid(1);
 #endif
     // Don't allow directory traversal things in names
-    if (ret.contains('/') || ret.contains(QLatin1String(".."))) {
+    if (ret.contains('/'_L1) || ret.contains(".."_L1)) {
         QStringList sl = ret.split(bt::DirSeparator());
         sl.removeAll(QLatin1String(".."));
         ret = sl.join(QStringLiteral("_"));
@@ -192,8 +194,8 @@ void Torrent::loadFiles(BListNode *node)
             QByteArray v = ln->getByteArray(j);
             unencoded_path.append(v);
             QString sd = QString::fromUtf8(v);
-            if (sd.contains(QLatin1String("\n")))
-                sd = sd.remove(QLatin1String("\n"));
+            if (sd.contains('\n'_L1))
+                sd = sd.remove('\n'_L1);
             path += sd;
             if (j + 1 < ln->getNumChildren())
                 path += bt::DirSeparator();

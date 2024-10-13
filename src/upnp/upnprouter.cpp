@@ -29,6 +29,7 @@
 #include <version.h>
 
 using namespace net;
+using namespace Qt::Literals::StringLiterals;
 
 namespace bt
 {
@@ -80,15 +81,15 @@ UPnPService::UPnPService(const UPnPService &s)
 
 void UPnPService::setProperty(const QString &name, const QString &value)
 {
-    if (name == "serviceType")
+    if (name == "serviceType"_L1)
         servicetype = value;
-    else if (name == "controlURL")
+    else if (name == "controlURL"_L1)
         controlurl = value;
-    else if (name == "eventSubURL")
+    else if (name == "eventSubURL"_L1)
         eventsuburl = value;
-    else if (name == "SCPDURL")
+    else if (name == "SCPDURL"_L1)
         scpdurl = value;
-    else if (name == "serviceId")
+    else if (name == "serviceId"_L1)
         serviceid = value;
 }
 
@@ -111,15 +112,15 @@ UPnPService &UPnPService::operator=(const UPnPService &s)
 
 void UPnPDeviceDescription::setProperty(const QString &name, const QString &value)
 {
-    if (name == "friendlyName")
+    if (name == "friendlyName"_L1)
         friendlyName = value;
-    else if (name == "manufacturer")
+    else if (name == "manufacturer"_L1)
         manufacturer = value;
-    else if (name == "modelDescription")
+    else if (name == "modelDescription"_L1)
         modelDescription = value;
-    else if (name == "modelName")
+    else if (name == "modelName"_L1)
         modelName = value;
-    else if (name == "modelNumber")
+    else if (name == "modelNumber"_L1)
         modelNumber = value;
 }
 
@@ -141,11 +142,11 @@ void UPnPRouter::addService(UPnPService s)
         if (s.servicetype == os.servicetype)
             return;
     }
-    if (s.controlurl.startsWith("/")) {
-        s.controlurl = "http://" + d->location.host() + ":" + QString::number(d->location.port()) + s.controlurl;
+    if (s.controlurl.startsWith('/'_L1)) {
+        s.controlurl = "http://"_L1 + d->location.host() + ':'_L1 + QString::number(d->location.port()) + s.controlurl;
     }
-    if (s.eventsuburl.startsWith("/")) {
-        s.controlurl = "http://" + d->location.host() + ":" + QString::number(d->location.port()) + s.eventsuburl;
+    if (s.eventsuburl.startsWith('/'_L1)) {
+        s.controlurl = "http://"_L1 + d->location.host() + ':'_L1 + QString::number(d->location.port()) + s.eventsuburl;
     }
     d->services.append(s);
 }
@@ -190,7 +191,7 @@ void UPnPRouter::forward(const net::Port &port)
     Out(SYS_PNP | LOG_NOTICE) << "Forwarding port " << port.number << " (" << (port.proto == UDP ? "UDP" : "TCP") << ")" << endl;
     // first find the right service
     for (const UPnPService &s : std::as_const(d->services)) {
-        if (s.servicetype.contains("WANIPConnection") || s.servicetype.contains("WANPPPConnection")) {
+        if (s.servicetype.contains("WANIPConnection"_L1) || s.servicetype.contains("WANPPPConnection"_L1)) {
             d->forward(&s, port);
             found = true;
         }
@@ -437,7 +438,7 @@ void UPnPRouter::UPnPRouterPrivate::forward(const UPnPService *srv, const net::P
             ++itr;
     }
 
-    fw.pending_req = sendSoapQuery(comm, srv->servicetype + "#" + action, srv->controlurl);
+    fw.pending_req = sendSoapQuery(comm, srv->servicetype + '#'_L1 + action, srv->controlurl);
     connect(fw.pending_req, &HTTPRequest::result, parent, &UPnPRouter::forwardResult);
     fwds.append(fw);
 }
@@ -462,7 +463,7 @@ void UPnPRouter::UPnPRouterPrivate::undoForward(const UPnPService *srv, const ne
 
     QString action = "DeletePortMapping";
     QString comm = SOAP::createCommand(action, srv->servicetype, args);
-    HTTPRequest *r = sendSoapQuery(comm, srv->servicetype + "#" + action, srv->controlurl, waitjob != nullptr);
+    HTTPRequest *r = sendSoapQuery(comm, srv->servicetype + '#'_L1 + action, srv->controlurl, waitjob != nullptr);
 
     if (waitjob)
         waitjob->addExitOperation(r);
@@ -473,10 +474,10 @@ void UPnPRouter::UPnPRouterPrivate::undoForward(const UPnPService *srv, const ne
 void UPnPRouter::UPnPRouterPrivate::getExternalIP()
 {
     for (const UPnPService &s : std::as_const(services)) {
-        if (s.servicetype.contains("WANIPConnection") || s.servicetype.contains("WANPPPConnection")) {
+        if (s.servicetype.contains("WANIPConnection"_L1) || s.servicetype.contains("WANPPPConnection"_L1)) {
             QString action = "GetExternalIPAddress";
             QString comm = SOAP::createCommand(action, s.servicetype);
-            HTTPRequest *r = sendSoapQuery(comm, s.servicetype + "#" + action, s.controlurl);
+            HTTPRequest *r = sendSoapQuery(comm, s.servicetype + '#'_L1 + action, s.controlurl);
             connect(r, &HTTPRequest::result, parent, &UPnPRouter::getExternalIPResult);
             break;
         }

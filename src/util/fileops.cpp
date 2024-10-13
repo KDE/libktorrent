@@ -84,6 +84,8 @@ typedef int64_t __s64;
 #undef CopyFile
 #endif
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 void MakeDir(const QString &dir, bool nothrow)
@@ -456,7 +458,7 @@ static QString ShortenName(const QString &name, int extra_number)
         base.chop(1);
     } while (fixed_len + QFile::encodeName(base).length() > NAME_MAX - 4 && base.length() != 0);
 
-    base += QStringLiteral("... "); // add ... so that the user knows the name is shortened
+    base += "... "_L1; // add ... so that the user knows the name is shortened
 
     QString ret = base;
     if (extra_number > 0)
@@ -476,7 +478,7 @@ static QString ShortenPath(const QString &path, int extra_number)
     QFileInfo fi(path);
     QString ext = fi.suffix();
     QString name = fi.completeBaseName();
-    QString fpath = fi.path() + '/';
+    QString fpath = fi.path() + '/'_L1;
 
     // calculate the fixed length, 1 is for the . between filename and extension
     int fixed_len = QFile::encodeName(fpath).length();

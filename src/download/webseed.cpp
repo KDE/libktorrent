@@ -179,7 +179,7 @@ void WebSeed::download(Uint32 first, Uint32 last)
 
     QString path = url.path();
     QString query = url.query();
-    if (path.endsWith('/'))
+    if (path.endsWith('/'_L1))
         path += tor.getNameSuggestion();
 
     if (tor.isMultiFile()) {
@@ -195,7 +195,7 @@ void WebSeed::download(Uint32 first, Uint32 last)
             range_queue.pop_front();
             const TorrentFile &tf = tor.getFile(r.file);
             QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
-            conn->get(host, path + '/' + tf.getPath(), query, r.off, r.len);
+            conn->get(host, path + '/'_L1 + tf.getPath(), query, r.off, r.len);
         }
     } else {
         Uint64 len = (last_chunk - first_chunk) * tor.getChunkSize();
@@ -214,7 +214,7 @@ void WebSeed::continueCurChunk()
 {
     QString path = url.path();
     QString query = url.query();
-    if (path.endsWith('/') && !isUserCreated())
+    if (path.endsWith('/'_L1) && !isUserCreated())
         path += tor.getNameSuggestion();
 
     first_chunk = cur_chunk;
@@ -233,7 +233,7 @@ void WebSeed::continueCurChunk()
             if (length >= bytes_of_cur_chunk) {
                 const TorrentFile &tf = tor.getFile(r.file);
                 QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
-                conn->get(host, path + '/' + tf.getPath(), query, r.off, r.len);
+                conn->get(host, path + '/'_L1 + tf.getPath(), query, r.off, r.len);
                 break;
             }
             length += r.len;
@@ -337,7 +337,7 @@ Uint32 WebSeed::update()
 
                 QString path = url.path();
                 QString query = url.query();
-                if (path.endsWith('/'))
+                if (path.endsWith('/'_L1))
                     path += tor.getNameSuggestion();
 
                 // ask for the next range
@@ -345,7 +345,7 @@ Uint32 WebSeed::update()
                 range_queue.pop_front();
                 const TorrentFile &tf = tor.getFile(r.file);
                 QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
-                conn->get(host, path + '/' + tf.getPath(), query, r.off, r.len);
+                conn->get(host, path + '/'_L1 + tf.getPath(), query, r.off, r.len);
             }
             status = conn->getStatusString();
         }

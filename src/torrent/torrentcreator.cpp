@@ -22,6 +22,8 @@
 #include <util/sha1hash.h>
 #include <version.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 TorrentCreator::TorrentCreator(const QString &tar,
@@ -150,8 +152,8 @@ void TorrentCreator::saveTorrent(const QString &url)
 
         for (const QString &t : std::as_const(trackers)) {
             enc.beginList();
-            enc.write(t.section(',', 0, 0).toUtf8());
-            enc.write((Uint32)t.section(',', 1, 1).toInt());
+            enc.write(t.section(','_L1, 0, 0).toUtf8());
+            enc.write((Uint32)t.section(','_L1, 1, 1).toInt());
             enc.end();
         }
         enc.end();
@@ -362,7 +364,7 @@ TorrentControl *TorrentCreator::makeTC(const QString &data_dir)
         st.write("IMPORTED", QString::number(tot_size));
         st.sync();
 
-        tc->init(nullptr, bt::LoadFile(dd + "torrent"), dd, odir);
+        tc->init(nullptr, bt::LoadFile(dd + "torrent"_L1), dd, odir);
         tc->createFiles();
     } catch (...) {
         bt::Delete(dd, true);

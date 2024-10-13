@@ -19,6 +19,8 @@
 #include <util/functions.h>
 #include <util/log.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 MultiDataChecker::MultiDataChecker(bt::Uint32 from, bt::Uint32 to)
@@ -137,7 +139,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
             QString dnd_path = QString("file%1.dnd").arg(f.getIndex());
             QString dnd_file = dnd_dir + dnd_path;
             if (!bt::Exists(dnd_file)) // could be an old style dnd dir
-                dnd_file = dnd_dir + f.getUserModifiedPath() + ".dnd";
+                dnd_file = dnd_dir + f.getUserModifiedPath() + ".dnd"_L1;
 
             if (bt::Exists(dnd_file)) {
                 Uint32 ret = 0;

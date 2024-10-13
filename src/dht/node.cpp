@@ -21,6 +21,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
@@ -135,20 +136,20 @@ void Node::refreshBuckets(DHT *dh_table)
 
 void Node::saveTable(const QString &file)
 {
-    d->ipv4_table->saveTable(file + ".ipv4");
-    d->ipv6_table->saveTable(file + ".ipv6");
+    d->ipv4_table->saveTable(file + ".ipv4"_L1);
+    d->ipv6_table->saveTable(file + ".ipv6"_L1);
 }
 
 void Node::loadTable(const QString &file)
 {
     if (d->new_key) {
         d->new_key = false;
-        bt::Delete(file + ".ipv4", true);
-        bt::Delete(file + ".ipv6", true);
+        bt::Delete(file + ".ipv4"_L1, true);
+        bt::Delete(file + ".ipv6"_L1, true);
         Out(SYS_DHT | LOG_IMPORTANT) << "DHT: new key, so removing tables" << endl;
     } else {
-        d->ipv4_table->loadTable(file + ".ipv4", d->srv);
-        d->ipv6_table->loadTable(file + ".ipv6", d->srv);
+        d->ipv4_table->loadTable(file + ".ipv4"_L1, d->srv);
+        d->ipv6_table->loadTable(file + ".ipv6"_L1, d->srv);
         num_entries = d->ipv4_table->numEntries() + d->ipv6_table->numEntries();
     }
 }

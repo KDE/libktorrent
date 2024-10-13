@@ -15,6 +15,8 @@
 #include <torrent/torrentcontrol.h>
 #include <util/functions.h>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 static ResourceManager data_checker_slot(1);
@@ -57,7 +59,7 @@ void DataCheckerJob::start()
                                           tor->downloadedChunksBitSet(),
                                           stats.output_path,
                                           tor->getTorrent(),
-                                          tor->getTorDir() + "dnd" + bt::DirSeparator());
+                                          tor->getTorDir() + "dnd"_L1 + bt::DirSeparator());
 
     connect(dcheck_thread, &DataCheckerThread::finished, this, &DataCheckerJob::threadFinished, Qt::QueuedConnection);
 

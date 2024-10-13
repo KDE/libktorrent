@@ -16,6 +16,7 @@
 #include <util/log.h>
 
 using namespace bt;
+using namespace Qt::Literals::StringLiterals;
 
 QString test_data =
     "ASSURED_DOWNLOAD_SPEED=0\n\
@@ -54,9 +55,9 @@ private Q_SLOTS:
         QTextStream out(&file);
         out << test_data;
 
-        const QStringList lines = test_data.split("\n");
+        const QStringList lines = test_data.split('\n'_L1);
         for (const QString &line : lines) {
-            QStringList sl = line.split("=");
+            QStringList sl = line.split('='_L1);
             if (sl.count() == 2) {
                 keys.append(sl[0]);
                 values.append(sl[1]);

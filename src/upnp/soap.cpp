@@ -6,6 +6,8 @@
 
 #include "soap.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace bt
 {
 QString SOAP::createCommand(const QString &action, const QString &service)
@@ -33,7 +35,7 @@ QString SOAP::createCommand(const QString &action, const QString &service, const
                        .arg(action, service);
 
     for (const Arg &a : args)
-        comm += "<" + a.element + ">" + a.value + "</" + a.element + ">";
+        comm += '<'_L1 + a.element + '>'_L1 + a.value + "</"_L1 + a.element + '>'_L1;
 
     comm += QString("</m:%1></SOAP-ENV:Body></SOAP-ENV:Envelope>").arg(action);
     return comm;
