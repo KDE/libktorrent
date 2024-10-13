@@ -150,7 +150,7 @@ void UPnPMCastSocket::onReadyRead()
 
     if (d->verbose) {
         Out(SYS_PNP | LOG_NOTICE) << "Received : " << endl;
-        Out(SYS_PNP | LOG_NOTICE) << QString(data) << endl;
+        Out(SYS_PNP | LOG_NOTICE) << QString::fromUtf8(data) << endl;
     }
 
     // try to make a router of it

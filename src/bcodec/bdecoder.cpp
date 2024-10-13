@@ -154,7 +154,7 @@ BValueNode *BDecoder::parseInt()
     QString n;
     // look for e and add everything between i and e to n
     while (pos < (Uint32)data.size() && data[pos] != 'e') {
-        n += data[pos];
+        n += QLatin1Char(data[pos]);
         pos++;
     }
 

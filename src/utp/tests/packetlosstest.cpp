@@ -17,12 +17,12 @@
 
 #include <ctime>
 
-#define PACKETS_TO_SEND 20
-#define TEST_DATA "This is the packet loss test\n"
-
 using namespace utp;
 using namespace bt;
 using namespace Qt::Literals::StringLiterals;
+
+#define PACKETS_TO_SEND 20
+const QLatin1StringView TEST_DATA = "This is the packet loss test\n"_L1;
 
 /**
     Server which simulates packet loss
@@ -78,10 +78,9 @@ public:
 
     void run() override
     {
-        char test[] = TEST_DATA;
         int sent = 0;
         while (sent < PACKETS_TO_SEND && outgoing->connectionState() != CS_CLOSED) {
-            int ret = outgoing->send((const bt::Uint8 *)test, strlen(test));
+            int ret = outgoing->send((const bt::Uint8 *)TEST_DATA.constData(), TEST_DATA.size());
             if (ret > 0) {
                 sent++;
             }
@@ -171,7 +170,7 @@ private:
                 QByteArray data(ba, 0);
                 int ret = incoming->recv((bt::Uint8 *)data.data(), ba);
                 if (ret > 0) {
-                    received_data.append(data);
+                    received_data.append(QLatin1StringView(data));
                     received += ret;
                 }
             } else if (incoming->connectionState() == CS_CLOSED) {

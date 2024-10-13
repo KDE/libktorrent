@@ -19,13 +19,13 @@ QString URLEncoder::encode(const char *buf, Uint32 size)
         Uint8 ch = buf[i];
         if (('A' <= ch && ch <= 'Z') || ('a' <= ch && ch <= 'z') || ('0' <= ch && ch <= '9')) {
             // 'A'..'Z'
-            res.append((char)ch);
+            res.append(QLatin1Char(ch));
         } else if (ch == ' ') {
             // space
             res.append(QStringLiteral("%20"));
         } else if (ch == '-' || ch == '_' // unreserved
                    || ch == '.' || ch == '!' || ch == '~' || ch == '*' || ch == '\'' || ch == '(' || ch == ')') {
-            res.append((char)ch);
+            res.append(QLatin1Char(ch));
         } else {
             // other ASCII as hexadecimal
             res.append('%'_L1);

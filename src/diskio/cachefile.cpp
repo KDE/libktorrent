@@ -78,7 +78,7 @@ void CacheFile::openFile(Mode mode)
     if (!ok) {
         delete fptr;
         fptr = nullptr;
-        throw Error(i18n("Cannot open %1: %2", path, strerror(errno)));
+        throw Error(i18n("Cannot open %1: %2", path, QString::fromUtf8(strerror(errno))));
     }
 
     file_size = fptr->size();
@@ -153,7 +153,7 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
         char *ptr = (char *)mmap(0, size + diff, mmap_flag, MAP_SHARED, fd, noff);
 #endif
         if (ptr == MAP_FAILED) {
-            Out(SYS_DIO | LOG_DEBUG) << "mmap failed : " << QString(strerror(errno)) << endl;
+            Out(SYS_DIO | LOG_DEBUG) << "mmap failed : " << QString::fromUtf8(strerror(errno)) << endl;
             return nullptr;
         } else {
             CacheFile::Entry e;
@@ -173,7 +173,7 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
         void *ptr = mmap(0, size, mmap_flag, MAP_SHARED, fd, off);
 #endif
         if (ptr == MAP_FAILED) {
-            Out(SYS_DIO | LOG_DEBUG) << "mmap failed : " << QString(strerror(errno)) << endl;
+            Out(SYS_DIO | LOG_DEBUG) << "mmap failed : " << QString::fromUtf8(strerror(errno)) << endl;
             return nullptr;
         } else {
             CacheFile::Entry e;
@@ -191,7 +191,7 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
     char *ptr = (char *)fptr->map(off, size);
 
     if (!ptr) {
-        Out(SYS_DIO | LOG_DEBUG) << "mmap failed3 : " << fptr->handle() << " " << QString(strerror(errno)) << endl;
+        Out(SYS_DIO | LOG_DEBUG) << "mmap failed3 : " << fptr->handle() << " " << QString::fromUtf8(strerror(errno)) << endl;
         Out(SYS_DIO | LOG_DEBUG) << off << " " << size << endl;
         return 0;
     } else {
@@ -259,7 +259,7 @@ void CacheFile::unmap(void *ptr)
         ret = munmap(e.ptr, e.size);
 #endif
         if (ret < 0)
-            Out(SYS_DIO | LOG_IMPORTANT) << u"Munmap failed with error %1 : %2"_s.arg(errno).arg(strerror(errno)) << endl;
+            Out(SYS_DIO | LOG_IMPORTANT) << u"Munmap failed with error %1 : %2"_s.arg(errno).arg(QString::fromUtf8(strerror(errno))) << endl;
 
         mappings.remove(ptr);
         // no mappings, close temporary
@@ -305,7 +305,7 @@ void CacheFile::unmapAll()
         ++i;
         mappings.remove(e.ptr);
         if (ret < 0) {
-            Out(SYS_DIO | LOG_IMPORTANT) << u"Munmap failed with error %1 : %2"_s.arg(errno).arg(strerror(errno)) << endl;
+            Out(SYS_DIO | LOG_IMPORTANT) << u"Munmap failed with error %1 : %2"_s.arg(errno).arg(QString::fromUtf8(strerror(errno))) << endl;
         }
     }
 }
@@ -445,7 +445,7 @@ void CacheFile::preallocate(PreallocationThread *prealloc)
             bt::TruncateFile(fd, max_size, !Cache::preallocateFully());
         }
     } catch (bt::Error &e) {
-        throw Error(i18n("Cannot preallocate diskspace: %1", strerror(errno)));
+        throw Error(i18n("Cannot preallocate diskspace: %1", QString::fromUtf8(strerror(errno))));
     }
 
     file_size = FileSize(fd);

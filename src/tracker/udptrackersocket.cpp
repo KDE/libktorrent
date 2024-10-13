@@ -210,7 +210,7 @@ void UDPTrackerSocket::handleError(bt::Buffer::Ptr buf)
     d->transactions.erase(it);
     QString msg;
     for (Uint32 i = 8; i < buf->size(); i++)
-        msg += (char)buf->get()[i];
+        msg += QLatin1Char(buf->get()[i]);
 
     // emit signal
     Q_EMIT error(tid, msg);

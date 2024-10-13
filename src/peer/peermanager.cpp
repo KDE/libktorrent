@@ -271,7 +271,7 @@ void PeerManager::loadPeerList(const QString &file)
         Out(SYS_GEN | LOG_DEBUG) << "Loading list of peers from " << file << endl;
 
         while (!fptr.atEnd()) {
-            QStringList sl = QString(fptr.readLine()).split(' '_L1);
+            QStringList sl = QString::fromUtf8(fptr.readLine()).split(' '_L1);
             if (sl.count() != 2)
                 continue;
 
