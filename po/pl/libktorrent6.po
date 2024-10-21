@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-19 00:39+0000\n"
+"POT-Creation-Date: 2024-10-21 00:39+0000\n"
 "PO-Revision-Date: 2022-12-11 07:36+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -190,13 +190,13 @@ msgstr[0] "Jeden uczestnik"
 msgstr[1] "%1 uczestników"
 msgstr[2] "%1 uczestników"
 
-#: src/download/downloader.cpp:693
+#: src/download/downloader.cpp:695
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "Wyłączony, ponieważ serwer rozsiewający nie pasuje do torrenta"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
-#: src/download/webseed.cpp:85
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:42
+#: src/download/webseed.cpp:87
 #, kde-format
 msgid "Not connected"
 msgstr "Niepodłączony"
@@ -216,7 +216,7 @@ msgstr "Za mało zasobów systemowych"
 msgid "Resolving hostname %1"
 msgstr "Określanie nazwy komputera %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:315
 #, kde-format
 msgid "Connection closed"
 msgstr "Połączenie zostało zakończone"
@@ -266,7 +266,7 @@ msgstr "Błąd: czas żądania został przekroczony"
 msgid "Redirected without a new location."
 msgstr "Przekierowanie bez nowej lokalizacji."
 
-#: src/download/webseed.cpp:500
+#: src/download/webseed.cpp:502
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

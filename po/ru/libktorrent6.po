@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-19 00:39+0000\n"
+"POT-Creation-Date: 2024-10-21 00:39+0000\n"
 "PO-Revision-Date: 2013-09-28 19:01+0400\n"
 "Last-Translator: Alexander Lakhin <exclusion@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -198,13 +198,13 @@ msgstr[1] "%1 участника"
 msgstr[2] "%1 участников"
 msgstr[3] "%1 участник"
 
-#: src/download/downloader.cpp:693
+#: src/download/downloader.cpp:695
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "Отключено, так как веб-сид не соответствует торренту."
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
-#: src/download/webseed.cpp:85
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:42
+#: src/download/webseed.cpp:87
 #, kde-format
 msgid "Not connected"
 msgstr "Не подключено"
@@ -224,7 +224,7 @@ msgstr "Недостаточно системных ресурсов"
 msgid "Resolving hostname %1"
 msgstr "Определение хоста %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:315
 #, kde-format
 msgid "Connection closed"
 msgstr "Подключение закрыто."
@@ -274,7 +274,7 @@ msgstr "Ошибка: время запроса истекло"
 msgid "Redirected without a new location."
 msgstr "Перенаправление без указания нового расположения."
 
-#: src/download/webseed.cpp:500
+#: src/download/webseed.cpp:502
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

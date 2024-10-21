@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-19 00:39+0000\n"
+"POT-Creation-Date: 2024-10-21 00:39+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -183,13 +183,13 @@ msgid "1 peer"
 msgid_plural "%1 peers"
 msgstr[0] "%1 个对等点"
 
-#: src/download/downloader.cpp:693
+#: src/download/downloader.cpp:695
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "因为网络种子不匹配种子文件而禁用"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
-#: src/download/webseed.cpp:85
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:42
+#: src/download/webseed.cpp:87
 #, kde-format
 msgid "Not connected"
 msgstr "未联机"
@@ -209,7 +209,7 @@ msgstr "系统资源不足"
 msgid "Resolving hostname %1"
 msgstr "正在解析主机名 %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:315
 #, kde-format
 msgid "Connection closed"
 msgstr "连接关闭"
@@ -259,7 +259,7 @@ msgstr "错误：请求超时"
 msgid "Redirected without a new location."
 msgstr "没有新位置就重定向。"
 
-#: src/download/webseed.cpp:500
+#: src/download/webseed.cpp:502
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

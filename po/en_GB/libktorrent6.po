@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-19 00:39+0000\n"
+"POT-Creation-Date: 2024-10-21 00:39+0000\n"
 "PO-Revision-Date: 2014-07-05 01:21+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
@@ -188,13 +188,13 @@ msgid_plural "%1 peers"
 msgstr[0] "1 peer"
 msgstr[1] "%1 peers"
 
-#: src/download/downloader.cpp:693
+#: src/download/downloader.cpp:695
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "Disabled because webseed does not match torrent"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
-#: src/download/webseed.cpp:85
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:42
+#: src/download/webseed.cpp:87
 #, kde-format
 msgid "Not connected"
 msgstr "Not connected"
@@ -214,7 +214,7 @@ msgstr "Not enough system resources available"
 msgid "Resolving hostname %1"
 msgstr "Resolving hostname %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:315
 #, kde-format
 msgid "Connection closed"
 msgstr "Connection closed"
@@ -264,7 +264,7 @@ msgstr "Error: request timed out"
 msgid "Redirected without a new location."
 msgstr "Redirected without a new location."
 
-#: src/download/webseed.cpp:500
+#: src/download/webseed.cpp:502
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"

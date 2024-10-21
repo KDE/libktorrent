@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-19 00:39+0000\n"
+"POT-Creation-Date: 2024-10-21 00:39+0000\n"
 "PO-Revision-Date: 2024-04-16 08:21+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
@@ -190,13 +190,13 @@ msgid_plural "%1 peers"
 msgstr[0] "1 jafningi"
 msgstr[1] "%1 jafningjar"
 
-#: src/download/downloader.cpp:693
+#: src/download/downloader.cpp:695
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "Er óvirkt þar sem vefsáning samsvara ekki torrent-streymi"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:40
-#: src/download/webseed.cpp:85
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:42
+#: src/download/webseed.cpp:87
 #, kde-format
 msgid "Not connected"
 msgstr "Ótengd(ur)"
@@ -216,7 +216,7 @@ msgstr "Ekki eru nægileg kerfistilföng tiltæk"
 msgid "Resolving hostname %1"
 msgstr "Greini vélarheiti %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:313
+#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:315
 #, kde-format
 msgid "Connection closed"
 msgstr "Tengingu lokað"
@@ -266,7 +266,7 @@ msgstr "Villa: fyrirspurn rann út á tíma"
 msgid "Redirected without a new location."
 msgstr "Endurbeint án nýrrar staðsetningar."
 
-#: src/download/webseed.cpp:500
+#: src/download/webseed.cpp:502
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
