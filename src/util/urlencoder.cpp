@@ -14,6 +14,7 @@ static const QString hex = u"0123456789ABCDEF"_s;
 QString URLEncoder::encode(const char *buf, Uint32 size)
 {
     QString res;
+    res.reserve(size * 3); // Worst case
 
     for (Uint32 i = 0; i < size; i++) {
         Uint8 ch = buf[i];
