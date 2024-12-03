@@ -51,7 +51,7 @@ void PacketReader::update(PeerInterface &peer)
 
     IncomingPacket::Ptr pck = dequeuePacket();
     while (pck) {
-        peer.handlePacket(pck->data.data(), pck->size);
+        peer.handlePacket(QByteArrayView(pck->data.data(), pck->size));
         pck = dequeuePacket();
     }
 }

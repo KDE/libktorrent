@@ -49,6 +49,11 @@ inline Uint32 ReadUint32(const Uint8 *buf, Uint32 off)
     return (buf[off] << 24) | (buf[off + 1] << 16) | (buf[off + 2] << 8) | buf[off + 3];
 }
 
+inline Uint32 ReadUint32(QByteArrayView buf, Uint32 off)
+{
+    return (buf[off] << 24) | (buf[off + 1] << 16) | (buf[off + 2] << 8) | buf[off + 3];
+}
+
 inline void WriteUint16(Uint8 *buf, Uint32 off, Uint16 val)
 {
     buf[off + 0] = (Uint8)((val & 0xFF00) >> 8);
@@ -56,6 +61,11 @@ inline void WriteUint16(Uint8 *buf, Uint32 off, Uint16 val)
 }
 
 inline Uint16 ReadUint16(const Uint8 *buf, Uint32 off)
+{
+    return (buf[off] << 8) | buf[off + 1];
+}
+
+inline Uint16 ReadUint16(QByteArrayView buf, Uint32 off)
 {
     return (buf[off] << 8) | buf[off + 1];
 }

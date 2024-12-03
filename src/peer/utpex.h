@@ -34,7 +34,7 @@ public:
      * @param packet The packet
      * @param size The size of the packet
      */
-    void handlePacket(const Uint8 *packet, Uint32 size) override;
+    void handlePacket(QByteArrayView data) override;
 
     /// Do we need to update PEX (should happen every minute)
     bool needsUpdate() const override;

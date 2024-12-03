@@ -28,12 +28,11 @@ UTMetaData::~UTMetaData()
 {
 }
 
-void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
+void UTMetaData::handlePacket(QByteArrayView packet)
 {
-    QByteArrayView tmp((const char *)packet, size);
     BNode *node = nullptr;
     try {
-        BDecoder dec(tmp, false, 2);
+        BDecoder dec(packet, false, 2);
         node = dec.decode();
         if (!node || node->getType() != BNode::DICT) {
             delete node;
@@ -47,7 +46,7 @@ void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
             request(dict);
             break;
         case 1: { // data
-            data(dict, tmp.mid(dec.position()));
+            data(dict, packet.mid(dec.position()));
             break;
         }
         case 2: // reject

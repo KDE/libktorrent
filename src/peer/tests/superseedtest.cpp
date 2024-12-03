@@ -70,10 +70,9 @@ public:
         allow_called = true;
     }
 
-    void handlePacket(const bt::Uint8 *packet, Uint32 size) override
+    void handlePacket(QByteArrayView packet) override
     {
         Q_UNUSED(packet);
-        Q_UNUSED(size);
     }
 
     Uint32 allowed_chunk;

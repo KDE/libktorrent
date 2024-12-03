@@ -173,9 +173,9 @@ void Peer::handleNotInterested(Uint32 len)
     }
 }
 
-void Peer::handleHave(const bt::Uint8 *packet, Uint32 len)
+void Peer::handleHave(QByteArrayView packet)
 {
-    if (len != 5) {
+    if (packet.size() != 5) {
         kill();
     } else {
         Uint32 ch = ReadUint32(packet, 1);
@@ -209,20 +209,20 @@ void Peer::handleHaveNone(Uint32 len)
     }
 }
 
-void Peer::handleBitField(const bt::Uint8 *packet, Uint32 len)
+void Peer::handleBitField(QByteArrayView packet)
 {
-    if (len != 1 + pieces.getNumBytes()) {
+    if (packet.size() != 1 + pieces.getNumBytes()) {
         if (pman->getTorrent().isLoaded())
             kill();
     } else {
-        pieces = BitSet(packet + 1, pieces.getNumBits());
+        pieces = BitSet((const bt::Uint8 *)packet.constData() + 1, pieces.getNumBits());
         pman->bitSetReceived(this, pieces);
     }
 }
 
-void Peer::handleRequest(const bt::Uint8 *packet, Uint32 len)
+void Peer::handleRequest(QByteArrayView packet)
 {
-    if (len != 13) {
+    if (packet.length() != 13) {
         kill();
         return;
     }
@@ -235,29 +235,29 @@ void Peer::handleRequest(const bt::Uint8 *packet, Uint32 len)
         sendReject(r);
 }
 
-void Peer::handlePiece(const bt::Uint8 *packet, Uint32 len)
+void Peer::handlePiece(QByteArrayView packet)
 {
     if (paused)
         return;
 
-    if (len < 9) {
+    if (packet.size() < 9) {
         kill();
         return;
     }
 
     snub_timer.update();
 
-    stats.bytes_downloaded += (len - 9);
-    bytes_downloaded_since_unchoke += (len - 9);
-    Piece p(ReadUint32(packet, 1), ReadUint32(packet, 5), len - 9, downloader, packet + 9);
+    stats.bytes_downloaded += (packet.size() - 9);
+    bytes_downloaded_since_unchoke += (packet.size() - 9);
+    Piece p(ReadUint32(packet, 1), ReadUint32(packet, 5), packet.size() - 9, downloader, (const bt::Uint8 *)packet.constData() + 9);
     downloader->piece(p);
     pman->pieceReceived(p);
     downloader->update();
 }
 
-void Peer::handleCancel(const bt::Uint8 *packet, Uint32 len)
+void Peer::handleCancel(QByteArrayView packet)
 {
-    if (len != 13) {
+    if (packet.length() != 13) {
         kill();
     } else {
         Request r(ReadUint32(packet, 1), ReadUint32(packet, 5), ReadUint32(packet, 9), downloader);
@@ -266,9 +266,9 @@ void Peer::handleCancel(const bt::Uint8 *packet, Uint32 len)
     }
 }
 
-void Peer::handleReject(const bt::Uint8 *packet, Uint32 len)
+void Peer::handleReject(QByteArrayView packet)
 {
-    if (len != 13) {
+    if (packet.size() != 13) {
         kill();
     } else {
         Request r(ReadUint32(packet, 1), ReadUint32(packet, 5), ReadUint32(packet, 9), downloader);
@@ -276,9 +276,9 @@ void Peer::handleReject(const bt::Uint8 *packet, Uint32 len)
     }
 }
 
-void Peer::handlePort(const bt::Uint8 *packet, Uint32 len)
+void Peer::handlePort(QByteArrayView packet)
 {
-    if (len != 3) {
+    if (packet.size() != 3) {
         kill();
     } else {
         Uint16 port = ReadUint16(packet, 1);
@@ -287,50 +287,50 @@ void Peer::handlePort(const bt::Uint8 *packet, Uint32 len)
     }
 }
 
-void Peer::handlePacket(const bt::Uint8 *packet, Uint32 size)
+void Peer::handlePacket(QByteArrayView packet)
 {
-    if (killed || size == 0)
+    if (killed || packet.size() == 0)
         return;
 
     switch (packet[0]) {
     case CHOKE:
-        handleChoke(size);
+        handleChoke(packet.size());
         break;
     case UNCHOKE:
-        handleUnchoke(size);
+        handleUnchoke(packet.size());
         break;
     case INTERESTED:
-        handleInterested(size);
+        handleInterested(packet.size());
         break;
     case NOT_INTERESTED:
-        handleNotInterested(size);
+        handleNotInterested(packet.size());
         break;
     case HAVE:
-        handleHave(packet, size);
+        handleHave(packet);
         break;
     case BITFIELD:
-        handleBitField(packet, size);
+        handleBitField(packet);
         break;
     case REQUEST:
-        handleRequest(packet, size);
+        handleRequest(packet);
         break;
     case PIECE:
-        handlePiece(packet, size);
+        handlePiece(packet);
         break;
     case CANCEL:
-        handleCancel(packet, size);
+        handleCancel(packet);
         break;
     case REJECT_REQUEST:
-        handleReject(packet, size);
+        handleReject(packet);
         break;
     case PORT:
-        handlePort(packet, size);
+        handlePort(packet);
         break;
     case HAVE_ALL:
-        handleHaveAll(size);
+        handleHaveAll(packet.size());
         break;
     case HAVE_NONE:
-        handleHaveNone(size);
+        handleHaveNone(packet.size());
         break;
     case SUGGEST_PIECE:
         // ignore suggestions for the moment
@@ -339,7 +339,7 @@ void Peer::handlePacket(const bt::Uint8 *packet, Uint32 size)
         // we no longer support this, so do nothing
         break;
     case EXTENDED:
-        handleExtendedPacket(packet, size);
+        handleExtendedPacket(packet);
         break;
     }
 }
@@ -361,25 +361,24 @@ void Peer::unpause()
     paused = false;
 }
 
-void Peer::handleExtendedPacket(const Uint8 *packet, Uint32 size)
+void Peer::handleExtendedPacket(QByteArrayView packet)
 {
-    if (size <= 2)
+    if (packet.size() <= 2)
         return;
 
     PeerProtocolExtension *ext = extensions.find(packet[1]);
     if (ext) {
-        ext->handlePacket(packet, size);
+        ext->handlePacket(packet);
     } else if (packet[1] == 0) {
-        handleExtendedHandshake(packet, size);
+        handleExtendedHandshake(packet);
     }
 }
 
-void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
+void Peer::handleExtendedHandshake(QByteArrayView packet)
 {
-    QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
     BNode *node = nullptr;
     try {
-        BDecoder dec(tmp, false, 2);
+        BDecoder dec(packet, false, 2);
         node = dec.decode();
         if (!node || node->getType() != BNode::DICT) {
             delete node;

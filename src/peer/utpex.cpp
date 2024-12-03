@@ -28,15 +28,14 @@ UTPex::~UTPex()
 {
 }
 
-void UTPex::handlePacket(const Uint8 *packet, Uint32 size)
+void UTPex::handlePacket(QByteArrayView packet)
 {
-    if (size <= 2 || packet[1] != 1)
+    if (packet.size() <= 2 || packet[1] != 1)
         return;
 
-    QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
     BNode *node = nullptr;
     try {
-        BDecoder dec(tmp, false, 2);
+        BDecoder dec(packet, false, 2);
         node = dec.decode();
         if (node && node->getType() == BNode::DICT) {
             BDictNode *dict = (BDictNode *)node;

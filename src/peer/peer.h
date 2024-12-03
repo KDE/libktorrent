@@ -306,7 +306,7 @@ public:
     void clearPendingPieceUploads();
 
     void chunkAllowed(Uint32 chunk) override;
-    void handlePacket(const bt::Uint8 *packet, bt::Uint32 size) override;
+    void handlePacket(QByteArrayView packet) override;
 
     typedef QSharedPointer<Peer> Ptr;
     typedef QWeakPointer<Peer> WPtr;
@@ -319,17 +319,17 @@ private:
     void handleUnchoke(Uint32 len);
     void handleInterested(Uint32 len);
     void handleNotInterested(Uint32 len);
-    void handleHave(const Uint8 *packet, Uint32 len);
+    void handleHave(QByteArrayView packet);
     void handleHaveAll(Uint32 len);
     void handleHaveNone(Uint32 len);
-    void handleBitField(const Uint8 *packet, Uint32 len);
-    void handleRequest(const Uint8 *packet, Uint32 len);
-    void handlePiece(const Uint8 *packet, Uint32 len);
-    void handleCancel(const Uint8 *packet, Uint32 len);
-    void handleReject(const Uint8 *packet, Uint32 len);
-    void handlePort(const Uint8 *packet, Uint32 len);
-    void handleExtendedPacket(const Uint8 *packet, Uint32 size);
-    void handleExtendedHandshake(const Uint8 *packet, Uint32 size);
+    void handleBitField(QByteArrayView packet);
+    void handleRequest(QByteArrayView packet);
+    void handlePiece(QByteArrayView packet);
+    void handleCancel(QByteArrayView packet);
+    void handleReject(QByteArrayView packet);
+    void handlePort(QByteArrayView packet);
+    void handleExtendedPacket(QByteArrayView packet);
+    void handleExtendedHandshake(QByteArrayView packet);
 
 Q_SIGNALS:
     /**

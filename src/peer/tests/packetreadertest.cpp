@@ -26,11 +26,11 @@ public:
         Q_UNUSED(chunk);
     }
 
-    void handlePacket(const bt::Uint8 *packet, bt::Uint32 size) override
+    void handlePacket(QByteArrayView packet) override
     {
-        received_packet.reset(new bt::Uint8[size]);
-        memcpy(received_packet.data(), packet, size);
-        received_packet_size = size;
+        received_packet.reset(new bt::Uint8[packet.size()]);
+        memcpy(received_packet.data(), packet.constData(), packet.size());
+        received_packet_size = packet.size();
     }
 
     bool check(const bt::Uint8 *packet, bt::Uint32 size)
