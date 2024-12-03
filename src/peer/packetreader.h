@@ -48,11 +48,11 @@ public:
         return !error;
     }
 
-    void onDataReady(Uint8 *buf, Uint32 size) override;
+    void onDataReady(QByteArrayView data) override;
 
 private:
-    Uint32 newPacket(Uint8 *buf, Uint32 size);
-    Uint32 readPacket(Uint8 *buf, Uint32 size);
+    Uint32 newPacket(QByteArrayView data);
+    Uint32 readPacket(QByteArrayView data);
     IncomingPacket::Ptr dequeuePacket();
 
 private:

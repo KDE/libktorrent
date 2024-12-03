@@ -82,7 +82,7 @@ void EncryptedPacketSocket::startMonitoring(net::SocketReader *rdr)
         if (enc)
             enc->decrypt(reinserted_data + reinserted_data_read, reinserted_data_size - reinserted_data_read);
 
-        rdr->onDataReady(reinserted_data + reinserted_data_read, reinserted_data_size - reinserted_data_read);
+        rdr->onDataReady(QByteArrayView(reinserted_data + reinserted_data_read, reinserted_data_size - reinserted_data_read));
         delete[] reinserted_data;
         reinserted_data = nullptr;
         reinserted_data_size = 0;

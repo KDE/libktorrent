@@ -56,27 +56,27 @@ void PacketReader::update(PeerInterface &peer)
     }
 }
 
-Uint32 PacketReader::newPacket(Uint8 *buf, Uint32 size)
+Uint32 PacketReader::newPacket(QByteArrayView data)
 {
     Uint32 packet_length = 0;
     Uint32 am_of_len_read = 0;
     if (len_received > 0) {
-        if ((int)size < 4 - len_received) {
-            memcpy(len + len_received, buf, size);
-            len_received += size;
-            return size;
+        if (data.size() < 4 - len_received) {
+            memcpy(len + len_received, data.constData(), data.size());
+            len_received += data.size();
+            return data.size();
         } else {
-            memcpy(len + len_received, buf, 4 - len_received);
+            memcpy(len + len_received, data.constData(), 4 - len_received);
             am_of_len_read = 4 - len_received;
             len_received = 0;
             packet_length = ReadUint32(len, 0);
         }
-    } else if (size < 4) {
-        memcpy(len, buf, size);
-        len_received = size;
-        return size;
+    } else if (data.size() < 4) {
+        memcpy(len, data.constData(), data.size());
+        len_received = data.size();
+        return data.size();
     } else {
-        packet_length = ReadUint32(buf, 0);
+        packet_length = ReadUint32(data, 0);
         am_of_len_read = 4;
     }
 
@@ -86,36 +86,36 @@ Uint32 PacketReader::newPacket(Uint8 *buf, Uint32 size)
     if (packet_length > max_packet_size) {
         Out(SYS_CON | LOG_DEBUG) << " packet_length too large " << packet_length << endl;
         error = true;
-        return size;
+        return data.size();
     }
 
     IncomingPacket::Ptr pck(new IncomingPacket(packet_length));
     packet_queue.push_back(pck);
-    return am_of_len_read + readPacket(buf + am_of_len_read, size - am_of_len_read);
+    return am_of_len_read + readPacket(data.sliced(am_of_len_read));
 }
 
-Uint32 PacketReader::readPacket(Uint8 *buf, Uint32 size)
+Uint32 PacketReader::readPacket(QByteArrayView data)
 {
-    if (!size)
+    if (!data.size())
         return 0;
 
     IncomingPacket::Ptr pck = packet_queue.back();
-    if (pck->read + size >= pck->size) {
+    if (pck->read + data.size() >= pck->size) {
         // we can read the full packet
         Uint32 tr = pck->size - pck->read;
-        memcpy(pck->data.data() + pck->read, buf, tr);
+        memcpy(pck->data.data() + pck->read, data.constData(), tr);
         pck->read += tr;
         return tr;
     } else {
         // we can do a partial read
-        Uint32 tr = size;
-        memcpy(pck->data.data() + pck->read, buf, tr);
+        Uint32 tr = data.size();
+        memcpy(pck->data.data() + pck->read, data.constData(), tr);
         pck->read += tr;
         return tr;
     }
 }
 
-void PacketReader::onDataReady(Uint8 *buf, Uint32 size)
+void PacketReader::onDataReady(QByteArrayView data)
 {
     if (error)
         return;
@@ -123,19 +123,19 @@ void PacketReader::onDataReady(Uint8 *buf, Uint32 size)
     mutex.lock();
     if (packet_queue.size() == 0) {
         Uint32 ret = 0;
-        while (ret < size && !error) {
-            ret += newPacket(buf + ret, size - ret);
+        while (ret < data.size() && !error) {
+            ret += newPacket(data.sliced(ret));
         }
     } else {
         Uint32 ret = 0;
         IncomingPacket::Ptr pck = packet_queue.back();
         if (pck->read == pck->size) // last packet in queue is fully read
-            ret = newPacket(buf, size);
+            ret = newPacket(data);
         else
-            ret = readPacket(buf, size);
+            ret = readPacket(data);
 
-        while (ret < size && !error) {
-            ret += newPacket(buf + ret, size - ret);
+        while (ret < data.size() && !error) {
+            ret += newPacket(data.sliced(ret));
         }
     }
     mutex.unlock();

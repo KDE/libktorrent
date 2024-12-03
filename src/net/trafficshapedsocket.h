@@ -31,7 +31,7 @@ public:
      * @param buf The buffer
      * @param size The size of the buffer
      */
-    virtual void onDataReady(bt::Uint8 *buf, bt::Uint32 size) = 0;
+    virtual void onDataReady(QByteArrayView data) = 0;
 };
 
 /**

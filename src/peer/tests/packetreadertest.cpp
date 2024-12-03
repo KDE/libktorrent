@@ -70,7 +70,7 @@ private Q_SLOTS:
         bt::Uint8 data[] = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
         bt::PacketReader pr(1024);
 
-        pr.onDataReady(data, 14);
+        pr.onDataReady(QByteArrayView(data, 14));
         QVERIFY(pr.ok());
         pr.update(*this);
         QVERIFY(check(data + 4, 10));
@@ -84,12 +84,12 @@ private Q_SLOTS:
         bt::Uint8 data2[] = {0, 0, 0, 10, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
         bt::PacketReader pr(1024);
 
-        pr.onDataReady(data, 14);
+        pr.onDataReady(QByteArrayView(data, 14));
         QVERIFY(pr.ok());
         pr.update(*this);
         QVERIFY(check(data + 4, 10));
 
-        pr.onDataReady(data2, 14);
+        pr.onDataReady(QByteArrayView(data2, 14));
         QVERIFY(pr.ok());
         pr.update(*this);
         QVERIFY(check(data2 + 4, 10));
@@ -102,12 +102,12 @@ private Q_SLOTS:
         bt::Uint8 data[] = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
         bt::PacketReader pr(1024);
 
-        pr.onDataReady(data, 7);
+        pr.onDataReady(QByteArrayView(data, 7));
         QVERIFY(pr.ok());
         pr.update(*this);
         QVERIFY(received_packet_size == 0);
 
-        pr.onDataReady(data + 7, 7);
+        pr.onDataReady(QByteArrayView(data + 7, 7));
         QVERIFY(pr.ok());
         pr.update(*this);
         QVERIFY(check(data + 4, 10));
@@ -120,12 +120,12 @@ private Q_SLOTS:
         bt::Uint8 data[] = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
         bt::PacketReader pr(1024);
 
-        pr.onDataReady(data, 3);
+        pr.onDataReady(QByteArrayView(data, 3));
         QVERIFY(pr.ok());
         pr.update(*this);
         QVERIFY(received_packet_size == 0);
 
-        pr.onDataReady(data + 3, 11);
+        pr.onDataReady(QByteArrayView(data + 3, 11));
         QVERIFY(pr.ok());
         pr.update(*this);
         QVERIFY(check(data + 4, 10));
@@ -138,7 +138,7 @@ private Q_SLOTS:
         bt::Uint8 data[] = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
         bt::PacketReader pr(7);
 
-        pr.onDataReady(data, 14);
+        pr.onDataReady(QByteArrayView(data, 14));
         QVERIFY(!pr.ok());
 
         pr.update(*this);

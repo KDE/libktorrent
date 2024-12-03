@@ -119,7 +119,7 @@ Uint32 TrafficShapedSocket::read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now
             mutex.unlock();
             if (rdr) {
                 postProcess(input_buffer, ret);
-                rdr->onDataReady(input_buffer, ret);
+                rdr->onDataReady(QByteArrayView(input_buffer, ret));
             }
             br += ret;
             ba -= ret;
