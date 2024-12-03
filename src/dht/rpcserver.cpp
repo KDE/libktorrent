@@ -71,7 +71,7 @@ public:
     {
         try {
             // read and decode the packet
-            BDecoder bdec(ptr->get(), ptr->size(), false);
+            BDecoder bdec(QByteArrayView(ptr->get(), ptr->size()), false);
             boost::scoped_ptr<BNode> n(bdec.decode());
 
             if (!n || n->getType() != BNode::DICT)

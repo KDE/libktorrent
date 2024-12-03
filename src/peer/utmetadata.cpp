@@ -30,7 +30,7 @@ UTMetaData::~UTMetaData()
 
 void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
 {
-    QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
+    QByteArrayView tmp((const char *)packet, size);
     BNode *node = nullptr;
     try {
         BDecoder dec(tmp, false, 2);
@@ -60,7 +60,7 @@ void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
     delete node;
 }
 
-void UTMetaData::data(BDictNode *dict, const QByteArray &piece_data)
+void UTMetaData::data(BDictNode *dict, QByteArrayView piece_data)
 {
     if (download) {
         if (download->data(dict->getInt(QByteArrayLiteral("piece")), piece_data)) {

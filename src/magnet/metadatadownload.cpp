@@ -34,7 +34,7 @@ void MetadataDownload::reject(Uint32 piece)
     downloadNext();
 }
 
-bool MetadataDownload::data(Uint32 piece, const QByteArray &piece_data)
+bool MetadataDownload::data(Uint32 piece, QByteArrayView piece_data)
 {
     // validate data
     if (piece >= pieces.getNumBits()) {

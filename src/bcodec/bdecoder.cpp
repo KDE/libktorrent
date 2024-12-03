@@ -11,15 +11,15 @@
 
 namespace bt
 {
-BDecoder::BDecoder(const Uint8 *ptr, Uint32 size, bool verbose, Uint32 off)
-    : data(QByteArray::fromRawData((const char *)ptr, size))
-    , pos(off)
-    , verbose(verbose)
-    , level(0)
-{
-}
+// BDecoder::BDecoder(const Uint8 *ptr, Uint32 size, bool verbose, Uint32 off)
+//     : data(QByteArray::fromRawData((const char *)ptr, size))
+//     , pos(off)
+//     , verbose(verbose)
+//     , level(0)
+// {
+// }
 
-BDecoder::BDecoder(const QByteArray &data, bool verbose, Uint32 off)
+BDecoder::BDecoder(QByteArrayView data, bool verbose, Uint32 off)
     : data(data)
     , pos(off)
     , verbose(verbose)

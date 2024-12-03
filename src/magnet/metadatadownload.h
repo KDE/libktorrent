@@ -33,7 +33,7 @@ public:
         A piece was received
         @return true if all the data has been received
     */
-    bool data(Uint32 piece, const QByteArray &piece_data);
+    bool data(Uint32 piece, QByteArrayView piece_data);
 
     /// Get the result
     const QByteArray &result() const

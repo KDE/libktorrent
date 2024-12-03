@@ -38,7 +38,7 @@ public:
 private:
     void request(BDictNode *dict);
     void reject(BDictNode *dict);
-    void data(BDictNode *dict, const QByteArray &piece_data);
+    void data(BDictNode *dict, QByteArrayView piece_data);
     void sendReject(int piece);
     void sendData(int piece, int total_size, const QByteArray &data);
     void startDownload();
