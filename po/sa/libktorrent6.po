@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-21 00:39+0000\n"
-"PO-Revision-Date: 2024-12-13 19:09+0530\n"
+"PO-Revision-Date: 2024-12-14 13:33+0530\n"
 "Last-Translator: Kali <EMAIL@ADDRESS>\n"
 "Language-Team: Sanskrit\n"
 "Language: sa\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>2);\n"
+"X-Generator: Poedit 3.5\n"
 
 #: src/bcodec/bdecoder.cpp:48
 #, kde-format
@@ -153,19 +154,19 @@ msgstr "अन्येषां चालनकार्यस्य समा�
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
-msgstr ""
+msgstr "स्रोतः"
 
 #: src/diskio/movedatafilesjob.cpp:112 src/diskio/movedatafilesjob.cpp:148
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
-msgstr ""
+msgstr "गन्तव्य"
 
 #: src/diskio/movedatafilesjob.cpp:146
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
-msgstr ""
+msgstr "चलन्"
 
 #: src/diskio/multifilecache.cpp:70 src/diskio/singlefilecache.cpp:57
 #, kde-format
@@ -181,8 +182,8 @@ msgstr "केवलं पठनीयं नक्शाङ्कितं ख
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "१ समवयस्कः"
+msgstr[1] "%1 समवयस्काः"
 
 #: src/download/downloader.cpp:695
 #, kde-format
@@ -264,8 +265,8 @@ msgstr "नूतनस्थानं विना पुनर्निर्�
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 सेकण्ड् यावत् अप्रयुक्तम् (अतिबहुसंयोजनविफलताः)"
+msgstr[1] "%1 सेकण्ड् यावत् अप्रयुक्तम् (अतिबहुसंयोजनविफलताः)"
 
 #: src/interfaces/trackerinterface.cpp:46
 #, kde-format
@@ -353,7 +354,7 @@ msgstr "बीजीकरणं सम्पन्नम्"
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
-msgstr ""
+msgstr "बीजकरणम्"
 
 #: src/torrent/torrentstats.cpp:81
 #, kde-format
@@ -530,8 +531,8 @@ msgstr "%1/s"
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "१ दिवसे "
+msgstr[1] "%1 दिवसाः "
 
 #: src/util/logsystemmanager.cpp:19
 #, kde-format
