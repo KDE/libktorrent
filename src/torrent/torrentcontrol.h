@@ -114,8 +114,6 @@ public:
     TorrentFileStream::Ptr createTorrentFileStream(bt::Uint32 index, bool streaming_mode, QObject *parent) override;
     void addPeerSource(PeerSource *ps) override;
     void removePeerSource(PeerSource *ps) override;
-    const QTextCodec *getTextCodec() const override;
-    void changeTextCodec(QTextCodec *tc) override;
     Uint32 getNumWebSeeds() const override;
     const WebSeedInterface *getWebSeed(Uint32 i) const override;
     WebSeedInterface *getWebSeed(Uint32 i) override;
@@ -290,7 +288,6 @@ private:
     void saveStats();
     void loadStats();
     void loadOutputDir();
-    void loadEncoding();
     void getSeederInfo(Uint32 &total, Uint32 &connected_to) const;
     void getLeecherInfo(Uint32 &total, Uint32 &connected_to) const;
     void continueStart();

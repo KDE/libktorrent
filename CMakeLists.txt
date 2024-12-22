@@ -61,8 +61,6 @@ find_package(Qt6 "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENTS
     Test
 )
 
-find_package(Qt6Core5Compat REQUIRED)
-
 # Load the frameworks we need
 find_package(KF6 "${KF_MIN_VERSION}" REQUIRED COMPONENTS
     Archive

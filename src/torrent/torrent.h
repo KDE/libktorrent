@@ -272,15 +272,6 @@ public:
         return web_seeds;
     }
 
-    /// Change the text codec
-    void changeTextCodec(QTextCodec *codec);
-
-    /// Get the text codec
-    const QTextCodec *getTextCodec()
-    {
-        return text_codec;
-    }
-
     /// Set the monitor
     void setMonitor(MonitorInterface *m)
     {
@@ -320,7 +311,6 @@ private:
     Uint64 chunk_size;
     Uint64 last_chunk_size;
     Uint64 total_size;
-    QTextCodec *text_codec;
     FilePriorityListener *file_prio_listener;
     mutable Uint32 pos_cache_chunk;
     mutable Uint32 pos_cache_file;

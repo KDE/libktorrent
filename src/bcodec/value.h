@@ -6,7 +6,6 @@
 #ifndef BTVALUE_H
 #define BTVALUE_H
 
-#include <QTextCodec>
 #include <ktorrent_export.h>
 #include <qstring.h>
 #include <util/constants.h>
@@ -52,7 +51,6 @@ public:
     {
         return QString::fromUtf8(strval);
     }
-    QString toString(QTextCodec *tc) const;
     QByteArray toByteArray() const
     {
         return strval;

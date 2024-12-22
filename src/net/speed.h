@@ -6,7 +6,6 @@
 #ifndef NETSPEED_H
 #define NETSPEED_H
 
-#include <QLinkedList>
 #include <QPair>
 #include <deque>
 #include <util/constants.h>

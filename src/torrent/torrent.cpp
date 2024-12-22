@@ -5,7 +5,6 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "torrent.h"
-#include <QTextCodec>
 #include <bcodec/bdecoder.h>
 #include <bcodec/bnode.h>
 #include <interfaces/monitorinterface.h>
@@ -53,7 +52,6 @@ Torrent::Torrent()
     , chunk_size(0)
     , last_chunk_size(0)
     , total_size(0)
-    , text_codec(QTextCodec::codecForName("utf-8"))
     , file_prio_listener(nullptr)
     , pos_cache_chunk(0)
     , pos_cache_file(0)
@@ -69,7 +67,6 @@ Torrent::Torrent(const bt::SHA1Hash &hash)
     , chunk_size(0)
     , last_chunk_size(0)
     , total_size(0)
-    , text_codec(QTextCodec::codecForName("utf-8"))
     , file_prio_listener(nullptr)
     , pos_cache_chunk(0)
     , pos_cache_file(0)
@@ -95,19 +92,9 @@ void Torrent::load(const QByteArray &data, bool verbose)
         if (!dict)
             throw Error(i18n("Corrupted torrent."));
 
-        // see if we can find an encoding node
-        if (dict->getValue(QByteArrayLiteral("encoding"))) {
-            QByteArray enc = dict->getByteArray(QByteArrayLiteral("encoding"));
-            QTextCodec *tc = QTextCodec::codecForName(enc);
-            if (tc) {
-                Out(SYS_GEN | LOG_DEBUG) << "Encoding : " << QString(tc->name()) << endl;
-                text_codec = tc;
-            }
-        }
-
         BValueNode *c = dict->getValue(QByteArrayLiteral("comment"));
         if (c)
-            comments = c->data().toString(text_codec);
+            comments = c->data().toString();
 
         const BValueNode *announce = dict->getValue(QByteArrayLiteral("announce"));
         BListNode *nodes = dict->getList(QByteArrayLiteral("nodes"));
@@ -115,7 +102,7 @@ void Torrent::load(const QByteArray &data, bool verbose)
         //  throw Error(i18n("Torrent has no announce or nodes field."));
 
         if (announce)
-            loadTrackerURL(dict->getString(QByteArrayLiteral("announce"), text_codec));
+            loadTrackerURL(dict->getString(QByteArrayLiteral("announce")));
 
         if (nodes) // DHT torrrents have a node key
             loadNodes(nodes);
@@ -128,7 +115,7 @@ void Torrent::load(const QByteArray &data, bool verbose)
         if (urls) {
             loadWebSeeds(urls);
         } else if (dict->getValue(QByteArrayLiteral("url-list"))) {
-            QUrl url(dict->getString(QByteArrayLiteral("url-list"), text_codec));
+            QUrl url(dict->getString(QByteArrayLiteral("url-list")));
             if (url.isValid())
                 web_seeds.append(url);
         }
@@ -161,7 +148,7 @@ void Torrent::loadInfo(BDictNode *dict)
 
     loadHash(dict);
     unencoded_name = dict->getByteArray(QByteArrayLiteral("name"));
-    name_suggestion = text_codec->toUnicode(unencoded_name);
+    name_suggestion = QString::fromUtf8(unencoded_name);
     name_suggestion = SanityzeName(name_suggestion);
     BValueNode *n = dict->getValue(QByteArrayLiteral("private"));
     if (n && n->data().toInt() == 1)
@@ -202,7 +189,7 @@ void Torrent::loadFiles(BListNode *node)
         for (Uint32 j = 0; j < ln->getNumChildren(); j++) {
             QByteArray v = ln->getByteArray(j);
             unencoded_path.append(v);
-            QString sd = text_codec ? text_codec->toUnicode(v) : QString(v);
+            QString sd = QString::fromUtf8(v);
             if (sd.contains(QLatin1String("\n")))
                 sd = sd.remove(QLatin1String("\n"));
             path += sd;
@@ -267,7 +254,7 @@ void Torrent::loadAnnounceList(BNode *node)
         BListNode *url_list = ml->getList(i);
         if (url_list) {
             for (Uint32 j = 0; j < url_list->getNumChildren(); j++)
-                tier->urls.append(QUrl(url_list->getString(j, nullptr)));
+                tier->urls.append(QUrl(url_list->getString(j)));
             tier->next = new TrackerTier();
             tier = tier->next;
         }
@@ -284,7 +271,7 @@ void Torrent::loadNodes(BListNode *node)
         // first child is the IP, second the port
         // add the DHT node
         DHTNode n;
-        n.ip = c->getString(0, nullptr);
+        n.ip = c->getString(0);
         n.port = c->getInt(1);
         nodes.append(n);
     }
@@ -293,7 +280,7 @@ void Torrent::loadNodes(BListNode *node)
 void Torrent::loadWebSeeds(BListNode *node)
 {
     for (Uint32 i = 0; i < node->getNumChildren(); i++) {
-        QUrl url = QUrl(node->getString(i, text_codec));
+        QUrl url = QUrl(node->getString(i));
         if (url.isValid())
             web_seeds.append(url);
     }
@@ -449,21 +436,6 @@ bool Torrent::checkPathForDirectoryTraversal(const QString &p)
 {
     QStringList sl = p.split(bt::DirSeparator());
     return !sl.contains(QLatin1String(".."));
-}
-
-void Torrent::changeTextCodec(QTextCodec *codec)
-{
-    if (text_codec == codec)
-        return;
-
-    Out(SYS_GEN | LOG_DEBUG) << "Change Codec: " << QString(codec->name()) << endl;
-    text_codec = codec;
-    for (int i = 0; i < files.count(); i++) {
-        TorrentFile &f = files[i];
-        f.changeTextCodec(codec);
-    }
-    name_suggestion = text_codec->toUnicode(unencoded_name);
-    name_suggestion = SanityzeName(name_suggestion);
 }
 
 void Torrent::downloadPriorityChanged(TorrentFile *tf, Priority newpriority, Priority oldpriority)

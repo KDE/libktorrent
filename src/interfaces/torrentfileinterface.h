@@ -173,9 +173,6 @@ public:
     /// Set the unencoded path
     void setUnencodedPath(const QList<QByteArray> up);
 
-    /// Change the text codec
-    void changeTextCodec(QTextCodec *codec);
-
     /// Is this a video
     bool isVideo() const
     {

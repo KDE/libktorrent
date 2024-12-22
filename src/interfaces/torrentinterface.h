@@ -8,7 +8,6 @@
 
 #include <QPointer>
 #include <QSharedPointer>
-#include <QTextCodec>
 #include <QUrl>
 
 #include <interfaces/trackerslist.h>
@@ -375,12 +374,6 @@ public:
 
     /// Check if there is enough diskspace available for this torrent
     virtual bool checkDiskSpace(bool emit_sig = true) = 0;
-
-    /// Get the text codec used in the torrent
-    virtual const QTextCodec *getTextCodec() const = 0;
-
-    /// Set the text codec
-    virtual void changeTextCodec(QTextCodec *tc) = 0;
 
     /// Get the number of webseeds
     virtual Uint32 getNumWebSeeds() const = 0;

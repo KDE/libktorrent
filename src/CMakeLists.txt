@@ -244,8 +244,6 @@ PUBLIC
     LibGMP::LibGMP
 )
 
-target_link_libraries(KTorrent6 PUBLIC Qt6::Core5Compat)
-
 if(WIN32)
 target_link_libraries(KTorrent6 PUBLIC ws2_32)
 endif(WIN32)

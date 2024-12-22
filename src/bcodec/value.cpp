@@ -4,7 +4,6 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "value.h"
-#include <qtextcodec.h>
 
 namespace bt
 {
@@ -46,14 +45,6 @@ Value::Value(const Value &val)
 
 Value::~Value()
 {
-}
-
-QString Value::toString(QTextCodec *tc) const
-{
-    if (!tc)
-        return toString();
-    else
-        return tc->toUnicode(strval);
 }
 
 Value &Value::operator=(const Value &val)

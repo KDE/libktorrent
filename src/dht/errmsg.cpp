@@ -49,7 +49,7 @@ void ErrMsg::parse(BDictNode *dict)
     if (!ln)
         throw bt::Error("Invalid error message");
 
-    msg = ln->getString(1, nullptr);
+    msg = ln->getString(1);
 }
 
 }

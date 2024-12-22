@@ -4,7 +4,6 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "torrentfileinterface.h"
-#include <QTextCodec>
 #include <util/fileops.h>
 #include <util/functions.h>
 
@@ -42,18 +41,6 @@ float TorrentFileInterface::getDownloadPercentage() const
 void TorrentFileInterface::setUnencodedPath(const QList<QByteArray> up)
 {
     unencoded_path = up;
-}
-
-void TorrentFileInterface::changeTextCodec(QTextCodec *codec)
-{
-    path.clear();
-    int idx = 0;
-    for (const QByteArray &b : std::as_const(unencoded_path)) {
-        path += codec->toUnicode(b);
-        if (idx < unencoded_path.size() - 1)
-            path += bt::DirSeparator();
-        idx++;
-    }
 }
 
 QString TorrentFileInterface::getMountPoint() const

@@ -4,7 +4,6 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "bnode.h"
-#include <QTextCodec>
 #include <util/error.h>
 #include <util/log.h>
 
@@ -142,7 +141,7 @@ qint64 BDictNode::getInt64(const QByteArray &key)
     return v->data().toInt64();
 }
 
-QString BDictNode::getString(const QByteArray &key, QTextCodec *tc)
+QString BDictNode::getString(const QByteArray &key)
 {
     const BValueNode *v = getValue(key);
     if (!v)
@@ -151,10 +150,7 @@ QString BDictNode::getString(const QByteArray &key, QTextCodec *tc)
     if (v->data().getType() != bt::Value::STRING)
         throw bt::Error(QStringLiteral("Incompatible type"));
 
-    if (!tc)
-        return v->data().toString();
-    else
-        return v->data().toString(tc);
+    return v->data().toString();
 }
 
 QByteArray BDictNode::getByteArray(const QByteArray &key)
@@ -241,7 +237,7 @@ qint64 BListNode::getInt64(Uint32 idx)
     return v->data().toInt64();
 }
 
-QString BListNode::getString(Uint32 idx, QTextCodec *tc)
+QString BListNode::getString(Uint32 idx)
 {
     const BValueNode *v = getValue(idx);
     if (!v)
@@ -250,10 +246,7 @@ QString BListNode::getString(Uint32 idx, QTextCodec *tc)
     if (v->data().getType() != bt::Value::STRING)
         throw bt::Error(QStringLiteral("Incompatible type"));
 
-    if (!tc)
-        return v->data().toString();
-    else
-        return v->data().toString(tc);
+    return v->data().toString();
 }
 
 QByteArray BListNode::getByteArray(Uint32 idx)

@@ -157,7 +157,7 @@ public:
     qint64 getInt64(const QByteArray &key);
 
     /// Same as getValue, except directly returns a QString, if something goes wrong, an error will be thrown
-    QString getString(const QByteArray &key, QTextCodec *tc);
+    QString getString(const QByteArray &key);
 
     /// Same as getValue, except directly returns an QByteArray, if something goes wrong, an error will be thrown
     QByteArray getByteArray(const QByteArray &key);
@@ -232,7 +232,7 @@ public:
     qint64 getInt64(Uint32 idx);
 
     /// Same as getValue, except directly returns a QString, if something goes wrong, an error will be thrown
-    QString getString(Uint32 idx, QTextCodec *tc);
+    QString getString(Uint32 idx);
 
     /// Same as getValue, except directly returns an QByteArray, if something goes wrong, an error will be thrown
     QByteArray getByteArray(Uint32 idx);

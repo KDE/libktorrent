@@ -9,7 +9,6 @@
 #include <QDateTime>
 #include <QDir>
 #include <QFile>
-#include <QTextCodec>
 #include <QTextStream>
 
 #include <KLocalizedString>
@@ -599,7 +598,6 @@ void TorrentControl::initInternal(QueueManagerInterface *qman, const QString &tm
     checkExisting(qman);
     setupDirs(tmpdir, ddir);
     setupStats();
-    loadEncoding();
     setupData();
     updateStatus();
 
@@ -933,7 +931,6 @@ void TorrentControl::saveStats()
 
     stats_file->write("UPLOAD_LIMIT", QString::number(upload_limit));
     stats_file->write("DOWNLOAD_LIMIT", QString::number(download_limit));
-    stats_file->write("ENCODING", QString(tor->getTextCodec()->name()));
     stats_file->write("ASSURED_UPLOAD_SPEED", QString::number(assured_upload_speed));
     stats_file->write("ASSURED_DOWNLOAD_SPEED", QString::number(assured_download_speed));
     if (!user_modified_name.isEmpty())
@@ -1012,13 +1009,6 @@ void TorrentControl::loadStats()
             setFeatureEnabled(UT_PEX_FEATURE, stats_file->readBoolean("UT_PEX"));
     }
 
-    QString codec = stats_file->readString("ENCODING");
-    if (codec.length() > 0) {
-        QTextCodec *cod = QTextCodec::codecForName(codec.toLocal8Bit());
-        if (cod)
-            changeTextCodec(cod);
-    }
-
     Uint32 aup = stats_file->readInt("ASSURED_UPLOAD_SPEED");
     Uint32 adown = stats_file->readInt("ASSURED_DOWNLOAD_SPEED");
     Uint32 up = stats_file->readInt("UPLOAD_LIMIT");
@@ -1049,21 +1039,6 @@ void TorrentControl::loadOutputDir()
     outputdir = stats_file->readString("OUTPUTDIR").trimmed();
     if (stats_file->hasKey("CUSTOM_OUTPUT_NAME") && stats_file->readULong("CUSTOM_OUTPUT_NAME") == 1) {
         istats.custom_output_name = true;
-    }
-}
-
-void TorrentControl::loadEncoding()
-{
-    if (!stats_file)
-        stats_file = new StatsFile(tordir + "stats");
-    if (!stats_file->hasKey("ENCODING"))
-        return;
-
-    QString codec = stats_file->readString("ENCODING");
-    if (codec.length() > 0) {
-        QTextCodec *cod = QTextCodec::codecForName(codec.toLocal8Bit());
-        if (cod)
-            changeTextCodec(cod);
     }
 }
 
@@ -1610,22 +1585,6 @@ void TorrentControl::preallocFinished(const QString &error, bool completed)
         saveStats();
         continueStart();
         Q_EMIT statusChanged(this);
-    }
-}
-
-const QTextCodec *TorrentControl::getTextCodec() const
-{
-    if (!tor)
-        return nullptr;
-    else
-        return tor->getTextCodec();
-}
-
-void TorrentControl::changeTextCodec(QTextCodec *tc)
-{
-    if (tor) {
-        tor->changeTextCodec(tc);
-        stats.torrent_name = tor->getNameSuggestion();
     }
 }
 
