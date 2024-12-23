@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-10-21 00:39+0000\n"
+"POT-Creation-Date: 2024-12-23 00:40+0000\n"
 "PO-Revision-Date: 2022-10-23 20:25+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -302,32 +302,32 @@ msgstr "S'ha produït un error: %1"
 msgid "Unknown client"
 msgstr "Client desconegut"
 
-#: src/torrent/torrent.cpp:96 src/torrent/torrent.cpp:153
-#: src/torrent/torrent.cpp:180 src/torrent/torrent.cpp:187
-#: src/torrent/torrent.cpp:194 src/torrent/torrent.cpp:198
-#: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
+#: src/torrent/torrent.cpp:93 src/torrent/torrent.cpp:140
+#: src/torrent/torrent.cpp:167 src/torrent/torrent.cpp:174
+#: src/torrent/torrent.cpp:181 src/torrent/torrent.cpp:185
+#: src/torrent/torrent.cpp:205 src/torrent/torrent.cpp:269
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "El torrent està corrupte."
 
-#: src/torrent/torrentcontrol.cpp:277
+#: src/torrent/torrentcontrol.cpp:276
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
 "S'ha produït un error en escriure al disc. Hi ha suficient espai lliure al "
 "disc?"
 
-#: src/torrent/torrentcontrol.cpp:492
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "S'ha produït un error en carregar <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:502
+#: src/torrent/torrentcontrol.cpp:501
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "No s'ha pogut crear %1: %2"
 
-#: src/torrent/torrentcontrol.cpp:515
+#: src/torrent/torrentcontrol.cpp:514
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -336,7 +336,7 @@ msgstr ""
 "Ja esteu baixant el torrent <b>%1</b>. S'han fusionat les llistes de "
 "seguidors d'ambdós torrent."
 
-#: src/torrent/torrentcontrol.cpp:519
+#: src/torrent/torrentcontrol.cpp:518
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Ja esteu baixant el torrent <b>%1</b>."

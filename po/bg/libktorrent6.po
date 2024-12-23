@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-10-21 00:39+0000\n"
+"POT-Creation-Date: 2024-12-23 00:40+0000\n"
 "PO-Revision-Date: 2024-06-07 11:37+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -296,30 +296,30 @@ msgstr "Грешка: %1"
 msgid "Unknown client"
 msgstr "Непознат клиент"
 
-#: src/torrent/torrent.cpp:96 src/torrent/torrent.cpp:153
-#: src/torrent/torrent.cpp:180 src/torrent/torrent.cpp:187
-#: src/torrent/torrent.cpp:194 src/torrent/torrent.cpp:198
-#: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
+#: src/torrent/torrent.cpp:93 src/torrent/torrent.cpp:140
+#: src/torrent/torrent.cpp:167 src/torrent/torrent.cpp:174
+#: src/torrent/torrent.cpp:181 src/torrent/torrent.cpp:185
+#: src/torrent/torrent.cpp:205 src/torrent/torrent.cpp:269
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Повреден торент."
 
-#: src/torrent/torrentcontrol.cpp:277
+#: src/torrent/torrentcontrol.cpp:276
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Грешка при запис на диск, имате ли достатъчно дисково пространство?"
 
-#: src/torrent/torrentcontrol.cpp:492
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "Възникна грешка при зареждане на <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:502
+#: src/torrent/torrentcontrol.cpp:501
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Невъзможно създаване на %1 : %2"
 
-#: src/torrent/torrentcontrol.cpp:515
+#: src/torrent/torrentcontrol.cpp:514
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -328,7 +328,7 @@ msgstr ""
 "Вие вече сваляте торент <b>%1</b>. Списъците с координиращи сървъри на двата "
 "торента бяха обединени."
 
-#: src/torrent/torrentcontrol.cpp:519
+#: src/torrent/torrentcontrol.cpp:518
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Вече сваляте торент <b>%1</b>."

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-10-21 00:39+0000\n"
+"POT-Creation-Date: 2024-12-23 00:40+0000\n"
 "PO-Revision-Date: 2009-10-31 23:24+0900\n"
 "Last-Translator: Yukiko Bando <ybando@k6.dion.ne.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -308,31 +308,31 @@ msgstr "エラー: %1"
 msgid "Unknown client"
 msgstr "未知のクライアント"
 
-#: src/torrent/torrent.cpp:96 src/torrent/torrent.cpp:153
-#: src/torrent/torrent.cpp:180 src/torrent/torrent.cpp:187
-#: src/torrent/torrent.cpp:194 src/torrent/torrent.cpp:198
-#: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
+#: src/torrent/torrent.cpp:93 src/torrent/torrent.cpp:140
+#: src/torrent/torrent.cpp:167 src/torrent/torrent.cpp:174
+#: src/torrent/torrent.cpp:181 src/torrent/torrent.cpp:185
+#: src/torrent/torrent.cpp:205 src/torrent/torrent.cpp:269
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "torrent が壊れています。"
 
-#: src/torrent/torrentcontrol.cpp:277
+#: src/torrent/torrentcontrol.cpp:276
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
 
-#: src/torrent/torrentcontrol.cpp:492
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr ""
 
-#: src/torrent/torrentcontrol.cpp:502
+#: src/torrent/torrentcontrol.cpp:501
 #, fuzzy, kde-format
 #| msgid "Unable to create %1 : %2"
 msgid "Unable to create %1: %2"
 msgstr "<resource>%1</resource> を作成できません: %2"
 
-#: src/torrent/torrentcontrol.cpp:515
+#: src/torrent/torrentcontrol.cpp:514
 #, fuzzy, kde-format
 #| msgid ""
 #| "You are already downloading this torrent %1, the list of trackers of both "
@@ -344,7 +344,7 @@ msgstr ""
 "torrent <resource>%1</resource> は既にダウンロード中です。両方の torrent のト"
 "ラッカーリストをマージしました。"
 
-#: src/torrent/torrentcontrol.cpp:519
+#: src/torrent/torrentcontrol.cpp:518
 #, fuzzy, kde-format
 #| msgid "You are already downloading the torrent %1"
 msgid "You are already downloading the torrent <b>%1</b>."

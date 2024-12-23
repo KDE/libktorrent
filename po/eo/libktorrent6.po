@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-10-21 00:39+0000\n"
+"POT-Creation-Date: 2024-12-23 00:40+0000\n"
 "PO-Revision-Date: 2023-02-12 18:47+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -296,30 +296,30 @@ msgstr "Eraro: %1"
 msgid "Unknown client"
 msgstr "Nekonata kliento"
 
-#: src/torrent/torrent.cpp:96 src/torrent/torrent.cpp:153
-#: src/torrent/torrent.cpp:180 src/torrent/torrent.cpp:187
-#: src/torrent/torrent.cpp:194 src/torrent/torrent.cpp:198
-#: src/torrent/torrent.cpp:218 src/torrent/torrent.cpp:282
+#: src/torrent/torrent.cpp:93 src/torrent/torrent.cpp:140
+#: src/torrent/torrent.cpp:167 src/torrent/torrent.cpp:174
+#: src/torrent/torrent.cpp:181 src/torrent/torrent.cpp:185
+#: src/torrent/torrent.cpp:205 src/torrent/torrent.cpp:269
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Koruptita torento."
 
-#: src/torrent/torrentcontrol.cpp:277
+#: src/torrent/torrentcontrol.cpp:276
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Eraro skribi al disko, ĉu vi havas sufiĉe da diskspaco?"
 
-#: src/torrent/torrentcontrol.cpp:492
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "Eraro okazis dum ŝarĝo de <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:502
+#: src/torrent/torrentcontrol.cpp:501
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Ne eblas krei %1: %2"
 
-#: src/torrent/torrentcontrol.cpp:515
+#: src/torrent/torrentcontrol.cpp:514
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -328,7 +328,7 @@ msgstr ""
 "Vi jam elŝutas la torenton <b>%1</b>. La spurlistoj de ambaŭ torentoj estis "
 "kunfanditaj."
 
-#: src/torrent/torrentcontrol.cpp:519
+#: src/torrent/torrentcontrol.cpp:518
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Vi jam elŝutas la torenton <b>%1</b>."
