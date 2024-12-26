@@ -34,17 +34,11 @@ public:
 
     bool doKill() override;
 
-    bool IsErrorPage() const
-    {
-        return error_page;
-    }
-
 private Q_SLOTS:
     void data(KIO::Job *j, const QByteArray &data);
     void finished(KJob *j);
 
 private:
-    bool error_page;
     QUrl url;
     QByteArray reply_data;
     KIO::TransferJob *get_job;

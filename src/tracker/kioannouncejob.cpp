@@ -11,8 +11,7 @@
 namespace bt
 {
 KIOAnnounceJob::KIOAnnounceJob(const QUrl &url, const KIO::MetaData &md)
-    : error_page(false)
-    , url(url)
+    : url(url)
 {
     get_job = KIO::get(url, KIO::NoReload, KIO::HideProgressInfo);
     get_job->setMetaData(md);
@@ -47,15 +46,8 @@ bool KIOAnnounceJob::doKill()
 
 void KIOAnnounceJob::finished(KJob *j)
 {
-    error_page = get_job->isErrorPage(); // must be called from slot connected to result()
-    if (error_page && !j->error()) {
-        QString err_code = get_job->metaData().value(QStringLiteral("responsecode"));
-        setError(KIO::ERR_WORKER_DEFINED);
-        setErrorText(QString("HTTP %1").arg(err_code));
-    } else {
-        setError(j->error());
-        setErrorText(j->errorText());
-    }
+    setError(j->error());
+    setErrorText(j->errorText());
 
     emitResult();
 }

@@ -351,18 +351,13 @@ void HTTPTracker::onAnnounceResult(const QUrl &url, const QByteArray &data, KJob
 {
     timer.stop();
     active_job = nullptr;
-    KIOAnnounceJob *st = (KIOAnnounceJob *)j;
-    if (st->IsErrorPage() || (j->error() && data.size() == 0)) {
+    if (j->error() && data.size() == 0) {
         QString err = error;
         error.clear();
         if (err.isEmpty())
             err = j->errorString();
 
         Out(SYS_TRK | LOG_IMPORTANT) << "Error : " << err << endl;
-
-        if (st->IsErrorPage()) {
-            Out(SYS_TRK | LOG_IMPORTANT) << "HTTP Error page : " << QString::fromStdString(st->replyData().toStdString()) << endl;
-        }
 
         if (QUrlQuery(url).queryItemValue(QStringLiteral("event")) != QLatin1String("stopped")) {
             failures++;
