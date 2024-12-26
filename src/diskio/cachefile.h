@@ -76,9 +76,8 @@ public:
     /**
      * Unmap a previously mapped region.
      * @param ptr Ptr to the region
-     * @param size Size of the region
      */
-    void unmap(void *ptr, Uint32 size);
+    void unmap(void *ptr);
 
     /**
      * Close the file, everything will be unmapped.

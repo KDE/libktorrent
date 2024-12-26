@@ -229,7 +229,7 @@ void CacheFile::growFile(Uint64 to_write)
     file_size = fptr->size();
 }
 
-void CacheFile::unmap(void *ptr, Uint32 size)
+void CacheFile::unmap(void *ptr)
 {
     int ret = 0;
     QMutexLocker lock(&mutex);

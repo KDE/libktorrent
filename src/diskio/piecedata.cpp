@@ -40,7 +40,7 @@ void PieceData::unload()
     if (!mapped())
         delete[] ptr;
     else
-        cache_file->unmap(ptr, len);
+        cache_file->unmap(ptr);
     ptr = nullptr;
 }
 
