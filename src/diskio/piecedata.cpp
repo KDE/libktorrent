@@ -5,7 +5,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "piecedata.h"
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 #include <util/log.h>
 #ifndef Q_OS_WIN
 #include <util/signalcatcher.h>

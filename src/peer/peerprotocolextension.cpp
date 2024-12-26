@@ -6,7 +6,7 @@
 
 #include "peerprotocolextension.h"
 #include "peer.h"
-#include <stdio.h>
+#include <cstdio>
 
 namespace bt
 {

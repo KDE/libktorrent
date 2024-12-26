@@ -5,9 +5,9 @@
 */
 #include "downloader.h"
 
+#include <KLocalizedString>
 #include <QFile>
 #include <QTextStream>
-#include <klocalizedstring.h>
 
 #include "chunkdownload.h"
 #include "chunkselector.h"

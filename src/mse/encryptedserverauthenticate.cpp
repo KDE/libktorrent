@@ -7,7 +7,7 @@
 #include "encryptedpacketsocket.h"
 #include "functions.h"
 #include "rc4encryptor.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include <torrent/globals.h>
 #include <torrent/server.h>
 #include <util/functions.h>

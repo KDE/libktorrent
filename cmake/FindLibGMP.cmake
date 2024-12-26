@@ -53,7 +53,7 @@ if(LibGMP_INCLUDE_DIRS)
         # parsing gmp.h failed, try test code instead
         set(_gmp_version_source "
 #include <stddef.h>
-#include <stdio.h>
+#include <cstdio>
 #include <gmp.h>
 int main()
 {

@@ -5,13 +5,13 @@
 */
 #include "peermanager.h"
 
+#include <KLocalizedString>
 #include <QDateTime>
 #include <QFile>
 #include <QList>
 #include <QSet>
 #include <QTextStream>
 #include <QtAlgorithms>
-#include <klocalizedstring.h>
 
 #include "authenticate.h"
 #include "authenticationmonitor.h"

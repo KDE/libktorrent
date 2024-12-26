@@ -9,9 +9,9 @@
 #include "dhtbase.h"
 #include "key.h"
 #include "rpcmsg.h"
-#include <qmap.h>
-#include <qstring.h>
-#include <qtimer.h>
+#include <QMap>
+#include <QString>
+#include <QTimer>
 #include <util/constants.h>
 #include <util/timer.h>
 

@@ -7,8 +7,8 @@
 #define DHTDHTPEERSOURCE_H
 
 #include "task.h"
+#include <QTimer>
 #include <interfaces/peersource.h>
-#include <qtimer.h>
 
 namespace bt
 {

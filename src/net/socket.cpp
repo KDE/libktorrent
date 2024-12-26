@@ -7,8 +7,8 @@
 #include "socket.h"
 #include <QtGlobal>
 
-#include <errno.h>
-#include <string.h>
+#include <cerrno>
+#include <cstring>
 #include <sys/types.h>
 
 #if defined(Q_OS_LINUX) && !defined(__FreeBSD_kernel__)

@@ -6,8 +6,8 @@
 #ifndef BTAUTOROTATELOGJOB_H
 #define BTAUTOROTATELOGJOB_H
 
+#include <KIO/Job>
 #include <cstdlib>
-#include <kio/job.h>
 
 namespace bt
 {

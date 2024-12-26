@@ -5,9 +5,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "deletedatafilesjob.h"
+#include <KIO/DeleteJob>
+#include <KIO/JobUiDelegate>
 #include <QDir>
-#include <kio/deletejob.h>
-#include <kio/jobuidelegate.h>
 #include <util/fileops.h>
 #include <util/functions.h>
 #include <util/log.h>

@@ -6,8 +6,8 @@
 #include <QObject>
 #include <QTest>
 
-#include <solid/device.h>
-#include <solid/storageaccess.h>
+#include <Solid/Device>
+#include <Solid/StorageAccess>
 #include <util/error.h>
 #include <util/fileops.h>
 #include <util/functions.h>

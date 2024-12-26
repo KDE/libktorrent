@@ -7,9 +7,9 @@
 #ifndef BT_TORRENTSTATS_H
 #define BT_TORRENTSTATS_H
 
+#include <QDateTime>
 #include <QString>
 #include <ktorrent_export.h>
-#include <qdatetime.h>
 #include <util/constants.h>
 
 #if defined ERROR

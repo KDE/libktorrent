@@ -6,9 +6,9 @@
 #ifndef BTEXITOPERATION_H
 #define BTEXITOPERATION_H
 
-#include <kio/job.h>
+#include <KIO/Job>
+#include <QObject>
 #include <ktorrent_export.h>
-#include <qobject.h>
 
 namespace bt
 {

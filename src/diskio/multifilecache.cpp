@@ -4,13 +4,17 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "multifilecache.h"
+
+#include <cerrno>
+
+#include <KLocalizedString>
+
+#include <QDir>
+#include <QFileInfo>
 #include <QSet>
+#include <QStringList>
 #include <QTextStream>
-#include <errno.h>
-#include <klocalizedstring.h>
-#include <qdir.h>
-#include <qfileinfo.h>
-#include <qstringlist.h>
+
 #include <util/error.h>
 #include <util/file.h>
 #include <util/fileops.h>

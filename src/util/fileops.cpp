@@ -7,8 +7,8 @@
 #include "fileops.h"
 #include "config-ktorrent.h"
 
+#include <cerrno>
 #include <cstdlib>
-#include <errno.h>
 #include <fcntl.h>
 #include <string>
 #include <sys/stat.h>
@@ -56,7 +56,7 @@
 #ifdef HAVE_XFS_XFS_H
 
 #if !defined(HAVE___S64) || !defined(HAVE___U64)
-#include <stdint.h>
+#include <cstdint>
 #endif
 
 #ifndef HAVE___U64

@@ -5,7 +5,7 @@
 */
 #include "socketgroup.h"
 #include "trafficshapedsocket.h"
-#include <math.h>
+#include <cmath>
 #include <util/functions.h>
 #include <util/log.h>
 

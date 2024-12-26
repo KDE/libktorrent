@@ -2,7 +2,7 @@
 #define QT_GUI_LIB
 #endif
 
-#include <time.h>
+#include <ctime>
 
 #include <QEventLoop>
 #include <QLocale>

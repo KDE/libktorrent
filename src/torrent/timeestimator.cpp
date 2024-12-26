@@ -5,7 +5,7 @@
 */
 #include "timeestimator.h"
 #include "torrentcontrol.h"
-#include <math.h>
+#include <cmath>
 #include <torrent/globals.h>
 #include <util/constants.h>
 #include <util/log.h>

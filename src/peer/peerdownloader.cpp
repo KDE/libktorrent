@@ -6,8 +6,8 @@
 #include "peerdownloader.h"
 
 #include "peer.h"
+#include <cmath>
 #include <download/piece.h>
-#include <math.h>
 #include <util/functions.h>
 #include <util/log.h>
 

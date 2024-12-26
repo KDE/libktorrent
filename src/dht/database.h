@@ -7,9 +7,9 @@
 #define DHTDATABASE_H
 
 #include "key.h"
+#include <QList>
+#include <QMap>
 #include <net/address.h>
-#include <qlist.h>
-#include <qmap.h>
 #include <util/array.h>
 #include <util/constants.h>
 #include <util/ptrmap.h>

@@ -6,9 +6,9 @@
 #ifndef BTAUTHENTICATEBASE_H
 #define BTAUTHENTICATEBASE_H
 
+#include <QObject>
+#include <QTimer>
 #include <mse/encryptedpacketsocket.h>
-#include <qobject.h>
-#include <qtimer.h>
 #include <util/constants.h>
 
 namespace bt

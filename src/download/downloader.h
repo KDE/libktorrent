@@ -9,8 +9,8 @@
 #include "download/chunkdownload.h"
 #include "download/webseed.h"
 #include "peer/peermanager.h"
+#include <QObject>
 #include <ktorrent_export.h>
-#include <qobject.h>
 #include <util/constants.h>
 #include <util/ptrmap.h>
 

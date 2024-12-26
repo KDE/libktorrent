@@ -7,13 +7,16 @@
 
 #include <config-ktorrent.h>
 
+#include <KFileItem>
+#include <KLocalizedString>
+
+#include <QFile>
+#include <QStorageInfo>
+
 #include "cache.h"
 #include "preallocationthread.h"
-#include <errno.h>
+#include <cerrno>
 #include <fcntl.h>
-#include <kfileitem.h>
-#include <klocalizedstring.h>
-#include <qfile.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <util/array.h>
@@ -25,8 +28,6 @@
 #ifndef Q_OS_WIN
 #include <sys/mman.h>
 #endif
-
-#include <QStorageInfo>
 
 // Not all systems have an O_LARGEFILE - Solaris depending
 // on command-line defines, FreeBSD never - so in those cases,

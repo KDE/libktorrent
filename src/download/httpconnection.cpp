@@ -6,10 +6,10 @@
 */
 #include "httpconnection.h"
 #include "httpresponseheader.h"
+#include <KLocalizedString>
 #include <QTimer>
 #include <QUrl>
 #include <QtAlgorithms>
-#include <klocalizedstring.h>
 #include <net/socketmonitor.h>
 #include <util/functions.h>
 #include <util/log.h>

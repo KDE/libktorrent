@@ -9,11 +9,11 @@
 
 #include "multifilecache.h"
 #include "singlefilecache.h"
+#include <KLocalizedString>
 #include <QMimeDatabase>
 #include <QMimeType>
+#include <QStringList>
 #include <interfaces/cachefactory.h>
-#include <klocalizedstring.h>
-#include <qstringlist.h>
 #include <torrent/torrent.h>
 #include <util/array.h>
 #include <util/bitset.h>

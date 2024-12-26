@@ -6,8 +6,8 @@
 #ifndef BTERROR_H
 #define BTERROR_H
 
+#include <QString>
 #include <ktorrent_export.h>
-#include <qstring.h>
 
 namespace bt
 {

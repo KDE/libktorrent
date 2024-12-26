@@ -13,7 +13,7 @@
 #include <version.h>
 
 #ifndef Q_OS_WIN
-#include <signal.h>
+#include <csignal>
 
 void signalhandler(int sig)
 {

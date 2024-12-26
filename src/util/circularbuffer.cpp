@@ -6,7 +6,7 @@
 
 #include "circularbuffer.h"
 #include "log.h"
-#include <string.h>
+#include <cstring>
 #include <util/log.h>
 
 namespace bt

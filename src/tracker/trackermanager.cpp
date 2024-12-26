@@ -4,9 +4,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "trackermanager.h"
+#include <KLocalizedString>
 #include <QFile>
 #include <QTextStream>
-#include <klocalizedstring.h>
 #include <peer/peermanager.h>
 #include <torrent/torrent.h>
 #include <torrent/torrentcontrol.h>

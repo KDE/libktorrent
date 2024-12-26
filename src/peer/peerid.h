@@ -6,8 +6,8 @@
 #ifndef BTPEERID_H
 #define BTPEERID_H
 
+#include <QString>
 #include <ktorrent_export.h>
-#include <qstring.h>
 
 namespace bt
 {

@@ -6,9 +6,9 @@
 #ifndef BTCHOKER_H
 #define BTCHOKER_H
 
+#include <QList>
 #include <ktorrent_export.h>
 #include <peer/peer.h>
-#include <qlist.h>
 #include <util/constants.h>
 
 namespace bt

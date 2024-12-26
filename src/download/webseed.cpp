@@ -8,16 +8,16 @@
 #include "webseed.h"
 
 #include "httpconnection.h"
-#include <QTimer>
 #include <diskio/chunkmanager.h>
 #include <diskio/piecedata.h>
-#include <klocalizedstring.h>
 #include <net/socketmonitor.h>
 #include <peer/peermanager.h>
 #include <torrent/torrent.h>
 #include <util/log.h>
 
+#include <KLocalizedString>
 #include <QNetworkProxyFactory>
+#include <QTimer>
 
 using namespace Qt::Literals::StringLiterals;
 

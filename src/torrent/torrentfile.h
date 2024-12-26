@@ -7,8 +7,8 @@
 #ifndef BTTORRENTFILE_H
 #define BTTORRENTFILE_H
 
+#include <QString>
 #include <interfaces/torrentfileinterface.h>
-#include <qstring.h>
 #include <util/constants.h>
 
 namespace bt

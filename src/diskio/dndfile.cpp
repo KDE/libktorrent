@@ -4,7 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "dndfile.h"
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 #include <torrent/torrentfile.h>
 #include <util/error.h>
 #include <util/file.h>

@@ -8,8 +8,8 @@
 
 #include "constants.h"
 #include <QSharedPointer>
+#include <cstdio>
 #include <ktorrent_export.h>
-#include <stdio.h>
 
 namespace bt
 {

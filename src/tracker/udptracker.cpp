@@ -5,11 +5,11 @@
 */
 #include "udptracker.h"
 #include "udptrackersocket.h"
+#include <KLocalizedString>
+#include <cstdlib>
 #include <interfaces/torrentinterface.h>
-#include <klocalizedstring.h>
 #include <net/addressresolver.h>
 #include <peer/peermanager.h>
-#include <stdlib.h>
 #include <torrent/globals.h>
 #include <torrent/server.h>
 #include <util/functions.h>

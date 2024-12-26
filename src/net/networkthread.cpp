@@ -6,7 +6,7 @@
 #include "networkthread.h"
 #include "socketgroup.h"
 #include "socketmonitor.h"
-#include <math.h>
+#include <cmath>
 #include <util/functions.h>
 #include <util/log.h>
 

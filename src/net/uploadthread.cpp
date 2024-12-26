@@ -7,7 +7,7 @@
 #include "socketgroup.h"
 #include "socketmonitor.h"
 #include "trafficshapedsocket.h"
-#include <math.h>
+#include <cmath>
 #include <util/functions.h>
 
 using namespace bt;

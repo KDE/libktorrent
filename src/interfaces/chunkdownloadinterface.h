@@ -6,7 +6,7 @@
 #ifndef BTCHUNKDOWNLOADINTERFACE_H
 #define BTCHUNKDOWNLOADINTERFACE_H
 
-#include <qstring.h>
+#include <QString>
 #include <util/constants.h>
 
 namespace bt

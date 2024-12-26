@@ -6,7 +6,7 @@
 */
 #include "logsystemmanager.h"
 #include "log.h"
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 
 namespace bt
 {

@@ -6,10 +6,10 @@
 #ifndef BTPEERDOWNLOADER_H
 #define BTPEERDOWNLOADER_H
 
+#include <QList>
+#include <QObject>
 #include <download/request.h>
 #include <interfaces/piecedownloader.h>
-#include <qlist.h>
-#include <qobject.h>
 
 namespace bt
 {

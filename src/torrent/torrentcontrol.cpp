@@ -11,6 +11,7 @@
 #include <QFile>
 #include <QTextStream>
 
+#include <KIO/CopyJob>
 #include <KLocalizedString>
 
 #include "choker.h"
@@ -41,7 +42,6 @@
 #include <interfaces/monitorinterface.h>
 #include <interfaces/queuemanagerinterface.h>
 #include <interfaces/trackerslist.h>
-#include <kio/copyjob.h>
 #include <net/socketmonitor.h>
 #include <peer/peer.h>
 #include <peer/peerdownloader.h>

@@ -5,7 +5,7 @@
 */
 #include "bdecoder.h"
 #include "bnode.h"
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 #include <util/error.h>
 #include <util/log.h>
 

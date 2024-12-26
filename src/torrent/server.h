@@ -7,10 +7,10 @@
 #define BTSERVER_H
 
 #include "globals.h"
+#include <QList>
+#include <QObject>
 #include <interfaces/serverinterface.h>
 #include <ktorrent_export.h>
-#include <qlist.h>
-#include <qobject.h>
 
 namespace bt
 {

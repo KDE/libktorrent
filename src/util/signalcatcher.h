@@ -11,9 +11,9 @@
 
 #include <QObject>
 #include <QSocketNotifier>
+#include <csetjmp>
+#include <csignal>
 #include <ktorrent_export.h>
-#include <setjmp.h>
-#include <signal.h>
 #include <util/error.h>
 
 namespace bt

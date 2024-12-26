@@ -5,8 +5,8 @@
 */
 #include "sha1hashgen.h"
 #include "functions.h"
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 
 #include <QCryptographicHash>
 

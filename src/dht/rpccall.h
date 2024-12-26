@@ -8,7 +8,7 @@
 
 #include "key.h"
 #include "rpcmsg.h"
-#include <qtimer.h>
+#include <QTimer>
 
 namespace dht
 {

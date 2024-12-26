@@ -5,6 +5,7 @@
 */
 #include "server.h"
 #include <QHostAddress>
+#include <QSocketNotifier>
 #include <QStringList>
 #include <mse/encryptedpacketsocket.h>
 #include <mse/encryptedserverauthenticate.h>
@@ -14,7 +15,6 @@
 #include <peer/authenticationmonitor.h>
 #include <peer/peermanager.h>
 #include <peer/serverauthenticate.h>
-#include <qsocketnotifier.h>
 #include <util/functions.h>
 #include <util/log.h>
 #include <util/sha1hash.h>

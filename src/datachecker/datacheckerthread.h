@@ -6,8 +6,8 @@
 #ifndef BTDATACHECKERTHREAD_H
 #define BTDATACHECKERTHREAD_H
 
+#include <QThread>
 #include <ktorrent_export.h>
-#include <qthread.h>
 #include <util/bitset.h>
 
 namespace bt

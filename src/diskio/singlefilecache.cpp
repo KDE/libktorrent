@@ -4,12 +4,15 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "singlefilecache.h"
+
+#include <QFileInfo>
+#include <QStringList>
 #include <QTextStream>
-#include <kio/copyjob.h>
-#include <kio/jobuidelegate.h>
-#include <klocalizedstring.h>
-#include <qfileinfo.h>
-#include <qstringlist.h>
+
+#include <KIO/CopyJob>
+#include <KIO/JobUiDelegate>
+#include <KLocalizedString>
+
 #include <util/error.h>
 #include <util/fileops.h>
 #include <util/functions.h>

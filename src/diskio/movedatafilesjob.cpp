@@ -4,13 +4,16 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "movedatafilesjob.h"
-#include <KIO/FileCopyJob>
+
 #include <QFileInfo>
 #include <QUrl>
+
+#include <KIO/FileCopyJob>
+#include <KIO/JobUiDelegate>
+#include <KJobTrackerInterface>
+#include <KLocalizedString>
+
 #include <interfaces/torrentfileinterface.h>
-#include <kio/jobuidelegate.h>
-#include <kjobtrackerinterface.h>
-#include <klocalizedstring.h>
 #include <util/fileops.h>
 #include <util/functions.h>
 #include <util/log.h>

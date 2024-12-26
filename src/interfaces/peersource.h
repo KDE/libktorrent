@@ -6,10 +6,10 @@
 #ifndef BTPEERSOURCE_H
 #define BTPEERSOURCE_H
 
+#include <QList>
+#include <QObject>
 #include <ktorrent_export.h>
 #include <net/address.h>
-#include <qlist.h>
-#include <qobject.h>
 #include <util/constants.h>
 
 namespace bt

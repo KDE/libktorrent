@@ -8,9 +8,9 @@
 #include <QTemporaryFile>
 #include <QTest>
 
+#include <csetjmp>
+#include <csignal>
 #include <ctime>
-#include <setjmp.h>
-#include <signal.h>
 #include <sys/types.h>
 #include <util/fileops.h>
 #include <util/log.h>

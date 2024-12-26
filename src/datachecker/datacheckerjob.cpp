@@ -5,11 +5,13 @@
 */
 
 #include "datacheckerjob.h"
+
+#include <KIO/Global>
+#include <KLocalizedString>
+
 #include "datacheckerthread.h"
 #include "multidatachecker.h"
 #include "singledatachecker.h"
-#include <KIO/Global>
-#include <klocalizedstring.h>
 #include <torrent/torrentcontrol.h>
 #include <util/functions.h>
 

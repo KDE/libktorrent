@@ -6,18 +6,20 @@
 #include "chunkselector.h"
 #include "chunkdownload.h"
 #include "downloader.h"
+
 #include <algorithm>
+#include <cstdlib>
 #include <random>
+#include <vector>
+
 #include <diskio/chunkmanager.h>
 #include <interfaces/piecedownloader.h>
 #include <peer/chunkcounter.h>
 #include <peer/peer.h>
 #include <peer/peermanager.h>
-#include <stdlib.h>
 #include <torrent/torrent.h>
 #include <util/bitset.h>
 #include <util/log.h>
-#include <vector>
 
 namespace bt
 {

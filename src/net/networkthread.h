@@ -6,9 +6,9 @@
 #ifndef NETNETWORKTHREAD_H
 #define NETNETWORKTHREAD_H
 
+#include <QThread>
 #include <net/poll.h>
 #include <net/socketgroup.h>
-#include <qthread.h>
 #include <util/constants.h>
 #include <util/ptrmap.h>
 

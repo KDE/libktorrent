@@ -7,7 +7,7 @@
 #ifndef Q_OS_WIN
 #include "signalcatcher.h"
 #include "log.h"
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 #include <sys/socket.h>
 #include <unistd.h>
 

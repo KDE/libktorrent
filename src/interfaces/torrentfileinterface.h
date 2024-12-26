@@ -6,9 +6,9 @@
 #ifndef BTTORRENTFILEINTERFACE_H
 #define BTTORRENTFILEINTERFACE_H
 
+#include <QObject>
+#include <QString>
 #include <ktorrent_export.h>
-#include <qobject.h>
-#include <qstring.h>
 #include <util/constants.h>
 
 class QTextCodec;

@@ -9,7 +9,7 @@
 #include "trafficshapedsocket.h"
 #include "wakeuppipe.h"
 #include <QtGlobal>
-#include <math.h>
+#include <cmath>
 #include <util/functions.h>
 #include <util/log.h>
 

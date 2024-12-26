@@ -8,10 +8,10 @@
 
 #include "cachefile.h"
 #include "ktorrent_export.h"
-#include <qmap.h>
-#include <qmutex.h>
-#include <qstring.h>
-#include <qthread.h>
+#include <QMap>
+#include <QMutex>
+#include <QString>
+#include <QThread>
 #include <util/constants.h>
 
 namespace bt

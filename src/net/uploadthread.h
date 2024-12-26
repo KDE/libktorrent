@@ -6,10 +6,10 @@
 #ifndef NETUPLOADTHREAD_H
 #define NETUPLOADTHREAD_H
 
+#include <QMutex>
+#include <QWaitCondition>
 #include <net/networkthread.h>
 #include <net/wakeuppipe.h>
-#include <qmutex.h>
-#include <qwaitcondition.h>
 
 namespace net
 {

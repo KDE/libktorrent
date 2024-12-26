@@ -4,7 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "torrentstats.h"
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 #include <util/functions.h>
 
 namespace bt

@@ -8,9 +8,9 @@
 #include <QRandomGenerator>
 #include <QTest>
 
+#include <ctime>
 #include <dht/key.h>
 #include <mse/rc4encryptor.h>
-#include <time.h>
 
 class RC4EncryptorTest : public QObject
 {

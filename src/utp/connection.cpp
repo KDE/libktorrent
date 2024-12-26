@@ -12,7 +12,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QThread>
-#include <time.h>
+#include <ctime>
 #include <util/functions.h>
 #include <util/log.h>
 #include <util/sha1hash.h>

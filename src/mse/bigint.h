@@ -6,9 +6,9 @@
 #ifndef MSEBIGINT_H
 #define MSEBIGINT_H
 
+#include <QString>
 #include <cstdio>
 #include <gmp.h>
-#include <qstring.h>
 #include <util/constants.h>
 
 using bt::Uint16;

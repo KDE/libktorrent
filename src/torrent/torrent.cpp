@@ -5,20 +5,22 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "torrent.h"
+
+#include <QDataStream>
+#include <QFile>
+#include <QStringList>
+
 #include <bcodec/bdecoder.h>
 #include <bcodec/bnode.h>
+#include <cstdlib>
+#include <ctime>
 #include <interfaces/monitorinterface.h>
-#include <qdatastream.h>
-#include <qfile.h>
-#include <qstringlist.h>
-#include <stdlib.h>
-#include <time.h>
 #include <util/error.h>
 #include <util/functions.h>
 #include <util/log.h>
 #include <util/sha1hashgen.h>
 
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 
 namespace bt
 {

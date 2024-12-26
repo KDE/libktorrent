@@ -7,7 +7,7 @@
 #define BTURLENCODER_H
 
 #include "constants.h"
-#include <qstring.h>
+#include <QString>
 
 namespace bt
 {

@@ -8,7 +8,7 @@
 
 #include "kbucket.h"
 #include "key.h"
-#include <qobject.h>
+#include <QObject>
 
 using bt::Uint8;
 

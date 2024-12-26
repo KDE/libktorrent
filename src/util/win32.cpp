@@ -7,9 +7,9 @@
 
 #include "win32.h"
 #include <assert.h>
-#include <errno.h>
+#include <cerrno>
+#include <cstdlib>
 #include <malloc.h>
-#include <stdlib.h>
 // #undef poll
 // #undef socket
 // #undef connect

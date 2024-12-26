@@ -5,8 +5,10 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "multidatachecker.h"
+
+#include <KLocalizedString>
+
 #include <diskio/dndfile.h>
-#include <klocalizedstring.h>
 #include <torrent/globals.h>
 #include <torrent/torrent.h>
 #include <torrent/torrentfile.h>

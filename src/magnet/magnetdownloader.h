@@ -8,8 +8,8 @@
 #define BT_MAGNETDOWNLOADER_H
 
 #include "magnetlink.h"
+#include <KIO/Job>
 #include <QObject>
-#include <kio/job.h>
 #include <ktorrent_export.h>
 #include <torrent/torrent.h>
 #include <tracker/tracker.h>

@@ -9,11 +9,11 @@
 
 #include "error.h"
 #include "log.h"
-#include <errno.h>
-#include <klocalizedstring.h>
-#include <qfile.h>
-#include <stdio.h>
-#include <string.h>
+#include <KLocalizedString>
+#include <QFile>
+#include <cerrno>
+#include <cstdio>
+#include <cstring>
 
 namespace bt
 {

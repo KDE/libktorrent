@@ -7,8 +7,8 @@
 #ifndef DECOMPRESSFILEJOB_H
 #define DECOMPRESSFILEJOB_H
 
+#include <KIO/Job>
 #include <QThread>
-#include <kio/job.h>
 #include <ktorrent_export.h>
 
 namespace bt

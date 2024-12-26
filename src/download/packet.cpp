@@ -5,11 +5,11 @@
 */
 #include "packet.h"
 #include "request.h"
+#include <QString>
+#include <cstring>
 #include <diskio/chunk.h>
 #include <net/socketdevice.h>
 #include <peer/peer.h>
-#include <qstring.h>
-#include <string.h>
 #include <util/bitset.h>
 #include <util/functions.h>
 #include <util/log.h>

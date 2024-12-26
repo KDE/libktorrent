@@ -4,13 +4,13 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "udptrackersocket.h"
+#include <KLocalizedString>
 #include <QHostAddress>
-#include <klocalizedstring.h>
+#include <cstdlib>
+#include <ctime>
 #include <net/portlist.h>
 #include <net/serversocket.h>
 #include <net/socket.h>
-#include <stdlib.h>
-#include <time.h>
 #include <torrent/globals.h>
 #include <util/array.h>
 #include <util/functions.h>

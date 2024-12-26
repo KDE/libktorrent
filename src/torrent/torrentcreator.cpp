@@ -7,12 +7,12 @@
 #include "globals.h"
 #include "statsfile.h"
 #include "torrentcontrol.h"
+#include <KLocalizedString>
+#include <QDir>
+#include <QFileInfo>
 #include <bcodec/bencoder.h>
+#include <ctime>
 #include <diskio/chunkmanager.h>
-#include <klocalizedstring.h>
-#include <qdir.h>
-#include <qfileinfo.h>
-#include <time.h>
 #include <util/array.h>
 #include <util/error.h>
 #include <util/file.h>

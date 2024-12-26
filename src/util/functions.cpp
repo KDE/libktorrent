@@ -6,7 +6,7 @@
 
 #include "functions.h"
 
-#include <errno.h>
+#include <cerrno>
 #include <gcrypt.h>
 #include <sys/types.h>
 
@@ -19,7 +19,7 @@
 #include <unistd.h>
 #else
 #include <Winsock2.h>
-#include <stdio.h>
+#include <cstdio>
 #endif
 
 #include <chrono>

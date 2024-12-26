@@ -6,7 +6,7 @@
 #include "authenticationmonitor.h"
 #include "authenticatebase.h"
 #include "peerconnector.h"
-#include <math.h>
+#include <cmath>
 #include <mse/encryptedpacketsocket.h>
 #include <util/functions.h>
 #include <util/log.h>

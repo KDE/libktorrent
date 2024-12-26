@@ -5,7 +5,7 @@
 */
 #include "waitjob.h"
 #include "log.h"
-#include <qtimer.h>
+#include <QTimer>
 #include <torrent/globals.h>
 
 namespace bt

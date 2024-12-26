@@ -4,14 +4,14 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "preallocationthread.h"
-#include <errno.h>
+#include <cerrno>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
 #include "chunkmanager.h"
-#include <klocalizedstring.h>
-#include <qfile.h>
+#include <KLocalizedString>
+#include <QFile>
 #include <util/error.h>
 #include <util/log.h>
 

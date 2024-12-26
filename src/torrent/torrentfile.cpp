@@ -8,8 +8,8 @@
 
 #include <QMimeDatabase>
 #include <QMimeType>
+#include <cmath>
 #include <diskio/chunkmanager.h>
-#include <math.h>
 #include <util/bitset.h>
 #include <util/functions.h>
 #include <util/log.h>

@@ -6,8 +6,8 @@
 #ifndef DHTDHTBASE_H
 #define DHTDHTBASE_H
 
-#include <qmap.h>
-#include <qobject.h>
+#include <QMap>
+#include <QObject>
 #include <util/constants.h>
 
 class QString;

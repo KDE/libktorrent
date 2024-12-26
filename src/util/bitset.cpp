@@ -5,7 +5,7 @@
 */
 #include "bitset.h"
 #include <algorithm>
-#include <string.h>
+#include <cstring>
 
 namespace bt
 {

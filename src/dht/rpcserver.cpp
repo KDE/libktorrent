@@ -17,9 +17,9 @@
 #include <bcodec/bencoder.h>
 #include <bcodec/bnode.h>
 #include <boost/scoped_ptr.hpp>
+#include <cstring>
 #include <net/portlist.h>
 #include <net/serversocket.h>
-#include <string.h>
 #include <torrent/globals.h>
 #include <util/error.h>
 #include <util/functions.h>

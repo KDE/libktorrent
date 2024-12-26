@@ -6,8 +6,8 @@
 #ifndef BTPEERUPLOADER_H
 #define BTPEERUPLOADER_H
 
+#include <QList>
 #include <download/request.h>
-#include <qlist.h>
 
 namespace bt
 {
