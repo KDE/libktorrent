@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-12-23 00:40+0000\n"
+"POT-Creation-Date: 2024-12-27 00:41+0000\n"
 "PO-Revision-Date: 2013-04-06 10:53+0200\n"
 "Last-Translator: Stelios <sstavragmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -49,54 +49,54 @@ msgstr "Αδυναμία μετατροπής του %1 σε ακέραιο"
 msgid "Torrent is incomplete."
 msgstr "Το torrent δεν είναι ολοκληρωμένο"
 
-#: src/datachecker/datacheckerjob.cpp:67
+#: src/datachecker/datacheckerjob.cpp:69
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr "Αναμονή για ολοκλήρωση άλλων ελέγχων σε δεδομένα"
 
-#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:93
+#: src/datachecker/datacheckerjob.cpp:75 src/torrent/torrentstats.cpp:93
 #, kde-format
 msgid "Checking data"
 msgstr "Έλεγχος δεδομένων"
 
-#: src/datachecker/datacheckerjob.cpp:120
+#: src/datachecker/datacheckerjob.cpp:122
 #, kde-format
 msgid "Checking Data"
 msgstr "Έλεγχος δεδομένων"
 
-#: src/datachecker/multidatachecker.cpp:181
-#: src/datachecker/singledatachecker.cpp:34 src/diskio/multifilecache.cpp:621
-#: src/diskio/multifilecache.cpp:656 src/torrent/torrentcreator.cpp:111
+#: src/datachecker/multidatachecker.cpp:183
+#: src/datachecker/singledatachecker.cpp:36 src/diskio/multifilecache.cpp:625
+#: src/diskio/multifilecache.cpp:660 src/torrent/torrentcreator.cpp:111
 #: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "Αδυναμία ανοίγματος του αρχείου %1: %2"
 
-#: src/diskio/cache.cpp:149 src/diskio/multifilecache.cpp:95
-#: src/diskio/singlefilecache.cpp:67
+#: src/diskio/cache.cpp:149 src/diskio/multifilecache.cpp:99
+#: src/diskio/singlefilecache.cpp:70
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "Αδυναμία δημιουργίας του %1: %2"
 
-#: src/diskio/cachefile.cpp:78 src/util/fileops.cpp:322
+#: src/diskio/cachefile.cpp:79 src/util/fileops.cpp:322
 #: src/util/fileops.cpp:365
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Αδυναμία ανοίγματος του αρχείου %1 : %2"
 
-#: src/diskio/cachefile.cpp:105 src/diskio/cachefile.cpp:217
-#: src/diskio/cachefile.cpp:370 src/diskio/cachefile.cpp:429
+#: src/diskio/cachefile.cpp:106 src/diskio/cachefile.cpp:218
+#: src/diskio/cachefile.cpp:371 src/diskio/cachefile.cpp:430
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr ""
 "Αδυναμία ανοίγματος του %1 για εγγραφή: σύστημα αρχείων για ανάγνωση μόνο"
 
-#: src/diskio/cachefile.cpp:111 src/diskio/cachefile.cpp:375
+#: src/diskio/cachefile.cpp:112 src/diskio/cachefile.cpp:376
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "Απόπειρα εγγραφής πέρα από το μέγιστο μέγεθος του %1"
 
-#: src/diskio/cachefile.cpp:222
+#: src/diskio/cachefile.cpp:223
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
@@ -104,32 +104,32 @@ msgstr ""
 "Αδυναμία επέκτασης αρχείου %1: απόπειρα αύξησης μεγέθους αρχείου πέρα από το "
 "μέγιστο"
 
-#: src/diskio/cachefile.cpp:226
+#: src/diskio/cachefile.cpp:227
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "Αδυναμία επέκτασης του αρχείου: %1: %2"
 
-#: src/diskio/cachefile.cpp:338
+#: src/diskio/cachefile.cpp:339
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "Σφάλμα: Η ανάγνωση πέρασε το τέλος του αρχείου %1"
 
-#: src/diskio/cachefile.cpp:343 src/diskio/cachefile.cpp:385
+#: src/diskio/cachefile.cpp:344 src/diskio/cachefile.cpp:386
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "Αποτυχία αναζήτησης αρχείου %1: %2"
 
-#: src/diskio/cachefile.cpp:350
+#: src/diskio/cachefile.cpp:351
 #, kde-format
 msgid "Error reading from %1"
 msgstr "Σφάλμα ανάγνωσης από το %1"
 
-#: src/diskio/cachefile.cpp:388
+#: src/diskio/cachefile.cpp:389
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "Αποτυχία εγγραφής στο αρχείο %1: %2"
 
-#: src/diskio/cachefile.cpp:445
+#: src/diskio/cachefile.cpp:446
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Αδυναμία προκράτησης χώρου στο δίσκο: %1"
@@ -154,30 +154,30 @@ msgstr "Αποτυχία εγγραφής του πρώτου κομματιού
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Αποτυχία εγγραφής του τελευταίου κομματιού στο αρχείο DND: %1"
 
-#: src/diskio/movedatafilesjob.cpp:110
+#: src/diskio/movedatafilesjob.cpp:113
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr "Αναμονή ολοκλήρωσης άλλων εργασιών μετακίνησης"
 
-#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#: src/diskio/movedatafilesjob.cpp:114 src/diskio/movedatafilesjob.cpp:150
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "Πηγή"
 
-#: src/diskio/movedatafilesjob.cpp:112 src/diskio/movedatafilesjob.cpp:148
+#: src/diskio/movedatafilesjob.cpp:115 src/diskio/movedatafilesjob.cpp:151
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "Προορισμός"
 
-#: src/diskio/movedatafilesjob.cpp:146
+#: src/diskio/movedatafilesjob.cpp:149
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
 msgstr "Κινούμενο"
 
-#: src/diskio/multifilecache.cpp:70 src/diskio/singlefilecache.cpp:57
+#: src/diskio/multifilecache.cpp:74 src/diskio/singlefilecache.cpp:60
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr "Αδυναμία ανοίγματος του %1: %2"
@@ -302,10 +302,10 @@ msgstr "Σφάλμα: %1"
 msgid "Unknown client"
 msgstr "Άγνωστος πελάτης"
 
-#: src/torrent/torrent.cpp:93 src/torrent/torrent.cpp:140
-#: src/torrent/torrent.cpp:167 src/torrent/torrent.cpp:174
-#: src/torrent/torrent.cpp:181 src/torrent/torrent.cpp:185
-#: src/torrent/torrent.cpp:205 src/torrent/torrent.cpp:269
+#: src/torrent/torrent.cpp:95 src/torrent/torrent.cpp:142
+#: src/torrent/torrent.cpp:169 src/torrent/torrent.cpp:176
+#: src/torrent/torrent.cpp:183 src/torrent/torrent.cpp:187
+#: src/torrent/torrent.cpp:207 src/torrent/torrent.cpp:271
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Κατεστραμμένο torrent."

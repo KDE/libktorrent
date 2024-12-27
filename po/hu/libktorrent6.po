@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KTorrent 3.1\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-12-23 00:40+0000\n"
+"POT-Creation-Date: 2024-12-27 00:41+0000\n"
 "PO-Revision-Date: 2013-07-03 19:36+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -46,85 +46,85 @@ msgstr "Nem sikerült egésszé alakítani: %1"
 msgid "Torrent is incomplete."
 msgstr "A torrent nem teljes."
 
-#: src/datachecker/datacheckerjob.cpp:67
+#: src/datachecker/datacheckerjob.cpp:69
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr "Várakozás a további adatellenőrzés befejezésére"
 
-#: src/datachecker/datacheckerjob.cpp:73 src/torrent/torrentstats.cpp:93
+#: src/datachecker/datacheckerjob.cpp:75 src/torrent/torrentstats.cpp:93
 #, kde-format
 msgid "Checking data"
 msgstr "Adatellenőrzés"
 
-#: src/datachecker/datacheckerjob.cpp:120
+#: src/datachecker/datacheckerjob.cpp:122
 #, kde-format
 msgid "Checking Data"
 msgstr "Adatellenőrzés"
 
-#: src/datachecker/multidatachecker.cpp:181
-#: src/datachecker/singledatachecker.cpp:34 src/diskio/multifilecache.cpp:621
-#: src/diskio/multifilecache.cpp:656 src/torrent/torrentcreator.cpp:111
+#: src/datachecker/multidatachecker.cpp:183
+#: src/datachecker/singledatachecker.cpp:36 src/diskio/multifilecache.cpp:625
+#: src/diskio/multifilecache.cpp:660 src/torrent/torrentcreator.cpp:111
 #: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "Nem sikerült megnyitni ezt a fájlt: %1. %2"
 
-#: src/diskio/cache.cpp:149 src/diskio/multifilecache.cpp:95
-#: src/diskio/singlefilecache.cpp:67
+#: src/diskio/cache.cpp:149 src/diskio/multifilecache.cpp:99
+#: src/diskio/singlefilecache.cpp:70
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "%1 létrehozása nem sikerült: %2"
 
-#: src/diskio/cachefile.cpp:78 src/util/fileops.cpp:322
+#: src/diskio/cachefile.cpp:79 src/util/fileops.cpp:322
 #: src/util/fileops.cpp:365
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "A(z) %1 nem nyitható meg: %2"
 
-#: src/diskio/cachefile.cpp:105 src/diskio/cachefile.cpp:217
-#: src/diskio/cachefile.cpp:370 src/diskio/cachefile.cpp:429
+#: src/diskio/cachefile.cpp:106 src/diskio/cachefile.cpp:218
+#: src/diskio/cachefile.cpp:371 src/diskio/cachefile.cpp:430
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "%1 nem nyitható meg írásra: a fájlrendszer csak olvasható"
 
-#: src/diskio/cachefile.cpp:111 src/diskio/cachefile.cpp:375
+#: src/diskio/cachefile.cpp:112 src/diskio/cachefile.cpp:376
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "A(z) %1 maximális méretén túli írás kísérlete"
 
-#: src/diskio/cachefile.cpp:222
+#: src/diskio/cachefile.cpp:223
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
 msgstr ""
 "A(z) %1 fájl nem növelhető meg: fájlnövelés próba a maximális méreten túl"
 
-#: src/diskio/cachefile.cpp:226
+#: src/diskio/cachefile.cpp:227
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "A(z) %1 fájl nem bővíthető: %2"
 
-#: src/diskio/cachefile.cpp:338
+#: src/diskio/cachefile.cpp:339
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "Hiba a(z) %1 fájl végének olvasásakor"
 
-#: src/diskio/cachefile.cpp:343 src/diskio/cachefile.cpp:385
+#: src/diskio/cachefile.cpp:344 src/diskio/cachefile.cpp:386
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "Nem sikerült pozicionálni a(z) %1 fájlban: %2"
 
-#: src/diskio/cachefile.cpp:350
+#: src/diskio/cachefile.cpp:351
 #, kde-format
 msgid "Error reading from %1"
 msgstr "Hiba történt %1 olvasása közben"
 
-#: src/diskio/cachefile.cpp:388
+#: src/diskio/cachefile.cpp:389
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "Nem sikerült írni a(z) %1 fájlba: %2"
 
-#: src/diskio/cachefile.cpp:445
+#: src/diskio/cachefile.cpp:446
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Nem sikerült előre lefoglalni lemezterületet: %1"
@@ -149,30 +149,30 @@ msgstr "Nem sikerült kiírni az első darabot a DND-fájlba: %1"
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Nem sikerült kiírni az utolsó darabot a DND-fájlba: %1"
 
-#: src/diskio/movedatafilesjob.cpp:110
+#: src/diskio/movedatafilesjob.cpp:113
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr "Várakozás a további mozgó feladatok befejezésére"
 
-#: src/diskio/movedatafilesjob.cpp:111 src/diskio/movedatafilesjob.cpp:147
+#: src/diskio/movedatafilesjob.cpp:114 src/diskio/movedatafilesjob.cpp:150
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "Forrás"
 
-#: src/diskio/movedatafilesjob.cpp:112 src/diskio/movedatafilesjob.cpp:148
+#: src/diskio/movedatafilesjob.cpp:115 src/diskio/movedatafilesjob.cpp:151
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "Cél"
 
-#: src/diskio/movedatafilesjob.cpp:146
+#: src/diskio/movedatafilesjob.cpp:149
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
 msgstr "Mozgatás"
 
-#: src/diskio/multifilecache.cpp:70 src/diskio/singlefilecache.cpp:57
+#: src/diskio/multifilecache.cpp:74 src/diskio/singlefilecache.cpp:60
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr "%1 megnyitása nem sikerült: %2"
@@ -297,10 +297,10 @@ msgstr "Hiba: %1"
 msgid "Unknown client"
 msgstr "Ismeretlen kliens"
 
-#: src/torrent/torrent.cpp:93 src/torrent/torrent.cpp:140
-#: src/torrent/torrent.cpp:167 src/torrent/torrent.cpp:174
-#: src/torrent/torrent.cpp:181 src/torrent/torrent.cpp:185
-#: src/torrent/torrent.cpp:205 src/torrent/torrent.cpp:269
+#: src/torrent/torrent.cpp:95 src/torrent/torrent.cpp:142
+#: src/torrent/torrent.cpp:169 src/torrent/torrent.cpp:176
+#: src/torrent/torrent.cpp:183 src/torrent/torrent.cpp:187
+#: src/torrent/torrent.cpp:207 src/torrent/torrent.cpp:271
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Hibás torrent."
