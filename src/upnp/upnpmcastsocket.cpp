@@ -277,7 +277,7 @@ void UPnPMCastSocket::UPnPMCastSocketPrivate::leaveUPnPMCastGroup(int fd)
 UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteArray &arr)
 {
     const QString response = QString::fromLatin1(arr);
-    QVector<QStringView> lines = QStringView(response).split(QStringLiteral("\r\n"));
+    QList<QStringView> lines = QStringView(response).split(QStringLiteral("\r\n"));
     QString server;
     QUrl location;
 

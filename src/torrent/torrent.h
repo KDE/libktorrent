@@ -301,9 +301,9 @@ private:
     QByteArray metadata;
 
     SHA1Hash info_hash;
-    QVector<SHA1Hash> hash_pieces;
-    QVector<TorrentFile> files;
-    QVector<DHTNode> nodes;
+    QList<SHA1Hash> hash_pieces;
+    QList<TorrentFile> files;
+    QList<DHTNode> nodes;
     QList<QUrl> web_seeds;
     PeerID peer_id;
 
