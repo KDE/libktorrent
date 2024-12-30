@@ -18,6 +18,8 @@ set(util_HDR
     bitset.h
     sha1hash.h
     sha1hashgen.h
+    sha2hash.h
+    sha2hashgen.h
     error.h
     logsystemmanager.h
     compressfilejob.h
