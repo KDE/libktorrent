@@ -15,6 +15,8 @@ target_sources(KTorrent6 PRIVATE
     util/urlencoder.cpp
     util/sha1hashgen.cpp
     util/sha1hash.cpp
+    util/sha2hashgen.cpp
+    util/sha2hash.cpp
     util/functions.cpp
     util/ptrmap.cpp
     util/array.cpp
