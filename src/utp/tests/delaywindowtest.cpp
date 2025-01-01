@@ -10,8 +10,6 @@
 
 #include <ctime>
 
-#include <boost/scoped_array.hpp>
-
 #include <util/functions.h>
 #include <util/log.h>
 #include <utp/delaywindow.h>
@@ -59,13 +57,13 @@ private Q_SLOTS:
     {
         const int SAMPLE_COUNT = 2400000;
 
-        boost::scoped_array<bt::Uint32> delay_samples(new bt::Uint32[SAMPLE_COUNT]);
+        std::unique_ptr<bt::Uint32[]> delay_samples(new bt::Uint32[SAMPLE_COUNT]);
         for (int i = 0; i < SAMPLE_COUNT; i++)
             delay_samples[i] = QRandomGenerator::global()->bounded(1000000);
 
-        boost::scoped_array<bt::Uint32> returned_delay_new(new bt::Uint32[SAMPLE_COUNT]);
-        boost::scoped_array<bt::Uint32> returned_delay_old(new bt::Uint32[SAMPLE_COUNT]);
-        boost::scoped_array<bt::Uint32> returned_delay_circular(new bt::Uint32[SAMPLE_COUNT]);
+        std::unique_ptr<bt::Uint32[]> returned_delay_new(new bt::Uint32[SAMPLE_COUNT]);
+        std::unique_ptr<bt::Uint32[]> returned_delay_old(new bt::Uint32[SAMPLE_COUNT]);
+        std::unique_ptr<bt::Uint32[]> returned_delay_circular(new bt::Uint32[SAMPLE_COUNT]);
 
         {
             DelayWindow wnd;

@@ -18,7 +18,6 @@
 #include "bcodec/bdecoder.h"
 #include "bcodec/bnode.h"
 #include "util/error.h"
-#include <boost/concept_check.hpp>
 
 namespace bt
 {

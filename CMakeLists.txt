@@ -70,7 +70,7 @@ find_package(KF6 "${KF_MIN_VERSION}" REQUIRED COMPONENTS
     Solid
 )
 
-find_package(Boost "${Boost_MIN_VERSION}" MODULE REQUIRED)
+find_package(Boost "${Boost_MIN_VERSION}" NO_MODULE REQUIRED)
 find_package(LibGMP "${LibGMP_MIN_VERSION}" REQUIRED)
 find_package(LibGcrypt "${LibGcrypt_MIN_VERSION}" REQUIRED)
 

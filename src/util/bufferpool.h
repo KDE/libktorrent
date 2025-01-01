@@ -10,7 +10,6 @@
 #include <QMutex>
 #include <QSharedPointer>
 #include <QWeakPointer>
-#include <boost/shared_array.hpp>
 #include <ktorrent_export.h>
 #include <list>
 #include <map>
@@ -21,13 +20,13 @@ namespace bt
 class BufferPool;
 
 /**
- * Buffer object, extends boost shared_array with a size and capacity property.
+ * Buffer object, extends shared_ptr with a size and capacity property.
  **/
 class KTORRENT_EXPORT Buffer
 {
 public:
     typedef QSharedPointer<Buffer> Ptr;
-    typedef boost::shared_array<bt::Uint8> Data;
+    typedef std::shared_ptr<bt::Uint8[]> Data;
 
     Buffer(Data data, bt::Uint32 fill, bt::Uint32 cap, QWeakPointer<BufferPool> pool);
     virtual ~Buffer();

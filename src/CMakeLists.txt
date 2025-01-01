@@ -239,7 +239,6 @@ PUBLIC
     KF6::Solid
     KF6::I18n
     Qt6::Xml
-    Boost::boost
     LibGcrypt::LibGcrypt
     LibGMP::LibGMP
 )

@@ -18,8 +18,6 @@
 #include <util/functions.h>
 #include <util/log.h>
 
-#include <boost/concept_check.hpp>
-
 using namespace bt;
 
 const bt::Uint64 TEST_FILE_SIZE = 15 * 1024 * 1024;

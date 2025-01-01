@@ -8,7 +8,6 @@
 #include <QTest>
 #include <QTimer>
 
-#include <boost/concept_check.hpp>
 #include <torrent/globals.h>
 #include <util/log.h>
 #include <utp/utpserver.h>

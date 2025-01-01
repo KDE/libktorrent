@@ -16,7 +16,6 @@
 #include <bcodec/bdecoder.h>
 #include <bcodec/bencoder.h>
 #include <bcodec/bnode.h>
-#include <boost/scoped_ptr.hpp>
 #include <cstring>
 #include <net/portlist.h>
 #include <net/serversocket.h>
@@ -72,7 +71,7 @@ public:
         try {
             // read and decode the packet
             BDecoder bdec(ptr->get(), ptr->size(), false);
-            boost::scoped_ptr<BNode> n(bdec.decode());
+            std::unique_ptr<BNode> n(bdec.decode());
 
             if (!n || n->getType() != BNode::DICT)
                 return;

@@ -12,7 +12,6 @@
 #include <QPair>
 #include <QSharedPointer>
 #include <QWaitCondition>
-#include <boost/concept_check.hpp>
 #include <ktorrent_export.h>
 #include <net/address.h>
 #include <util/circularbuffer.h>

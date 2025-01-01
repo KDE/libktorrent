@@ -10,13 +10,12 @@
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QTimer>
-#include <boost/scoped_ptr.hpp>
 #include <interfaces/queuemanagerinterface.h>
 #include <torrent/torrentcontrol.h>
 
 class QUrl;
 
-typedef boost::scoped_ptr<bt::TorrentControl> TorrentControlPtr;
+typedef std::unique_ptr<bt::TorrentControl> TorrentControlPtr;
 
 class KTCLI : public QCoreApplication, public bt::QueueManagerInterface
 {
