@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-12-27 00:41+0000\n"
+"POT-Creation-Date: 2025-01-02 00:41+0000\n"
 "PO-Revision-Date: 2024-02-12 14:04+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -410,7 +410,7 @@ msgid "Superseeding"
 msgstr "التزويد الخارق"
 
 #: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
-#: src/tracker/httptracker.cpp:390
+#: src/tracker/httptracker.cpp:385
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "إجابة غير صالحة من المتتبّع"
@@ -420,12 +420,12 @@ msgstr "إجابة غير صالحة من المتتبّع"
 msgid "Invalid data from tracker"
 msgstr "بيانات غير صالحة من المتتبّع"
 
-#: src/tracker/httptracker.cpp:405
+#: src/tracker/httptracker.cpp:400
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "عنوان URL لمتتبّع غير صالح"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:458 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"

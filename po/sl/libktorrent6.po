@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-12-27 00:41+0000\n"
+"POT-Creation-Date: 2025-01-02 00:41+0000\n"
 "PO-Revision-Date: 2020-02-21 22:15+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -411,7 +411,7 @@ msgid "Superseeding"
 msgstr "Super-sejanje"
 
 #: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
-#: src/tracker/httptracker.cpp:390
+#: src/tracker/httptracker.cpp:385
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Neveljaven odgovor sledilnika"
@@ -421,12 +421,12 @@ msgstr "Neveljaven odgovor sledilnika"
 msgid "Invalid data from tracker"
 msgstr "Neveljavni podatki s sledilnika"
 
-#: src/tracker/httptracker.cpp:405
+#: src/tracker/httptracker.cpp:400
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Neveljaven URL sledilnika"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:458 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"

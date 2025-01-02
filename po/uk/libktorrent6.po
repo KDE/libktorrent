@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent5\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-12-27 00:41+0000\n"
+"POT-Creation-Date: 2025-01-02 00:41+0000\n"
 "PO-Revision-Date: 2015-06-25 19:31+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -420,7 +420,7 @@ msgid "Superseeding"
 msgstr "Суперпоширення"
 
 #: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
-#: src/tracker/httptracker.cpp:390
+#: src/tracker/httptracker.cpp:385
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Некоректна відповідь координатора"
@@ -430,12 +430,12 @@ msgstr "Некоректна відповідь координатора"
 msgid "Invalid data from tracker"
 msgstr "Некоректні дані від координатора"
 
-#: src/tracker/httptracker.cpp:405
+#: src/tracker/httptracker.cpp:400
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Некоректна адреса URL координатора"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:458 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-12-27 00:41+0000\n"
+"POT-Creation-Date: 2025-01-02 00:41+0000\n"
 "PO-Revision-Date: 2013-04-03 10:32+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -406,7 +406,7 @@ msgid "Superseeding"
 msgstr "A super-publicar"
 
 #: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
-#: src/tracker/httptracker.cpp:390
+#: src/tracker/httptracker.cpp:385
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Foi recebida uma resposta inválida do localizador"
@@ -416,12 +416,12 @@ msgstr "Foi recebida uma resposta inválida do localizador"
 msgid "Invalid data from tracker"
 msgstr "Foram recebidos dados inválidos do localizador"
 
-#: src/tracker/httptracker.cpp:405
+#: src/tracker/httptracker.cpp:400
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "O URL do localizador é inválido"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:458 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KTorrent 3.1\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-12-27 00:41+0000\n"
+"POT-Creation-Date: 2025-01-02 00:41+0000\n"
 "PO-Revision-Date: 2013-07-03 19:36+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -406,7 +406,7 @@ msgid "Superseeding"
 msgstr "Szuper-feltöltés"
 
 #: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
-#: src/tracker/httptracker.cpp:390
+#: src/tracker/httptracker.cpp:385
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Érvénytelen válasz érkezett a követőtől"
@@ -416,12 +416,12 @@ msgstr "Érvénytelen válasz érkezett a követőtől"
 msgid "Invalid data from tracker"
 msgstr "Érvénytelen adat érkezett a követőtől"
 
-#: src/tracker/httptracker.cpp:405
+#: src/tracker/httptracker.cpp:400
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Érvénytelen követő-URL"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:458 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"
