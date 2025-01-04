@@ -321,7 +321,7 @@ bool XfsPreallocate(const QString &path, Uint64 size)
 {
     int fd = ::open(QFile::encodeName(path).constData(), O_RDWR | O_LARGEFILE);
     if (fd < 0)
-        throw Error(i18n("Cannot open %1: %2", path, strerror(errno)));
+        throw Error(i18n("Cannot open %1: %2", path, QString::fromUtf8(strerror(errno))));
 
     bool ret = XfsPreallocate(fd, size);
     close(fd);
