@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-01-02 00:41+0000\n"
+"POT-Creation-Date: 2025-01-04 00:41+0000\n"
 "PO-Revision-Date: 2023-02-12 18:47+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -19,78 +19,78 @@ msgstr ""
 "X-Generator: translate-po (https://github.com/zcribe/translate-po)\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: src/bcodec/bdecoder.cpp:48
+#: src/bcodec/bdecoder.cpp:50
 #, kde-format
 msgid "Illegal token: %1"
 msgstr "Maltaŭga ĵetono: %1"
 
-#: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
+#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:111
 #, kde-format
 msgid "Decode error"
 msgstr "Malkoda eraro"
 
-#: src/bcodec/bdecoder.cpp:161 src/bcodec/bdecoder.cpp:199
+#: src/bcodec/bdecoder.cpp:163 src/bcodec/bdecoder.cpp:201
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Neatendita fino de enigo"
 
-#: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
+#: src/bcodec/bdecoder.cpp:180 src/bcodec/bdecoder.cpp:220
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "Ne povas konverti %1 en entjeron"
 
-#: src/bcodec/bdecoder.cpp:223
+#: src/bcodec/bdecoder.cpp:225
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Torento estas nekompleta."
 
-#: src/datachecker/datacheckerjob.cpp:69
+#: src/datachecker/datacheckerjob.cpp:71
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr "Atendante la finiĝon de aliaj datumaj kontroloj"
 
-#: src/datachecker/datacheckerjob.cpp:75 src/torrent/torrentstats.cpp:93
+#: src/datachecker/datacheckerjob.cpp:77 src/torrent/torrentstats.cpp:93
 #, kde-format
 msgid "Checking data"
 msgstr "Kontrolas datumojn"
 
-#: src/datachecker/datacheckerjob.cpp:122
+#: src/datachecker/datacheckerjob.cpp:124
 #, kde-format
 msgid "Checking Data"
 msgstr "Kontrolante Datumojn"
 
-#: src/datachecker/multidatachecker.cpp:183
-#: src/datachecker/singledatachecker.cpp:36 src/diskio/multifilecache.cpp:625
-#: src/diskio/multifilecache.cpp:660 src/torrent/torrentcreator.cpp:111
-#: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
+#: src/datachecker/multidatachecker.cpp:185
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:627
+#: src/diskio/multifilecache.cpp:662 src/torrent/torrentcreator.cpp:113
+#: src/torrent/torrentcreator.cpp:234 src/torrent/torrentcreator.cpp:266
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "Ne povas malfermi dosieron %1: %2"
 
-#: src/diskio/cache.cpp:149 src/diskio/multifilecache.cpp:99
-#: src/diskio/singlefilecache.cpp:70
+#: src/diskio/cache.cpp:151 src/diskio/multifilecache.cpp:101
+#: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "Malsukcesis krei %1: %2"
 
-#: src/diskio/cachefile.cpp:79 src/util/fileops.cpp:322
-#: src/util/fileops.cpp:365
+#: src/diskio/cachefile.cpp:81 src/util/fileops.cpp:324
+#: src/util/fileops.cpp:367
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Ne povas malfermi %1: %2"
 
-#: src/diskio/cachefile.cpp:106 src/diskio/cachefile.cpp:218
-#: src/diskio/cachefile.cpp:371 src/diskio/cachefile.cpp:430
+#: src/diskio/cachefile.cpp:108 src/diskio/cachefile.cpp:220
+#: src/diskio/cachefile.cpp:373 src/diskio/cachefile.cpp:432
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "Ne povas malfermi %1 por skribi: nurlegebla dosiersistemo"
 
-#: src/diskio/cachefile.cpp:112 src/diskio/cachefile.cpp:376
+#: src/diskio/cachefile.cpp:114 src/diskio/cachefile.cpp:378
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "Provante skribi preter la maksimuma grandeco de %1"
 
-#: src/diskio/cachefile.cpp:223
+#: src/diskio/cachefile.cpp:225
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
@@ -98,80 +98,80 @@ msgstr ""
 "Ne povas vastigi dosieron %1: provante kreskigi la dosieron preter la "
 "maksimuma grandeco"
 
-#: src/diskio/cachefile.cpp:227
+#: src/diskio/cachefile.cpp:229
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "Ne povas vastigi dosieron %1: %2"
 
-#: src/diskio/cachefile.cpp:339
+#: src/diskio/cachefile.cpp:341
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "Eraro: Legado preter la fino de la dosiero %1"
 
-#: src/diskio/cachefile.cpp:344 src/diskio/cachefile.cpp:386
+#: src/diskio/cachefile.cpp:346 src/diskio/cachefile.cpp:388
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "Malsukcesis serĉi dosieron %1: %2"
 
-#: src/diskio/cachefile.cpp:351
+#: src/diskio/cachefile.cpp:353
 #, kde-format
 msgid "Error reading from %1"
 msgstr "Eraro okazis dum legado de %1"
 
-#: src/diskio/cachefile.cpp:389
+#: src/diskio/cachefile.cpp:391
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "Malsukcesis skribi al dosiero %1: %2"
 
-#: src/diskio/cachefile.cpp:446
+#: src/diskio/cachefile.cpp:448
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Ne povas antaŭasigni diskspacon: %1"
 
-#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
+#: src/diskio/chunkmanager.cpp:851 src/diskio/chunkmanager.cpp:874
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "Ne povas malfermi indeksan dosieron %1: %2"
 
-#: src/diskio/dndfile.cpp:72
+#: src/diskio/dndfile.cpp:74
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "Ne povas krei dosieron %1: %2"
 
-#: src/diskio/dndfile.cpp:114
+#: src/diskio/dndfile.cpp:116
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Malsukcesis skribi la unuan pecon al DND-dosiero: %1"
 
-#: src/diskio/dndfile.cpp:129
+#: src/diskio/dndfile.cpp:131
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Malsukcesis skribi lastan pecon al DND-dosiero: %1"
 
-#: src/diskio/movedatafilesjob.cpp:113
+#: src/diskio/movedatafilesjob.cpp:115
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr "Atendante ke aliaj movlaboroj finiĝos"
 
-#: src/diskio/movedatafilesjob.cpp:114 src/diskio/movedatafilesjob.cpp:150
+#: src/diskio/movedatafilesjob.cpp:116 src/diskio/movedatafilesjob.cpp:152
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "Fonto"
 
-#: src/diskio/movedatafilesjob.cpp:115 src/diskio/movedatafilesjob.cpp:151
+#: src/diskio/movedatafilesjob.cpp:117 src/diskio/movedatafilesjob.cpp:153
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "Celo"
 
-#: src/diskio/movedatafilesjob.cpp:149
+#: src/diskio/movedatafilesjob.cpp:151
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
 msgstr "Ŝovante"
 
-#: src/diskio/multifilecache.cpp:74 src/diskio/singlefilecache.cpp:60
+#: src/diskio/multifilecache.cpp:76 src/diskio/singlefilecache.cpp:62
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr "Ne povas malfermi %1 : %2"
@@ -181,7 +181,7 @@ msgstr "Ne povas malfermi %1 : %2"
 msgid "Unable to write to a piece mapped read only"
 msgstr "Ne eblas skribi al peco mapita nur legata"
 
-#: src/download/chunkdownload.cpp:342
+#: src/download/chunkdownload.cpp:344
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
@@ -193,73 +193,73 @@ msgstr[1] "%1 kundividantoj"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Malŝaltita ĉar webseed ne kongruas kun torento"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:42
+#: src/download/httpconnection.cpp:31 src/download/webseed.cpp:42
 #: src/download/webseed.cpp:87
 #, kde-format
 msgid "Not connected"
 msgstr "Sen konekto"
 
-#: src/download/httpconnection.cpp:96
+#: src/download/httpconnection.cpp:98
 #, kde-format
 msgid "Resolving proxy %1:%2"
 msgstr "Solvante prokurilon %1:%2"
 
-#: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
+#: src/download/httpconnection.cpp:102 src/download/httpconnection.cpp:116
 #, kde-format
 msgid "Not enough system resources available"
 msgstr "Ne sufiĉaj sistemaj rimedoj disponeblaj"
 
-#: src/download/httpconnection.cpp:110
+#: src/download/httpconnection.cpp:112
 #, kde-format
 msgid "Resolving hostname %1"
 msgstr "Solvante gastigan nomon %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:315
+#: src/download/httpconnection.cpp:128 src/download/webseed.cpp:315
 #, kde-format
 msgid "Connection closed"
 msgstr "Konekto fermiĝis"
 
-#: src/download/httpconnection.cpp:130
+#: src/download/httpconnection.cpp:132
 #, kde-format
 msgid "Error: request failed: %1"
 msgstr "Eraro: peto malsukcesis: %1"
 
-#: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
+#: src/download/httpconnection.cpp:156 src/download/httpconnection.cpp:183
 #, kde-format
 msgid "Connected"
 msgstr "Konektita"
 
-#: src/download/httpconnection.cpp:162
+#: src/download/httpconnection.cpp:164
 #, kde-format
 msgid "Error: Failed to connect to webseed"
 msgstr "Eraro: Malsukcesis konekti al webseed"
 
-#: src/download/httpconnection.cpp:186
+#: src/download/httpconnection.cpp:188
 #, kde-format
 msgid "Connecting"
 msgstr "Konektante"
 
-#: src/download/httpconnection.cpp:195
+#: src/download/httpconnection.cpp:197
 #, kde-format
 msgid "Failed to connect to webseed"
 msgstr "Malsukcesis konekti al webseed"
 
-#: src/download/httpconnection.cpp:200
+#: src/download/httpconnection.cpp:202
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
 msgstr "Malsukcesis solvi gastigan nomon de webseed"
 
-#: src/download/httpconnection.cpp:271
+#: src/download/httpconnection.cpp:273
 #, kde-format
 msgid "Error: failed to connect, server not responding"
 msgstr "Eraro: malsukcesis konektiĝi, servilo ne respondas"
 
-#: src/download/httpconnection.cpp:281
+#: src/download/httpconnection.cpp:283
 #, kde-format
 msgid "Error: request timed out"
 msgstr "Eraro: peto elĉerpita"
 
-#: src/download/httpconnection.cpp:351
+#: src/download/httpconnection.cpp:353
 #, kde-format
 msgid "Redirected without a new location."
 msgstr "Alidirektita sen nova loko."
@@ -291,35 +291,35 @@ msgstr "Konektas"
 msgid "Error: %1"
 msgstr "Eraro: %1"
 
-#: src/peer/peerid.cpp:299
+#: src/peer/peerid.cpp:301
 #, kde-format
 msgid "Unknown client"
 msgstr "Nekonata kliento"
 
-#: src/torrent/torrent.cpp:95 src/torrent/torrent.cpp:142
-#: src/torrent/torrent.cpp:169 src/torrent/torrent.cpp:176
-#: src/torrent/torrent.cpp:183 src/torrent/torrent.cpp:187
-#: src/torrent/torrent.cpp:207 src/torrent/torrent.cpp:271
+#: src/torrent/torrent.cpp:97 src/torrent/torrent.cpp:144
+#: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
+#: src/torrent/torrent.cpp:185 src/torrent/torrent.cpp:189
+#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:273
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Koruptita torento."
 
-#: src/torrent/torrentcontrol.cpp:276
+#: src/torrent/torrentcontrol.cpp:278
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Eraro skribi al disko, ĉu vi havas sufiĉe da diskspaco?"
 
-#: src/torrent/torrentcontrol.cpp:491
+#: src/torrent/torrentcontrol.cpp:493
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "Eraro okazis dum ŝarĝo de <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:501
+#: src/torrent/torrentcontrol.cpp:503
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Ne eblas krei %1: %2"
 
-#: src/torrent/torrentcontrol.cpp:514
+#: src/torrent/torrentcontrol.cpp:516
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -328,12 +328,12 @@ msgstr ""
 "Vi jam elŝutas la torenton <b>%1</b>. La spurlistoj de ambaŭ torentoj estis "
 "kunfanditaj."
 
-#: src/torrent/torrentcontrol.cpp:518
+#: src/torrent/torrentcontrol.cpp:520
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Vi jam elŝutas la torenton <b>%1</b>."
 
-#: src/torrent/torrentcreator.cpp:332
+#: src/torrent/torrentcreator.cpp:334
 #, kde-format
 msgid "Cannot create index file: %1"
 msgstr "Ne povas krei indekshavan dosieron: %1"
@@ -404,23 +404,23 @@ msgstr "Paŭzita"
 msgid "Superseeding"
 msgstr "Anstataŭante"
 
-#: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
-#: src/tracker/httptracker.cpp:385
+#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
+#: src/tracker/httptracker.cpp:387
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Nevalida respondo de servilo"
 
-#: src/tracker/httptracker.cpp:251
+#: src/tracker/httptracker.cpp:253
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Nevalida datumo de servilo"
 
-#: src/tracker/httptracker.cpp:400
+#: src/tracker/httptracker.cpp:402
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Nevalida servila retadreso"
 
-#: src/tracker/httptracker.cpp:458 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:460 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -436,17 +436,17 @@ msgstr "Ne eblas solvi gastigan nomon %1"
 msgid "Operation timed out"
 msgstr "Operacio elĉerpita"
 
-#: src/upnp/upnprouter.cpp:156
+#: src/upnp/upnprouter.cpp:157
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "Malsukcesis elŝuti %1: %2"
 
-#: src/upnp/upnprouter.cpp:166
+#: src/upnp/upnprouter.cpp:167
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Eraro dum analizado de enkursigilo-priskribo."
 
-#: src/upnp/upnprouter.cpp:200
+#: src/upnp/upnprouter.cpp:201
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -455,7 +455,7 @@ msgstr ""
 "Plusendado malsukcesis:\n"
 "Aparato ne havas WANIPConnection aŭ WANPPPCconnection."
 
-#: src/upnp/upnprouter.cpp:279
+#: src/upnp/upnprouter.cpp:280
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "Ne povas trovi havenon plusendan servon en la priskribo de la aparato."
@@ -470,57 +470,57 @@ msgstr "Ne povas skribi al %1: %2"
 msgid "Cannot read from %1"
 msgstr "Ne povas legi el %1"
 
-#: src/util/fileops.cpp:97
+#: src/util/fileops.cpp:99
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "Ne povas krei dosierujon %1"
 
-#: src/util/fileops.cpp:160
+#: src/util/fileops.cpp:162
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "Ne povas krei simbolan ligilon de %1 al %2: %3"
 
-#: src/util/fileops.cpp:172
+#: src/util/fileops.cpp:174
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "Ne povas movi %1 al %2: %3"
 
-#: src/util/fileops.cpp:183 src/util/fileops.cpp:194
+#: src/util/fileops.cpp:185 src/util/fileops.cpp:196
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "Ne povas kopii %1 al %2: %3"
 
-#: src/util/fileops.cpp:248
+#: src/util/fileops.cpp:250
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Ne povas forigi %1: %2"
 
-#: src/util/fileops.cpp:264
+#: src/util/fileops.cpp:266
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Ne povas krei %1: %2"
 
-#: src/util/fileops.cpp:281
+#: src/util/fileops.cpp:283
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Ne povas kalkuli la dosiergrandecon de %1: %2"
 
-#: src/util/fileops.cpp:297
+#: src/util/fileops.cpp:299
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Ne povas kalkuli la dosiergrandecon: %1"
 
-#: src/util/fileops.cpp:344 src/util/fileops.cpp:357
+#: src/util/fileops.cpp:346 src/util/fileops.cpp:359
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Ne povas vastigi dosieron: %1"
 
-#: src/util/fileops.cpp:383
+#: src/util/fileops.cpp:385
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Ne eblas serĉi en dosiero: %1"
 
-#: src/util/fileops.cpp:624
+#: src/util/fileops.cpp:626
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Ne eblas malfermi dosieron %1: %2"

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-01-02 00:41+0000\n"
+"POT-Creation-Date: 2025-01-04 00:41+0000\n"
 "PO-Revision-Date: 2013-04-09 17:20+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: Dutch <kde-i18n-nl@kde.org>\n"
@@ -23,78 +23,78 @@ msgstr ""
 "X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: src/bcodec/bdecoder.cpp:48
+#: src/bcodec/bdecoder.cpp:50
 #, kde-format
 msgid "Illegal token: %1"
 msgstr "Ongeldig token: %1"
 
-#: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
+#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:111
 #, kde-format
 msgid "Decode error"
 msgstr "Decodeerfout"
 
-#: src/bcodec/bdecoder.cpp:161 src/bcodec/bdecoder.cpp:199
+#: src/bcodec/bdecoder.cpp:163 src/bcodec/bdecoder.cpp:201
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Onverwacht einde van invoer"
 
-#: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
+#: src/bcodec/bdecoder.cpp:180 src/bcodec/bdecoder.cpp:220
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "Kan %1 niet converteren naar een integer"
 
-#: src/bcodec/bdecoder.cpp:223
+#: src/bcodec/bdecoder.cpp:225
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Torrent is incompleet."
 
-#: src/datachecker/datacheckerjob.cpp:69
+#: src/datachecker/datacheckerjob.cpp:71
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr "Er wordt gewacht totdat gegevenscontroles klaar zijn"
 
-#: src/datachecker/datacheckerjob.cpp:75 src/torrent/torrentstats.cpp:93
+#: src/datachecker/datacheckerjob.cpp:77 src/torrent/torrentstats.cpp:93
 #, kde-format
 msgid "Checking data"
 msgstr "Gegevens controleren"
 
-#: src/datachecker/datacheckerjob.cpp:122
+#: src/datachecker/datacheckerjob.cpp:124
 #, kde-format
 msgid "Checking Data"
 msgstr "Gegevens controleren"
 
-#: src/datachecker/multidatachecker.cpp:183
-#: src/datachecker/singledatachecker.cpp:36 src/diskio/multifilecache.cpp:625
-#: src/diskio/multifilecache.cpp:660 src/torrent/torrentcreator.cpp:111
-#: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
+#: src/datachecker/multidatachecker.cpp:185
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:627
+#: src/diskio/multifilecache.cpp:662 src/torrent/torrentcreator.cpp:113
+#: src/torrent/torrentcreator.cpp:234 src/torrent/torrentcreator.cpp:266
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "Kan bestand %1 niet openen: %2"
 
-#: src/diskio/cache.cpp:149 src/diskio/multifilecache.cpp:99
-#: src/diskio/singlefilecache.cpp:70
+#: src/diskio/cache.cpp:151 src/diskio/multifilecache.cpp:101
+#: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "Niet in staat %1 aan te maken: %2"
 
-#: src/diskio/cachefile.cpp:79 src/util/fileops.cpp:322
-#: src/util/fileops.cpp:365
+#: src/diskio/cachefile.cpp:81 src/util/fileops.cpp:324
+#: src/util/fileops.cpp:367
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Kan %1 niet openen: %2"
 
-#: src/diskio/cachefile.cpp:106 src/diskio/cachefile.cpp:218
-#: src/diskio/cachefile.cpp:371 src/diskio/cachefile.cpp:430
+#: src/diskio/cachefile.cpp:108 src/diskio/cachefile.cpp:220
+#: src/diskio/cachefile.cpp:373 src/diskio/cachefile.cpp:432
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "Kan %1 niet openen om weg te schrijven: alleen-lezen bestandssysteem."
 
-#: src/diskio/cachefile.cpp:112 src/diskio/cachefile.cpp:376
+#: src/diskio/cachefile.cpp:114 src/diskio/cachefile.cpp:378
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "Poging om te schrijven boven de maximum grootte van %1"
 
-#: src/diskio/cachefile.cpp:223
+#: src/diskio/cachefile.cpp:225
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
@@ -102,80 +102,80 @@ msgstr ""
 "Vergroten van bestand %1 lukt niet: poging om te vergroten boven de maximum "
 "grootte"
 
-#: src/diskio/cachefile.cpp:227
+#: src/diskio/cachefile.cpp:229
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "Kan bestand %1 niet uitbreiden: %2"
 
-#: src/diskio/cachefile.cpp:339
+#: src/diskio/cachefile.cpp:341
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "Fout: Lezen buiten het bereik van bestand %1"
 
-#: src/diskio/cachefile.cpp:344 src/diskio/cachefile.cpp:386
+#: src/diskio/cachefile.cpp:346 src/diskio/cachefile.cpp:388
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "Niet in staat bestand %1 op te zoeken: %2"
 
-#: src/diskio/cachefile.cpp:351
+#: src/diskio/cachefile.cpp:353
 #, kde-format
 msgid "Error reading from %1"
 msgstr "Fout bij het lezen van %1"
 
-#: src/diskio/cachefile.cpp:389
+#: src/diskio/cachefile.cpp:391
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "Niet in staat om naar bestand %1 te schrijven: %2"
 
-#: src/diskio/cachefile.cpp:446
+#: src/diskio/cachefile.cpp:448
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Kan geen schijfruimte toewijzen: %1"
 
-#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
+#: src/diskio/chunkmanager.cpp:851 src/diskio/chunkmanager.cpp:874
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "Kan indexbestand %1 niet openen: %2"
 
-#: src/diskio/dndfile.cpp:72
+#: src/diskio/dndfile.cpp:74
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "Kan het bestand %1 niet aanmaken: %2"
 
-#: src/diskio/dndfile.cpp:114
+#: src/diskio/dndfile.cpp:116
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Kan de eerste chunk niet wegschrijven naar het DND-bestand: %1"
 
-#: src/diskio/dndfile.cpp:129
+#: src/diskio/dndfile.cpp:131
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Kan de laatste chunk niet wegschrijven naar het DND-bestand: %1"
 
-#: src/diskio/movedatafilesjob.cpp:113
+#: src/diskio/movedatafilesjob.cpp:115
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr "Wachten totdat andere taken met verplaatsingen klaar zijn"
 
-#: src/diskio/movedatafilesjob.cpp:114 src/diskio/movedatafilesjob.cpp:150
+#: src/diskio/movedatafilesjob.cpp:116 src/diskio/movedatafilesjob.cpp:152
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "Bron"
 
-#: src/diskio/movedatafilesjob.cpp:115 src/diskio/movedatafilesjob.cpp:151
+#: src/diskio/movedatafilesjob.cpp:117 src/diskio/movedatafilesjob.cpp:153
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "Bestemming"
 
-#: src/diskio/movedatafilesjob.cpp:149
+#: src/diskio/movedatafilesjob.cpp:151
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
 msgstr "Verplaatsen"
 
-#: src/diskio/multifilecache.cpp:74 src/diskio/singlefilecache.cpp:60
+#: src/diskio/multifilecache.cpp:76 src/diskio/singlefilecache.cpp:62
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr "Kan %1 niet openen: %2"
@@ -185,7 +185,7 @@ msgstr "Kan %1 niet openen: %2"
 msgid "Unable to write to a piece mapped read only"
 msgstr "Schrijven naar iets wat alleen-lezen is kan niet"
 
-#: src/download/chunkdownload.cpp:342
+#: src/download/chunkdownload.cpp:344
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
@@ -197,73 +197,73 @@ msgstr[1] "%1 peers"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Uitgeschakeld omdat de webseed niet overeenkomt met de torrent"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:42
+#: src/download/httpconnection.cpp:31 src/download/webseed.cpp:42
 #: src/download/webseed.cpp:87
 #, kde-format
 msgid "Not connected"
 msgstr "Niet verbonden"
 
-#: src/download/httpconnection.cpp:96
+#: src/download/httpconnection.cpp:98
 #, kde-format
 msgid "Resolving proxy %1:%2"
 msgstr "Proxy herleiden %1:%2"
 
-#: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
+#: src/download/httpconnection.cpp:102 src/download/httpconnection.cpp:116
 #, kde-format
 msgid "Not enough system resources available"
 msgstr "Er zijn niet genoeg hulpbronnen beschikbaar"
 
-#: src/download/httpconnection.cpp:110
+#: src/download/httpconnection.cpp:112
 #, kde-format
 msgid "Resolving hostname %1"
 msgstr "Hostnaam herleiden %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:315
+#: src/download/httpconnection.cpp:128 src/download/webseed.cpp:315
 #, kde-format
 msgid "Connection closed"
 msgstr "Verbinding gesloten"
 
-#: src/download/httpconnection.cpp:130
+#: src/download/httpconnection.cpp:132
 #, kde-format
 msgid "Error: request failed: %1"
 msgstr "Fout: verzoek is mislukt: %1"
 
-#: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
+#: src/download/httpconnection.cpp:156 src/download/httpconnection.cpp:183
 #, kde-format
 msgid "Connected"
 msgstr "Verbonden"
 
-#: src/download/httpconnection.cpp:162
+#: src/download/httpconnection.cpp:164
 #, kde-format
 msgid "Error: Failed to connect to webseed"
 msgstr "Fout: Kon niet verbinden naar webseed"
 
-#: src/download/httpconnection.cpp:186
+#: src/download/httpconnection.cpp:188
 #, kde-format
 msgid "Connecting"
 msgstr "Verbinding maken"
 
-#: src/download/httpconnection.cpp:195
+#: src/download/httpconnection.cpp:197
 #, kde-format
 msgid "Failed to connect to webseed"
 msgstr "Kon niet verbinden naar webseed"
 
-#: src/download/httpconnection.cpp:200
+#: src/download/httpconnection.cpp:202
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
 msgstr "Kon de hostnaam van de webseed niet herleiden"
 
-#: src/download/httpconnection.cpp:271
+#: src/download/httpconnection.cpp:273
 #, kde-format
 msgid "Error: failed to connect, server not responding"
 msgstr "Fout: kon niet verbinden, server reageerde niet"
 
-#: src/download/httpconnection.cpp:281
+#: src/download/httpconnection.cpp:283
 #, kde-format
 msgid "Error: request timed out"
 msgstr "Fout: time-out op verzoek"
 
-#: src/download/httpconnection.cpp:351
+#: src/download/httpconnection.cpp:353
 #, kde-format
 msgid "Redirected without a new location."
 msgstr "Doorgestuurd zonder een nieuwe locatie."
@@ -295,36 +295,36 @@ msgstr "Aankondigen"
 msgid "Error: %1"
 msgstr "Fout: %1"
 
-#: src/peer/peerid.cpp:299
+#: src/peer/peerid.cpp:301
 #, kde-format
 msgid "Unknown client"
 msgstr "Onbekende client"
 
-#: src/torrent/torrent.cpp:95 src/torrent/torrent.cpp:142
-#: src/torrent/torrent.cpp:169 src/torrent/torrent.cpp:176
-#: src/torrent/torrent.cpp:183 src/torrent/torrent.cpp:187
-#: src/torrent/torrent.cpp:207 src/torrent/torrent.cpp:271
+#: src/torrent/torrent.cpp:97 src/torrent/torrent.cpp:144
+#: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
+#: src/torrent/torrent.cpp:185 src/torrent/torrent.cpp:189
+#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:273
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Torrent is beschadigd."
 
-#: src/torrent/torrentcontrol.cpp:276
+#: src/torrent/torrentcontrol.cpp:278
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Fout bij schrijven naar schijf, hebt u genoeg schijfruimte?"
 
-#: src/torrent/torrentcontrol.cpp:491
+#: src/torrent/torrentcontrol.cpp:493
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr ""
 "Er is een fout opgetreden tijdens het laden van <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:501
+#: src/torrent/torrentcontrol.cpp:503
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Niet in staat %1 aan te maken: %2"
 
-#: src/torrent/torrentcontrol.cpp:514
+#: src/torrent/torrentcontrol.cpp:516
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -333,12 +333,12 @@ msgstr ""
 "De torrent <b>%1</b> wordt op het moment al gedownload, de lijst met "
 "trackers van beide torrents zijn nu samengevoegd."
 
-#: src/torrent/torrentcontrol.cpp:518
+#: src/torrent/torrentcontrol.cpp:520
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "De torrent <b>%1</b> wordt op het moment al gedownload."
 
-#: src/torrent/torrentcreator.cpp:332
+#: src/torrent/torrentcreator.cpp:334
 #, kde-format
 msgid "Cannot create index file: %1"
 msgstr "Kan indexbestand %1 niet aanmaken"
@@ -409,23 +409,23 @@ msgstr "Gepauzeerd"
 msgid "Superseeding"
 msgstr "Superseeding"
 
-#: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
-#: src/tracker/httptracker.cpp:385
+#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
+#: src/tracker/httptracker.cpp:387
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Ongeldig antwoord van tracker"
 
-#: src/tracker/httptracker.cpp:251
+#: src/tracker/httptracker.cpp:253
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Onjuiste gegevens verkregen van tracker"
 
-#: src/tracker/httptracker.cpp:400
+#: src/tracker/httptracker.cpp:402
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Ongeldig URL-adres voor tracker"
 
-#: src/tracker/httptracker.cpp:458 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:460 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -441,17 +441,17 @@ msgstr "Kon hostnaam %1 niet herleiden"
 msgid "Operation timed out"
 msgstr "Tijdslimiet voor bewerking is verstreken"
 
-#: src/upnp/upnprouter.cpp:156
+#: src/upnp/upnprouter.cpp:157
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "Kon %1 niet downloaden: %2"
 
-#: src/upnp/upnprouter.cpp:166
+#: src/upnp/upnprouter.cpp:167
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Fout bij het ontleden van de routerbeschrijving."
 
-#: src/upnp/upnprouter.cpp:200
+#: src/upnp/upnprouter.cpp:201
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -460,7 +460,7 @@ msgstr ""
 "Doorsturen is mislukt:\n"
 "Apparaat heeft geen WANIPConnectie of WANPPPConnectie."
 
-#: src/upnp/upnprouter.cpp:279
+#: src/upnp/upnprouter.cpp:280
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr ""
@@ -476,57 +476,57 @@ msgstr "Kan niet schrijven naar %1: %2"
 msgid "Cannot read from %1"
 msgstr "Kan niet lezen van %1"
 
-#: src/util/fileops.cpp:97
+#: src/util/fileops.cpp:99
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "Kan map %1 niet aanmaken"
 
-#: src/util/fileops.cpp:160
+#: src/util/fileops.cpp:162
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "Kan de symbolische koppeling van %1 naar %2 niet aanmaken: %3"
 
-#: src/util/fileops.cpp:172
+#: src/util/fileops.cpp:174
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "Kan %1 niet verplaatsen naar %2: %3"
 
-#: src/util/fileops.cpp:183 src/util/fileops.cpp:194
+#: src/util/fileops.cpp:185 src/util/fileops.cpp:196
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "Kan %1 niet kopiëren naar %2: %3"
 
-#: src/util/fileops.cpp:248
+#: src/util/fileops.cpp:250
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Kan %1 niet verwijderen: %2"
 
-#: src/util/fileops.cpp:264
+#: src/util/fileops.cpp:266
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Kan %1 niet aanmaken: %2"
 
-#: src/util/fileops.cpp:281
+#: src/util/fileops.cpp:283
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Kan de bestandsgrootte van %1 niet berekenen: %2"
 
-#: src/util/fileops.cpp:297
+#: src/util/fileops.cpp:299
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Kan de bestandsgrootte niet berekenen: %1"
 
-#: src/util/fileops.cpp:344 src/util/fileops.cpp:357
+#: src/util/fileops.cpp:346 src/util/fileops.cpp:359
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Kan geen gegevens toevoegen aan bestand: %1"
 
-#: src/util/fileops.cpp:383
+#: src/util/fileops.cpp:385
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Kan niet zoeken in bestand: %1"
 
-#: src/util/fileops.cpp:624
+#: src/util/fileops.cpp:626
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Niet in staat bestand %1 te openen: %2"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-01-02 00:41+0000\n"
+"POT-Creation-Date: 2025-01-04 00:41+0000\n"
 "PO-Revision-Date: 2022-11-27 22:23+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -18,158 +18,158 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.2\n"
 
-#: src/bcodec/bdecoder.cpp:48
+#: src/bcodec/bdecoder.cpp:50
 #, kde-format
 msgid "Illegal token: %1"
 msgstr "არასწორი კოდი: %1"
 
-#: src/bcodec/bdecoder.cpp:101 src/bcodec/bdecoder.cpp:109
+#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:111
 #, kde-format
 msgid "Decode error"
 msgstr "დეკოდერის შეცდომა"
 
-#: src/bcodec/bdecoder.cpp:161 src/bcodec/bdecoder.cpp:199
+#: src/bcodec/bdecoder.cpp:163 src/bcodec/bdecoder.cpp:201
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "შეყვანის მოულოდნელი დასასრული"
 
-#: src/bcodec/bdecoder.cpp:178 src/bcodec/bdecoder.cpp:218
+#: src/bcodec/bdecoder.cpp:180 src/bcodec/bdecoder.cpp:220
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "%1-ის მთელ რიცხვში გადაყვანა შეუძლებელია"
 
-#: src/bcodec/bdecoder.cpp:223
+#: src/bcodec/bdecoder.cpp:225
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Torrent-ი არასრულია."
 
-#: src/datachecker/datacheckerjob.cpp:69
+#: src/datachecker/datacheckerjob.cpp:71
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr "სხვა მონაცემების შემოწმებების დასასრულის მოლოდინი"
 
-#: src/datachecker/datacheckerjob.cpp:75 src/torrent/torrentstats.cpp:93
+#: src/datachecker/datacheckerjob.cpp:77 src/torrent/torrentstats.cpp:93
 #, kde-format
 msgid "Checking data"
 msgstr "მონაცემების შემოწმება"
 
-#: src/datachecker/datacheckerjob.cpp:122
+#: src/datachecker/datacheckerjob.cpp:124
 #, kde-format
 msgid "Checking Data"
 msgstr "მონაცემების შემოწმება"
 
-#: src/datachecker/multidatachecker.cpp:183
-#: src/datachecker/singledatachecker.cpp:36 src/diskio/multifilecache.cpp:625
-#: src/diskio/multifilecache.cpp:660 src/torrent/torrentcreator.cpp:111
-#: src/torrent/torrentcreator.cpp:232 src/torrent/torrentcreator.cpp:264
+#: src/datachecker/multidatachecker.cpp:185
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:627
+#: src/diskio/multifilecache.cpp:662 src/torrent/torrentcreator.cpp:113
+#: src/torrent/torrentcreator.cpp:234 src/torrent/torrentcreator.cpp:266
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "ფაილის (%1) გახსნის შეცდომა: %2"
 
-#: src/diskio/cache.cpp:149 src/diskio/multifilecache.cpp:99
-#: src/diskio/singlefilecache.cpp:70
+#: src/diskio/cache.cpp:151 src/diskio/multifilecache.cpp:101
+#: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "%1-ის შექმნის შეცდომა: %2"
 
-#: src/diskio/cachefile.cpp:79 src/util/fileops.cpp:322
-#: src/util/fileops.cpp:365
+#: src/diskio/cachefile.cpp:81 src/util/fileops.cpp:324
+#: src/util/fileops.cpp:367
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "გახსნის შეცდომა: %1: %2"
 
-#: src/diskio/cachefile.cpp:106 src/diskio/cachefile.cpp:218
-#: src/diskio/cachefile.cpp:371 src/diskio/cachefile.cpp:430
+#: src/diskio/cachefile.cpp:108 src/diskio/cachefile.cpp:220
+#: src/diskio/cachefile.cpp:373 src/diskio/cachefile.cpp:432
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "%1-ს ჩასაწერად გახსნის შეცდომა: მხოლოდ წაკითხვადი ფაილური სისტემა"
 
-#: src/diskio/cachefile.cpp:112 src/diskio/cachefile.cpp:376
+#: src/diskio/cachefile.cpp:114 src/diskio/cachefile.cpp:378
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "%1-ის მაქსიმალური ზომის მიღმა ჩაწერის მცდელობა"
 
-#: src/diskio/cachefile.cpp:223
+#: src/diskio/cachefile.cpp:225
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
 msgstr ""
 "ფაილის %1 გაფართოების შეცდომა: მაქსიმალური ზომის მიღმა ჩაწერის მცდელობა"
 
-#: src/diskio/cachefile.cpp:227
+#: src/diskio/cachefile.cpp:229
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "ფაილის %1 გაფართოების შეცდომა: %2"
 
-#: src/diskio/cachefile.cpp:339
+#: src/diskio/cachefile.cpp:341
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "შეცდომა: ფაილის \"%1\" დასასრულის შემდეგ წაკითხვის მცდელობა"
 
-#: src/diskio/cachefile.cpp:344 src/diskio/cachefile.cpp:386
+#: src/diskio/cachefile.cpp:346 src/diskio/cachefile.cpp:388
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "ფაილის %1 გადახვევის შეცდომა: %2"
 
-#: src/diskio/cachefile.cpp:351
+#: src/diskio/cachefile.cpp:353
 #, kde-format
 msgid "Error reading from %1"
 msgstr "%1-დან წაკითხვის შეცდომა"
 
-#: src/diskio/cachefile.cpp:389
+#: src/diskio/cachefile.cpp:391
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "ფაილში %1 ჩაწერის შეცდომა: %2"
 
-#: src/diskio/cachefile.cpp:446
+#: src/diskio/cachefile.cpp:448
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "დისკური ადგილის წინასწარი გამოთხოვის შეცდომა: %1"
 
-#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
+#: src/diskio/chunkmanager.cpp:851 src/diskio/chunkmanager.cpp:874
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "ინდექსის ფაილის %1 გახსნის შეცდომა: %2"
 
-#: src/diskio/dndfile.cpp:72
+#: src/diskio/dndfile.cpp:74
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "ფაილის %1 შექმნის შეცდომა: %2"
 
-#: src/diskio/dndfile.cpp:114
+#: src/diskio/dndfile.cpp:116
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "DND ფაილის პირველი ნაწილის ჩაწერის შეცდომა: %1"
 
-#: src/diskio/dndfile.cpp:129
+#: src/diskio/dndfile.cpp:131
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "DND ფაილის ბოლო ნაწილის შეცდომა: %1"
 
-#: src/diskio/movedatafilesjob.cpp:113
+#: src/diskio/movedatafilesjob.cpp:115
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr "გადატანის სხვა დავალებების დასრულების მოლოდინი"
 
-#: src/diskio/movedatafilesjob.cpp:114 src/diskio/movedatafilesjob.cpp:150
+#: src/diskio/movedatafilesjob.cpp:116 src/diskio/movedatafilesjob.cpp:152
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "წყარო"
 
-#: src/diskio/movedatafilesjob.cpp:115 src/diskio/movedatafilesjob.cpp:151
+#: src/diskio/movedatafilesjob.cpp:117 src/diskio/movedatafilesjob.cpp:153
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "დანიშნულება"
 
-#: src/diskio/movedatafilesjob.cpp:149
+#: src/diskio/movedatafilesjob.cpp:151
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
 msgstr "გადატანა"
 
-#: src/diskio/multifilecache.cpp:74 src/diskio/singlefilecache.cpp:60
+#: src/diskio/multifilecache.cpp:76 src/diskio/singlefilecache.cpp:62
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr "%1-ის გახსნის შეცდომა: %2"
@@ -179,7 +179,7 @@ msgstr "%1-ის გახსნის შეცდომა: %2"
 msgid "Unable to write to a piece mapped read only"
 msgstr "მხოლოდ-წასაკითხად მიმაგრებულ ნაწილში ჩაწერის შეცდომა"
 
-#: src/download/chunkdownload.cpp:342
+#: src/download/chunkdownload.cpp:344
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
@@ -191,73 +191,73 @@ msgstr[1] "%1 პარტნიორი"
 msgid "Disabled because webseed does not match torrent"
 msgstr "გამორთულია იმიტომ, რომ webseed-ი ტორენტს არ ემთხვევა"
 
-#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:42
+#: src/download/httpconnection.cpp:31 src/download/webseed.cpp:42
 #: src/download/webseed.cpp:87
 #, kde-format
 msgid "Not connected"
 msgstr "არაა დაკავშირებული"
 
-#: src/download/httpconnection.cpp:96
+#: src/download/httpconnection.cpp:98
 #, kde-format
 msgid "Resolving proxy %1:%2"
 msgstr "%1 პროქსის ამოხსნა: %2"
 
-#: src/download/httpconnection.cpp:100 src/download/httpconnection.cpp:114
+#: src/download/httpconnection.cpp:102 src/download/httpconnection.cpp:116
 #, kde-format
 msgid "Not enough system resources available"
 msgstr "სისტემური რესურსები საკმარისი აღარაა"
 
-#: src/download/httpconnection.cpp:110
+#: src/download/httpconnection.cpp:112
 #, kde-format
 msgid "Resolving hostname %1"
 msgstr "ჰოსტის სახელის ამოხსნა: %1"
 
-#: src/download/httpconnection.cpp:126 src/download/webseed.cpp:315
+#: src/download/httpconnection.cpp:128 src/download/webseed.cpp:315
 #, kde-format
 msgid "Connection closed"
 msgstr "კავშირი დახურულია"
 
-#: src/download/httpconnection.cpp:130
+#: src/download/httpconnection.cpp:132
 #, kde-format
 msgid "Error: request failed: %1"
 msgstr "შეცდომა: მოთხოვნის შეცდომა: %1"
 
-#: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
+#: src/download/httpconnection.cpp:156 src/download/httpconnection.cpp:183
 #, kde-format
 msgid "Connected"
 msgstr "შეერთებული"
 
-#: src/download/httpconnection.cpp:162
+#: src/download/httpconnection.cpp:164
 #, kde-format
 msgid "Error: Failed to connect to webseed"
 msgstr "შეცდომა: Webseed-თან მიერთების შეცდომა"
 
-#: src/download/httpconnection.cpp:186
+#: src/download/httpconnection.cpp:188
 #, kde-format
 msgid "Connecting"
 msgstr "დაკავშირება"
 
-#: src/download/httpconnection.cpp:195
+#: src/download/httpconnection.cpp:197
 #, kde-format
 msgid "Failed to connect to webseed"
 msgstr "Webseed-თან მიერთების შეცდომა"
 
-#: src/download/httpconnection.cpp:200
+#: src/download/httpconnection.cpp:202
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
 msgstr "Webseed-ის ჰოსტის სახელის ამოხსნის შეცდომა"
 
-#: src/download/httpconnection.cpp:271
+#: src/download/httpconnection.cpp:273
 #, kde-format
 msgid "Error: failed to connect, server not responding"
 msgstr "შეცდომა: მიერთების შეცდომა: სერვერი არ პასუხობს"
 
-#: src/download/httpconnection.cpp:281
+#: src/download/httpconnection.cpp:283
 #, kde-format
 msgid "Error: request timed out"
 msgstr "შეცდომა: მოთხოვნის ვადა გავიდა"
 
-#: src/download/httpconnection.cpp:351
+#: src/download/httpconnection.cpp:353
 #, kde-format
 msgid "Redirected without a new location."
 msgstr "გადამისამართება ახალი მდებარეობის გარეშე."
@@ -289,35 +289,35 @@ msgstr "გამოცხადება"
 msgid "Error: %1"
 msgstr "შეცდომა: %1"
 
-#: src/peer/peerid.cpp:299
+#: src/peer/peerid.cpp:301
 #, kde-format
 msgid "Unknown client"
 msgstr "უცნობი კლიენტი"
 
-#: src/torrent/torrent.cpp:95 src/torrent/torrent.cpp:142
-#: src/torrent/torrent.cpp:169 src/torrent/torrent.cpp:176
-#: src/torrent/torrent.cpp:183 src/torrent/torrent.cpp:187
-#: src/torrent/torrent.cpp:207 src/torrent/torrent.cpp:271
+#: src/torrent/torrent.cpp:97 src/torrent/torrent.cpp:144
+#: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
+#: src/torrent/torrent.cpp:185 src/torrent/torrent.cpp:189
+#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:273
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "დაზიანებული Torrent."
 
-#: src/torrent/torrentcontrol.cpp:276
+#: src/torrent/torrentcontrol.cpp:278
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "დისკზე ჩაწერის შეცდომა. ადგილი საკმარისია?"
 
-#: src/torrent/torrentcontrol.cpp:491
+#: src/torrent/torrentcontrol.cpp:493
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "შეცდომა ჩატვირთვისას: <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:501
+#: src/torrent/torrentcontrol.cpp:503
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "%1-ის შექმნის შეცდომა: %2"
 
-#: src/torrent/torrentcontrol.cpp:514
+#: src/torrent/torrentcontrol.cpp:516
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -326,12 +326,12 @@ msgstr ""
 "ტორენტს <b>%1</b> უკვე იწერთ. ტრეკერების სია ორივე ტორენტიდან ახლა "
 "შერწყმულია."
 
-#: src/torrent/torrentcontrol.cpp:518
+#: src/torrent/torrentcontrol.cpp:520
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "ტორენტს <b>%1</b> უკვე იწერტ."
 
-#: src/torrent/torrentcreator.cpp:332
+#: src/torrent/torrentcreator.cpp:334
 #, kde-format
 msgid "Cannot create index file: %1"
 msgstr "ინდექსის ფაილის შექმნის შეცდომა: %1"
@@ -402,23 +402,23 @@ msgstr "შეჩერებულია"
 msgid "Superseeding"
 msgstr "Superseeding"
 
-#: src/tracker/httptracker.cpp:241 src/tracker/httptracker.cpp:257
-#: src/tracker/httptracker.cpp:385
+#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
+#: src/tracker/httptracker.cpp:387
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "ტრეკერის პასუხი არასწორია"
 
-#: src/tracker/httptracker.cpp:251
+#: src/tracker/httptracker.cpp:253
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "ტრეკერის არასწორი მონაცემები"
 
-#: src/tracker/httptracker.cpp:400
+#: src/tracker/httptracker.cpp:402
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "ტრეკერის არასწორი URL"
 
-#: src/tracker/httptracker.cpp:458 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:460 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -434,17 +434,17 @@ msgstr "ჰოსტის სახელის ამოხსნის შე
 msgid "Operation timed out"
 msgstr "ოპერაციის ვადა გავიდა"
 
-#: src/upnp/upnprouter.cpp:156
+#: src/upnp/upnprouter.cpp:157
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "%1-ის გადმოწერის შეცდომა: %2"
 
-#: src/upnp/upnprouter.cpp:166
+#: src/upnp/upnprouter.cpp:167
 #, kde-format
 msgid "Error parsing router description."
 msgstr "რაუტერის აღწერის დამუშავების შეცდომა."
 
-#: src/upnp/upnprouter.cpp:200
+#: src/upnp/upnprouter.cpp:201
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -453,7 +453,7 @@ msgstr ""
 "დაგზავნის შეცდომა:\n"
 "მოწყობლობას WANIPConnection ან WANPPPConnection-ის მხარდაჭერა არ გააჩნია."
 
-#: src/upnp/upnprouter.cpp:279
+#: src/upnp/upnprouter.cpp:280
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "მოწყობილობის აღწერაში პორტები გადამისამართების სერვისი ვერ ვიპოვე."
@@ -468,57 +468,57 @@ msgstr "%1-სი ჩაწერის შეცდომა: %2"
 msgid "Cannot read from %1"
 msgstr "%1-დან წაკითხვის შეცდომა"
 
-#: src/util/fileops.cpp:97
+#: src/util/fileops.cpp:99
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "საქაღალდის შექმნის შეცდომა: %1"
 
-#: src/util/fileops.cpp:160
+#: src/util/fileops.cpp:162
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "%1-დან %2-მდე სიმბმულის შექმნის შეცდომა: %3"
 
-#: src/util/fileops.cpp:172
+#: src/util/fileops.cpp:174
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "%1-დან %2-მდე გადატანის შეცდომა: %3"
 
-#: src/util/fileops.cpp:183 src/util/fileops.cpp:194
+#: src/util/fileops.cpp:185 src/util/fileops.cpp:196
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "%1-დან %2-მდე კოპირების შეცდომა: %3"
 
-#: src/util/fileops.cpp:248
+#: src/util/fileops.cpp:250
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "%1-ის წაშლის შეცდომა: %2"
 
-#: src/util/fileops.cpp:264
+#: src/util/fileops.cpp:266
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "%1-ის შექმნის შეცდომა: %2"
 
-#: src/util/fileops.cpp:281
+#: src/util/fileops.cpp:283
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "%1-ის ფაილის ზომის გამოთვლის შეცდომა: %2"
 
-#: src/util/fileops.cpp:297
+#: src/util/fileops.cpp:299
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "ფაილის ზომის გამოთვლის შეცდომა: %1"
 
-#: src/util/fileops.cpp:344 src/util/fileops.cpp:357
+#: src/util/fileops.cpp:346 src/util/fileops.cpp:359
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "ფაილის გაფართოების შეცდომა: %1"
 
-#: src/util/fileops.cpp:383
+#: src/util/fileops.cpp:385
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "ფაილში გადახვევის შეცდომა: %1"
 
-#: src/util/fileops.cpp:624
+#: src/util/fileops.cpp:626
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "ფაილის (%1) გახსნის შეცდომა: %2"
