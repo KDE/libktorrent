@@ -8,7 +8,6 @@
 #include "sha2hashgen.h"
 #include "urlencoder.h"
 #include <QHash>
-#include <algorithm>
 #include <cstdio>
 #include <cstring>
 
@@ -104,7 +103,7 @@ QByteArray SHA2Hash::toByteArray() const
 
 QString SHA2Hash::toURLString() const
 {
-    return URLEncoder::encode((const char *)hash, 20);
+    return URLEncoder::encode((const char *)hash, 32);
 }
 
 Log &operator<<(Log &out, const SHA2Hash &h)

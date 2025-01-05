@@ -9,14 +9,14 @@
 
 #include <QUrl>
 #include <ktorrent_export.h>
-#include <util/sha1hash.h>
+#include <util/infohash.h>
 
 namespace bt
 {
 /**
     MagnetLink class
     magnet links have the format:
-    magnet:?xt=urn:btih:info_hash&dn=name&tr=tracker-url[,tracker-url...]
+    magnet:?xt=urn:btih:info_hash_v1&dn=name&tr=tracker-url[,tracker-url...]
     note: a comma-separated list will not work with other clients likely
     optional parameters are
     to=torrent-file-url (need not be valid)
@@ -76,7 +76,7 @@ public:
     }
 
     /// Get the info hash
-    const SHA1Hash &infoHash() const
+    const InfoHash &infoHash() const
     {
         return info_hash;
     }
@@ -88,7 +88,7 @@ private:
 
 private:
     QString magnet_string;
-    SHA1Hash info_hash;
+    InfoHash info_hash;
     QString torrent_url;
     QList<QUrl> tracker_urls;
     QString path;

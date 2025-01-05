@@ -31,13 +31,13 @@ public:
     {
     }
 
-    bool alreadyLoaded(const bt::SHA1Hash &ih) const override
+    bool alreadyLoaded(const bt::InfoHash &ih) const override
     {
         Q_UNUSED(ih);
         return false;
     }
 
-    void mergeAnnounceList(const bt::SHA1Hash &ih, const bt::TrackerTier *trk) override
+    void mergeAnnounceList(const bt::InfoHash &ih, const bt::TrackerTier *trk) override
     {
         Q_UNUSED(ih);
         Q_UNUSED(trk);

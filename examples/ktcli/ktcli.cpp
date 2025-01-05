@@ -166,13 +166,13 @@ bool KTCLI::notify(QObject *obj, QEvent *ev)
     return true;
 }
 
-bool KTCLI::alreadyLoaded(const bt::SHA1Hash &ih) const
+bool KTCLI::alreadyLoaded(const bt::InfoHash &ih) const
 {
     Q_UNUSED(ih);
     return false;
 }
 
-void KTCLI::mergeAnnounceList(const bt::SHA1Hash &ih, const bt::TrackerTier *trk)
+void KTCLI::mergeAnnounceList(const bt::InfoHash &ih, const bt::TrackerTier *trk)
 {
     Q_UNUSED(ih);
     Q_UNUSED(trk);
