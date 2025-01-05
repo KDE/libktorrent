@@ -6,9 +6,9 @@
 #include "sha1hash.h"
 #include "log.h"
 #include "sha1hashgen.h"
+#include "sha2hash.h"
 #include "urlencoder.h"
 #include <QHash>
-#include <algorithm>
 #include <cstdio>
 #include <cstring>
 

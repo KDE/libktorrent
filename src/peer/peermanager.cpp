@@ -195,10 +195,10 @@ void PeerManager::newConnection(mse::EncryptedPacketSocket::Ptr sock, const Peer
     if (!d->started)
         return;
 
-    ConnectionLimit::Token::Ptr token = climit.acquire(d->tor.getInfoHash());
+    ConnectionLimit::Token::Ptr token = climit.acquire(d->tor.getInfoHash().truncated());
     if (!token) {
         d->killBadPeer();
-        token = climit.acquire(d->tor.getInfoHash());
+        token = climit.acquire(d->tor.getInfoHash().truncated());
     }
 
     if (token)
@@ -674,7 +674,7 @@ void PeerManager::Private::connectToPeers()
         AccessManager &aman = AccessManager::instance();
 
         if (aman.allowed(itr->first) && !connectedTo(itr->first)) {
-            ConnectionLimit::Token::Ptr token = climit.acquire(tor.getInfoHash());
+            ConnectionLimit::Token::Ptr token = climit.acquire(tor.getInfoHash().truncated());
             if (!token)
                 break;
 
