@@ -17,7 +17,7 @@
 #include <ktorrent_export.h>
 #include <peer/peerid.h>
 #include <util/constants.h>
-#include <util/sha1hash.h>
+#include <util/infohash.h>
 
 class QTextCodec;
 
@@ -58,7 +58,7 @@ class KTORRENT_EXPORT Torrent
 {
 public:
     Torrent();
-    Torrent(const bt::SHA1Hash &hash);
+    Torrent(const bt::InfoHash &hash);
     virtual ~Torrent();
 
     /*!
@@ -126,8 +126,8 @@ public:
         return last_chunk_size;
     }
 
-    //! Get the info_hash.
-    const SHA1Hash &getInfoHash() const
+    /// Get the info_hash.
+    const InfoHash &getInfoHash() const
     {
         return info_hash;
     }
@@ -301,7 +301,7 @@ private:
     QString comments;
     QByteArray metadata;
 
-    SHA1Hash info_hash;
+    InfoHash info_hash;
     QList<SHA1Hash> hash_pieces;
     QList<TorrentFile> files;
     QList<DHTNode> nodes;

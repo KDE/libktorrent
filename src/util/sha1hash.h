@@ -15,6 +15,7 @@ class QString;
 namespace bt
 {
 class Log;
+class SHA2Hash;
 
 /*!
  * \author Joris Guisson

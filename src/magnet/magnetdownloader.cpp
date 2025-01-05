@@ -67,7 +67,7 @@ void MagnetDownloader::start()
 
     dht::DHTBase &dht_table = Globals::instance().getDHT();
     if (dht_table.isRunning()) {
-        dht_ps = new dht::DHTPeerSource(dht_table, mlink.infoHash(), mlink.displayName());
+        dht_ps = new dht::DHTPeerSource(dht_table, mlink.infoHash().truncated(), mlink.displayName());
         dht_ps->setRequestInterval(0); // Do not wait if the announce task finishes
         connect(dht_ps, &dht::DHTPeerSource::peersReady, pman, &PeerManager::peerSourceReady);
         dht_ps->start();
@@ -145,7 +145,7 @@ bool MagnetDownloader::isPartialSeed() const
     return false;
 }
 
-const bt::SHA1Hash &MagnetDownloader::infoHash() const
+const bt::InfoHash &MagnetDownloader::infoHash() const
 {
     return mlink.infoHash();
 }
@@ -181,7 +181,9 @@ void MagnetDownloader::onMetadataDownloaded(const QByteArray &data)
     if (found)
         return;
 
-    bt::SHA1Hash hash = bt::SHA1Hash::generate(data);
+    bt::SHA1Hash hash1 = bt::SHA1Hash::generate(data);
+    bt::SHA2Hash hash2 = bt::SHA2Hash::generate(data);
+    auto hash = bt::InfoHash(hash1, hash2);
     if (hash != mlink.infoHash()) {
         Out(SYS_GEN | LOG_NOTICE) << "Metadata downloaded, but hash check failed" << endl;
         return;
@@ -197,7 +199,7 @@ void MagnetDownloader::dhtStarted()
 {
     if (running() && !dht_ps) {
         dht::DHTBase &dht_table = Globals::instance().getDHT();
-        dht_ps = new dht::DHTPeerSource(dht_table, mlink.infoHash(), mlink.displayName());
+        dht_ps = new dht::DHTPeerSource(dht_table, mlink.infoHash().truncated(), mlink.displayName());
         dht_ps->setRequestInterval(0); // Do not wait if the announce task finishes
         connect(dht_ps, &dht::DHTPeerSource::peersReady, pman, &PeerManager::peerSourceReady);
         dht_ps->start();

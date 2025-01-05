@@ -543,7 +543,7 @@ Uint64 TrackerManager::bytesLeft() const
     return tor->getStats().bytes_left;
 }
 
-const bt::SHA1Hash &TrackerManager::infoHash() const
+const bt::InfoHash &TrackerManager::infoHash() const
 {
     return tor->getInfoHash();
 }

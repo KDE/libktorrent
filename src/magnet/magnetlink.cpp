@@ -125,7 +125,7 @@ void MagnetLink::parse(const QUrl &url)
             hash[i] = (high << 4) | low;
         }
 
-        info_hash = SHA1Hash(hash);
+        info_hash = InfoHash(SHA1Hash(hash), SHA2Hash());
         tracker_urls = GetTrackers(url_query);
         name = url_query.queryItemValue(QLatin1String("dn")).replace('+'_L1, ' '_L1);
         magnet_string = url.toString();

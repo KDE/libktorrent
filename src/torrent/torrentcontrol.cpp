@@ -1352,7 +1352,7 @@ void TorrentControl::deleteDataFiles()
         job->start(); // don't use queue, this is only done when removing the torrent
 }
 
-const bt::SHA1Hash &TorrentControl::getInfoHash() const
+const bt::InfoHash &TorrentControl::getInfoHash() const
 {
     return tor->getInfoHash();
 }

@@ -256,7 +256,7 @@ void UDPTracker::sendAnnounce()
     WriteInt64(buf, 0, connection_id);
     WriteInt32(buf, 8, UDPTrackerSocket::ANNOUNCE);
     WriteInt32(buf, 12, transaction_id);
-    const SHA1Hash &info_hash = tds->infoHash();
+    const SHA1Hash &info_hash = tds->infoHash().truncated();
     memcpy(buf + 16, info_hash.getData(), 20);
     memcpy(buf + 36, peer_id.data(), 20);
     WriteInt64(buf, 56, bytesDownloaded());
@@ -298,7 +298,7 @@ void UDPTracker::sendScrape()
     WriteInt64(buf, 0, connection_id);
     WriteInt32(buf, 8, UDPTrackerSocket::SCRAPE);
     WriteInt32(buf, 12, scrape_transaction_id);
-    const SHA1Hash &info_hash = tds->infoHash();
+    const SHA1Hash &info_hash = tds->infoHash().truncated();
     memcpy(buf + 16, info_hash.getData(), 20);
 
     socket->sendScrape(scrape_transaction_id, buf, address);

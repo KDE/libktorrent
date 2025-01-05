@@ -79,7 +79,7 @@ private:
     Uint64 bytesDownloaded() const override;
     Uint64 bytesUploaded() const override;
     Uint64 bytesLeft() const override;
-    const SHA1Hash &infoHash() const override;
+    const InfoHash &infoHash() const override;
     bool isPartialSeed() const override;
 
     MagnetLink mlink;

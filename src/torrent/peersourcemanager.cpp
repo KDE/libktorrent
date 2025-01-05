@@ -109,7 +109,7 @@ void PeerSourceManager::addDHT()
         delete m_dht;
     }
 
-    m_dht = new dht::DHTPeerSource(Globals::instance().getDHT(), tor->getInfoHash(), tor->getStats().torrent_name);
+    m_dht = new dht::DHTPeerSource(Globals::instance().getDHT(), tor->getInfoHash().truncated(), tor->getStats().torrent_name);
     for (Uint32 i = 0; i < tor->getNumDHTNodes(); i++)
         m_dht->addDHTNode(tor->getDHTNode(i));
 
