@@ -207,10 +207,10 @@ void PeerManager::newConnection(std::unique_ptr<mse::EncryptedPacketSocket> sock
         return;
     }
 
-    std::unique_ptr<ConnectionLimit::Token> token = climit.acquire(d->tor.getInfoHash());
+    std::unique_ptr<ConnectionLimit::Token> token = climit.acquire(d->tor.getInfoHash().truncated());
     if (!token) {
         d->killBadPeer();
-        token = climit.acquire(d->tor.getInfoHash());
+        token = climit.acquire(d->tor.getInfoHash().truncated());
     }
 
     if (token) {
@@ -724,7 +724,7 @@ void PeerManager::Private::connectToPeers()
         const AccessManager &aman = AccessManager::instance();
 
         if (aman.allowed(itr->first) && !connectedTo(itr->first)) {
-            std::unique_ptr<ConnectionLimit::Token> token = climit.acquire(tor.getInfoHash());
+            std::unique_ptr<ConnectionLimit::Token> token = climit.acquire(tor.getInfoHash().truncated());
             if (!token) {
                 break;
             }

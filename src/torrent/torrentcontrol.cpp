@@ -1430,7 +1430,7 @@ void TorrentControl::deleteDataFiles()
     }
 }
 
-const bt::SHA1Hash &TorrentControl::getInfoHash() const
+const bt::InfoHash &TorrentControl::getInfoHash() const
 {
     return tor->getInfoHash();
 }

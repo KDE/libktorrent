@@ -13,6 +13,7 @@ target_sources(KTorrent6 PRIVATE
     util/bitset.cpp
     util/timer.cpp
     util/urlencoder.cpp
+    util/infohash.cpp
     util/sha1hashgen.cpp
     util/sha1hash.cpp
     util/sha2hashgen.cpp

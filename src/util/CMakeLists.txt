@@ -15,6 +15,7 @@ set(util_HDR
     file.h
     constants.h
     bitset.h
+    infohash.h
     sha1hash.h
     sha1hashgen.h
     sha2hash.h

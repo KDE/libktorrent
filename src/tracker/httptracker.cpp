@@ -106,7 +106,7 @@ void HTTPTracker::scrape()
     scrape_url.setPath(url.path(QUrl::FullyEncoded).replace(QStringLiteral("announce"), QStringLiteral("scrape")), QUrl::StrictMode);
 
     QString epq = scrape_url.query(QUrl::FullyEncoded);
-    const SHA1Hash &info_hash = tds->infoHash();
+    const InfoHash &info_hash = tds->infoHash();
     if (epq.length()) {
         epq += '&'_L1;
     }
@@ -146,7 +146,7 @@ void HTTPTracker::onScrapeResult(const KJob *j)
         BDictNode *d = dict.get();
         d = d->getDict("files");
         if (d) {
-            d = d->getDict(tds->infoHash());
+            d = d->getDict(tds->infoHash().truncated());
             if (d) {
                 try {
                     seeders = d->getInt("complete");
@@ -214,7 +214,7 @@ void HTTPTracker::doRequest(WaitJob *wjob)
         query.addQueryItem(QStringLiteral("event"), event);
     }
 
-    const SHA1Hash &info_hash = tds->infoHash();
+    const InfoHash &info_hash = tds->infoHash();
     const QString epq = query.toString(QUrl::FullyEncoded) + QLatin1String("&info_hash=") + info_hash.toURLString();
 
     QUrl u = url;

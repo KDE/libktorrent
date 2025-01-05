@@ -17,6 +17,7 @@
 #include <interfaces/monitorinterface.h>
 #include <util/error.h>
 #include <util/functions.h>
+#include <util/infohash.h>
 #include <util/log.h>
 #include <util/sha1hashgen.h>
 #include <utility>
@@ -68,7 +69,7 @@ Torrent::Torrent()
 {
 }
 
-Torrent::Torrent(const bt::SHA1Hash &hash)
+Torrent::Torrent(const bt::InfoHash &hash)
     : info_hash(hash)
     , chunk_size(0)
     , last_chunk_size(0)
@@ -129,7 +130,7 @@ void Torrent::load(const QByteArray &data, bool verbose)
     SHA1HashGen hg;
     // save info dict
     metadata = dict->getData("info")->getBytes().toByteArray();
-    info_hash = hg.generate(metadata);
+    info_hash = InfoHash(SHA1Hash(hg.generate(metadata)), SHA2Hash());
 
     loaded = true;
 }

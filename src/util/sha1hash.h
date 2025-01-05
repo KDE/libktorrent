@@ -15,6 +15,7 @@ class QString;
 namespace bt
 {
 class Log;
+class SHA2Hash;
 
 /*!
  * \headerfile util/sha1hash.h
