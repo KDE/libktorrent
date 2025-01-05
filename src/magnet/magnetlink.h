@@ -9,7 +9,7 @@
 
 #include <QUrl>
 #include <ktorrent_export.h>
-#include <util/sha1hash.h>
+#include <util/infohash.h>
 
 namespace bt
 {
@@ -76,7 +76,7 @@ public:
     }
 
     //! Get the info hash
-    const SHA1Hash &infoHash() const
+    const InfoHash &infoHash() const
     {
         return info_hash;
     }
@@ -88,7 +88,7 @@ private:
 
 private:
     QString magnet_string;
-    SHA1Hash info_hash;
+    InfoHash info_hash;
     QString torrent_url;
     QList<QUrl> tracker_urls;
     QString path;
