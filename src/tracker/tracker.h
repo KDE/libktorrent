@@ -13,7 +13,7 @@
 #include <interfaces/trackerinterface.h>
 #include <ktorrent_export.h>
 #include <peer/peerid.h>
-#include <util/sha1hash.h>
+#include <util/infohash.h>
 
 class QUrl;
 
@@ -34,7 +34,7 @@ public:
     [[nodiscard]] virtual Uint64 bytesDownloaded() const = 0;
     [[nodiscard]] virtual Uint64 bytesUploaded() const = 0;
     [[nodiscard]] virtual Uint64 bytesLeft() const = 0;
-    [[nodiscard]] virtual const SHA1Hash &infoHash() const = 0;
+    [[nodiscard]] virtual const InfoHash &infoHash() const = 0;
     [[nodiscard]] virtual bool isPartialSeed() const = 0;
 };
 

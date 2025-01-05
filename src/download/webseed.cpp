@@ -113,7 +113,7 @@ Uint32 WebSeed::getDownloadRate() const
 void WebSeed::connectToServer()
 {
     if (!token) {
-        token = PeerManager::connectionLimits().acquire(tor.getInfoHash());
+        token = PeerManager::connectionLimits().acquire(tor.getInfoHash().truncated());
     }
 
     if (!token) {

@@ -59,7 +59,7 @@ public:
 };
 
 PeerConnector::PeerConnector(const net::Address &addr, bool local, bt::PeerManager *pman, std::unique_ptr<ConnectionLimit::Token> token)
-    : Resource(&half_open_connections, pman->getTorrent().getInfoHash().toString())
+    : Resource(&half_open_connections, pman->getTorrent().getInfoHash().truncated().toString())
     , d(std::make_unique<Private>(this, addr, local, pman, std::move(token)))
 {
 }
@@ -181,9 +181,9 @@ void PeerConnector::Private::start(PeerConnector::Method method)
     const Torrent &tor = pm->getTorrent();
     const TransportProtocol proto = (method == Method::TCP_WITH_ENCRYPTION || method == Method::TCP_WITHOUT_ENCRYPTION) ? TCP : UTP;
     if (method == Method::TCP_WITH_ENCRYPTION || method == Method::UTP_WITH_ENCRYPTION) {
-        auth = new mse::EncryptedAuthenticate(addr, proto, tor.getInfoHash(), tor.getPeerID(), self);
+        auth = new mse::EncryptedAuthenticate(addr, proto, tor.getInfoHash().truncated(), tor.getPeerID(), self);
     } else {
-        auth = new Authenticate(addr, proto, tor.getInfoHash(), tor.getPeerID(), self);
+        auth = new Authenticate(addr, proto, tor.getInfoHash().truncated(), tor.getPeerID(), self);
     }
 
     if (local) {

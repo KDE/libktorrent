@@ -264,7 +264,7 @@ void UDPTracker::sendAnnounce()
     98
     */
 
-    const SHA1Hash &info_hash = tds->infoHash();
+    const SHA1Hash info_hash = tds->infoHash().truncated();
     const Uint32 ev = event;
     const Uint16 port = ServerInterface::getPort();
     const Int64 bytes_left = ev == COMPLETED ? 0 : tds->bytesLeft();
@@ -301,7 +301,7 @@ void UDPTracker::sendScrape()
     16 + 20 * N
     */
     scrape_transaction_id = socket->newTransactionID();
-    const SHA1Hash &info_hash = tds->infoHash();
+    const SHA1Hash info_hash = tds->infoHash().truncated();
 
     std::array<std::byte, 36> buf;
     WriteInt64(buf.data(), 0, connection_id);

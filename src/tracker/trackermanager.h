@@ -89,7 +89,7 @@ protected:
     [[nodiscard]] Uint64 bytesDownloaded() const override;
     [[nodiscard]] Uint64 bytesUploaded() const override;
     [[nodiscard]] Uint64 bytesLeft() const override;
-    [[nodiscard]] const SHA1Hash &infoHash() const override;
+    [[nodiscard]] const InfoHash &infoHash() const override;
     [[nodiscard]] bool isPartialSeed() const override;
 
 private Q_SLOTS:

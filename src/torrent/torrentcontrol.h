@@ -164,7 +164,7 @@ public:
     void getTrafficLimits(Uint32 &up, Uint32 &down) override;
     void setAssuredSpeeds(Uint32 up, Uint32 down) override;
     void getAssuredSpeeds(Uint32 &up, Uint32 &down) override;
-    [[nodiscard]] const SHA1Hash &getInfoHash() const override;
+    [[nodiscard]] const InfoHash &getInfoHash() const override;
     void setUserModifiedFileName(const QString &n) override;
     int getETA() override;
     void setMoveWhenCompletedDir(const QString &dir) override

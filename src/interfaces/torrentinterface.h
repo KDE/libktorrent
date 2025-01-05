@@ -31,7 +31,7 @@ class PeerID;
 class MonitorInterface;
 class TorrentFileInterface;
 class PeerSource;
-class SHA1Hash;
+class InfoHash;
 class WebSeedInterface;
 class JobQueue;
 class ChunkSelectorInterface;
@@ -409,7 +409,7 @@ public:
     virtual void handleError(const QString &err) = 0;
 
     //! Get the info_hash.
-    [[nodiscard]] virtual const bt::SHA1Hash &getInfoHash() const = 0;
+    [[nodiscard]] virtual const bt::InfoHash &getInfoHash() const = 0;
 
     /*!
      * Add a new PeerSource

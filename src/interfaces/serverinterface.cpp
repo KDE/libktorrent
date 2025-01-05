@@ -55,7 +55,7 @@ PeerManager *ServerInterface::findPeerManager(const bt::SHA1Hash &hash)
     QList<PeerManager *>::iterator i = peer_managers.begin();
     while (i != peer_managers.end()) {
         PeerManager *pm = *i;
-        if (pm && pm->getTorrent().getInfoHash() == hash) {
+        if (pm && pm->getTorrent().getInfoHash().truncated() == hash) {
             if (!pm->isStarted()) {
                 return nullptr;
             } else {
@@ -74,9 +74,9 @@ bool ServerInterface::findInfoHash(const bt::SHA1Hash &skey, SHA1Hash &info_hash
     QList<PeerManager *>::iterator i = peer_managers.begin();
     while (i != peer_managers.end()) {
         const PeerManager *pm = *i;
-        memcpy(buf.data() + 4, pm->getTorrent().getInfoHash().getData(), 20);
+        memcpy(buf.data() + 4, pm->getTorrent().getInfoHash().truncated().getData(), 20);
         if (SHA1Hash::generate(buf) == skey) {
-            info_hash = pm->getTorrent().getInfoHash();
+            info_hash = pm->getTorrent().getInfoHash().truncated();
             return true;
         }
         ++i;
