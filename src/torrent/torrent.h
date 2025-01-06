@@ -173,7 +173,9 @@ public:
     //! See if we have a multi file torrent.
     bool isMultiFile() const
     {
-        return files.count() > 0;
+        if (meta_version == 1)
+            return files.count() > 0;
+        return files.count() > 1;
     }
 
     //! Get the number of files in a multi file torrent.
@@ -288,8 +290,10 @@ public:
 private:
     void loadInfo(BDictNode *node);
     void loadTrackerURL(const QString &s);
-    void loadHash(BDictNode *dict);
-    void loadFiles(BListNode *node);
+    void loadHashV1(BDictNode *dict);
+    QList<SHA2Hash> loadHashV2(BDictNode *piece_layers, QByteArray root);
+    void loadFilesV1(BListNode *node);
+    void loadFilesV2(BDictNode *node, BDictNode *piece_layers, Uint8 depth = 0, QStringList path = QStringList(), Uint32 idx = 0);
     void loadNodes(BListNode *node);
     void loadAnnounceList(BNode *node);
     void loadWebSeeds(BListNode *node);
@@ -310,6 +314,7 @@ private:
 
     std::unique_ptr<TrackerTier> trackers;
     Uint64 chunk_size;
+    Uint32 meta_version;
     Uint64 last_chunk_size;
     Uint64 total_size;
     FilePriorityListener *file_prio_listener;

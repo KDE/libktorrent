@@ -21,6 +21,7 @@
 #include <util/infohash.h>
 #include <util/log.h>
 #include <util/sha1hashgen.h>
+#include <util/sha2hashgen.h>
 
 #include <KLocalizedString>
 
@@ -28,7 +29,7 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace bt
 {
-static QString SanityzeName(const QString &name)
+static QString SanitizeName(const QString &name)
 {
     QString ret = name;
 #ifdef Q_OS_WIN
@@ -120,49 +121,84 @@ void Torrent::load(const QByteArray &data, bool verbose)
     }
 
     BNode *n = dict->getData(QByteArrayLiteral("info"));
-    SHA1HashGen hg;
     // save info dict
     metadata = data.mid(n->getOffset(), n->getLength());
-    info_hash = InfoHash(SHA1Hash(hg.generate(metadata)), SHA2Hash());
+    SHA1HashGen hg1;
+    SHA1Hash hash1 = SHA1Hash(hg1.generate(metadata));
+    if (meta_version == 1)
+        info_hash = InfoHash(hash1, SHA2Hash());
+    else {
+        SHA2HashGen hg2;
+        SHA2Hash hash2 = SHA2Hash(hg2.generate((const Uint8 *)metadata.data(), metadata.size()));
+        info_hash = InfoHash(hash1, hash2);
+    }
 
     loaded = true;
 }
 
 void Torrent::loadInfo(BDictNode *dict)
 {
-    if (!dict)
+    BDictNode *info = dict->getDict(QByteArrayLiteral("info"));
+    if (!info)
         throw Error(i18n("Corrupted torrent."));
 
-    chunk_size = dict->getInt64(QByteArrayLiteral("piece length"));
-    BListNode *files = dict->getList(QByteArrayLiteral("files"));
-    if (files)
-        loadFiles(files);
-    else
-        total_size = dict->getInt64(QByteArrayLiteral("length"));
+    const BValueNode *m = info->getValue(QByteArrayLiteral("meta version"));
+    meta_version = m ? m->data().toInt() : 1;
+    if (meta_version > 2)
+        throw Error(i18n("Unsupported torrent version: %1.", meta_version));
 
-    loadHash(dict);
-    unencoded_name = dict->getByteArray(QByteArrayLiteral("name"));
+    chunk_size = info->getInt64(QByteArrayLiteral("piece length"));
+
+    BDictNode *file_tree = info->getDict(QByteArrayLiteral("file tree"));
+    BDictNode *piece_layers = dict->getDict(QByteArrayLiteral("piece layers"));
+    if (meta_version >= 2 && !file_tree) {
+        Out(SYS_GEN | LOG_DEBUG) << "File tree not found" << endl;
+        throw Error(i18n("Corrupted torrent."));
+    }
+    if (meta_version >= 2 && !piece_layers) {
+        Out(SYS_GEN | LOG_DEBUG) << "Piece layers not found" << endl;
+        throw Error(i18n("Corrupted torrent."));
+    }
+    if (meta_version == 1 && file_tree) {
+        throw Error(i18n("Corrupted torrent."));
+    }
+
+    BListNode *files = info->getList(QByteArrayLiteral("files"));
+    if (files)
+        loadFilesV1(files);
+    else if (meta_version == 1)
+        total_size = info->getInt64(QByteArrayLiteral("length"));
+
+    if (meta_version >= 2)
+        loadFilesV2(file_tree, piece_layers);
+
+    if (files)
+        loadHashV1(info);
+
+    unencoded_name = info->getByteArray(QByteArrayLiteral("name"));
     name_suggestion = QString::fromUtf8(unencoded_name);
-    name_suggestion = SanityzeName(name_suggestion);
-    BValueNode *n = dict->getValue(QByteArrayLiteral("private"));
+    name_suggestion = SanitizeName(name_suggestion);
+    BValueNode *n = info->getValue(QByteArrayLiteral("private"));
     if (n && n->data().toInt() == 1)
         priv_torrent = true;
 
-    // do a safety check to see if the number of hashes matches the file_length
-    Uint32 num_chunks = (total_size / chunk_size);
-    last_chunk_size = total_size % chunk_size;
-    if (last_chunk_size > 0)
-        num_chunks++;
-    else
-        last_chunk_size = chunk_size;
+    if (files) {
+        // do a safety check to see if the number of hashes matches the file_length
+        Uint32 num_chunks = (total_size / chunk_size);
+        last_chunk_size = total_size % chunk_size;
+        if (last_chunk_size > 0)
+            num_chunks++;
+        else
+            last_chunk_size = chunk_size;
 
-    if (num_chunks != (Uint32)hash_pieces.count()) {
-        Out(SYS_GEN | LOG_DEBUG) << "File sizes and number of hashes do not match for " << name_suggestion << endl;
-        throw Error(i18n("Corrupted torrent."));
+        if (num_chunks != (Uint32)hash_pieces.count()) {
+            Out(SYS_GEN | LOG_DEBUG) << "File sizes and number of hashes do not match for " << name_suggestion << endl;
+            throw Error(i18n("Corrupted torrent."));
+        }
     }
 }
 
-void Torrent::loadFiles(BListNode *node)
+void Torrent::loadFilesV1(BListNode *node)
 {
     if (!node)
         throw Error(i18n("Corrupted torrent."));
@@ -209,6 +245,46 @@ void Torrent::loadFiles(BListNode *node)
     }
 }
 
+void Torrent::loadFilesV2(BDictNode *node, BDictNode *piece_layers, Uint8 depth, QStringList path, Uint32 idx)
+{
+    if (!node)
+        throw Error(i18n("Corrupted torrent."));
+
+    // We parse file tree structure recursively, so make sure not to overflow the stack.
+    if (depth > 100) {
+        throw Error(i18n("Torrent contains too many levels of nested directories."));
+    }
+
+    const QList<QByteArray> keys = node->keys();
+    for (const QByteArray &key : keys) {
+        BDictNode *second = node->getDict(key);
+        if (second == nullptr) {
+            throw Error(i18n("Corrupted torrent."));
+        }
+
+        bool leaf_node = key.isEmpty();
+        if (leaf_node) {
+            Uint64 length = second->getInt64(QByteArrayLiteral("length"));
+            QByteArray root = second->getByteArray(QByteArrayLiteral("pieces root"));
+            if (length > chunk_size) {
+                QList<SHA2Hash> hashes_list = loadHashV2(piece_layers, root); // TODO: Not yet used
+            }
+
+            QString file_path = SanitizeName(path.join(bt::DirSeparator()));
+            TorrentFile file(this, idx, file_path, total_size, length, chunk_size);
+            total_size += length;
+            idx++;
+            files.append(file);
+        } else {
+            QString directory_name = QString::fromUtf8(key).remove(bt::DirSeparator());
+            if (directory_name.isEmpty()) {
+                throw Error(i18n("Invalid directory name."));
+            }
+            loadFilesV2(second, piece_layers, depth + 1, QStringList(path) << directory_name);
+        }
+    }
+}
+
 void Torrent::loadTrackerURL(const QString &s)
 {
     if (!trackers)
@@ -219,14 +295,34 @@ void Torrent::loadTrackerURL(const QString &s)
         trackers->urls.append(url);
 }
 
-void Torrent::loadHash(BDictNode *dict)
+void Torrent::loadHashV1(BDictNode *dict)
 {
+    const BValueNode *pieces = dict->getValue(QByteArrayLiteral("pieces"));
+    if (!pieces) {
+        if (meta_version == 1) {
+            throw Error(i18n("Corrupted torrent."));
+        }
+        return;
+    }
     const QByteArray hash_string = dict->getByteArray(QByteArrayLiteral("pieces"));
     const QByteArrayView hash_string_view{hash_string};
     for (int i = 0; i < hash_string.size(); i += 20) {
         SHA1Hash hash(hash_string_view.sliced(i, 20));
         hash_pieces.append(hash);
     }
+}
+
+QList<SHA2Hash> Torrent::loadHashV2(BDictNode *piece_layers, QByteArray root)
+{
+    QList<SHA2Hash> hash_pieces;
+    const QByteArray hash_string = piece_layers->getByteArray(root);
+    for (int i = 0; i < hash_string.size(); i += 32) {
+        Uint8 h[32];
+        memcpy(h, hash_string.data() + i, 32);
+        SHA2Hash hash(h);
+        hash_pieces.append(hash);
+    }
+    return hash_pieces;
 }
 
 void Torrent::loadAnnounceList(BNode *node)
