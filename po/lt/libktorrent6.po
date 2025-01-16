@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-01-04 00:41+0000\n"
-"PO-Revision-Date: 2012-04-06 14:49+0300\n"
+"PO-Revision-Date: 2025-01-15 23:54+0000\n"
 "Last-Translator: Andrius Štikonas <andrius@stikonas.eu>\n"
 "Language-Team: Lithuanian <kde-i18n-doc@kde.org>\n"
 "Language: lt\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Poedit 3.5\n"
 
 #: src/bcodec/bdecoder.cpp:50
 #, kde-format
 msgid "Illegal token: %1"
-msgstr "Neleistina saugumo priemonė: %1"
+msgstr "Neleistinas simbolis: %1"
 
 #: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:111
 #, kde-format
@@ -37,7 +37,7 @@ msgstr "Netikėta įvesties pabaiga"
 #: src/bcodec/bdecoder.cpp:180 src/bcodec/bdecoder.cpp:220
 #, kde-format
 msgid "Cannot convert %1 to an int"
-msgstr "Nepavyksta konvertuoti %1 į kint."
+msgstr "Nepavyksta konvertuoti %1 į sveikąjį skaičių"
 
 #: src/bcodec/bdecoder.cpp:225
 #, kde-format
@@ -264,17 +264,16 @@ msgstr "Klaida: baigėsi užklausai skirtas laikas"
 #: src/download/httpconnection.cpp:353
 #, kde-format
 msgid "Redirected without a new location."
-msgstr "Nukreipti be naujos vietos"
+msgstr "Nukreipti be naujos vietos."
 
 #: src/download/webseed.cpp:502
-#, fuzzy, kde-format
-#| msgid "Unused for %1 seconds (Too many connection failures)"
+#, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
-msgstr[0] "Nenaudota %1 sek. (Per daug sujungimo klaidų)"
-msgstr[1] "Nenaudota %1 sek. (Per daug sujungimo klaidų)"
-msgstr[2] "Nenaudota %1 sek. (Per daug sujungimo klaidų)"
-msgstr[3] "Nenaudota %1 sek. (Per daug sujungimo klaidų)"
+msgstr[0] "Nenaudota %1 sekundę (Per daug sujungimo klaidų)"
+msgstr[1] "Nenaudota %1 sekundes (Per daug sujungimo klaidų)"
+msgstr[2] "Nenaudota %1 sekundžių (Per daug sujungimo klaidų)"
+msgstr[3] "Nenaudota %1 sekundę (Per daug sujungimo klaidų)"
 
 #: src/interfaces/trackerinterface.cpp:46
 #, kde-format
@@ -322,7 +321,7 @@ msgstr "Įvyko klaida įkeliant <b>%1</b>:<br/><b>%2</b>"
 #: src/torrent/torrentcontrol.cpp:503
 #, kde-format
 msgid "Unable to create %1: %2"
-msgstr " Nepavyksta sukurti %1: %2"
+msgstr "Nepavyksta sukurti %1: %2"
 
 #: src/torrent/torrentcontrol.cpp:516
 #, kde-format
@@ -423,7 +422,7 @@ msgstr "Klaidingi duomenys iš vedlio"
 #: src/tracker/httptracker.cpp:402
 #, kde-format
 msgid "Invalid tracker URL"
-msgstr "Klaidingas vedlio URL:"
+msgstr "Klaidingas vedlio URL"
 
 #: src/tracker/httptracker.cpp:460 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
@@ -526,8 +525,7 @@ msgid "Cannot seek in file: %1"
 msgstr "Nepavyksta ieškoti faile: %1"
 
 #: src/util/fileops.cpp:626
-#, fuzzy, kde-format
-#| msgid "Unable to open torrent file %1: %2"
+#, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Nepavyksta atverti torento failo %1: %2"
 
@@ -568,7 +566,7 @@ msgstr "DHT"
 #: src/util/logsystemmanager.cpp:23
 #, kde-format
 msgid "Disk Input/Output"
-msgstr "Disko Įvestis/Išvestis:"
+msgstr "Disko Įvestis/Išvestis"
 
 #: src/util/logsystemmanager.cpp:24
 #, kde-format
