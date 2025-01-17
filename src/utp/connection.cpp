@@ -12,6 +12,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QThread>
+#include <climits>
 #include <ctime>
 #include <util/functions.h>
 #include <util/log.h>
