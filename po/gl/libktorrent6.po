@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-21 00:39+0000\n"
-"PO-Revision-Date: 2025-01-12 15:47+0100\n"
+"PO-Revision-Date: 2025-01-19 12:20+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
 "Language: gl\n"
@@ -91,7 +91,7 @@ msgstr "Non é posíbel abrir %1: %2"
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr ""
-"Non é posíbel abrir %1 para escritura: o sistema de ficheiros só admite "
+"Non é posíbel abrir %1 para escritura: o sistema de ficheiros só permite "
 "lectura."
 
 #: src/diskio/cachefile.cpp:111 src/diskio/cachefile.cpp:375
