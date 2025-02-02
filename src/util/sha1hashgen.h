@@ -33,6 +33,13 @@ public:
     /**
      * Generate a hash from a bunch of data.
      * @param data The data
+     * @return The SHA1 hash
+     */
+    SHA1Hash generate(QByteArrayView data);
+
+    /**
+     * Generate a hash from a bunch of data.
+     * @param data The data
      * @param len The length
      * @return The SHA1 hash
      */
@@ -42,6 +49,12 @@ public:
      * Start SHA1 hash generation in chunks.
      */
     void start();
+
+    /**
+     * Update the hash.
+     * @param data The data
+     */
+    void update(QByteArrayView data);
 
     /**
      * Update the hash.

@@ -92,7 +92,7 @@ private Q_SLOTS:
             written += tc.getStats().chunk_size;
 
             // Verify the hash
-            bt::SHA1Hash hash = bt::SHA1Hash::generate((const bt::Uint8 *)tmp.data(), tmp.size());
+            bt::SHA1Hash hash = bt::SHA1Hash::generate(tmp);
             QVERIFY(hash == tc.getTorrent().getHash(idx));
             idx++;
         }
@@ -137,7 +137,7 @@ private Q_SLOTS:
             written += ret;
 
             // Verify the hash
-            bt::SHA1Hash hash = bt::SHA1Hash::generate((const bt::Uint8 *)tmp.data(), tmp.size());
+            bt::SHA1Hash hash = bt::SHA1Hash::generate(tmp);
             QVERIFY(hash == tc.getTorrent().getHash(idx));
             idx++;
         }
@@ -195,8 +195,9 @@ private Q_SLOTS:
         Out(SYS_GEN | LOG_DEBUG) << "chunk_off = " << chunk_off << endl;
 
         // Verify the hashes
+        const QByteArrayView range_view{range};
         for (int i = 0; i < 3; i++) {
-            bt::SHA1Hash hash = bt::SHA1Hash::generate((const bt::Uint8 *)range.data() + chunk_off, tc.getStats().chunk_size);
+            bt::SHA1Hash hash = bt::SHA1Hash::generate(range_view.sliced(chunk_off, tc.getStats().chunk_size));
 
             Out(SYS_GEN | LOG_DEBUG) << "chash = " << hash.toString() << endl;
             Out(SYS_GEN | LOG_DEBUG) << "whash = " << tc.getTorrent().getHash(chunk_idx).toString() << endl;

@@ -24,6 +24,11 @@ SHA1Hash::SHA1Hash(const SHA1Hash &other)
     memcpy(hash, other.hash, 20);
 }
 
+SHA1Hash::SHA1Hash(QByteArrayView h)
+{
+    memcpy(hash, h.data(), 20);
+}
+
 SHA1Hash::SHA1Hash(const Uint8 *h)
 {
     memcpy(hash, h, 20);
@@ -44,11 +49,16 @@ bool SHA1Hash::operator==(const SHA1Hash &other) const
     return memcmp(hash, other.hash, 20) == 0;
 }
 
-SHA1Hash SHA1Hash::generate(const Uint8 *data, Uint32 len)
+SHA1Hash SHA1Hash::generate(const QByteArrayView data)
 {
     SHA1HashGen hg;
 
-    return hg.generate(data, len);
+    return hg.generate(data);
+}
+
+SHA1Hash SHA1Hash::generate(const Uint8 *data, Uint32 len)
+{
+    return generate(QByteArrayView(data, len));
 }
 
 #define hex_str '%', '0', '2', 'x'

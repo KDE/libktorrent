@@ -24,10 +24,15 @@ SHA1HashGen::~SHA1HashGen()
     delete h;
 }
 
+SHA1Hash SHA1HashGen::generate(const QByteArrayView data)
+{
+    h->addData(data);
+    return SHA1Hash(h->result());
+}
+
 SHA1Hash SHA1HashGen::generate(const Uint8 *data, Uint32 len)
 {
-    h->addData(QByteArrayView((const char *)data, len));
-    return SHA1Hash((const bt::Uint8 *)h->result().constData());
+    return generate(QByteArrayView(data, len));
 }
 
 void SHA1HashGen::start()
@@ -35,9 +40,14 @@ void SHA1HashGen::start()
     h->reset();
 }
 
+void SHA1HashGen::update(const QByteArrayView data)
+{
+    h->addData(data);
+}
+
 void SHA1HashGen::update(const Uint8 *data, Uint32 len)
 {
-    h->addData(QByteArrayView((const char *)data, len));
+    update(QByteArrayView(data, len));
 }
 
 void SHA1HashGen::end()

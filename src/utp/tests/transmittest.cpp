@@ -80,7 +80,8 @@ public:
     void run() override
     {
         int step = 64 * 1024;
-        QByteArray data = Generate(step);
+        const QByteArray data = Generate(step);
+        const QByteArrayView data_view{data};
         bt::SHA1HashGen hgen;
 
         bt::Int64 sent = 0;
@@ -90,7 +91,7 @@ public:
             int to_send = step - off;
             int ret = outgoing->send((const bt::Uint8 *)data.data() + off, to_send);
             if (ret > 0) {
-                hgen.update((const bt::Uint8 *)data.data() + off, ret);
+                hgen.update(data_view.sliced(off, ret));
                 sent += ret;
                 off += ret;
                 off = off % step;
@@ -205,7 +206,7 @@ private Q_SLOTS:
                 int ret = incoming->recv((bt::Uint8 *)data.data(), to_read);
                 QVERIFY(ret == to_read);
                 if (ret > 0) {
-                    hgen.update((bt::Uint8 *)data.data(), ret);
+                    hgen.update(data);
                     received += ret;
                     // Out(SYS_UTP|LOG_DEBUG) << "Received " << received << endl;
                 }

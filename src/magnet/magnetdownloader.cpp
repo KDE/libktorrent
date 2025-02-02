@@ -181,7 +181,7 @@ void MagnetDownloader::onMetadataDownloaded(const QByteArray &data)
     if (found)
         return;
 
-    bt::SHA1Hash hash = bt::SHA1Hash::generate((const Uint8 *)data.data(), data.size());
+    bt::SHA1Hash hash = bt::SHA1Hash::generate(data);
     if (hash != mlink.infoHash()) {
         Out(SYS_GEN | LOG_NOTICE) << "Metadata downloaded, but hash check failed" << endl;
         return;

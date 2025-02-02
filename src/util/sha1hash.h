@@ -44,6 +44,12 @@ public:
      * Directly set the hash data.
      * @param h The hash data must be 20 bytes large
      */
+    SHA1Hash(QByteArrayView h);
+
+    /**
+     * Directly set the hash data.
+     * @param h The hash data must be 20 bytes large
+     */
     SHA1Hash(const Uint8 *h);
 
     /**
@@ -79,6 +85,13 @@ public:
     {
         return !operator==(other);
     }
+
+    /**
+     * Generate an SHA1 hash from a bunch of data.
+     * @param data The data
+     * @return The generated SHA1 hash
+     */
+    static SHA1Hash generate(QByteArrayView data);
 
     /**
      * Generate an SHA1 hash from a bunch of data.
