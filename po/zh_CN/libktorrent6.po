@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-01-04 00:41+0000\n"
+"POT-Creation-Date: 2025-02-13 00:44+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -293,7 +293,7 @@ msgstr "未知客户端"
 #: src/torrent/torrent.cpp:97 src/torrent/torrent.cpp:144
 #: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
 #: src/torrent/torrent.cpp:185 src/torrent/torrent.cpp:189
-#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:273
+#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:272
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "损坏的种子。"

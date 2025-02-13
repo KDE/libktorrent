@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-01-04 00:41+0000\n"
+"POT-Creation-Date: 2025-02-13 00:44+0000\n"
 "PO-Revision-Date: 2011-06-28 12:49+0200\n"
 "Last-Translator: Marko Dimjašević <marko@dimjasevic.net>\n"
 "Language-Team: Croatian <kde-croatia-list@lists.sourceforge.net>\n"
@@ -305,7 +305,7 @@ msgstr ""
 #: src/torrent/torrent.cpp:97 src/torrent/torrent.cpp:144
 #: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
 #: src/torrent/torrent.cpp:185 src/torrent/torrent.cpp:189
-#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:273
+#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:272
 #, fuzzy, kde-format
 #| msgid "KTorrent"
 msgid "Corrupted torrent."

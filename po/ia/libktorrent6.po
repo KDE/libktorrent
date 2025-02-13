@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-01-04 00:41+0000\n"
+"POT-Creation-Date: 2025-02-13 00:44+0000\n"
 "PO-Revision-Date: 2023-05-08 12:47+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -297,7 +297,7 @@ msgstr "Cliente incognite"
 #: src/torrent/torrent.cpp:97 src/torrent/torrent.cpp:144
 #: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
 #: src/torrent/torrent.cpp:185 src/torrent/torrent.cpp:189
-#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:273
+#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:272
 #, kde-format
 msgid "Corrupted torrent."
 msgstr ""

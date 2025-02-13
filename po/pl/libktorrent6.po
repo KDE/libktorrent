@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-01-04 00:41+0000\n"
+"POT-Creation-Date: 2025-02-13 00:44+0000\n"
 "PO-Revision-Date: 2022-12-11 07:36+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -302,7 +302,7 @@ msgstr "Nieznany klient"
 #: src/torrent/torrent.cpp:97 src/torrent/torrent.cpp:144
 #: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
 #: src/torrent/torrent.cpp:185 src/torrent/torrent.cpp:189
-#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:273
+#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:272
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Uszkodzony torrent."
