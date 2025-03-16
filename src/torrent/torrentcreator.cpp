@@ -54,23 +54,19 @@ TorrentCreator::TorrentCreator(const QString &tar,
 
         tot_size = 0;
         buildFileList(QString());
-        num_chunks = tot_size / chunk_size;
-        if (tot_size % chunk_size > 0)
-            num_chunks++;
-        last_size = tot_size % chunk_size;
-        Out(SYS_GEN | LOG_DEBUG) << "Tot Size : " << tot_size << endl;
     } else {
         tot_size = bt::FileSize(target);
-        num_chunks = tot_size / chunk_size;
-        if (tot_size % chunk_size > 0)
-            num_chunks++;
-        last_size = tot_size % chunk_size;
-        Out(SYS_GEN | LOG_DEBUG) << "Tot Size : " << tot_size << endl;
     }
 
-    if (last_size == 0)
+    num_chunks = tot_size / chunk_size;
+    last_size = tot_size % chunk_size;
+    if (last_size == 0) {
         last_size = chunk_size;
+    } else {
+        ++num_chunks;
+    }
 
+    Out(SYS_GEN | LOG_DEBUG) << "Tot Size : " << tot_size << endl;
     Out(SYS_GEN | LOG_DEBUG) << "Num Chunks : " << num_chunks << endl;
     Out(SYS_GEN | LOG_DEBUG) << "Chunk Size : " << chunk_size << endl;
     Out(SYS_GEN | LOG_DEBUG) << "Last Size : " << last_size << endl;
