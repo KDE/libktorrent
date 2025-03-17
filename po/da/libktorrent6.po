@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-02-13 00:44+0000\n"
+"POT-Creation-Date: 2025-03-17 00:41+0000\n"
 "PO-Revision-Date: 2014-05-10 17:04+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -60,8 +60,8 @@ msgstr "Tjekker data"
 
 #: src/datachecker/multidatachecker.cpp:185
 #: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:627
-#: src/diskio/multifilecache.cpp:662 src/torrent/torrentcreator.cpp:113
-#: src/torrent/torrentcreator.cpp:234 src/torrent/torrentcreator.cpp:266
+#: src/diskio/multifilecache.cpp:662 src/torrent/torrentcreator.cpp:109
+#: src/torrent/torrentcreator.cpp:230 src/torrent/torrentcreator.cpp:262
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "Kan ikke åbne filen %1: %2"
@@ -332,7 +332,7 @@ msgstr ""
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Du downloader allerede torrenten <b>%1</b>."
 
-#: src/torrent/torrentcreator.cpp:334
+#: src/torrent/torrentcreator.cpp:330
 #, kde-format
 msgid "Cannot create index file: %1"
 msgstr "Kan ikke oprette indeksfil: %1"
