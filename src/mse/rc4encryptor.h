@@ -6,7 +6,12 @@
 #ifndef MSERC4ENCRYPTOR_H
 #define MSERC4ENCRYPTOR_H
 
+#if defined(LIBKTORRENT_USE_OPENSSL)
+#include <openssl/types.h>
+#include <memory>
+#elif defined(LIBKTORRENT_USE_LIBGCRYPT)
 #include <gcrypt.h>
+#endif
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <util/sha1hash.h>
@@ -49,15 +54,30 @@ public:
 
     /**
      * Encrypt data, encryption will happen in the same buffer. So data will
-     * be changed replaced by it's encrypted version.
+     * be changed replaced by its encrypted version.
      * @param data The data to encrypt
      * @param len The length of the data
      */
     void encryptReplace(Uint8 *data, Uint32 len);
 
 private:
+#if defined(LIBKTORRENT_USE_OPENSSL)
+    struct EVP_CIPHERDeleter
+    {
+        void operator()(EVP_CIPHER *cipher) const noexcept;
+    };
+
+    struct EVP_CIPHER_CTXDeleter
+    {
+        void operator()(EVP_CIPHER_CTX *ctx) const noexcept;
+    };
+
+    std::unique_ptr<EVP_CIPHER_CTX, EVP_CIPHER_CTXDeleter> enc;
+    std::unique_ptr<EVP_CIPHER_CTX, EVP_CIPHER_CTXDeleter> dec;
+#elif defined(LIBKTORRENT_USE_LIBGCRYPT)
     gcry_cipher_hd_t enc;
     gcry_cipher_hd_t dec;
+#endif
 };
 
 }

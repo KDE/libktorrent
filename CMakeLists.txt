@@ -12,6 +12,7 @@ set (RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE
 set(Boost_MIN_VERSION "1.71.0")
 set(LibGMP_MIN_VERSION "6.0.0")
 set(LibGcrypt_MIN_VERSION "1.4.5")
+set(OpenSSL_MIN_VERSION "3.0.0")
 set(KF_MIN_VERSION "5.240.0")
 set(QT_MIN_VERSION "6.5.0")
 
@@ -21,6 +22,13 @@ project(LIBKTORRENT VERSION ${RELEASE_SERVICE_VERSION})
 
 # set some default settings
 enable_testing()
+
+set(CRYPTO_BACKENDS "Auto" "OpenSSL" "LibGcrypt")
+set(USE_CRYPTO_BACKEND "Auto" CACHE STRING "Cryptography backend to use in libktorrent")
+set_property(CACHE USE_CRYPTO_BACKEND PROPERTY STRINGS ${CRYPTO_BACKENDS})
+if (NOT USE_CRYPTO_BACKEND IN_LIST CRYPTO_BACKENDS)
+    message(FATAL_ERROR "USE_CRYPTO_BACKEND must be one of: ${CRYPTO_BACKENDS}")
+endif()
 
 find_package(ECM ${KF_MIN_VERSION} NO_MODULE)
 
@@ -72,7 +80,22 @@ find_package(KF6 "${KF_MIN_VERSION}" REQUIRED COMPONENTS
 
 find_package(Boost "${Boost_MIN_VERSION}" NO_MODULE REQUIRED)
 find_package(LibGMP "${LibGMP_MIN_VERSION}" REQUIRED)
-find_package(LibGcrypt "${LibGcrypt_MIN_VERSION}" REQUIRED)
+
+if (USE_CRYPTO_BACKEND STREQUAL "Auto" OR USE_CRYPTO_BACKEND STREQUAL "OpenSSL")
+    find_package(OpenSSL "${OpenSSL_MIN_VERSION}")
+endif()
+if (NOT OPENSSL_FOUND AND (USE_CRYPTO_BACKEND STREQUAL "Auto" OR USE_CRYPTO_BACKEND STREQUAL "LibGcrypt"))
+    find_package(LibGcrypt "${LibGcrypt_MIN_VERSION}")
+endif()
+if (OPENSSL_FOUND)
+    set(USE_OPENSSL 1)
+    set(USE_LIBGCRYPT 0)
+elseif (LibGcrypt_FOUND)
+    set(USE_LIBGCRYPT 1)
+    set(USE_OPENSSL 0)
+else()
+    message(FATAL_ERROR "No cryptography library found, USE_CRYPTO_BACKEND is ${USE_CRYPTO_BACKEND}")
+endif()
 
 kde_enable_exceptions()
 add_definitions(

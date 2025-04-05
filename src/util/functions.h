@@ -185,6 +185,11 @@ struct KTORRENT_EXPORT RecursiveEntryGuard {
     }
 };
 
+#if defined(LIBKTORRENT_USE_OPENSSL)
+/// Returns a string with the last OpenSSL error. Only for internal use in libktorrent for diagnostic purposes.
+QString getLastOpenSSLErrorString();
+#endif
+
 /**
     Global initialization function, should be called, in the applications main function.
  */

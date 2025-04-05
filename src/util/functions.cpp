@@ -7,7 +7,14 @@
 #include "functions.h"
 
 #include <cerrno>
+#if defined(LIBKTORRENT_USE_OPENSSL)
+#include <openssl/types.h>
+#include <openssl/provider.h>
+#include <openssl/err.h>
+#include <memory>
+#elif defined(LIBKTORRENT_USE_LIBGCRYPT)
 #include <gcrypt.h>
+#endif
 #include <sys/types.h>
 
 #ifndef Q_OS_WIN
@@ -266,6 +273,15 @@ double Percentage(const TorrentStats &s)
     }
 }
 
+#if defined(LIBKTORRENT_USE_OPENSSL)
+QString getLastOpenSSLErrorString()
+{
+    char buf[1024];
+    ERR_error_string_n(ERR_get_error(), buf, sizeof(buf));
+    return QString::fromUtf8(buf);
+}
+#endif
+
 #ifdef Q_OS_WIN
 static bool InitWindowsSocketsAPI()
 {
@@ -284,12 +300,20 @@ static bool InitWindowsSocketsAPI()
 }
 #endif
 
-static bool InitGCrypt()
+static bool InitCryptoBackend()
 {
     static bool initialized = false;
     if (initialized)
         return true;
 
+#if defined(LIBKTORRENT_USE_OPENSSL)
+    // We need legacy provider for the RC4 cipher
+    OSSL_PROVIDER *legacy_provider = OSSL_PROVIDER_try_load(nullptr, "legacy", true);
+    if (!legacy_provider) {
+        Out(SYS_GEN | LOG_NOTICE) << "Failed to initialize legacy crypto provider in OpenSSL: " << getLastOpenSSLErrorString() << endl;
+        return false;
+    }
+#elif defined(LIBKTORRENT_USE_LIBGCRYPT)
     // If already initialized, don't do anything
     if (gcry_control(GCRYCTL_INITIALIZATION_FINISHED_P)) {
         initialized = true;
@@ -303,6 +327,8 @@ static bool InitGCrypt()
     /* Disable secure memory. */
     gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
     gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
+#endif
+
     initialized = true;
     return true;
 }
@@ -310,7 +336,7 @@ static bool InitGCrypt()
 bool InitLibKTorrent()
 {
     MaximizeLimits();
-    bool ret = InitGCrypt();
+    bool ret = InitCryptoBackend();
 #ifdef Q_OS_WIN
     ret = InitWindowsSocketsAPI() && ret;
 #endif

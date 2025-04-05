@@ -240,9 +240,16 @@ PUBLIC
     KF6::I18n
     Qt6::Xml
     Boost::boost
-    LibGcrypt::LibGcrypt
     LibGMP::LibGMP
 )
+
+if (USE_OPENSSL)
+    target_compile_definitions(KTorrent6 PUBLIC LIBKTORRENT_USE_OPENSSL=1)
+    target_link_libraries(KTorrent6 PUBLIC OpenSSL::Crypto)
+elseif (USE_LIBGCRYPT)
+    target_compile_definitions(KTorrent6 PUBLIC LIBKTORRENT_USE_LIBGCRYPT=1)
+    target_link_libraries(KTorrent6 PUBLIC LibGcrypt::LibGcrypt)
+endif()
 
 if(WIN32)
 target_link_libraries(KTorrent6 PUBLIC ws2_32)

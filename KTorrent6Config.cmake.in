@@ -13,6 +13,11 @@ find_dependency(Qt6Network "@QT_MIN_VERSION@")
 
 find_dependency(Boost "@Boost_MIN_VERSION@")
 find_dependency(LibGMP "@LibGMP_MIN_VERSION@")
-find_dependency(LibGcrypt "@LibGcrypt_MIN_VERSION@")
+if ("@USE_OPENSSL@")
+    find_dependency(OpenSSL "@OpenSSL_MIN_VERSION@")
+endif()
+if ("@USE_LIBGCRYPT@")
+    find_dependency(LibGcrypt "@LibGcrypt_MIN_VERSION@")
+endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/KTorrent6Targets.cmake")
