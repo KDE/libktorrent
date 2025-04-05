@@ -80,12 +80,15 @@ Socket::Socket(bool tcp, int ip_version)
         m_ip_version = 4;
 
     int fd = socket(m_ip_version == 4 ? PF_INET : PF_INET6, tcp ? SOCK_STREAM : SOCK_DGRAM, 0);
-    if (fd < 0)
+    if (fd < 0) {
         Out(SYS_GEN | LOG_IMPORTANT) << QStringLiteral("Cannot create socket : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
+        m_state = CLOSED;
+        return;
+    }
     m_fd = fd;
 
     // Try using dual-stack for IPv6
-    if (m_fd != -1 && m_ip_version == 6) {
+    if (m_ip_version == 6) {
         const int no = 0;
 #ifndef Q_OS_WIN
         int err = setsockopt(m_fd, IPPROTO_IPV6, IPV6_V6ONLY, &no, sizeof(no));
@@ -109,22 +112,17 @@ Socket::Socket(bool tcp, int ip_version)
 
 Socket::~Socket()
 {
-    if (m_fd >= 0) {
-        shutdown(m_fd, SHUT_RDWR);
-#ifdef Q_OS_WIN
-        ::closesocket(m_fd);
-#else
-        ::close(m_fd);
-#endif
-    }
+    close();
 }
 
 void Socket::reset()
 {
     close();
     int fd = socket(m_ip_version == 4 ? PF_INET : PF_INET6, SOCK_STREAM, 0);
-    if (fd < 0)
+    if (fd < 0) {
         Out(SYS_GEN | LOG_IMPORTANT) << QStringLiteral("Cannot create socket : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
+        return;
+    }
     m_fd = fd;
 
 #if defined(Q_OS_MACX) || defined(Q_OS_DARWIN)
@@ -138,12 +136,16 @@ void Socket::reset()
 
 void Socket::close()
 {
-    if (m_fd >= 0) {
-        shutdown(m_fd, SHUT_RDWR);
+    // Note: Reading the fd into a local variable works around a possible codegen issue that results
+    //       in valgrind warnings about close() being called on invalid fd of -1.
+    //       https://invent.kde.org/network/libktorrent/-/merge_requests/80
+    const int fd = m_fd;
+    if (fd >= 0) {
+        shutdown(fd, SHUT_RDWR);
 #ifdef Q_OS_WIN
-        ::closesocket(m_fd);
+        ::closesocket(fd);
 #else
-        ::close(m_fd);
+        ::close(fd);
 #endif
         m_fd = -1;
         m_state = CLOSED;

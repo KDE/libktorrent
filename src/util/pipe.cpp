@@ -79,11 +79,15 @@ Pipe::Pipe()
 Pipe::~Pipe()
 {
 #ifndef Q_OS_WIN
-    ::close(reader);
-    ::close(writer);
+    if (reader >= 0)
+        ::close(reader);
+    if (writer >= 0)
+        ::close(writer);
 #else
-    ::closesocket(reader);
-    ::closesocket(writer);
+    if (reader >= 0)
+        ::closesocket(reader);
+    if (writer >= 0)
+        ::closesocket(writer);
 #endif
 }
 
