@@ -6,10 +6,12 @@
 #ifndef BTCACHE_H
 #define BTCACHE_H
 
-#include <QMultiMap>
+#include <QHash>
 #include <QSet>
 #include <QString>
 #include <QStringList>
+#include <utility>
+#include <type_traits>
 #include <diskio/piecedata.h>
 #include <ktorrent_export.h>
 #include <torrent/torrent.h>
@@ -255,7 +257,47 @@ protected:
     bool preexisting_files;
     Uint32 mmap_failures;
 
-    typedef QMultiMap<Chunk *, PieceData::Ptr> PieceCache;
+    //! Information about a piece data object
+    struct PieceDataInfo
+    {
+        //! Ordering predicate by key
+        struct OrderByKey
+        {
+            typedef void is_transparent;
+
+            bool operator()(const PieceDataInfo &left, const PieceDataInfo &right) const noexcept
+            {
+                return left.key < right.key;
+            }
+            bool operator()(const PieceDataInfo &left, Uint64 key) const noexcept
+            {
+                return left.key < key;
+            }
+            bool operator()(Uint64 key, const PieceDataInfo &right) const noexcept
+            {
+                return key < right.key;
+            }
+        };
+
+        //! Pointer to the piece data object
+        PieceData::Ptr piece_data;
+        //! Lookup key that is comprised from the piece data offset and length
+        Uint64 key;
+
+        PieceDataInfo() : piece_data(), key(0) {}
+        template<typename Ptr, typename = typename std::enable_if<std::is_constructible<PieceData::Ptr, Ptr &&>::value>::type>
+        explicit PieceDataInfo(Ptr &&p) : piece_data(std::forward<Ptr>(p)), key(makeKey(p->offset(), p->length())) {}
+        template<typename Ptr, typename = typename std::enable_if<std::is_constructible<PieceData::Ptr, Ptr &&>::value>::type>
+        PieceDataInfo(Ptr &&p, Uint64 k) : piece_data(std::forward<Ptr>(p)), key(k) {}
+
+        //! Creates a key value from piece offset and length
+        static Uint64 makeKey(Uint32 off, Uint32 len) noexcept
+        {
+            return (static_cast<Uint64>(off) << 32u) | static_cast<Uint64>(len);
+        }
+    };
+    typedef QVector<PieceDataInfo> PieceDataInfoList;
+    typedef QHash<Chunk *, PieceDataInfoList> PieceCache;
     PieceCache piece_cache;
 
     QSet<QString> mount_points;

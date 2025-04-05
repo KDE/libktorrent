@@ -7,6 +7,8 @@
 #include "cachefile.h"
 #include "chunk.h"
 #include "piecedata.h"
+#include <utility>
+#include <algorithm>
 #include <KLocalizedString>
 #include <peer/connectionlimit.h>
 #include <peer/peermanager.h>
@@ -48,7 +50,9 @@ void Cache::cleanupPieceCache()
 {
     PieceCache::iterator i = piece_cache.begin();
     while (i != piece_cache.end()) {
-        i.value()->unload();
+        for (auto& info : i.value())
+            info.piece_data->unload();
+
         ++i;
     }
     piece_cache.clear();
@@ -88,11 +92,15 @@ void Cache::moveDataFilesFinished(const QMap<TorrentFileInterface *, QString> &f
 PieceData::Ptr Cache::findPiece(Chunk *c, Uint32 off, Uint32 len, bool read_only)
 {
     PieceCache::const_iterator i = piece_cache.constFind(c);
-    while (i != piece_cache.constEnd() && i.key() == c) {
-        PieceData::Ptr cp = i.value();
-        if (cp->offset() == off && cp->length() == len && !(!cp->writeable() && !read_only))
-            return PieceData::Ptr(cp);
-        ++i;
+    if (i != piece_cache.constEnd()) {
+        Uint64 key = PieceDataInfo::makeKey(off, len);
+        const PieceDataInfoList &info_list = i.value();
+        auto j = std::lower_bound(info_list.begin(), info_list.end(), key, PieceDataInfo::OrderByKey());
+        while (j != info_list.end() && j->key == key) {
+            if (read_only || j->piece_data->writeable())
+                return j->piece_data;
+            ++j;
+        }
     }
 
     return PieceData::Ptr();
@@ -100,22 +108,28 @@ PieceData::Ptr Cache::findPiece(Chunk *c, Uint32 off, Uint32 len, bool read_only
 
 void Cache::insertPiece(Chunk *c, PieceData::Ptr p)
 {
-    piece_cache.insert(c, p);
+    PieceDataInfoList &info_list = piece_cache[c];
+    Uint64 key = PieceDataInfo::makeKey(p->offset(), p->length());
+    auto i = std::upper_bound(info_list.begin(), info_list.end(), key, PieceDataInfo::OrderByKey());
+    info_list.insert(i, PieceDataInfo(std::move(p), key));
 }
 
 void Cache::clearPieces(Chunk *c)
 {
     PieceCache::iterator i = piece_cache.find(c);
-    while (i != piece_cache.end() && i.key() == c) {
-        i = piece_cache.erase(i);
-    }
+    if (i != piece_cache.end())
+        piece_cache.erase(i);
 }
 
 void Cache::clearPieceCache()
 {
     PieceCache::iterator i = piece_cache.begin();
     while (i != piece_cache.end()) {
-        if (!i.value()->inUse())
+        PieceDataInfoList &info_list = i.value();
+        auto j = std::remove_if(info_list.begin(), info_list.end(), [](const PieceDataInfo &info) { return !info.piece_data->inUse(); });
+        info_list.erase(j, info_list.end());
+
+        if (info_list.isEmpty())
             i = piece_cache.erase(i);
         else
             ++i;
@@ -128,13 +142,24 @@ void Cache::checkMemoryUsage()
     Uint64 freed = 0;
     PieceCache::iterator i = piece_cache.begin();
     while (i != piece_cache.end()) {
-        if (!i.value()->inUse()) {
-            freed += i.value()->length();
+        PieceDataInfoList &info_list = i.value();
+        auto j = std::remove_if(info_list.begin(), info_list.end(), [&](const PieceDataInfo &info)
+        {
+            Uint32 len = info.piece_data->length();
+            if (!info.piece_data->inUse()) {
+                freed += len;
+                return true;
+            } else {
+                mem += len;
+                return false;
+            }
+        });
+        info_list.erase(j, info_list.end());
+
+        if (info_list.isEmpty())
             i = piece_cache.erase(i);
-        } else {
-            mem += i.value()->length();
+        else
             ++i;
-        }
     }
 
     if (mem || freed)
