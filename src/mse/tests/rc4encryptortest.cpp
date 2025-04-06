@@ -8,9 +8,12 @@
 #include <QRandomGenerator>
 #include <QTest>
 
-#include <ctime>
+#include <string.h>
+#include <iostream>
 #include <dht/key.h>
 #include <mse/rc4encryptor.h>
+#include <util/functions.h>
+#include <util/error.h>
 
 class RC4EncryptorTest : public QObject
 {
@@ -28,6 +31,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
+        bt::InitLibKTorrent();
     }
 
     void cleanupTestCase()
@@ -36,22 +40,27 @@ private Q_SLOTS:
 
     void testRC4()
     {
-        bt::SHA1Hash dkey = randomKey();
-        bt::SHA1Hash ekey = randomKey();
-        mse::RC4Encryptor a(dkey, ekey);
-        mse::RC4Encryptor b(ekey, dkey);
+        try {
+            bt::SHA1Hash dkey = randomKey();
+            bt::SHA1Hash ekey = randomKey();
+            mse::RC4Encryptor a(dkey, ekey);
+            mse::RC4Encryptor b(ekey, dkey);
 
-        bt::Uint8 tmp[1024];
-        for (int i = 0; i < 1000; i++) {
-            memset(tmp, 0, 1024);
-            bt::Uint32 data[256];
-            for (int j = 0; j < 256; j++)
-                data[j] = QRandomGenerator::global()->generate();
+            bt::Uint8 tmp[1024];
+            for (int i = 0; i < 1000; i++) {
+                memset(tmp, 0, 1024);
+                bt::Uint32 data[256];
+                for (int j = 0; j < 256; j++)
+                    data[j] = QRandomGenerator::global()->generate();
 
-            memcpy(tmp, data, 1024);
-            a.encryptReplace(reinterpret_cast<Uint8 *>(data), 1024);
-            b.decrypt(reinterpret_cast<Uint8 *>(data), 1024);
-            QVERIFY(memcmp(tmp, data, 1024) == 0);
+                memcpy(tmp, data, 1024);
+                a.encryptReplace(reinterpret_cast<Uint8 *>(data), 1024);
+                b.decrypt(reinterpret_cast<Uint8 *>(data), 1024);
+                QVERIFY(memcmp(tmp, data, 1024) == 0);
+            }
+        } catch (bt::Error &err) {
+            std::cout << "bt::Error caught: " << err.toString().toStdString() << std::endl;
+            throw;
         }
     }
 };
