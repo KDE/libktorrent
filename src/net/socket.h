@@ -74,6 +74,7 @@ public:
     typedef QSharedPointer<Socket> Ptr;
 
 private:
+    void configureFd();
     void cacheAddress();
 
 private:

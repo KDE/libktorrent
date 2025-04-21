@@ -59,17 +59,31 @@ Socket::Socket(int fd, int ip_version)
     if (m_ip_version != 4 && m_ip_version != 6)
         m_ip_version = 4;
 
-#if defined(Q_OS_MACX) || defined(Q_OS_DARWIN)
-    int val = 1;
-    if (setsockopt(m_fd, SOL_SOCKET, SO_NOSIGPIPE, &val, sizeof(int)) < 0) {
-        Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Failed to set the NOSIGPIPE option : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
-    }
+    if (m_fd >= 0) {
+        int val = 0;
+#ifndef Q_OS_WIN
+        socklen_t val_len = sizeof(val);
+        int err = getsockopt(m_fd, SOL_SOCKET, SO_TYPE, &val, &val_len);
+#else
+        int val_len = sizeof(val);
+        int err = getsockopt(m_fd, SOL_SOCKET, SO_TYPE, reinterpret_cast<char *>(&val), &val_len);
 #endif
-    cacheAddress();
+        if (err < 0) {
+            err = errno;
+            Out(SYS_GEN | LOG_IMPORTANT) << QStringLiteral("Failed to query socket type : %1").arg(QString::fromUtf8(strerror(err))) << endl;
+        } else {
+            transport_protocol = val == SOCK_STREAM ? bt::TCP : bt::UTP;
+        }
+
+        configureFd();
+        cacheAddress();
+    } else {
+        m_state = CLOSED;
+    }
 }
 
 Socket::Socket(bool tcp, int ip_version)
-    : SocketDevice(bt::TCP)
+    : SocketDevice(tcp ? bt::TCP : bt::UTP)
     , m_fd(-1)
     , m_ip_version(ip_version)
     , r_poll_index(-1)
@@ -79,35 +93,9 @@ Socket::Socket(bool tcp, int ip_version)
     if (m_ip_version != 4 && m_ip_version != 6)
         m_ip_version = 4;
 
-    int fd = socket(m_ip_version == 4 ? PF_INET : PF_INET6, tcp ? SOCK_STREAM : SOCK_DGRAM, 0);
-    if (fd < 0) {
-        Out(SYS_GEN | LOG_IMPORTANT) << QStringLiteral("Cannot create socket : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
-        m_state = CLOSED;
-        return;
-    }
-    m_fd = fd;
+    m_state = CLOSED;
 
-    // Try using dual-stack for IPv6
-    if (m_ip_version == 6) {
-        const int no = 0;
-#ifndef Q_OS_WIN
-        int err = setsockopt(m_fd, IPPROTO_IPV6, IPV6_V6ONLY, &no, sizeof(no));
-#else
-        int err = setsockopt(m_fd, IPPROTO_IPV6, IPV6_V6ONLY, reinterpret_cast<const char *>(&no), sizeof(no));
-#endif
-        if (err < 0) {
-            Out(SYS_GEN | LOG_IMPORTANT) << u"Failed to set dual-stack option for IPv6 socket : %1"_s.arg(QString::fromUtf8(strerror(errno))) << endl;
-        } else {
-            dualstack = true;
-        }
-    }
-
-#if defined(Q_OS_MACX) || defined(Q_OS_DARWIN)
-    int val = 1;
-    if (setsockopt(m_fd, SOL_SOCKET, SO_NOSIGPIPE, &val, sizeof(int)) < 0) {
-        Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Failed to set the NOSIGPIPE option : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
-    }
-#endif
+    reset();
 }
 
 Socket::~Socket()
@@ -118,20 +106,46 @@ Socket::~Socket()
 void Socket::reset()
 {
     close();
-    int fd = socket(m_ip_version == 4 ? PF_INET : PF_INET6, SOCK_STREAM, 0);
+
+    int fd = socket(m_ip_version == 4 ? PF_INET : PF_INET6, transport_protocol == bt::TCP ? SOCK_STREAM : SOCK_DGRAM, 0);
     if (fd < 0) {
-        Out(SYS_GEN | LOG_IMPORTANT) << QStringLiteral("Cannot create socket : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
+        const int err = errno;
+        Out(SYS_GEN | LOG_IMPORTANT) << QStringLiteral("Cannot create socket : %1").arg(QString::fromUtf8(strerror(err))) << endl;
         return;
     }
     m_fd = fd;
 
+    configureFd();
+
+    m_state = IDLE;
+}
+
+void Socket::configureFd()
+{
+    // Try using dual-stack for IPv6
+    dualstack = false;
+    if (m_ip_version == 6) {
+        const int no = 0;
+#ifndef Q_OS_WIN
+        int err = setsockopt(m_fd, IPPROTO_IPV6, IPV6_V6ONLY, &no, sizeof(no));
+#else
+        int err = setsockopt(m_fd, IPPROTO_IPV6, IPV6_V6ONLY, reinterpret_cast<const char *>(&no), sizeof(no));
+#endif
+        if (err < 0) {
+            err = errno;
+            Out(SYS_GEN | LOG_IMPORTANT) << QStringLiteral("Failed to set dual-stack option for IPv6 socket : %1").arg(QString::fromUtf8(strerror(err))) << endl;
+        } else {
+            dualstack = true;
+        }
+    }
+
 #if defined(Q_OS_MACX) || defined(Q_OS_DARWIN)
     int val = 1;
-    if (setsockopt(m_fd, SOL_SOCKET, SO_NOSIGPIPE, &val, sizeof(int)) < 0) {
-        Out(SYS_CON | LOG_NOTICE) << QString("Failed to set the NOSIGPIPE option : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
+    if (setsockopt(m_fd, SOL_SOCKET, SO_NOSIGPIPE, &val, sizeof(val)) < 0) {
+        const int err = errno;
+        Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Failed to set the NOSIGPIPE option : %1").arg(QString::fromUtf8(strerror(err))) << endl;
     }
 #endif
-    m_state = IDLE;
 }
 
 void Socket::close()
