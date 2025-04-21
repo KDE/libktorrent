@@ -198,17 +198,18 @@ bool Socket::connectTo(const Address &a)
     struct sockaddr_storage ss;
     a.toSocketAddress(&ss, len, dualstack);
     if (::connect(m_fd, (struct sockaddr *)&ss, len) < 0) {
+        const int err = errno;
 #ifndef Q_OS_WIN
-        if (errno == EINPROGRESS)
+        if (err == EINPROGRESS)
 #else
-        if (errno == WSAEINVAL || errno == WSAEALREADY || errno == WSAEWOULDBLOCK)
+        if (err == WSAEINVAL || err == WSAEALREADY || err == WSAEWOULDBLOCK)
 #endif
         {
             //  Out(SYS_CON|LOG_DEBUG) << "Socket is connecting" << endl;
             m_state = CONNECTING;
             return false;
         } else {
-            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Cannot connect to host %1 : %2").arg(a.toString(), QString::fromUtf8(strerror(errno))) << endl;
+            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Cannot connect to host %1 : %2").arg(a.toString(), QString::fromUtf8(strerror(err))) << endl;
             return false;
         }
     }
@@ -231,21 +232,24 @@ bool Socket::bind(const net::Address &addr, bool also_listen)
     if (setsockopt(m_fd, SOL_SOCKET, SO_REUSEADDR, (char *)&val, sizeof(int)) < 0)
 #endif
     {
-        Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Failed to set the reuseaddr option : %1").arg(QString::fromUtf8(strerror(errno))) << endl;
+        const int err = errno;
+        Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Failed to set the reuseaddr option : %1").arg(QString::fromUtf8(strerror(err))) << endl;
     }
 
     int len = 0;
     struct sockaddr_storage ss;
     addr.toSocketAddress(&ss, len);
     if (::bind(m_fd, (struct sockaddr *)&ss, len) != 0) {
+        const int err = errno;
         Out(SYS_CON | LOG_IMPORTANT)
-            << QStringLiteral("Cannot bind to port %1:%2 : %3").arg(addr.toString()).arg(addr.port()).arg(QString::fromUtf8(strerror(errno))) << endl;
+            << QStringLiteral("Cannot bind to port %1:%2 : %3").arg(addr.toString()).arg(addr.port()).arg(QString::fromUtf8(strerror(err))) << endl;
         return false;
     }
 
     if (also_listen && listen(m_fd, SOMAXCONN) < 0) {
+        const int err = errno;
         Out(SYS_CON | LOG_IMPORTANT)
-            << QStringLiteral("Cannot listen to port %1:%2 : %3").arg(addr.toString()).arg(addr.port()).arg(QString::fromUtf8(strerror(errno))) << endl;
+            << QStringLiteral("Cannot listen to port %1:%2 : %3").arg(addr.toString()).arg(addr.port()).arg(QString::fromUtf8(strerror(err))) << endl;
         return false;
     }
 
@@ -261,8 +265,9 @@ int Socket::send(const bt::Uint8 *buf, int len)
     int ret = ::send(m_fd, (char *)buf, len, MSG_NOSIGNAL);
 #endif
     if (ret < 0) {
-        if (errno != EAGAIN && errno != EWOULDBLOCK) {
-            //  Out(SYS_CON|LOG_DEBUG) << "Send error : " << QString::fromUtf8(strerror(errno)) << endl;
+        const int err = errno;
+        if (err != EAGAIN && err != EWOULDBLOCK) {
+            //  Out(SYS_CON|LOG_DEBUG) << "Send error : " << QString::fromUtf8(strerror(err)) << endl;
             close();
         }
         return 0;
@@ -278,8 +283,9 @@ int Socket::recv(bt::Uint8 *buf, int max_len)
     int ret = ::recv(m_fd, (char *)buf, max_len, 0);
 #endif
     if (ret < 0) {
-        if (errno != EAGAIN && errno != EWOULDBLOCK) {
-            //  Out(SYS_CON|LOG_DEBUG) << "Receive error : " << QString::fromUtf8(strerror(errno)) << endl;
+        const int err = errno;
+        if (err != EAGAIN && err != EWOULDBLOCK) {
+            //  Out(SYS_CON|LOG_DEBUG) << "Receive error : " << QString::fromUtf8(strerror(err)) << endl;
             close();
             return 0;
         }
@@ -300,10 +306,11 @@ int Socket::sendTo(const bt::Uint8 *buf, int len, const Address &a)
     a.toSocketAddress(&ss, alen, dualstack);
     int ret = ::sendto(m_fd, (char *)buf, len, 0, (struct sockaddr *)&ss, alen);
     if (ret < 0) {
-        if (errno == EAGAIN || errno == EWOULDBLOCK)
+        const int err = errno;
+        if (err == EAGAIN || err == EWOULDBLOCK)
             return SEND_WOULD_BLOCK;
 
-        Out(SYS_CON | LOG_DEBUG) << "Send error : " << QString::fromUtf8(strerror(errno)) << endl;
+        Out(SYS_CON | LOG_DEBUG) << "Send error : " << QString::fromUtf8(strerror(err)) << endl;
         return SEND_FAILURE;
     }
 
@@ -320,7 +327,8 @@ int Socket::recvFrom(bt::Uint8 *buf, int max_len, Address &a)
     int ret = ::recvfrom(m_fd, (char *)buf, max_len, 0, (struct sockaddr *)&ss, &slen);
 #endif
     if (ret < 0) {
-        Out(SYS_CON | LOG_DEBUG) << "Receive error : " << QString::fromUtf8(strerror(errno)) << endl;
+        const int err = errno;
+        Out(SYS_CON | LOG_DEBUG) << "Receive error : " << QString::fromUtf8(strerror(err)) << endl;
         return 0;
     }
     a = ss;
@@ -334,7 +342,8 @@ int Socket::accept(Address &a)
     int sfd = ::accept(m_fd, (struct sockaddr *)&ss, &slen);
 
     if (sfd < 0) {
-        Out(SYS_CON | LOG_DEBUG) << "Accept error : " << QString::fromUtf8(strerror(errno)) << endl;
+        const int err = errno;
+        Out(SYS_CON | LOG_DEBUG) << "Accept error : " << QString::fromUtf8(strerror(err)) << endl;
         return -1;
     }
     a = net::Address(&ss);
@@ -361,7 +370,8 @@ bool Socket::setTOS(unsigned char type_of_service)
         if (setsockopt(m_fd, IPPROTO_IP, IP_TOS, (char *)&c, sizeof(c)) < 0)
 #endif
         {
-            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Failed to set TOS to %1 : %2").arg((int)type_of_service).arg(QString::fromUtf8(strerror(errno)))
+            const int err = errno;
+            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Failed to set TOS to %1 : %2").arg((int)type_of_service).arg(QString::fromUtf8(strerror(err)))
                                       << endl;
             return false;
         }
@@ -373,8 +383,9 @@ bool Socket::setTOS(unsigned char type_of_service)
         char c = type_of_service;
 #endif
         if (setsockopt(m_fd, IPPROTO_IPV6, IPV6_TCLASS, &c, sizeof(c)) < 0) {
+            const int err = errno;
             Out(SYS_CON | LOG_NOTICE)
-                << QStringLiteral("Failed to set traffic class to %1 : %2").arg((int)type_of_service).arg(QString::fromUtf8(strerror(errno))) << endl;
+                << QStringLiteral("Failed to set traffic class to %1 : %2").arg((int)type_of_service).arg(QString::fromUtf8(strerror(err))) << endl;
             return false;
         }
 #endif
