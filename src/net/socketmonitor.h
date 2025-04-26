@@ -89,7 +89,7 @@ public:
      * Change the group assured rate
      * @param type The group type
      * @param gid The group id
-     * @param limit The limit
+     * @param as The assured rate
      */
     void setGroupAssuredRate(GroupType type, Uint32 gid, Uint32 as);
 

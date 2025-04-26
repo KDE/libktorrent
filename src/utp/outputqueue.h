@@ -29,7 +29,7 @@ public:
 
     /**
      * Add an entry to the queue.
-     * @param data The packet
+     * @param packet The packet
      * @param conn The connection this packet belongs to
      * @return The number of queued packets
      */

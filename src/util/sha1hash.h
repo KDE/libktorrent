@@ -141,7 +141,7 @@ public:
     /**
      * Function to compare 2 hashes
      * @param a The first hash
-     * @param h The second hash
+     * @param b The second hash
      * @return whether a is smaller then b
      */
     KTORRENT_EXPORT friend bool operator<(const SHA1Hash &a, const SHA1Hash &b);

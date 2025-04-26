@@ -33,7 +33,7 @@ public:
     /**
         Write up to len bytes from data and store it in the window.
         @param ptr The data to copy
-        @param max_len Amount to write
+        @param len Amount to write
         @return The amount written
     */
     virtual bt::Uint32 write(const bt::Uint8 *ptr, bt::Uint32 len);

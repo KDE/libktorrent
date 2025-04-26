@@ -81,7 +81,6 @@ public:
 
     /**
      * Close the file, everything will be unmapped.
-     * @param to_be_reopened Indicates if the close is temporarely (i.e. it will be reopened)
      */
     void close();
 

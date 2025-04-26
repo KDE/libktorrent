@@ -50,7 +50,7 @@ public:
 
     /**
      * Set the remote address, used by Socks to set the actual address.
-     * @param addr The address
+     * @param a The address
      */
     void setRemoteAddress(const Address &a)
     {

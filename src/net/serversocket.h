@@ -58,7 +58,7 @@ public:
 
         /**
             An UDP packet was received
-            @param data The packet
+            @param buffer The packet
             @param addr The address from which it was received
         */
         virtual void dataReceived(bt::Buffer::Ptr buffer, const net::Address &addr) = 0;

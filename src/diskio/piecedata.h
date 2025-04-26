@@ -87,7 +87,7 @@ public:
         Write data into the PieceData. This function should always be used
         for writing into a PieceData object, as it protects against bus errors.
         @param buf The buffer to write
-        @param size Size of the buffer
+        @param buf_size Size of the buffer
         @param off Offset to write
         @return The number of bytes written
         @throw BusError When writing results in a SIGBUS

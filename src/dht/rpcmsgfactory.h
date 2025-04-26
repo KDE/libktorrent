@@ -38,7 +38,7 @@ public:
     /**
      * Creates a message out of a BDictNode.
      * @param dict The BDictNode
-     * @param srv The RPCMethodResolver
+     * @param method_resolver The RPCMethodResolver
      * @return A newly created message
      * @throw bt::Error if something goes wrong
      */

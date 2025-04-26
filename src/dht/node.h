@@ -43,7 +43,6 @@ public:
      * the right bucket.
      * @param dh_table The DHT
      * @param msg The message
-     * @param srv The RPCServer to send a ping if necessary
      */
     void received(DHT *dh_table, const RPCMsg &msg);
 

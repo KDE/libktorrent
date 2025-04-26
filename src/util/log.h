@@ -97,7 +97,7 @@ public:
      * Set the output logfile.
      * @param file The name of the file
      * @param rotate Whether or not to rotate the logs
-     * @param bool handle_qt_messages Whether or not handle Qt messages
+     * @param handle_qt_messages Whether or not handle Qt messages
      * @throw Exception if the file can't be opened
      */
     void setOutputFile(const QString &file, bool rotate, bool handle_qt_messages);
@@ -160,7 +160,7 @@ public:
 
     /**
      * Write an URL to the file.
-     * @param text The QUrl
+     * @param url The QUrl
      * @return This Log
      */
     Log &operator<<(const QUrl &url);

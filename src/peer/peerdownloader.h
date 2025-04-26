@@ -34,7 +34,7 @@ struct TimeStampedRequest {
 
     /**
      * Copy constructor, copy the request and the timestamp
-     * @param r The Request
+     * @param t The TimeStampedRequest
      */
     TimeStampedRequest(const TimeStampedRequest &t);
 

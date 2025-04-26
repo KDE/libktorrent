@@ -195,7 +195,7 @@ public:
      * Get a TorrentFile. If the index is out of range, or
      * we have a single file torrent we return a null TorrentFile.
      * @param idx Index of the file
-     * @param A reference to the file
+     * @return A reference to the file
      */
     TorrentFile &getFile(Uint32 idx);
 
@@ -203,7 +203,7 @@ public:
      * Get a TorrentFile. If the index is out of range, or
      * we have a single file torrent we return a null TorrentFile.
      * @param idx Index of the file
-     * @param A reference to the file
+     * @return A reference to the file
      */
     const TorrentFile &getFile(Uint32 idx) const;
 

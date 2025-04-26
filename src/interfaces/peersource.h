@@ -42,7 +42,6 @@ public:
     /**
      * Add a peer to the list of peers.
      * @param addr The address of the peer
-     * @param port The port
      * @param local Whether or not the peer is on the local network
      */
     void addPeer(const net::Address &addr, bool local = false);

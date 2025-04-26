@@ -125,7 +125,6 @@ public:
      * Send a chunk of data.
      * @param data The data
      * @param len The length
-     * @param proto Indicates whether the packed is data or a protocol message
      * @return Number of bytes written
      */
     Uint32 sendData(const Uint8 *data, Uint32 len);
@@ -235,19 +234,19 @@ public:
 
     /**
      * Send a request for data.
-     * @param req The Request
+     * @param r The Request
      */
     void sendRequest(const Request &r);
 
     /**
      * Cancel a request.
-     * @param req The Request
+     * @param r The Request
      */
     void sendCancel(const Request &r);
 
     /**
      * Send a reject for a request
-     * @param req The Request
+     * @param r The Request
      */
     void sendReject(const Request &r);
 

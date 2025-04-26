@@ -27,7 +27,7 @@ template<class Key, class Data> class PtrMap
 public:
     /**
      * Constructor.
-     * @param auto_del Whether or not to enable auto deletion
+     * @param autodel Whether or not to enable auto deletion
      */
     PtrMap(bool autodel = false)
         : autodel(autodel)

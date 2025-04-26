@@ -114,8 +114,9 @@ public:
      * overridden by subclasses.
      * @param idx The Chunk's index
      */
-    virtual bool hasChunk(bt::Uint32 /*idx*/) const
+    virtual bool hasChunk(bt::Uint32 idx) const
     {
+        Q_UNUSED(idx);
         return true;
     }
 

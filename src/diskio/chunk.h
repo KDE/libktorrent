@@ -59,8 +59,7 @@ public:
 
     /**
      * Save a piece
-     * @param off Offset of the piece
-     * @param len Length of the piece
+     * @param piece The piece
      */
     void savePiece(PieceData::Ptr piece);
 

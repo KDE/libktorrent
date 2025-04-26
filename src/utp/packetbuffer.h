@@ -39,7 +39,7 @@ public:
 
     /**
      * Set the packet's header.
-     * @param header Header
+     * @param hdr Header
      * @param extension_length Length of the extension header
      * @return False if there is not enough head room, true otherwise
      **/

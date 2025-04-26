@@ -125,7 +125,7 @@ public:
     /**
      * Addition for key and a value
      * @param a The key
-     * @param b The value
+     * @param value The value
      */
     friend KTORRENT_EXPORT Key operator+(const Key &a, bt::Uint8 value);
 

@@ -35,7 +35,7 @@ public:
      * @param proto Transport protocol to use
      * @param info_hash Info hash
      * @param peer_id Peer ID
-     * @param pman PeerManager
+     * @param pcon PeerConnector
      */
     Authenticate(const net::Address &addr, TransportProtocol proto, const SHA1Hash &info_hash, const PeerID &peer_id, PeerConnector::WPtr pcon);
 
