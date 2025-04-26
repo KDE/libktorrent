@@ -259,7 +259,8 @@ public:
     void updateFilePercentage(ChunkManager &cman);
 
     /**
-     * Update the percentage of a all files which have a particular chunk.
+     * Update the percentage of all files that have a particular chunk.
+     * @param chunk The chunk
      * @param cman The ChunkManager
      */
     void updateFilePercentage(Uint32 chunk, ChunkManager &cman);

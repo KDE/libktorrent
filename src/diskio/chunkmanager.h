@@ -235,6 +235,7 @@ public:
      * Make sure that a range will get priority over other chunks.
      * @param from First chunk in range
      * @param to Last chunk in range
+     * @param priority The priority for the range
      */
     void prioritise(Uint32 from, Uint32 to, Priority priority);
 

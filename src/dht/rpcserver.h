@@ -64,6 +64,7 @@ public:
 
     /**
      * Ping a node, we don't care about the MTID.
+     * @param our_id The ID of our node
      * @param addr The address
      */
     void ping(const dht::Key &our_id, const net::Address &addr);

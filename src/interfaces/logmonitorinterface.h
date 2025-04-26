@@ -28,8 +28,9 @@ public:
     /**
      * A line was written to the log file.
      * @param line The line
+     * @param filter The filter of the Log object. See Log::setFilter.
      */
-    virtual void message(const QString &line, unsigned int arg) = 0;
+    virtual void message(const QString &line, unsigned int filter) = 0;
 };
 
 }

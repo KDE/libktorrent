@@ -82,6 +82,7 @@ public:
 
     /**
      * Do a HTTP GET request
+     * @param host The hostname of the webseed
      * @param path The path of the file
      * @param query The query string for the url
      * @param start Offset into file

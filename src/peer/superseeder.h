@@ -49,6 +49,7 @@ public:
     /**
         A BITSET message was sent by a Peer
         @param peer The Peer
+        @param bs The bitset
     */
     void bitset(PeerInterface *peer, const BitSet &bs);
 

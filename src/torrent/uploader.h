@@ -25,8 +25,9 @@ class Uploader : public QObject, public PeerManager::PeerVisitor
     Q_OBJECT
 public:
     /**
-     * Constructor, sets the ChunkManager.
+     * Constructor, sets the ChunkManager and PeerManager.
      * @param cman The ChunkManager
+     * @param pman The PeerManager
      */
     Uploader(ChunkManager &cman, PeerManager &pman);
     ~Uploader() override;

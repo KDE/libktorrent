@@ -40,6 +40,7 @@ public:
 
     /**
      * Constructor.
+     * @param tor The torrent this file belongs to
      * @param index Index number of the file
      * @param path Path of the file
      * @param off Offset into the torrent

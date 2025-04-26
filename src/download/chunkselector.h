@@ -45,6 +45,8 @@ public:
     /**
      * Data has been checked, and these chunks are OK.
      * @param ok_chunks The ok_chunks
+     * @param from The first chunk checked
+     * @param to The last chunk checked
      */
     void dataChecked(const bt::BitSet &ok_chunks, bt::Uint32 from, bt::Uint32 to) override;
 

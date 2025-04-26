@@ -57,6 +57,8 @@ public:
      * @param name The name suggestion
      * @param comments The comments field of the torrent
      * @param priv Private torrent or not
+     * @param decentralized If this is true then trackers are treated
+     * as DHT nodes and are written to the @a nodes section of the file.
      */
     TorrentCreator(const QString &target,
                    const QStringList &trackers,
