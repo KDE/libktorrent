@@ -47,6 +47,7 @@ set(KDE_COMPILERSETTINGS_LEVEL "5.82")
 include(KDECompilerSettings NO_POLICY_SCOPE)
 include(FeatureSummary)
 include(GenerateExportHeader)
+include(ECMAddQch)
 include(ECMMarkAsTest)
 include(ECMSetupVersion)
 include(KDEClangFormat)
@@ -61,6 +62,9 @@ ecm_setup_version(${RELEASE_SERVICE_VERSION} VARIABLE_PREFIX LIBKTORRENT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/libktorrent_version.h"
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KTorrent6ConfigVersion.cmake"
                         SOVERSION "${SOVERSION}")
+
+option(BUILD_QCH "Build API documentation in QCH format (for e.g. Qt Assistant, Qt Creator & KDevelop)" OFF)
+add_feature_info(QCH ${BUILD_QCH} "API documentation in QCH format (for e.g. Qt Assistant, Qt Creator & KDevelop)")
 
 find_package(Qt6 "${QT_MIN_VERSION}" CONFIG REQUIRED COMPONENTS
     Core
@@ -149,7 +153,6 @@ if(BUILD_TESTING)
     add_subdirectory(testlib)
 endif()
 add_subdirectory(examples)
-add_subdirectory(doc)
 
 set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KTorrent6")
 
@@ -158,6 +161,17 @@ configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KTorrent6Config.cmake
                               INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
                               PATH_VARS KDE_INSTALL_INCLUDEDIR
                               )
+
+if (BUILD_QCH)
+    ecm_install_qch_export(
+        TARGETS KTorrent6_QCH
+        FILE KTorrent6QchTargets.cmake
+        DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
+        COMPONENT Devel
+    )
+    set(PACKAGE_INCLUDE_QCHTARGETS "include(\"\${CMAKE_CURRENT_LIST_DIR}/KTorrent6QchTargets.cmake\")")
+endif()
+
 
 # Install the CMake modules needed to use libktorrent
 add_subdirectory(cmake)
