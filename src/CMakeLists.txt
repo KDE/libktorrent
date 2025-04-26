@@ -263,7 +263,74 @@ target_include_directories(KTorrent6 PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOU
 
 install(TARGETS KTorrent6 EXPORT KTorrent6Targets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
-set (interfaces_HDR
+set(libktorrent_export_HEADERS
+    ${CMAKE_CURRENT_BINARY_DIR}/ktorrent_export.h
+    ${CMAKE_BINARY_DIR}/libktorrent_version.h
+    version.h
+)
+
+set(libktorrent_HEADERS
+    bcodec/bencoder.h
+    bcodec/bnode.h
+    bcodec/bdecoder.h
+    bcodec/value.h
+
+    datachecker/datachecker.h
+    datachecker/datacheckerjob.h
+    datachecker/datacheckerthread.h
+    datachecker/multidatachecker.h
+    datachecker/singledatachecker.h
+
+    dht/announcereq.h
+    dht/announcersp.h
+    dht/announcetask.h
+    dht/database.h
+    dht/dht.h
+    dht/dhtbase.h
+    dht/dhtpeersource.h
+    dht/findnodereq.h
+    dht/findnodersp.h
+    dht/getpeersreq.h
+    dht/getpeersrsp.h
+    dht/kbucket.h
+    dht/kbucketentry.h
+    dht/kbuckettable.h
+    dht/kclosestnodessearch.h
+    dht/key.h
+    dht/node.h
+    dht/nodelookup.h
+    dht/pack.h
+    dht/pingreq.h
+    dht/pingrsp.h
+    dht/rpccall.h
+    dht/rpcmsg.h
+    dht/rpcmsgfactory.h
+    dht/rpcserver.h
+    dht/rpcserverinterface.h
+    dht/task.h
+    dht/taskmanager.h
+
+    diskio/cache.h
+    diskio/cachefile.h
+    diskio/chunk.h
+    diskio/chunkmanager.h
+    diskio/deletedatafilesjob.h
+    diskio/dndfile.h
+    diskio/movedatafilesjob.h
+    diskio/multifilecache.h
+    diskio/piecedata.h
+    diskio/preallocationjob.h
+    diskio/preallocationthread.h
+    diskio/singlefilecache.h
+
+    download/chunkdownload.h
+    download/chunkselector.h
+    download/downloader.h
+    download/packet.h
+    download/piece.h
+    download/request.h
+    download/webseed.h
+
     interfaces/peerinterface.h
     interfaces/queuemanagerinterface.h
     interfaces/exitoperation.h
@@ -281,36 +348,144 @@ set (interfaces_HDR
     interfaces/webseedinterface.h
     interfaces/trackerinterface.h
     interfaces/serverinterface.h
+
+    magnet/magnetdownloader.h
+    magnet/magnetlink.h
+    magnet/metadatadownload.h
+
+    mse/bigint.h
+    mse/encryptedauthenticate.h
+    mse/encryptedpacketsocket.h
+    mse/encryptedserverauthenticate.h
+    mse/functions.h
+    mse/rc4encryptor.h
+
+    net/address.h
+    net/addressresolver.h
+    net/downloadthread.h
+    net/networkthread.h
+    net/packetsocket.h
+    net/poll.h
+    net/portlist.h
+    net/reverseresolver.h
+    net/serversocket.h
+    net/socket.h
+    net/socketdevice.h
+    net/socketgroup.h
+    net/socketmonitor.h
+    net/socks.h
+    net/speed.h
+    net/streamsocket.h
+    net/trafficshapedsocket.h
+    net/uploadthread.h
+    net/wakeuppipe.h
+
+    peer/accessmanager.h
+    peer/authenticate.h
+    peer/authenticatebase.h
+    peer/authenticationmonitor.h
+    peer/chunkcounter.h
+    peer/connectionlimit.h
+    peer/packetreader.h
+    peer/peer.h
+    peer/peerconnector.h
+    peer/peerdownloader.h
+    peer/peerid.h
+    peer/peermanager.h
+    peer/peerprotocolextension.h
+    peer/peeruploader.h
+    peer/serverauthenticate.h
+    peer/superseeder.h
+    peer/utmetadata.h
+    peer/utpex.h
+
+    torrent/advancedchokealgorithm.h
+    torrent/choker.h
+    torrent/globals.h
+    torrent/job.h
+    torrent/jobqueue.h
+    torrent/peersourcemanager.h
+    torrent/server.h
+    torrent/statsfile.h
+    torrent/timeestimator.h
+    torrent/torrent.h
+    torrent/torrentcontrol.h
+    torrent/torrentcreator.h
+    torrent/torrentfile.h
+    torrent/torrentfilestream.h
+    torrent/torrentstats.h
+    torrent/uploader.h
+
+    tracker/httptracker.h
+    tracker/kioannouncejob.h
+    tracker/tracker.h
+    tracker/trackermanager.h
+    tracker/udptracker.h
+    tracker/udptrackersocket.h
+
+    upnp/upnpmcastsocket.h
+    upnp/upnprouter.h
+
+    util/array.h
+    util/autorotatelogjob.h
+    util/bitset.h
+    util/bufferpool.h
+    util/circularbuffer.h
+    util/compressfilejob.h
+    util/constants.h
+    util/decompressfilejob.h
+    util/error.h
+    util/extractfilejob.h
+    util/file.h
+    util/fileops.h
+    util/functions.h
+    util/log.h
+    util/logsystemmanager.h
+    util/pipe.h
+    util/ptrmap.h
+    util/resourcemanager.h
+    util/sha1hash.h
+    util/sha1hashgen.h
+    util/timer.h
+    util/urlencoder.h
+    util/waitjob.h
+    util/win32.h
+
+    utp/connection.h
+    utp/delaywindow.h
+    utp/localwindow.h
+    utp/packetbuffer.h
+    utp/pollpipe.h
+    utp/remotewindow.h
+    utp/timevalue.h
+    utp/utpprotocol.h
+    utp/utpserver.h
+    utp/utpserverthread.h
+    utp/utpsocket.h
 )
 
-set (ktorrent_HDR
-    ${CMAKE_CURRENT_BINARY_DIR}/ktorrent_export.h
-    ${CMAKE_BINARY_DIR}/libktorrent_version.h
-    version.h
+if(NOT WIN32)
+set(libktorrent_HEADERS ${libktorrent_HEADERS}
+    util/signalcatcher.h
+)
+endif()
+
+install(FILES
+    ${libktorrent_HEADERS}
+    ${libktorrent_export_HEADERS}
+    DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent COMPONENT Devel
 )
 
-set (bcodec_HDR
-    bcodec/bencoder.h
-    bcodec/bnode.h
-    bcodec/bdecoder.h
-    bcodec/value.h
-)
-
-install(FILES ${bcodec_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent/bcodec COMPONENT Devel)
-install(FILES ${interfaces_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent/interfaces COMPONENT Devel)
-install(FILES ${migrate_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent/migrate COMPONENT Devel)
-install(FILES ${ktorrent_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent COMPONENT Devel)
-
-add_subdirectory(torrent)
-add_subdirectory(datachecker)
-add_subdirectory(download)
-add_subdirectory(diskio)
-add_subdirectory(peer)
-add_subdirectory(net)
-add_subdirectory(mse)
-add_subdirectory(magnet)
-add_subdirectory(util)
-add_subdirectory(utp)
-add_subdirectory(upnp)
-add_subdirectory(tracker)
-add_subdirectory(dht)
+if(BUILD_TESTING)
+    add_subdirectory(datachecker/tests)
+    add_subdirectory(dht/tests)
+    add_subdirectory(diskio/tests)
+    add_subdirectory(download/tests)
+    add_subdirectory(magnet/tests)
+    add_subdirectory(mse/tests)
+    add_subdirectory(net/tests)
+    add_subdirectory(peer/tests)
+    add_subdirectory(torrent/tests)
+    add_subdirectory(util/tests)
+    add_subdirectory(utp/tests)
+endif()
