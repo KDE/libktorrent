@@ -156,7 +156,6 @@ public:
      * Add a potential peer
      * @param addr The peers' address
      * @param local Is it a peer on the local network
-     * @return void
      **/
     void addPotentialPeer(const net::Address &addr, bool local);
 

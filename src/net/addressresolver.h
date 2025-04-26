@@ -49,7 +49,6 @@ public:
      * @param port Port number
      * @param parent Parent
      * @param slot Slot of parent to connect to
-     * @return void
      **/
     static void resolve(const QString &host, bt::Uint16 port, QObject *parent, const char *slot);
 

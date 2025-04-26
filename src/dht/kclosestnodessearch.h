@@ -31,7 +31,6 @@ public:
      * Constructor sets the key to compare with
      * @param key The key to compare with
      * @param max_entries The maximum number of entries can be in the map
-     * @return
      */
     KClosestNodesSearch(const dht::Key &key, bt::Uint32 max_entries);
     virtual ~KClosestNodesSearch();

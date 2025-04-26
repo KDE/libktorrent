@@ -24,7 +24,6 @@ class KBucketEntry
 public:
     /**
      * Constructor, sets everything to 0.
-     * @return
      */
     KBucketEntry();
 
@@ -38,7 +37,6 @@ public:
     /**
      * Copy constructor.
      * @param other KBucketEntry to copy
-     * @return
      */
     KBucketEntry(const KBucketEntry &other);
 

@@ -65,7 +65,6 @@ public:
 
     /**
      * All data has been delivered, calculate the final hash.
-     * @return
      */
     void end();
 

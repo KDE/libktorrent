@@ -41,7 +41,6 @@ public:
     /**
      * Copy constructor.
      * @param bs BitSet to copy
-     * @return
      */
     BitSet(const BitSet &bs);
     virtual ~BitSet();
