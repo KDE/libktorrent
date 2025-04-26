@@ -454,6 +454,7 @@ int Socket::take()
 {
     int ret = m_fd;
     m_fd = -1;
+    m_state = CLOSED;
     return ret;
 }
 
