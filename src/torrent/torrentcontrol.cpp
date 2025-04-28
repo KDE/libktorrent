@@ -223,6 +223,15 @@ void TorrentControl::update()
             cman->checkMemoryUsage();
         }
 
+        if (stats.download_rate > 100 && stats.bytes_left > 0) {
+            stalled_timer.update();
+            stats.last_download_activity_time = CurrentTime();
+        }
+
+        if (stats.upload_rate > 100) {
+            stats.last_upload_activity_time = CurrentTime();
+        }
+
         // to satisfy people obsessed with their share ratio
         bool save_stats = m_qman ? m_qman->permitStatsSync(this) : (stats_save_timer.getElapsedSinceUpdate() >= 5 * 60 * 1000);
 
@@ -233,14 +242,6 @@ void TorrentControl::update()
 
         // Update DownloadCap
         updateStats();
-
-        if (stats.download_rate > 100) {
-            stalled_timer.update();
-            stats.last_download_activity_time = CurrentTime();
-        }
-
-        if (stats.upload_rate > 100)
-            stats.last_upload_activity_time = CurrentTime();
 
         // do a manual update if we are stalled for more then 2 minutes
         // we do not do this for private torrents
@@ -404,7 +405,6 @@ void TorrentControl::continueStart()
     stats.running = true;
     stats.started = true;
     stats.queued = false;
-    stats.last_download_activity_time = stats.last_upload_activity_time = CurrentTime();
     choker_update_timer.update();
     stats_save_timer.update();
     wanted_update_timer.update();
@@ -924,6 +924,8 @@ void TorrentControl::saveStats()
     stats_file->write(u"MAX_SEED_TIME"_s, QString::number(stats.max_seed_time));
     stats_file->write(u"RESTART_DISK_PREALLOCATION"_s, prealloc ? u"1"_s : u"0"_s);
     stats_file->write(u"AUTO_STOPPED"_s, stats.auto_stopped ? u"1"_s : u"0"_s);
+    stats_file->write(u"LAST_DOWNLOAD_ACTIVITY"_s, QString::number(stats.last_download_activity_time));
+    stats_file->write(u"LAST_UPLOAD_ACTIVITY"_s, QString::number(stats.last_upload_activity_time));
 
     if (!stats.priv_torrent) {
         // save dht and pex
@@ -1025,6 +1027,18 @@ void TorrentControl::loadStats()
         stats.time_added.setSecsSinceEpoch(stats_file->readULong(u"TIME_ADDED"_s));
     else
         stats.time_added = QDateTime::currentDateTime();
+
+    if (stats_file->hasKey(u"LAST_DOWNLOAD_ACTIVITY"_s)) {
+        stats.last_download_activity_time = stats_file->readULong(u"LAST_DOWNLOAD_ACTIVITY"_s);
+    } else {
+        stats.last_download_activity_time = QDateTime::currentMSecsSinceEpoch();
+    }
+
+    if (stats_file->hasKey(u"LAST_UPLOAD_ACTIVITY"_s)) {
+        stats.last_upload_activity_time = stats_file->readULong(u"LAST_UPLOAD_ACTIVITY"_s);
+    } else {
+        stats.last_upload_activity_time = QDateTime::currentMSecsSinceEpoch();
+    }
 
     bool ss = stats_file->hasKey(u"SUPERSEEDING"_s) && stats_file->readBoolean(u"SUPERSEEDING"_s);
     setSuperSeeding(ss);
