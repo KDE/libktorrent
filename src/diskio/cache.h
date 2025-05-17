@@ -8,6 +8,7 @@
 
 #include <QHash>
 #include <QSet>
+#include <QVector>
 #include <QString>
 #include <QStringList>
 #include <utility>
