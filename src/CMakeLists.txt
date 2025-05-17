@@ -489,27 +489,3 @@ if(BUILD_TESTING)
     add_subdirectory(util/tests)
     add_subdirectory(utp/tests)
 endif()
-
-if (BUILD_QCH)
-    ecm_add_qch(
-        KTorrent6_QCH
-        NAME libktorrent
-        BASE_NAME libktorrent
-        VERSION ${RELEASE_SERVICE_VERSION}
-        ORG_DOMAIN org.kde
-        SOURCES # using only public headers, to cover only public API
-            ${libktorrent_HEADERS}
-        MD_MAINPAGE "${CMAKE_SOURCE_DIR}/doc/index.md"
-        LINK_QCHS
-            Qt6Core_QCH
-            Qt6Network_QCH
-            Qt6Xml_QCH
-            KF6Archive_QCH
-            KF6KIO_QCH
-        INCLUDE_DIRS
-            ${CMAKE_CURRENT_BINARY_DIR}
-        TAGFILE_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
-        QCH_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
-        COMPONENT Devel
-    )
-endif()
