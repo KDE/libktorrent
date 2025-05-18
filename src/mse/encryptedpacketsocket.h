@@ -135,7 +135,7 @@ public:
     typedef QSharedPointer<EncryptedPacketSocket> Ptr;
 
 private:
-    void preProcess(bt::Packet::Ptr packet) override;
+    void preProcess(Uint8 *data, Uint32 size) override;
     void postProcess(Uint8 *data, Uint32 size) override;
 
 private:

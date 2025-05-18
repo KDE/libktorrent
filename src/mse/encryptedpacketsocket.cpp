@@ -255,10 +255,10 @@ void EncryptedPacketSocket::setRemoteAddress(const net::Address &addr)
     sock->setRemoteAddress(addr);
 }
 
-void EncryptedPacketSocket::preProcess(Packet::Ptr packet)
+void EncryptedPacketSocket::preProcess(Uint8 *data, Uint32 size)
 {
     if (enc)
-        enc->encryptReplace(packet->getData(), packet->getDataLength());
+        enc->encryptReplace(data, size);
 }
 
 void EncryptedPacketSocket::postProcess(Uint8 *data, Uint32 size)

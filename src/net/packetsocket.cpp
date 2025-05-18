@@ -63,7 +63,7 @@ Packet::Ptr PacketSocket::selectPacket()
     }
 
     if (ret)
-        preProcess(ret);
+        preProcess(ret->getData(), ret->getDataLength());
 
     return ret;
 }
@@ -134,9 +134,10 @@ bool PacketSocket::bytesReadyToWrite() const
     return !data_packets.empty() || !control_packets.empty();
 }
 
-void PacketSocket::preProcess(Packet::Ptr packet)
+void PacketSocket::preProcess(Uint8 *data, Uint32 size)
 {
-    Q_UNUSED(packet);
+    Q_UNUSED(data);
+    Q_UNUSED(size);
 }
 
 Uint32 PacketSocket::dataBytesUploaded()

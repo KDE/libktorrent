@@ -67,9 +67,10 @@ public:
 protected:
     /**
      * Preprocess the packet data, before it is sent. Default implementation does nothing.
-     * @param packet The packet
+     * @param data The packet data
+     * @param size The size of the data
      **/
-    virtual void preProcess(bt::Packet::Ptr packet);
+    virtual void preProcess(Uint8 *data, Uint32 size);
 
 private:
     bt::Packet::Ptr selectPacket();
