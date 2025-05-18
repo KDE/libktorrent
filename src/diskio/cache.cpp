@@ -48,12 +48,10 @@ Cache::~Cache()
 
 void Cache::cleanupPieceCache()
 {
-    PieceCache::iterator i = piece_cache.begin();
-    while (i != piece_cache.end()) {
-        for (auto& info : i.value())
+    for (const auto &piece_info_list : std::as_const(piece_cache)) {
+        for (const auto &info : piece_info_list) {
             info.piece_data->unload();
-
-        ++i;
+        }
     }
     piece_cache.clear();
 }
@@ -116,9 +114,7 @@ void Cache::insertPiece(Chunk *c, PieceData::Ptr p)
 
 void Cache::clearPieces(Chunk *c)
 {
-    PieceCache::iterator i = piece_cache.find(c);
-    if (i != piece_cache.end())
-        piece_cache.erase(i);
+    piece_cache.remove(c);
 }
 
 void Cache::clearPieceCache()
