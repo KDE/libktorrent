@@ -716,7 +716,7 @@ void Peer::sendChoke()
     if (!stats.has_upload_slot)
         return;
 
-    sock->addPacket(Packet::Ptr(new Packet(CHOKE)));
+    sock->addPacket(Packet::create(CHOKE));
     stats.has_upload_slot = false;
 }
 
@@ -725,13 +725,13 @@ void Peer::sendUnchoke()
     if (stats.has_upload_slot)
         return;
 
-    sock->addPacket(Packet::Ptr(new Packet(UNCHOKE)));
+    sock->addPacket(Packet::create(UNCHOKE));
     stats.has_upload_slot = true;
 }
 
 void Peer::sendEvilUnchoke()
 {
-    sock->addPacket(Packet::Ptr(new Packet(UNCHOKE)));
+    sock->addPacket(Packet::create(UNCHOKE));
     stats.has_upload_slot = false;
 }
 
@@ -740,7 +740,7 @@ void Peer::sendInterested()
     if (stats.am_interested == true)
         return;
 
-    sock->addPacket(Packet::Ptr(new Packet(INTERESTED)));
+    sock->addPacket(Packet::create(INTERESTED));
     stats.am_interested = true;
 }
 
@@ -749,58 +749,58 @@ void Peer::sendNotInterested()
     if (stats.am_interested == false)
         return;
 
-    sock->addPacket(Packet::Ptr(new Packet(NOT_INTERESTED)));
+    sock->addPacket(Packet::create(NOT_INTERESTED));
     stats.am_interested = false;
 }
 
 void Peer::sendRequest(const Request &r)
 {
-    sock->addPacket(Packet::Ptr(new Packet(r, bt::REQUEST)));
+    sock->addPacket(Packet::create(r, bt::REQUEST));
 }
 
 void Peer::sendCancel(const Request &r)
 {
-    sock->addPacket(Packet::Ptr(new Packet(r, bt::CANCEL)));
+    sock->addPacket(Packet::create(r, bt::CANCEL));
 }
 
 void Peer::sendReject(const Request &r)
 {
-    sock->addPacket(Packet::Ptr(new Packet(r, bt::REJECT_REQUEST)));
+    sock->addPacket(Packet::create(r, bt::REJECT_REQUEST));
 }
 
 void Peer::sendHave(Uint32 index)
 {
-    sock->addPacket(Packet::Ptr(new Packet(index, bt::HAVE)));
+    sock->addPacket(Packet::create(index, bt::HAVE));
 }
 
 void Peer::sendPort(Uint16 port)
 {
-    sock->addPacket(Packet::Ptr(new Packet(port)));
+    sock->addPacket(Packet::create(port));
 }
 
 void Peer::sendBitSet(const BitSet &bs)
 {
-    sock->addPacket(Packet::Ptr(new Packet(bs)));
+    sock->addPacket(Packet::create(bs));
 }
 
 void Peer::sendHaveAll()
 {
-    sock->addPacket(Packet::Ptr(new Packet(bt::HAVE_ALL)));
+    sock->addPacket(Packet::create(bt::HAVE_ALL));
 }
 
 void Peer::sendHaveNone()
 {
-    sock->addPacket(Packet::Ptr(new Packet(bt::HAVE_NONE)));
+    sock->addPacket(Packet::create(bt::HAVE_NONE));
 }
 
 void Peer::sendSuggestPiece(Uint32 index)
 {
-    sock->addPacket(Packet::Ptr(new Packet(index, bt::SUGGEST_PIECE)));
+    sock->addPacket(Packet::create(index, bt::SUGGEST_PIECE));
 }
 
 void Peer::sendAllowedFast(Uint32 index)
 {
-    sock->addPacket(Packet::Ptr(new Packet(index, bt::ALLOWED_FAST)));
+    sock->addPacket(Packet::create(index, bt::ALLOWED_FAST));
 }
 
 bool Peer::sendChunk(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch)
@@ -830,13 +830,13 @@ bool Peer::sendChunk(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch)
      *          .arg(index).arg(begin).arg(len).arg((quint64)ch,0,16).arg((quint64)ch->getData(),0,16)
      *          << endl;;
      */
-    sock->addPacket(Packet::Ptr(new Packet(index, begin, len, ch)));
+    sock->addPacket(Packet::create(index, begin, len, ch));
     return true;
 }
 
 void Peer::sendExtProtMsg(Uint8 id, const QByteArray &data)
 {
-    sock->addPacket(Packet::Ptr(new Packet(id, data)));
+    sock->addPacket(Packet::create(id, data));
 }
 
 void Peer::clearPendingPieceUploads()

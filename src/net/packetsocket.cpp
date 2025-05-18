@@ -156,7 +156,7 @@ void PacketSocket::clearPieces(bool reject)
         Packet::Ptr p = *i;
         if (p->getType() == bt::PIECE && !p->sending() && curr_packet != p) {
             if (reject)
-                addPacket(Packet::Ptr(p->makeRejectOfPiece()));
+                addPacket(p->makeRejectOfPiece());
             pending_upload_data_bytes -= p->getDataLength();
             i = data_packets.erase(i);
         } else {
@@ -176,7 +176,7 @@ void PacketSocket::doNotSendPiece(const bt::Request &req, bool reject)
             i = data_packets.erase(i);
             if (reject) {
                 // queue a reject packet
-                addPacket(Packet::Ptr(p->makeRejectOfPiece()));
+                addPacket(p->makeRejectOfPiece());
             }
         } else {
             i++;
