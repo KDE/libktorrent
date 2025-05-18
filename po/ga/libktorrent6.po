@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-network/ktorrent.po\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-17 00:41+0000\n"
+"POT-Creation-Date: 2025-05-18 00:42+0000\n"
 "PO-Revision-Date: 2007-08-07 07:02-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -65,7 +65,7 @@ msgstr "Sonraí á Seiceáil"
 msgid "Cannot open file %1: %2"
 msgstr "Ní féidir comhad %1 a oscailt: %2"
 
-#: src/diskio/cache.cpp:151 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:176 src/diskio/multifilecache.cpp:101
 #: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
@@ -307,7 +307,7 @@ msgstr "Cliant anaithnid"
 msgid "Corrupted torrent."
 msgstr "Torrent truaillithe."
 
-#: src/torrent/torrentcontrol.cpp:278
+#: src/torrent/torrentcontrol.cpp:279
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
@@ -528,12 +528,12 @@ msgstr "Ní féidir lorg i gcomhad: %1"
 msgid "Unable to open file %1: %2"
 msgstr "Ní féidir comhad %1 a oscailt: %2"
 
-#: src/util/functions.cpp:231
+#: src/util/functions.cpp:238
 #, kde-format
 msgid "%1/s"
 msgstr "%1/s"
 
-#: src/util/functions.cpp:240
+#: src/util/functions.cpp:247
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "

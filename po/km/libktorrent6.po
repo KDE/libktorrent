@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-17 00:41+0000\n"
+"POT-Creation-Date: 2025-05-18 00:42+0000\n"
 "PO-Revision-Date: 2012-07-04 08:47+0700\n"
 "Last-Translator: Sophea <sophea@khmeros.info>\n"
 "Language-Team: Khmer <>\n"
@@ -71,7 +71,7 @@ msgstr "ពិនិត្យ​ទិន្នន័យ​​"
 msgid "Cannot open file %1: %2"
 msgstr "មិន​អាច​បើក​ឯកសារ %1 ៖​ %2 បានទេ"
 
-#: src/diskio/cache.cpp:151 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:176 src/diskio/multifilecache.cpp:101
 #: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
@@ -305,7 +305,7 @@ msgstr "មិន​ស្គាល់​ម៉ាស៊ីន​ភ្ញៀវ
 msgid "Corrupted torrent."
 msgstr "torrent ខូច !"
 
-#: src/torrent/torrentcontrol.cpp:278
+#: src/torrent/torrentcontrol.cpp:279
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "កំហុស​ក្នុង​ការ​សរសេរ​ទៅកាន់​ថាស តើ​អ្នក​មាន​ទំហំ​ថាស​គ្រប់គ្រាន់​ដែរ​ឬទេ ?"
@@ -527,12 +527,12 @@ msgstr "មិន​អាច​ស្វែងរក​ក្នុង​ឯក
 msgid "Unable to open file %1: %2"
 msgstr " មិន​អាច​បើក​ឯកសារ​ torrent %1 ៖ %2 បានទេ"
 
-#: src/util/functions.cpp:231
+#: src/util/functions.cpp:238
 #, kde-format
 msgid "%1/s"
 msgstr "%1/វិ."
 
-#: src/util/functions.cpp:240
+#: src/util/functions.cpp:247
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "

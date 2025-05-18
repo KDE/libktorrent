@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-17 00:41+0000\n"
+"POT-Creation-Date: 2025-05-18 00:42+0000\n"
 "PO-Revision-Date: 2024-06-02 18:51+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -70,7 +70,7 @@ msgstr "檢查資料中"
 msgid "Cannot open file %1: %2"
 msgstr "無法開啟檔案 %1：%2"
 
-#: src/diskio/cache.cpp:151 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:176 src/diskio/multifilecache.cpp:101
 #: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
@@ -303,7 +303,7 @@ msgstr "不明用戶端"
 msgid "Corrupted torrent."
 msgstr "損壞的 torrent。"
 
-#: src/torrent/torrentcontrol.cpp:278
+#: src/torrent/torrentcontrol.cpp:279
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "寫入磁碟時發生錯誤。您有足夠的磁碟空間嗎？"
@@ -522,12 +522,12 @@ msgstr "無法在檔案中搜尋：%1"
 msgid "Unable to open file %1: %2"
 msgstr "無法開啟檔案 %1：%2"
 
-#: src/util/functions.cpp:231
+#: src/util/functions.cpp:238
 #, kde-format
 msgid "%1/s"
 msgstr "%1/秒"
 
-#: src/util/functions.cpp:240
+#: src/util/functions.cpp:247
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "

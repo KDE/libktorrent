@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-17 00:41+0000\n"
+"POT-Creation-Date: 2025-05-18 00:42+0000\n"
 "PO-Revision-Date: 2007-09-11 22:44+0200\n"
 "Last-Translator: Northern Sami translation team <i18n-sme@lister.ping.uio."
 "no>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Cannot open file %1: %2"
 msgstr ""
 
-#: src/diskio/cache.cpp:151 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:176 src/diskio/multifilecache.cpp:101
 #: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
@@ -302,7 +302,7 @@ msgstr ""
 msgid "Corrupted torrent."
 msgstr ""
 
-#: src/torrent/torrentcontrol.cpp:278
+#: src/torrent/torrentcontrol.cpp:279
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
@@ -519,12 +519,12 @@ msgstr ""
 msgid "Unable to open file %1: %2"
 msgstr ""
 
-#: src/util/functions.cpp:231
+#: src/util/functions.cpp:238
 #, kde-format
 msgid "%1/s"
 msgstr ""
 
-#: src/util/functions.cpp:240
+#: src/util/functions.cpp:247
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "

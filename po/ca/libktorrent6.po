@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-17 00:41+0000\n"
+"POT-Creation-Date: 2025-05-18 00:42+0000\n"
 "PO-Revision-Date: 2022-10-23 20:25+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -72,7 +72,7 @@ msgstr "S'estan comprovant les dades"
 msgid "Cannot open file %1: %2"
 msgstr "No s'ha pogut obrir el fitxer %1: %2"
 
-#: src/diskio/cache.cpp:151 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:176 src/diskio/multifilecache.cpp:101
 #: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
@@ -310,7 +310,7 @@ msgstr "Client desconegut"
 msgid "Corrupted torrent."
 msgstr "El torrent està corrupte."
 
-#: src/torrent/torrentcontrol.cpp:278
+#: src/torrent/torrentcontrol.cpp:279
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Error en escriure al disc. Hi ha suficient espai lliure al disc?"
@@ -533,12 +533,12 @@ msgstr "No s'ha pogut cercar en el fitxer: %1"
 msgid "Unable to open file %1: %2"
 msgstr "No s'ha pogut obrir el fitxer %1: %2"
 
-#: src/util/functions.cpp:231
+#: src/util/functions.cpp:238
 #, kde-format
 msgid "%1/s"
 msgstr "%1/s"
 
-#: src/util/functions.cpp:240
+#: src/util/functions.cpp:247
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "

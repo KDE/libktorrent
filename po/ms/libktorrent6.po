@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-17 00:41+0000\n"
+"POT-Creation-Date: 2025-05-18 00:42+0000\n"
 "PO-Revision-Date: 2009-06-07 23:54+0800\n"
 "Last-Translator: Sharuzzaman Ahmat Raslan <sharuzzaman@myrealbox.com>\n"
 "Language-Team: Malay <kedidiemas@yahoogroups.com>\n"
@@ -66,7 +66,7 @@ msgstr "Visualisasi Data"
 msgid "Cannot open file %1: %2"
 msgstr ""
 
-#: src/diskio/cache.cpp:151 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:176 src/diskio/multifilecache.cpp:101
 #: src/diskio/singlefilecache.cpp:72
 #, fuzzy, kde-format
 msgid "Failed to create %1: %2"
@@ -301,7 +301,7 @@ msgstr "Tidak diketahui"
 msgid "Corrupted torrent."
 msgstr "Hasilkan fax"
 
-#: src/torrent/torrentcontrol.cpp:278
+#: src/torrent/torrentcontrol.cpp:279
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
@@ -521,12 +521,12 @@ msgstr "Ralat mengimport fail %s"
 msgid "Unable to open file %1: %2"
 msgstr "Tidak menjumpai fail comps."
 
-#: src/util/functions.cpp:231
+#: src/util/functions.cpp:238
 #, fuzzy, kde-format
 msgid "%1/s"
 msgstr "%1/s"
 
-#: src/util/functions.cpp:240
+#: src/util/functions.cpp:247
 #, fuzzy, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
