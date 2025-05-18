@@ -8,9 +8,11 @@
 #define BTTORRENT_H
 
 #include "torrentfile.h"
+#include <climits>
 #include <QList>
 #include <QUrl>
 #include <QVector>
+#include <QVarLengthArray>
 #include <interfaces/torrentinterface.h>
 #include <ktorrent_export.h>
 #include <peer/peerid.h>
@@ -208,14 +210,22 @@ public:
     const TorrentFile &getFile(Uint32 idx) const;
 
     /**
+     * Type of the list of file indices.
+     * An array-like container, optimized for small number of elements and
+     * forward iteration.
+     */
+    typedef QVarLengthArray<Uint32, 64> FileIndexList;
+
+    /**
      * Calculate in which file(s) a Chunk lies. A list will
      * get filled with the indices of all the files. The list gets cleared at
      * the beginning. If something is wrong only the list will
      * get cleared.
      * @param chunk The index of the chunk
      * @param file_list This list will be filled with all the indices
+     * @param max_files Maximum number of file indices to put in @a file_list
      */
-    void calcChunkPos(Uint32 chunk, QList<Uint32> &file_list) const;
+    void calcChunkPos(Uint32 chunk, FileIndexList &file_list, int max_files = INT_MAX) const;
 
     /**
      * Checks if torrent file is audio or video.

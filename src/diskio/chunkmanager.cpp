@@ -995,7 +995,7 @@ void ChunkManager::Private::doPreviewPriority(TorrentFile &file)
 
 bool ChunkManager::Private::allFilesExistOfChunk(Uint32 idx)
 {
-    QList<Uint32> files;
+    Torrent::FileIndexList files;
     Torrent &tor = p->tor;
     tor.calcChunkPos(idx, files);
     for (Uint32 fidx : std::as_const(files)) {
@@ -1048,7 +1048,7 @@ void ChunkManager::Private::dumpPriority(TorrentFile *tf)
 
 void ChunkManager::Private::setBorderChunkPriority(Uint32 idx, Priority prio)
 {
-    QList<Uint32> files;
+    Torrent::FileIndexList files;
     Torrent &tor = p->tor;
     Priority highest = prio;
     // get list of files where first chunk lies in
@@ -1065,7 +1065,7 @@ void ChunkManager::Private::setBorderChunkPriority(Uint32 idx, Priority prio)
 
 bool ChunkManager::Private::resetBorderChunk(Uint32 idx, TorrentFile *tf)
 {
-    QList<Uint32> files;
+    Torrent::FileIndexList files;
     Torrent &tor = p->tor;
     tor.calcChunkPos(idx, files);
     for (Uint32 file : std::as_const(files)) {

@@ -14,6 +14,7 @@
 #include <bcodec/bnode.h>
 #include <cstdlib>
 #include <ctime>
+#include <utility>
 #include <interfaces/monitorinterface.h>
 #include <util/error.h>
 #include <util/functions.h>
@@ -360,7 +361,7 @@ unsigned int Torrent::getNumTrackerURLs() const
     return count;
 }
 
-void Torrent::calcChunkPos(Uint32 chunk, QList<Uint32> &file_list) const
+void Torrent::calcChunkPos(Uint32 chunk, FileIndexList &file_list, int max_files) const
 {
     file_list.clear();
     if (chunk >= (Uint32)hash_pieces.size() || files.empty())
@@ -401,6 +402,8 @@ void Torrent::calcChunkPos(Uint32 chunk, QList<Uint32> &file_list) const
         const TorrentFile &f = files[i];
         if (chunk >= f.getFirstChunk() && chunk <= f.getLastChunk() && f.getSize() != 0) {
             file_list.append(f.getIndex());
+            if (file_list.count() >= max_files)
+                break;
         } else if (chunk < f.getFirstChunk())
             break;
     }
@@ -424,14 +427,12 @@ void Torrent::updateFilePercentage(ChunkManager &cman)
 
 void Torrent::updateFilePercentage(Uint32 chunk, ChunkManager &cman)
 {
-    QList<Uint32> cfiles;
+    FileIndexList cfiles;
     calcChunkPos(chunk, cfiles);
 
-    QList<Uint32>::iterator i = cfiles.begin();
-    while (i != cfiles.end()) {
-        TorrentFile &f = getFile(*i);
+    for (Uint32 cfindex : std::as_const(cfiles)) {
+        TorrentFile &f = getFile(cfindex);
         f.updateNumDownloadedChunks(cman);
-        ++i;
     }
 }
 

@@ -422,7 +422,7 @@ void WebSeed::handleData(const QByteArray &tmp)
 
 void WebSeed::fillRangeList(Uint32 chunk)
 {
-    QList<Uint32> tflist;
+    Torrent::FileIndexList tflist;
     tor.calcChunkPos(chunk, tflist);
     Chunk *c = cman.getChunk(chunk);
 

@@ -354,8 +354,8 @@ PieceData::Ptr MultiFileCache::createPiece(Chunk *c, Uint32 off, Uint32 length, 
 {
     open();
 
-    QList<Uint32> tflist;
-    tor.calcChunkPos(c->getIndex(), tflist);
+    Torrent::FileIndexList tflist;
+    tor.calcChunkPos(c->getIndex(), tflist, 2); // we don't need all the files, just to know whether there is only one or multiple files
 
     // one file so try to map it
     if (tflist.count() == 1) {
@@ -430,7 +430,7 @@ PieceData::Ptr MultiFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
         return piece;
 
     // Now we need to load it
-    QList<Uint32> tflist;
+    Torrent::FileIndexList tflist;
     tor.calcChunkPos(c->getIndex(), tflist);
 
     // The chunk lies in one file, so it is easy
@@ -515,7 +515,7 @@ void MultiFileCache::savePiece(PieceData::Ptr piece)
         return;
 
     Chunk *c = piece->parentChunk();
-    QList<Uint32> tflist;
+    Torrent::FileIndexList tflist;
     tor.calcChunkPos(c->getIndex(), tflist);
     Uint32 chunk_off = 0; // number of bytes passed of the chunk
     Uint32 piece_off = 0; // how many bytes written from the piece

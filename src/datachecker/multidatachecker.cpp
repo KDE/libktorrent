@@ -95,7 +95,7 @@ void MultiDataChecker::check(const QString &path, const Torrent &tor, const QStr
 
 bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
 {
-    QList<Uint32> tflist;
+    Torrent::FileIndexList tflist;
     tor.calcChunkPos(ci, tflist);
 
     closePastFiles(tflist.first());
@@ -157,7 +157,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
                 if (!bt::Exists(f.getPathOnDisk()) || bt::FileSize(f.getPathOnDisk()) < off)
                     return false;
 
-                File::Ptr fptr = open(tor, tflist.at(i));
+                File::Ptr fptr = open(tor, tflist[i]);
                 if (fptr->seek(File::BEGIN, off) != off)
                     return false;
 
