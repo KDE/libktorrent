@@ -6,9 +6,12 @@
 #ifndef BTPACKETREADER_H
 #define BTPACKETREADER_H
 
-#include <QList>
 #include <QMutex>
+#include <cstddef>
+#include <new>
 #include <deque>
+#include <memory>
+#include <boost/align/align_up.hpp>
 #include <ktorrent_export.h>
 #include <net/trafficshapedsocket.h>
 
@@ -17,13 +20,45 @@ namespace bt
 class PeerInterface;
 
 struct IncomingPacket {
-    QScopedArrayPointer<Uint8> data;
     Uint32 size;
     Uint32 read;
 
-    IncomingPacket(Uint32 size);
+    typedef std::unique_ptr<IncomingPacket> Ptr;
 
-    typedef QSharedPointer<IncomingPacket> Ptr;
+private:
+    static constexpr std::size_t data_alignment = 16;
+
+    explicit IncomingPacket(Uint32 size) noexcept;
+
+    /// Memory allocation function
+    static void *operator new(std::size_t object_size, Uint32 data_size)
+    {
+        return ::operator new(boost::alignment::align_up(object_size, data_alignment) + data_size);
+    }
+    /// Placement delete function
+    static void operator delete(void *p, Uint32) noexcept
+    {
+        operator delete(p);
+    }
+
+public:
+    IncomingPacket(const IncomingPacket &) = delete;
+    IncomingPacket &operator=(const IncomingPacket &) = delete;
+
+    /// Creates a packet of the given size
+    static Ptr create(Uint32 size);
+
+    /// Memory release function
+    static void operator delete(void *p) noexcept
+    {
+        ::operator delete(p);
+    }
+
+    /// Returns a pointer to the packet data
+    Uint8 *data() noexcept
+    {
+        return reinterpret_cast<Uint8 *>(this) + boost::alignment::align_up(sizeof(*this), data_alignment);
+    }
 };
 
 /**
@@ -57,11 +92,7 @@ private:
 
 private:
     bool error;
-#ifndef DO_NOT_USE_DEQUE
     std::deque<IncomingPacket::Ptr> packet_queue;
-#else
-    QList<IncomingPacket::Ptr> packet_queue;
-#endif
     QMutex mutex;
     Uint8 len[4];
     int len_received;

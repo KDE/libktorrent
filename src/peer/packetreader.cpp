@@ -5,6 +5,7 @@
 */
 #include "packetreader.h"
 #include "peer.h"
+#include <utility>
 #include <QtAlgorithms>
 #include <util/file.h>
 #include <util/functions.h>
@@ -12,11 +13,15 @@
 
 namespace bt
 {
-IncomingPacket::IncomingPacket(Uint32 size)
-    : data(new Uint8[size])
-    , size(size)
+IncomingPacket::IncomingPacket(Uint32 size) noexcept
+    : size(size)
     , read(0)
 {
+}
+
+IncomingPacket::Ptr IncomingPacket::create(Uint32 size)
+{
+    return Ptr(new (size) IncomingPacket(size));
 }
 
 PacketReader::PacketReader(Uint32 max_packet_size)
@@ -33,15 +38,16 @@ PacketReader::~PacketReader()
 IncomingPacket::Ptr PacketReader::dequeuePacket()
 {
     QMutexLocker lock(&mutex);
-    if (packet_queue.size() == 0)
+    if (packet_queue.empty())
         return IncomingPacket::Ptr();
 
-    IncomingPacket::Ptr pck = packet_queue.front();
+    IncomingPacket::Ptr &pck = packet_queue.front();
     if (pck->read != pck->size)
         return IncomingPacket::Ptr();
 
+    IncomingPacket::Ptr p(std::move(pck));
     packet_queue.pop_front();
-    return pck;
+    return p;
 }
 
 void PacketReader::update(PeerInterface &peer)
@@ -51,7 +57,7 @@ void PacketReader::update(PeerInterface &peer)
 
     IncomingPacket::Ptr pck = dequeuePacket();
     while (pck) {
-        peer.handlePacket(pck->data.data(), pck->size);
+        peer.handlePacket(pck->data(), pck->size);
         pck = dequeuePacket();
     }
 }
@@ -89,8 +95,7 @@ Uint32 PacketReader::newPacket(Uint8 *buf, Uint32 size)
         return size;
     }
 
-    IncomingPacket::Ptr pck(new IncomingPacket(packet_length));
-    packet_queue.push_back(pck);
+    packet_queue.push_back(IncomingPacket::create(packet_length));
     return am_of_len_read + readPacket(buf + am_of_len_read, size - am_of_len_read);
 }
 
@@ -99,17 +104,17 @@ Uint32 PacketReader::readPacket(Uint8 *buf, Uint32 size)
     if (!size)
         return 0;
 
-    IncomingPacket::Ptr pck = packet_queue.back();
+    IncomingPacket *pck = packet_queue.back().get();
     if (pck->read + size >= pck->size) {
         // we can read the full packet
         Uint32 tr = pck->size - pck->read;
-        memcpy(pck->data.data() + pck->read, buf, tr);
+        memcpy(pck->data() + pck->read, buf, tr);
         pck->read += tr;
         return tr;
     } else {
         // we can do a partial read
         Uint32 tr = size;
-        memcpy(pck->data.data() + pck->read, buf, tr);
+        memcpy(pck->data() + pck->read, buf, tr);
         pck->read += tr;
         return tr;
     }
@@ -120,24 +125,16 @@ void PacketReader::onDataReady(Uint8 *buf, Uint32 size)
     if (error)
         return;
 
-    mutex.lock();
-    if (packet_queue.size() == 0) {
-        Uint32 ret = 0;
-        while (ret < size && !error) {
-            ret += newPacket(buf + ret, size - ret);
-        }
-    } else {
-        Uint32 ret = 0;
-        IncomingPacket::Ptr pck = packet_queue.back();
-        if (pck->read == pck->size) // last packet in queue is fully read
-            ret = newPacket(buf, size);
-        else
+    QMutexLocker lock(&mutex);
+    Uint32 ret = 0;
+    if (!packet_queue.empty()) {
+        IncomingPacket *pck = packet_queue.back().get();
+        if (pck->read < pck->size) // last packet in queue is not fully read
             ret = readPacket(buf, size);
-
-        while (ret < size && !error) {
-            ret += newPacket(buf + ret, size - ret);
-        }
     }
-    mutex.unlock();
+
+    while (ret < size && !error) {
+        ret += newPacket(buf + ret, size - ret);
+    }
 }
 }
