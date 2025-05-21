@@ -42,6 +42,10 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace bt
 {
+#ifndef Q_OS_WIN
+const Uint64 CacheFile::page_size = sysconf(_SC_PAGESIZE);
+#endif
+
 CacheFile::CacheFile()
     : fptr(nullptr)
     , max_size(0)
@@ -78,7 +82,8 @@ void CacheFile::openFile(Mode mode)
     if (!ok) {
         delete fptr;
         fptr = nullptr;
-        throw Error(i18n("Cannot open %1: %2", path, QString::fromUtf8(strerror(errno))));
+        const int err = errno;
+        throw Error(i18n("Cannot open %1: %2", path, QString::fromUtf8(strerror(err))));
     }
 
     file_size = fptr->size();
@@ -140,66 +145,43 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
     }
 
     int fd = fptr->handle();
-    Uint32 page_size = sysconf(_SC_PAGESIZE);
-    if (off % page_size > 0) {
-        // off is not a multiple of the page_size
-        // so we play around a bit
-        Uint32 diff = (off % page_size);
-        Uint64 noff = off - diff;
-        //  Out(SYS_DIO|LOG_DEBUG) << "Offsetted mmap : " << diff << endl;
+    // off may not be a multiple of the page_size
+    // so we play around a bit
+    Uint64 diff = (off % page_size);
+    Uint64 noff = off - diff;
+    //  Out(SYS_DIO|LOG_DEBUG) << "Offsetted mmap : " << diff << endl;
 #ifdef HAVE_MMAP64
-        char *ptr = (char *)mmap64(nullptr, size + diff, mmap_flag, MAP_SHARED, fd, noff);
+    char *ptr = (char *)mmap64(nullptr, size + diff, mmap_flag, MAP_SHARED, fd, noff);
 #else
-        char *ptr = (char *)mmap(0, size + diff, mmap_flag, MAP_SHARED, fd, noff);
+    char *ptr = (char *)mmap(0, size + diff, mmap_flag, MAP_SHARED, fd, noff);
 #endif
-        if (ptr == MAP_FAILED) {
-            Out(SYS_DIO | LOG_DEBUG) << "mmap failed : " << QString::fromUtf8(strerror(errno)) << endl;
-            return nullptr;
-        } else {
-            CacheFile::Entry e;
-            e.thing = thing;
-            e.offset = off;
-            e.diff = diff;
-            e.ptr = ptr;
-            e.size = size + diff;
-            e.mode = mode;
-            mappings.insert((void *)(ptr + diff), e);
-            return ptr + diff;
-        }
-    } else {
-#ifdef HAVE_MMAP64
-        void *ptr = mmap64(nullptr, size, mmap_flag, MAP_SHARED, fd, off);
-#else
-        void *ptr = mmap(0, size, mmap_flag, MAP_SHARED, fd, off);
-#endif
-        if (ptr == MAP_FAILED) {
-            Out(SYS_DIO | LOG_DEBUG) << "mmap failed : " << QString::fromUtf8(strerror(errno)) << endl;
-            return nullptr;
-        } else {
-            CacheFile::Entry e;
-            e.thing = thing;
-            e.offset = off;
-            e.ptr = ptr;
-            e.diff = 0;
-            e.size = size;
-            e.mode = mode;
-            mappings.insert(ptr, e);
-            return ptr;
-        }
-    }
-#else // Q_OS_WIN
-    char *ptr = (char *)fptr->map(off, size);
-
-    if (!ptr) {
-        Out(SYS_DIO | LOG_DEBUG) << "mmap failed3 : " << fptr->handle() << " " << QString::fromUtf8(strerror(errno)) << endl;
-        Out(SYS_DIO | LOG_DEBUG) << off << " " << size << endl;
-        return 0;
+    if (ptr == MAP_FAILED) {
+        const int err = errno;
+        Out(SYS_DIO | LOG_DEBUG) << "mmap failed : " << QString::fromUtf8(strerror(err)) << endl;
+        return nullptr;
     } else {
         CacheFile::Entry e;
         e.thing = thing;
         e.offset = off;
         e.ptr = ptr;
-        e.diff = 0;
+        e.size = size + diff;
+        e.mode = mode;
+        mappings.insert((void *)(ptr + diff), e);
+        return ptr + diff;
+    }
+#else // Q_OS_WIN
+    char *ptr = (char *)fptr->map(off, size);
+
+    if (!ptr) {
+        const int err = errno;
+        Out(SYS_DIO | LOG_DEBUG) << "mmap failed3 : " << fptr->handle() << " " << QString::fromUtf8(strerror(err)) << endl;
+        Out(SYS_DIO | LOG_DEBUG) << off << " " << size << endl;
+        return nullptr;
+    } else {
+        CacheFile::Entry e;
+        e.thing = thing;
+        e.offset = off;
+        e.ptr = ptr;
         e.size = size;
         e.mode = mode;
         mappings.insert(ptr, e);
@@ -239,29 +221,32 @@ void CacheFile::unmap(void *ptr)
     if (!fptr)
         return;
 
-    if (mappings.contains(ptr)) {
-        CacheFile::Entry &e = mappings[ptr];
+    const auto it = mappings.constFind(ptr);
+    if (it != mappings.constEnd()) {
+        const CacheFile::Entry &e = it.value();
         if (!fptr->unmap((uchar *)e.ptr))
             Out(SYS_DIO | LOG_IMPORTANT) << u"Unmap failed : %1"_s.arg(fptr->errorString()) << endl;
 
-        mappings.remove(ptr);
+        mappings.erase(it);
         // no mappings, close temporary
         if (mappings.count() == 0)
             closeTemporary();
     }
 #else
-    // see if it wasn't an offsetted mapping
-    if (mappings.contains(ptr)) {
-        CacheFile::Entry &e = mappings[ptr];
+    const auto it = mappings.constFind(ptr);
+    if (it != mappings.constEnd()) {
+        const CacheFile::Entry &e = it.value();
 #ifdef HAVE_MUNMAP64
         ret = munmap64(e.ptr, e.size);
 #else
         ret = munmap(e.ptr, e.size);
 #endif
-        if (ret < 0)
-            Out(SYS_DIO | LOG_IMPORTANT) << u"Munmap failed with error %1 : %2"_s.arg(errno).arg(QString::fromUtf8(strerror(errno))) << endl;
+        if (ret < 0) {
+            const int err = errno;
+            Out(SYS_DIO | LOG_IMPORTANT) << u"Munmap failed with error %1 : %2"_s.arg(err).arg(QString::fromUtf8(strerror(err))) << endl;
+        }
 
-        mappings.remove(ptr);
+        mappings.erase(it);
         // no mappings, close temporary
         if (mappings.count() == 0)
             closeTemporary();
@@ -286,7 +271,7 @@ void CacheFile::aboutToClose()
 
 void CacheFile::unmapAll()
 {
-    QMap<void *, Entry>::iterator i = mappings.begin();
+    auto i = mappings.begin();
     while (i != mappings.end()) {
         int ret = 0;
         CacheFile::Entry &e = i.value();
@@ -299,14 +284,17 @@ void CacheFile::unmapAll()
         ret = munmap(e.ptr, e.size);
 #endif // HAVE_MUNMAP64
 #endif // Q_OS_WIN
-        e.thing->unmapped();
+        if (ret < 0) {
+            const int err = errno;
+            Out(SYS_DIO | LOG_IMPORTANT) << u"Munmap failed with error %1 : %2"_s.arg(err).arg(QString::fromUtf8(strerror(err))) << endl;
+        }
+
+        MMappeable *thing = e.thing;
         // if it will be reopenend, we will not remove all mappings
         // so that they will be redone on reopening
-        ++i;
-        mappings.remove(e.ptr);
-        if (ret < 0) {
-            Out(SYS_DIO | LOG_IMPORTANT) << u"Munmap failed with error %1 : %2"_s.arg(errno).arg(QString::fromUtf8(strerror(errno))) << endl;
-        }
+        i = mappings.erase(i);
+
+        thing->unmapped();
     }
 }
 
@@ -445,7 +433,8 @@ void CacheFile::preallocate(PreallocationThread *prealloc)
             bt::TruncateFile(fd, max_size, !Cache::preallocateFully());
         }
     } catch (bt::Error &e) {
-        throw Error(i18n("Cannot preallocate diskspace: %1", QString::fromUtf8(strerror(errno))));
+        const int err = errno;
+        throw Error(i18n("Cannot preallocate diskspace: %1", QString::fromUtf8(strerror(err))));
     }
 
     file_size = FileSize(fd);

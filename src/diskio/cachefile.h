@@ -7,7 +7,7 @@
 #define BTCACHEFILE_H
 
 #include <QFile>
-#include <QMap>
+#include <QHash>
 #include <QRecursiveMutex>
 #include <QSharedPointer>
 #include <util/constants.h>
@@ -123,19 +123,22 @@ private Q_SLOTS:
 private:
     QFile *fptr;
     bool read_only;
+    bool manual_close;
     Uint64 max_size, file_size;
     QString path;
     struct Entry {
         MMappeable *thing;
         void *ptr;
-        Uint32 size;
         Uint64 offset;
-        Uint32 diff;
+        Uint32 size;
         Mode mode;
     };
-    QMap<void *, Entry> mappings; // mappings where offset wasn't a multiple of 4K
+    QHash<void *, Entry> mappings;
     mutable QRecursiveMutex mutex;
-    bool manual_close;
+
+#ifndef Q_OS_WIN
+    static const Uint64 page_size;
+#endif
 };
 
 }
