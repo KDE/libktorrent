@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-18 00:42+0000\n"
+"POT-Creation-Date: 2025-05-22 00:42+0000\n"
 "PO-Revision-Date: 2022-12-11 07:36+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -68,30 +68,30 @@ msgstr "Sprawdzanie danych"
 msgid "Cannot open file %1: %2"
 msgstr "Nie można otworzyć pliku %1: %2"
 
-#: src/diskio/cache.cpp:176 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:101
 #: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "Nieudane utworzenie %1: %2"
 
-#: src/diskio/cachefile.cpp:81 src/util/fileops.cpp:324
+#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:324
 #: src/util/fileops.cpp:367
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Nie można otworzyć %1: %2"
 
-#: src/diskio/cachefile.cpp:108 src/diskio/cachefile.cpp:220
-#: src/diskio/cachefile.cpp:373 src/diskio/cachefile.cpp:432
+#: src/diskio/cachefile.cpp:113 src/diskio/cachefile.cpp:202
+#: src/diskio/cachefile.cpp:361 src/diskio/cachefile.cpp:420
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "Nie można otworzyć %1 do zapisu : system plików tylko do odczytu"
 
-#: src/diskio/cachefile.cpp:114 src/diskio/cachefile.cpp:378
+#: src/diskio/cachefile.cpp:119 src/diskio/cachefile.cpp:366
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "Próba zapisu poza maksymalnym rozmiarem %1"
 
-#: src/diskio/cachefile.cpp:225
+#: src/diskio/cachefile.cpp:207
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
@@ -99,32 +99,32 @@ msgstr ""
 "Nie można powiększyć pliku %1 : próba powiększenia pliku poza maksymalny "
 "rozmiar"
 
-#: src/diskio/cachefile.cpp:229
+#: src/diskio/cachefile.cpp:211
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "Nie można powiększyć pliku %1: %2"
 
-#: src/diskio/cachefile.cpp:341
+#: src/diskio/cachefile.cpp:329
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "Błąd : Czytanie poza końcem pliku %1"
 
-#: src/diskio/cachefile.cpp:346 src/diskio/cachefile.cpp:388
+#: src/diskio/cachefile.cpp:334 src/diskio/cachefile.cpp:376
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "Nieudane przejście w pliku %1 : %2"
 
-#: src/diskio/cachefile.cpp:353
+#: src/diskio/cachefile.cpp:341
 #, kde-format
 msgid "Error reading from %1"
 msgstr "Błąd odczytu z %1"
 
-#: src/diskio/cachefile.cpp:391
+#: src/diskio/cachefile.cpp:379
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "Nie udało się zapisać z do pliku %1: %2"
 
-#: src/diskio/cachefile.cpp:448
+#: src/diskio/cachefile.cpp:437
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Nie można wcześniej przydzielić powierzchni dysku: %1"
@@ -299,10 +299,10 @@ msgstr "Błąd: %1"
 msgid "Unknown client"
 msgstr "Nieznany klient"
 
-#: src/torrent/torrent.cpp:97 src/torrent/torrent.cpp:144
-#: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
-#: src/torrent/torrent.cpp:185 src/torrent/torrent.cpp:189
-#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:272
+#: src/torrent/torrent.cpp:98 src/torrent/torrent.cpp:145
+#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
+#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:190
+#: src/torrent/torrent.cpp:210 src/torrent/torrent.cpp:273
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Uszkodzony torrent."

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-18 00:42+0000\n"
+"POT-Creation-Date: 2025-05-22 00:42+0000\n"
 "PO-Revision-Date: 2013-04-06 10:53+0200\n"
 "Last-Translator: Stelios <sstavragmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -72,31 +72,31 @@ msgstr "Έλεγχος δεδομένων"
 msgid "Cannot open file %1: %2"
 msgstr "Αδυναμία ανοίγματος του αρχείου %1: %2"
 
-#: src/diskio/cache.cpp:176 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:101
 #: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "Αδυναμία δημιουργίας του %1: %2"
 
-#: src/diskio/cachefile.cpp:81 src/util/fileops.cpp:324
+#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:324
 #: src/util/fileops.cpp:367
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Αδυναμία ανοίγματος του αρχείου %1 : %2"
 
-#: src/diskio/cachefile.cpp:108 src/diskio/cachefile.cpp:220
-#: src/diskio/cachefile.cpp:373 src/diskio/cachefile.cpp:432
+#: src/diskio/cachefile.cpp:113 src/diskio/cachefile.cpp:202
+#: src/diskio/cachefile.cpp:361 src/diskio/cachefile.cpp:420
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr ""
 "Αδυναμία ανοίγματος του %1 για εγγραφή: σύστημα αρχείων για ανάγνωση μόνο"
 
-#: src/diskio/cachefile.cpp:114 src/diskio/cachefile.cpp:378
+#: src/diskio/cachefile.cpp:119 src/diskio/cachefile.cpp:366
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "Απόπειρα εγγραφής πέρα από το μέγιστο μέγεθος του %1"
 
-#: src/diskio/cachefile.cpp:225
+#: src/diskio/cachefile.cpp:207
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
@@ -104,32 +104,32 @@ msgstr ""
 "Αδυναμία επέκτασης αρχείου %1: απόπειρα αύξησης μεγέθους αρχείου πέρα από το "
 "μέγιστο"
 
-#: src/diskio/cachefile.cpp:229
+#: src/diskio/cachefile.cpp:211
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "Αδυναμία επέκτασης του αρχείου: %1: %2"
 
-#: src/diskio/cachefile.cpp:341
+#: src/diskio/cachefile.cpp:329
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "Σφάλμα: Η ανάγνωση πέρασε το τέλος του αρχείου %1"
 
-#: src/diskio/cachefile.cpp:346 src/diskio/cachefile.cpp:388
+#: src/diskio/cachefile.cpp:334 src/diskio/cachefile.cpp:376
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "Αποτυχία αναζήτησης αρχείου %1: %2"
 
-#: src/diskio/cachefile.cpp:353
+#: src/diskio/cachefile.cpp:341
 #, kde-format
 msgid "Error reading from %1"
 msgstr "Σφάλμα ανάγνωσης από το %1"
 
-#: src/diskio/cachefile.cpp:391
+#: src/diskio/cachefile.cpp:379
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "Αποτυχία εγγραφής στο αρχείο %1: %2"
 
-#: src/diskio/cachefile.cpp:448
+#: src/diskio/cachefile.cpp:437
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Αδυναμία προκράτησης χώρου στο δίσκο: %1"
@@ -302,10 +302,10 @@ msgstr "Σφάλμα: %1"
 msgid "Unknown client"
 msgstr "Άγνωστος πελάτης"
 
-#: src/torrent/torrent.cpp:97 src/torrent/torrent.cpp:144
-#: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
-#: src/torrent/torrent.cpp:185 src/torrent/torrent.cpp:189
-#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:272
+#: src/torrent/torrent.cpp:98 src/torrent/torrent.cpp:145
+#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
+#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:190
+#: src/torrent/torrent.cpp:210 src/torrent/torrent.cpp:273
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Κατεστραμμένο torrent."

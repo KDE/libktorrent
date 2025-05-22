@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent5\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-18 00:42+0000\n"
+"POT-Creation-Date: 2025-05-22 00:42+0000\n"
 "PO-Revision-Date: 2015-06-25 19:31+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -68,30 +68,30 @@ msgstr "Перевірка даних"
 msgid "Cannot open file %1: %2"
 msgstr "Не вдалося відкрити файл %1: %2"
 
-#: src/diskio/cache.cpp:176 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:101
 #: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "Не вдалося створити %1: %2"
 
-#: src/diskio/cachefile.cpp:81 src/util/fileops.cpp:324
+#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:324
 #: src/util/fileops.cpp:367
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Не вдалося відкрити %1: %2"
 
-#: src/diskio/cachefile.cpp:108 src/diskio/cachefile.cpp:220
-#: src/diskio/cachefile.cpp:373 src/diskio/cachefile.cpp:432
+#: src/diskio/cachefile.cpp:113 src/diskio/cachefile.cpp:202
+#: src/diskio/cachefile.cpp:361 src/diskio/cachefile.cpp:420
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "Не вдалося відкрити %1 для запису: файлова система лише для читання"
 
-#: src/diskio/cachefile.cpp:114 src/diskio/cachefile.cpp:378
+#: src/diskio/cachefile.cpp:119 src/diskio/cachefile.cpp:366
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "Спроба запису понад максимальний розмір %1"
 
-#: src/diskio/cachefile.cpp:225
+#: src/diskio/cachefile.cpp:207
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
@@ -99,32 +99,32 @@ msgstr ""
 "Не вдалося розширити область файла %1: спроба збільшити файл понад "
 "максимальний розмір"
 
-#: src/diskio/cachefile.cpp:229
+#: src/diskio/cachefile.cpp:211
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "Не вдалося розгорнути файл%1: %2"
 
-#: src/diskio/cachefile.cpp:341
+#: src/diskio/cachefile.cpp:329
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "Помилка: читання поза кінцем файла %1"
 
-#: src/diskio/cachefile.cpp:346 src/diskio/cachefile.cpp:388
+#: src/diskio/cachefile.cpp:334 src/diskio/cachefile.cpp:376
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "Не вдалося шукати в файлі %1: %2"
 
-#: src/diskio/cachefile.cpp:353
+#: src/diskio/cachefile.cpp:341
 #, kde-format
 msgid "Error reading from %1"
 msgstr "Помилка читання з %1"
 
-#: src/diskio/cachefile.cpp:391
+#: src/diskio/cachefile.cpp:379
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "Не вдалося записати в файл %1: %2"
 
-#: src/diskio/cachefile.cpp:448
+#: src/diskio/cachefile.cpp:437
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Не вдалося виділити місце на диску: %1"
@@ -310,10 +310,10 @@ msgstr "Помилка: %1"
 msgid "Unknown client"
 msgstr "Невідомий клієнт"
 
-#: src/torrent/torrent.cpp:97 src/torrent/torrent.cpp:144
-#: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
-#: src/torrent/torrent.cpp:185 src/torrent/torrent.cpp:189
-#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:272
+#: src/torrent/torrent.cpp:98 src/torrent/torrent.cpp:145
+#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
+#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:190
+#: src/torrent/torrent.cpp:210 src/torrent/torrent.cpp:273
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Пошкоджений торент."

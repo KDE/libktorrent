@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-18 00:42+0000\n"
+"POT-Creation-Date: 2025-05-22 00:42+0000\n"
 "PO-Revision-Date: 2007-09-11 22:44+0200\n"
 "Last-Translator: Northern Sami translation team <i18n-sme@lister.ping.uio."
 "no>\n"
@@ -67,61 +67,61 @@ msgstr ""
 msgid "Cannot open file %1: %2"
 msgstr ""
 
-#: src/diskio/cache.cpp:176 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:101
 #: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr ""
 
-#: src/diskio/cachefile.cpp:81 src/util/fileops.cpp:324
+#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:324
 #: src/util/fileops.cpp:367
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr ""
 
-#: src/diskio/cachefile.cpp:108 src/diskio/cachefile.cpp:220
-#: src/diskio/cachefile.cpp:373 src/diskio/cachefile.cpp:432
+#: src/diskio/cachefile.cpp:113 src/diskio/cachefile.cpp:202
+#: src/diskio/cachefile.cpp:361 src/diskio/cachefile.cpp:420
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr ""
 
-#: src/diskio/cachefile.cpp:114 src/diskio/cachefile.cpp:378
+#: src/diskio/cachefile.cpp:119 src/diskio/cachefile.cpp:366
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr ""
 
-#: src/diskio/cachefile.cpp:225
+#: src/diskio/cachefile.cpp:207
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
 msgstr ""
 
-#: src/diskio/cachefile.cpp:229
+#: src/diskio/cachefile.cpp:211
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr ""
 
-#: src/diskio/cachefile.cpp:341
+#: src/diskio/cachefile.cpp:329
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr ""
 
-#: src/diskio/cachefile.cpp:346 src/diskio/cachefile.cpp:388
+#: src/diskio/cachefile.cpp:334 src/diskio/cachefile.cpp:376
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr ""
 
-#: src/diskio/cachefile.cpp:353
+#: src/diskio/cachefile.cpp:341
 #, kde-format
 msgid "Error reading from %1"
 msgstr ""
 
-#: src/diskio/cachefile.cpp:391
+#: src/diskio/cachefile.cpp:379
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr ""
 
-#: src/diskio/cachefile.cpp:448
+#: src/diskio/cachefile.cpp:437
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr ""
@@ -294,10 +294,10 @@ msgstr ""
 msgid "Unknown client"
 msgstr ""
 
-#: src/torrent/torrent.cpp:97 src/torrent/torrent.cpp:144
-#: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
-#: src/torrent/torrent.cpp:185 src/torrent/torrent.cpp:189
-#: src/torrent/torrent.cpp:209 src/torrent/torrent.cpp:272
+#: src/torrent/torrent.cpp:98 src/torrent/torrent.cpp:145
+#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
+#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:190
+#: src/torrent/torrent.cpp:210 src/torrent/torrent.cpp:273
 #, kde-format
 msgid "Corrupted torrent."
 msgstr ""
