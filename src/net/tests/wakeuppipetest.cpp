@@ -25,7 +25,7 @@ public Q_SLOTS:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLibKTorrent();
+        QVERIFY(bt::InitLibKTorrent());
         bt::InitLog(u"wakeuppipetest.log"_s);
     }
 

@@ -148,7 +148,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLibKTorrent();
+        QVERIFY(bt::InitLibKTorrent());
         bt::InitLog(u"transmittest.log"_s, false, true, false);
 
         port = 50000;

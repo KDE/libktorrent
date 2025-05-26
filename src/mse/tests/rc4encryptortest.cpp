@@ -31,7 +31,7 @@ public:
 private Q_SLOTS:
     void initTestCase()
     {
-        bt::InitLibKTorrent();
+        QVERIFY(bt::InitLibKTorrent());
     }
 
     void cleanupTestCase()

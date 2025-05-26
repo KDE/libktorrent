@@ -31,7 +31,7 @@ private Q_SLOTS:
     void initTestCase()
     {
         QLocale::setDefault(QLocale(u"main"_s));
-        bt::InitLibKTorrent();
+        QVERIFY(bt::InitLibKTorrent());
         bt::InitLog(u"preallocationtest.log"_s, false, true);
         QMap<QString, bt::Uint64> files;
 
