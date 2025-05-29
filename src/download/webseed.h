@@ -24,8 +24,8 @@ class ChunkManager;
 class Chunk;
 class WebSeedChunkDownload;
 
-/**
-    @author Joris Guisson
+/*!
+    \author Joris Guisson
     Class which handles downloading from a webseed
 */
 class KTORRENT_EXPORT WebSeed : public QObject, public WebSeedInterface
@@ -35,72 +35,72 @@ public:
     WebSeed(const QUrl &url, bool user, const Torrent &tor, ChunkManager &cman);
     ~WebSeed() override;
 
-    /// Is this webseed busy ?
+    //! Is this webseed busy ?
     bool busy() const;
 
-    /// Check if a chunk lies in the current range we are downloading
+    //! Check if a chunk lies in the current range we are downloading
     bool inCurrentRange(Uint32 chunk) const
     {
         return chunk >= first_chunk && chunk <= last_chunk;
     }
 
-    /**
+    /*!
      * Download a range of chunks
-     * @param first The first chunk
-     * @param last The last chunk
+     * \param first The first chunk
+     * \param last The last chunk
      */
     void download(Uint32 first, Uint32 last);
 
-    /**
+    /*!
      * A range has been excluded, if we are fully
      * downloading in this range, reset.
-     * @param from Start of range
-     * @param to End of range
+     * \param from Start of range
+     * \param to End of range
      */
     void onExcluded(Uint32 from, Uint32 to);
 
-    /**
+    /*!
      * Check if the connection has received some data and handle it.
-     * @return The number of bytes downloaded
+     * \return The number of bytes downloaded
      */
     Uint32 update();
 
-    /**
+    /*!
      * A chunk has been downloaded.
-     * @param chunk The chunk
+     * \param chunk The chunk
      */
     void chunkDownloaded(Uint32 chunk);
 
-    /**
+    /*!
      * Cancel the current download and kill the connection
      */
     void cancel();
 
-    /// Get the current download rate
+    //! Get the current download rate
     Uint32 getDownloadRate() const override;
 
-    /**
+    /*!
      * Set the group ID's of the http connection (for speed limits)
-     * @param up Upload group id
-     * @param down Download group id
+     * \param up Upload group id
+     * \param down Download group id
      */
     void setGroupIDs(Uint32 up, Uint32 down);
 
-    /**
+    /*!
      * Set the proxy to use for all WebSeeds
-     * @param host Hostname or IP address of the proxy
-     * @param port Port number of the proxy
+     * \param host Hostname or IP address of the proxy
+     * \param port Port number of the proxy
      */
     static void setProxy(const QString &host, bt::Uint16 port);
 
-    /**
+    /*!
      * Whether or not to enable or disable the use of a proxy.
      * When the proxy is disabled, we will use the KDE proxy settings.
-     * @param on On or not
+     * \param on On or not
      */
     static void setProxyEnabled(bool on);
 
-    /// Get the current webseed download
+    //! Get the current webseed download
     WebSeedChunkDownload *currentChunkDownload()
     {
         return current;
@@ -108,44 +108,44 @@ public:
 
     void setEnabled(bool on) override;
 
-    /// Disable the webseed
+    //! Disable the webseed
     void disable(const QString &reason);
 
-    /// Get the number of failed attempts
+    //! Get the number of failed attempts
     Uint32 failedAttempts() const
     {
         return num_failures;
     }
 
 public Q_SLOTS:
-    /**
+    /*!
      * Reset the webseed (kills the connection)
      */
     void reset();
 
 Q_SIGNALS:
-    /**
+    /*!
      * Emitted when a chunk is downloaded
-     * @param c The chunk
+     * \param c The chunk
      */
     void chunkReady(Chunk *c);
 
-    /**
+    /*!
      * Emitted when a range has been fully downloaded
      */
     void finished();
 
-    /**
+    /*!
      * A ChunkDownload was started
-     * @param cd The ChunkDownloadInterface
-     * @param chunk The chunk which is being started
+     * \param cd The ChunkDownloadInterface
+     * \param chunk The chunk which is being started
      */
     void chunkDownloadStarted(WebSeedChunkDownload *cd, Uint32 chunk);
 
-    /**
+    /*!
      * A ChunkDownload was finished
-     * @param cd The ChunkDownloadInterface
-     * @param chunk The chunk which is being stopped
+     * \param cd The ChunkDownloadInterface
+     * \param chunk The chunk which is being stopped
      */
     void chunkDownloadFinished(WebSeedChunkDownload *cd, Uint32 chunk);
 

@@ -18,7 +18,7 @@
 
 namespace utp
 {
-/**
+/*!
  * Manages the send queue of all UTP server sockets
  */
 class OutputQueue
@@ -27,17 +27,17 @@ public:
     OutputQueue();
     virtual ~OutputQueue();
 
-    /**
+    /*!
      * Add an entry to the queue.
-     * @param packet The packet
-     * @param conn The connection this packet belongs to
-     * @return The number of queued packets
+     * \param packet The packet
+     * \param conn The connection this packet belongs to
+     * \return The number of queued packets
      */
     int add(const PacketBuffer &packet, Connection::WPtr conn);
 
-    /**
+    /*!
      * Attempt to send the queue on a socket
-     * @param sock The socket
+     * \param sock The socket
      */
     void send(net::ServerSocket *sock);
 

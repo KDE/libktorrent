@@ -12,7 +12,7 @@
 
 namespace bt
 {
-/**
+/*!
     Cross platform pipe implementation, uses socketpair on unix and a TCP connection over the localhost in windows.
 */
 class KTORRENT_EXPORT Pipe
@@ -21,22 +21,22 @@ public:
     Pipe();
     virtual ~Pipe();
 
-    /// Get the reader socket
+    //! Get the reader socket
     int readerSocket() const
     {
         return reader;
     }
 
-    /// Get the writer socket
+    //! Get the writer socket
     int writerSocket() const
     {
         return writer;
     }
 
-    /// Write data to the write end of the pipe
+    //! Write data to the write end of the pipe
     int write(const Uint8 *data, int len);
 
-    /// Read data from the read end of the pipe
+    //! Read data from the read end of the pipe
     int read(Uint8 *buffer, int max_len);
 
 protected:

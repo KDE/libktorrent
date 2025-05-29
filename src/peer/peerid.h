@@ -11,8 +11,8 @@
 
 namespace bt
 {
-/**
-@author Joris Guisson
+/*!
+\author Joris Guisson
 */
 class KTORRENT_EXPORT PeerID
 {
@@ -34,10 +34,10 @@ public:
 
     QString toString() const;
 
-    /**
+    /*!
      * Interprets the PeerID to figure out which client it is.
-     * @author Ivan + Joris
-     * @return The name of the client
+     * \author Ivan + Joris
+     * \return The name of the client
      */
     QString identifyClient() const;
 

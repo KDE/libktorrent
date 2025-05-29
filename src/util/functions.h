@@ -118,33 +118,33 @@ KTORRENT_EXPORT TimeStamp Now();
 KTORRENT_EXPORT QString DirSeparator();
 KTORRENT_EXPORT bool IsMultimediaFile(const QString &filename);
 
-/**
+/*!
  * Maximize the file and memory limits using setrlimit.
  */
 KTORRENT_EXPORT bool MaximizeLimits();
 
-/// Get the maximum number of open files
+//! Get the maximum number of open files
 KTORRENT_EXPORT Uint32 MaxOpenFiles();
 
-/// Get the current number of open files
+//! Get the current number of open files
 KTORRENT_EXPORT Uint32 CurrentOpenFiles();
 
-/// Can we open another file ?
+//! Can we open another file ?
 KTORRENT_EXPORT bool OpenFileAllowed();
 
-/// Set the network interface to use (null means all interfaces)
+//! Set the network interface to use (null means all interfaces)
 KTORRENT_EXPORT void SetNetworkInterface(const QString &iface);
 
-/// Get the network interface which needs to be used (this will return the name e.g. eth0, wlan0 ...)
+//! Get the network interface which needs to be used (this will return the name e.g. eth0, wlan0 ...)
 KTORRENT_EXPORT QString NetworkInterface();
 
-/// Get the IP address of the network interface
+//! Get the IP address of the network interface
 KTORRENT_EXPORT QString NetworkInterfaceIPAddress(const QString &iface);
 
-/// Get all the IP addresses of the network interface
+//! Get all the IP addresses of the network interface
 KTORRENT_EXPORT QStringList NetworkInterfaceIPAddresses(const QString &iface);
 
-/// Get the current IPv6 address
+//! Get the current IPv6 address
 KTORRENT_EXPORT QString CurrentIPv6Address();
 
 const double TO_KB = 1024.0;
@@ -186,11 +186,11 @@ struct KTORRENT_EXPORT RecursiveEntryGuard {
 };
 
 #if defined(LIBKTORRENT_USE_OPENSSL)
-/// Returns a string with the last OpenSSL error. Only for internal use in libktorrent for diagnostic purposes.
+//! Returns a string with the last OpenSSL error. Only for internal use in libktorrent for diagnostic purposes.
 QString getLastOpenSSLErrorString();
 #endif
 
-/**
+/*!
     Global initialization function, should be called, in the applications main function.
  */
 KTORRENT_EXPORT bool InitLibKTorrent();

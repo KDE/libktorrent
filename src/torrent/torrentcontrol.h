@@ -43,9 +43,9 @@ class CacheFactory;
 class JobQueue;
 class DataCheckerJob;
 
-/**
- * @author Joris Guisson
- * @brief Controls just about everything
+/*!
+ * \author Joris Guisson
+ * \brief Controls just about everything
  *
  * This is the interface which any user gets to deal with.
  * This class controls the uploading, downloading, choking,
@@ -58,30 +58,30 @@ public:
     TorrentControl();
     ~TorrentControl() override;
 
-    /// Get the Torrent.
+    //! Get the Torrent.
     const Torrent &getTorrent() const
     {
         return *tor;
     }
 
-    /**
+    /*!
      * Initialize the TorrentControl.
-     * @param qman The QueueManager
-     * @param data The data of the torrent
-     * @param tmpdir The directory to store temporary data
-     * @param datadir The directory to store the actual file(s)
+     * \param qman The QueueManager
+     * \param data The data of the torrent
+     * \param tmpdir The directory to store temporary data
+     * \param datadir The directory to store the actual file(s)
      *      (only used the first time we load a torrent)
-     * @throw Error when something goes wrong
+     * \throw Error when something goes wrong
      */
     void init(QueueManagerInterface *qman, const QByteArray &data, const QString &tmpdir, const QString &datadir);
 
-    /// Tell the TorrentControl obj to preallocate diskspace in the next update
+    //! Tell the TorrentControl obj to preallocate diskspace in the next update
     void setPreallocateDiskSpace(bool pa)
     {
         prealloc = pa;
     }
 
-    /// Test if the torrent has existing files, only works the first time a torrent is loaded
+    //! Test if the torrent has existing files, only works the first time a torrent is loaded
     bool hasExistingFiles() const;
 
     const BitSet &downloadedChunksBitSet() const override;
@@ -177,84 +177,84 @@ public:
     }
     void setSuperSeeding(bool on) override;
 
-    /// Create all the necessary files
+    //! Create all the necessary files
     void createFiles();
 
-    /// Get the PeerManager
+    //! Get the PeerManager
     const PeerManager *getPeerMgr() const;
 
-    /**
+    /*!
      * Set a custom chunk selector factory (needs to be done for init is called)
      * Note: TorrentControl does not take ownership
      */
     void setChunkSelectorFactory(ChunkSelectorFactoryInterface *csfi);
 
-    /// Set a custom Cache factory
+    //! Set a custom Cache factory
     void setCacheFactory(CacheFactory *cf);
 
-    /// Get time in msec since the last Stats file save on disk
+    //! Get time in msec since the last Stats file save on disk
     TimeStamp getStatsSyncElapsedTime()
     {
         return stats_save_timer.getElapsedSinceUpdate();
     }
 
 public:
-    /**
+    /*!
      * Update the object, should be called periodically.
      */
     void update() override;
 
-    /**
+    /*!
      * Pause the torrent.
      */
     void pause() override;
 
-    /**
+    /*!
      * Unpause the torrent.
      */
     void unpause() override;
 
-    /**
+    /*!
      * Start the download of the torrent.
      */
     void start() override;
 
-    /**
+    /*!
      * Stop the download, closes all connections.
-     * @param wjob WaitJob to wait at exit for the completion of stopped requests
+     * \param wjob WaitJob to wait at exit for the completion of stopped requests
      */
     void stop(WaitJob *wjob = nullptr) override;
 
-    /**
+    /*!
      * Update the tracker, this should normally handled internally.
      * We leave it public so that the user can do a manual announce.
      */
     void updateTracker() override;
 
-    /**
+    /*!
      * Scrape the tracker.
      * */
     void scrapeTracker() override;
 
-    /**
+    /*!
      * A scrape has finished on the tracker.
      * */
     void trackerScrapeDone();
 
     void afterRename();
 
-    /**
+    /*!
      * Enable or disable data check upon completion
-     * @param on
+     * \param on
      */
     static void setDataCheckWhenCompleted(bool on)
     {
         completed_datacheck = on;
     }
 
-    /**
+    /*!
      * Set the minimum amount of diskspace in MB. When there is less then this free, torrents will be stopped.
-     * @param m
+     * \param m
      */
     static void setMinimumDiskSpace(Uint32 m)
     {
@@ -262,7 +262,7 @@ public:
     }
 
 protected:
-    /// Called when a data check is finished by DataCheckerJob
+    //! Called when a data check is finished by DataCheckerJob
     void afterDataCheck(DataCheckerJob *job, const BitSet &result);
     void beforeDataCheck();
     void preallocFinished(const QString &error, bool completed);
@@ -274,7 +274,7 @@ private:
     void onPeerRemoved(Peer *p);
     void doChoking();
     void onIOError(const QString &msg);
-    /// Update the stats of the torrent.
+    //! Update the stats of the torrent.
     void updateStats();
     void corrupted(Uint32 chunk);
     void moveDataFilesFinished(KJob *j);

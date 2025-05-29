@@ -13,7 +13,7 @@ namespace bt
 {
 class DataCheckerThread;
 
-/// Job which runs a DataChecker
+//! Job which runs a DataChecker
 class KTORRENT_EXPORT DataCheckerJob : public bt::Job, public Resource
 {
 public:
@@ -27,25 +27,25 @@ public:
         return CHECKING_DATA;
     }
 
-    /// Is this an automatic import
+    //! Is this an automatic import
     bool isAutoImport() const
     {
         return auto_import;
     }
 
-    /// Was the job stopped
+    //! Was the job stopped
     bool isStopped() const
     {
         return killed;
     }
 
-    /// Get the first chunk the datacheck was started from
+    //! Get the first chunk the datacheck was started from
     bt::Uint32 firstChunk() const
     {
         return from;
     }
 
-    /// Get the last chunk of the datacheck
+    //! Get the last chunk of the datacheck
     bt::Uint32 lastChunk() const
     {
         return to;

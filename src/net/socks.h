@@ -14,8 +14,8 @@
 
 namespace net
 {
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Class which handles the SOCKSv5 protocol
  */
@@ -40,46 +40,46 @@ public:
     Socks(mse::EncryptedPacketSocket::Ptr sock, const Address &dest);
     ~Socks() override;
 
-    /// Setup a socks connection, return the current state
+    //! Setup a socks connection, return the current state
     State setup();
 
-    /**
+    /*!
      * The socket is ready to write (used to determine if we are connected to the server)
-     * @return The current state
+     * \return The current state
      */
     State onReadyToWrite();
 
-    /**
+    /*!
      * There is data available on the socked
-     * @return The current state
+     * \return The current state
      */
     State onReadyToRead();
 
-    /// Is socks enabled
+    //! Is socks enabled
     static bool enabled()
     {
         return socks_enabled;
     }
 
-    /// Enable or disable socks
+    //! Enable or disable socks
     static void setSocksEnabled(bool on)
     {
         socks_enabled = on;
     }
 
-    /// Set the socks server address
+    //! Set the socks server address
     static void setSocksServerAddress(const QString &host, bt::Uint16 port);
 
-    /// Set the socks version (4 or 5)
+    //! Set the socks version (4 or 5)
     static void setSocksVersion(int version)
     {
         socks_version = version;
     }
 
-    /**
+    /*!
      * Set the SOCKSv5 Username and password
-     * @param username The username
-     * @param password The password
+     * \param username The username
+     * \param password The password
      */
     static void setSocksAuthentication(const QString &username, const QString &password);
 

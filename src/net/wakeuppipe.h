@@ -13,7 +13,7 @@
 
 namespace net
 {
-/**
+/*!
     A WakeUpPipe's purpose is to wakeup a select or poll call.
     It works by using a pipe
     One end needs to be part of the poll or select, and the other end will send dummy data to it.
@@ -25,10 +25,10 @@ public:
     WakeUpPipe();
     ~WakeUpPipe() override;
 
-    /// Wake up the other socket
+    //! Wake up the other socket
     virtual void wakeUp();
 
-    /// Read all the dummy data
+    //! Read all the dummy data
     void handleData() override;
 
     int fd() const override
@@ -38,7 +38,7 @@ public:
 
     void reset() override;
 
-    /// Have we been woken up
+    //! Have we been woken up
     bool wokenUp() const
     {
         return woken_up;

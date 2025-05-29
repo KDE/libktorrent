@@ -14,8 +14,8 @@ class QCryptographicHash;
 
 namespace bt
 {
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Generates a SHA1 hash, code based on wikipedia's pseudocode
  * There are 2 ways to use this class :
@@ -30,45 +30,45 @@ public:
     SHA1HashGen();
     ~SHA1HashGen();
 
-    /**
+    /*!
      * Generate a hash from a bunch of data.
-     * @param data The data
-     * @return The SHA1 hash
+     * \param data The data
+     * \return The SHA1 hash
      */
     SHA1Hash generate(QByteArrayView data);
 
-    /**
+    /*!
      * Generate a hash from a bunch of data.
-     * @param data The data
-     * @param len The length
-     * @return The SHA1 hash
+     * \param data The data
+     * \param len The length
+     * \return The SHA1 hash
      */
     SHA1Hash generate(const Uint8 *data, Uint32 len);
 
-    /**
+    /*!
      * Start SHA1 hash generation in chunks.
      */
     void start();
 
-    /**
+    /*!
      * Update the hash.
-     * @param data The data
+     * \param data The data
      */
     void update(QByteArrayView data);
 
-    /**
+    /*!
      * Update the hash.
-     * @param data The data
-     * @param len Length of the data
+     * \param data The data
+     * \param len Length of the data
      */
     void update(const Uint8 *data, Uint32 len);
 
-    /**
+    /*!
      * All data has been delivered, calculate the final hash.
      */
     void end();
 
-    /**
+    /*!
      * Get the hash generated.
      */
     SHA1Hash get() const;

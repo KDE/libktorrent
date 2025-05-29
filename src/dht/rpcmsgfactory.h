@@ -12,7 +12,7 @@
 
 namespace dht
 {
-/**
+/*!
  * Interface to resolve the method of an RPC call given an mtid
  */
 class RPCMethodResolver
@@ -22,11 +22,11 @@ public:
     {
     }
 
-    /// Return the method associated with an mtid
+    //! Return the method associated with an mtid
     virtual Method findMethod(const QByteArray &mtid) = 0;
 };
 
-/**
+/*!
  * Creates RPC message objects out of a BDictNode
  */
 class KTORRENT_EXPORT RPCMsgFactory
@@ -35,12 +35,12 @@ public:
     RPCMsgFactory();
     virtual ~RPCMsgFactory();
 
-    /**
+    /*!
      * Creates a message out of a BDictNode.
-     * @param dict The BDictNode
-     * @param method_resolver The RPCMethodResolver
-     * @return A newly created message
-     * @throw bt::Error if something goes wrong
+     * \param dict The BDictNode
+     * \param method_resolver The RPCMethodResolver
+     * \return A newly created message
+     * \throw bt::Error if something goes wrong
      */
     RPCMsg::Ptr build(bt::BDictNode *dict, RPCMethodResolver *method_resolver);
 

@@ -12,7 +12,7 @@
 
 namespace dht
 {
-/**
+/*!
  * GetPeers response message
  */
 class KTORRENT_EXPORT GetPeersRsp : public RPCMsg, public PackedNodeContainer

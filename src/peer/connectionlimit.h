@@ -15,7 +15,7 @@
 
 namespace bt
 {
-/**
+/*!
  * Maintains the connection limit. It uses a Token for that.
  */
 class KTORRENT_EXPORT ConnectionLimit
@@ -24,20 +24,20 @@ public:
     ConnectionLimit();
     virtual ~ConnectionLimit();
 
-    /// Get the total number of connections currently in use
+    //! Get the total number of connections currently in use
     bt::Uint32 totalConnections() const
     {
         return global_total;
     }
 
-    /**
+    /*!
      * Set the connection limits
-     * @param global_limit Global limit
-     * @param torrent_limit Per torrent limit
+     * \param global_limit Global limit
+     * \param torrent_limit Per torrent limit
      **/
     void setLimits(bt::Uint32 global_limit, bt::Uint32 torrent_limit);
 
-    /**
+    /*!
      * Token representing the allowance to open a connection.
      * When the token is destroyed, it will be automatically released.
      */
@@ -47,7 +47,7 @@ public:
         Token(ConnectionLimit &limit, const bt::SHA1Hash &hash);
         ~Token();
 
-        /// Get the info hash
+        //! Get the info hash
         const bt::SHA1Hash &infoHash() const
         {
             return hash;
@@ -60,17 +60,17 @@ public:
         bt::SHA1Hash hash;
     };
 
-    /**
+    /*!
      * Request a token for a given torrent
-     * @param hash Info hash of the torrent
-     * @return ConnectionLimit::Token::Ptr a valid token if a connection can be opened, a 0 pointer if not
+     * \param hash Info hash of the torrent
+     * \return ConnectionLimit::Token::Ptr a valid token if a connection can be opened, a 0 pointer if not
      **/
     Token::Ptr acquire(const SHA1Hash &hash);
 
 protected:
-    /**
+    /*!
      * Release one Token. Will be done by destructor of Token.
-     * @param token The Token
+     * \param token The Token
      **/
     void release(const Token &token);
 

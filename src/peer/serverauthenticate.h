@@ -10,8 +10,8 @@
 
 namespace bt
 {
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Handles the authentication of incoming connections on the Server.
  * Once the authentication is finished, the socket gets handed over

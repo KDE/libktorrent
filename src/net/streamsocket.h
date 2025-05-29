@@ -19,17 +19,17 @@ public:
     {
     }
 
-    /**
+    /*!
      * Called when a StreamSocket gets connected.
      */
     virtual void connectFinished(bool succeeded) = 0;
 
-    /**
+    /*!
      * Called when all data has been sent.
      */
     virtual void dataSent() = 0;
 };
-/**
+/*!
  * TrafficShapedSocket which provides a simple buffer as outbound data queue.
  * And a callback interface (StreamSocketListener) for notification of events.
  */
@@ -42,9 +42,9 @@ public:
     bool bytesReadyToWrite() const override;
     bt::Uint32 write(bt::Uint32 max, bt::TimeStamp now) override;
 
-    /**
+    /*!
      * Add data to send
-     * @param data The QByteArray
+     * \param data The QByteArray
      */
     void addData(const QByteArray &data);
 

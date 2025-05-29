@@ -12,9 +12,9 @@ namespace bt
 {
 class CacheFile;
 
-/**
- * @author Joris Guisson
- * @brief Cache for single file torrents
+/*!
+ * \author Joris Guisson
+ * \brief Cache for single file torrents
  *
  * This class implements Cache for a single file torrent
  */

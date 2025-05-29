@@ -12,7 +12,7 @@
 
 namespace dht
 {
-/**
+/*!
  * FindNode response message for DHT
  */
 class KTORRENT_EXPORT FindNodeRsp : public RPCMsg, public PackedNodeContainer

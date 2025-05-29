@@ -46,7 +46,7 @@ const QByteArray TYP = "y";
 const QByteArray ARG = "a";
 const QByteArray ERR_DHT = "e";
 
-/**
+/*!
  * Base class for all RPC messages.
  */
 class KTORRENT_EXPORT RPCMsg
@@ -58,80 +58,80 @@ public:
 
     typedef QSharedPointer<RPCMsg> Ptr;
 
-    /**
+    /*!
      * When this message arrives this function will be called upon the DHT.
      * The message should then call the appropriate DHT function (double dispatch)
-     * @param dh_table Pointer to DHT
+     * \param dh_table Pointer to DHT
      */
     virtual void apply(DHT *dh_table) = 0;
 
-    /**
+    /*!
      * Print the message for debugging purposes.
      */
     virtual void print() = 0;
 
-    /**
+    /*!
      * BEncode the message.
-     * @param arr Data array
+     * \param arr Data array
      */
     virtual void encode(QByteArray &arr) const = 0;
 
-    /**
+    /*!
      * Parse the message
-     * @param dict Data dictionary
-     * @throws bt::Error when something goes wrong
+     * \param dict Data dictionary
+     * \throws bt::Error when something goes wrong
      **/
     virtual void parse(bt::BDictNode *dict);
 
-    /// Set the origin (i.e. where the message came from)
+    //! Set the origin (i.e. where the message came from)
     void setOrigin(const net::Address &o)
     {
         origin = o;
     }
 
-    /// Get the origin
+    //! Get the origin
     const net::Address &getOrigin() const
     {
         return origin;
     }
 
-    /// Set the origin (i.e. where the message came from)
+    //! Set the origin (i.e. where the message came from)
     void setDestination(const net::Address &o)
     {
         origin = o;
     }
 
-    /// Get the origin
+    //! Get the origin
     const net::Address &getDestination() const
     {
         return origin;
     }
 
-    /// Get the MTID
+    //! Get the MTID
     const QByteArray &getMTID() const
     {
         return mtid;
     }
 
-    /// Set the MTID
+    //! Set the MTID
     void setMTID(const QByteArray &m)
     {
         mtid = m;
     }
 
-    /// Get the id of the sender
+    //! Get the id of the sender
     const Key &getID() const
     {
         return id;
     }
 
-    /// Get the type of the message
+    //! Get the type of the message
     Type getType() const
     {
         return type;
     }
 
-    /// Get the message it's method
+    //! Get the message it's method
     Method getMethod() const
     {
         return method;

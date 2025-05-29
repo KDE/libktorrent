@@ -13,7 +13,7 @@
 
 namespace utp
 {
-/**
+/*!
     Special wake up pipe for UTP polling
 */
 class PollPipe : public net::WakeUpPipe
@@ -24,13 +24,13 @@ public:
 
     typedef QSharedPointer<PollPipe> Ptr;
 
-    /// Is the pipe being polled
+    //! Is the pipe being polled
     bool polling() const
     {
         return poll_index >= 0;
     }
 
-    /// Prepare the poll
+    //! Prepare the poll
     void prepare(net::Poll *p, bt::Uint16 conn_id, PollPipe::Ptr self)
     {
         QMutexLocker lock(&mutex);
@@ -39,17 +39,17 @@ public:
             poll_index = p->add(qSharedPointerCast<PollClient>(self));
     }
 
-    /// Are we polling a connection
+    //! Are we polling a connection
     bool polling(bt::Uint16 conn) const
     {
         QMutexLocker lock(&mutex);
         return poll_index >= 0 && conn_ids[conn];
     }
 
-    /// Reset the poll_index
+    //! Reset the poll_index
     void reset() override;
 
-    /// Polling mode
+    //! Polling mode
     net::Poll::Mode pollingMode() const
     {
         return mode;

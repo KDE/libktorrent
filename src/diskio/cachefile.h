@@ -16,7 +16,7 @@ namespace bt
 {
 class PreallocationThread;
 
-/**
+/*!
  * Interface which classes must implement to be able to map something from a CacheFile
  * It will also be used to notify when things get unmapped or remapped
  */
@@ -27,14 +27,14 @@ public:
     {
     }
 
-    /**
+    /*!
      * When a CacheFile is closed, this will be called on all existing mappings.
      */
     virtual void unmapped() = 0;
 };
 
-/**
-    @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+    \author Joris Guisson <joris.guisson@gmail.com>
 
     Used by Single and MultiFileCache to write to disk.
 */
@@ -51,61 +51,61 @@ public:
         RW,
     };
 
-    /**
+    /*!
      * Open the file.
-     * @param path Path of the file
-     * @param size Max size of the file
-     * @throw Error when something goes wrong
+     * \param path Path of the file
+     * \param size Max size of the file
+     * \throw Error when something goes wrong
      */
     void open(const QString &path, Uint64 size);
 
-    /// Change the path of the file
+    //! Change the path of the file
     void changePath(const QString &npath);
 
-    /**
+    /*!
      * Map a part of the file into memory, will expand the file
      * if it is to small, but will not go past the limit set in open.
-     * @param thing The thing that wishes to map the mmapping
-     * @param off Offset into the file
-     * @param size Size of the region to map
-     * @param mode How the region will be mapped
-     * @return A ptr to the mmaped region, or 0 if something goes wrong
+     * \param thing The thing that wishes to map the mmapping
+     * \param off Offset into the file
+     * \param size Size of the region to map
+     * \param mode How the region will be mapped
+     * \return A ptr to the mmaped region, or 0 if something goes wrong
      */
     void *map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode);
 
-    /**
+    /*!
      * Unmap a previously mapped region.
-     * @param ptr Ptr to the region
+     * \param ptr Ptr to the region
      */
     void unmap(void *ptr);
 
-    /**
+    /*!
      * Close the file, everything will be unmapped.
      */
     void close();
 
-    /**
+    /*!
      * Read from the file.
-     * @param buf Buffer to store data
-     * @param size Size to read
-     * @param off Offset to read from in file
+     * \param buf Buffer to store data
+     * \param size Size to read
+     * \param off Offset to read from in file
      */
     void read(Uint8 *buf, Uint32 size, Uint64 off);
 
-    /**
+    /*!
      * Write to the file.
-     * @param buf Buffer to write
-     * @param size Size to read
-     * @param off Offset to read from in file
+     * \param buf Buffer to write
+     * \param size Size to read
+     * \param off Offset to read from in file
      */
     void write(const Uint8 *buf, Uint32 size, Uint64 off);
 
-    /**
+    /*!
      * Preallocate disk space
      */
     void preallocate(PreallocationThread *prealloc);
 
-    /// Get the number of bytes this cache file is taking up
+    //! Get the number of bytes this cache file is taking up
     Uint64 diskUsage();
 
     typedef QSharedPointer<CacheFile> Ptr;

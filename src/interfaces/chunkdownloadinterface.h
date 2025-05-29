@@ -11,9 +11,9 @@
 
 namespace bt
 {
-/**
- * @author Joris Guisson
- * @brief Interface for a ChunkDownload
+/*!
+ * \author Joris Guisson
+ * \brief Interface for a ChunkDownload
  *
  * This class provides the interface for a ChunkDownload object.
  */
@@ -24,17 +24,17 @@ public:
     virtual ~ChunkDownloadInterface();
 
     struct Stats {
-        /// The PeerID of the current downloader
+        //! The PeerID of the current downloader
         QString current_peer_id;
-        /// The current download speed
+        //! The current download speed
         bt::Uint32 download_speed;
-        /// The index of the chunk
+        //! The index of the chunk
         bt::Uint32 chunk_index;
-        /// The number of pieces of the chunk which have been downloaded
+        //! The number of pieces of the chunk which have been downloaded
         bt::Uint32 pieces_downloaded;
-        /// The total number of pieces of the chunk
+        //! The total number of pieces of the chunk
         bt::Uint32 total_pieces;
-        /// The number of assigned downloaders
+        //! The number of assigned downloaders
         bt::Uint32 num_downloaders;
     };
 

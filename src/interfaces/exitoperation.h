@@ -12,8 +12,8 @@
 
 namespace bt
 {
-/**
- * @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+ * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * Object to derive from for operations which need to be performed at exit.
  * The operation should emit the operationFinished signal when they are done.
@@ -28,7 +28,7 @@ public:
     ExitOperation();
     ~ExitOperation() override;
 
-    /// whether or not we can do a deleteLater on the job after it has finished.
+    //! whether or not we can do a deleteLater on the job after it has finished.
     virtual bool deleteAllowed() const
     {
         return true;
@@ -37,7 +37,7 @@ Q_SIGNALS:
     void operationFinished(ExitOperation *opt);
 };
 
-/**
+/*!
  * Exit operation which waits for a KIO::Job
  */
 class ExitJobOperation : public ExitOperation

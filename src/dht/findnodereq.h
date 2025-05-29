@@ -12,7 +12,7 @@
 
 namespace dht
 {
-/**
+/*!
  * FindNode request in the DHT protocol
  */
 class KTORRENT_EXPORT FindNodeReq : public RPCMsg

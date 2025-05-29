@@ -18,8 +18,8 @@ namespace net
 {
 class SocketMonitor;
 
-/**
-    @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+    \author Joris Guisson <joris.guisson@gmail.com>
 
     Base class for the 2 networking threads. Handles the socket groups.
 */
@@ -35,71 +35,71 @@ public:
     NetworkThread(SocketMonitor *sm);
     ~NetworkThread() override;
 
-    /**
+    /*!
      * Add a new group with a given limit
-     * @param gid The group ID (cannot be 0, 0 is the default group)
-     * @param limit The limit in bytes per sec
-     * @param assured_rate The assured rate for this group in bytes per second
+     * \param gid The group ID (cannot be 0, 0 is the default group)
+     * \param limit The limit in bytes per sec
+     * \param assured_rate The assured rate for this group in bytes per second
      */
     void addGroup(Uint32 gid, Uint32 limit, Uint32 assured_rate);
 
-    /**
+    /*!
      * Remove a group
-     * @param gid The group ID
+     * \param gid The group ID
      */
     void removeGroup(Uint32 gid);
 
-    /**
+    /*!
      * Set the limit for a group
-     * @param gid The group ID
-     * @param limit The limit
+     * \param gid The group ID
+     * \param limit The limit
      */
     void setGroupLimit(Uint32 gid, Uint32 limit);
 
-    /**
+    /*!
      * Set the assured rate for a group
-     * @param gid The group ID
-     * @param as The assured rate
+     * \param gid The group ID
+     * \param as The assured rate
      */
     void setGroupAssuredRate(Uint32 gid, Uint32 as);
 
-    /**
+    /*!
      * The main function of the thread
      */
     void run() override;
 
-    /**
+    /*!
      * Subclasses must implement this function
      */
     virtual void update() = 0;
 
-    /**
+    /*!
      * Do one SocketGroup
-     * @param g The group
-     * @param allowance The groups allowance
-     * @param now The current time
-     * @return true if the group can go again
+     * \param g The group
+     * \param allowance The groups allowance
+     * \param now The current time
+     * \return true if the group can go again
      */
     virtual bool doGroup(SocketGroup *g, Uint32 &allowance, bt::TimeStamp now) = 0;
 
-    /// Stop before the next update
+    //! Stop before the next update
     void stop()
     {
         running = false;
     }
 
-    /// Is the thread running
+    //! Is the thread running
     bool isRunning() const
     {
         return running;
     }
 
 protected:
-    /**
+    /*!
      * Go over all groups and do them
-     * @param num_ready The number of ready sockets
-     * @param now The current time
-     * @param limit The global limit in bytes per sec
+     * \param num_ready The number of ready sockets
+     * \param now The current time
+     * \param limit The global limit in bytes per sec
      */
     void doGroups(Uint32 num_ready, bt::TimeStamp now, bt::Uint32 limit);
 

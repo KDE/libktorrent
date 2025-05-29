@@ -25,16 +25,16 @@ public:
     {
     }
 
-    /**
+    /*!
      * Function which will be called whenever data has been read from the socket.
      * This data should be dealt with, otherwise it will be discarded.
-     * @param buf The buffer
-     * @param size The size of the buffer
+     * \param buf The buffer
+     * \param size The size of the buffer
      */
     virtual void onDataReady(bt::Uint8 *buf, bt::Uint32 size) = 0;
 };
 
-/**
+/*!
  * Socket which supports traffic shaping
  */
 class TrafficShapedSocket
@@ -45,76 +45,76 @@ public:
     TrafficShapedSocket(bool tcp, int ip_version);
     virtual ~TrafficShapedSocket();
 
-    /// Get the SocketDevice
+    //! Get the SocketDevice
     SocketDevice *socketDevice()
     {
         return sock;
     }
 
-    /// Get the SocketDevice (const vesion)
+    //! Get the SocketDevice (const vesion)
     const SocketDevice *socketDevice() const
     {
         return sock;
     }
 
-    /// Set the reader
+    //! Set the reader
     void setReader(SocketReader *r)
     {
         rdr = r;
     }
 
-    /**
+    /*!
      * Reads data from the socket and pass it to the SocketReader.
-     * @param max_bytes_to_read Maximum number of bytes to read (0 is no limit)
-     * @param now Current time stamp
-     * @return The number of bytes read
+     * \param max_bytes_to_read Maximum number of bytes to read (0 is no limit)
+     * \param now Current time stamp
+     * \return The number of bytes read
      */
     virtual Uint32 read(Uint32 max_bytes_to_read, bt::TimeStamp now);
 
-    /**
+    /*!
      * Writes data to the socket. Subclasses should implement the data source.
-     * @param max The maximum number of bytes to send over the socket (0 = no limit)
-     * @param now Current time stamp
-     * @return The number of bytes written
+     * \param max The maximum number of bytes to send over the socket (0 = no limit)
+     * \param now Current time stamp
+     * \return The number of bytes written
      */
     virtual Uint32 write(Uint32 max, bt::TimeStamp now) = 0;
 
-    /// See if the socket has something ready to write
+    //! See if the socket has something ready to write
     virtual bool bytesReadyToWrite() const = 0;
 
-    /// Get the current download rate
+    //! Get the current download rate
     int getDownloadRate() const;
 
-    /// Get the current download rate
+    //! Get the current download rate
     int getUploadRate() const;
 
-    /// Update up and down speed
+    //! Update up and down speed
     void updateSpeeds(bt::TimeStamp now);
 
-    /**
+    /*!
      * Set the group ID of the socket
-     * @param gid THe ID (0 is default group)
-     * @param upload Whether this is an upload group or a download group
+     * \param gid THe ID (0 is default group)
+     * \param upload Whether this is an upload group or a download group
      */
     void setGroupID(Uint32 gid, bool upload);
 
-    /// Get the download group ID
+    //! Get the download group ID
     Uint32 downloadGroupID() const
     {
         return down_gid;
     }
 
-    /// Get the upload group ID
+    //! Get the upload group ID
     Uint32 uploadGroupID() const
     {
         return up_gid;
     }
 
 protected:
-    /**
+    /*!
      * Post process received data. Default implementation does nothing.
-     * @param data The data
-     * @param size The size of the data
+     * \param data The data
+     * \param size The size of the data
      **/
     virtual void postProcess(bt::Uint8 *data, bt::Uint32 size);
 

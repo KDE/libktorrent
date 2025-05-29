@@ -13,8 +13,8 @@ namespace bt
 {
 class Log;
 
-/**
-    @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+    \author Joris Guisson <joris.guisson@gmail.com>
 
     Job which handles the rotation of the log file.
     This Job must do several move jobs which must be done sequentially.

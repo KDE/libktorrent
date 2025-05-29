@@ -17,8 +17,8 @@ class QUrl;
 
 namespace bt
 {
-/**
-    @author Joris Guisson
+/*!
+    \author Joris Guisson
 
     HTTP connection for webseeding. We do not use KIO here, because we want to be able to apply
     the maximum upload and download rate to webseeds;
@@ -30,63 +30,63 @@ public:
     HttpConnection();
     ~HttpConnection() override;
 
-    /// Get the last http response code
+    //! Get the last http response code
     int responseCode() const
     {
         return response_code;
     }
 
-    /// Is this connection redirected
+    //! Is this connection redirected
     bool isRedirected() const
     {
         return redirected;
     }
 
-    /// Get the redirected url
+    //! Get the redirected url
     QUrl redirectedUrl() const
     {
         return redirected_url;
     }
 
-    /**
+    /*!
      * Set the group ID's of the socket
-     * @param up Upload group id
-     * @param down Download group id
+     * \param up Upload group id
+     * \param down Download group id
      */
     void setGroupIDs(Uint32 up, Uint32 down);
 
-    /**
+    /*!
      * Connect to a webseed
-     * @param url Url of the webseeder
+     * \param url Url of the webseeder
      */
     void connectTo(const QUrl &url);
 
-    /**
+    /*!
      * Connect to a proxy.
-     * @param proxy The HTTP proxy to use (null means don't use any)
-     * @param proxy_port The port of the HTTP proxy
+     * \param proxy The HTTP proxy to use (null means don't use any)
+     * \param proxy_port The port of the HTTP proxy
      */
     void connectToProxy(const QString &proxy, Uint16 proxy_port);
 
-    /// Check if the connection is OK
+    //! Check if the connection is OK
     bool ok() const;
 
-    /// See if we are connected
+    //! See if we are connected
     bool connected() const;
 
-    /// Has the connection been closed
+    //! Has the connection been closed
     bool closed() const;
 
-    /// Ready to do another request
+    //! Ready to do another request
     bool ready() const;
 
-    /**
+    /*!
      * Do a HTTP GET request
-     * @param host The hostname of the webseed
-     * @param path The path of the file
-     * @param query The query string for the url
-     * @param start Offset into file
-     * @param len Length of data to download
+     * \param host The hostname of the webseed
+     * \param path The path of the file
+     * \param query The query string for the url
+     * \param start Offset into file
+     * \param len Length of data to download
      */
     bool get(const QString &host, const QString &path, const QString &query, bt::Uint64 start, bt::Uint64 len);
 
@@ -94,17 +94,17 @@ public:
     void connectFinished(bool succeeded) override;
     void dataSent() override;
 
-    /**
+    /*!
      * Get some part of the
-     * @param data Bytearray to copy the data into
-     * @return true if data was filled in
+     * \param data Bytearray to copy the data into
+     * \return true if data was filled in
      */
     bool getData(QByteArray &data);
 
-    /// Get the current download rate
+    //! Get the current download rate
     int getDownloadRate() const;
 
-    /// Get the status string
+    //! Get the status string
     const QString getStatusString() const;
 
 private:

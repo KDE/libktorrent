@@ -18,7 +18,7 @@ namespace net
 {
 class ReverseResolverThread;
 
-/**
+/*!
     Resolve an IP address into a hostname
     This should be threated as fire and forget objects, when using them asynchronously.
     The worker thread will delete them, when they are done.
@@ -30,29 +30,29 @@ public:
     ReverseResolver(QObject *parent = nullptr);
     ~ReverseResolver() override;
 
-    /**
+    /*!
         Resolve an ip address asynchronously, uses the worker thread
         Connecting to the resolved signal should be done with Qt::QueuedConnection, seeing
         that it will be emitted from the worker thread.
-        @param addr The address
+        \param addr The address
     */
     void resolveAsync(const net::Address &addr);
 
-    /**
+    /*!
         Resolve an ip address synchronously.
     */
     QString resolve(const net::Address &addr);
 
-    /**
+    /*!
         Run the actual resolve and emit the signal when done
     */
     void run();
 
-    /// Shutdown the worker thread
+    //! Shutdown the worker thread
     static void shutdown();
 
 Q_SIGNALS:
-    /// Emitted when the resolution is complete
+    //! Emitted when the resolution is complete
     void resolved(const QString &host);
 
 private:
@@ -67,13 +67,13 @@ public:
     ReverseResolverThread();
     ~ReverseResolverThread() override;
 
-    /// Add a ReverseResolver to the todo list
+    //! Add a ReverseResolver to the todo list
     void add(ReverseResolver *rr);
 
-    /// Run the thread
+    //! Run the thread
     void run() override;
 
-    /// Stop the thread
+    //! Stop the thread
     void stop();
 
 private:

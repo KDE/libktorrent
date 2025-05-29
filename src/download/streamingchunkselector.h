@@ -13,7 +13,7 @@
 
 namespace bt
 {
-/**
+/*!
     ChunkSelector which supports streaming mode.
     It has a range of chunks which are to be downloaded sequentially. And it has a cursor, to support jumping around
     in the stream.
@@ -31,21 +31,21 @@ public:
     void reinsert(bt::Uint32 chunk) override;
     bool selectRange(bt::Uint32 &from, bt::Uint32 &to, bt::Uint32 max_len) override;
 
-    /// Get the critical window size in chunks
+    //! Get the critical window size in chunks
     Uint32 criticialWindowSize() const
     {
         return critical_window_size;
     }
 
-    /**
+    /*!
         Set the range to be downloaded sequentially.
         The cursor will be initialized to the first of the range.
-        @param from Start of range
-        @param to End of range
+        \param from Start of range
+        \param to End of range
      */
     void setSequentialRange(bt::Uint32 from, bt::Uint32 to);
 
-    /// Set the cursor location
+    //! Set the cursor location
     void setCursor(bt::Uint32 chunk);
 
 private:

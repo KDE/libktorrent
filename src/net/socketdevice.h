@@ -37,20 +37,20 @@ public:
     virtual Uint32 bytesAvailable() const = 0;
     virtual bool setTOS(unsigned char type_of_service) = 0;
     virtual bool connectTo(const Address &addr) = 0;
-    /// See if a connectTo was succesfull in non blocking mode
+    //! See if a connectTo was succesfull in non blocking mode
     virtual bool connectSuccesFull() = 0;
     virtual const Address &getPeerName() const = 0;
     virtual Address getSockName() const = 0;
 
-    /// Get the used transport protocol for this SocketDevice
+    //! Get the used transport protocol for this SocketDevice
     bt::TransportProtocol transportProtocol() const
     {
         return transport_protocol;
     }
 
-    /**
+    /*!
      * Set the remote address, used by Socks to set the actual address.
-     * @param a The address
+     * \param a The address
      */
     void setRemoteAddress(const Address &a)
     {
@@ -58,7 +58,7 @@ public:
         remote_addr_override = true;
     }
 
-    /// reset the socket (i.e. close it and create a new one)
+    //! reset the socket (i.e. close it and create a new one)
     virtual void reset() = 0;
 
     State state() const
@@ -66,10 +66,10 @@ public:
         return m_state;
     }
 
-    /// Prepare for polling
+    //! Prepare for polling
     virtual void prepare(Poll *p, Poll::Mode mode) = 0;
 
-    /// Check if the socket is ready according to the poll
+    //! Check if the socket is ready according to the poll
     virtual bool ready(const Poll *p, Poll::Mode mode) const = 0;
 
 protected:

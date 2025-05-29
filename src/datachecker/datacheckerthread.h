@@ -15,8 +15,8 @@ namespace bt
 class Torrent;
 class DataChecker;
 
-/**
-    @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+    \author Joris Guisson <joris.guisson@gmail.com>
 
     Thread which runs the data check.
 */
@@ -36,19 +36,19 @@ public:
 
     void run() override;
 
-    /// Get the data checker
+    //! Get the data checker
     DataChecker *getDataChecker()
     {
         return dc;
     }
 
-    /// Are we still running
+    //! Are we still running
     bool isRunning() const
     {
         return running;
     }
 
-    /// Get the error (if any occurred)
+    //! Get the error (if any occurred)
     QString getError() const
     {
         return error;

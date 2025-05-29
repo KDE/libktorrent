@@ -13,8 +13,8 @@ namespace bt
 {
 class TorrentFileInterface;
 
-/**
- * @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+ * \author Joris Guisson <joris.guisson@gmail.com>
  * KIO::Job to move all the files of a torrent.
  */
 class MoveDataFilesJob : public Job, public Resource
@@ -22,24 +22,24 @@ class MoveDataFilesJob : public Job, public Resource
 public:
     MoveDataFilesJob();
 
-    /**
+    /*!
         Constructor with a file map.
-        @param fmap Map of files and their destinations
+        \param fmap Map of files and their destinations
     */
     MoveDataFilesJob(const QMap<TorrentFileInterface *, QString> &fmap);
     ~MoveDataFilesJob() override;
 
-    /**
+    /*!
      * Add a move to the todo list.
-     * @param src File to move
-     * @param dst Where to move it to
+     * \param src File to move
+     * \param dst Where to move it to
      */
     void addMove(const QString &src, const QString &dst);
 
     void start() override;
     void kill(bool quietly = true) override;
 
-    /// Get the file map (could be empty)
+    //! Get the file map (could be empty)
     const QMap<TorrentFileInterface *, QString> &fileMap() const
     {
         return file_map;

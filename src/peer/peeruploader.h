@@ -16,9 +16,9 @@ class ChunkManager;
 
 const Uint32 ALLOWED_FAST_SIZE = 8;
 
-/**
- * @author Joris Guisson
- * @brief Uploads pieces to a Peer
+/*!
+ * \author Joris Guisson
+ * \brief Uploads pieces to a Peer
  *
  * This class handles the uploading of pieces to a Peer. It keeps
  * track of a list of Request objects. All these Requests where sent
@@ -32,34 +32,34 @@ class PeerUploader
     Uint32 uploaded;
 
 public:
-    /**
+    /*!
      * Constructor. Set the Peer.
-     * @param peer The Peer
+     * \param peer The Peer
      */
     PeerUploader(Peer *peer);
     virtual ~PeerUploader();
 
-    /**
+    /*!
      * Add a Request to the list of Requests.
-     * @param r The Request
+     * \param r The Request
      */
     void addRequest(const Request &r);
 
-    /**
+    /*!
      * Remove a Request from the list of Requests.
-     * @param r The Request
+     * \param r The Request
      */
     void removeRequest(const Request &r);
 
-    /**
+    /*!
      * Update the PeerUploader. This will check if there are Request, and
      * will try to handle them.
-     * @param cman The ChunkManager
-     * @return The number of bytes uploaded
+     * \param cman The ChunkManager
+     * \return The number of bytes uploaded
      */
     Uint32 handleRequests(bt::ChunkManager &cman);
 
-    /// Get the number of requests
+    //! Get the number of requests
     Uint32 getNumRequests() const;
 
     void addUploadedBytes(Uint32 bytes)
@@ -67,7 +67,7 @@ public:
         uploaded += bytes;
     }
 
-    /**
+    /*!
      * Clear all pending requests.
      */
     void clearAllRequests();

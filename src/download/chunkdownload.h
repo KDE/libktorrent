@@ -72,143 +72,143 @@ private:
     QSet<Uint32> status;
 };
 
-/**
- * @author Joris Guisson
- * @brief Handles the download off one Chunk off a Peer
+/*!
+ * \author Joris Guisson
+ * \brief Handles the download off one Chunk off a Peer
  *
  * This class handles the download of one Chunk.
  */
 class KTORRENT_EXPORT ChunkDownload : public QObject, public ChunkDownloadInterface
 {
 public:
-    /**
+    /*!
      * Constructor, set the chunk and the PeerManager.
-     * @param chunk The Chunk
+     * \param chunk The Chunk
      */
     ChunkDownload(Chunk *chunk);
 
     ~ChunkDownload() override;
 
-    /// Get the chunk
+    //! Get the chunk
     Chunk *getChunk()
     {
         return chunk;
     }
 
-    /// Get the total number of pieces
+    //! Get the total number of pieces
     Uint32 getTotalPieces() const
     {
         return num;
     }
 
-    /// Get the number of pieces downloaded
+    //! Get the number of pieces downloaded
     Uint32 getPiecesDownloaded() const
     {
         return num_downloaded;
     }
 
-    /// Get the number of bytes downloaded.
+    //! Get the number of bytes downloaded.
     Uint32 bytesDownloaded() const;
 
-    /// Get the index of the chunk
+    //! Get the index of the chunk
     Uint32 getChunkIndex() const;
 
-    /// Get the PeerID of the current peer
+    //! Get the PeerID of the current peer
     QString getPieceDownloaderName() const;
 
-    /// Get the download speed
+    //! Get the download speed
     Uint32 getDownloadSpeed() const;
 
-    /// Get download stats
+    //! Get download stats
     void getStats(Stats &s) override;
 
-    /// See if a chunkdownload is idle (i.e. has no downloaders)
+    //! See if a chunkdownload is idle (i.e. has no downloaders)
     bool isIdle() const
     {
         return pdown.count() == 0;
     }
 
-    /**
+    /*!
      * A Piece has arived.
-     * @param p The Piece
-     * @param ok Whether or not the piece was needed
-     * @return true If Chunk is complete
+     * \param p The Piece
+     * \param ok Whether or not the piece was needed
+     * \return true If Chunk is complete
      */
     bool piece(const Piece &p, bool &ok);
 
-    /**
+    /*!
      * Assign the downloader to download from.
-     * @param pd The downloader
-     * @return true if the peer was asigned, false if not
+     * \param pd The downloader
+     * \return true if the peer was asigned, false if not
      */
     bool assign(PieceDownloader *pd);
 
-    /**
+    /*!
      * Release a downloader
-     * @param pd The downloader
+     * \param pd The downloader
      */
     void release(PieceDownloader *pd);
 
-    /**
+    /*!
      * A PieceDownloader has been killed. We need to remove it.
-     * @param pd The PieceDownloader
+     * \param pd The PieceDownloader
      */
     void killed(PieceDownloader *pd);
 
-    /**
+    /*!
      * Save to a File
-     * @param file The File
+     * \param file The File
      */
     void save(File &file);
 
-    /**
+    /*!
      * Load from a File
-     * @param file The File
-     * @param hdr Header for the chunk
-     * @param update_hash Whether or not to update the hash
+     * \param file The File
+     * \param hdr Header for the chunk
+     * \param update_hash Whether or not to update the hash
      */
     bool load(File &file, ChunkDownloadHeader &hdr, bool update_hash = true);
 
-    /**
+    /*!
      * Cancel all requests.
      */
     void cancelAll();
 
-    /**
+    /*!
      * When a Chunk is downloaded, this function checks if all
      * pieces are delivered by the same peer and if so returns it.
-     * @return The PieceDownloader or 0 if there is no only peer
+     * \return The PieceDownloader or 0 if there is no only peer
      */
     PieceDownloader *getOnlyDownloader();
 
-    /// See if a PieceDownloader is assigned to this chunk
+    //! See if a PieceDownloader is assigned to this chunk
     bool containsPeer(PieceDownloader *pd)
     {
         return pdown.contains(pd);
     }
 
-    /// See if the download is choked (i.e. all downloaders are choked)
+    //! See if the download is choked (i.e. all downloaders are choked)
     bool isChoked() const;
 
-    /// Release all PD's and clear the requested chunks
+    //! Release all PD's and clear the requested chunks
     void releaseAllPDs();
 
-    /// Send requests to peers
+    //! Send requests to peers
     void update();
 
-    /// See if this CD hasn't been active in the last update
+    //! See if this CD hasn't been active in the last update
     bool needsToBeUpdated() const
     {
         return timer.getElapsedSinceUpdate() > 60 * 1000;
     }
 
-    /// Get the SHA1 hash of the downloaded chunk
+    //! Get the SHA1 hash of the downloaded chunk
     SHA1Hash getHash() const
     {
         return hash_gen.get();
     }
 
-    /// Get the number of downloaders
+    //! Get the number of downloaders
     Uint32 getNumDownloaders() const
     {
         return pdown.count();

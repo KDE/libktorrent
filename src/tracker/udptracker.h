@@ -21,9 +21,9 @@ namespace bt
 {
 class UDPTrackerSocket;
 
-/**
- * @author Joris Guisson
- * @brief Communicates with an UDP tracker
+/*!
+ * \author Joris Guisson
+ * \brief Communicates with an UDP tracker
  *
  * This class is able to communicate with an UDP tracker.
  * This is an implementation of the protocol described in

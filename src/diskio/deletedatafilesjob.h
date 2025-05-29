@@ -14,37 +14,37 @@
 
 namespace bt
 {
-/**
- * @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+ * \author Joris Guisson <joris.guisson@gmail.com>
  * KIO::Job to delete all the files of a torrent.
  */
 class DeleteDataFilesJob : public Job
 {
     Q_OBJECT
 public:
-    /**
-     * @param base Base directory, the data files are in
+    /*!
+     * \param base Base directory, the data files are in
      */
     DeleteDataFilesJob(const QString &base);
     ~DeleteDataFilesJob() override;
 
-    /**
+    /*!
      * Add a file to delete
-     * @param file File
+     * \param file File
      */
     void addFile(const QString &file);
 
-    /**
+    /*!
      * Check all directories in fpath and delete them if they are empty.
      * The base path passed in the constructor, will be prepended to fpath.
-     * @param fpath The file path
+     * \param fpath The file path
      */
     void addEmptyDirectoryCheck(const QString &fpath);
 
-    /// Start the job
+    //! Start the job
     void start() override;
 
-    /// Kill the job
+    //! Kill the job
     void kill(bool quietly) override;
 
 private Q_SLOTS:

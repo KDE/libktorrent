@@ -12,9 +12,9 @@ class QString;
 
 namespace bt
 {
-/**
- * @author Joris Guisson
- * @brief Interface for classes who which to receive which log messages are printed
+/*!
+ * \author Joris Guisson
+ * \brief Interface for classes who which to receive which log messages are printed
  *
  * This class is an interface for all classes which want to know,
  * what is written to the log.
@@ -25,10 +25,10 @@ public:
     LogMonitorInterface();
     virtual ~LogMonitorInterface();
 
-    /**
+    /*!
      * A line was written to the log file.
-     * @param line The line
-     * @param filter The filter of the Log object. See Log::setFilter.
+     * \param line The line
+     * \param filter The filter of the Log object. See Log::setFilter.
      */
     virtual void message(const QString &line, unsigned int filter) = 0;
 };

@@ -14,8 +14,8 @@ namespace dht
 class Node;
 class RPCServer;
 
-/**
- * @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+ * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * Task to do a node lookup.
  */

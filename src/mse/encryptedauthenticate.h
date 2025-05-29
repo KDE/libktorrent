@@ -17,8 +17,8 @@ class RC4Encryptor;
 
 const Uint32 MAX_EA_BUF_SIZE = 622 + 512;
 
-/**
- * @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+ * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * Encrypted version of the Authenticate class
  */

@@ -15,7 +15,7 @@
 
 namespace bt
 {
-/**
+/*!
     Keeps track of all logging system ID's
 */
 class KTORRENT_EXPORT LogSystemManager : public QObject
@@ -27,10 +27,10 @@ class KTORRENT_EXPORT LogSystemManager : public QObject
 public:
     ~LogSystemManager() override;
 
-    /// Register a system
+    //! Register a system
     void registerSystem(const QString &name, Uint32 id);
 
-    /// Unregister a system
+    //! Unregister a system
     void unregisterSystem(const QString &name);
 
     typedef QMap<QString, Uint32>::iterator iterator;
@@ -56,7 +56,7 @@ public:
 
     static LogSystemManager &instance();
 
-    /// Get the ID of a system
+    //! Get the ID of a system
     Uint32 systemID(const QString &name);
 
 Q_SIGNALS:

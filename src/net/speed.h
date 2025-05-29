@@ -12,8 +12,8 @@
 
 namespace net
 {
-/**
-    @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+    \author Joris Guisson <joris.guisson@gmail.com>
 
     Measures the download and upload speed.
 */
