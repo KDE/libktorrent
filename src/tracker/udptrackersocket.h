@@ -23,8 +23,8 @@ class Address;
 
 namespace bt
 {
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Class which handles communication with one or more UDP trackers.
  */
@@ -42,84 +42,84 @@ public:
         ERROR = 3,
     };
 
-    /**
+    /*!
      * Send a connect message. As a response to this, the connectReceived
      * signal will be emitted, classes recieving this signal should check if
      * the transaction_id is the same.
-     * @param tid The transaction_id
-     * @param addr The address to send to
+     * \param tid The transaction_id
+     * \param addr The address to send to
      */
     void sendConnect(Int32 tid, const net::Address &addr);
 
-    /**
+    /*!
      * Send an announce message. As a response to this, the announceReceived
      * signal will be emitted, classes recieving this signal should check if
      * the transaction_id is the same.
-     * @param tid The transaction_id
-     * @param data The data to send (connect input structure, in UDP Tracker specifaction)
-     * @param addr The address to send to
+     * \param tid The transaction_id
+     * \param data The data to send (connect input structure, in UDP Tracker specifaction)
+     * \param addr The address to send to
      */
     void sendAnnounce(Int32 tid, const Uint8 *data, const net::Address &addr);
 
-    /**
+    /*!
      * Send a scrape message. As a response to this, the scrapeReceived
      * signal will be emitted, classes recieving this signal should check if
      * the transaction_id is the same.
-     * @param tid The transaction_id
-     * @param data The data to send (connect input structure, in UDP Tracker specifaction)
-     * @param addr The address to send to
+     * \param tid The transaction_id
+     * \param data The data to send (connect input structure, in UDP Tracker specifaction)
+     * \param addr The address to send to
      */
     void sendScrape(Int32 tid, const Uint8 *data, const net::Address &addr);
 
-    /**
+    /*!
      * If a transaction times out, this should be used to cancel it.
-     * @param tid
+     * \param tid
      */
     void cancelTransaction(Int32 tid);
 
-    /**
+    /*!
      * Compute a free transaction_id.
-     * @return A free transaction_id
+     * \return A free transaction_id
      */
     Int32 newTransactionID();
 
-    /**
+    /*!
      * Set the port ot use.
-     * @param p The port
+     * \param p The port
      */
     static void setPort(Uint16 p);
 
-    /// Get the port in use.
+    //! Get the port in use.
     static Uint16 getPort();
 
 Q_SIGNALS:
-    /**
+    /*!
      * Emitted when a connect message is received.
-     * @param tid The transaction_id
-     * @param connection_id The connection_id returned
+     * \param tid The transaction_id
+     * \param connection_id The connection_id returned
      */
     void connectReceived(Int32 tid, Int64 connection_id);
 
-    /**
+    /*!
      * Emitted when an announce message is received.
-     * @param tid The transaction_id
-     * @param buf The data
-     * @param size The data size
+     * \param tid The transaction_id
+     * \param buf The data
+     * \param size The data size
      */
     void announceReceived(Int32 tid, const Uint8 *buf, Uint32 size);
 
-    /**
+    /*!
      * Emitted when a scrape message is received.
-     * @param tid The transaction_id
-     * @param buf The data
-     * @param size The data size
+     * \param tid The transaction_id
+     * \param buf The data
+     * \param size The data size
      */
     void scrapeReceived(Int32 tid, const Uint8 *buf, Uint32 size);
 
-    /**
+    /*!
      * Signal emitted, when an error occurs during a transaction.
-     * @param tid The transaction_id
-     * @param error_string Potential error string
+     * \param tid The transaction_id
+     * \param error_string Potential error string
      */
     void error(Int32 tid, const QString &error_string);
 

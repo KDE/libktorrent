@@ -23,8 +23,8 @@ class Torrent;
 class TorrentControl;
 class PeerSource;
 
-/**
- * @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+ * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * This class manages all PeerSources.
  */
@@ -37,21 +37,21 @@ public:
     PeerSourceManager(TorrentControl *tor, PeerManager *pman);
     ~PeerSourceManager() override;
 
-    /**
+    /*!
      * Add a PeerSource, the difference between PeerSource and Tracker
      * is that only one Tracker can be used at the same time,
      * PeerSource can always be used.
-     * @param ps The PeerSource
+     * \param ps The PeerSource
      */
     void addPeerSource(PeerSource *ps);
 
-    /**
+    /*!
      * Remove a Tracker or PeerSource.
-     * @param ps
+     * \param ps
      */
     void removePeerSource(PeerSource *ps);
 
-    /**
+    /*!
      * See if the PeerSourceManager has been started
      */
     bool isStarted() const
@@ -64,11 +64,11 @@ public:
     void completed() override;
     void manualUpdate() override;
 
-    /// Adds DHT as PeerSource for this torrent
+    //! Adds DHT as PeerSource for this torrent
     void addDHT();
-    /// Removes DHT from PeerSourceManager for this torrent.
+    //! Removes DHT from PeerSourceManager for this torrent.
     void removeDHT();
-    /// Checks if DHT is enabled
+    //! Checks if DHT is enabled
     bool dhtStarted();
 };
 

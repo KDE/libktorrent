@@ -12,7 +12,7 @@
 #include <QTemporaryDir>
 #include <util/constants.h>
 
-/**
+/*!
     Utility class for tests, to create dummy torrents (and their files)
     It will create the torrent and the data in a temporary dir with the following layout:
 
@@ -31,33 +31,33 @@ public:
     DummyTorrentCreator();
     virtual ~DummyTorrentCreator();
 
-    /// Set the tracker URL's (by default http://localhost:5000/announce is used)
+    //! Set the tracker URL's (by default http://localhost:5000/announce is used)
     void setTrackers(const QStringList &urls)
     {
         trackers = urls;
     }
 
-    /**
+    /*!
         Create a single file torrent
-        @param size The size of the torrent
-        @param filename The name of the file
+        \param size The size of the torrent
+        \param filename The name of the file
     */
     bool createSingleFileTorrent(bt::Uint64 size, const QString &filename);
 
-    /**
+    /*!
         Create a multi file torrent
-        @param files Map of files in the torrent, and their respective sizes
-        @param name The name of the torrent (will be used for the toplevel directory name)
+        \param files Map of files in the torrent, and their respective sizes
+        \param name The name of the torrent (will be used for the toplevel directory name)
     */
     bool createMultiFileTorrent(const QMap<QString, bt::Uint64> &files, const QString &name);
 
-    /// Get the full path of the torrent file
+    //! Get the full path of the torrent file
     QString torrentPath() const;
 
-    /// Get the full path of the single data file or toplevel directory (in case of multifile torrents)
+    //! Get the full path of the single data file or toplevel directory (in case of multifile torrents)
     QString dataPath() const;
 
-    /// Get the temp path used
+    //! Get the temp path used
     QString tempPath() const
     {
         return tmpdir.path();

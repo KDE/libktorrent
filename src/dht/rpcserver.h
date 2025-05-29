@@ -23,8 +23,8 @@ namespace dht
 class Key;
 class DHT;
 
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Class to handle incoming and outgoing RPC messages.
  */
@@ -35,41 +35,41 @@ public:
     RPCServer(DHT *dh_table, Uint16 port, QObject *parent = nullptr);
     ~RPCServer() override;
 
-    /// Start the server
+    //! Start the server
     void start();
 
-    /// Stop the server
+    //! Stop the server
     void stop();
 
-    /**
+    /*!
      * Do a RPC call.
-     * @param msg The message to send
-     * @return The call object
+     * \param msg The message to send
+     * \return The call object
      */
     RPCCall *doCall(RPCMsg::Ptr msg) override;
 
-    /**
+    /*!
      * Send a message, this only sends the message, it does not keep any call
      * information. This should be used for replies.
-     * @param msg The message to send
+     * \param msg The message to send
      */
     void sendMsg(RPCMsg::Ptr msg);
 
-    /**
+    /*!
      * Send a message, this only sends the message, it does not keep any call
      * information. This should be used for replies.
-     * @param msg The message to send
+     * \param msg The message to send
      */
     void sendMsg(const RPCMsg &msg);
 
-    /**
+    /*!
      * Ping a node, we don't care about the MTID.
-     * @param our_id The ID of our node
-     * @param addr The address
+     * \param our_id The ID of our node
+     * \param addr The address
      */
     void ping(const dht::Key &our_id, const net::Address &addr);
 
-    /// Get the number of active calls
+    //! Get the number of active calls
     Uint32 getNumActiveRPCCalls() const;
 
 private Q_SLOTS:

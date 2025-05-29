@@ -16,7 +16,7 @@ class BDictNode;
 class Peer;
 class Torrent;
 
-/**
+/*!
     Handles ut_metadata extension
 */
 class KTORRENT_EXPORT UTMetaData : public PeerProtocolExtension
@@ -25,12 +25,12 @@ public:
     UTMetaData(const Torrent &tor, bt::Uint32 id, Peer *peer);
     ~UTMetaData() override;
 
-    /**
+    /*!
         Handle a metadata packet
     */
     void handlePacket(const bt::Uint8 *packet, Uint32 size) override;
 
-    /**
+    /*!
         Set the reported metadata size
     */
     void setReportedMetadataSize(Uint32 metadata_size);

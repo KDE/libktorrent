@@ -13,7 +13,7 @@
 
 namespace bt
 {
-/**
+/*!
     MagnetLink class
     magnet links have the format:
     magnet:?xt=urn:btih:info_hash&dn=name&tr=tracker-url[,tracker-url...]
@@ -33,49 +33,49 @@ public:
     MagnetLink(const QString &mlink);
     ~MagnetLink();
 
-    /// Assignment operator
+    //! Assignment operator
     MagnetLink &operator=(const MagnetLink &mlink);
 
-    /// Equality operator
+    //! Equality operator
     bool operator==(const MagnetLink &mlink) const;
 
-    /// Is this a valid magnet link
+    //! Is this a valid magnet link
     bool isValid() const
     {
         return !magnet_string.isEmpty();
     }
 
-    /// Convert it to a string
+    //! Convert it to a string
     QString toString() const
     {
         return magnet_string;
     }
 
-    /// Get the display name (can be empty)
+    //! Get the display name (can be empty)
     QString displayName() const
     {
         return name;
     }
 
-    /// Get the path of addressed file(s) inside the torrent
+    //! Get the path of addressed file(s) inside the torrent
     QString subPath() const
     {
         return path;
     }
 
-    /// Get the torrent URL (can be empty)
+    //! Get the torrent URL (can be empty)
     QString torrent() const
     {
         return torrent_url;
     }
 
-    /// Get all possible trackers (can be empty)
+    //! Get all possible trackers (can be empty)
     QList<QUrl> trackers() const
     {
         return tracker_urls;
     }
 
-    /// Get the info hash
+    //! Get the info hash
     const SHA1Hash &infoHash() const
     {
         return info_hash;

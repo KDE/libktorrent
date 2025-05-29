@@ -18,9 +18,9 @@ class Socks;
 
 namespace bt
 {
-/**
- * @author Joris Guisson
- * @brief Authenicate a peer
+/*!
+ * \author Joris Guisson
+ * \brief Authenicate a peer
  *
  * After we connect to a peer,
  * we need to authenticate the peer. This class handles this.
@@ -29,13 +29,13 @@ class Authenticate : public AuthenticateBase
 {
     Q_OBJECT
 public:
-    /**
+    /*!
      * Connect to a remote host first and authenicate it.
-     * @param addr Address to connect to
-     * @param proto Transport protocol to use
-     * @param info_hash Info hash
-     * @param peer_id Peer ID
-     * @param pcon PeerConnector
+     * \param addr Address to connect to
+     * \param proto Transport protocol to use
+     * \param info_hash Info hash
+     * \param peer_id Peer ID
+     * \param pcon PeerConnector
      */
     Authenticate(const net::Address &addr, TransportProtocol proto, const SHA1Hash &info_hash, const PeerID &peer_id, PeerConnector::WPtr pcon);
 
@@ -46,14 +46,14 @@ public:
         return peer_id;
     }
 
-    /// See if the authentication is succesfull
+    //! See if the authentication is succesfull
     bool isSuccesfull() const
     {
         return succes;
     }
 
 public Q_SLOTS:
-    /// Stop the authentication
+    //! Stop the authentication
     void stop();
 
 protected Q_SLOTS:

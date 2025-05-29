@@ -16,8 +16,8 @@ namespace bt
 class SHA1Hash;
 class PeerID;
 
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Base class for authentication classes. This class just groups
  * some common stuff between Authenticate and ServerAuthentciate.
@@ -32,65 +32,65 @@ public:
     AuthenticateBase(mse::EncryptedPacketSocket::Ptr s);
     ~AuthenticateBase() override;
 
-    /// Set whether this is a local peer
+    //! Set whether this is a local peer
     void setLocal(bool loc)
     {
         local = loc;
     }
 
-    /// Is this a local peer
+    //! Is this a local peer
     bool isLocal() const
     {
         return local;
     }
 
-    /// See if the authentication is finished
+    //! See if the authentication is finished
     bool isFinished() const
     {
         return finished;
     }
 
-    /// Flags indicating which extensions are supported
+    //! Flags indicating which extensions are supported
     Uint32 supportedExtensions() const
     {
         return ext_support;
     }
 
-    /// get the socket
+    //! get the socket
     mse::EncryptedPacketSocket::Ptr getSocket() const
     {
         return sock;
     }
 
-    /// We can read from the socket
+    //! We can read from the socket
     virtual void onReadyRead();
 
-    /// We can write to the socket (used to detect a succesfull connection)
+    //! We can write to the socket (used to detect a succesfull connection)
     virtual void onReadyWrite();
 
 protected:
-    /**
+    /*!
      * Send a handshake
-     * @param info_hash The info_hash to include
-     * @param our_peer_id Our PeerID
+     * \param info_hash The info_hash to include
+     * \param our_peer_id Our PeerID
      */
     void sendHandshake(const SHA1Hash &info_hash, const PeerID &our_peer_id);
 
-    /**
+    /*!
      * Authentication finished.
-     * @param succes Succes or not
+     * \param succes Succes or not
      */
     virtual void onFinish(bool succes) = 0;
 
-    /**
+    /*!
      * The other side send a handshake. The first 20 bytes
      * of the handshake will already have been checked.
-     * @param full Indicates whether we have a full handshake
+     * \param full Indicates whether we have a full handshake
      *  if this is not full, we should just send our own
      */
     virtual void handshakeReceived(bool full) = 0;
 
-    /**
+    /*!
      * Fill in the handshake in a buffer.
      */
     void makeHandshake(bt::Uint8 *buf, const SHA1Hash &info_hash, const PeerID &our_peer_id);

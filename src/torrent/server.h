@@ -16,8 +16,8 @@ namespace bt
 {
 class PeerManager;
 
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Class which listens for incoming connections.
  * Handles authentication and then hands of the new

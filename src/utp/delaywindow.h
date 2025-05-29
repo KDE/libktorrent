@@ -22,7 +22,7 @@ public:
     DelayWindow();
     virtual ~DelayWindow();
 
-    /// Update the window with a new packet, returns the base delay
+    //! Update the window with a new packet, returns the base delay
     bt::Uint32 update(const Header *hdr, bt::TimeStamp receive_time);
 
 private:

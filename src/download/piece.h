@@ -10,8 +10,8 @@
 
 namespace bt
 {
-/**
-@author Joris Guisson
+/*!
+\author Joris Guisson
 */
 class Piece : public Request
 {

@@ -29,7 +29,7 @@ namespace utp
 {
 class UTPServerThread;
 
-/**
+/*!
     Utility class used by UTPServer to make sure that ServerInterface::newConnection is called
     from the main thread and not from UTP thread (which is dangerous).
 */
@@ -41,7 +41,7 @@ public:
     ~MainThreadCall() override;
 
 public Q_SLOTS:
-    /**
+    /*!
         Calls UTPServer::handlePendingConnections, this should be executed in
         the main thread.
     */

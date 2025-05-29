@@ -19,7 +19,7 @@ namespace bt
 {
 class BufferPool;
 
-/**
+/*!
  * Buffer object, extends shared_ptr with a size and capacity property.
  **/
 class KTORRENT_EXPORT Buffer
@@ -31,25 +31,25 @@ public:
     Buffer(Data data, bt::Uint32 fill, bt::Uint32 cap, QWeakPointer<BufferPool> pool);
     virtual ~Buffer();
 
-    /// Get the buffers capacity
+    //! Get the buffers capacity
     bt::Uint32 capacity() const
     {
         return cap;
     }
 
-    /// Get the current size
+    //! Get the current size
     bt::Uint32 size() const
     {
         return fill;
     }
 
-    /// Set the current size
+    //! Set the current size
     void setSize(bt::Uint32 s)
     {
         fill = s;
     }
 
-    /// Get a pointer to the data
+    //! Get a pointer to the data
     bt::Uint8 *get()
     {
         return data.get();
@@ -62,7 +62,7 @@ private:
     QWeakPointer<BufferPool> pool;
 };
 
-/**
+/*!
  * Keeps track of a pool of buffers.
  **/
 class KTORRENT_EXPORT BufferPool
@@ -71,31 +71,31 @@ public:
     BufferPool();
     virtual ~BufferPool();
 
-    /**
+    /*!
      * Set the weak pointer to the buffer pool itself.
-     * @param wp The weak pointer
+     * \param wp The weak pointer
      * */
     void setWeakPointer(QWeakPointer<BufferPool> wp)
     {
         self = wp;
     }
 
-    /**
+    /*!
      * Get a buffer for a given size.
      * The buffer returned might be bigger then the requested size.
-     * @param min_size The minimum size it should be
-     * @return A new Buffer
+     * \param min_size The minimum size it should be
+     * \return A new Buffer
      **/
     Buffer::Ptr get(bt::Uint32 min_size);
 
-    /**
+    /*!
      * Release a buffer, puts it into the free list.
-     * @param data The Buffer::Data
-     * @param size The size of the data object
+     * \param data The Buffer::Data
+     * \param size The size of the data object
      **/
     void release(Buffer::Data data, bt::Uint32 size);
 
-    /**
+    /*!
      * Clear the pool.
      **/
     void clear();

@@ -11,9 +11,9 @@
 
 namespace bt
 {
-/**
- * @author Joris Guisson
- * @brief Simple implementation of a BitSet
+/*!
+ * \author Joris Guisson
+ * \brief Simple implementation of a BitSet
  *
  * Simple implementation of a BitSet, can only turn on and off bits.
  * BitSet's are used to indicate which chunks we have or not.
@@ -25,46 +25,46 @@ class KTORRENT_EXPORT BitSet
     Uint32 num_on;
 
 public:
-    /**
+    /*!
      * Constructor.
-     * @param num_bits The number of bits
+     * \param num_bits The number of bits
      */
     BitSet(Uint32 num_bits = 8);
 
-    /**
+    /*!
      * Manually set data.
-     * @param data The data
-     * @param num_bits The number of bits
+     * \param data The data
+     * \param num_bits The number of bits
      */
     BitSet(const Uint8 *data, Uint32 num_bits);
 
-    /**
+    /*!
      * Copy constructor.
-     * @param bs BitSet to copy
+     * \param bs BitSet to copy
      */
     BitSet(const BitSet &bs);
     virtual ~BitSet();
 
-    /// See if the BitSet is null
+    //! See if the BitSet is null
     bool isNull() const
     {
         return num_bits == 0;
     }
 
-    /**
+    /*!
      * Get the value of a bit, false means 0, true 1.
-     * @param i Index of Bit
+     * \param i Index of Bit
      */
     bool get(Uint32 i) const;
 
-    /**
+    /*!
      * Set the value of a bit, false means 0, true 1.
-     * @param i Index of Bit
-     * @param on False means 0, true 1
+     * \param i Index of Bit
+     * \param on False means 0, true 1
      */
     void set(Uint32 i, bool on);
 
-    /// Set all bits on or off
+    //! Set all bits on or off
     void setAll(bool on);
 
     Uint32 getNumBytes() const
@@ -84,72 +84,72 @@ public:
         return data;
     }
 
-    /// Get the number of on bits
+    //! Get the number of on bits
     Uint32 numOnBits() const
     {
         return num_on;
     }
 
-    /**
+    /*!
      * Set all bits to 0
      */
     void clear();
 
-    /**
+    /*!
      * invert this BitSet
      */
     void invert();
 
-    /**
+    /*!
      * or this BitSet with another.
-     * @param other The other BitSet
+     * \param other The other BitSet
      */
     void orBitSet(const BitSet &other);
 
-    /**
+    /*!
      * and this BitSet with another.
-     * @param other The other BitSet
+     * \param other The other BitSet
      */
     void andBitSet(const BitSet &other);
 
-    /**
+    /*!
      * see if this BitSet includes another.
-     * @param other The other BitSet
+     * \param other The other BitSet
      */
     bool includesBitSet(const BitSet &other) const;
 
-    /**
+    /*!
      * Assignment operator.
-     * @param bs BitSet to copy
-     * @return *this
+     * \param bs BitSet to copy
+     * \return *this
      */
     BitSet &operator=(const BitSet &bs);
 
-    /**
+    /*!
      * Subtraction assignment operator.
-     * @param bs BitSet to copy and subtract from this one
-     * @return *this
+     * \param bs BitSet to copy and subtract from this one
+     * \return *this
      */
     BitSet &operator-=(const BitSet &bs);
 
-    /**
+    /*!
      * Subtraction operator.
-     * @param bs BitSet to subtract from this one
-     * @return difference
+     * \param bs BitSet to subtract from this one
+     * \return difference
      */
     BitSet operator-(const BitSet &bs) const;
 
-    /// Check if all bit are set to 1
+    //! Check if all bit are set to 1
     bool allOn() const;
 
-    /**
+    /*!
      * Check for equality of bitsets
-     * @param bs BitSet to compare
-     * @return true if equal
+     * \param bs BitSet to compare
+     * \return true if equal
      */
     bool operator==(const BitSet &bs) const;
 
-    /**
+    /*!
      * Opposite of operator ==
      */
     bool operator!=(const BitSet &bs) const
@@ -157,7 +157,7 @@ public:
         return !operator==(bs);
     }
 
-    /**
+    /*!
      * Update the number of on bits
      */
     void updateNumOnBits();

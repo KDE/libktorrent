@@ -11,8 +11,8 @@
 
 namespace bt
 {
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Template array classes, makes creating dynamic buffers easier
  * and safer.
@@ -54,15 +54,15 @@ public:
         return data;
     }
 
-    /// Get the number of elements in the array
+    //! Get the number of elements in the array
     Uint32 size() const
     {
         return num;
     }
 
-    /**
+    /*!
      * Fill the array with a value
-     * @param val The value
+     * \param val The value
      */
     void fill(T val)
     {

@@ -12,8 +12,8 @@
 #include <util/constants.h>
 namespace bt
 {
-/**
-@author Joris Guisson
+/*!
+\author Joris Guisson
 */
 class KTORRENT_EXPORT Value
 {

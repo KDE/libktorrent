@@ -21,8 +21,8 @@ namespace bt
 {
 class UPnPRouter;
 
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Socket used to discover UPnP devices. This class will keep track
  * of all discovered devices.
@@ -34,23 +34,23 @@ public:
     UPnPMCastSocket(bool verbose = false);
     ~UPnPMCastSocket() override;
 
-    /// Get the number of routers discovered
+    //! Get the number of routers discovered
     Uint32 getNumDevicesDiscovered() const;
 
-    /// Find a router using it's server name
+    //! Find a router using it's server name
     UPnPRouter *findDevice(const QString &name);
 
-    /// Save all routers to a file (for convenience at startup)
+    //! Save all routers to a file (for convenience at startup)
     void saveRouters(const QString &file);
 
-    /// Load all routers from a file
+    //! Load all routers from a file
     void loadRouters(const QString &file);
 
-    /// Set verbose mode
+    //! Set verbose mode
     void setVerbose(bool v);
 
 public:
-    /**
+    /*!
      * Try to discover a UPnP device on the network.
      * A signal will be emitted when a device is found.
      */
@@ -62,9 +62,9 @@ private:
     void onXmlFileDownloaded(UPnPRouter *r, bool success);
 
 Q_SIGNALS:
-    /**
+    /*!
      * Emitted when a router or internet gateway device is detected.
-     * @param router The router
+     * \param router The router
      */
     void discovered(bt::UPnPRouter *router);
 

@@ -11,7 +11,7 @@
 
 namespace dht
 {
-/**
+/*!
  * Ping request message in the DHT protocol
  */
 class KTORRENT_EXPORT PingReq : public RPCMsg

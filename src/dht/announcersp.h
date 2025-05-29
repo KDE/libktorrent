@@ -11,7 +11,7 @@
 
 namespace dht
 {
-/**
+/*!
  * Announce response message
  */
 class KTORRENT_EXPORT AnnounceRsp : public RPCMsg

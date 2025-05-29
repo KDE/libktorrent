@@ -21,8 +21,8 @@ namespace dht
 class DHTBase;
 class AnnounceTask;
 
-/**
-    @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+    \author Joris Guisson <joris.guisson@gmail.com>
 */
 class KTORRENT_EXPORT DHTPeerSource : public bt::PeerSource
 {

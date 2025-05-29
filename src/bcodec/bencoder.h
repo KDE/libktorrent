@@ -15,8 +15,8 @@ namespace bt
 {
 class File;
 
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Interface for classes which wish to receive the output from a BEncoder.
  */
@@ -26,15 +26,15 @@ public:
     virtual ~BEncoderOutput()
     {
     }
-    /**
+    /*!
      * Write a string of characters.
-     * @param str The string
-     * @param len The length of the string
+     * \param str The string
+     * \param len The length of the string
      */
     virtual void write(const char *str, Uint32 len) = 0;
 };
 
-/**
+/*!
  * Writes the output of a bencoder to a file
  */
 class KTORRENT_EXPORT BEncoderFileOutput : public BEncoderOutput
@@ -47,7 +47,7 @@ public:
     void write(const char *str, Uint32 len) override;
 };
 
-/**
+/*!
  * Write the output of a BEncoder to a QByteArray
  */
 class KTORRENT_EXPORT BEncoderBufferOutput : public BEncoderOutput
@@ -71,9 +71,9 @@ public:
     void write(const char *str, Uint32 len) override;
 };
 
-/**
- * @author Joris Guisson
- * @brief Helper class to b-encode stuff.
+/*!
+ * \author Joris Guisson
+ * \brief Helper class to b-encode stuff.
  *
  * This class b-encodes data. For more details about b-encoding, see
  * the BitTorrent protocol docs. The data gets written to a BEncoderOutput
@@ -85,32 +85,32 @@ class KTORRENT_EXPORT BEncoder
     bool del;
 
 public:
-    /**
+    /*!
      * Constructor, output gets written to a file.
-     * @param fptr The File to write to
+     * \param fptr The File to write to
      */
     BEncoder(File *fptr);
 
-    /**
+    /*!
      * Constructor, output gets written to a BEncoderOutput object.
-     * @param out The BEncoderOutput
+     * \param out The BEncoderOutput
      */
     BEncoder(BEncoderOutput *out);
 
-    /**
+    /*!
      * Constructor, output gets written to a QIODevice object.
-     * @param dev The QIODevice
+     * \param dev The QIODevice
      */
     BEncoder(QIODevice *dev);
 
     virtual ~BEncoder();
 
-    /**
+    /*!
      * Begin a dictionary.Should have a corresponding end call.
      */
     void beginDict();
 
-    /**
+    /*!
      * Begin a list. Should have a corresponding end call.
      */
     void beginList();
@@ -121,52 +121,52 @@ public:
         write(val);
     }
 
-    /**
+    /*!
      * Write a boolean (is encoded as an intà
-     * @param val
+     * \param val
      */
     void write(bool val);
 
-    /**
+    /*!
      * Write a float
-     * @param val
+     * \param val
      */
     void write(float val);
 
-    /**
+    /*!
      * Write an int
-     * @param val
+     * \param val
      */
     void write(Uint32 val);
 
-    /**
+    /*!
      * Write an int64
-     * @param val
+     * \param val
      */
     void write(Uint64 val);
 
 private:
-    /**
+    /*!
      * Write a string
-     * @param str
+     * \param str
      */
     void write(const char *str);
 
 public:
-    /**
+    /*!
      * Write a QByteArray
-     * @param data
+     * \param data
      */
     void write(const QByteArray &data);
 
-    /**
+    /*!
      * Write a data array
-     * @param data
-     * @param size of data
+     * \param data
+     * \param size of data
      */
     void write(const Uint8 *data, Uint32 size);
 
-    /**
+    /*!
      * End a beginDict or beginList call.
      */
     void end();

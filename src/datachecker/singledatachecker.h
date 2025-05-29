@@ -10,8 +10,8 @@
 
 namespace bt
 {
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Data checker for single file torrents.
  */

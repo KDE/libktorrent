@@ -15,8 +15,8 @@
 
 namespace bt
 {
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Simple HTTP request class.
  * TODO: switch to KIO for this
@@ -25,21 +25,21 @@ class HTTPRequest : public bt::ExitOperation
 {
     Q_OBJECT
 public:
-    /**
+    /*!
      * Constructor, set the url and the request header.
-     * @param hdr The http request header
-     * @param payload The payload
-     * @param host The host
-     * @param port THe port
-     * @param verbose Print traffic to the log
+     * \param hdr The http request header
+     * \param payload The payload
+     * \param host The host
+     * \param port THe port
+     * \param verbose Print traffic to the log
      */
     HTTPRequest(const QNetworkRequest &hdr, const QString &payload, const QString &host, bt::Uint16 port, bool verbose);
-    /**
+    /*!
      * Open a connection and send the request.
      */
     void start();
 
-    /**
+    /*!
         Get the reply data
     */
     QByteArray replyData() const
@@ -47,7 +47,7 @@ public:
         return reply;
     }
 
-    /**
+    /*!
         Did the request succeed
     */
     bool succeeded() const
@@ -55,7 +55,7 @@ public:
         return success;
     }
 
-    /**
+    /*!
         In case of failure this function will return an error string
     */
     QString errorString() const
@@ -64,9 +64,9 @@ public:
     }
 
 Q_SIGNALS:
-    /**
+    /*!
      * An OK reply was sent.
-     * @param r The sender of the request
+     * \param r The sender of the request
      */
     void result(HTTPRequest *r);
 

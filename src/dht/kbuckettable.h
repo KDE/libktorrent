@@ -12,7 +12,7 @@
 
 namespace dht
 {
-/**
+/*!
  * Holds a table of buckets.
  */
 class KBucketTable
@@ -21,25 +21,25 @@ public:
     KBucketTable(const Key &our_id);
     virtual ~KBucketTable();
 
-    /// Insert a KBucketEntry into the table
+    //! Insert a KBucketEntry into the table
     void insert(const KBucketEntry &entry, RPCServerInterface *srv);
 
-    /// Get the number of entries
+    //! Get the number of entries
     int numEntries() const;
 
-    /// Refresh the buckets
+    //! Refresh the buckets
     void refreshBuckets(DHT *dh_table);
 
-    /// Timeout happened
+    //! Timeout happened
     void onTimeout(const net::Address &addr);
 
-    /// Load the table from a file
+    //! Load the table from a file
     void loadTable(const QString &file, dht::RPCServerInterface *srv);
 
-    /// Save table to a file
+    //! Save table to a file
     void saveTable(const QString &file);
 
-    /// Find the K closest nodes
+    //! Find the K closest nodes
     void findKClosestNodes(KClosestNodesSearch &kns) const;
 
 private:

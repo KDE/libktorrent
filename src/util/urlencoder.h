@@ -11,8 +11,8 @@
 
 namespace bt
 {
-/**
-@author Joris Guisson
+/*!
+\author Joris Guisson
 */
 class URLEncoder
 {

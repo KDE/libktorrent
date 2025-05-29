@@ -19,7 +19,7 @@ class PeerManager;
 class ChunkManager;
 struct TorrentStats;
 
-/**
+/*!
  * Base class for all choke algorithms.
  */
 class ChokeAlgorithm
@@ -31,32 +31,32 @@ public:
     ChokeAlgorithm();
     virtual ~ChokeAlgorithm();
 
-    /**
+    /*!
      * Do the actual choking when we are still downloading.
-     * @param pman The PeerManager
-     * @param cman The ChunkManager
-     * @param stats The torrent stats
+     * \param pman The PeerManager
+     * \param cman The ChunkManager
+     * \param stats The torrent stats
      */
     virtual void doChokingLeechingState(PeerManager &pman, ChunkManager &cman, const TorrentStats &stats) = 0;
 
-    /**
+    /*!
      * Do the actual choking when we are seeding
-     * @param pman The PeerManager
-     * @param cman The ChunkManager
-     * @param stats The torrent stats
+     * \param pman The PeerManager
+     * \param cman The ChunkManager
+     * \param stats The torrent stats
      */
     virtual void doChokingSeedingState(PeerManager &pman, ChunkManager &cman, const TorrentStats &stats) = 0;
 
-    /// Get the optimisticly unchoked peer ID
+    //! Get the optimisticly unchoked peer ID
     Uint32 getOptimisticlyUnchokedPeerID() const
     {
         return opt_unchoked_peer_id;
     }
 };
 
-/**
- * @author Joris Guisson
- * @brief Handles the choking
+/*!
+ * \author Joris Guisson
+ * \brief Handles the choking
  *
  * This class handles the choking and unchoking of Peer's.
  * This class needs to be updated every 10 seconds.
@@ -72,26 +72,26 @@ public:
     Choker(PeerManager &pman, ChunkManager &cman);
     virtual ~Choker();
 
-    /**
+    /*!
      * Update which peers are choked or not.
-     * @param have_all Indicates whether we have the entire file
-     * @param stats Statistic of the torrent
+     * \param have_all Indicates whether we have the entire file
+     * \param stats Statistic of the torrent
      */
     void update(bool have_all, const TorrentStats &stats);
 
-    /// Get the PeerID of the optimisticly unchoked peer.
+    //! Get the PeerID of the optimisticly unchoked peer.
     Uint32 getOptimisticlyUnchokedPeerID() const
     {
         return choke->getOptimisticlyUnchokedPeerID();
     }
 
-    /// Set the number of upload slots
+    //! Set the number of upload slots
     static void setNumUploadSlots(Uint32 n)
     {
         num_upload_slots = n;
     }
 
-    /// Get the number of upload slots
+    //! Get the number of upload slots
     static Uint32 getNumUploadSlots()
     {
         return num_upload_slots;

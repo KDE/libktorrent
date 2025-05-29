@@ -21,7 +21,7 @@ class TorrentControl;
 class WaitJob;
 class PeerManager;
 
-/**
+/*!
  * Manages all trackers
  */
 class KTORRENT_EXPORT TrackerManager : public QObject, public bt::TrackersList, public TrackerDataSource
@@ -44,34 +44,34 @@ public:
     bool noTrackersReachable() const override;
     TrackersStatusInfo getTrackersStatusInfo() const override;
 
-    /// Get the number of seeders
+    //! Get the number of seeders
     Uint32 getNumSeeders() const;
 
-    /// Get the number of leechers
+    //! Get the number of leechers
     Uint32 getNumLeechers() const;
 
-    /**
+    /*!
      * Start gathering peers
      */
     virtual void start();
 
-    /**
+    /*!
      * Stop gathering peers
-     * @param wjob WaitJob to wait at exit for the completion of stopped events to the trackers
+     * \param wjob WaitJob to wait at exit for the completion of stopped events to the trackers
      */
     virtual void stop(WaitJob *wjob = nullptr);
 
-    /**
+    /*!
      * Notify peersources and trackrs that the download is complete.
      */
     virtual void completed();
 
-    /**
+    /*!
      * Do a manual update on all peer sources and trackers.
      */
     virtual void manualUpdate();
 
-    /**
+    /*!
      * Do a scrape on the current tracker
      * */
     virtual void scrape();
@@ -92,19 +92,19 @@ protected:
     bool isPartialSeed() const override;
 
 private Q_SLOTS:
-    /**
+    /*!
      * The an error happened contacting the tracker.
-     * @param err The error
+     * \param err The error
      */
     void onTrackerError(const QString &err);
 
-    /**
+    /*!
      * Tracker update was OK.
-     * @param
+     * \param
      */
     void onTrackerOK();
 
-    /**
+    /*!
      * Update the current tracker manually
      */
     void updateCurrentManually();

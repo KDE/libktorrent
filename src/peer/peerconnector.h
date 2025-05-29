@@ -19,7 +19,7 @@ namespace bt
 class Authenticate;
 class PeerManager;
 
-/**
+/*!
     Class which connects to a peer.
 */
 class KTORRENT_EXPORT PeerConnector : public Resource
@@ -35,13 +35,13 @@ public:
     PeerConnector(const net::Address &addr, bool local, PeerManager *pman, ConnectionLimit::Token::Ptr token);
     ~PeerConnector() override;
 
-    /// Called when an authentication attempt is finished
+    //! Called when an authentication attempt is finished
     void authenticationFinished(bt::Authenticate *auth, bool ok);
 
-    /// Start connecting
+    //! Start connecting
     void start();
 
-    /**
+    /*!
      * Set the maximum number of active PeerConnectors allowed
      */
     static void setMaxActive(Uint32 mc);
@@ -49,7 +49,7 @@ public:
     typedef QSharedPointer<PeerConnector> Ptr;
     typedef QWeakPointer<PeerConnector> WPtr;
 
-    /// Set a weak pointer to this object
+    //! Set a weak pointer to this object
     void setWeakPointer(WPtr ptr);
 
 private:

@@ -42,8 +42,8 @@ struct TrackerTier {
     }
 };
 
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * Listener base class, to get notified when the priority of a file changes.
  */
@@ -57,9 +57,9 @@ public:
     virtual void downloadPriorityChanged(TorrentFile *tf, Priority newpriority, Priority oldpriority) = 0;
 };
 
-/**
- * @author Joris Guisson
- * @brief Loads a .torrent file
+/*!
+ * \author Joris Guisson
+ * \brief Loads a .torrent file
  *
  * Loads a torrent file and calculates some miscelanious other data,
  * like the info_hash and the peer_id.
@@ -71,211 +71,211 @@ public:
     Torrent(const bt::SHA1Hash &hash);
     virtual ~Torrent();
 
-    /**
+    /*!
      * Set the FilePriorityListener
-     * @param l THe listener
+     * \param l THe listener
      */
     void setFilePriorityListener(FilePriorityListener *l)
     {
         file_prio_listener = l;
     }
 
-    /**
+    /*!
      * Called by TorrentFile when the priority changes
-     * @param tf The file
-     * @param newpriority The old priority
-     * @param oldpriority The new priority
+     * \param tf The file
+     * \param newpriority The old priority
+     * \param oldpriority The new priority
      */
     void downloadPriorityChanged(TorrentFile *tf, Priority newpriority, Priority oldpriority);
 
-    /**
+    /*!
      * Called by TorrentFile when the percentage changes
-     * @param tf The file
-     * @param perc The percentage
+     * \param tf The file
+     * \param perc The percentage
      */
     void filePercentageChanged(TorrentFile *tf, float perc);
 
-    /**
+    /*!
      * Called by TorrentFile when the preview state changes
-     * @param tf The file
-     * @param preview Whether preview is possible or not
+     * \param tf The file
+     * \param preview Whether preview is possible or not
      */
     void filePreviewChanged(TorrentFile *tf, bool preview);
 
-    /**
+    /*!
      * Load a .torrent file.
-     * @param data The data
-     * @param verbose Whether to print information to the log
-     * @throw Error if something goes wrong
+     * \param data The data
+     * \param verbose Whether to print information to the log
+     * \throw Error if something goes wrong
      */
     void load(const QByteArray &data, bool verbose);
 
     void debugPrintInfo();
 
-    /// Return the comments in the torrent
+    //! Return the comments in the torrent
     QString getComments() const
     {
         return comments;
     }
 
-    /// Get the number of chunks.
+    //! Get the number of chunks.
     Uint32 getNumChunks() const
     {
         return hash_pieces.size();
     }
 
-    /// Get the size of a chunk.
+    //! Get the size of a chunk.
     Uint64 getChunkSize() const
     {
         return chunk_size;
     }
 
-    /// Get the size of the last chunk
+    //! Get the size of the last chunk
     Uint64 getLastChunkSize() const
     {
         return last_chunk_size;
     }
 
-    /// Get the info_hash.
+    //! Get the info_hash.
     const SHA1Hash &getInfoHash() const
     {
         return info_hash;
     }
 
-    /// Get our peer_id.
+    //! Get our peer_id.
     const PeerID &getPeerID() const
     {
         return peer_id;
     }
 
-    /// Get the file size in number of bytes.
+    //! Get the file size in number of bytes.
     Uint64 getTotalSize() const
     {
         return total_size;
     }
 
-    /// Get the suggested name.
+    //! Get the suggested name.
     QString getNameSuggestion() const
     {
         return name_suggestion;
     }
 
-    /**
+    /*!
      * Verify whether a hash matches the hash
      * of a Chunk
-     * @param h The hash
-     * @param index The index of the chunk
-     * @return true if they match
+     * \param h The hash
+     * \param index The index of the chunk
+     * \return true if they match
      */
     bool verifyHash(const SHA1Hash &h, Uint32 index);
 
-    /// Get the number of tracker URL's
+    //! Get the number of tracker URL's
     unsigned int getNumTrackerURLs() const;
 
-    /**
+    /*!
      * Get the hash of a Chunk. Throws an Error
      * if idx is out of bounds.
-     * @param idx Index of Chunk
-     * @return The SHA1 hash of the chunk
+     * \param idx Index of Chunk
+     * \return The SHA1 hash of the chunk
      */
     const SHA1Hash &getHash(Uint32 idx) const;
 
-    /// See if we have a multi file torrent.
+    //! See if we have a multi file torrent.
     bool isMultiFile() const
     {
         return files.count() > 0;
     }
 
-    /// Get the number of files in a multi file torrent.
-    /// If we have a single file torrent, this will return 0.
+    //! Get the number of files in a multi file torrent.
+    //! If we have a single file torrent, this will return 0.
     Uint32 getNumFiles() const
     {
         return files.count();
     }
 
-    /**
+    /*!
      * Get a TorrentFile. If the index is out of range, or
      * we have a single file torrent we return a null TorrentFile.
-     * @param idx Index of the file
-     * @return A reference to the file
+     * \param idx Index of the file
+     * \return A reference to the file
      */
     TorrentFile &getFile(Uint32 idx);
 
-    /**
+    /*!
      * Get a TorrentFile. If the index is out of range, or
      * we have a single file torrent we return a null TorrentFile.
-     * @param idx Index of the file
-     * @return A reference to the file
+     * \param idx Index of the file
+     * \return A reference to the file
      */
     const TorrentFile &getFile(Uint32 idx) const;
 
-    /**
+    /*!
      * Type of the list of file indices.
      * An array-like container, optimized for small number of elements and
      * forward iteration.
      */
     typedef QVarLengthArray<Uint32, 64> FileIndexList;
 
-    /**
+    /*!
      * Calculate in which file(s) a Chunk lies. A list will
      * get filled with the indices of all the files. The list gets cleared at
      * the beginning. If something is wrong only the list will
      * get cleared.
-     * @param chunk The index of the chunk
-     * @param file_list This list will be filled with all the indices
-     * @param max_files Maximum number of file indices to put in @a file_list
+     * \param chunk The index of the chunk
+     * \param file_list This list will be filled with all the indices
+     * \param max_files Maximum number of file indices to put in \a file_list
      */
     void calcChunkPos(Uint32 chunk, FileIndexList &file_list, int max_files = INT_MAX) const;
 
-    /**
+    /*!
      * Checks if torrent file is audio or video.
      **/
     bool isMultimedia() const;
 
-    /// See if the torrent is private
+    //! See if the torrent is private
     bool isPrivate() const
     {
         return priv_torrent;
     }
 
-    /// Is the torrent loaded
+    //! Is the torrent loaded
     bool isLoaded() const
     {
         return loaded;
     }
 
-    /// Gets a pointer to AnnounceList
+    //! Gets a pointer to AnnounceList
     const TrackerTier *getTrackerList() const
     {
         return trackers;
     }
 
-    /// Get the number of initial DHT nodes
+    //! Get the number of initial DHT nodes
     Uint32 getNumDHTNodes() const
     {
         return nodes.count();
     }
 
-    /// Get a DHT node
+    //! Get a DHT node
     const DHTNode &getDHTNode(Uint32 i)
     {
         return nodes[i];
     }
 
-    /**
+    /*!
      * Update the percentage of all files.
-     * @param cman The ChunkManager
+     * \param cman The ChunkManager
      */
     void updateFilePercentage(ChunkManager &cman);
 
-    /**
+    /*!
      * Update the percentage of all files that have a particular chunk.
-     * @param chunk The chunk
-     * @param cman The ChunkManager
+     * \param chunk The chunk
+     * \param cman The ChunkManager
      */
     void updateFilePercentage(Uint32 chunk, ChunkManager &cman);
 
-    /**
+    /*!
      * Get the list with web seed URL's
      */
     const QList<QUrl> &getWebSeeds() const
@@ -283,13 +283,13 @@ public:
         return web_seeds;
     }
 
-    /// Set the monitor
+    //! Set the monitor
     void setMonitor(MonitorInterface *m)
     {
         tmon = m;
     }
 
-    /// Get the metadata
+    //! Get the metadata
     const QByteArray &getMetaData() const
     {
         return metadata;

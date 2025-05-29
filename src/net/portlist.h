@@ -29,7 +29,7 @@ struct KTORRENT_EXPORT Port {
     bool operator==(const Port &p) const;
 };
 
-/**
+/*!
  * Listener class for the PortList.
  */
 class KTORRENT_EXPORT PortListener
@@ -39,21 +39,21 @@ public:
     {
     }
 
-    /**
+    /*!
      * A port has been added.
-     * @param port The port
+     * \param port The port
      */
     virtual void portAdded(const Port &port) = 0;
 
-    /**
+    /*!
      * A port has been removed
-     * @param port The port
+     * \param port The port
      */
     virtual void portRemoved(const Port &port) = 0;
 };
 
-/**
- * @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+ * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * List of ports which are currently being used.
  *
@@ -66,24 +66,24 @@ public:
     PortList();
     virtual ~PortList();
 
-    /**
+    /*!
      * When a port is in use, this function needs to be called.
-     * @param number Port number
-     * @param proto Protocol
-     * @param forward Whether or not it needs to be forwarded
+     * \param number Port number
+     * \param proto Protocol
+     * \param forward Whether or not it needs to be forwarded
      */
     void addNewPort(bt::Uint16 number, Protocol proto, bool forward);
 
-    /**
+    /*!
      * Needs to be called when a port is not being using anymore.
-     * @param number Port number
-     * @param proto Protocol
+     * \param number Port number
+     * \param proto Protocol
      */
     void removePort(bt::Uint16 number, Protocol proto);
 
-    /**
+    /*!
      * Set the port listener.
-     * @param pl Port listener
+     * \param pl Port listener
      */
     void setListener(PortListener *pl)
     {

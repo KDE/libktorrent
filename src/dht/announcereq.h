@@ -11,7 +11,7 @@
 
 namespace dht
 {
-/**
+/*!
  * Announce request in the DHT protocol
  */
 class KTORRENT_EXPORT AnnounceReq : public GetPeersReq

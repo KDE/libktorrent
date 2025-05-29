@@ -21,7 +21,7 @@ using namespace utp;
 using namespace bt;
 using namespace Qt::Literals::StringLiterals;
 
-/**
+/*!
     Server which simulates packet loss
 */
 class CongestionTestServer : public UTPServer

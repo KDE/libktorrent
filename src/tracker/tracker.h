@@ -19,7 +19,7 @@ class QUrl;
 
 namespace bt
 {
-/**
+/*!
     Interface used by the Tracker to obtain the data it needs to know
     when announcing.
 */
@@ -37,7 +37,7 @@ public:
     virtual bool isPartialSeed() const = 0;
 };
 
-/**
+/*!
  * Base class for all tracker classes.
  */
 class KTORRENT_EXPORT Tracker : public PeerSource, public TrackerInterface
@@ -47,87 +47,87 @@ public:
     Tracker(const QUrl &url, TrackerDataSource *tds, const PeerID &id, int tier);
     ~Tracker() override;
 
-    /**
+    /*!
      * Set the custom IP
-     * @param str
+     * \param str
      */
     static void setCustomIP(const QString &str);
 
-    /// get the tracker url
+    //! get the tracker url
     QUrl trackerURL() const
     {
         return url;
     }
 
-    /**
+    /*!
      * Delete the tracker in ms milliseconds, or when the stopDone signal is emitted.
-     * @param ms Number of ms to wait
+     * \param ms Number of ms to wait
      */
     void timedDelete(int ms);
 
-    /**
+    /*!
      * Get the number of failed attempts to reach a tracker.
-     * @return The number of failed attempts
+     * \return The number of failed attempts
      */
     virtual Uint32 failureCount() const = 0;
 
-    /**
+    /*!
      * Do a tracker scrape to get more accurate stats about a torrent.
      * Does nothing if the tracker does not support this.
      */
     virtual void scrape() = 0;
 
-    /// Get the trackers tier
+    //! Get the trackers tier
     int getTier() const
     {
         return tier;
     }
 
-    /// Get the custom ip to use, null if none is set
+    //! Get the custom ip to use, null if none is set
     static QString getCustomIP();
 
-    /// Handle a failure
+    //! Handle a failure
     void handleFailure();
 
 protected:
-    /// Reset the tracker stats
+    //! Reset the tracker stats
     void resetTrackerStats();
 
-    /// Calculates the bytes downloaded to send with the request
+    //! Calculates the bytes downloaded to send with the request
     Uint64 bytesDownloaded() const;
 
-    /// Calculates the bytes uploaded to send with the request
+    //! Calculates the bytes uploaded to send with the request
     Uint64 bytesUploaded() const;
 
-    /// Emit the failure signal, and set the error
+    //! Emit the failure signal, and set the error
     void failed(const QString &err);
 
 public:
     void manualUpdate() override = 0;
 
 Q_SIGNALS:
-    /**
+    /*!
      * Emitted when an error happens.
-     * @param failure_reason The reason why we couldn't reach the tracker
+     * \param failure_reason The reason why we couldn't reach the tracker
      */
     void requestFailed(const QString &failure_reason);
 
-    /**
+    /*!
      * Emitted when a stop is done.
      */
     void stopDone();
 
-    /**
+    /*!
      * Emitted when a request to the tracker succeeded
      */
     void requestOK();
 
-    /**
+    /*!
      * A request to the tracker has been started.
      */
     void requestPending();
 
-    /**
+    /*!
      * Emitted when a scrape has finished
      * */
     void scrapeDone();

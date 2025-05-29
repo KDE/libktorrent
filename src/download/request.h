@@ -12,9 +12,9 @@ namespace bt
 {
 class PieceDownloader;
 
-/**
- * @author Joris Guisson
- * @brief Request of a piece sent to other peers
+/*!
+ * \author Joris Guisson
+ * \brief Request of a piece sent to other peers
  *
  * This class keeps track of a request of a piece.
  * The Request consists of an index (the index of the chunk),
@@ -25,7 +25,7 @@ class PieceDownloader;
 class Request
 {
 public:
-    /**
+    /*!
      * Constructor, set everything to 0.
      */
     inline Request()
@@ -36,12 +36,12 @@ public:
     {
     }
 
-    /**
+    /*!
      * Constructor, set the index, offset,length and peer
-     * @param index The index of the chunk
-     * @param off The offset into the chunk
-     * @param len The length of the piece
-     * @param pd Pointer to PieceDownloader of the request
+     * \param index The index of the chunk
+     * \param off The offset into the chunk
+     * \param len The length of the piece
+     * \param pd Pointer to PieceDownloader of the request
      */
     inline Request(Uint32 index, Uint32 off, Uint32 len, PieceDownloader *pd)
         : index(index)
@@ -51,9 +51,9 @@ public:
     {
     }
 
-    /**
+    /*!
      * Copy constructor.
-     * @param r Request to copy
+     * \param r Request to copy
      */
     inline Request(const Request &r)
         : index(r.index)
@@ -66,33 +66,33 @@ public:
     {
     }
 
-    /// Get the index of the chunk
+    //! Get the index of the chunk
     Uint32 getIndex() const
     {
         return index;
     }
 
-    /// Get the offset into the chunk
+    //! Get the offset into the chunk
     Uint32 getOffset() const
     {
         return off;
     }
 
-    /// Get the length of a the piece
+    //! Get the length of a the piece
     Uint32 getLength() const
     {
         return len;
     }
 
-    /// Get the sending Peer
+    //! Get the sending Peer
     inline PieceDownloader *getPieceDownloader() const
     {
         return pd;
     }
 
-    /**
+    /*!
      * Assignment operator.
-     * @param r The Request to copy
+     * \param r The Request to copy
      */
     inline Request &operator=(const Request &r)
     {
@@ -103,12 +103,12 @@ public:
         return *this;
     }
 
-    /**
+    /*!
      * Compare two requests. Return true if they are the same.
      * This only compares the index,offset and length.
-     * @param a The first request
-     * @param b The second request
-     * @return true if they are equal
+     * \param a The first request
+     * \param b The second request
+     * \return true if they are equal
      */
     friend inline bool operator==(const Request &a, const Request &b)
     {

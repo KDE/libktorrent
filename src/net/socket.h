@@ -16,8 +16,8 @@ namespace net
 const int SEND_FAILURE = 0;
 const int SEND_WOULD_BLOCK = -1;
 
-/**
-    @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+    \author Joris Guisson <joris.guisson@gmail.com>
 */
 class KTORRENT_EXPORT Socket : public SocketDevice
 {
@@ -68,7 +68,7 @@ public:
         return m_ip_version == 6;
     }
 
-    /// Take the filedescriptor from the socket
+    //! Take the filedescriptor from the socket
     int take();
 
     typedef QSharedPointer<Socket> Ptr;

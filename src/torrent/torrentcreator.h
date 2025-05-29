@@ -17,9 +17,9 @@ namespace bt
 class BEncoder;
 class TorrentControl;
 
-/**
- * @author Joris Guisson
- * @brief Class to generate torrent files
+/*!
+ * \author Joris Guisson
+ * \brief Class to generate torrent files
  *
  * This class generates torrent files.
  * It also allows to create a TorrentControl object, so
@@ -48,17 +48,17 @@ class KTORRENT_EXPORT TorrentCreator : public QThread
     bool stopped;
 
 public:
-    /**
+    /*!
      * Constructor.
-     * @param target The file or directory to make a torrent of
-     * @param trackers A list of tracker urls
-     * @param webseeds A list of webseed urls
-     * @param chunk_size The size of each chunk
-     * @param name The name suggestion
-     * @param comments The comments field of the torrent
-     * @param priv Private torrent or not
-     * @param decentralized If this is true then trackers are treated
-     * as DHT nodes and are written to the @a nodes section of the file.
+     * \param target The file or directory to make a torrent of
+     * \param trackers A list of tracker urls
+     * \param webseeds A list of webseed urls
+     * \param chunk_size The size of each chunk
+     * \param name The name suggestion
+     * \param comments The comments field of the torrent
+     * \param priv Private torrent or not
+     * \param decentralized If this is true then trackers are treated
+     * as DHT nodes and are written to the \a nodes section of the file.
      */
     TorrentCreator(const QString &target,
                    const QStringList &trackers,
@@ -70,7 +70,7 @@ public:
                    bool decentralized);
     ~TorrentCreator() override;
 
-    /// Get the number of chunks
+    //! Get the number of chunks
     Uint32 getNumChunks() const
     {
         return num_chunks;
@@ -81,26 +81,26 @@ public:
         return cur_chunk;
     }
 
-    /**
+    /*!
      * Save the torrent file.
-     * @param url Filename
-     * @throw Error if something goes wrong
+     * \param url Filename
+     * \throw Error if something goes wrong
      */
     void saveTorrent(const QString &url);
 
-    /**
+    /*!
      * Make a TorrentControl object for this torrent.
      * This will also create the files :
      * data_dir/index
      * data_dir/torrent
      * data_dir/cache (symlink to target)
-     * @param data_dir The data directory
-     * @throw Error if something goes wrong
-     * @return The newly created object
+     * \param data_dir The data directory
+     * \throw Error if something goes wrong
+     * \return The newly created object
      */
     TorrentControl *makeTC(const QString &data_dir);
 
-    /// Stop the thread
+    //! Stop the thread
     void stop()
     {
         stopped = true;

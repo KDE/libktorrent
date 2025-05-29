@@ -13,8 +13,8 @@ namespace bt
 {
 struct TorrentStats;
 
-/**
-    @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+    \author Joris Guisson <joris.guisson@gmail.com>
 */
 class AdvancedChokeAlgorithm : public ChokeAlgorithm
 {

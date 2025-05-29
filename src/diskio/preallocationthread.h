@@ -16,8 +16,8 @@
 
 namespace bt
 {
-/**
- * @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+ * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * Thread to preallocate diskspace
  */
@@ -27,47 +27,47 @@ public:
     PreallocationThread();
     ~PreallocationThread() override;
 
-    /// Add a CacheFile to preallocate
+    //! Add a CacheFile to preallocate
     void add(CacheFile::Ptr cache_file);
 
     void run() override;
 
-    /**
+    /*!
      * Stop the thread.
      */
     void stop();
 
-    /**
+    /*!
      * Set an error message, also calls stop
-     * @param msg The message
+     * \param msg The message
      */
     void setErrorMsg(const QString &msg);
 
-    /// See if the thread has been stopped
+    //! See if the thread has been stopped
     bool isStopped() const;
 
-    /// Did an error occur during the preallocation ?
+    //! Did an error occur during the preallocation ?
     bool errorHappened() const;
 
-    /// Get the error_msg
+    //! Get the error_msg
     const QString &errorMessage() const
     {
         return error_msg;
     }
 
-    /// nb Number of bytes have been written
+    //! nb Number of bytes have been written
     void written(Uint64 nb);
 
-    /// Get the number of bytes written
+    //! Get the number of bytes written
     Uint64 bytesWritten();
 
-    /// Allocation was aborted, so the next time the torrent is started it needs to be started again
+    //! Allocation was aborted, so the next time the torrent is started it needs to be started again
     void setNotFinished();
 
-    /// See if the allocation hasn't completed yet
+    //! See if the allocation hasn't completed yet
     bool isNotFinished() const;
 
-    /// See if the thread was done
+    //! See if the thread was done
     bool isDone() const;
 
 private:

@@ -19,9 +19,9 @@ class MetaData;
 
 namespace bt
 {
-/**
- * @author Joris Guisson
- * @brief Communicates with the tracker
+/*!
+ * \author Joris Guisson
+ * \brief Communicates with the tracker
  *
  * This class uses the HTTP protocol to communicate with the tracker.
  */

@@ -29,8 +29,8 @@ const bt::Uint32 K = 20;
 const bt::Uint32 BUCKET_MAGIC_NUMBER = 0xB0C4B0C4;
 const bt::Uint32 BUCKET_REFRESH_INTERVAL = 15 * 60 * 1000;
 
-/**
- * @author Joris Guisson
+/*!
+ * \author Joris Guisson
  *
  * A KBucket is just a list of KBucketEntry objects.
  * The list is sorted by time last seen :
@@ -48,83 +48,83 @@ public:
 
     typedef QSharedPointer<KBucket> Ptr;
 
-    /// Get the min key
+    //! Get the min key
     const dht::Key &minKey() const
     {
         return min_key;
     }
 
-    /// Get the max key
+    //! Get the max key
     const dht::Key &maxKey() const
     {
         return max_key;
     }
 
-    /// Does the key k lies in in the range of this bucket
+    //! Does the key k lies in in the range of this bucket
     bool keyInRange(const dht::Key &k) const;
 
-    /// Are we allowed to split
+    //! Are we allowed to split
     bool splitAllowed() const;
 
     class UnableToSplit
     {
     };
 
-    /**
+    /*!
      * Split the bucket in two new buckets, each containing half the range of the original one.
-     * @return A pair of KBucket's
-     * @throw UnableToSplit if something goes wrong
+     * \return A pair of KBucket's
+     * \throw UnableToSplit if something goes wrong
      */
     std::pair<KBucket::Ptr, KBucket::Ptr> split() noexcept(false);
 
-    /**
+    /*!
      * Inserts an entry into the bucket.
-     * @param entry The entry to insert
-     * @return true If the bucket needs to be split, false otherwise
+     * \param entry The entry to insert
+     * \return true If the bucket needs to be split, false otherwise
      */
     bool insert(const KBucketEntry &entry);
 
-    /// Get the least recently seen node
+    //! Get the least recently seen node
     const KBucketEntry &leastRecentlySeen() const
     {
         return entries[0];
     }
 
-    /// Get the number of entries
+    //! Get the number of entries
     bt::Uint32 getNumEntries() const
     {
         return entries.count();
     }
 
-    /// See if this bucket contains an entry
+    //! See if this bucket contains an entry
     bool contains(const KBucketEntry &entry) const;
 
-    /**
+    /*!
      * Find the K closest entries to a key and store them in the KClosestNodesSearch
      * object.
-     * @param kns The object to store the search results
+     * \param kns The object to store the search results
      */
     void findKClosestNodes(KClosestNodesSearch &kns) const;
 
-    /**
+    /*!
      * A peer failed to respond
-     * @param addr Address of the peer
+     * \param addr Address of the peer
      */
     bool onTimeout(const net::Address &addr);
 
-    /// Check if the bucket needs to be refreshed
+    //! Check if the bucket needs to be refreshed
     bool needsToBeRefreshed() const;
 
-    /// save the bucket to a file
+    //! save the bucket to a file
     void save(bt::BEncoder &enc);
 
-    /// Load the bucket from a file
+    //! Load the bucket from a file
     void load(bt::BDictNode *dict);
 
-    /// Update the refresh timer of the bucket
+    //! Update the refresh timer of the bucket
     void updateRefreshTimer();
 
-    /// Set the refresh task
+    //! Set the refresh task
     void setRefreshTask(Task *t);
 
 private:

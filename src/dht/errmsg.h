@@ -11,7 +11,7 @@
 
 namespace dht
 {
-/**
+/*!
  * Error message in the DHT protocol
  */
 class KTORRENT_EXPORT ErrMsg : public RPCMsg
@@ -26,7 +26,7 @@ public:
     void encode(QByteArray &arr) const override;
     void parse(bt::BDictNode *dict) override;
 
-    /// Get the error message
+    //! Get the error message
     const QString &message() const
     {
         return msg;

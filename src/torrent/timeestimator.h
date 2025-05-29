@@ -14,10 +14,10 @@ namespace bt
 {
 class TorrentControl;
 
-/**
+/*!
  * Simple queue class for samples. Optimized for speed and size
  * without possibility to dynamically resize itself.
- * @author Ivan Vasic <ivasic@gmail.com>
+ * \author Ivan Vasic <ivasic@gmail.com>
  */
 class SampleQueue
 {
@@ -29,7 +29,7 @@ public:
         SAMPLE_COUNT_MAX = 20,
     };
 
-    /**
+    /*!
      * Inserts new sample into the queue. The oldest sample is overwritten.
      */
     void push(Uint32 sample);
@@ -39,13 +39,13 @@ public:
 
     bool isFull();
 
-    /**
+    /*!
      * This function will return the number of samples in queue until it counts m_size number of elements.
      * After this point it will always return m_size since no samples are being deleted.
      */
     int count();
 
-    /**
+    /*!
      * Returns the sum of all samples.
      */
     Uint32 sum();
@@ -59,9 +59,9 @@ private:
     Uint32 m_samples[SAMPLE_COUNT_MAX];
 };
 
-/**
+/*!
  * ETA estimator class. It will use different algorithms for different download phases.
- * @author Ivan Vasic <ivasic@gmail.com>
+ * \author Ivan Vasic <ivasic@gmail.com>
  */
 class KTORRENT_EXPORT TimeEstimator
 {
@@ -80,7 +80,7 @@ public:
     TimeEstimator(TorrentControl *tc);
     ~TimeEstimator();
 
-    /// Returns ETA for m_tc torrent.
+    //! Returns ETA for m_tc torrent.
     int estimate();
 
 private:

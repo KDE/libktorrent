@@ -12,13 +12,13 @@
 
 namespace utp
 {
-/**
+/*!
     High precision time value
 */
 class KTORRENT_EXPORT TimeValue
 {
 public:
-    /// Default constructor, gets the current time
+    //! Default constructor, gets the current time
     TimeValue();
     TimeValue(bt::Uint64 secs, bt::Uint64 usecs);
     TimeValue(const TimeValue &tv);
@@ -41,7 +41,7 @@ public:
         }
     }
 
-    /// Convert to time stamp
+    //! Convert to time stamp
     bt::TimeStamp toTimeStamp() const
     {
         return seconds * 1000 + (bt::Uint64)microseconds * 0.001;
@@ -52,7 +52,7 @@ public:
     bt::Uint64 microseconds;
 };
 
-/// Calculate the a - b in milliseconds
+//! Calculate the a - b in milliseconds
 inline bt::Int64 operator-(const TimeValue &a, const TimeValue &b)
 {
     bt::Int64 seconds = a.seconds - b.seconds;

@@ -12,7 +12,7 @@
 
 namespace dht
 {
-/**
+/*!
  * GetPeers request in the DHT protocol
  */
 class KTORRENT_EXPORT GetPeersReq : public RPCMsg

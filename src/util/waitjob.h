@@ -15,8 +15,8 @@
 
 namespace bt
 {
-/**
- * @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+ * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * Job to wait for a certain amount of time or until one or more ExitOperation's have
  * finished.
@@ -29,25 +29,25 @@ public:
 
     virtual void kill(bool quietly = true);
 
-    /**
+    /*!
      * Add an ExitOperation;
-     * @param op The operation
+     * \param op The operation
      */
     void addExitOperation(ExitOperation *op);
 
-    /**
+    /*!
      * Add a KIO::Job to wait on;
-     * @param job The job
+     * \param job The job
      */
     void addExitOperation(KIO::Job *job);
 
-    /**
+    /*!
      * Execute a WaitJob
-     * @param job The Job
+     * \param job The Job
      */
     static void execute(WaitJob *job);
 
-    /// Are there any ExitOperation's we need to wait for
+    //! Are there any ExitOperation's we need to wait for
     bool needToWait() const
     {
         return exit_ops.count() > 0;

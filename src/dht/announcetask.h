@@ -36,8 +36,8 @@ public:
     }
 };
 
-/**
-    @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+    \author Joris Guisson <joris.guisson@gmail.com>
 */
 class AnnounceTask : public Task
 {
@@ -49,11 +49,11 @@ public:
     void callTimeout(RPCCall *c) override;
     void update() override;
 
-    /**
+    /*!
      * Take one item from the returned values.
      * Returns false if there is no item to take.
-     * @param item The item
-     * @return false if no item to take, true else
+     * \param item The item
+     * \return false if no item to take, true else
      */
     bool takeItem(DBItem &item);
 

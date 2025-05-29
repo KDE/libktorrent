@@ -18,8 +18,8 @@ namespace net
 using bt::Uint32;
 using bt::Uint8;
 
-/**
- * @author Joris Guisson <joris.guisson@gmail.com>
+/*!
+ * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * Extends the TrafficShapedSocket with outbound bittorrent
  * packet queues.
@@ -32,43 +32,43 @@ public:
     PacketSocket(bool tcp, int ip_version);
     ~PacketSocket() override;
 
-    /**
+    /*!
      * Add a packet to send
-     * @param packet The Packet to send
+     * \param packet The Packet to send
      **/
     void addPacket(bt::Packet::Ptr packet);
 
     Uint32 write(Uint32 max, bt::TimeStamp now) override;
     bool bytesReadyToWrite() const override;
 
-    /// Get the number of data bytes uploaded
+    //! Get the number of data bytes uploaded
     Uint32 dataBytesUploaded();
 
-    /**
+    /*!
      * Clear all pieces we are not in the progress of sending.
-     * @param reject Whether or not to send a reject
+     * \param reject Whether or not to send a reject
      */
     void clearPieces(bool reject);
 
-    /**
+    /*!
      * Do not send a piece which matches this request.
      * But only if we are not already sending the piece.
-     * @param req The request
-     * @param reject Whether we can send a reject instead
+     * \param req The request
+     * \param reject Whether we can send a reject instead
      */
     void doNotSendPiece(const bt::Request &req, bool reject);
 
-    /// Get the number of pending piece uploads
+    //! Get the number of pending piece uploads
     Uint32 numPendingPieceUploads() const;
 
-    /// Get the number of pending piece upload bytes (including message headers)
+    //! Get the number of pending piece upload bytes (including message headers)
     Uint32 numPendingPieceUploadBytes() const;
 
 protected:
-    /**
+    /*!
      * Preprocess the packet data, before it is sent. Default implementation does nothing.
-     * @param data The packet data
-     * @param size The size of the data
+     * \param data The packet data
+     * \param size The size of the data
      **/
     virtual void preProcess(Uint8 *data, Uint32 size);
 

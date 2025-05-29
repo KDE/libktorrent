@@ -24,7 +24,7 @@ namespace bt
 class Peer;
 class PeerManager;
 
-/**
+/*!
     Class which tries to download the metadata associated to a MagnetLink
     It basically has a Tracker (optional), a DHTPeerSource and a PeerManager.
     With these it tries to find peers, connect to them and download the metadata.
@@ -36,35 +36,35 @@ public:
     MagnetDownloader(const MagnetLink &mlink, QObject *parent);
     ~MagnetDownloader() override;
 
-    /**
+    /*!
         Update the MagnetDownloader
     */
     void update();
 
-    /// Is the magnet download running
+    //! Is the magnet download running
     bool running() const;
 
-    /// How many peers are we connected to
+    //! How many peers are we connected to
     Uint32 numPeers() const;
 
-    /// Get the MagnetLink
+    //! Get the MagnetLink
     const MagnetLink &magnetLink() const
     {
         return mlink;
     }
 
-    /**
+    /*!
     Start the MagnetDownloader, this will enable DHT.
     */
     void start();
 
-    /**
+    /*!
     Stop the MagnetDownloader
     */
     void stop();
 
 Q_SIGNALS:
-    /**
+    /*!
         Emitted when downloading the metadata was succesfull.
     */
     void foundMetadata(bt::MagnetDownloader *self, const QByteArray &metadata);

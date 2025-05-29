@@ -17,7 +17,7 @@ class Peer;
 const Uint32 UT_PEX_ID = 1;
 const Uint32 UT_METADATA_ID = 2;
 
-/**
+/*!
     Base class for protocol extensions
 */
 class KTORRENT_EXPORT PeerProtocolExtension
@@ -26,22 +26,22 @@ public:
     PeerProtocolExtension(bt::Uint32 id, Peer *peer);
     virtual ~PeerProtocolExtension();
 
-    /// Virtual update function does nothing, needs to be overridden if update
+    //! Virtual update function does nothing, needs to be overridden if update
     virtual void update();
 
-    /// Does this needs to be update
+    //! Does this needs to be update
     virtual bool needsUpdate() const
     {
         return false;
     }
 
-    /// Handle a packet
+    //! Handle a packet
     virtual void handlePacket(const bt::Uint8 *packet, Uint32 size) = 0;
 
-    /// Send an extension protocol packet
+    //! Send an extension protocol packet
     void sendPacket(const QByteArray &data);
 
-    /// Change the ID
+    //! Change the ID
     void changeID(Uint32 id);
 
 protected:
