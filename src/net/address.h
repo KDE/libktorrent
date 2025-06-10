@@ -21,7 +21,8 @@ namespace net
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Network address, contains an IP address and a port number.
+ * \brief Network address, contains an IP address and a port number.
+ *
  * This supports both IPv4 and IPv6 addresses.
  */
 class KTORRENT_EXPORT Address : public QHostAddress

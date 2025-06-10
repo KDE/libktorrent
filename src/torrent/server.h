@@ -21,9 +21,7 @@ class PeerManager;
 /*!
  * \author Joris Guisson
  *
- * Class which listens for incoming connections.
- * Handles authentication and then hands of the new
- * connections to a PeerManager.
+ * \brief Listens for incoming connections, does the handshake, then hands off the new connections to a PeerManager.
  *
  * All PeerManager's should register with this class when they
  * are created and should unregister when they are destroyed.

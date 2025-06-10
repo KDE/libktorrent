@@ -31,6 +31,9 @@ UTP header:
 +---------------+---------------+---------------+---------------+
 */
 
+/*!
+ * \brief The header of a UTP packet.
+ */
 struct KTORRENT_EXPORT Header {
     unsigned int version : 4;
     unsigned int type : 4;
@@ -47,6 +50,9 @@ struct KTORRENT_EXPORT Header {
     static bt::Uint32 size();
 };
 
+/*!
+ * \brief The selective ACK extension part of a UTP packet header.
+ */
 struct SelectiveAck {
     bt::Uint8 *bitmask;
     bt::Uint8 extension;
@@ -60,12 +66,18 @@ struct SelectiveAck {
     }
 };
 
+/*!
+ * \brief An arbitrary extension of a UTP packet header.
+ */
 struct ExtensionBits {
     bt::Uint8 extension;
     bt::Uint8 length;
     bt::Uint8 extension_bitmask[8];
 };
 
+/*!
+ * \brief An unknown extension of a UTP packet header.
+ */
 struct UnknownExtension {
     bt::Uint8 extension;
     bt::Uint8 length;
@@ -145,8 +157,8 @@ inline void Ack(SelectiveAck *sack, bt::Uint16 bit)
 }
 
 /*!
-    Helper class to parse packets
-*/
+ * \brief Parses UTP packets.
+ */
 class KTORRENT_EXPORT PacketParser
 {
 public:

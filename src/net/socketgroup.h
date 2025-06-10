@@ -15,6 +15,7 @@ class TrafficShapedSocket;
 
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
+    \brief A container for sockets that allows setting rate limits for the entire group.
 */
 class SocketGroup
 {

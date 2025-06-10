@@ -48,7 +48,7 @@ class LogMonitorInterface;
 
 /*!
  * \author Joris Guisson
- * \brief Class which writes messages to a logfile
+ * \brief Writes messages to a log file.
  *
  * This class writes messages to a logfile. To use it, create an instance,
  * set the output file and write stuff with the << operator.

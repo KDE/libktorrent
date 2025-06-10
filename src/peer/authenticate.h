@@ -20,10 +20,7 @@ namespace bt
 {
 /*!
  * \author Joris Guisson
- * \brief Authenicate a peer
- *
- * After we connect to a peer,
- * we need to authenticate the peer. This class handles this.
+ * \brief Connects to a Peer, then carries out the handshake.
  */
 class Authenticate : public AuthenticateBase
 {

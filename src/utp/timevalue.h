@@ -13,8 +13,8 @@
 namespace utp
 {
 /*!
-    High precision time value
-*/
+ * \brief High precision time value.
+ */
 class KTORRENT_EXPORT TimeValue
 {
 public:

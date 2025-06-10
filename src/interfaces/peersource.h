@@ -19,9 +19,9 @@ class WaitJob;
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * This class is the base class for all classes who which to provide potential peers
- * for torrents. PeerSources should work independently and should emit a signal when they
- * have peers ready.
+ * \brief Interface for all classes that will provide potential peers for torrents.
+ *
+ * PeerSources should work independently and should emit a signal when they have peers ready.
  */
 class KTORRENT_EXPORT PeerSource : public QObject
 {

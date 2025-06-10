@@ -21,6 +21,9 @@ namespace dht
 {
 class AnnounceTask;
 
+/*!
+ * \brief Statistics about the DHT.
+ */
 struct Stats {
     //! number of peers in the routing table
     bt::Uint32 num_peers;
@@ -31,7 +34,7 @@ struct Stats {
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Interface for DHT class, this is to keep other things separate from the inner workings
+ * \brief Interface for DHT class, this is to keep other things separate from the inner workings
  * of the DHT.
  */
 class DHTBase : public QObject

@@ -14,6 +14,9 @@ namespace utp
 {
 class UTPServer;
 
+/*!
+ * \brief Thread which runs a UTP server.
+ */
 class KTORRENT_EXPORT UTPServerThread : public QThread
 {
     Q_OBJECT

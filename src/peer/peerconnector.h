@@ -22,8 +22,8 @@ class Authenticate;
 class PeerManager;
 
 /*!
-    Class which connects to a peer.
-*/
+ * \brief Connects to a peer.
+ */
 class KTORRENT_EXPORT PeerConnector : public Resource
 {
 public:

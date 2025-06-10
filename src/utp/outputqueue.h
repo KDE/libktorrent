@@ -19,7 +19,7 @@
 namespace utp
 {
 /*!
- * Manages the send queue of all UTP server sockets
+ * \brief Manages the send queue of all UTP server sockets.
  */
 class OutputQueue
 {

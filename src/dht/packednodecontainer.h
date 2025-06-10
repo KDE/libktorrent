@@ -13,8 +13,7 @@
 namespace dht
 {
 /*!
- * Packed node container utilitiy class.
- * Stores both nodes and nodes6 parameters of some DHT messages.
+ * \brief Stores both nodes and nodes6 parameters of some DHT messages.
  */
 class PackedNodeContainer
 {

@@ -16,8 +16,7 @@ namespace dht
 /*!
  * \author Joris Guisson
  *
- * Entry in a KBucket, it basically contains an ip_address of a node,
- * the udp port of the node and a node_id.
+ * \brief Entry in a KBucket, it basically contains an ip_address of a node, the udp port of the node and a node_id.
  */
 class KBucketEntry
 {
@@ -103,6 +102,9 @@ private:
     bt::Uint32 questionable_pings;
 };
 
+/*!
+ * \brief Convenience wrapper around a std::set of KBucketEntry.
+ */
 class KBucketEntrySet : public std::set<KBucketEntry>
 {
 public:

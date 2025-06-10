@@ -15,7 +15,7 @@ namespace net
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Thread which processes incoming data
+ * \brief Thread which processes incoming data
  */
 class DownloadThread : public NetworkThread
 {

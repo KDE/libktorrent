@@ -13,8 +13,8 @@
 namespace bt
 {
 /*!
- * \brief This class is used for loading/storing torrent stats in a file.
  * \author Ivan Vasic <ivasic@gmail.com>
+ * \brief Loads and stores torrent stats in a file.
  */
 class KTORRENT_EXPORT StatsFile
 {

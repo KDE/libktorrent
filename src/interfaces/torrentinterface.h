@@ -50,6 +50,9 @@ enum AutoStopReason {
     MAX_SEED_TIME_REACHED,
 };
 
+/*!
+ * \brief A DHT node.
+ */
 struct DHTNode {
     QString ip;
     bt::Uint16 port;
@@ -62,7 +65,7 @@ enum TorrentFeature {
 
 /*!
  * \author Joris Guisson
- * \brief Interface for an object which controls one torrent
+ * \brief Interface for an object which controls one torrent.
  *
  * This class is the interface for an object which controls the
  * up- and download of one torrent.

@@ -25,7 +25,8 @@ class Peer;
 class PeerManager;
 
 /*!
-    Class which tries to download the metadata associated to a MagnetLink
+    \brief Tries to download the metadata associated with a MagnetLink.
+
     It basically has a Tracker (optional), a DHTPeerSource and a PeerManager.
     With these it tries to find peers, connect to them and download the metadata.
 */

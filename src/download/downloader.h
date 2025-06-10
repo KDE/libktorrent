@@ -37,19 +37,21 @@ typedef PtrMap<Uint32, ChunkDownload>::const_iterator CurChunkCItr;
 
 #define CURRENT_CHUNK_MAGIC 0xABCDEF00
 
+/*!
+ * \brief The file-header used when saving the current downloads to a file.
+ */
 struct CurrentChunksHeader {
     Uint32 magic; // CURRENT_CHUNK_MAGIC
-    Uint32 major;
-    Uint32 minor;
+    Uint32 major; // Current libktorrent major version
+    Uint32 minor; // Current libktorrent minor version
     Uint32 num_chunks;
 };
 
 /*!
  * \author Joris Guisson
- * \brief Manages the downloading
+ * \brief Manages the downloading for one torrent.
  *
- * This class manages the downloading of the file. It should
- * regurarly be updated.
+ * It should be regularly updated.
  */
 class KTORRENT_EXPORT Downloader : public QObject, public PieceHandler
 {

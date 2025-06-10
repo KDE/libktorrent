@@ -15,7 +15,7 @@ namespace net
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
 
-    Measures the download and upload speed.
+    \brief Measures the download and upload speed.
 */
 class Speed
 {

@@ -19,7 +19,8 @@ namespace bt
 class ResourceManager;
 
 /*!
-    Represents a scarce resource which must be acquired from a ResouceManager.
+    \brief Represents a scarce resource which must be acquired from a ResourceManager.
+
     The ResourceManager will notify the Resource when it has been acquired.
  */
 class KTORRENT_EXPORT Resource
@@ -49,8 +50,7 @@ private:
 };
 
 /*!
-    Class which distributes resources equally over several groups.
-    Ensuring that each group gets it's fair share.
+ * \brief Distributes resources equally over several groups, ensuring that each group gets its fair share.
  */
 class KTORRENT_EXPORT ResourceManager
 {

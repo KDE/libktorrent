@@ -19,6 +19,7 @@ class RC4Encryptor;
 const bt::Uint32 MAX_SEA_BUF_SIZE = 608 + 20 + 20 + 8 + 4 + 2 + 512 + 2 + 68;
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
+    \brief Manages the handshake of incoming RC4 encrypted connections on the Server.
 */
 class EncryptedServerAuthenticate : public bt::ServerAuthenticate
 {

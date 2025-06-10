@@ -18,7 +18,7 @@ namespace bt
 {
 /*!
  * \author Ivan Vasic
- * \brief Base class for BlockLists
+ * \brief Interface for classes to implement for blocking IP addresses.
  */
 class KTORRENT_EXPORT BlockListInterface
 {

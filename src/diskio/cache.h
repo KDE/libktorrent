@@ -28,7 +28,7 @@ class Job;
 
 /*!
  * \author Joris Guisson
- * \brief Manages the temporary data
+ * \brief Interface for managing temporary downloaded data.
  *
  * Interface for a class which manages downloaded data.
  * Subclasses should implement the load and save methods.

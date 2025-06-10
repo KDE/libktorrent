@@ -18,8 +18,7 @@ namespace net
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Extends the TrafficShapedSocket with outbound bittorrent
- * packet queues.
+ * \brief Extends the TrafficShapedSocket with outbound bittorrent packet queues.
  */
 class PacketSocket : public TrafficShapedSocket
 {

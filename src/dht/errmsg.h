@@ -12,7 +12,7 @@
 namespace dht
 {
 /*!
- * Error message in the DHT protocol
+ * \brief Error message in the DHT protocol.
  */
 class KTORRENT_EXPORT ErrMsg : public RPCMsg
 {

@@ -27,7 +27,9 @@ class ConnectionLimit;
 
 const Uint32 MAX_SIMULTANIOUS_AUTHS = 20;
 
-//! Base class for handling pieces
+/*!
+ * \brief Interface that is notified whenever a piece is received.
+ */
 class KTORRENT_EXPORT PieceHandler
 {
 public:
@@ -40,7 +42,7 @@ public:
 
 /*!
  * \author Joris Guisson
- * \brief Manages all the Peers
+ * \brief Manages all the Peers for a given torrent.
  *
  * This class manages all Peer objects.
  * It can also open connections to other peers.
@@ -195,6 +197,9 @@ public:
      */
     void loadPeerList(const QString &file);
 
+    /*!
+     * \brief Implements the visitor pattern for all Peers owned by the PeerManager.
+     */
     class PeerVisitor
     {
     public:

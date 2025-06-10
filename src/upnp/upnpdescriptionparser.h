@@ -15,7 +15,7 @@ class UPnPRouter;
 /*!
  * \author Joris Guisson
  *
- * Parses the xml description of a router.
+ * \brief Parses the XML description of a router.
  */
 class UPnPDescriptionParser
 {

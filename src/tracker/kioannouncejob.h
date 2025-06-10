@@ -13,6 +13,9 @@
 
 namespace bt
 {
+/*!
+ * \brief KIO::Job that announces to a tracker (a HTTP get request).
+ */
 class KTORRENT_EXPORT KIOAnnounceJob : public KIO::Job
 {
     Q_OBJECT

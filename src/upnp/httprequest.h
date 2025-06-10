@@ -18,7 +18,8 @@ namespace bt
 /*!
  * \author Joris Guisson
  *
- * Simple HTTP request class.
+ * \brief Simple HTTP request class.
+ *
  * TODO: switch to KIO for this
  */
 class HTTPRequest : public bt::ExitOperation

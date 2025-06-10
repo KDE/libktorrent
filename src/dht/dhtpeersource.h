@@ -23,6 +23,7 @@ class AnnounceTask;
 
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
+    \brief Uses DHT to find peers.
 */
 class KTORRENT_EXPORT DHTPeerSource : public bt::PeerSource
 {

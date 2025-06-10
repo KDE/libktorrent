@@ -14,8 +14,9 @@
 namespace bt
 {
 /*!
-\author Joris Guisson
-*/
+ * \author Joris Guisson
+ * \brief Measures elapsed time.
+ */
 class KTORRENT_EXPORT Timer
 {
     TimeStamp last;
@@ -38,7 +39,10 @@ public:
     TimeStamp getElapsedSinceUpdate() const;
     Timer &operator=(const Timer &t);
 };
-#if 1
+
+/*!
+ * \brief Logs elapsed time.
+ */
 class Marker
 {
     QString name;
@@ -57,7 +61,6 @@ public:
         Out(SYS_GEN | LOG_DEBUG) << "Mark: " << name << " : " << timer.getElapsed() << " ms" << endl;
     }
 };
-#endif
 }
 
 #endif

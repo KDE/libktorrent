@@ -18,6 +18,9 @@ namespace bt
 {
 const Uint32 DND_FILE_HDR_MAGIC = 0xD1234567;
 
+/*!
+ * \brief Header of a DND file, contains the size of the first and last chunks.
+ */
 struct DNDFileHeader {
     Uint32 magic;
     Uint32 first_size;

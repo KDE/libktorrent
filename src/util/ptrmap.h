@@ -13,9 +13,8 @@ namespace bt
 {
 /*!
  * \author Joris Guisson
- * \brief Map of pointers
+ * \brief Map of pointers with an optional auto-delete feature.
  *
- * A Map where the data is a pointer. The PtrMap has an autodeletion feature.
  * When autodelete is on, every time we remove something from the map, the data
  * will be deleted.
  */

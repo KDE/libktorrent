@@ -20,6 +20,9 @@ struct Header;
 
 const bt::Uint32 DEFAULT_CAPACITY = 64 * 1024;
 
+/*!
+ * \brief A received packet that we have not yet acked.
+ */
 struct WindowPacket {
     WindowPacket(bt::Uint16 seq_nr);
     WindowPacket(bt::Uint16 seq_nr, bt::Buffer::Ptr packet, bt::Uint32 data_off);
@@ -35,8 +38,8 @@ struct WindowPacket {
 };
 
 /*!
-    Manages the local window of a UTP connection.
-*/
+ * \brief Manages the local window of a UTP connection.
+ */
 class KTORRENT_EXPORT LocalWindow
 {
 public:

@@ -19,7 +19,7 @@ namespace bt
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Thread to preallocate diskspace
+ * \brief Thread to preallocate diskspace.
  */
 class KTORRENT_EXPORT PreallocationThread : public QThread
 {

@@ -18,8 +18,8 @@ class UTMetaData;
 const int METADATA_PIECE_SIZE = 16 * 1024;
 
 /*!
-    Handles the metadatadownload
-*/
+ * \brief Handles the downloading of torrent metadata via the UT metadata extension (BEP 0009).
+ */
 class MetadataDownload
 {
 public:

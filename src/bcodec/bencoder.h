@@ -18,7 +18,7 @@ class File;
 /*!
  * \author Joris Guisson
  *
- * Interface for classes which wish to receive the output from a BEncoder.
+ * \brief Interface for classes which wish to receive the output from a BEncoder.
  */
 class KTORRENT_EXPORT BEncoderOutput
 {
@@ -35,7 +35,7 @@ public:
 };
 
 /*!
- * Writes the output of a bencoder to a file
+ * \brief Writes the output of a BEncoder to a file.
  */
 class KTORRENT_EXPORT BEncoderFileOutput : public BEncoderOutput
 {
@@ -48,7 +48,7 @@ public:
 };
 
 /*!
- * Write the output of a BEncoder to a QByteArray
+ * \brief Writes the output of a BEncoder to a QByteArray.
  */
 class KTORRENT_EXPORT BEncoderBufferOutput : public BEncoderOutput
 {
@@ -61,6 +61,9 @@ public:
     void write(const char *str, Uint32 len) override;
 };
 
+/*!
+ * \brief Writes the output of a BEncoder to a QIODevice.
+ */
 class KTORRENT_EXPORT BEncoderIODeviceOutput : public BEncoderOutput
 {
     QIODevice *dev;
@@ -73,11 +76,10 @@ public:
 
 /*!
  * \author Joris Guisson
- * \brief Helper class to b-encode stuff.
+ * \brief Bencodes data.
  *
- * This class b-encodes data. For more details about b-encoding, see
- * the BitTorrent protocol docs. The data gets written to a BEncoderOutput
- * thing.
+ * For more details about b-encoding, see the BitTorrent protocol docs.
+ * The data gets written to a BEncoderOutput.
  */
 class KTORRENT_EXPORT BEncoder
 {

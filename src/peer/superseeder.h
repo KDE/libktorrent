@@ -19,8 +19,9 @@ class PeerInterface;
 class BitSet;
 
 /*!
-    Class which manages superseeding. Superseeding is a way to achieve much higher seeding
-    efficiences, thereby allowing a peer to use much less bandwidth to get a torrent seeded.
+    \brief Manages the superseeding extension.
+
+    Superseeding is a way to achieve much higher seeding efficiences, thereby allowing a peer to use much less bandwidth to get a torrent seeded.
     \sa http://bittorrent.org/beps/bep_0016.html
 */
 class KTORRENT_EXPORT SuperSeeder

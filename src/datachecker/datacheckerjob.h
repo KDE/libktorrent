@@ -13,7 +13,9 @@ namespace bt
 {
 class DataCheckerThread;
 
-//! Job which runs a DataChecker
+/*!
+ * \brief Job which runs a DataChecker.
+ */
 class KTORRENT_EXPORT DataCheckerJob : public bt::Job, public Resource
 {
 public:

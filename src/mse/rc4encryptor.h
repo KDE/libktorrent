@@ -21,7 +21,8 @@ namespace mse
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * RC4 encryptor. Uses the RC4 algorithm to encrypt and decrypt data.
+ * \brief Uses the RC4 algorithm to encrypt and decrypt data.
+ *
  * This class has a static encryption buffer, which makes it not thread safe
  * because the buffer is not protected by mutexes.
  */

@@ -13,8 +13,8 @@
 namespace bt
 {
 /*!
-    Blocklist to keep track of bad peers.
-*/
+ * \brief Blocklist to keep track of bad peers.
+ */
 class BadPeersList : public BlockListInterface
 {
 public:

@@ -14,6 +14,9 @@
 
 namespace net
 {
+/*!
+ * \brief Interface for classes that implement socket behavior should inherit from.
+ */
 class SocketDevice
 {
 public:

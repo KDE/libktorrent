@@ -15,7 +15,7 @@ class TorrentFileInterface;
 
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
- * KIO::Job to move all the files of a torrent.
+ * \brief Job to move all files of a torrent.
  */
 class MoveDataFilesJob : public Job, public Resource
 {

@@ -19,7 +19,8 @@ class BadPeersList;
 /*!
     \author Joris Guisson
 
-    Class which determines whether or not we allow an IP to connect to us.
+    \brief Determines whether we allow an IP to connect to us.
+
     It uses blocklists to do this. Blocklists should register with this class.
     By default it has one blocklist, the banned peers list.
 */

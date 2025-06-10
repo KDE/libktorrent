@@ -26,7 +26,7 @@ class RC4Encryptor;
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Wrapper around a TCP socket which handles RC4 encryption.
+ * \brief Wrapper around a TCP socket which handles RC4 encryption.
  */
 class KTORRENT_EXPORT EncryptedPacketSocket : public net::PacketSocket
 {

@@ -15,7 +15,7 @@ namespace dht
 class RPCCall;
 
 /*!
- * Class which objects should derive from, if they want to know the result of a call.
+ * \brief Interface for classes that want to know the result of a call.
  */
 class RPCCallListener : public QObject
 {
@@ -39,6 +39,7 @@ public:
 
 /*!
  * \author Joris Guisson
+ * \brief Notifies RPCCallListener when an RPCMsg times out or receives a response.
  */
 class RPCCall : public QObject
 {

@@ -13,8 +13,10 @@
 namespace bt
 {
 /*!
-    Cross platform pipe implementation, uses socketpair on unix and a TCP connection over the localhost in windows.
-*/
+ * \brief Cross platform pipe implementation.
+ *
+ * Uses socketpair on unix and a TCP connection over the localhost in windows.
+ */
 class KTORRENT_EXPORT Pipe
 {
 public:

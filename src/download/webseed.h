@@ -26,7 +26,7 @@ class WebSeedChunkDownload;
 
 /*!
     \author Joris Guisson
-    Class which handles downloading from a webseed
+    \brief Handles downloading from a webseed.
 */
 class KTORRENT_EXPORT WebSeed : public QObject, public WebSeedInterface
 {
@@ -197,6 +197,9 @@ private:
     static bool proxy_enabled;
 };
 
+/*!
+ * \brief Handles the download of one Chunk from a WebSeed.
+ */
 class WebSeedChunkDownload : public ChunkDownloadInterface
 {
 public:

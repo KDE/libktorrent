@@ -17,7 +17,8 @@ namespace bt
 class PreallocationThread;
 
 /*!
- * Interface which classes must implement to be able to map something from a CacheFile
+ * \brief Interface which must be implemented to be able to map something from a CacheFile.
+ *
  * It will also be used to notify when things get unmapped or remapped
  */
 class MMappeable
@@ -36,7 +37,7 @@ public:
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
 
-    Used by Single and MultiFileCache to write to disk.
+    \brief Used by SingleFileCache and MultiFileCache to write to disk.
 */
 class CacheFile : public QObject
 {

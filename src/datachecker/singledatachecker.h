@@ -13,7 +13,7 @@ namespace bt
 /*!
  * \author Joris Guisson
  *
- * Data checker for single file torrents.
+ * \brief DataChecker for single file torrents.
  */
 class KTORRENT_EXPORT SingleDataChecker : public DataChecker
 {

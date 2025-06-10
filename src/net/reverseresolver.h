@@ -19,7 +19,8 @@ namespace net
 class ReverseResolverThread;
 
 /*!
-    Resolve an IP address into a hostname
+    \brief Resolves an IP address into a hostname.
+
     This should be threated as fire and forget objects, when using them asynchronously.
     The worker thread will delete them, when they are done.
 */
@@ -60,6 +61,9 @@ private:
     net::Address addr_to_resolve;
 };
 
+/*!
+ * \brief Thread that runs a list of ReverseResolver.
+ */
 class ReverseResolverThread : public QThread
 {
     Q_OBJECT

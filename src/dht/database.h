@@ -22,8 +22,7 @@ const bt::Uint32 MAX_ITEM_AGE = 30 * 60 * 1000;
 /*!
  * \author Joris Guisson
  *
- * Item in the database, will keep track of an IP and port combination.
- * As well as the time it was inserted.
+ * \brief Item in the database, keeps track of an IP and port combination as well as the time it was inserted.
  */
 class DBItem
 {
@@ -61,7 +60,7 @@ typedef QList<DBItem> DBItemList;
 /*!
  * \author Joris Guisson
  *
- * Class where all the key value paires get stored.
+ * \brief Database where all the key value pairs get stored.
  */
 class Database
 {

@@ -21,7 +21,7 @@ class PieceDownloader;
 /*!
  * \author Joris Guisson
  *
- * Interface class for selecting chunks to download.
+ * \brief Interface for selecting chunks to download.
  */
 class KTORRENT_EXPORT ChunkSelectorInterface
 {

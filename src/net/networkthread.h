@@ -19,7 +19,7 @@ class SocketMonitor;
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
 
-    Base class for the 2 networking threads. Handles the socket groups.
+    \brief Base class for the two networking threads. Handles the socket groups.
 */
 class NetworkThread : public QThread, public Poll
 {

@@ -12,8 +12,9 @@
 namespace bt
 {
 /*!
-\author Joris Guisson
-*/
+ * \author Joris Guisson
+ * \brief Represents a Peer's ID.
+ */
 class KTORRENT_EXPORT PeerID
 {
     char id[20];

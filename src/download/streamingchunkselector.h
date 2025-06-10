@@ -14,7 +14,8 @@
 namespace bt
 {
 /*!
-    ChunkSelector which supports streaming mode.
+    \brief ChunkSelector which supports streaming mode.
+
     It has a range of chunks which are to be downloaded sequentially. And it has a cursor, to support jumping around
     in the stream.
  */

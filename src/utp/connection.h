@@ -26,8 +26,8 @@ class LocalWindow;
 class Transmitter;
 
 /*!
-    Keeps track of a single UTP connection
-*/
+ * \brief Keeps track of a single UTP connection.
+ */
 class KTORRENT_EXPORT Connection : public QObject, public Retransmitter
 {
     Q_OBJECT
@@ -37,7 +37,9 @@ public:
         OUTGOING,
     };
 
-    //! Thrown when a transmission error occurs, server should kill the connection if it happens
+    /*!
+     * \brief Thrown when a transmission error occurs, server should kill the connection if it happens.
+     */
     class TransmissionError
     {
     public:
@@ -46,6 +48,9 @@ public:
         QString location;
     };
 
+    /*!
+     * \brief Statistics about the Connection.
+     */
     struct Stats {
         Type type;
         net::Address remote;
@@ -208,7 +213,7 @@ private:
 };
 
 /*!
-    Interface class for transmitting packets and notifying if a connection becomes readable or writeable
+ * \brief Interface class for transmitting packets and notifying if a connection becomes readable or writeable.
  */
 class KTORRENT_EXPORT Transmitter
 {

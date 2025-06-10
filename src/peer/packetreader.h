@@ -19,6 +19,9 @@ namespace bt
 {
 class PeerInterface;
 
+/*!
+ * \brief A partially or fully received BitTorrent packet that is yet to be processed.
+ */
 struct IncomingPacket {
     Uint32 size;
     Uint32 read;
@@ -62,8 +65,8 @@ public:
 };
 
 /*!
- * Chops up the raw byte stream from a socket into bittorrent packets
  * \author Joris Guisson
+ * \brief Chops up the raw byte stream from a socket into bittorrent packets.
  */
 class KTORRENT_EXPORT PacketReader : public net::SocketReader
 {

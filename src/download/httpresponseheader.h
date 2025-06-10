@@ -10,6 +10,9 @@
 #include <QMap>
 #include <QString>
 
+/*!
+ * \brief Response header information for HTTP.
+ */
 class HttpResponseHeader
 {
 public:

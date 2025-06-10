@@ -19,9 +19,7 @@ class BValueNode;
 
 /*!
  * \author Joris Guisson
- * \brief Decodes b-encoded data
- *
- * Class to decode b-encoded data.
+ * \brief Decodes bencoded data.
  */
 class KTORRENT_EXPORT BDecoder
 {

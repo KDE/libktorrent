@@ -17,7 +17,7 @@ namespace net
 /*!
  * \author Joris Guisson
  *
- * Class which handles the SOCKSv5 protocol
+ * \brief Handles the SOCKSv5 protocol.
  */
 class KTORRENT_EXPORT Socks : public QObject
 {

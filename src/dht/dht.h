@@ -43,6 +43,7 @@ class AnnounceReq;
 
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
+    \brief Handles everything to do with DHT.
 */
 class DHT : public DHTBase
 {

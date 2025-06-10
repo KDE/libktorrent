@@ -24,8 +24,7 @@ class UPnPRouter;
 /*!
  * \author Joris Guisson
  *
- * Socket used to discover UPnP devices. This class will keep track
- * of all discovered devices.
+ * \brief Socket used to discover and keep track of UPnP devices.
  */
 class KTORRENT_EXPORT UPnPMCastSocket : public QUdpSocket
 {

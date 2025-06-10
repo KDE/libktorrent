@@ -17,7 +17,8 @@ class PackedNodeContainer;
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Class used to store the search results during a K closests nodes search
+ * \brief Stores the search results during a K closests nodes search.
+ *
  * Note: we use a std::map because of lack of functionality in QMap
  */
 class KClosestNodesSearch

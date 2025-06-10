@@ -15,8 +15,9 @@
 namespace bt
 {
 /*!
-\author Joris Guisson
-*/
+ * \author Joris Guisson
+ * \brief DataChecker for multi-file torrents.
+ */
 class KTORRENT_EXPORT MultiDataChecker : public DataChecker
 {
 public:

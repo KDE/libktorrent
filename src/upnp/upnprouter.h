@@ -23,7 +23,7 @@ class HTTPRequest;
 class WaitJob;
 
 /*!
- * Structure describing a UPnP service found in an xml file.
+ * \brief Structure describing a UPnP service found in an XML file.
  */
 struct KTORRENT_EXPORT UPnPService {
     QString serviceid;
@@ -56,7 +56,7 @@ struct KTORRENT_EXPORT UPnPService {
 };
 
 /*!
- *  Struct to hold the description of a device
+ * \brief Struct to hold the description of a UPnP device.
  */
 struct KTORRENT_EXPORT UPnPDeviceDescription {
     QString friendlyName;
@@ -76,8 +76,9 @@ struct KTORRENT_EXPORT UPnPDeviceDescription {
 /*!
  * \author Joris Guisson
  *
- * Class representing a UPnP enabled router. This class is also used to communicate
- * with the router.
+ * \brief Represents a UPnP enabled router.
+ *
+ * This class is also used to communicate with the router.
  */
 class KTORRENT_EXPORT UPnPRouter : public QObject
 {
@@ -147,6 +148,8 @@ public:
     void undoForward(const net::Port &port, bt::WaitJob *waitjob = nullptr);
 
     /*!
+        \brief Implements the visitor pattern for port forwarding.
+
         In order to iterate over all forwardings, the visitor pattern must be used.
     */
     class Visitor

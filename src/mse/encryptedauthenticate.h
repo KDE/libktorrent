@@ -22,7 +22,7 @@ const bt::Uint32 MAX_EA_BUF_SIZE = 622 + 512;
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Encrypted version of the Authenticate class
+ * \brief RC4 encrypted version of the Authenticate class.
  */
 class EncryptedAuthenticate : public bt::Authenticate
 {

@@ -13,6 +13,9 @@ namespace bt
 class PreallocationThread;
 class ChunkManager;
 
+/*!
+ * \brief Job to preallocates disk space for a torrent.
+ */
 class KTORRENT_EXPORT PreallocationJob : public bt::Job
 {
     Q_OBJECT

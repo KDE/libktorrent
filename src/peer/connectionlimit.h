@@ -16,7 +16,7 @@
 namespace bt
 {
 /*!
- * Maintains the connection limit. It uses a Token for that.
+ * \brief Maintains the connection limit. It uses a Token for that.
  */
 class KTORRENT_EXPORT ConnectionLimit
 {
@@ -38,7 +38,7 @@ public:
     void setLimits(bt::Uint32 global_limit, bt::Uint32 torrent_limit);
 
     /*!
-     * Token representing the allowance to open a connection.
+     * \brief Token representing the allowance to open a connection.
      * When the token is destroyed, it will be automatically released.
      */
     class Token

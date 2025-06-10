@@ -13,7 +13,7 @@ namespace bt
 {
 /*!
  * \author Joris Guisson
- * \brief Simple implementation of a BitSet
+ * \brief Represents a fixed-size sequence of bits.
  *
  * Simple implementation of a BitSet, can only turn on and off bits.
  * BitSet's are used to indicate which chunks we have or not.

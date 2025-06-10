@@ -14,7 +14,7 @@ namespace dht
 {
 /*!
  * \author Joris Guisson
- * \brief Key in the distributed hash table
+ * \brief Key in the distributed hash table.
  *
  * Key's in the distributed hash table are just SHA-1 hashes.
  * Key provides all necessary operators to be used as a value.

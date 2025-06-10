@@ -13,7 +13,7 @@
 namespace dht
 {
 /*!
- * Interface to resolve the method of an RPC call given an mtid
+ * \brief Interface to resolve the method of an RPC call given a message transaction ID.
  */
 class RPCMethodResolver
 {
@@ -27,7 +27,7 @@ public:
 };
 
 /*!
- * Creates RPC message objects out of a BDictNode
+ * \brief Creates RPC message objects out of a BDictNode.
  */
 class KTORRENT_EXPORT RPCMsgFactory
 {

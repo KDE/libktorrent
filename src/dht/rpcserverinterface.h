@@ -14,7 +14,7 @@ namespace dht
 class RPCCall;
 
 /*!
- * Interface class for an RPCServer
+ * \brief Interface class for an RPCServer.
  */
 class RPCServerInterface
 {

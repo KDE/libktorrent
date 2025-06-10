@@ -15,7 +15,7 @@ namespace bt
 {
 /*!
  * \author Joris Guisson
- * \brief Interface for a Peer
+ * \brief Interface for a Peer.
  *
  * This is the interface for a Peer, it allows other classes to
  * get statistics about a Peer, and provides some basic functionality provided by a Peer.
@@ -31,6 +31,9 @@ public:
     PeerInterface(const PeerID &peer_id, Uint32 num_chunks);
     virtual ~PeerInterface();
 
+    /*!
+     * \brief Information about the peer.
+     */
     struct Stats {
         //! IP address of peer (dotted notation)
         QString ip_address;

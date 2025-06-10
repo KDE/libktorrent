@@ -15,8 +15,7 @@ namespace bt
 /*!
  * \author Joris Guisson
  *
- * Template array classes, makes creating dynamic buffers easier
- * and safer.
+ * \brief Fixed capacity dynamically allocated buffer.
  */
 template<class T> class KTORRENT_EXPORT Array
 {

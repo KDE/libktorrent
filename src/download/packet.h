@@ -28,7 +28,7 @@ class Peer;
 /*!
  * \author Joris Guisson
  *
- * Packet off data, which gets sent to a Peer
+ * \brief Packet of data, which gets sent to a Peer.
  */
 class Packet :
     public boost::intrusive_ref_counter<Packet>

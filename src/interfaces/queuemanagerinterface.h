@@ -16,8 +16,8 @@ class TorrentControl;
 struct TrackerTier;
 
 /*!
-    \author
-*/
+ * \brief Interface that should own all TorrentInterface's, and is used to ensure a torrent isn't loaded twice.
+ */
 class KTORRENT_EXPORT QueueManagerInterface
 {
     static bool qm_enabled;

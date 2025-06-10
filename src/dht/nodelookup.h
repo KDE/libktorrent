@@ -17,7 +17,7 @@ class RPCServer;
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Task to do a node lookup.
+ * \brief Task to do a node lookup.
  */
 class NodeLookup : public Task
 {

@@ -18,8 +18,8 @@ const Uint32 UT_PEX_ID = 1;
 const Uint32 UT_METADATA_ID = 2;
 
 /*!
-    Base class for protocol extensions
-*/
+ * \brief Base class for protocol extensions.
+ */
 class KTORRENT_EXPORT PeerProtocolExtension
 {
 public:

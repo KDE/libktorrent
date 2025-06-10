@@ -15,8 +15,9 @@ namespace bt
 class TorrentControl;
 
 /*!
- * Simple queue class for samples. Optimized for speed and size
- * without possibility to dynamically resize itself.
+ * \brief Simple queue class for download/upload-rate samples.
+ *
+ * Optimized for speed and size without possibility to dynamically resize itself.
  * \author Ivan Vasic <ivasic@gmail.com>
  */
 class SampleQueue
@@ -58,7 +59,9 @@ private:
 };
 
 /*!
- * ETA estimator class. It will use different algorithms for different download phases.
+ * \brief Estimates the time remaining when downloading a torrent.
+ *
+ * It will use different algorithms for different download phases.
  * \author Ivan Vasic <ivasic@gmail.com>
  */
 class KTORRENT_EXPORT TimeEstimator

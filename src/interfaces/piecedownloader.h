@@ -17,8 +17,8 @@ class Piece;
 class Request;
 
 /*!
- * Interface for all things which want to download pieces from something.
  * \author Joris Guisson
+ * \brief Interface for all things which want to download pieces from a source.
  */
 class KTORRENT_EXPORT PieceDownloader : public QObject
 {

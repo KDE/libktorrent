@@ -17,9 +17,7 @@ namespace bt
 {
 /*!
  * \author Joris Guisson
- * \brief Interface for a file in a multifile torrent
- *
- * This class is the interface for a file in a multifile torrent.
+ * \brief Interface for a file in a multifile torrent.
  */
 class KTORRENT_EXPORT TorrentFileInterface : public QObject
 {

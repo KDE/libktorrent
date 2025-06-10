@@ -17,8 +17,9 @@ class TorrentFile;
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Special file where we keep the first and last chunk of a file which is marked as do not download.
- * THe first and last chunk of a file will most certainly be partial chunks.
+ * \brief Special file where we keep the first and last chunk of a file which is marked as do not download.
+ *
+ * The first and last chunk of a file will most certainly be partial chunks.
  */
 class DNDFile
 {

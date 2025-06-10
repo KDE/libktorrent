@@ -19,8 +19,9 @@ class Torrent;
 /*!
  * \author Joris Guisson
  *
- * File in a multi file torrent. Keeps track of the path of the file,
- * it's size, offset into the cache and between which chunks it lies.
+ * \brief A file in a multi file torrent.
+ *
+ * Keeps track of the path of the file, it's size, offset into the cache and between which chunks it lies.
  */
 class KTORRENT_EXPORT TorrentFile : public TorrentFileInterface
 {

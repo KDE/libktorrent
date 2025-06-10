@@ -14,7 +14,7 @@ class PieceDownloader;
 
 /*!
  * \author Joris Guisson
- * \brief Request of a piece sent to other peers
+ * \brief Request of a piece sent to other peers.
  *
  * This class keeps track of a request of a piece.
  * The Request consists of an index (the index of the chunk),

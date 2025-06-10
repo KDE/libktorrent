@@ -28,7 +28,7 @@ namespace bt
 /*!
  * \author Joris Guisson
  *
- * Class which handles communication with one or more UDP trackers.
+ * \brief Handles communication with one or more UDP trackers.
  */
 class KTORRENT_EXPORT UDPTrackerSocket : public QObject
 {

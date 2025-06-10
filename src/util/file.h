@@ -16,9 +16,7 @@ namespace bt
 {
 /*!
  * \author Joris Guisson
- * \brief Wrapper class for stdio's FILE
- *
- * Wrapper class for stdio's FILE.
+ * \brief Wrapper class for stdio's FILE.
  */
 class KTORRENT_EXPORT File
 {

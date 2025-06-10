@@ -18,9 +18,9 @@ class PieceData;
 
 /*!
  * \author Joris Guisson
- * \brief Keep track of a piece of the file
+ * \brief Keeps track of a chunk of a file. This can contain multiple bittorrent pieces.
  *
- * Keeps track of a piece of the file. The Chunk has 3 possible states :
+ * The Chunk has 3 possible states :
  * - MMAPPED : It is memory mapped
  * - BUFFERED : It is in a buffer in dynamically allocated memory
  *  (because the chunk is located in 2 or more separate files, so we cannot just set a pointer

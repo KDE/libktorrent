@@ -20,7 +20,7 @@ class ChunkManager;
 struct TorrentStats;
 
 /*!
- * Base class for all choke algorithms.
+ * \brief Base class for all choke algorithms.
  */
 class ChokeAlgorithm
 {
@@ -56,7 +56,7 @@ public:
 
 /*!
  * \author Joris Guisson
- * \brief Handles the choking
+ * \brief Runs the ChokeAlgorithm for a given torrent.
  *
  * This class handles the choking and unchoking of Peer's.
  * This class needs to be updated every 10 seconds.

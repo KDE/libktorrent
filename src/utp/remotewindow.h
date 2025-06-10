@@ -20,6 +20,9 @@ namespace utp
 struct SelectiveAck;
 struct Header;
 
+/*!
+ * \brief A packet that we have sent that has not yet been acked by the remote window.
+ */
 struct UnackedPacket {
     UnackedPacket(const PacketBuffer &packet, bt::Uint16 seq_nr, bt::TimeStamp send_time);
     ~UnackedPacket();
@@ -31,8 +34,8 @@ struct UnackedPacket {
 };
 
 /*!
-    The Retransmitter provides is an interface class to retransmit packets
-*/
+ * \brief An interface class to retransmit packets.
+ */
 class KTORRENT_EXPORT Retransmitter
 {
 public:
@@ -51,8 +54,8 @@ public:
 };
 
 /*!
-    Keeps track of the remote sides window including all packets inflight.
-*/
+ * \brief Keeps track of the remote sides window including all packets in-flight.
+ */
 class KTORRENT_EXPORT RemoteWindow
 {
 public:

@@ -13,7 +13,7 @@ namespace bt
 {
 /*!
  * \author Joris Guisson
- * \brief Interface for a ChunkDownload
+ * \brief Interface for a ChunkDownload.
  *
  * This class provides the interface for a ChunkDownload object.
  */
@@ -23,6 +23,9 @@ public:
     ChunkDownloadInterface();
     virtual ~ChunkDownloadInterface();
 
+    /*!
+     * \brief Statistics about the chunk.
+     */
     struct Stats {
         //! The PeerID of the current downloader
         QString current_peer_id;

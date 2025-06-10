@@ -14,7 +14,7 @@ namespace bt
 {
 /*!
  * \author Joris Guisson
- * \brief Interface for classes who which to receive which log messages are printed
+ * \brief Interface that is notified every time a log message is written.
  *
  * This class is an interface for all classes which want to know,
  * what is written to the log.

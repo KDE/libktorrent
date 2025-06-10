@@ -14,6 +14,9 @@ namespace bt
 struct TrackerTier;
 class TrackerInterface;
 
+/*!
+ * \brief The combined status of all trackers in a TrackersList.
+ */
 struct TrackersStatusInfo {
     int trackers_count;
     int errors;
@@ -24,7 +27,7 @@ struct TrackersStatusInfo {
 /*!
  * \author Ivan Vasić <ivasic@gmail.com>
  *
- * This interface is used to provide access to AnnounceList object which holds a list of available trackers for a torrent.
+ * \brief This interface is used to provide access to AnnounceList object which holds a list of available trackers for a torrent.
  */
 class KTORRENT_EXPORT TrackersList
 {

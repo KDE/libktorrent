@@ -19,7 +19,8 @@ class TrafficShapedSocket;
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Monitors all sockets for upload and download traffic.
+ * \brief Monitors all sockets for upload and download traffic.
+ *
  * It uses two threads to do this.
  */
 class KTORRENT_EXPORT SocketMonitor

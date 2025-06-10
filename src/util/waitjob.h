@@ -18,7 +18,7 @@ namespace bt
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Job to wait for a certain amount of time or until one or more ExitOperation's have
+ * \brief KIO::Job to wait for a certain amount of time or until one or more ExitOperation's have
  * finished.
  */
 class KTORRENT_EXPORT WaitJob : public KIO::Job

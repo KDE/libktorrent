@@ -22,8 +22,8 @@ using namespace bt;
 using namespace Qt::Literals::StringLiterals;
 
 /*!
-    Server which simulates packet loss
-*/
+ * \brief Server which simulates packet loss.
+ */
 class CongestionTestServer : public UTPServer
 {
     Q_OBJECT

@@ -25,8 +25,8 @@ using namespace Qt::Literals::StringLiterals;
 const QLatin1StringView TEST_DATA = "This is the packet loss test\n"_L1;
 
 /*!
-    Server which simulates packet loss
-*/
+ * \brief Server which simulates packet loss.
+ */
 class PacketLossServer : public UTPServer
 {
 public:

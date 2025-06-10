@@ -26,8 +26,8 @@ const bt::Uint32 WANT_BOTH = WANT_IPV4 | WANT_IPV6;
 /*!
  * \author Joris Guisson
  *
- * A Node represents us in the kademlia network. It contains
- * our id and 160 KBucket's.
+ * \brief Represents us in the kademlia network. It contains our id and 160 KBucket's.
+ *
  * A KBucketEntry is in node i, when the difference between our id and
  * the KBucketEntry's id is between 2 to the power i and 2 to the power i+1.
  */

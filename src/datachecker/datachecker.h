@@ -18,6 +18,7 @@ class Torrent;
 
 /*!
  * \author Joris Guisson
+ * \brief Interface for checking which chunks of a torrent are downloaded.
  *
  * Checks which data is downloaded, given a torrent and a file or directory containing
  * files of the torrent.

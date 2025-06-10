@@ -15,8 +15,8 @@
 namespace utp
 {
 /*!
-    UTPSocket class serves as an interface for the networking code.
-*/
+ * \brief Socket for handling UTP connections.
+ */
 class KTORRENT_EXPORT UTPSocket : public net::SocketDevice
 {
 public:

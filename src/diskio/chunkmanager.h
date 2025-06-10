@@ -27,6 +27,9 @@ class TorrentFileInterface;
 class CacheFactory;
 class Job;
 
+/*!
+ * \brief Header used when saving the indices of Chunks that are not yet downloaded.
+ */
 struct NewChunkHeader {
     unsigned int index; // the Chunks index
     unsigned int deprecated; // offset in cache file
@@ -35,7 +38,7 @@ struct NewChunkHeader {
 /*!
  * \author Joris Guisson
  *
- * Manages all Chunk's and the cache file, where all the chunk's are stored.
+ * \brief Manages all Chunks and the cache file, where all the chunk's are stored.
  * It also manages a separate index file, where the position of each piece
  * in the cache file is stored.
  *

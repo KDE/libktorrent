@@ -13,8 +13,11 @@
 namespace bt
 {
 /*!
-\author Joris Guisson
-*/
+ * \author Joris Guisson
+ * \brief Empty class for constructing SOAP commands.
+ *
+ * TODO: why not just use a namespace?
+ */
 class SOAP
 {
 public:
@@ -26,6 +29,9 @@ public:
      */
     static QString createCommand(const QString &action, const QString &service);
 
+    /*!
+     * \brief An argument for a UPnP SOAP command.
+     */
     struct Arg {
         QString element;
         QString value;

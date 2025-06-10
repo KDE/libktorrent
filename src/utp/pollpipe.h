@@ -14,8 +14,8 @@
 namespace utp
 {
 /*!
-    Special wake up pipe for UTP polling
-*/
+ * \brief Special wake up pipe for UTP polling.
+ */
 class PollPipe : public net::WakeUpPipe
 {
 public:

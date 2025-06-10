@@ -24,7 +24,7 @@ class DHT;
 /*!
  * \author Joris Guisson
  *
- * Class to handle incoming and outgoing RPC messages.
+ * \brief Handles incoming and outgoing RPC messages.
  */
 class RPCServer : public QObject, public RPCServerInterface
 {

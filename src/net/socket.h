@@ -18,6 +18,7 @@ const int SEND_WOULD_BLOCK = -1;
 
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
+    \brief A TCP or UDP socket.
 */
 class KTORRENT_EXPORT Socket : public SocketDevice
 {

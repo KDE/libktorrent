@@ -17,7 +17,7 @@ namespace bt
 class ExtractFileThread;
 
 /*!
-    Job which extracts a single file out of an archive
+    \brief Extracts a single file out of an archive.
 */
 class KTORRENT_EXPORT ExtractFileJob : public KIO::Job
 {

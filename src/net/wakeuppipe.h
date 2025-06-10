@@ -14,7 +14,8 @@
 namespace net
 {
 /*!
-    A WakeUpPipe's purpose is to wakeup a select or poll call.
+    \brief A WakeUpPipe's purpose is to wakeup a select or poll call.
+
     It works by using a pipe
     One end needs to be part of the poll or select, and the other end will send dummy data to it.
     Waking up the select or poll call.

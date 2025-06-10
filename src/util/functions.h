@@ -170,6 +170,9 @@ template<class T> QString hex(T val)
     return QStringLiteral("0x%1").arg(val, 0, 16);
 }
 
+/*!
+ * \brief Provides access serialization for recursive function calls.
+ */
 struct KTORRENT_EXPORT RecursiveEntryGuard {
     bool *guard;
 

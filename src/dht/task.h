@@ -26,8 +26,7 @@ const bt::Uint32 MAX_CONCURRENT_REQS = 16;
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Performs a task on K nodes provided by a KClosestNodesSearch.
- * This is a base class for all tasks.
+ * \brief Interface class that performs a task on K nodes provided by a KClosestNodesSearch.
  */
 class Task : public RPCCallListener
 {

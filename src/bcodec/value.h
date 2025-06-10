@@ -13,8 +13,9 @@
 namespace bt
 {
 /*!
-\author Joris Guisson
-*/
+ * \author Joris Guisson
+ * \brief Acts like a union for bencoded data types.
+ */
 class KTORRENT_EXPORT Value
 {
 public:

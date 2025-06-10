@@ -11,8 +11,9 @@
 namespace bt
 {
 /*!
-\author Joris Guisson
-*/
+ * \author Joris Guisson
+ * \brief A piece in a torrent.
+ */
 class Piece : public Request
 {
 public:

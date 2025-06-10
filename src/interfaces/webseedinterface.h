@@ -14,8 +14,8 @@
 namespace bt
 {
 /*!
-    Interface for WebSeeds
-*/
+ * \brief Interface for WebSeeds.
+ */
 class KTORRENT_EXPORT WebSeedInterface
 {
 public:

@@ -18,7 +18,7 @@ namespace utp
 struct Header;
 
 /*!
- * Special packet buffer for UTP packets
+ * \brief Special packet buffer for UTP packets.
  **/
 class KTORRENT_EXPORT PacketBuffer
 {

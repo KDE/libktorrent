@@ -17,6 +17,7 @@ class SocketMonitor;
 
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
+    \brief Thread which processes outgoing data.
 */
 class UploadThread : public NetworkThread
 {

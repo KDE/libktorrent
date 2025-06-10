@@ -16,8 +16,9 @@ class Log;
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
 
-    Job which handles the rotation of the log file.
-    This Job must do several move jobs which must be done sequentially.
+    \brief KIO::Job which handles the rotation of the log file.
+
+    This job must do several move jobs which must be done sequentially.
 */
 class AutoRotateLogJob : public KIO::Job
 {

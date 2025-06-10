@@ -19,8 +19,8 @@ class SHA1Hash;
 class PeerManager;
 
 /*!
-    Base class for all servers which accept connections.
-*/
+ * \brief Interface for all servers which accept connections.
+ */
 class KTORRENT_EXPORT ServerInterface : public QObject
 {
     Q_OBJECT

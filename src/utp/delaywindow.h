@@ -16,6 +16,9 @@ namespace utp
 {
 const bt::Uint32 MAX_DELAY = 0xFFFFFFFF;
 
+/*!
+ * \brief Keeps track of the delay of all packets over the past two minutes.
+ */
 class KTORRENT_EXPORT DelayWindow
 {
 public:

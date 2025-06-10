@@ -45,7 +45,7 @@ class DataCheckerJob;
 
 /*!
  * \author Joris Guisson
- * \brief Controls just about everything
+ * \brief Controls just about everything for a single torrent.
  *
  * This is the interface which any user gets to deal with.
  * This class controls the uploading, downloading, choking,

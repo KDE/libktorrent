@@ -32,7 +32,8 @@ const bt::Uint32 BUCKET_REFRESH_INTERVAL = 15 * 60 * 1000;
 /*!
  * \author Joris Guisson
  *
- * A KBucket is just a list of KBucketEntry objects.
+ * \brief A KBucket is just a list of KBucketEntry objects.
+ *
  * The list is sorted by time last seen :
  * The first element is the least recently seen, the last
  * the most recently seen.
@@ -66,6 +67,9 @@ public:
     //! Are we allowed to split
     bool splitAllowed() const;
 
+    /*!
+     * \brief The exception thrown when attempting to split a KBucket that can only contain a single key.
+     */
     class UnableToSplit
     {
     };

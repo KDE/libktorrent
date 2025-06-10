@@ -23,7 +23,8 @@ class TorrentInterface;
 class BitSet;
 
 /*!
-    QIODevice which streams a file of a torrent or the whole torrent (for single file torrents)
+    \brief QIODevice which streams a file of a torrent or the whole torrent (for single file torrents).
+
     This object should not be manually constructed.
 */
 class KTORRENT_EXPORT TorrentFileStream : public QIODevice

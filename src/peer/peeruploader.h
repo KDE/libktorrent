@@ -18,7 +18,7 @@ const Uint32 ALLOWED_FAST_SIZE = 8;
 
 /*!
  * \author Joris Guisson
- * \brief Uploads pieces to a Peer
+ * \brief Uploads pieces to a Peer.
  *
  * This class handles the uploading of pieces to a Peer. It keeps
  * track of a list of Request objects. All these Requests where sent

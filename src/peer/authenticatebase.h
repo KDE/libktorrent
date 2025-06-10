@@ -21,10 +21,10 @@ class PeerID;
 /*!
  * \author Joris Guisson
  *
- * Base class for authentication classes. This class just groups
- * some common stuff between Authenticate and ServerAuthentciate.
- * It has a socket, handles the timing out, provides a function to send
- * the handshake.
+ * \brief Base class for carrying out the handshake when connecting to a Peer.
+ *
+ * This class just groups some common stuff between Authenticate and ServerAuthenticate.
+ * It has a socket, handles the timing out, provides a function to send the handshake.
  */
 class AuthenticateBase : public QObject
 {

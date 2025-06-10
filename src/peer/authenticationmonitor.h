@@ -18,7 +18,7 @@ class AuthenticateBase;
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
 
-    Monitors ongoing authentication attempts. This class is a singleton.
+    \brief Singleton that monitors ongoing authentication attempts.
 */
 class KTORRENT_EXPORT AuthenticationMonitor : public net::Poll
 {

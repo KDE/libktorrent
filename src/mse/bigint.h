@@ -16,8 +16,9 @@ namespace mse
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Class which can hold an arbitrary large integer. This will be a very important part of our
- * MSE implementation.
+ * \brief Holds an arbitrary large integer.
+ *
+ * This will be a very important part of our MSE implementation.
  */
 class BigInt
 {

@@ -16,7 +16,7 @@ class BitSet;
 /*!
  * \author Joris Guisson
  *
- * Class to keep track of how many peers have a chunk.
+ * \brief Keeps track of how many peers have a chunk.
  */
 class KTORRENT_EXPORT ChunkCounter
 {

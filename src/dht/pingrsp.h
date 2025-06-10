@@ -12,7 +12,7 @@
 namespace dht
 {
 /*!
- * Ping response message in the DHT protocol
+ * \brief Ping response message in the DHT protocol.
  */
 class KTORRENT_EXPORT PingRsp : public RPCMsg
 {

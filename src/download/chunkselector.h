@@ -21,7 +21,7 @@ class PieceDownloader;
 /*!
  * \author Joris Guisson
  *
- * Selects which Chunks to download.
+ * \brief Selects which Chunks to download.
  */
 class ChunkSelector : public ChunkSelectorInterface
 {

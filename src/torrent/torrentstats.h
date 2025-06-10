@@ -36,6 +36,9 @@ enum TorrentStatus {
     INVALID_STATUS,
 };
 
+/*!
+ * \brief Stores statistics about a torrent.
+ */
 struct KTORRENT_EXPORT TorrentStats {
     //! Error message for the user
     QString error_msg;

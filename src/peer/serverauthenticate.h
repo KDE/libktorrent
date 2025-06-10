@@ -13,7 +13,8 @@ namespace bt
 /*!
  * \author Joris Guisson
  *
- * Handles the authentication of incoming connections on the Server.
+ * \brief Manages the handshake of incoming connections on the Server.
+ *
  * Once the authentication is finished, the socket gets handed over
  * to the right PeerManager.
  */

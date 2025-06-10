@@ -24,8 +24,8 @@ namespace bt
 extern KTORRENT_EXPORT sigjmp_buf sigbus_env;
 
 /*!
- * Protects against SIGBUS errors when doing mmapped IO
- **/
+ * \brief Protects against SIGBUS errors when doing mmapped IO.
+ */
 class KTORRENT_EXPORT BusErrorGuard
 {
 public:
@@ -34,8 +34,8 @@ public:
 };
 
 /*!
-    Exception throw when a SIGBUS is caught.
-*/
+ * \brief Exception thrown when a SIGBUS is caught.
+ */
 class KTORRENT_EXPORT BusError : public bt::Error
 {
 public:
@@ -47,7 +47,7 @@ public:
 };
 
 /*!
- * Class to handle UNIX signals (not Qt ones)
+ * \brief Class to handle UNIX signals (not Qt ones).
  */
 class KTORRENT_EXPORT SignalCatcher : public QObject
 {

@@ -36,7 +36,7 @@ class BitSet;
 
 /*!
  * \author Joris Guisson
- * \brief Manages the connection with a peer
+ * \brief Manages the connection with a peer.
  *
  * This class manages a connection with a peer in the P2P network.
  * It provides functions for sending packets. Packets it receives

@@ -25,18 +25,27 @@ class Peer;
 class Request;
 class PieceDownloader;
 
+/*!
+ * \brief The header used when saving the progress of the a chunk to a file.
+ */
 struct ChunkDownloadHeader {
     Uint32 index;
     Uint32 num_bits;
     Uint32 buffered;
 };
 
+/*!
+ * \brief The header used when saving the progress of a piece from a chunk to a file.
+ */
 struct PieceHeader {
     Uint32 piece;
     Uint32 size;
     Uint32 mapped;
 };
 
+/*!
+ * \brief The status of one piece inside a chunk.
+ */
 class DownloadStatus
 {
 public:
@@ -74,9 +83,7 @@ private:
 
 /*!
  * \author Joris Guisson
- * \brief Handles the download off one Chunk off a Peer
- *
- * This class handles the download of one Chunk.
+ * \brief Handles the download of one Chunk from a Peer.
  */
 class KTORRENT_EXPORT ChunkDownload : public QObject, public ChunkDownloadInterface
 {

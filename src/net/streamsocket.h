@@ -12,6 +12,9 @@
 
 namespace net
 {
+/*!
+ * \brief Interface for receiving notifications when a StreamSocket sends data.
+ */
 class StreamSocketListener
 {
 public:
@@ -29,9 +32,10 @@ public:
      */
     virtual void dataSent() = 0;
 };
+
 /*!
- * TrafficShapedSocket which provides a simple buffer as outbound data queue.
- * And a callback interface (StreamSocketListener) for notification of events.
+ * \brief TrafficShapedSocket which provides a simple buffer as outbound data queue,
+ * and a callback interface (StreamSocketListener) for notification of events.
  */
 class StreamSocket : public net::TrafficShapedSocket
 {

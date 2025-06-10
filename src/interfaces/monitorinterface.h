@@ -16,7 +16,7 @@ class TorrentFileInterface;
 
 /*!
  * \author Joris Guisson
- * \brief Interface for classes who want to monitor a TorrentInterface
+ * \brief Interface for classes who want to monitor a TorrentInterface.
  *
  * Classes who want to keep track of all peers currently connected for a given
  * torrent and all chunks who are currently downloading can implement this interface.

@@ -46,7 +46,7 @@ const QByteArray ARG = "a";
 const QByteArray ERR_DHT = "e";
 
 /*!
- * Base class for all RPC messages.
+ * \brief Base class for all RPC messages.
  */
 class KTORRENT_EXPORT RPCMsg
 {

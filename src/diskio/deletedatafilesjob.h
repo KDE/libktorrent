@@ -16,7 +16,7 @@ namespace bt
 {
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
- * KIO::Job to delete all the files of a torrent.
+ * \brief Job to delete all the files of a torrent.
  */
 class DeleteDataFilesJob : public Job
 {

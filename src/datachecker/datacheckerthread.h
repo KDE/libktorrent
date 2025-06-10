@@ -18,7 +18,7 @@ class DataChecker;
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
 
-    Thread which runs the data check.
+    \brief Thread which runs a DataChecker.
 */
 class KTORRENT_EXPORT DataCheckerThread : public QThread
 {

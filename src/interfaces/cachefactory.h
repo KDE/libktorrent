@@ -16,7 +16,9 @@ class Cache;
 class Torrent;
 
 /*!
- * Factory to create Cache objects. If you want a custom Cache you need to derive from this class
+ * \brief Interface to implement for creating custom Cache objects.
+ *
+ * If you want a custom Cache you need to derive from this class
  * and implement the create method to create your own custom Caches.
  * \author Joris Guisson
  */

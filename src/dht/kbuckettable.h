@@ -13,7 +13,7 @@
 namespace dht
 {
 /*!
- * Holds a table of buckets.
+ * \brief Holds a table of buckets.
  */
 class KBucketTable
 {

@@ -15,7 +15,7 @@ namespace bt
 {
 /*!
  * \author Joris Guisson
- * \brief Cache for multi file torrents
+ * \brief Cache for multi file torrents.
  *
  * This class manages a multi file torrent cache. Everything gets stored in the
  * correct files immediately.

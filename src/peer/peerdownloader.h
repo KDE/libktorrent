@@ -18,7 +18,7 @@ class Request;
 class Piece;
 
 /*!
- * Request with a timestamp.
+ * \brief Request with a timestamp.
  */
 struct TimeStampedRequest {
     Request req;
@@ -78,9 +78,7 @@ struct TimeStampedRequest {
 
 /*!
  * \author Joris Guisson
- * \brief Class which downloads pieces from a Peer
- *
- * This class downloads Piece's from a Peer.
+ * \brief Downloads pieces from a Peer.
  */
 class PeerDownloader : public PieceDownloader
 {

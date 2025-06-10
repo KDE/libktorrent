@@ -20,9 +20,9 @@ class QUrl;
 namespace bt
 {
 /*!
-    Interface used by the Tracker to obtain the data it needs to know
-    when announcing.
-*/
+ * \brief Interface used by the Tracker to obtain the data it needs to know
+ * when announcing.
+ */
 class KTORRENT_EXPORT TrackerDataSource
 {
 public:
@@ -38,7 +38,7 @@ public:
 };
 
 /*!
- * Base class for all tracker classes.
+ * \brief Base class for all tracker classes.
  */
 class KTORRENT_EXPORT Tracker : public PeerSource, public TrackerInterface
 {

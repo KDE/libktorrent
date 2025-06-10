@@ -23,9 +23,8 @@ class UDPTrackerSocket;
 
 /*!
  * \author Joris Guisson
- * \brief Communicates with an UDP tracker
+ * \brief Communicates with a UDP tracker.
  *
- * This class is able to communicate with an UDP tracker.
  * This is an implementation of the protocol described in
  * http://xbtt.sourceforge.net/udp_tracker_protocol.html
  */

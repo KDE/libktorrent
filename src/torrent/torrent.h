@@ -27,6 +27,9 @@ class BNode;
 class BDictNode;
 class BListNode;
 
+/*!
+ * \brief A heirarchy of trackers for a torrent.
+ */
 struct TrackerTier {
     QList<QUrl> urls;
     std::unique_ptr<TrackerTier> next;
@@ -35,7 +38,7 @@ struct TrackerTier {
 /*!
  * \author Joris Guisson
  *
- * Listener base class, to get notified when the priority of a file changes.
+ * \brief Listener base class, to get notified when the priority of a file changes.
  */
 class KTORRENT_EXPORT FilePriorityListener
 {
@@ -49,7 +52,7 @@ public:
 
 /*!
  * \author Joris Guisson
- * \brief Loads a .torrent file
+ * \brief Loads a .torrent file.
  *
  * Loads a torrent file and calculates some miscelanious other data,
  * like the info_hash and the peer_id.

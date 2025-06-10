@@ -21,7 +21,7 @@ namespace bt
 class BufferPool;
 
 /*!
- * Buffer object, extends shared_ptr with a size and capacity property.
+ * \brief A fixed-capacity byte array that can be leased from a BufferPool.
  **/
 class KTORRENT_EXPORT Buffer
 {
@@ -64,7 +64,7 @@ private:
 };
 
 /*!
- * Keeps track of a pool of buffers.
+ * \brief Keeps track of a pool of buffers.
  **/
 class KTORRENT_EXPORT BufferPool
 {

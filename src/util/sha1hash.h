@@ -18,10 +18,9 @@ class Log;
 
 /*!
  * \author Joris Guisson
- * \brief Stores a SHA1 hash
+ * \brief Stores a SHA-1 hash.
  *
- * This class keeps track of a SHA1 hash. A SHA1 hash is a 20 byte
- * array of bytes.
+ * A SHA-1 hash is an array of 20 bytes.
  */
 class KTORRENT_EXPORT SHA1Hash
 {

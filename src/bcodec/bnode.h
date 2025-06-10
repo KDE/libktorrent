@@ -22,7 +22,7 @@ class BListNode;
 
 /*!
  * \author Joris Guisson
- * \brief Base class for a node in a b-encoded piece of data
+ * \brief Base class for a node in a bencoded piece of data.
  *
  * There are 3 possible pieces of data in b-encoded piece of data.
  * This is the base class for all those 3 things.
@@ -79,7 +79,7 @@ private:
 
 /*!
  * \author Joris Guisson
- * \brief Represents a value (string,bytearray or int) in bencoded data
+ * \brief Represents a value (string, byte array or int) in bencoded data.
  *
  * @todo Use QVariant
  */
@@ -100,8 +100,7 @@ public:
 
 /*!
  * \author Joris Guisson
- * \brief Represents a dictionary in bencoded data
- *
+ * \brief Represents a dictionary in bencoded data.
  */
 class KTORRENT_EXPORT BDictNode : public BNode
 {
@@ -178,8 +177,7 @@ public:
 
 /*!
  * \author Joris Guisson
- * \brief Represents a list in bencoded data
- *
+ * \brief Represents a list in bencoded data.
  */
 class KTORRENT_EXPORT BListNode : public BNode
 {

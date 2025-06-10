@@ -21,7 +21,7 @@ namespace bt
 {
 /*!
  * \author Joris Guisson
- * \brief Communicates with the tracker
+ * \brief Communicates with a HTTP tracker.
  *
  * This class uses the HTTP protocol to communicate with the tracker.
  */

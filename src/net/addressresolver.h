@@ -14,7 +14,8 @@
 namespace net
 {
 /*!
- * Resolves hostnames into net::Address objects.
+ * \brief Resolves hostnames into Address objects.
+ *
  * This class will clean itself up, after it is done using deleteLater.
  **/
 class KTORRENT_EXPORT AddressResolver : public QObject

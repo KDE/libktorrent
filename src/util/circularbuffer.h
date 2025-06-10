@@ -14,8 +14,8 @@
 namespace bt
 {
 /*!
-    Circular buffer class
-*/
+ * \brief Circular buffer for byte arrays.
+ */
 class KTORRENT_EXPORT CircularBuffer
 {
 public:

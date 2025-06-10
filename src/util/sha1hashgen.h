@@ -17,7 +17,8 @@ namespace bt
 /*!
  * \author Joris Guisson
  *
- * Generates a SHA1 hash, code based on wikipedia's pseudocode
+ * \brief Generator for a SHA-1 hash.
+ *
  * There are 2 ways to use this class :
  * - generate : all data is present from the start
  * - start, update and end : data can be delivered in chunks

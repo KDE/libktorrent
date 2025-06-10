@@ -12,8 +12,11 @@
 namespace bt
 {
 /*!
-\author Joris Guisson
-*/
+ * \author Joris Guisson
+ * \brief Provides a function to percent-encode a byte array.
+ *
+ * TODO: why not just a namespace?
+ */
 class URLEncoder
 {
 public:

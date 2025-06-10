@@ -18,7 +18,7 @@ class DHT;
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Manages all dht tasks.
+ * \brief Manages all dht tasks.
  */
 class TaskManager : public QObject
 {

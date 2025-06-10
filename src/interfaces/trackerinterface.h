@@ -21,7 +21,7 @@ enum TrackerStatus {
 };
 
 /*!
-    Interface class for trackers to be used in plugins
+ * \brief Interface for trackers to be used in plugins.
  */
 class KTORRENT_EXPORT TrackerInterface
 {

@@ -17,8 +17,9 @@ class ChunkManager;
 /*!
  * \author Joris Guisson
  *
- * Class which manages the uploading of data. It has a PeerUploader for
- * each Peer.
+ * \brief Manages the uploading of a torrent.
+ *
+ * It has a PeerUploader for each Peer.
  */
 class Uploader : public QObject, public PeerManager::PeerVisitor
 {

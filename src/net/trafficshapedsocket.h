@@ -15,6 +15,9 @@ namespace net
 {
 class Speed;
 
+/*!
+ * \brief Interface for processing data received from a socket.
+ */
 class SocketReader
 {
 public:
@@ -35,7 +38,7 @@ public:
 };
 
 /*!
- * Socket which supports traffic shaping
+ * \brief Socket which supports traffic shaping.
  */
 class TrafficShapedSocket
 {

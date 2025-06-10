@@ -15,7 +15,8 @@ namespace bt
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Object to derive from for operations which need to be performed at exit.
+ * \brief Object to derive from for operations which need to be performed at exit.
+ *
  * The operation should emit the operationFinished signal when they are done.
  *
  * ExitOperation's can be used in combination with a WaitJob, to wait for a certain amount of time
@@ -38,7 +39,7 @@ Q_SIGNALS:
 };
 
 /*!
- * Exit operation which waits for a KIO::Job
+ * \brief An ExitOperation which waits for a KJob.
  */
 class ExitJobOperation : public ExitOperation
 {

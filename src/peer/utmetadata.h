@@ -17,8 +17,8 @@ class Peer;
 class Torrent;
 
 /*!
-    Handles ut_metadata extension
-*/
+ * \brief Handles the ut_metadata extension (BEP 0009).
+ */
 class KTORRENT_EXPORT UTMetaData : public PeerProtocolExtension
 {
 public:

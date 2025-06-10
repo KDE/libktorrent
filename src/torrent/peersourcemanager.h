@@ -26,7 +26,7 @@ class PeerSource;
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * This class manages all PeerSources.
+ * \brief Manages all PeerSources for a given torrent.
  */
 class PeerSourceManager : public TrackerManager
 {

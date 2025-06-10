@@ -16,8 +16,8 @@ namespace bt
 class Job;
 
 /*!
-    A job queue handles all jobs running on a torrent in a sequential order
-*/
+ * \brief Handles all jobs running on a torrent in a sequential order.
+ */
 class KTORRENT_EXPORT JobQueue : public QObject
 {
 public:

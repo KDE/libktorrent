@@ -17,6 +17,9 @@ enum Protocol {
     UDP,
 };
 
+/*!
+ * \brief A network port.
+ */
 struct KTORRENT_EXPORT Port {
     bt::Uint16 number;
     Protocol proto;
@@ -30,7 +33,7 @@ struct KTORRENT_EXPORT Port {
 };
 
 /*!
- * Listener class for the PortList.
+ * \brief Listener for the PortList.
  */
 class KTORRENT_EXPORT PortListener
 {
@@ -55,8 +58,7 @@ public:
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * List of ports which are currently being used.
- *
+ * \brief List of ports which are currently being used.
  */
 class KTORRENT_EXPORT PortList : public QList<Port>
 {

@@ -20,8 +20,9 @@ namespace bt
 /*!
     \author Joris Guisson
 
-    HTTP connection for webseeding. We do not use KIO here, because we want to be able to apply
-    the maximum upload and download rate to webseeds;
+    \brief HTTP connection for webseeding.
+
+    We do not use KIO here, because we want to be able to apply the maximum upload and download rate to webseeds;
 */
 class HttpConnection : public QObject, public net::SocketReader, public net::StreamSocketListener
 {

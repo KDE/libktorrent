@@ -14,7 +14,8 @@
 namespace bt
 {
 /*!
-    MagnetLink class
+    \brief Represents a magnet link.
+
     magnet links have the format:
     magnet:?xt=urn:btih:info_hash&dn=name&tr=tracker-url[,tracker-url...]
     note: a comma-separated list will not work with other clients likely

@@ -19,9 +19,8 @@ class TorrentControl;
 
 /*!
  * \author Joris Guisson
- * \brief Class to generate torrent files
+ * \brief Generates torrent files.
  *
- * This class generates torrent files.
  * It also allows to create a TorrentControl object, so
  * that we immediately can start to share the torrent.
  */

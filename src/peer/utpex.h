@@ -21,7 +21,7 @@ class BEncoder;
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
- * Class which handles µTorrent's peer exchange
+ * \brief Handles µTorrent's peer exchange.
  */
 class KTORRENT_EXPORT UTPex : public PeerProtocolExtension, public PeerManager::PeerVisitor
 {

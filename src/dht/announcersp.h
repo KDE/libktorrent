@@ -12,7 +12,7 @@
 namespace dht
 {
 /*!
- * Announce response message
+ * \brief Announce response message for DHT.
  */
 class KTORRENT_EXPORT AnnounceRsp : public RPCMsg
 {

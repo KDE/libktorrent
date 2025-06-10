@@ -16,7 +16,7 @@
 namespace bt
 {
 /*!
-    Keeps track of all logging system ID's
+    \brief Keeps track of all logging system ID's.
 */
 class KTORRENT_EXPORT LogSystemManager : public QObject
 {
