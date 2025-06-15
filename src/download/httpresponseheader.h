@@ -4,6 +4,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#ifndef HTTPRESPONSEHEADER_H
+#define HTTPRESPONSEHEADER_H
+
 #include <QMap>
 #include <QString>
 
@@ -41,3 +44,5 @@ private:
     int _statCode;
     QString _reasonPhr;
 };
+
+#endif // HTTPRESPONSEHEADER_H
