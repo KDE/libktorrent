@@ -134,17 +134,6 @@ public:
     void insert(const QByteArray &key, std::unique_ptr<BNode> node);
 
     /*!
-     * Insert a BNode in the dictionary.
-     * \param key The key
-     * \param node The node
-     * \deprecated Use the unique_ptr overload instead
-     */
-    void insert(const QByteArray &key, BNode *node)
-    {
-        insert(key, std::unique_ptr<BNode>(node));
-    }
-
-    /*!
      * Get a BNode.
      * \param key The key
      * \return The node or 0 if there is no node with has key \a key
@@ -207,16 +196,6 @@ public:
      * \param node The node
      */
     void append(std::unique_ptr<BNode> node);
-
-    /*!
-     * Append a node to the list.
-     * \param node The node
-     * \deprecated Use the unique_ptr overload instead
-     */
-    void append(BNode *node)
-    {
-        append(std::unique_ptr<BNode>(node));
-    }
 
     void printDebugInfo() override;
 

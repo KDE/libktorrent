@@ -50,25 +50,22 @@ public:
     virtual ~BDecoder();
 
     /*!
-     * Decode the data, the root node gets
-     * returned. (Note that the caller must delete this node)
+     * Decode the data, the root node gets returned.
      * \return The root node
      */
-    BNode *decode();
+    std::unique_ptr<BNode> decode();
 
     /*!
-     * Decode the data, the root list node gets
-     * returned. (Note that the caller must delete this node)
+     * Decode the data, the root list node gets returned.
      * \return The root node
      */
-    BListNode *decodeList();
+    std::unique_ptr<BListNode> decodeList();
 
     /*!
-     * Decode the data, the root dict node gets
-     * returned. (Note that the caller must delete this node)
+     * Decode the data, the root dict node gets returned.
      * \return The root node
      */
-    BDictNode *decodeDict();
+    std::unique_ptr<BDictNode> decodeDict();
 
     //! Get the current position in the data
     Uint32 position() const
@@ -80,10 +77,10 @@ private:
     void debugMsg(const QString &msg);
 
 private:
-    BDictNode *parseDict();
-    BListNode *parseList();
-    BValueNode *parseInt();
-    BValueNode *parseString();
+    std::unique_ptr<BDictNode> parseDict();
+    std::unique_ptr<BListNode> parseList();
+    std::unique_ptr<BValueNode> parseInt();
+    std::unique_ptr<BValueNode> parseString();
 };
 
 }

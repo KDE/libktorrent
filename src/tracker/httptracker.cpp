@@ -131,17 +131,17 @@ void HTTPTracker::onScrapeResult(KJob *j)
 
     KIO::StoredTransferJob *st = (KIO::StoredTransferJob *)j;
     BDecoder dec(st->data(), false, 0);
-    QScopedPointer<BNode> n;
+    std::unique_ptr<BDictNode> dict;
 
     try {
-        n.reset(dec.decode());
+        dict = dec.decodeDict();
     } catch (bt::Error &err) {
         Out(SYS_TRK | LOG_IMPORTANT) << "Invalid scrape data " << err.toString() << endl;
         return;
     }
 
-    if (n && n->getType() == BNode::DICT) {
-        BDictNode *d = (BDictNode *)n.data();
+    if (dict) {
+        BDictNode *d = dict.get();
         d = d->getDict(QByteArrayLiteral("files"));
         if (d) {
             d = d->getDict(tds->infoHash().toByteArray());
@@ -245,29 +245,26 @@ bool HTTPTracker::updateData(const QByteArray &data)
     }
 
     BDecoder dec(data, false, i);
-    BNode *n = nullptr;
+    std::unique_ptr<BDictNode> dict = nullptr;
     try {
-        n = dec.decode();
+        dict = dec.decodeDict();
     } catch (...) {
         failures++;
         failed(i18n("Invalid data from tracker"));
         return false;
     }
 
-    if (!n || n->getType() != BNode::DICT) {
+    if (!dict) {
         failures++;
         failed(i18n("Invalid response from tracker"));
-        delete n;
         return false;
     }
 
-    BDictNode *dict = (BDictNode *)n;
     if (dict->getData(QByteArrayLiteral("failure reason"))) {
         BValueNode *vn = dict->getValue(QByteArrayLiteral("failure reason"));
         error = vn->data().toString();
         failures++;
         failed(error);
-        delete n;
         return false;
     }
 
@@ -339,7 +336,6 @@ bool HTTPTracker::updateData(const QByteArray &data)
         }
     }
 
-    delete n;
     return true;
 }
 

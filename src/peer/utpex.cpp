@@ -34,13 +34,10 @@ void UTPex::handlePacket(const Uint8 *packet, Uint32 size)
         return;
 
     QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
-    BNode *node = nullptr;
     try {
         BDecoder dec(tmp, false, 2);
-        node = dec.decode();
-        if (node && node->getType() == BNode::DICT) {
-            BDictNode *dict = (BDictNode *)node;
-
+        const std::unique_ptr<BDictNode> dict = dec.decodeDict();
+        if (dict) {
             // ut_pex packet, emit signal to notify PeerManager
             BValueNode *peers4 = dict->getValue("added");
             if (peers4) {
@@ -61,7 +58,6 @@ void UTPex::handlePacket(const Uint8 *packet, Uint32 size)
         // just ignore invalid packets
         Out(SYS_CON | LOG_DEBUG) << "Invalid ut_pex packet" << endl;
     }
-    delete node;
 }
 
 bool UTPex::needsUpdate() const

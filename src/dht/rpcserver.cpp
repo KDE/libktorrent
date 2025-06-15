@@ -71,13 +71,13 @@ public:
         try {
             // read and decode the packet
             BDecoder bdec(ptr->get(), ptr->size(), false);
-            std::unique_ptr<BNode> n(bdec.decode());
+            const std::unique_ptr<BDictNode> dict = bdec.decodeDict();
 
-            if (!n || n->getType() != BNode::DICT)
+            if (!dict)
                 return;
 
             // try to make a RPCMsg of it
-            RPCMsg::Ptr msg = factory.build((BDictNode *)n.get(), this);
+            RPCMsg::Ptr msg = factory.build(dict.get(), this);
             if (msg) {
                 if (addr.ipVersion() == 6 && addr.isIPv4Mapped())
                     msg->setOrigin(addr.convertIPv4Mapped());

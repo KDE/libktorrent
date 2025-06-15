@@ -43,8 +43,8 @@ private Q_SLOTS:
         try {
             bt::BDecoder dec(QByteArray(msg), false);
 
-            QScopedPointer<bt::BDictNode> dict(dec.decodeDict());
-            dht::RPCMsg::Ptr msg = factory.build(dict.data(), nullptr);
+            const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
+            dht::RPCMsg::Ptr msg = factory.build(dict.get(), nullptr);
 
             QVERIFY(msg->getType() == dht::ERR_MSG);
             dht::ErrMsg::Ptr err = msg.dynamicCast<dht::ErrMsg>();
@@ -64,9 +64,9 @@ private Q_SLOTS:
         int idx = 0;
         while (msg[idx]) {
             bt::BDecoder dec(QByteArray(msg[idx]), false);
-            QScopedPointer<bt::BDictNode> dict(dec.decodeDict());
+            const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
-                dht::RPCMsg::Ptr msg = factory.build(dict.data(), this);
+                dht::RPCMsg::Ptr msg = factory.build(dict.get(), this);
                 QFAIL("No exception thrown");
             } catch (bt::Error &) {
                 // OK
@@ -83,9 +83,9 @@ private Q_SLOTS:
         int idx = 0;
         while (msg[idx]) {
             bt::BDecoder dec(QByteArray(msg[idx]), false);
-            QScopedPointer<bt::BDictNode> dict(dec.decodeDict());
+            const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
-                dht::RPCMsg::Ptr msg = factory.build(dict.data(), this);
+                dht::RPCMsg::Ptr msg = factory.build(dict.get(), this);
                 QVERIFY(msg);
                 QVERIFY(msg->getMTID() == QByteArray("aa"));
                 QVERIFY(msg->getMethod() == dht::PING);
@@ -107,9 +107,9 @@ private Q_SLOTS:
         int idx = 0;
         while (msg[idx]) {
             bt::BDecoder dec(QByteArray(msg[idx]), false);
-            QScopedPointer<bt::BDictNode> dict(dec.decodeDict());
+            const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
-                dht::RPCMsg::Ptr msg = factory.build(dict.data(), this);
+                dht::RPCMsg::Ptr msg = factory.build(dict.get(), this);
                 QVERIFY(msg);
                 QVERIFY(msg->getMTID() == QByteArray("aa"));
                 QVERIFY(msg->getMethod() == dht::FIND_NODE);
@@ -131,9 +131,9 @@ private Q_SLOTS:
         int idx = 0;
         while (msg[idx]) {
             bt::BDecoder dec(QByteArray(msg[idx]), false);
-            QScopedPointer<bt::BDictNode> dict(dec.decodeDict());
+            const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
-                dht::RPCMsg::Ptr msg = factory.build(dict.data(), this);
+                dht::RPCMsg::Ptr msg = factory.build(dict.get(), this);
                 QVERIFY(msg);
                 QVERIFY(msg->getMTID() == QByteArray("aa"));
                 QVERIFY(msg->getMethod() == dht::GET_PEERS);
@@ -154,9 +154,9 @@ private Q_SLOTS:
         int idx = 0;
         while (msg[idx]) {
             bt::BDecoder dec(QByteArray(msg[idx]), false);
-            QScopedPointer<bt::BDictNode> dict(dec.decodeDict());
+            const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
-                dht::RPCMsg::Ptr msg = factory.build(dict.data(), this);
+                dht::RPCMsg::Ptr msg = factory.build(dict.get(), this);
                 QVERIFY(msg);
                 QVERIFY(msg->getMTID() == QByteArray("aa"));
                 QVERIFY(msg->getMethod() == dht::ANNOUNCE_PEER);

@@ -31,33 +31,29 @@ UTMetaData::~UTMetaData()
 void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
 {
     QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
-    BNode *node = nullptr;
     try {
         BDecoder dec(tmp, false, 2);
-        node = dec.decode();
-        if (!node || node->getType() != BNode::DICT) {
-            delete node;
+        const std::unique_ptr<BDictNode> dict = dec.decodeDict();
+        if (!dict) {
             return;
         }
 
-        BDictNode *dict = (BDictNode *)node;
         int type = dict->getInt(QByteArrayLiteral("msg_type"));
         switch (type) {
         case 0: // request
-            request(dict);
+            request(dict.get());
             break;
         case 1: { // data
-            data(dict, tmp.mid(dec.position()));
+            data(dict.get(), tmp.mid(dec.position()));
             break;
         }
         case 2: // reject
-            reject(dict);
+            reject(dict.get());
             break;
         }
     } catch (...) {
         Out(SYS_CON | LOG_DEBUG) << "Invalid metadata packet" << endl;
     }
-    delete node;
 }
 
 void UTMetaData::data(BDictNode *dict, const QByteArray &piece_data)

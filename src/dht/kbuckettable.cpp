@@ -124,7 +124,7 @@ void KBucketTable::loadTable(const QString &file, RPCServerInterface *srv)
         QByteArray data = fptr.readAll();
         bt::BDecoder dec(data, false, 0);
 
-        QScopedPointer<BListNode> bucket_list(dec.decodeList());
+        const std::unique_ptr<BListNode> bucket_list = dec.decodeList();
         if (!bucket_list)
             return;
 

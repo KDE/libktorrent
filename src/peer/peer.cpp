@@ -377,19 +377,15 @@ void Peer::handleExtendedPacket(const Uint8 *packet, Uint32 size)
 void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
 {
     QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
-    BNode *node = nullptr;
     try {
         BDecoder dec(tmp, false, 2);
-        node = dec.decode();
-        if (!node || node->getType() != BNode::DICT) {
-            delete node;
+        const std::unique_ptr<BDictNode> dict = dec.decodeDict();
+        if (!dict) {
             return;
         }
 
-        BDictNode *dict = (BDictNode *)node;
         BDictNode *mdict = dict->getDict(QByteArrayLiteral("m"));
         if (!mdict) {
-            delete node;
             return;
         }
 
@@ -427,7 +423,6 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
                         Out(SYS_GEN | LOG_NOTICE) << "Wrong or too high metadata size: " << metadata_size << ". Killing peer... " << endl;
                         Out(SYS_GEN | LOG_NOTICE) << "Maximum supported metadata (torrent file) size: " << MAX_METADATA_SIZE << endl;
                         kill();
-                        delete node;
                         return;
                     }
 
@@ -449,7 +444,6 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
         // just ignore invalid packets
         Out(SYS_CON | LOG_DEBUG) << "Invalid extended packet" << endl;
     }
-    delete node;
 }
 
 Uint32 Peer::sendData(const Uint8 *data, Uint32 len)

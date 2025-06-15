@@ -33,7 +33,7 @@ BDecoder::~BDecoder()
 {
 }
 
-BNode *BDecoder::decode()
+std::unique_ptr<BNode> BDecoder::decode()
 {
     if (pos >= (Uint32)data.size())
         return nullptr;
@@ -51,103 +51,79 @@ BNode *BDecoder::decode()
     }
 }
 
-BDictNode *BDecoder::decodeDict()
+std::unique_ptr<BDictNode> BDecoder::decodeDict()
 {
-    BNode *n = nullptr;
-    try {
-        n = decode();
-        if (n && n->getType() == BNode::DICT)
-            return (BDictNode *)n;
-
-        delete n;
-    } catch (...) {
-        delete n;
-        throw;
-    }
+    std::unique_ptr<BNode> n = decode();
+    if (n && n->getType() == BNode::DICT)
+        return std::unique_ptr<BDictNode>(static_cast<BDictNode *>(n.release()));
 
     return nullptr;
 }
 
-BListNode *BDecoder::decodeList()
+std::unique_ptr<BListNode> BDecoder::decodeList()
 {
-    BNode *n = nullptr;
-    try {
-        n = decode();
-        if (n && n->getType() == BNode::LIST)
-            return (BListNode *)n;
-
-        delete n;
-    } catch (...) {
-        delete n;
-        throw;
-    }
+    std::unique_ptr<BNode> n = decode();
+    if (n && n->getType() == BNode::LIST)
+        return std::unique_ptr<BListNode>(static_cast<BListNode *>(n.release()));
 
     return nullptr;
 }
 
-BDictNode *BDecoder::parseDict()
+std::unique_ptr<BDictNode> BDecoder::parseDict()
 {
     Uint32 off = pos;
     // we're now entering a dictionary
-    BDictNode *curr = new BDictNode(off);
+    auto curr = std::make_unique<BDictNode>(off);
     pos++;
     debugMsg(u"DICT"_s);
     level++;
-    try {
-        while (pos < (Uint32)data.size() && data[pos] != 'e') {
-            debugMsg(u"Key : "_s);
-            BNode *kn = decode();
-            const BValueNode *k = dynamic_cast<BValueNode *>(kn);
-            if (!k || k->data().getType() != Value::STRING) {
-                delete kn;
-                throw Error(i18n("Decode error"));
-            }
 
-            QByteArray key = k->data().toByteArray();
-            delete kn;
-
-            BNode *value = decode();
-            if (!value)
-                throw Error(i18n("Decode error"));
-
-            curr->insert(key, value);
+    while (pos < (Uint32)data.size() && data[pos] != 'e') {
+        debugMsg(u"Key : "_s);
+        const std::unique_ptr<BNode> kn = decode();
+        const BValueNode *k = dynamic_cast<BValueNode *>(kn.get());
+        if (!k || k->data().getType() != Value::STRING) {
+            throw Error(i18n("Decode error"));
         }
-        pos++;
-    } catch (...) {
-        delete curr;
-        throw;
+
+        QByteArray key = k->data().toByteArray();
+
+        auto value = decode();
+        if (!value)
+            throw Error(i18n("Decode error"));
+
+        curr->insert(key, std::move(value));
     }
+    pos++;
+
     level--;
     debugMsg(u"END"_s);
     curr->setLength(pos - off);
     return curr;
 }
 
-BListNode *BDecoder::parseList()
+std::unique_ptr<BListNode> BDecoder::parseList()
 {
     Uint32 off = pos;
     debugMsg(u"LIST"_s);
     level++;
-    BListNode *curr = new BListNode(off);
+    auto curr = std::make_unique<BListNode>(off);
     pos++;
-    try {
-        while (pos < (Uint32)data.size() && data[pos] != 'e') {
-            BNode *n = decode();
-            if (n)
-                curr->append(n);
-        }
-        pos++;
-    } catch (...) {
-        delete curr;
-        throw;
+
+    while (pos < (Uint32)data.size() && data[pos] != 'e') {
+        std::unique_ptr<BNode> n = decode();
+        if (n)
+            curr->append(std::move(n));
     }
+    pos++;
+
     level--;
     debugMsg(u"END"_s);
     curr->setLength(pos - off);
     return curr;
 }
 
-BValueNode *BDecoder::parseInt()
+std::unique_ptr<BValueNode> BDecoder::parseInt()
 {
     Uint32 off = pos;
     pos++;
@@ -170,7 +146,7 @@ BValueNode *BDecoder::parseInt()
     if (ok) {
         pos++;
         debugMsg(QStringLiteral("INT = %1").arg(val));
-        BValueNode *vn = new BValueNode(Value(val), off);
+        auto vn = std::make_unique<BValueNode>(Value(val), off);
         vn->setLength(pos - off);
         return vn;
     } else {
@@ -181,13 +157,13 @@ BValueNode *BDecoder::parseInt()
 
         pos++;
         debugMsg(QStringLiteral("INT64 = %1").arg(n));
-        BValueNode *vn = new BValueNode(Value(bi), off);
+        auto vn = std::make_unique<BValueNode>(Value(bi), off);
         vn->setLength(pos - off);
         return vn;
     }
 }
 
-BValueNode *BDecoder::parseString()
+std::unique_ptr<BValueNode> BDecoder::parseString()
 {
     const Uint32 off = pos;
     // string are encoded 4:spam (length:string)
@@ -229,7 +205,7 @@ BValueNode *BDecoder::parseString()
     // read the string into n
 
     // pos should be positioned right after the string
-    BValueNode *vn = new BValueNode(Value(arr), off);
+    auto vn = std::make_unique<BValueNode>(Value(arr), off);
     vn->setLength(pos - off);
     if (verbose) {
         if (arr.size() < 200)

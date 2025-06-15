@@ -88,55 +88,46 @@ Torrent::~Torrent()
 
 void Torrent::load(const QByteArray &data, bool verbose)
 {
-    BNode *node = nullptr;
+    BDecoder decoder(data, verbose);
+    const std::unique_ptr<BDictNode> dict = decoder.decodeDict();
+    if (!dict)
+        throw Error(i18n("Corrupted torrent."));
 
-    try {
-        BDecoder decoder(data, verbose);
-        node = decoder.decode();
-        BDictNode *dict = dynamic_cast<BDictNode *>(node);
-        if (!dict)
-            throw Error(i18n("Corrupted torrent."));
+    BValueNode *c = dict->getValue(QByteArrayLiteral("comment"));
+    if (c)
+        comments = c->data().toString();
 
-        BValueNode *c = dict->getValue(QByteArrayLiteral("comment"));
-        if (c)
-            comments = c->data().toString();
+    const BValueNode *announce = dict->getValue(QByteArrayLiteral("announce"));
+    BListNode *nodes = dict->getList(QByteArrayLiteral("nodes"));
+    // if (!announce && !nodes)
+    //  throw Error(i18n("Torrent has no announce or nodes field."));
 
-        const BValueNode *announce = dict->getValue(QByteArrayLiteral("announce"));
-        BListNode *nodes = dict->getList(QByteArrayLiteral("nodes"));
-        // if (!announce && !nodes)
-        //  throw Error(i18n("Torrent has no announce or nodes field."));
+    if (announce)
+        loadTrackerURL(dict->getString(QByteArrayLiteral("announce")));
 
-        if (announce)
-            loadTrackerURL(dict->getString(QByteArrayLiteral("announce")));
+    if (nodes) // DHT torrrents have a node key
+        loadNodes(nodes);
 
-        if (nodes) // DHT torrrents have a node key
-            loadNodes(nodes);
+    loadInfo(dict->getDict(QByteArrayLiteral("info")));
+    loadAnnounceList(dict->getData(QByteArrayLiteral("announce-list")));
 
-        loadInfo(dict->getDict(QByteArrayLiteral("info")));
-        loadAnnounceList(dict->getData(QByteArrayLiteral("announce-list")));
-
-        // see if the torrent contains webseeds
-        BListNode *urls = dict->getList(QByteArrayLiteral("url-list"));
-        if (urls) {
-            loadWebSeeds(urls);
-        } else if (dict->getValue(QByteArrayLiteral("url-list"))) {
-            QUrl url(dict->getString(QByteArrayLiteral("url-list")));
-            if (url.isValid())
-                web_seeds.append(url);
-        }
-
-        BNode *n = dict->getData(QByteArrayLiteral("info"));
-        SHA1HashGen hg;
-        // save info dict
-        metadata = data.mid(n->getOffset(), n->getLength());
-        info_hash = hg.generate(metadata);
-        delete node;
-
-        loaded = true;
-    } catch (...) {
-        delete node;
-        throw;
+    // see if the torrent contains webseeds
+    BListNode *urls = dict->getList(QByteArrayLiteral("url-list"));
+    if (urls) {
+        loadWebSeeds(urls);
+    } else if (dict->getValue(QByteArrayLiteral("url-list"))) {
+        QUrl url(dict->getString(QByteArrayLiteral("url-list")));
+        if (url.isValid())
+            web_seeds.append(url);
     }
+
+    BNode *n = dict->getData(QByteArrayLiteral("info"));
+    SHA1HashGen hg;
+    // save info dict
+    metadata = data.mid(n->getOffset(), n->getLength());
+    info_hash = hg.generate(metadata);
+
+    loaded = true;
 }
 
 void Torrent::loadInfo(BDictNode *dict)
