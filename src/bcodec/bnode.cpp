@@ -51,58 +51,35 @@ BDictNode::BDictNode(Uint32 off)
 
 BDictNode::~BDictNode()
 {
-    QList<DictEntry>::iterator i = children.begin();
-    while (i != children.end()) {
-        DictEntry &e = *i;
-        delete e.node;
-        ++i;
-    }
 }
 
 QList<QByteArray> BDictNode::keys() const
 {
     QList<QByteArray> ret;
     ret.reserve(children.size());
-    QList<DictEntry>::const_iterator i = children.begin();
-    while (i != children.end()) {
-        const DictEntry &e = *i;
-        ret << e.key;
-        ++i;
+    for (const DictEntry &e : children) {
+        ret.push_back(e.key);
     }
 
     return ret;
 }
 
-void BDictNode::insert(const QByteArray &key, BNode *node)
+void BDictNode::insert(const QByteArray &key, std::unique_ptr<BNode> node)
 {
-    DictEntry entry;
-    entry.key = key;
-    entry.node = node;
-    children.append(entry);
+    children.emplace_back(key, std::move(node));
 }
 
 BNode *BDictNode::getData(const QByteArray &key)
 {
-    auto i = children.constBegin();
-    while (i != children.constEnd()) {
-        const DictEntry &e = *i;
-        if (e.key == key)
-            return e.node;
-        i++;
-    }
-    return nullptr;
+    const auto i = std::find_if(children.cbegin(), children.cend(), [&key](const DictEntry &e) {
+        return e.key == key;
+    });
+    return i == children.cend() ? nullptr : i->node.get();
 }
 
 BDictNode *BDictNode::getDict(const QByteArray &key)
 {
-    QList<DictEntry>::iterator i = children.begin();
-    while (i != children.end()) {
-        DictEntry &e = *i;
-        if (e.key == key)
-            return dynamic_cast<BDictNode *>(e.node);
-        ++i;
-    }
-    return nullptr;
+    return dynamic_cast<BDictNode *>(getData(key));
 }
 
 BListNode *BDictNode::getList(const QByteArray &key)
@@ -168,12 +145,9 @@ QByteArray BDictNode::getByteArray(const QByteArray &key)
 void BDictNode::printDebugInfo()
 {
     Out(SYS_GEN | LOG_DEBUG) << "DICT" << endl;
-    QList<DictEntry>::iterator i = children.begin();
-    while (i != children.end()) {
-        DictEntry &e = *i;
+    for (const DictEntry &e : children) {
         Out(SYS_GEN | LOG_DEBUG) << QString::fromLatin1(e.key) << ": " << endl;
         e.node->printDebugInfo();
-        ++i;
     }
     Out(SYS_GEN | LOG_DEBUG) << "END" << endl;
 }
@@ -187,15 +161,11 @@ BListNode::BListNode(Uint32 off)
 
 BListNode::~BListNode()
 {
-    for (int i = 0; i < children.count(); i++) {
-        BNode *n = children.at(i);
-        delete n;
-    }
 }
 
-void BListNode::append(BNode *node)
+void BListNode::append(std::unique_ptr<BNode> node)
 {
-    children.append(node);
+    children.push_back(std::move(node));
 }
 
 BListNode *BListNode::getList(Uint32 idx)
@@ -263,9 +233,8 @@ QByteArray BListNode::getByteArray(Uint32 idx)
 
 void BListNode::printDebugInfo()
 {
-    Out(SYS_GEN | LOG_DEBUG) << "LIST " << children.count() << endl;
-    for (int i = 0; i < children.count(); i++) {
-        BNode *n = children.at(i);
+    Out(SYS_GEN | LOG_DEBUG) << "LIST " << children.size() << endl;
+    for (const auto &n : children) {
         n->printDebugInfo();
     }
     Out(SYS_GEN | LOG_DEBUG) << "END" << endl;

@@ -13,6 +13,9 @@
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
+#include <memory>
+#include <vector>
+
 namespace bt
 {
 class BListNode;
@@ -104,13 +107,21 @@ class KTORRENT_EXPORT BDictNode : public BNode
 {
     struct DictEntry {
         QByteArray key;
-        BNode *node;
+        std::unique_ptr<BNode> node;
+
+        DictEntry(const QByteArray &key, std::unique_ptr<BNode> node)
+            : key(key)
+            , node(std::move(node))
+        {
+        }
     };
-    QList<DictEntry> children;
+    std::vector<DictEntry> children;
 
 public:
     BDictNode(Uint32 off);
     ~BDictNode() override;
+
+    Q_DISABLE_COPY(BDictNode)
 
     //! Get a list of keys
     QList<QByteArray> keys() const;
@@ -120,7 +131,18 @@ public:
      * \param key The key
      * \param node The node
      */
-    void insert(const QByteArray &key, BNode *node);
+    void insert(const QByteArray &key, std::unique_ptr<BNode> node);
+
+    /*!
+     * Insert a BNode in the dictionary.
+     * \param key The key
+     * \param node The node
+     * \deprecated Use the unique_ptr overload instead
+     */
+    void insert(const QByteArray &key, BNode *node)
+    {
+        insert(key, std::unique_ptr<BNode>(node));
+    }
 
     /*!
      * Get a BNode.
@@ -172,23 +194,36 @@ public:
  */
 class KTORRENT_EXPORT BListNode : public BNode
 {
-    QList<BNode *> children;
+    std::vector<std::unique_ptr<BNode>> children;
 
 public:
     BListNode(Uint32 off);
     ~BListNode() override;
 
+    Q_DISABLE_COPY(BListNode)
+
     /*!
      * Append a node to the list.
      * \param node The node
      */
-    void append(BNode *node);
+    void append(std::unique_ptr<BNode> node);
+
+    /*!
+     * Append a node to the list.
+     * \param node The node
+     * \deprecated Use the unique_ptr overload instead
+     */
+    void append(BNode *node)
+    {
+        append(std::unique_ptr<BNode>(node));
+    }
+
     void printDebugInfo() override;
 
     //! Get the number of nodes in the list.
     Uint32 getNumChildren() const
     {
-        return children.count();
+        return children.size();
     }
 
     /*!
@@ -198,7 +233,7 @@ public:
      */
     BNode *getChild(Uint32 idx)
     {
-        return children.at(idx);
+        return children[idx].get();
     }
 
     /*!
