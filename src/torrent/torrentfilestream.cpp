@@ -53,19 +53,18 @@ public:
 
 TorrentFileStream::TorrentFileStream(TorrentControl *tc, ChunkManager *cman, bool streaming_mode, QObject *parent)
     : QIODevice(parent)
-    , d(new Private(tc, cman, streaming_mode, this))
+    , d(std::make_unique<Private>(tc, cman, streaming_mode, this))
 {
 }
 
 TorrentFileStream::TorrentFileStream(TorrentControl *tc, Uint32 file_index, ChunkManager *cman, bool streaming_mode, QObject *parent)
     : QIODevice(parent)
-    , d(new Private(tc, file_index, cman, streaming_mode, this))
+    , d(std::make_unique<Private>(tc, file_index, cman, streaming_mode, this))
 {
 }
 
 TorrentFileStream::~TorrentFileStream()
 {
-    delete d;
 }
 
 const bt::BitSet &TorrentFileStream::chunksBitSet() const

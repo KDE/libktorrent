@@ -82,7 +82,7 @@ public:
 };
 
 Node::Node(RPCServer *srv, const QString &key_file)
-    : d(new Private(srv))
+    : d(std::make_unique<Private>(srv))
 {
     num_entries = 0;
     our_id = d->loadKey(key_file);
@@ -92,7 +92,6 @@ Node::Node(RPCServer *srv, const QString &key_file)
 
 Node::~Node()
 {
-    delete d;
 }
 
 void Node::received(dht::DHT *dh_table, const dht::RPCMsg &msg)

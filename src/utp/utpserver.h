@@ -13,6 +13,8 @@
 #include <net/poll.h>
 #include <utp/connection.h>
 
+#include <memory>
+
 namespace utp
 {
 /*!
@@ -77,7 +79,7 @@ private:
 
 private:
     class Private;
-    Private *d;
+    std::unique_ptr<Private> d;
 };
 
 }

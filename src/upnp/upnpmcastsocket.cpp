@@ -55,7 +55,7 @@ public:
 };
 
 UPnPMCastSocket::UPnPMCastSocket(bool verbose)
-    : d(new UPnPMCastSocketPrivate(verbose))
+    : d(std::make_unique<UPnPMCastSocketPrivate>(verbose))
 {
     QObject::connect(this, &UPnPMCastSocket::readyRead, this, &UPnPMCastSocket::onReadyRead);
     QObject::connect(this, &UPnPMCastSocket::errorOccurred, this, &UPnPMCastSocket::error);
@@ -73,7 +73,6 @@ UPnPMCastSocket::UPnPMCastSocket(bool verbose)
 UPnPMCastSocket::~UPnPMCastSocket()
 {
     d->leaveUPnPMCastGroup(socketDescriptor());
-    delete d;
 }
 
 void UPnPMCastSocket::discover()

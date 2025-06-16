@@ -15,6 +15,8 @@
 #include <ktorrent_export.h>
 #include <torrent/torrent.h>
 #include <util/bitset.h>
+
+#include <memory>
 #include <vector>
 
 namespace bt
@@ -340,7 +342,7 @@ private:
     static Uint32 preview_size_video;
 
     class Private;
-    Private *d;
+    std::unique_ptr<Private> d;
     Torrent &tor;
     BitSet bitset;
     BitSet excluded_chunks;

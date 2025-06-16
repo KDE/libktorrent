@@ -13,6 +13,8 @@
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
+#include <memory>
+
 namespace bt
 {
 class ChunkManager;
@@ -82,7 +84,7 @@ private:
     void chunkDownloaded(bt::TorrentInterface *tc, bt::Uint32 chunk);
 
     class Private;
-    Private *d;
+    std::unique_ptr<Private> d;
 };
 
 }

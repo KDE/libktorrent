@@ -13,6 +13,8 @@
 #include <util/bufferpool.h>
 #include <util/constants.h>
 
+#include <memory>
+
 namespace net
 {
 class Address;
@@ -144,7 +146,7 @@ private Q_SLOTS:
 
 private:
     class Private;
-    Private *d;
+    std::unique_ptr<Private> d;
 };
 
 }

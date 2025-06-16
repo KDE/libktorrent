@@ -10,6 +10,8 @@
 #include "key.h"
 #include <QObject>
 
+#include <memory>
+
 using bt::Uint8;
 
 namespace dht
@@ -82,7 +84,7 @@ public:
 
 private:
     class Private;
-    Private *d;
+    std::unique_ptr<Private> d;
     dht::Key our_id;
     bt::Uint32 num_entries;
 };

@@ -12,6 +12,8 @@
 #include <interfaces/serverinterface.h>
 #include <ktorrent_export.h>
 
+#include <memory>
+
 namespace bt
 {
 class PeerManager;
@@ -37,7 +39,7 @@ public:
 
 private:
     class Private;
-    Private *d;
+    std::unique_ptr<Private> d;
 };
 
 }

@@ -171,14 +171,13 @@ public:
 };
 
 Log::Log()
+    : priv(std::make_unique<Private>(this))
 {
-    priv = new Private(this);
 }
 
 Log::~Log()
 {
     qInstallMessageHandler(nullptr);
-    delete priv;
 }
 
 void Log::setOutputFile(const QString &file, bool rotate, bool handle_qt_messages)

@@ -12,6 +12,8 @@
 #include <util/bufferpool.h>
 #include <util/constants.h>
 
+#include <memory>
+
 #ifdef ERROR
 #undef ERROR
 #endif
@@ -131,7 +133,7 @@ private:
 
 private:
     class Private;
-    Private *d;
+    std::unique_ptr<Private> d;
 
     static Uint16 port;
 };

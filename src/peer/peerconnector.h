@@ -14,6 +14,8 @@
 #include <util/constants.h>
 #include <util/resourcemanager.h>
 
+#include <memory>
+
 namespace bt
 {
 class Authenticate;
@@ -57,7 +59,7 @@ private:
 
 private:
     class Private;
-    Private *d;
+    std::unique_ptr<Private> d;
 };
 
 }

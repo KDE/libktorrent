@@ -60,13 +60,12 @@ public:
 
 PeerConnector::PeerConnector(const net::Address &addr, bool local, bt::PeerManager *pman, ConnectionLimit::Token::Ptr token)
     : Resource(&half_open_connections, pman->getTorrent().getInfoHash().toString())
-    , d(new Private(this, addr, local, pman, token))
+    , d(std::make_unique<Private>(this, addr, local, pman, token))
 {
 }
 
 PeerConnector::~PeerConnector()
 {
-    delete d;
 }
 
 void PeerConnector::setWeakPointer(PeerConnector::WPtr ptr)

@@ -15,6 +15,8 @@
 #include <util/constants.h>
 #include <util/ptrmap.h>
 
+#include <memory>
+
 using bt::Uint32;
 
 namespace bt
@@ -70,7 +72,7 @@ Q_SIGNALS:
 
 private:
     class UPnPMCastSocketPrivate;
-    UPnPMCastSocketPrivate *d;
+    std::unique_ptr<UPnPMCastSocketPrivate> d;
 };
 }
 

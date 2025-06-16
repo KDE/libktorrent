@@ -13,6 +13,8 @@
 #include <ktorrent_export.h>
 #include <net/portlist.h>
 
+#include <memory>
+
 class KJob;
 
 namespace bt
@@ -190,7 +192,7 @@ Q_SIGNALS:
 
 private:
     class UPnPRouterPrivate;
-    UPnPRouterPrivate *d;
+    std::unique_ptr<UPnPRouterPrivate> d;
 };
 
 }

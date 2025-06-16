@@ -13,6 +13,8 @@
 #include <peer/peerconnector.h>
 #include <peer/superseeder.h>
 
+#include <memory>
+
 namespace KNetwork
 {
 class KResolverResults;
@@ -272,7 +274,7 @@ Q_SIGNALS:
 
 private:
     class Private;
-    Private *d;
+    std::unique_ptr<Private> d;
 };
 
 }

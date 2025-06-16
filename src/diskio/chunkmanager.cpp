@@ -70,19 +70,17 @@ public:
 };
 
 ChunkManager::ChunkManager(Torrent &tor, const QString &tmpdir, const QString &datadir, bool custom_output_name, CacheFactory *fac)
-    : d(nullptr)
+    : d(std::make_unique<Private>(this, tor, tmpdir, datadir, custom_output_name, fac))
     , tor(tor)
     , bitset(tor.getNumChunks())
     , excluded_chunks(tor.getNumChunks())
     , only_seed_chunks(tor.getNumChunks())
 {
-    d = new Private(this, tor, tmpdir, datadir, custom_output_name, fac);
     d->setupPriorities();
 }
 
 ChunkManager::~ChunkManager()
 {
-    delete d;
 }
 
 QString ChunkManager::getDataDir() const

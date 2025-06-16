@@ -196,13 +196,12 @@ public:
 
 RPCServer::RPCServer(DHT *dh_table, Uint16 port, QObject *parent)
     : QObject(parent)
-    , d(new Private(this, dh_table, port))
+    , d(std::make_unique<Private>(this, dh_table, port))
 {
 }
 
 RPCServer::~RPCServer()
 {
-    delete d;
 }
 
 void RPCServer::start()

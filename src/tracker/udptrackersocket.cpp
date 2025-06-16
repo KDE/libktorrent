@@ -88,7 +88,7 @@ public:
 };
 
 UDPTrackerSocket::UDPTrackerSocket()
-    : d(new Private(this))
+    : d(std::make_unique<Private>(this))
 {
     if (port == 0)
         port = 4444;
@@ -113,7 +113,6 @@ UDPTrackerSocket::UDPTrackerSocket()
 UDPTrackerSocket::~UDPTrackerSocket()
 {
     Globals::instance().getPortList().removePort(port, net::UDP);
-    delete d;
 }
 
 void UDPTrackerSocket::sendConnect(Int32 tid, const net::Address &addr)

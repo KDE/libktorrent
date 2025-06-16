@@ -63,14 +63,13 @@ public:
 };
 
 Server::Server()
-    : d(new Private(this))
+    : d(std::make_unique<Private>(this))
 {
 }
 
 Server::~Server()
 {
     Globals::instance().getPortList().removePort(port, net::TCP);
-    delete d;
 }
 
 bool Server::changePort(Uint16 p)

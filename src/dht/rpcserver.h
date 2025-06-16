@@ -14,6 +14,8 @@
 #include <util/constants.h>
 #include <util/ptrmap.h>
 
+#include <memory>
+
 using bt::Uint16;
 using bt::Uint32;
 using bt::Uint8;
@@ -77,7 +79,7 @@ private Q_SLOTS:
 
 private:
     class Private;
-    Private *d;
+    std::unique_ptr<Private> d;
 };
 
 }

@@ -68,18 +68,17 @@ public:
 };
 
 ServerSocket::ServerSocket(ConnectionHandler *chandler)
-    : d(new Private(chandler))
+    : d(std::make_unique<Private>(chandler))
 {
 }
 
 ServerSocket::ServerSocket(ServerSocket::DataHandler *dhandler)
-    : d(new Private(dhandler))
+    : d(std::make_unique<Private>(dhandler))
 {
 }
 
 ServerSocket::~ServerSocket()
 {
-    delete d;
 }
 
 bool ServerSocket::bind(const QString &ip, bt::Uint16 port)

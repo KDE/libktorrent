@@ -78,13 +78,12 @@ public:
 };
 
 PeerManager::PeerManager(Torrent &tor)
-    : d(new Private(this, tor))
+    : d(std::make_unique<Private>(this, tor))
 {
 }
 
 PeerManager::~PeerManager()
 {
-    delete d;
 }
 
 ConnectionLimit &PeerManager::connectionLimits()

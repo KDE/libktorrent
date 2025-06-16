@@ -12,6 +12,8 @@
 #include <QUrl>
 #include <ktorrent_export.h>
 
+#include <memory>
+
 // LOG MESSAGES CONSTANTS
 #define LOG_NONE 0x00
 #define LOG_IMPORTANT 0x01
@@ -61,7 +63,7 @@ class KTORRENT_EXPORT Log
 {
     class Private;
 
-    Private *priv;
+    std::unique_ptr<Private> priv;
 
 public:
     /*!

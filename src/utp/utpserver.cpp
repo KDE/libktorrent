@@ -196,7 +196,7 @@ void UTPServer::Private::readyToWrite(net::ServerSocket *sock)
 
 UTPServer::UTPServer(QObject *parent)
     : ServerInterface(parent)
-    , d(new Private(this))
+    , d(std::make_unique<Private>(this))
 
 {
     connect(d->timer, &QTimer::timeout, this, &UTPServer::checkTimeouts);
@@ -204,7 +204,6 @@ UTPServer::UTPServer(QObject *parent)
 
 UTPServer::~UTPServer()
 {
-    delete d;
 }
 
 void UTPServer::handlePendingConnections()

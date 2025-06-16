@@ -10,6 +10,8 @@
 #include <list>
 #include <util/constants.h>
 
+#include <memory>
+
 namespace net
 {
 using bt::Uint32;
@@ -112,7 +114,7 @@ public:
 
 private:
     class Private;
-    Private *d;
+    std::unique_ptr<Private> d;
     std::list<TrafficShapedSocket *> sockets;
     static SocketMonitor self;
 };

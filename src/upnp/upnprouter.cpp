@@ -127,13 +127,12 @@ void UPnPDeviceDescription::setProperty(const QString &name, const QString &valu
 ///////////////////////////////////////
 
 UPnPRouter::UPnPRouter(const QString &server, const QUrl &location, bool verbose)
-    : d(new UPnPRouterPrivate(server, location, verbose, this))
+    : d(std::make_unique<UPnPRouterPrivate>(server, location, verbose, this))
 {
 }
 
 UPnPRouter::~UPnPRouter()
 {
-    delete d;
 }
 
 void UPnPRouter::addService(UPnPService s)

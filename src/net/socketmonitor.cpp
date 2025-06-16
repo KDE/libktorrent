@@ -48,13 +48,12 @@ public:
 };
 
 SocketMonitor::SocketMonitor()
-    : d(new Private(this))
+    : d(std::make_unique<Private>(this))
 {
 }
 
 SocketMonitor::~SocketMonitor()
 {
-    delete d;
 }
 
 void SocketMonitor::shutdown()
