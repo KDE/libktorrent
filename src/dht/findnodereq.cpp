@@ -43,7 +43,7 @@ void FindNodeReq::print()
 
 void FindNodeReq::encode(QByteArray &arr) const
 {
-    BEncoder enc(new BEncoderBufferOutput(arr));
+    BEncoder enc(std::make_unique<BEncoderBufferOutput>(arr));
     enc.beginDict();
     {
         enc.write(ARG);

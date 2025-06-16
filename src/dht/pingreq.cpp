@@ -40,7 +40,7 @@ void PingReq::print()
 
 void PingReq::encode(QByteArray &arr) const
 {
-    BEncoder enc(new BEncoderBufferOutput(arr));
+    BEncoder enc(std::make_unique<BEncoderBufferOutput>(arr));
     enc.beginDict();
     {
         enc.write(ARG);

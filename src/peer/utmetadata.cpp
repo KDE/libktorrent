@@ -96,7 +96,7 @@ void UTMetaData::request(BDictNode *dict)
 void UTMetaData::sendReject(int piece)
 {
     QByteArray data;
-    BEncoder enc(new BEncoderBufferOutput(data));
+    BEncoder enc(std::make_unique<BEncoderBufferOutput>(data));
     enc.beginDict();
     enc.write(QByteArrayLiteral("msg_type"));
     enc.write((bt::Uint32)2);
@@ -110,7 +110,7 @@ void UTMetaData::sendData(int piece, int total_size, const QByteArray &data)
 {
     Out(SYS_CON | LOG_DEBUG) << "Sending metadata piece " << piece << endl;
     QByteArray tmp;
-    BEncoder enc(new BEncoderBufferOutput(tmp));
+    BEncoder enc(std::make_unique<BEncoderBufferOutput>(tmp));
     enc.beginDict();
     enc.write(QByteArrayLiteral("msg_type"));
     enc.write((bt::Uint32)1);

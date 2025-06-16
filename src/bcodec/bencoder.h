@@ -81,8 +81,7 @@ public:
  */
 class KTORRENT_EXPORT BEncoder
 {
-    BEncoderOutput *out;
-    bool del;
+    std::unique_ptr<BEncoderOutput> out;
 
 public:
     /*!
@@ -95,7 +94,7 @@ public:
      * Constructor, output gets written to a BEncoderOutput object.
      * \param out The BEncoderOutput
      */
-    BEncoder(BEncoderOutput *out);
+    BEncoder(std::unique_ptr<BEncoderOutput> out);
 
     /*!
      * Constructor, output gets written to a QIODevice object.

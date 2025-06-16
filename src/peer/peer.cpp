@@ -637,7 +637,7 @@ void Peer::sendExtProtHandshake(Uint16 port, Uint32 metadata_size, bool partial_
         return;
 
     QByteArray arr;
-    BEncoder enc(new BEncoderBufferOutput(arr));
+    BEncoder enc(std::make_unique<BEncoderBufferOutput>(arr));
     enc.beginDict();
     enc.write(QByteArrayLiteral("m"));
     // supported messages

@@ -54,29 +54,22 @@ void BEncoderIODeviceOutput::write(const char *str, Uint32 len)
 ////////////////////////////////////
 
 BEncoder::BEncoder(File *fptr)
-    : out(nullptr)
-    , del(true)
+    : out(std::make_unique<BEncoderFileOutput>(fptr))
 {
-    out = new BEncoderFileOutput(fptr);
 }
 
-BEncoder::BEncoder(BEncoderOutput *out)
-    : out(out)
-    , del(true)
+BEncoder::BEncoder(std::unique_ptr<BEncoderOutput> out)
+    : out(std::move(out))
 {
 }
 
 BEncoder::BEncoder(QIODevice *dev)
-    : out(nullptr)
-    , del(true)
+    : out(std::make_unique<BEncoderIODeviceOutput>(dev))
 {
-    out = new BEncoderIODeviceOutput(dev);
 }
 
 BEncoder::~BEncoder()
 {
-    if (del)
-        delete out;
 }
 
 void BEncoder::beginDict()

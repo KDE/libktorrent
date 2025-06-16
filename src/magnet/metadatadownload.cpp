@@ -72,7 +72,7 @@ bool MetadataDownload::data(Uint32 piece, const QByteArray &piece_data)
 void MetadataDownload::download(Uint32 piece)
 {
     QByteArray request;
-    BEncoder enc(new BEncoderBufferOutput(request));
+    BEncoder enc(std::make_unique<BEncoderBufferOutput>(request));
     enc.beginDict();
     enc.write(QByteArrayLiteral("msg_type"));
     enc.write((bt::Uint32)0);

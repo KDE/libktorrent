@@ -109,7 +109,7 @@ void UTPex::update()
     pman->visit(*this);
 
     QByteArray data;
-    BEncoder enc(new BEncoderBufferOutput(data));
+    BEncoder enc(std::make_unique<BEncoderBufferOutput>(data));
     enc.beginDict();
 
     encodePeers(enc, peers4, added4, flags4, 4);
