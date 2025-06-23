@@ -30,7 +30,6 @@ Uint8 EncryptedPacketSocket::tos = IPTOS_THROUGHPUT;
 
 EncryptedPacketSocket::EncryptedPacketSocket(int ip_version)
     : net::PacketSocket(true, ip_version)
-    , enc(nullptr)
     , monitored(false)
 {
     sock->setBlocking(false);
@@ -42,7 +41,6 @@ EncryptedPacketSocket::EncryptedPacketSocket(int ip_version)
 
 EncryptedPacketSocket::EncryptedPacketSocket(int fd, int ip_version)
     : net::PacketSocket(fd, ip_version)
-    , enc(nullptr)
     , monitored(false)
 {
     sock->setBlocking(false);
@@ -54,7 +52,6 @@ EncryptedPacketSocket::EncryptedPacketSocket(int fd, int ip_version)
 
 EncryptedPacketSocket::EncryptedPacketSocket(net::SocketDevice *sd)
     : net::PacketSocket(sd)
-    , enc(nullptr)
     , monitored(false)
 {
     sd->setBlocking(false);
@@ -70,7 +67,6 @@ EncryptedPacketSocket::~EncryptedPacketSocket()
         stopMonitoring();
 
     delete[] reinserted_data;
-    delete enc;
 }
 
 void EncryptedPacketSocket::startMonitoring(net::SocketReader *rdr)
@@ -189,14 +185,12 @@ bool EncryptedPacketSocket::connectTo(const net::Address &addr)
 
 void EncryptedPacketSocket::initCrypt(const bt::SHA1Hash &dkey, const bt::SHA1Hash &ekey)
 {
-    delete enc;
-    enc = new RC4Encryptor(dkey, ekey);
+    enc = std::make_unique<RC4Encryptor>(dkey, ekey);
 }
 
 void EncryptedPacketSocket::disableCrypt()
 {
-    delete enc;
-    enc = nullptr;
+    enc.reset();
 }
 
 bool EncryptedPacketSocket::ok() const
@@ -219,10 +213,9 @@ net::Address EncryptedPacketSocket::getRemoteAddress() const
     return sock->getPeerName();
 }
 
-void EncryptedPacketSocket::setRC4Encryptor(RC4Encryptor *e)
+void EncryptedPacketSocket::setRC4Encryptor(std::unique_ptr<RC4Encryptor> e)
 {
-    delete enc;
-    enc = e;
+    enc = std::move(e);
 }
 
 void EncryptedPacketSocket::reinsert(const Uint8 *d, Uint32 size)

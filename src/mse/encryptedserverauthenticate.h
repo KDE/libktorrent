@@ -10,6 +10,8 @@
 #include <peer/serverauthenticate.h>
 #include <util/sha1hash.h>
 
+#include <memory>
+
 namespace mse
 {
 class RC4Encryptor;
@@ -56,7 +58,7 @@ private:
     bt::Uint32 crypto_provide, crypto_select;
     bt::Uint16 pad_C_len;
     bt::Uint16 ia_len;
-    RC4Encryptor *our_rc4;
+    std::unique_ptr<RC4Encryptor> our_rc4;
 };
 
 }

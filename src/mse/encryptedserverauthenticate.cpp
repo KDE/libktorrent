@@ -24,14 +24,12 @@ EncryptedServerAuthenticate::EncryptedServerAuthenticate(mse::EncryptedPacketSoc
     state = WAITING_FOR_YA;
     buf_size = 0;
     req1_off = 0;
-    our_rc4 = nullptr;
     pad_C_len = 0;
     crypto_provide = crypto_select = 0;
 }
 
 EncryptedServerAuthenticate::~EncryptedServerAuthenticate()
 {
-    delete our_rc4;
 }
 
 void EncryptedServerAuthenticate::sendYB()
@@ -117,7 +115,7 @@ void EncryptedServerAuthenticate::processVC()
         SHA1Hash dec = mse::EncryptionKey(true, s, info_hash);
         // Out() << "enc = " << enc.toString() << endl;
         // Out() << "dec = " << dec.toString() << endl;
-        our_rc4 = new RC4Encryptor(dec, enc);
+        our_rc4 = std::make_unique<RC4Encryptor>(dec, enc);
     }
 
     // if we do not have everything return
@@ -206,16 +204,14 @@ void EncryptedServerAuthenticate::handleIA()
     bool allow_unenc = ServerInterface::unencryptedConnectionsAllowed();
 
     if (crypto_select & 0x0000002) {
-        sock->setRC4Encryptor(our_rc4);
-        our_rc4 = nullptr;
+        sock->setRC4Encryptor(std::move(our_rc4));
     } else if (!allow_unenc && crypto_select & 0x00000001) {
         // if no encrypted connections
         Out(SYS_CON | LOG_DEBUG) << "Unencrypted connections not allowed" << endl;
         onFinish(false);
         return;
     } else {
-        delete our_rc4;
-        our_rc4 = nullptr;
+        our_rc4.reset();
     }
 
     // hand it over to ServerAuthenticate

@@ -31,7 +31,6 @@ EncryptedAuthenticate::EncryptedAuthenticate(const net::Address &addr,
     mse::GeneratePublicPrivateKey(xa, ya);
     state = NOT_CONNECTED;
     buf_size = 0;
-    our_rc4 = nullptr;
     vc_off = 0;
     dec_bytes = 0;
     crypto_select = 0;
@@ -42,7 +41,6 @@ EncryptedAuthenticate::EncryptedAuthenticate(const net::Address &addr,
 
 EncryptedAuthenticate::~EncryptedAuthenticate()
 {
-    delete our_rc4;
 }
 
 void EncryptedAuthenticate::connected()
@@ -104,7 +102,7 @@ void EncryptedAuthenticate::handleYB()
     enc = mse::EncryptionKey(true, s, info_hash);
     dec = mse::EncryptionKey(false, s, info_hash);
 
-    our_rc4 = new RC4Encryptor(dec, enc);
+    our_rc4 = std::make_unique<RC4Encryptor>(dec, enc);
 
     // now we must send ENCRYPT(VC, crypto_provide, len(PadC), PadC, len(IA))
     memset(tmp_buf, 0, 16); // VC are 8 0x00's
@@ -186,11 +184,9 @@ void EncryptedAuthenticate::handlePadD()
     our_rc4->decrypt(buf + (vc_off + 14), pad_D_len);
 
     if (crypto_select & 0x00000001) { // plain_text selected
-        delete our_rc4;
-        our_rc4 = nullptr;
+        our_rc4.reset();
     } else if (crypto_select & 0x00000002) { // now it must be rc4 if not exit
-        sock->setRC4Encryptor(our_rc4);
-        our_rc4 = nullptr;
+        sock->setRC4Encryptor(std::move(our_rc4));
     } else { // we don't support anything else so error out
         onFinish(false);
         return;

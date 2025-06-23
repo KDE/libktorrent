@@ -10,6 +10,8 @@
 #include <net/packetsocket.h>
 #include <util/constants.h>
 
+#include <memory>
+
 class QString;
 
 namespace bt
@@ -67,7 +69,7 @@ public:
     void initCrypt(const bt::SHA1Hash &dkey, const bt::SHA1Hash &ekey);
 
     //! Set the encryptor
-    void setRC4Encryptor(RC4Encryptor *enc);
+    void setRC4Encryptor(std::unique_ptr<RC4Encryptor> enc);
 
     //! Disables encryption. All data will be sent over as plain text.
     void disableCrypt();
@@ -135,7 +137,7 @@ private:
     void postProcess(bt::Uint8 *data, bt::Uint32 size) override;
 
 private:
-    RC4Encryptor *enc;
+    std::unique_ptr<RC4Encryptor> enc;
     bt::Uint8 *reinserted_data;
     bt::Uint32 reinserted_data_size;
     bt::Uint32 reinserted_data_read;

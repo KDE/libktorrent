@@ -11,6 +11,8 @@
 #include <util/constants.h>
 #include <util/sha1hash.h>
 
+#include <memory>
+
 namespace mse
 {
 class RC4Encryptor;
@@ -55,7 +57,7 @@ private:
 
     BigInt xa, ya, s, skey, yb;
     State state;
-    RC4Encryptor *our_rc4;
+    std::unique_ptr<RC4Encryptor> our_rc4;
     bt::Uint8 buf[MAX_EA_BUF_SIZE];
     bt::Uint32 buf_size;
     bt::Uint32 vc_off;
