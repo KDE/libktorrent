@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-22 00:42+0000\n"
+"POT-Creation-Date: 2025-06-24 00:42+0000\n"
 "PO-Revision-Date: 2020-02-21 22:15+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -26,22 +26,22 @@ msgstr ""
 msgid "Illegal token: %1"
 msgstr "Neveljaven žeton: %1"
 
-#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:111
+#: src/bcodec/bdecoder.cpp:86 src/bcodec/bdecoder.cpp:93
 #, kde-format
 msgid "Decode error"
 msgstr "Napaka med dekodiranjem"
 
-#: src/bcodec/bdecoder.cpp:163 src/bcodec/bdecoder.cpp:201
+#: src/bcodec/bdecoder.cpp:139 src/bcodec/bdecoder.cpp:177
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Nepričakovan konec vhoda"
 
-#: src/bcodec/bdecoder.cpp:180 src/bcodec/bdecoder.cpp:220
+#: src/bcodec/bdecoder.cpp:156 src/bcodec/bdecoder.cpp:196
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "Ni mogoče pretvoriti %1 v celo število"
 
-#: src/bcodec/bdecoder.cpp:225
+#: src/bcodec/bdecoder.cpp:201
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Torrent ni zaključen."
@@ -130,7 +130,7 @@ msgstr "Ni bilo mogoče pisati v datoteko %1: %2"
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Ni mogoče v naprej dodeliti prostora na disku: %1"
 
-#: src/diskio/chunkmanager.cpp:851 src/diskio/chunkmanager.cpp:874
+#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "Ni mogoče odpreti datoteke s kazalom %1: %2"
@@ -302,10 +302,10 @@ msgstr "Napaka: %1"
 msgid "Unknown client"
 msgstr "Neznan odjemalec"
 
-#: src/torrent/torrent.cpp:98 src/torrent/torrent.cpp:145
-#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
-#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:190
-#: src/torrent/torrent.cpp:210 src/torrent/torrent.cpp:273
+#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:136
+#: src/torrent/torrent.cpp:163 src/torrent/torrent.cpp:170
+#: src/torrent/torrent.cpp:177 src/torrent/torrent.cpp:181
+#: src/torrent/torrent.cpp:201 src/torrent/torrent.cpp:264
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Pokvarjen torrent."
@@ -411,7 +411,7 @@ msgid "Superseeding"
 msgstr "Super-sejanje"
 
 #: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
-#: src/tracker/httptracker.cpp:387
+#: src/tracker/httptracker.cpp:383
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Neveljaven odgovor sledilnika"
@@ -421,12 +421,12 @@ msgstr "Neveljaven odgovor sledilnika"
 msgid "Invalid data from tracker"
 msgstr "Neveljavni podatki s sledilnika"
 
-#: src/tracker/httptracker.cpp:402
+#: src/tracker/httptracker.cpp:398
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Neveljaven URL sledilnika"
 
-#: src/tracker/httptracker.cpp:460 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:456 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -442,17 +442,17 @@ msgstr "Ni mogoče razrešiti imena gostitelja %1"
 msgid "Operation timed out"
 msgstr "Dejanje je poteklo"
 
-#: src/upnp/upnprouter.cpp:157
+#: src/upnp/upnprouter.cpp:156
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "Ni bilo mogoče prejeti %1: %2"
 
-#: src/upnp/upnprouter.cpp:167
+#: src/upnp/upnprouter.cpp:166
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Napaka med razčlenjevanjem opisa usmerjevalnika."
 
-#: src/upnp/upnprouter.cpp:201
+#: src/upnp/upnprouter.cpp:200
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -461,7 +461,7 @@ msgstr ""
 "Posredovanje je spodletelo:\n"
 "Naprava nima  WANIPConnection ali WANPPPConnection."
 
-#: src/upnp/upnprouter.cpp:280
+#: src/upnp/upnprouter.cpp:279
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "V opisu naprave ni mogoče najti storitve posredovanja vrat."

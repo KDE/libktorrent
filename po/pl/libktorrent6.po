@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-22 00:42+0000\n"
+"POT-Creation-Date: 2025-06-24 00:42+0000\n"
 "PO-Revision-Date: 2022-12-11 07:36+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -25,22 +25,22 @@ msgstr ""
 msgid "Illegal token: %1"
 msgstr "Nieprawidłowy token: %1"
 
-#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:111
+#: src/bcodec/bdecoder.cpp:86 src/bcodec/bdecoder.cpp:93
 #, kde-format
 msgid "Decode error"
 msgstr "Błąd dekodowania"
 
-#: src/bcodec/bdecoder.cpp:163 src/bcodec/bdecoder.cpp:201
+#: src/bcodec/bdecoder.cpp:139 src/bcodec/bdecoder.cpp:177
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Niespodziewany koniec wejścia"
 
-#: src/bcodec/bdecoder.cpp:180 src/bcodec/bdecoder.cpp:220
+#: src/bcodec/bdecoder.cpp:156 src/bcodec/bdecoder.cpp:196
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "Nie można przekonwertować %1 do liczby całkowitej"
 
-#: src/bcodec/bdecoder.cpp:225
+#: src/bcodec/bdecoder.cpp:201
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Torrent jest niekompletny."
@@ -129,7 +129,7 @@ msgstr "Nie udało się zapisać z do pliku %1: %2"
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Nie można wcześniej przydzielić powierzchni dysku: %1"
 
-#: src/diskio/chunkmanager.cpp:851 src/diskio/chunkmanager.cpp:874
+#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "Nie można otworzyć pliku indeksującego %1: %2"
@@ -299,10 +299,10 @@ msgstr "Błąd: %1"
 msgid "Unknown client"
 msgstr "Nieznany klient"
 
-#: src/torrent/torrent.cpp:98 src/torrent/torrent.cpp:145
-#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
-#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:190
-#: src/torrent/torrent.cpp:210 src/torrent/torrent.cpp:273
+#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:136
+#: src/torrent/torrent.cpp:163 src/torrent/torrent.cpp:170
+#: src/torrent/torrent.cpp:177 src/torrent/torrent.cpp:181
+#: src/torrent/torrent.cpp:201 src/torrent/torrent.cpp:264
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Uszkodzony torrent."
@@ -408,7 +408,7 @@ msgid "Superseeding"
 msgstr "Super-rozsyłanie"
 
 #: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
-#: src/tracker/httptracker.cpp:387
+#: src/tracker/httptracker.cpp:383
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Nieprawidłowa odpowiedź trackera"
@@ -418,12 +418,12 @@ msgstr "Nieprawidłowa odpowiedź trackera"
 msgid "Invalid data from tracker"
 msgstr "Błędne dane z trackera"
 
-#: src/tracker/httptracker.cpp:402
+#: src/tracker/httptracker.cpp:398
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Nieprawidłowy URL trackera"
 
-#: src/tracker/httptracker.cpp:460 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:456 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -439,17 +439,17 @@ msgstr "Przetwarzanie nazwy %1 nie powiodło się"
 msgid "Operation timed out"
 msgstr "Przekroczono czas oczekiwania na operację"
 
-#: src/upnp/upnprouter.cpp:157
+#: src/upnp/upnprouter.cpp:156
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "Nieudane pobranie %1: %2"
 
-#: src/upnp/upnprouter.cpp:167
+#: src/upnp/upnprouter.cpp:166
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Błąd przetwarzania opisu routera."
 
-#: src/upnp/upnprouter.cpp:201
+#: src/upnp/upnprouter.cpp:200
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -458,7 +458,7 @@ msgstr ""
 "Nieudane przekierowanie: \n"
 "Urządzenie nie ma WANIPConnection lub WANPPPConnection."
 
-#: src/upnp/upnprouter.cpp:280
+#: src/upnp/upnprouter.cpp:279
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "Nie można znaleźć usługi przekierowania portów w opisie urządzenia."

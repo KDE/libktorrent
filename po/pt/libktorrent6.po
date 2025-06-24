@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-22 00:42+0000\n"
+"POT-Creation-Date: 2025-06-24 00:42+0000\n"
 "PO-Revision-Date: 2013-04-03 10:32+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -19,22 +19,22 @@ msgstr ""
 msgid "Illegal token: %1"
 msgstr "Item inválido: %1"
 
-#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:111
+#: src/bcodec/bdecoder.cpp:86 src/bcodec/bdecoder.cpp:93
 #, kde-format
 msgid "Decode error"
 msgstr "Erro de descodificação"
 
-#: src/bcodec/bdecoder.cpp:163 src/bcodec/bdecoder.cpp:201
+#: src/bcodec/bdecoder.cpp:139 src/bcodec/bdecoder.cpp:177
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Atingiu-se o fim dos dados de forma inesperada"
 
-#: src/bcodec/bdecoder.cpp:180 src/bcodec/bdecoder.cpp:220
+#: src/bcodec/bdecoder.cpp:156 src/bcodec/bdecoder.cpp:196
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "Não é possível converter o %1 para um inteiro"
 
-#: src/bcodec/bdecoder.cpp:225
+#: src/bcodec/bdecoder.cpp:201
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "A torrente está incompleta."
@@ -125,7 +125,7 @@ msgstr "Não foi possível escrever no ficheiro %1: %2"
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Não é possível pré-alocar o espaço em disco: %1"
 
-#: src/diskio/chunkmanager.cpp:851 src/diskio/chunkmanager.cpp:874
+#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "Não é possível aceder ao ficheiro de índice %1: %2"
@@ -295,10 +295,10 @@ msgstr "Erro: %1"
 msgid "Unknown client"
 msgstr "Cliente desconhecido"
 
-#: src/torrent/torrent.cpp:98 src/torrent/torrent.cpp:145
-#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
-#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:190
-#: src/torrent/torrent.cpp:210 src/torrent/torrent.cpp:273
+#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:136
+#: src/torrent/torrent.cpp:163 src/torrent/torrent.cpp:170
+#: src/torrent/torrent.cpp:177 src/torrent/torrent.cpp:181
+#: src/torrent/torrent.cpp:201 src/torrent/torrent.cpp:264
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "A torrente está corrompida."
@@ -406,7 +406,7 @@ msgid "Superseeding"
 msgstr "A super-publicar"
 
 #: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
-#: src/tracker/httptracker.cpp:387
+#: src/tracker/httptracker.cpp:383
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Foi recebida uma resposta inválida do localizador"
@@ -416,12 +416,12 @@ msgstr "Foi recebida uma resposta inválida do localizador"
 msgid "Invalid data from tracker"
 msgstr "Foram recebidos dados inválidos do localizador"
 
-#: src/tracker/httptracker.cpp:402
+#: src/tracker/httptracker.cpp:398
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "O URL do localizador é inválido"
 
-#: src/tracker/httptracker.cpp:460 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:456 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -437,17 +437,17 @@ msgstr "Não é possível resolver o nome de máquina %1"
 msgid "Operation timed out"
 msgstr "A operação expirou o tempo-limite"
 
-#: src/upnp/upnprouter.cpp:157
+#: src/upnp/upnprouter.cpp:156
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "Não é possível obter o %1: %2"
 
-#: src/upnp/upnprouter.cpp:167
+#: src/upnp/upnprouter.cpp:166
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Ocorreu um erro ao processar a descrição do 'router'."
 
-#: src/upnp/upnprouter.cpp:201
+#: src/upnp/upnprouter.cpp:200
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -456,7 +456,7 @@ msgstr ""
 "O encaminhamento foi mal-sucedido:\n"
 "O dispositivo não tem um objecto WANIPConnection ou WANPPPConnection."
 
-#: src/upnp/upnprouter.cpp:280
+#: src/upnp/upnprouter.cpp:279
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr ""

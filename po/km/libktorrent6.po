@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-22 00:42+0000\n"
+"POT-Creation-Date: 2025-06-24 00:42+0000\n"
 "PO-Revision-Date: 2012-07-04 08:47+0700\n"
 "Last-Translator: Sophea <sophea@khmeros.info>\n"
 "Language-Team: Khmer <>\n"
@@ -28,22 +28,22 @@ msgstr ""
 msgid "Illegal token: %1"
 msgstr "ថូខឹន​មិន​ត្រឹមត្រូវ ៖ %1"
 
-#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:111
+#: src/bcodec/bdecoder.cpp:86 src/bcodec/bdecoder.cpp:93
 #, kde-format
 msgid "Decode error"
 msgstr "កំហុស​ឌិកូដ"
 
-#: src/bcodec/bdecoder.cpp:163 src/bcodec/bdecoder.cpp:201
+#: src/bcodec/bdecoder.cpp:139 src/bcodec/bdecoder.cpp:177
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "ចុង​បញ្ចប់​ដែល​មិន​បាន​រំពឹង​ទុក​នៃ​ព័ត៌មាន​បញ្ចូល"
 
-#: src/bcodec/bdecoder.cpp:180 src/bcodec/bdecoder.cpp:220
+#: src/bcodec/bdecoder.cpp:156 src/bcodec/bdecoder.cpp:196
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "មិន​អាច​បង្កើត​​ %1 ទៅជា​ចំនួនគត់​"
 
-#: src/bcodec/bdecoder.cpp:225
+#: src/bcodec/bdecoder.cpp:201
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Torrent មិន​ពេញ​លេញ​ ។"
@@ -130,7 +130,7 @@ msgstr "បាន​បរាជ័យ​ដើម្បី​សរសេរ​
 msgid "Cannot preallocate diskspace: %1"
 msgstr "មិន​អាច​ទុក​ទំហំ​ថាស​ដោយ​ឡែក​មុន​បាន​ឡើយ​ ៖​ %1"
 
-#: src/diskio/chunkmanager.cpp:851 src/diskio/chunkmanager.cpp:874
+#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "មិន​អាច​បើក​ឯកសារ​លិបិក្រម %1 ៖ %2"
@@ -297,10 +297,10 @@ msgstr "កំហុស​ ៖​​ %1"
 msgid "Unknown client"
 msgstr "មិន​ស្គាល់​ម៉ាស៊ីន​ភ្ញៀវ"
 
-#: src/torrent/torrent.cpp:98 src/torrent/torrent.cpp:145
-#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
-#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:190
-#: src/torrent/torrent.cpp:210 src/torrent/torrent.cpp:273
+#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:136
+#: src/torrent/torrent.cpp:163 src/torrent/torrent.cpp:170
+#: src/torrent/torrent.cpp:177 src/torrent/torrent.cpp:181
+#: src/torrent/torrent.cpp:201 src/torrent/torrent.cpp:264
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "torrent ខូច !"
@@ -406,7 +406,7 @@ msgid "Superseeding"
 msgstr "ការ​បណ្ដុះ​ពិសេស​"
 
 #: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
-#: src/tracker/httptracker.cpp:387
+#: src/tracker/httptracker.cpp:383
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "ការ​ឆ្លើយ​តប​មិន​ត្រឹមត្រូវ​ពី​កម្មវិធី​តាមដាន"
@@ -416,12 +416,12 @@ msgstr "ការ​ឆ្លើយ​តប​មិន​ត្រឹមត្
 msgid "Invalid data from tracker"
 msgstr "ទិន្នន័យ​មិន​ត្រឹម​ត្រូវ​ពី​កម្មវិធី​តាមដាន"
 
-#: src/tracker/httptracker.cpp:402
+#: src/tracker/httptracker.cpp:398
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "URL កម្មវិធី​តាមដាន​បទ​មិន​ត្រឹមត្រូវ"
 
-#: src/tracker/httptracker.cpp:460 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:456 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -437,17 +437,17 @@ msgstr "មិន​អាច​ដោះស្រាយ​ឈ្មោះ​ម
 msgid "Operation timed out"
 msgstr "អស់​ពេល​ប្រតិបត្តិ​​ការ​"
 
-#: src/upnp/upnprouter.cpp:157
+#: src/upnp/upnprouter.cpp:156
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "បាន​បរាជ័យ​ក្នុង​ការ​ទាញ​យក %1 ៖ %2"
 
-#: src/upnp/upnprouter.cpp:167
+#: src/upnp/upnprouter.cpp:166
 #, kde-format
 msgid "Error parsing router description."
 msgstr "កំហុស​ក្នុង​ការ​ញែក​សេចក្ដី​ពិពណ៌នា​​រ៉ោតទ័រ​ ។"
 
-#: src/upnp/upnprouter.cpp:201
+#: src/upnp/upnprouter.cpp:200
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -456,7 +456,7 @@ msgstr ""
 "បាន​បរាជ័យ​ក្នុង​កា​រ​បញ្ជូន​បន្ត ៖ \n"
 "ឧបករណ៍​មិន​មានការ​តភ្ជាប់​ WANIP ឬ​ការ​តភ្ជាប់ WANPPP ឡើយ ។"
 
-#: src/upnp/upnprouter.cpp:280
+#: src/upnp/upnprouter.cpp:279
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "រក​មិន​ឃើញ​ច្រក​ដែល​បញ្ជូន​បន្ត​សេវា​ក្នុង​ការ​ពិពណ៌នា​របស់​ឧបករណ៍​ឡើយ​ ។"

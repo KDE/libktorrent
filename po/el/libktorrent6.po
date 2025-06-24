@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-22 00:42+0000\n"
+"POT-Creation-Date: 2025-06-24 00:42+0000\n"
 "PO-Revision-Date: 2013-04-06 10:53+0200\n"
 "Last-Translator: Stelios <sstavragmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -29,22 +29,22 @@ msgstr ""
 msgid "Illegal token: %1"
 msgstr "Εσφαλμένο αναγνωριστικό: %1"
 
-#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:111
+#: src/bcodec/bdecoder.cpp:86 src/bcodec/bdecoder.cpp:93
 #, kde-format
 msgid "Decode error"
 msgstr "Σφάλμα αποκωδικοποίησης"
 
-#: src/bcodec/bdecoder.cpp:163 src/bcodec/bdecoder.cpp:201
+#: src/bcodec/bdecoder.cpp:139 src/bcodec/bdecoder.cpp:177
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Μη αναμενόμενο τέλος της εισόδου"
 
-#: src/bcodec/bdecoder.cpp:180 src/bcodec/bdecoder.cpp:220
+#: src/bcodec/bdecoder.cpp:156 src/bcodec/bdecoder.cpp:196
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "Αδυναμία μετατροπής του %1 σε ακέραιο"
 
-#: src/bcodec/bdecoder.cpp:225
+#: src/bcodec/bdecoder.cpp:201
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Το torrent δεν είναι ολοκληρωμένο"
@@ -134,7 +134,7 @@ msgstr "Αποτυχία εγγραφής στο αρχείο %1: %2"
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Αδυναμία προκράτησης χώρου στο δίσκο: %1"
 
-#: src/diskio/chunkmanager.cpp:851 src/diskio/chunkmanager.cpp:874
+#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "Αδυναμία ανοίγματος του αρχείου ευρετηρίου %1: %2"
@@ -302,10 +302,10 @@ msgstr "Σφάλμα: %1"
 msgid "Unknown client"
 msgstr "Άγνωστος πελάτης"
 
-#: src/torrent/torrent.cpp:98 src/torrent/torrent.cpp:145
-#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
-#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:190
-#: src/torrent/torrent.cpp:210 src/torrent/torrent.cpp:273
+#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:136
+#: src/torrent/torrent.cpp:163 src/torrent/torrent.cpp:170
+#: src/torrent/torrent.cpp:177 src/torrent/torrent.cpp:181
+#: src/torrent/torrent.cpp:201 src/torrent/torrent.cpp:264
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Κατεστραμμένο torrent."
@@ -411,7 +411,7 @@ msgid "Superseeding"
 msgstr "Υπερπροσφορά πηγής"
 
 #: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
-#: src/tracker/httptracker.cpp:387
+#: src/tracker/httptracker.cpp:383
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Μη έγκυρη απάντηση από ιχνηλάτη"
@@ -421,12 +421,12 @@ msgstr "Μη έγκυρη απάντηση από ιχνηλάτη"
 msgid "Invalid data from tracker"
 msgstr "Μη έγκυρα δεδομένα από τον ιχνηλάτη"
 
-#: src/tracker/httptracker.cpp:402
+#: src/tracker/httptracker.cpp:398
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Μη έγκυρο URL ιχνηλάτη"
 
-#: src/tracker/httptracker.cpp:460 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:456 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -442,17 +442,17 @@ msgstr "Αδυναμία επίλυσης ονόματος υπολογιστή 
 msgid "Operation timed out"
 msgstr "Τέλος χρόνου λειτουργίας"
 
-#: src/upnp/upnprouter.cpp:157
+#: src/upnp/upnprouter.cpp:156
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "Αποτυχία λήψης %1: %2"
 
-#: src/upnp/upnprouter.cpp:167
+#: src/upnp/upnprouter.cpp:166
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Σφάλμα ανάλυσης περιγραφής δρομολογητή (router)."
 
-#: src/upnp/upnprouter.cpp:201
+#: src/upnp/upnprouter.cpp:200
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -461,7 +461,7 @@ msgstr ""
 "Αποτυχία προώθησης (Forwarding):\n"
 "Η συσκευή δεν έχει διαθέσιμη μια WANIPConnection ή μια WANPPPConnection."
 
-#: src/upnp/upnprouter.cpp:280
+#: src/upnp/upnprouter.cpp:279
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr ""

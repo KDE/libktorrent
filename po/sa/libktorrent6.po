@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-22 00:42+0000\n"
+"POT-Creation-Date: 2025-06-24 00:42+0000\n"
 "PO-Revision-Date: 2024-12-14 13:33+0530\n"
 "Last-Translator: Kali <EMAIL@ADDRESS>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -23,22 +23,22 @@ msgstr ""
 msgid "Illegal token: %1"
 msgstr "अवैध टोकन: %1"
 
-#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:111
+#: src/bcodec/bdecoder.cpp:86 src/bcodec/bdecoder.cpp:93
 #, kde-format
 msgid "Decode error"
 msgstr "त्रुटिं विकोडयतु"
 
-#: src/bcodec/bdecoder.cpp:163 src/bcodec/bdecoder.cpp:201
+#: src/bcodec/bdecoder.cpp:139 src/bcodec/bdecoder.cpp:177
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "निवेशस्य अप्रत्याशितः अन्तः"
 
-#: src/bcodec/bdecoder.cpp:180 src/bcodec/bdecoder.cpp:220
+#: src/bcodec/bdecoder.cpp:156 src/bcodec/bdecoder.cpp:196
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "%1 इत्येतत् int मध्ये परिवर्तयितुं न शक्यते"
 
-#: src/bcodec/bdecoder.cpp:225
+#: src/bcodec/bdecoder.cpp:201
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "टोरेण्ट् अपूर्णः अस्ति।"
@@ -125,7 +125,7 @@ msgstr "%1: %2 सञ्चिकायां लिखितुं असफल
 msgid "Cannot preallocate diskspace: %1"
 msgstr "डिस्कस्थानं पूर्वविनियोगं कर्तुं न शक्यते: %1"
 
-#: src/diskio/chunkmanager.cpp:851 src/diskio/chunkmanager.cpp:874
+#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "अनुक्रमणिकासञ्चिका %1: %2 उद्घाटयितुं न शक्यते"
@@ -293,10 +293,10 @@ msgstr "त्रुटिः %1"
 msgid "Unknown client"
 msgstr "अज्ञात ग्राहक"
 
-#: src/torrent/torrent.cpp:98 src/torrent/torrent.cpp:145
-#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
-#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:190
-#: src/torrent/torrent.cpp:210 src/torrent/torrent.cpp:273
+#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:136
+#: src/torrent/torrent.cpp:163 src/torrent/torrent.cpp:170
+#: src/torrent/torrent.cpp:177 src/torrent/torrent.cpp:181
+#: src/torrent/torrent.cpp:201 src/torrent/torrent.cpp:264
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "दूषित धारा।"
@@ -402,7 +402,7 @@ msgid "Superseeding"
 msgstr "सुपरसीडिंग"
 
 #: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
-#: src/tracker/httptracker.cpp:387
+#: src/tracker/httptracker.cpp:383
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "ट्रैकरतः अमान्यप्रतिक्रिया"
@@ -412,12 +412,12 @@ msgstr "ट्रैकरतः अमान्यप्रतिक्रि�
 msgid "Invalid data from tracker"
 msgstr "ट्रैकरतः अमान्यदत्तांशः"
 
-#: src/tracker/httptracker.cpp:402
+#: src/tracker/httptracker.cpp:398
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "अमान्य ट्रैकर URL"
 
-#: src/tracker/httptracker.cpp:460 src/tracker/udptracker.cpp:314
+#: src/tracker/httptracker.cpp:456 src/tracker/udptracker.cpp:314
 #: src/tracker/udptracker.cpp:321
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -433,17 +433,17 @@ msgstr "होस्ट्नाम %1 समाधानं कर्तुं 
 msgid "Operation timed out"
 msgstr "ऑपरेशनस्य समयः समाप्तः"
 
-#: src/upnp/upnprouter.cpp:157
+#: src/upnp/upnprouter.cpp:156
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "%1: %2 अवतरणं कर्तुं असफलम्"
 
-#: src/upnp/upnprouter.cpp:167
+#: src/upnp/upnprouter.cpp:166
 #, kde-format
 msgid "Error parsing router description."
 msgstr "रूटरविवरणं विश्लेषणं कृत्वा त्रुटिः।"
 
-#: src/upnp/upnprouter.cpp:201
+#: src/upnp/upnprouter.cpp:200
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -452,7 +452,7 @@ msgstr ""
 "अग्रे प्रेषणं विफलम् : १.\n"
 "उपकरणे WANIPConnection अथवा WANPPPConnection नास्ति ।"
 
-#: src/upnp/upnprouter.cpp:280
+#: src/upnp/upnprouter.cpp:279
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "यन्त्रस्य विवरणे पोर्ट् अग्रेषणसेवा न प्राप्यते ।"
