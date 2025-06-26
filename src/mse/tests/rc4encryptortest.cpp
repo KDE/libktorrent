@@ -25,7 +25,7 @@ public:
         for (int i = 0; i < 5; i++) {
             hash[i] = QRandomGenerator::global()->generate();
         }
-        return bt::SHA1Hash(reinterpret_cast<Uint8 *>(hash));
+        return bt::SHA1Hash(reinterpret_cast<bt::Uint8 *>(hash));
     }
 
 private Q_SLOTS:
@@ -54,8 +54,8 @@ private Q_SLOTS:
                     data[j] = QRandomGenerator::global()->generate();
 
                 memcpy(tmp, data, 1024);
-                a.encryptReplace(reinterpret_cast<Uint8 *>(data), 1024);
-                b.decrypt(reinterpret_cast<Uint8 *>(data), 1024);
+                a.encryptReplace(reinterpret_cast<bt::Uint8 *>(data), 1024);
+                b.decrypt(reinterpret_cast<bt::Uint8 *>(data), 1024);
                 QVERIFY(memcmp(tmp, data, 1024) == 0);
             }
         } catch (bt::Error &err) {

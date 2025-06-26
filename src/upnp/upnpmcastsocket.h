@@ -17,8 +17,6 @@
 
 #include <memory>
 
-using bt::Uint32;
-
 namespace bt
 {
 class UPnPRouter;

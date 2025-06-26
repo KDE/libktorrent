@@ -11,11 +11,6 @@
 #include <gmp.h>
 #include <util/constants.h>
 
-using bt::Uint16;
-using bt::Uint32;
-using bt::Uint64;
-using bt::Uint8;
-
 namespace mse
 {
 /*!
@@ -32,7 +27,7 @@ public:
      * All bits will be set to 0.
      * \param num_bits The number of bits
      */
-    BigInt(Uint32 num_bits = 0);
+    BigInt(bt::Uint32 num_bits = 0);
 
     /*!
      * Create a big integer of a string. The string must be
@@ -69,10 +64,10 @@ public:
     static BigInt random();
 
     //! Export the bigint ot a buffer
-    Uint32 toBuffer(Uint8 *buf, Uint32 max_size) const;
+    bt::Uint32 toBuffer(bt::Uint8 *buf, bt::Uint32 max_size) const;
 
     //! Make a BigInt out of a buffer
-    static BigInt fromBuffer(const Uint8 *buf, Uint32 size);
+    static BigInt fromBuffer(const bt::Uint8 *buf, bt::Uint32 size);
 
 private:
     mpz_t val;

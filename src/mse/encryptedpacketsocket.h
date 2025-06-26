@@ -12,10 +12,6 @@
 
 class QString;
 
-using bt::Uint16;
-using bt::Uint32;
-using bt::Uint8;
-
 namespace bt
 {
 class SHA1Hash;
@@ -44,7 +40,7 @@ public:
      * \param len The length
      * \return Number of bytes written
      */
-    Uint32 sendData(const Uint8 *data, Uint32 len);
+    bt::Uint32 sendData(const bt::Uint8 *data, bt::Uint32 len);
 
     /*!
      * Reads data from the peer.
@@ -52,10 +48,10 @@ public:
      * \param len The maximum number of bytes to read
      * \return The number of bytes read
      */
-    Uint32 readData(Uint8 *buf, Uint32 len);
+    bt::Uint32 readData(bt::Uint8 *buf, bt::Uint32 len);
 
     //! Get the number of bytes available to read.
-    Uint32 bytesAvailable() const;
+    bt::Uint32 bytesAvailable() const;
 
     //! Are we using encryption
     bool encrypted() const
@@ -80,7 +76,7 @@ public:
     void close();
 
     //! Connect the socket to a remote host
-    bool connectTo(const QString &ip, Uint16 port);
+    bool connectTo(const QString &ip, bt::Uint16 port);
 
     //! Connect the socket to a remote host
     bool connectTo(const net::Address &addr);
@@ -99,7 +95,7 @@ public:
      * This data will be the first to read out. The data will be copied to a temporary buffer
      * which will be destroyed when the reinserted data has been read.
      */
-    void reinsert(const Uint8 *d, Uint32 size);
+    void reinsert(const bt::Uint8 *d, bt::Uint32 size);
 
     //! see if the socket is still OK
     bool ok() const;
@@ -120,7 +116,7 @@ public:
      * Set the TOS byte for new sockets.
      * \param t TOS value
      */
-    static void setTOS(Uint8 t)
+    static void setTOS(bt::Uint8 t)
     {
         tos = t;
     }
@@ -135,17 +131,17 @@ public:
     typedef QSharedPointer<EncryptedPacketSocket> Ptr;
 
 private:
-    void preProcess(Uint8 *data, Uint32 size) override;
-    void postProcess(Uint8 *data, Uint32 size) override;
+    void preProcess(bt::Uint8 *data, bt::Uint32 size) override;
+    void postProcess(bt::Uint8 *data, bt::Uint32 size) override;
 
 private:
     RC4Encryptor *enc;
-    Uint8 *reinserted_data;
-    Uint32 reinserted_data_size;
-    Uint32 reinserted_data_read;
+    bt::Uint8 *reinserted_data;
+    bt::Uint32 reinserted_data_size;
+    bt::Uint32 reinserted_data_read;
     bool monitored;
 
-    static Uint8 tos;
+    static bt::Uint8 tos;
 };
 
 }

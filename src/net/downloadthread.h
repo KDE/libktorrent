@@ -33,7 +33,7 @@ public:
     }
 
     //! Get the download cap
-    static Uint32 cap()
+    static bt::Uint32 cap()
     {
         return dcap;
     }
@@ -43,7 +43,7 @@ public:
 
 private:
     void update() override;
-    bool doGroup(SocketGroup *g, Uint32 &allowance, bt::TimeStamp now) override;
+    bool doGroup(SocketGroup *g, bt::Uint32 &allowance, bt::TimeStamp now) override;
     int waitForSocketReady();
 
 private:

@@ -14,7 +14,7 @@ namespace mse
 {
 class RC4Encryptor;
 
-const Uint32 MAX_SEA_BUF_SIZE = 608 + 20 + 20 + 8 + 4 + 2 + 512 + 2 + 68;
+const bt::Uint32 MAX_SEA_BUF_SIZE = 608 + 20 + 20 + 8 + 4 + 2 + 512 + 2 + 68;
 /*!
     \author Joris Guisson <joris.guisson@gmail.com>
 */
@@ -50,12 +50,12 @@ private:
     BigInt xb, yb, s, ya;
     bt::SHA1Hash skey, info_hash;
     State state;
-    Uint8 buf[MAX_SEA_BUF_SIZE];
-    Uint32 buf_size;
-    Uint32 req1_off;
-    Uint32 crypto_provide, crypto_select;
-    Uint16 pad_C_len;
-    Uint16 ia_len;
+    bt::Uint8 buf[MAX_SEA_BUF_SIZE];
+    bt::Uint32 buf_size;
+    bt::Uint32 req1_off;
+    bt::Uint32 crypto_provide, crypto_select;
+    bt::Uint16 pad_C_len;
+    bt::Uint16 ia_len;
     RC4Encryptor *our_rc4;
 };
 

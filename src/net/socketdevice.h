@@ -34,7 +34,7 @@ public:
     virtual int recv(bt::Uint8 *buf, int max_len) = 0;
     virtual void close() = 0;
     virtual void setBlocking(bool on) = 0;
-    virtual Uint32 bytesAvailable() const = 0;
+    virtual bt::Uint32 bytesAvailable() const = 0;
     virtual bool setTOS(unsigned char type_of_service) = 0;
     virtual bool connectTo(const Address &addr) = 0;
     //! See if a connectTo was succesfull in non blocking mode

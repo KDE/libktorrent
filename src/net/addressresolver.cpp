@@ -39,12 +39,12 @@ void AddressResolver::hostResolved(const QHostInfo &res)
     deleteLater();
 }
 
-void AddressResolver::resolve(const QString &host, Uint16 port, QObject *parent, const char *slot)
+void AddressResolver::resolve(const QString &host, bt::Uint16 port, QObject *parent, const char *slot)
 {
     new AddressResolver(host, port, parent, slot);
 }
 
-Address AddressResolver::resolve(const QString &host, Uint16 port)
+Address AddressResolver::resolve(const QString &host, bt::Uint16 port)
 {
     QHostInfo info = QHostInfo::fromName(host);
     if (info.error() == QHostInfo::NoError && info.addresses().size() > 0)

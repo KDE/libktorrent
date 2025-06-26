@@ -14,8 +14,6 @@
 
 namespace net
 {
-using bt::Uint32;
-
 class TrafficShapedSocket;
 
 /*!
@@ -77,7 +75,7 @@ public:
      * \param assured_rate The assured rate in bytes/s
      * \return The group ID
      */
-    Uint32 newGroup(GroupType type, Uint32 limit, Uint32 assured_rate);
+    bt::Uint32 newGroup(GroupType type, bt::Uint32 limit, bt::Uint32 assured_rate);
 
     /*!
      * Change the group limit
@@ -85,7 +83,7 @@ public:
      * \param gid The group id
      * \param limit The limit
      */
-    void setGroupLimit(GroupType type, Uint32 gid, Uint32 limit);
+    void setGroupLimit(GroupType type, bt::Uint32 gid, bt::Uint32 limit);
 
     /*!
      * Change the group assured rate
@@ -93,20 +91,20 @@ public:
      * \param gid The group id
      * \param as The assured rate
      */
-    void setGroupAssuredRate(GroupType type, Uint32 gid, Uint32 as);
+    void setGroupAssuredRate(GroupType type, bt::Uint32 gid, bt::Uint32 as);
 
     /*!
      * Remove a group
      * \param type The group type
      * \param gid The group id
      */
-    void removeGroup(GroupType type, Uint32 gid);
+    void removeGroup(GroupType type, bt::Uint32 gid);
 
-    static void setDownloadCap(Uint32 bytes_per_sec);
-    static Uint32 getDownloadCap();
-    static void setUploadCap(Uint32 bytes_per_sec);
-    static Uint32 getUploadCap();
-    static void setSleepTime(Uint32 sleep_time);
+    static void setDownloadCap(bt::Uint32 bytes_per_sec);
+    static bt::Uint32 getDownloadCap();
+    static void setUploadCap(bt::Uint32 bytes_per_sec);
+    static bt::Uint32 getUploadCap();
+    static void setSleepTime(bt::Uint32 sleep_time);
     static SocketMonitor &instance()
     {
         return self;

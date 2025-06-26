@@ -16,10 +16,6 @@
 
 #include <memory>
 
-using bt::Uint16;
-using bt::Uint32;
-using bt::Uint8;
-
 namespace dht
 {
 class Key;
@@ -34,7 +30,7 @@ class RPCServer : public QObject, public RPCServerInterface
 {
     Q_OBJECT
 public:
-    RPCServer(DHT *dh_table, Uint16 port, QObject *parent = nullptr);
+    RPCServer(DHT *dh_table, bt::Uint16 port, QObject *parent = nullptr);
     ~RPCServer() override;
 
     //! Start the server
@@ -72,7 +68,7 @@ public:
     void ping(const dht::Key &our_id, const net::Address &addr);
 
     //! Get the number of active calls
-    Uint32 getNumActiveRPCCalls() const;
+    bt::Uint32 getNumActiveRPCCalls() const;
 
 private Q_SLOTS:
     void callTimeout(RPCCall *call);

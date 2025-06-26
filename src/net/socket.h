@@ -30,7 +30,7 @@ public:
     bool connectTo(const Address &addr) override;
     bool connectSuccesFull() override;
     void close() override;
-    Uint32 bytesAvailable() const override;
+    bt::Uint32 bytesAvailable() const override;
     int send(const bt::Uint8 *buf, int len) override;
     int recv(bt::Uint8 *buf, int max_len) override;
     bool ok() const override
@@ -52,7 +52,7 @@ public:
     void prepare(Poll *p, Poll::Mode mode) override;
     bool ready(const Poll *p, Poll::Mode mode) const override;
 
-    bool bind(const QString &ip, Uint16 port, bool also_listen);
+    bool bind(const QString &ip, bt::Uint16 port, bool also_listen);
     bool bind(const Address &addr, bool also_listen);
     int accept(Address &a);
 

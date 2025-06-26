@@ -15,11 +15,6 @@
 
 #include <memory>
 
-namespace KNetwork
-{
-class KResolverResults;
-}
-
 namespace bt
 {
 class PeerID;
@@ -29,8 +24,6 @@ class Authenticate;
 class ChunkCounter;
 class PieceDownloader;
 class ConnectionLimit;
-
-using KNetwork::KResolverResults;
 
 const Uint32 MAX_SIMULTANIOUS_AUTHS = 20;
 

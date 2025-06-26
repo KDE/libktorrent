@@ -12,8 +12,6 @@
 #include <util/constants.h>
 #include <util/ptrmap.h>
 
-using bt::Uint32;
-
 namespace net
 {
 class SocketMonitor;
@@ -28,7 +26,7 @@ class NetworkThread : public QThread, public Poll
 protected:
     SocketMonitor *sm;
     bool running;
-    bt::PtrMap<Uint32, SocketGroup> groups;
+    bt::PtrMap<bt::Uint32, SocketGroup> groups;
     bt::TimeStamp prev_run_time;
 
 public:
@@ -41,27 +39,27 @@ public:
      * \param limit The limit in bytes per sec
      * \param assured_rate The assured rate for this group in bytes per second
      */
-    void addGroup(Uint32 gid, Uint32 limit, Uint32 assured_rate);
+    void addGroup(bt::Uint32 gid, bt::Uint32 limit, bt::Uint32 assured_rate);
 
     /*!
      * Remove a group
      * \param gid The group ID
      */
-    void removeGroup(Uint32 gid);
+    void removeGroup(bt::Uint32 gid);
 
     /*!
      * Set the limit for a group
      * \param gid The group ID
      * \param limit The limit
      */
-    void setGroupLimit(Uint32 gid, Uint32 limit);
+    void setGroupLimit(bt::Uint32 gid, bt::Uint32 limit);
 
     /*!
      * Set the assured rate for a group
      * \param gid The group ID
      * \param as The assured rate
      */
-    void setGroupAssuredRate(Uint32 gid, Uint32 as);
+    void setGroupAssuredRate(bt::Uint32 gid, bt::Uint32 as);
 
     /*!
      * The main function of the thread
@@ -80,7 +78,7 @@ public:
      * \param now The current time
      * \return true if the group can go again
      */
-    virtual bool doGroup(SocketGroup *g, Uint32 &allowance, bt::TimeStamp now) = 0;
+    virtual bool doGroup(SocketGroup *g, bt::Uint32 &allowance, bt::TimeStamp now) = 0;
 
     //! Stop before the next update
     void stop()
@@ -101,10 +99,10 @@ protected:
      * \param now The current time
      * \param limit The global limit in bytes per sec
      */
-    void doGroups(Uint32 num_ready, bt::TimeStamp now, bt::Uint32 limit);
+    void doGroups(bt::Uint32 num_ready, bt::TimeStamp now, bt::Uint32 limit);
 
 private:
-    Uint32 doGroupsLimited(Uint32 num_ready, bt::TimeStamp now, Uint32 &allowance);
+    bt::Uint32 doGroupsLimited(bt::Uint32 num_ready, bt::TimeStamp now, bt::Uint32 &allowance);
 };
 
 }

@@ -11,8 +11,6 @@
 
 namespace net
 {
-using bt::Uint32;
-
 class TrafficShapedSocket;
 
 /*!
@@ -20,15 +18,15 @@ class TrafficShapedSocket;
 */
 class SocketGroup
 {
-    Uint32 limit;
-    Uint32 assured_rate;
+    bt::Uint32 limit;
+    bt::Uint32 assured_rate;
     std::list<TrafficShapedSocket *> sockets;
     bt::TimeStamp prev_run_time;
-    Uint32 group_allowance;
-    Uint32 group_assured;
+    bt::Uint32 group_allowance;
+    bt::Uint32 group_assured;
 
 public:
-    SocketGroup(Uint32 limit, Uint32 assured_rate);
+    SocketGroup(bt::Uint32 limit, bt::Uint32 assured_rate);
     virtual ~SocketGroup();
 
     //! Clear the lists of sockets
@@ -49,7 +47,7 @@ public:
         \param now Current time
         \return true if we can download more data, false otherwise
     */
-    bool download(Uint32 &global_allowance, bt::TimeStamp now);
+    bool download(bt::Uint32 &global_allowance, bt::TimeStamp now);
 
     /*!
         Process all the sockets in the vector for upload
@@ -57,13 +55,13 @@ public:
         \param now Current time
         \return true if we can upload more data, false otherwise
      */
-    bool upload(Uint32 &global_allowance, bt::TimeStamp now);
+    bool upload(bt::Uint32 &global_allowance, bt::TimeStamp now);
 
     /*!
      * Set the group limit in bytes per sec
      * \param lim The limit
      */
-    void setLimit(Uint32 lim)
+    void setLimit(bt::Uint32 lim)
     {
         limit = lim;
     }
@@ -72,13 +70,13 @@ public:
      * Set the assured rate for the gorup in bytes per sec
      * \param as The assured rate
      */
-    void setAssuredRate(Uint32 as)
+    void setAssuredRate(bt::Uint32 as)
     {
         assured_rate = as;
     }
 
     //! Get the number of sockets
-    Uint32 numSockets() const
+    bt::Uint32 numSockets() const
     {
         return sockets.size();
     }
@@ -92,15 +90,15 @@ public:
     /*!
      * Get the assured allowance .
      */
-    Uint32 getAssuredAllowance() const
+    bt::Uint32 getAssuredAllowance() const
     {
         return group_assured;
     }
 
 private:
     void processUnlimited(bool up, bt::TimeStamp now);
-    bool processLimited(bool up, bt::TimeStamp now, Uint32 &allowance);
-    bool process(bool up, bt::TimeStamp now, Uint32 &global_allowance);
+    bool processLimited(bool up, bt::TimeStamp now, bt::Uint32 &allowance);
+    bool process(bool up, bt::TimeStamp now, bt::Uint32 &global_allowance);
 };
 
 }

@@ -15,7 +15,7 @@ namespace mse
 {
 class RC4Encryptor;
 
-const Uint32 MAX_EA_BUF_SIZE = 622 + 512;
+const bt::Uint32 MAX_EA_BUF_SIZE = 622 + 512;
 
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
@@ -56,14 +56,14 @@ private:
     BigInt xa, ya, s, skey, yb;
     State state;
     RC4Encryptor *our_rc4;
-    Uint8 buf[MAX_EA_BUF_SIZE];
-    Uint32 buf_size;
-    Uint32 vc_off;
-    Uint32 dec_bytes;
+    bt::Uint8 buf[MAX_EA_BUF_SIZE];
+    bt::Uint32 buf_size;
+    bt::Uint32 vc_off;
+    bt::Uint32 dec_bytes;
     bt::SHA1Hash enc, dec;
-    Uint32 crypto_select;
-    Uint16 pad_D_len;
-    Uint32 end_of_crypto_handshake;
+    bt::Uint32 crypto_select;
+    bt::Uint16 pad_D_len;
+    bt::Uint32 end_of_crypto_handshake;
 };
 
 }

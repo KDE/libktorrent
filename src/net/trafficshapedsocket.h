@@ -69,7 +69,7 @@ public:
      * \param now Current time stamp
      * \return The number of bytes read
      */
-    virtual Uint32 read(Uint32 max_bytes_to_read, bt::TimeStamp now);
+    virtual bt::Uint32 read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now);
 
     /*!
      * Writes data to the socket. Subclasses should implement the data source.
@@ -77,7 +77,7 @@ public:
      * \param now Current time stamp
      * \return The number of bytes written
      */
-    virtual Uint32 write(Uint32 max, bt::TimeStamp now) = 0;
+    virtual bt::Uint32 write(bt::Uint32 max, bt::TimeStamp now) = 0;
 
     //! See if the socket has something ready to write
     virtual bool bytesReadyToWrite() const = 0;
@@ -96,16 +96,16 @@ public:
      * \param gid THe ID (0 is default group)
      * \param upload Whether this is an upload group or a download group
      */
-    void setGroupID(Uint32 gid, bool upload);
+    void setGroupID(bt::Uint32 gid, bool upload);
 
     //! Get the download group ID
-    Uint32 downloadGroupID() const
+    bt::Uint32 downloadGroupID() const
     {
         return down_gid;
     }
 
     //! Get the upload group ID
-    Uint32 uploadGroupID() const
+    bt::Uint32 uploadGroupID() const
     {
         return up_gid;
     }
@@ -122,8 +122,8 @@ protected:
     SocketReader *rdr;
     Speed *down_speed;
     Speed *up_speed;
-    Uint32 up_gid;
-    Uint32 down_gid; // group id which this torrent belongs to, group 0 means the default group
+    bt::Uint32 up_gid;
+    bt::Uint32 down_gid; // group id which this torrent belongs to, group 0 means the default group
     SocketDevice *sock;
     mutable QRecursiveMutex mutex;
 };

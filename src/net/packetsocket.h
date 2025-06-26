@@ -15,9 +15,6 @@
 
 namespace net
 {
-using bt::Uint32;
-using bt::Uint8;
-
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
@@ -38,11 +35,11 @@ public:
      **/
     void addPacket(bt::Packet::Ptr packet);
 
-    Uint32 write(Uint32 max, bt::TimeStamp now) override;
+    bt::Uint32 write(bt::Uint32 max, bt::TimeStamp now) override;
     bool bytesReadyToWrite() const override;
 
     //! Get the number of data bytes uploaded
-    Uint32 dataBytesUploaded();
+    bt::Uint32 dataBytesUploaded();
 
     /*!
      * Clear all pieces we are not in the progress of sending.
@@ -59,10 +56,10 @@ public:
     void doNotSendPiece(const bt::Request &req, bool reject);
 
     //! Get the number of pending piece uploads
-    Uint32 numPendingPieceUploads() const;
+    bt::Uint32 numPendingPieceUploads() const;
 
     //! Get the number of pending piece upload bytes (including message headers)
-    Uint32 numPendingPieceUploadBytes() const;
+    bt::Uint32 numPendingPieceUploadBytes() const;
 
 protected:
     /*!
@@ -70,7 +67,7 @@ protected:
      * \param data The packet data
      * \param size The size of the data
      **/
-    virtual void preProcess(Uint8 *data, Uint32 size);
+    virtual void preProcess(bt::Uint8 *data, bt::Uint32 size);
 
 private:
     bt::Packet::Ptr selectPacket();
@@ -79,10 +76,10 @@ protected:
     std::deque<bt::Packet::Ptr> control_packets;
     std::deque<bt::Packet::Ptr> data_packets; // NOTE: revert back to lists because of erase() calls?
     bt::Packet::Ptr curr_packet;
-    Uint32 ctrl_packets_sent;
+    bt::Uint32 ctrl_packets_sent;
 
-    Uint32 pending_upload_data_bytes;
-    Uint32 uploaded_data_bytes;
+    bt::Uint32 pending_upload_data_bytes;
+    bt::Uint32 uploaded_data_bytes;
 };
 
 }

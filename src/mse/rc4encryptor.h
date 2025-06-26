@@ -16,9 +16,6 @@
 #include <util/constants.h>
 #include <util/sha1hash.h>
 
-using bt::Uint32;
-using bt::Uint8;
-
 namespace mse
 {
 /*!
@@ -39,7 +36,7 @@ public:
      * \param data The data
      * \param len Size of the data
      */
-    void decrypt(Uint8 *data, Uint32 len);
+    void decrypt(bt::Uint8 *data, bt::Uint32 len);
 
     /*!
      * Encrypt the data. Encryption happens into the static buffer.
@@ -50,7 +47,7 @@ public:
      * \param len The length of the data
      * \return Pointer to the static buffer
      */
-    const Uint8 *encrypt(const Uint8 *data, Uint32 len);
+    const bt::Uint8 *encrypt(const bt::Uint8 *data, bt::Uint32 len);
 
     /*!
      * Encrypt data, encryption will happen in the same buffer. So data will
@@ -58,7 +55,7 @@ public:
      * \param data The data to encrypt
      * \param len The length of the data
      */
-    void encryptReplace(Uint8 *data, Uint32 len);
+    void encryptReplace(bt::Uint8 *data, bt::Uint32 len);
 
 private:
 #if defined(LIBKTORRENT_USE_OPENSSL)

@@ -12,8 +12,6 @@
 
 #include <memory>
 
-using bt::Uint8;
-
 namespace dht
 {
 class DHT;

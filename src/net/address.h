@@ -18,9 +18,6 @@
 
 namespace net
 {
-using bt::Uint16;
-using bt::Uint32;
-
 /*!
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
@@ -31,23 +28,23 @@ class KTORRENT_EXPORT Address : public QHostAddress
 {
 public:
     Address();
-    Address(quint32 ip4Addr, Uint16 port);
-    Address(quint8 *ip6Addr, Uint16 port);
-    Address(const Q_IPV6ADDR &ip6Addr, Uint16 port);
+    Address(quint32 ip4Addr, bt::Uint16 port);
+    Address(quint8 *ip6Addr, bt::Uint16 port);
+    Address(const Q_IPV6ADDR &ip6Addr, bt::Uint16 port);
     Address(const struct sockaddr_storage *ss);
-    Address(const QString &host, Uint16 port);
-    Address(const QHostAddress &addr, Uint16 port);
+    Address(const QString &host, bt::Uint16 port);
+    Address(const QHostAddress &addr, bt::Uint16 port);
     Address(const Address &addr);
     virtual ~Address();
 
     //! Get the port number
-    Uint16 port() const
+    bt::Uint16 port() const
     {
         return port_number;
     }
 
     //! Set the port number
-    void setPort(Uint16 p)
+    void setPort(bt::Uint16 p)
     {
         port_number = p;
     }
@@ -87,7 +84,7 @@ public:
     Address convertIPv4Mapped() const;
 
 private:
-    Uint16 port_number;
+    bt::Uint16 port_number;
 };
 
 }
