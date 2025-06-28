@@ -9,6 +9,7 @@ using namespace Qt::Literals::StringLiterals;
 class MagnetLinkTest : public QObject
 {
     Q_OBJECT
+
 public:
     MagnetLinkTest()
     {
@@ -25,16 +26,18 @@ private Q_SLOTS:
     void testParsing()
     {
         QString data = QStringLiteral(
-            "magnet:?xt=urn:btih:fe377e017ef52efa83251231b5b991ffae0e77ae&dn=Indie+Top+50+-+Best+of+Indie"
-            "&tr=http%3A%2F%2Fdenis.stalker.h3q.com%3A6969%2Fannounce"
-            "&to=http%3A%2F%2Ftorrents.thepiratebay.org%2F5156308%2FIndie_Top_50_-_Best_of_Indie.5156308.TPB.torrent");
+            "magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c&dn=Big+Buck+Bunny&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker."
+            "coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker."
+            "opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%"
+            "3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fbig-buck-bunny.torrent");
         bt::MagnetLink mlink(data);
         QVERIFY(mlink.isValid());
-        QCOMPARE(mlink.displayName(), u"Indie Top 50 - Best of Indie"_s);
-        QCOMPARE(mlink.torrent(), u"http://torrents.thepiratebay.org/5156308/Indie_Top_50_-_Best_of_Indie.5156308.TPB.torrent"_s);
-        QCOMPARE(mlink.trackers().constFirst(), QUrl(u"http://denis.stalker.h3q.com:6969/announce"_s));
+        QCOMPARE(mlink.displayName(), u"Big Buck Bunny"_s);
+        QCOMPARE(mlink.torrent(), u"https://webtorrent.io/torrents/big-buck-bunny.torrent"_s);
+        QCOMPARE(mlink.trackers().size(), 8);
+        QCOMPARE(mlink.trackers().constFirst(), QUrl(u"udp://explodie.org:6969"_s));
 
-        bt::Uint8 hash[] = {0xfe, 0x37, 0x7e, 0x01, 0x7e, 0xf5, 0x2e, 0xfa, 0x83, 0x25, 0x12, 0x31, 0xb5, 0xb9, 0x91, 0xff, 0xae, 0x0e, 0x77, 0xae};
+        bt::Uint8 hash[] = {0xdd, 0x82, 0x55, 0xec, 0xdc, 0x7c, 0xa5, 0x5f, 0xb0, 0xbb, 0xf8, 0x13, 0x23, 0xd8, 0x70, 0x62, 0xdb, 0x1f, 0x6d, 0x1c};
 
         QCOMPARE(mlink.infoHash(), bt::SHA1Hash(hash));
     }

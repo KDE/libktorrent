@@ -20,6 +20,7 @@ namespace bt
     note: a comma-separated list will not work with other clients likely
     optional parameters are
     to=torrent-file-url (need not be valid)
+    xs=torrent-file-url (eXact Source - need not be valid)
     pt=path-to-download-in-torrent
 */
 class KTORRENT_EXPORT MagnetLink

@@ -75,6 +75,9 @@ void MagnetLink::parse(const QUrl &url)
     }
 
     torrent_url = QUrlQuery(url).queryItemValue(QStringLiteral("to"), QUrl::FullyDecoded);
+    if (torrent_url.isEmpty()) {
+        torrent_url = QUrlQuery(url).queryItemValue(QStringLiteral("xs"), QUrl::FullyDecoded);
+    }
     // magnet://description-of-content.btih.HASH(-HASH)*.dht/path/file?x.pt=&x.to=
 
     // TODO automatically select these files and prefetches from here
