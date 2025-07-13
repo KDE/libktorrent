@@ -125,7 +125,7 @@ private Q_SLOTS:
         }
 
         ExtendedStreamingChunkSelector *csel = new ExtendedStreamingChunkSelector();
-        tc.setChunkSelector(csel);
+        tc.setChunkSelector(std::unique_ptr<ExtendedStreamingChunkSelector>(csel));
         QVERIFY(csel != nullptr);
         csel->setSequentialRange(0, 50);
 
@@ -158,7 +158,7 @@ private Q_SLOTS:
         }
 
         ExtendedStreamingChunkSelector *csel = new ExtendedStreamingChunkSelector();
-        tc.setChunkSelector(csel);
+        tc.setChunkSelector(std::unique_ptr<ExtendedStreamingChunkSelector>(csel));
         QVERIFY(csel != nullptr);
         Downloader *downer = csel->downloader();
         QVERIFY(downer != nullptr);

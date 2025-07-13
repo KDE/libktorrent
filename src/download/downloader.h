@@ -14,6 +14,8 @@
 #include <util/constants.h>
 #include <util/ptrmap.h>
 
+#include <memory>
+
 class QUrl;
 
 namespace bt
@@ -203,8 +205,8 @@ public:
      */
     void corrupted(Uint32 chunk);
 
-    //! Set the ChunkSelector, 0 means KT will reset to the default selector
-    void setChunkSelector(ChunkSelectorInterface *csel);
+    //! Set the ChunkSelector to use (nullptr resets to the default ChunkSelector)
+    void setChunkSelector(std::unique_ptr<ChunkSelectorInterface> csel);
 
     /*!
      * We got a new connection.
@@ -305,7 +307,7 @@ private:
     PtrMap<Uint32, ChunkDownload> current_chunks;
     QList<PieceDownloader *> piece_downloaders;
     MonitorInterface *tmon;
-    ChunkSelectorInterface *chunk_selector;
+    std::unique_ptr<ChunkSelectorInterface> chunk_selector;
     QList<WebSeed *> webseeds;
     PtrMap<Uint32, WebSeed> webseeds_chunks;
     Uint32 active_webseed_downloads;

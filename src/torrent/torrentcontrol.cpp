@@ -1711,15 +1711,12 @@ void TorrentControl::allJobsDone()
     Q_EMIT runningJobsDone(this);
 }
 
-void TorrentControl::setChunkSelector(ChunkSelectorInterface *csel)
+void TorrentControl::setChunkSelector(std::unique_ptr<ChunkSelectorInterface> csel)
 {
     if (!downloader)
         return;
 
-    if (csel)
-        downloader->setChunkSelector(csel);
-    else
-        downloader->setChunkSelector(nullptr);
+    downloader->setChunkSelector(std::move(csel));
 }
 
 void TorrentControl::networkUp()

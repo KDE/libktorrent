@@ -43,12 +43,11 @@ Downloader::Downloader(Torrent &tor, PeerManager &pman, ChunkManager &cman)
     , cman(cman)
     , bytes_downloaded(0)
     , tmon(nullptr)
-    , chunk_selector(nullptr)
+    , chunk_selector(std::make_unique<ChunkSelector>())
     , webseed_endgame_mode(false)
 {
     webseeds_on = use_webseeds;
     pman.setPieceHandler(this);
-    chunk_selector = new ChunkSelector();
     chunk_selector->init(&cman, this, &pman);
 
     Uint64 total = tor.getTotalSize();
@@ -85,18 +84,15 @@ Downloader::Downloader(Torrent &tor, PeerManager &pman, ChunkManager &cman)
 
 Downloader::~Downloader()
 {
-    delete chunk_selector;
     qDeleteAll(webseeds);
 }
 
-void Downloader::setChunkSelector(ChunkSelectorInterface *csel)
+void Downloader::setChunkSelector(std::unique_ptr<ChunkSelectorInterface> csel)
 {
-    delete chunk_selector;
-
     if (!csel) // check if a custom one was provided, if not create a default one
-        chunk_selector = new ChunkSelector();
+        chunk_selector = std::make_unique<ChunkSelector>();
     else
-        chunk_selector = csel;
+        chunk_selector = std::move(csel);
 
     chunk_selector->init(&cman, this, &pman);
 }

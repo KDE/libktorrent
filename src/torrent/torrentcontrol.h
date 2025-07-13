@@ -141,7 +141,7 @@ public:
     }
     void setAllowedToStart(bool on) override;
     void setQueued(bool queued) override;
-    void setChunkSelector(ChunkSelectorInterface *csel) override;
+    void setChunkSelector(std::unique_ptr<ChunkSelectorInterface> csel) override;
     void networkUp() override;
     bool announceAllowed() override;
     Job *startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to) override;

@@ -193,7 +193,7 @@ TorrentFileStream::Private::Private(TorrentControl *tc, ChunkManager *cman, bool
 
     if (streaming_mode) {
         csel = new StreamingChunkSelector();
-        tc->setChunkSelector(csel);
+        tc->setChunkSelector(std::unique_ptr<StreamingChunkSelector>(csel));
         csel->setSequentialRange(firstChunk(), lastChunk());
     }
 }
@@ -215,7 +215,7 @@ TorrentFileStream::Private::Private(TorrentControl *tc, Uint32 file_index, Chunk
 
     if (streaming_mode) {
         csel = new StreamingChunkSelector();
-        tc->setChunkSelector(csel);
+        tc->setChunkSelector(std::unique_ptr<StreamingChunkSelector>(csel));
         csel->setSequentialRange(firstChunk(), lastChunk());
     }
 }

@@ -16,6 +16,8 @@
 #include <torrent/torrentstats.h>
 #include <util/constants.h>
 
+#include <memory>
+
 #ifdef ERROR
 #undef ERROR
 #endif
@@ -434,8 +436,8 @@ public:
     //! Get the JobQueue of the torrent
     virtual const JobQueue *getJobQueue() const = 0;
 
-    //! Set the ChunkSelector to use (0 resets to the default ChunkSelector)
-    virtual void setChunkSelector(ChunkSelectorInterface *csel) = 0;
+    //! Set the ChunkSelector to use (nullptr resets to the default ChunkSelector)
+    virtual void setChunkSelector(std::unique_ptr<ChunkSelectorInterface> csel) = 0;
 
     //! After some network down time, the network is back up
     virtual void networkUp() = 0;
