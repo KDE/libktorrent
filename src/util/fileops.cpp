@@ -207,13 +207,10 @@ bool Exists(const QString &url)
 static bool DelDir(const QString &fn)
 {
     QDir d(fn);
-    const QStringList subdirs = d.entryList(QDir::Dirs);
+    const QStringList subdirs = d.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
     for (auto i = subdirs.begin(); i != subdirs.end(); i++) {
         QString entry = *i;
-
-        if (entry == QLatin1String("..") || entry == QLatin1String("."))
-            continue;
 
         if (!DelDir(d.absoluteFilePath(entry)))
             return false;
