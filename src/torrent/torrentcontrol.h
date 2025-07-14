@@ -190,7 +190,7 @@ public:
     void setChunkSelectorFactory(ChunkSelectorFactoryInterface *csfi);
 
     //! Set a custom Cache factory
-    void setCacheFactory(CacheFactory *cf);
+    void setCacheFactory(std::unique_ptr<CacheFactory> cf);
 
     //! Get time in msec since the last Stats file save on disk
     TimeStamp getStatsSyncElapsedTime()
@@ -306,18 +306,18 @@ Q_SIGNALS:
     void dataCheckFinished();
 
 private:
-    JobQueue *job_queue;
+    JobQueue *job_queue; // lifetime managed by QObject
     QueueManagerInterface *m_qman;
-    Torrent *tor;
-    PeerSourceManager *psman;
-    ChunkManager *cman;
-    PeerManager *pman;
-    Downloader *downloader;
-    Uploader *uploader;
-    Choker *choke;
-    TimeEstimator *m_eta;
+    std::unique_ptr<Choker> choke;
+    std::unique_ptr<Downloader> downloader;
+    std::unique_ptr<Uploader> uploader;
+    std::unique_ptr<ChunkManager> cman;
+    std::unique_ptr<PeerManager> pman;
+    std::unique_ptr<PeerSourceManager> psman;
+    std::unique_ptr<Torrent> tor;
+    std::unique_ptr<TimeEstimator> m_eta;
     MonitorInterface *tmon;
-    CacheFactory *cache_factory;
+    std::unique_ptr<CacheFactory> cache_factory;
     QString move_data_files_destination_path;
     Timer choker_update_timer;
     Timer stats_save_timer;
@@ -357,7 +357,7 @@ private:
     Uint32 assured_upload_speed;
 
     InternalStats istats;
-    StatsFile *stats_file;
+    std::unique_ptr<StatsFile> stats_file;
 
     TorrentFileStream::WPtr stream;
 

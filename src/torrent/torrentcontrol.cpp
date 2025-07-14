@@ -61,22 +61,14 @@ bool TorrentControl::completed_datacheck = false;
 Uint32 TorrentControl::min_diskspace = 100;
 
 TorrentControl::TorrentControl()
-    : m_qman(nullptr)
-    , tor(nullptr)
-    , psman(nullptr)
-    , cman(nullptr)
-    , pman(nullptr)
-    , downloader(nullptr)
-    , uploader(nullptr)
-    , choke(nullptr)
+    : job_queue(new JobQueue(this))
+    , m_qman(nullptr)
+    , m_eta(std::make_unique<TimeEstimator>(this))
     , tmon(nullptr)
     , prealloc(false)
 {
-    job_queue = new JobQueue(this);
-    cache_factory = nullptr;
     istats.session_bytes_uploaded = 0;
     old_tordir = QString();
-    stats_file = nullptr;
     loading_stats = false;
 
     istats.running_time_dl = istats.running_time_ul = 0;
@@ -89,7 +81,6 @@ TorrentControl::TorrentControl()
     istats.dht_on = false;
     updateStats();
 
-    m_eta = new TimeEstimator(this);
     // by default no torrent limits
     upload_gid = download_gid = 0;
     upload_limit = download_limit = 0;
@@ -110,18 +101,6 @@ TorrentControl::~TorrentControl()
 
     if (downloader)
         downloader->saveWebSeeds(tordir + "webseeds"_L1);
-
-    delete job_queue;
-    delete choke;
-    delete downloader;
-    delete uploader;
-    delete cman;
-    delete pman;
-    delete psman;
-    delete tor;
-    delete m_eta;
-    delete cache_factory;
-    delete stats_file;
 }
 
 void TorrentControl::update()
@@ -483,13 +462,12 @@ void TorrentControl::init(QueueManagerInterface *qman, const QByteArray &data, c
     m_qman = qman;
 
     // first load the torrent file
-    tor = new Torrent();
+    tor = std::make_unique<Torrent>();
     try {
         tor->load(data, false);
     } catch (bt::Error &err) {
         Out(SYS_GEN | LOG_NOTICE) << "Failed to load torrent: " << err.toString() << endl;
-        delete tor;
-        tor = nullptr;
+        tor.reset();
         throw Error(i18n("An error occurred while loading <b>%1</b>:<br/><b>%2</b>", loadUrl().toString(), err.toString()));
     }
 
@@ -549,7 +527,7 @@ void TorrentControl::setupStats()
 
     // check the stats file for the custom_output_name variable
     if (!stats_file)
-        stats_file = new StatsFile(tordir + "stats"_L1);
+        stats_file = std::make_unique<StatsFile>(tordir + "stats"_L1);
 
     if (stats_file->hasKey(u"CUSTOM_OUTPUT_NAME"_s) && stats_file->readULong(u"CUSTOM_OUTPUT_NAME"_s) == 1) {
         istats.custom_output_name = true;
@@ -566,33 +544,33 @@ void TorrentControl::setupStats()
 void TorrentControl::setupData()
 {
     // create PeerManager and Tracker
-    pman = new PeerManager(*tor);
+    pman = std::make_unique<PeerManager>(*tor);
     // Out() << "Tracker url " << url << " " << url.protocol() << " " << url.prettyURL() << endl;
-    psman = new PeerSourceManager(this, pman);
+    psman = std::make_unique<PeerSourceManager>(this, pman.get());
 
     // Create chunkmanager, load the index file if it exists
     // else create all the necesarry files
-    cman = new ChunkManager(*tor, tordir, outputdir, istats.custom_output_name, cache_factory);
+    cman = std::make_unique<ChunkManager>(*tor, tordir, outputdir, istats.custom_output_name, cache_factory.get());
     if (bt::Exists(tordir + "index"_L1))
         cman->loadIndexFile();
 
-    connect(cman, &ChunkManager::updateStats, this, &TorrentControl::updateStats);
+    connect(cman.get(), &ChunkManager::updateStats, this, &TorrentControl::updateStats);
     updateStats();
     stats.completed = cman->completed();
 
     // create downloader, uploader and choker
-    downloader = new Downloader(*tor, *pman, *cman);
+    downloader = std::make_unique<Downloader>(*tor, *pman, *cman);
     downloader->loadWebSeeds(tordir + "webseeds"_L1);
-    connect(downloader, &Downloader::ioError, this, &TorrentControl::onIOError);
-    connect(downloader, &Downloader::chunkDownloaded, this, &TorrentControl::downloaded);
-    uploader = new Uploader(*cman, *pman);
-    choke = new Choker(*pman, *cman);
+    connect(downloader.get(), &Downloader::ioError, this, &TorrentControl::onIOError);
+    connect(downloader.get(), &Downloader::chunkDownloaded, this, &TorrentControl::downloaded);
+    uploader = std::make_unique<Uploader>(*cman, *pman);
+    choke = std::make_unique<Choker>(*pman, *cman);
 
-    connect(pman, &PeerManager::newPeer, this, &TorrentControl::onNewPeer);
-    connect(pman, &PeerManager::peerKilled, this, &TorrentControl::onPeerRemoved);
-    connect(cman, &ChunkManager::excluded, downloader, &Downloader::onExcluded);
-    connect(cman, &ChunkManager::included, downloader, &Downloader::onIncluded);
-    connect(cman, &ChunkManager::corrupted, this, &TorrentControl::corrupted);
+    connect(pman.get(), &PeerManager::newPeer, this, &TorrentControl::onNewPeer);
+    connect(pman.get(), &PeerManager::peerKilled, this, &TorrentControl::onPeerRemoved);
+    connect(cman.get(), &ChunkManager::excluded, downloader.get(), &Downloader::onExcluded);
+    connect(cman.get(), &ChunkManager::included, downloader.get(), &Downloader::onIncluded);
+    connect(cman.get(), &ChunkManager::corrupted, this, &TorrentControl::corrupted);
 }
 
 void TorrentControl::initInternal(QueueManagerInterface *qman, const QString &tmpdir, const QString &ddir)
@@ -893,7 +871,7 @@ void TorrentControl::saveStats()
         return;
 
     if (!stats_file)
-        stats_file = new StatsFile(tordir + "stats"_L1);
+        stats_file = std::make_unique<StatsFile>(tordir + "stats"_L1);
 
     stats_file->write(u"OUTPUTDIR"_s, cman->getDataDir());
     stats_file->write(u"COMPLETEDDIR"_s, completed_dir);
@@ -958,7 +936,7 @@ void TorrentControl::loadStats()
 
     RecursiveEntryGuard guard(&loading_stats);
     if (!stats_file)
-        stats_file = new StatsFile(tordir + "stats"_L1);
+        stats_file = std::make_unique<StatsFile>(tordir + "stats"_L1);
 
     Uint64 val = stats_file->readUint64(u"UPLOADED"_s);
     // stats.session_bytes_uploaded will be calculated based upon prev_bytes_ul
@@ -1047,7 +1025,7 @@ void TorrentControl::loadStats()
 void TorrentControl::loadOutputDir()
 {
     if (!stats_file)
-        stats_file = new StatsFile(tordir + "stats"_L1);
+        stats_file = std::make_unique<StatsFile>(tordir + "stats"_L1);
 
     if (!stats_file->hasKey(u"OUTPUTDIR"_s))
         return;
@@ -1195,7 +1173,7 @@ void TorrentControl::setPriority(int p)
 {
     istats.priority = p;
     if (!stats_file)
-        stats_file = new StatsFile(tordir + "stats"_L1);
+        stats_file = std::make_unique<StatsFile>(tordir + "stats"_L1);
 
     stats_file->write(u"PRIORITY"_s, QString::number(istats.priority));
     updateStatus();
@@ -1238,12 +1216,12 @@ bool TorrentControl::overMaxSeedTime()
 
 TrackersList *TorrentControl::getTrackersList()
 {
-    return psman;
+    return psman.get();
 }
 
 const TrackersList *TorrentControl::getTrackersList() const
 {
-    return psman;
+    return psman.get();
 }
 
 Job *TorrentControl::startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to)
@@ -1583,7 +1561,7 @@ void TorrentControl::getAssuredSpeeds(Uint32 &up, Uint32 &down)
 
 const PeerManager *TorrentControl::getPeerMgr() const
 {
-    return pman;
+    return pman.get();
 }
 
 void TorrentControl::preallocFinished(const QString &error, bool completed)
@@ -1604,9 +1582,9 @@ void TorrentControl::preallocFinished(const QString &error, bool completed)
     }
 }
 
-void TorrentControl::setCacheFactory(CacheFactory *cf)
+void TorrentControl::setCacheFactory(std::unique_ptr<CacheFactory> cf)
 {
-    cache_factory = cf;
+    cache_factory = std::move(cf);
 }
 
 Uint32 TorrentControl::getNumWebSeeds() const
@@ -1731,7 +1709,7 @@ bool TorrentControl::preallocate()
     if (Cache::preallocationEnabled() && !cman->haveAllChunks()) {
         Out(SYS_GEN | LOG_NOTICE) << "Pre-allocating diskspace" << endl;
         stats.running = true;
-        job_queue->enqueue(new PreallocationJob(cman, this));
+        job_queue->enqueue(new PreallocationJob(cman.get(), this));
         updateStatus();
         return true;
     } else {
@@ -1782,12 +1760,12 @@ TorrentFileStream::Ptr TorrentControl::createTorrentFileStream(Uint32 index, boo
         if (index >= tor->getNumFiles())
             return TorrentFileStream::Ptr(nullptr);
 
-        TorrentFileStream::Ptr ptr(new TorrentFileStream(this, index, cman, streaming_mode, parent));
+        TorrentFileStream::Ptr ptr(new TorrentFileStream(this, index, cman.get(), streaming_mode, parent));
         if (streaming_mode)
             stream = ptr;
         return ptr;
     } else {
-        TorrentFileStream::Ptr ptr(new TorrentFileStream(this, cman, streaming_mode, parent));
+        TorrentFileStream::Ptr ptr(new TorrentFileStream(this, cman.get(), streaming_mode, parent));
         if (streaming_mode)
             stream = ptr;
         return ptr;
