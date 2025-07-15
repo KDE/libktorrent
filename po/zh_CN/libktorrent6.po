@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-24 00:42+0000\n"
+"POT-Creation-Date: 2025-07-15 00:43+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -71,8 +71,8 @@ msgstr "无法打开文件 %1：%2"
 msgid "Failed to create %1: %2"
 msgstr "创建 %1 失败：%2"
 
-#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:324
-#: src/util/fileops.cpp:367
+#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:321
+#: src/util/fileops.cpp:364
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "无法打开 %1：%2"
@@ -482,37 +482,37 @@ msgstr "无法移动 %1 到 %2：%3"
 msgid "Cannot copy %1 to %2: %3"
 msgstr "无法复制 %1 到 %2：%3"
 
-#: src/util/fileops.cpp:250
+#: src/util/fileops.cpp:247
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "无法删除 %1：%2"
 
-#: src/util/fileops.cpp:266
+#: src/util/fileops.cpp:263
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "无法创建 %1：%2"
 
-#: src/util/fileops.cpp:283
+#: src/util/fileops.cpp:280
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "无法计算 %1 的文件大小：%2"
 
-#: src/util/fileops.cpp:299
+#: src/util/fileops.cpp:296
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "无法计算文件大小：%1"
 
-#: src/util/fileops.cpp:346 src/util/fileops.cpp:359
+#: src/util/fileops.cpp:343 src/util/fileops.cpp:356
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "无法展开文件：%1"
 
-#: src/util/fileops.cpp:385
+#: src/util/fileops.cpp:382
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "无法在文件中定位：%1"
 
-#: src/util/fileops.cpp:626
+#: src/util/fileops.cpp:623
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "无法打开文件“%1”：%2"

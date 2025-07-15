@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-24 00:42+0000\n"
+"POT-Creation-Date: 2025-07-15 00:43+0000\n"
 "PO-Revision-Date: 2014-05-10 17:04+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -72,8 +72,8 @@ msgstr "Kan ikke åbne filen %1: %2"
 msgid "Failed to create %1: %2"
 msgstr "Kunne ikke oprette %1: %2"
 
-#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:324
-#: src/util/fileops.cpp:367
+#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:321
+#: src/util/fileops.cpp:364
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Kan ikke åbne %1: %2"
@@ -490,37 +490,37 @@ msgstr "Kan ikke flytte %1 til %2: %3"
 msgid "Cannot copy %1 to %2: %3"
 msgstr "Kan ikke kopiere %1 til %2: %3"
 
-#: src/util/fileops.cpp:250
+#: src/util/fileops.cpp:247
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Kan ikke slette %1: %2"
 
-#: src/util/fileops.cpp:266
+#: src/util/fileops.cpp:263
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Kan ikke oprette %1: %2"
 
-#: src/util/fileops.cpp:283
+#: src/util/fileops.cpp:280
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Kan ikke beregne filstørrelse for %1: %2"
 
-#: src/util/fileops.cpp:299
+#: src/util/fileops.cpp:296
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Kan ikke beregne filstørrelsen: %1"
 
-#: src/util/fileops.cpp:346 src/util/fileops.cpp:359
+#: src/util/fileops.cpp:343 src/util/fileops.cpp:356
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Kan ikke udvide fil: %1"
 
-#: src/util/fileops.cpp:385
+#: src/util/fileops.cpp:382
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Kan ikke søge i fil: %1"
 
-#: src/util/fileops.cpp:626
+#: src/util/fileops.cpp:623
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Kan ikke åbne filen %1: %2"

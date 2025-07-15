@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent(2)\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-24 00:42+0000\n"
+"POT-Creation-Date: 2025-07-15 00:43+0000\n"
 "PO-Revision-Date: 2020-09-24 22:03+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian\n"
@@ -73,8 +73,8 @@ msgstr "Nu se poate deschide fișierul %1: %2"
 msgid "Failed to create %1: %2"
 msgstr "Crearea %1 a eșuat: %2"
 
-#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:324
-#: src/util/fileops.cpp:367
+#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:321
+#: src/util/fileops.cpp:364
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Nu se poate deschide %1: %2"
@@ -496,37 +496,37 @@ msgstr "Nu se poate muta %1 în %2: %3"
 msgid "Cannot copy %1 to %2: %3"
 msgstr "Nu se poate copia %1 în %2: %3"
 
-#: src/util/fileops.cpp:250
+#: src/util/fileops.cpp:247
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Nu se poate șterge %1: %2"
 
-#: src/util/fileops.cpp:266
+#: src/util/fileops.cpp:263
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Nu se poate crea %1: %2"
 
-#: src/util/fileops.cpp:283
+#: src/util/fileops.cpp:280
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Nu se poate calcula dimensiunea fișierului %1: %2"
 
-#: src/util/fileops.cpp:299
+#: src/util/fileops.cpp:296
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Nu se poate calcula dimensiunea fișierului: %1"
 
-#: src/util/fileops.cpp:346 src/util/fileops.cpp:359
+#: src/util/fileops.cpp:343 src/util/fileops.cpp:356
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Fișierul nu poate fi extins: %1"
 
-#: src/util/fileops.cpp:385
+#: src/util/fileops.cpp:382
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Nu se poate căuta în fișier: %1"
 
-#: src/util/fileops.cpp:626
+#: src/util/fileops.cpp:623
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Nu s-a putut deschide fișierul %1: %2"

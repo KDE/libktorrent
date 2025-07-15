@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-24 00:42+0000\n"
+"POT-Creation-Date: 2025-07-15 00:43+0000\n"
 "PO-Revision-Date: 2012-07-04 08:47+0700\n"
 "Last-Translator: Sophea <sophea@khmeros.info>\n"
 "Language-Team: Khmer <>\n"
@@ -77,8 +77,8 @@ msgstr "មិន​អាច​បើក​ឯកសារ %1 ៖​ %2 បា
 msgid "Failed to create %1: %2"
 msgstr "បរាជ័យ​ក្នុង​ការ​បង្កើត %1 ៖ %2​"
 
-#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:324
-#: src/util/fileops.cpp:367
+#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:321
+#: src/util/fileops.cpp:364
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "មិន​អាច​បើក​ %1 ៖​ %2"
@@ -491,37 +491,37 @@ msgstr "មិន​អាច​ផ្លាស់ទី​ %1 ទៅ​កា�
 msgid "Cannot copy %1 to %2: %3"
 msgstr "មិន​អាច​ចម្លង​ %1 ទៅ​កាន់​ %2 ៖ %3"
 
-#: src/util/fileops.cpp:250
+#: src/util/fileops.cpp:247
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "មិន​អាច​លុប​ %1 ៖ %2"
 
-#: src/util/fileops.cpp:266
+#: src/util/fileops.cpp:263
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "មិន​អាច​បង្កើត​ %1 ៖ %2"
 
-#: src/util/fileops.cpp:283
+#: src/util/fileops.cpp:280
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "មិន​អាច​គណនា​ទំហំ​ឯកសារ​%1 ៖ %2"
 
-#: src/util/fileops.cpp:299
+#: src/util/fileops.cpp:296
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "មិន​អាច​គណនា​ទំហំ​ឯកសារ ៖ %1"
 
-#: src/util/fileops.cpp:346 src/util/fileops.cpp:359
+#: src/util/fileops.cpp:343 src/util/fileops.cpp:356
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "មិន​អាច​ពង្រីក​​ឯកសារ​ ៖​ %1"
 
-#: src/util/fileops.cpp:385
+#: src/util/fileops.cpp:382
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "មិន​អាច​ស្វែងរក​ក្នុង​ឯកសារ​ ៖​ %1​"
 
-#: src/util/fileops.cpp:626
+#: src/util/fileops.cpp:623
 #, fuzzy, kde-format
 #| msgid "Unable to open torrent file %1: %2"
 msgid "Unable to open file %1: %2"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-24 00:42+0000\n"
+"POT-Creation-Date: 2025-07-15 00:43+0000\n"
 "PO-Revision-Date: 2024-04-17 10:13+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -72,8 +72,8 @@ msgstr "לא ניתן לפתוח את הקובץ %1: %2"
 msgid "Failed to create %1: %2"
 msgstr "היצירה של %1 נכשלה: %2"
 
-#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:324
-#: src/util/fileops.cpp:367
+#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:321
+#: src/util/fileops.cpp:364
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "לא ניתן לפתוח את %1: %2"
@@ -490,37 +490,37 @@ msgstr "לא ניתן להעביר את %1 אל %2: %3"
 msgid "Cannot copy %1 to %2: %3"
 msgstr "לא ניתן להעתיק את %1 אל %2: %3"
 
-#: src/util/fileops.cpp:250
+#: src/util/fileops.cpp:247
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "לא ניתן למחוק את %1: %2"
 
-#: src/util/fileops.cpp:266
+#: src/util/fileops.cpp:263
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "לא ניתן ליצור את %1: %2"
 
-#: src/util/fileops.cpp:283
+#: src/util/fileops.cpp:280
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "לא ניתן לחשב את גודל הקובץ %1: %2"
 
-#: src/util/fileops.cpp:299
+#: src/util/fileops.cpp:296
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "לא ניתן לחשב את גודל הקובץ: %1"
 
-#: src/util/fileops.cpp:346 src/util/fileops.cpp:359
+#: src/util/fileops.cpp:343 src/util/fileops.cpp:356
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "לא ניתן להרחיב את הקובץ: %1"
 
-#: src/util/fileops.cpp:385
+#: src/util/fileops.cpp:382
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "לא ניתן לחתור בקובץ: %1"
 
-#: src/util/fileops.cpp:626
+#: src/util/fileops.cpp:623
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "לא ניתן לפתוח את הקובץ %1: %2"

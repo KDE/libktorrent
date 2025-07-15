@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-24 00:42+0000\n"
+"POT-Creation-Date: 2025-07-15 00:43+0000\n"
 "PO-Revision-Date: 2009-06-07 23:54+0800\n"
 "Last-Translator: Sharuzzaman Ahmat Raslan <sharuzzaman@myrealbox.com>\n"
 "Language-Team: Malay <kedidiemas@yahoogroups.com>\n"
@@ -72,8 +72,8 @@ msgstr ""
 msgid "Failed to create %1: %2"
 msgstr "Tidak dapat cipta %1: %2"
 
-#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:324
-#: src/util/fileops.cpp:367
+#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:321
+#: src/util/fileops.cpp:364
 #, fuzzy, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Ralat mengimport fail %s"
@@ -486,37 +486,37 @@ msgstr "Tidak dapat cipta %1: %2"
 msgid "Cannot copy %1 to %2: %3"
 msgstr "Tidak dapat cipta %1: %2"
 
-#: src/util/fileops.cpp:250
+#: src/util/fileops.cpp:247
 #, fuzzy, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Tidak dapat cipta %1: %2"
 
-#: src/util/fileops.cpp:266
+#: src/util/fileops.cpp:263
 #, fuzzy, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Tidak dapat cipta %1: %2"
 
-#: src/util/fileops.cpp:283
+#: src/util/fileops.cpp:280
 #, fuzzy, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Tidak boleh buang gaya ini"
 
-#: src/util/fileops.cpp:299
+#: src/util/fileops.cpp:296
 #, fuzzy, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Tidak boleh buang gaya ini"
 
-#: src/util/fileops.cpp:346 src/util/fileops.cpp:359
+#: src/util/fileops.cpp:343 src/util/fileops.cpp:356
 #, fuzzy, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Ralat mengimport fail %s"
 
-#: src/util/fileops.cpp:385
+#: src/util/fileops.cpp:382
 #, fuzzy, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Ralat mengimport fail %s"
 
-#: src/util/fileops.cpp:626
+#: src/util/fileops.cpp:623
 #, fuzzy, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Tidak menjumpai fail comps."
