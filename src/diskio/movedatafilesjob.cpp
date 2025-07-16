@@ -84,7 +84,7 @@ void MoveDataFilesJob::onJobDone(KJob *j)
 
         active_job = nullptr;
         if (j->error())
-            ((KIO::Job *)j)->uiDelegate()->showErrorMessage();
+            static_cast<KIO::Job *>(j)->uiDelegate()->showErrorMessage();
 
         // shit happened cancel all previous moves
         err = true;

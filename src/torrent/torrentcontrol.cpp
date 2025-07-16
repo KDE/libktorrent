@@ -750,7 +750,7 @@ bool TorrentControl::changeOutputDir(const QString &ndir, int flags)
 
 void TorrentControl::moveDataFilesFinished(KJob *kj)
 {
-    Job *job = (Job *)kj;
+    const auto job = static_cast<bt::Job *>(kj);
     if (job)
         cman->moveDataFilesFinished(job);
 
@@ -788,7 +788,7 @@ void TorrentControl::moveDataFilesWithMapFinished(KJob *j)
     if (!j)
         return;
 
-    MoveDataFilesJob *job = (MoveDataFilesJob *)j;
+    const auto job = static_cast<MoveDataFilesJob *>(j);
     cman->moveDataFilesFinished(job->fileMap(), job);
     Out(SYS_GEN | LOG_NOTICE) << "Move of data files completed " << endl;
 }

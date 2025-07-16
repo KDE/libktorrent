@@ -90,9 +90,9 @@ public:
     {
     }
 
-    bool allowCalled(PeerInterface *peer)
+    bool allowCalled(const DummyPeer *peer)
     {
-        return ((DummyPeer *)peer)->allow_called && ((DummyPeer *)peer)->allowed_chunk != INVALID_CHUNK;
+        return peer->allow_called && peer->allowed_chunk != INVALID_CHUNK;
     }
 
 private Q_SLOTS:

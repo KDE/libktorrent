@@ -175,7 +175,7 @@ private:
     void forwardResult(HTTPRequest *r);
     void undoForwardResult(HTTPRequest *r);
     void getExternalIPResult(HTTPRequest *r);
-    void downloadFinished(KJob *j);
+    void downloadFinished(const KJob *j);
 
 Q_SIGNALS:
     /*!

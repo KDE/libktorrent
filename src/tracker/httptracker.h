@@ -46,8 +46,8 @@ public:
     [[deprecated]] static void setUseQHttp(bool on);
 
 private Q_SLOTS:
-    void onKIOAnnounceResult(KJob *j);
-    void onScrapeResult(KJob *j);
+    void onKIOAnnounceResult(const KJob *j);
+    void onScrapeResult(const KJob *j);
     void emitInvalidURLFailure();
     void onTimeout();
     void manualUpdate() override;
@@ -58,7 +58,7 @@ private:
     void setupMetaData(KIO::MetaData &md);
     void doAnnounceQueue();
     void doAnnounce(const QUrl &u);
-    void onAnnounceResult(const QUrl &url, const QByteArray &data, KJob *j);
+    void onAnnounceResult(const QUrl &url, const QByteArray &data, const KJob *j);
 
 private:
     KJob *active_job;

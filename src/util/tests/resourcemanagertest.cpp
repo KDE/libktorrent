@@ -15,7 +15,9 @@
 using namespace bt;
 using namespace Qt::Literals::StringLiterals;
 
-static bt::Resource *last_acquired = nullptr;
+class TestResource;
+
+static TestResource *last_acquired = nullptr;
 
 class TestResource : public bt::Resource
 {
@@ -121,7 +123,7 @@ private Q_SLOTS:
 
         QString last_acquired_group;
         for (int i = 0; i < 496; i++) {
-            tr.removeAll((TestResource *)last_acquired);
+            tr.removeAll(last_acquired);
             delete last_acquired;
             QVERIFY(last_acquired);
             if (last_acquired->groupName() == last_acquired_group) {

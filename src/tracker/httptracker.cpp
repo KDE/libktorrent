@@ -122,14 +122,14 @@ void HTTPTracker::scrape()
     connect(j, &KIO::StoredTransferJob::result, this, &HTTPTracker::onScrapeResult);
 }
 
-void HTTPTracker::onScrapeResult(KJob *j)
+void HTTPTracker::onScrapeResult(const KJob *j)
 {
     if (j->error()) {
         Out(SYS_TRK | LOG_IMPORTANT) << "Scrape failed : " << j->errorString() << endl;
         return;
     }
 
-    KIO::StoredTransferJob *st = (KIO::StoredTransferJob *)j;
+    const auto st = static_cast<const KIO::StoredTransferJob *>(j);
     BDecoder dec(st->data(), false, 0);
     std::unique_ptr<BDictNode> dict;
 
@@ -339,13 +339,13 @@ bool HTTPTracker::updateData(const QByteArray &data)
     return true;
 }
 
-void HTTPTracker::onKIOAnnounceResult(KJob *j)
+void HTTPTracker::onKIOAnnounceResult(const KJob *j)
 {
-    KIOAnnounceJob *st = (KIOAnnounceJob *)j;
+    const auto st = static_cast<const KIOAnnounceJob *>(j);
     onAnnounceResult(st->announceUrl(), st->replyData(), j);
 }
 
-void HTTPTracker::onAnnounceResult(const QUrl &url, const QByteArray &data, KJob *j)
+void HTTPTracker::onAnnounceResult(const QUrl &url, const QByteArray &data, const KJob *j)
 {
     timer.stop();
     active_job = nullptr;

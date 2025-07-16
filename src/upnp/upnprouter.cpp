@@ -150,7 +150,7 @@ void UPnPRouter::addService(UPnPService s)
     d->services.append(s);
 }
 
-void UPnPRouter::downloadFinished(KJob *j)
+void UPnPRouter::downloadFinished(const KJob *j)
 {
     if (j->error()) {
         d->error = i18n("Failed to download %1: %2", d->location.toDisplayString(), j->errorString());
@@ -158,7 +158,7 @@ void UPnPRouter::downloadFinished(KJob *j)
         return;
     }
 
-    KIO::StoredTransferJob *st = (KIO::StoredTransferJob *)j;
+    const auto st = static_cast<const KIO::StoredTransferJob *>(j);
     // load in the file (target is always local)
     UPnPDescriptionParser desc_parse;
     bool ret = desc_parse.parse(st->data(), this);

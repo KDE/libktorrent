@@ -77,7 +77,7 @@ void ExtractFileJob::start()
                 return;
             }
 
-            dir = (const KArchiveDirectory *)e;
+            dir = static_cast<const KArchiveDirectory *>(e);
         } else {
             // last in the path, must be a file
             if (!e->isFile()) {
@@ -87,7 +87,7 @@ void ExtractFileJob::start()
             }
 
             // create a device to read the file and start a thread to do the reading
-            KArchiveFile *file = (KArchiveFile *)e;
+            const auto file = static_cast<const KArchiveFile *>(e);
             QFile *out_dev = new QFile(dest);
             if (!out_dev->open(QIODevice::WriteOnly)) {
                 delete out_dev;

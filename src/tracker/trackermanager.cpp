@@ -120,7 +120,7 @@ void TrackerManager::setCurrentTracker(bt::TrackerInterface *t)
     if (!tor->getStats().priv_torrent)
         return;
 
-    Tracker *trk = (Tracker *)t;
+    const auto trk = dynamic_cast<Tracker *>(t);
     if (!trk)
         return;
 
@@ -423,10 +423,10 @@ void TrackerManager::onTrackerError(const QString &err)
         return;
 
     if (!tor->getStats().priv_torrent) {
-        Tracker *trk = (Tracker *)sender();
+        const auto trk = static_cast<Tracker *>(sender());
         trk->handleFailure();
     } else {
-        Tracker *trk = (Tracker *)sender();
+        auto trk = static_cast<Tracker *>(sender());
         if (trk == curr) {
             // select an other tracker
             trk = selectTracker();
@@ -447,7 +447,7 @@ void TrackerManager::onTrackerError(const QString &err)
 
 void TrackerManager::onTrackerOK()
 {
-    Tracker *tracker = (Tracker *)sender();
+    const auto tracker = static_cast<Tracker *>(sender());
     if (tracker->isStarted())
         tracker->scrape();
 }
