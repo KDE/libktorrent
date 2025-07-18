@@ -18,7 +18,6 @@ Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, co
     , our_peer_id(peer_id)
     , addr(addr)
     , pcon(pcon)
-    , socks(nullptr)
 {
     finished = succes = false;
     if (proto == TCP)
@@ -28,7 +27,7 @@ Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, co
 
     Out(SYS_CON | LOG_NOTICE) << "Initiating connection to " << addr.toString() << " via (" << (proto == TCP ? "TCP" : "UTP") << ")" << endl;
     if (net::Socks::enabled()) {
-        socks = new net::Socks(sock, addr);
+        socks = std::make_unique<net::Socks>(sock.get(), addr);
         switch (socks->setup()) {
         case net::Socks::FAILED:
             Out(SYS_CON | LOG_NOTICE) << "Failed to connect to " << addr.toString() << " via socks server " << endl;
@@ -37,8 +36,7 @@ Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, co
             timer.setInterval(1);
             break;
         case net::Socks::CONNECTED:
-            delete socks;
-            socks = nullptr;
+            socks.reset();
             connected();
             break;
         default:
@@ -59,7 +57,6 @@ Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, co
 
 Authenticate::~Authenticate()
 {
-    delete socks;
 }
 
 void Authenticate::onReadyWrite()
@@ -74,8 +71,7 @@ void Authenticate::onReadyWrite()
             onFinish(false);
             break;
         case net::Socks::CONNECTED:
-            delete socks;
-            socks = nullptr;
+            socks.reset();
             connected();
             break;
         default:
@@ -103,8 +99,7 @@ void Authenticate::onReadyRead()
             break;
         case net::Socks::CONNECTED:
             // connection established, so get rid of socks shit
-            delete socks;
-            socks = nullptr;
+            socks.reset();
             connected();
             if (sock->bytesAvailable() > 0)
                 AuthenticateBase::onReadyRead();
@@ -126,8 +121,10 @@ void Authenticate::onFinish(bool succes)
     finished = true;
     this->succes = succes;
 
-    if (!succes)
+    if (!succes) {
+        socks.reset();
         sock.clear();
+    }
 
     timer.stop();
     PeerConnector::Ptr pc = pcon.toStrongRef();

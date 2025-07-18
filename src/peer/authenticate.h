@@ -71,7 +71,7 @@ protected:
     net::Address addr;
     bool succes;
     PeerConnector::WPtr pcon;
-    net::Socks *socks;
+    std::unique_ptr<net::Socks> socks;
 };
 }
 

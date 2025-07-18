@@ -37,7 +37,7 @@ public:
         USERNAME_AND_PASSWORD_SENT,
         CONNECT_REQUEST_SENT,
     };
-    Socks(mse::EncryptedPacketSocket::Ptr sock, const Address &dest);
+    Socks(mse::EncryptedPacketSocket *sock, const Address &dest);
     ~Socks() override;
 
     //! Setup a socks connection, return the current state
@@ -95,7 +95,7 @@ private Q_SLOTS:
     void resolved(net::AddressResolver *ar);
 
 private:
-    mse::EncryptedPacketSocket::Ptr sock;
+    mse::EncryptedPacketSocket *sock;
     Address dest;
     State state;
     SetupState internal_state;

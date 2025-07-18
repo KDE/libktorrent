@@ -215,8 +215,7 @@ void EncryptedAuthenticate::onReadyRead()
             break;
         case net::Socks::CONNECTED:
             // connection established, so get rid of socks shit
-            delete socks;
-            socks = nullptr;
+            socks.reset();
             connected();
             if (sock->bytesAvailable() > 0)
                 onReadyRead();

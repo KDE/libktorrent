@@ -24,7 +24,7 @@ QString Socks::socks_password;
 bool Socks::socks_server_addr_resolved = false;
 net::Address Socks::socks_server_addr;
 
-Socks::Socks(mse::EncryptedPacketSocket::Ptr sock, const Address &dest)
+Socks::Socks(mse::EncryptedPacketSocket *sock, const Address &dest)
     : sock(sock)
     , dest(dest)
     , state(IDLE)
