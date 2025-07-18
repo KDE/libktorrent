@@ -25,8 +25,8 @@ AuthenticateBase::AuthenticateBase()
     ext_support = 0;
 }
 
-AuthenticateBase::AuthenticateBase(mse::EncryptedPacketSocket::Ptr s)
-    : sock(s)
+AuthenticateBase::AuthenticateBase(std::unique_ptr<mse::EncryptedPacketSocket> s)
+    : sock(std::move(s))
     , finished(false)
     , local(false)
 {

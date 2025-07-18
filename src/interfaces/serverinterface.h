@@ -116,7 +116,7 @@ public:
     }
 
 protected:
-    void newConnection(mse::EncryptedPacketSocket::Ptr sock);
+    void newConnection(std::unique_ptr<mse::EncryptedPacketSocket> sock);
 
 protected:
     static Uint16 port;

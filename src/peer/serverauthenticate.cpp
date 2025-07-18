@@ -18,8 +18,8 @@ namespace bt
 {
 bool ServerAuthenticate::s_firewalled = true;
 
-ServerAuthenticate::ServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock)
-    : AuthenticateBase(sock)
+ServerAuthenticate::ServerAuthenticate(std::unique_ptr<mse::EncryptedPacketSocket> sock)
+    : AuthenticateBase(std::move(sock))
 {
 }
 
@@ -34,7 +34,7 @@ void ServerAuthenticate::onFinish(bool succes)
     setFirewalled(false);
 
     if (!succes)
-        sock.clear();
+        sock.reset();
 
     timer.stop();
 }
@@ -81,7 +81,7 @@ void ServerAuthenticate::handshakeReceived(bool full)
         sendHandshake(rh, pman->getTorrent().getPeerID());
         onFinish(true);
         // hand over connection
-        pman->newConnection(sock, peer_id, supportedExtensions());
+        pman->newConnection(std::move(sock), peer_id, supportedExtensions());
     } else {
         // if the handshake wasn't fully received just send our handshake
         sendHandshake(rh, pman->getTorrent().getPeerID());

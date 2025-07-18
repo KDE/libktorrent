@@ -21,9 +21,9 @@ Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, co
 {
     finished = succes = false;
     if (proto == TCP)
-        sock = mse::EncryptedPacketSocket::Ptr(new mse::EncryptedPacketSocket(addr.ipVersion()));
+        sock = std::make_unique<mse::EncryptedPacketSocket>(addr.ipVersion());
     else
-        sock = mse::EncryptedPacketSocket::Ptr(new mse::EncryptedPacketSocket(new utp::UTPSocket()));
+        sock = std::make_unique<mse::EncryptedPacketSocket>(new utp::UTPSocket());
 
     Out(SYS_CON | LOG_NOTICE) << "Initiating connection to " << addr.toString() << " via (" << (proto == TCP ? "TCP" : "UTP") << ")" << endl;
     if (net::Socks::enabled()) {
@@ -123,7 +123,7 @@ void Authenticate::onFinish(bool succes)
 
     if (!succes) {
         socks.reset();
-        sock.clear();
+        sock.reset();
     }
 
     timer.stop();

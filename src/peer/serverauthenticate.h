@@ -21,7 +21,7 @@ class ServerAuthenticate : public AuthenticateBase
 {
     Q_OBJECT
 public:
-    ServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock);
+    ServerAuthenticate(std::unique_ptr<mse::EncryptedPacketSocket> sock);
     ~ServerAuthenticate() override;
 
     static bool isFirewalled();

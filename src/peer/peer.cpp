@@ -37,7 +37,7 @@ static const Uint32 MAX_PENDING_UPLOAD_BYTES = MAX_PENDING_UPLOAD_BLOCKS * (13 +
 static Uint32 peer_id_counter = 1;
 bool Peer::resolve_hostname = true;
 
-Peer::Peer(mse::EncryptedPacketSocket::Ptr sock,
+Peer::Peer(std::unique_ptr<mse::EncryptedPacketSocket> sock,
            const PeerID &peer_id,
            Uint32 num_chunks,
            Uint32 chunk_size,
@@ -46,7 +46,7 @@ Peer::Peer(mse::EncryptedPacketSocket::Ptr sock,
            ConnectionLimit::Token::Ptr token,
            PeerManager *pman)
     : PeerInterface(peer_id, num_chunks)
-    , sock(sock)
+    , sock(std::move(sock))
     , token(token)
     , pman(pman)
 {
@@ -73,15 +73,15 @@ Peer::Peer(mse::EncryptedPacketSocket::Ptr sock,
     stats.dht_support = support & DHT_SUPPORT;
     stats.fast_extensions = support & FAST_EXT_SUPPORT;
     stats.extension_protocol = support & EXT_PROT_SUPPORT;
-    stats.encrypted = sock->encrypted();
+    stats.encrypted = this->sock->encrypted();
     stats.local = local;
-    stats.transport_protocol = sock->socketDevice()->transportProtocol();
+    stats.transport_protocol = this->sock->socketDevice()->transportProtocol();
 
     if (stats.ip_address == QStringLiteral("0.0.0.0")) {
         Out(SYS_CON | LOG_DEBUG) << "No more 0.0.0.0" << endl;
         kill();
     } else {
-        sock->startMonitoring(preader);
+        this->sock->startMonitoring(preader);
     }
 
     pex_allowed = stats.extension_protocol;
@@ -90,7 +90,7 @@ Peer::Peer(mse::EncryptedPacketSocket::Ptr sock,
     if (resolve_hostname) {
         net::ReverseResolver *res = new net::ReverseResolver();
         connect(res, &net::ReverseResolver::resolved, this, &Peer::resolved, Qt::QueuedConnection);
-        res->resolveAsync(sock->getRemoteAddress());
+        res->resolveAsync(this->sock->getRemoteAddress());
     }
 }
 

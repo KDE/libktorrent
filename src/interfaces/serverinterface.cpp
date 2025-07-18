@@ -102,7 +102,7 @@ QStringList ServerInterface::bindAddresses()
     return ips;
 }
 
-void ServerInterface::newConnection(mse::EncryptedPacketSocket::Ptr s)
+void ServerInterface::newConnection(std::unique_ptr<mse::EncryptedPacketSocket> s)
 {
     if (peer_managers.count() == 0) {
         s->close();
@@ -119,9 +119,9 @@ void ServerInterface::newConnection(mse::EncryptedPacketSocket::Ptr s)
         ServerAuthenticate *auth = nullptr;
 
         if (encryption)
-            auth = new mse::EncryptedServerAuthenticate(s);
+            auth = new mse::EncryptedServerAuthenticate(std::move(s));
         else
-            auth = new ServerAuthenticate(s);
+            auth = new ServerAuthenticate(std::move(s));
 
         AuthenticationMonitor::instance().add(auth);
     }

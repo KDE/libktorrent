@@ -145,7 +145,7 @@ public:
      * \param peer_id The Peer's ID
      * \param support What extensions the peer supports
      */
-    void newConnection(mse::EncryptedPacketSocket::Ptr sock, const PeerID &peer_id, Uint32 support);
+    void newConnection(std::unique_ptr<mse::EncryptedPacketSocket> sock, const PeerID &peer_id, Uint32 support);
 
     /*!
      * Add a potential peer

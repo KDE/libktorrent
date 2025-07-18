@@ -17,6 +17,8 @@
 #include <util/ptrmap.h>
 #include <util/timer.h>
 
+#include <memory>
+
 namespace net
 {
 class Address;
@@ -56,7 +58,7 @@ public:
      * \param token ConnectionLimit token
      * \param pman The PeerManager
      */
-    Peer(mse::EncryptedPacketSocket::Ptr sock,
+    Peer(std::unique_ptr<mse::EncryptedPacketSocket> sock,
          const PeerID &peer_id,
          Uint32 num_chunks,
          Uint32 chunk_size,
@@ -337,7 +339,7 @@ Q_SIGNALS:
     void metadataDownloaded(const QByteArray &data);
 
 private:
-    mse::EncryptedPacketSocket::Ptr sock;
+    std::unique_ptr<mse::EncryptedPacketSocket> sock;
     ConnectionLimit::Token::Ptr token;
 
     Timer stalled_timer;

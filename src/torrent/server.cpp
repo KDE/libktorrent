@@ -46,8 +46,7 @@ public:
 
     void newConnection(int fd, const net::Address &addr) override
     {
-        mse::EncryptedPacketSocket::Ptr s(new mse::EncryptedPacketSocket(fd, addr.ipVersion()));
-        p->newConnection(s);
+        p->newConnection(std::make_unique<mse::EncryptedPacketSocket>(fd, addr.ipVersion()));
     }
 
     void add(const QString &ip, bt::Uint16 port)

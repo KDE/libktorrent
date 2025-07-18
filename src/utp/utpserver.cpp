@@ -127,10 +127,10 @@ void UTPServer::Private::syn(const PacketParser &parser, bt::Buffer::Ptr buffer,
             connections.insert(recv_conn_id, conn);
             if (create_sockets) {
                 UTPSocket *utps = new UTPSocket(conn);
-                mse::EncryptedPacketSocket::Ptr ss(new mse::EncryptedPacketSocket(utps));
+                auto ss = std::make_unique<mse::EncryptedPacketSocket>(utps);
                 {
                     QMutexLocker lock(&pending_mutex);
-                    pending.append(ss);
+                    pending.emplace_back(std::move(ss));
                 }
                 Q_EMIT p->handlePendingConnectionsDelayed();
             } else {
@@ -209,16 +209,15 @@ UTPServer::~UTPServer()
 void UTPServer::handlePendingConnections()
 {
     // This should be called from the main thread
-    QList<mse::EncryptedPacketSocket::Ptr> p;
+    std::vector<std::unique_ptr<mse::EncryptedPacketSocket>> p;
     {
         QMutexLocker lock(&d->pending_mutex);
         // Copy the pending list and clear it before using it's contents to avoid a deadlock
-        p = d->pending;
-        d->pending.clear();
+        std::swap(p, d->pending);
     }
 
-    for (const mse::EncryptedPacketSocket::Ptr &s : std::as_const(p)) {
-        newConnection(s);
+    for (std::unique_ptr<mse::EncryptedPacketSocket> &s : p) {
+        newConnection(std::move(s));
     }
 }
 

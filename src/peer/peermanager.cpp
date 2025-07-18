@@ -53,7 +53,7 @@ public:
 
     void updateAvailableChunks();
     bool killBadPeer();
-    void createPeer(mse::EncryptedPacketSocket::Ptr sock, const PeerID &peer_id, Uint32 support, bool local, ConnectionLimit::Token::Ptr token);
+    void createPeer(std::unique_ptr<mse::EncryptedPacketSocket> sock, const PeerID &peer_id, Uint32 support, bool local, ConnectionLimit::Token::Ptr token);
     bool connectedTo(const net::Address &addr) const;
     void update();
     void have(Peer *peer, Uint32 index);
@@ -189,7 +189,7 @@ void PeerManager::bitSetReceived(Peer *p, const BitSet &bs)
         d->superseeder->bitset(p, bs);
 }
 
-void PeerManager::newConnection(mse::EncryptedPacketSocket::Ptr sock, const PeerID &peer_id, Uint32 support)
+void PeerManager::newConnection(std::unique_ptr<mse::EncryptedPacketSocket> sock, const PeerID &peer_id, Uint32 support)
 {
     if (!d->started)
         return;
@@ -201,14 +201,14 @@ void PeerManager::newConnection(mse::EncryptedPacketSocket::Ptr sock, const Peer
     }
 
     if (token)
-        d->createPeer(sock, peer_id, support, false, token);
+        d->createPeer(std::move(sock), peer_id, support, false, token);
 }
 
 void PeerManager::peerAuthenticated(bt::Authenticate *auth, bt::PeerConnector::WPtr pcon, bool ok, bt::ConnectionLimit::Token::Ptr token)
 {
     if (d->started) {
         if (ok && !connectedTo(auth->getPeerID()))
-            d->createPeer(auth->getSocket(), auth->getPeerID(), auth->supportedExtensions(), auth->isLocal(), token);
+            d->createPeer(auth->takeSocket(), auth->getPeerID(), auth->supportedExtensions(), auth->isLocal(), token);
     }
 
     PeerConnector::Ptr ptr = pcon.toStrongRef();
@@ -630,13 +630,13 @@ bool PeerManager::Private::killBadPeer()
     return false;
 }
 
-void PeerManager::Private::createPeer(mse::EncryptedPacketSocket::Ptr sock,
+void PeerManager::Private::createPeer(std::unique_ptr<mse::EncryptedPacketSocket> sock,
                                       const bt::PeerID &peer_id,
                                       Uint32 support,
                                       bool local,
                                       bt::ConnectionLimit::Token::Ptr token)
 {
-    Peer::Ptr peer(new Peer(sock, peer_id, tor.getNumChunks(), tor.getChunkSize(), support, local, token, p));
+    Peer::Ptr peer(new Peer(std::move(sock), peer_id, tor.getNumChunks(), tor.getChunkSize(), support, local, token, p));
     peer_map.insert(peer->getID(), peer);
     Q_EMIT p->newPeer(peer.data());
     peer->setPexEnabled(pex_on);

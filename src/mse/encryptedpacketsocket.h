@@ -130,8 +130,6 @@ public:
      */
     void setRemoteAddress(const net::Address &addr);
 
-    typedef QSharedPointer<EncryptedPacketSocket> Ptr;
-
 private:
     void preProcess(bt::Uint8 *data, bt::Uint32 size) override;
     void postProcess(bt::Uint8 *data, bt::Uint32 size) override;

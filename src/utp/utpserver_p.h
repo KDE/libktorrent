@@ -25,6 +25,8 @@
 #include <net/wakeuppipe.h>
 #include <util/ptrmap.h>
 
+#include <memory>
+
 namespace utp
 {
 class UTPServerThread;
@@ -92,7 +94,7 @@ public:
     bool create_sockets;
     bt::Uint8 tos;
     OutputQueue output_queue;
-    QList<mse::EncryptedPacketSocket::Ptr> pending;
+    std::vector<std::unique_ptr<mse::EncryptedPacketSocket>> pending;
     QMutex pending_mutex;
     MainThreadCall *mtc;
     QList<Connection::WPtr> last_accepted;

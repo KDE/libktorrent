@@ -11,6 +11,8 @@
 #include <mse/encryptedpacketsocket.h>
 #include <util/constants.h>
 
+#include <memory>
+
 namespace bt
 {
 class SHA1Hash;
@@ -29,7 +31,7 @@ class AuthenticateBase : public QObject
     Q_OBJECT
 public:
     AuthenticateBase();
-    AuthenticateBase(mse::EncryptedPacketSocket::Ptr s);
+    AuthenticateBase(std::unique_ptr<mse::EncryptedPacketSocket> s);
     ~AuthenticateBase() override;
 
     //! Set whether this is a local peer
@@ -56,10 +58,16 @@ public:
         return ext_support;
     }
 
-    //! get the socket
-    mse::EncryptedPacketSocket::Ptr getSocket() const
+    //! Take the socket, only if authentication has finished
+    std::unique_ptr<mse::EncryptedPacketSocket> takeSocket()
     {
-        return sock;
+        return finished ? std::move(sock) : nullptr;
+    }
+
+    //! get the socket
+    mse::EncryptedPacketSocket *getSocket() const
+    {
+        return sock.get();
     }
 
     //! We can read from the socket
@@ -100,7 +108,7 @@ protected Q_SLOTS:
     void onError(int err);
 
 protected:
-    mse::EncryptedPacketSocket::Ptr sock;
+    std::unique_ptr<mse::EncryptedPacketSocket> sock;
     QTimer timer;
     bool finished;
     Uint8 handshake[68];

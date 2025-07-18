@@ -24,7 +24,7 @@ class EncryptedServerAuthenticate : public bt::ServerAuthenticate
 {
     Q_OBJECT
 public:
-    EncryptedServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock);
+    EncryptedServerAuthenticate(std::unique_ptr<mse::EncryptedPacketSocket> sock);
     ~EncryptedServerAuthenticate() override;
 
 private Q_SLOTS:

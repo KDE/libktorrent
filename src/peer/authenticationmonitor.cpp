@@ -67,7 +67,7 @@ void AuthenticationMonitor::update()
 
             itr = auths.erase(itr);
         } else {
-            mse::EncryptedPacketSocket::Ptr socket = ab->getSocket();
+            mse::EncryptedPacketSocket *socket = ab->getSocket();
             if (socket) {
                 net::SocketDevice *dev = socket->socketDevice();
                 if (dev) {
@@ -94,7 +94,7 @@ void AuthenticationMonitor::handleData()
                 ab->deleteLater();
             itr = auths.erase(itr);
         } else {
-            mse::EncryptedPacketSocket::Ptr socket = ab->getSocket();
+            mse::EncryptedPacketSocket *socket = ab->getSocket();
             if (socket) {
                 net::SocketDevice *dev = socket->socketDevice();
                 bool r = dev && dev->ready(this, Poll::INPUT);

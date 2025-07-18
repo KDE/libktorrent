@@ -17,8 +17,8 @@ using namespace bt;
 
 namespace mse
 {
-EncryptedServerAuthenticate::EncryptedServerAuthenticate(mse::EncryptedPacketSocket::Ptr sock)
-    : bt::ServerAuthenticate(sock)
+EncryptedServerAuthenticate::EncryptedServerAuthenticate(std::unique_ptr<mse::EncryptedPacketSocket> sock)
+    : bt::ServerAuthenticate(std::move(sock))
 {
     mse::GeneratePublicPrivateKey(xb, yb);
     state = WAITING_FOR_YA;
