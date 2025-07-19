@@ -33,13 +33,13 @@ RPCMsgFactory::~RPCMsgFactory()
 {
 }
 
-RPCMsg::Ptr RPCMsgFactory::buildRequest(BDictNode *dict)
+std::unique_ptr<RPCMsg> RPCMsgFactory::buildRequest(BDictNode *dict)
 {
     BDictNode *args = dict->getDict(ARG);
     if (!args)
         throw bt::Error(u"Invalid request, arguments missing"_s);
 
-    RPCMsg::Ptr msg;
+    std::unique_ptr<RPCMsg> msg;
     const auto str = dict->getByteArray(REQ);
     if (str == "ping") {
         msg = std::make_unique<PingReq>();
@@ -64,7 +64,7 @@ RPCMsg::Ptr RPCMsgFactory::buildRequest(BDictNode *dict)
         throw bt::Error(u"Invalid request type %1"_s.arg(QLatin1StringView(str)));
 }
 
-RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver *method_resolver)
+std::unique_ptr<RPCMsg> RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver *method_resolver)
 {
     BDictNode *args = dict->getDict(RSP);
     if (!args)
@@ -75,7 +75,7 @@ RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver
     if (mtid.size() == 0)
         throw bt::Error(u"Empty transaction ID in DHT response"_s);
 
-    RPCMsg::Ptr msg;
+    std::unique_ptr<RPCMsg> msg;
 
     // find the call
     Method method = method_resolver->findMethod(mtid);
@@ -104,7 +104,7 @@ RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver
     return msg;
 }
 
-RPCMsg::Ptr RPCMsgFactory::build(bt::BDictNode *dict, RPCMethodResolver *method_resolver)
+std::unique_ptr<RPCMsg> RPCMsgFactory::build(bt::BDictNode *dict, RPCMethodResolver *method_resolver)
 {
     const auto t = dict->getByteArray(TYP);
     if (t == REQ) {

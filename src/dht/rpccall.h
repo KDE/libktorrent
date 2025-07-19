@@ -44,7 +44,7 @@ class RPCCall : public QObject
 {
     Q_OBJECT
 public:
-    RPCCall(RPCMsg::Ptr msg, bool queued);
+    RPCCall(std::unique_ptr<RPCMsg> msg, bool queued);
     ~RPCCall() override;
 
     /*!
@@ -87,7 +87,7 @@ Q_SIGNALS:
     void timeout(dht::RPCCall *c);
 
 private:
-    RPCMsg::Ptr msg;
+    std::unique_ptr<RPCMsg> msg;
     QTimer timer;
     bool queued;
 };

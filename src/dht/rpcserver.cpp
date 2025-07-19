@@ -77,7 +77,7 @@ public:
                 return;
 
             // try to make a RPCMsg of it
-            RPCMsg::Ptr msg = factory.build(dict.get(), this);
+            std::unique_ptr<RPCMsg> msg = factory.build(dict.get(), this);
             if (msg) {
                 if (addr.ipVersion() == 6 && addr.isIPv4Mapped())
                     msg->setOrigin(addr.convertIPv4Mapped());
@@ -141,7 +141,7 @@ public:
         }
     }
 
-    RPCCall *doCall(RPCMsg::Ptr msg)
+    RPCCall *doCall(std::unique_ptr<RPCMsg> msg)
     {
         Uint8 start = next_mtid;
         QByteArray mtid(1, start);
@@ -245,7 +245,7 @@ static void PrintRawData(const QByteArray & data)
 }
 #endif
 
-RPCCall *RPCServer::doCall(RPCMsg::Ptr msg)
+RPCCall *RPCServer::doCall(std::unique_ptr<RPCMsg> msg)
 {
     RPCCall *c = d->doCall(std::move(msg));
     if (c)

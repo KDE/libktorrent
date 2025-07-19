@@ -44,7 +44,7 @@ public:
      * \param msg The message to send
      * \return The call object
      */
-    RPCCall *doCall(RPCMsg::Ptr msg) override;
+    RPCCall *doCall(std::unique_ptr<RPCMsg> msg) override;
 
     /*!
      * Send a message, this only sends the message, it does not keep any call

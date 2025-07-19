@@ -18,7 +18,7 @@ RPCCallListener::~RPCCallListener()
 {
 }
 
-RPCCall::RPCCall(dht::RPCMsg::Ptr msg, bool queued)
+RPCCall::RPCCall(std::unique_ptr<dht::RPCMsg> msg, bool queued)
     : msg(std::move(msg))
     , queued(queued)
 {

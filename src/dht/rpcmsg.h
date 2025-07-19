@@ -55,8 +55,6 @@ public:
     RPCMsg(const QByteArray &mtid, Method m, Type type, const Key &id);
     virtual ~RPCMsg();
 
-    typedef std::unique_ptr<RPCMsg> Ptr;
-
     /*!
      * When this message arrives this function will be called upon the DHT.
      * The message should then call the appropriate DHT function (double dispatch)

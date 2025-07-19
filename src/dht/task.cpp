@@ -68,7 +68,7 @@ void Task::onTimeout(RPCCall *c)
     }
 }
 
-bool Task::rpcCall(dht::RPCMsg::Ptr req)
+bool Task::rpcCall(std::unique_ptr<dht::RPCMsg> req)
 {
     if (!canDoRequest())
         return false;

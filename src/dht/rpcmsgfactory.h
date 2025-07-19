@@ -42,11 +42,11 @@ public:
      * \return A newly created message
      * \throw bt::Error if something goes wrong
      */
-    RPCMsg::Ptr build(bt::BDictNode *dict, RPCMethodResolver *method_resolver);
+    std::unique_ptr<RPCMsg> build(bt::BDictNode *dict, RPCMethodResolver *method_resolver);
 
 private:
-    RPCMsg::Ptr buildRequest(bt::BDictNode *dict);
-    RPCMsg::Ptr buildResponse(bt::BDictNode *dict, RPCMethodResolver *method_resolver);
+    std::unique_ptr<RPCMsg> buildRequest(bt::BDictNode *dict);
+    std::unique_ptr<RPCMsg> buildResponse(bt::BDictNode *dict, RPCMethodResolver *method_resolver);
 };
 
 }

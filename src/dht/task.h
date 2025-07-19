@@ -85,7 +85,7 @@ public:
      * \param req THe request to send
      * \return true if call was made, false if not
      */
-    bool rpcCall(RPCMsg::Ptr req);
+    bool rpcCall(std::unique_ptr<RPCMsg> req);
 
     //! See if we can do a request
     bool canDoRequest() const
