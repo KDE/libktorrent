@@ -45,7 +45,7 @@ void NodeLookup::handleNodes(const QByteArray &nodes, int ip_version)
     }
 }
 
-void NodeLookup::callFinished(RPCCall *, RPCMsg::Ptr rsp)
+void NodeLookup::callFinished(RPCCall *, RPCMsg *rsp)
 {
     // Out(SYS_DHT|LOG_DEBUG) << "NodeLookup::callFinished" << endl;
     if (isFinished())
@@ -53,7 +53,7 @@ void NodeLookup::callFinished(RPCCall *, RPCMsg::Ptr rsp)
 
     // check the response and see if it is a good one
     if (rsp->getMethod() == dht::FIND_NODE && rsp->getType() == dht::RSP_MSG) {
-        FindNodeRsp::Ptr fnr = rsp.dynamicCast<FindNodeRsp>();
+        auto fnr = dynamic_cast<FindNodeRsp *>(rsp);
         if (!fnr)
             return;
 

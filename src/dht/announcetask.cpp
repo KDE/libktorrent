@@ -45,7 +45,7 @@ void AnnounceTask::handleNodes(const QByteArray &nodes, int ip_version)
     }
 }
 
-void AnnounceTask::callFinished(RPCCall *c, RPCMsg::Ptr rsp)
+void AnnounceTask::callFinished(RPCCall *c, RPCMsg *rsp)
 {
     // Out(SYS_DHT|LOG_DEBUG) << "AnnounceTask::callFinished" << endl;
     // if we do not have a get peers response, return
@@ -53,7 +53,7 @@ void AnnounceTask::callFinished(RPCCall *c, RPCMsg::Ptr rsp)
     if (c->getMsgMethod() != dht::GET_PEERS)
         return;
 
-    GetPeersRsp::Ptr gpr = rsp.dynamicCast<GetPeersRsp>();
+    const auto gpr = dynamic_cast<const GetPeersRsp *>(rsp);
     if (!gpr)
         return;
 

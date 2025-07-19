@@ -48,7 +48,7 @@ void Task::onResponse(dht::RPCCall *c, dht::RPCMsg::Ptr rsp)
         outstanding_reqs--;
 
     if (!isFinished()) {
-        callFinished(c, rsp);
+        callFinished(c, rsp.get());
 
         if (canDoRequest() && !isFinished())
             update();

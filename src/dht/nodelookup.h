@@ -26,7 +26,7 @@ public:
     ~NodeLookup() override;
 
     void update() override;
-    void callFinished(RPCCall *c, RPCMsg::Ptr rsp) override;
+    void callFinished(RPCCall *c, RPCMsg *rsp) override;
     void callTimeout(RPCCall *c) override;
 
 private:

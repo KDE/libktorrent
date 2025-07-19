@@ -45,7 +45,7 @@ public:
     AnnounceTask(Database *db, RPCServer *rpc, Node *node, const dht::Key &info_hash, bt::Uint16 port, QObject *parent);
     ~AnnounceTask() override;
 
-    void callFinished(RPCCall *c, RPCMsg::Ptr rsp) override;
+    void callFinished(RPCCall *c, RPCMsg *rsp) override;
     void callTimeout(RPCCall *c) override;
     void update() override;
 

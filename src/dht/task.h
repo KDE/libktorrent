@@ -72,7 +72,7 @@ public:
      * \param c The call
      * \param rsp The response
      */
-    virtual void callFinished(RPCCall *c, RPCMsg::Ptr rsp) = 0;
+    virtual void callFinished(RPCCall *c, RPCMsg *rsp) = 0;
 
     /*!
      * A call timedout
