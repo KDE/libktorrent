@@ -47,7 +47,7 @@ private Q_SLOTS:
             dht::RPCMsg::Ptr msg = factory.build(dict.get(), nullptr);
 
             QVERIFY(msg->getType() == dht::ERR_MSG);
-            dht::ErrMsg::Ptr err = msg.dynamicCast<dht::ErrMsg>();
+            const auto err = dynamic_cast<const dht::ErrMsg *>(msg.get());
             QVERIFY(err);
             QCOMPARE(err->message(), "A Generic Error Ocurred"_L1);
             QVERIFY(err->getMTID() == QByteArray("aa"));

@@ -8,7 +8,6 @@
 
 #include "database.h"
 #include "key.h"
-#include <QSharedPointer>
 #include <QString>
 #include <ktorrent_export.h>
 #include <util/constants.h>
@@ -56,7 +55,7 @@ public:
     RPCMsg(const QByteArray &mtid, Method m, Type type, const Key &id);
     virtual ~RPCMsg();
 
-    typedef QSharedPointer<RPCMsg> Ptr;
+    typedef std::unique_ptr<RPCMsg> Ptr;
 
     /*!
      * When this message arrives this function will be called upon the DHT.

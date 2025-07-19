@@ -84,9 +84,9 @@ void NodeLookup::update()
         // only send a findNode if we haven't allrready visited the node
         if (!visited.contains(*itr)) {
             // send a findNode to the node
-            RPCMsg::Ptr fnr(new FindNodeReq(node->getOurID(), node_id));
+            auto fnr = std::make_unique<FindNodeReq>(node->getOurID(), node_id);
             fnr->setOrigin(itr->getAddress());
-            rpcCall(fnr);
+            rpcCall(std::move(fnr));
             visited.insert(*itr);
         }
         // remove the entry from the todo list

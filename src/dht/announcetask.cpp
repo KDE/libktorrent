@@ -100,10 +100,10 @@ void AnnounceTask::update()
     while (!answered.empty() && canDoRequest()) {
         std::set<KBucketEntryAndToken>::iterator itr = answered.begin();
         if (!answered_visited.contains(*itr)) {
-            RPCMsg::Ptr anr(new AnnounceReq(node->getOurID(), info_hash, port, itr->getToken()));
+            auto anr = std::make_unique<AnnounceReq>(node->getOurID(), info_hash, port, itr->getToken());
             anr->setOrigin(itr->getAddress());
             //      Out(SYS_DHT|LOG_DEBUG) << "DHT: Announcing to " << e.getAddress().toString() << endl;
-            rpcCall(anr);
+            rpcCall(std::move(anr));
             answered_visited.insert(*itr);
         }
         answered.erase(itr);
@@ -117,9 +117,9 @@ void AnnounceTask::update()
         if (!visited.contains(*itr)) {
             // send a findNode to the node
             //      Out(SYS_DHT|LOG_DEBUG) << "DHT: Sending GetPeers to " << e.getAddress().toString() << endl;
-            RPCMsg::Ptr gpr(new GetPeersReq(node->getOurID(), info_hash));
+            auto gpr = std::make_unique<GetPeersReq>(node->getOurID(), info_hash);
             gpr->setOrigin(itr->getAddress());
-            rpcCall(gpr);
+            rpcCall(std::move(gpr));
             visited.insert(*itr);
         }
         // remove the entry from the todo list

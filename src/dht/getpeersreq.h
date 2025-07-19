@@ -33,8 +33,6 @@ public:
     void encode(QByteArray &arr) const override;
     void parse(bt::BDictNode *dict) override;
 
-    typedef QSharedPointer<GetPeersReq> Ptr;
-
 protected:
     Key info_hash;
     QStringList want;

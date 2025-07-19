@@ -32,8 +32,6 @@ public:
         return msg;
     }
 
-    typedef QSharedPointer<ErrMsg> Ptr;
-
 private:
     QString msg;
 };

@@ -178,9 +178,9 @@ void KBucket::pingQuestionable(const KBucketEntry &replacement_entry)
         KBucketEntry &e = *i;
         if (e.isQuestionable()) {
             Out(SYS_DHT | LOG_DEBUG) << "Pinging questionable node : " << e.getAddress().toString() << endl;
-            RPCMsg::Ptr p(new PingReq(our_id));
+            auto p = std::make_unique<PingReq>(our_id);
             p->setDestination(e.getAddress());
-            RPCCall *c = srv->doCall(p);
+            RPCCall *c = srv->doCall(std::move(p));
             if (c) {
                 e.onPingQuestionable();
                 c->addListener(this);

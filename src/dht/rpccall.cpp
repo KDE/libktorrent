@@ -19,7 +19,7 @@ RPCCallListener::~RPCCallListener()
 }
 
 RPCCall::RPCCall(dht::RPCMsg::Ptr msg, bool queued)
-    : msg(msg)
+    : msg(std::move(msg))
     , queued(queued)
 {
     timer.setSingleShot(true);

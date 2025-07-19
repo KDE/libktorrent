@@ -33,8 +33,6 @@ public:
     }
     bool wants(int ip_version) const;
 
-    typedef QSharedPointer<FindNodeReq> Ptr;
-
 private:
     Key target;
     QStringList want;

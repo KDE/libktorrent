@@ -150,7 +150,7 @@ public:
             mtid[0] = ++next_mtid;
             if (next_mtid == start) { // if this happens we cannot do any calls
                 // so queue the call
-                RPCCall *c = new RPCCall(msg, true);
+                RPCCall *c = new RPCCall(std::move(msg), true);
                 call_queue.append(c);
                 Out(SYS_DHT | LOG_NOTICE) << "Queueing RPC call, no slots available at the moment" << endl;
                 return c;
@@ -159,7 +159,7 @@ public:
 
         msg->setMTID(mtid);
         sendMsg(*msg);
-        RPCCall *c = new RPCCall(msg, false);
+        RPCCall *c = new RPCCall(std::move(msg), false);
         calls.insert(mtid, c);
         return c;
     }
@@ -247,7 +247,7 @@ static void PrintRawData(const QByteArray & data)
 
 RPCCall *RPCServer::doCall(RPCMsg::Ptr msg)
 {
-    RPCCall *c = d->doCall(msg);
+    RPCCall *c = d->doCall(std::move(msg));
     if (c)
         connect(c, &RPCCall::timeout, this, &RPCServer::callTimeout);
 
@@ -266,9 +266,9 @@ void RPCServer::callTimeout(RPCCall *call)
 
 void RPCServer::ping(const dht::Key &our_id, const net::Address &addr)
 {
-    RPCMsg::Ptr pr(new PingReq(our_id));
+    auto pr = std::make_unique<PingReq>(our_id);
     pr->setOrigin(addr);
-    doCall(pr);
+    doCall(std::move(pr));
 }
 
 Uint32 RPCServer::getNumActiveRPCCalls() const

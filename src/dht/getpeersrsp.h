@@ -45,8 +45,6 @@ public:
         return nodes.size() == 0;
     }
 
-    typedef QSharedPointer<GetPeersRsp> Ptr;
-
 private:
     QByteArray token;
     DBItemList items;

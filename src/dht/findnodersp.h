@@ -26,8 +26,6 @@ public:
     void print() override;
     void encode(QByteArray &arr) const override;
     void parse(bt::BDictNode *dict) override;
-
-    typedef QSharedPointer<FindNodeRsp> Ptr;
 };
 
 }

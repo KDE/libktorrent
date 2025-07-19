@@ -237,9 +237,9 @@ void DHT::portReceived(const QString &ip, bt::Uint16 port)
     if (!running)
         return;
 
-    RPCMsg::Ptr r(new PingReq(node->getOurID()));
+    auto r = std::make_unique<PingReq>(node->getOurID());
     r->setOrigin(net::Address(ip, port));
-    srv->doCall(r);
+    srv->doCall(std::move(r));
 }
 
 bool DHT::canStartTask() const

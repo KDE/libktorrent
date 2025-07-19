@@ -24,8 +24,6 @@ public:
     void apply(DHT *dh_table) override;
     void print() override;
     void encode(QByteArray &arr) const override;
-
-    typedef QSharedPointer<PingRsp> Ptr;
 };
 }
 

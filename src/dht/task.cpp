@@ -73,7 +73,7 @@ bool Task::rpcCall(dht::RPCMsg::Ptr req)
     if (!canDoRequest())
         return false;
 
-    RPCCall *c = rpc->doCall(req);
+    RPCCall *c = rpc->doCall(std::move(req));
     c->addListener(this);
     outstanding_reqs++;
     return true;

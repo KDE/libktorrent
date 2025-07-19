@@ -35,8 +35,6 @@ public:
         return port;
     }
 
-    typedef QSharedPointer<AnnounceReq> Ptr;
-
 private:
     bt::Uint16 port;
     QByteArray token;

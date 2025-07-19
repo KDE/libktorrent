@@ -42,19 +42,19 @@ RPCMsg::Ptr RPCMsgFactory::buildRequest(BDictNode *dict)
     RPCMsg::Ptr msg;
     const auto str = dict->getByteArray(REQ);
     if (str == "ping") {
-        msg = RPCMsg::Ptr(new PingReq());
+        msg = std::make_unique<PingReq>();
         msg->parse(dict);
         return msg;
     } else if (str == "find_node") {
-        msg = RPCMsg::Ptr(new FindNodeReq());
+        msg = std::make_unique<FindNodeReq>();
         msg->parse(dict);
         return msg;
     } else if (str == "get_peers") {
-        msg = RPCMsg::Ptr(new GetPeersReq());
+        msg = std::make_unique<GetPeersReq>();
         msg->parse(dict);
         return msg;
     } else if (str == "announce_peer") {
-        msg = RPCMsg::Ptr(new AnnounceReq());
+        msg = std::make_unique<AnnounceReq>();
         msg->parse(dict);
         return msg;
     } else if (str == "vote") {
@@ -81,19 +81,19 @@ RPCMsg::Ptr RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver
     Method method = method_resolver->findMethod(mtid);
     switch (method) {
     case PING:
-        msg = RPCMsg::Ptr(new PingRsp());
+        msg = std::make_unique<PingRsp>();
         msg->parse(dict);
         break;
     case FIND_NODE:
-        msg = RPCMsg::Ptr(new FindNodeRsp());
+        msg = std::make_unique<FindNodeRsp>();
         msg->parse(dict);
         break;
     case GET_PEERS:
-        msg = RPCMsg::Ptr(new GetPeersRsp());
+        msg = std::make_unique<GetPeersRsp>();
         msg->parse(dict);
         break;
     case ANNOUNCE_PEER:
-        msg = RPCMsg::Ptr(new AnnounceRsp());
+        msg = std::make_unique<AnnounceRsp>();
         msg->parse(dict);
         break;
     case NONE:
@@ -112,7 +112,7 @@ RPCMsg::Ptr RPCMsgFactory::build(bt::BDictNode *dict, RPCMethodResolver *method_
     } else if (t == RSP) {
         return buildResponse(dict, method_resolver);
     } else if (t == ERR_DHT) {
-        RPCMsg::Ptr msg(new ErrMsg());
+        auto msg = std::make_unique<ErrMsg>();
         msg->parse(dict);
         return msg;
     } else
