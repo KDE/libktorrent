@@ -28,7 +28,7 @@ public:
      * \param c The call
      * \param rsp The response
      */
-    virtual void onResponse(RPCCall *c, RPCMsg::Ptr rsp) = 0;
+    virtual void onResponse(RPCCall *c, RPCMsg *rsp) = 0;
 
     /*!
      * The call has timed out.
@@ -56,7 +56,7 @@ public:
      * Called by the server if a response is received.
      * \param rsp
      */
-    void response(RPCMsg::Ptr rsp);
+    void response(RPCMsg *rsp);
 
     /*!
      * Add a listener for this call
@@ -83,7 +83,7 @@ private Q_SLOTS:
     void onTimeout();
 
 Q_SIGNALS:
-    void response(dht::RPCCall *c, dht::RPCMsg::Ptr rsp);
+    void response(dht::RPCCall *c, dht::RPCMsg *rsp);
     void timeout(dht::RPCCall *c);
 
 private:

@@ -128,7 +128,7 @@ public:
     void setRefreshTask(Task *t);
 
 private:
-    void onResponse(RPCCall *c, RPCMsg::Ptr rsp) override;
+    void onResponse(RPCCall *c, RPCMsg *rsp) override;
     void onTimeout(RPCCall *c) override;
     void pingQuestionable(const KBucketEntry &replacement_entry);
     bool replaceBadEntry(const KBucketEntry &entry);

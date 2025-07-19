@@ -43,7 +43,7 @@ void RPCCall::onTimeout()
     Q_EMIT timeout(this);
 }
 
-void RPCCall::response(RPCMsg::Ptr rsp)
+void RPCCall::response(RPCMsg *rsp)
 {
     Q_EMIT response(this, rsp);
 }
@@ -58,7 +58,7 @@ Method RPCCall::getMsgMethod() const
 
 void RPCCall::addListener(RPCCallListener *cl)
 {
-    connect(this, qOverload<RPCCall *, RPCMsg::Ptr>(&RPCCall::response), cl, &RPCCallListener::onResponse);
+    connect(this, qOverload<RPCCall *, RPCMsg *>(&RPCCall::response), cl, &RPCCallListener::onResponse);
     connect(this, &RPCCall::timeout, cl, &RPCCallListener::onTimeout);
 }
 

@@ -114,7 +114,7 @@ bool KBucket::insert(const KBucketEntry &entry)
     return false;
 }
 
-void KBucket::onResponse(RPCCall *c, RPCMsg::Ptr rsp)
+void KBucket::onResponse(RPCCall *c, RPCMsg *rsp)
 {
     Q_UNUSED(rsp);
     last_modified = bt::CurrentTime();

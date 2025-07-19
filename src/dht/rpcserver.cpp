@@ -89,7 +89,7 @@ public:
                 if (msg->getType() == RSP_MSG && calls.contains(msg->getMTID())) {
                     // delete the call, but first notify it off the response
                     RPCCall *c = calls.find(msg->getMTID());
-                    c->response(msg);
+                    c->response(msg.get());
                     calls.erase(msg->getMTID());
                     c->deleteLater();
                     doQueuedCalls();

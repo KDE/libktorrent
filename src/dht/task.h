@@ -56,7 +56,7 @@ public:
     void start();
 
     //! Decrements the outstanding_reqs
-    void onResponse(RPCCall *c, RPCMsg::Ptr rsp) override;
+    void onResponse(RPCCall *c, RPCMsg *rsp) override;
 
     //! Decrements the outstanding_reqs
     void onTimeout(RPCCall *c) override;
