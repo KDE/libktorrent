@@ -68,15 +68,15 @@ public:
     Method getMsgMethod() const;
 
     //! Get the request sent
-    const RPCMsg::Ptr getRequest() const
+    const RPCMsg *getRequest() const
     {
-        return msg;
+        return msg.get();
     }
 
     //! Get the request sent
-    RPCMsg::Ptr getRequest()
+    RPCMsg *getRequest()
     {
-        return msg;
+        return msg.get();
     }
 
 private Q_SLOTS:

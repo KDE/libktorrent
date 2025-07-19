@@ -57,7 +57,7 @@ public:
     void getPeers(const GetPeersReq &r);
     void announce(const AnnounceReq &r);
     void error(const ErrMsg &r);
-    void timeout(RPCMsg::Ptr r);
+    void timeout(const RPCMsg &r);
 
     /*!
      * A Peer has received a PORT message, and uses this function to alert the DHT of it.

@@ -131,7 +131,7 @@ public:
             while (calls.contains(QByteArray(1, next_mtid)))
                 next_mtid++;
 
-            RPCMsg::Ptr msg = c->getRequest();
+            RPCMsg *msg = c->getRequest();
             QByteArray mtid(1, next_mtid);
             msg->setMTID(mtid);
             next_mtid++;
@@ -177,7 +177,7 @@ public:
         // delete the call
         RPCCall *c = calls.find(mtid);
         if (c) {
-            dh_table->timeout(c->getRequest());
+            dh_table->timeout(*c->getRequest());
             calls.erase(mtid);
             c->deleteLater();
         }

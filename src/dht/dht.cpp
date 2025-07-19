@@ -330,9 +330,9 @@ void DHT::update()
     }
 }
 
-void DHT::timeout(RPCMsg::Ptr r)
+void DHT::timeout(const RPCMsg &r)
 {
-    node->onTimeout(*r);
+    node->onTimeout(r);
 }
 
 void DHT::addDHTNode(const QString &host, Uint16 hport)
