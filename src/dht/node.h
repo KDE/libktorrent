@@ -63,7 +63,7 @@ public:
     /*!
      * Increase the failed queries count of the bucket entry we sent the message to
      */
-    void onTimeout(RPCMsg::Ptr msg);
+    void onTimeout(const RPCMsg &msg);
 
     //! Check if a buckets needs to be refreshed, and refresh if necesarry
     void refreshBuckets(DHT *dh_table);

@@ -116,12 +116,12 @@ void Node::findKClosestNodes(KClosestNodesSearch &kns, bt::Uint32 want)
         d->ipv6_table->findKClosestNodes(kns);
 }
 
-void Node::onTimeout(RPCMsg::Ptr msg)
+void Node::onTimeout(const RPCMsg &msg)
 {
-    if (msg->getOrigin().ipVersion() == 4)
-        d->ipv4_table->onTimeout(msg->getOrigin());
+    if (msg.getOrigin().ipVersion() == 4)
+        d->ipv4_table->onTimeout(msg.getOrigin());
     else
-        d->ipv6_table->onTimeout(msg->getOrigin());
+        d->ipv6_table->onTimeout(msg.getOrigin());
 }
 
 void Node::refreshBuckets(DHT *dh_table)
