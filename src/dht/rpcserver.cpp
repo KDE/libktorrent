@@ -135,7 +135,7 @@ public:
             QByteArray mtid(1, next_mtid);
             msg->setMTID(mtid);
             next_mtid++;
-            sendMsg(msg);
+            sendMsg(*msg);
             calls.insert(msg->getMTID(), c);
             c->start();
         }
@@ -158,17 +158,17 @@ public:
         }
 
         msg->setMTID(mtid);
-        sendMsg(msg);
+        sendMsg(*msg);
         RPCCall *c = new RPCCall(msg, false);
         calls.insert(mtid, c);
         return c;
     }
 
-    void sendMsg(RPCMsg::Ptr msg)
+    void sendMsg(const RPCMsg &msg)
     {
         QByteArray data;
-        msg->encode(data);
-        send(msg->getDestination(), data);
+        msg.encode(data);
+        send(msg.getDestination(), data);
         //  PrintRawData(data);
     }
 
@@ -254,16 +254,9 @@ RPCCall *RPCServer::doCall(RPCMsg::Ptr msg)
     return c;
 }
 
-void RPCServer::sendMsg(RPCMsg::Ptr msg)
+void RPCServer::sendMsg(const RPCMsg &msg)
 {
     d->sendMsg(msg);
-}
-
-void RPCServer::sendMsg(const dht::RPCMsg &msg)
-{
-    QByteArray data;
-    msg.encode(data);
-    d->send(msg.getDestination(), data);
 }
 
 void RPCServer::callTimeout(RPCCall *call)

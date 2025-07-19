@@ -51,13 +51,6 @@ public:
      * information. This should be used for replies.
      * \param msg The message to send
      */
-    void sendMsg(RPCMsg::Ptr msg);
-
-    /*!
-     * Send a message, this only sends the message, it does not keep any call
-     * information. This should be used for replies.
-     * \param msg The message to send
-     */
     void sendMsg(const RPCMsg &msg);
 
     /*!
