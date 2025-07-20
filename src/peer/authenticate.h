@@ -37,7 +37,12 @@ public:
      * \param peer_id Peer ID
      * \param pcon PeerConnector
      */
-    Authenticate(const net::Address &addr, TransportProtocol proto, const SHA1Hash &info_hash, const PeerID &peer_id, PeerConnector::WPtr pcon);
+    Authenticate(const net::Address &addr,
+                 TransportProtocol proto,
+                 const SHA1Hash &info_hash,
+                 const PeerID &peer_id,
+                 PeerConnector::WPtr pcon,
+                 bool we_support_v2);
 
     ~Authenticate() override;
 

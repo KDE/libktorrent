@@ -59,11 +59,28 @@ public:
     static void removePeerManager(PeerManager *pman);
 
     /*!
-     * Find the PeerManager given the info_hash of it's torrent.
+     * Find the PeerManager given the V1 info_hash of it's torrent.
      * \param hash The info_hash
-     * \return The PeerManager or 0 if one can't be found
+     * \return The PeerManager or nullptr if one can't be found
      */
-    static PeerManager *findPeerManager(const SHA1Hash &hash);
+    static PeerManager *findPeerManager(const SHA1Hash &hash)
+    {
+        return findPeerManagerFromV1(hash);
+    }
+
+    /*!
+     * Find the PeerManager given the V1 info_hash of it's torrent.
+     * \param hash The info_hash
+     * \return The PeerManager or nullptr if one can't be found
+     */
+    static PeerManager *findPeerManagerFromV1(const SHA1Hash &hash);
+
+    /*!
+     * Find the PeerManager given the truncated V2 info_hash of it's torrent.
+     * \param hash The info_hash
+     * \return The PeerManager or nullptr if one can't be found
+     */
+    static PeerManager *findPeerManagerFromTruncatedV2(const SHA1Hash &hash);
 
     /*!
      * Find the info_hash based on the skey hash. The skey hash is a hash

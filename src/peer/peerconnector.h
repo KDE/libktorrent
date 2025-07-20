@@ -34,7 +34,7 @@ public:
         UTP_WITHOUT_ENCRYPTION,
     };
 
-    PeerConnector(const net::Address &addr, bool local, PeerManager *pman, ConnectionLimit::Token::Ptr token);
+    PeerConnector(const net::Address &addr, bool local, Uint32 protocol_version, PeerManager *pman, ConnectionLimit::Token::Ptr token);
     ~PeerConnector() override;
 
     //! Called when an authentication attempt is finished

@@ -46,10 +46,23 @@ void ServerInterface::removePeerManager(PeerManager *pman)
     peer_managers.removeAll(pman);
 }
 
-PeerManager *ServerInterface::findPeerManager(const bt::SHA1Hash &hash)
+PeerManager *ServerInterface::findPeerManagerFromV1(const bt::SHA1Hash &hash)
 {
     for (PeerManager *pm : std::as_const(peer_managers)) {
-        if (pm && pm->getTorrent().getInfoHash().truncated() == hash) {
+        if (pm && pm->getTorrent().getInfoHash().getV1() == hash) {
+            if (!pm->isStarted())
+                return nullptr;
+            else
+                return pm;
+        }
+    }
+    return nullptr;
+}
+
+PeerManager *ServerInterface::findPeerManagerFromTruncatedV2(const bt::SHA1Hash &hash)
+{
+    for (PeerManager *pm : std::as_const(peer_managers)) {
+        if (pm && pm->getTorrent().getInfoHash().containsTruncatedV2(hash)) {
             if (!pm->isStarted())
                 return nullptr;
             else

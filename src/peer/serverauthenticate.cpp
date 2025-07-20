@@ -52,10 +52,20 @@ void ServerAuthenticate::handshakeReceived(bool full)
 
     // try to find a PeerManager which has the right info hash
     SHA1Hash rh(hs + 28);
-    PeerManager *pman = ServerInterface::findPeerManager(rh);
-    if (!pman) {
-        onFinish(false);
-        return;
+    PeerManager *pman = ServerInterface::findPeerManagerFromV1(rh);
+    if (pman) {
+        // They sent a V1 hash but support V2, retry the connection with V2
+        if (they_support_v2) {
+            pman->addPotentialPeer(sock->socketDevice()->getPeerName(), local, 2);
+            onFinish(false);
+            return;
+        }
+    } else {
+        pman = ServerInterface::findPeerManagerFromTruncatedV2(rh);
+        if (!pman) {
+            onFinish(false);
+            return;
+        }
     }
 
     if (full) {
@@ -78,6 +88,7 @@ void ServerAuthenticate::handshakeReceived(bool full)
         }
 
         // send handshake and finish off
+        we_support_v2 = pman->getTorrent().getInfoHash().hasV2();
         sendHandshake(rh, pman->getTorrent().getPeerID());
         onFinish(true);
         // hand over connection

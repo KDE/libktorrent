@@ -32,7 +32,8 @@ public:
                           bt::TransportProtocol proto,
                           const bt::SHA1Hash &info_hash,
                           const bt::PeerID &peer_id,
-                          bt::PeerConnector::WPtr pcon);
+                          bt::PeerConnector::WPtr pcon,
+                          bool we_support_v2);
     ~EncryptedAuthenticate() override;
 
 private Q_SLOTS:
