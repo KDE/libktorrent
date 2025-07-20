@@ -28,7 +28,7 @@ class PeerManager;
 class KTORRENT_EXPORT PeerConnector : public Resource
 {
 public:
-    PeerConnector(const net::Address &addr, bool local, PeerManager *pman, std::unique_ptr<ConnectionLimit::Token> token);
+    PeerConnector(const net::Address &addr, bool local, Uint32 protocol_version, PeerManager *pman, std::unique_ptr<ConnectionLimit::Token> token);
     ~PeerConnector() override;
 
     //! Called when an authentication attempt is finished
