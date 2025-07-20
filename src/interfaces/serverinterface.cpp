@@ -48,16 +48,13 @@ void ServerInterface::removePeerManager(PeerManager *pman)
 
 PeerManager *ServerInterface::findPeerManager(const bt::SHA1Hash &hash)
 {
-    QList<PeerManager *>::iterator i = peer_managers.begin();
-    while (i != peer_managers.end()) {
-        PeerManager *pm = *i;
+    for (PeerManager *pm : std::as_const(peer_managers)) {
         if (pm && pm->getTorrent().getInfoHash().truncated() == hash) {
             if (!pm->isStarted())
                 return nullptr;
             else
                 return pm;
         }
-        ++i;
     }
     return nullptr;
 }
