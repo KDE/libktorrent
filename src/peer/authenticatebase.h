@@ -46,6 +46,11 @@ public:
         return local;
     }
 
+    void setWeSupportV2(bool support)
+    {
+        we_support_v2 = support;
+    }
+
     //! See if the authentication is finished
     bool isFinished() const
     {
@@ -68,6 +73,16 @@ public:
     mse::EncryptedPacketSocket *getSocket() const
     {
         return sock.get();
+    }
+
+    /*!
+     * \brief Whether the peers supports v2 torrents.
+     *
+     * This is only valid if the authentication was successful.
+     */
+    bool supportsV2() const
+    {
+        return they_support_v2;
     }
 
     //! We can read from the socket
@@ -115,6 +130,8 @@ protected:
     Uint32 bytes_of_handshake_received;
     Uint32 ext_support;
     bool local;
+    bool they_support_v2 = false;
+    bool we_support_v2 = false;
 };
 
 }

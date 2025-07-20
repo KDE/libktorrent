@@ -21,7 +21,7 @@ static ResourceManager half_open_connections(50);
 class PeerConnector::Private
 {
 public:
-    Private(PeerConnector *p, const net::Address &addr, bool local, PeerManager *pman, ConnectionLimit::Token::Ptr token)
+    Private(PeerConnector *p, const net::Address &addr, bool local, Uint32 protocol_version, PeerManager *pman, ConnectionLimit::Token::Ptr token)
         : p(p)
         , addr(addr)
         , local(local)
@@ -29,6 +29,7 @@ public:
         , stopping(false)
         , do_not_start(false)
         , token(token)
+        , protocol_version(protocol_version)
     {
     }
 
@@ -56,11 +57,12 @@ public:
     bool do_not_start;
     PeerConnector::WPtr self;
     ConnectionLimit::Token::Ptr token;
+    Uint32 protocol_version = 1;
 };
 
-PeerConnector::PeerConnector(const net::Address &addr, bool local, bt::PeerManager *pman, ConnectionLimit::Token::Ptr token)
+PeerConnector::PeerConnector(const net::Address &addr, bool local, Uint32 protocol_version, bt::PeerManager *pman, ConnectionLimit::Token::Ptr token)
     : Resource(&half_open_connections, pman->getTorrent().getInfoHash().truncated().toString())
-    , d(std::make_unique<Private>(this, addr, local, pman, token))
+    , d(std::make_unique<Private>(this, addr, local, protocol_version, pman, token))
 {
 }
 
@@ -122,8 +124,15 @@ void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
         return;
 
     if (ok) {
-        pm->peerAuthenticated(auth, self, ok, token);
-        return;
+        if (protocol_version == 1 && auth->supportsV2()) {
+            ++protocol_version;
+            tried_methods.clear();
+            start(current_method);
+            return;
+        } else {
+            pm->peerAuthenticated(auth, self, ok, token);
+            return;
+        }
     }
 
     tried_methods.insert(current_method);
@@ -146,6 +155,8 @@ void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
             start(TCP_WITH_ENCRYPTION);
         else if (!only_use_utp && !only_use_encryption && !tried_methods.contains(TCP_WITHOUT_ENCRYPTION) && tcp_allowed)
             start(TCP_WITHOUT_ENCRYPTION);
+        else if (protocol_version == 1)
+            ++protocol_version;
         else
             pm->peerAuthenticated(auth, self, false, token);
     } else { // Primary is TCP
@@ -157,6 +168,8 @@ void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
             start(UTP_WITH_ENCRYPTION);
         else if (utp && !only_use_encryption && !tried_methods.contains(UTP_WITHOUT_ENCRYPTION))
             start(UTP_WITHOUT_ENCRYPTION);
+        else if (protocol_version == 1)
+            ++protocol_version;
         else
             pm->peerAuthenticated(auth, self, false, token);
     }
@@ -170,11 +183,18 @@ void PeerConnector::Private::start(PeerConnector::Method method)
 
     current_method = method;
     const Torrent &tor = pm->getTorrent();
+    const InfoHash &info_hash = tor.getInfoHash();
+    const bool we_support_v2 = info_hash.hasV2();
+    if (protocol_version == 2 && !we_support_v2) {
+        pm->peerAuthenticated(nullptr, self, false, token);
+    }
+
+    const SHA1Hash truncated_hash = protocol_version == 1 ? tor.getInfoHash().getV1() : tor.getInfoHash().truncated();
     TransportProtocol proto = (method == TCP_WITH_ENCRYPTION || method == TCP_WITHOUT_ENCRYPTION) ? TCP : UTP;
     if (method == TCP_WITH_ENCRYPTION || method == UTP_WITH_ENCRYPTION)
-        auth = new mse::EncryptedAuthenticate(addr, proto, tor.getInfoHash().truncated(), tor.getPeerID(), self);
+        auth = new mse::EncryptedAuthenticate(addr, proto, truncated_hash, tor.getPeerID(), self, we_support_v2);
     else
-        auth = new Authenticate(addr, proto, tor.getInfoHash().truncated(), tor.getPeerID(), self);
+        auth = new Authenticate(addr, proto, truncated_hash, tor.getPeerID(), self, we_support_v2);
 
     if (local)
         auth.data()->setLocal(true);

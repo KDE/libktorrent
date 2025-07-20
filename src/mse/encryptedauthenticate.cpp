@@ -25,8 +25,9 @@ EncryptedAuthenticate::EncryptedAuthenticate(const net::Address &addr,
                                              TransportProtocol proto,
                                              const SHA1Hash &info_hash,
                                              const PeerID &peer_id,
-                                             PeerConnector::WPtr pcon)
-    : Authenticate(addr, proto, info_hash, peer_id, pcon)
+                                             PeerConnector::WPtr pcon,
+                                             bool we_support_v2)
+    : Authenticate(addr, proto, info_hash, peer_id, pcon, we_support_v2)
 {
     mse::GeneratePublicPrivateKey(xa, ya);
     state = NOT_CONNECTED;

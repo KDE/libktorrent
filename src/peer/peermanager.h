@@ -152,7 +152,7 @@ public:
      * \param addr The peers' address
      * \param local Is it a peer on the local network
      **/
-    void addPotentialPeer(const net::Address &addr, bool local);
+    void addPotentialPeer(const net::Address &addr, bool local, Uint32 protocol_version = 1);
 
     /*!
      * Kills all connections to seeders.

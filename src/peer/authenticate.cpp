@@ -13,13 +13,19 @@
 
 namespace bt
 {
-Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, const SHA1Hash &info_hash, const PeerID &peer_id, PeerConnector::WPtr pcon)
+Authenticate::Authenticate(const net::Address &addr,
+                           TransportProtocol proto,
+                           const SHA1Hash &info_hash,
+                           const PeerID &peer_id,
+                           PeerConnector::WPtr pcon,
+                           bool we_support_v2)
     : info_hash(info_hash)
     , our_peer_id(peer_id)
     , addr(addr)
     , pcon(pcon)
 {
     finished = succes = false;
+    setWeSupportV2(we_support_v2);
     if (proto == TCP)
         sock = std::make_unique<mse::EncryptedPacketSocket>(addr.ipVersion());
     else
