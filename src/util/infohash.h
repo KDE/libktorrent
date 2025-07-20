@@ -46,6 +46,9 @@ public:
     QString toString() const;
     QString toURLString() const;
 
+    //! Whether this info hash contains \a hash as a truncated V2 hash
+    bool containsTruncatedV2(const SHA1Hash &truncated_hash) const;
+
     /**
      * Function to support the use of SHA2Hash as QHash keys
      * @param key SHA2Hash used to compute a hash key

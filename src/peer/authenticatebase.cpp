@@ -65,6 +65,9 @@ void AuthenticateBase::makeHandshake(Uint8 *hs, const SHA1Hash &info_hash, const
     }
     hs[25] |= 0x10; // extension protocol
     hs[27] |= 0x04; // fast extensions
+    if (we_support_v2) {
+        hs[27] |= 0x10; // v2 protocol
+    }
     memcpy(hs + 28, info_hash.getData(), 20);
     memcpy(hs + 48, our_peer_id.data(), 20);
 }
@@ -125,6 +128,11 @@ void AuthenticateBase::onReadyRead()
 
     if (handshake[25] & 0x10) {
         ext_support |= bt::EXT_PROT_SUPPORT;
+    }
+
+    if (handshake[27] & 0x10) {
+        // TODO figure encode this into ext_support without colliding with EXT_PROT_SUPPORT
+        they_support_v2 = true;
     }
 
     handshakeReceived(true);

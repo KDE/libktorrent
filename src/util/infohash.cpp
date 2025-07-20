@@ -78,6 +78,11 @@ QString InfoHash::toURLString() const
     return URLEncoder::encode((const char *)truncated().getData(), 32);
 }
 
+bool InfoHash::containsTruncatedV2(const SHA1Hash &truncated_hash) const
+{
+    return memcmp(v2.getData(), truncated_hash.getData(), 20) == 0;
+}
+
 size_t qHash(const InfoHash &key, size_t seed = 0) noexcept
 {
     return qHash(key.truncated(), seed);

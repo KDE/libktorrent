@@ -38,9 +38,16 @@
 
 using namespace Qt::Literals::StringLiterals;
 
+namespace
+{
+struct PeerProperties {
+    bool local;
+    bt::Uint32 protocol_version;
+};
+}
+
 namespace bt
 {
-using PPItr = std::map<net::Address, bool>::iterator;
 using PeerMap = std::map<Uint32, std::unique_ptr<Peer>>;
 
 static ConnectionLimit climit;
@@ -76,7 +83,7 @@ public:
     bool paused;
     QSet<PeerConnector::Ptr> connectors;
     QScopedPointer<SuperSeeder> superseeder;
-    std::map<net::Address, bool> potential_peers;
+    std::map<net::Address, PeerProperties> potential_peers;
     bool partial_seed;
     Uint32 num_cleared;
 };
@@ -148,10 +155,10 @@ void PeerManager::setWantedChunks(const BitSet &bs)
     d->wanted_changed = true;
 }
 
-void PeerManager::addPotentialPeer(const net::Address &addr, bool local)
+void PeerManager::addPotentialPeer(const net::Address &addr, bool local, Uint32 protocol_version)
 {
     if (d->potential_peers.size() < 500) {
-        d->potential_peers[addr] = local;
+        d->potential_peers[addr] = PeerProperties{local, protocol_version};
     }
 }
 
@@ -268,10 +275,8 @@ void PeerManager::savePeerList(const QString &file)
         }
 
         // now the potential_peers
-        std::map<net::Address, bool>::const_iterator i = d->potential_peers.cbegin();
-        while (i != d->potential_peers.cend()) {
-            out << i->first.toString() << " " << i->first.port() << Qt::endl;
-            ++i;
+        for (const auto &[peer_addr, peer_props] : d->potential_peers) {
+            out << peer_addr.toString() << " " << peer_addr.port() << Qt::endl;
         }
     } catch (bt::Error &err) {
         Out(SYS_GEN | LOG_DEBUG) << "Error happened during saving of peer list : " << err.toString() << endl;
@@ -719,7 +724,9 @@ void PeerManager::Private::connectToPeers()
             return;
         }
 
-        const PPItr itr = potential_peers.begin();
+        const auto itr = potential_peers.begin();
+        const net::Address &peer_addr = itr->first;
+        const PeerProperties &peer_props = itr->second;
 
         const AccessManager &aman = AccessManager::instance();
 
@@ -729,7 +736,7 @@ void PeerManager::Private::connectToPeers()
                 break;
             }
 
-            const PeerConnector::Ptr pcon(new PeerConnector(itr->first, itr->second, p, std::move(token)));
+            const PeerConnector::Ptr pcon(new PeerConnector(peer_addr, peer_props.local, peer_props.protocol_version, p, std::move(token)));
             pcon->setWeakPointer(PeerConnector::WPtr(pcon));
             connectors.insert(pcon);
             pcon->start();
