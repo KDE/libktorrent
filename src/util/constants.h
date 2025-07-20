@@ -65,14 +65,25 @@ enum PeerMessageType : Uint8 {
     ALLOWED_FAST = 17,
     // Extension Protocol, bep 0010
     EXTENDED = 20,
+    // BitTorrent Protocol V2, bep 0052
+    HASH_REQUEST = 21,
+    HASHES = 22,
+    HASH_REJECT = 23,
 };
 
 // flags for things which a peer supports
 const Uint32 DHT_SUPPORT = 0x01;
 const Uint32 EXT_PROT_SUPPORT = 0x10;
 const Uint32 FAST_EXT_SUPPORT = 0x04;
+const Uint8 V2_PROTOCOL_SUPPORT = 0x10;
 
 enum TransportProtocol { TCP, UTP };
 }
+
+enum class ProtocolVersion {
+    V1,
+    V2,
+    Hybrid, // V1 and V2
+};
 
 #endif
