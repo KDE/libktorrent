@@ -168,7 +168,7 @@ void MagnetDownloader::onTorrentDownloaded(KJob *job)
         const TrackerTier *tier = tor.getTrackerList();
         while (tier) {
             mlink.tracker_urls.append(tier->urls);
-            tier = tier->next;
+            tier = tier->next.get();
         }
         onMetadataDownloaded(tor.getMetaData());
     } catch (...) {

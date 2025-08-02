@@ -40,7 +40,7 @@ TrackerManager::TrackerManager(bt::TorrentControl *tor, PeerManager *pman)
         }
 
         tier++;
-        t = t->next;
+        t = t->next.get();
     }
 
     // load custom trackers

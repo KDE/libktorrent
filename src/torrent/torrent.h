@@ -29,17 +29,7 @@ class BListNode;
 
 struct TrackerTier {
     QList<QUrl> urls;
-    TrackerTier *next;
-
-    TrackerTier()
-        : next(nullptr)
-    {
-    }
-
-    ~TrackerTier()
-    {
-        delete next;
-    }
+    std::unique_ptr<TrackerTier> next;
 };
 
 /*!
@@ -247,7 +237,7 @@ public:
     //! Gets a pointer to AnnounceList
     const TrackerTier *getTrackerList() const
     {
-        return trackers;
+        return trackers.get();
     }
 
     //! Get the number of initial DHT nodes
@@ -318,7 +308,7 @@ private:
     QList<QUrl> web_seeds;
     PeerID peer_id;
 
-    TrackerTier *trackers;
+    std::unique_ptr<TrackerTier> trackers;
     Uint64 chunk_size;
     Uint64 last_chunk_size;
     Uint64 total_size;

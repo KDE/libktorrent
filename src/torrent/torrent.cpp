@@ -53,8 +53,7 @@ static QString SanityzeName(const QString &name)
 }
 
 Torrent::Torrent()
-    : trackers(nullptr)
-    , chunk_size(0)
+    : chunk_size(0)
     , last_chunk_size(0)
     , total_size(0)
     , file_prio_listener(nullptr)
@@ -68,7 +67,6 @@ Torrent::Torrent()
 
 Torrent::Torrent(const bt::SHA1Hash &hash)
     : info_hash(hash)
-    , trackers(nullptr)
     , chunk_size(0)
     , last_chunk_size(0)
     , total_size(0)
@@ -83,7 +81,6 @@ Torrent::Torrent(const bt::SHA1Hash &hash)
 
 Torrent::~Torrent()
 {
-    delete trackers;
 }
 
 void Torrent::load(const QByteArray &data, bool verbose)
@@ -214,7 +211,7 @@ void Torrent::loadFiles(BListNode *node)
 void Torrent::loadTrackerURL(const QString &s)
 {
     if (!trackers)
-        trackers = new TrackerTier();
+        trackers = std::make_unique<TrackerTier>();
 
     QUrl url(s);
     if (s.length() > 0 && url.isValid())
@@ -241,17 +238,17 @@ void Torrent::loadAnnounceList(BNode *node)
         return;
 
     if (!trackers)
-        trackers = new TrackerTier();
+        trackers = std::make_unique<TrackerTier>();
 
-    TrackerTier *tier = trackers;
+    TrackerTier *tier = trackers.get();
     // ml->printDebugInfo();
     for (Uint32 i = 0; i < ml->getNumChildren(); i++) {
         BListNode *url_list = ml->getList(i);
         if (url_list) {
             for (Uint32 j = 0; j < url_list->getNumChildren(); j++)
                 tier->urls.append(QUrl(url_list->getString(j)));
-            tier->next = new TrackerTier();
-            tier = tier->next;
+            tier->next = std::make_unique<TrackerTier>();
+            tier = tier->next.get();
         }
     }
 }
@@ -344,10 +341,10 @@ const TorrentFile &Torrent::getFile(Uint32 idx) const
 unsigned int Torrent::getNumTrackerURLs() const
 {
     Uint32 count = 0;
-    TrackerTier *tt = trackers;
+    TrackerTier *tt = trackers.get();
     while (tt) {
         count += tt->urls.count();
-        tt = tt->next;
+        tt = tt->next.get();
     }
     return count;
 }

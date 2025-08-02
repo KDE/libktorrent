@@ -26,7 +26,7 @@ void TrackersList::merge(const bt::TrackerTier *first)
             ++i;
         }
         tier++;
-        first = first->next;
+        first = first->next.get();
     }
 }
 
