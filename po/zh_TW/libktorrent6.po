@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-15 00:43+0000\n"
+"POT-Creation-Date: 2025-08-03 00:41+0000\n"
 "PO-Revision-Date: 2024-06-02 18:51+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -188,7 +188,7 @@ msgid "1 peer"
 msgid_plural "%1 peers"
 msgstr[0] "%1 個端點"
 
-#: src/download/downloader.cpp:695
+#: src/download/downloader.cpp:691
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "已關閉，因為網頁種子與 torrent 不符"
@@ -303,29 +303,29 @@ msgstr "不明用戶端"
 msgid "Corrupted torrent."
 msgstr "損壞的 torrent。"
 
-#: src/torrent/torrentcontrol.cpp:279
+#: src/torrent/torrentcontrol.cpp:258
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "寫入磁碟時發生錯誤。您有足夠的磁碟空間嗎？"
 
-#: src/torrent/torrentcontrol.cpp:493
+#: src/torrent/torrentcontrol.cpp:471
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "載入 <b>%1</b> 時發生錯誤：<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:503
+#: src/torrent/torrentcontrol.cpp:481
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "無法建立 %1：%2"
 
-#: src/torrent/torrentcontrol.cpp:516
+#: src/torrent/torrentcontrol.cpp:494
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
 "both torrents have been merged."
 msgstr "您正在下載 torrent <b>%1</b>。兩個 torrent 的追蹤器清單已被合併。"
 
-#: src/torrent/torrentcontrol.cpp:520
+#: src/torrent/torrentcontrol.cpp:498
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "您正在下載 torrent <b>%1</b>。"

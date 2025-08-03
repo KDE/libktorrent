@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent(2)\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-15 00:43+0000\n"
+"POT-Creation-Date: 2025-08-03 00:41+0000\n"
 "PO-Revision-Date: 2020-09-24 22:03+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian\n"
@@ -191,7 +191,7 @@ msgstr[0] "1 partener"
 msgstr[1] "%1 parteneri"
 msgstr[2] "%1 de parteneri"
 
-#: src/download/downloader.cpp:695
+#: src/download/downloader.cpp:691
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "Dezactivat deoarece semințele web nu se potrivesc cu torentul"
@@ -308,22 +308,22 @@ msgstr "Client necunoscut"
 msgid "Corrupted torrent."
 msgstr "Torent corupt."
 
-#: src/torrent/torrentcontrol.cpp:279
+#: src/torrent/torrentcontrol.cpp:258
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Eroare la scrierea pe disc. Aveți suficient spațiu liber?"
 
-#: src/torrent/torrentcontrol.cpp:493
+#: src/torrent/torrentcontrol.cpp:471
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "A intervenit o eroare la încărcarea <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:503
+#: src/torrent/torrentcontrol.cpp:481
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Nu se poate crea %1: %2"
 
-#: src/torrent/torrentcontrol.cpp:516
+#: src/torrent/torrentcontrol.cpp:494
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -332,7 +332,7 @@ msgstr ""
 "Deja descărcați torentul <b>%1</b>. Lista tracker-elor ambelor torente a "
 "fost unificată."
 
-#: src/torrent/torrentcontrol.cpp:520
+#: src/torrent/torrentcontrol.cpp:498
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Deja descărcați torentul <b>%1</b>."

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-15 00:43+0000\n"
+"POT-Creation-Date: 2025-08-03 00:41+0000\n"
 "PO-Revision-Date: 2022-10-23 20:25+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -194,7 +194,7 @@ msgid_plural "%1 peers"
 msgstr[0] "1 parell"
 msgstr[1] "%1 parells"
 
-#: src/download/downloader.cpp:695
+#: src/download/downloader.cpp:691
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "S'ha desactivat perquè el sembrador web no coincidix amb el torrent"
@@ -310,24 +310,24 @@ msgstr "Client desconegut"
 msgid "Corrupted torrent."
 msgstr "El torrent està corrupte."
 
-#: src/torrent/torrentcontrol.cpp:279
+#: src/torrent/torrentcontrol.cpp:258
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
 "S'ha produït un error en escriure al disc. Hi ha suficient espai lliure al "
 "disc?"
 
-#: src/torrent/torrentcontrol.cpp:493
+#: src/torrent/torrentcontrol.cpp:471
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "S'ha produït un error en carregar <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:503
+#: src/torrent/torrentcontrol.cpp:481
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "No s'ha pogut crear %1: %2"
 
-#: src/torrent/torrentcontrol.cpp:516
+#: src/torrent/torrentcontrol.cpp:494
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -336,7 +336,7 @@ msgstr ""
 "Ja esteu baixant el torrent <b>%1</b>. S'han fusionat les llistes de "
 "seguidors d'ambdós torrent."
 
-#: src/torrent/torrentcontrol.cpp:520
+#: src/torrent/torrentcontrol.cpp:498
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Ja esteu baixant el torrent <b>%1</b>."

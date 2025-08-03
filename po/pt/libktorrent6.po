@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-15 00:43+0000\n"
+"POT-Creation-Date: 2025-08-03 00:41+0000\n"
 "PO-Revision-Date: 2013-04-03 10:32+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -185,7 +185,7 @@ msgid_plural "%1 peers"
 msgstr[0] "1 máquina"
 msgstr[1] "%1 máquinas"
 
-#: src/download/downloader.cpp:695
+#: src/download/downloader.cpp:691
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "Desactivado porque a fonte Web não corresponde à torrente"
@@ -303,24 +303,24 @@ msgstr "Cliente desconhecido"
 msgid "Corrupted torrent."
 msgstr "A torrente está corrompida."
 
-#: src/torrent/torrentcontrol.cpp:279
+#: src/torrent/torrentcontrol.cpp:258
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
 "Ocorreu um erro de gravação no disco; será que tem espaço em disco "
 "suficiente?"
 
-#: src/torrent/torrentcontrol.cpp:493
+#: src/torrent/torrentcontrol.cpp:471
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "Ocorreu um erro ao carregar o <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:503
+#: src/torrent/torrentcontrol.cpp:481
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Não é possível criar o %1: %2"
 
-#: src/torrent/torrentcontrol.cpp:516
+#: src/torrent/torrentcontrol.cpp:494
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -329,7 +329,7 @@ msgstr ""
 "Já está a transferir a torrente <b>%1</b>. As listas de localizadores de "
 "ambas as torrentes foram reunidas."
 
-#: src/torrent/torrentcontrol.cpp:520
+#: src/torrent/torrentcontrol.cpp:498
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Já está a transferir a torrente <b>%1</b>."

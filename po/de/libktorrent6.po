@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent6\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-15 00:43+0000\n"
+"POT-Creation-Date: 2025-08-03 00:41+0000\n"
 "PO-Revision-Date: 2013-04-04 06:04+0200\n"
 "Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -192,7 +192,7 @@ msgid_plural "%1 peers"
 msgstr[0] "Eine Gegenstelle"
 msgstr[1] "%1 Gegenstellen"
 
-#: src/download/downloader.cpp:695
+#: src/download/downloader.cpp:691
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "Deaktiviert, weil der Webseed nicht zum Torrents passt"
@@ -310,24 +310,24 @@ msgstr "Die Torrent-Datei ist beschädigt."
 
 # TODO:
 # Leerzeichen entfernen
-#: src/torrent/torrentcontrol.cpp:279
+#: src/torrent/torrentcontrol.cpp:258
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
 "Fehler beim Schreiben auf den Datenträger. Ist genügend Speicherplatz "
 "vorhanden?"
 
-#: src/torrent/torrentcontrol.cpp:493
+#: src/torrent/torrentcontrol.cpp:471
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "Beim Laden von <b>%1</b> ist ein Fehler aufgetreten:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:503
+#: src/torrent/torrentcontrol.cpp:481
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "%1 kann nicht erstellt werden: %2"
 
-#: src/torrent/torrentcontrol.cpp:516
+#: src/torrent/torrentcontrol.cpp:494
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -336,7 +336,7 @@ msgstr ""
 "Sie laden den Torrent <b>%1</b> bereits herunter. Die Liste der Tracker von "
 "beiden Torrents wurde zusammengeführt."
 
-#: src/torrent/torrentcontrol.cpp:520
+#: src/torrent/torrentcontrol.cpp:498
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Sie laden den Torrent <b>%1</b> bereits herunter."

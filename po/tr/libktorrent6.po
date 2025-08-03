@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-network-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-15 00:43+0000\n"
+"POT-Creation-Date: 2025-08-03 00:41+0000\n"
 "PO-Revision-Date: 2024-03-16 14:01+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -196,7 +196,7 @@ msgid_plural "%1 peers"
 msgstr[0] "%1 paylaşımcı"
 msgstr[1] "%1 paylaşımcı"
 
-#: src/download/downloader.cpp:695
+#: src/download/downloader.cpp:691
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "Webseed torrent ile eşleşmediğinden devre dışı bırakıldı"
@@ -312,23 +312,23 @@ msgstr "Bilinmeyen istemci"
 msgid "Corrupted torrent."
 msgstr "Bozuk torrent."
 
-#: src/torrent/torrentcontrol.cpp:279
+#: src/torrent/torrentcontrol.cpp:258
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
 "Diske yazılamadı, yeterli disk alanına sahip olduğunuzdan emin misiniz?"
 
-#: src/torrent/torrentcontrol.cpp:493
+#: src/torrent/torrentcontrol.cpp:471
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "<b>%1</b> yüklenirken bir hata oluştu:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:503
+#: src/torrent/torrentcontrol.cpp:481
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "%1 oluşturulamıyor: %2"
 
-#: src/torrent/torrentcontrol.cpp:516
+#: src/torrent/torrentcontrol.cpp:494
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -337,7 +337,7 @@ msgstr ""
 "<b>%1</b> torrentini zaten indiriyorsunuz. İki torrentin izleyici listesi "
 "birleştirildi."
 
-#: src/torrent/torrentcontrol.cpp:520
+#: src/torrent/torrentcontrol.cpp:498
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "<b>%1</b> torrentini zaten indiriyorsunuz."
