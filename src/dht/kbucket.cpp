@@ -68,8 +68,8 @@ std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() noexcept(false)
     if (m == min_key || m + 1 == max_key)
         throw UnableToSplit();
 
-    KBucket::Ptr left(new KBucket(min_key, m, srv, our_id));
-    KBucket::Ptr right(new KBucket(m + 1, max_key, srv, our_id));
+    auto left = std::make_unique<KBucket>(min_key, m, srv, our_id);
+    auto right = std::make_unique<KBucket>(m + 1, max_key, srv, our_id);
 
     QList<KBucketEntry>::iterator i;
     for (i = entries.begin(); i != entries.end(); ++i) {
@@ -80,7 +80,7 @@ std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() noexcept(false)
             right->insert(e);
     }
 
-    return std::make_pair(left, right);
+    return std::make_pair(std::move(left), std::move(right));
 }
 
 bool KBucket::insert(const KBucketEntry &entry)

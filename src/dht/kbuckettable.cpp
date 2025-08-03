@@ -32,8 +32,7 @@ KBucketTable::~KBucketTable()
 void KBucketTable::insert(const dht::KBucketEntry &entry, dht::RPCServerInterface *srv)
 {
     if (buckets.empty()) {
-        KBucket::Ptr initial(new KBucket(srv, our_id));
-        buckets.push_back(initial);
+        buckets.emplace_back(std::make_unique<KBucket>(srv, our_id));
     }
 
     KBucketList::iterator kb = findBucket(entry.getID());
@@ -56,13 +55,13 @@ void KBucketTable::insert(const dht::KBucketEntry &entry, dht::RPCServerInterfac
                             Out(SYS_DHT | LOG_DEBUG) << "R: " << result.second->minKey().toString() << "-" << result.second->maxKey().toString() << endl;
                             Out(SYS_DHT | LOG_DEBUG) << "R range: " << (result.second->maxKey() - result.second->minKey()).toString() << endl;
             */
-            buckets.insert(kb, result.first);
-            buckets.insert(kb, result.second);
-            buckets.erase(kb);
             if (result.first->keyInRange(entry.getID()))
                 result.first->insert(entry);
             else
                 result.second->insert(entry);
+            buckets.insert(kb, std::move(result.first));
+            buckets.insert(kb, std::move(result.second));
+            buckets.erase(kb);
         }
     } catch (const KBucket::UnableToSplit &) {
         // Can't split, so stop this
@@ -133,9 +132,9 @@ void KBucketTable::loadTable(const QString &file, RPCServerInterface *srv)
             if (!dict)
                 continue;
 
-            KBucket::Ptr bucket(new KBucket(srv, our_id));
+            auto bucket = std::make_unique<KBucket>(srv, our_id);
             bucket->load(dict);
-            buckets.push_back(bucket);
+            buckets.push_back(std::move(bucket));
         }
     } catch (bt::Error &e) {
         Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Failed to load bucket table: " << e.toString() << endl;

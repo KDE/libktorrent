@@ -46,7 +46,7 @@ public:
     KBucket(const dht::Key &min_key, const dht::Key &max_key, RPCServerInterface *srv, const Key &our_id);
     ~KBucket() override;
 
-    typedef QSharedPointer<KBucket> Ptr;
+    typedef std::unique_ptr<KBucket> Ptr;
 
     //! Get the min key
     const dht::Key &minKey() const
