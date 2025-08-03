@@ -33,7 +33,7 @@ class KTORRENT_EXPORT EncryptedPacketSocket : public net::PacketSocket
 public:
     EncryptedPacketSocket(int ip_version);
     EncryptedPacketSocket(int fd, int ip_version);
-    EncryptedPacketSocket(net::SocketDevice *sock);
+    EncryptedPacketSocket(std::unique_ptr<net::SocketDevice> sock);
     ~EncryptedPacketSocket() override;
 
     /*!

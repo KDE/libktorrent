@@ -24,7 +24,7 @@ namespace net
 class PacketSocket : public TrafficShapedSocket
 {
 public:
-    PacketSocket(SocketDevice *sock);
+    PacketSocket(std::unique_ptr<SocketDevice> sock);
     PacketSocket(int fd, int ip_version);
     PacketSocket(bool tcp, int ip_version);
     ~PacketSocket() override;

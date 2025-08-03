@@ -126,8 +126,7 @@ void UTPServer::Private::syn(const PacketParser &parser, bt::Buffer::Ptr buffer,
             conn->handlePacket(parser, buffer);
             connections.insert(recv_conn_id, conn);
             if (create_sockets) {
-                UTPSocket *utps = new UTPSocket(conn);
-                auto ss = std::make_unique<mse::EncryptedPacketSocket>(utps);
+                auto ss = std::make_unique<mse::EncryptedPacketSocket>(std::make_unique<UTPSocket>(conn));
                 {
                     QMutexLocker lock(&pending_mutex);
                     pending.emplace_back(std::move(ss));

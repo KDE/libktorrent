@@ -23,7 +23,7 @@ Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, co
     if (proto == TCP)
         sock = std::make_unique<mse::EncryptedPacketSocket>(addr.ipVersion());
     else
-        sock = std::make_unique<mse::EncryptedPacketSocket>(new utp::UTPSocket());
+        sock = std::make_unique<mse::EncryptedPacketSocket>(std::make_unique<utp::UTPSocket>());
 
     Out(SYS_CON | LOG_NOTICE) << "Initiating connection to " << addr.toString() << " via (" << (proto == TCP ? "TCP" : "UTP") << ")" << endl;
     if (net::Socks::enabled()) {

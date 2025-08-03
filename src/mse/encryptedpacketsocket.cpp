@@ -50,12 +50,12 @@ EncryptedPacketSocket::EncryptedPacketSocket(int fd, int ip_version)
     reinserted_data_read = 0;
 }
 
-EncryptedPacketSocket::EncryptedPacketSocket(net::SocketDevice *sd)
-    : net::PacketSocket(sd)
+EncryptedPacketSocket::EncryptedPacketSocket(std::unique_ptr<net::SocketDevice> sd)
+    : net::PacketSocket(std::move(sd))
     , monitored(false)
 {
-    sd->setBlocking(false);
-    sd->setTOS(tos);
+    sock->setBlocking(false);
+    sock->setTOS(tos);
     reinserted_data = nullptr;
     reinserted_data_size = 0;
     reinserted_data_read = 0;

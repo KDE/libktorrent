@@ -17,11 +17,11 @@ using namespace bt;
 
 namespace net
 {
-TrafficShapedSocket::TrafficShapedSocket(SocketDevice *sock)
+TrafficShapedSocket::TrafficShapedSocket(std::unique_ptr<SocketDevice> sock)
     : rdr(nullptr)
     , up_gid(0)
     , down_gid(0)
-    , sock(sock)
+    , sock(std::move(sock))
     , mutex()
 {
     down_speed = new Speed();
@@ -32,9 +32,9 @@ TrafficShapedSocket::TrafficShapedSocket(int fd, int ip_version)
     : rdr(nullptr)
     , up_gid(0)
     , down_gid(0)
+    , sock(std::make_unique<Socket>(fd, ip_version))
     , mutex()
 {
-    sock = new Socket(fd, ip_version);
     down_speed = new Speed();
     up_speed = new Speed();
 }
@@ -45,14 +45,14 @@ TrafficShapedSocket::TrafficShapedSocket(bool tcp, int ip_version)
     , down_gid(0)
     , mutex()
 {
-    Socket *socket = new Socket(tcp, ip_version);
+    auto socket = std::make_unique<Socket>(tcp, ip_version);
 
     QString iface = NetworkInterface();
     QStringList ips = NetworkInterfaceIPAddresses(iface);
     if (ips.size() > 0)
         socket->bind(ips.front(), 0, false);
 
-    sock = socket;
+    sock = std::move(socket);
     down_speed = new Speed();
     up_speed = new Speed();
 }
@@ -61,7 +61,6 @@ TrafficShapedSocket::~TrafficShapedSocket()
 {
     delete up_speed;
     delete down_speed;
-    delete sock;
 }
 
 void TrafficShapedSocket::setGroupID(Uint32 gid, bool upload)

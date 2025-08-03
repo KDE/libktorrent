@@ -12,8 +12,8 @@ using namespace bt;
 
 namespace net
 {
-PacketSocket::PacketSocket(SocketDevice *sock)
-    : TrafficShapedSocket(sock)
+PacketSocket::PacketSocket(std::unique_ptr<SocketDevice> sock)
+    : TrafficShapedSocket(std::move(sock))
     , ctrl_packets_sent(0)
     , pending_upload_data_bytes(0)
     , uploaded_data_bytes(0)
@@ -79,7 +79,7 @@ Uint32 PacketSocket::write(Uint32 max, bt::TimeStamp now)
     Uint32 written = 0;
     while (curr_packet && (written < max || max == 0)) {
         Uint32 limit = (max == 0) ? 0 : max - written;
-        int ret = curr_packet->send(sock, limit);
+        int ret = curr_packet->send(sock.get(), limit);
         if (ret > 0) {
             written += ret;
             QMutexLocker locker(&mutex);

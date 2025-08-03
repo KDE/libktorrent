@@ -40,7 +40,7 @@ public:
 class TrafficShapedSocket
 {
 public:
-    TrafficShapedSocket(SocketDevice *sock);
+    TrafficShapedSocket(std::unique_ptr<SocketDevice> sock);
     TrafficShapedSocket(int fd, int ip_version);
     TrafficShapedSocket(bool tcp, int ip_version);
     virtual ~TrafficShapedSocket();
@@ -48,13 +48,13 @@ public:
     //! Get the SocketDevice
     SocketDevice *socketDevice()
     {
-        return sock;
+        return sock.get();
     }
 
     //! Get the SocketDevice (const vesion)
     const SocketDevice *socketDevice() const
     {
-        return sock;
+        return sock.get();
     }
 
     //! Set the reader
@@ -124,7 +124,7 @@ protected:
     Speed *up_speed;
     bt::Uint32 up_gid;
     bt::Uint32 down_gid; // group id which this torrent belongs to, group 0 means the default group
-    SocketDevice *sock;
+    std::unique_ptr<SocketDevice> sock;
     mutable QRecursiveMutex mutex;
 };
 
