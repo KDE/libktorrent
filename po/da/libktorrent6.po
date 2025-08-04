@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-03 00:41+0000\n"
+"POT-Creation-Date: 2025-08-04 00:42+0000\n"
 "PO-Revision-Date: 2014-05-10 17:04+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -295,10 +295,10 @@ msgstr "Fejl: %1"
 msgid "Unknown client"
 msgstr "Ukendt klient"
 
-#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:136
-#: src/torrent/torrent.cpp:163 src/torrent/torrent.cpp:170
-#: src/torrent/torrent.cpp:177 src/torrent/torrent.cpp:181
-#: src/torrent/torrent.cpp:201 src/torrent/torrent.cpp:264
+#: src/torrent/torrent.cpp:91 src/torrent/torrent.cpp:133
+#: src/torrent/torrent.cpp:160 src/torrent/torrent.cpp:167
+#: src/torrent/torrent.cpp:174 src/torrent/torrent.cpp:178
+#: src/torrent/torrent.cpp:198 src/torrent/torrent.cpp:261
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Defekt torrent."

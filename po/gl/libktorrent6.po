@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-03 00:41+0000\n"
+"POT-Creation-Date: 2025-08-04 00:42+0000\n"
 "PO-Revision-Date: 2025-01-19 12:20+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -305,10 +305,10 @@ msgstr "Erro: %1"
 msgid "Unknown client"
 msgstr "Cliente descoñecido"
 
-#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:136
-#: src/torrent/torrent.cpp:163 src/torrent/torrent.cpp:170
-#: src/torrent/torrent.cpp:177 src/torrent/torrent.cpp:181
-#: src/torrent/torrent.cpp:201 src/torrent/torrent.cpp:264
+#: src/torrent/torrent.cpp:91 src/torrent/torrent.cpp:133
+#: src/torrent/torrent.cpp:160 src/torrent/torrent.cpp:167
+#: src/torrent/torrent.cpp:174 src/torrent/torrent.cpp:178
+#: src/torrent/torrent.cpp:198 src/torrent/torrent.cpp:261
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Torrent corrompido."
