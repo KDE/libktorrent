@@ -309,9 +309,6 @@ public:
     void chunkAllowed(Uint32 chunk) override;
     void handlePacket(const bt::Uint8 *packet, bt::Uint32 size) override;
 
-    typedef QSharedPointer<Peer> Ptr;
-    typedef QWeakPointer<Peer> WPtr;
-
 private Q_SLOTS:
     void resolved(const QString &hinfo);
 
