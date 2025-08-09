@@ -27,7 +27,7 @@ class KTORRENT_EXPORT ServerSocket : public QObject
 {
     Q_OBJECT
 public:
-    typedef QSharedPointer<ServerSocket> Ptr;
+    typedef std::unique_ptr<ServerSocket> Ptr;
 
     /*!
         Interface class to handle new connections

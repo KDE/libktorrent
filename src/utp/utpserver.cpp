@@ -97,7 +97,7 @@ void UTPServer::Private::stop()
 
 bool UTPServer::Private::bind(const net::Address &addr)
 {
-    net::ServerSocket::Ptr sock(new net::ServerSocket(this));
+    auto sock = std::make_unique<net::ServerSocket>(this);
     if (!sock->bind(addr)) {
         return false;
     } else {
@@ -105,7 +105,7 @@ bool UTPServer::Private::bind(const net::Address &addr)
         sock->setTOS(tos);
         sock->setReadNotificationsEnabled(false);
         sock->setWriteNotificationsEnabled(false);
-        sockets.append(sock);
+        sockets.emplace_back(std::move(sock));
         return true;
     }
 }
@@ -222,7 +222,7 @@ void UTPServer::handlePendingConnections()
 
 bool UTPServer::changePort(bt::Uint16 p)
 {
-    if (d->sockets.count() > 0 && port == p)
+    if (!d->sockets.empty() && port == p)
         return true;
 
     Globals::instance().getPortList().removePort(port, net::UDP);
@@ -233,13 +233,13 @@ bool UTPServer::changePort(bt::Uint16 p)
         d->bind(net::Address(addr, p));
     }
 
-    if (d->sockets.count() == 0) {
+    if (d->sockets.empty()) {
         // Try any addresses if previous binds failed
         d->bind(net::Address(QHostAddress(QHostAddress::AnyIPv6).toString(), p));
         d->bind(net::Address(QHostAddress(QHostAddress::Any).toString(), p));
     }
 
-    if (d->sockets.count()) {
+    if (!d->sockets.empty()) {
         Globals::instance().getPortList().addNewPort(p, net::UDP, true);
         return true;
     } else
@@ -249,14 +249,14 @@ bool UTPServer::changePort(bt::Uint16 p)
 void UTPServer::setTOS(Uint8 type_of_service)
 {
     d->tos = type_of_service;
-    for (net::ServerSocket::Ptr sock : std::as_const(d->sockets))
+    for (const net::ServerSocket::Ptr &sock : std::as_const(d->sockets))
         sock->setTOS(d->tos);
 }
 
 void UTPServer::threadStarted()
 {
     d->timer->start(500);
-    for (net::ServerSocket::Ptr sock : std::as_const(d->sockets)) {
+    for (const net::ServerSocket::Ptr &sock : std::as_const(d->sockets)) {
         sock->setReadNotificationsEnabled(true);
     }
 }
@@ -342,7 +342,7 @@ bool UTPServer::sendTo(utp::Connection::Ptr conn, const PacketBuffer &packet)
         if (QThread::currentThread() != d->utp_thread) {
             QCoreApplication::postEvent(this, new QEvent(QEvent::User));
         } else {
-            for (net::ServerSocket::Ptr sock : std::as_const(d->sockets))
+            for (const net::ServerSocket::Ptr &sock : std::as_const(d->sockets))
                 sock->setWriteNotificationsEnabled(true);
         }
     }
@@ -352,14 +352,14 @@ bool UTPServer::sendTo(utp::Connection::Ptr conn, const PacketBuffer &packet)
 void UTPServer::customEvent(QEvent *ev)
 {
     if (ev->type() == QEvent::User) {
-        for (net::ServerSocket::Ptr sock : std::as_const(d->sockets))
+        for (const net::ServerSocket::Ptr &sock : std::as_const(d->sockets))
             sock->setWriteNotificationsEnabled(true);
     }
 }
 
 Connection::WPtr UTPServer::connectTo(const net::Address &addr)
 {
-    if (d->sockets.isEmpty() || addr.port() == 0)
+    if (d->sockets.empty() || addr.port() == 0)
         return Connection::WPtr();
 
     QMutexLocker lock(&d->mutex);

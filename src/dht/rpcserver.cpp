@@ -56,13 +56,13 @@ public:
     void listen(const QString &ip)
     {
         net::Address addr(ip, port);
-        net::ServerSocket::Ptr sock(new net::ServerSocket(this));
+        auto sock = std::make_unique<net::ServerSocket>(this);
         if (!sock->bind(addr)) {
             Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Failed to bind to " << addr.toString() << endl;
         } else {
             Out(SYS_DHT | LOG_NOTICE) << "DHT: Bound to " << addr.toString() << endl;
-            sockets.append(sock);
             sock->setReadNotificationsEnabled(true);
+            sockets.emplace_back(std::move(sock));
         }
     }
 
@@ -116,7 +116,7 @@ public:
 
     void send(const net::Address &addr, const QByteArray &msg)
     {
-        for (net::ServerSocket::Ptr sock : std::as_const(sockets)) {
+        for (const net::ServerSocket::Ptr &sock : std::as_const(sockets)) {
             if (sock->sendTo((const bt::Uint8 *)msg.data(), msg.size(), addr) == msg.size())
                 break;
         }
@@ -185,7 +185,7 @@ public:
     }
 
     RPCServer *p;
-    QList<net::ServerSocket::Ptr> sockets;
+    std::vector<net::ServerSocket::Ptr> sockets;
     DHT *dh_table;
     bt::PtrMap<QByteArray, RPCCall> calls;
     QList<RPCCall *> call_queue;
@@ -213,13 +213,13 @@ void RPCServer::start()
         d->listen(addr);
     }
 
-    if (d->sockets.count() == 0) {
+    if (d->sockets.empty()) {
         // Try all addresses if the previous listen calls all failed
         d->listen(QHostAddress(QHostAddress::AnyIPv6).toString());
         d->listen(QHostAddress(QHostAddress::Any).toString());
     }
 
-    if (d->sockets.count() > 0)
+    if (!d->sockets.empty())
         bt::Globals::instance().getPortList().addNewPort(d->port, net::UDP, true);
 }
 

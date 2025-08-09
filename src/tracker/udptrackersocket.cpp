@@ -40,14 +40,14 @@ public:
 
     void listen(const QString &ip, Uint16 port)
     {
-        net::ServerSocket::Ptr sock(new net::ServerSocket(this));
+        auto sock = std::make_unique<net::ServerSocket>(this);
         if (sock->bind(ip, port))
-            sockets.append(sock);
+            sockets.emplace_back(std::move(sock));
     }
 
     bool send(const Uint8 *buf, int size, const net::Address &addr)
     {
-        for (net::ServerSocket::Ptr sock : std::as_const(sockets))
+        for (const net::ServerSocket::Ptr &sock : std::as_const(sockets))
             if (sock->sendTo(buf, size, addr) == size)
                 return true;
 
@@ -82,7 +82,7 @@ public:
         Q_UNUSED(sock);
     }
 
-    QList<net::ServerSocket::Ptr> sockets;
+    std::vector<net::ServerSocket::Ptr> sockets;
     QMap<Int32, Action> transactions;
     UDPTrackerSocket *p;
 };
@@ -97,13 +97,13 @@ UDPTrackerSocket::UDPTrackerSocket()
     for (const QString &ip : ips)
         d->listen(ip, port);
 
-    if (d->sockets.count() == 0) {
+    if (d->sockets.empty()) {
         // Try all addresses if the previous listen calls all failed
         d->listen(QHostAddress(QHostAddress::AnyIPv6).toString(), port);
         d->listen(QHostAddress(QHostAddress::Any).toString(), port);
     }
 
-    if (d->sockets.count() == 0) {
+    if (d->sockets.empty()) {
         Out(SYS_TRK | LOG_IMPORTANT) << u"Cannot bind to udp port %1"_s.arg(port) << endl;
     } else {
         Globals::instance().getPortList().addNewPort(port, net::UDP, true);

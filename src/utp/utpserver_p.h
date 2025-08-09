@@ -85,7 +85,7 @@ public:
 
 public:
     UTPServer *p;
-    QList<net::ServerSocket::Ptr> sockets;
+    std::vector<net::ServerSocket::Ptr> sockets;
     bool running;
     QMap<quint16, Connection::Ptr> connections;
     UTPServerThread *utp_thread;
