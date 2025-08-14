@@ -59,10 +59,10 @@ bool MagnetLink::operator==(const bt::MagnetLink &mlink) const
     return info_hash == mlink.infoHash();
 }
 
-static QList<QUrl> GetTrackers(const QUrl &url)
+static QList<QUrl> GetTrackers(const QUrlQuery &url_query)
 {
     QList<QUrl> result;
-    for (QString tr : QUrlQuery(url).allQueryItemValues(u"tr"_s, QUrl::FullyDecoded))
+    for (QString tr : url_query.allQueryItemValues(u"tr"_s, QUrl::FullyDecoded))
         result << QUrl(tr.replace(QLatin1Char('+'), QLatin1Char(' ')));
     return result;
 }
@@ -74,21 +74,23 @@ void MagnetLink::parse(const QUrl &url)
         return;
     }
 
-    torrent_url = QUrlQuery(url).queryItemValue(QStringLiteral("to"), QUrl::FullyDecoded);
+    const QUrlQuery url_query{url};
+
+    torrent_url = url_query.queryItemValue(QStringLiteral("to"), QUrl::FullyDecoded);
     if (torrent_url.isEmpty()) {
-        torrent_url = QUrlQuery(url).queryItemValue(QStringLiteral("xs"), QUrl::FullyDecoded);
+        torrent_url = url_query.queryItemValue(QStringLiteral("xs"), QUrl::FullyDecoded);
     }
     // magnet://description-of-content.btih.HASH(-HASH)*.dht/path/file?x.pt=&x.to=
 
     // TODO automatically select these files and prefetches from here
-    path = QUrlQuery(url).queryItemValue(QStringLiteral("pt"));
+    path = url_query.queryItemValue(QStringLiteral("pt"));
     if (path.isEmpty() && url.path() != QLatin1String("/")) {
         // TODO find out why RemoveTrailingSlash does not work
         static const QRegularExpression rx{QLatin1String("^/")};
         path = url.adjusted(QUrl::StripTrailingSlash).path().remove(rx);
     }
 
-    QString xt = QUrlQuery(url).queryItemValue(QLatin1String("xt"));
+    QString xt = url_query.queryItemValue(QLatin1String("xt"));
     if (xt.isEmpty() || !xt.startsWith(QLatin1String("urn:btih:"))) {
         static QRegularExpression btihHash(QLatin1String("([^\\.]+).btih"));
 
@@ -122,8 +124,8 @@ void MagnetLink::parse(const QUrl &url)
         }
 
         info_hash = SHA1Hash(hash);
-        tracker_urls = GetTrackers(url);
-        name = QUrlQuery(url).queryItemValue(QLatin1String("dn")).replace('+'_L1, ' '_L1);
+        tracker_urls = GetTrackers(url_query);
+        name = url_query.queryItemValue(QLatin1String("dn")).replace('+'_L1, ' '_L1);
         magnet_string = url.toString();
     } catch (...) {
         Out(SYS_GEN | LOG_NOTICE) << "Invalid magnet link " << url << endl;
