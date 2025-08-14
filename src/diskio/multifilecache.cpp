@@ -727,7 +727,7 @@ static void DeleteEmptyDirs(const QString &output_dir, const QString &fpath)
     while (sl.count() > 0) {
         QString path = output_dir;
         // reassemble the full directory path
-        for (const QString &s : sl)
+        for (const QString &s : std::as_const(sl))
             path += s + bt::DirSeparator();
 
         QDir dir(path);

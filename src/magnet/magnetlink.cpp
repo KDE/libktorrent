@@ -61,8 +61,10 @@ bool MagnetLink::operator==(const bt::MagnetLink &mlink) const
 
 static QList<QUrl> GetTrackers(const QUrlQuery &url_query)
 {
+    const QStringList trackers = url_query.allQueryItemValues(u"tr"_s, QUrl::FullyDecoded);
     QList<QUrl> result;
-    for (QString tr : url_query.allQueryItemValues(u"tr"_s, QUrl::FullyDecoded))
+    result.reserve(trackers.size());
+    for (QString tr : trackers)
         result << QUrl(tr.replace(QLatin1Char('+'), QLatin1Char(' ')));
     return result;
 }
