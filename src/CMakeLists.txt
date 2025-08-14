@@ -258,7 +258,7 @@ if(HAIKU)
 target_link_libraries(KTorrent6 PUBLIC network)
 endif(HAIKU)
 target_include_directories(KTorrent6 INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent>")
-target_include_directories(KTorrent6 PUBLIC "$<BUILD_INTERFACE:${LIBKTORRENT_SOURCE_DIR}/src;${LIBKTORRENT_BINARY_DIR}/src;${LIBKTORRENT_BINARY_DIR}>")
+target_include_directories(KTorrent6 PUBLIC "$<BUILD_INTERFACE:;${LIBKTORRENT_BINARY_DIR}>") # for config and export headers
 
 
 install(TARGETS KTorrent6 EXPORT KTorrent6Targets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
