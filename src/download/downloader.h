@@ -232,7 +232,7 @@ public Q_SLOTS:
      * Set the TorrentMonitor.
      * \param tmo
      */
-    void setMonitor(MonitorInterface *tmo);
+    void setMonitor(bt::MonitorInterface *tmo);
 
     /*!
      * Data has been checked, and these chunks are OK.
@@ -240,7 +240,7 @@ public Q_SLOTS:
      * \param from First chunk of the check
      * \param to Last chunk of the check
      */
-    void dataChecked(const BitSet &ok_chunks, bt::Uint32 from, bt::Uint32 to);
+    void dataChecked(const bt::BitSet &ok_chunks, bt::Uint32 from, bt::Uint32 to);
 
     /*!
      * Recalculate the number of bytes downloaded.
@@ -249,7 +249,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void pieceReceived(const bt::Piece &p) override;
-    bool finished(ChunkDownload *c);
+    bool finished(bt::ChunkDownload *c);
 
 public:
     /*!

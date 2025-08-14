@@ -105,7 +105,7 @@ public:
 private Q_SLOTS:
     void update() override;
     void onResolverResults(net::AddressResolver *ar);
-    void ownNodeLookupFinished(Task *t);
+    void ownNodeLookupFinished(dht::Task *t);
     void expireDatabaseItems();
 
 private:

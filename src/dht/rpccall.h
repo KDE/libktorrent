@@ -83,8 +83,8 @@ private Q_SLOTS:
     void onTimeout();
 
 Q_SIGNALS:
-    void response(RPCCall *c, RPCMsg::Ptr rsp);
-    void timeout(RPCCall *c);
+    void response(dht::RPCCall *c, dht::RPCMsg::Ptr rsp);
+    void timeout(dht::RPCCall *c);
 
 private:
     RPCMsg::Ptr msg;

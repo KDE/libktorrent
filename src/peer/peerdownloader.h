@@ -152,13 +152,13 @@ public Q_SLOTS:
      * be stored temporarely in the unsent_reqs list)
      * \param req The Request
      */
-    void download(const Request &req) override;
+    void download(const bt::Request &req) override;
 
     /*!
      * Cancel a Request.
      * \param req The Request
      */
-    void cancel(const Request &req) override;
+    void cancel(const bt::Request &req) override;
 
     /*!
      * Cancel all Requests
@@ -169,7 +169,7 @@ public Q_SLOTS:
      * Handles a rejected request.
      * \param req
      */
-    void onRejected(const Request &req);
+    void onRejected(const bt::Request &req);
 
     /*!
      * Send requests and manage wait queue

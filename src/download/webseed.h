@@ -128,7 +128,7 @@ Q_SIGNALS:
      * Emitted when a chunk is downloaded
      * \param c The chunk
      */
-    void chunkReady(Chunk *c);
+    void chunkReady(bt::Chunk *c);
 
     /*!
      * Emitted when a range has been fully downloaded
@@ -140,14 +140,14 @@ Q_SIGNALS:
      * \param cd The ChunkDownloadInterface
      * \param chunk The chunk which is being started
      */
-    void chunkDownloadStarted(WebSeedChunkDownload *cd, Uint32 chunk);
+    void chunkDownloadStarted(bt::WebSeedChunkDownload *cd, Uint32 chunk);
 
     /*!
      * A ChunkDownload was finished
      * \param cd The ChunkDownloadInterface
      * \param chunk The chunk which is being stopped
      */
-    void chunkDownloadFinished(WebSeedChunkDownload *cd, Uint32 chunk);
+    void chunkDownloadFinished(bt::WebSeedChunkDownload *cd, Uint32 chunk);
 
 private Q_SLOTS:
     void redirected(const QUrl &to_url);

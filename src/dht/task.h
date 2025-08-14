@@ -130,14 +130,14 @@ Q_SIGNALS:
      * The task is finsihed.
      * \param t The Task
      */
-    void finished(Task *t);
+    void finished(dht::Task *t);
 
     /*!
      * Called by the task when data is ready.
      * Can be overrided if wanted.
      * \param t The Task
      */
-    void dataReady(Task *t);
+    void dataReady(dht::Task *t);
 
 protected:
     void done();

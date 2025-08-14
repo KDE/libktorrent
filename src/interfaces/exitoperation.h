@@ -34,7 +34,7 @@ public:
         return true;
     }
 Q_SIGNALS:
-    void operationFinished(ExitOperation *opt);
+    void operationFinished(bt::ExitOperation *opt);
 };
 
 /*!

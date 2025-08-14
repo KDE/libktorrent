@@ -259,11 +259,11 @@ public Q_SLOTS:
      * A PeerSource, has new potential peers.
      * \param ps The PeerSource
      */
-    void peerSourceReady(PeerSource *ps);
+    void peerSourceReady(bt::PeerSource *ps);
 
 Q_SIGNALS:
-    void newPeer(Peer *p);
-    void peerKilled(Peer *p);
+    void newPeer(bt::Peer *p);
+    void peerKilled(bt::Peer *p);
 
 private:
     class Private;

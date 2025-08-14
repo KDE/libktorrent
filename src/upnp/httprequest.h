@@ -68,7 +68,7 @@ Q_SIGNALS:
      * An OK reply was sent.
      * \param r The sender of the request
      */
-    void result(HTTPRequest *r);
+    void result(bt::HTTPRequest *r);
 
 public:
     void replyFinished();

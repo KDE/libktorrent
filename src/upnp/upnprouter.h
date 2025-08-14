@@ -188,7 +188,7 @@ Q_SIGNALS:
      * \param r The router which emitted the signal
      * \param success Whether or not it succeeded
      */
-    void xmlFileDownloaded(UPnPRouter *r, bool success);
+    void xmlFileDownloaded(bt::UPnPRouter *r, bool success);
 
 private:
     class UPnPRouterPrivate;

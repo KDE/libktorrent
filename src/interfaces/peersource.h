@@ -79,7 +79,7 @@ Q_SIGNALS:
      * This signal should be emitted when a new batch of peers is ready.
      * \param ps The PeerSource
      */
-    void peersReady(PeerSource *ps);
+    void peersReady(bt::PeerSource *ps);
 
 private:
     //! List to keep the potential peers in.

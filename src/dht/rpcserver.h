@@ -71,7 +71,7 @@ public:
     bt::Uint32 getNumActiveRPCCalls() const;
 
 private Q_SLOTS:
-    void callTimeout(RPCCall *call);
+    void callTimeout(dht::RPCCall *call);
 
 private:
     class Private;

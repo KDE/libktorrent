@@ -134,7 +134,7 @@ private:
     bool replaceBadEntry(const KBucketEntry &entry);
 
 private Q_SLOTS:
-    void onFinished(Task *t);
+    void onFinished(dht::Task *t);
 
 private:
     dht::Key min_key, max_key;
