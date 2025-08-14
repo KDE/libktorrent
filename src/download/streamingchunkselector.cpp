@@ -199,7 +199,7 @@ void StreamingChunkSelector::reinsert(bt::Uint32 chunk)
                 return;
             }
 
-            itr++;
+            ++itr;
         }
 
         // Not returned yet, so must be the last chunk in the range

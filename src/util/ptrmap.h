@@ -86,7 +86,7 @@ public:
     void clear()
     {
         if (autodel) {
-            for (iterator i = pmap.begin(); i != pmap.end(); i++) {
+            for (iterator i = pmap.begin(); i != pmap.end(); ++i) {
                 delete i->second;
                 i->second = nullptr;
             }
@@ -176,7 +176,7 @@ public:
     iterator erase(iterator i)
     {
         iterator j = i;
-        j++;
+        ++j;
         pmap.erase(i);
         return j;
     }
