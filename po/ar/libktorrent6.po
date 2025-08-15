@@ -331,12 +331,12 @@ msgstr "تعذّر إنشاء %1: %2"
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
 "both torrents have been merged."
-msgstr "أنت تنزّل السيل <b>%1</b> بالفعل. قوائم المتتبّعين من السيلان معًا دُمِجَا."
+msgstr "أنت تنزّل السيل <b>%1</b> فعلًا. قوائم المتتبّعين من السيلان معًا دُمِجَا."
 
 #: src/torrent/torrentcontrol.cpp:520
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
-msgstr "أنت تنزّل السيل <b>%1</b> بالفعل."
+msgstr "أنت تنزّل السيل <b>%1</b> فعلًا."
 
 #: src/torrent/torrentcreator.cpp:330
 #, kde-format
