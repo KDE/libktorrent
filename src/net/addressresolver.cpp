@@ -14,7 +14,7 @@ AddressResolver::AddressResolver(const QString &host, bt::Uint16 port, QObject *
     , succesfull(false)
 {
     result.setPort(port);
-    lookup_id = QHostInfo::lookupHost(host, this, SLOT(hostResolved(QHostInfo)));
+    lookup_id = QHostInfo::lookupHost(host, this, &AddressResolver::hostResolved);
     ongoing = true;
     connect(this, SIGNAL(resolved(net::AddressResolver *)), parent, slot);
 }
