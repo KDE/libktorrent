@@ -330,7 +330,7 @@ private:
     QString completed_dir;
     bool prealloc;
     TimeStamp last_diskspace_check;
-    bool loading_stats;
+    bool loading_stats = false;
 
     struct InternalStats {
         QDateTime time_started_dl;
@@ -348,13 +348,14 @@ private:
         bool diskspace_warning_emitted;
     };
 
-    Uint32 upload_gid; // group ID for upload
-    Uint32 upload_limit;
-    Uint32 download_gid; // group ID for download
-    Uint32 download_limit;
+    // by default no torrent limits
+    Uint32 upload_gid = 0; // group ID for upload
+    Uint32 upload_limit = 0;
+    Uint32 download_gid = 0; // group ID for download
+    Uint32 download_limit = 0;
 
-    Uint32 assured_download_speed;
-    Uint32 assured_upload_speed;
+    Uint32 assured_download_speed = 0;
+    Uint32 assured_upload_speed = 0;
 
     InternalStats istats;
     std::unique_ptr<StatsFile> stats_file;

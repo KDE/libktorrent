@@ -228,8 +228,8 @@ private:
 
     BitSet pieces;
     Chunk *chunk;
-    Uint32 num;
-    Uint32 num_downloaded;
+    Uint32 num = 0;
+    Uint32 num_downloaded = 0;
     Uint32 last_size;
     Timer timer;
     QList<PieceDownloader *> pdown;
@@ -237,7 +237,7 @@ private:
     QSet<PieceDownloader *> piece_providers;
     PieceData::Ptr *piece_data;
     SHA1HashGen hash_gen;
-    Uint32 num_pieces_in_hash;
+    Uint32 num_pieces_in_hash = 0;
 
     friend File &operator<<(File &out, const ChunkDownload &cd);
     friend File &operator>>(File &in, ChunkDownload &cd);

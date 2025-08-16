@@ -138,8 +138,8 @@ protected:
     TrackerDataSource *tds;
     Uint32 key;
     QTimer reannounce_timer;
-    Uint64 bytes_downloaded_at_start;
-    Uint64 bytes_uploaded_at_start;
+    Uint64 bytes_downloaded_at_start = 0;
+    Uint64 bytes_uploaded_at_start = 0;
 };
 }
 

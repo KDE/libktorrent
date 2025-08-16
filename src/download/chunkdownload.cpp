@@ -58,10 +58,8 @@ void DownloadStatus::clear()
 
 ChunkDownload::ChunkDownload(Chunk *chunk)
     : chunk(chunk)
+    , num(chunk->getSize() / MAX_PIECE_LEN)
 {
-    num = num_downloaded = 0;
-    num = chunk->getSize() / MAX_PIECE_LEN;
-
     if (chunk->getSize() % MAX_PIECE_LEN != 0) {
         last_size = chunk->getSize() % MAX_PIECE_LEN;
         num++;
@@ -75,7 +73,6 @@ ChunkDownload::ChunkDownload(Chunk *chunk)
 
     dstatus.setAutoDelete(true);
 
-    num_pieces_in_hash = 0;
     hash_gen.start();
 }
 

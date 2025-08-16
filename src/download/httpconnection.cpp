@@ -26,17 +26,14 @@ HttpConnection::HttpConnection()
     , mutex()
     , request(nullptr)
     , using_proxy(false)
+    , status(i18n("Not connected"))
     , response_code(0)
 {
-    status = i18n("Not connected");
     connect(&reply_timer, &QTimer::timeout, this, &HttpConnection::replyTimeout);
     connect(&connect_timer, &QTimer::timeout, this, &HttpConnection::connectTimeout);
     connect(this, &HttpConnection::startReplyTimer, &reply_timer, qOverload<int>(&QTimer::start), Qt::QueuedConnection);
     connect(this, &HttpConnection::stopReplyTimer, &reply_timer, &QTimer::stop, Qt::QueuedConnection);
     connect(this, &HttpConnection::stopConnectTimer, &connect_timer, &QTimer::stop, Qt::QueuedConnection);
-    up_gid = down_gid = 0;
-    close_when_finished = false;
-    redirected = false;
 }
 
 HttpConnection::~HttpConnection()

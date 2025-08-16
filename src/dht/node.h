@@ -84,7 +84,7 @@ private:
     class Private;
     std::unique_ptr<Private> d;
     dht::Key our_id;
-    bt::Uint32 num_entries;
+    bt::Uint32 num_entries = 0;
 };
 
 }

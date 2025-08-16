@@ -355,7 +355,7 @@ private:
     bool pex_allowed;
     PeerManager *pman;
     PtrMap<Uint32, PeerProtocolExtension> extensions;
-    Uint32 ut_pex_id;
+    Uint32 ut_pex_id = 0;
 
     Uint64 bytes_downloaded_since_unchoke;
 

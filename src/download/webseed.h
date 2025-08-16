@@ -175,16 +175,17 @@ private:
 private:
     const Torrent &tor;
     ChunkManager &cman;
-    HttpConnection *conn;
+    HttpConnection *conn = nullptr;
     QList<QByteArray> chunks;
     Uint32 first_chunk;
     Uint32 last_chunk;
-    Uint32 cur_chunk;
+    Uint32 cur_chunk = -1;
     Uint32 bytes_of_cur_chunk;
-    Uint32 num_failures;
-    Uint32 downloaded;
-    WebSeedChunkDownload *current;
-    Uint32 up_gid, down_gid;
+    Uint32 num_failures = 0;
+    Uint32 downloaded = 0;
+    WebSeedChunkDownload *current = nullptr;
+    Uint32 up_gid = 0;
+    Uint32 down_gid = 0;
     QList<Range> range_queue;
     QUrl redirected_url;
     PieceData::Ptr cur_piece;

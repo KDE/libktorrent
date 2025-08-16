@@ -34,9 +34,9 @@ namespace bt
 {
 SingleFileCache::SingleFileCache(Torrent &tor, const QString &tmpdir, const QString &datadir)
     : Cache(tor, tmpdir, datadir)
+    , cache_file(tmpdir + "cache"_L1)
     , fd(nullptr)
 {
-    cache_file = tmpdir + "cache"_L1;
     QFileInfo fi(cache_file);
     if (fi.isSymLink()) // old style symlink
         output_file = fi.symLinkTarget();

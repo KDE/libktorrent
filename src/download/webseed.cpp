@@ -33,15 +33,10 @@ WebSeed::WebSeed(const QUrl &url, bool user, const Torrent &tor, ChunkManager &c
     : WebSeedInterface(url, user)
     , tor(tor)
     , cman(cman)
+    , first_chunk(tor.getNumChunks() + 1)
+    , last_chunk(first_chunk)
 {
-    first_chunk = last_chunk = tor.getNumChunks() + 1;
-    num_failures = 0;
-    conn = nullptr;
-    downloaded = 0;
-    current = nullptr;
     status = i18n("Not connected");
-    up_gid = down_gid = 0;
-    cur_chunk = -1;
     connect(&retry_timer, &QTimer::timeout, this, &WebSeed::reset);
     retry_timer.setSingleShot(true);
 }

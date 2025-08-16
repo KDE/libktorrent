@@ -66,10 +66,9 @@ TorrentControl::TorrentControl()
     , m_eta(std::make_unique<TimeEstimator>(this))
     , tmon(nullptr)
     , prealloc(false)
+    , last_diskspace_check(bt::CurrentTime())
 {
     istats.session_bytes_uploaded = 0;
-    old_tordir = QString();
-    loading_stats = false;
 
     istats.running_time_dl = istats.running_time_ul = 0;
     istats.prev_bytes_dl = 0;
@@ -80,12 +79,6 @@ TorrentControl::TorrentControl()
     istats.diskspace_warning_emitted = false;
     istats.dht_on = false;
     updateStats();
-
-    // by default no torrent limits
-    upload_gid = download_gid = 0;
-    upload_limit = download_limit = 0;
-    assured_upload_speed = assured_download_speed = 0;
-    last_diskspace_check = bt::CurrentTime();
 }
 
 TorrentControl::~TorrentControl()

@@ -43,10 +43,9 @@ static void DeleteEmptyDirs(const QString &output_dir, const QString &fpath);
 
 MultiFileCache::MultiFileCache(Torrent &tor, const QString &tmpdir, const QString &datadir, bool custom_output_name)
     : Cache(tor, tmpdir, datadir)
+    , cache_dir("cache"_L1 + bt::DirSeparator())
     , opened(false)
 {
-    cache_dir = tmpdir + "cache"_L1 + bt::DirSeparator();
-
     if (!custom_output_name)
         output_dir = this->datadir + tor.getNameSuggestion() + bt::DirSeparator();
     else

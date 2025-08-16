@@ -48,11 +48,10 @@ Peer::Peer(std::unique_ptr<mse::EncryptedPacketSocket> sock,
     : PeerInterface(peer_id, num_chunks)
     , sock(std::move(sock))
     , token(token)
+    , id(peer_id_counter)
     , pman(pman)
 {
-    id = peer_id_counter;
     peer_id_counter++;
-    ut_pex_id = 0;
 
     Uint32 max_packet_len = 9 + MAX_PIECE_LEN; // size of piece packet
     Uint32 bitfield_length = num_chunks / 8 + 1 + (num_chunks % 8 == 0 ? 0 : 1);

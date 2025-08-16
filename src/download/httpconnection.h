@@ -164,9 +164,10 @@ private:
     QString status;
     QTimer connect_timer;
     QTimer reply_timer;
-    Uint32 up_gid, down_gid;
-    bool close_when_finished;
-    bool redirected;
+    Uint32 up_gid = 0;
+    Uint32 down_gid = 0;
+    bool close_when_finished = false;
+    bool redirected = false;
     QUrl redirected_url;
     int response_code;
 };

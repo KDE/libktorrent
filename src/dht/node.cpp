@@ -31,8 +31,6 @@ public:
     Private(RPCServer *srv)
         : srv(srv)
     {
-        num_receives = 0;
-        new_key = false;
     }
 
     ~Private()
@@ -77,15 +75,14 @@ public:
     QScopedPointer<KBucketTable> ipv4_table;
     QScopedPointer<KBucketTable> ipv6_table;
     RPCServer *srv;
-    Uint32 num_receives;
-    bool new_key;
+    Uint32 num_receives = 0;
+    bool new_key = false;
 };
 
 Node::Node(RPCServer *srv, const QString &key_file)
     : d(std::make_unique<Private>(srv))
+    , our_id(d->loadKey(key_file))
 {
-    num_entries = 0;
-    our_id = d->loadKey(key_file);
     d->ipv4_table.reset(new KBucketTable(our_id));
     d->ipv6_table.reset(new KBucketTable(our_id));
 }

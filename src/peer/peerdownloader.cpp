@@ -14,14 +14,14 @@
 namespace bt
 {
 TimeStampedRequest::TimeStampedRequest()
+    : time_stamp(bt::CurrentTime())
 {
-    time_stamp = bt::CurrentTime();
 }
 
 TimeStampedRequest::TimeStampedRequest(const Request &r)
     : req(r)
+    , time_stamp(bt::CurrentTime())
 {
-    time_stamp = bt::CurrentTime();
 }
 
 TimeStampedRequest::TimeStampedRequest(const TimeStampedRequest &t)

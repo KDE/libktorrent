@@ -30,11 +30,10 @@ Tracker::Tracker(const QUrl &url, TrackerDataSource *tds, const PeerID &id, int 
     , tier(tier)
     , peer_id(id)
     , tds(tds)
+    , key(QRandomGenerator::global()->generate())
 {
-    key = QRandomGenerator::global()->generate();
     connect(&reannounce_timer, &QTimer::timeout, this, &Tracker::manualUpdate);
     reannounce_timer.setSingleShot(true);
-    bytes_downloaded_at_start = bytes_uploaded_at_start = 0;
 }
 
 Tracker::~Tracker()
