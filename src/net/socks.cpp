@@ -236,13 +236,13 @@ void Socks::sendConnectRequest()
         memcpy(req.ipv4.ip, &ip, 4);
         req.ipv4.port = htons(dest.port());
         len += 4;
-        req.address_type = socks5::AddressType::IPV4;
+        req.address_type = socks5::AddressType::ADDR_IPV4;
     } else {
         Q_IPV6ADDR ip = dest.toIPv6Address();
         memcpy(req.ipv6.ip, ip.c, 16);
         req.ipv6.port = htons(dest.port());
         len += 16;
-        req.address_type = socks5::AddressType::IPV6;
+        req.address_type = socks5::AddressType::ADDR_IPV6;
     }
     sock->sendData((const Uint8 *)&req, len);
     internal_state = CONNECT_REQUEST_SENT;
@@ -284,7 +284,7 @@ Socks::State Socks::handleConnectReply()
     }
 
     Uint32 ba = sock->bytesAvailable();
-    if (reply.address_type == socks5::AddressType::IPV4) {
+    if (reply.address_type == socks5::AddressType::ADDR_IPV4) {
         Uint8 addr[6]; // IP and port
         if (ba < 6 || sock->readData(addr, 6) != 6) {
             // Out(SYS_CON|LOG_DEBUG) << "Failed to read IPv4 address : " << endl;
@@ -295,7 +295,7 @@ Socks::State Socks::handleConnectReply()
             state = CONNECTED;
             return state;
         }
-    } else if (reply.address_type == socks5::AddressType::IPV6) {
+    } else if (reply.address_type == socks5::AddressType::ADDR_IPV6) {
         Uint8 addr[18]; // IP and port
         if (ba < 18 || sock->readData(addr, 6) != 6) {
             // Out(SYS_CON|LOG_DEBUG) << "Failed to read IPv4 address : " << endl;
@@ -306,7 +306,7 @@ Socks::State Socks::handleConnectReply()
             state = CONNECTED;
             return state;
         }
-    } else if (reply.address_type == socks5::AddressType::DOMAIN) {
+    } else if (reply.address_type == socks5::AddressType::ADDR_DOMAIN) {
         Uint8 len = 0;
         if (ba == 0 || sock->readData(&len, 1) != 1) {
             // Out(SYS_CON|LOG_DEBUG) << "Failed to read domain name length " << endl;

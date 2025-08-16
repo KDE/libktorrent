@@ -58,9 +58,9 @@ enum Version : bt::Uint8 {
 };
 
 enum AddressType : bt::Uint8 {
-    IPV4 = 0x01,
-    DOMAIN = 0x03,
-    IPV6 = 0x04,
+    ADDR_IPV4 = 0x01,
+    ADDR_DOMAIN = 0x03,
+    ADDR_IPV6 = 0x04,
 };
 
 enum Command : bt::Uint8 {
