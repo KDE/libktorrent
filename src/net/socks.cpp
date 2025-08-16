@@ -5,6 +5,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "socks.h"
+#include "socks_p.h"
 #include <sys/types.h>
 
 #include <mse/encryptedpacketsocket.h>
@@ -119,119 +120,19 @@ Socks::State Socks::onReadyToRead()
     }
 }
 
-const Uint8 SOCKS_VERSION_4 = 4;
-const Uint8 SOCKS_VERSION_5 = 5;
-const Uint8 SOCKS_CMD_CONNECT = 1;
-const Uint8 SOCKS_CMD_BIND = 2;
-const Uint8 SOCKS_CMD_UDP_ASSOCIATE = 3;
-const Uint8 SOCKS_ADDR_TYPE_IPV4 = 1;
-const Uint8 SOCKS_ADDR_TYPE_DOMAIN = 3;
-const Uint8 SOCKS_ADDR_TYPE_IPV6 = 4;
-
-const Uint8 SOCKS_REPLY_OK = 0; //' succeeded
-const Uint8 SOCKS_REPLY_SERVER_FAILURE = 1; // general SOCKS server failure
-const Uint8 SOCKS_REPLY_NOT_ALLOWED = 2; // connection not allowed by ruleset
-const Uint8 SOCKS_REPLY_NETWORK_UNREACHABLE = 3;
-const Uint8 SOCKS_REPLY_HOST_UNREACHABLE = 4;
-const Uint8 SOCKS_REPLY_CONNECTION_REFUSED = 5;
-const Uint8 SOCKS_REPLY_TTL_EXPIRED = 6;
-const Uint8 SOCKS_REPLY_CMD_NOT_SUPPORTED = 7;
-const Uint8 SOCKS_REPLY_ADDR_TYPE_NOT_SUPPORTED = 8;
-
-const Uint8 SOCKS_V4_REPLY_OK = 0x5a;
-const Uint8 SOCKS_V4_REPLY_FAILED = 0x5b;
-const Uint8 SOCKS_V4_REPLY_FAILED_2 = 0x5c;
-const Uint8 SOCKS_V4_REPLY_FAILED_3 = 0x5d;
-
-const Uint8 SOCKS_AUTH_METHOD_NONE = 0x00;
-const Uint8 SOCKS_AUTH_METHOD_GSSAPI = 0x01;
-const Uint8 SOCKS_AUTH_METHOD_USERNAME_PASSWORD = 0x02;
-
-struct SocksAuthRequest {
-    Uint8 version;
-    Uint8 nmethods;
-    Uint8 methods[5];
-
-    int size() const
-    {
-        return 2 + nmethods;
-    }
-};
-
-struct SocksAuthReply {
-    Uint8 version;
-    Uint8 method;
-};
-
-struct SocksV4ConnectRequest {
-    Uint8 version;
-    Uint8 cmd;
-    Uint16 port;
-    Uint8 ip[4];
-    char user_id[100];
-
-    int size() const
-    {
-        return 8 + strlen(user_id) + 1;
-    }
-};
-
-struct SocksV4ConnectReply {
-    Uint8 null_byte;
-    Uint8 reply;
-    Uint8 dummy[6];
-};
-
-struct SocksConnectRequest {
-    Uint8 version;
-    Uint8 cmd;
-    Uint8 reserved;
-    Uint8 address_type;
-    union {
-        struct {
-            Uint8 ip[4];
-            Uint16 port;
-        } ipv4;
-        struct {
-            Uint8 ip[16];
-            Uint16 port;
-        } ipv6;
-        /*struct
-        {
-            Uint8 len;
-            char domain_name[200];
-        }domain;*/
-    };
-};
-
-struct SocksConnectReply {
-    Uint8 version;
-    Uint8 reply;
-    Uint8 reserved;
-    Uint8 address_type;
-    /*
-    union
-    {
-        Uint8 ip_v4[4];
-        Uint8 ip_v6[16];
-    };
-    Uint16 port;
-    */
-};
-
 Socks::State Socks::sendAuthRequest()
 {
     if (version == 5) {
-        SocksAuthRequest req;
-        memset(&req, 0, sizeof(SocksAuthRequest));
-        req.version = SOCKS_VERSION_5;
+        socks5::AuthRequest req;
+        memset(&req, 0, sizeof(socks5::AuthRequest));
+        req.version = socks5::Version::VERSION_5;
         if (socks_username.length() > 0 && socks_password.length() > 0)
             req.nmethods = 2;
         else
             req.nmethods = 1;
-        req.methods[0] = SOCKS_AUTH_METHOD_NONE; // No authentication
-        req.methods[1] = SOCKS_AUTH_METHOD_USERNAME_PASSWORD; // Username and password
-        req.methods[2] = SOCKS_AUTH_METHOD_GSSAPI; // GSSAPI
+        req.methods[0] = socks5::AuthMethod::NONE; // No authentication
+        req.methods[1] = socks5::AuthMethod::USERNAME_PASSWORD; // Username and password
+        req.methods[2] = socks5::AuthMethod::GSSAPI; // GSSAPI
         sock->sendData((const Uint8 *)&req, req.size());
         internal_state = AUTH_REQUEST_SENT;
     } else {
@@ -242,10 +143,10 @@ Socks::State Socks::sendAuthRequest()
         }
 
         // version 4 has no auth request
-        SocksV4ConnectRequest req;
-        memset(&req, 0, sizeof(SocksV4ConnectRequest));
-        req.version = SOCKS_VERSION_4;
-        req.cmd = SOCKS_CMD_CONNECT;
+        socks4::ConnectRequest req;
+        memset(&req, 0, sizeof(socks4::ConnectRequest));
+        req.version = socks4::Version::VERSION_4;
+        req.cmd = socks4::Command::CONNECT;
         req.port = htons(dest.port());
         quint32 ip = htonl(dest.toIPv4Address());
         memcpy(req.ip, &ip, 4);
@@ -259,27 +160,27 @@ Socks::State Socks::sendAuthRequest()
 
 Socks::State Socks::handleAuthReply()
 {
-    SocksAuthReply reply;
-    if (sock->readData((Uint8 *)&reply, sizeof(SocksAuthReply)) != sizeof(SocksAuthReply)) {
-        // Out(SYS_CON|LOG_DEBUG) << "sock->readData SocksAuthReply size not ok" << endl;
+    socks5::AuthReply reply;
+    if (sock->readData((Uint8 *)&reply, sizeof(socks5::AuthReply)) != sizeof(socks5::AuthReply)) {
+        // Out(SYS_CON|LOG_DEBUG) << "sock->readData socks5::AuthReply size not ok" << endl;
         state = FAILED;
         return state;
     }
 
-    if (reply.version != SOCKS_VERSION_5 || reply.method == 0xFF) {
-        // Out(SYS_CON|LOG_DEBUG) << "SocksAuthReply = " << reply.version << " " << reply.method << endl;
+    if (reply.version != socks5::Version::VERSION_5 || reply.method == 0xFF) {
+        // Out(SYS_CON|LOG_DEBUG) << "socks5::AuthReply = " << reply.version << " " << reply.method << endl;
         state = FAILED;
         return state;
     }
 
     switch (reply.method) {
-    case SOCKS_AUTH_METHOD_NONE:
+    case socks5::AuthMethod::NONE:
         sendConnectRequest();
         break;
-    case SOCKS_AUTH_METHOD_USERNAME_PASSWORD:
+    case socks5::AuthMethod::USERNAME_PASSWORD:
         sendUsernamePassword();
         break;
-    case SOCKS_AUTH_METHOD_GSSAPI:
+    case socks5::AuthMethod::GSSAPI:
         break;
     }
     return state;
@@ -326,22 +227,22 @@ Socks::State Socks::handleUsernamePasswordReply()
 void Socks::sendConnectRequest()
 {
     int len = 6;
-    SocksConnectRequest req;
-    memset(&req, 0, sizeof(SocksConnectRequest));
-    req.version = SOCKS_VERSION_5;
-    req.cmd = SOCKS_CMD_CONNECT;
+    socks5::ConnectRequest req;
+    memset(&req, 0, sizeof(socks5::ConnectRequest));
+    req.version = socks5::Version::VERSION_5;
+    req.cmd = socks5::Command::CONNECT;
     if (dest.protocol() == QAbstractSocket::IPv4Protocol) {
         quint32 ip = htonl(dest.toIPv4Address());
         memcpy(req.ipv4.ip, &ip, 4);
         req.ipv4.port = htons(dest.port());
         len += 4;
-        req.address_type = SOCKS_ADDR_TYPE_IPV4;
+        req.address_type = socks5::AddressType::IPV4;
     } else {
         Q_IPV6ADDR ip = dest.toIPv6Address();
         memcpy(req.ipv6.ip, ip.c, 16);
         req.ipv6.port = htons(dest.port());
         len += 16;
-        req.address_type = SOCKS_ADDR_TYPE_IPV6;
+        req.address_type = socks5::AddressType::IPV6;
     }
     sock->sendData((const Uint8 *)&req, len);
     internal_state = CONNECT_REQUEST_SENT;
@@ -351,15 +252,15 @@ Socks::State Socks::handleConnectReply()
 {
     if (version == 4) {
         // Out(SYS_CON|LOG_DEBUG) << "SOCKSV4 handleConnectReply" << endl;
-        SocksV4ConnectReply reply;
-        if (sock->readData((Uint8 *)&reply, sizeof(SocksV4ConnectReply)) != sizeof(SocksV4ConnectReply)) {
-            //  Out(SYS_CON|LOG_DEBUG) << "sock->readData SocksV4ConnectReply size not ok" << endl;
+        socks4::ConnectReply reply;
+        if (sock->readData((Uint8 *)&reply, sizeof(socks4::ConnectReply)) != sizeof(socks4::ConnectReply)) {
+            //  Out(SYS_CON|LOG_DEBUG) << "sock->readData socks4::ConnectReply size not ok" << endl;
             state = FAILED;
             return state;
         }
 
-        if (reply.reply != SOCKS_V4_REPLY_OK) {
-            //  Out(SYS_CON|LOG_DEBUG) << "reply.reply != SOCKS_V4_REPLY_OK" << endl;
+        if (reply.reply != socks4::Reply::OK) {
+            //  Out(SYS_CON|LOG_DEBUG) << "reply.reply != socks4::Reply::OK" << endl;
             state = FAILED;
             return state;
         }
@@ -369,21 +270,21 @@ Socks::State Socks::handleConnectReply()
         return state;
     }
 
-    SocksConnectReply reply;
-    if (sock->readData((Uint8 *)&reply, sizeof(SocksConnectReply)) != sizeof(SocksConnectReply)) {
-        // Out(SYS_CON|LOG_DEBUG) << "sock->readData SocksConnectReply size not ok" << endl;
+    socks5::ConnectReply reply;
+    if (sock->readData((Uint8 *)&reply, sizeof(socks5::ConnectReply)) != sizeof(socks5::ConnectReply)) {
+        // Out(SYS_CON|LOG_DEBUG) << "sock->readData socks5::ConnectReply size not ok" << endl;
         state = FAILED;
         return state;
     }
 
-    if (reply.version != SOCKS_VERSION_5 || reply.reply != SOCKS_REPLY_OK) {
-        // Out(SYS_CON|LOG_DEBUG) << "SocksConnectReply : " << reply.version << " " << reply.reply << " " << reply.address_type << endl;
+    if (reply.version != socks5::Version::VERSION_5 || reply.reply != socks5::Reply::OK) {
+        // Out(SYS_CON|LOG_DEBUG) << "socks5::ConnectReply : " << reply.version << " " << reply.reply << " " << reply.address_type << endl;
         state = FAILED;
         return state;
     }
 
     Uint32 ba = sock->bytesAvailable();
-    if (reply.address_type == SOCKS_ADDR_TYPE_IPV4) {
+    if (reply.address_type == socks5::AddressType::IPV4) {
         Uint8 addr[6]; // IP and port
         if (ba < 6 || sock->readData(addr, 6) != 6) {
             // Out(SYS_CON|LOG_DEBUG) << "Failed to read IPv4 address : " << endl;
@@ -394,7 +295,7 @@ Socks::State Socks::handleConnectReply()
             state = CONNECTED;
             return state;
         }
-    } else if (reply.address_type == SOCKS_ADDR_TYPE_IPV6) {
+    } else if (reply.address_type == socks5::AddressType::IPV6) {
         Uint8 addr[18]; // IP and port
         if (ba < 18 || sock->readData(addr, 6) != 6) {
             // Out(SYS_CON|LOG_DEBUG) << "Failed to read IPv4 address : " << endl;
@@ -405,7 +306,7 @@ Socks::State Socks::handleConnectReply()
             state = CONNECTED;
             return state;
         }
-    } else if (reply.address_type == SOCKS_ADDR_TYPE_DOMAIN) {
+    } else if (reply.address_type == socks5::AddressType::DOMAIN) {
         Uint8 len = 0;
         if (ba == 0 || sock->readData(&len, 1) != 1) {
             // Out(SYS_CON|LOG_DEBUG) << "Failed to read domain name length " << endl;
