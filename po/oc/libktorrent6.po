@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-04 00:42+0000\n"
+"POT-Creation-Date: 2025-08-17 00:42+0000\n"
 "PO-Revision-Date: 2008-08-05 22:26+0200\n"
 "Last-Translator: Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan (lengadocian) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
@@ -59,14 +59,14 @@ msgid "Checking Data"
 msgstr ""
 
 #: src/datachecker/multidatachecker.cpp:185
-#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:627
-#: src/diskio/multifilecache.cpp:662 src/torrent/torrentcreator.cpp:109
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:626
+#: src/diskio/multifilecache.cpp:661 src/torrent/torrentcreator.cpp:109
 #: src/torrent/torrentcreator.cpp:230 src/torrent/torrentcreator.cpp:262
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr ""
 
-#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:100
 #: src/diskio/singlefilecache.cpp:72
 #, fuzzy, kde-format
 #| msgid "Downloaded"
@@ -173,7 +173,7 @@ msgctxt "@title job"
 msgid "Moving"
 msgstr ""
 
-#: src/diskio/multifilecache.cpp:76 src/diskio/singlefilecache.cpp:62
+#: src/diskio/multifilecache.cpp:75 src/diskio/singlefilecache.cpp:62
 #, fuzzy, kde-format
 #| msgid "Downloaded"
 msgid "Failed to open %1: %2"
@@ -184,7 +184,7 @@ msgstr "Descargat"
 msgid "Unable to write to a piece mapped read only"
 msgstr ""
 
-#: src/download/chunkdownload.cpp:344
+#: src/download/chunkdownload.cpp:341
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
@@ -196,81 +196,81 @@ msgstr[1] ""
 msgid "Disabled because webseed does not match torrent"
 msgstr ""
 
-#: src/download/httpconnection.cpp:31 src/download/webseed.cpp:42
-#: src/download/webseed.cpp:87
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
+#: src/download/webseed.cpp:82
 #, kde-format
 msgid "Not connected"
 msgstr "Pas connectat"
 
-#: src/download/httpconnection.cpp:98
+#: src/download/httpconnection.cpp:95
 #, kde-format
 msgid "Resolving proxy %1:%2"
 msgstr ""
 
-#: src/download/httpconnection.cpp:102 src/download/httpconnection.cpp:116
+#: src/download/httpconnection.cpp:99 src/download/httpconnection.cpp:113
 #, kde-format
 msgid "Not enough system resources available"
 msgstr ""
 
-#: src/download/httpconnection.cpp:112
+#: src/download/httpconnection.cpp:109
 #, kde-format
 msgid "Resolving hostname %1"
 msgstr ""
 
-#: src/download/httpconnection.cpp:128 src/download/webseed.cpp:315
+#: src/download/httpconnection.cpp:125 src/download/webseed.cpp:310
 #, fuzzy, kde-format
 #| msgid "Connections"
 msgid "Connection closed"
 msgstr "Connexions"
 
-#: src/download/httpconnection.cpp:132
+#: src/download/httpconnection.cpp:129
 #, kde-format
 msgid "Error: request failed: %1"
 msgstr ""
 
-#: src/download/httpconnection.cpp:156 src/download/httpconnection.cpp:183
+#: src/download/httpconnection.cpp:153 src/download/httpconnection.cpp:180
 #, fuzzy, kde-format
 #| msgid "Connections"
 msgid "Connected"
 msgstr "Connectat"
 
-#: src/download/httpconnection.cpp:164
+#: src/download/httpconnection.cpp:161
 #, kde-format
 msgid "Error: Failed to connect to webseed"
 msgstr ""
 
-#: src/download/httpconnection.cpp:188
+#: src/download/httpconnection.cpp:185
 #, fuzzy, kde-format
 #| msgid "Connections"
 msgid "Connecting"
 msgstr "Connexion"
 
-#: src/download/httpconnection.cpp:197
+#: src/download/httpconnection.cpp:194
 #, kde-format
 msgid "Failed to connect to webseed"
 msgstr ""
 
-#: src/download/httpconnection.cpp:202
+#: src/download/httpconnection.cpp:199
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
 msgstr ""
 
-#: src/download/httpconnection.cpp:273
+#: src/download/httpconnection.cpp:270
 #, kde-format
 msgid "Error: failed to connect, server not responding"
 msgstr ""
 
-#: src/download/httpconnection.cpp:283
+#: src/download/httpconnection.cpp:280
 #, kde-format
 msgid "Error: request timed out"
 msgstr ""
 
-#: src/download/httpconnection.cpp:353
+#: src/download/httpconnection.cpp:350
 #, kde-format
 msgid "Redirected without a new location."
 msgstr ""
 
-#: src/download/webseed.cpp:502
+#: src/download/webseed.cpp:497
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
@@ -313,30 +313,30 @@ msgstr ""
 msgid "Corrupted torrent."
 msgstr "Important"
 
-#: src/torrent/torrentcontrol.cpp:258
+#: src/torrent/torrentcontrol.cpp:251
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
 
-#: src/torrent/torrentcontrol.cpp:471
+#: src/torrent/torrentcontrol.cpp:464
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr ""
 
-#: src/torrent/torrentcontrol.cpp:481
+#: src/torrent/torrentcontrol.cpp:474
 #, fuzzy, kde-format
 #| msgid "Downloaded"
 msgid "Unable to create %1: %2"
 msgstr "Descargat"
 
-#: src/torrent/torrentcontrol.cpp:494
+#: src/torrent/torrentcontrol.cpp:487
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
 "both torrents have been merged."
 msgstr ""
 
-#: src/torrent/torrentcontrol.cpp:498
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr ""

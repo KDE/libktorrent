@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-04 00:42+0000\n"
+"POT-Creation-Date: 2025-08-17 00:42+0000\n"
 "PO-Revision-Date: 2013-04-03 15:56+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -59,14 +59,14 @@ msgid "Checking Data"
 msgstr "Kontrollerar data"
 
 #: src/datachecker/multidatachecker.cpp:185
-#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:627
-#: src/diskio/multifilecache.cpp:662 src/torrent/torrentcreator.cpp:109
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:626
+#: src/diskio/multifilecache.cpp:661 src/torrent/torrentcreator.cpp:109
 #: src/torrent/torrentcreator.cpp:230 src/torrent/torrentcreator.cpp:262
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "Kan inte öppna filen %1: %2"
 
-#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:100
 #: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
@@ -169,7 +169,7 @@ msgctxt "@title job"
 msgid "Moving"
 msgstr "Flyttar"
 
-#: src/diskio/multifilecache.cpp:76 src/diskio/singlefilecache.cpp:62
+#: src/diskio/multifilecache.cpp:75 src/diskio/singlefilecache.cpp:62
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr "Misslyckades öppna %1: %2"
@@ -179,7 +179,7 @@ msgstr "Misslyckades öppna %1: %2"
 msgid "Unable to write to a piece mapped read only"
 msgstr "Kunde inte skriva till en del som är avbildad som skrivskyddad"
 
-#: src/download/chunkdownload.cpp:344
+#: src/download/chunkdownload.cpp:341
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
@@ -191,78 +191,78 @@ msgstr[1] "%1 deltagare"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Inaktiverad eftersom webberbjudande inte stämmer med dataflöde"
 
-#: src/download/httpconnection.cpp:31 src/download/webseed.cpp:42
-#: src/download/webseed.cpp:87
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
+#: src/download/webseed.cpp:82
 #, kde-format
 msgid "Not connected"
 msgstr "Inte ansluten"
 
-#: src/download/httpconnection.cpp:98
+#: src/download/httpconnection.cpp:95
 #, kde-format
 msgid "Resolving proxy %1:%2"
 msgstr "Upplösning av proxy %1: %2"
 
-#: src/download/httpconnection.cpp:102 src/download/httpconnection.cpp:116
+#: src/download/httpconnection.cpp:99 src/download/httpconnection.cpp:113
 #, kde-format
 msgid "Not enough system resources available"
 msgstr "Tillräckliga systemresurser ej tillgängliga"
 
-#: src/download/httpconnection.cpp:112
+#: src/download/httpconnection.cpp:109
 #, kde-format
 msgid "Resolving hostname %1"
 msgstr "Upplösning av värddatornamn %1"
 
-#: src/download/httpconnection.cpp:128 src/download/webseed.cpp:315
+#: src/download/httpconnection.cpp:125 src/download/webseed.cpp:310
 #, kde-format
 msgid "Connection closed"
 msgstr "Anslutning stängd"
 
-#: src/download/httpconnection.cpp:132
+#: src/download/httpconnection.cpp:129
 #, kde-format
 msgid "Error: request failed: %1"
 msgstr "Fel: Begäran misslyckades: %1"
 
-#: src/download/httpconnection.cpp:156 src/download/httpconnection.cpp:183
+#: src/download/httpconnection.cpp:153 src/download/httpconnection.cpp:180
 #, kde-format
 msgid "Connected"
 msgstr "Ansluten"
 
-#: src/download/httpconnection.cpp:164
+#: src/download/httpconnection.cpp:161
 #, kde-format
 msgid "Error: Failed to connect to webseed"
 msgstr "Fel: Misslyckades ansluta till webberbjudande"
 
-#: src/download/httpconnection.cpp:188
+#: src/download/httpconnection.cpp:185
 #, kde-format
 msgid "Connecting"
 msgstr "Ansluter"
 
-#: src/download/httpconnection.cpp:197
+#: src/download/httpconnection.cpp:194
 #, kde-format
 msgid "Failed to connect to webseed"
 msgstr "Misslyckades ansluta till webberbjudande"
 
-#: src/download/httpconnection.cpp:202
+#: src/download/httpconnection.cpp:199
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
 msgstr "Misslyckades vid upplösning av webberbjudandets värddatornamn"
 
-#: src/download/httpconnection.cpp:273
+#: src/download/httpconnection.cpp:270
 #, kde-format
 msgid "Error: failed to connect, server not responding"
 msgstr "Fel: Misslyckades ansluta, servern svarar inte"
 
-#: src/download/httpconnection.cpp:283
+#: src/download/httpconnection.cpp:280
 #, kde-format
 msgid "Error: request timed out"
 msgstr "Fel: Tidsgräns för begäran gick ut"
 
-#: src/download/httpconnection.cpp:353
+#: src/download/httpconnection.cpp:350
 #, kde-format
 msgid "Redirected without a new location."
 msgstr "Omdirigerad utan en ny plats."
 
-#: src/download/webseed.cpp:502
+#: src/download/webseed.cpp:497
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
@@ -302,22 +302,22 @@ msgstr "Okänd klient"
 msgid "Corrupted torrent."
 msgstr "Skadat dataflöde."
 
-#: src/torrent/torrentcontrol.cpp:258
+#: src/torrent/torrentcontrol.cpp:251
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Fel vid skrivning till disk. Finns det tillräckligt med diskutrymme?"
 
-#: src/torrent/torrentcontrol.cpp:471
+#: src/torrent/torrentcontrol.cpp:464
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "Ett fel uppstod vid laddning av <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:481
+#: src/torrent/torrentcontrol.cpp:474
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Kan inte skapa %1: %2"
 
-#: src/torrent/torrentcontrol.cpp:494
+#: src/torrent/torrentcontrol.cpp:487
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -326,7 +326,7 @@ msgstr ""
 "Du laddar redan ner dataflödet <b>%1</b>. Listan med spårare för båda "
 "dataflöden har slagits ihop."
 
-#: src/torrent/torrentcontrol.cpp:498
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Du laddar redan ner dataflödet <b>%1</b>."

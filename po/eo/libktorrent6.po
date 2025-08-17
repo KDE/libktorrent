@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-04 00:42+0000\n"
+"POT-Creation-Date: 2025-08-17 00:42+0000\n"
 "PO-Revision-Date: 2023-02-12 18:47+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -60,14 +60,14 @@ msgid "Checking Data"
 msgstr "Kontrolante Datumojn"
 
 #: src/datachecker/multidatachecker.cpp:185
-#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:627
-#: src/diskio/multifilecache.cpp:662 src/torrent/torrentcreator.cpp:109
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:626
+#: src/diskio/multifilecache.cpp:661 src/torrent/torrentcreator.cpp:109
 #: src/torrent/torrentcreator.cpp:230 src/torrent/torrentcreator.cpp:262
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "Ne povas malfermi dosieron %1: %2"
 
-#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:100
 #: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
@@ -171,7 +171,7 @@ msgctxt "@title job"
 msgid "Moving"
 msgstr "Ŝovante"
 
-#: src/diskio/multifilecache.cpp:76 src/diskio/singlefilecache.cpp:62
+#: src/diskio/multifilecache.cpp:75 src/diskio/singlefilecache.cpp:62
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr "Ne povas malfermi %1 : %2"
@@ -181,7 +181,7 @@ msgstr "Ne povas malfermi %1 : %2"
 msgid "Unable to write to a piece mapped read only"
 msgstr "Ne eblas skribi al peco mapita nur legata"
 
-#: src/download/chunkdownload.cpp:344
+#: src/download/chunkdownload.cpp:341
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
@@ -193,78 +193,78 @@ msgstr[1] "%1 kundividantoj"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Malŝaltita ĉar webseed ne kongruas kun torento"
 
-#: src/download/httpconnection.cpp:31 src/download/webseed.cpp:42
-#: src/download/webseed.cpp:87
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
+#: src/download/webseed.cpp:82
 #, kde-format
 msgid "Not connected"
 msgstr "Sen konekto"
 
-#: src/download/httpconnection.cpp:98
+#: src/download/httpconnection.cpp:95
 #, kde-format
 msgid "Resolving proxy %1:%2"
 msgstr "Solvante prokurilon %1:%2"
 
-#: src/download/httpconnection.cpp:102 src/download/httpconnection.cpp:116
+#: src/download/httpconnection.cpp:99 src/download/httpconnection.cpp:113
 #, kde-format
 msgid "Not enough system resources available"
 msgstr "Ne sufiĉaj sistemaj rimedoj disponeblaj"
 
-#: src/download/httpconnection.cpp:112
+#: src/download/httpconnection.cpp:109
 #, kde-format
 msgid "Resolving hostname %1"
 msgstr "Solvante gastigan nomon %1"
 
-#: src/download/httpconnection.cpp:128 src/download/webseed.cpp:315
+#: src/download/httpconnection.cpp:125 src/download/webseed.cpp:310
 #, kde-format
 msgid "Connection closed"
 msgstr "Konekto fermiĝis"
 
-#: src/download/httpconnection.cpp:132
+#: src/download/httpconnection.cpp:129
 #, kde-format
 msgid "Error: request failed: %1"
 msgstr "Eraro: peto malsukcesis: %1"
 
-#: src/download/httpconnection.cpp:156 src/download/httpconnection.cpp:183
+#: src/download/httpconnection.cpp:153 src/download/httpconnection.cpp:180
 #, kde-format
 msgid "Connected"
 msgstr "Konektita"
 
-#: src/download/httpconnection.cpp:164
+#: src/download/httpconnection.cpp:161
 #, kde-format
 msgid "Error: Failed to connect to webseed"
 msgstr "Eraro: Malsukcesis konekti al webseed"
 
-#: src/download/httpconnection.cpp:188
+#: src/download/httpconnection.cpp:185
 #, kde-format
 msgid "Connecting"
 msgstr "Konektante"
 
-#: src/download/httpconnection.cpp:197
+#: src/download/httpconnection.cpp:194
 #, kde-format
 msgid "Failed to connect to webseed"
 msgstr "Malsukcesis konekti al webseed"
 
-#: src/download/httpconnection.cpp:202
+#: src/download/httpconnection.cpp:199
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
 msgstr "Malsukcesis solvi gastigan nomon de webseed"
 
-#: src/download/httpconnection.cpp:273
+#: src/download/httpconnection.cpp:270
 #, kde-format
 msgid "Error: failed to connect, server not responding"
 msgstr "Eraro: malsukcesis konektiĝi, servilo ne respondas"
 
-#: src/download/httpconnection.cpp:283
+#: src/download/httpconnection.cpp:280
 #, kde-format
 msgid "Error: request timed out"
 msgstr "Eraro: peto elĉerpita"
 
-#: src/download/httpconnection.cpp:353
+#: src/download/httpconnection.cpp:350
 #, kde-format
 msgid "Redirected without a new location."
 msgstr "Alidirektita sen nova loko."
 
-#: src/download/webseed.cpp:502
+#: src/download/webseed.cpp:497
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
@@ -304,22 +304,22 @@ msgstr "Nekonata kliento"
 msgid "Corrupted torrent."
 msgstr "Koruptita torento."
 
-#: src/torrent/torrentcontrol.cpp:258
+#: src/torrent/torrentcontrol.cpp:251
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Eraro skribi al disko, ĉu vi havas sufiĉe da diskspaco?"
 
-#: src/torrent/torrentcontrol.cpp:471
+#: src/torrent/torrentcontrol.cpp:464
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "Eraro okazis dum ŝarĝo de <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:481
+#: src/torrent/torrentcontrol.cpp:474
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Ne eblas krei %1: %2"
 
-#: src/torrent/torrentcontrol.cpp:494
+#: src/torrent/torrentcontrol.cpp:487
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -328,7 +328,7 @@ msgstr ""
 "Vi jam elŝutas la torenton <b>%1</b>. La spurlistoj de ambaŭ torentoj estis "
 "kunfanditaj."
 
-#: src/torrent/torrentcontrol.cpp:498
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Vi jam elŝutas la torenton <b>%1</b>."

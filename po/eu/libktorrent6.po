@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-04 00:42+0000\n"
+"POT-Creation-Date: 2025-08-17 00:42+0000\n"
 "PO-Revision-Date: 2013-02-02 17:29+0100\n"
 "Last-Translator: Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -63,14 +63,14 @@ msgid "Checking Data"
 msgstr "Datuak egiaztatzen"
 
 #: src/datachecker/multidatachecker.cpp:185
-#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:627
-#: src/diskio/multifilecache.cpp:662 src/torrent/torrentcreator.cpp:109
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:626
+#: src/diskio/multifilecache.cpp:661 src/torrent/torrentcreator.cpp:109
 #: src/torrent/torrentcreator.cpp:230 src/torrent/torrentcreator.cpp:262
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "%1 fitxategia ezin da ireki: %2"
 
-#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:101
+#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:100
 #: src/diskio/singlefilecache.cpp:72
 #, kde-format
 msgid "Failed to create %1: %2"
@@ -174,7 +174,7 @@ msgctxt "@title job"
 msgid "Moving"
 msgstr "Eramaten"
 
-#: src/diskio/multifilecache.cpp:76 src/diskio/singlefilecache.cpp:62
+#: src/diskio/multifilecache.cpp:75 src/diskio/singlefilecache.cpp:62
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr "Huts egin du %1 irekitzean: %2"
@@ -184,7 +184,7 @@ msgstr "Huts egin du %1 irekitzean: %2"
 msgid "Unable to write to a piece mapped read only"
 msgstr "Ezin izan da idatzi irakurtzeko soilik mapatutako zati batean"
 
-#: src/download/chunkdownload.cpp:344
+#: src/download/chunkdownload.cpp:341
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
@@ -196,78 +196,78 @@ msgstr[1] "%1 pare"
 msgid "Disabled because webseed does not match torrent"
 msgstr "Desgaituta, web-hazia eta torrent-a bat ez datozelako"
 
-#: src/download/httpconnection.cpp:31 src/download/webseed.cpp:42
-#: src/download/webseed.cpp:87
+#: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
+#: src/download/webseed.cpp:82
 #, kde-format
 msgid "Not connected"
 msgstr "Konektatu gabe"
 
-#: src/download/httpconnection.cpp:98
+#: src/download/httpconnection.cpp:95
 #, kde-format
 msgid "Resolving proxy %1:%2"
 msgstr "%1 proxya ebazten:%2"
 
-#: src/download/httpconnection.cpp:102 src/download/httpconnection.cpp:116
+#: src/download/httpconnection.cpp:99 src/download/httpconnection.cpp:113
 #, kde-format
 msgid "Not enough system resources available"
 msgstr "Ez dago nahikoa sistema-baliabide erabilgarri"
 
-#: src/download/httpconnection.cpp:112
+#: src/download/httpconnection.cpp:109
 #, kde-format
 msgid "Resolving hostname %1"
 msgstr "%1 ostalari-izena ebazten"
 
-#: src/download/httpconnection.cpp:128 src/download/webseed.cpp:315
+#: src/download/httpconnection.cpp:125 src/download/webseed.cpp:310
 #, kde-format
 msgid "Connection closed"
 msgstr "Konexioa itxi da"
 
-#: src/download/httpconnection.cpp:132
+#: src/download/httpconnection.cpp:129
 #, kde-format
 msgid "Error: request failed: %1"
 msgstr "Errorea: eskaerak huts egin du: %1"
 
-#: src/download/httpconnection.cpp:156 src/download/httpconnection.cpp:183
+#: src/download/httpconnection.cpp:153 src/download/httpconnection.cpp:180
 #, kde-format
 msgid "Connected"
 msgstr "Konektatuta"
 
-#: src/download/httpconnection.cpp:164
+#: src/download/httpconnection.cpp:161
 #, kde-format
 msgid "Error: Failed to connect to webseed"
 msgstr "Errorea: huts egin du web-hazira konektatzean"
 
-#: src/download/httpconnection.cpp:188
+#: src/download/httpconnection.cpp:185
 #, kde-format
 msgid "Connecting"
 msgstr "Konektatzen"
 
-#: src/download/httpconnection.cpp:197
+#: src/download/httpconnection.cpp:194
 #, kde-format
 msgid "Failed to connect to webseed"
 msgstr "Huts egin du web-hazira konektatzean"
 
-#: src/download/httpconnection.cpp:202
+#: src/download/httpconnection.cpp:199
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
 msgstr "Huts egin du web-haziaren ostalari-izena ebaztean"
 
-#: src/download/httpconnection.cpp:273
+#: src/download/httpconnection.cpp:270
 #, kde-format
 msgid "Error: failed to connect, server not responding"
 msgstr "Errorea: huts egin du konektatzean, zerbitzariak ez du erantzuten"
 
-#: src/download/httpconnection.cpp:283
+#: src/download/httpconnection.cpp:280
 #, kde-format
 msgid "Error: request timed out"
 msgstr "Errorea: eskaerak denbora-muga gainditu du"
 
-#: src/download/httpconnection.cpp:353
+#: src/download/httpconnection.cpp:350
 #, kde-format
 msgid "Redirected without a new location."
 msgstr "Kokaleku berririk gabe birbideratu da."
 
-#: src/download/webseed.cpp:502
+#: src/download/webseed.cpp:497
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
@@ -307,22 +307,22 @@ msgstr "Bezero ezezaguna"
 msgid "Corrupted torrent."
 msgstr "Torrent hondatua."
 
-#: src/torrent/torrentcontrol.cpp:258
+#: src/torrent/torrentcontrol.cpp:251
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Errorea diskora idaztean, diskoan lekurik gelditzen da?"
 
-#: src/torrent/torrentcontrol.cpp:471
+#: src/torrent/torrentcontrol.cpp:464
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "Errore bat gertatu da <b>%1</b> kargatzean:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:481
+#: src/torrent/torrentcontrol.cpp:474
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Ezin da %1 sortu: %2"
 
-#: src/torrent/torrentcontrol.cpp:494
+#: src/torrent/torrentcontrol.cpp:487
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -331,7 +331,7 @@ msgstr ""
 "Dagoeneko <b>%1</b> torrent-a deskargatzen ari zara. Bi torrent-en "
 "kontrolatzaile-zerrendak fusionatu egin dira."
 
-#: src/torrent/torrentcontrol.cpp:498
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Dagoeneko <b>%1</b> torrent-a deskargatzen ari zara."
