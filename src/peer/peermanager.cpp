@@ -305,22 +305,22 @@ void PeerManager::stop()
     closeAllConnections();
 }
 
-Peer::Ptr PeerManager::findPeer(Uint32 peer_id)
+Peer *PeerManager::findPeer(Uint32 peer_id)
 {
     PeerMap::iterator i = d->peer_map.find(peer_id);
     if (i == d->peer_map.end())
-        return Peer::Ptr();
+        return nullptr;
     else
-        return *i;
+        return i.value().get();
 }
 
-Peer::Ptr PeerManager::findPeer(PieceDownloader *pd)
+Peer *PeerManager::findPeer(PieceDownloader *pd)
 {
     for (Peer::Ptr p : std::as_const(d->peer_map)) {
         if ((PieceDownloader *)p->getPeerDownloader() == pd)
-            return p;
+            return p.get();
     }
-    return Peer::Ptr();
+    return nullptr;
 }
 
 void PeerManager::rerunChoker()

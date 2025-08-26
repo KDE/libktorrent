@@ -103,7 +103,7 @@ void AdvancedChokeAlgorithm::doChokingLeechingState(PeerManager &pman, ChunkMana
     doUnchoking(ppl, updateOptimisticPeer(pman, ppl));
 }
 
-void AdvancedChokeAlgorithm::doUnchoking(const QList<Peer::Ptr> &ppl, Peer::Ptr poup)
+void AdvancedChokeAlgorithm::doUnchoking(const QList<Peer::Ptr> &ppl, Peer *poup)
 {
     // Get the number of upload slots
     Uint32 num_slots = Choker::getNumUploadSlots();
@@ -166,10 +166,10 @@ static Uint32 FindPlannedOptimisticUnchokedPeer(const QList<Peer::Ptr> &ppl)
     return UNDEFINED_ID;
 }
 
-Peer::Ptr AdvancedChokeAlgorithm::updateOptimisticPeer(PeerManager &pman, const QList<Peer::Ptr> &ppl)
+Peer *AdvancedChokeAlgorithm::updateOptimisticPeer(PeerManager &pman, const QList<Peer::Ptr> &ppl)
 {
     // get the planned optimistic unchoked peer and change it if necessary
-    Peer::Ptr poup = pman.findPeer(opt_unchoked_peer_id);
+    Peer *poup = pman.findPeer(opt_unchoked_peer_id);
     TimeStamp now = CurrentTime();
     if (now - last_opt_sel_time > OPT_SEL_INTERVAL || !poup) {
         opt_unchoked_peer_id = FindPlannedOptimisticUnchokedPeer(ppl);

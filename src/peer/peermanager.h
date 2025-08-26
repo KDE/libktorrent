@@ -84,16 +84,16 @@ public:
     /*!
      * Find a Peer based on it's ID
      * \param peer_id The ID
-     * \return A Peer or 0, if nothing could be found
+     * \return A Peer or nullptr, if nothing could be found
      */
-    Peer::Ptr findPeer(Uint32 peer_id);
+    Peer *findPeer(Uint32 peer_id);
 
     /*!
      * Find a Peer based on it's PieceDownloader
      * \param pd The PieceDownloader
-     * \return The matching Peer or 0 if none can be found
+     * \return The matching Peer or nullptr if none can be found
      */
-    Peer::Ptr findPeer(PieceDownloader *pd);
+    Peer *findPeer(PieceDownloader *pd);
 
     void setWantedChunks(const BitSet &bs);
 

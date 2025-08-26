@@ -392,7 +392,7 @@ bool Downloader::finished(ChunkDownload *cd)
 
         PieceDownloader *only = cd->getOnlyDownloader();
         if (only) {
-            Peer::Ptr p = pman.findPeer(only);
+            Peer *p = pman.findPeer(only);
             if (!p)
                 return false;
 
