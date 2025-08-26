@@ -512,9 +512,14 @@ Uint32 PeerManager::uploadRate() const
     return rate;
 }
 
-QList<Peer::Ptr> PeerManager::getPeers() const
+QList<Peer *> PeerManager::getPeers() const
 {
-    return d->peer_map.values();
+    QList<Peer *> peers;
+    peers.reserve(d->peer_map.size());
+    for (const Peer::Ptr &p : std::as_const(d->peer_map)) {
+        peers.push_back(p.get());
+    }
+    return peers;
 }
 
 void PeerManager::setPartialSeed(bool partial_seed)

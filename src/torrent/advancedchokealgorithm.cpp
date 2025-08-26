@@ -31,7 +31,7 @@ AdvancedChokeAlgorithm::~AdvancedChokeAlgorithm()
 {
 }
 
-bool AdvancedChokeAlgorithm::calcACAScore(Peer::Ptr p, ChunkManager &cman, const TorrentStats &stats)
+bool AdvancedChokeAlgorithm::calcACAScore(Peer *p, ChunkManager &cman, const TorrentStats &stats)
 {
     const PeerInterface::Stats &s = p->getStats();
     if (p->isSeeder() || s.partial_seed) {
@@ -79,16 +79,16 @@ bool AdvancedChokeAlgorithm::calcACAScore(Peer::Ptr p, ChunkManager &cman, const
     return true;
 }
 
-static bool ACAGreaterThan(Peer::Ptr a, Peer::Ptr b)
+static bool ACAGreaterThan(Peer *a, Peer *b)
 {
     return a->getStats().aca_score > b->getStats().aca_score;
 }
 
 void AdvancedChokeAlgorithm::doChokingLeechingState(PeerManager &pman, ChunkManager &cman, const TorrentStats &stats)
 {
-    QList<Peer::Ptr> ppl = pman.getPeers();
-    for (QList<Peer::Ptr>::iterator i = ppl.begin(); i != ppl.end();) {
-        Peer::Ptr p = *i;
+    QList<Peer *> ppl = pman.getPeers();
+    for (auto i = ppl.begin(); i != ppl.end();) {
+        Peer *p = *i;
         if (!calcACAScore(p, cman, stats)) {
             // choke seeders they do not want to download from us anyway
             p->choke();
@@ -103,13 +103,13 @@ void AdvancedChokeAlgorithm::doChokingLeechingState(PeerManager &pman, ChunkMana
     doUnchoking(ppl, updateOptimisticPeer(pman, ppl));
 }
 
-void AdvancedChokeAlgorithm::doUnchoking(const QList<Peer::Ptr> &ppl, Peer *poup)
+void AdvancedChokeAlgorithm::doUnchoking(const QList<Peer *> &ppl, Peer *poup)
 {
     // Get the number of upload slots
     Uint32 num_slots = Choker::getNumUploadSlots();
     // Do the choking and unchoking
     Uint32 num_unchoked = 0;
-    for (Peer::Ptr p : ppl) {
+    for (Peer *p : ppl) {
         if (!poup && num_unchoked < num_slots) {
             p->sendUnchoke();
             num_unchoked++;
@@ -123,16 +123,16 @@ void AdvancedChokeAlgorithm::doUnchoking(const QList<Peer::Ptr> &ppl, Peer *poup
     }
 }
 
-static bool UploadRateGreaterThan(Peer::Ptr a, Peer::Ptr b)
+static bool UploadRateGreaterThan(Peer *a, Peer *b)
 {
     return a->getStats().upload_rate > b->getStats().upload_rate;
 }
 
 void AdvancedChokeAlgorithm::doChokingSeedingState(PeerManager &pman, ChunkManager &cman, const TorrentStats &stats)
 {
-    QList<Peer::Ptr> ppl = pman.getPeers();
-    for (QList<Peer::Ptr>::iterator i = ppl.begin(); i != ppl.end();) {
-        Peer::Ptr p = *i;
+    QList<Peer *> ppl = pman.getPeers();
+    for (auto i = ppl.begin(); i != ppl.end();) {
+        Peer *p = *i;
         if (!calcACAScore(p, cman, stats)) {
             // choke seeders they do not want to download from us anyway
             p->choke();
@@ -146,7 +146,7 @@ void AdvancedChokeAlgorithm::doChokingSeedingState(PeerManager &pman, ChunkManag
     doUnchoking(ppl, updateOptimisticPeer(pman, ppl));
 }
 
-static Uint32 FindPlannedOptimisticUnchokedPeer(const QList<Peer::Ptr> &ppl)
+static Uint32 FindPlannedOptimisticUnchokedPeer(const QList<Peer *> &ppl)
 {
     Uint32 num_peers = ppl.size();
     if (num_peers == 0)
@@ -156,7 +156,7 @@ static Uint32 FindPlannedOptimisticUnchokedPeer(const QList<Peer::Ptr> &ppl)
     Uint32 start = QRandomGenerator::global()->bounded(num_peers);
     Uint32 i = (start + 1) % num_peers;
     while (i != start) {
-        Peer::Ptr p = ppl.at(i);
+        Peer *p = ppl.at(i);
         if (p && p->isChoked() && p->isInterested() && !p->isSeeder() && ppl.contains(p))
             return p->getID();
         i = (i + 1) % num_peers;
@@ -166,7 +166,7 @@ static Uint32 FindPlannedOptimisticUnchokedPeer(const QList<Peer::Ptr> &ppl)
     return UNDEFINED_ID;
 }
 
-Peer *AdvancedChokeAlgorithm::updateOptimisticPeer(PeerManager &pman, const QList<Peer::Ptr> &ppl)
+Peer *AdvancedChokeAlgorithm::updateOptimisticPeer(PeerManager &pman, const QList<Peer *> &ppl)
 {
     // get the planned optimistic unchoked peer and change it if necessary
     Peer *poup = pman.findPeer(opt_unchoked_peer_id);

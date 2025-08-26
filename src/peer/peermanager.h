@@ -79,7 +79,7 @@ public:
      * Get a list of all peers.
      * \return A QList of Peer's
      */
-    QList<Peer::Ptr> getPeers() const;
+    QList<Peer *> getPeers() const;
 
     /*!
      * Find a Peer based on it's ID

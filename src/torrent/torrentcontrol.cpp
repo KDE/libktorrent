@@ -442,9 +442,9 @@ void TorrentControl::setMonitor(MonitorInterface *tmo)
     tmon = tmo;
     downloader->setMonitor(tmon);
     if (tmon) {
-        const QList<Peer::Ptr> ppl = pman->getPeers();
-        for (const Peer::Ptr &peer : ppl)
-            tmon->peerAdded(peer.data());
+        const QList<Peer *> ppl = pman->getPeers();
+        for (Peer *peer : ppl)
+            tmon->peerAdded(peer);
     }
 
     tor->setMonitor(tmon);
