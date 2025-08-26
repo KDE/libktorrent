@@ -24,7 +24,7 @@ Uploader::~Uploader()
 {
 }
 
-void Uploader::visit(const bt::Peer::Ptr p)
+void Uploader::visit(const bt::Peer *p)
 {
     PeerUploader *pu = p->getPeerUploader();
     uploaded += pu->handleRequests(cman);

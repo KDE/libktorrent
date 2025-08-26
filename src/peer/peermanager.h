@@ -203,7 +203,7 @@ public:
         }
 
         //! Called for each Peer
-        virtual void visit(const Peer::Ptr p) = 0;
+        virtual void visit(const Peer *p) = 0;
     };
 
     //! Visit all peers

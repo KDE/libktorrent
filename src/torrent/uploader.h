@@ -54,7 +54,7 @@ public Q_SLOTS:
     void update();
 
 private:
-    void visit(const bt::Peer::Ptr p) override;
+    void visit(const bt::Peer *p) override;
 
 private:
     ChunkManager &cman;

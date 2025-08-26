@@ -68,8 +68,8 @@ private:
                      int ip_version);
     void encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps, int ipVersion);
     void encodeFlags(BEncoder &enc, const std::map<Uint32, Uint8> &flags);
-    void visit(const bt::Peer::Ptr p) override;
-    void visit(const bt::Peer::Ptr p,
+    void visit(const bt::Peer *p) override;
+    void visit(const bt::Peer *p,
                std::map<Uint32, net::Address> &peers,
                std::map<Uint32, net::Address> &added,
                std::map<Uint32, Uint8> &flags,

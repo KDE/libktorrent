@@ -65,7 +65,7 @@ bool UTPex::needsUpdate() const
     return bt::CurrentTime() - last_updated >= 60 * 1000;
 }
 
-void UTPex::visit(const bt::Peer::Ptr p)
+void UTPex::visit(const bt::Peer *p)
 {
     const auto ip_version = p->getAddress().ipVersion();
 
@@ -76,13 +76,13 @@ void UTPex::visit(const bt::Peer::Ptr p)
     }
 }
 
-void UTPex::visit(const bt::Peer::Ptr p,
+void UTPex::visit(const bt::Peer *p,
                   std::map<Uint32, net::Address> &peers,
                   std::map<Uint32, net::Address> &added,
                   std::map<Uint32, Uint8> &flags,
                   std::map<Uint32, net::Address> &npeers)
 {
-    if (p.data() != peer) {
+    if (p != peer) {
         npeers.insert(std::make_pair(p->getID(), p->getAddress()));
         if (peers.count(p->getID()) == 0) {
             // new one, add to added

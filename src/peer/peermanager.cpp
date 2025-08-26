@@ -499,7 +499,7 @@ bool PeerManager::isStarted() const
 void PeerManager::visit(PeerManager::PeerVisitor &visitor)
 {
     for (const Peer::Ptr &p : std::as_const(d->peer_map)) {
-        visitor.visit(p);
+        visitor.visit(p.get());
     }
 }
 
