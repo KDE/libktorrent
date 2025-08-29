@@ -221,7 +221,7 @@ void UDPTrackerSocket::handleScrape(bt::Buffer::Ptr buf)
         return;
 
     // Read the transaction_id and check it
-    Int32 tid = ReadInt32((Uint8 *)buf.data(), 4);
+    Int32 tid = ReadInt32(buf->get(), 4);
     QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (i == d->transactions.end())
