@@ -8,10 +8,9 @@
 
 namespace bt
 {
-Buffer::Buffer(Data data, bt::Uint32 fill, bt::Uint32 cap, QWeakPointer<BufferPool> pool)
-    : data(data)
+Buffer::Buffer(Data data, bt::Uint32 fill, QWeakPointer<BufferPool> pool)
+    : data(std::move(data))
     , fill(fill)
-    , cap(cap)
     , pool(pool)
 {
 }
@@ -20,7 +19,7 @@ Buffer::~Buffer()
 {
     QSharedPointer<BufferPool> ptr = pool.toStrongRef();
     if (ptr)
-        ptr->release(data, cap);
+        ptr->release(std::move(data));
 }
 
 BufferPool::BufferPool()
@@ -36,18 +35,18 @@ Buffer::Ptr BufferPool::get(bt::Uint32 min_size)
     QMutexLocker lock(&mutex);
     FreeBufferMap::iterator i = free_buffers.lower_bound(min_size);
     if (i != free_buffers.end() && !i->second.empty()) {
-        Buffer::Data data = i->second.front();
+        Buffer::Data data = std::move(i->second.front());
         i->second.pop_front();
-        return Buffer::Ptr(new Buffer(data, min_size, i->first, self));
+        return Buffer::Ptr(new Buffer(std::move(data), min_size, self));
     } else {
-        return Buffer::Ptr(new Buffer(Buffer::Data(new Uint8[min_size]), min_size, min_size, self));
+        return Buffer::Ptr(new Buffer(Buffer::Data(min_size), min_size, self));
     }
 }
 
-void BufferPool::release(Buffer::Data data, bt::Uint32 size)
+void BufferPool::release(Buffer::Data data)
 {
     QMutexLocker lock(&mutex);
-    free_buffers[size].push_back(data);
+    free_buffers[data.size()].push_back(std::move(data));
 }
 
 void BufferPool::clear()

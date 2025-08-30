@@ -31,6 +31,34 @@ public:
             data = std::make_unique<T[]>(num);
     }
 
+    /*!
+     * Construct an array by moving the data from \a other.
+     *
+     * This sets the capacity of \a other to 0 to avoid unneccessary allocations.
+     */
+    Array(Array &&other)
+        : num(other.num)
+        , data(std::move(other.data))
+    {
+        other.num = 0;
+    }
+
+    /*!
+     * Assigns the array by moving the data from \a other.
+     *
+     * This sets the capacity of \a other to 0 to avoid unneccessary allocations.
+     */
+    Array &operator=(Array &&other)
+    {
+        if (this == &other) {
+            return *this;
+        }
+        num = other.num;
+        data = std::move(other.data);
+        other.num = 0;
+        return *this;
+    }
+
     ~Array()
     {
     }

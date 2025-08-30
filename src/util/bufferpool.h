@@ -7,6 +7,7 @@
 #ifndef BUFFERPOOL_H_
 #define BUFFERPOOL_H_
 
+#include "array.h"
 #include <QMutex>
 #include <QSharedPointer>
 #include <QWeakPointer>
@@ -26,15 +27,16 @@ class KTORRENT_EXPORT Buffer
 {
 public:
     typedef QSharedPointer<Buffer> Ptr;
-    typedef std::shared_ptr<bt::Uint8[]> Data;
+    // TODO(Qt6.8) use QByteArray with Qt::Initialization overload
+    typedef Array<bt::Uint8> Data;
 
-    Buffer(Data data, bt::Uint32 fill, bt::Uint32 cap, QWeakPointer<BufferPool> pool);
+    Buffer(Data data, bt::Uint32 fill, QWeakPointer<BufferPool> pool);
     virtual ~Buffer();
 
     //! Get the buffers capacity
     bt::Uint32 capacity() const
     {
-        return cap;
+        return data.size();
     }
 
     //! Get the current size
@@ -52,13 +54,12 @@ public:
     //! Get a pointer to the data
     bt::Uint8 *get()
     {
-        return data.get();
+        return data;
     }
 
 private:
     Data data;
     bt::Uint32 fill;
-    bt::Uint32 cap;
     QWeakPointer<BufferPool> pool;
 };
 
@@ -91,9 +92,8 @@ public:
     /*!
      * Release a buffer, puts it into the free list.
      * \param data The Buffer::Data
-     * \param size The size of the data object
      **/
-    void release(Buffer::Data data, bt::Uint32 size);
+    void release(Buffer::Data data);
 
     /*!
      * Clear the pool.
