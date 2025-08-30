@@ -8,6 +8,7 @@
 
 #include "constants.h"
 #include <ktorrent_export.h>
+#include <memory>
 
 namespace bt
 {
@@ -20,20 +21,18 @@ namespace bt
 template<class T> class KTORRENT_EXPORT Array
 {
     Uint32 num;
-    T *data;
+    std::unique_ptr<T[]> data;
 
 public:
     Array(Uint32 num = 0)
         : num(num)
-        , data(nullptr)
     {
         if (num > 0)
-            data = new T[num];
+            data = std::make_unique<T[]>(num);
     }
 
     ~Array()
     {
-        delete[] data;
     }
 
     T &operator[](Uint32 i)
@@ -47,11 +46,11 @@ public:
 
     operator const T *() const
     {
-        return data;
+        return data.get();
     }
     operator T *()
     {
-        return data;
+        return data.get();
     }
 
     //! Get the number of elements in the array
