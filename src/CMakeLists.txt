@@ -314,3 +314,7 @@ add_subdirectory(utp)
 add_subdirectory(upnp)
 add_subdirectory(tracker)
 add_subdirectory(dht)
+
+if(BUILD_TESTING)
+    add_subdirectory(bcodec/tests)
+endif()

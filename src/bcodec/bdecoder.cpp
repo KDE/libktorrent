@@ -94,6 +94,10 @@ std::unique_ptr<BDictNode> BDecoder::parseDict()
 
         curr->insert(key, std::move(value));
     }
+
+    if (pos >= static_cast<Uint32>(data.size()) || data[pos] != 'e') {
+        throw Error(i18n("Unexpected end of input"));
+    }
     pos++;
 
     level--;
@@ -114,6 +118,10 @@ std::unique_ptr<BListNode> BDecoder::parseList()
         std::unique_ptr<BNode> n = decode();
         if (n)
             curr->append(std::move(n));
+    }
+
+    if (pos >= static_cast<Uint32>(data.size()) || data[pos] != 'e') {
+        throw Error(i18n("Unexpected end of input"));
     }
     pos++;
 

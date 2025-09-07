@@ -59,7 +59,7 @@ private Q_SLOTS:
 
     void testWrongErrMsg()
     {
-        const char *msg[] = {"d1:t2:aa1:y1:ee", "d1:eli201e1:t2:aa1:y1:ee", nullptr};
+        const char *msg[] = {"d1:t2:aa1:y1:ee", "d1:eli201e1:t2:aa1:y1:eee", nullptr};
 
         int idx = 0;
         while (msg[idx]) {
