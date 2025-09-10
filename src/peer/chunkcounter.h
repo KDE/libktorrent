@@ -14,6 +14,7 @@ namespace bt
 class BitSet;
 
 /*!
+ * \headerfile peer/chunkcounter.h
  * \author Joris Guisson
  *
  * \brief Keeps track of how many peers have a chunk.

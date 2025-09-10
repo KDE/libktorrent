@@ -13,6 +13,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/gepeersreq.h
  * \brief GetPeers request in the DHT protocol.
  */
 class KTORRENT_EXPORT GetPeersReq : public RPCMsg

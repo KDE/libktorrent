@@ -14,6 +14,7 @@
 namespace bt
 {
 /*!
+ * \headerfile util/circularbuffer.h
  * \brief Circular buffer for byte arrays.
  */
 class KTORRENT_EXPORT CircularBuffer

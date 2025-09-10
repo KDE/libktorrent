@@ -14,6 +14,7 @@ namespace bt
 class Log;
 
 /*!
+    \headerfile util/autorotatelogjob.h
     \author Joris Guisson <joris.guisson@gmail.com>
 
     \brief KIO::Job which handles the rotation of the log file.

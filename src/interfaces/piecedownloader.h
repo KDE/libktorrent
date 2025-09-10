@@ -17,6 +17,7 @@ class Piece;
 class Request;
 
 /*!
+ * \headerfile interfaces/piecedownloader.h
  * \author Joris Guisson
  * \brief Interface for all things which want to download pieces from a source.
  */

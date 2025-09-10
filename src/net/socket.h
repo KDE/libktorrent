@@ -17,6 +17,7 @@ const int SEND_FAILURE = 0;
 const int SEND_WOULD_BLOCK = -1;
 
 /*!
+    \headerfile net/socket.h
     \author Joris Guisson <joris.guisson@gmail.com>
     \brief A TCP or UDP socket.
 */

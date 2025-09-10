@@ -14,6 +14,7 @@ namespace dht
 class Database;
 
 /*!
+ * \headerfile dht/announcetask.h
  * \brief Stores the response of a GetPeersReq to be used in a follow-up AnnounceReq.
  */
 class KBucketEntryAndToken : public KBucketEntry
@@ -40,6 +41,7 @@ public:
 };
 
 /*!
+    \headerfile dht/announcetask.h
     \author Joris Guisson <joris.guisson@gmail.com>
     \brief Task that announces we are downloading a torrent and gets peers for it.
 */

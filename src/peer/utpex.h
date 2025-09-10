@@ -19,6 +19,7 @@ class Peer;
 class BEncoder;
 
 /*!
+ * \headerfile peer/utpex.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Handles µTorrent's peer exchange.

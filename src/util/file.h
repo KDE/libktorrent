@@ -15,6 +15,7 @@
 namespace bt
 {
 /*!
+ * \headerfile util/file.h
  * \author Joris Guisson
  * \brief Wrapper class for stdio's FILE.
  */

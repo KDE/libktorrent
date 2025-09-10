@@ -13,6 +13,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/kbuckettable.h
  * \brief Holds a table of buckets.
  */
 class KBucketTable

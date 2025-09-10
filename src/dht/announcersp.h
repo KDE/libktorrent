@@ -12,6 +12,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/announceresp.h
  * \brief Announce response message for DHT.
  */
 class KTORRENT_EXPORT AnnounceRsp : public RPCMsg

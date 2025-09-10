@@ -14,6 +14,7 @@ namespace bt
 class TorrentFileInterface;
 
 /*!
+ * \headerfile diskio/movedatafilesjob.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  * \brief Job to move all files of a torrent.
  */

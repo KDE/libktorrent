@@ -16,6 +16,7 @@ namespace bt
 class File;
 
 /*!
+ * \headerfile bcodec/bencoder.h
  * \author Joris Guisson
  *
  * \brief Interface for classes which wish to receive the output from a BEncoder.
@@ -35,6 +36,7 @@ public:
 };
 
 /*!
+ * \headerfile bcodec/bencoder.h
  * \brief Writes the output of a BEncoder to a file.
  */
 class KTORRENT_EXPORT BEncoderFileOutput : public BEncoderOutput
@@ -48,6 +50,7 @@ public:
 };
 
 /*!
+ * \headerfile bcodec/bencoder.h
  * \brief Writes the output of a BEncoder to a QByteArray.
  */
 class KTORRENT_EXPORT BEncoderBufferOutput : public BEncoderOutput
@@ -62,6 +65,7 @@ public:
 };
 
 /*!
+ * \headerfile bcodec/bencoder.h
  * \brief Writes the output of a BEncoder to a QIODevice.
  */
 class KTORRENT_EXPORT BEncoderIODeviceOutput : public BEncoderOutput
@@ -75,6 +79,7 @@ public:
 };
 
 /*!
+ * \headerfile bcodec/bencoder.h
  * \author Joris Guisson
  * \brief Bencodes data.
  *

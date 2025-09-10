@@ -18,6 +18,7 @@ namespace bt
 class TorrentControl;
 
 /*!
+    \headerfile torrent/job.h
     \brief A KIO::Job which runs on a torrent.
 */
 class KTORRENT_EXPORT Job : public KIO::Job

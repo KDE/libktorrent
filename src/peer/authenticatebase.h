@@ -19,6 +19,7 @@ class SHA1Hash;
 class PeerID;
 
 /*!
+ * \headerfile peer/authenticatebase.h
  * \author Joris Guisson
  *
  * \brief Base class for carrying out the handshake when connecting to a Peer.

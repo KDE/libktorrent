@@ -21,6 +21,7 @@ struct SelectiveAck;
 struct Header;
 
 /*!
+ * \headerfile utp/remotewindow.h
  * \brief A packet that we have sent that has not yet been acked by the remote window.
  */
 struct UnackedPacket {
@@ -34,6 +35,7 @@ struct UnackedPacket {
 };
 
 /*!
+ * \headerfile utp/remotewindow.h
  * \brief An interface class to retransmit packets.
  */
 class KTORRENT_EXPORT Retransmitter
@@ -54,6 +56,7 @@ public:
 };
 
 /*!
+ * \headerfile utp/remotewindow.h
  * \brief Keeps track of the remote sides window including all packets in-flight.
  */
 class KTORRENT_EXPORT RemoteWindow

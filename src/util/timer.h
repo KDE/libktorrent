@@ -14,6 +14,7 @@
 namespace bt
 {
 /*!
+ * \headerfile util/timer.h
  * \author Joris Guisson
  * \brief Measures elapsed time.
  */
@@ -41,6 +42,7 @@ public:
 };
 
 /*!
+ * \headerfile util/timer.h
  * \brief Logs elapsed time.
  */
 class Marker

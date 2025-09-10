@@ -26,6 +26,7 @@ class Request;
 class PieceDownloader;
 
 /*!
+ * \headerfile download/chunkdownload.h
  * \brief The header used when saving the progress of the a chunk to a file.
  */
 struct ChunkDownloadHeader {
@@ -35,6 +36,7 @@ struct ChunkDownloadHeader {
 };
 
 /*!
+ * \headerfile download/chunkdownload.h
  * \brief The header used when saving the progress of a piece from a chunk to a file.
  */
 struct PieceHeader {
@@ -44,6 +46,7 @@ struct PieceHeader {
 };
 
 /*!
+ * \headerfile download/chunkdownload.h
  * \brief The status of one piece inside a chunk.
  */
 class DownloadStatus
@@ -82,6 +85,7 @@ private:
 };
 
 /*!
+ * \headerfile download/chunkdownload.h
  * \author Joris Guisson
  * \brief Handles the download of one Chunk from a Peer.
  */

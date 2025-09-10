@@ -17,6 +17,7 @@ namespace bt
 class PreallocationThread;
 
 /*!
+ * \headerfile diskio/cachefile.h
  * \brief Interface which must be implemented to be able to map something from a CacheFile.
  *
  * It will also be used to notify when things get unmapped or remapped
@@ -35,6 +36,7 @@ public:
 };
 
 /*!
+    \headerfile diskio/cachefile.h
     \author Joris Guisson <joris.guisson@gmail.com>
 
     \brief Used by SingleFileCache and MultiFileCache to write to disk.

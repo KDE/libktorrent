@@ -13,6 +13,7 @@
 namespace bt
 {
 /*!
+ * \headerfile util/pipe.h
  * \brief Cross platform pipe implementation.
  *
  * Uses socketpair on unix and a TCP connection over the localhost in windows.

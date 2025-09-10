@@ -20,6 +20,7 @@ namespace dht
 const bt::Uint32 MAX_ITEM_AGE = 30 * 60 * 1000;
 
 /*!
+ * \headerfile dht/database.h
  * \author Joris Guisson
  *
  * \brief Item in the database, keeps track of an IP and port combination as well as the time it was inserted.
@@ -58,6 +59,7 @@ private:
 using DBItemList = QList<DBItem>;
 
 /*!
+ * \headerfile dht/database.h
  * \author Joris Guisson
  *
  * \brief Database where all the key value pairs get stored.

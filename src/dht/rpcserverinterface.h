@@ -14,6 +14,7 @@ namespace dht
 class RPCCall;
 
 /*!
+ * \headerfile dht/rpcserverinterface.h
  * \brief Interface class for an RPCServer.
  */
 class RPCServerInterface

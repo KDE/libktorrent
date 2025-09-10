@@ -12,6 +12,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/announcereq.h
  * \brief Announce request in the DHT protocol.
  */
 class KTORRENT_EXPORT AnnounceReq : public GetPeersReq

@@ -42,6 +42,7 @@ class GetPeersReq;
 class AnnounceReq;
 
 /*!
+    \headerfile dht/dht.h
     \author Joris Guisson <joris.guisson@gmail.com>
     \brief Handles everything to do with DHT.
 */

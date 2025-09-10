@@ -24,6 +24,7 @@ const bt::Uint32 WANT_IPV6 = 2;
 const bt::Uint32 WANT_BOTH = WANT_IPV4 | WANT_IPV6;
 
 /*!
+ * \headerfile dht/node.h
  * \author Joris Guisson
  *
  * \brief Represents us in the kademlia network. It contains our id and 160 KBucket's.

@@ -44,6 +44,7 @@ class JobQueue;
 class DataCheckerJob;
 
 /*!
+ * \headerfile torrent/torrentcontrol.h
  * \author Joris Guisson
  * \brief Controls just about everything for a single torrent.
  *

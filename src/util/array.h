@@ -15,6 +15,7 @@
 namespace bt
 {
 /*!
+ * \headerfile util/array.h
  * \author Joris Guisson
  *
  * \brief Fixed capacity dynamically allocated buffer.

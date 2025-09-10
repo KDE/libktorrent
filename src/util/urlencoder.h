@@ -12,6 +12,7 @@
 namespace bt
 {
 /*!
+ * \headerfile util/urlencoder.h
  * \author Joris Guisson
  * \brief Provides a function to percent-encode a byte array.
  *

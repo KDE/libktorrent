@@ -17,6 +17,7 @@ class ChunkManager;
 class Torrent;
 
 /*!
+ * \headerfile torrent/torrentfile.h
  * \author Joris Guisson
  *
  * \brief A file in a multi file torrent.

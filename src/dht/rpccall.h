@@ -15,6 +15,7 @@ namespace dht
 class RPCCall;
 
 /*!
+ * \headerfile dht/rpccall.h
  * \brief Interface for classes that want to know the result of a call.
  */
 class RPCCallListener : public QObject
@@ -38,6 +39,7 @@ public:
 };
 
 /*!
+ * \headerfile dht/rpccall.h
  * \author Joris Guisson
  * \brief Notifies RPCCallListener when an RPCMsg times out or receives a response.
  */

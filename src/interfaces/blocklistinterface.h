@@ -17,6 +17,7 @@ class Address;
 namespace bt
 {
 /*!
+ * \headerfile interfaces/blocklistinterface.h
  * \author Ivan Vasic
  * \brief Interface for classes to implement for blocking IP addresses.
  */

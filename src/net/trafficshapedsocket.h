@@ -16,6 +16,7 @@ namespace net
 class Speed;
 
 /*!
+ * \headerfile net/trafficshapedsocket.h
  * \brief Interface for processing data received from a socket.
  */
 class SocketReader
@@ -38,6 +39,7 @@ public:
 };
 
 /*!
+ * \headerfile net/trafficshapedsocket.h
  * \brief Socket which supports traffic shaping.
  */
 class TrafficShapedSocket

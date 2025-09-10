@@ -20,6 +20,7 @@ class RC4Encryptor;
 const bt::Uint32 MAX_EA_BUF_SIZE = 622 + 512;
 
 /*!
+ * \headerfile mse/encryptedauthenticate.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief RC4 encrypted version of the Authenticate class.

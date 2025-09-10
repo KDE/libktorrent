@@ -13,6 +13,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/key.h
  * \author Joris Guisson
  * \brief Key in the distributed hash table.
  *

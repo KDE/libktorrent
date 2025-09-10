@@ -15,6 +15,7 @@
 namespace bt
 {
 /*!
+ * \headerfile diskio/deletedatafilesjob.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  * \brief Job to delete all the files of a torrent.
  */

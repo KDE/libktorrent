@@ -16,6 +16,7 @@ class Cache;
 class Torrent;
 
 /*!
+ * \headerfile interfaces/cachefactory.h
  * \brief Interface to implement for creating custom Cache objects.
  *
  * If you want a custom Cache you need to derive from this class

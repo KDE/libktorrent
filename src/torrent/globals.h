@@ -29,6 +29,7 @@ namespace bt
 class Server;
 
 /*!
+ * \headerfile torrent/globals.h
  * \brief Singleton object that manages other singletons, such as the TCP/UTP servers and DHT database.
  */
 class KTORRENT_EXPORT Globals

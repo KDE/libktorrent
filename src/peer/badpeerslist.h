@@ -13,6 +13,7 @@
 namespace bt
 {
 /*!
+ * \headerfile peer/badpeerslist.h
  * \brief Blocklist to keep track of bad peers.
  */
 class BadPeersList : public BlockListInterface

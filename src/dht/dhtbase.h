@@ -22,6 +22,7 @@ namespace dht
 class AnnounceTask;
 
 /*!
+ * \headerfile dht/dhtbase.h
  * \brief Statistics about the DHT.
  */
 struct Stats {
@@ -32,6 +33,7 @@ struct Stats {
 };
 
 /*!
+ * \headerfile dht/dhtbase.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Interface for DHT class, this is to keep other things separate from the inner workings

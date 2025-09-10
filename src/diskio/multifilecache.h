@@ -15,6 +15,7 @@
 namespace bt
 {
 /*!
+ * \headerfile diskio/multifilecache.h
  * \author Joris Guisson
  * \brief Cache for multi file torrents.
  *

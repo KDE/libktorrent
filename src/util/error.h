@@ -12,6 +12,7 @@
 namespace bt
 {
 /*!
+    \headerfile util/error.h
     \author Joris Guisson
     \brief Exception thrown whenever an unrecoverable error occurs.
 */
@@ -30,6 +31,7 @@ public:
 };
 
 /*!
+ * \headerfile util/error.h
  * \brief Exception thrown when the user is a dummy.
  *
  * TODO: formalize when this should be used instead of Error

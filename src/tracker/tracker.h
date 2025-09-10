@@ -20,6 +20,7 @@ class QUrl;
 namespace bt
 {
 /*!
+ * \headerfile torrent/tracker.h
  * \brief Interface used by the Tracker to obtain the data it needs to know
  * when announcing.
  */
@@ -38,6 +39,7 @@ public:
 };
 
 /*!
+ * \headerfile torrent/tracker.h
  * \brief Base class for all tracker classes.
  */
 class KTORRENT_EXPORT Tracker : public PeerSource, public TrackerInterface

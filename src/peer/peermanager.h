@@ -28,6 +28,7 @@ class ConnectionLimit;
 const Uint32 MAX_SIMULTANIOUS_AUTHS = 20;
 
 /*!
+ * \headerfile peer/peermanager.h
  * \brief Interface that is notified whenever a piece is received.
  */
 class KTORRENT_EXPORT PieceHandler
@@ -41,6 +42,7 @@ public:
 };
 
 /*!
+ * \headerfile peer/peermanager.h
  * \author Joris Guisson
  * \brief Manages all the Peers for a given torrent.
  *
@@ -198,6 +200,7 @@ public:
     void loadPeerList(const QString &file);
 
     /*!
+     * \headerfile peer/peermanager.h
      * \brief Implements the visitor pattern for all Peers owned by the PeerManager.
      */
     class PeerVisitor

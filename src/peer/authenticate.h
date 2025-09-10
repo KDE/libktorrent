@@ -19,6 +19,7 @@ class Socks;
 namespace bt
 {
 /*!
+ * \headerfile peer/authenticate.h
  * \author Joris Guisson
  * \brief Connects to a Peer, then carries out the handshake.
  */

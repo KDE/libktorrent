@@ -37,6 +37,7 @@ enum TorrentStatus {
 };
 
 /*!
+ * \headerfile torrent/torrentstats.h
  * \brief Stores statistics about a torrent.
  */
 struct KTORRENT_EXPORT TorrentStats {

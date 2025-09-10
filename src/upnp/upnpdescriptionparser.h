@@ -13,6 +13,7 @@ namespace bt
 class UPnPRouter;
 
 /*!
+ * \headerfile torrent/upnpdescriptionparser.h
  * \author Joris Guisson
  *
  * \brief Parses the XML description of a router.

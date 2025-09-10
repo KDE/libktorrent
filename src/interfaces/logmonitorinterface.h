@@ -13,6 +13,7 @@ class QString;
 namespace bt
 {
 /*!
+ * \headerfile interfaces/logmonitorinterface.h
  * \author Joris Guisson
  * \brief Interface that is notified every time a log message is written.
  *

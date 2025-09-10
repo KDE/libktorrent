@@ -19,6 +19,7 @@
 namespace net
 {
 /*!
+ * \headerfile net/address.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Network address, contains an IP address and a port number.

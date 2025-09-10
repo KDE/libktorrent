@@ -17,6 +17,7 @@
 namespace bt
 {
 /*!
+ * \headerfile diskio/preallocationthread.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Thread to preallocate diskspace.

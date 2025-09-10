@@ -13,6 +13,7 @@
 namespace net
 {
 /*!
+ * \headerfile net/streamsocket.h
  * \brief Interface for receiving notifications when a StreamSocket sends data.
  */
 class StreamSocketListener
@@ -34,6 +35,7 @@ public:
 };
 
 /*!
+ * \headerfile net/streamsocket.h
  * \brief TrafficShapedSocket which provides a simple buffer as outbound data queue,
  * and a callback interface (StreamSocketListener) for notification of events.
  */

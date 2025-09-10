@@ -15,6 +15,7 @@ namespace utp
 class UTPServer;
 
 /*!
+ * \headerfile utp/utpserverthread.h
  * \brief Thread which runs a UTP server.
  */
 class KTORRENT_EXPORT UTPServerThread : public QThread

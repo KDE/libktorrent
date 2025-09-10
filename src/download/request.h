@@ -13,6 +13,7 @@ namespace bt
 class PieceDownloader;
 
 /*!
+ * \headerfile download/request.h
  * \author Joris Guisson
  * \brief Request of a piece sent to other peers.
  *

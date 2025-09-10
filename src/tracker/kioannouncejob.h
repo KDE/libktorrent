@@ -14,6 +14,7 @@
 namespace bt
 {
 /*!
+ * \headerfile torrent/kioannouncejob.h
  * \brief KIO::Job that announces to a tracker (a HTTP get request).
  */
 class KTORRENT_EXPORT KIOAnnounceJob : public KIO::Job

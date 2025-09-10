@@ -12,6 +12,7 @@
 namespace bt
 {
 /*!
+ * \headerfile util/bitset.h
  * \author Joris Guisson
  * \brief Represents a fixed-size sequence of bits.
  *

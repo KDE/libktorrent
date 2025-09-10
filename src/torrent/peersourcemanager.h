@@ -24,6 +24,7 @@ class TorrentControl;
 class PeerSource;
 
 /*!
+ * \headerfile torrent/peersourcemanager.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Manages all PeerSources for a given torrent.

@@ -24,6 +24,7 @@ class KClosestNodesSearch;
 const bt::Uint32 MAX_CONCURRENT_REQS = 16;
 
 /*!
+ * \headerfile dht/task.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Interface class that performs a task on K nodes provided by a KClosestNodesSearch.

@@ -13,6 +13,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/packednodecontainer.h
  * \brief Stores both nodes and nodes6 parameters of some DHT messages.
  */
 class PackedNodeContainer

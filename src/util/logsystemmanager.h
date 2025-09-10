@@ -16,6 +16,7 @@
 namespace bt
 {
 /*!
+    \headerfile util/logsystemmanager.h
     \brief Keeps track of all logging system ID's.
 */
 class KTORRENT_EXPORT LogSystemManager : public QObject

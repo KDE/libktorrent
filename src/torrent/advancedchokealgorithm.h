@@ -14,6 +14,7 @@ namespace bt
 struct TorrentStats;
 
 /*!
+    \headerfile torrent/advancedchokealgorithm.h
     \author Joris Guisson <joris.guisson@gmail.com>
     \brief Choking algorithm that prioritizes local and new peers, and deprioritizes peers that haven't uploaded much data or have low bandwidth.
 */

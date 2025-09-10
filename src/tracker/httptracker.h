@@ -20,6 +20,7 @@ class MetaData;
 namespace bt
 {
 /*!
+ * \headerfile torrent/httptracker.h
  * \author Joris Guisson
  * \brief Communicates with a HTTP tracker.
  *

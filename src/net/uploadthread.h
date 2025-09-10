@@ -16,6 +16,7 @@ namespace net
 class SocketMonitor;
 
 /*!
+    \headerfile net/uploadthread.h
     \author Joris Guisson <joris.guisson@gmail.com>
     \brief Thread which processes outgoing data.
 */

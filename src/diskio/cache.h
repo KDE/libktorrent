@@ -27,6 +27,7 @@ class TorrentFileInterface;
 class Job;
 
 /*!
+ * \headerfile diskio/cache.h
  * \author Joris Guisson
  * \brief Interface for managing temporary downloaded data.
  *

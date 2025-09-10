@@ -13,6 +13,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/findnodersp.h
  * \brief FindNode response message for DHT.
  */
 class KTORRENT_EXPORT FindNodeRsp : public RPCMsg, public PackedNodeContainer

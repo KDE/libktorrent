@@ -22,6 +22,7 @@ struct pollfd;
 namespace net
 {
 /*!
+ * \headerfile net/poll.h
  * \brief Interface that can be polled.
  */
 class KTORRENT_EXPORT PollClient
@@ -47,6 +48,7 @@ public:
 };
 
 /*!
+ * \headerfile net/poll.h
  * \brief Handles polling of sockets.
  */
 class KTORRENT_EXPORT Poll

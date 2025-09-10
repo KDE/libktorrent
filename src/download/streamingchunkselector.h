@@ -14,6 +14,7 @@
 namespace bt
 {
 /*!
+    \headerfile download/streamingchunkselector.h
     \brief ChunkSelector which supports streaming mode.
 
     It has a range of chunks which are to be downloaded sequentially. And it has a cursor, to support jumping around

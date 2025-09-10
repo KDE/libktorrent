@@ -18,6 +18,7 @@ class QUrl;
 namespace bt
 {
 /*!
+    \headerfile download/httpconnection.h
     \author Joris Guisson
 
     \brief HTTP connection for webseeding.

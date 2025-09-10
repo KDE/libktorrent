@@ -17,6 +17,7 @@ namespace net
 class TrafficShapedSocket;
 
 /*!
+ * \headerfile net/socketmonitor.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Monitors all sockets for upload and download traffic.

@@ -38,6 +38,7 @@ using CurChunkCItr = PtrMap<Uint32, ChunkDownload>::const_iterator;
 #define CURRENT_CHUNK_MAGIC 0xABCDEF00
 
 /*!
+ * \headerfile download/downloader.h
  * \brief The file-header used when saving the current downloads to a file.
  */
 struct CurrentChunksHeader {
@@ -48,6 +49,7 @@ struct CurrentChunksHeader {
 };
 
 /*!
+ * \headerfile download/downloader.h
  * \author Joris Guisson
  * \brief Manages the downloading for one torrent.
  *

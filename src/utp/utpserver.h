@@ -18,6 +18,7 @@
 namespace utp
 {
 /*!
+ * \headerfile utp/utpserver.h
  * \brief A UTP server that listens for UTP packets and manages all connections.
  */
 class KTORRENT_EXPORT UTPServer : public bt::ServerInterface, public Transmitter

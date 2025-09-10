@@ -12,6 +12,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/pingreq.h
  * \brief Ping request message in the DHT protocol.
  */
 class KTORRENT_EXPORT PingReq : public RPCMsg

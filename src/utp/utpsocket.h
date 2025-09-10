@@ -15,6 +15,7 @@
 namespace utp
 {
 /*!
+ * \headerfile utp/utpserversocket.h
  * \brief Socket for handling UTP connections.
  */
 class KTORRENT_EXPORT UTPSocket : public net::SocketDevice

@@ -17,6 +17,7 @@ class Cache;
 class PieceData;
 
 /*!
+ * \headerfile diskio/chunk.h
  * \author Joris Guisson
  * \brief Keeps track of a chunk of a file. This can contain multiple bittorrent pieces.
  *

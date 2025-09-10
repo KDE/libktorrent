@@ -22,6 +22,7 @@ class WaitJob;
 class PeerManager;
 
 /*!
+ * \headerfile torrent/trackermanager.h
  * \brief Manages all trackers for a given torrent.
  */
 class KTORRENT_EXPORT TrackerManager : public QObject, public bt::TrackersList, public TrackerDataSource

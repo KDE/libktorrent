@@ -27,6 +27,7 @@ class BDictNode;
 class BListNode;
 
 /*!
+ * \headerfile torrent/torrent.h
  * \brief A heirarchy of trackers for a torrent.
  */
 struct TrackerTier {
@@ -35,6 +36,7 @@ struct TrackerTier {
 };
 
 /*!
+ * \headerfile torrent/torrent.h
  * \author Joris Guisson
  *
  * \brief Listener base class, to get notified when the priority of a file changes.
@@ -50,6 +52,7 @@ public:
 };
 
 /*!
+ * \headerfile torrent/torrent.h
  * \author Joris Guisson
  * \brief Loads a .torrent file.
  *

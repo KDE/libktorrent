@@ -17,6 +17,7 @@ namespace bt
 class Log;
 
 /*!
+ * \headerfile util/sha1hash.h
  * \author Joris Guisson
  * \brief Stores a SHA-1 hash.
  *

@@ -21,6 +21,7 @@ namespace bt
 class BufferPool;
 
 /*!
+ * \headerfile util/bufferpool.h
  * \brief A fixed-capacity byte array that can be leased from a BufferPool.
  **/
 class KTORRENT_EXPORT Buffer
@@ -64,6 +65,7 @@ private:
 };
 
 /*!
+ * \headerfile util/bufferpool.h
  * \brief Keeps track of a pool of buffers.
  **/
 class KTORRENT_EXPORT BufferPool

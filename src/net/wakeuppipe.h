@@ -14,6 +14,7 @@
 namespace net
 {
 /*!
+    \headerfile net/wakeuppipe.h
     \brief A WakeUpPipe's purpose is to wakeup a select or poll call.
 
     It works by using a pipe

@@ -14,6 +14,7 @@ class PreallocationThread;
 class ChunkManager;
 
 /*!
+ * \headerfile diskio/preallocationjob.h
  * \brief Job to preallocates disk space for a torrent.
  */
 class KTORRENT_EXPORT PreallocationJob : public bt::Job

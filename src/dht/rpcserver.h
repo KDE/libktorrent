@@ -22,6 +22,7 @@ class Key;
 class DHT;
 
 /*!
+ * \headerfile dht/rpcserver.h
  * \author Joris Guisson
  *
  * \brief Handles incoming and outgoing RPC messages.

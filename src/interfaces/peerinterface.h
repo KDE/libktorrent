@@ -14,6 +14,7 @@
 namespace bt
 {
 /*!
+ * \headerfile interfaces/peerinterface.h
  * \author Joris Guisson
  * \brief Interface for a Peer.
  *
@@ -32,6 +33,7 @@ public:
     virtual ~PeerInterface();
 
     /*!
+     * \headerfile interfaces/peerinterface.h
      * \brief Information about the peer.
      */
     struct Stats {

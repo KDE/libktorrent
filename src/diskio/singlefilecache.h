@@ -13,6 +13,7 @@ namespace bt
 class CacheFile;
 
 /*!
+ * \headerfile diskio/singlefilecache.h
  * \author Joris Guisson
  * \brief Cache for single file torrents.
  *

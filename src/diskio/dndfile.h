@@ -15,6 +15,7 @@ namespace bt
 class TorrentFile;
 
 /*!
+ * \headerfile diskio/dndfile.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Special file where we keep the first and last chunk of a file which is marked as do not download.

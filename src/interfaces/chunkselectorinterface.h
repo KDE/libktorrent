@@ -19,6 +19,7 @@ class ChunkManager;
 class PieceDownloader;
 
 /*!
+ * \headerfile interfaces/chunkselectorinterface.h
  * \author Joris Guisson
  *
  * \brief Interface for selecting chunks to download.

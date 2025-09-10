@@ -13,6 +13,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/findnodereq.h
  * \brief FindNode request in the DHT protocol.
  */
 class KTORRENT_EXPORT FindNodeReq : public RPCMsg

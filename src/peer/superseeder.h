@@ -21,6 +21,7 @@ class PeerInterface;
 class BitSet;
 
 /*!
+    \headerfile peer/superseeder.h
     \brief Manages the superseeding extension.
 
     Superseeding is a way to achieve much higher seeding efficiences, thereby allowing a peer to use much less bandwidth to get a torrent seeded.

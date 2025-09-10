@@ -13,6 +13,7 @@
 namespace utp
 {
 /*!
+ * \headerfile utp/timevalue.h
  * \brief High precision time value.
  */
 class KTORRENT_EXPORT TimeValue

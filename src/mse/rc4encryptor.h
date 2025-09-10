@@ -19,6 +19,7 @@
 namespace mse
 {
 /*!
+ * \headerfile mse/rc4encryptor.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Uses the RC4 algorithm to encrypt and decrypt data.

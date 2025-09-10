@@ -25,6 +25,7 @@ class Peer;
 class PeerManager;
 
 /*!
+    \headerfile magnet/magnetdownloader.h
     \brief Tries to download the metadata associated with a MagnetLink.
 
     It basically has a Tracker (optional), a DHTPeerSource and a PeerManager.

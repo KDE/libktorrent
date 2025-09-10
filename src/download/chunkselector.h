@@ -19,6 +19,7 @@ class PeerManager;
 class PieceDownloader;
 
 /*!
+ * \headerfile download/chunkselector.h
  * \author Joris Guisson
  *
  * \brief Selects which Chunks to download.

@@ -32,6 +32,7 @@ UTP header:
 */
 
 /*!
+ * \headerfile utp/utpprotocol.h
  * \brief The header of a UTP packet.
  */
 struct KTORRENT_EXPORT Header {
@@ -51,6 +52,7 @@ struct KTORRENT_EXPORT Header {
 };
 
 /*!
+ * \headerfile utp/utpprotocol.h
  * \brief The selective ACK extension part of a UTP packet header.
  */
 struct SelectiveAck {
@@ -67,6 +69,7 @@ struct SelectiveAck {
 };
 
 /*!
+ * \headerfile utp/utpprotocol.h
  * \brief An arbitrary extension of a UTP packet header.
  */
 struct ExtensionBits {
@@ -76,6 +79,7 @@ struct ExtensionBits {
 };
 
 /*!
+ * \headerfile utp/utpprotocol.h
  * \brief An unknown extension of a UTP packet header.
  */
 struct UnknownExtension {
@@ -159,6 +163,7 @@ inline void Ack(SelectiveAck *sack, bt::Uint16 bit)
 }
 
 /*!
+ * \headerfile utp/utpprotocol.h
  * \brief Parses UTP packets.
  */
 class KTORRENT_EXPORT PacketParser

@@ -15,6 +15,7 @@ class PeerInterface;
 class TorrentFileInterface;
 
 /*!
+ * \headerfile interfaces/monitorinterface.h
  * \author Joris Guisson
  * \brief Interface for classes who want to monitor a TorrentInterface.
  *

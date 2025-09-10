@@ -14,6 +14,7 @@
 namespace net
 {
 /*!
+ * \headerfile net/addressresolver.h
  * \brief Resolves hostnames into Address objects.
  *
  * This class will clean itself up, after it is done using deleteLater.

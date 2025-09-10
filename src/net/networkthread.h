@@ -17,6 +17,7 @@ namespace net
 class SocketMonitor;
 
 /*!
+    \headerfile net/networkthread.h
     \author Joris Guisson <joris.guisson@gmail.com>
 
     \brief Base class for the two networking threads. Handles the socket groups.

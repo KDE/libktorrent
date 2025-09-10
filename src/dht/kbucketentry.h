@@ -14,6 +14,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/kbucketentry.h
  * \author Joris Guisson
  *
  * \brief Entry in a KBucket, it basically contains an ip_address of a node, the udp port of the node and a node_id.
@@ -103,6 +104,7 @@ private:
 };
 
 /*!
+ * \headerfile dht/kbucketentry.h
  * \brief Convenience wrapper around a std::set of KBucketEntry.
  */
 class KBucketEntrySet : public std::set<KBucketEntry>

@@ -19,6 +19,7 @@ namespace bt
 class PeerManager;
 
 /*!
+ * \headerfile torrent/server.h
  * \author Joris Guisson
  *
  * \brief Listens for incoming connections, does the handshake, then hands off the new connections to a PeerManager.

@@ -13,6 +13,7 @@
 namespace net
 {
 /*!
+ * \headerfile net/downloadthread.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Thread which processes incoming data

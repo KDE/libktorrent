@@ -20,6 +20,7 @@ namespace bt
 class PeerInterface;
 
 /*!
+ * \headerfile peer/packetreader.h
  * \brief A partially or fully received BitTorrent packet that is yet to be processed.
  */
 struct IncomingPacket {
@@ -65,6 +66,7 @@ public:
 };
 
 /*!
+ * \headerfile peer/packetreader.h
  * \author Joris Guisson
  * \brief Chops up the raw byte stream from a socket into bittorrent packets.
  */

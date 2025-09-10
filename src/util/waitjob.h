@@ -16,6 +16,7 @@
 namespace bt
 {
 /*!
+ * \headerfile util/waitjob.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief KIO::Job to wait for a certain amount of time or until one or more ExitOperation's have

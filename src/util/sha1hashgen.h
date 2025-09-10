@@ -15,6 +15,7 @@ class QCryptographicHash;
 namespace bt
 {
 /*!
+ * \headerfile util/sha1hashgen.h
  * \author Joris Guisson
  *
  * \brief Generator for a SHA-1 hash.

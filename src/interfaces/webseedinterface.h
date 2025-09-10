@@ -14,6 +14,7 @@
 namespace bt
 {
 /*!
+ * \headerfile interfaces/webseedinterface.h
  * \brief Interface for WebSeeds.
  */
 class KTORRENT_EXPORT WebSeedInterface

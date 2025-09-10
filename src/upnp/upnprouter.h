@@ -23,6 +23,7 @@ class HTTPRequest;
 class WaitJob;
 
 /*!
+ * \headerfile torrent/upnprouter.h
  * \brief Structure describing a UPnP service found in an XML file.
  */
 struct KTORRENT_EXPORT UPnPService {
@@ -56,6 +57,7 @@ struct KTORRENT_EXPORT UPnPService {
 };
 
 /*!
+ * \headerfile torrent/upnprouter.h
  * \brief Struct to hold the description of a UPnP device.
  */
 struct KTORRENT_EXPORT UPnPDeviceDescription {
@@ -74,6 +76,7 @@ struct KTORRENT_EXPORT UPnPDeviceDescription {
 };
 
 /*!
+ * \headerfile torrent/upnprouter.h
  * \author Joris Guisson
  *
  * \brief Represents a UPnP enabled router.
@@ -148,6 +151,7 @@ public:
     void undoForward(const net::Port &port, bt::WaitJob *waitjob = nullptr);
 
     /*!
+        \headerfile torrent/upnprouter.h
         \brief Implements the visitor pattern for port forwarding.
 
         In order to iterate over all forwardings, the visitor pattern must be used.

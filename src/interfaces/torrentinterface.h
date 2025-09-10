@@ -51,6 +51,7 @@ enum AutoStopReason {
 };
 
 /*!
+ * \headerfile interfaces/torrentinterface.h
  * \brief A DHT node.
  */
 struct DHTNode {
@@ -64,6 +65,7 @@ enum TorrentFeature {
 };
 
 /*!
+ * \headerfile interfaces/torrentinterface.h
  * \author Joris Guisson
  * \brief Interface for an object which controls one torrent.
  *

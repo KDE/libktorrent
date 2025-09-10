@@ -17,6 +17,7 @@ class ChunkManager;
 const Uint32 ALLOWED_FAST_SIZE = 8;
 
 /*!
+ * \headerfile peer/peeruploader.h
  * \author Joris Guisson
  * \brief Uploads pieces to a Peer.
  *

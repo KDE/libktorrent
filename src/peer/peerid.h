@@ -12,6 +12,7 @@
 namespace bt
 {
 /*!
+ * \headerfile peer/peerid.h
  * \author Joris Guisson
  * \brief Represents a Peer's ID.
  */

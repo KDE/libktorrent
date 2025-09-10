@@ -19,6 +19,7 @@ namespace net
 class ReverseResolverThread;
 
 /*!
+    \headerfile net/reverseresolver.h
     \brief Resolves an IP address into a hostname.
 
     This should be threated as fire and forget objects, when using them asynchronously.
@@ -62,6 +63,7 @@ private:
 };
 
 /*!
+ * \headerfile net/reverseresolver.h
  * \brief Thread that runs a list of ReverseResolver.
  */
 class ReverseResolverThread : public QThread

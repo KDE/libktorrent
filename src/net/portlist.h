@@ -18,6 +18,7 @@ enum Protocol {
 };
 
 /*!
+ * \headerfile net/portlist.h
  * \brief A network port.
  */
 struct KTORRENT_EXPORT Port {
@@ -33,6 +34,7 @@ struct KTORRENT_EXPORT Port {
 };
 
 /*!
+ * \headerfile net/portlist.h
  * \brief Listener for the PortList.
  */
 class KTORRENT_EXPORT PortListener
@@ -56,6 +58,7 @@ public:
 };
 
 /*!
+ * \headerfile net/portlist.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief List of ports which are currently being used.

@@ -26,6 +26,7 @@ class Chunk;
 class Peer;
 
 /*!
+ * \headerfile download/packet.h
  * \author Joris Guisson
  *
  * \brief Packet of data, which gets sent to a Peer.

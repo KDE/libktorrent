@@ -20,6 +20,7 @@ namespace net
 class Address;
 
 /*!
+    \headerfile net/serversocket.h
     \brief Convenience class to create and bind a server socket.
 
     Internally it combines a QSocketNotifier and a net::Socket.
@@ -31,6 +32,7 @@ public:
     using Ptr = std::unique_ptr<ServerSocket>;
 
     /*!
+     * \headerfile net/serversocket.h
      * \brief Interface class to handle new connections from a ServerSocket.
      */
     class KTORRENT_EXPORT ConnectionHandler
@@ -49,6 +51,7 @@ public:
     };
 
     /*!
+     * \headerfile net/serversocket.h
      * \brief Interface class to handle data from a ServerSocket.
      */
     class KTORRENT_EXPORT DataHandler

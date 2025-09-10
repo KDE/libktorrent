@@ -12,6 +12,7 @@
 namespace bt
 {
 /*!
+ * \headerfile util/ptrmap.h
  * \author Joris Guisson
  * \brief Map of pointers with an optional auto-delete feature.
  *

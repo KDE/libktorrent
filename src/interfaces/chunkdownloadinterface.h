@@ -12,6 +12,7 @@
 namespace bt
 {
 /*!
+ * \headerfile interfaces/chunkdownloadinterface.h
  * \author Joris Guisson
  * \brief Interface for a ChunkDownload.
  *
@@ -24,6 +25,7 @@ public:
     virtual ~ChunkDownloadInterface();
 
     /*!
+     * \headerfile interfaces/chunkdownloadinterface.h
      * \brief Statistics about the chunk.
      */
     struct Stats {

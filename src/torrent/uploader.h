@@ -15,6 +15,7 @@ class Peer;
 class ChunkManager;
 
 /*!
+ * \headerfile torrent/uploader.h
  * \author Joris Guisson
  *
  * \brief Manages the uploading of a torrent.

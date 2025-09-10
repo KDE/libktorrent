@@ -12,6 +12,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/pingrsp.h
  * \brief Ping response message in the DHT protocol.
  */
 class KTORRENT_EXPORT PingRsp : public RPCMsg

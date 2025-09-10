@@ -14,6 +14,7 @@
 namespace bt
 {
 /*!
+ * \headerfile util/decompressfilejob.h
  * \brief Thread which decompresses a single file.
  */
 class KTORRENT_EXPORT DecompressThread : public QThread
@@ -42,6 +43,7 @@ private:
 };
 
 /*!
+ * \headerfile util/decompressfilejob.h
  * \brief Decompresses a file and removes it when completed successfully.
  */
 class KTORRENT_EXPORT DecompressFileJob : public KIO::Job

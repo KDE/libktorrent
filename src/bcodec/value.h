@@ -13,6 +13,7 @@
 namespace bt
 {
 /*!
+ * \headerfile bcodec/value.h
  * \author Joris Guisson
  * \brief Acts like a union for bencoded data types.
  */

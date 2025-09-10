@@ -17,6 +17,7 @@ namespace bt
 class Torrent;
 
 /*!
+ * \headerfile datachecker/datachecker.h
  * \author Joris Guisson
  * \brief Interface for checking which chunks of a torrent are downloaded.
  *

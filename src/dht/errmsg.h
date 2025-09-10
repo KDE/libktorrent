@@ -12,6 +12,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/errmsg.h
  * \brief Error message in the DHT protocol.
  */
 class KTORRENT_EXPORT ErrMsg : public RPCMsg

@@ -16,6 +16,7 @@ namespace dht
 class DHT;
 
 /*!
+ * \headerfile dht/taskmanager.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Manages all dht tasks.

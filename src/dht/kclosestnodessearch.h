@@ -15,6 +15,7 @@ namespace dht
 class PackedNodeContainer;
 
 /*!
+ * \headerfile dht/kclosestnodessearch.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Stores the search results during a K closests nodes search.

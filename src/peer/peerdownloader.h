@@ -18,6 +18,7 @@ class Request;
 class Piece;
 
 /*!
+ * \headerfile peer/peerdownloader.h
  * \brief Request with a timestamp.
  */
 struct TimeStampedRequest {
@@ -77,6 +78,7 @@ struct TimeStampedRequest {
 };
 
 /*!
+ * \headerfile peer/peerdownloader.h
  * \author Joris Guisson
  * \brief Downloads pieces from a Peer.
  */

@@ -21,6 +21,7 @@ enum TrackerStatus {
 };
 
 /*!
+ * \headerfile interfaces/trackerinterface.h
  * \brief Interface for trackers to be used in plugins.
  */
 class KTORRENT_EXPORT TrackerInterface

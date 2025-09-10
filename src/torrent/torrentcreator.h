@@ -18,6 +18,7 @@ class BEncoder;
 class TorrentControl;
 
 /*!
+ * \headerfile torrent/torrentcreator.h
  * \author Joris Guisson
  * \brief Generates torrent files.
  *

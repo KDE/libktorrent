@@ -13,6 +13,7 @@
 namespace net
 {
 /*!
+    \headerfile net/speed.h
     \author Joris Guisson <joris.guisson@gmail.com>
 
     \brief Measures the download and upload speed.

@@ -15,6 +15,7 @@ namespace bt
 class TorrentControl;
 
 /*!
+ * \headerfile torrent/timeestimator.h
  * \brief Simple queue class for download/upload-rate samples.
  *
  * Optimized for speed and size without possibility to dynamically resize itself.
@@ -59,6 +60,7 @@ private:
 };
 
 /*!
+ * \headerfile torrent/timeestimator.h
  * \brief Estimates the time remaining when downloading a torrent.
  *
  * It will use different algorithms for different download phases.

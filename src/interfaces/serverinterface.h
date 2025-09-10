@@ -19,6 +19,7 @@ class SHA1Hash;
 class PeerManager;
 
 /*!
+ * \headerfile interfaces/serverinterface.h
  * \brief Interface for all servers which accept connections.
  */
 class KTORRENT_EXPORT ServerInterface : public QObject

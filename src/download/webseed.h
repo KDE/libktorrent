@@ -25,6 +25,7 @@ class Chunk;
 class WebSeedChunkDownload;
 
 /*!
+    \headerfile download/webseed.h
     \author Joris Guisson
     \brief Handles downloading from a webseed.
 */
@@ -198,6 +199,7 @@ private:
 };
 
 /*!
+ * \headerfile download/webseed.h
  * \brief Handles the download of one Chunk from a WebSeed.
  */
 class WebSeedChunkDownload : public ChunkDownloadInterface

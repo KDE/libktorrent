@@ -18,6 +18,7 @@ class UTMetaData;
 const int METADATA_PIECE_SIZE = 16 * 1024;
 
 /*!
+ * \headerfile manget/metadatadownload.h
  * \brief Handles the downloading of torrent metadata via the UT metadata extension (BEP 0009).
  */
 class MetadataDownload

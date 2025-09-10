@@ -11,6 +11,7 @@
 namespace bt
 {
 /*!
+ * \headerfile datachecker/singledatachecker.h
  * \author Joris Guisson
  *
  * \brief DataChecker for single file torrents.

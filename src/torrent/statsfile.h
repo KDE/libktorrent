@@ -13,6 +13,7 @@
 namespace bt
 {
 /*!
+ * \headerfile torrent/statsfile.h
  * \author Ivan Vasic <ivasic@gmail.com>
  * \brief Loads and stores torrent stats in a file.
  */

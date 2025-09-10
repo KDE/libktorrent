@@ -23,6 +23,7 @@ class TorrentInterface;
 class BitSet;
 
 /*!
+    \headerfile torrent/torrentfilestream.h
     \brief QIODevice which streams a file of a torrent or the whole torrent (for single file torrents).
 
     This object should not be manually constructed.

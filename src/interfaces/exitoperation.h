@@ -13,6 +13,7 @@
 namespace bt
 {
 /*!
+ * \headerfile interfaces/exitoperation.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Object to derive from for operations which need to be performed at exit.
@@ -39,6 +40,7 @@ Q_SIGNALS:
 };
 
 /*!
+ * \headerfile interfaces/exitoperation.h
  * \brief An ExitOperation which waits for a KJob.
  */
 class ExitJobOperation : public ExitOperation

@@ -24,6 +24,7 @@ namespace mse
 class RC4Encryptor;
 
 /*!
+ * \headerfile mse/encryptedpacketsocket.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Wrapper around a TCP socket which handles RC4 encryption.

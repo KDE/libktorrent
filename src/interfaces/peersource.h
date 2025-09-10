@@ -17,6 +17,7 @@ namespace bt
 class WaitJob;
 
 /*!
+ * \headerfile interfaces/peersource.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Interface for all classes that will provide potential peers for torrents.

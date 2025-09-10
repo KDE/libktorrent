@@ -16,6 +16,7 @@ class QTextCodec;
 namespace bt
 {
 /*!
+ * \headerfile interfaces/torrentfileinterface.h
  * \author Joris Guisson
  * \brief Interface for a file in a multifile torrent.
  */

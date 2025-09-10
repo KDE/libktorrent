@@ -26,6 +26,7 @@ class LocalWindow;
 class Transmitter;
 
 /*!
+ * \headerfile utp/connection.h
  * \brief Keeps track of a single UTP connection.
  */
 class KTORRENT_EXPORT Connection : public QObject, public Retransmitter
@@ -38,6 +39,7 @@ public:
     };
 
     /*!
+     * \headerfile utp/connection.h
      * \brief Thrown when a transmission error occurs, server should kill the connection if it happens.
      */
     class TransmissionError
@@ -49,6 +51,7 @@ public:
     };
 
     /*!
+     * \headerfile utp/connection.h
      * \brief Statistics about the Connection.
      */
     struct Stats {
@@ -213,6 +216,7 @@ private:
 };
 
 /*!
+ * \headerfile utp/connection.h
  * \brief Interface class for transmitting packets and notifying if a connection becomes readable or writeable.
  */
 class KTORRENT_EXPORT Transmitter

@@ -35,6 +35,7 @@ class PeerManager;
 class BitSet;
 
 /*!
+ * \headerfile peer/peer.h
  * \author Joris Guisson
  * \brief Manages the connection with a peer.
  *

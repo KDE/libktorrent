@@ -13,6 +13,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/getpeersrsp.h
  * \brief GetPeers response message.
  */
 class KTORRENT_EXPORT GetPeersRsp : public RPCMsg, public PackedNodeContainer

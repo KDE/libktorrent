@@ -16,6 +16,7 @@ class Torrent;
 class DataChecker;
 
 /*!
+    \headerfile datachecker/datacheckerthread.h
     \author Joris Guisson <joris.guisson@gmail.com>
 
     \brief Thread which runs a DataChecker.

@@ -14,6 +14,7 @@
 namespace bt
 {
 /*!
+ * \headerfile util/compressfilejob.h
  * \brief Thread compresses a file using gzip and removes it when completed successfully.
  */
 class KTORRENT_EXPORT CompressThread : public QThread
@@ -41,6 +42,7 @@ private:
 };
 
 /*!
+ * \headerfile util/compressfilejob.h
  * \brief KIO::Job that compresses a file using gzip and removes it when completed successfully.
  */
 class KTORRENT_EXPORT CompressFileJob : public KIO::Job

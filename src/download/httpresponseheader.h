@@ -11,6 +11,7 @@
 #include <QString>
 
 /*!
+ * \headerfile download/httpresponseheader.h
  * \brief Response header information for HTTP.
  */
 class HttpResponseHeader

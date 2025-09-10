@@ -18,6 +18,7 @@ class BDictNode;
 class BValueNode;
 
 /*!
+ * \headerfile bcodec/bdecoder.h
  * \author Joris Guisson
  * \brief Decodes bencoded data.
  */

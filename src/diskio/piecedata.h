@@ -23,6 +23,7 @@ class SHA1Hash;
 class SHA1HashGen;
 
 /*!
+    \headerfile diskio/piecedata.h
     \brief Holds the data of a piece of a chunk.
 
     It has a reference counter.

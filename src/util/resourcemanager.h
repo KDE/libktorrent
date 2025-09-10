@@ -19,6 +19,7 @@ namespace bt
 class ResourceManager;
 
 /*!
+    \headerfile util/resourcemanager.h
     \brief Represents a scarce resource which must be acquired from a ResourceManager.
 
     The ResourceManager will notify the Resource when it has been acquired.
@@ -50,6 +51,7 @@ private:
 };
 
 /*!
+ * \headerfile util/resourcemanager.h
  * \brief Distributes resources equally over several groups, ensuring that each group gets its fair share.
  */
 class KTORRENT_EXPORT ResourceManager

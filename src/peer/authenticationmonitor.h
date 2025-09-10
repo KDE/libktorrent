@@ -16,6 +16,7 @@ namespace bt
 class AuthenticateBase;
 
 /*!
+    \headerfile peer/authenticationmonitor.h
     \author Joris Guisson <joris.guisson@gmail.com>
 
     \brief Singleton that monitors ongoing authentication attempts.

@@ -16,6 +16,7 @@
 namespace net
 {
 /*!
+ * \headerfile net/packetsocket.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Extends the TrafficShapedSocket with outbound bittorrent packet queues.

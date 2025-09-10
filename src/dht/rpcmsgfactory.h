@@ -13,6 +13,7 @@
 namespace dht
 {
 /*!
+ * \headerfile dht/rpcmsgfactory.h
  * \brief Interface to resolve the method of an RPC call given a message transaction ID.
  */
 class RPCMethodResolver
@@ -27,6 +28,7 @@ public:
 };
 
 /*!
+ * \headerfile dht/rpcmsgfactory.h
  * \brief Creates RPC message objects out of a BDictNode.
  */
 class KTORRENT_EXPORT RPCMsgFactory

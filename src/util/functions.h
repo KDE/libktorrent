@@ -174,6 +174,7 @@ QString hex(T val)
 }
 
 /*!
+ * \headerfile util/functions.h
  * \brief Provides access serialization for recursive function calls.
  */
 struct KTORRENT_EXPORT RecursiveEntryGuard {

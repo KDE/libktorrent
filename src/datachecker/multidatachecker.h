@@ -15,6 +15,7 @@
 namespace bt
 {
 /*!
+ * \headerfile datachecker/multidatachecker.h
  * \author Joris Guisson
  * \brief DataChecker for multi-file torrents.
  */

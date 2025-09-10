@@ -14,6 +14,7 @@
 namespace bt
 {
 /*!
+    \headerfile magnet/magnetlink.h
     \brief Represents a magnet link.
 
     magnet links have the format:

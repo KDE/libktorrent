@@ -14,6 +14,7 @@ namespace bt
 class DataCheckerThread;
 
 /*!
+ * \headerfile datachecker/datacheckerjob.h
  * \brief Job which runs a DataChecker.
  */
 class KTORRENT_EXPORT DataCheckerJob : public bt::Job, public Resource

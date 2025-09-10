@@ -15,6 +15,7 @@ struct TrackerTier;
 class TrackerInterface;
 
 /*!
+ * \headerfile interfaces/trackerslist.h
  * \brief The combined status of all trackers in a TrackersList.
  */
 struct TrackersStatusInfo {
@@ -25,6 +26,7 @@ struct TrackersStatusInfo {
 };
 
 /*!
+ * \headerfile interfaces/trackerslist.h
  * \author Ivan Vasić <ivasic@gmail.com>
  *
  * \brief This interface is used to provide access to AnnounceList object which holds a list of available trackers for a torrent.

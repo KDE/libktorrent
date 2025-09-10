@@ -21,6 +21,7 @@ namespace bt
 class BListNode;
 
 /*!
+ * \headerfile bcodec/bnode.h
  * \author Joris Guisson
  * \brief Base class for a node in a bencoded piece of data.
  *
@@ -78,6 +79,7 @@ private:
 };
 
 /*!
+ * \headerfile bcodec/bnode.h
  * \author Joris Guisson
  * \brief Represents a value (string, byte array or int) in bencoded data.
  *
@@ -99,6 +101,7 @@ public:
 };
 
 /*!
+ * \headerfile bcodec/bnode.h
  * \author Joris Guisson
  * \brief Represents a dictionary in bencoded data.
  */
@@ -176,6 +179,7 @@ public:
 };
 
 /*!
+ * \headerfile bcodec/bnode.h
  * \author Joris Guisson
  * \brief Represents a list in bencoded data.
  */

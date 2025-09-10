@@ -15,6 +15,7 @@
 namespace net
 {
 /*!
+ * \headerfile net/socks.h
  * \author Joris Guisson
  *
  * \brief Handles the SOCKSv5 protocol.

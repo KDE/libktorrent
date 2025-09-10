@@ -16,6 +16,7 @@ class TorrentControl;
 struct TrackerTier;
 
 /*!
+ * \headerfile interfaces/queuemanagerinterface.h
  * \brief Interface that should own all TorrentInterface's, and is used to ensure a torrent isn't loaded twice.
  */
 class KTORRENT_EXPORT QueueManagerInterface

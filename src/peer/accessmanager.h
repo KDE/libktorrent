@@ -17,6 +17,7 @@ class BlockListInterface;
 class BadPeersList;
 
 /*!
+    \headerfile peer/accessmanager.h
     \author Joris Guisson
 
     \brief Determines whether we allow an IP to connect to us.

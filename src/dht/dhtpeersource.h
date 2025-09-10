@@ -22,6 +22,7 @@ class DHTBase;
 class AnnounceTask;
 
 /*!
+    \headerfile dht/dhtpeersouce.h
     \author Joris Guisson <joris.guisson@gmail.com>
     \brief Uses DHT to find peers.
 */

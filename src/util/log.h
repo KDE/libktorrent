@@ -47,6 +47,7 @@ namespace bt
 class LogMonitorInterface;
 
 /*!
+ * \headerfile util/log.h
  * \author Joris Guisson
  * \brief Writes messages to a log file.
  *

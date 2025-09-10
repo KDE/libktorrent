@@ -30,6 +30,7 @@ const bt::Uint32 BUCKET_MAGIC_NUMBER = 0xB0C4B0C4;
 const bt::Uint32 BUCKET_REFRESH_INTERVAL = 15 * 60 * 1000;
 
 /*!
+ * \headerfile dht/kbucket.h
  * \author Joris Guisson
  *
  * \brief A KBucket is just a list of KBucketEntry objects.
@@ -68,6 +69,7 @@ public:
     bool splitAllowed() const;
 
     /*!
+     * \headerfile dht/kbucket.h
      * \brief The exception thrown when attempting to split a KBucket that can only contain a single key.
      */
     class UnableToSplit

@@ -15,6 +15,7 @@ class Node;
 class RPCServer;
 
 /*!
+ * \headerfile dht/nodelookup.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Task to do a node lookup.

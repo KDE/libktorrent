@@ -11,6 +11,7 @@
 namespace bt
 {
 /*!
+ * \headerfile download/piece.h
  * \author Joris Guisson
  * \brief A piece in a torrent.
  */

@@ -14,6 +14,7 @@
 namespace mse
 {
 /*!
+ * \headerfile mse/bigint.h
  * \author Joris Guisson <joris.guisson@gmail.com>
  *
  * \brief Holds an arbitrary large integer.

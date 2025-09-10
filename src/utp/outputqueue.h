@@ -19,6 +19,7 @@
 namespace utp
 {
 /*!
+ * \headerfile utp/outputqueue.h
  * \brief Manages the send queue of all UTP server sockets.
  */
 class OutputQueue

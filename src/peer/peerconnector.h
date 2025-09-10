@@ -22,6 +22,7 @@ class Authenticate;
 class PeerManager;
 
 /*!
+ * \headerfile peer/peerconnector.h
  * \brief Connects to a peer.
  */
 class KTORRENT_EXPORT PeerConnector : public Resource

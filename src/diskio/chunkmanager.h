@@ -28,6 +28,7 @@ class CacheFactory;
 class Job;
 
 /*!
+ * \headerfile diskio/chunkmanager.h
  * \brief Header used when saving the indices of Chunks that are not yet downloaded.
  */
 struct NewChunkHeader {
@@ -36,6 +37,7 @@ struct NewChunkHeader {
 };
 
 /*!
+ * \headerfile diskio/chunkmanager.h
  * \author Joris Guisson
  *
  * \brief Manages all Chunks and the cache file, where all the chunk's are stored.

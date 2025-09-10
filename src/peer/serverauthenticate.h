@@ -11,6 +11,7 @@
 namespace bt
 {
 /*!
+ * \headerfile peer/serverauthenticate.h
  * \author Joris Guisson
  *
  * \brief Manages the handshake of incoming connections on the Server.
