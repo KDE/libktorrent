@@ -89,7 +89,7 @@ public:
     const BitSet &excludedChunksBitSet() const override;
     const BitSet &onlySeedChunksBitSet() const override;
     bool changeTorDir(const QString &new_dir) override;
-    bool changeOutputDir(const QString &new_dir, int flags) override;
+    bool changeOutputDir(const QString &new_dir, ChangeOutputOptions flags) override;
     void rollback() override;
     void setDisplayName(const QString &n) override;
     TrackersList *getTrackersList() override;

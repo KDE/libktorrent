@@ -169,19 +169,21 @@ public:
      */
     virtual bool changeTorDir(const QString &new_dir) = 0;
 
-    enum ChangeOutputFlags {
+    enum ChangeOutputOption {
+        NO_OPTIONS = 0,
         MOVE_FILES = 1,
         FULL_PATH = 2,
     };
+    Q_DECLARE_FLAGS(ChangeOutputOptions, ChangeOutputOption)
 
     /*!
      * Change to a new data dir. If this fails
      * we will fall back on the old directory.
      * \param new_dir The new directory
-     * \param flags The OR of ChangeOutputFlags
+     * \param flags A combination of ChangeOutputOption
      * \return true upon succes
      */
-    virtual bool changeOutputDir(const QString &new_dir, int flags) = 0;
+    virtual bool changeOutputDir(const QString &new_dir, ChangeOutputOptions flags = bt::TorrentInterface::NO_OPTIONS) = 0;
 
     /*!
      * Roll back the previous changeDataDir call.

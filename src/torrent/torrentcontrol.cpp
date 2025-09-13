@@ -692,7 +692,7 @@ bool TorrentControl::changeTorDir(const QString &new_dir)
     return true;
 }
 
-bool TorrentControl::changeOutputDir(const QString &ndir, int flags)
+bool TorrentControl::changeOutputDir(const QString &ndir, ChangeOutputOptions flags)
 {
     // check if torrent is running and stop it before moving data
     QString new_dir = ndir;
