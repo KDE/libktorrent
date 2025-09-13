@@ -34,13 +34,6 @@ public:
     TorrentFileInterface(Uint32 index, const QString &path, Uint64 size);
     ~TorrentFileInterface() override;
 
-    enum FileType {
-        UNKNOWN,
-        AUDIO,
-        VIDEO,
-        NORMAL,
-    };
-
     //! Get the index of the file
     Uint32 getIndex() const
     {
@@ -186,6 +179,13 @@ public:
     }
 
 protected:
+    enum FileType {
+        UNKNOWN,
+        AUDIO,
+        VIDEO,
+        NORMAL,
+    };
+
     Uint32 index;
     Uint32 first_chunk;
     Uint32 last_chunk;

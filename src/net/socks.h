@@ -31,12 +31,6 @@ public:
         FAILED,
     };
 
-    enum SetupState {
-        NONE,
-        AUTH_REQUEST_SENT,
-        USERNAME_AND_PASSWORD_SENT,
-        CONNECT_REQUEST_SENT,
-    };
     Socks(mse::EncryptedPacketSocket *sock, const Address &dest);
     ~Socks() override;
 
@@ -95,6 +89,13 @@ private Q_SLOTS:
     void resolved(net::AddressResolver *ar);
 
 private:
+    enum SetupState {
+        NONE,
+        AUTH_REQUEST_SENT,
+        USERNAME_AND_PASSWORD_SENT,
+        CONNECT_REQUEST_SENT,
+    };
+
     mse::EncryptedPacketSocket *sock;
     Address dest;
     State state;

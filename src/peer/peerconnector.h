@@ -27,13 +27,6 @@ class PeerManager;
 class KTORRENT_EXPORT PeerConnector : public Resource
 {
 public:
-    enum Method {
-        TCP_WITH_ENCRYPTION,
-        TCP_WITHOUT_ENCRYPTION,
-        UTP_WITH_ENCRYPTION,
-        UTP_WITHOUT_ENCRYPTION,
-    };
-
     PeerConnector(const net::Address &addr, bool local, PeerManager *pman, ConnectionLimit::Token::Ptr token);
     ~PeerConnector() override;
 
@@ -57,7 +50,13 @@ public:
 private:
     void acquired() override;
 
-private:
+    enum Method {
+        TCP_WITH_ENCRYPTION,
+        TCP_WITHOUT_ENCRYPTION,
+        UTP_WITH_ENCRYPTION,
+        UTP_WITHOUT_ENCRYPTION,
+    };
+
     class Private;
     std::unique_ptr<Private> d;
 };
