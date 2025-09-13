@@ -34,12 +34,6 @@ typedef enum {
     EXCLUDED = 10,
 } Priority;
 
-enum ConfirmationResult {
-    KEEP_DATA,
-    THROW_AWAY_DATA,
-    CANCELED,
-};
-
 const Uint32 MAX_MSGLEN = 9 + 131072;
 const Uint16 MIN_PORT = 6881;
 const Uint16 MAX_PORT = 6889;

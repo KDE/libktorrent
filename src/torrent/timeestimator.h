@@ -25,9 +25,7 @@ public:
     SampleQueue();
     ~SampleQueue();
 
-    enum {
-        SAMPLE_COUNT_MAX = 20,
-    };
+    static constexpr auto SAMPLE_COUNT_MAX = 20;
 
     /*!
      * Inserts new sample into the queue. The oldest sample is overwritten.
@@ -69,14 +67,6 @@ public:
     static const int NEVER = INT_MAX;
     static const int ALREADY_FINISHED = 0;
 
-    enum ETAlgorithm {
-        ETA_KT, // ktorrent default algorithm - combination of the following according to our tests
-        ETA_CSA, // current speed algorithm
-        ETA_GASA, // global average speed algorithm
-        ETA_WINX, // window of X algorithm
-        ETA_MAVG // moving average algorithm
-    };
-
     TimeEstimator(TorrentControl *tc);
     ~TimeEstimator();
 
@@ -84,9 +74,16 @@ public:
     int estimate();
 
 private:
+    //! global average speed algorithm
     int estimateGASA();
+
+    //! window of X algorithm
     int estimateWINX();
+
+    //! moving average algorithm
     int estimateMAVG();
+
+    //! ktorrent default algorithm - combination of the following according to our tests
     int estimateKT();
 
     Uint32 sample() const;
