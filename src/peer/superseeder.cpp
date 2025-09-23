@@ -116,19 +116,21 @@ void SuperSeeder::sendChunk(PeerInterface *peer)
     Uint32 start = QRandomGenerator::global()->bounded(num_chunks);
     Uint32 chunk = (start + 1) % num_chunks;
     Uint32 alternative = num_chunks;
+    Uint32 alternative_num_owners = std::numeric_limits<Uint32>::max();
     while (chunk != start) {
         chunk = (chunk + 1) % num_chunks;
         if (bs.get(chunk))
             continue;
 
-        // If we can find a chunk which nobody has, use that
-        // keep track of alternatives, if none is found
-        if (chunk_counter->get(chunk) - num_seeders == 0) {
+        // Search for a chunk which no downloader has, or has been sent.
+        // Otherwise choose the rarest chunk
+        const Uint32 num_chunk_owners = chunk_counter->get(chunk);
+        if (num_chunk_owners == num_seeders && !active_chunks.contains(chunk)) {
             peer->chunkAllowed(chunk);
             active_chunks.insert(chunk, peer);
             active_peers[peer] = chunk;
             return;
-        } else if (alternative == num_chunks) {
+        } else if (num_chunk_owners < alternative_num_owners) {
             alternative = chunk;
         }
     }
