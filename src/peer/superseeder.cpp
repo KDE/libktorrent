@@ -136,9 +136,9 @@ void SuperSeeder::sendChunk(PeerInterface *peer)
     }
 
     if (alternative < num_chunks) {
-        peer->chunkAllowed(chunk);
-        active_chunks.insert(chunk, peer);
-        active_peers[peer] = chunk;
+        peer->chunkAllowed(alternative);
+        active_chunks.insert(alternative, peer);
+        active_peers[peer] = alternative;
     }
 }
 
