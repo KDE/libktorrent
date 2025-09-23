@@ -126,31 +126,25 @@ private Q_SLOTS:
         // Simulate normal superseeding operation
         for (int i = 0; i < 4; i++) {
             Out(SYS_GEN | LOG_DEBUG) << "======================================" << endl;
-            Uint32 prev_chunk = uploader->allowed_chunk;
+            Uint32 prev_uploader_chunk = uploader->allowed_chunk;
+            Uint32 prev_downloader_chunk = downloader->allowed_chunk;
             // Now simulate b downloaded the first chunk from a
-            Uint32 chunk = prev_chunk;
+            Uint32 chunk = prev_uploader_chunk;
 
             Out(SYS_GEN | LOG_DEBUG) << "uploader = " << uploader->getPeerID().toString() << endl;
             Out(SYS_GEN | LOG_DEBUG) << "downloader = " << downloader->getPeerID().toString() << endl;
             Out(SYS_GEN | LOG_DEBUG) << "chunk = " << chunk << endl;
 
-            if (uploader->allowed_chunk == downloader->allowed_chunk) {
-                uploader->have(chunk);
-                downloader->have(chunk);
-                ss.have(downloader, chunk);
-                Out(SYS_GEN | LOG_DEBUG) << "prev_chunk = " << chunk << ", uploader->allowed_chunk = " << uploader->allowed_chunk << endl;
-                QVERIFY(uploader->allowed_chunk != prev_chunk && uploader->allowed_chunk != INVALID_CHUNK);
-                QVERIFY(allowCalled(uploader));
-                uploader->allow_called = false;
+            uploader->have(chunk);
+            downloader->have(chunk);
+            ss.have(downloader, chunk);
+            Out(SYS_GEN | LOG_DEBUG) << "prev_chunk = " << chunk << ", uploader->allowed_chunk = " << uploader->allowed_chunk << endl;
+            QVERIFY(uploader->allowed_chunk != prev_uploader_chunk && uploader->allowed_chunk != INVALID_CHUNK);
+            QVERIFY(allowCalled(uploader));
+            uploader->allow_called = false;
+
+            if (prev_uploader_chunk == prev_downloader_chunk) {
                 QVERIFY(!allowCalled(downloader));
-            } else {
-                uploader->have(chunk);
-                downloader->have(chunk);
-                ss.have(downloader, chunk);
-                Out(SYS_GEN | LOG_DEBUG) << "prev_chunk = " << chunk << ", uploader->allowed_chunk = " << uploader->allowed_chunk << endl;
-                QVERIFY(uploader->allowed_chunk != prev_chunk && uploader->allowed_chunk != INVALID_CHUNK);
-                QVERIFY(allowCalled(uploader)); // allow should be called again on the uploader
-                uploader->allow_called = false;
             }
 
             // Cycle through peers
