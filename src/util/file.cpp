@@ -27,6 +27,25 @@ File::~File()
     close();
 }
 
+File::File(File &&other)
+    : fptr(other.fptr)
+    , file(std::move(other.file))
+{
+    other.fptr = nullptr;
+}
+
+File &File::operator=(File &&other)
+{
+    if (this == &other) {
+        return *this;
+    }
+    close();
+    fptr = other.fptr;
+    file = std::move(other.file);
+    other.fptr = nullptr;
+    return *this;
+}
+
 bool File::open(const QString &file, const QString &mode)
 {
     this->file = file;

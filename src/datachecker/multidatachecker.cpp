@@ -104,7 +104,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
     if (tflist.count() == 1) {
         const TorrentFile &f = tor.getFile(tflist.first());
         if (!f.doNotDownload()) {
-            File::Ptr fptr = open(tor, tflist.first());
+            File *fptr = open(tor, tflist.first());
             Uint64 off = f.fileOffset(ci, tor.getChunkSize());
             if (fptr->seek(File::BEGIN, off) != off)
                 return false;
@@ -157,7 +157,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
                 if (!bt::Exists(f.getPathOnDisk()) || bt::FileSize(f.getPathOnDisk()) < off)
                     return false;
 
-                File::Ptr fptr = open(tor, tflist[i]);
+                File *fptr = open(tor, tflist[i]);
                 if (fptr->seek(File::BEGIN, off) != off)
                     return false;
 
@@ -173,29 +173,29 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
     return true;
 }
 
-File::Ptr MultiDataChecker::open(const bt::Torrent &tor, Uint32 idx)
+File *MultiDataChecker::open(const bt::Torrent &tor, Uint32 idx)
 {
-    QMap<Uint32, File::Ptr>::iterator i = files.find(idx);
+    auto i = files.find(idx);
     if (i != files.end())
-        return i.value();
+        return &i->second;
 
     const TorrentFile &tf = tor.getFile(idx);
-    File::Ptr fptr(new File());
-    if (!fptr->open(tf.getPathOnDisk(), u"rb"_s)) {
-        QString err = i18n("Cannot open file %1: %2", tf.getPathOnDisk(), fptr->errorString());
+    File file;
+    if (!file.open(tf.getPathOnDisk(), u"rb"_s)) {
+        QString err = i18n("Cannot open file %1: %2", tf.getPathOnDisk(), file.errorString());
         Out(SYS_GEN | LOG_DEBUG) << err << endl;
         throw Error(err);
     } else {
-        files.insert(idx, fptr);
-        return fptr;
+        auto [i, _] = files.emplace(idx, std::move(file));
+        return &i->second;
     }
 }
 
 void MultiDataChecker::closePastFiles(Uint32 min_idx)
 {
-    QMap<Uint32, File::Ptr>::iterator i = files.begin();
+    auto i = files.begin();
     while (i != files.end()) {
-        if (i.key() < min_idx)
+        if (i->first < min_idx)
             i = files.erase(i);
         else {
             ++i;

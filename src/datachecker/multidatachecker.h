@@ -7,9 +7,10 @@
 #define BTMULTIDATACHECKER_H
 
 #include "datachecker.h"
-#include <QMap>
 #include <QString>
 #include <util/file.h>
+
+#include <map>
 
 namespace bt
 {
@@ -26,14 +27,14 @@ public:
 
 private:
     bool loadChunk(Uint32 ci, Uint32 cs, const Torrent &to);
-    File::Ptr open(const Torrent &tor, Uint32 idx);
+    File *open(const Torrent &tor, Uint32 idx);
     void closePastFiles(Uint32 min_idx);
 
 private:
     QString cache;
     QString dnd_dir;
     Uint8 *buf;
-    QMap<Uint32, File::Ptr> files;
+    std::map<Uint32, File> files;
 };
 
 }

@@ -7,9 +7,10 @@
 #define BTFILE_H
 
 #include "constants.h"
-#include <QSharedPointer>
 #include <cstdio>
 #include <ktorrent_export.h>
+
+#include <QString>
 
 namespace bt
 {
@@ -34,6 +35,19 @@ public:
      * Destructor, closes the file.
      */
     virtual ~File();
+
+    File(const File &) = delete;
+    File &operator=(const File &) = delete;
+
+    /*!
+     * Move constructor.
+     */
+    File(File &&other);
+
+    /*!
+     * Move assignment operator.
+     */
+    File &operator=(File &&other);
 
     /*!
      * Open the file similar to fopen
@@ -93,8 +107,6 @@ public:
 
     //! Get the error string.
     QString errorString() const;
-
-    typedef QSharedPointer<File> Ptr;
 };
 
 }
