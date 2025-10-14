@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-17 00:42+0000\n"
+"POT-Creation-Date: 2025-10-14 00:42+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -452,12 +452,12 @@ msgstr ""
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "无法在设备描述中找到端口转发服务。"
 
-#: src/util/file.cpp:68
+#: src/util/file.cpp:87
 #, kde-format
 msgid "Cannot write to %1: %2"
 msgstr "无法写入 %1：%2"
 
-#: src/util/file.cpp:81
+#: src/util/file.cpp:100
 #, kde-format
 msgid "Cannot read from %1"
 msgstr "无法从 %1 读取"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-17 00:42+0000\n"
+"POT-Creation-Date: 2025-10-14 00:42+0000\n"
 "PO-Revision-Date: 2013-02-02 17:29+0100\n"
 "Last-Translator: Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -464,12 +464,12 @@ msgid "Cannot find port forwarding service in the device's description."
 msgstr ""
 "Ezin da aurkitu ataka birbideratzeko zerbitzua gailuaren deskribapenean."
 
-#: src/util/file.cpp:68
+#: src/util/file.cpp:87
 #, kde-format
 msgid "Cannot write to %1: %2"
 msgstr "Ezin da %1(e)(a)n idatzi: %2"
 
-#: src/util/file.cpp:81
+#: src/util/file.cpp:100
 #, kde-format
 msgid "Cannot read from %1"
 msgstr "Ezin da %1 irakurri"

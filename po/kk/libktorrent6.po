@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-17 00:42+0000\n"
+"POT-Creation-Date: 2025-10-14 00:42+0000\n"
 "PO-Revision-Date: 2013-03-25 04:38+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -455,12 +455,12 @@ msgstr ""
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "Кұрылғының сипаттамасында порт бағыттауы табылған жоқ."
 
-#: src/util/file.cpp:68
+#: src/util/file.cpp:87
 #, kde-format
 msgid "Cannot write to %1: %2"
 msgstr "%1 дегенге жазылмады: %2"
 
-#: src/util/file.cpp:81
+#: src/util/file.cpp:100
 #, kde-format
 msgid "Cannot read from %1"
 msgstr "%1 дегеннен оқылмады"

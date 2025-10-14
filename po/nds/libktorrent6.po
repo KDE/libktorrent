@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-17 00:42+0000\n"
+"POT-Creation-Date: 2025-10-14 00:42+0000\n"
 "PO-Revision-Date: 2014-06-05 17:38+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -463,12 +463,12 @@ msgstr ""
 "In de Reedschap-Beschrieven lett sik keen Deenst för't Port-Wiederledden "
 "finnen."
 
-#: src/util/file.cpp:68
+#: src/util/file.cpp:87
 #, kde-format
 msgid "Cannot write to %1: %2"
 msgstr "Datei \"%1\" lett sik nich schrieven: %2"
 
-#: src/util/file.cpp:81
+#: src/util/file.cpp:100
 #, kde-format
 msgid "Cannot read from %1"
 msgstr "Datei \"%1\" lett sik nich lesen."

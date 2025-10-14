@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-17 00:42+0000\n"
+"POT-Creation-Date: 2025-10-14 00:42+0000\n"
 "PO-Revision-Date: 2008-09-23 17:28+0300\n"
 "Last-Translator: Erdal Ronahi <erdal.ronahi@nospam.gmail.com>\n"
 "Language-Team: Kurdish <kde-i18n-doc@lists.kde.org>\n"
@@ -484,13 +484,13 @@ msgstr ""
 msgid "Cannot find port forwarding service in the device's description."
 msgstr ""
 
-#: src/util/file.cpp:68
+#: src/util/file.cpp:87
 #, fuzzy, kde-format
 #| msgid "Cannot write to %1 : %2"
 msgid "Cannot write to %1: %2"
 msgstr "Li %1 nayê nivîsandin: %2"
 
-#: src/util/file.cpp:81
+#: src/util/file.cpp:100
 #, kde-format
 msgid "Cannot read from %1"
 msgstr "Ji %1 nayê xwedin"

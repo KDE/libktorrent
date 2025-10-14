@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-17 00:42+0000\n"
+"POT-Creation-Date: 2025-10-14 00:42+0000\n"
 "PO-Revision-Date: 2009-03-10 17:56+0530\n"
 "Last-Translator: Ravishankar Shrivastava <raviratlami@aol.in>\n"
 "Language-Team: Hindi <kde-i18n-doc@lists.kde.org>\n"
@@ -480,13 +480,13 @@ msgstr ""
 msgid "Cannot find port forwarding service in the device's description."
 msgstr ""
 
-#: src/util/file.cpp:68
+#: src/util/file.cpp:87
 #, fuzzy, kde-format
 #| msgid "Cannot create %1: %2"
 msgid "Cannot write to %1: %2"
 msgstr "बना नइ सकिस %1: %2"
 
-#: src/util/file.cpp:81
+#: src/util/file.cpp:100
 #, fuzzy, kde-format
 #| msgid "Cannot create directory %1"
 msgid "Cannot read from %1"
