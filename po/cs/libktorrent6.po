@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-14 00:42+0000\n"
+"POT-Creation-Date: 2025-10-22 00:43+0000\n"
 "PO-Revision-Date: 2013-04-03 12:50+0200\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -130,17 +130,17 @@ msgstr "Nelze předalokovat místo na disku: %1"
 msgid "Cannot open index file %1: %2"
 msgstr "Nelze otevřít index soubor %1: %2"
 
-#: src/diskio/dndfile.cpp:74
+#: src/diskio/dndfile.cpp:77
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "Nelze vytvořit soubor %1: %2"
 
-#: src/diskio/dndfile.cpp:116
+#: src/diskio/dndfile.cpp:119
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Nelze zapsat první blok do souboru DND: %1"
 
-#: src/diskio/dndfile.cpp:131
+#: src/diskio/dndfile.cpp:134
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Selhalo zapisování posledního bloku do souboru DND: %1"

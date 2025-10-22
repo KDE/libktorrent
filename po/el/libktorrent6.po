@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-14 00:42+0000\n"
+"POT-Creation-Date: 2025-10-22 00:43+0000\n"
 "PO-Revision-Date: 2013-04-06 10:53+0200\n"
 "Last-Translator: Stelios <sstavragmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -139,17 +139,17 @@ msgstr "Αδυναμία προκράτησης χώρου στο δίσκο: %1
 msgid "Cannot open index file %1: %2"
 msgstr "Αδυναμία ανοίγματος του αρχείου ευρετηρίου %1: %2"
 
-#: src/diskio/dndfile.cpp:74
+#: src/diskio/dndfile.cpp:77
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "Αδυναμία δημιουργίας αρχείου %1: %2"
 
-#: src/diskio/dndfile.cpp:116
+#: src/diskio/dndfile.cpp:119
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Αποτυχία εγγραφής του πρώτου κομματιού στο αρχείο DND: %1"
 
-#: src/diskio/dndfile.cpp:131
+#: src/diskio/dndfile.cpp:134
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Αποτυχία εγγραφής του τελευταίου κομματιού στο αρχείο DND: %1"

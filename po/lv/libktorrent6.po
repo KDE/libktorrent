@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-14 00:42+0000\n"
+"POT-Creation-Date: 2025-10-22 00:43+0000\n"
 "PO-Revision-Date: 2024-04-03 17:19+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -142,17 +142,17 @@ msgstr "Neizdevās rezervēt vietu diskā: %1"
 msgid "Cannot open index file %1: %2"
 msgstr "Neizdevās atvērt indeksa datni „%1“: %2"
 
-#: src/diskio/dndfile.cpp:74
+#: src/diskio/dndfile.cpp:77
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "Neizdevās izveidot datni %1: %2"
 
-#: src/diskio/dndfile.cpp:116
+#: src/diskio/dndfile.cpp:119
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Neizdevās ierakstīt pirmo gabalu DND datnē: %1"
 
-#: src/diskio/dndfile.cpp:131
+#: src/diskio/dndfile.cpp:134
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Neizdevās ierakstīt pēdējo gabalu DND datnē: %1"

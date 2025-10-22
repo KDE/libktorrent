@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-14 00:42+0000\n"
+"POT-Creation-Date: 2025-10-22 00:43+0000\n"
 "PO-Revision-Date: 2015-01-05 02:08+0200\n"
 "Last-Translator: Lasse Liehu <lasse.liehu@gmail.com>\n"
 "Language-Team: Finnish <lokalisointi@lists.coss.fi>\n"
@@ -133,17 +133,17 @@ msgstr "Ei voitu varata levytilaa: %1"
 msgid "Cannot open index file %1: %2"
 msgstr "Indeksitiedoston %1 avaus ei onnistunut: %2"
 
-#: src/diskio/dndfile.cpp:74
+#: src/diskio/dndfile.cpp:77
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "Tiedostoa %1 ei voitu luoda: %2"
 
-#: src/diskio/dndfile.cpp:116
+#: src/diskio/dndfile.cpp:119
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Ensimmäisen lohkon kirjoitus DND-tiedostoon epäonnistui: %1"
 
-#: src/diskio/dndfile.cpp:131
+#: src/diskio/dndfile.cpp:134
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Viimeisen lohkon kirjoitus DND-tiedostoon epäonnistui: %1"

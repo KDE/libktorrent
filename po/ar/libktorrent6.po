@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-14 00:42+0000\n"
+"POT-Creation-Date: 2025-10-22 00:43+0000\n"
 "PO-Revision-Date: 2024-02-12 14:04+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -132,17 +132,17 @@ msgstr "لا يمكن تخصيص مساحة القرص مسبقًا: %1"
 msgid "Cannot open index file %1: %2"
 msgstr "تعذّر فتح ملف الفهرس %1: %2"
 
-#: src/diskio/dndfile.cpp:74
+#: src/diskio/dndfile.cpp:77
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "تعذّر إنشاء الملف %1: %2"
 
-#: src/diskio/dndfile.cpp:116
+#: src/diskio/dndfile.cpp:119
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "فشل كتابة أول كتلة إلى ملف DND:‏ %1"
 
-#: src/diskio/dndfile.cpp:131
+#: src/diskio/dndfile.cpp:134
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "فشل كتابة آخر كتلة إلى ملف DND:‏ %1"

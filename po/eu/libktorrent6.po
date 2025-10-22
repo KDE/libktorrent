@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-14 00:42+0000\n"
+"POT-Creation-Date: 2025-10-22 00:43+0000\n"
 "PO-Revision-Date: 2013-02-02 17:29+0100\n"
 "Last-Translator: Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -136,17 +136,17 @@ msgstr "Diskoko lekua ezin da aurretiaz esleitu: %1"
 msgid "Cannot open index file %1: %2"
 msgstr "%1 indize-fitxategia ezin da ireki: %2"
 
-#: src/diskio/dndfile.cpp:74
+#: src/diskio/dndfile.cpp:77
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "%1 fitxategia ezin da sortu: %2"
 
-#: src/diskio/dndfile.cpp:116
+#: src/diskio/dndfile.cpp:119
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Huts egin du lehen zatia DND fitxategian idaztean: %1"
 
-#: src/diskio/dndfile.cpp:131
+#: src/diskio/dndfile.cpp:134
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Huts egin du azken zatia DND fitxategian idaztean: %1"

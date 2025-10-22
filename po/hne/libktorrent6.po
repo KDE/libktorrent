@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-14 00:42+0000\n"
+"POT-Creation-Date: 2025-10-22 00:43+0000\n"
 "PO-Revision-Date: 2009-03-10 17:56+0530\n"
 "Last-Translator: Ravishankar Shrivastava <raviratlami@aol.in>\n"
 "Language-Team: Hindi <kde-i18n-doc@lists.kde.org>\n"
@@ -141,19 +141,19 @@ msgstr "फाइल बना नइ सकिस %1: %2"
 msgid "Cannot open index file %1: %2"
 msgstr "फ़ाइल%1 : %2 खोल नइ सकिस"
 
-#: src/diskio/dndfile.cpp:74
+#: src/diskio/dndfile.cpp:77
 #, fuzzy, kde-format
 #| msgid "Cannot create file %1 : %2"
 msgid "Cannot create file %1: %2"
 msgstr "फाइल बना नइ सकिस %1: %2"
 
-#: src/diskio/dndfile.cpp:116
+#: src/diskio/dndfile.cpp:119
 #, fuzzy, kde-format
 #| msgid "Failed to create %1 : %2"
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "बना नइ सकिस %1 : %2"
 
-#: src/diskio/dndfile.cpp:131
+#: src/diskio/dndfile.cpp:134
 #, fuzzy, kde-format
 #| msgid "Failed to create %1 : %2"
 msgid "Failed to write last chunk to DND file: %1"

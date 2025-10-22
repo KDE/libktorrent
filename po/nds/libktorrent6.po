@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-14 00:42+0000\n"
+"POT-Creation-Date: 2025-10-22 00:43+0000\n"
 "PO-Revision-Date: 2014-06-05 17:38+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -133,17 +133,17 @@ msgstr "Plattenspieker lett sik nich vörweg towiesen: %1"
 msgid "Cannot open index file %1: %2"
 msgstr "Index-Datei \"%1\" lett sik nich opmaken: %2"
 
-#: src/diskio/dndfile.cpp:74
+#: src/diskio/dndfile.cpp:77
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "Datei \"%1\" lett sik nich opstellen: %2"
 
-#: src/diskio/dndfile.cpp:116
+#: src/diskio/dndfile.cpp:119
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Eerst Block lett sik nich na DND-Datei schrieven: %1"
 
-#: src/diskio/dndfile.cpp:131
+#: src/diskio/dndfile.cpp:134
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Lest Block lett sik nich na DND-Datei schrieven: %1"

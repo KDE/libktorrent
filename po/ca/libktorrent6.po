@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-14 00:42+0000\n"
+"POT-Creation-Date: 2025-10-22 00:43+0000\n"
 "PO-Revision-Date: 2022-10-23 20:25+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -139,17 +139,17 @@ msgstr "No es pot preassignar espai en disc: %1"
 msgid "Cannot open index file %1: %2"
 msgstr "No s'ha pogut obrir el fitxer d'índex %1: %2"
 
-#: src/diskio/dndfile.cpp:74
+#: src/diskio/dndfile.cpp:77
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "No s'ha pogut crear el fitxer %1: %2"
 
-#: src/diskio/dndfile.cpp:116
+#: src/diskio/dndfile.cpp:119
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Ha fallat en escriure el primer fragment al fitxer DND: %1"
 
-#: src/diskio/dndfile.cpp:131
+#: src/diskio/dndfile.cpp:134
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Ha fallat en escriure l'últim fragment al fitxer DND: %1"

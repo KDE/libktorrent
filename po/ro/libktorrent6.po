@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent(2)\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-14 00:42+0000\n"
+"POT-Creation-Date: 2025-10-22 00:43+0000\n"
 "PO-Revision-Date: 2020-09-24 22:03+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian\n"
@@ -135,17 +135,17 @@ msgstr "Nu se poate prealoca spațiu pe disc: %1"
 msgid "Cannot open index file %1: %2"
 msgstr "Nu se poate deschide fișierul-index %1: %2"
 
-#: src/diskio/dndfile.cpp:74
+#: src/diskio/dndfile.cpp:77
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "Nu se poate crea fișierul %1: %2"
 
-#: src/diskio/dndfile.cpp:116
+#: src/diskio/dndfile.cpp:119
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Nu s-a putut scrie prima bucată în fișierul DND: %1"
 
-#: src/diskio/dndfile.cpp:131
+#: src/diskio/dndfile.cpp:134
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Nu s-a putut scrie ultima bucată în fișierul DND: %1"
