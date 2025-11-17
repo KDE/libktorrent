@@ -23,10 +23,11 @@
 #include "torrent.h"
 #include <net/serversocket.h>
 
+#include <memory>
+#include <vector>
+
 namespace bt
 {
-typedef QSharedPointer<net::ServerSocket> ServerSocketPtr;
-
 class Server::Private : public net::ServerSocket::ConnectionHandler
 {
 public:
@@ -51,14 +52,14 @@ public:
 
     void add(const QString &ip, bt::Uint16 port)
     {
-        ServerSocketPtr sock(new net::ServerSocket(this));
+        auto sock = std::make_unique<net::ServerSocket>(this);
         if (sock->bind(ip, port)) {
-            sockets.append(sock);
+            sockets.emplace_back(std::move(sock));
         }
     }
 
     Server *p;
-    QList<ServerSocketPtr> sockets;
+    std::vector<std::unique_ptr<net::ServerSocket>> sockets;
 };
 
 Server::Server()
@@ -73,7 +74,7 @@ Server::~Server()
 
 bool Server::changePort(Uint16 p)
 {
-    if (d->sockets.count() > 0 && p == port)
+    if (!d->sockets.empty() && p == port)
         return true;
 
     Globals::instance().getPortList().removePort(port, net::TCP);
@@ -84,13 +85,13 @@ bool Server::changePort(Uint16 p)
         d->add(addr, p);
     }
 
-    if (d->sockets.count() == 0) {
+    if (d->sockets.empty()) {
         // Try any addresses if previous binds failed
         d->add(QHostAddress(QHostAddress::AnyIPv6).toString(), p);
         d->add(QHostAddress(QHostAddress::Any).toString(), p);
     }
 
-    if (d->sockets.count()) {
+    if (!d->sockets.empty()) {
         Globals::instance().getPortList().addNewPort(p, net::TCP, true);
         return true;
     } else
