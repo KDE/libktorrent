@@ -138,7 +138,7 @@ public:
     /*!
      * Get's the i'th Chunk.
      * \param i The Chunk's index
-     * \return The Chunk, or 0 when i is out of bounds
+     * \return The Chunk, or nullptr when i is out of bounds
      */
     Chunk *getChunk(unsigned int i);
 

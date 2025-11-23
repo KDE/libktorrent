@@ -70,7 +70,7 @@ public:
      * \param off Offset into the file
      * \param size Size of the region to map
      * \param mode How the region will be mapped
-     * \return A ptr to the mmaped region, or 0 if something goes wrong
+     * \return A ptr to the mmaped region, or nullptr if something goes wrong
      */
     void *map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode);
 

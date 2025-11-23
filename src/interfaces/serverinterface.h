@@ -61,7 +61,7 @@ public:
     /*!
      * Find the PeerManager given the info_hash of it's torrent.
      * \param hash The info_hash
-     * \return The PeerManager or 0 if one can't be found
+     * \return The PeerManager or nullptr if one can't be found
      */
     static PeerManager *findPeerManager(const SHA1Hash &hash);
 

@@ -135,28 +135,28 @@ public:
     /*!
      * Get a BNode.
      * \param key The key
-     * \return The node or 0 if there is no node with has key \a key
+     * \return The node or nullptr if there is no node with has key \a key
      */
     BNode *getData(const QByteArray &key);
 
     /*!
      * Get a BListNode.
      * \param key The key
-     * \return The node or 0 if there is no list node with has key \a key
+     * \return The node or nullptr if there is no list node with has key \a key
      */
     BListNode *getList(const QByteArray &key);
 
     /*!
      * Get a BDictNode.
      * \param key The key
-     * \return The node or 0 if there is no dict node with has key \a key
+     * \return The node or nullptr if there is no dict node with has key \a key
      */
     BDictNode *getDict(const QByteArray &key);
 
     /*!
      * Get a BValueNode.
      * \param key The key
-     * \return The node or 0 if there is no value node with has key \a key
+     * \return The node or nullptr if there is no value node with has key \a key
      */
     BValueNode *getValue(const QByteArray &key);
 
@@ -206,7 +206,7 @@ public:
     /*!
      * Get a node from the list
      * \param idx The index
-     * \return The node or 0 if idx is out of bounds
+     * \return The node or nullptr if idx is out of bounds
      */
     BNode *getChild(Uint32 idx)
     {
@@ -216,7 +216,7 @@ public:
     /*!
      * Get a BListNode.
      * \param idx The index
-     * \return The node or 0 if the index is out of bounds or the element
+     * \return The node or nullptr if the index is out of bounds or the element
      *  at postion \a idx isn't a BListNode.
      */
     BListNode *getList(Uint32 idx);
@@ -224,7 +224,7 @@ public:
     /*!
      * Get a BDictNode.
      * \param idx The index
-     * \return The node or 0 if the index is out of bounds or the element
+     * \return The node or nullptr if the index is out of bounds or the element
      *  at postion \a idx isn't a BDictNode.
      */
     BDictNode *getDict(Uint32 idx);
@@ -232,7 +232,7 @@ public:
     /*!
      * Get a BValueNode.
      * \param idx The index
-     * \return The node or 0 if the index is out of bounds or the element
+     * \return The node or nullptr if the index is out of bounds or the element
      *  at postion \a idx isn't a BValueNode.
      */
     BValueNode *getValue(Uint32 idx);

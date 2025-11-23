@@ -248,7 +248,7 @@ public:
         \param streaming_mode Set to true if this needs to be streamed
             (note that only one streaming_mode per torrent is allowed)
         \param parent Parent of the TorrentFileStream
-        \return A TorrentFileStream or 0 if index is not valid
+        \return A TorrentFileStream or nullptr if index is not valid
     */
     virtual TorrentFileStream::Ptr createTorrentFileStream(bt::Uint32 index, bool streaming_mode, QObject *parent) = 0;
 

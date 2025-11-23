@@ -184,7 +184,7 @@ public:
     /*!
      * When a Chunk is downloaded, this function checks if all
      * pieces are delivered by the same peer and if so returns it.
-     * \return The PieceDownloader or 0 if there is no only peer
+     * \return The PieceDownloader or nullptr if there is no only peer
      */
     PieceDownloader *getOnlyDownloader();
 

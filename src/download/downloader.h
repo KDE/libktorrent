@@ -147,14 +147,14 @@ public:
     /*!
      * Get a download for a chunk
      * \param chunk The chunk
-     * \return The ChunkDownload, or 0 if no download is found
+     * \return The ChunkDownload, or nullptr if no download is found
      */
     ChunkDownload *download(Uint32 chunk);
 
     /*!
      * Get a download for a chunk (const version)
      * \param chunk The chunk
-     * \return The ChunkDownload, or 0 if no download is found
+     * \return The ChunkDownload, or nullptr if no download is found
      */
     const ChunkDownload *download(Uint32 chunk) const;
 
