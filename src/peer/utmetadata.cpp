@@ -30,9 +30,13 @@ UTMetaData::~UTMetaData()
 
 void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
 {
-    QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
+    if (size <= 2) {
+        return;
+    }
+
+    const auto tmp = QByteArrayView{packet, size}.sliced(2);
     try {
-        BDecoder dec(tmp, false, 2);
+        BDecoder dec(tmp.data(), tmp.size(), false);
         const std::unique_ptr<BDictNode> dict = dec.decodeDict();
         if (!dict) {
             return;
@@ -44,7 +48,7 @@ void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
             request(dict.get());
             break;
         case 1: { // data
-            data(dict.get(), tmp.mid(dec.position()));
+            data(dict.get(), tmp.sliced(dec.position()));
             break;
         }
         case 2: // reject
@@ -56,7 +60,7 @@ void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
     }
 }
 
-void UTMetaData::data(BDictNode *dict, const QByteArray &piece_data)
+void UTMetaData::data(BDictNode *dict, QByteArrayView piece_data)
 {
     if (download) {
         if (download->data(dict->getInt(QByteArrayLiteral("piece")), piece_data)) {
@@ -80,7 +84,8 @@ void UTMetaData::request(BDictNode *dict)
         return;
     }
 
-    const QByteArray &md = tor.getMetaData();
+    const QByteArray &md_ref = tor.getMetaData();
+    const QByteArrayView md{md_ref};
     int num_pieces = md.size() / METADATA_PIECE_SIZE + (md.size() % METADATA_PIECE_SIZE == 0 ? 0 : 1);
     if (piece < 0 || piece >= num_pieces) {
         sendReject(piece);
@@ -90,7 +95,7 @@ void UTMetaData::request(BDictNode *dict)
     int off = piece * METADATA_PIECE_SIZE;
     int last_len = (md.size() % METADATA_PIECE_SIZE == 0) ? METADATA_PIECE_SIZE : (md.size() % METADATA_PIECE_SIZE);
     int len = piece == num_pieces - 1 ? last_len : METADATA_PIECE_SIZE;
-    sendData(piece, md.size(), md.mid(off, len));
+    sendData(piece, md.size(), md.sliced(off, len));
 }
 
 void UTMetaData::sendReject(int piece)
@@ -106,7 +111,7 @@ void UTMetaData::sendReject(int piece)
     sendPacket(data);
 }
 
-void UTMetaData::sendData(int piece, int total_size, const QByteArray &data)
+void UTMetaData::sendData(int piece, int total_size, QByteArrayView data)
 {
     Out(SYS_CON | LOG_DEBUG) << "Sending metadata piece " << piece << endl;
     QByteArray tmp;
