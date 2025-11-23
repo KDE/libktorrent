@@ -100,13 +100,13 @@ void DataCheckerJob::threadFinished()
             setError(KIO::ERR_UNKNOWN);
         } else
             setError(0);
-    } else
-        setError(0);
 
-    dcheck_thread->deleteLater();
-    dcheck_thread = nullptr;
-    if (!killed) // Job::kill already emitted the result
+        dcheck_thread->deleteLater();
+        dcheck_thread = nullptr;
         emitResult();
+    } else {
+        setError(0);
+    }
 
     release();
 }
