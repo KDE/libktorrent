@@ -44,7 +44,7 @@ private Q_SLOTS:
         constexpr QByteArrayView msg = "d1:eli201e23:A Generic Error Ocurrede1:t2:aa1:y1:ee";
 
         try {
-            bt::BDecoder dec(QByteArray(msg), false);
+            bt::BDecoder dec(msg, false);
 
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), nullptr);
@@ -68,7 +68,7 @@ private Q_SLOTS:
         };
 
         for (const auto msg : msgs) {
-            bt::BDecoder dec(QByteArray(msg), false);
+            bt::BDecoder dec(msg, false);
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
                 const std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
@@ -88,7 +88,7 @@ private Q_SLOTS:
         current_method = dht::PING;
 
         for (const auto msg : msgs) {
-            bt::BDecoder dec(QByteArray(msg), false);
+            bt::BDecoder dec(msg, false);
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
@@ -111,7 +111,7 @@ private Q_SLOTS:
         current_method = dht::FIND_NODE;
 
         for (const auto msg : msgs) {
-            bt::BDecoder dec(QByteArray(msg), false);
+            bt::BDecoder dec(msg, false);
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
@@ -134,7 +134,7 @@ private Q_SLOTS:
         current_method = dht::GET_PEERS;
 
         for (const auto msg : msgs) {
-            bt::BDecoder dec(QByteArray(msg), false);
+            bt::BDecoder dec(msg, false);
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
@@ -156,7 +156,7 @@ private Q_SLOTS:
         current_method = dht::ANNOUNCE_PEER;
 
         for (const auto msg : msgs) {
-            bt::BDecoder dec(QByteArray(msg), false);
+            bt::BDecoder dec(msg, false);
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);

@@ -13,19 +13,9 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace bt
 {
-BDecoder::BDecoder(const Uint8 *ptr, Uint32 size, bool verbose, Uint32 off)
-    : data(QByteArray::fromRawData((const char *)ptr, size))
-    , pos(off)
-    , verbose(verbose)
-    , level(0)
-{
-}
-
-BDecoder::BDecoder(const QByteArray &data, bool verbose, Uint32 off)
+BDecoder::BDecoder(QByteArrayView data, bool verbose)
     : data(data)
-    , pos(off)
     , verbose(verbose)
-    , level(0)
 {
 }
 
@@ -76,7 +66,7 @@ std::unique_ptr<BDictNode> BDecoder::parseDict()
 {
     const Uint32 off = pos;
     // we're now entering a dictionary
-    auto curr = std::make_unique<BDictNode>(off);
+    auto curr = std::make_unique<BDictNode>();
     pos++;
     debugMsg(u"DICT"_s);
     level++;
@@ -89,7 +79,7 @@ std::unique_ptr<BDictNode> BDecoder::parseDict()
             throw Error(i18n("Decode error"));
         }
 
-        const QByteArray key = k->data().toByteArray();
+        const auto key = k->data().toByteArrayView();
 
         auto value = decode();
         if (!value) {
@@ -106,7 +96,7 @@ std::unique_ptr<BDictNode> BDecoder::parseDict()
 
     level--;
     debugMsg(u"END"_s);
-    curr->setLength(pos - off);
+    curr->setBytes(data.sliced(off, pos - off));
     return curr;
 }
 
@@ -115,7 +105,7 @@ std::unique_ptr<BListNode> BDecoder::parseList()
     const Uint32 off = pos;
     debugMsg(u"LIST"_s);
     level++;
-    auto curr = std::make_unique<BListNode>(off);
+    auto curr = std::make_unique<BListNode>();
     pos++;
 
     while (pos < (Uint32)data.size() && data[pos] != 'e') {
@@ -132,7 +122,7 @@ std::unique_ptr<BListNode> BDecoder::parseList()
 
     level--;
     debugMsg(u"END"_s);
-    curr->setLength(pos - off);
+    curr->setBytes(data.sliced(off, pos - off));
     return curr;
 }
 
@@ -159,8 +149,7 @@ std::unique_ptr<BValueNode> BDecoder::parseInt()
     if (ok) {
         pos++;
         debugMsg(QStringLiteral("INT = %1").arg(val));
-        auto vn = std::make_unique<BValueNode>(Value(val), off);
-        vn->setLength(pos - off);
+        auto vn = std::make_unique<BValueNode>(Value(val), data.sliced(off, pos - off));
         return vn;
     } else {
         Int64 bi = 0LL;
@@ -171,8 +160,7 @@ std::unique_ptr<BValueNode> BDecoder::parseInt()
 
         pos++;
         debugMsg(QStringLiteral("INT64 = %1").arg(n));
-        auto vn = std::make_unique<BValueNode>(Value(bi), off);
-        vn->setLength(pos - off);
+        auto vn = std::make_unique<BValueNode>(Value(bi), data.sliced(off, pos - off));
         return vn;
     }
 }
@@ -215,16 +203,15 @@ std::unique_ptr<BValueNode> BDecoder::parseString()
         throw Error(i18n("Torrent is incomplete."));
     }
 
-    const QByteArray arr(data.constData() + pos, len);
+    const auto str = QByteArrayView(data).sliced(pos, len);
     pos += len;
     // read the string into n
 
     // pos should be positioned right after the string
-    auto vn = std::make_unique<BValueNode>(Value(arr), off);
-    vn->setLength(pos - off);
+    auto vn = std::make_unique<BValueNode>(Value(str), data.sliced(off, pos - off));
     if (verbose) {
-        if (arr.size() < 200) {
-            debugMsg(QStringLiteral("STRING ") + QString::fromUtf8(arr));
+        if (str.size() < 200) {
+            debugMsg(QStringLiteral("STRING ") + QString::fromUtf8(str));
         } else {
             debugMsg(QStringLiteral("STRING really long string"));
         }

@@ -70,7 +70,7 @@ public:
     {
         try {
             // read and decode the packet
-            BDecoder bdec(ptr->get(), ptr->size(), false);
+            BDecoder bdec(QByteArrayView{ptr->get(), ptr->size()}, false);
             const std::unique_ptr<BDictNode> dict = bdec.decodeDict();
 
             if (!dict) {

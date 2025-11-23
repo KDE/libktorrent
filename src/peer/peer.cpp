@@ -383,9 +383,13 @@ void Peer::handleExtendedPacket(const Uint8 *packet, Uint32 size)
 
 void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
 {
-    const QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
+    if (size <= 2) {
+        return;
+    }
+
+    const auto tmp = QByteArrayView{packet, size}.sliced(2);
     try {
-        BDecoder dec(tmp, false, 2);
+        BDecoder dec(tmp, false);
         const std::unique_ptr<BDictNode> dict = dec.decodeDict();
         if (!dict) {
             return;

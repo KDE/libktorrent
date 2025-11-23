@@ -132,7 +132,7 @@ void HTTPTracker::onScrapeResult(const KJob *j)
     }
 
     const auto st = static_cast<const KIO::StoredTransferJob *>(j);
-    BDecoder dec(st->data(), false, 0);
+    BDecoder dec(st->data(), false);
     std::unique_ptr<BDictNode> dict;
 
     try {
@@ -254,7 +254,7 @@ bool HTTPTracker::updateData(const QByteArray &data)
         return false;
     }
 
-    BDecoder dec(data, false, i);
+    BDecoder dec(QByteArrayView{data}.sliced(i), false);
     std::unique_ptr<BDictNode> dict = nullptr;
     try {
         dict = dec.decodeDict();

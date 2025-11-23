@@ -36,7 +36,7 @@ void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
 
     const auto tmp = QByteArrayView{packet, size}.sliced(2);
     try {
-        BDecoder dec(tmp.data(), tmp.size(), false);
+        BDecoder dec(tmp, false);
         const std::unique_ptr<BDictNode> dict = dec.decodeDict();
         if (!dict) {
             return;

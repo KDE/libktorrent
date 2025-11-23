@@ -34,9 +34,9 @@ void UTPex::handlePacket(const Uint8 *packet, Uint32 size)
         return;
     }
 
-    const QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
+    const auto tmp = QByteArrayView{packet, size}.sliced(2);
     try {
-        BDecoder dec(tmp, false, 2);
+        BDecoder dec(tmp, false);
         const std::unique_ptr<BDictNode> dict = dec.decodeDict();
         if (dict) {
             // ut_pex packet, emit signal to notify PeerManager

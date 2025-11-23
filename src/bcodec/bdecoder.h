@@ -24,28 +24,18 @@ class BValueNode;
  */
 class KTORRENT_EXPORT BDecoder
 {
-    QByteArray data;
-    Uint32 pos;
+    QByteArrayView data;
+    Uint32 pos = 0;
     bool verbose;
-    int level;
+    int level = 0;
 
 public:
     /*!
-     * Constructor, passes in the data to decode.
-     * \param ptr Pointer to the data
-     * \param size Size of the data
-     * \param verbose Verbose output to the log
-     * \param off Offset to start parsing
+     * Constructs a BDecoder and initializes it with \a data to decode.
+     *
+     * If \a verbose is true, debug output is written to the log.
      */
-    BDecoder(const Uint8 *ptr, Uint32 size, bool verbose, Uint32 off = 0);
-
-    /*!
-     * Constructor, passes in the data to decode.
-     * \param data The data
-     * \param verbose Verbose output to the log
-     * \param off Offset to start parsing
-     */
-    BDecoder(const QByteArray &data, bool verbose, Uint32 off = 0);
+    BDecoder(QByteArrayView data, bool verbose);
     virtual ~BDecoder();
 
     /*!

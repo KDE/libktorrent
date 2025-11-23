@@ -38,12 +38,13 @@ public:
     };
 
     /*!
-     * Constructor, sets the Type, and the offset into
-     * the data.
-     * \param type Type of node
-     * \param off The offset into the data
+     * Constructs a BNode of Type \a type with the underlying data \a data.
+     *
+     * The \c setData() method allows the bencoded data to be set after the
+     * node has been created. This is useful for when a node will be updated
+     * whilst still parsing the data.
      */
-    BNode(Type type, Uint32 off);
+    BNode(Type type, QByteArrayView data = QByteArrayView());
     virtual ~BNode();
 
     //! Get the type of node
@@ -52,22 +53,18 @@ public:
         return type;
     }
 
-    //! Get the offset in the bytearray where this node starts.
-    [[nodiscard]] Uint32 getOffset() const
+    /*!
+     * Sets the bencoded data for this node to \a data.
+     */
+    void setBytes(QByteArrayView data)
     {
-        return off;
+        this->data = data;
     }
 
-    //! Get the length this node takes up in the bytearray.
-    [[nodiscard]] Uint32 getLength() const
+    //! Get the bencoded data for this node.
+    [[nodiscard]] QByteArrayView getBytes() const
     {
-        return len;
-    }
-
-    //! Set the length
-    void setLength(Uint32 l)
-    {
-        len = l;
+        return data;
     }
 
     //! Print some debugging info
@@ -75,7 +72,7 @@ public:
 
 private:
     Type type;
-    Uint32 off, len;
+    QByteArrayView data;
 };
 
 /*!
@@ -90,7 +87,7 @@ class KTORRENT_EXPORT BValueNode : public BNode
     Value value;
 
 public:
-    BValueNode(const Value &v, Uint32 off);
+    BValueNode(const Value &v, QByteArrayView data);
     ~BValueNode() override;
 
     [[nodiscard]] const Value &data() const
@@ -108,10 +105,10 @@ public:
 class KTORRENT_EXPORT BDictNode : public BNode
 {
     struct DictEntry {
-        QByteArray key;
+        QByteArrayView key;
         std::unique_ptr<BNode> node;
 
-        DictEntry(const QByteArray &key, std::unique_ptr<BNode> node)
+        DictEntry(QByteArrayView key, std::unique_ptr<BNode> node)
             : key(key)
             , node(std::move(node))
         {
@@ -120,7 +117,7 @@ class KTORRENT_EXPORT BDictNode : public BNode
     std::vector<DictEntry> children;
 
 public:
-    BDictNode(Uint32 off);
+    BDictNode();
     ~BDictNode() override;
 
     Q_DISABLE_COPY(BDictNode)
@@ -133,7 +130,7 @@ public:
      * \param key The key
      * \param node The node
      */
-    void insert(const QByteArray &key, std::unique_ptr<BNode> node);
+    void insert(QByteArrayView key, std::unique_ptr<BNode> node);
 
     /*!
      * Get a BNode.
@@ -172,7 +169,16 @@ public:
     //! Same as getValue, except directly returns a QString, if something goes wrong, an error will be thrown
     QString getString(QByteArrayView key);
 
-    //! Same as getValue, except directly returns an QByteArray, if something goes wrong, an error will be thrown
+    /*!
+     * Same as getValue, except directly returns an QByteArrayView, if something goes wrong, an error will be thrown.
+     */
+    QByteArrayView getByteArrayView(QByteArrayView key);
+
+    /*!
+     * Same as getValue, except directly returns an QByteArray, if something goes wrong, an error will be thrown.
+     *
+     * You should only use this function if you need a deep copy of the data. If you just need a view, then call getByteArrayView().
+     */
     QByteArray getByteArray(QByteArrayView key);
 
     void printDebugInfo() override;
@@ -188,7 +194,7 @@ class KTORRENT_EXPORT BListNode : public BNode
     std::vector<std::unique_ptr<BNode>> children;
 
 public:
-    BListNode(Uint32 off);
+    BListNode();
     ~BListNode() override;
 
     Q_DISABLE_COPY(BListNode)
@@ -250,7 +256,16 @@ public:
     //! Same as getValue, except directly returns a QString, if something goes wrong, an error will be thrown
     QString getString(Uint32 idx);
 
-    //! Same as getValue, except directly returns an QByteArray, if something goes wrong, an error will be thrown
+    /**
+     * Same as getValue, except directly returns an QByteArrayView, if something goes wrong, an error will be thrown.
+     */
+    QByteArrayView getByteArrayView(Uint32 idx);
+
+    /**
+     * Same as getValue, except directly returns an QByteArray, if something goes wrong, an error will be thrown
+     *
+     * You should only use this function if you need a deep copy of the data. If you just need a view, then call getByteArrayView().
+     */
     QByteArray getByteArray(Uint32 idx);
 };
 }

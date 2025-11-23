@@ -9,10 +9,9 @@
 
 namespace bt
 {
-BNode::BNode(Type type, Uint32 off)
+BNode::BNode(Type type, QByteArrayView data)
     : type(type)
-    , off(off)
-    , len(0)
+    , data(data)
 {
 }
 
@@ -22,8 +21,8 @@ BNode::~BNode()
 
 ////////////////////////////////////////////////
 
-BValueNode::BValueNode(const Value &v, Uint32 off)
-    : BNode(VALUE, off)
+BValueNode::BValueNode(const Value &v, QByteArrayView data)
+    : BNode(VALUE, data)
     , value(v)
 {
 }
@@ -45,8 +44,8 @@ void BValueNode::printDebugInfo()
 
 ////////////////////////////////////////////////
 
-BDictNode::BDictNode(Uint32 off)
-    : BNode(DICT, off)
+BDictNode::BDictNode()
+    : BNode(DICT)
 {
 }
 
@@ -59,13 +58,13 @@ QList<QByteArray> BDictNode::keys() const
     QList<QByteArray> ret;
     ret.reserve(children.size());
     for (const DictEntry &e : children) {
-        ret.push_back(e.key);
+        ret.push_back(QByteArray(e.key));
     }
 
     return ret;
 }
 
-void BDictNode::insert(const QByteArray &key, std::unique_ptr<BNode> node)
+void BDictNode::insert(QByteArrayView key, std::unique_ptr<BNode> node)
 {
     children.emplace_back(key, std::move(node));
 }
@@ -137,7 +136,7 @@ QString BDictNode::getString(QByteArrayView key)
     return v->data().toString();
 }
 
-QByteArray BDictNode::getByteArray(QByteArrayView key)
+QByteArrayView BDictNode::getByteArrayView(QByteArrayView key)
 {
     const BValueNode *v = getValue(key);
     if (!v) {
@@ -148,7 +147,12 @@ QByteArray BDictNode::getByteArray(QByteArrayView key)
         throw bt::Error(QStringLiteral("Incompatible type"));
     }
 
-    return v->data().toByteArray();
+    return v->data().toByteArrayView();
+}
+
+QByteArray BDictNode::getByteArray(QByteArrayView key)
+{
+    return getByteArrayView(key).toByteArray();
 }
 
 void BDictNode::printDebugInfo()
@@ -163,8 +167,8 @@ void BDictNode::printDebugInfo()
 
 ////////////////////////////////////////////////
 
-BListNode::BListNode(Uint32 off)
-    : BNode(LIST, off)
+BListNode::BListNode()
+    : BNode(LIST)
 {
 }
 
@@ -234,7 +238,7 @@ QString BListNode::getString(Uint32 idx)
     return v->data().toString();
 }
 
-QByteArray BListNode::getByteArray(Uint32 idx)
+QByteArrayView BListNode::getByteArrayView(Uint32 idx)
 {
     const BValueNode *v = getValue(idx);
     if (!v) {
@@ -245,7 +249,12 @@ QByteArray BListNode::getByteArray(Uint32 idx)
         throw bt::Error(QStringLiteral("Incompatible type"));
     }
 
-    return v->data().toByteArray();
+    return v->data().toByteArrayView();
+}
+
+QByteArray BListNode::getByteArray(Uint32 idx)
+{
+    return getByteArrayView(idx).toByteArray();
 }
 
 void BListNode::printDebugInfo()

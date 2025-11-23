@@ -29,14 +29,14 @@ public:
     Value();
     Value(int val);
     Value(Int64 val);
-    Value(const QByteArray &val);
+    Value(QByteArrayView val);
     Value(const Value &val);
     ~Value();
 
     Value &operator=(const Value &val);
     Value &operator=(Int32 val);
     Value &operator=(Int64 val);
-    Value &operator=(const QByteArray &val);
+    Value &operator=(QByteArrayView val);
 
     [[nodiscard]] Type getType() const
     {
@@ -54,7 +54,19 @@ public:
     {
         return QString::fromUtf8(strval);
     }
+
+    /*!
+     * Returns a deep copy of the string.
+     */
     [[nodiscard]] QByteArray toByteArray() const
+    {
+        return strval.toByteArray();
+    }
+
+    /*!
+     * Returns a view over the byte string
+     */
+    [[nodiscard]] QByteArrayView toByteArrayView() const
     {
         return strval;
     }
@@ -62,7 +74,7 @@ public:
 private:
     Type type;
     Int32 ival;
-    QByteArray strval;
+    QByteArrayView strval;
     Int64 big_ival;
 };
 }

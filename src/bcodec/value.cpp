@@ -27,7 +27,7 @@ Value::Value(Int64 val)
 {
 }
 
-Value::Value(const QByteArray &val)
+Value::Value(QByteArrayView val)
     : type(STRING)
     , ival(0)
     , strval(val)
@@ -71,7 +71,7 @@ Value &Value::operator=(Int64 val)
     return *this;
 }
 
-Value &Value::operator=(const QByteArray &val)
+Value &Value::operator=(QByteArrayView val)
 {
     type = STRING;
     strval = val;

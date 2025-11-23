@@ -126,10 +126,9 @@ void Torrent::load(const QByteArray &data, bool verbose)
         }
     }
 
-    const BNode *n = dict->getData("info");
     SHA1HashGen hg;
     // save info dict
-    metadata = data.mid(n->getOffset(), n->getLength());
+    metadata = dict->getData("info")->getBytes().toByteArray();
     info_hash = hg.generate(metadata);
 
     loaded = true;
