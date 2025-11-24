@@ -29,7 +29,7 @@ Address::Address(quint32 ip4Addr, Uint16 port)
 {
 }
 
-Address::Address(quint8 *ip6Addr, Uint16 port)
+Address::Address(const quint8 *ip6Addr, Uint16 port)
     : QHostAddress(ip6Addr)
     , port_number(port)
 {

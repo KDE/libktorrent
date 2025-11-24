@@ -30,7 +30,7 @@ class KTORRENT_EXPORT Address : public QHostAddress
 public:
     Address();
     Address(quint32 ip4Addr, bt::Uint16 port);
-    Address(quint8 *ip6Addr, bt::Uint16 port);
+    Address(const quint8 *ip6Addr, bt::Uint16 port);
     Address(const Q_IPV6ADDR &ip6Addr, bt::Uint16 port);
     Address(const struct sockaddr_storage *ss);
     Address(const QString &host, bt::Uint16 port);
