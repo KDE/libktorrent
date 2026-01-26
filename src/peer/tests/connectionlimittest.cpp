@@ -32,20 +32,20 @@ private Q_SLOTS:
         climit.setLimits(10, 20);
         bt::SHA1Hash hash;
 
-        QList<bt::ConnectionLimit::Token::Ptr> tokens;
+        std::vector<std::unique_ptr<bt::ConnectionLimit::Token>> tokens;
         for (int i = 0; i < 10; i++) {
-            bt::ConnectionLimit::Token::Ptr t = climit.acquire(hash);
-            QVERIFY(!t.isNull());
-            tokens.append(t);
+            std::unique_ptr<bt::ConnectionLimit::Token> t = climit.acquire(hash);
+            QVERIFY(t);
+            tokens.push_back(std::move(t));
         }
 
-        bt::ConnectionLimit::Token::Ptr t = climit.acquire(hash);
-        QVERIFY(t.isNull());
+        std::unique_ptr<bt::ConnectionLimit::Token> t = climit.acquire(hash);
+        QVERIFY(!t);
 
-        tokens.pop_front();
+        tokens.erase(tokens.cbegin());
 
         t = climit.acquire(hash);
-        QVERIFY(!t.isNull());
+        QVERIFY(t);
     }
 
     void testTorrentLimit()
@@ -54,20 +54,20 @@ private Q_SLOTS:
         climit.setLimits(20, 10);
         bt::SHA1Hash hash;
 
-        QList<bt::ConnectionLimit::Token::Ptr> tokens;
+        std::vector<std::unique_ptr<bt::ConnectionLimit::Token>> tokens;
         for (int i = 0; i < 10; i++) {
-            bt::ConnectionLimit::Token::Ptr t = climit.acquire(hash);
-            QVERIFY(!t.isNull());
-            tokens.append(t);
+            std::unique_ptr<bt::ConnectionLimit::Token> t = climit.acquire(hash);
+            QVERIFY(t);
+            tokens.push_back(std::move(t));
         }
 
-        bt::ConnectionLimit::Token::Ptr t = climit.acquire(hash);
-        QVERIFY(t.isNull());
+        std::unique_ptr<bt::ConnectionLimit::Token> t = climit.acquire(hash);
+        QVERIFY(!t);
 
-        tokens.pop_front();
+        tokens.erase(tokens.cbegin());
 
         t = climit.acquire(hash);
-        QVERIFY(!t.isNull());
+        QVERIFY(t);
     }
 
     void testMulitpleTorrents()
@@ -82,31 +82,31 @@ private Q_SLOTS:
         memset(tmp, 0xEE, 20);
         bt::SHA1Hash hash2 = bt::SHA1Hash::generate(tmp, 20);
 
-        QList<bt::ConnectionLimit::Token::Ptr> tokens;
+        std::vector<std::unique_ptr<bt::ConnectionLimit::Token>> tokens;
         for (int i = 0; i < 10; i++) {
-            bt::ConnectionLimit::Token::Ptr t = climit.acquire(hash1);
-            QVERIFY(!t.isNull());
-            tokens.append(t);
+            std::unique_ptr<bt::ConnectionLimit::Token> t = climit.acquire(hash1);
+            QVERIFY(t);
+            tokens.push_back(std::move(t));
         }
 
-        QVERIFY(climit.acquire(hash1).isNull());
+        QVERIFY(!climit.acquire(hash1));
 
         for (int i = 0; i < 5; i++) {
-            bt::ConnectionLimit::Token::Ptr t = climit.acquire(hash2);
-            QVERIFY(!t.isNull());
-            tokens.append(t);
+            std::unique_ptr<bt::ConnectionLimit::Token> t = climit.acquire(hash2);
+            QVERIFY(t);
+            tokens.push_back(std::move(t));
         }
 
-        bt::ConnectionLimit::Token::Ptr t = climit.acquire(hash1);
-        QVERIFY(t.isNull());
+        std::unique_ptr<bt::ConnectionLimit::Token> t = climit.acquire(hash1);
+        QVERIFY(!t);
 
         t = climit.acquire(hash2);
-        QVERIFY(t.isNull());
+        QVERIFY(!t);
 
-        tokens.pop_front();
+        tokens.erase(tokens.cbegin());
 
         t = climit.acquire(hash2);
-        QVERIFY(!t.isNull());
+        QVERIFY(t);
     }
 
 private:

@@ -53,7 +53,11 @@ public:
 
     void updateAvailableChunks();
     bool killBadPeer();
-    void createPeer(std::unique_ptr<mse::EncryptedPacketSocket> sock, const PeerID &peer_id, Uint32 support, bool local, ConnectionLimit::Token::Ptr token);
+    void createPeer(std::unique_ptr<mse::EncryptedPacketSocket> sock,
+                    const PeerID &peer_id,
+                    Uint32 support,
+                    bool local,
+                    std::unique_ptr<ConnectionLimit::Token> token);
     bool connectedTo(const net::Address &addr) const;
     void update();
     void have(Peer *peer, Uint32 index);
@@ -194,21 +198,21 @@ void PeerManager::newConnection(std::unique_ptr<mse::EncryptedPacketSocket> sock
     if (!d->started)
         return;
 
-    ConnectionLimit::Token::Ptr token = climit.acquire(d->tor.getInfoHash());
+    std::unique_ptr<ConnectionLimit::Token> token = climit.acquire(d->tor.getInfoHash());
     if (!token) {
         d->killBadPeer();
         token = climit.acquire(d->tor.getInfoHash());
     }
 
     if (token)
-        d->createPeer(std::move(sock), peer_id, support, false, token);
+        d->createPeer(std::move(sock), peer_id, support, false, std::move(token));
 }
 
-void PeerManager::peerAuthenticated(bt::Authenticate *auth, bt::PeerConnector::WPtr pcon, bool ok, bt::ConnectionLimit::Token::Ptr token)
+void PeerManager::peerAuthenticated(bt::Authenticate *auth, bt::PeerConnector::WPtr pcon, bool ok, std::unique_ptr<ConnectionLimit::Token> token)
 {
     if (d->started) {
         if (ok && !connectedTo(auth->getPeerID()))
-            d->createPeer(auth->takeSocket(), auth->getPeerID(), auth->supportedExtensions(), auth->isLocal(), token);
+            d->createPeer(auth->takeSocket(), auth->getPeerID(), auth->supportedExtensions(), auth->isLocal(), std::move(token));
     }
 
     PeerConnector::Ptr ptr = pcon.toStrongRef();
@@ -639,9 +643,9 @@ void PeerManager::Private::createPeer(std::unique_ptr<mse::EncryptedPacketSocket
                                       const bt::PeerID &peer_id,
                                       Uint32 support,
                                       bool local,
-                                      bt::ConnectionLimit::Token::Ptr token)
+                                      std::unique_ptr<ConnectionLimit::Token> token)
 {
-    auto peer = std::make_unique<Peer>(std::move(sock), peer_id, tor.getNumChunks(), tor.getChunkSize(), support, local, token, p);
+    auto peer = std::make_unique<Peer>(std::move(sock), peer_id, tor.getNumChunks(), tor.getChunkSize(), support, local, std::move(token), p);
     auto peer_ptr = peer.get();
     peer_map.emplace(peer->getID(), std::move(peer));
     Q_EMIT p->newPeer(peer_ptr);
@@ -679,11 +683,11 @@ void PeerManager::Private::connectToPeers()
         AccessManager &aman = AccessManager::instance();
 
         if (aman.allowed(itr->first) && !connectedTo(itr->first)) {
-            ConnectionLimit::Token::Ptr token = climit.acquire(tor.getInfoHash());
+            std::unique_ptr<ConnectionLimit::Token> token = climit.acquire(tor.getInfoHash());
             if (!token)
                 break;
 
-            PeerConnector::Ptr pcon(new PeerConnector(itr->first, itr->second, p, token));
+            PeerConnector::Ptr pcon(new PeerConnector(itr->first, itr->second, p, std::move(token)));
             pcon->setWeakPointer(PeerConnector::WPtr(pcon));
             connectors.insert(pcon);
             pcon->start();

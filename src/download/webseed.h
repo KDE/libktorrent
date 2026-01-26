@@ -190,7 +190,7 @@ private:
     QUrl redirected_url;
     PieceData::Ptr cur_piece;
     QTimer retry_timer;
-    ConnectionLimit::Token::Ptr token;
+    std::unique_ptr<ConnectionLimit::Token> token;
 
     static QString proxy_host;
     static Uint16 proxy_port;

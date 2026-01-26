@@ -43,11 +43,11 @@ Peer::Peer(std::unique_ptr<mse::EncryptedPacketSocket> sock,
            Uint32 chunk_size,
            Uint32 support,
            bool local,
-           ConnectionLimit::Token::Ptr token,
+           std::unique_ptr<ConnectionLimit::Token> token,
            PeerManager *pman)
     : PeerInterface(peer_id, num_chunks)
     , sock(std::move(sock))
-    , token(token)
+    , token(std::move(token))
     , id(peer_id_counter)
     , pman(pman)
 {
@@ -113,7 +113,7 @@ void Peer::kill()
 {
     sock->close();
     killed = true;
-    token.clear();
+    token.reset();
 }
 
 void Peer::handleChoke(Uint32 len)

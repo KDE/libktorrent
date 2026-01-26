@@ -64,7 +64,7 @@ public:
          Uint32 chunk_size,
          Uint32 support,
          bool local,
-         ConnectionLimit::Token::Ptr token,
+         std::unique_ptr<ConnectionLimit::Token> token,
          PeerManager *pman);
 
     ~Peer() override;
@@ -337,7 +337,7 @@ Q_SIGNALS:
 
 private:
     std::unique_ptr<mse::EncryptedPacketSocket> sock;
-    ConnectionLimit::Token::Ptr token;
+    std::unique_ptr<ConnectionLimit::Token> token;
 
     Timer stalled_timer;
 

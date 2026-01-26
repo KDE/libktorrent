@@ -8,10 +8,11 @@
 #define BT_CONNECTIONLIMIT_H
 
 #include <QMap>
-#include <QSharedPointer>
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <util/sha1hash.h>
+
+#include <memory>
 
 namespace bt
 {
@@ -41,7 +42,7 @@ public:
      * \brief Token representing the allowance to open a connection.
      * When the token is destroyed, it will be automatically released.
      */
-    class Token
+    class KTORRENT_EXPORT Token
     {
     public:
         Token(ConnectionLimit &limit, const bt::SHA1Hash &hash);
@@ -53,8 +54,6 @@ public:
             return hash;
         }
 
-        typedef QSharedPointer<Token> Ptr;
-
     private:
         ConnectionLimit &limit;
         bt::SHA1Hash hash;
@@ -65,7 +64,7 @@ public:
      * \param hash Info hash of the torrent
      * \return ConnectionLimit::Token::Ptr a valid token if a connection can be opened, a nullptr if not
      **/
-    Token::Ptr acquire(const SHA1Hash &hash);
+    std::unique_ptr<Token> acquire(const SHA1Hash &hash);
 
 protected:
     /*!

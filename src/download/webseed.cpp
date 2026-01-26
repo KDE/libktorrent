@@ -291,7 +291,7 @@ Uint32 WebSeed::update()
             }
             delete conn;
             conn = nullptr;
-            token.clear();
+            token.reset();
             chunkStopped();
             first_chunk = last_chunk = cur_chunk = tor.getNumChunks() + 1;
             num_failures++;
@@ -305,7 +305,7 @@ Uint32 WebSeed::update()
             Out(SYS_CON | LOG_DEBUG) << "WebSeed: connection closed" << endl;
             delete conn;
             conn = nullptr;
-            token.clear();
+            token.reset();
 
             status = i18n("Connection closed");
             chunkStopped();
@@ -480,7 +480,7 @@ void WebSeed::redirected(const QUrl &to_url)
 {
     delete conn;
     conn = nullptr;
-    token.clear();
+    token.reset();
     if (to_url.isValid() && (to_url.scheme() == "http"_L1 || to_url.scheme() == "https"_L1)) {
         redirected_url = to_url;
         download(cur_chunk, last_chunk);

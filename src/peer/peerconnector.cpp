@@ -21,14 +21,14 @@ static ResourceManager half_open_connections(50);
 class PeerConnector::Private
 {
 public:
-    Private(PeerConnector *p, const net::Address &addr, bool local, PeerManager *pman, ConnectionLimit::Token::Ptr token)
+    Private(PeerConnector *p, const net::Address &addr, bool local, PeerManager *pman, std::unique_ptr<ConnectionLimit::Token> token)
         : p(p)
         , addr(addr)
         , local(local)
         , pman(pman)
         , stopping(false)
         , do_not_start(false)
-        , token(token)
+        , token(std::move(token))
     {
     }
 
@@ -55,12 +55,12 @@ public:
     bool stopping;
     bool do_not_start;
     PeerConnector::WPtr self;
-    ConnectionLimit::Token::Ptr token;
+    std::unique_ptr<ConnectionLimit::Token> token;
 };
 
-PeerConnector::PeerConnector(const net::Address &addr, bool local, bt::PeerManager *pman, ConnectionLimit::Token::Ptr token)
+PeerConnector::PeerConnector(const net::Address &addr, bool local, bt::PeerManager *pman, std::unique_ptr<ConnectionLimit::Token> token)
     : Resource(&half_open_connections, pman->getTorrent().getInfoHash().toString())
-    , d(std::make_unique<Private>(this, addr, local, pman, token))
+    , d(std::make_unique<Private>(this, addr, local, pman, std::move(token)))
 {
 }
 
@@ -122,7 +122,7 @@ void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
         return;
 
     if (ok) {
-        pm->peerAuthenticated(auth, self, ok, token);
+        pm->peerAuthenticated(auth, self, ok, std::move(token));
         return;
     }
 
@@ -147,7 +147,7 @@ void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
         else if (!only_use_utp && !only_use_encryption && !tried_methods.contains(TCP_WITHOUT_ENCRYPTION) && tcp_allowed)
             start(TCP_WITHOUT_ENCRYPTION);
         else
-            pm->peerAuthenticated(auth, self, false, token);
+            pm->peerAuthenticated(auth, self, false, std::move(token));
     } else { // Primary is TCP
         if (!only_use_utp && encryption && !tried_methods.contains(TCP_WITH_ENCRYPTION) && tcp_allowed)
             start(TCP_WITH_ENCRYPTION);
@@ -158,7 +158,7 @@ void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
         else if (utp && !only_use_encryption && !tried_methods.contains(UTP_WITHOUT_ENCRYPTION))
             start(UTP_WITHOUT_ENCRYPTION);
         else
-            pm->peerAuthenticated(auth, self, false, token);
+            pm->peerAuthenticated(auth, self, false, std::move(token));
     }
 }
 
