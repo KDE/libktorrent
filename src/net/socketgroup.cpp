@@ -74,7 +74,7 @@ bool SocketGroup::processLimited(bool up, bt::TimeStamp now, Uint32 &allowance)
             else
                 allowance -= ret;
         } else {
-            // 0 pointer so just erase
+            // nullptr so just erase
             itr = sockets.erase(itr);
         }
 

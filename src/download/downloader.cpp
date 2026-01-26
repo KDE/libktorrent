@@ -468,7 +468,7 @@ void Downloader::saveDownloads(const QString &file)
     if (!fptr.open(file, u"wb"_s))
         return;
 
-    // See bug 219019, don't know why, but it is possible that we get 0 pointers in the map
+    // See bug 219019, don't know why, but it is possible that we get nullptr in the map
     // so get rid of them before we save
     for (CurChunkItr i = current_chunks.begin(); i != current_chunks.end();) {
         if (!i->second)

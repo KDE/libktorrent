@@ -63,7 +63,7 @@ public:
     /*!
      * Request a token for a given torrent
      * \param hash Info hash of the torrent
-     * \return ConnectionLimit::Token::Ptr a valid token if a connection can be opened, a 0 pointer if not
+     * \return ConnectionLimit::Token::Ptr a valid token if a connection can be opened, a nullptr if not
      **/
     Token::Ptr acquire(const SHA1Hash &hash);
 
