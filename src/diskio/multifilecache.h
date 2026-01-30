@@ -10,6 +10,7 @@
 #include "cachefile.h"
 #include "dndfile.h"
 #include <QMap>
+#include <memory>
 
 namespace bt
 {
@@ -25,6 +26,8 @@ class KTORRENT_EXPORT MultiFileCache : public Cache
 public:
     MultiFileCache(Torrent &tor, const QString &tmpdir, const QString &datadir, bool custom_output_name);
     ~MultiFileCache() override;
+
+    Q_DISABLE_COPY_MOVE(MultiFileCache);
 
     void changeTmpDir(const QString &ndir) override;
     void create() override;
@@ -58,7 +61,7 @@ private:
 private:
     QString cache_dir, output_dir;
     QMap<Uint32, CacheFile::Ptr> files;
-    QMap<Uint32, DNDFile::Ptr> dnd_files;
+    std::map<Uint32, std::unique_ptr<DNDFile>> dnd_files;
     QString new_output_dir;
     bool opened;
 };

@@ -145,8 +145,7 @@ void MultiFileCache::open()
             fd->open(tf.getPathOnDisk(), tf.getSize());
             files.insert(i, fd);
         } else {
-            if (dnd_files.contains(i))
-                dnd_files.remove(i);
+            dnd_files.erase(i);
 
             QString dnd_path = u"file%1.dnd"_s.arg(tf.getIndex());
             QString dnd_file = dnd_dir + dnd_path;
@@ -155,9 +154,9 @@ void MultiFileCache::open()
                 // with the old file
                 bt::Move(dnd_dir + tf.getUserModifiedPath() + ".dnd"_L1, dnd_file, true, true);
             }
-            DNDFile::Ptr dfd(new DNDFile(dnd_file, &tf, tor.getChunkSize()));
+            auto dfd = std::make_unique<DNDFile>(dnd_file, &tf, tor.getChunkSize());
             dfd->checkIntegrity();
-            dnd_files.insert(i, dfd);
+            dnd_files.emplace(i, std::move(dfd));
         }
     }
 
@@ -174,7 +173,7 @@ void MultiFileCache::changeTmpDir(const QString &ndir)
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
         TorrentFile &tf = tor.getFile(i);
         if (tf.doNotDownload()) {
-            DNDFile::Ptr dfd = dnd_files[i];
+            std::unique_ptr<DNDFile> &dfd = dnd_files[i];
             if (dfd) {
                 QString dnd_path = u"file%1.dnd"_s.arg(tf.getIndex());
                 dfd->changePath(dnd_dir + dnd_path);
@@ -449,7 +448,7 @@ PieceData::Ptr MultiFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
     for (int i = 0; i < tflist.count(); i++) {
         const TorrentFile &f = tor.getFile(tflist[i]);
         CacheFile::Ptr fd = files[tflist[i]];
-        DNDFile::Ptr dfd = dnd_files[tflist[i]];
+        std::unique_ptr<DNDFile> &dfd = dnd_files[tflist[i]];
 
         // first calculate offset into file
         // only the first file can have an offset
@@ -524,7 +523,7 @@ void MultiFileCache::savePiece(PieceData::Ptr piece)
     for (int i = 0; i < tflist.count(); i++) {
         const TorrentFile &f = tor.getFile(tflist[i]);
         CacheFile::Ptr fd = files[tflist[i]];
-        DNDFile::Ptr dfd = dnd_files[tflist[i]];
+        std::unique_ptr<DNDFile> &dfd = dnd_files[tflist[i]];
 
         // first calculate offset into file
         // only the first file can have an offset
@@ -601,14 +600,14 @@ void MultiFileCache::downloadStatusChanged(TorrentFile *tf, bool download)
                 bt::Delete(tf->getPathOnDisk(), true);
 
             files.remove(tf->getIndex());
-            DNDFile::Ptr dfd(new DNDFile(dnd_file, tf, tor.getChunkSize()));
+            auto dfd = std::make_unique<DNDFile>(dnd_file, tf, tor.getChunkSize());
             dfd->checkIntegrity();
-            dnd_files.insert(tf->getIndex(), dfd);
+            dnd_files.insert_or_assign(tf->getIndex(), std::move(dfd));
         } else {
             // recreate the file
             recreateFile(tf, dnd_dir + dnd_path, tf->getPathOnDisk());
             bt::Delete(dnd_dir + dnd_path);
-            dnd_files.remove(tf->getIndex());
+            dnd_files.erase(tf->getIndex());
             CacheFile::Ptr fd(new CacheFile());
             fd->open(tf->getPathOnDisk(), tf->getSize());
             files.insert(tf->getIndex(), fd);

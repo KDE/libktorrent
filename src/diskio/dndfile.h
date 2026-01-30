@@ -6,7 +6,6 @@
 #ifndef BTDNDFILE_H
 #define BTDNDFILE_H
 
-#include <QSharedPointer>
 #include <QString>
 #include <util/constants.h>
 
@@ -66,8 +65,6 @@ public:
      * \param size Size to write
      */
     void writeLastChunk(const Uint8 *buf, Uint32 off, Uint32 size);
-
-    typedef QSharedPointer<DNDFile> Ptr;
 
 private:
     void create();
