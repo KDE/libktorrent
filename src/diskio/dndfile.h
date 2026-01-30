@@ -7,6 +7,7 @@
 #define BTDNDFILE_H
 
 #include <QString>
+#include <QtClassHelperMacros>
 #include <util/constants.h>
 
 namespace bt
@@ -24,7 +25,9 @@ class DNDFile
 {
 public:
     DNDFile(const QString &path, const TorrentFile *tf, Uint32 chunk_size);
-    virtual ~DNDFile();
+    ~DNDFile();
+
+    Q_DISABLE_COPY_MOVE(DNDFile);
 
     //! Change the path of the file
     void changePath(const QString &npath);

@@ -16,16 +16,16 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace bt
 {
-const Uint32 DND_FILE_HDR_MAGIC = 0xD1234567;
+constexpr Uint32 DND_FILE_HDR_MAGIC = 0xD1234567;
 
 /*!
  * \brief Header of a DND file, contains the size of the first and last chunks.
  */
 struct DNDFileHeader {
-    Uint32 magic;
+    Uint32 magic = DND_FILE_HDR_MAGIC;
     Uint32 first_size;
     Uint32 last_size;
-    Uint8 data_sha1[20];
+    Uint8 data_sha1[20] = {0};
 };
 
 DNDFile::DNDFile(const QString &path, const TorrentFile *tf, Uint32 chunk_size)
@@ -66,11 +66,10 @@ void DNDFile::checkIntegrity()
 
 void DNDFile::create()
 {
-    DNDFileHeader hdr;
-    hdr.magic = DND_FILE_HDR_MAGIC;
-    hdr.first_size = first_size;
-    hdr.last_size = last_size;
-    memset(hdr.data_sha1, 0, 20);
+    const DNDFileHeader hdr{
+        .first_size = first_size,
+        .last_size = last_size,
+    };
 
     File fptr;
     if (!fptr.open(path, u"wb"_s))
