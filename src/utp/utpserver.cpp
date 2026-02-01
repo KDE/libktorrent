@@ -60,7 +60,6 @@ UTPServer::Private::Private(UTPServer *p)
     , create_sockets(true)
     , tos(0)
     , mtc(new MainThreadCall(p))
-    , timer(new QTimer)
 {
     QObject::connect(p, &UTPServer::handlePendingConnectionsDelayed, mtc, &MainThreadCall::handlePendingConnections, Qt::QueuedConnection);
 
@@ -74,12 +73,11 @@ UTPServer::Private::~Private()
 
     pending.clear();
     delete mtc;
-    timer->deleteLater();
 }
 
 void UTPServer::Private::stop()
 {
-    QTimer::singleShot(0, timer, &QTimer::stop); // kill in its own thread
+    QTimer::singleShot(0, &timer, &QTimer::stop); // stop in its own thread
     running = false;
     if (utp_thread) {
         utp_thread->exit();
@@ -198,7 +196,7 @@ UTPServer::UTPServer(QObject *parent)
     , d(std::make_unique<Private>(this))
 
 {
-    connect(d->timer, &QTimer::timeout, this, &UTPServer::checkTimeouts);
+    connect(&d->timer, &QTimer::timeout, this, &UTPServer::checkTimeouts);
 }
 
 UTPServer::~UTPServer()
@@ -255,7 +253,7 @@ void UTPServer::setTOS(Uint8 type_of_service)
 
 void UTPServer::threadStarted()
 {
-    d->timer->start(500);
+    d->timer.start(500);
     for (const net::ServerSocket::Ptr &sock : std::as_const(d->sockets)) {
         sock->setReadNotificationsEnabled(true);
     }
@@ -392,7 +390,7 @@ void UTPServer::start()
         d->utp_thread = new UTPServerThread(this);
         for (const net::ServerSocket::Ptr &sock : std::as_const(d->sockets))
             sock->moveToThread(d->utp_thread);
-        d->timer->moveToThread(d->utp_thread);
+        d->timer.moveToThread(d->utp_thread);
         d->utp_thread->start();
     }
 }
