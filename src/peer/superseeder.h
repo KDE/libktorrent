@@ -12,6 +12,8 @@
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
+#include <memory>
+
 namespace bt
 {
 class ChunkCounter;
@@ -75,7 +77,7 @@ private:
     void sendChunk(PeerInterface *peer);
 
 private:
-    ChunkCounter *chunk_counter;
+    std::unique_ptr<ChunkCounter> chunk_counter;
     QMultiMap<bt::Uint32, bt::PeerInterface *> active_chunks;
     QMap<bt::PeerInterface *, bt::Uint32> active_peers;
     Uint32 num_seeders;

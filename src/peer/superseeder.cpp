@@ -15,7 +15,7 @@
 namespace bt
 {
 SuperSeeder::SuperSeeder(Uint32 num_chunks)
-    : chunk_counter(new ChunkCounter(num_chunks))
+    : chunk_counter(std::make_unique<ChunkCounter>(num_chunks))
     , num_seeders(0)
 {
 }
