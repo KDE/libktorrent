@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-02-02 00:43+0000\n"
 "PO-Revision-Date: 2025-10-09 13:17+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -59,8 +59,8 @@ msgid "Checking Data"
 msgstr "הנתונים נבדקים"
 
 #: src/datachecker/multidatachecker.cpp:185
-#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:626
-#: src/diskio/multifilecache.cpp:661 src/torrent/torrentcreator.cpp:109
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:625
+#: src/diskio/multifilecache.cpp:660 src/torrent/torrentcreator.cpp:109
 #: src/torrent/torrentcreator.cpp:230 src/torrent/torrentcreator.cpp:262
 #, kde-format
 msgid "Cannot open file %1: %2"
@@ -131,17 +131,17 @@ msgstr "לא ניתן להקצות את המקום מראש: %1"
 msgid "Cannot open index file %1: %2"
 msgstr "לא ניתן לפתוח את קובץ המפתח %1: %2"
 
-#: src/diskio/dndfile.cpp:77
+#: src/diskio/dndfile.cpp:76
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "לא ניתן ליצור את הקובץ %1: %2"
 
-#: src/diskio/dndfile.cpp:119
+#: src/diskio/dndfile.cpp:118
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "כתיבת החלק הראשון לקובץ DND (לא להפריע) נכשל: %1"
 
-#: src/diskio/dndfile.cpp:134
+#: src/diskio/dndfile.cpp:133
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "כתיבת החלק האחרון לקובץ DND (לא להפריע) נכשל: %1"

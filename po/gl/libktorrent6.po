@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-02-02 00:43+0000\n"
 "PO-Revision-Date: 2025-01-19 12:20+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -67,8 +67,8 @@ msgid "Checking Data"
 msgstr "Comprobando os datos"
 
 #: src/datachecker/multidatachecker.cpp:185
-#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:626
-#: src/diskio/multifilecache.cpp:661 src/torrent/torrentcreator.cpp:109
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:625
+#: src/diskio/multifilecache.cpp:660 src/torrent/torrentcreator.cpp:109
 #: src/torrent/torrentcreator.cpp:230 src/torrent/torrentcreator.cpp:262
 #, kde-format
 msgid "Cannot open file %1: %2"
@@ -142,17 +142,17 @@ msgstr "Non é posíbel reservar espazo de almacenamento: %1"
 msgid "Cannot open index file %1: %2"
 msgstr "Non é posíbel abrir o ficheiro do índice %1: %2"
 
-#: src/diskio/dndfile.cpp:77
+#: src/diskio/dndfile.cpp:76
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "Non é posíbel crear o ficheiro %1: %2"
 
-#: src/diskio/dndfile.cpp:119
+#: src/diskio/dndfile.cpp:118
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Non foi posíbel gardar o primeiro anaco no ficheiro DND: %1"
 
-#: src/diskio/dndfile.cpp:134
+#: src/diskio/dndfile.cpp:133
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Non foi posíbel gardar o último anaco no ficheiro DND: %1"

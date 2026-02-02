@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-network-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-02-02 00:43+0000\n"
 "PO-Revision-Date: 2024-03-16 14:01+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -68,8 +68,8 @@ msgid "Checking Data"
 msgstr "Veri denetleniyor"
 
 #: src/datachecker/multidatachecker.cpp:185
-#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:626
-#: src/diskio/multifilecache.cpp:661 src/torrent/torrentcreator.cpp:109
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:625
+#: src/diskio/multifilecache.cpp:660 src/torrent/torrentcreator.cpp:109
 #: src/torrent/torrentcreator.cpp:230 src/torrent/torrentcreator.cpp:262
 #, kde-format
 msgid "Cannot open file %1: %2"
@@ -141,17 +141,17 @@ msgstr "Disk alanı önceden ayrılamıyor: %1"
 msgid "Cannot open index file %1: %2"
 msgstr "%1 dizin dosyası açılamıyor: %2"
 
-#: src/diskio/dndfile.cpp:77
+#: src/diskio/dndfile.cpp:76
 #, kde-format
 msgid "Cannot create file %1: %2"
 msgstr "%1 dosyası oluşturulamıyor: %2"
 
-#: src/diskio/dndfile.cpp:119
+#: src/diskio/dndfile.cpp:118
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "İlk parça DND dosyasına yazılamadı: %1"
 
-#: src/diskio/dndfile.cpp:134
+#: src/diskio/dndfile.cpp:133
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Son parça DND dosyasına yazılamadı: %1"
