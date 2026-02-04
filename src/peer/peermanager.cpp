@@ -5,6 +5,9 @@
 */
 #include "peermanager.h"
 
+#include <memory>
+#include <vector>
+
 #include <KLocalizedString>
 #include <QDateTime>
 #include <QFile>
@@ -74,7 +77,7 @@ public:
     bool wanted_changed;
     PieceHandler *piece_handler;
     bool paused;
-    QSet<PeerConnector::Ptr> connectors;
+    std::vector<std::unique_ptr<PeerConnector>> connectors;
     QScopedPointer<SuperSeeder> superseeder;
     std::map<net::Address, bool> potential_peers;
     bool partial_seed;
@@ -218,7 +221,7 @@ void PeerManager::newConnection(std::unique_ptr<mse::EncryptedPacketSocket> sock
     }
 }
 
-void PeerManager::peerAuthenticated(bt::Authenticate *auth, bt::PeerConnector::WPtr pcon, bool ok, std::unique_ptr<ConnectionLimit::Token> token)
+void PeerManager::peerAuthenticated(bt::Authenticate *auth, bt::PeerConnector *pcon, bool ok, std::unique_ptr<ConnectionLimit::Token> token)
 {
     if (d->started) {
         if (ok && !connectedTo(auth->getPeerID())) {
@@ -226,8 +229,12 @@ void PeerManager::peerAuthenticated(bt::Authenticate *auth, bt::PeerConnector::W
         }
     }
 
-    const PeerConnector::Ptr ptr = pcon.toStrongRef();
-    d->connectors.remove(ptr);
+    const auto it = std::find_if(d->connectors.cbegin(), d->connectors.cend(), [pcon](const std::unique_ptr<bt::PeerConnector> &pc) {
+        return pc.get() == pcon;
+    });
+    if (it != d->connectors.cend()) {
+        d->connectors.erase(it);
+    }
 }
 
 bool PeerManager::connectedTo(const PeerID &peer_id)
@@ -726,10 +733,8 @@ void PeerManager::Private::connectToPeers()
                 break;
             }
 
-            const PeerConnector::Ptr pcon(new PeerConnector(itr->first, itr->second, p, std::move(token)));
-            pcon->setWeakPointer(PeerConnector::WPtr(pcon));
-            connectors.insert(pcon);
-            pcon->start();
+            connectors.emplace_back(std::make_unique<PeerConnector>(itr->first, itr->second, p, std::move(token)));
+            connectors.back()->start();
         }
 
         potential_peers.erase(itr);

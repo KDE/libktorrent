@@ -27,7 +27,7 @@ EncryptedAuthenticate::EncryptedAuthenticate(const net::Address &addr,
                                              TransportProtocol proto,
                                              const SHA1Hash &info_hash,
                                              const PeerID &peer_id,
-                                             PeerConnector::WPtr pcon)
+                                             PeerConnector *pcon)
     : Authenticate(addr, proto, info_hash, peer_id, pcon)
 {
     mse::GeneratePublicPrivateKey(xa, ya);

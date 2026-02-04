@@ -8,12 +8,13 @@
 #include <mse/encryptedpacketsocket.h>
 #include <net/socks.h>
 #include <peer/accessmanager.h>
+#include <peer/peerconnector.h>
 #include <util/log.h>
 #include <utp/utpsocket.h>
 
 namespace bt
 {
-Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, const SHA1Hash &info_hash, const PeerID &peer_id, PeerConnector::WPtr pcon)
+Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, const SHA1Hash &info_hash, const PeerID &peer_id, PeerConnector *pcon)
     : info_hash(info_hash)
     , our_peer_id(peer_id)
     , addr(addr)
@@ -131,10 +132,7 @@ void Authenticate::onFinish(bool success)
     }
 
     timer.stop();
-    const PeerConnector::Ptr pc = pcon.toStrongRef();
-    if (pc) {
-        pc->authenticationFinished(this, success);
-    }
+    pcon->authenticationFinished(this, success);
 }
 
 void Authenticate::handshakeReceived(bool full)
