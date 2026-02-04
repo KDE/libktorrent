@@ -6,14 +6,16 @@
 #ifndef BTPACKETREADER_H
 #define BTPACKETREADER_H
 
-#include <QMutex>
-#include <boost/align/align_up.hpp>
 #include <cstddef>
 #include <deque>
+#include <optional>
+
+#include <QMutex>
+
 #include <ktorrent_export.h>
-#include <memory>
 #include <net/trafficshapedsocket.h>
-#include <new>
+#include <util/array.h>
+#include <util/constants.h>
 
 namespace bt
 {
@@ -24,45 +26,16 @@ class PeerInterface;
  * \brief A partially or fully received BitTorrent packet that is yet to be processed.
  */
 struct IncomingPacket {
-    Uint32 size;
-    Uint32 read;
-
-    using Ptr = std::unique_ptr<IncomingPacket>;
-
-private:
-    static constexpr std::size_t data_alignment = 16;
+    Array<Uint8> data;
+    Uint32 read = 0;
 
     explicit IncomingPacket(Uint32 size) noexcept;
 
-    //! Memory allocation function
-    static void *operator new(std::size_t object_size, Uint32 data_size)
-    {
-        return ::operator new(boost::alignment::align_up(object_size, data_alignment) + data_size);
-    }
-    //! Placement delete function
-    static void operator delete(void *p, Uint32) noexcept
-    {
-        operator delete(p);
-    }
+    IncomingPacket(IncomingPacket &&other) = default;
+    IncomingPacket &operator=(IncomingPacket &&other) = default;
 
-public:
     IncomingPacket(const IncomingPacket &) = delete;
     IncomingPacket &operator=(const IncomingPacket &) = delete;
-
-    //! Creates a packet of the given size
-    static Ptr create(Uint32 size);
-
-    //! Memory release function
-    static void operator delete(void *p) noexcept
-    {
-        ::operator delete(p);
-    }
-
-    //! Returns a pointer to the packet data
-    Uint8 *data() noexcept
-    {
-        return reinterpret_cast<Uint8 *>(this) + boost::alignment::align_up(sizeof(*this), data_alignment);
-    }
 };
 
 /*!
@@ -93,11 +66,11 @@ public:
 private:
     Uint32 newPacket(Uint8 *buf, Uint32 size);
     Uint32 readPacket(Uint8 *buf, Uint32 size);
-    IncomingPacket::Ptr dequeuePacket();
+    std::optional<IncomingPacket> dequeuePacket();
 
 private:
     bool error;
-    std::deque<IncomingPacket::Ptr> packet_queue;
+    std::deque<IncomingPacket> packet_queue;
     QMutex mutex;
     Uint8 len[4];
     int len_received;
