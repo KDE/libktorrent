@@ -43,12 +43,16 @@ void AuthenticationMonitor::shutdown()
 
 void AuthenticationMonitor::add(AuthenticateBase *s)
 {
-    auths.push_back(s);
+    if (s) {
+        auths.push_back(s);
+    }
 }
 
 void AuthenticationMonitor::remove(AuthenticateBase *s)
 {
-    auths.remove(s);
+    if (s) {
+        auths.remove(s);
+    }
 }
 
 void AuthenticationMonitor::update()
@@ -62,11 +66,8 @@ void AuthenticationMonitor::update()
     std::list<AuthenticateBase *>::iterator itr = auths.begin();
     while (itr != auths.end()) {
         AuthenticateBase *ab = *itr;
-        if (!ab || ab->isFinished()) {
-            if (ab) {
-                ab->deleteLater();
-            }
-
+        if (ab->isFinished()) {
+            ab->deleteLater();
             itr = auths.erase(itr);
         } else {
             mse::EncryptedPacketSocket *socket = ab->getSocket();
@@ -91,10 +92,8 @@ void AuthenticationMonitor::handleData()
     std::list<AuthenticateBase *>::iterator itr = auths.begin();
     while (itr != auths.end()) {
         AuthenticateBase *ab = *itr;
-        if (!ab || ab->isFinished()) {
-            if (ab) {
-                ab->deleteLater();
-            }
+        if (ab->isFinished()) {
+            ab->deleteLater();
             itr = auths.erase(itr);
         } else {
             mse::EncryptedPacketSocket *socket = ab->getSocket();
