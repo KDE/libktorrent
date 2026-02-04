@@ -733,7 +733,7 @@ void PeerManager::Private::connectToPeers()
                 break;
             }
 
-            connectors.emplace_back(std::make_unique<PeerConnector>(itr->first, itr->second, p, std::move(token)));
+            connectors.emplace_back(std::make_unique<PeerConnector>(itr->first, itr->second, *p, std::move(token)));
             connectors.back()->start();
         }
 
