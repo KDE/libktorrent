@@ -6,8 +6,11 @@
 #ifndef NETBUFFEREDSOCKET_H
 #define NETBUFFEREDSOCKET_H
 
-#include <QMutex>
 #include <deque>
+#include <optional>
+
+#include <QMutex>
+
 #include <download/packet.h>
 #include <download/request.h>
 #include <ktorrent_export.h>
@@ -34,7 +37,7 @@ public:
      * Add a packet to send
      * \param packet The Packet to send
      **/
-    void addPacket(bt::Packet::Ptr packet);
+    void addPacket(bt::Packet packet);
 
     bt::Uint32 write(bt::Uint32 max, bt::TimeStamp now) override;
     bool bytesReadyToWrite() const override;
@@ -73,10 +76,9 @@ protected:
 private:
     void selectPacket();
 
-protected:
-    std::deque<bt::Packet::Ptr> control_packets;
-    std::deque<bt::Packet::Ptr> data_packets; // NOTE: revert back to lists because of erase() calls?
-    bt::Packet::Ptr curr_packet;
+    std::deque<bt::Packet> control_packets;
+    std::deque<bt::Packet> data_packets; // NOTE: revert back to lists because of erase() calls?
+    std::optional<bt::Packet> curr_packet;
     bt::Uint32 ctrl_packets_sent;
 
     bt::Uint32 pending_upload_data_bytes;

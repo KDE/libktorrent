@@ -31,14 +31,14 @@
 
 using namespace Qt::StringLiterals;
 
-bool ComparePacketSize(const bt::Packet::Ptr &packet, const bt::Uint32 size)
+bool ComparePacketSize(const bt::Packet &packet, const bt::Uint32 size)
 {
-    return packet->getDataLength() == (4 + size) && bt::ReadUint32(packet->getData(), 0), size;
+    return packet.getDataLength() == (4 + size) && bt::ReadUint32(packet.getData(), 0), size;
 }
 
-bool ComparePacketType(const bt::Packet::Ptr &packet, const bt::PeerMessageType type)
+bool ComparePacketType(const bt::Packet &packet, const bt::PeerMessageType type)
 {
-    return packet->getData()[4] == type;
+    return packet.getData()[4] == type;
 }
 
 class PacketTest : public QObject
@@ -76,7 +76,7 @@ private Q_SLOTS:
         const auto packet = bt::Packet::create(port);
         QVERIFY(ComparePacketSize(packet, 3));
         QVERIFY(ComparePacketType(packet, bt::PeerMessageType::PORT));
-        QCOMPARE(bt::ReadUint16(packet->getData(), 5), port);
+        QCOMPARE(bt::ReadUint16(packet.getData(), 5), port);
     }
 
     void testPieceIndex_data()
@@ -97,7 +97,7 @@ private Q_SLOTS:
         const auto packet = bt::Packet::create(piece_index, packet_type);
         QVERIFY(ComparePacketSize(packet, 5));
         QVERIFY(ComparePacketType(packet, packet_type));
-        QCOMPARE(bt::ReadUint32(packet->getData(), 5), piece_index);
+        QCOMPARE(bt::ReadUint32(packet.getData(), 5), piece_index);
     }
 
     void testBitSet()
@@ -110,7 +110,7 @@ private Q_SLOTS:
         const auto packet = bt::Packet::create(bitset);
         QVERIFY(ComparePacketSize(packet, 1 + bitset.getNumBytes()));
         QVERIFY(ComparePacketType(packet, bt::PeerMessageType::BITFIELD));
-        QCOMPARE(std::memcmp(packet->getData() + 5, bitset.getData(), bitset.getNumBytes()), 0);
+        QCOMPARE(std::memcmp(packet.getData() + 5, bitset.getData(), bitset.getNumBytes()), 0);
     }
 
     void testRequest_data()
@@ -131,9 +131,9 @@ private Q_SLOTS:
         const auto packet = bt::Packet::create(request, packet_type);
         QVERIFY(ComparePacketSize(packet, 13));
         QVERIFY(ComparePacketType(packet, packet_type));
-        QCOMPARE(bt::ReadUint32(packet->getData(), 5), request.getIndex());
-        QCOMPARE(bt::ReadUint32(packet->getData(), 9), request.getOffset());
-        QCOMPARE(bt::ReadUint32(packet->getData(), 13), request.getLength());
+        QCOMPARE(bt::ReadUint32(packet.getData(), 5), request.getIndex());
+        QCOMPARE(bt::ReadUint32(packet.getData(), 9), request.getOffset());
+        QCOMPARE(bt::ReadUint32(packet.getData(), 13), request.getLength());
     }
 
     void testPiece()
@@ -168,12 +168,12 @@ private Q_SLOTS:
             // message len (4) + message type (1) + chunk index (4) + offset into chunk (4) + piece size
             QVERIFY(ComparePacketSize(packet, 13 + piece_size));
             QVERIFY(ComparePacketType(packet, bt::PeerMessageType::PIECE));
-            QCOMPARE(bt::ReadUint32(packet->getData(), 5), chunk_index);
-            QCOMPARE(bt::ReadUint32(packet->getData(), 9), offset);
+            QCOMPARE(bt::ReadUint32(packet.getData(), 5), chunk_index);
+            QCOMPARE(bt::ReadUint32(packet.getData(), 9), offset);
 
             constexpr bool read_only = true;
             auto piece = chunk->getPiece(offset, piece_size, read_only);
-            QCOMPARE(memcmp(packet->getData() + 13, piece->data(), piece_size), 0);
+            QCOMPARE(memcmp(packet.getData() + 13, piece->data(), piece_size), 0);
         }
     }
 
@@ -185,8 +185,8 @@ private Q_SLOTS:
         const auto packet = bt::Packet::create(extension_id, message);
         QVERIFY(ComparePacketSize(packet, 1 + message.size()));
         QVERIFY(ComparePacketType(packet, bt::PeerMessageType::EXTENDED));
-        QCOMPARE(packet->getData()[5], extension_id);
-        QCOMPARE(memcmp(packet->getData() + 6, message.data(), message.size()), 0);
+        QCOMPARE(packet.getData()[5], extension_id);
+        QCOMPARE(memcmp(packet.getData() + 6, message.data(), message.size()), 0);
     }
 
     void testMakeRejectOfPieceBad()
@@ -196,7 +196,7 @@ private Q_SLOTS:
                 continue;
             }
             auto packet = bt::Packet::create(type);
-            QCOMPARE(packet->makeRejectOfPiece(), nullptr);
+            QCOMPARE(packet.makeRejectOfPiece(), std::nullopt);
         }
     }
 
@@ -227,8 +227,8 @@ private Q_SLOTS:
 
         auto num_sends = 0;
         auto num_bytes_sent = 0;
-        while (!packet->isSent() && num_sends < expected_num_sends) {
-            QCOMPARE_LE(packet->send(writer_socket.get(), max_bytes_to_send), max_bytes_to_send);
+        while (!packet.isSent() && num_sends < expected_num_sends) {
+            QCOMPARE_LE(packet.send(writer_socket.get(), max_bytes_to_send), max_bytes_to_send);
 
             const auto bytes_received = reader_socket->recv(reinterpret_cast<bt::Uint8 *>(reader_data.data()) + num_bytes_sent, max_bytes_to_send);
 

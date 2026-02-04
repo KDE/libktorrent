@@ -38,7 +38,7 @@ struct PiecePacket {
         return 4 + 1 + 4 + 4 + m_length;
     }
 
-    bt::Packet::Ptr toPacket() const
+    bt::Packet toPacket() const
     {
         return bt::Packet::create(m_chunk_index, m_offset, m_length, m_chunk);
     }
@@ -97,7 +97,7 @@ struct ExtensionPacket {
         return 4 + 1 + 1 + static_cast<bt::Uint32>(m_message.size());
     }
 
-    bt::Packet::Ptr toPacket() const
+    bt::Packet toPacket() const
     {
         return bt::Packet::create(m_extension_id, m_message);
     }
@@ -151,7 +151,7 @@ struct RequestPacket {
         return 4 + 1 + 4 + 4 + 4;
     }
 
-    bt::Packet::Ptr toPacket() const
+    bt::Packet toPacket() const
     {
         return bt::Packet::create(bt::Request{m_chunk_index, m_offset, m_length, nullptr}, m_packet_type);
     }

@@ -117,12 +117,12 @@ Uint32 PacketSocket::write(Uint32 max, bt::TimeStamp now)
     return written;
 }
 
-void PacketSocket::addPacket(Packet::Ptr packet)
+void PacketSocket::addPacket(Packet packet)
 {
-    Q_ASSERT(!packet->sending());
+    Q_ASSERT(!packet.sending());
     const QMutexLocker locker(&mutex);
-    if (packet->getType() == PIECE) {
-        pending_upload_data_bytes += packet->getDataLength();
+    if (packet.getType() == PIECE) {
+        pending_upload_data_bytes += packet.getDataLength();
         data_packets.push_back(std::move(packet));
     } else {
         control_packets.push_back(std::move(packet));
@@ -157,12 +157,15 @@ void PacketSocket::clearPieces(bool reject)
 
     auto i = data_packets.begin();
     while (i != data_packets.end()) {
-        const Packet::Ptr &p = *i;
-        if (p->getType() == bt::PIECE && !p->sending()) {
+        const Packet &p = *i;
+        if (p.getType() == bt::PIECE && !p.sending()) {
             if (reject) {
-                addPacket(p->makeRejectOfPiece());
+                auto reject_pkt = p.makeRejectOfPiece();
+                if (reject_pkt.has_value()) {
+                    addPacket(std::move(reject_pkt.value()));
+                }
             }
-            pending_upload_data_bytes -= p->getDataLength();
+            pending_upload_data_bytes -= p.getDataLength();
             i = data_packets.erase(i);
         } else {
             i++;
@@ -175,12 +178,15 @@ void PacketSocket::doNotSendPiece(const bt::Request &req, bool reject)
     const QMutexLocker locker(&mutex);
     auto i = data_packets.begin();
     while (i != data_packets.end()) {
-        const Packet::Ptr &p = *i;
-        if (p->isPiece(req) && !p->sending()) {
-            pending_upload_data_bytes -= p->getDataLength();
+        const Packet &p = *i;
+        if (p.isPiece(req) && !p.sending()) {
+            pending_upload_data_bytes -= p.getDataLength();
             if (reject) {
                 // queue a reject packet
-                addPacket(p->makeRejectOfPiece());
+                auto reject_pkt = p.makeRejectOfPiece();
+                if (reject_pkt.has_value()) {
+                    addPacket(std::move(reject_pkt.value()));
+                }
             }
             i = data_packets.erase(i);
         } else {
