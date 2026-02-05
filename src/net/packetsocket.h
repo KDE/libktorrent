@@ -71,7 +71,7 @@ protected:
     virtual void preProcess(bt::Uint8 *data, bt::Uint32 size);
 
 private:
-    bt::Packet::Ptr selectPacket();
+    void selectPacket();
 
 protected:
     std::deque<bt::Packet::Ptr> control_packets;
