@@ -1,23 +1,23 @@
 # Traducerea ktorrent.po în Română
+# SPDX-FileCopyrightText: 2008, 2009, 2013, 2020, 2026 Sergiu Bivol <sergiu@cip.md>
 # This file is distributed under the same license as the ktorrent package.
 # Laurențiu Buzdugan <lbuz@rolix.org>, 2008".
 # Cristian Tarsoaga <cristian.tarsoaga@gmail.com>, 2008.
-# Sergiu Bivol <sergiu@cip.md>, 2008, 2009, 2013, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent(2)\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 14:40+0000\n"
-"PO-Revision-Date: 2020-09-24 22:03+0100\n"
+"PO-Revision-Date: 2026-02-05 10:47+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
-"Language-Team: Romanian\n"
+"Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: src/bcodec/bdecoder.cpp:50
 #, kde-format
@@ -524,7 +524,7 @@ msgstr "Fișierul nu poate fi extins: %1"
 #: src/util/fileops.cpp:382
 #, kde-format
 msgid "Cannot seek in file: %1"
-msgstr "Nu se poate căuta în fișier: %1"
+msgstr "Nu se poate derula în fișier: %1"
 
 #: src/util/fileops.cpp:623
 #, kde-format
