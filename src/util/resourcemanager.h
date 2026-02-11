@@ -41,8 +41,8 @@ public:
     //! Release the Resource
     void release();
 
-    typedef QSet<Resource *> Set;
-    typedef QList<Resource *> List;
+    using Set = QSet<Resource *>;
+    using List = QList<Resource *>;
 
 private:
     ResourceManager *rman;

@@ -69,7 +69,7 @@ public:
     }
 
 private:
-    typedef std::pair<bt::Uint8 *, bt::Uint32> Range;
+    using Range = std::pair<bt::Uint8 *, bt::Uint32>;
 
     //! Get the first range
     Range firstRange();

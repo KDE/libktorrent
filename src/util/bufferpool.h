@@ -26,9 +26,9 @@ class BufferPool;
 class KTORRENT_EXPORT Buffer
 {
 public:
-    typedef QSharedPointer<Buffer> Ptr;
+    using Ptr = QSharedPointer<Buffer>;
     // TODO(Qt6.8) use QByteArray with Qt::Initialization overload
-    typedef Array<bt::Uint8> Data;
+    using Data = Array<bt::Uint8>;
 
     Buffer(Data data, bt::Uint32 fill, QWeakPointer<BufferPool> pool);
     virtual ~Buffer();
@@ -100,10 +100,10 @@ public:
      **/
     void clear();
 
-    typedef QSharedPointer<BufferPool> Ptr;
+    using Ptr = QSharedPointer<BufferPool>;
 
 private:
-    typedef std::map<bt::Uint32, std::list<Buffer::Data>> FreeBufferMap;
+    using FreeBufferMap = std::map<bt::Uint32, std::list<Buffer::Data>>;
     QMutex mutex;
     FreeBufferMap free_buffers;
     QWeakPointer<BufferPool> self;

@@ -26,7 +26,7 @@ struct IncomingPacket {
     Uint32 size;
     Uint32 read;
 
-    typedef std::unique_ptr<IncomingPacket> Ptr;
+    using Ptr = std::unique_ptr<IncomingPacket>;
 
 private:
     static constexpr std::size_t data_alignment = 16;

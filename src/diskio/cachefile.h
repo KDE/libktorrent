@@ -109,7 +109,7 @@ public:
     //! Get the number of bytes this cache file is taking up
     Uint64 diskUsage();
 
-    typedef QSharedPointer<CacheFile> Ptr;
+    using Ptr = QSharedPointer<CacheFile>;
 
 private:
     void growFile(Uint64 to_write);

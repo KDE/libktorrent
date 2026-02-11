@@ -66,7 +66,7 @@ public:
         return timeouts;
     }
 
-    typedef QSet<Uint32>::iterator iterator;
+    using iterator = QSet<Uint32>::iterator;
     iterator begin()
     {
         return status.begin();

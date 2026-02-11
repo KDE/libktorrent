@@ -36,7 +36,7 @@ public:
     //! Remove a socket, will stop threads if no more sockets are left
     void remove(TrafficShapedSocket *sock);
 
-    typedef std::list<TrafficShapedSocket *>::iterator Itr;
+    using Itr = std::list<TrafficShapedSocket *>::iterator;
 
     //! Get the begin of the list of sockets
     Itr begin()

@@ -58,8 +58,8 @@ public:
         autodel = yes;
     }
 
-    typedef typename std::map<Key, Data *>::iterator iterator;
-    typedef typename std::map<Key, Data *>::const_iterator const_iterator;
+    using iterator = typename std::map<Key, Data *>::iterator;
+    using const_iterator = typename std::map<Key, Data *>::const_iterator;
 
     iterator begin()
     {

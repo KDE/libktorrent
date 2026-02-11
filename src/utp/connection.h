@@ -165,8 +165,8 @@ public:
         return stats.timeout;
     }
 
-    typedef QSharedPointer<Connection> Ptr;
-    typedef QWeakPointer<Connection> WPtr;
+    using Ptr = QSharedPointer<Connection>;
+    using WPtr = QWeakPointer<Connection>;
 
     //! Set a weak pointer to self
     void setWeakPointer(WPtr ptr)

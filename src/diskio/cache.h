@@ -264,7 +264,7 @@ protected:
         //! Ordering predicate by key
         struct OrderByKey
         {
-            typedef void is_transparent;
+            using is_transparent = void;
 
             bool operator()(const PieceDataInfo &left, const PieceDataInfo &right) const noexcept
             {
@@ -297,8 +297,8 @@ protected:
             return (static_cast<Uint64>(off) << 32u) | static_cast<Uint64>(len);
         }
     };
-    typedef QVector<PieceDataInfo> PieceDataInfoList;
-    typedef QHash<Chunk *, PieceDataInfoList> PieceCache;
+    using PieceDataInfoList = QVector<PieceDataInfo>;
+    using PieceCache = QHash<Chunk *, PieceDataInfoList>;
     PieceCache piece_cache;
 
     QSet<QString> mount_points;

@@ -45,7 +45,7 @@ public:
         return woken_up;
     }
 
-    typedef QSharedPointer<WakeUpPipe> Ptr;
+    using Ptr = QSharedPointer<WakeUpPipe>;
 
 protected:
     mutable QMutex mutex;

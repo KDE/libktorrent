@@ -72,7 +72,7 @@ public:
     //! Take the filedescriptor from the socket
     int take();
 
-    typedef QSharedPointer<Socket> Ptr;
+    using Ptr = QSharedPointer<Socket>;
 
 private:
     void configureFd();

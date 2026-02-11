@@ -12,7 +12,7 @@ using namespace bt;
 
 namespace dht
 {
-typedef std::map<dht::Key, KBucketEntry>::iterator KNSitr;
+using KNSitr = std::map<dht::Key, KBucketEntry>::iterator;
 
 KClosestNodesSearch::KClosestNodesSearch(const dht::Key &key, Uint32 max_entries)
     : key(key)

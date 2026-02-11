@@ -41,8 +41,8 @@ public:
      */
     static void setMaxActive(Uint32 mc);
 
-    typedef QSharedPointer<PeerConnector> Ptr;
-    typedef QWeakPointer<PeerConnector> WPtr;
+    using Ptr = QSharedPointer<PeerConnector>;
+    using WPtr = QWeakPointer<PeerConnector>;
 
     //! Set a weak pointer to this object
     void setWeakPointer(WPtr ptr);

@@ -33,8 +33,8 @@ public:
     //! Unregister a system
     void unregisterSystem(const QString &name);
 
-    typedef QMap<QString, Uint32>::iterator iterator;
-    typedef QMap<QString, Uint32>::const_iterator const_iterator;
+    using iterator = QMap<QString, Uint32>::iterator;
+    using const_iterator = QMap<QString, Uint32>::const_iterator;
 
     iterator begin()
     {

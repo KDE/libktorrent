@@ -43,7 +43,7 @@ public:
     void findKClosestNodes(KClosestNodesSearch &kns) const;
 
 private:
-    typedef std::list<std::unique_ptr<KBucket>> KBucketList;
+    using KBucketList = std::list<std::unique_ptr<KBucket>>;
     inline KBucketList::iterator findBucket(const dht::Key &id);
 
 private:

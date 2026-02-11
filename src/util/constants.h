@@ -10,17 +10,17 @@
 
 namespace bt
 {
-typedef quint64 Uint64;
-typedef quint32 Uint32;
-typedef quint16 Uint16;
-typedef quint8 Uint8;
+using Uint64 = quint64;
+using Uint32 = quint32;
+using Uint16 = quint16;
+using Uint8 = quint8;
 
-typedef qint64 Int64;
-typedef qint32 Int32;
-typedef qint16 Int16;
-typedef qint8 Int8;
+using Int64 = qint64;
+using Int32 = qint32;
+using Int16 = qint16;
+using Int8 = qint8;
 
-typedef Uint64 TimeStamp;
+using TimeStamp = Uint64;
 
 enum Priority {
     // also leave some room if we want to add new priorities in the future

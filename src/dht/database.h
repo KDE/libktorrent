@@ -55,7 +55,7 @@ private:
     bt::TimeStamp time_stamp;
 };
 
-typedef QList<DBItem> DBItemList;
+using DBItemList = QList<DBItem>;
 
 /*!
  * \author Joris Guisson

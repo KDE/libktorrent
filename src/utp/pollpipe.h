@@ -22,7 +22,7 @@ public:
     PollPipe(net::Poll::Mode mode);
     ~PollPipe() override;
 
-    typedef QSharedPointer<PollPipe> Ptr;
+    using Ptr = QSharedPointer<PollPipe>;
 
     //! Is the pipe being polled
     bool polling() const

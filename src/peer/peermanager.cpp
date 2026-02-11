@@ -40,7 +40,7 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace bt
 {
-typedef std::map<net::Address, bool>::iterator PPItr;
+using PPItr = std::map<net::Address, bool>::iterator;
 using PeerMap = std::map<Uint32, std::unique_ptr<Peer>>;
 
 static ConnectionLimit climit;

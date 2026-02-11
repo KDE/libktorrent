@@ -463,8 +463,8 @@ public:
      */
     virtual void setSuperSeeding(bool on) = 0;
 
-    typedef QSharedPointer<TorrentInterface> Ptr;
-    typedef QPointer<TorrentInterface> WPtr;
+    using Ptr = QSharedPointer<TorrentInterface>;
+    using WPtr = QPointer<TorrentInterface>;
 
 Q_SIGNALS:
     /*!

@@ -36,8 +36,8 @@ public:
     KClosestNodesSearch(const dht::Key &key, bt::Uint32 max_entries);
     virtual ~KClosestNodesSearch();
 
-    typedef std::map<dht::Key, KBucketEntry>::iterator Itr;
-    typedef std::map<dht::Key, KBucketEntry>::const_iterator CItr;
+    using Itr = std::map<dht::Key, KBucketEntry>::iterator;
+    using CItr = std::map<dht::Key, KBucketEntry>::const_iterator;
 
     Itr begin()
     {

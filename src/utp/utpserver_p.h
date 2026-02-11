@@ -53,7 +53,7 @@ private:
     UTPServer *server;
 };
 
-typedef bt::PtrMap<quint16, Connection>::iterator ConItr;
+using ConItr = bt::PtrMap<quint16, Connection>::iterator;
 
 struct PollPipePair {
     PollPipe::Ptr read_pipe;
@@ -65,8 +65,8 @@ struct PollPipePair {
     bool testWrite(ConItr b, ConItr e);
 };
 
-typedef bt::PtrMap<net::Poll *, PollPipePair>::iterator PollPipePairItr;
-typedef QMap<quint16, Connection::Ptr>::iterator ConnectionMapItr;
+using PollPipePairItr = bt::PtrMap<net::Poll *, PollPipePair>::iterator;
+using ConnectionMapItr = QMap<quint16, Connection::Ptr>::iterator;
 
 class UTPServer::Private : public net::ServerSocket::DataHandler
 {

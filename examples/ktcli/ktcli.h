@@ -15,7 +15,7 @@
 
 class QUrl;
 
-typedef std::unique_ptr<bt::TorrentControl> TorrentControlPtr;
+using TorrentControlPtr = std::unique_ptr<bt::TorrentControl>;
 
 class KTCLI : public QCoreApplication, public bt::QueueManagerInterface
 {

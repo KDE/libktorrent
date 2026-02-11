@@ -51,7 +51,7 @@ private:
         }
     };
 
-    typedef boost::circular_buffer<DelayEntry>::iterator DelayEntryItr;
+    using DelayEntryItr = boost::circular_buffer<DelayEntry>::iterator;
 
 private:
     boost::circular_buffer<DelayEntry> delay_window;

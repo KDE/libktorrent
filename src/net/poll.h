@@ -43,7 +43,7 @@ public:
     //! Reset the client called after poll finishes
     virtual void reset() = 0;
 
-    typedef QSharedPointer<PollClient> Ptr;
+    using Ptr = QSharedPointer<PollClient>;
 };
 
 /*!

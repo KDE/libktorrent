@@ -82,8 +82,8 @@ private:
     QMap<bt::PeerInterface *, bt::Uint32> active_peers;
     Uint32 num_seeders;
 
-    typedef QMultiMap<bt::Uint32, bt::PeerInterface *>::iterator ActiveChunkItr;
-    typedef QMap<bt::PeerInterface *, bt::Uint32>::iterator ActivePeerItr;
+    using ActiveChunkItr = QMultiMap<bt::Uint32, bt::PeerInterface *>::iterator;
+    using ActivePeerItr = QMap<bt::PeerInterface *, bt::Uint32>::iterator;
 };
 
 }

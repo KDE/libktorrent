@@ -104,7 +104,7 @@ public:
     void fillSelectiveAck(SelectiveAck *sack);
 
 private:
-    typedef std::vector<WindowPacket> WindowPacketList;
+    using WindowPacketList = std::vector<WindowPacket>;
 
     bt::Uint16 last_seq_nr;
     bt::Uint16 first_seq_nr;

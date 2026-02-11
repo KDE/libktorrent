@@ -32,8 +32,8 @@ class PieceDownloader;
 class MonitorInterface;
 class WebSeedChunkDownload;
 
-typedef PtrMap<Uint32, ChunkDownload>::iterator CurChunkItr;
-typedef PtrMap<Uint32, ChunkDownload>::const_iterator CurChunkCItr;
+using CurChunkItr = PtrMap<Uint32, ChunkDownload>::iterator;
+using CurChunkCItr = PtrMap<Uint32, ChunkDownload>::const_iterator;
 
 #define CURRENT_CHUNK_MAGIC 0xABCDEF00
 

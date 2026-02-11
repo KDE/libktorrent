@@ -34,7 +34,7 @@ class Packet :
     public boost::intrusive_ref_counter<Packet>
 {
 public:
-    typedef boost::intrusive_ptr<Packet> Ptr;
+    using Ptr = boost::intrusive_ptr<Packet>;
 
 private:
     static constexpr std::size_t data_alignment = 16;

@@ -207,7 +207,7 @@ public:
      * An array-like container, optimized for small number of elements and
      * forward iteration.
      */
-    typedef QVarLengthArray<Uint32, 64> FileIndexList;
+    using FileIndexList = QVarLengthArray<Uint32, 64>;
 
     /*!
      * Calculate in which file(s) a Chunk lies. A list will

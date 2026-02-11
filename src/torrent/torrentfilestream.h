@@ -73,8 +73,8 @@ public:
     //! Get the current chunk relative to the first chunk of the file
     Uint32 currentChunk() const;
 
-    typedef QSharedPointer<TorrentFileStream> Ptr;
-    typedef QWeakPointer<TorrentFileStream> WPtr;
+    using Ptr = QSharedPointer<TorrentFileStream>;
+    using WPtr = QWeakPointer<TorrentFileStream>;
 
 protected:
     qint64 writeData(const char *data, qint64 len) override;

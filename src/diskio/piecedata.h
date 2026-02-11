@@ -140,7 +140,7 @@ public:
      */
     SHA1Hash generateHash() const;
 
-    typedef QExplicitlySharedDataPointer<PieceData> Ptr;
+    using Ptr = QExplicitlySharedDataPointer<PieceData>;
 
     //! Is the piece in use by somebody else then the cache
     bool inUse() const
