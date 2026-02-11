@@ -35,7 +35,7 @@ public:
      *
      * This sets the capacity of \a other to 0 to avoid unneccessary allocations.
      */
-    Array(Array &&other)
+    Array(Array &&other) noexcept
         : num(other.num)
         , data(std::move(other.data))
     {
@@ -47,7 +47,7 @@ public:
      *
      * This sets the capacity of \a other to 0 to avoid unneccessary allocations.
      */
-    Array &operator=(Array &&other)
+    Array &operator=(Array &&other) noexcept
     {
         if (this == &other) {
             return *this;

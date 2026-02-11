@@ -40,12 +40,12 @@ public:
     /*!
      * Move constructor.
      */
-    File(File &&other);
+    File(File &&other) noexcept;
 
     /*!
      * Move assignment operator.
      */
-    File &operator=(File &&other);
+    File &operator=(File &&other) noexcept;
 
     /*!
      * Open the file similar to fopen

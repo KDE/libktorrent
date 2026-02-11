@@ -27,14 +27,14 @@ File::~File()
     close();
 }
 
-File::File(File &&other)
+File::File(File &&other) noexcept
     : fptr(other.fptr)
     , file(std::move(other.file))
 {
     other.fptr = nullptr;
 }
 
-File &File::operator=(File &&other)
+File &File::operator=(File &&other) noexcept
 {
     if (this == &other) {
         return *this;
