@@ -7,8 +7,8 @@
 #define BTCACHE_H
 
 #include <QHash>
+#include <QList>
 #include <QSet>
-#include <QVector>
 #include <QString>
 #include <QStringList>
 #include <utility>
@@ -297,7 +297,7 @@ protected:
             return (static_cast<Uint64>(off) << 32u) | static_cast<Uint64>(len);
         }
     };
-    using PieceDataInfoList = QVector<PieceDataInfo>;
+    using PieceDataInfoList = QList<PieceDataInfo>;
     using PieceCache = QHash<Chunk *, PieceDataInfoList>;
     PieceCache piece_cache;
 

@@ -11,7 +11,6 @@
 #include <climits>
 #include <QList>
 #include <QUrl>
-#include <QVector>
 #include <QVarLengthArray>
 #include <interfaces/torrentinterface.h>
 #include <ktorrent_export.h>
