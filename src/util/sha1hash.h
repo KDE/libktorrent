@@ -104,19 +104,19 @@ public:
      * Convert the hash to a printable string.
      * \return The string
      */
-    QString toString() const;
+    [[nodiscard]] QString toString() const;
 
     /*!
      * Convert the hash to a string, usable in http get requests.
      * \return The string
      */
-    QString toURLString() const;
+    [[nodiscard]] QString toURLString() const;
 
     /*!
      * Directly get pointer to the data.
      * \return The data
      */
-    const Uint8 *getData() const
+    [[nodiscard]] const Uint8 *getData() const
     {
         return (Uint8 *)hash;
     }
@@ -155,7 +155,7 @@ public:
     /*!
      * Convert the hash to a byte array.
      */
-    QByteArray toByteArray() const;
+    [[nodiscard]] QByteArray toByteArray() const;
 };
 
 }

@@ -47,7 +47,7 @@ public:
     void received(DHT *dh_table, const RPCMsg &msg);
 
     //! Get our own ID
-    const dht::Key &getOurID() const
+    [[nodiscard]] const dht::Key &getOurID() const
     {
         return our_id;
     }
@@ -75,7 +75,7 @@ public:
     void loadTable(const QString &file);
 
     //! Get the number of entries in the routing table
-    bt::Uint32 getNumEntriesInRoutingTable() const
+    [[nodiscard]] bt::Uint32 getNumEntriesInRoutingTable() const
     {
         return num_entries;
     }

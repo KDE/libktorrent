@@ -52,13 +52,13 @@ public:
     bool createMultiFileTorrent(const QMap<QString, bt::Uint64> &files, const QString &name);
 
     //! Get the full path of the torrent file
-    QString torrentPath() const;
+    [[nodiscard]] QString torrentPath() const;
 
     //! Get the full path of the single data file or toplevel directory (in case of multifile torrents)
-    QString dataPath() const;
+    [[nodiscard]] QString dataPath() const;
 
     //! Get the temp path used
-    QString tempPath() const
+    [[nodiscard]] QString tempPath() const
     {
         return tmpdir.path();
     }

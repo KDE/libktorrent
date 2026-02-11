@@ -42,11 +42,11 @@ public:
     bool initUTPServer(Uint16 port);
     void shutdownUTPServer();
 
-    bool isUTPEnabled() const
+    [[nodiscard]] bool isUTPEnabled() const
     {
         return utp_server != nullptr;
     }
-    bool isTCPEnabled() const
+    [[nodiscard]] bool isTCPEnabled() const
     {
         return tcp_server != nullptr;
     }

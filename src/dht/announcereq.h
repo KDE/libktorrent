@@ -26,11 +26,11 @@ public:
     void encode(QByteArray &arr) const override;
     void parse(bt::BDictNode *dict) override;
 
-    const QByteArray &getToken() const
+    [[nodiscard]] const QByteArray &getToken() const
     {
         return token;
     }
-    bt::Uint16 getPort() const
+    [[nodiscard]] bt::Uint16 getPort() const
     {
         return port;
     }

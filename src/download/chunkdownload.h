@@ -61,7 +61,7 @@ public:
     {
         timeouts++;
     }
-    Uint32 numTimeouts() const
+    [[nodiscard]] Uint32 numTimeouts() const
     {
         return timeouts;
     }
@@ -103,34 +103,34 @@ public:
     }
 
     //! Get the total number of pieces
-    Uint32 getTotalPieces() const
+    [[nodiscard]] Uint32 getTotalPieces() const
     {
         return num;
     }
 
     //! Get the number of pieces downloaded
-    Uint32 getPiecesDownloaded() const
+    [[nodiscard]] Uint32 getPiecesDownloaded() const
     {
         return num_downloaded;
     }
 
     //! Get the number of bytes downloaded.
-    Uint32 bytesDownloaded() const;
+    [[nodiscard]] Uint32 bytesDownloaded() const;
 
     //! Get the index of the chunk
-    Uint32 getChunkIndex() const;
+    [[nodiscard]] Uint32 getChunkIndex() const;
 
     //! Get the PeerID of the current peer
-    QString getPieceDownloaderName() const;
+    [[nodiscard]] QString getPieceDownloaderName() const;
 
     //! Get the download speed
-    Uint32 getDownloadSpeed() const;
+    [[nodiscard]] Uint32 getDownloadSpeed() const;
 
     //! Get download stats
     void getStats(Stats &s) override;
 
     //! See if a chunkdownload is idle (i.e. has no downloaders)
-    bool isIdle() const
+    [[nodiscard]] bool isIdle() const
     {
         return pdown.count() == 0;
     }
@@ -195,7 +195,7 @@ public:
     }
 
     //! See if the download is choked (i.e. all downloaders are choked)
-    bool isChoked() const;
+    [[nodiscard]] bool isChoked() const;
 
     //! Release all PD's and clear the requested chunks
     void releaseAllPDs();
@@ -204,19 +204,19 @@ public:
     void update();
 
     //! See if this CD hasn't been active in the last update
-    bool needsToBeUpdated() const
+    [[nodiscard]] bool needsToBeUpdated() const
     {
         return timer.getElapsedSinceUpdate() > 60 * 1000;
     }
 
     //! Get the SHA1 hash of the downloaded chunk
-    SHA1Hash getHash() const
+    [[nodiscard]] SHA1Hash getHash() const
     {
         return hash_gen.get();
     }
 
     //! Get the number of downloaders
-    Uint32 getNumDownloaders() const
+    [[nodiscard]] Uint32 getNumDownloaders() const
     {
         return pdown.count();
     }

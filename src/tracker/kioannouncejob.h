@@ -24,13 +24,13 @@ public:
     ~KIOAnnounceJob() override;
 
     //! Get the announce url
-    QUrl announceUrl() const
+    [[nodiscard]] QUrl announceUrl() const
     {
         return url;
     }
 
     //! Get the reply data
-    const QByteArray &replyData() const
+    [[nodiscard]] const QByteArray &replyData() const
     {
         return reply_data;
     }

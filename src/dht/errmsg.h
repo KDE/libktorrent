@@ -27,7 +27,7 @@ public:
     void parse(bt::BDictNode *dict) override;
 
     //! Get the error message
-    const QString &message() const
+    [[nodiscard]] const QString &message() const
     {
         return msg;
     }

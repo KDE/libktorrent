@@ -25,7 +25,7 @@ public:
     ~JobQueue() override;
 
     //! Are there running jobs
-    bool runningJobs() const;
+    [[nodiscard]] bool runningJobs() const;
 
     //! Start the next job
     void startNextJob();

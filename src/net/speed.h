@@ -29,7 +29,7 @@ public:
 
     void onData(bt::Uint32 bytes, bt::TimeStamp ts);
     void update(bt::TimeStamp now);
-    int getRate() const
+    [[nodiscard]] int getRate() const
     {
         return rate;
     }

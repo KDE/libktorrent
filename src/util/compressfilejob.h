@@ -29,7 +29,7 @@ public:
     void cancel();
 
     //! Get the error which happened (0 means no error)
-    int error() const
+    [[nodiscard]] int error() const
     {
         return err;
     }

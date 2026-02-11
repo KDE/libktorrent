@@ -45,11 +45,11 @@ public:
         return systems.end();
     }
 
-    const_iterator begin() const
+    [[nodiscard]] const_iterator begin() const
     {
         return systems.cbegin();
     }
-    const_iterator end() const
+    [[nodiscard]] const_iterator end() const
     {
         return systems.cend();
     }

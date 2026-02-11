@@ -22,11 +22,11 @@ public:
     GetPeersReq(const Key &id, const Key &info_hash);
     ~GetPeersReq() override;
 
-    const Key &getInfoHash() const
+    [[nodiscard]] const Key &getInfoHash() const
     {
         return info_hash;
     }
-    bool wants(int ip_version) const;
+    [[nodiscard]] bool wants(int ip_version) const;
 
     void apply(DHT *dh_table) override;
     void print() override;

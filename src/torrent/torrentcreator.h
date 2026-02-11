@@ -70,12 +70,12 @@ public:
     ~TorrentCreator() override;
 
     //! Get the number of chunks
-    Uint32 getNumChunks() const
+    [[nodiscard]] Uint32 getNumChunks() const
     {
         return num_chunks;
     }
 
-    Uint32 getCurrentChunk() const
+    [[nodiscard]] Uint32 getCurrentChunk() const
     {
         return cur_chunk;
     }

@@ -36,10 +36,10 @@ public:
     ~WebSeed() override;
 
     //! Is this webseed busy ?
-    bool busy() const;
+    [[nodiscard]] bool busy() const;
 
     //! Check if a chunk lies in the current range we are downloading
-    bool inCurrentRange(Uint32 chunk) const
+    [[nodiscard]] bool inCurrentRange(Uint32 chunk) const
     {
         return chunk >= first_chunk && chunk <= last_chunk;
     }
@@ -77,7 +77,7 @@ public:
     void cancel();
 
     //! Get the current download rate
-    Uint32 getDownloadRate() const override;
+    [[nodiscard]] Uint32 getDownloadRate() const override;
 
     /*!
      * Set the group ID's of the http connection (for speed limits)
@@ -112,7 +112,7 @@ public:
     void disable(const QString &reason);
 
     //! Get the number of failed attempts
-    Uint32 failedAttempts() const
+    [[nodiscard]] Uint32 failedAttempts() const
     {
         return num_failures;
     }

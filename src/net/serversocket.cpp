@@ -54,7 +54,7 @@ public:
         sock = nullptr;
     }
 
-    bool isTCP() const
+    [[nodiscard]] bool isTCP() const
     {
         return chandler != nullptr;
     }

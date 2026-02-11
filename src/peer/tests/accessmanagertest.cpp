@@ -26,7 +26,7 @@ public:
     {
     }
 
-    bool blocked(const net::Address &addr) const override
+    [[nodiscard]] bool blocked(const net::Address &addr) const override
     {
         return addr.toString() == u"8.8.8.8"_s;
     }

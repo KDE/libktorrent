@@ -41,7 +41,7 @@ public:
     void release();
 
     //! Get the number of times this PeerDownloader was grabbed.
-    int getNumGrabbed() const
+    [[nodiscard]] int getNumGrabbed() const
     {
         return grabbed;
     }
@@ -69,19 +69,19 @@ public:
      * For a regular PeerDownloader, this should be the client and version.
      * For a webseed this should be the URL
      */
-    virtual QString getName() const = 0;
+    [[nodiscard]] virtual QString getName() const = 0;
 
     /*!
      * Get the current download rate.
      * \return The download rate in bytes/sec
      */
-    virtual bt::Uint32 getDownloadRate() const = 0;
+    [[nodiscard]] virtual bt::Uint32 getDownloadRate() const = 0;
 
     /*!
      * See if the PieceDownloader is choked, can be overwritten by subclasses.
      * \return Whether or not the PieceDownloader is choked
      */
-    virtual bool isChoked() const
+    [[nodiscard]] virtual bool isChoked() const
     {
         return false;
     }
@@ -89,15 +89,15 @@ public:
     /*!
      * Whether or not we can add another request.
      */
-    virtual bool canAddRequest() const = 0;
+    [[nodiscard]] virtual bool canAddRequest() const = 0;
 
     /*!
      * Whether or not we can download another chunk from this.
      */
-    virtual bool canDownloadChunk() const = 0;
+    [[nodiscard]] virtual bool canDownloadChunk() const = 0;
 
     //! See if this PieceDownloader has nearly finished a chunk
-    bool isNearlyDone() const
+    [[nodiscard]] bool isNearlyDone() const
     {
         return getNumGrabbed() == 1 && nearly_done;
     }
@@ -114,7 +114,7 @@ public:
      * overridden by subclasses.
      * \param idx The Chunk's index
      */
-    virtual bool hasChunk(bt::Uint32 idx) const
+    [[nodiscard]] virtual bool hasChunk(bt::Uint32 idx) const
     {
         Q_UNUSED(idx);
         return true;

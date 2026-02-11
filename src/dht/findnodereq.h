@@ -27,11 +27,11 @@ public:
     void encode(QByteArray &arr) const override;
     void parse(bt::BDictNode *dict) override;
 
-    const Key &getTarget() const
+    [[nodiscard]] const Key &getTarget() const
     {
         return target;
     }
-    bool wants(int ip_version) const;
+    [[nodiscard]] bool wants(int ip_version) const;
 
 private:
     Key target;

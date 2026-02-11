@@ -34,7 +34,7 @@ private:
     bool loadFromDir(const QString &path);
 
     bool notify(QObject *obj, QEvent *ev) override;
-    bool alreadyLoaded(const bt::SHA1Hash &ih) const override;
+    [[nodiscard]] bool alreadyLoaded(const bt::SHA1Hash &ih) const override;
     void mergeAnnounceList(const bt::SHA1Hash &ih, const bt::TrackerTier *trk) override;
 
 public Q_SLOTS:

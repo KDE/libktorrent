@@ -132,13 +132,13 @@ struct KTORRENT_EXPORT TorrentStats {
     TorrentStats();
 
     //! Calculate the share ratio
-    float shareRatio() const;
+    [[nodiscard]] float shareRatio() const;
 
     //! Are we over the max share ratio
-    bool overMaxRatio() const;
+    [[nodiscard]] bool overMaxRatio() const;
 
     //! Convert the status into a human readable string
-    QString statusToString() const;
+    [[nodiscard]] QString statusToString() const;
 };
 }
 

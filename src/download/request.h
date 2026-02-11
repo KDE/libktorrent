@@ -67,25 +67,25 @@ public:
     }
 
     //! Get the index of the chunk
-    Uint32 getIndex() const
+    [[nodiscard]] Uint32 getIndex() const
     {
         return index;
     }
 
     //! Get the offset into the chunk
-    Uint32 getOffset() const
+    [[nodiscard]] Uint32 getOffset() const
     {
         return off;
     }
 
     //! Get the length of a the piece
-    Uint32 getLength() const
+    [[nodiscard]] Uint32 getLength() const
     {
         return len;
     }
 
     //! Get the sending Peer
-    inline PieceDownloader *getPieceDownloader() const
+    [[nodiscard]] inline PieceDownloader *getPieceDownloader() const
     {
         return pd;
     }

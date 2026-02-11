@@ -35,7 +35,7 @@ public:
     }
 
     //! Get the filedescriptor to poll
-    virtual int fd() const = 0;
+    [[nodiscard]] virtual int fd() const = 0;
 
     //! Handle data
     virtual void handleData() = 0;
@@ -70,7 +70,7 @@ public:
     int poll(int timeout = -1);
 
     //! Check if a socket at an index is read
-    bool ready(int index, Mode mode) const;
+    [[nodiscard]] bool ready(int index, Mode mode) const;
 
     //! Reset the poll
     void reset();

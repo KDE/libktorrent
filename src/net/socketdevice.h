@@ -31,22 +31,22 @@ public:
         CLOSED,
     };
 
-    virtual int fd() const = 0;
-    virtual bool ok() const = 0;
+    [[nodiscard]] virtual int fd() const = 0;
+    [[nodiscard]] virtual bool ok() const = 0;
     virtual int send(const bt::Uint8 *buf, int len) = 0;
     virtual int recv(bt::Uint8 *buf, int max_len) = 0;
     virtual void close() = 0;
     virtual void setBlocking(bool on) = 0;
-    virtual bt::Uint32 bytesAvailable() const = 0;
+    [[nodiscard]] virtual bt::Uint32 bytesAvailable() const = 0;
     virtual bool setTOS(unsigned char type_of_service) = 0;
     virtual bool connectTo(const Address &addr) = 0;
     //! See if a connectTo was succesfull in non blocking mode
     virtual bool connectSuccesFull() = 0;
-    virtual const Address &getPeerName() const = 0;
-    virtual Address getSockName() const = 0;
+    [[nodiscard]] virtual const Address &getPeerName() const = 0;
+    [[nodiscard]] virtual Address getSockName() const = 0;
 
     //! Get the used transport protocol for this SocketDevice
-    bt::TransportProtocol transportProtocol() const
+    [[nodiscard]] bt::TransportProtocol transportProtocol() const
     {
         return transport_protocol;
     }
@@ -64,7 +64,7 @@ public:
     //! reset the socket (i.e. close it and create a new one)
     virtual void reset() = 0;
 
-    State state() const
+    [[nodiscard]] State state() const
     {
         return m_state;
     }

@@ -48,23 +48,23 @@ public:
         return emap.end();
     }
 
-    CItr begin() const
+    [[nodiscard]] CItr begin() const
     {
         return emap.begin();
     }
-    CItr end() const
+    [[nodiscard]] CItr end() const
     {
         return emap.end();
     }
 
     //! Get the target key of the search3
-    const dht::Key &getSearchTarget() const
+    [[nodiscard]] const dht::Key &getSearchTarget() const
     {
         return key;
     }
 
     //! Get the number of entries.
-    bt::Uint32 getNumEntries() const
+    [[nodiscard]] bt::Uint32 getNumEntries() const
     {
         return emap.size();
     }

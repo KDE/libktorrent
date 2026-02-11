@@ -97,22 +97,22 @@ public:
     void setVerbose(bool v);
 
     //! Get the name  of the server
-    QString getServer() const;
+    [[nodiscard]] QString getServer() const;
 
     //! Get the location of it's xml description
-    QUrl getLocation() const;
+    [[nodiscard]] QUrl getLocation() const;
 
     //! Get the device description
     UPnPDeviceDescription &getDescription();
 
     //! Get the device description (const version)
-    const UPnPDeviceDescription &getDescription() const;
+    [[nodiscard]] const UPnPDeviceDescription &getDescription() const;
 
     //! Get the current error (null string if there is none)
-    QString getError() const;
+    [[nodiscard]] QString getError() const;
 
     //! Get the router's external IP
-    QString getExternalIP() const;
+    [[nodiscard]] QString getExternalIP() const;
 
     /*!
      * Download the XML File of the router.

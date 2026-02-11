@@ -29,7 +29,7 @@ struct WindowPacket {
     ~WindowPacket();
 
     bt::Uint32 read(bt::Uint8 *dst, bt::Uint32 max_len);
-    bool fullyRead() const;
+    [[nodiscard]] bool fullyRead() const;
     void set(bt::Buffer::Ptr packet, bt::Uint32 data_off);
 
     bt::Uint16 seq_nr;
@@ -47,19 +47,19 @@ public:
     virtual ~LocalWindow();
 
     //! Get back the available space
-    bt::Uint32 availableSpace() const
+    [[nodiscard]] bt::Uint32 availableSpace() const
     {
         return window_space;
     }
 
     //! Get back how large the window is
-    bt::Uint32 currentWindow() const
+    [[nodiscard]] bt::Uint32 currentWindow() const
     {
         return capacity - window_space;
     }
 
     //! Get the window capacity
-    bt::Uint32 windowCapacity() const
+    [[nodiscard]] bt::Uint32 windowCapacity() const
     {
         return capacity;
     }
@@ -71,13 +71,13 @@ public:
     void setLastSeqNr(bt::Uint16 lsn);
 
     //! Get the last sequence number we can safely ack
-    bt::Uint16 lastSeqNr() const
+    [[nodiscard]] bt::Uint16 lastSeqNr() const
     {
         return last_seq_nr;
     }
 
     //! Is the window empty
-    bool isEmpty() const
+    [[nodiscard]] bool isEmpty() const
     {
         return incoming_packets.empty();
     }
@@ -86,19 +86,19 @@ public:
     bt::Uint32 read(bt::Uint8 *data, bt::Uint32 max_len);
 
     //! Is there something to read ?
-    bool isReadable() const
+    [[nodiscard]] bool isReadable() const
     {
         return bytes_available > 0;
     }
 
     //! The amount of bytes available
-    bt::Uint32 bytesAvailable() const
+    [[nodiscard]] bt::Uint32 bytesAvailable() const
     {
         return bytes_available;
     }
 
     //! Get the number of selective ack bits needed when sending a packet
-    bt::Uint32 selectiveAckBits() const;
+    [[nodiscard]] bt::Uint32 selectiveAckBits() const;
 
     //! Fill a SelectiveAck structure
     void fillSelectiveAck(SelectiveAck *sack);

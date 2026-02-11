@@ -35,7 +35,7 @@ public:
     void start() override;
     void stop(WaitJob *wjob = nullptr) override;
     void completed() override;
-    Uint32 failureCount() const override
+    [[nodiscard]] Uint32 failureCount() const override
     {
         return failures;
     }

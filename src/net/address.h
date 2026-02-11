@@ -39,7 +39,7 @@ public:
     virtual ~Address();
 
     //! Get the port number
-    bt::Uint16 port() const
+    [[nodiscard]] bt::Uint16 port() const
     {
         return port_number;
     }
@@ -61,7 +61,7 @@ public:
     void toSocketAddress(struct sockaddr_storage *ss, int &length, bool as_ipv6 = false) const;
 
     //! Return the IP protocol version (4 or 6)
-    int ipVersion() const
+    [[nodiscard]] int ipVersion() const
     {
         return protocol() == QAbstractSocket::IPv4Protocol ? 4 : 6;
     }
@@ -79,10 +79,10 @@ public:
     Address &operator=(const struct sockaddr_storage &ss);
 
     //! Is this a IPv4 mapped address into the IPv6 address space
-    bool isIPv4Mapped() const;
+    [[nodiscard]] bool isIPv4Mapped() const;
 
     //! Convert an IPv4 mapped IPv6 address to an IPv4 address
-    Address convertIPv4Mapped() const;
+    [[nodiscard]] Address convertIPv4Mapped() const;
 
 private:
     bt::Uint16 port_number;

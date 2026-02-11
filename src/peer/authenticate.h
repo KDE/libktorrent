@@ -38,13 +38,13 @@ public:
 
     ~Authenticate() override;
 
-    const PeerID &getPeerID() const
+    [[nodiscard]] const PeerID &getPeerID() const
     {
         return peer_id;
     }
 
     //! See if the authentication is succesfull
-    bool isSuccesfull() const
+    [[nodiscard]] bool isSuccesfull() const
     {
         return succes;
     }

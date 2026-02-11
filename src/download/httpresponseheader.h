@@ -28,11 +28,11 @@ public:
     {
         return _reasonPhr;
     }
-    QString value(const QString &key) const
+    [[nodiscard]] QString value(const QString &key) const
     {
         return values[key.toLower()];
     }
-    bool hasKey(const QString &key) const
+    [[nodiscard]] bool hasKey(const QString &key) const
     {
         return values.contains(key.toLower());
     }

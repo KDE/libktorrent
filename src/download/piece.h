@@ -26,7 +26,7 @@ public:
     {
     }
 
-    const Uint8 *getData() const
+    [[nodiscard]] const Uint8 *getData() const
     {
         return data;
     }

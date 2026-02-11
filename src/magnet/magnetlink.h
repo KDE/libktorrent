@@ -42,43 +42,43 @@ public:
     bool operator==(const MagnetLink &mlink) const;
 
     //! Is this a valid magnet link
-    bool isValid() const
+    [[nodiscard]] bool isValid() const
     {
         return !magnet_string.isEmpty();
     }
 
     //! Convert it to a string
-    QString toString() const
+    [[nodiscard]] QString toString() const
     {
         return magnet_string;
     }
 
     //! Get the display name (can be empty)
-    QString displayName() const
+    [[nodiscard]] QString displayName() const
     {
         return name;
     }
 
     //! Get the path of addressed file(s) inside the torrent
-    QString subPath() const
+    [[nodiscard]] QString subPath() const
     {
         return path;
     }
 
     //! Get the torrent URL (can be empty)
-    QString torrent() const
+    [[nodiscard]] QString torrent() const
     {
         return torrent_url;
     }
 
     //! Get all possible trackers (can be empty)
-    QList<QUrl> trackers() const
+    [[nodiscard]] QList<QUrl> trackers() const
     {
         return tracker_urls;
     }
 
     //! Get the info hash
-    const SHA1Hash &infoHash() const
+    [[nodiscard]] const SHA1Hash &infoHash() const
     {
         return info_hash;
     }

@@ -31,23 +31,23 @@ public:
     bool connectTo(const Address &addr) override;
     bool connectSuccesFull() override;
     void close() override;
-    bt::Uint32 bytesAvailable() const override;
+    [[nodiscard]] bt::Uint32 bytesAvailable() const override;
     int send(const bt::Uint8 *buf, int len) override;
     int recv(bt::Uint8 *buf, int max_len) override;
-    bool ok() const override
+    [[nodiscard]] bool ok() const override
     {
         return m_fd >= 0;
     }
-    int fd() const override
+    [[nodiscard]] int fd() const override
     {
         return m_fd;
     }
     bool setTOS(unsigned char type_of_service) override;
-    const Address &getPeerName() const override
+    [[nodiscard]] const Address &getPeerName() const override
     {
         return addr;
     }
-    Address getSockName() const override;
+    [[nodiscard]] Address getSockName() const override;
 
     void reset() override;
     void prepare(Poll *p, Poll::Mode mode) override;
@@ -60,11 +60,11 @@ public:
     int sendTo(const bt::Uint8 *buf, int size, const Address &addr);
     int recvFrom(bt::Uint8 *buf, int max_size, Address &addr);
 
-    bool isIPv4() const
+    [[nodiscard]] bool isIPv4() const
     {
         return m_ip_version == 4;
     }
-    bool isIPv6() const
+    [[nodiscard]] bool isIPv6() const
     {
         return m_ip_version == 6;
     }

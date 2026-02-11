@@ -36,7 +36,7 @@ public:
     using Cache::moveDataFilesFinished;
     void moveDataFilesFinished(Job *job) override;
     void changeOutputPath(const QString &outputpath) override;
-    QString getOutputPath() const override
+    [[nodiscard]] QString getOutputPath() const override
     {
         return output_file;
     }

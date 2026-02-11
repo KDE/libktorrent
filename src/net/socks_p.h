@@ -38,7 +38,7 @@ struct ConnectRequest {
     bt::Uint8 ip[4];
     char user_id[100];
 
-    int size() const
+    [[nodiscard]] int size() const
     {
         return 8 + strlen(user_id) + 1;
     }
@@ -92,7 +92,7 @@ struct AuthRequest {
     bt::Uint8 nmethods;
     bt::Uint8 methods[5];
 
-    int size() const
+    [[nodiscard]] int size() const
     {
         return 2 + nmethods;
     }

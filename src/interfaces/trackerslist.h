@@ -39,7 +39,7 @@ public:
      * Get the current tracker (for non private torrents this returns 0, seeing that
      * all trackers are used at the same time)
      */
-    virtual TrackerInterface *getCurrentTracker() const = 0;
+    [[nodiscard]] virtual TrackerInterface *getCurrentTracker() const = 0;
 
     /*!
      * Sets the current tracker and does the announce. For non private torrents, this
@@ -107,12 +107,12 @@ public:
     /*!
      * Returns true if no tracker is reachable
      */
-    virtual bool noTrackersReachable() const = 0;
+    [[nodiscard]] virtual bool noTrackersReachable() const = 0;
 
     /*!
      * Returns true if any tracker has time out error
      */
-    virtual TrackersStatusInfo getTrackersStatusInfo() const = 0;
+    [[nodiscard]] virtual TrackersStatusInfo getTrackersStatusInfo() const = 0;
 };
 
 }

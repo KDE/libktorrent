@@ -33,13 +33,13 @@ public:
     ~AddressResolver() override;
 
     //! Did the resolver succeed ?
-    bool succeeded() const
+    [[nodiscard]] bool succeeded() const
     {
         return succesfull;
     }
 
     //! Get the resulting address
-    const net::Address &address() const
+    [[nodiscard]] const net::Address &address() const
     {
         return result;
     }

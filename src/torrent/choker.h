@@ -48,7 +48,7 @@ public:
     virtual void doChokingSeedingState(PeerManager &pman, ChunkManager &cman, const TorrentStats &stats) = 0;
 
     //! Get the optimisticly unchoked peer ID
-    Uint32 getOptimisticlyUnchokedPeerID() const
+    [[nodiscard]] Uint32 getOptimisticlyUnchokedPeerID() const
     {
         return opt_unchoked_peer_id;
     }
@@ -80,7 +80,7 @@ public:
     void update(bool have_all, const TorrentStats &stats);
 
     //! Get the PeerID of the optimisticly unchoked peer.
-    Uint32 getOptimisticlyUnchokedPeerID() const
+    [[nodiscard]] Uint32 getOptimisticlyUnchokedPeerID() const
     {
         return choke->getOptimisticlyUnchokedPeerID();
     }

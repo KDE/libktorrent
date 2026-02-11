@@ -33,7 +33,7 @@ public:
     bool selectRange(bt::Uint32 &from, bt::Uint32 &to, bt::Uint32 max_len) override;
 
     //! Get the critical window size in chunks
-    Uint32 criticialWindowSize() const
+    [[nodiscard]] Uint32 criticialWindowSize() const
     {
         return critical_window_size;
     }

@@ -81,7 +81,7 @@ public:
     }
 
     //! Get the number of elements in the array
-    Uint32 size() const
+    [[nodiscard]] Uint32 size() const
     {
         return num;
     }

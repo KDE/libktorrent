@@ -54,7 +54,7 @@ public:
      * Get the counter for the idx'th chunk
      * \param idx Index of the chunk
      */
-    Uint32 get(Uint32 idx) const;
+    [[nodiscard]] Uint32 get(Uint32 idx) const;
 
     /*!
      * Reset all values to 0
@@ -62,7 +62,7 @@ public:
     void reset();
 
     //! Get the number of chunks there are
-    Uint32 getNumChunks() const
+    [[nodiscard]] Uint32 getNumChunks() const
     {
         return cnt.size();
     }

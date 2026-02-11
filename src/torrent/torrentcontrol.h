@@ -59,7 +59,7 @@ public:
     ~TorrentControl() override;
 
     //! Get the Torrent.
-    const Torrent &getTorrent() const
+    [[nodiscard]] const Torrent &getTorrent() const
     {
         return *tor;
     }
@@ -82,60 +82,60 @@ public:
     }
 
     //! Test if the torrent has existing files, only works the first time a torrent is loaded
-    bool hasExistingFiles() const;
+    [[nodiscard]] bool hasExistingFiles() const;
 
-    const BitSet &downloadedChunksBitSet() const override;
-    const BitSet &availableChunksBitSet() const override;
-    const BitSet &excludedChunksBitSet() const override;
-    const BitSet &onlySeedChunksBitSet() const override;
+    [[nodiscard]] const BitSet &downloadedChunksBitSet() const override;
+    [[nodiscard]] const BitSet &availableChunksBitSet() const override;
+    [[nodiscard]] const BitSet &excludedChunksBitSet() const override;
+    [[nodiscard]] const BitSet &onlySeedChunksBitSet() const override;
     bool changeTorDir(const QString &new_dir) override;
     bool changeOutputDir(const QString &new_dir, ChangeOutputOptions flags) override;
     void rollback() override;
     void setDisplayName(const QString &n) override;
     TrackersList *getTrackersList() override;
-    const TrackersList *getTrackersList() const override;
-    QString getDataDir() const override
+    [[nodiscard]] const TrackersList *getTrackersList() const override;
+    [[nodiscard]] QString getDataDir() const override
     {
         return outputdir;
     }
-    QString getTorDir() const override
+    [[nodiscard]] QString getTorDir() const override
     {
         return tordir;
     }
     void setMonitor(MonitorInterface *tmo) override;
-    Uint32 getRunningTimeDL() const override;
-    Uint32 getRunningTimeUL() const override;
-    Uint32 getNumFiles() const override;
+    [[nodiscard]] Uint32 getRunningTimeDL() const override;
+    [[nodiscard]] Uint32 getRunningTimeUL() const override;
+    [[nodiscard]] Uint32 getNumFiles() const override;
     TorrentFileInterface &getTorrentFile(Uint32 index) override;
-    const TorrentFileInterface &getTorrentFile(Uint32 index) const override;
+    [[nodiscard]] const TorrentFileInterface &getTorrentFile(Uint32 index) const override;
     bool moveTorrentFiles(const QMap<TorrentFileInterface *, QString> &files) override;
     void recreateMissingFiles() override;
     void dndMissingFiles() override;
     TorrentFileStream::Ptr createTorrentFileStream(bt::Uint32 index, bool streaming_mode, QObject *parent) override;
     void addPeerSource(PeerSource *ps) override;
     void removePeerSource(PeerSource *ps) override;
-    Uint32 getNumWebSeeds() const override;
-    const WebSeedInterface *getWebSeed(Uint32 i) const override;
+    [[nodiscard]] Uint32 getNumWebSeeds() const override;
+    [[nodiscard]] const WebSeedInterface *getWebSeed(Uint32 i) const override;
     WebSeedInterface *getWebSeed(Uint32 i) override;
     bool addWebSeed(const QUrl &url) override;
     bool removeWebSeed(const QUrl &url) override;
-    bool readyForPreview() const override;
-    bool isMultimedia() const override;
+    [[nodiscard]] bool readyForPreview() const override;
+    [[nodiscard]] bool isMultimedia() const override;
     void markExistingFilesAsDownloaded() override;
-    int getPriority() const override
+    [[nodiscard]] int getPriority() const override
     {
         return istats.priority;
     }
     void setPriority(int p) override;
     bool overMaxRatio() override;
     void setMaxShareRatio(float ratio) override;
-    float getMaxShareRatio() const override
+    [[nodiscard]] float getMaxShareRatio() const override
     {
         return stats.max_share_ratio;
     }
     bool overMaxSeedTime() override;
     void setMaxSeedTime(float hours) override;
-    float getMaxSeedTime() const override
+    [[nodiscard]] float getMaxSeedTime() const override
     {
         return stats.max_seed_time;
     }
@@ -147,12 +147,12 @@ public:
     Job *startDataCheck(bool auto_import, bt::Uint32 from, bt::Uint32 to) override;
     bool hasMissingFiles(QStringList &sl) override;
     bool isStorageMounted(QStringList &missing) override;
-    Uint32 getNumDHTNodes() const override;
-    const DHTNode &getDHTNode(Uint32 i) const override;
+    [[nodiscard]] Uint32 getNumDHTNodes() const override;
+    [[nodiscard]] const DHTNode &getDHTNode(Uint32 i) const override;
     void deleteDataFiles() override;
-    const bt::PeerID &getOwnPeerID() const override;
-    QString getComments() const override;
-    const JobQueue *getJobQueue() const override
+    [[nodiscard]] const bt::PeerID &getOwnPeerID() const override;
+    [[nodiscard]] QString getComments() const override;
+    [[nodiscard]] const JobQueue *getJobQueue() const override
     {
         return job_queue;
     }
@@ -163,7 +163,7 @@ public:
     void getTrafficLimits(Uint32 &up, Uint32 &down) override;
     void setAssuredSpeeds(Uint32 up, Uint32 down) override;
     void getAssuredSpeeds(Uint32 &up, Uint32 &down) override;
-    const SHA1Hash &getInfoHash() const override;
+    [[nodiscard]] const SHA1Hash &getInfoHash() const override;
     void setUserModifiedFileName(const QString &n) override;
     int getETA() override;
     void setMoveWhenCompletedDir(const QString &dir) override
@@ -171,7 +171,7 @@ public:
         completed_dir = dir;
         saveStats();
     }
-    QString getMoveWhenCompletedDir() const override
+    [[nodiscard]] QString getMoveWhenCompletedDir() const override
     {
         return completed_dir;
     }
@@ -181,7 +181,7 @@ public:
     void createFiles();
 
     //! Get the PeerManager
-    const PeerManager *getPeerMgr() const;
+    [[nodiscard]] const PeerManager *getPeerMgr() const;
 
     /*!
      * Set a custom chunk selector factory (needs to be done for init is called)

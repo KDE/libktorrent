@@ -44,7 +44,7 @@ public:
      * \param key The key
      * \return true if key is in the stats file
      */
-    bool hasKey(const QString &key) const;
+    [[nodiscard]] bool hasKey(const QString &key) const;
 
 private:
     KSharedConfigPtr cfg;

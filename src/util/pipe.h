@@ -24,13 +24,13 @@ public:
     virtual ~Pipe();
 
     //! Get the reader socket
-    int readerSocket() const
+    [[nodiscard]] int readerSocket() const
     {
         return reader;
     }
 
     //! Get the writer socket
-    int writerSocket() const
+    [[nodiscard]] int writerSocket() const
     {
         return writer;
     }

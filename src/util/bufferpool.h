@@ -34,13 +34,13 @@ public:
     virtual ~Buffer();
 
     //! Get the buffers capacity
-    bt::Uint32 capacity() const
+    [[nodiscard]] bt::Uint32 capacity() const
     {
         return data.size();
     }
 
     //! Get the current size
-    bt::Uint32 size() const
+    [[nodiscard]] bt::Uint32 size() const
     {
         return fill;
     }

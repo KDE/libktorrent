@@ -32,7 +32,7 @@ public:
     {
     }
 
-    bool canAddRequest() const override
+    [[nodiscard]] bool canAddRequest() const override
     {
         return true;
     }
@@ -42,7 +42,7 @@ public:
     void cancelAll() override
     {
     }
-    bool canDownloadChunk() const override
+    [[nodiscard]] bool canDownloadChunk() const override
     {
         return getNumGrabbed() == 0;
     }
@@ -52,15 +52,15 @@ public:
     void checkTimeouts() override
     {
     }
-    Uint32 getDownloadRate() const override
+    [[nodiscard]] Uint32 getDownloadRate() const override
     {
         return 0;
     }
-    QString getName() const override
+    [[nodiscard]] QString getName() const override
     {
         return u"foobar"_s;
     }
-    bool isChoked() const override
+    [[nodiscard]] bool isChoked() const override
     {
         return false;
     }

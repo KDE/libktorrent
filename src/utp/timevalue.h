@@ -25,7 +25,7 @@ public:
 
     TimeValue &operator=(const TimeValue &tv);
 
-    bt::Uint32 timestampMicroSeconds() const
+    [[nodiscard]] bt::Uint32 timestampMicroSeconds() const
     {
         bt::Uint64 microsecs = seconds * 1000000 + microseconds;
         // return microsecs & 0x00000000FFFFFFFF;
@@ -42,7 +42,7 @@ public:
     }
 
     //! Convert to time stamp
-    bt::TimeStamp toTimeStamp() const
+    [[nodiscard]] bt::TimeStamp toTimeStamp() const
     {
         return seconds * 1000 + (bt::Uint64)microseconds * 0.001;
     }

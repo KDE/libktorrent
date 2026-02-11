@@ -81,7 +81,7 @@ public:
     void update(PeerInterface &peer);
 
     //! Did an error occur
-    bool ok() const
+    [[nodiscard]] bool ok() const
     {
         return !error;
     }

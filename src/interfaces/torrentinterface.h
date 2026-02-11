@@ -84,7 +84,7 @@ public:
     }
 
     //! Get the URL which the torrent was loaded from
-    QUrl loadUrl() const
+    [[nodiscard]] QUrl loadUrl() const
     {
         return url;
     }
@@ -128,7 +128,7 @@ public:
     virtual void scrapeTracker() = 0;
 
     //! Get the torrent's statistics
-    const TorrentStats &getStats() const
+    [[nodiscard]] const TorrentStats &getStats() const
     {
         return stats;
     }
@@ -138,31 +138,31 @@ public:
      * This only works for single file torrents
      * \return true if it is
      **/
-    virtual bool readyForPreview() const = 0;
+    [[nodiscard]] virtual bool readyForPreview() const = 0;
 
     //! See if this is a single file torrent and a multimedia files
-    virtual bool isMultimedia() const = 0;
+    [[nodiscard]] virtual bool isMultimedia() const = 0;
 
     /*!
      * Get the torX directory of this torrent. Temporary stuff like the index
      * file get stored there.
      */
-    virtual QString getTorDir() const = 0;
+    [[nodiscard]] virtual QString getTorDir() const = 0;
 
     //! Get the data directory of this torrent
-    virtual QString getDataDir() const = 0;
+    [[nodiscard]] virtual QString getDataDir() const = 0;
 
     /*!
      * Get the download running time of this torrent in seconds
      * \return Uint32 - time in seconds
      */
-    virtual Uint32 getRunningTimeDL() const = 0;
+    [[nodiscard]] virtual Uint32 getRunningTimeDL() const = 0;
 
     /*!
      * Get the upload running time of this torrent in seconds
      * \return Uint32 - time in seconds
      */
-    virtual Uint32 getRunningTimeUL() const = 0;
+    [[nodiscard]] virtual Uint32 getRunningTimeUL() const = 0;
 
     /*!
      * Change to a new torX dir. If this fails
@@ -197,28 +197,28 @@ public:
     /*!
      * Get a BitSet of the status of all Chunks
      */
-    virtual const bt::BitSet &downloadedChunksBitSet() const = 0;
+    [[nodiscard]] virtual const bt::BitSet &downloadedChunksBitSet() const = 0;
 
     /*!
      * Get a BitSet of the availability of all Chunks
      */
-    virtual const bt::BitSet &availableChunksBitSet() const = 0;
+    [[nodiscard]] virtual const bt::BitSet &availableChunksBitSet() const = 0;
 
     /*!
      * Get a BitSet of the excluded Chunks
      */
-    virtual const bt::BitSet &excludedChunksBitSet() const = 0;
+    [[nodiscard]] virtual const bt::BitSet &excludedChunksBitSet() const = 0;
 
     /*!
      * Get a bitset of only seed chunks
      */
-    virtual const bt::BitSet &onlySeedChunksBitSet() const = 0;
+    [[nodiscard]] virtual const bt::BitSet &onlySeedChunksBitSet() const = 0;
 
     //! Set the monitor
     virtual void setMonitor(MonitorInterface *tmo) = 0;
 
     //! Get the number of files in a multifile torrent (0 if we do not have a multifile torrent)
-    virtual Uint32 getNumFiles() const = 0;
+    [[nodiscard]] virtual Uint32 getNumFiles() const = 0;
 
     /*!
      * Get the index'th file of a multifile torrent
@@ -232,7 +232,7 @@ public:
      * \param index The index of the file
      * \return The TorrentFileInterface (isNull() will be true in case of error)
      */
-    virtual const TorrentFileInterface &getTorrentFile(Uint32 index) const = 0;
+    [[nodiscard]] virtual const TorrentFileInterface &getTorrentFile(Uint32 index) const = 0;
 
     /*!
      * Move a torrent file to a new location.
@@ -256,10 +256,10 @@ public:
     virtual TrackersList *getTrackersList() = 0;
 
     //! Get a pointer to TrackersList object
-    virtual const TrackersList *getTrackersList() const = 0;
+    [[nodiscard]] virtual const TrackersList *getTrackersList() const = 0;
 
     //! Get the torrent queue number. Zero if not in queue
-    virtual int getPriority() const = 0;
+    [[nodiscard]] virtual int getPriority() const = 0;
 
     //! Set the torrent queue number.
     virtual void setPriority(int p) = 0;
@@ -268,16 +268,16 @@ public:
     virtual void setMaxShareRatio(float ratio) = 0;
 
     //! Get the max share ratio
-    virtual float getMaxShareRatio() const = 0;
+    [[nodiscard]] virtual float getMaxShareRatio() const = 0;
 
     //! Set the max seed time in hours (0 is no limit)
     virtual void setMaxSeedTime(float hours) = 0;
 
     //! Get the max seed time
-    virtual float getMaxSeedTime() const = 0;
+    [[nodiscard]] virtual float getMaxSeedTime() const = 0;
 
     //! Get the comments
-    virtual QString getComments() const = 0;
+    [[nodiscard]] virtual QString getComments() const = 0;
 
     //! Update the status
     virtual void updateStatus() = 0;
@@ -324,10 +324,10 @@ public:
     virtual void dndMissingFiles() = 0;
 
     //! Get the number of initial DHT nodes
-    virtual Uint32 getNumDHTNodes() const = 0;
+    [[nodiscard]] virtual Uint32 getNumDHTNodes() const = 0;
 
     //! Get a DHT node
-    virtual const DHTNode &getDHTNode(Uint32 i) const = 0;
+    [[nodiscard]] virtual const DHTNode &getDHTNode(Uint32 i) const = 0;
 
     /*! Delete the data files of the torrent,
      * they will be lost permanently
@@ -344,7 +344,7 @@ public:
     virtual void handleError(const QString &err) = 0;
 
     //! Get the info_hash.
-    virtual const bt::SHA1Hash &getInfoHash() const = 0;
+    [[nodiscard]] virtual const bt::SHA1Hash &getInfoHash() const = 0;
 
     /*!
      * Add a new PeerSource
@@ -365,7 +365,7 @@ public:
     virtual void setFeatureEnabled(TorrentFeature tf, bool on) = 0;
 
     //! Get our PeerID
-    virtual const bt::PeerID &getOwnPeerID() const = 0;
+    [[nodiscard]] virtual const bt::PeerID &getOwnPeerID() const = 0;
 
     //! Set the traffic limits for this torrent
     virtual void setTrafficLimits(Uint32 up, Uint32 down) = 0;
@@ -383,10 +383,10 @@ public:
     virtual bool checkDiskSpace(bool emit_sig = true) = 0;
 
     //! Get the number of webseeds
-    virtual Uint32 getNumWebSeeds() const = 0;
+    [[nodiscard]] virtual Uint32 getNumWebSeeds() const = 0;
 
     //! Get a webseed (returns 0 if index is invalid)
-    virtual const WebSeedInterface *getWebSeed(Uint32 i) const = 0;
+    [[nodiscard]] virtual const WebSeedInterface *getWebSeed(Uint32 i) const = 0;
 
     //! Get a webseed (returns 0 if index is invalid)
     virtual WebSeedInterface *getWebSeed(Uint32 i) = 0;
@@ -407,7 +407,7 @@ public:
     }
 
     //! Gets the user modified file or toplevel directory name
-    QString getUserModifiedFileName() const
+    [[nodiscard]] QString getUserModifiedFileName() const
     {
         return user_modified_name.isEmpty() ? stats.torrent_name : user_modified_name;
     }
@@ -416,7 +416,7 @@ public:
     virtual void setDisplayName(const QString &n) = 0;
 
     //! Gets the displayed name
-    QString getDisplayName() const
+    [[nodiscard]] QString getDisplayName() const
     {
         return display_name.isEmpty() ? stats.torrent_name : display_name;
     }
@@ -428,7 +428,7 @@ public:
      * Can the torrent be started by the QM.
      * \return True if it can, false otherwise
      */
-    bool isAllowedToStart() const
+    [[nodiscard]] bool isAllowedToStart() const
     {
         return stats.qm_can_start;
     }
@@ -439,7 +439,7 @@ public:
     virtual void setQueued(bool queued) = 0;
 
     //! Get the JobQueue of the torrent
-    virtual const JobQueue *getJobQueue() const = 0;
+    [[nodiscard]] virtual const JobQueue *getJobQueue() const = 0;
 
     //! Set the ChunkSelector to use (nullptr resets to the default ChunkSelector)
     virtual void setChunkSelector(std::unique_ptr<ChunkSelectorInterface> csel) = 0;
@@ -456,7 +456,7 @@ public:
     /*!
      * Get the move upon completion directory.
      */
-    virtual QString getMoveWhenCompletedDir() const = 0;
+    [[nodiscard]] virtual QString getMoveWhenCompletedDir() const = 0;
 
     /*!
      * Enable or disable superseeding mode, does nothing if the torrent is not finished.

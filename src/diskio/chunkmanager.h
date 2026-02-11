@@ -53,16 +53,16 @@ public:
     ~ChunkManager() override;
 
     //! Get the torrent
-    const Torrent &getTorrent() const
+    [[nodiscard]] const Torrent &getTorrent() const
     {
         return tor;
     }
 
     //! Get the data dir
-    QString getDataDir() const;
+    [[nodiscard]] QString getDataDir() const;
 
     //! Get the actual output path
-    QString getOutputPath() const;
+    [[nodiscard]] QString getOutputPath() const;
 
     void changeOutputPath(const QString &output_path);
 
@@ -159,54 +159,54 @@ public:
      * excluded chunks (this should be used for the tracker).
      * \return The number of bytes to download + the number of bytes excluded
      */
-    Uint64 bytesLeft() const;
+    [[nodiscard]] Uint64 bytesLeft() const;
 
     /*!
      * Calculates the number of bytes left to download.
      */
-    Uint64 bytesLeftToDownload() const;
+    [[nodiscard]] Uint64 bytesLeftToDownload() const;
 
     /*!
      * Calculates the number of bytes which have been excluded.
      * \return The number of bytes excluded
      */
-    Uint64 bytesExcluded() const;
+    [[nodiscard]] Uint64 bytesExcluded() const;
 
     /*!
      * Calculates the number of chunks left to download.
      * Does not include excluded chunks.
      * \return The number of chunks to download
      */
-    Uint32 chunksLeft() const;
+    [[nodiscard]] Uint32 chunksLeft() const;
 
     /*!
      * Check if we have all chunks, this is not the same as
      * chunksLeft() == 0, it does not look at excluded chunks.
      * \return true if all chunks have been downloaded
      */
-    bool haveAllChunks() const;
+    [[nodiscard]] bool haveAllChunks() const;
 
     /*!
      * Get the number of chunks which have been excluded.
      * \return The number of excluded chunks
      */
-    Uint32 chunksExcluded() const;
+    [[nodiscard]] Uint32 chunksExcluded() const;
 
     /*!
      * Get the number of downloaded chunks
      * \return
      */
-    Uint32 chunksDownloaded() const;
+    [[nodiscard]] Uint32 chunksDownloaded() const;
 
     /*!
      * Get the number of only seed chunks.
      */
-    Uint32 onlySeedChunks() const;
+    [[nodiscard]] Uint32 onlySeedChunks() const;
 
     /*!
      * Get a BitSet of the status of all Chunks
      */
-    const BitSet &getBitSet() const
+    [[nodiscard]] const BitSet &getBitSet() const
     {
         return bitset;
     }
@@ -214,7 +214,7 @@ public:
     /*!
      * Get the excluded bitset
      */
-    const BitSet &getExcludedBitSet() const
+    [[nodiscard]] const BitSet &getExcludedBitSet() const
     {
         return excluded_chunks;
     }
@@ -222,13 +222,13 @@ public:
     /*!
      * Get the only seed bitset.
      */
-    const BitSet &getOnlySeedBitSet() const
+    [[nodiscard]] const BitSet &getOnlySeedBitSet() const
     {
         return only_seed_chunks;
     }
 
     //! Get the number of chunks into the file.
-    Uint32 getNumChunks() const
+    [[nodiscard]] Uint32 getNumChunks() const
     {
         return tor.getNumChunks();
     }
@@ -276,7 +276,7 @@ public:
     void dataChecked(const BitSet &ok_chunks, Uint32 from, Uint32 to);
 
     //! Test if the torrent has existing files, only works the first time a torrent is loaded
-    bool hasExistingFiles() const;
+    [[nodiscard]] bool hasExistingFiles() const;
 
     //! Mark all existing files as downloaded
     void markExistingFilesAsDownloaded();
@@ -291,7 +291,7 @@ public:
     Job *deleteDataFiles();
 
     //! Are all not deselected chunks downloaded.
-    bool completed() const;
+    [[nodiscard]] bool completed() const;
 
     //! Set the preview sizes for audio and video files
     static void setPreviewSizes(Uint32 audio, Uint32 video);
@@ -300,10 +300,10 @@ public:
     Uint64 diskUsage();
 
     //! Get the size in chunks of the preview range of a file of the torrent
-    Uint32 previewChunkRangeSize(const TorrentFile &tf) const;
+    [[nodiscard]] Uint32 previewChunkRangeSize(const TorrentFile &tf) const;
 
     //! Get the size in chunks of the preview range for a single file torrent
-    Uint32 previewChunkRangeSize() const;
+    [[nodiscard]] Uint32 previewChunkRangeSize() const;
 
     //! The download priority of a file has changed
     void downloadPriorityChanged(TorrentFile *tf, Priority newpriority, Priority oldpriority);

@@ -44,7 +44,7 @@ public:
     /*!
      * Return the number of key data pairs in the map.
      */
-    unsigned int count() const
+    [[nodiscard]] unsigned int count() const
     {
         return pmap.size();
     }
@@ -70,11 +70,11 @@ public:
         return pmap.end();
     }
 
-    const_iterator begin() const
+    [[nodiscard]] const_iterator begin() const
     {
         return pmap.begin();
     }
-    const_iterator end() const
+    [[nodiscard]] const_iterator end() const
     {
         return pmap.end();
     }
@@ -134,7 +134,7 @@ public:
      * \param k The key
      * \return The data of the key, 0 if the key isn't in the map
      */
-    const Data *find(const Key &k) const
+    [[nodiscard]] const Data *find(const Key &k) const
     {
         const_iterator i = pmap.find(k);
         return (i == pmap.end()) ? nullptr : i->second;
@@ -145,7 +145,7 @@ public:
      * \param k The key
      * \return true if it is part of the map
      */
-    bool contains(const Key &k) const
+    [[nodiscard]] bool contains(const Key &k) const
     {
         const_iterator i = pmap.find(k);
         return i != pmap.end();

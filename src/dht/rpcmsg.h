@@ -87,7 +87,7 @@ public:
     }
 
     //! Get the origin
-    const net::Address &getOrigin() const
+    [[nodiscard]] const net::Address &getOrigin() const
     {
         return origin;
     }
@@ -99,13 +99,13 @@ public:
     }
 
     //! Get the origin
-    const net::Address &getDestination() const
+    [[nodiscard]] const net::Address &getDestination() const
     {
         return origin;
     }
 
     //! Get the MTID
-    const QByteArray &getMTID() const
+    [[nodiscard]] const QByteArray &getMTID() const
     {
         return mtid;
     }
@@ -117,19 +117,19 @@ public:
     }
 
     //! Get the id of the sender
-    const Key &getID() const
+    [[nodiscard]] const Key &getID() const
     {
         return id;
     }
 
     //! Get the type of the message
-    Type getType() const
+    [[nodiscard]] Type getType() const
     {
         return type;
     }
 
     //! Get the message it's method
-    Method getMethod() const
+    [[nodiscard]] Method getMethod() const
     {
         return method;
     }

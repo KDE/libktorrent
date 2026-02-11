@@ -87,24 +87,24 @@ public:
     bool rpcCall(std::unique_ptr<RPCMsg> req);
 
     //! See if we can do a request
-    bool canDoRequest() const
+    [[nodiscard]] bool canDoRequest() const
     {
         return outstanding_reqs < MAX_CONCURRENT_REQS;
     }
 
     //! Is the task finished
-    bool isFinished() const
+    [[nodiscard]] bool isFinished() const
     {
         return task_finished;
     }
 
     //! Get the number of outstanding requests
-    bt::Uint32 getNumOutstandingRequests() const
+    [[nodiscard]] bt::Uint32 getNumOutstandingRequests() const
     {
         return outstanding_reqs;
     }
 
-    bool isQueued() const
+    [[nodiscard]] bool isQueued() const
     {
         return queued;
     }

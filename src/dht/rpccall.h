@@ -66,10 +66,10 @@ public:
     void addListener(RPCCallListener *cl);
 
     //! Get the message type
-    Method getMsgMethod() const;
+    [[nodiscard]] Method getMsgMethod() const;
 
     //! Get the request sent
-    const RPCMsg *getRequest() const
+    [[nodiscard]] const RPCMsg *getRequest() const
     {
         return msg.get();
     }

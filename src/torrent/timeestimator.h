@@ -89,8 +89,8 @@ private:
     //! ktorrent default algorithm - combination of the following according to our tests
     int estimateKT();
 
-    Uint32 sample() const;
-    Uint64 bytesLeft() const;
+    [[nodiscard]] Uint32 sample() const;
+    [[nodiscard]] Uint64 bytesLeft() const;
 
     TorrentControl *m_tc;
     SampleQueue m_samples;

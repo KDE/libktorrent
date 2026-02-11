@@ -30,7 +30,7 @@ public:
     virtual ~Resource();
 
     //! Get the name of the group the resource is part of
-    QString groupName() const
+    [[nodiscard]] QString groupName() const
     {
         return group;
     }

@@ -32,7 +32,7 @@ public:
     /*!
      * Is the buffer empty
      * */
-    bool isEmpty() const
+    [[nodiscard]] bool isEmpty() const
     {
         return size == 0;
     }
@@ -79,25 +79,25 @@ public:
     static void clearPool();
 
     //! Get the data pointer
-    const bt::Uint8 *data() const
+    [[nodiscard]] const bt::Uint8 *data() const
     {
         return header;
     }
 
     //! Get the buffer size
-    bt::Uint32 bufferSize() const
+    [[nodiscard]] bt::Uint32 bufferSize() const
     {
         return size;
     }
 
     //! Get the size of the payload
-    bt::Uint32 payloadSize() const
+    [[nodiscard]] bt::Uint32 payloadSize() const
     {
         return payload ? (buffer->get() + MAX_SIZE) - payload : 0;
     }
 
     //! Get the amount of headroom (room in front of payload)
-    bt::Uint32 headRoom() const
+    [[nodiscard]] bt::Uint32 headRoom() const
     {
         return payload ? payload - buffer->get() : MAX_SIZE;
     }

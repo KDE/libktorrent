@@ -169,16 +169,16 @@ public:
     //! Parses the packet, returns false on error
     bool parse();
 
-    const Header *header() const
+    [[nodiscard]] const Header *header() const
     {
         return &hdr;
     }
-    const SelectiveAck *selectiveAck() const;
-    bt::Uint32 dataOffset() const
+    [[nodiscard]] const SelectiveAck *selectiveAck() const;
+    [[nodiscard]] bt::Uint32 dataOffset() const
     {
         return data_off;
     }
-    bt::Uint32 dataSize() const
+    [[nodiscard]] bt::Uint32 dataSize() const
     {
         return data_size;
     }

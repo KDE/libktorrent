@@ -64,7 +64,7 @@ public:
     void savePiece(PieceData::Ptr piece);
 
     //! Get the chunks status.
-    Status getStatus() const
+    [[nodiscard]] Status getStatus() const
     {
         return status;
     }
@@ -79,19 +79,19 @@ public:
     }
 
     //! Get the chunk's index
-    Uint32 getIndex() const
+    [[nodiscard]] Uint32 getIndex() const
     {
         return index;
     }
 
     //! Get the chunk's size
-    Uint32 getSize() const
+    [[nodiscard]] Uint32 getSize() const
     {
         return size;
     }
 
     //! get chunk priority
-    Priority getPriority() const
+    [[nodiscard]] Priority getPriority() const
     {
         return priority;
     }
@@ -103,7 +103,7 @@ public:
     }
 
     //! Is chunk part of a multimedia preview
-    bool isPreview() const
+    [[nodiscard]] bool isPreview() const
     {
         return priority == FIRST_PREVIEW_PRIORITY ||
                 priority == NORMAL_PREVIEW_PRIORITY ||
@@ -111,13 +111,13 @@ public:
     }
 
     //! Is chunk excluded
-    bool isExcluded() const
+    [[nodiscard]] bool isExcluded() const
     {
         return priority == EXCLUDED;
     }
 
     //! Is this a seed only chunk
-    bool isExcludedForDownloading() const
+    [[nodiscard]] bool isExcludedForDownloading() const
     {
         return priority == ONLY_SEED_PRIORITY;
     }

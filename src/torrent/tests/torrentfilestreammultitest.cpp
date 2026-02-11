@@ -37,7 +37,7 @@ public:
     {
     }
 
-    bool alreadyLoaded(const bt::SHA1Hash &ih) const override
+    [[nodiscard]] bool alreadyLoaded(const bt::SHA1Hash &ih) const override
     {
         Q_UNUSED(ih);
         return false;

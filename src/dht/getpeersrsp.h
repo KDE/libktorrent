@@ -28,19 +28,19 @@ public:
     void encode(QByteArray &arr) const override;
     void parse(bt::BDictNode *dict) override;
 
-    const DBItemList &getItemList() const
+    [[nodiscard]] const DBItemList &getItemList() const
     {
         return items;
     }
-    const QByteArray &getToken() const
+    [[nodiscard]] const QByteArray &getToken() const
     {
         return token;
     }
-    bool containsNodes() const
+    [[nodiscard]] bool containsNodes() const
     {
         return nodes.size() > 0 || nodes6.size() > 0;
     }
-    bool containsValues() const
+    [[nodiscard]] bool containsValues() const
     {
         return nodes.size() == 0;
     }

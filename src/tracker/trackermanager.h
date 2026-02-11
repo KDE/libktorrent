@@ -31,7 +31,7 @@ public:
     TrackerManager(TorrentControl *tor, PeerManager *pman);
     ~TrackerManager() override;
 
-    TrackerInterface *getCurrentTracker() const override;
+    [[nodiscard]] TrackerInterface *getCurrentTracker() const override;
     void setCurrentTracker(TrackerInterface *t) override;
     void setCurrentTracker(const QUrl &url) override;
     QList<TrackerInterface *> getTrackers() override;
@@ -41,14 +41,14 @@ public:
     bool canRemoveTracker(TrackerInterface *t) override;
     void restoreDefault() override;
     void setTrackerEnabled(const QUrl &url, bool on) override;
-    bool noTrackersReachable() const override;
-    TrackersStatusInfo getTrackersStatusInfo() const override;
+    [[nodiscard]] bool noTrackersReachable() const override;
+    [[nodiscard]] TrackersStatusInfo getTrackersStatusInfo() const override;
 
     //! Get the number of seeders
-    Uint32 getNumSeeders() const;
+    [[nodiscard]] Uint32 getNumSeeders() const;
 
     //! Get the number of leechers
-    Uint32 getNumLeechers() const;
+    [[nodiscard]] Uint32 getNumLeechers() const;
 
     /*!
      * Start gathering peers
@@ -85,11 +85,11 @@ protected:
     void switchTracker(Tracker *trk);
     Tracker *selectTracker();
 
-    Uint64 bytesDownloaded() const override;
-    Uint64 bytesUploaded() const override;
-    Uint64 bytesLeft() const override;
-    const SHA1Hash &infoHash() const override;
-    bool isPartialSeed() const override;
+    [[nodiscard]] Uint64 bytesDownloaded() const override;
+    [[nodiscard]] Uint64 bytesUploaded() const override;
+    [[nodiscard]] Uint64 bytesLeft() const override;
+    [[nodiscard]] const SHA1Hash &infoHash() const override;
+    [[nodiscard]] bool isPartialSeed() const override;
 
 private Q_SLOTS:
     /*!

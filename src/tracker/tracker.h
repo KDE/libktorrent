@@ -30,11 +30,11 @@ public:
     {
     }
 
-    virtual Uint64 bytesDownloaded() const = 0;
-    virtual Uint64 bytesUploaded() const = 0;
-    virtual Uint64 bytesLeft() const = 0;
-    virtual const SHA1Hash &infoHash() const = 0;
-    virtual bool isPartialSeed() const = 0;
+    [[nodiscard]] virtual Uint64 bytesDownloaded() const = 0;
+    [[nodiscard]] virtual Uint64 bytesUploaded() const = 0;
+    [[nodiscard]] virtual Uint64 bytesLeft() const = 0;
+    [[nodiscard]] virtual const SHA1Hash &infoHash() const = 0;
+    [[nodiscard]] virtual bool isPartialSeed() const = 0;
 };
 
 /*!
@@ -54,7 +54,7 @@ public:
     static void setCustomIP(const QString &str);
 
     //! get the tracker url
-    QUrl trackerURL() const
+    [[nodiscard]] QUrl trackerURL() const
     {
         return url;
     }
@@ -69,7 +69,7 @@ public:
      * Get the number of failed attempts to reach a tracker.
      * \return The number of failed attempts
      */
-    virtual Uint32 failureCount() const = 0;
+    [[nodiscard]] virtual Uint32 failureCount() const = 0;
 
     /*!
      * Do a tracker scrape to get more accurate stats about a torrent.
@@ -78,7 +78,7 @@ public:
     virtual void scrape() = 0;
 
     //! Get the trackers tier
-    int getTier() const
+    [[nodiscard]] int getTier() const
     {
         return tier;
     }
@@ -94,10 +94,10 @@ protected:
     void resetTrackerStats();
 
     //! Calculates the bytes downloaded to send with the request
-    Uint64 bytesDownloaded() const;
+    [[nodiscard]] Uint64 bytesDownloaded() const;
 
     //! Calculates the bytes uploaded to send with the request
-    Uint64 bytesUploaded() const;
+    [[nodiscard]] Uint64 bytesUploaded() const;
 
     //! Emit the failure signal, and set the error
     void failed(const QString &err);

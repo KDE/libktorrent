@@ -50,7 +50,7 @@ public:
     virtual void retransmit(PacketBuffer &packet, bt::Uint16 p_seq_nr) = 0;
 
     //! Get the current timeout
-    virtual bt::Uint32 currentTimeout() const = 0;
+    [[nodiscard]] virtual bt::Uint32 currentTimeout() const = 0;
 };
 
 /*!
@@ -69,13 +69,13 @@ public:
     void addPacket(const PacketBuffer &packet, bt::Uint16 seq_nr, bt::TimeStamp send_time);
 
     //! Are we allowed to send
-    bool allowedToSend(bt::Uint32 packet_size) const
+    [[nodiscard]] bool allowedToSend(bt::Uint32 packet_size) const
     {
         return cur_window + packet_size <= qMin(wnd_size, max_window);
     }
 
     //! Calculates how much window space is availabe
-    bt::Uint32 availableSpace() const
+    [[nodiscard]] bt::Uint32 availableSpace() const
     {
         bt::Uint32 m = qMin(wnd_size, max_window);
         if (cur_window > m)
@@ -85,13 +85,13 @@ public:
     }
 
     //! See if all packets are acked
-    bool allPacketsAcked() const
+    [[nodiscard]] bool allPacketsAcked() const
     {
         return unacked_packets.isEmpty();
     }
 
     //! Get the number of unacked packets
-    bt::Uint32 numUnackedPackets() const
+    [[nodiscard]] bt::Uint32 numUnackedPackets() const
     {
         return unacked_packets.count();
     }
@@ -100,7 +100,7 @@ public:
     void timeout(Retransmitter *conn);
 
     //! Get the window usage factor
-    double windowUsageFactor() const
+    [[nodiscard]] double windowUsageFactor() const
     {
         return qMax((double)cur_window / max_window, 1.0);
     }
@@ -108,15 +108,15 @@ public:
     //! Update the window size
     void updateWindowSize(double scaled_gain);
 
-    bt::Uint32 currentWindow() const
+    [[nodiscard]] bt::Uint32 currentWindow() const
     {
         return cur_window;
     }
-    bt::Uint32 maxWindow() const
+    [[nodiscard]] bt::Uint32 maxWindow() const
     {
         return max_window;
     }
-    bt::Uint32 windowSize() const
+    [[nodiscard]] bt::Uint32 windowSize() const
     {
         return wnd_size;
     }

@@ -30,7 +30,7 @@ public:
     ~ExitOperation() override;
 
     //! whether or not we can do a deleteLater on the job after it has finished.
-    virtual bool deleteAllowed() const
+    [[nodiscard]] virtual bool deleteAllowed() const
     {
         return true;
     }
@@ -47,7 +47,7 @@ public:
     ExitJobOperation(KJob *j);
     ~ExitJobOperation() override;
 
-    bool deleteAllowed() const override
+    [[nodiscard]] bool deleteAllowed() const override
     {
         return true;
     }

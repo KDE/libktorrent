@@ -37,7 +37,7 @@ public:
     void handlePacket(const Uint8 *packet, Uint32 size) override;
 
     //! Do we need to update PEX (should happen every minute)
-    bool needsUpdate() const override;
+    [[nodiscard]] bool needsUpdate() const override;
 
     //! Send a new PEX packet to the Peer
     void update() override;

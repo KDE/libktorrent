@@ -30,34 +30,34 @@ public:
     virtual ~TrackerInterface();
 
     //! See if a start request succeeded
-    bool isStarted() const
+    [[nodiscard]] bool isStarted() const
     {
         return started;
     }
 
     //! get the tracker url
-    QUrl trackerURL() const
+    [[nodiscard]] QUrl trackerURL() const
     {
         return url;
     }
 
     //! Get the tracker status
-    TrackerStatus trackerStatus() const
+    [[nodiscard]] TrackerStatus trackerStatus() const
     {
         return status;
     }
 
     //! Get a string of the current tracker status
-    QString trackerStatusString() const;
+    [[nodiscard]] QString trackerStatusString() const;
 
     //! Is tracker timed out
-    bool timeOut() const
+    [[nodiscard]] bool timeOut() const
     {
         return time_out;
     }
 
     //! Is there any warnings
-    bool hasWarning() const
+    [[nodiscard]] bool hasWarning() const
     {
         return !warning.isEmpty();
     }
@@ -66,7 +66,7 @@ public:
      * Get the update interval in ms
      * \return interval
      */
-    Uint32 getInterval() const
+    [[nodiscard]] Uint32 getInterval() const
     {
         return interval;
     }
@@ -78,19 +78,19 @@ public:
     }
 
     //! Get the number of seeders
-    int getNumSeeders() const
+    [[nodiscard]] int getNumSeeders() const
     {
         return seeders;
     }
 
     //! Get the number of leechers
-    int getNumLeechers() const
+    [[nodiscard]] int getNumLeechers() const
     {
         return leechers;
     }
 
     //! Get the number of times the torrent was downloaded
-    int getTotalTimesDownloaded() const
+    [[nodiscard]] int getTotalTimesDownloaded() const
     {
         return total_downloaded;
     }
@@ -102,13 +102,13 @@ public:
     }
 
     //! Is the tracker enabled
-    bool isEnabled() const
+    [[nodiscard]] bool isEnabled() const
     {
         return enabled;
     }
 
     //! Get the time in seconds to the next tracker update
-    Uint32 timeToNextUpdate() const;
+    [[nodiscard]] Uint32 timeToNextUpdate() const;
 
     //! Reset the tracker
     virtual void reset();

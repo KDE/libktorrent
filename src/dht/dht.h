@@ -92,7 +92,7 @@ public:
     NodeLookup *findOwnNode();
 
     //! See if it is possible to start a task
-    bool canStartTask() const;
+    [[nodiscard]] bool canStartTask() const;
 
     void start(const QString &table, const QString &key_file, bt::Uint16 port) override;
     void stop() override;

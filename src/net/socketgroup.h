@@ -77,7 +77,7 @@ public:
     }
 
     //! Get the number of sockets
-    bt::Uint32 numSockets() const
+    [[nodiscard]] bt::Uint32 numSockets() const
     {
         return sockets.size();
     }
@@ -91,7 +91,7 @@ public:
     /*!
      * Get the assured allowance .
      */
-    bt::Uint32 getAssuredAllowance() const
+    [[nodiscard]] bt::Uint32 getAssuredAllowance() const
     {
         return group_assured;
     }

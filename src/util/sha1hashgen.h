@@ -72,7 +72,7 @@ public:
     /*!
      * Get the hash generated.
      */
-    SHA1Hash get() const;
+    [[nodiscard]] SHA1Hash get() const;
 
 private:
     QCryptographicHash *h;

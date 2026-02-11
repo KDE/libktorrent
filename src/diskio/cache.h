@@ -51,7 +51,7 @@ public:
     virtual void saveFileMap() = 0;
 
     //! Get the datadir
-    QString getDataDir() const
+    [[nodiscard]] QString getDataDir() const
     {
         return datadir;
     }
@@ -60,7 +60,7 @@ public:
      * Get the actual output path.
      * \return The output path
      */
-    virtual QString getOutputPath() const = 0;
+    [[nodiscard]] virtual QString getOutputPath() const = 0;
 
     /*!
      * Changes the tmp dir. All data files should already been moved.
@@ -140,7 +140,7 @@ public:
     virtual void preparePreallocation(PreallocationThread *prealloc) = 0;
 
     //! See if the download has existing files
-    bool hasExistingFiles() const
+    [[nodiscard]] bool hasExistingFiles() const
     {
         return preexisting_files;
     }

@@ -36,7 +36,7 @@ public:
     bool data(Uint32 piece, QByteArrayView piece_data);
 
     //! Get the result
-    const QByteArray &result() const
+    [[nodiscard]] const QByteArray &result() const
     {
         return metadata;
     }

@@ -89,7 +89,7 @@ public:
         bool partial_seed;
 
         //! Get the address of the peer (hostname if it is valid, IP otherwise)
-        QString address() const
+        [[nodiscard]] QString address() const
         {
             return hostname.isEmpty() ? ip_address : hostname;
         }

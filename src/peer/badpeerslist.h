@@ -21,7 +21,7 @@ public:
     BadPeersList();
     ~BadPeersList() override;
 
-    bool blocked(const net::Address &addr) const override;
+    [[nodiscard]] bool blocked(const net::Address &addr) const override;
 
     //! Add a bad peer to the list
     void addBadPeer(const QString &ip);

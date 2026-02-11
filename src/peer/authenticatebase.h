@@ -41,19 +41,19 @@ public:
     }
 
     //! Is this a local peer
-    bool isLocal() const
+    [[nodiscard]] bool isLocal() const
     {
         return local;
     }
 
     //! See if the authentication is finished
-    bool isFinished() const
+    [[nodiscard]] bool isFinished() const
     {
         return finished;
     }
 
     //! Flags indicating which extensions are supported
-    Uint32 supportedExtensions() const
+    [[nodiscard]] Uint32 supportedExtensions() const
     {
         return ext_support;
     }
@@ -65,7 +65,7 @@ public:
     }
 
     //! get the socket
-    mse::EncryptedPacketSocket *getSocket() const
+    [[nodiscard]] mse::EncryptedPacketSocket *getSocket() const
     {
         return sock.get();
     }

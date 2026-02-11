@@ -58,7 +58,7 @@ public:
                     Uint32 support,
                     bool local,
                     std::unique_ptr<ConnectionLimit::Token> token);
-    bool connectedTo(const net::Address &addr) const;
+    [[nodiscard]] bool connectedTo(const net::Address &addr) const;
     void update();
     void have(Peer *peer, Uint32 index);
     void connectToPeers();

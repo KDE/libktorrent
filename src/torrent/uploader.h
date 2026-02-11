@@ -34,13 +34,13 @@ public:
     ~Uploader() override;
 
     //! Get the number of bytes uploaded.
-    Uint64 bytesUploaded() const
+    [[nodiscard]] Uint64 bytesUploaded() const
     {
         return uploaded;
     }
 
     //! Get the upload rate of all Peers combined.
-    Uint32 uploadRate() const;
+    [[nodiscard]] Uint32 uploadRate() const;
 
     //! Set the number of bytes which have been uploaded.
     void setBytesUploaded(Uint64 b)

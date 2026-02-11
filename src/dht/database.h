@@ -33,10 +33,10 @@ public:
     virtual ~DBItem();
 
     //! See if the item is expired
-    bool expired(bt::TimeStamp now) const;
+    [[nodiscard]] bool expired(bt::TimeStamp now) const;
 
     //! Get the address of an item
-    const net::Address &getAddress() const
+    [[nodiscard]] const net::Address &getAddress() const
     {
         return addr;
     }
@@ -112,7 +112,7 @@ public:
     bool checkToken(const QByteArray &token, const net::Address &addr);
 
     //! Test whether or not the DB contains a key
-    bool contains(const dht::Key &key) const;
+    [[nodiscard]] bool contains(const dht::Key &key) const;
 
     //! Insert an empty item (only if it isn't already in the DB)
     void insert(const dht::Key &key);

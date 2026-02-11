@@ -23,7 +23,7 @@ public:
     Error(const QString &msg);
     virtual ~Error();
 
-    QString toString() const
+    [[nodiscard]] QString toString() const
     {
         return msg;
     }
@@ -42,7 +42,7 @@ public:
     Warning(const QString &msg);
     virtual ~Warning();
 
-    QString toString() const
+    [[nodiscard]] QString toString() const
     {
         return msg;
     }

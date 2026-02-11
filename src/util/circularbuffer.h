@@ -39,31 +39,31 @@ public:
     virtual bt::Uint32 write(const bt::Uint8 *ptr, bt::Uint32 len);
 
     //! Is the buffer empty
-    bool empty() const
+    [[nodiscard]] bool empty() const
     {
         return buf_size == 0;
     }
 
     //! Is the buffer full
-    bool full() const
+    [[nodiscard]] bool full() const
     {
         return buf_size == buf_capacity;
     }
 
     //! How much of the buffer is used
-    bt::Uint32 size() const
+    [[nodiscard]] bt::Uint32 size() const
     {
         return buf_size;
     }
 
     //! How much capacity is available
-    bt::Uint32 capacity() const
+    [[nodiscard]] bt::Uint32 capacity() const
     {
         return buf_capacity;
     }
 
     //! Get the available space
-    bt::Uint32 available() const
+    [[nodiscard]] bt::Uint32 available() const
     {
         return buf_capacity - buf_size;
     }

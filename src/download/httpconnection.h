@@ -151,7 +151,7 @@ private:
         virtual ~HttpGet();
 
         bool onDataReady(Uint8 *buf, Uint32 size);
-        bool finished() const
+        [[nodiscard]] bool finished() const
         {
             return data_received >= len;
         }

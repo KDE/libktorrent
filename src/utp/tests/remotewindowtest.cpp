@@ -51,7 +51,7 @@ public:
         retransmit_ok = false;
     }
 
-    bt::Uint32 currentTimeout() const override
+    [[nodiscard]] bt::Uint32 currentTimeout() const override
     {
         return 1000;
     }

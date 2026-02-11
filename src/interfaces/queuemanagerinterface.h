@@ -31,7 +31,7 @@ public:
      * \param ih The info hash of a torrent
      * \return true if we do, false if we don't
      */
-    virtual bool alreadyLoaded(const SHA1Hash &ih) const = 0;
+    [[nodiscard]] virtual bool alreadyLoaded(const SHA1Hash &ih) const = 0;
 
     /*!
      * Merge announce lists to a torrent

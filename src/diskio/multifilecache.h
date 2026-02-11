@@ -40,7 +40,7 @@ public:
     void moveDataFilesFinished(Job *job) override;
     Job *moveDataFiles(const QMap<TorrentFileInterface *, QString> &files) override;
     void moveDataFilesFinished(const QMap<TorrentFileInterface *, QString> &files, Job *job) override;
-    QString getOutputPath() const override;
+    [[nodiscard]] QString getOutputPath() const override;
     void changeOutputPath(const QString &outputpath) override;
     void preparePreallocation(PreallocationThread *prealloc) override;
     bool hasMissingFiles(QStringList &sl) override;

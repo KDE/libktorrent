@@ -98,13 +98,13 @@ public:
     Uint64 seek(SeekPos from, Int64 num);
 
     //! Check to see if we are at the end of the file.
-    bool eof() const;
+    [[nodiscard]] bool eof() const;
 
     //! Get the current position in the file.
-    Uint64 tell() const;
+    [[nodiscard]] Uint64 tell() const;
 
     //! Get the error string.
-    QString errorString() const;
+    [[nodiscard]] QString errorString() const;
 };
 
 }

@@ -46,19 +46,19 @@ public:
     virtual ~BNode();
 
     //! Get the type of node
-    Type getType() const
+    [[nodiscard]] Type getType() const
     {
         return type;
     }
 
     //! Get the offset in the bytearray where this node starts.
-    Uint32 getOffset() const
+    [[nodiscard]] Uint32 getOffset() const
     {
         return off;
     }
 
     //! Get the length this node takes up in the bytearray.
-    Uint32 getLength() const
+    [[nodiscard]] Uint32 getLength() const
     {
         return len;
     }
@@ -91,7 +91,7 @@ public:
     BValueNode(const Value &v, Uint32 off);
     ~BValueNode() override;
 
-    const Value &data() const
+    [[nodiscard]] const Value &data() const
     {
         return value;
     }
@@ -123,7 +123,7 @@ public:
     Q_DISABLE_COPY(BDictNode)
 
     //! Get a list of keys
-    QList<QByteArray> keys() const;
+    [[nodiscard]] QList<QByteArray> keys() const;
 
     /*!
      * Insert a BNode in the dictionary.
@@ -198,7 +198,7 @@ public:
     void printDebugInfo() override;
 
     //! Get the number of nodes in the list.
-    Uint32 getNumChildren() const
+    [[nodiscard]] Uint32 getNumChildren() const
     {
         return children.size();
     }

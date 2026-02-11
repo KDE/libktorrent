@@ -75,13 +75,13 @@ public:
     void setGroupIDs(Uint32 up, Uint32 down);
 
     //! Get the number of webseeds
-    Uint32 getNumWebSeeds() const
+    [[nodiscard]] Uint32 getNumWebSeeds() const
     {
         return webseeds.count();
     }
 
     //! Get a webseed
-    const WebSeed *getWebSeed(Uint32 i) const
+    [[nodiscard]] const WebSeed *getWebSeed(Uint32 i) const
     {
         return i < (Uint32)webseeds.count() ? webseeds[i] : nullptr;
     }
@@ -108,22 +108,22 @@ public:
     void loadWebSeeds(const QString &file);
 
     //! Get the number of bytes we have downloaded
-    Uint64 bytesDownloaded() const
+    [[nodiscard]] Uint64 bytesDownloaded() const
     {
         return bytes_downloaded + curr_chunks_downloaded;
     }
 
     //! Get the current dowload rate
-    Uint32 downloadRate() const;
+    [[nodiscard]] Uint32 downloadRate() const;
 
     //! Get the number of chunks we are dowloading
-    Uint32 numActiveDownloads() const
+    [[nodiscard]] Uint32 numActiveDownloads() const
     {
         return current_chunks.count() + active_webseed_downloads;
     }
 
     //! See if the download is finished.
-    bool isFinished() const;
+    [[nodiscard]] bool isFinished() const;
 
     /*!
      * Clear all downloads. Deletes all active downloads.
@@ -135,11 +135,11 @@ public:
      */
     void pause();
 
-    CurChunkCItr beginDownloads() const
+    [[nodiscard]] CurChunkCItr beginDownloads() const
     {
         return current_chunks.begin();
     }
-    CurChunkCItr endDownloads() const
+    [[nodiscard]] CurChunkCItr endDownloads() const
     {
         return current_chunks.end();
     }
@@ -156,31 +156,31 @@ public:
      * \param chunk The chunk
      * \return The ChunkDownload, or nullptr if no download is found
      */
-    const ChunkDownload *download(Uint32 chunk) const;
+    [[nodiscard]] const ChunkDownload *download(Uint32 chunk) const;
 
     /*!
      * See if we are downloading a Chunk
      * \param chunk ID of Chunk
      * \return true if we are, false if not
      */
-    bool downloading(Uint32 chunk) const;
+    [[nodiscard]] bool downloading(Uint32 chunk) const;
 
     /*!
      * Can we download a chunk from a webseed.
      * \param chunk ID of Chunk
      * \return true if we can
      */
-    bool canDownloadFromWebSeed(Uint32 chunk) const;
+    [[nodiscard]] bool canDownloadFromWebSeed(Uint32 chunk) const;
 
     /*!
      * Get the number of downloaders assigned to a chunk
      * \param chunk ID of Chunk
      * \return the number of downloaders for that chunk
      */
-    Uint32 numDownloadersForChunk(Uint32 chunk) const;
+    [[nodiscard]] Uint32 numDownloadersForChunk(Uint32 chunk) const;
 
     //! Are we in endgame mode
-    bool endgameMode() const;
+    [[nodiscard]] bool endgameMode() const;
 
     /*!
      * Save the current downloads.

@@ -37,23 +37,23 @@ public:
     Value &operator=(Int64 val);
     Value &operator=(const QByteArray &val);
 
-    Type getType() const
+    [[nodiscard]] Type getType() const
     {
         return type;
     }
-    Int32 toInt() const
+    [[nodiscard]] Int32 toInt() const
     {
         return ival;
     }
-    Int64 toInt64() const
+    [[nodiscard]] Int64 toInt64() const
     {
         return big_ival;
     }
-    QString toString() const
+    [[nodiscard]] QString toString() const
     {
         return QString::fromUtf8(strval);
     }
-    QByteArray toByteArray() const
+    [[nodiscard]] QByteArray toByteArray() const
     {
         return strval;
     }

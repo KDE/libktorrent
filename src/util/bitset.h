@@ -46,7 +46,7 @@ public:
     virtual ~BitSet();
 
     //! See if the BitSet is null
-    bool isNull() const
+    [[nodiscard]] bool isNull() const
     {
         return num_bits == 0;
     }
@@ -55,7 +55,7 @@ public:
      * Get the value of a bit, false means 0, true 1.
      * \param i Index of Bit
      */
-    bool get(Uint32 i) const;
+    [[nodiscard]] bool get(Uint32 i) const;
 
     /*!
      * Set the value of a bit, false means 0, true 1.
@@ -67,15 +67,15 @@ public:
     //! Set all bits on or off
     void setAll(bool on);
 
-    Uint32 getNumBytes() const
+    [[nodiscard]] Uint32 getNumBytes() const
     {
         return num_bytes;
     }
-    Uint32 getNumBits() const
+    [[nodiscard]] Uint32 getNumBits() const
     {
         return num_bits;
     }
-    const Uint8 *getData() const
+    [[nodiscard]] const Uint8 *getData() const
     {
         return data;
     }
@@ -85,7 +85,7 @@ public:
     }
 
     //! Get the number of on bits
-    Uint32 numOnBits() const
+    [[nodiscard]] Uint32 numOnBits() const
     {
         return num_on;
     }
@@ -116,7 +116,7 @@ public:
      * see if this BitSet includes another.
      * \param other The other BitSet
      */
-    bool includesBitSet(const BitSet &other) const;
+    [[nodiscard]] bool includesBitSet(const BitSet &other) const;
 
     /*!
      * Assignment operator.
@@ -140,7 +140,7 @@ public:
     BitSet operator-(const BitSet &bs) const;
 
     //! Check if all bit are set to 1
-    bool allOn() const;
+    [[nodiscard]] bool allOn() const;
 
     /*!
      * Check for equality of bitsets

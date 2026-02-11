@@ -25,13 +25,13 @@ public:
     void addNode(const QByteArray &a);
 
     //! Get the nodes parameter
-    const QByteArray &getNodes() const
+    [[nodiscard]] const QByteArray &getNodes() const
     {
         return nodes;
     }
 
     //! Get the nodes6 parameter
-    const QByteArray &getNodes6() const
+    [[nodiscard]] const QByteArray &getNodes6() const
     {
         return nodes6;
     }

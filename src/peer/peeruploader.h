@@ -60,7 +60,7 @@ public:
     Uint32 handleRequests(bt::ChunkManager &cman);
 
     //! Get the number of requests
-    Uint32 getNumRequests() const;
+    [[nodiscard]] Uint32 getNumRequests() const;
 
     void addUploadedBytes(Uint32 bytes)
     {

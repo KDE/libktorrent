@@ -54,7 +54,7 @@ public:
     /*!
      * See if the PeerSourceManager has been started
      */
-    bool isStarted() const
+    [[nodiscard]] bool isStarted() const
     {
         return started;
     }

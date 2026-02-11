@@ -25,7 +25,7 @@ public:
 
     void start() override;
     void kill(bool quietly = true) override;
-    TorrentStatus torrentStatus() const override
+    [[nodiscard]] TorrentStatus torrentStatus() const override
     {
         return ALLOCATING_DISKSPACE;
     }

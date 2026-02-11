@@ -48,7 +48,7 @@ public:
     static void execute(WaitJob *job);
 
     //! Are there any ExitOperation's we need to wait for
-    bool needToWait() const
+    [[nodiscard]] bool needToWait() const
     {
         return exit_ops.count() > 0;
     }

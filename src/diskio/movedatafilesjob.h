@@ -40,7 +40,7 @@ public:
     void kill(bool quietly = true) override;
 
     //! Get the file map (could be empty)
-    const QMap<TorrentFileInterface *, QString> &fileMap() const
+    [[nodiscard]] const QMap<TorrentFileInterface *, QString> &fileMap() const
     {
         return file_map;
     }

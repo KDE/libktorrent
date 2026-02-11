@@ -28,7 +28,7 @@ public:
     ~Job() override;
 
     //! Do we need to stop the torrent when the job is running
-    bool stopTorrent() const
+    [[nodiscard]] bool stopTorrent() const
     {
         return stop_torrent;
     }
@@ -37,7 +37,7 @@ public:
     virtual void kill(bool quietly = true);
 
     //! Return the status of the torrent during the job (default implementation returns INVALID_STATUS)
-    virtual TorrentStatus torrentStatus() const;
+    [[nodiscard]] virtual TorrentStatus torrentStatus() const;
 
     //! Get the torrent associated with this job
     TorrentControl *torrent()

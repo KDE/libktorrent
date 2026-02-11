@@ -44,7 +44,7 @@ public:
     /*!
      * Get the BitSet representing all the downloaded chunks and which is the result of the data check.
      */
-    const BitSet &getResult() const
+    [[nodiscard]] const BitSet &getResult() const
     {
         return result;
     }

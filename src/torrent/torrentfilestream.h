@@ -41,37 +41,37 @@ public:
     void close() override;
 
     //! Get the current stream position
-    qint64 pos() const override;
+    [[nodiscard]] qint64 pos() const override;
 
     //! Get the total size
-    qint64 size() const override;
+    [[nodiscard]] qint64 size() const override;
 
     //! Seek, will fail if attempting to seek to a point which is not downloaded yet
     bool seek(qint64 pos) override;
 
     //! Are we at the end of the file
-    bool atEnd() const override;
+    [[nodiscard]] bool atEnd() const override;
 
     //! Reset the stream
     bool reset() override;
 
     //! How many bytes are there available
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
 
     //! The stream is not sequential
-    bool isSequential() const override
+    [[nodiscard]] bool isSequential() const override
     {
         return false;
     }
 
     //! Get the path of the file
-    QString path() const;
+    [[nodiscard]] QString path() const;
 
     //! Get a BitSet of all the chunks of this TorrentFileStream
-    const BitSet &chunksBitSet() const;
+    [[nodiscard]] const BitSet &chunksBitSet() const;
 
     //! Get the current chunk relative to the first chunk of the file
-    Uint32 currentChunk() const;
+    [[nodiscard]] Uint32 currentChunk() const;
 
     using Ptr = QSharedPointer<TorrentFileStream>;
     using WPtr = QWeakPointer<TorrentFileStream>;

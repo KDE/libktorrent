@@ -34,7 +34,7 @@ public:
     ~UPnPMCastSocket() override;
 
     //! Get the number of routers discovered
-    Uint32 getNumDevicesDiscovered() const;
+    [[nodiscard]] Uint32 getNumDevicesDiscovered() const;
 
     //! Find a router using it's server name
     UPnPRouter *findDevice(const QString &name);

@@ -26,34 +26,34 @@ public:
     virtual void setEnabled(bool on);
 
     //! Whether or not the webseed is enabled
-    bool isEnabled() const
+    [[nodiscard]] bool isEnabled() const
     {
         return enabled;
     }
 
     //! Get the URL of the webseed
-    const QUrl &getUrl() const
+    [[nodiscard]] const QUrl &getUrl() const
     {
         return url;
     }
 
     //! Get how much data was downloaded
-    Uint64 getTotalDownloaded() const
+    [[nodiscard]] Uint64 getTotalDownloaded() const
     {
         return total_downloaded;
     }
 
     //! Get the present status in string form
-    QString getStatus() const
+    [[nodiscard]] QString getStatus() const
     {
         return status;
     }
 
     //! Get the current download rate in bytes per sec
-    virtual Uint32 getDownloadRate() const = 0;
+    [[nodiscard]] virtual Uint32 getDownloadRate() const = 0;
 
     //! Whether or not this webseed was user created
-    bool isUserCreated() const
+    [[nodiscard]] bool isUserCreated() const
     {
         return user;
     }

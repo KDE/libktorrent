@@ -30,7 +30,7 @@ public:
     virtual void update();
 
     //! Does this needs to be update
-    virtual bool needsUpdate() const
+    [[nodiscard]] virtual bool needsUpdate() const
     {
         return false;
     }

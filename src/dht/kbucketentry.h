@@ -53,25 +53,25 @@ public:
     bool operator==(const KBucketEntry &entry) const;
 
     //! Get the socket address of the node
-    const net::Address &getAddress() const
+    [[nodiscard]] const net::Address &getAddress() const
     {
         return addr;
     }
 
     //! Get it's ID
-    const Key &getID() const
+    [[nodiscard]] const Key &getID() const
     {
         return node_id;
     }
 
     //! Is this node a good node
-    bool isGood() const;
+    [[nodiscard]] bool isGood() const;
 
     //! Is this node questionable (haven't heard from it in the last 15 minutes)
-    bool isQuestionable() const;
+    [[nodiscard]] bool isQuestionable() const;
 
     //! Is it a bad node. (Hasn't responded to a query
-    bool isBad() const;
+    [[nodiscard]] bool isBad() const;
 
     //! Signal the entry that the peer has responded
     void hasResponded();
@@ -115,7 +115,7 @@ public:
     {
     }
 
-    bool contains(const KBucketEntry &entry) const
+    [[nodiscard]] bool contains(const KBucketEntry &entry) const
     {
         return find(entry) != end();
     }

@@ -31,7 +31,7 @@ public:
      * \return TRUE if IP should be blocked. FALSE otherwise
      * \param addr Address of the peer
      */
-    virtual bool blocked(const net::Address &addr) const = 0;
+    [[nodiscard]] virtual bool blocked(const net::Address &addr) const = 0;
 };
 }
 #endif

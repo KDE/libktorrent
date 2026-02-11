@@ -80,19 +80,19 @@ public:
     /*!
      * See if the DHT is running.
      */
-    bool isRunning() const
+    [[nodiscard]] bool isRunning() const
     {
         return running;
     }
 
     //! Get the DHT port
-    bt::Uint16 getPort() const
+    [[nodiscard]] bt::Uint16 getPort() const
     {
         return port;
     }
 
     //! Get statistics about the DHT
-    const dht::Stats &getStats() const
+    [[nodiscard]] const dht::Stats &getStats() const
     {
         return stats;
     }

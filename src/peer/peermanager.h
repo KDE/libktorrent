@@ -81,7 +81,7 @@ public:
      * Get a list of all peers.
      * \return A QList of Peer's
      */
-    QList<Peer *> getPeers() const;
+    [[nodiscard]] QList<Peer *> getPeers() const;
 
     /*!
      * Find a Peer based on it's ID
@@ -121,25 +121,25 @@ public:
     void killStalePeers();
 
     //! Get the number of connected peers
-    Uint32 getNumConnectedPeers() const;
+    [[nodiscard]] Uint32 getNumConnectedPeers() const;
 
     //! Get the number of connected seeders
-    Uint32 getNumConnectedSeeders() const;
+    [[nodiscard]] Uint32 getNumConnectedSeeders() const;
 
     //! Get the number of connected leechers
-    Uint32 getNumConnectedLeechers() const;
+    [[nodiscard]] Uint32 getNumConnectedLeechers() const;
 
     //! Get the number of pending peers we are attempting to connect to
-    Uint32 getNumPending() const;
+    [[nodiscard]] Uint32 getNumPending() const;
 
     //! Is the peer manager started
-    bool isStarted() const;
+    [[nodiscard]] bool isStarted() const;
 
     //! Get the Torrent
-    const Torrent &getTorrent() const;
+    [[nodiscard]] const Torrent &getTorrent() const;
 
     //! Get the combined upload rate of all peers in bytes per sec
-    Uint32 uploadRate() const;
+    [[nodiscard]] Uint32 uploadRate() const;
 
     /*!
      * A new connection is ready for this PeerManager.
@@ -170,7 +170,7 @@ public:
     void killUninterested();
 
     //! Get a BitSet of all available chunks
-    const BitSet &getAvailableChunksBitSet() const;
+    [[nodiscard]] const BitSet &getAvailableChunksBitSet() const;
 
     //! Get the chunk counter.
     ChunkCounter &getChunkCounter();
@@ -215,7 +215,7 @@ public:
     void visit(PeerVisitor &visitor);
 
     //! Is PEX enabled
-    bool isPexEnabled() const;
+    [[nodiscard]] bool isPexEnabled() const;
 
     //! Enable or disable PEX
     void setPexEnabled(bool on);
@@ -233,7 +233,7 @@ public:
     void rerunChoker();
 
     //! Does the choker need to run again
-    bool chokerNeedsToRun() const;
+    [[nodiscard]] bool chokerNeedsToRun() const;
 
     //! A PEX message was received
     void pex(const QByteArray &arr, int ip_version);
@@ -257,7 +257,7 @@ public:
     void setPartialSeed(bool partial_seed);
 
     //! Are we a partial seed
-    bool isPartialSeed() const;
+    [[nodiscard]] bool isPartialSeed() const;
 
 public Q_SLOTS:
     /*!

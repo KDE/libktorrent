@@ -61,7 +61,7 @@ public:
     void ping(const dht::Key &our_id, const net::Address &addr);
 
     //! Get the number of active calls
-    bt::Uint32 getNumActiveRPCCalls() const;
+    [[nodiscard]] bt::Uint32 getNumActiveRPCCalls() const;
 
 private Q_SLOTS:
     void callTimeout(dht::RPCCall *call);

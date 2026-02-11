@@ -87,7 +87,7 @@ public:
     }
 
     //! Is the thread running
-    bool isRunning() const
+    [[nodiscard]] bool isRunning() const
     {
         return running;
     }

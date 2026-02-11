@@ -43,13 +43,13 @@ public:
     }
 
     //! Are we still running
-    bool isRunning() const
+    [[nodiscard]] bool isRunning() const
     {
         return running;
     }
 
     //! Get the error (if any occurred)
-    QString getError() const
+    [[nodiscard]] QString getError() const
     {
         return error;
     }

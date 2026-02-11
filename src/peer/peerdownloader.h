@@ -93,17 +93,17 @@ public:
     ~PeerDownloader() override;
 
     //! See if we can add a request to the wait_queue
-    bool canAddRequest() const override;
-    bool canDownloadChunk() const override;
+    [[nodiscard]] bool canAddRequest() const override;
+    [[nodiscard]] bool canDownloadChunk() const override;
 
     //! Get the number of active requests
-    Uint32 getNumRequests() const;
+    [[nodiscard]] Uint32 getNumRequests() const;
 
     //! Is the Peer choked.
-    bool isChoked() const override;
+    [[nodiscard]] bool isChoked() const override;
 
     //! Is NULL (is the Peer set)
-    bool isNull() const
+    [[nodiscard]] bool isNull() const
     {
         return peer == nullptr;
     }
@@ -112,10 +112,10 @@ public:
      * See if the Peer has a Chunk
      * \param idx The Chunk's index
      */
-    bool hasChunk(Uint32 idx) const override;
+    [[nodiscard]] bool hasChunk(Uint32 idx) const override;
 
     //! Get the Peer
-    const Peer *getPeer() const
+    [[nodiscard]] const Peer *getPeer() const
     {
         return peer;
     }
@@ -126,7 +126,7 @@ public:
     void checkTimeouts() override;
 
     //! Get the maximum number of chunk downloads
-    Uint32 getMaxChunkDownloads() const;
+    [[nodiscard]] Uint32 getMaxChunkDownloads() const;
 
     /*!
      * The peer has been choked, all pending requests are rejected.
@@ -134,8 +134,8 @@ public:
      */
     void choked();
 
-    QString getName() const override;
-    Uint32 getDownloadRate() const override;
+    [[nodiscard]] QString getName() const override;
+    [[nodiscard]] Uint32 getDownloadRate() const override;
 
     /*!
      * Called when a piece has arrived.

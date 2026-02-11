@@ -43,7 +43,7 @@ public:
     /*!
         Get the reply data
     */
-    QByteArray replyData() const
+    [[nodiscard]] QByteArray replyData() const
     {
         return reply;
     }
@@ -51,7 +51,7 @@ public:
     /*!
         Did the request succeed
     */
-    bool succeeded() const
+    [[nodiscard]] bool succeeded() const
     {
         return success;
     }
@@ -59,7 +59,7 @@ public:
     /*!
         In case of failure this function will return an error string
     */
-    QString errorString() const
+    [[nodiscard]] QString errorString() const
     {
         return error;
     }

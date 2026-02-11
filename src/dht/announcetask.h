@@ -33,7 +33,7 @@ public:
     {
     }
 
-    const QByteArray &getToken() const
+    [[nodiscard]] const QByteArray &getToken() const
     {
         return token;
     }

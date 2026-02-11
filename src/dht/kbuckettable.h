@@ -25,7 +25,7 @@ public:
     void insert(const KBucketEntry &entry, RPCServerInterface *srv);
 
     //! Get the number of entries
-    int numEntries() const;
+    [[nodiscard]] int numEntries() const;
 
     //! Refresh the buckets
     void refreshBuckets(DHT *dh_table);
