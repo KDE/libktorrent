@@ -22,7 +22,7 @@ typedef qint8 Int8;
 
 typedef Uint64 TimeStamp;
 
-typedef enum {
+enum Priority {
     // also leave some room if we want to add new priorities in the future
     FIRST_PREVIEW_PRIORITY = 55,
     FIRST_PRIORITY = 50,
@@ -32,7 +32,7 @@ typedef enum {
     LAST_PRIORITY = 30,
     ONLY_SEED_PRIORITY = 20,
     EXCLUDED = 10,
-} Priority;
+};
 
 const Uint32 MAX_MSGLEN = 9 + 131072;
 const Uint16 MIN_PORT = 6881;
