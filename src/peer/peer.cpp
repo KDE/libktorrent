@@ -642,7 +642,7 @@ void Peer::sendExtProtHandshake(Uint16 port, Uint32 metadata_size, bool partial_
     // supported messages
     enc.beginDict();
     enc.write(QByteArrayLiteral("ut_pex"));
-    enc.write((Uint32)(pex_allowed ? UT_PEX_ID : 0));
+    enc.write(pex_allowed ? UT_PEX_ID : 0);
     enc.write(QByteArrayLiteral("ut_metadata"));
     enc.write(UT_METADATA_ID);
     enc.end();

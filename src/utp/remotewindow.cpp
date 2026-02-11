@@ -165,7 +165,7 @@ void RemoteWindow::timeout(Retransmitter *conn)
 
 void RemoteWindow::updateWindowSize(double scaled_gain)
 {
-    int d = (int)qRound(scaled_gain);
+    int d = qRound(scaled_gain);
     if (max_window + d < MIN_PACKET_SIZE)
         max_window = MIN_PACKET_SIZE;
     else

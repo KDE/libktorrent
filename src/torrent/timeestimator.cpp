@@ -103,7 +103,7 @@ int TimeEstimator::estimateMAVG()
         double lavg;
 
         if (m_lastAvg == 0)
-            lavg = (Uint32)m_samples.sum() / m_samples.count();
+            lavg = m_samples.sum() / m_samples.count();
         else
             lavg = m_lastAvg - ((double)m_samples.first() / (double)m_samples.count()) + ((double)m_samples.last() / (double)m_samples.count());
 

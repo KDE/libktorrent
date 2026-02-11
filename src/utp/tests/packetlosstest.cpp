@@ -47,7 +47,7 @@ public:
         if (packet_loss) {
             // pick a random number from 0 to 100
             int r = QRandomGenerator::global()->bounded(100);
-            if (r <= (int)qRound(100 * loss_factor)) {
+            if (r <= qRound(100 * loss_factor)) {
                 Out(SYS_UTP | LOG_DEBUG) << "Dropping packet " << endl;
                 return;
             }
