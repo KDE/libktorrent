@@ -56,6 +56,7 @@ public:
     void downloadStatusChanged(TorrentFile *tf, bool download);
     void loadIndexFile();
     void setupPriorities();
+    void recalculateChunksLeft();
 
 public:
     ChunkManager *p;
@@ -255,19 +256,8 @@ Uint64 ChunkManager::bytesLeftToDownload() const
 
 Uint32 ChunkManager::chunksLeft() const
 {
-    if (!d->recalc_chunks_left)
-        return d->chunks_left;
-
-    Uint32 num = 0;
-    Uint32 tot = d->chunks.size();
-    for (Uint32 i = 0; i < tot; i++) {
-        const Chunk *c = d->chunks[i];
-        if (c && !bitset.get(i) && !c->isExcluded())
-            num++;
-    }
-    d->chunks_left = num;
-    d->recalc_chunks_left = false;
-    return num;
+    d->recalculateChunksLeft();
+    return d->chunks_left;
 }
 
 bool ChunkManager::haveAllChunks() const
@@ -603,7 +593,7 @@ void ChunkManager::dataChecked(const bt::BitSet &ok_chunks, bt::Uint32 from, bt:
     } catch (...) {
         Out(SYS_DIO | LOG_DEBUG) << "Failed to save index file : unknown exception" << endl;
     }
-    chunksLeft();
+    d->recalculateChunksLeft();
 }
 
 bool ChunkManager::hasExistingFiles() const
@@ -668,7 +658,7 @@ void ChunkManager::markExistingFilesAsDownloaded()
     } catch (...) {
         Out(SYS_DIO | LOG_DEBUG) << "Failed to save index file : unknown exception" << endl;
     }
-    chunksLeft();
+    d->recalculateChunksLeft();
 }
 
 void ChunkManager::recreateMissingFiles()
@@ -693,7 +683,7 @@ void ChunkManager::recreateMissingFiles()
     }
     d->saveIndexFile();
     d->recalc_chunks_left = true;
-    chunksLeft();
+    d->recalculateChunksLeft();
 }
 
 void ChunkManager::dndMissingFiles()
@@ -714,7 +704,7 @@ void ChunkManager::dndMissingFiles()
     d->savePriorityInfo();
     d->saveIndexFile();
     d->recalc_chunks_left = true;
-    chunksLeft();
+    d->recalculateChunksLeft();
 }
 
 Job *ChunkManager::deleteDataFiles()
@@ -1157,6 +1147,21 @@ void ChunkManager::Private::downloadStatusChanged(TorrentFile *tf, bool download
         p->tor.updateFilePercentage(*p);
 }
 
+void ChunkManager::Private::recalculateChunksLeft()
+{
+    if (!recalc_chunks_left)
+        return;
+
+    Uint32 num = 0;
+    Uint32 tot = chunks.size();
+    for (Uint32 i = 0; i < tot; i++) {
+        const Chunk *c = chunks[i];
+        if (c && !p->bitset.get(i) && !c->isExcluded())
+            num++;
+    }
+    chunks_left = num;
+    recalc_chunks_left = false;
+}
 }
 
 #include "moc_chunkmanager.cpp"
