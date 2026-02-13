@@ -261,8 +261,8 @@ void KBucket::updateRefreshTimer()
 void KBucket::save(bt::BEncoder &enc)
 {
     enc.beginDict();
-    enc.write("min", min_key.toByteArray());
-    enc.write("max", max_key.toByteArray());
+    enc.write("min", min_key);
+    enc.write("max", max_key);
     enc.write("entries");
     enc.beginList();
     QList<KBucketEntry>::iterator i;
@@ -270,7 +270,7 @@ void KBucket::save(bt::BEncoder &enc)
         enc.beginDict();
         KBucketEntry &e = *i;
 
-        enc.write("id", e.getID().toByteArray());
+        enc.write("id", e.getID());
         enc.write("address");
         if (e.getAddress().ipVersion() == 4) {
             std::array<Uint8, 6> tmp;

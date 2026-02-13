@@ -146,7 +146,7 @@ void HTTPTracker::onScrapeResult(const KJob *j)
         BDictNode *d = dict.get();
         d = d->getDict("files");
         if (d) {
-            d = d->getDict(tds->infoHash().toByteArray());
+            d = d->getDict(tds->infoHash());
             if (d) {
                 try {
                     seeders = d->getInt("complete");
