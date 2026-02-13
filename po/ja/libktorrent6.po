@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-02 00:43+0000\n"
+"POT-Creation-Date: 2026-02-13 00:43+0000\n"
 "PO-Revision-Date: 2009-10-31 23:24+0900\n"
 "Last-Translator: Yukiko Bando <ybando@k6.dion.ne.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -137,7 +137,7 @@ msgstr "ファイル <filename>%1</filename> に書き込めませんでした: 
 msgid "Cannot preallocate diskspace: %1"
 msgstr "ディスク領域の事前割り当てができません: %1"
 
-#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
+#: src/diskio/chunkmanager.cpp:839 src/diskio/chunkmanager.cpp:862
 #, fuzzy, kde-format
 #| msgid "Cannot open index file %1 : %2"
 msgid "Cannot open index file %1: %2"

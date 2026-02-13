@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-02 00:43+0000\n"
+"POT-Creation-Date: 2026-02-13 00:43+0000\n"
 "PO-Revision-Date: 2015-01-05 02:08+0200\n"
 "Last-Translator: Lasse Liehu <lasse.liehu@gmail.com>\n"
 "Language-Team: Finnish <lokalisointi@lists.coss.fi>\n"
@@ -128,7 +128,7 @@ msgstr "Tiedostoon %1 ei voitu kirjoittaa: %2"
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Ei voitu varata levytilaa: %1"
 
-#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
+#: src/diskio/chunkmanager.cpp:839 src/diskio/chunkmanager.cpp:862
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "Indeksitiedoston %1 avaus ei onnistunut: %2"

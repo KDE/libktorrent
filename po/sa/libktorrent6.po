@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-02 00:43+0000\n"
+"POT-Creation-Date: 2026-02-13 00:43+0000\n"
 "PO-Revision-Date: 2024-12-14 13:33+0530\n"
 "Last-Translator: Kali <EMAIL@ADDRESS>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -125,7 +125,7 @@ msgstr "%1: %2 सञ्चिकायां लिखितुं असफल
 msgid "Cannot preallocate diskspace: %1"
 msgstr "डिस्कस्थानं पूर्वविनियोगं कर्तुं न शक्यते: %1"
 
-#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
+#: src/diskio/chunkmanager.cpp:839 src/diskio/chunkmanager.cpp:862
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "अनुक्रमणिकासञ्चिका %1: %2 उद्घाटयितुं न शक्यते"

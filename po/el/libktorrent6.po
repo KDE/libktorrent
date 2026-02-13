@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-02 00:43+0000\n"
+"POT-Creation-Date: 2026-02-13 00:43+0000\n"
 "PO-Revision-Date: 2013-04-06 10:53+0200\n"
 "Last-Translator: Stelios <sstavragmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -134,7 +134,7 @@ msgstr "Αποτυχία εγγραφής στο αρχείο %1: %2"
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Αδυναμία προκράτησης χώρου στο δίσκο: %1"
 
-#: src/diskio/chunkmanager.cpp:849 src/diskio/chunkmanager.cpp:872
+#: src/diskio/chunkmanager.cpp:839 src/diskio/chunkmanager.cpp:862
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "Αδυναμία ανοίγματος του αρχείου ευρετηρίου %1: %2"
