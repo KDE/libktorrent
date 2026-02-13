@@ -19,15 +19,15 @@ namespace bt
  */
 template<class T> class KTORRENT_EXPORT Array
 {
-    Uint32 num;
-    std::unique_ptr<T[]> data;
+    Uint32 m_num;
+    std::unique_ptr<T[]> m_data;
 
 public:
     Array(Uint32 num = 0)
-        : num(num)
+        : m_num(num)
     {
         if (num > 0)
-            data = std::make_unique<T[]>(num);
+            m_data = std::make_unique<T[]>(num);
     }
 
     /*!
@@ -36,10 +36,10 @@ public:
      * This sets the capacity of \a other to 0 to avoid unneccessary allocations.
      */
     Array(Array &&other) noexcept
-        : num(other.num)
-        , data(std::move(other.data))
+        : m_num(other.m_num)
+        , m_data(std::move(other.m_data))
     {
-        other.num = 0;
+        other.m_num = 0;
     }
 
     /*!
@@ -52,9 +52,9 @@ public:
         if (this == &other) {
             return *this;
         }
-        num = other.num;
-        data = std::move(other.data);
-        other.num = 0;
+        m_num = other.m_num;
+        m_data = std::move(other.m_data);
+        other.m_num = 0;
         return *this;
     }
 
@@ -64,26 +64,26 @@ public:
 
     T &operator[](Uint32 i)
     {
-        return data[i];
+        return m_data[i];
     }
     const T &operator[](Uint32 i) const
     {
-        return data[i];
+        return m_data[i];
     }
 
     operator const T *() const
     {
-        return data.get();
+        return m_data.get();
     }
     operator T *()
     {
-        return data.get();
+        return m_data.get();
     }
 
     //! Get the number of elements in the array
     [[nodiscard]] Uint32 size() const
     {
-        return num;
+        return m_num;
     }
 
     /*!
@@ -92,8 +92,8 @@ public:
      */
     void fill(T val)
     {
-        for (Uint32 i = 0; i < num; i++)
-            data[i] = val;
+        for (Uint32 i = 0; i < m_num; i++)
+            m_data[i] = val;
     }
 };
 
