@@ -70,7 +70,7 @@ void BDictNode::insert(const QByteArray &key, std::unique_ptr<BNode> node)
     children.emplace_back(key, std::move(node));
 }
 
-BNode *BDictNode::getData(const QByteArray &key)
+BNode *BDictNode::getData(QByteArrayView key)
 {
     const auto i = std::find_if(children.cbegin(), children.cend(), [&key](const DictEntry &e) {
         return e.key == key;
@@ -78,24 +78,24 @@ BNode *BDictNode::getData(const QByteArray &key)
     return i == children.cend() ? nullptr : i->node.get();
 }
 
-BDictNode *BDictNode::getDict(const QByteArray &key)
+BDictNode *BDictNode::getDict(QByteArrayView key)
 {
     return dynamic_cast<BDictNode *>(getData(key));
 }
 
-BListNode *BDictNode::getList(const QByteArray &key)
+BListNode *BDictNode::getList(QByteArrayView key)
 {
     BNode *n = getData(key);
     return dynamic_cast<BListNode *>(n);
 }
 
-BValueNode *BDictNode::getValue(const QByteArray &key)
+BValueNode *BDictNode::getValue(QByteArrayView key)
 {
     BNode *n = getData(key);
     return dynamic_cast<BValueNode *>(n);
 }
 
-int BDictNode::getInt(const QByteArray &key)
+int BDictNode::getInt(QByteArrayView key)
 {
     const BValueNode *v = getValue(key);
     if (!v) {
@@ -109,7 +109,7 @@ int BDictNode::getInt(const QByteArray &key)
     return v->data().toInt();
 }
 
-qint64 BDictNode::getInt64(const QByteArray &key)
+qint64 BDictNode::getInt64(QByteArrayView key)
 {
     const BValueNode *v = getValue(key);
     if (!v) {
@@ -123,7 +123,7 @@ qint64 BDictNode::getInt64(const QByteArray &key)
     return v->data().toInt64();
 }
 
-QString BDictNode::getString(const QByteArray &key)
+QString BDictNode::getString(QByteArrayView key)
 {
     const BValueNode *v = getValue(key);
     if (!v) {
@@ -137,7 +137,7 @@ QString BDictNode::getString(const QByteArray &key)
     return v->data().toString();
 }
 
-QByteArray BDictNode::getByteArray(const QByteArray &key)
+QByteArray BDictNode::getByteArray(QByteArrayView key)
 {
     const BValueNode *v = getValue(key);
     if (!v) {

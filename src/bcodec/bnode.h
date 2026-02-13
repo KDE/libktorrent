@@ -140,40 +140,40 @@ public:
      * \param key The key
      * \return The node or nullptr if there is no node with has key \a key
      */
-    BNode *getData(const QByteArray &key);
+    BNode *getData(QByteArrayView key);
 
     /*!
      * Get a BListNode.
      * \param key The key
      * \return The node or nullptr if there is no list node with has key \a key
      */
-    BListNode *getList(const QByteArray &key);
+    BListNode *getList(QByteArrayView key);
 
     /*!
      * Get a BDictNode.
      * \param key The key
      * \return The node or nullptr if there is no dict node with has key \a key
      */
-    BDictNode *getDict(const QByteArray &key);
+    BDictNode *getDict(QByteArrayView key);
 
     /*!
      * Get a BValueNode.
      * \param key The key
      * \return The node or nullptr if there is no value node with has key \a key
      */
-    BValueNode *getValue(const QByteArray &key);
+    BValueNode *getValue(QByteArrayView key);
 
     //! Same as getValue, except directly returns an int, if something goes wrong, an error will be thrown
-    int getInt(const QByteArray &key);
+    int getInt(QByteArrayView key);
 
     //! Same as getValue, except directly returns a qint64, if something goes wrong, an error will be thrown
-    qint64 getInt64(const QByteArray &key);
+    qint64 getInt64(QByteArrayView key);
 
     //! Same as getValue, except directly returns a QString, if something goes wrong, an error will be thrown
-    QString getString(const QByteArray &key);
+    QString getString(QByteArrayView key);
 
     //! Same as getValue, except directly returns an QByteArray, if something goes wrong, an error will be thrown
-    QByteArray getByteArray(const QByteArray &key);
+    QByteArray getByteArray(QByteArrayView key);
 
     void printDebugInfo() override;
 };
