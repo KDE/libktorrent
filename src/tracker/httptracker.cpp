@@ -144,15 +144,15 @@ void HTTPTracker::onScrapeResult(const KJob *j)
 
     if (dict) {
         BDictNode *d = dict.get();
-        d = d->getDict(QByteArrayLiteral("files"));
+        d = d->getDict("files");
         if (d) {
             d = d->getDict(tds->infoHash().toByteArray());
             if (d) {
                 try {
-                    seeders = d->getInt(QByteArrayLiteral("complete"));
-                    leechers = d->getInt(QByteArrayLiteral("incomplete"));
-                    total_downloaded = d->getInt(QByteArrayLiteral("downloaded"));
-                    supports_partial_seed_extension = d->getValue(QByteArrayLiteral("downloaders")) != nullptr;
+                    seeders = d->getInt("complete");
+                    leechers = d->getInt("incomplete");
+                    total_downloaded = d->getInt("downloaded");
+                    supports_partial_seed_extension = d->getValue("downloaders") != nullptr;
                     Out(SYS_TRK | LOG_DEBUG) << "Scrape : leechers = " << leechers << ", seeders = " << seeders << ", downloaded = " << total_downloaded
                                              << endl;
                 } catch (...) {
@@ -270,22 +270,22 @@ bool HTTPTracker::updateData(const QByteArray &data)
         return false;
     }
 
-    if (dict->getData(QByteArrayLiteral("failure reason"))) {
-        BValueNode *vn = dict->getValue(QByteArrayLiteral("failure reason"));
+    if (dict->getData("failure reason")) {
+        BValueNode *vn = dict->getValue("failure reason");
         error = vn->data().toString();
         failures++;
         failed(error);
         return false;
     }
 
-    if (dict->getData(QByteArrayLiteral("warning message"))) {
-        BValueNode *vn = dict->getValue(QByteArrayLiteral("warning message"));
+    if (dict->getData("warning message")) {
+        BValueNode *vn = dict->getValue("warning message");
         warning = vn->data().toString();
     } else {
         warning.clear();
     }
 
-    BValueNode *vn = dict->getValue(QByteArrayLiteral("interval"));
+    BValueNode *vn = dict->getValue("interval");
 
     // if no interval is specified, use 5 minutes
     if (vn) {
@@ -294,20 +294,20 @@ bool HTTPTracker::updateData(const QByteArray &data)
         interval = 5 * 60;
     }
 
-    vn = dict->getValue(QByteArrayLiteral("incomplete"));
+    vn = dict->getValue("incomplete");
     if (vn) {
         leechers = vn->data().toInt();
     }
 
-    vn = dict->getValue(QByteArrayLiteral("complete"));
+    vn = dict->getValue("complete");
     if (vn) {
         seeders = vn->data().toInt();
     }
 
-    BListNode *ln = dict->getList(QByteArrayLiteral("peers"));
+    BListNode *ln = dict->getList("peers");
     if (!ln) {
         // no list, it might however be a compact response
-        vn = dict->getValue(QByteArrayLiteral("peers"));
+        vn = dict->getValue("peers");
         if (vn && vn->data().getType() == Value::STRING) {
             QByteArray arr = vn->data().toByteArray();
             for (int i = 0; i < arr.size(); i += 6) {
@@ -328,8 +328,8 @@ bool HTTPTracker::updateData(const QByteArray &data)
                 continue;
             }
 
-            BValueNode *ip_node = dict->getValue(QByteArrayLiteral("ip"));
-            BValueNode *port_node = dict->getValue(QByteArrayLiteral("port"));
+            BValueNode *ip_node = dict->getValue("ip");
+            BValueNode *port_node = dict->getValue("port");
 
             if (!ip_node || !port_node) {
                 continue;
@@ -341,7 +341,7 @@ bool HTTPTracker::updateData(const QByteArray &data)
     }
 
     // Check for IPv6 compact peers
-    vn = dict->getValue(QByteArrayLiteral("peers6"));
+    vn = dict->getValue("peers6");
     if (vn && vn->data().getType() == Value::STRING) {
         QByteArray arr = vn->data().toByteArray();
         for (int i = 0; i < arr.size(); i += 18) {

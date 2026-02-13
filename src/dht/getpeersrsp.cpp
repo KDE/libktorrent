@@ -57,23 +57,23 @@ void GetPeersRsp::encode(QByteArray &arr) const
         enc.write(RSP);
         enc.beginDict();
         {
-            enc.write(QByteArrayLiteral("id"));
+            enc.write("id");
             enc.write(id);
             if (nodes.size() > 0) {
-                enc.write(QByteArrayLiteral("nodes"));
+                enc.write("nodes");
                 enc.write(nodes);
             }
 
             if (nodes6.size() > 0) {
-                enc.write(QByteArrayLiteral("nodes6"));
+                enc.write("nodes6");
                 enc.write(nodes6);
             }
 
-            enc.write(QByteArrayLiteral("token"));
+            enc.write("token");
             enc.write(token);
 
             if (items.size() > 0) {
-                enc.write(QByteArrayLiteral("values"));
+                enc.write("values");
                 enc.beginList();
                 DBItemList::const_iterator i = items.begin();
                 while (i != items.end()) {

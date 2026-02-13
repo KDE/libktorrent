@@ -77,9 +77,9 @@ void MetadataDownload::download(Uint32 piece)
     QByteArray request;
     BEncoder enc(std::make_unique<BEncoderBufferOutput>(request));
     enc.beginDict();
-    enc.write(QByteArrayLiteral("msg_type"));
+    enc.write("msg_type");
     enc.write((bt::Uint32)0);
-    enc.write(QByteArrayLiteral("piece"));
+    enc.write("piece");
     enc.write((bt::Uint32)piece);
     enc.end();
     ext->sendPacket(request);

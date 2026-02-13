@@ -62,7 +62,7 @@ private Q_SLOTS:
     {
         QByteArray buffer;
         bt::BEncoder encoder(std::make_unique<bt::BEncoderBufferOutput>(buffer));
-        encoder.write(QByteArrayLiteral("info_hash"));
+        encoder.write("info_hash");
         QCOMPARE(buffer, "9:info_hash");
     }
 
@@ -71,8 +71,8 @@ private Q_SLOTS:
         QByteArray buffer;
         bt::BEncoder encoder(std::make_unique<bt::BEncoderBufferOutput>(buffer));
         encoder.beginList();
-        encoder.write(QByteArrayLiteral("spam"));
-        encoder.write(QByteArrayLiteral("eggs"));
+        encoder.write("spam");
+        encoder.write("eggs");
         encoder.write(5u);
         encoder.end();
         QCOMPARE(buffer, "l4:spam4:eggsi5ee");
@@ -83,11 +83,11 @@ private Q_SLOTS:
         QByteArray buffer;
         bt::BEncoder encoder(std::make_unique<bt::BEncoderBufferOutput>(buffer));
         encoder.beginDict();
-        encoder.write(QByteArrayLiteral("cow"));
-        encoder.write(QByteArrayLiteral("moo"));
-        encoder.write(QByteArrayLiteral("spam"));
-        encoder.write(QByteArrayLiteral("eggs"));
-        encoder.write(QByteArrayLiteral("kde2026"));
+        encoder.write("cow");
+        encoder.write("moo");
+        encoder.write("spam");
+        encoder.write("eggs");
+        encoder.write("kde2026");
         encoder.write(30u);
         encoder.end();
         QCOMPARE(buffer, "d3:cow3:moo4:spam4:eggs7:kde2026i30ee");
@@ -98,10 +98,10 @@ private Q_SLOTS:
         QByteArray buffer;
         bt::BEncoder encoder(std::make_unique<bt::BEncoderBufferOutput>(buffer));
         encoder.beginDict();
-        encoder.write(QByteArrayLiteral("spam"));
+        encoder.write("spam");
         encoder.beginList();
-        encoder.write(QByteArrayLiteral("a"));
-        encoder.write(QByteArrayLiteral("b"));
+        encoder.write("a");
+        encoder.write("b");
         encoder.end();
         encoder.end();
         QCOMPARE(buffer, "d4:spaml1:a1:bee");

@@ -94,39 +94,39 @@ void Torrent::load(const QByteArray &data, bool verbose)
         throw Error(i18n("Corrupted torrent."));
     }
 
-    BValueNode *c = dict->getValue(QByteArrayLiteral("comment"));
+    BValueNode *c = dict->getValue("comment");
     if (c) {
         comments = c->data().toString();
     }
 
-    const BValueNode *announce = dict->getValue(QByteArrayLiteral("announce"));
-    BListNode *nodes = dict->getList(QByteArrayLiteral("nodes"));
+    const BValueNode *announce = dict->getValue("announce");
+    BListNode *nodes = dict->getList("nodes");
     // if (!announce && !nodes)
     //  throw Error(i18n("Torrent has no announce or nodes field."));
 
     if (announce) {
-        loadTrackerURL(dict->getString(QByteArrayLiteral("announce")));
+        loadTrackerURL(dict->getString("announce"));
     }
 
     if (nodes) { // DHT torrrents have a node key
         loadNodes(nodes);
     }
 
-    loadInfo(dict->getDict(QByteArrayLiteral("info")));
-    loadAnnounceList(dict->getData(QByteArrayLiteral("announce-list")));
+    loadInfo(dict->getDict("info"));
+    loadAnnounceList(dict->getData("announce-list"));
 
     // see if the torrent contains webseeds
-    BListNode *urls = dict->getList(QByteArrayLiteral("url-list"));
+    BListNode *urls = dict->getList("url-list");
     if (urls) {
         loadWebSeeds(urls);
-    } else if (dict->getValue(QByteArrayLiteral("url-list"))) {
-        QUrl url(dict->getString(QByteArrayLiteral("url-list")));
+    } else if (dict->getValue("url-list")) {
+        QUrl url(dict->getString("url-list"));
         if (url.isValid()) {
             web_seeds.append(url);
         }
     }
 
-    BNode *n = dict->getData(QByteArrayLiteral("info"));
+    BNode *n = dict->getData("info");
     SHA1HashGen hg;
     // save info dict
     metadata = data.mid(n->getOffset(), n->getLength());
@@ -141,19 +141,19 @@ void Torrent::loadInfo(BDictNode *dict)
         throw Error(i18n("Corrupted torrent."));
     }
 
-    chunk_size = dict->getInt64(QByteArrayLiteral("piece length"));
-    BListNode *files = dict->getList(QByteArrayLiteral("files"));
+    chunk_size = dict->getInt64("piece length");
+    BListNode *files = dict->getList("files");
     if (files) {
         loadFiles(files);
     } else {
-        total_size = dict->getInt64(QByteArrayLiteral("length"));
+        total_size = dict->getInt64("length");
     }
 
     loadHash(dict);
-    unencoded_name = dict->getByteArray(QByteArrayLiteral("name"));
+    unencoded_name = dict->getByteArray("name");
     name_suggestion = QString::fromUtf8(unencoded_name);
     name_suggestion = SanityzeName(name_suggestion);
-    BValueNode *n = dict->getValue(QByteArrayLiteral("private"));
+    BValueNode *n = dict->getValue("private");
     if (n && n->data().toInt() == 1) {
         priv_torrent = true;
     }
@@ -187,7 +187,7 @@ void Torrent::loadFiles(BListNode *node)
             throw Error(i18n("Corrupted torrent."));
         }
 
-        BListNode *ln = d->getList(QByteArrayLiteral("path"));
+        BListNode *ln = d->getList("path");
         if (!ln) {
             throw Error(i18n("Corrupted torrent."));
         }
@@ -216,7 +216,7 @@ void Torrent::loadFiles(BListNode *node)
             throw Error(i18n("Corrupted torrent."));
         }
 
-        Uint64 s = d->getInt64(QByteArrayLiteral("length"));
+        Uint64 s = d->getInt64("length");
         TorrentFile file(this, idx, path, total_size, s, chunk_size);
         file.setUnencodedPath(unencoded_path);
 
@@ -241,7 +241,7 @@ void Torrent::loadTrackerURL(const QString &s)
 
 void Torrent::loadHash(BDictNode *dict)
 {
-    const QByteArray hash_string = dict->getByteArray(QByteArrayLiteral("pieces"));
+    const QByteArray hash_string = dict->getByteArray("pieces");
     const QByteArrayView hash_string_view{hash_string};
     for (int i = 0; i < hash_string.size(); i += 20) {
         SHA1Hash hash(hash_string_view.sliced(i, 20));

@@ -49,14 +49,14 @@ void GetPeersReq::encode(QByteArray &arr) const
         enc.write(ARG);
         enc.beginDict();
         {
-            enc.write(QByteArrayLiteral("id"));
+            enc.write("id");
             enc.write(id);
-            enc.write(QByteArrayLiteral("info_hash"));
+            enc.write("info_hash");
             enc.write(info_hash);
         }
         enc.end();
         enc.write(REQ);
-        enc.write(QByteArrayLiteral("get_peers"));
+        enc.write("get_peers");
         enc.write(TID);
         enc.write(mtid);
         enc.write(TYP);

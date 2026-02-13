@@ -42,7 +42,7 @@ void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
             return;
         }
 
-        int type = dict->getInt(QByteArrayLiteral("msg_type"));
+        int type = dict->getInt("msg_type");
         switch (type) {
         case 0: // request
             request(dict.get());
@@ -63,7 +63,7 @@ void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
 void UTMetaData::data(BDictNode *dict, QByteArrayView piece_data)
 {
     if (download) {
-        if (download->data(dict->getInt(QByteArrayLiteral("piece")), piece_data)) {
+        if (download->data(dict->getInt("piece"), piece_data)) {
             peer->emitMetadataDownloaded(download->result());
         }
     }
@@ -72,13 +72,13 @@ void UTMetaData::data(BDictNode *dict, QByteArrayView piece_data)
 void UTMetaData::reject(BDictNode *dict)
 {
     if (download) {
-        download->reject(dict->getInt(QByteArrayLiteral("piece")));
+        download->reject(dict->getInt("piece"));
     }
 }
 
 void UTMetaData::request(BDictNode *dict)
 {
-    int piece = dict->getInt(QByteArrayLiteral("piece"));
+    int piece = dict->getInt("piece");
     Out(SYS_CON | LOG_DEBUG) << "Received request for metadata piece " << piece << endl;
     if (!tor.isLoaded()) {
         sendReject(piece);
@@ -104,9 +104,9 @@ void UTMetaData::sendReject(int piece)
     QByteArray data;
     BEncoder enc(std::make_unique<BEncoderBufferOutput>(data));
     enc.beginDict();
-    enc.write(QByteArrayLiteral("msg_type"));
+    enc.write("msg_type");
     enc.write((bt::Uint32)2);
-    enc.write(QByteArrayLiteral("piece"));
+    enc.write("piece");
     enc.write((bt::Uint32)piece);
     enc.end();
     sendPacket(data);
@@ -118,11 +118,11 @@ void UTMetaData::sendData(int piece, int total_size, QByteArrayView data)
     QByteArray tmp;
     BEncoder enc(std::make_unique<BEncoderBufferOutput>(tmp));
     enc.beginDict();
-    enc.write(QByteArrayLiteral("msg_type"));
+    enc.write("msg_type");
     enc.write((bt::Uint32)1);
-    enc.write(QByteArrayLiteral("piece"));
+    enc.write("piece");
     enc.write((bt::Uint32)piece);
-    enc.write(QByteArrayLiteral("total_size"));
+    enc.write("total_size");
     enc.write((bt::Uint32)total_size);
     enc.end();
     tmp.append(data);

@@ -115,7 +115,7 @@ void TorrentCreator::saveTorrent(const QString &url)
     enc.beginDict(); // top dict
 
     if (!decentralized) {
-        enc.write(QByteArrayLiteral("announce"));
+        enc.write("announce");
         if (trackers.count() > 0) {
             enc.write(trackers[0].toUtf8());
         } else {
@@ -123,7 +123,7 @@ void TorrentCreator::saveTorrent(const QString &url)
         }
 
         if (trackers.count() > 1) {
-            enc.write(QByteArrayLiteral("announce-list"));
+            enc.write("announce-list");
             enc.beginList();
             for (const QString &t : std::as_const(trackers)) {
                 enc.beginList();
@@ -135,19 +135,19 @@ void TorrentCreator::saveTorrent(const QString &url)
     }
 
     if (comments.length() > 0) {
-        enc.write(QByteArrayLiteral("comment"));
+        enc.write("comment");
         enc.write(comments.toUtf8());
     }
-    enc.write(QByteArrayLiteral("created by"));
+    enc.write("created by");
     enc.write(bt::GetVersionString().toLatin1());
-    enc.write(QByteArrayLiteral("creation date"));
+    enc.write("creation date");
     enc.write((Uint64)time(nullptr));
-    enc.write(QByteArrayLiteral("info"));
+    enc.write("info");
     saveInfo(enc);
     // save the nodes list after the info hash, keys must be sorted !
     if (decentralized) {
         // DHT torrent
-        enc.write(QByteArrayLiteral("nodes"));
+        enc.write("nodes");
         enc.beginList();
 
         for (const QString &t : std::as_const(trackers)) {
@@ -160,10 +160,10 @@ void TorrentCreator::saveTorrent(const QString &url)
     }
 
     if (webseeds.count() == 1) {
-        enc.write(QByteArrayLiteral("url-list"));
+        enc.write("url-list");
         enc.write(webseeds[0].toDisplayString().toUtf8());
     } else if (webseeds.count() > 0) {
-        enc.write(QByteArrayLiteral("url-list"));
+        enc.write("url-list");
         enc.beginList();
         for (const QUrl &u : std::as_const(webseeds)) {
             enc.write(u.toDisplayString().toUtf8());
@@ -180,7 +180,7 @@ void TorrentCreator::saveInfo(BEncoder &enc)
 
     QFileInfo fi(target);
     if (fi.isDir()) {
-        enc.write(QByteArrayLiteral("files"));
+        enc.write("files");
         enc.beginList();
         for (const TorrentFile &file : std::as_const(files)) {
             saveFile(enc, file);
@@ -188,17 +188,17 @@ void TorrentCreator::saveInfo(BEncoder &enc)
 
         enc.end();
     } else {
-        enc.write(QByteArrayLiteral("length"));
+        enc.write("length");
         enc.write(bt::FileSize(target));
     }
-    enc.write(QByteArrayLiteral("name"));
+    enc.write("name");
     enc.write(name.toUtf8());
-    enc.write(QByteArrayLiteral("piece length"));
+    enc.write("piece length");
     enc.write((Uint64)chunk_size);
-    enc.write(QByteArrayLiteral("pieces"));
+    enc.write("pieces");
     savePieces(enc);
     if (priv) {
-        enc.write(QByteArrayLiteral("private"));
+        enc.write("private");
         enc.write((Uint64)1);
     }
     enc.end();
@@ -207,9 +207,9 @@ void TorrentCreator::saveInfo(BEncoder &enc)
 void TorrentCreator::saveFile(BEncoder &enc, const TorrentFile &file)
 {
     enc.beginDict();
-    enc.write(QByteArrayLiteral("length"));
+    enc.write("length");
     enc.write(file.getSize());
-    enc.write(QByteArrayLiteral("path"));
+    enc.write("path");
     enc.beginList();
     const QStringList sl = file.getPath().split(bt::DirSeparator());
     for (const QString &s : sl) {

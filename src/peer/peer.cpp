@@ -391,14 +391,14 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
             return;
         }
 
-        BDictNode *mdict = dict->getDict(QByteArrayLiteral("m"));
+        BDictNode *mdict = dict->getDict("m");
         if (!mdict) {
             return;
         }
 
         BValueNode *val = nullptr;
 
-        if ((val = mdict->getValue(QByteArrayLiteral("ut_pex"))) && UTPex::isEnabled()) {
+        if ((val = mdict->getValue("ut_pex")) && UTPex::isEnabled()) {
             // ut_pex packet
             ut_pex_id = val->data().toInt();
             if (ut_pex_id == 0) {
@@ -413,7 +413,7 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
             }
         }
 
-        if ((val = mdict->getValue(QByteArrayLiteral("ut_metadata")))) {
+        if ((val = mdict->getValue("ut_metadata"))) {
             // meta data
             Uint32 ut_metadata_id = val->data().toInt();
             if (ut_metadata_id == 0) { // disabled by other side
@@ -424,8 +424,8 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
                     ext->changeID(ut_metadata_id);
                 } else {
                     int metadata_size = 0;
-                    if (dict->getValue(QByteArrayLiteral("metadata_size"))) {
-                        metadata_size = dict->getInt(QByteArrayLiteral("metadata_size"));
+                    if (dict->getValue("metadata_size")) {
+                        metadata_size = dict->getInt("metadata_size");
                     }
 
                     if (metadata_size > MAX_METADATA_SIZE) { // check for wrong metadata_size values
@@ -442,11 +442,11 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
             }
         }
 
-        if ((val = dict->getValue(QByteArrayLiteral("reqq")))) {
+        if ((val = dict->getValue("reqq"))) {
             stats.max_request_queue = val->data().toInt();
         }
 
-        if ((val = dict->getValue(QByteArrayLiteral("upload_only")))) {
+        if ((val = dict->getValue("upload_only"))) {
             stats.partial_seed = val->data().toInt() == 1;
         }
     } catch (...) {
@@ -664,27 +664,27 @@ void Peer::sendExtProtHandshake(Uint16 port, Uint32 metadata_size, bool partial_
     QByteArray arr;
     BEncoder enc(std::make_unique<BEncoderBufferOutput>(arr));
     enc.beginDict();
-    enc.write(QByteArrayLiteral("m"));
+    enc.write("m");
     // supported messages
     enc.beginDict();
-    enc.write(QByteArrayLiteral("ut_pex"));
+    enc.write("ut_pex");
     enc.write(pex_allowed ? UT_PEX_ID : 0);
-    enc.write(QByteArrayLiteral("ut_metadata"));
+    enc.write("ut_metadata");
     enc.write(UT_METADATA_ID);
     enc.end();
     if (port > 0) {
-        enc.write(QByteArrayLiteral("p"));
+        enc.write("p");
         enc.write((Uint32)port);
     }
-    enc.write(QByteArrayLiteral("reqq"));
+    enc.write("reqq");
     enc.write((bt::Uint32)250);
     if (metadata_size) {
-        enc.write(QByteArrayLiteral("metadata_size"));
+        enc.write("metadata_size");
         enc.write(metadata_size);
     }
 
-    enc.write(QByteArrayLiteral("upload_only"), partial_seed);
-    enc.write(QByteArrayLiteral("v"));
+    enc.write("upload_only", partial_seed);
+    enc.write("v");
     enc.write(bt::GetVersionString().toLatin1());
     enc.end();
     sendExtProtMsg(0, arr);

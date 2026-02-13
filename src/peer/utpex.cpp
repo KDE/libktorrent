@@ -144,15 +144,15 @@ void UTPex::encodePeers(BEncoder &enc,
 {
     if (!added.empty()) {
         // encode the whole lot
-        enc.write(ip_version == 4 ? QByteArrayLiteral("added") : QByteArrayLiteral("added6"));
+        enc.write(ip_version == 4 ? "added" : "added6");
         encode(enc, added, ip_version);
 
-        enc.write(ip_version == 4 ? QByteArrayLiteral("added.f") : QByteArrayLiteral("added6.f"));
+        enc.write(ip_version == 4 ? "added.f" : "added6.f");
         encodeFlags(enc, flags);
     }
 
     if (!dropped.empty()) {
-        enc.write(ip_version == 4 ? QByteArrayLiteral("dropped") : QByteArrayLiteral("dropped6"));
+        enc.write(ip_version == 4 ? "dropped" : "dropped6");
         encode(enc, dropped, ip_version);
     }
 }

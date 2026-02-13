@@ -53,18 +53,18 @@ void AnnounceReq::encode(QByteArray &arr) const
         enc.write(ARG);
         enc.beginDict();
         {
-            enc.write(QByteArrayLiteral("id"));
+            enc.write("id");
             enc.write(id);
-            enc.write(QByteArrayLiteral("info_hash"));
+            enc.write("info_hash");
             enc.write(info_hash);
-            enc.write(QByteArrayLiteral("port"));
+            enc.write("port");
             enc.write((Uint32)port);
-            enc.write(QByteArrayLiteral("token"));
+            enc.write("token");
             enc.write(token);
         }
         enc.end();
         enc.write(REQ);
-        enc.write(QByteArrayLiteral("announce_peer"));
+        enc.write("announce_peer");
         enc.write(TID);
         enc.write(mtid);
         enc.write(TYP);
