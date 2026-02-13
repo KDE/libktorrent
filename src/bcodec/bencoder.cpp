@@ -16,10 +16,10 @@ BEncoderFileOutput::BEncoderFileOutput(File *fptr)
 {
 }
 
-void BEncoderFileOutput::write(const char *str, Uint32 len)
+void BEncoderFileOutput::write(QByteArrayView str)
 {
     if (fptr) {
-        fptr->write(str, len);
+        fptr->write(str.data(), str.size());
     }
 }
 
@@ -33,9 +33,9 @@ BEncoderBufferOutput::BEncoderBufferOutput(QByteArray &data)
     data.resize(0);
 }
 
-void BEncoderBufferOutput::write(const char *str, Uint32 len)
+void BEncoderBufferOutput::write(QByteArrayView str)
 {
-    data.append(str, len);
+    data.append(str);
 }
 
 ////////////////////////////////////
@@ -45,9 +45,9 @@ BEncoderIODeviceOutput::BEncoderIODeviceOutput(QIODevice *dev)
 {
 }
 
-void BEncoderIODeviceOutput::write(const char *str, Uint32 len)
+void BEncoderIODeviceOutput::write(QByteArrayView str)
 {
-    dev->write(str, len);
+    dev->write(str.data(), str.size());
 }
 
 ////////////////////////////////////
@@ -77,7 +77,7 @@ void BEncoder::beginDict()
         return;
     }
 
-    out->write("d", 1);
+    out->write("d");
 }
 
 void BEncoder::beginList()
@@ -86,7 +86,7 @@ void BEncoder::beginList()
         return;
     }
 
-    out->write("l", 1);
+    out->write("l");
 }
 
 void BEncoder::write(bool val)
@@ -96,7 +96,7 @@ void BEncoder::write(bool val)
     }
 
     QByteArray s = QStringLiteral("i%1e").arg(val ? 1 : 0).toUtf8();
-    out->write(s.constData(), s.length());
+    out->write(s);
 }
 
 void BEncoder::write(float val)
@@ -115,7 +115,7 @@ void BEncoder::write(Uint32 val)
     }
 
     QByteArray s = QStringLiteral("i%1e").arg(val).toUtf8();
-    out->write(s.constData(), s.length());
+    out->write(s);
 }
 
 void BEncoder::write(Uint64 val)
@@ -125,7 +125,7 @@ void BEncoder::write(Uint64 val)
     }
 
     QByteArray s = QStringLiteral("i%1e").arg(val).toUtf8();
-    out->write(s.constData(), s.length());
+    out->write(s);
 }
 
 void BEncoder::write(const char *str)
@@ -135,7 +135,7 @@ void BEncoder::write(const char *str)
     }
 
     QByteArray s = QStringLiteral("%1:%2").arg(strlen(str)).arg(QString::fromUtf8(str)).toUtf8();
-    out->write(s.constData(), s.length());
+    out->write(s);
 }
 
 void BEncoder::write(const QByteArray &data)
@@ -145,9 +145,9 @@ void BEncoder::write(const QByteArray &data)
     }
 
     QByteArray s = QByteArray::number(data.size());
-    out->write(s.constData(), s.length());
-    out->write(":", 1);
-    out->write(data.constData(), data.size());
+    out->write(s);
+    out->write(":");
+    out->write(data);
 }
 
 void BEncoder::write(const Uint8 *data, Uint32 size)
@@ -157,9 +157,9 @@ void BEncoder::write(const Uint8 *data, Uint32 size)
     }
 
     QByteArray s = QByteArray::number(size);
-    out->write(s.constData(), s.length());
-    out->write(":", 1);
-    out->write((const char *)data, size);
+    out->write(s);
+    out->write(":");
+    out->write(QByteArrayView{data, size});
 }
 
 void BEncoder::end()
@@ -168,6 +168,6 @@ void BEncoder::end()
         return;
     }
 
-    out->write("e", 1);
+    out->write("e");
 }
 }

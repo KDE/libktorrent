@@ -30,9 +30,8 @@ public:
     /*!
      * Write a string of characters.
      * \param str The string
-     * \param len The length of the string
      */
-    virtual void write(const char *str, Uint32 len) = 0;
+    virtual void write(QByteArrayView str) = 0;
 };
 
 /*!
@@ -46,7 +45,7 @@ class KTORRENT_EXPORT BEncoderFileOutput : public BEncoderOutput
 public:
     BEncoderFileOutput(File *fptr);
 
-    void write(const char *str, Uint32 len) override;
+    void write(QByteArrayView str) override;
 };
 
 /*!
@@ -62,7 +61,7 @@ class KTORRENT_EXPORT BEncoderBufferOutput : public BEncoderOutput
 public:
     BEncoderBufferOutput(QByteArray &data);
 
-    void write(const char *str, Uint32 len) override;
+    void write(QByteArrayView str) override;
 };
 
 /*!
@@ -76,7 +75,7 @@ class KTORRENT_EXPORT BEncoderIODeviceOutput : public BEncoderOutput
 public:
     BEncoderIODeviceOutput(QIODevice *dev);
 
-    void write(const char *str, Uint32 len) override;
+    void write(QByteArrayView str) override;
 };
 
 /*!
