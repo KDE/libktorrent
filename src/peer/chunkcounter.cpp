@@ -11,8 +11,7 @@ namespace bt
 ChunkCounter::ChunkCounter(Uint32 num_chunks)
     : cnt(num_chunks)
 {
-    // fill with 0
-    cnt.fill(0);
+    std::fill(cnt.begin(), cnt.end(), 0);
 }
 
 ChunkCounter::~ChunkCounter()
@@ -21,7 +20,7 @@ ChunkCounter::~ChunkCounter()
 
 void ChunkCounter::reset()
 {
-    cnt.fill(0);
+    std::fill(cnt.begin(), cnt.end(), 0);
 }
 
 void ChunkCounter::incBitSet(const BitSet &bs)

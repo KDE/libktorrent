@@ -107,16 +107,6 @@ public:
     {
         return end();
     }
-
-    /*!
-     * Fill the array with a value
-     * \param val The value
-     */
-    void fill(T val)
-    {
-        for (Uint32 i = 0; i < m_num; i++)
-            m_data[i] = val;
-    }
 };
 
 }
