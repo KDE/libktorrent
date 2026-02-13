@@ -128,17 +128,7 @@ void BEncoder::write(Uint64 val)
     out->write(s);
 }
 
-void BEncoder::write(const char *str)
-{
-    if (!out) {
-        return;
-    }
-
-    QByteArray s = QStringLiteral("%1:%2").arg(strlen(str)).arg(QString::fromUtf8(str)).toUtf8();
-    out->write(s);
-}
-
-void BEncoder::write(const QByteArray &data)
+void BEncoder::write(QByteArrayView data)
 {
     if (!out) {
         return;
@@ -148,18 +138,6 @@ void BEncoder::write(const QByteArray &data)
     out->write(s);
     out->write(":");
     out->write(data);
-}
-
-void BEncoder::write(const Uint8 *data, Uint32 size)
-{
-    if (!out) {
-        return;
-    }
-
-    QByteArray s = QByteArray::number(size);
-    out->write(s);
-    out->write(":");
-    out->write(QByteArrayView{data, size});
 }
 
 void BEncoder::end()

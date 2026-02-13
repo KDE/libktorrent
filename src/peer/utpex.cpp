@@ -191,7 +191,7 @@ void UTPex::encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps, int 
         }
     }
 
-    enc.write(buf, size);
+    enc.write(QByteArrayView{buf, size});
     delete[] buf;
 }
 
@@ -211,7 +211,7 @@ void UTPex::encodeFlags(BEncoder &enc, const std::map<Uint32, Uint8> &flags)
         ++i;
     }
 
-    enc.write(buf, flags.size());
+    enc.write(QByteArrayView{buf, static_cast<qsizetype>(flags.size())});
     delete[] buf;
 }
 }

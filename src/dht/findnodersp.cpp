@@ -49,7 +49,7 @@ void FindNodeRsp::encode(QByteArray &arr) const
         enc.beginDict();
         {
             enc.write(QByteArrayLiteral("id"));
-            enc.write(id.getData(), 20);
+            enc.write(id);
             if (nodes.size() > 0) {
                 enc.write(QByteArrayLiteral("nodes"));
                 enc.write(nodes);

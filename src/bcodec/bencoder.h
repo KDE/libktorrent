@@ -152,26 +152,31 @@ public:
      */
     void write(Uint64 val);
 
-private:
     /*!
      * Write a string
-     * \param str
-     */
-    void write(const char *str);
-
-public:
-    /*!
-     * Write a QByteArray
      * \param data
      */
-    void write(const QByteArray &data);
+    void write(QByteArrayView data);
 
     /*!
-     * Write a data array
+     * \internal
+     * Write a string. This function exists because QByteArray is implicitly convertible to both bool and QByteArrayView.
      * \param data
-     * \param size of data
      */
-    void write(const Uint8 *data, Uint32 size);
+    void write(const QByteArray &data)
+    {
+        write(QByteArrayView{data});
+    }
+
+    /*!
+     * \internal
+     * Write a string. This function exists because char * is implicitly convertible to bool.
+     * \param data
+     */
+    void write(const char *data)
+    {
+        write(QByteArrayView{data});
+    }
 
     /*!
      * End a beginDict or beginList call.

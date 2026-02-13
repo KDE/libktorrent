@@ -54,14 +54,13 @@ void AnnounceReq::encode(QByteArray &arr) const
         enc.beginDict();
         {
             enc.write(QByteArrayLiteral("id"));
-            enc.write(id.getData(), 20);
+            enc.write(id);
             enc.write(QByteArrayLiteral("info_hash"));
-            enc.write(info_hash.getData(), 20);
+            enc.write(info_hash);
             enc.write(QByteArrayLiteral("port"));
             enc.write((Uint32)port);
-            // must cast data() to (const Uint8*) to call right write() overload
             enc.write(QByteArrayLiteral("token"));
-            enc.write((const Uint8 *)token.data(), token.size());
+            enc.write(token);
         }
         enc.end();
         enc.write(REQ);

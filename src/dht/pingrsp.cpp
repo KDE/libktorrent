@@ -47,7 +47,7 @@ void PingRsp::encode(QByteArray &arr) const
         enc.beginDict();
         {
             enc.write(QByteArrayLiteral("id"));
-            enc.write(id.getData(), 20);
+            enc.write(id);
         }
         enc.end();
         enc.write(TID);

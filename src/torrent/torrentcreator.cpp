@@ -225,7 +225,7 @@ void TorrentCreator::savePieces(BEncoder &enc)
     for (Uint32 i = 0; i < num_chunks; ++i) {
         memcpy(big_hash.data() + (20 * i), hashes[i].getData(), 20);
     }
-    enc.write(big_hash.data(), num_chunks * 20);
+    enc.write(big_hash);
 }
 
 bool TorrentCreator::calcHashSingle()

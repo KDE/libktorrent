@@ -58,7 +58,7 @@ void GetPeersRsp::encode(QByteArray &arr) const
         enc.beginDict();
         {
             enc.write(QByteArrayLiteral("id"));
-            enc.write(id.getData(), 20);
+            enc.write(id);
             if (nodes.size() > 0) {
                 enc.write(QByteArrayLiteral("nodes"));
                 enc.write(nodes);
@@ -69,9 +69,8 @@ void GetPeersRsp::encode(QByteArray &arr) const
                 enc.write(nodes6);
             }
 
-            // must cast data() to (const Uint8*) to call right write() overload
             enc.write(QByteArrayLiteral("token"));
-            enc.write((const Uint8 *)token.data(), token.size());
+            enc.write(token);
 
             if (items.size() > 0) {
                 enc.write(QByteArrayLiteral("values"));
@@ -79,9 +78,9 @@ void GetPeersRsp::encode(QByteArray &arr) const
                 DBItemList::const_iterator i = items.begin();
                 while (i != items.end()) {
                     const DBItem &item = *i;
-                    Uint8 tmp[18];
-                    Uint32 b = item.pack(tmp);
-                    enc.write(tmp, b);
+                    std::array<Uint8, 18> tmp;
+                    Uint32 b = item.pack(tmp.data());
+                    enc.write(QByteArrayView{tmp}.chopped(b));
                     ++i;
                 }
                 enc.end();

@@ -50,9 +50,9 @@ void GetPeersReq::encode(QByteArray &arr) const
         enc.beginDict();
         {
             enc.write(QByteArrayLiteral("id"));
-            enc.write(id.getData(), 20);
+            enc.write(id);
             enc.write(QByteArrayLiteral("info_hash"));
-            enc.write(info_hash.getData(), 20);
+            enc.write(info_hash);
         }
         enc.end();
         enc.write(REQ);

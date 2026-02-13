@@ -273,15 +273,15 @@ void KBucket::save(bt::BEncoder &enc)
         enc.write(QByteArrayLiteral("id"), e.getID().toByteArray());
         enc.write(QByteArrayLiteral("address"));
         if (e.getAddress().ipVersion() == 4) {
-            Uint8 tmp[6];
-            bt::WriteUint32(tmp, 0, e.getAddress().toIPv4Address());
-            bt::WriteUint16(tmp, 4, e.getAddress().port());
-            enc.write(tmp, 6);
+            std::array<Uint8, 6> tmp;
+            bt::WriteUint32(tmp.data(), 0, e.getAddress().toIPv4Address());
+            bt::WriteUint16(tmp.data(), 4, e.getAddress().port());
+            enc.write(tmp);
         } else {
-            Uint8 tmp[18];
-            memcpy(tmp, e.getAddress().toIPv6Address().c, 16);
-            bt::WriteUint16(tmp, 16, e.getAddress().port());
-            enc.write(tmp, 18);
+            std::array<Uint8, 18> tmp;
+            memcpy(tmp.data(), e.getAddress().toIPv6Address().c, 16);
+            bt::WriteUint16(tmp.data(), 16, e.getAddress().port());
+            enc.write(tmp);
         }
 
         enc.end();

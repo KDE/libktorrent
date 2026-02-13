@@ -50,9 +50,9 @@ void FindNodeReq::encode(QByteArray &arr) const
         enc.beginDict();
         {
             enc.write(QByteArrayLiteral("id"));
-            enc.write(id.getData(), 20);
+            enc.write(id);
             enc.write(QByteArrayLiteral("target"));
-            enc.write(target.getData(), 20);
+            enc.write(target);
         }
         enc.end();
         enc.write(REQ);
