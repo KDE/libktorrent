@@ -7,6 +7,8 @@
 #define BTARRAY_H
 
 #include "constants.h"
+#include <QByteArray>
+#include <QByteArrayView>
 #include <ktorrent_export.h>
 #include <memory>
 
@@ -71,11 +73,11 @@ public:
         return m_data[i];
     }
 
-    operator const T *() const
+    [[nodiscard]] const T *data() const
     {
         return m_data.get();
     }
-    operator T *()
+    [[nodiscard]] T *data()
     {
         return m_data.get();
     }
@@ -84,6 +86,26 @@ public:
     [[nodiscard]] Uint32 size() const
     {
         return m_num;
+    }
+
+    // Bare minimum required for conversion to std::span and QByteArrayView
+    using iterator = T *;
+    using const_iterator = const T *;
+    [[nodiscard]] iterator begin()
+    {
+        return m_data.get();
+    }
+    [[nodiscard]] iterator end()
+    {
+        return begin() + size();
+    }
+    [[nodiscard]] const_iterator begin() const
+    {
+        return begin();
+    }
+    [[nodiscard]] const_iterator end() const
+    {
+        return end();
     }
 
     /*!

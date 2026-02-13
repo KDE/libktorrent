@@ -217,9 +217,9 @@ void TorrentCreator::savePieces(BEncoder &enc)
 {
     Array<Uint8> big_hash(num_chunks * 20);
     for (Uint32 i = 0; i < num_chunks; ++i) {
-        memcpy(big_hash + (20 * i), hashes[i].getData(), 20);
+        memcpy(big_hash.data() + (20 * i), hashes[i].getData(), 20);
     }
-    enc.write(big_hash, num_chunks * 20);
+    enc.write(big_hash.data(), num_chunks * 20);
 }
 
 bool TorrentCreator::calcHashSingle()
@@ -231,8 +231,8 @@ bool TorrentCreator::calcHashSingle()
 
     Uint32 s = cur_chunk != num_chunks - 1 ? chunk_size : last_size;
     fptr.seek(File::BEGIN, (Int64)cur_chunk * chunk_size);
-    fptr.read(buf, s);
-    SHA1Hash h = SHA1Hash::generate(buf, s);
+    fptr.read(buf.data(), s);
+    SHA1Hash h = SHA1Hash::generate(buf.data(), s);
     hashes.append(h);
     cur_chunk++;
     return cur_chunk >= num_chunks;
@@ -282,12 +282,12 @@ bool TorrentCreator::calcHashMulti()
 
         // read part of data
         fptr.seek(File::BEGIN, (Int64)off);
-        fptr.read(buf + read, to_read);
+        fptr.read(buf.data() + read, to_read);
         read += to_read;
     }
 
     // generate hash
-    SHA1Hash h = SHA1Hash::generate(buf, s);
+    SHA1Hash h = SHA1Hash::generate(buf.data(), s);
     hashes.append(h);
 
     cur_chunk++;

@@ -54,7 +54,7 @@ public:
     //! Get a pointer to the data
     bt::Uint8 *get()
     {
-        return data;
+        return data.data();
     }
 
 private:

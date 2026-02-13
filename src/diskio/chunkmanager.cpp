@@ -452,7 +452,7 @@ void ChunkManager::Private::loadPriorityInfo()
     }
 
     Array<Uint32> buf(num);
-    if (fptr.read(buf, sizeof(Uint32) * num) != sizeof(Uint32) * num) {
+    if (fptr.read(buf.data(), sizeof(Uint32) * num) != sizeof(Uint32) * num) {
         Out(SYS_DIO | LOG_IMPORTANT) << "Warning : error reading chunk_info file" << endl;
         loadFileInfo();
         return;
