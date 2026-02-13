@@ -157,6 +157,14 @@ public:
      * Convert the hash to a byte array.
      */
     [[nodiscard]] QByteArray toByteArray() const;
+
+    /*!
+     * Construct a view over the hash data.
+     */
+    [[nodiscard]] operator QByteArrayView() const
+    {
+        return QByteArrayView{reinterpret_cast<const char *>(hash), 20};
+    }
 };
 
 }

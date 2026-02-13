@@ -108,6 +108,6 @@ bool operator<(const SHA1Hash &a, const SHA1Hash &b)
 
 size_t qHash(const SHA1Hash &key, size_t seed = 0) noexcept
 {
-    return qHash(key.toByteArray(), seed);
+    return qHash(QByteArrayView{key}, seed);
 }
 }
