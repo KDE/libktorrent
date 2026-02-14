@@ -183,8 +183,8 @@ void SingleFileCache::savePiece(PieceData::Ptr piece)
 
 void SingleFileCache::create()
 {
-    // check for a to long path name
-    if (FileNameToLong(output_file))
+    // check for a too long path name
+    if (FileNameTooLong(output_file))
         output_file = ShortenFileName(output_file);
 
     if (!bt::Exists(output_file)) {

@@ -419,7 +419,7 @@ bool FreeDiskSpace(const QString &path, Uint64 &bytes_free)
 #endif
 }
 
-bool FileNameToLong(const QString &path)
+bool FileNameTooLong(const QString &path)
 {
     int length = 0;
     const QStringList names = path.split(QLatin1Char('/'));

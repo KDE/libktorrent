@@ -305,8 +305,8 @@ void MultiFileCache::create()
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
         TorrentFile &tf = tor.getFile(i);
 #ifndef Q_OS_WIN
-        // check if the filename is to long
-        if (FileNameToLong(tf.getPathOnDisk())) {
+        // check if the filename is too long
+        if (FileNameTooLong(tf.getPathOnDisk())) {
             QString s = ShortenFileName(tf.getPathOnDisk());
             Out(SYS_DIO | LOG_DEBUG) << "Path to long " << tf.getPathOnDisk() << endl;
             // make sure there are no dupes

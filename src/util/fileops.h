@@ -155,8 +155,8 @@ KTORRENT_EXPORT void SeekFile(int fd, Int64 off, int whence);
 //! Calculate the number of bytes free on the filesystem path is located
 KTORRENT_EXPORT bool FreeDiskSpace(const QString &path, Uint64 &bytes_free);
 
-//! Check if a filename is to long
-KTORRENT_EXPORT bool FileNameToLong(const QString &path);
+//! Check if a filename is too long
+KTORRENT_EXPORT bool FileNameTooLong(const QString &path);
 
 /*!
  * Shorten a filename
