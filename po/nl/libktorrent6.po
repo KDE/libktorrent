@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-13 00:43+0000\n"
+"POT-Creation-Date: 2026-02-14 00:43+0000\n"
 "PO-Revision-Date: 2013-04-09 17:20+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: Dutch <kde-i18n-nl@kde.org>\n"
@@ -33,17 +33,18 @@ msgstr "Ongeldig token: %1"
 msgid "Decode error"
 msgstr "Decodeerfout"
 
-#: src/bcodec/bdecoder.cpp:139 src/bcodec/bdecoder.cpp:177
+#: src/bcodec/bdecoder.cpp:99 src/bcodec/bdecoder.cpp:124
+#: src/bcodec/bdecoder.cpp:147 src/bcodec/bdecoder.cpp:185
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Onverwacht einde van invoer"
 
-#: src/bcodec/bdecoder.cpp:156 src/bcodec/bdecoder.cpp:196
+#: src/bcodec/bdecoder.cpp:164 src/bcodec/bdecoder.cpp:204
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "Kan %1 niet converteren naar een integer"
 
-#: src/bcodec/bdecoder.cpp:201
+#: src/bcodec/bdecoder.cpp:209
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Torrent is incompleet."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-13 00:43+0000\n"
+"POT-Creation-Date: 2026-02-14 00:43+0000\n"
 "PO-Revision-Date: 2014-06-05 17:38+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -29,17 +29,18 @@ msgstr "Leeg Beteker: %1"
 msgid "Decode error"
 msgstr "Dekodeer-Fehler"
 
-#: src/bcodec/bdecoder.cpp:139 src/bcodec/bdecoder.cpp:177
+#: src/bcodec/bdecoder.cpp:99 src/bcodec/bdecoder.cpp:124
+#: src/bcodec/bdecoder.cpp:147 src/bcodec/bdecoder.cpp:185
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Nich verwacht Ingaav-Enn"
 
-#: src/bcodec/bdecoder.cpp:156 src/bcodec/bdecoder.cpp:196
+#: src/bcodec/bdecoder.cpp:164 src/bcodec/bdecoder.cpp:204
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "\"%1\" lett sik nich na en Heeltall ümwanneln"
 
-#: src/bcodec/bdecoder.cpp:201
+#: src/bcodec/bdecoder.cpp:209
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Torrent is nich komplett."

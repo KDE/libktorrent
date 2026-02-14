@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-13 00:43+0000\n"
+"POT-Creation-Date: 2026-02-14 00:43+0000\n"
 "PO-Revision-Date: 2025-01-19 12:20+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -36,17 +36,18 @@ msgstr "Elemento inaceptábel: %1"
 msgid "Decode error"
 msgstr "Erro de descodificación"
 
-#: src/bcodec/bdecoder.cpp:139 src/bcodec/bdecoder.cpp:177
+#: src/bcodec/bdecoder.cpp:99 src/bcodec/bdecoder.cpp:124
+#: src/bcodec/bdecoder.cpp:147 src/bcodec/bdecoder.cpp:185
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Fin de datos inesperado"
 
-#: src/bcodec/bdecoder.cpp:156 src/bcodec/bdecoder.cpp:196
+#: src/bcodec/bdecoder.cpp:164 src/bcodec/bdecoder.cpp:204
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "Non foi posíbel converter %1 nun enteiro"
 
-#: src/bcodec/bdecoder.cpp:201
+#: src/bcodec/bdecoder.cpp:209
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "O torrent está incompleto."

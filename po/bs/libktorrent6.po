@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-13 00:43+0000\n"
+"POT-Creation-Date: 2026-02-14 00:43+0000\n"
 "PO-Revision-Date: 2015-02-04 15:43+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: bosanski <bs@li.org>\n"
@@ -34,17 +34,18 @@ msgstr "Nedozvoljen token: %1"
 msgid "Decode error"
 msgstr "Greška dekodiranja"
 
-#: src/bcodec/bdecoder.cpp:139 src/bcodec/bdecoder.cpp:177
+#: src/bcodec/bdecoder.cpp:99 src/bcodec/bdecoder.cpp:124
+#: src/bcodec/bdecoder.cpp:147 src/bcodec/bdecoder.cpp:185
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Neočekivan kraj ulaza"
 
-#: src/bcodec/bdecoder.cpp:156 src/bcodec/bdecoder.cpp:196
+#: src/bcodec/bdecoder.cpp:164 src/bcodec/bdecoder.cpp:204
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "Ne mogu da pretvorim %1 u cio broj"
 
-#: src/bcodec/bdecoder.cpp:201
+#: src/bcodec/bdecoder.cpp:209
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Torent nije završen."

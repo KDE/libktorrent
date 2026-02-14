@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-network-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-13 00:43+0000\n"
+"POT-Creation-Date: 2026-02-14 00:43+0000\n"
 "PO-Revision-Date: 2024-03-16 14:01+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -37,17 +37,18 @@ msgstr "Geçersiz anahtar: %1"
 msgid "Decode error"
 msgstr "Kod çözme hatası"
 
-#: src/bcodec/bdecoder.cpp:139 src/bcodec/bdecoder.cpp:177
+#: src/bcodec/bdecoder.cpp:99 src/bcodec/bdecoder.cpp:124
+#: src/bcodec/bdecoder.cpp:147 src/bcodec/bdecoder.cpp:185
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Beklenmeyen girdi sonu"
 
-#: src/bcodec/bdecoder.cpp:156 src/bcodec/bdecoder.cpp:196
+#: src/bcodec/bdecoder.cpp:164 src/bcodec/bdecoder.cpp:204
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "%1 bir tamsayıya dönüştürülemiyor"
 
-#: src/bcodec/bdecoder.cpp:201
+#: src/bcodec/bdecoder.cpp:209
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Torrent tamamlanmamış."
