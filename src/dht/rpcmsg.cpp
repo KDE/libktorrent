@@ -38,7 +38,7 @@ void RPCMsg::parse(bt::BDictNode *dict)
         throw bt::Error(u"Invalid DHT transaction ID"_s);
     }
 
-    const auto t = dict->getByteArray(TYP);
+    const auto t = dict->getByteArrayView(TYP);
     if (t == REQ) {
         type = REQ_MSG;
         BDictNode *args = dict->getDict(ARG);
@@ -46,7 +46,7 @@ void RPCMsg::parse(bt::BDictNode *dict)
             return;
         }
 
-        id = Key(args->getByteArray("id"));
+        id = Key(args->getByteArrayView("id"));
     } else if (t == RSP) {
         type = RSP_MSG;
         BDictNode *args = dict->getDict(RSP);
@@ -54,7 +54,7 @@ void RPCMsg::parse(bt::BDictNode *dict)
             return;
         }
 
-        id = Key(args->getByteArray("id"));
+        id = Key(args->getByteArrayView("id"));
     } else if (t == ERR_DHT) {
         type = ERR_MSG;
     } else {

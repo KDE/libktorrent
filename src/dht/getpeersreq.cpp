@@ -68,7 +68,7 @@ void GetPeersReq::parse(BDictNode *dict)
         throw bt::Error(u"Invalid request, arguments missing"_s);
     }
 
-    info_hash = Key(args->getByteArray("info_hash"));
+    info_hash = Key(args->getByteArrayView("info_hash"));
     BListNode *ln = args->getList("want");
     if (ln) {
         for (bt::Uint32 i = 0; i < ln->getNumChildren(); i++) {

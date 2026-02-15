@@ -41,7 +41,7 @@ std::unique_ptr<RPCMsg> RPCMsgFactory::buildRequest(BDictNode *dict)
     }
 
     std::unique_ptr<RPCMsg> msg;
-    const auto str = dict->getByteArray(REQ);
+    const auto str = dict->getByteArrayView(REQ);
     if (str == "ping") {
         msg = std::make_unique<PingReq>();
         msg->parse(dict);
@@ -110,7 +110,7 @@ std::unique_ptr<RPCMsg> RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMe
 
 std::unique_ptr<RPCMsg> RPCMsgFactory::build(bt::BDictNode *dict, RPCMethodResolver *method_resolver)
 {
-    const auto t = dict->getByteArray(TYP);
+    const auto t = dict->getByteArrayView(TYP);
     if (t == REQ) {
         return buildRequest(dict);
     } else if (t == RSP) {

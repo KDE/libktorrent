@@ -293,8 +293,8 @@ void KBucket::save(bt::BEncoder &enc)
 
 void KBucket::load(bt::BDictNode *dict)
 {
-    min_key = dht::Key(dict->getByteArray("min"));
-    max_key = dht::Key(dict->getByteArray("max"));
+    min_key = dht::Key(dict->getByteArrayView("min"));
+    max_key = dht::Key(dict->getByteArrayView("max"));
     BListNode *entry_list = dict->getList("entries");
     if (!entry_list || entry_list->getNumChildren() == 0) {
         return;
@@ -306,8 +306,8 @@ void KBucket::load(bt::BDictNode *dict)
             continue;
         }
 
-        const Key id = Key(entry->getByteArray("id"));
-        QByteArray addr = entry->getByteArray("address");
+        const Key id = Key(entry->getByteArrayView("id"));
+        const auto addr = entry->getByteArrayView("address");
         if (addr.size() == 6) {
             entries.append(KBucketEntry(net::Address(bt::ReadUint32((const Uint8 *)addr.data(), 0), bt::ReadUint16((const Uint8 *)addr.data(), 4)), id));
         } else {

@@ -74,8 +74,8 @@ void AnnounceReq::parse(BDictNode *dict)
         throw bt::Error(u"Invalid request, arguments missing"_s);
     }
 
-    info_hash = Key(args->getByteArray("info_hash"));
+    info_hash = Key(args->getByteArrayView("info_hash"));
     port = args->getInt("port");
-    token = args->getByteArray("token").left(MAX_TOKEN_SIZE);
+    token = args->getByteArrayView("token").left(MAX_TOKEN_SIZE).toByteArray();
 }
 }

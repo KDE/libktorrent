@@ -97,7 +97,7 @@ void GetPeersRsp::parse(BDictNode *dict)
         throw bt::Error(u"Invalid response, arguments missing"_s);
     }
 
-    token = args->getByteArray("token").left(MAX_TOKEN_SIZE);
+    token = args->getByteArrayView("token").left(MAX_TOKEN_SIZE).toByteArray();
 
     BListNode *vals = args->getList("values");
     if (vals) {

@@ -68,7 +68,7 @@ void FindNodeReq::parse(BDictNode *dict)
         throw bt::Error(u"Invalid request, arguments missing"_s);
     }
 
-    target = Key(args->getByteArray("target"));
+    target = Key(args->getByteArrayView("target"));
     BListNode *ln = args->getList("want");
     if (ln) {
         for (bt::Uint32 i = 0; i < ln->getNumChildren(); i++) {
