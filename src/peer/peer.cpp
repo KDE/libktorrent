@@ -813,9 +813,7 @@ bool Peer::sendChunk(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch)
         Out(SYS_CON | LOG_NOTICE) << "\tPiece : begin = " << begin << " len = " << len << endl;
         return false;
     }
-    if (sock->numPendingPieceUploads() >= MAX_PENDING_UPLOAD_BLOCKS ||
-        sock->numPendingPieceUploadBytes() + 13 + len > MAX_PENDING_UPLOAD_BYTES)
-    {
+    if (sock->numPendingPieceUploads() >= MAX_PENDING_UPLOAD_BLOCKS || sock->numPendingPieceUploadBytes() + 13 + len > MAX_PENDING_UPLOAD_BYTES) {
         Out(SYS_CON | LOG_NOTICE) << "Warning : rejecting piece request due to limit on pending uploads" << endl;
         return false;
     }

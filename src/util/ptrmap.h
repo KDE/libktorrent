@@ -18,7 +18,8 @@ namespace bt
  * When autodelete is on, every time we remove something from the map, the data
  * will be deleted.
  */
-template<class Key, class Data> class PtrMap
+template<class Key, class Data>
+class PtrMap
 {
     bool autodel;
     std::map<Key, Data *> pmap;

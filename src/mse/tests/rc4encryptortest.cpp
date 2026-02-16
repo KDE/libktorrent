@@ -9,11 +9,11 @@
 #include <QTest>
 
 #include <cstring>
-#include <iostream>
 #include <dht/key.h>
+#include <iostream>
 #include <mse/rc4encryptor.h>
-#include <util/functions.h>
 #include <util/error.h>
+#include <util/functions.h>
 
 class RC4EncryptorTest : public QObject
 {

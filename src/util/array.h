@@ -19,7 +19,8 @@ namespace bt
  *
  * \brief Fixed capacity dynamically allocated buffer.
  */
-template<class T> class KTORRENT_EXPORT Array
+template<class T>
+class KTORRENT_EXPORT Array
 {
     Uint32 m_num;
     std::unique_ptr<T[]> m_data;

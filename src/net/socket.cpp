@@ -133,7 +133,8 @@ void Socket::configureFd()
 #endif
         if (err < 0) {
             err = errno;
-            Out(SYS_GEN | LOG_IMPORTANT) << QStringLiteral("Failed to set dual-stack option for IPv6 socket : %1").arg(QString::fromUtf8(strerror(err))) << endl;
+            Out(SYS_GEN | LOG_IMPORTANT) << QStringLiteral("Failed to set dual-stack option for IPv6 socket : %1").arg(QString::fromUtf8(strerror(err)))
+                                         << endl;
         } else {
             dualstack = true;
         }
@@ -371,8 +372,7 @@ bool Socket::setTOS(unsigned char type_of_service)
 #endif
         {
             const int err = errno;
-            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Failed to set TOS to %1 : %2").arg((int)type_of_service).arg(QString::fromUtf8(strerror(err)))
-                                      << endl;
+            Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Failed to set TOS to %1 : %2").arg((int)type_of_service).arg(QString::fromUtf8(strerror(err))) << endl;
             return false;
         }
     } else {

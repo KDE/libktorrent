@@ -4,20 +4,21 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include "rc4encryptor.h"
+
 #if defined(LIBKTORRENT_USE_OPENSSL)
-#include <openssl/types.h>
-#include <openssl/params.h>
-#include <openssl/core_names.h>
-#include <openssl/evp.h>
 #include <climits>
 #include <memory>
+#include <openssl/core_names.h>
+#include <openssl/evp.h>
+#include <openssl/params.h>
+#include <openssl/types.h>
 #elif defined(LIBKTORRENT_USE_LIBGCRYPT)
 #include <gcrypt.h>
 #endif
 #include <QString>
-#include "rc4encryptor.h"
-#include <util/functions.h>
 #include <util/error.h>
+#include <util/functions.h>
 #include <util/log.h>
 
 using namespace bt;
@@ -45,23 +46,18 @@ RC4Encryptor::RC4Encryptor(const bt::SHA1Hash &dk, const bt::SHA1Hash &ek)
         throw bt::Error(QStringLiteral("RC4 cipher not available: ") + getLastOpenSSLErrorString());
 
     unsigned int key_len = 20;
-    OSSL_PARAM params[2] = {
-        OSSL_PARAM_construct_uint(OSSL_CIPHER_PARAM_KEYLEN, &key_len),
-        OSSL_PARAM_construct_end()
-    };
+    OSSL_PARAM params[2] = {OSSL_PARAM_construct_uint(OSSL_CIPHER_PARAM_KEYLEN, &key_len), OSSL_PARAM_construct_end()};
 
     // The first EVP_EncryptInit_ex2 call sets params *after* initializing the key,
     // so in order to first set the key length we have to call the init twice.
     enc.reset(EVP_CIPHER_CTX_new());
-    if (!enc ||
-        !EVP_EncryptInit_ex2(enc.get(), cipher.get(), nullptr, nullptr, params) ||
-        !EVP_EncryptInit_ex2(enc.get(), nullptr, ek.getData(), nullptr, nullptr))
+    if (!enc || !EVP_EncryptInit_ex2(enc.get(), cipher.get(), nullptr, nullptr, params)
+        || !EVP_EncryptInit_ex2(enc.get(), nullptr, ek.getData(), nullptr, nullptr))
         throw bt::Error(QStringLiteral("Failed to initialize RC4 encryption context: ") + getLastOpenSSLErrorString());
 
     dec.reset(EVP_CIPHER_CTX_new());
-    if (!dec ||
-        !EVP_DecryptInit_ex2(dec.get(), cipher.get(), nullptr, nullptr, params) ||
-        !EVP_DecryptInit_ex2(dec.get(), nullptr, dk.getData(), nullptr, nullptr))
+    if (!dec || !EVP_DecryptInit_ex2(dec.get(), cipher.get(), nullptr, nullptr, params)
+        || !EVP_DecryptInit_ex2(dec.get(), nullptr, dk.getData(), nullptr, nullptr))
         throw bt::Error(QStringLiteral("Failed to initialize RC4 decryption context: ") + getLastOpenSSLErrorString());
 
     Uint8 tmp[1024];

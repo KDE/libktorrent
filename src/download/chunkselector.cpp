@@ -80,7 +80,7 @@ void ChunkSelector::init(ChunkManager *cman, Downloader *downer, PeerManager *pm
             tmp.push_back(i);
         }
     }
-    std::shuffle(tmp.begin(),tmp.end(), g);
+    std::shuffle(tmp.begin(), tmp.end(), g);
     // std::list does not support random_shuffle so we use a vector as a temporary storage
     // for the random_shuffle
     chunks.insert(chunks.begin(), tmp.begin(), tmp.end());
@@ -161,9 +161,7 @@ bool ChunkSelector::select(PieceDownloader *pd, Uint32 &chunk)
             if (dl < sel_dl) {
                 const Uint32 max_peers_per_chunk = c->isPreview() ? 3 : 2;
                 ChunkDownload *cd;
-                if (dl < max_peers_per_chunk || downer->endgameMode() ||
-                        ((cd = downer->download(i)) && cd->getDownloadSpeed() < 100))
-                {
+                if (dl < max_peers_per_chunk || downer->endgameMode() || ((cd = downer->download(i)) && cd->getDownloadSpeed() < 100)) {
                     sel = i;
                     sel_dl = dl;
                     sel_prio = c->getPriority();

@@ -9,7 +9,7 @@
 #include <torrent/globals.h>
 #include <util/constants.h>
 #include <util/log.h>
-//#include "settings.h"
+// #include "settings.h"
 
 namespace bt
 {

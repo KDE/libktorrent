@@ -7,8 +7,8 @@
 #define MSERC4ENCRYPTOR_H
 
 #if defined(LIBKTORRENT_USE_OPENSSL)
-#include <openssl/types.h>
 #include <memory>
+#include <openssl/types.h>
 #elif defined(LIBKTORRENT_USE_LIBGCRYPT)
 #include <gcrypt.h>
 #endif
@@ -60,13 +60,11 @@ public:
 
 private:
 #if defined(LIBKTORRENT_USE_OPENSSL)
-    struct EVP_CIPHERDeleter
-    {
+    struct EVP_CIPHERDeleter {
         void operator()(EVP_CIPHER *cipher) const noexcept;
     };
 
-    struct EVP_CIPHER_CTXDeleter
-    {
+    struct EVP_CIPHER_CTXDeleter {
         void operator()(EVP_CIPHER_CTX *ctx) const noexcept;
     };
 

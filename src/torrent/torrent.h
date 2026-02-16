@@ -8,10 +8,10 @@
 #define BTTORRENT_H
 
 #include "torrentfile.h"
-#include <climits>
 #include <QList>
 #include <QUrl>
 #include <QVarLengthArray>
+#include <climits>
 #include <interfaces/torrentinterface.h>
 #include <ktorrent_export.h>
 #include <peer/peerid.h>

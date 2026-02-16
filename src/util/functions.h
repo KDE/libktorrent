@@ -155,7 +155,8 @@ KTORRENT_EXPORT QString BytesToString(bt::Uint64 bytes);
 KTORRENT_EXPORT QString BytesPerSecToString(double speed);
 KTORRENT_EXPORT QString DurationToString(bt::Uint32 nsecs);
 
-template<class T> int CompareVal(T a, T b)
+template<class T>
+int CompareVal(T a, T b)
 {
     if (a < b)
         return -1;
@@ -165,7 +166,8 @@ template<class T> int CompareVal(T a, T b)
         return 0;
 }
 
-template<class T> QString hex(T val)
+template<class T>
+QString hex(T val)
 {
     return QStringLiteral("0x%1").arg(val, 0, 16);
 }

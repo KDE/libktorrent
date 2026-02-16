@@ -14,12 +14,12 @@
 #include <bcodec/bnode.h>
 #include <cstdlib>
 #include <ctime>
-#include <utility>
 #include <interfaces/monitorinterface.h>
 #include <util/error.h>
 #include <util/functions.h>
 #include <util/log.h>
 #include <util/sha1hashgen.h>
+#include <utility>
 
 #include <KLocalizedString>
 

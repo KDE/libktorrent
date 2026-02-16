@@ -110,7 +110,8 @@ public:
      * \param val The value
      * \return This Log
      */
-    template<class T> Log &operator<<(T val)
+    template<class T>
+    Log &operator<<(T val)
     {
         return operator<<(QString::number(val));
     }

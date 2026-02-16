@@ -11,12 +11,12 @@
 #include <QSet>
 #include <QString>
 #include <QStringList>
-#include <utility>
-#include <type_traits>
 #include <diskio/piecedata.h>
 #include <ktorrent_export.h>
 #include <torrent/torrent.h>
+#include <type_traits>
 #include <util/constants.h>
+#include <utility>
 
 namespace bt
 {
@@ -131,7 +131,7 @@ public:
     virtual void open() = 0;
 
     //! Does nothing, can be overridden to be alerted of download status changes of a TorrentFile
-    virtual void downloadStatusChanged(TorrentFile *, bool){};
+    virtual void downloadStatusChanged(TorrentFile *, bool) { };
 
     /*!
      * Prepare disksapce preallocation
@@ -259,11 +259,9 @@ protected:
     Uint32 mmap_failures;
 
     //! Information about a piece data object
-    struct PieceDataInfo
-    {
+    struct PieceDataInfo {
         //! Ordering predicate by key
-        struct OrderByKey
-        {
+        struct OrderByKey {
             using is_transparent = void;
 
             bool operator()(const PieceDataInfo &left, const PieceDataInfo &right) const noexcept
@@ -285,11 +283,23 @@ protected:
         //! Lookup key that is comprised from the piece data offset and length
         Uint64 key;
 
-        PieceDataInfo() : piece_data(), key(0) {}
+        PieceDataInfo()
+            : piece_data()
+            , key(0)
+        {
+        }
         template<typename Ptr, typename = typename std::enable_if<std::is_constructible<PieceData::Ptr, Ptr &&>::value>::type>
-        explicit PieceDataInfo(Ptr &&p) : piece_data(std::forward<Ptr>(p)), key(makeKey(piece_data->offset(), piece_data->length())) {}
+        explicit PieceDataInfo(Ptr &&p)
+            : piece_data(std::forward<Ptr>(p))
+            , key(makeKey(piece_data->offset(), piece_data->length()))
+        {
+        }
         template<typename Ptr, typename = typename std::enable_if<std::is_constructible<PieceData::Ptr, Ptr &&>::value>::type>
-        PieceDataInfo(Ptr &&p, Uint64 k) : piece_data(std::forward<Ptr>(p)), key(k) {}
+        PieceDataInfo(Ptr &&p, Uint64 k)
+            : piece_data(std::forward<Ptr>(p))
+            , key(k)
+        {
+        }
 
         //! Creates a key value from piece offset and length
         static Uint64 makeKey(Uint32 off, Uint32 len) noexcept

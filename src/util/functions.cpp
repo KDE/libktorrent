@@ -8,10 +8,10 @@
 
 #include <cerrno>
 #if defined(LIBKTORRENT_USE_OPENSSL)
-#include <openssl/types.h>
-#include <openssl/provider.h>
-#include <openssl/err.h>
 #include <memory>
+#include <openssl/err.h>
+#include <openssl/provider.h>
+#include <openssl/types.h>
 #elif defined(LIBKTORRENT_USE_LIBGCRYPT)
 #include <gcrypt.h>
 #endif

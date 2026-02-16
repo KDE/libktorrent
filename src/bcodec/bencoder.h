@@ -116,7 +116,8 @@ public:
      */
     void beginList();
 
-    template<class T> void write(const QByteArray &key, T val)
+    template<class T>
+    void write(const QByteArray &key, T val)
     {
         write(key);
         write(val);

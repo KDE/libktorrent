@@ -6,11 +6,11 @@
 #ifndef BTPACKET_H
 #define BTPACKET_H
 
-#include <cstddef>
-#include <new>
 #include <boost/align/align_up.hpp>
 #include <boost/smart_ptr/intrusive_ptr.hpp>
 #include <boost/smart_ptr/intrusive_ref_counter.hpp>
+#include <cstddef>
+#include <new>
 #include <util/constants.h>
 
 namespace net
@@ -30,8 +30,7 @@ class Peer;
  *
  * \brief Packet of data, which gets sent to a Peer.
  */
-class Packet :
-    public boost::intrusive_ref_counter<Packet>
+class Packet : public boost::intrusive_ref_counter<Packet>
 {
 public:
     using Ptr = boost::intrusive_ptr<Packet>;
@@ -54,7 +53,7 @@ private:
 
 public:
     Packet(const Packet &) = delete;
-    Packet &operator= (const Packet &) = delete;
+    Packet &operator=(const Packet &) = delete;
 
     //! Memory release function
     static void operator delete(void *p) noexcept

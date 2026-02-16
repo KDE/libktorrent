@@ -5,11 +5,11 @@
 */
 #include "packetreader.h"
 #include "peer.h"
-#include <utility>
 #include <QtAlgorithms>
 #include <util/file.h>
 #include <util/functions.h>
 #include <util/log.h>
+#include <utility>
 
 namespace bt
 {

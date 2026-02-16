@@ -7,13 +7,13 @@
 #define BTPACKETREADER_H
 
 #include <QMutex>
-#include <cstddef>
-#include <new>
-#include <deque>
-#include <memory>
 #include <boost/align/align_up.hpp>
+#include <cstddef>
+#include <deque>
 #include <ktorrent_export.h>
+#include <memory>
 #include <net/trafficshapedsocket.h>
+#include <new>
 
 namespace bt
 {

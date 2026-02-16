@@ -105,9 +105,7 @@ public:
     //! Is chunk part of a multimedia preview
     [[nodiscard]] bool isPreview() const
     {
-        return priority == FIRST_PREVIEW_PRIORITY ||
-                priority == NORMAL_PREVIEW_PRIORITY ||
-                priority == LAST_PREVIEW_PRIORITY;
+        return priority == FIRST_PREVIEW_PRIORITY || priority == NORMAL_PREVIEW_PRIORITY || priority == LAST_PREVIEW_PRIORITY;
     }
 
     //! Is chunk excluded

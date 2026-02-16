@@ -7,9 +7,8 @@
 #include "cachefile.h"
 #include "chunk.h"
 #include "piecedata.h"
-#include <utility>
-#include <algorithm>
 #include <KLocalizedString>
+#include <algorithm>
 #include <peer/connectionlimit.h>
 #include <peer/peermanager.h>
 #include <torrent/job.h>
@@ -18,6 +17,7 @@
 #include <util/fileops.h>
 #include <util/functions.h>
 #include <util/log.h>
+#include <utility>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -122,7 +122,9 @@ void Cache::clearPieceCache()
     PieceCache::iterator i = piece_cache.begin();
     while (i != piece_cache.end()) {
         PieceDataInfoList &info_list = i.value();
-        auto j = std::remove_if(info_list.begin(), info_list.end(), [](const PieceDataInfo &info) { return !info.piece_data->inUse(); });
+        auto j = std::remove_if(info_list.begin(), info_list.end(), [](const PieceDataInfo &info) {
+            return !info.piece_data->inUse();
+        });
         info_list.erase(j, info_list.end());
 
         if (info_list.isEmpty())
@@ -139,8 +141,7 @@ void Cache::checkMemoryUsage()
     PieceCache::iterator i = piece_cache.begin();
     while (i != piece_cache.end()) {
         PieceDataInfoList &info_list = i.value();
-        auto j = std::remove_if(info_list.begin(), info_list.end(), [&](const PieceDataInfo &info)
-        {
+        auto j = std::remove_if(info_list.begin(), info_list.end(), [&](const PieceDataInfo &info) {
             Uint32 len = info.piece_data->length();
             if (!info.piece_data->inUse()) {
                 freed += len;
