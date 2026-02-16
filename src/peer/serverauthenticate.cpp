@@ -33,8 +33,9 @@ void ServerAuthenticate::onFinish(bool succes)
     finished = true;
     setFirewalled(false);
 
-    if (!succes)
+    if (!succes) {
         sock.reset();
+    }
 
     timer.stop();
 }

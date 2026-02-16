@@ -34,12 +34,13 @@ BValueNode::~BValueNode()
 
 void BValueNode::printDebugInfo()
 {
-    if (value.getType() == Value::STRING)
+    if (value.getType() == Value::STRING) {
         Out(SYS_GEN | LOG_DEBUG) << "Value = " << value.toString() << endl;
-    else if (value.getType() == Value::INT)
+    } else if (value.getType() == Value::INT) {
         Out(SYS_GEN | LOG_DEBUG) << "Value = " << value.toInt() << endl;
-    else if (value.getType() == Value::INT64)
+    } else if (value.getType() == Value::INT64) {
         Out(SYS_GEN | LOG_DEBUG) << "Value = " << value.toInt64() << endl;
+    }
 }
 
 ////////////////////////////////////////////////
@@ -97,11 +98,13 @@ BValueNode *BDictNode::getValue(const QByteArray &key)
 int BDictNode::getInt(const QByteArray &key)
 {
     const BValueNode *v = getValue(key);
-    if (!v)
+    if (!v) {
         throw bt::Error(QStringLiteral("Key not found in dict"));
+    }
 
-    if (v->data().getType() != bt::Value::INT)
+    if (v->data().getType() != bt::Value::INT) {
         throw bt::Error(QStringLiteral("Incompatible type"));
+    }
 
     return v->data().toInt();
 }
@@ -109,11 +112,13 @@ int BDictNode::getInt(const QByteArray &key)
 qint64 BDictNode::getInt64(const QByteArray &key)
 {
     const BValueNode *v = getValue(key);
-    if (!v)
+    if (!v) {
         throw bt::Error(QStringLiteral("Key not found in dict"));
+    }
 
-    if (v->data().getType() != bt::Value::INT64 && v->data().getType() != bt::Value::INT)
+    if (v->data().getType() != bt::Value::INT64 && v->data().getType() != bt::Value::INT) {
         throw bt::Error(QStringLiteral("Incompatible type"));
+    }
 
     return v->data().toInt64();
 }
@@ -121,11 +126,13 @@ qint64 BDictNode::getInt64(const QByteArray &key)
 QString BDictNode::getString(const QByteArray &key)
 {
     const BValueNode *v = getValue(key);
-    if (!v)
+    if (!v) {
         throw bt::Error(QStringLiteral("Key not found in dict"));
+    }
 
-    if (v->data().getType() != bt::Value::STRING)
+    if (v->data().getType() != bt::Value::STRING) {
         throw bt::Error(QStringLiteral("Incompatible type"));
+    }
 
     return v->data().toString();
 }
@@ -133,11 +140,13 @@ QString BDictNode::getString(const QByteArray &key)
 QByteArray BDictNode::getByteArray(const QByteArray &key)
 {
     const BValueNode *v = getValue(key);
-    if (!v)
+    if (!v) {
         throw bt::Error(QStringLiteral("Key not found in dict"));
+    }
 
-    if (v->data().getType() != bt::Value::STRING)
+    if (v->data().getType() != bt::Value::STRING) {
         throw bt::Error(QStringLiteral("Incompatible type"));
+    }
 
     return v->data().toByteArray();
 }
@@ -186,11 +195,13 @@ BValueNode *BListNode::getValue(Uint32 idx)
 int BListNode::getInt(Uint32 idx)
 {
     const BValueNode *v = getValue(idx);
-    if (!v)
+    if (!v) {
         throw bt::Error(QStringLiteral("Key not found in dict"));
+    }
 
-    if (v->data().getType() != bt::Value::INT)
+    if (v->data().getType() != bt::Value::INT) {
         throw bt::Error(QStringLiteral("Incompatible type"));
+    }
 
     return v->data().toInt();
 }
@@ -198,11 +209,13 @@ int BListNode::getInt(Uint32 idx)
 qint64 BListNode::getInt64(Uint32 idx)
 {
     const BValueNode *v = getValue(idx);
-    if (!v)
+    if (!v) {
         throw bt::Error(QStringLiteral("Key not found in dict"));
+    }
 
-    if (v->data().getType() != bt::Value::INT64 && v->data().getType() != bt::Value::INT)
+    if (v->data().getType() != bt::Value::INT64 && v->data().getType() != bt::Value::INT) {
         throw bt::Error(QStringLiteral("Incompatible type"));
+    }
 
     return v->data().toInt64();
 }
@@ -210,11 +223,13 @@ qint64 BListNode::getInt64(Uint32 idx)
 QString BListNode::getString(Uint32 idx)
 {
     const BValueNode *v = getValue(idx);
-    if (!v)
+    if (!v) {
         throw bt::Error(QStringLiteral("Key not found in dict"));
+    }
 
-    if (v->data().getType() != bt::Value::STRING)
+    if (v->data().getType() != bt::Value::STRING) {
         throw bt::Error(QStringLiteral("Incompatible type"));
+    }
 
     return v->data().toString();
 }
@@ -222,11 +237,13 @@ QString BListNode::getString(Uint32 idx)
 QByteArray BListNode::getByteArray(Uint32 idx)
 {
     const BValueNode *v = getValue(idx);
-    if (!v)
+    if (!v) {
         throw bt::Error(QStringLiteral("Key not found in dict"));
+    }
 
-    if (v->data().getType() != bt::Value::STRING)
+    if (v->data().getType() != bt::Value::STRING) {
         throw bt::Error(QStringLiteral("Incompatible type"));
+    }
 
     return v->data().toByteArray();
 }

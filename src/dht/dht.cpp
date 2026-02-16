@@ -46,17 +46,20 @@ DHT::DHT()
 
 DHT::~DHT()
 {
-    if (running)
+    if (running) {
         stop();
+    }
 }
 
 void DHT::start(const QString &table, const QString &key_file, bt::Uint16 port)
 {
-    if (running)
+    if (running) {
         return;
+    }
 
-    if (port == 0)
+    if (port == 0) {
         port = 6881;
+    }
 
     table_file = table;
     this->port = port;
@@ -83,8 +86,9 @@ void DHT::start(const QString &table, const QString &key_file, bt::Uint16 port)
 
 void DHT::stop()
 {
-    if (!running)
+    if (!running) {
         return;
+    }
 
     update_timer.stop();
     expire_timer.stop();
@@ -105,12 +109,14 @@ void DHT::stop()
 
 void DHT::ping(const PingReq &r)
 {
-    if (!running)
+    if (!running) {
         return;
+    }
 
     // ignore requests we get from ourself
-    if (r.getID() == node->getOurID())
+    if (r.getID() == node->getOurID()) {
         return;
+    }
 
     PingRsp rsp(r.getMTID(), node->getOurID());
     rsp.setOrigin(r.getOrigin());
@@ -120,22 +126,26 @@ void DHT::ping(const PingReq &r)
 
 void DHT::findNode(const dht::FindNodeReq &r)
 {
-    if (!running)
+    if (!running) {
         return;
+    }
 
     // ignore requests we get from ourself
-    if (r.getID() == node->getOurID())
+    if (r.getID() == node->getOurID()) {
         return;
+    }
 
     node->received(this, r);
     // find the K closest nodes and pack them
     KClosestNodesSearch kns(r.getTarget(), K);
 
     bt::Uint32 wants = 0;
-    if (r.wants(4) || r.getOrigin().ipVersion() == 4)
+    if (r.wants(4) || r.getOrigin().ipVersion() == 4) {
         wants |= WANT_IPV4;
-    if (r.wants(6) || r.getOrigin().ipVersion() == 6)
+    }
+    if (r.wants(6) || r.getOrigin().ipVersion() == 6) {
         wants |= WANT_IPV6;
+    }
 
     node->findKClosestNodes(kns, wants);
 
@@ -148,35 +158,41 @@ void DHT::findNode(const dht::FindNodeReq &r)
 
 NodeLookup *DHT::findOwnNode()
 {
-    if (our_node_lookup)
+    if (our_node_lookup) {
         return our_node_lookup;
+    }
 
     our_node_lookup = findNode(node->getOurID());
-    if (our_node_lookup)
+    if (our_node_lookup) {
         connect(our_node_lookup, &NodeLookup::finished, this, &DHT::ownNodeLookupFinished);
+    }
     return our_node_lookup;
 }
 
 void DHT::ownNodeLookupFinished(Task *t)
 {
-    if (our_node_lookup == t)
+    if (our_node_lookup == t) {
         our_node_lookup = nullptr;
+    }
 }
 
 void DHT::announce(const AnnounceReq &r)
 {
-    if (!running)
+    if (!running) {
         return;
+    }
 
     // ignore requests we get from ourself
-    if (r.getID() == node->getOurID())
+    if (r.getID() == node->getOurID()) {
         return;
+    }
 
     node->received(this, r);
     // first check if the token is OK
     QByteArray token = r.getToken();
-    if (!db->checkToken(token, r.getOrigin()))
+    if (!db->checkToken(token, r.getOrigin())) {
         return;
+    }
 
     // everything OK, so store the value
     db->store(r.getInfoHash(), DBItem(r.getOrigin()));
@@ -188,12 +204,14 @@ void DHT::announce(const AnnounceReq &r)
 
 void DHT::getPeers(const GetPeersReq &r)
 {
-    if (!running)
+    if (!running) {
         return;
+    }
 
     // ignore requests we get from ourself
-    if (r.getID() == node->getOurID())
+    if (r.getID() == node->getOurID()) {
         return;
+    }
 
     node->received(this, r);
     DBItemList dbl;
@@ -203,10 +221,12 @@ void DHT::getPeers(const GetPeersReq &r)
     QByteArray token = db->genToken(r.getOrigin());
 
     bt::Uint32 wants = 0;
-    if (r.wants(4) || r.getOrigin().ipVersion() == 4)
+    if (r.wants(4) || r.getOrigin().ipVersion() == 4) {
         wants |= WANT_IPV4;
-    if (r.wants(6) || r.getOrigin().ipVersion() == 6)
+    }
+    if (r.wants(6) || r.getOrigin().ipVersion() == 6) {
         wants |= WANT_IPV6;
+    }
 
     // if data is null do the same as when we have a findNode request
     // find the K closest nodes and pack them
@@ -221,8 +241,9 @@ void DHT::getPeers(const GetPeersReq &r)
 
 void DHT::response(const RPCMsg &r)
 {
-    if (!running)
+    if (!running) {
         return;
+    }
 
     node->received(this, r);
 }
@@ -234,8 +255,9 @@ void DHT::error(const ErrMsg &msg)
 
 void DHT::portReceived(const QString &ip, bt::Uint16 port)
 {
-    if (!running)
+    if (!running) {
         return;
+    }
 
     auto r = std::make_unique<PingReq>(node->getOurID());
     r->setOrigin(net::Address(ip, port));
@@ -246,18 +268,20 @@ bool DHT::canStartTask() const
 {
     // we can start a task if we have less then  7 runnning and
     // there are at least 16 RPC slots available
-    if (tman->getNumTasks() >= 7)
+    if (tman->getNumTasks() >= 7) {
         return false;
-    else if (256 - srv->getNumActiveRPCCalls() <= 16)
+    } else if (256 - srv->getNumActiveRPCCalls() <= 16) {
         return false;
+    }
 
     return true;
 }
 
 AnnounceTask *DHT::announce(const bt::SHA1Hash &info_hash, bt::Uint16 port)
 {
-    if (!running)
+    if (!running) {
         return nullptr;
+    }
 
     KClosestNodesSearch kns(info_hash, K);
     node->findKClosestNodes(kns, WANT_BOTH);
@@ -266,8 +290,9 @@ AnnounceTask *DHT::announce(const bt::SHA1Hash &info_hash, bt::Uint16 port)
         AnnounceTask *at = new AnnounceTask(db, srv, node, info_hash, port, tman);
         at->start(kns, !canStartTask());
         tman->addTask(at);
-        if (!db->contains(info_hash))
+        if (!db->contains(info_hash)) {
             db->insert(info_hash);
+        }
         return at;
     }
 
@@ -276,8 +301,9 @@ AnnounceTask *DHT::announce(const bt::SHA1Hash &info_hash, bt::Uint16 port)
 
 NodeLookup *DHT::refreshBucket(const dht::Key &id, KBucket &bucket)
 {
-    if (!running)
+    if (!running) {
         return nullptr;
+    }
 
     KClosestNodesSearch kns(id, K);
     bucket.findKClosestNodes(kns);
@@ -295,8 +321,9 @@ NodeLookup *DHT::refreshBucket(const dht::Key &id, KBucket &bucket)
 
 NodeLookup *DHT::findNode(const dht::Key &id)
 {
-    if (!running)
+    if (!running) {
         return nullptr;
+    }
 
     KClosestNodesSearch kns(id, K);
     node->findKClosestNodes(kns, WANT_BOTH);
@@ -318,8 +345,9 @@ void DHT::expireDatabaseItems()
 
 void DHT::update()
 {
-    if (!running)
+    if (!running) {
         return;
+    }
 
     try {
         node->refreshBuckets(this);
@@ -337,8 +365,9 @@ void DHT::timeout(const RPCMsg &r)
 
 void DHT::addDHTNode(const QString &host, Uint16 hport)
 {
-    if (!running)
+    if (!running) {
         return;
+    }
 
     net::Address addr;
     if (addr.setAddress(host)) {
@@ -353,8 +382,9 @@ void DHT::addDHTNode(const QString &host, Uint16 hport)
 
 void DHT::onResolverResults(net::AddressResolver *res)
 {
-    if (!running)
+    if (!running) {
         return;
+    }
 
     if (res->succeeded()) {
         Out(SYS_DHT | LOG_DEBUG) << "DHT: Adding node '" << res->address().toString() << ":" << res->address().port() << "'" << endl;
@@ -366,8 +396,9 @@ QMap<QString, int> DHT::getClosestGoodNodes(int maxNodes)
 {
     QMap<QString, int> map;
 
-    if (!node)
+    if (!node) {
         return map;
+    }
 
     int max = 0;
     KClosestNodesSearch kns(node->getOurID(), maxNodes * 2);
@@ -377,14 +408,16 @@ QMap<QString, int> DHT::getClosestGoodNodes(int maxNodes)
     for (it = kns.begin(); it != kns.end(); ++it) {
         KBucketEntry e = it->second;
 
-        if (!e.isGood())
+        if (!e.isGood()) {
             continue;
+        }
 
         const net::Address &a = e.getAddress();
 
         map.insert(a.toString(), a.port());
-        if (++max >= maxNodes)
+        if (++max >= maxNodes) {
             break;
+        }
     }
 
     return map;

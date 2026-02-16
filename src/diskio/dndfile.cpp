@@ -72,8 +72,9 @@ void DNDFile::create()
     };
 
     File fptr;
-    if (!fptr.open(path, u"wb"_s))
+    if (!fptr.open(path, u"wb"_s)) {
         throw Error(i18n("Cannot create file %1: %2", path, fptr.errorString()));
+    }
 
     fptr.write(&hdr, sizeof(DNDFileHeader));
     fptr.close();
@@ -88,8 +89,9 @@ Uint32 DNDFile::readFirstChunk(Uint8 *buf, Uint32 off, Uint32 size)
     }
 
     Uint64 read_pos = sizeof(DNDFileHeader) + off;
-    if (fptr.seek(File::BEGIN, read_pos) != read_pos)
+    if (fptr.seek(File::BEGIN, read_pos) != read_pos) {
         return 0;
+    }
 
     return fptr.read(buf, size);
 }
@@ -103,8 +105,9 @@ Uint32 DNDFile::readLastChunk(Uint8 *buf, Uint32 off, Uint32 size)
     }
 
     Uint64 read_pos = sizeof(DNDFileHeader) + first_size + off;
-    if (fptr.seek(File::BEGIN, read_pos) != read_pos)
+    if (fptr.seek(File::BEGIN, read_pos) != read_pos) {
         return 0;
+    }
 
     return fptr.read(buf, size);
 }

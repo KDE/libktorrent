@@ -106,8 +106,9 @@ public:
         iterator itr = pmap.find(k);
         if (itr != pmap.end()) {
             if (overwrite) {
-                if (autodel)
+                if (autodel) {
                     delete itr->second;
+                }
                 itr->second = d;
                 return true;
             } else {
@@ -161,11 +162,13 @@ public:
     virtual bool erase(const Key &key)
     {
         iterator i = pmap.find(key);
-        if (i == pmap.end())
+        if (i == pmap.end()) {
             return false;
+        }
 
-        if (autodel)
+        if (autodel) {
             delete i->second;
+        }
         pmap.erase(i);
         return true;
     }

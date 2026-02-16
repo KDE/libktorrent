@@ -134,8 +134,9 @@ The number in the diagram maps the bit in the bitmask to the offset to add to ac
 inline bool Acked(const SelectiveAck *sack, bt::Uint16 bit)
 {
     // check bounds
-    if (bit < 2 || bit > 8 * sack->length + 1)
+    if (bit < 2 || bit > 8 * sack->length + 1) {
         return false;
+    }
 
     const bt::Uint8 *bitset = sack->bitmask;
     int byte = (bit - 2) / 8;
@@ -147,8 +148,9 @@ inline bool Acked(const SelectiveAck *sack, bt::Uint16 bit)
 inline void Ack(SelectiveAck *sack, bt::Uint16 bit)
 {
     // check bounds
-    if (bit < 2 || bit > 8 * sack->length + 1)
+    if (bit < 2 || bit > 8 * sack->length + 1) {
         return;
+    }
 
     bt::Uint8 *bitset = sack->bitmask;
     int byte = (bit - 2) / 8;
@@ -196,30 +198,33 @@ private:
 //! <= for sequence numbers (taking into account wrapping around)
 inline bool SeqNrCmpSE(bt::Uint16 a, bt::Uint16 b)
 {
-    if (qAbs(b - a) < 32768)
+    if (qAbs(b - a) < 32768) {
         return a <= b;
-    else
+    } else {
         return a > b;
+    }
 }
 
 //! < for sequence numbers (taking into account wrapping around)
 inline bool SeqNrCmpS(bt::Uint16 a, bt::Uint16 b)
 {
-    if (qAbs(b - a) < 32768)
+    if (qAbs(b - a) < 32768) {
         return a < b;
-    else
+    } else {
         return a > b;
+    }
 }
 
 //! Calculates difference between two sequence numbers (taking into account wrapping around)
 inline bt::Uint16 SeqNrDiff(bt::Uint16 a, bt::Uint16 b)
 {
-    if (qAbs(b - a) < 32768)
+    if (qAbs(b - a) < 32768) {
         return b - a;
-    else if (b > a)
+    } else if (b > a) {
         return a + (65536 - b);
-    else
+    } else {
         return b + (65536 - a);
+    }
 }
 }
 

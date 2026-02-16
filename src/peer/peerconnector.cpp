@@ -86,23 +86,26 @@ void PeerConnector::start()
 void PeerConnector::acquired()
 {
     PeerManager *pm = d->pman.data();
-    if (!pm || !pm->isStarted())
+    if (!pm || !pm->isStarted()) {
         return;
+    }
 
     bt::TransportProtocol primary = ServerInterface::primaryTransportProtocol();
     bool encryption = ServerInterface::isEncryptionEnabled();
     bool utp = ServerInterface::isUtpEnabled();
 
     if (encryption) {
-        if (utp && primary == bt::UTP)
+        if (utp && primary == bt::UTP) {
             d->start(UTP_WITH_ENCRYPTION);
-        else
+        } else {
             d->start(TCP_WITH_ENCRYPTION);
+        }
     } else {
-        if (utp && primary == bt::UTP)
+        if (utp && primary == bt::UTP) {
             d->start(UTP_WITHOUT_ENCRYPTION);
-        else
+        } else {
             d->start(TCP_WITHOUT_ENCRYPTION);
+        }
     }
 }
 
@@ -114,12 +117,14 @@ void PeerConnector::authenticationFinished(Authenticate *auth, bool ok)
 void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
 {
     this->auth.clear();
-    if (stopping)
+    if (stopping) {
         return;
+    }
 
     PeerManager *pm = pman.data();
-    if (!pm)
+    if (!pm) {
         return;
+    }
 
     if (ok) {
         pm->peerAuthenticated(auth, self, ok, std::move(token));
@@ -138,46 +143,51 @@ void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
     bool only_use_utp = ServerInterface::onlyUseUtp();
 
     if (primary == bt::UTP) {
-        if (utp && encryption && !tried_methods.contains(UTP_WITH_ENCRYPTION))
+        if (utp && encryption && !tried_methods.contains(UTP_WITH_ENCRYPTION)) {
             start(UTP_WITH_ENCRYPTION);
-        else if (utp && !only_use_encryption && !tried_methods.contains(UTP_WITHOUT_ENCRYPTION))
+        } else if (utp && !only_use_encryption && !tried_methods.contains(UTP_WITHOUT_ENCRYPTION)) {
             start(UTP_WITHOUT_ENCRYPTION);
-        else if (!only_use_utp && encryption && !tried_methods.contains(TCP_WITH_ENCRYPTION) && tcp_allowed)
+        } else if (!only_use_utp && encryption && !tried_methods.contains(TCP_WITH_ENCRYPTION) && tcp_allowed) {
             start(TCP_WITH_ENCRYPTION);
-        else if (!only_use_utp && !only_use_encryption && !tried_methods.contains(TCP_WITHOUT_ENCRYPTION) && tcp_allowed)
+        } else if (!only_use_utp && !only_use_encryption && !tried_methods.contains(TCP_WITHOUT_ENCRYPTION) && tcp_allowed) {
             start(TCP_WITHOUT_ENCRYPTION);
-        else
+        } else {
             pm->peerAuthenticated(auth, self, false, std::move(token));
+        }
     } else { // Primary is TCP
-        if (!only_use_utp && encryption && !tried_methods.contains(TCP_WITH_ENCRYPTION) && tcp_allowed)
+        if (!only_use_utp && encryption && !tried_methods.contains(TCP_WITH_ENCRYPTION) && tcp_allowed) {
             start(TCP_WITH_ENCRYPTION);
-        else if (!only_use_utp && !only_use_encryption && !tried_methods.contains(TCP_WITHOUT_ENCRYPTION) && tcp_allowed)
+        } else if (!only_use_utp && !only_use_encryption && !tried_methods.contains(TCP_WITHOUT_ENCRYPTION) && tcp_allowed) {
             start(TCP_WITHOUT_ENCRYPTION);
-        else if (utp && encryption && !tried_methods.contains(UTP_WITH_ENCRYPTION))
+        } else if (utp && encryption && !tried_methods.contains(UTP_WITH_ENCRYPTION)) {
             start(UTP_WITH_ENCRYPTION);
-        else if (utp && !only_use_encryption && !tried_methods.contains(UTP_WITHOUT_ENCRYPTION))
+        } else if (utp && !only_use_encryption && !tried_methods.contains(UTP_WITHOUT_ENCRYPTION)) {
             start(UTP_WITHOUT_ENCRYPTION);
-        else
+        } else {
             pm->peerAuthenticated(auth, self, false, std::move(token));
+        }
     }
 }
 
 void PeerConnector::Private::start(PeerConnector::Method method)
 {
     PeerManager *pm = pman.data();
-    if (!pm)
+    if (!pm) {
         return;
+    }
 
     current_method = method;
     const Torrent &tor = pm->getTorrent();
     TransportProtocol proto = (method == TCP_WITH_ENCRYPTION || method == TCP_WITHOUT_ENCRYPTION) ? TCP : UTP;
-    if (method == TCP_WITH_ENCRYPTION || method == UTP_WITH_ENCRYPTION)
+    if (method == TCP_WITH_ENCRYPTION || method == UTP_WITH_ENCRYPTION) {
         auth = new mse::EncryptedAuthenticate(addr, proto, tor.getInfoHash(), tor.getPeerID(), self);
-    else
+    } else {
         auth = new Authenticate(addr, proto, tor.getInfoHash(), tor.getPeerID(), self);
+    }
 
-    if (local)
+    if (local) {
         auth.data()->setLocal(true);
+    }
 
     AuthenticationMonitor::instance().add(auth.data());
 }

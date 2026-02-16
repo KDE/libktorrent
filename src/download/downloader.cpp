@@ -71,12 +71,14 @@ Downloader::Downloader(Torrent &tor, PeerManager &pman, ChunkManager &cman)
 
     if (webseeds.count() > 0) {
         webseed_range_size = tor.getNumChunks() / webseeds.count();
-        if (webseed_range_size == 0)
+        if (webseed_range_size == 0) {
             webseed_range_size = 1;
+        }
 
         // make sure the range is not to big
-        if (webseed_range_size > tor.getNumChunks() / 10)
+        if (webseed_range_size > tor.getNumChunks() / 10) {
             webseed_range_size = tor.getNumChunks() / 10;
+        }
     } else {
         webseed_range_size = 1;
     }
@@ -89,18 +91,20 @@ Downloader::~Downloader()
 
 void Downloader::setChunkSelector(std::unique_ptr<ChunkSelectorInterface> csel)
 {
-    if (!csel) // check if a custom one was provided, if not create a default one
+    if (!csel) { // check if a custom one was provided, if not create a default one
         chunk_selector = std::make_unique<ChunkSelector>();
-    else
+    } else {
         chunk_selector = std::move(csel);
+    }
 
     chunk_selector->init(&cman, this, &pman);
 }
 
 void Downloader::pieceReceived(const Piece &p)
 {
-    if (cman.completed())
+    if (cman.completed()) {
         return;
+    }
 
     ChunkDownload *cd = current_chunks.find(p.getIndex());
     if (!cd) {
@@ -111,29 +115,34 @@ void Downloader::pieceReceived(const Piece &p)
 
     bool ok = false;
     if (cd->piece(p, ok)) {
-        if (tmon)
+        if (tmon) {
             tmon->downloadRemoved(cd);
+        }
 
-        if (ok)
+        if (ok) {
             bytes_downloaded += p.getLength();
+        }
 
         if (!finished(cd)) {
             // if the chunk fails don't count the bytes downloaded
-            if (cd->getChunk()->getSize() > bytes_downloaded)
+            if (cd->getChunk()->getSize() > bytes_downloaded) {
                 bytes_downloaded = 0;
-            else
+            } else {
                 bytes_downloaded -= cd->getChunk()->getSize();
+            }
             current_chunks.erase(p.getIndex());
         } else {
             current_chunks.erase(p.getIndex());
             for (WebSeed *ws : std::as_const(webseeds)) {
-                if (ws->inCurrentRange(p.getIndex()))
+                if (ws->inCurrentRange(p.getIndex())) {
                     ws->chunkDownloaded(p.getIndex());
+                }
             }
         }
     } else {
-        if (ok)
+        if (ok) {
             bytes_downloaded += p.getLength();
+        }
     }
 
     if (!ok) {
@@ -149,8 +158,9 @@ bool Downloader::endgameMode() const
 
 void Downloader::update()
 {
-    if (cman.completed())
+    if (cman.completed()) {
         return;
+    }
 
     /*
         Normal update should now handle all modes properly.
@@ -191,8 +201,9 @@ void Downloader::normalUpdate()
     for (PieceDownloader *pd : std::as_const(piece_downloaders)) {
         if (!pd->isChoked()) {
             while (pd->canDownloadChunk()) {
-                if (!downloadFrom(pd))
+                if (!downloadFrom(pd)) {
                     break;
+                }
                 pd->setNearlyDone(false);
             }
         }
@@ -222,8 +233,9 @@ ChunkDownload *Downloader::selectCD(PieceDownloader *pd, Uint32 n)
 
     for (CurChunkItr j = current_chunks.begin(); j != current_chunks.end(); ++j) {
         ChunkDownload *cd = j->second;
-        if (pd->isChoked() || !pd->hasChunk(cd->getChunk()->getIndex()))
+        if (pd->isChoked() || !pd->hasChunk(cd->getChunk()->getIndex())) {
             continue;
+        }
 
         if (cd->getNumDownloaders() == n) {
             // lets favor the ones which are nearly finished
@@ -254,15 +266,17 @@ ChunkDownload *Downloader::selectWorst(PieceDownloader *pd)
     ChunkDownload *cdmin = nullptr;
     for (CurChunkItr j = current_chunks.begin(); j != current_chunks.end(); ++j) {
         ChunkDownload *cd = j->second;
-        if (!pd->hasChunk(cd->getChunk()->getIndex()) || cd->containsPeer(pd))
+        if (!pd->hasChunk(cd->getChunk()->getIndex()) || cd->containsPeer(pd)) {
             continue;
+        }
 
-        if (!cdmin)
+        if (!cdmin) {
             cdmin = cd;
-        else if (cd->getDownloadSpeed() < cdmin->getDownloadSpeed())
+        } else if (cd->getDownloadSpeed() < cdmin->getDownloadSpeed()) {
             cdmin = cd;
-        else if (cd->getNumDownloaders() < cdmin->getNumDownloaders())
+        } else if (cd->getNumDownloaders() < cdmin->getNumDownloaders()) {
             cdmin = cd;
+        }
     }
 
     return cdmin;
@@ -271,8 +285,9 @@ ChunkDownload *Downloader::selectWorst(PieceDownloader *pd)
 bool Downloader::downloadFrom(PieceDownloader *pd)
 {
     // first see if we can use an existing dowload
-    if (findDownloadForPD(pd))
+    if (findDownloadForPD(pd)) {
         return true;
+    }
 
     Uint32 chunk = 0;
     if (chunk_selector->select(pd, chunk)) {
@@ -283,8 +298,9 @@ bool Downloader::downloadFrom(PieceDownloader *pd)
             ChunkDownload *cd = new ChunkDownload(c);
             current_chunks.insert(chunk, cd);
             cd->assign(pd);
-            if (tmon)
+            if (tmon) {
                 tmon->downloadStarted(cd);
+            }
             return true;
         }
     } else if (pd->getNumGrabbed() == 0) {
@@ -309,8 +325,9 @@ void Downloader::downloadFrom(WebSeed *ws)
     } else {
         // go to endgame mode
         webseed_endgame_mode = true;
-        if (chunk_selector->selectRange(first, last, webseed_range_size))
+        if (chunk_selector->selectRange(first, last, webseed_range_size)) {
             ws->download(first, last);
+        }
     }
 }
 
@@ -321,12 +338,14 @@ bool Downloader::downloading(Uint32 chunk) const
 
 bool Downloader::canDownloadFromWebSeed(Uint32 chunk) const
 {
-    if (webseed_endgame_mode)
+    if (webseed_endgame_mode) {
         return true;
+    }
 
     for (WebSeed *ws : std::as_const(webseeds)) {
-        if (ws->busy() && ws->inCurrentRange(chunk))
+        if (ws->busy() && ws->inCurrentRange(chunk)) {
             return false;
+        }
     }
 
     return !downloading(chunk);
@@ -335,8 +354,9 @@ bool Downloader::canDownloadFromWebSeed(Uint32 chunk) const
 Uint32 Downloader::numDownloadersForChunk(Uint32 chunk) const
 {
     const ChunkDownload *cd = current_chunks.find(chunk);
-    if (!cd)
+    if (!cd) {
         return 0;
+    }
 
     return cd->getNumDownloaders();
 }
@@ -366,8 +386,9 @@ bool Downloader::finished(ChunkDownload *cd)
         try {
             for (WebSeed *ws : std::as_const(webseeds)) {
                 // tell all webseeds a chunk is downloaded
-                if (ws->inCurrentRange(c->getIndex()))
+                if (ws->inCurrentRange(c->getIndex())) {
                     ws->chunkDownloaded(c->getIndex());
+                }
             }
 
             cman.chunkDownloaded(c->getIndex());
@@ -385,16 +406,18 @@ bool Downloader::finished(ChunkDownload *cd)
         Out(SYS_GEN | LOG_IMPORTANT) << "Should be : " << tor.getHash(c->getIndex()) << endl;
 
         // reset chunk but only when no webseeder is downloading it
-        if (!webseeds_chunks.find(c->getIndex()))
+        if (!webseeds_chunks.find(c->getIndex())) {
             cman.resetChunk(c->getIndex());
+        }
 
         chunk_selector->reinsert(c->getIndex());
 
         PieceDownloader *only = cd->getOnlyDownloader();
         if (only) {
             Peer *p = pman.findPeer(only);
-            if (!p)
+            if (!p) {
                 return false;
+            }
 
             QString ip = p->getIPAddresss();
             Out(SYS_GEN | LOG_NOTICE) << "Peer " << ip << " sent bad data" << endl;
@@ -411,8 +434,9 @@ void Downloader::clearDownloads()
     current_chunks.clear();
     piece_downloaders.clear();
 
-    for (WebSeed *ws : std::as_const(webseeds))
+    for (WebSeed *ws : std::as_const(webseeds)) {
         ws->cancel();
+    }
 }
 
 void Downloader::pause()
@@ -425,17 +449,20 @@ void Downloader::pause()
     }
 
     current_chunks.clear();
-    for (WebSeed *ws : std::as_const(webseeds))
+    for (WebSeed *ws : std::as_const(webseeds)) {
         ws->reset();
+    }
 }
 
 Uint32 Downloader::downloadRate() const
 {
     // sum of the download rate of each peer
     Uint32 rate = 0;
-    for (PieceDownloader *pd : std::as_const(piece_downloaders))
-        if (pd)
+    for (PieceDownloader *pd : std::as_const(piece_downloaders)) {
+        if (pd) {
             rate += pd->getDownloadRate();
+        }
+    }
 
     for (WebSeed *ws : std::as_const(webseeds)) {
         rate += ws->getDownloadRate();
@@ -447,8 +474,9 @@ Uint32 Downloader::downloadRate() const
 void Downloader::setMonitor(MonitorInterface *tmo)
 {
     tmon = tmo;
-    if (!tmon)
+    if (!tmon) {
         return;
+    }
 
     for (CurChunkItr i = current_chunks.begin(); i != current_chunks.end(); ++i) {
         ChunkDownload *cd = i->second;
@@ -457,24 +485,27 @@ void Downloader::setMonitor(MonitorInterface *tmo)
 
     for (WebSeed *ws : std::as_const(webseeds)) {
         WebSeedChunkDownload *cd = ws->currentChunkDownload();
-        if (cd)
+        if (cd) {
             tmon->downloadStarted(cd);
+        }
     }
 }
 
 void Downloader::saveDownloads(const QString &file)
 {
     File fptr;
-    if (!fptr.open(file, u"wb"_s))
+    if (!fptr.open(file, u"wb"_s)) {
         return;
+    }
 
     // See bug 219019, don't know why, but it is possible that we get nullptr in the map
     // so get rid of them before we save
     for (CurChunkItr i = current_chunks.begin(); i != current_chunks.end();) {
-        if (!i->second)
+        if (!i->second) {
             i = current_chunks.erase(i);
-        else
+        } else {
             ++i;
+        }
     }
 
     // Save all the current downloads to a file
@@ -495,13 +526,15 @@ void Downloader::saveDownloads(const QString &file)
 void Downloader::loadDownloads(const QString &file)
 {
     // don't load stuff if download is finished
-    if (cman.completed())
+    if (cman.completed()) {
         return;
+    }
 
     // Load all partial downloads
     File fptr;
-    if (!fptr.open(file, u"rb"_s))
+    if (!fptr.open(file, u"rb"_s)) {
         return;
+    }
 
     // recalculate downloaded bytes
     bytes_downloaded = (tor.getTotalSize() - cman.bytesLeft());
@@ -544,8 +577,9 @@ void Downloader::loadDownloads(const QString &file)
             current_chunks.insert(hdr.index, cd);
             bytes_downloaded += cd->bytesDownloaded();
 
-            if (tmon)
+            if (tmon) {
                 tmon->downloadStarted(cd);
+            }
         }
     }
 
@@ -557,8 +591,9 @@ Uint32 Downloader::getDownloadedBytesOfCurrentChunksFile(const QString &file)
 {
     // Load all partial downloads
     File fptr;
-    if (!fptr.open(file, u"rb"_s))
+    if (!fptr.open(file, u"rb"_s)) {
         return 0;
+    }
 
     // read the number of chunks
     CurrentChunksHeader chdr;
@@ -576,12 +611,14 @@ Uint32 Downloader::getDownloadedBytesOfCurrentChunksFile(const QString &file)
         fptr.read(&hdr, sizeof(ChunkDownloadHeader));
 
         Chunk *c = cman.getChunk(hdr.index);
-        if (!c)
+        if (!c) {
             return num_bytes;
+        }
 
         ChunkDownload tmp(c);
-        if (!tmp.load(fptr, hdr, false))
+        if (!tmp.load(fptr, hdr, false)) {
             return num_bytes;
+        }
 
         num_bytes += tmp.bytesDownloaded();
     }
@@ -598,13 +635,15 @@ void Downloader::onExcluded(Uint32 from, Uint32 to)
 {
     for (Uint32 i = from; i <= to; i++) {
         ChunkDownload *cd = current_chunks.find(i);
-        if (!cd)
+        if (!cd) {
             continue;
+        }
 
         cd->cancelAll();
         cd->releaseAllPDs();
-        if (tmon)
+        if (tmon) {
             tmon->downloadRemoved(cd);
+        }
         current_chunks.erase(i);
         cman.resetChunk(i); // reset chunk it is not fully downloaded yet
     }
@@ -631,8 +670,9 @@ void Downloader::dataChecked(const bt::BitSet &ok_chunks, Uint32 from, Uint32 to
         if (ok_chunks.get(i) && cd) {
             // we have a chunk and we are downloading it so kill it
             cd->releaseAllPDs();
-            if (tmon)
+            if (tmon) {
                 tmon->downloadRemoved(cd);
+            }
 
             current_chunks.erase(i);
         }
@@ -658,16 +698,18 @@ void Downloader::onChunkReady(Chunk *c)
 
             for (WebSeed *ws : std::as_const(webseeds)) {
                 // tell all webseeds a chunk is downloaded
-                if (ws->inCurrentRange(c->getIndex()))
+                if (ws->inCurrentRange(c->getIndex())) {
                     ws->chunkDownloaded(c->getIndex());
+                }
             }
 
             ChunkDownload *cd = current_chunks.find(c->getIndex());
             if (cd) {
                 // A ChunkDownload is ongoing for this chunk so kill it, we have the chunk
                 cd->cancelAll();
-                if (tmon)
+                if (tmon) {
                     tmon->downloadRemoved(cd);
+                }
                 current_chunks.erase(c->getIndex());
             }
 
@@ -684,8 +726,9 @@ void Downloader::onChunkReady(Chunk *c)
     } else {
         Out(SYS_GEN | LOG_IMPORTANT) << "Hash verification error on chunk " << c->getIndex() << endl;
         // reset chunk but only when no other peer is downloading it
-        if (!current_chunks.find(c->getIndex()))
+        if (!current_chunks.find(c->getIndex())) {
             cman.resetChunk(c->getIndex());
+        }
 
         chunk_selector->reinsert(c->getIndex());
         ws->disable(i18n("Disabled because webseed does not match torrent"));
@@ -696,26 +739,30 @@ void Downloader::chunkDownloadStarted(WebSeedChunkDownload *cd, Uint32 chunk)
 {
     webseeds_chunks.insert(chunk, cd->ws);
     active_webseed_downloads++;
-    if (tmon)
+    if (tmon) {
         tmon->downloadStarted(cd);
+    }
 }
 
 void Downloader::chunkDownloadFinished(WebSeedChunkDownload *cd, Uint32 chunk)
 {
     webseeds_chunks.erase(chunk);
-    if (active_webseed_downloads > 0)
+    if (active_webseed_downloads > 0) {
         active_webseed_downloads--;
+    }
 
-    if (tmon)
+    if (tmon) {
         tmon->downloadRemoved(cd);
+    }
 }
 
 WebSeed *Downloader::addWebSeed(const QUrl &url)
 {
     // Check for dupes
     for (WebSeed *ws : std::as_const(webseeds)) {
-        if (ws->getUrl() == url)
+        if (ws->getUrl() == url) {
             return nullptr;
+        }
     }
 
     WebSeed *ws = new WebSeed(url, true, tor, cman);
@@ -732,10 +779,11 @@ bool Downloader::removeWebSeed(const QUrl &url)
         if (ws->getUrl() == url && ws->isUserCreated()) {
             PtrMap<Uint32, WebSeed>::iterator i = webseeds_chunks.begin();
             while (i != webseeds_chunks.end()) {
-                if (i->second == ws)
+                if (i->second == ws) {
                     i = webseeds_chunks.erase(i);
-                else
+                } else {
                     ++i;
+                }
             }
             webseeds.removeAll(ws);
             delete ws;
@@ -761,13 +809,15 @@ void Downloader::saveWebSeeds(const QString &file)
 
     QTextStream out(&fptr);
     for (WebSeed *ws : std::as_const(webseeds)) {
-        if (ws->isUserCreated())
+        if (ws->isUserCreated()) {
             out << ws->getUrl().toDisplayString() << Qt::endl;
+        }
     }
     out << "====disabled====" << Qt::endl;
     for (WebSeed *ws : std::as_const(webseeds)) {
-        if (!ws->isEnabled())
+        if (!ws->isEnabled()) {
             out << ws->getUrl().toDisplayString() << Qt::endl;
+        }
     }
 }
 
@@ -789,8 +839,9 @@ void Downloader::loadWebSeeds(const QString &file)
         }
 
         QUrl url(line);
-        if (!url.isValid() || (url.scheme() != "http"_L1 && url.scheme() != "https"_L1))
+        if (!url.isValid() || (url.scheme() != "http"_L1 && url.scheme() != "https"_L1)) {
             continue;
+        }
 
         if (disabled_list_found) {
             for (WebSeed *ws : std::as_const(webseeds)) {

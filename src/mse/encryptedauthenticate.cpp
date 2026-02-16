@@ -106,10 +106,11 @@ void EncryptedAuthenticate::handleYB()
 
     // now we must send ENCRYPT(VC, crypto_provide, len(PadC), PadC, len(IA))
     memset(tmp_buf, 0, 16); // VC are 8 0x00's
-    if (bt::ServerInterface::unencryptedConnectionsAllowed())
+    if (bt::ServerInterface::unencryptedConnectionsAllowed()) {
         tmp_buf[11] = 0x03; // we support both plain text and rc4
-    else
+    } else {
         tmp_buf[11] = 0x02;
+    }
     WriteUint16(tmp_buf, 12, 0x0000); // no padC
     WriteUint16(tmp_buf, 14, 68); // length of IA, which will be the bittorrent handshake
     // send IA which is the handshake
@@ -146,8 +147,9 @@ void EncryptedAuthenticate::findVC()
 void EncryptedAuthenticate::handleCryptoSelect()
 {
     // not enough data available so lets come back later
-    if (vc_off + 14 >= buf_size)
+    if (vc_off + 14 >= buf_size) {
         return;
+    }
 
     // now decrypt the first 14 bytes
     our_rc4->decrypt(buf + vc_off, 14);
@@ -204,8 +206,9 @@ void EncryptedAuthenticate::handlePadD()
 
 void EncryptedAuthenticate::onReadyRead()
 {
-    if (finished)
+    if (finished) {
         return;
+    }
 
     if (socks) {
         switch (socks->onReadyToRead()) {
@@ -217,8 +220,9 @@ void EncryptedAuthenticate::onReadyRead()
             // connection established, so get rid of socks shit
             socks.reset();
             connected();
-            if (sock->bytesAvailable() > 0)
+            if (sock->bytesAvailable() > 0) {
                 onReadyRead();
+            }
             break;
         default:
             break;
@@ -233,12 +237,14 @@ void EncryptedAuthenticate::onReadyRead()
     }
 
     if (state != NORMAL_HANDSHAKE) {
-        if (buf_size + ba > MAX_EA_BUF_SIZE)
+        if (buf_size + ba > MAX_EA_BUF_SIZE) {
             ba = MAX_EA_BUF_SIZE - buf_size;
+        }
 
         // do not read past the end of padD
-        if (pad_D_len > 0 && buf_size + ba > vc_off + 14 + pad_D_len)
+        if (pad_D_len > 0 && buf_size + ba > vc_off + 14 + pad_D_len) {
             ba = (vc_off + 14 + pad_D_len) - buf_size;
+        }
         // read data
         buf_size += sock->readData(buf + buf_size, ba);
     }

@@ -47,18 +47,21 @@ void PortList::addNewPort(bt::Uint16 number, Protocol proto, bool forward)
 {
     Port p = Port(number, proto, forward);
     append(p);
-    if (lst)
+    if (lst) {
         lst->portAdded(p);
+    }
 }
 
 void PortList::removePort(bt::Uint16 number, Protocol proto)
 {
     PortList::iterator itr = std::find(begin(), end(), Port(number, proto, false));
-    if (itr == end())
+    if (itr == end()) {
         return;
+    }
 
-    if (lst)
+    if (lst) {
         lst->portRemoved(*itr);
+    }
 
     erase(itr);
 }

@@ -36,8 +36,9 @@ void KIOAnnounceJob::data(KIO::Job *j, const QByteArray &data)
         setError(KIO::ERR_ABORTED);
         Out(SYS_TRK | LOG_DEBUG) << "Tracker sending back to much data in announce reply, aborting ..." << endl;
         emitResult();
-    } else
+    } else {
         reply_data.append(data);
+    }
 }
 
 bool KIOAnnounceJob::doKill()

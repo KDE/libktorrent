@@ -69,14 +69,16 @@ void GetPeersReq::parse(BDictNode *dict)
 {
     dht::RPCMsg::parse(dict);
     BDictNode *args = dict->getDict(ARG);
-    if (!args)
+    if (!args) {
         throw bt::Error(u"Invalid request, arguments missing"_s);
+    }
 
     info_hash = Key(args->getByteArray("info_hash"));
     BListNode *ln = args->getList("want");
     if (ln) {
-        for (bt::Uint32 i = 0; i < ln->getNumChildren(); i++)
+        for (bt::Uint32 i = 0; i < ln->getNumChildren(); i++) {
             want.append(ln->getString(i));
+        }
     }
 }
 

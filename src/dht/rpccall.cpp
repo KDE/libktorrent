@@ -24,8 +24,9 @@ RPCCall::RPCCall(std::unique_ptr<dht::RPCMsg> msg, bool queued)
 {
     timer.setSingleShot(true);
     connect(&timer, &QTimer::timeout, this, &RPCCall::onTimeout);
-    if (!queued)
+    if (!queued) {
         timer.start(30 * 1000);
+    }
 }
 
 RPCCall::~RPCCall()
@@ -50,10 +51,11 @@ void RPCCall::response(RPCMsg *rsp)
 
 Method RPCCall::getMsgMethod() const
 {
-    if (msg)
+    if (msg) {
         return msg->getMethod();
-    else
+    } else {
         return dht::NONE;
+    }
 }
 
 void RPCCall::addListener(RPCCallListener *cl)

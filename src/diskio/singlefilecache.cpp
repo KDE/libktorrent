@@ -38,10 +38,11 @@ SingleFileCache::SingleFileCache(Torrent &tor, const QString &tmpdir, const QStr
     , fd(nullptr)
 {
     QFileInfo fi(cache_file);
-    if (fi.isSymLink()) // old style symlink
+    if (fi.isSymLink()) { // old style symlink
         output_file = fi.symLinkTarget();
-    else
+    } else {
         output_file = datadir + tor.getNameSuggestion();
+    }
 }
 
 SingleFileCache::~SingleFileCache()
@@ -58,8 +59,9 @@ void SingleFileCache::loadFileMap()
     }
 
     QFile fptr(file_map);
-    if (!fptr.open(QIODevice::ReadOnly))
+    if (!fptr.open(QIODevice::ReadOnly)) {
         throw Error(i18n("Failed to open %1: %2", file_map, fptr.errorString()));
+    }
 
     output_file = QString::fromLocal8Bit(fptr.readLine().trimmed());
 }
@@ -68,8 +70,9 @@ void SingleFileCache::saveFileMap()
 {
     QString file_map = tmpdir + "file_map"_L1;
     QFile fptr(file_map);
-    if (!fptr.open(QIODevice::WriteOnly))
+    if (!fptr.open(QIODevice::WriteOnly)) {
         throw Error(i18n("Failed to create %1: %2", file_map, fptr.errorString()));
+    }
 
     QTextStream out(&fptr);
     out << output_file << Qt::endl;
@@ -92,12 +95,14 @@ void SingleFileCache::changeOutputPath(const QString &outputpath)
 Job *SingleFileCache::moveDataFiles(const QString &ndir)
 {
     QString dst = ndir;
-    if (!dst.endsWith(bt::DirSeparator()))
+    if (!dst.endsWith(bt::DirSeparator())) {
         dst += bt::DirSeparator();
+    }
 
     dst += output_file.mid(output_file.lastIndexOf(bt::DirSeparator()) + 1);
-    if (output_file == dst)
+    if (output_file == dst) {
         return nullptr;
+    }
 
     move_data_files_dst = dst;
     MoveDataFilesJob *job = new MoveDataFilesJob();
@@ -108,16 +113,18 @@ Job *SingleFileCache::moveDataFiles(const QString &ndir)
 void SingleFileCache::moveDataFilesFinished(Job *job)
 {
     if (job->error() == KIO::ERR_USER_CANCELED) {
-        if (bt::Exists(move_data_files_dst))
+        if (bt::Exists(move_data_files_dst)) {
             bt::Delete(move_data_files_dst, true);
+        }
     }
     move_data_files_dst = QString();
 }
 
 PieceData::Ptr SingleFileCache::createPiece(Chunk *c, Uint64 off, Uint32 length, bool read_only)
 {
-    if (!fd)
+    if (!fd) {
         open();
+    }
 
     Uint64 piece_off = c->getIndex() * tor.getChunkSize() + off;
     Uint8 *buf = nullptr;
@@ -132,8 +139,9 @@ PieceData::Ptr SingleFileCache::createPiece(Chunk *c, Uint64 off, Uint32 length,
         if (buf) {
             cp->setData(buf);
         } else {
-            if (mmap_failures < 3)
+            if (mmap_failures < 3) {
                 mmap_failures++;
+            }
 
             buf = new Uint8[length];
             cp = PieceData::Ptr(new PieceData(c, off, length, buf, CacheFile::Ptr(), read_only));
@@ -146,8 +154,9 @@ PieceData::Ptr SingleFileCache::createPiece(Chunk *c, Uint64 off, Uint32 length,
 PieceData::Ptr SingleFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
 {
     PieceData::Ptr cp = findPiece(c, off, length, true);
-    if (cp)
+    if (cp) {
         return cp;
+    }
 
     cp = createPiece(c, off, length, true);
     if (cp && !cp->mapped()) {
@@ -162,36 +171,41 @@ PieceData::Ptr SingleFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
 PieceData::Ptr SingleFileCache::preparePiece(Chunk *c, Uint32 off, Uint32 length)
 {
     PieceData::Ptr cp = findPiece(c, off, length, false);
-    if (cp)
+    if (cp) {
         return cp;
+    }
 
     return createPiece(c, off, length, false);
 }
 
 void SingleFileCache::savePiece(PieceData::Ptr piece)
 {
-    if (!fd)
+    if (!fd) {
         open();
+    }
 
     // mapped pieces will be unmapped when they are destroyed, buffered ones need to be written
     if (!piece->mapped()) {
         Uint64 off = piece->parentChunk()->getIndex() * tor.getChunkSize() + piece->offset();
-        if (piece->ok())
+        if (piece->ok()) {
             fd->write(piece->data(), piece->length(), off);
+        }
     }
 }
 
 void SingleFileCache::create()
 {
     // check for a too long path name
-    if (FileNameTooLong(output_file))
+    if (FileNameTooLong(output_file)) {
         output_file = ShortenFileName(output_file);
+    }
 
     if (!bt::Exists(output_file)) {
         MakeFilePath(output_file);
         bt::Touch(output_file);
-    } else
+    } else {
         preexisting_files = true;
+    }
 
     QSet<QString> mps;
     mps.insert(MountPoint(output_file));
@@ -202,8 +216,9 @@ void SingleFileCache::create()
 bool SingleFileCache::getMountPoints(QSet<QString> &mps)
 {
     QString mp = MountPoint(output_file);
-    if (mp.isEmpty())
+    if (mp.isEmpty()) {
         return false;
+    }
 
     mps.insert(mp);
     return true;
@@ -219,8 +234,9 @@ void SingleFileCache::close()
 
 void SingleFileCache::open()
 {
-    if (fd)
+    if (fd) {
         return;
+    }
 
     CacheFile::Ptr tmp(new CacheFile());
     tmp->open(output_file, tor.getTotalSize());
@@ -229,8 +245,9 @@ void SingleFileCache::open()
 
 void SingleFileCache::preparePreallocation(PreallocationThread *prealloc)
 {
-    if (!fd)
+    if (!fd) {
         open();
+    }
 
     prealloc->add(fd);
 }
@@ -253,8 +270,9 @@ Job *SingleFileCache::deleteDataFiles()
 
 Uint64 SingleFileCache::diskUsage()
 {
-    if (!fd)
+    if (!fd) {
         open();
+    }
 
     return fd->diskUsage();
 }

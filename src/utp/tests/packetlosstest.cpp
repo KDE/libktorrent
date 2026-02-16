@@ -88,8 +88,9 @@ public:
             msleep(200);
         }
 
-        while (!outgoing->allDataSent() && outgoing->connectionState() != CS_CLOSED)
+        while (!outgoing->allDataSent() && outgoing->connectionState() != CS_CLOSED) {
             sleep(1);
+        }
 
         Out(SYS_UTP | LOG_DEBUG) << "Transmitted " << sent << " packets " << endl;
         outgoing->dumpStats();
@@ -124,10 +125,11 @@ private:
 
         port = 50000;
         while (port < 60000) {
-            if (!srv.changePort(port))
+            if (!srv.changePort(port)) {
                 port++;
-            else
+            } else {
                 break;
+            }
         }
 
         srv.start();

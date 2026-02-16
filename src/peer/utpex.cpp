@@ -30,8 +30,9 @@ UTPex::~UTPex()
 
 void UTPex::handlePacket(const Uint8 *packet, Uint32 size)
 {
-    if (size <= 2 || packet[1] != 1)
+    if (size <= 2 || packet[1] != 1) {
         return;
+    }
 
     QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
     try {
@@ -89,10 +90,12 @@ void UTPex::visit(const bt::Peer *p,
             added.insert(std::make_pair(p->getID(), p->getAddress()));
 
             Uint8 flag = 0;
-            if (p->isSeeder())
+            if (p->isSeeder()) {
                 flag |= 0x02;
-            if (p->getStats().fast_extensions)
+            }
+            if (p->getStats().fast_extensions) {
                 flag |= 0x01;
+            }
             flags.insert(std::make_pair(p->getID(), flag));
         } else {
             // erase from old list, so only the dropped ones are left

@@ -27,8 +27,9 @@ SuperSeeder::~SuperSeeder()
 void SuperSeeder::have(PeerInterface *peer, Uint32 chunk)
 {
     chunk_counter->inc(chunk);
-    if (peer->getBitSet().allOn()) // it is possible the peer has become a seeder
+    if (peer->getBitSet().allOn()) { // it is possible the peer has become a seeder
         num_seeders++;
+    }
 
     QList<PeerInterface *> peers;
 
@@ -41,8 +42,9 @@ void SuperSeeder::have(PeerInterface *peer, Uint32 chunk)
             i = active_chunks.erase(i);
             // p2 has probably been a good boy, he can download another chunk from us
             peers.append(p2);
-        } else
+        } else {
             ++i;
+        }
     }
 
     for (PeerInterface *p : std::as_const(peers)) {
@@ -71,8 +73,9 @@ void SuperSeeder::bitset(PeerInterface *peer, const bt::BitSet &bs)
 
     // Call have for each chunk the peer has
     for (Uint32 i = 0; i < bs.getNumBits(); i++) {
-        if (bs.get(i))
+        if (bs.get(i)) {
             have(peer, i);
+        }
     }
 }
 
@@ -96,20 +99,23 @@ void SuperSeeder::peerRemoved(PeerInterface *peer)
     }
 
     // decrease num_seeders if the peer is a seeder
-    if (peer->getBitSet().allOn() && num_seeders > 0)
+    if (peer->getBitSet().allOn() && num_seeders > 0) {
         num_seeders--;
+    }
 
     chunk_counter->decBitSet(peer->getBitSet());
 }
 
 void SuperSeeder::sendChunk(PeerInterface *peer)
 {
-    if (active_peers.contains(peer))
+    if (active_peers.contains(peer)) {
         return;
+    }
 
     const BitSet &bs = peer->getBitSet();
-    if (bs.allOn())
+    if (bs.allOn()) {
         return;
+    }
 
     // Use random chunk to start searching for a potential chunk we can send
     Uint32 num_chunks = chunk_counter->getNumChunks();
@@ -119,8 +125,9 @@ void SuperSeeder::sendChunk(PeerInterface *peer)
     Uint32 alternative_num_owners = std::numeric_limits<Uint32>::max();
     while (chunk != start) {
         chunk = (chunk + 1) % num_chunks;
-        if (bs.get(chunk))
+        if (bs.get(chunk)) {
             continue;
+        }
 
         // Search for a chunk which no downloader has, or has been sent.
         // Otherwise choose the rarest chunk

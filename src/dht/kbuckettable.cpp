@@ -55,10 +55,11 @@ void KBucketTable::insert(const dht::KBucketEntry &entry, dht::RPCServerInterfac
                             Out(SYS_DHT | LOG_DEBUG) << "R: " << result.second->minKey().toString() << "-" << result.second->maxKey().toString() << endl;
                             Out(SYS_DHT | LOG_DEBUG) << "R range: " << (result.second->maxKey() - result.second->minKey()).toString() << endl;
             */
-            if (result.first->keyInRange(entry.getID()))
+            if (result.first->keyInRange(entry.getID())) {
                 result.first->insert(entry);
-            else
+            } else {
                 result.second->insert(entry);
+            }
             buckets.insert(kb, std::move(result.first));
             buckets.insert(kb, std::move(result.second));
             buckets.erase(kb);
@@ -83,8 +84,9 @@ int KBucketTable::numEntries() const
 KBucketTable::KBucketList::iterator KBucketTable::findBucket(const dht::Key &id)
 {
     for (KBucketList::iterator i = buckets.begin(); i != buckets.end(); ++i) {
-        if ((*i)->keyInRange(id))
+        if ((*i)->keyInRange(id)) {
             return i;
+        }
     }
 
     return buckets.end();
@@ -97,8 +99,9 @@ void KBucketTable::refreshBuckets(DHT *dh_table)
             // the key needs to be the refreshed
             dht::Key m = dht::Key::mid(b->minKey(), b->maxKey());
             NodeLookup *nl = dh_table->refreshBucket(m, *b);
-            if (nl)
+            if (nl) {
                 b->setRefreshTask(nl);
+            }
         }
     }
 }
@@ -106,8 +109,9 @@ void KBucketTable::refreshBuckets(DHT *dh_table)
 void KBucketTable::onTimeout(const net::Address &addr)
 {
     for (const KBucket::Ptr &b : std::as_const(buckets)) {
-        if (b->onTimeout(addr))
+        if (b->onTimeout(addr)) {
             return;
+        }
     }
 }
 
@@ -124,13 +128,15 @@ void KBucketTable::loadTable(const QString &file, RPCServerInterface *srv)
         bt::BDecoder dec(data, false, 0);
 
         const std::unique_ptr<BListNode> bucket_list = dec.decodeList();
-        if (!bucket_list)
+        if (!bucket_list) {
             return;
+        }
 
         for (bt::Uint32 i = 0; i < bucket_list->getNumChildren(); i++) {
             BDictNode *dict = bucket_list->getDict(i);
-            if (!dict)
+            if (!dict) {
                 continue;
+            }
 
             auto bucket = std::make_unique<KBucket>(srv, our_id);
             bucket->load(dict);

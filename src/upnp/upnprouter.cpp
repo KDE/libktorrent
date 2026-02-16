@@ -81,16 +81,17 @@ UPnPService::UPnPService(const UPnPService &s)
 
 void UPnPService::setProperty(const QString &name, const QString &value)
 {
-    if (name == "serviceType"_L1)
+    if (name == "serviceType"_L1) {
         servicetype = value;
-    else if (name == "controlURL"_L1)
+    } else if (name == "controlURL"_L1) {
         controlurl = value;
-    else if (name == "eventSubURL"_L1)
+    } else if (name == "eventSubURL"_L1) {
         eventsuburl = value;
-    else if (name == "SCPDURL"_L1)
+    } else if (name == "SCPDURL"_L1) {
         scpdurl = value;
-    else if (name == "serviceId"_L1)
+    } else if (name == "serviceId"_L1) {
         serviceid = value;
+    }
 }
 
 void UPnPService::clear()
@@ -112,16 +113,17 @@ UPnPService &UPnPService::operator=(const UPnPService &s)
 
 void UPnPDeviceDescription::setProperty(const QString &name, const QString &value)
 {
-    if (name == "friendlyName"_L1)
+    if (name == "friendlyName"_L1) {
         friendlyName = value;
-    else if (name == "manufacturer"_L1)
+    } else if (name == "manufacturer"_L1) {
         manufacturer = value;
-    else if (name == "modelDescription"_L1)
+    } else if (name == "modelDescription"_L1) {
         modelDescription = value;
-    else if (name == "modelName"_L1)
+    } else if (name == "modelName"_L1) {
         modelName = value;
-    else if (name == "modelNumber"_L1)
+    } else if (name == "modelNumber"_L1) {
         modelNumber = value;
+    }
 }
 
 ///////////////////////////////////////
@@ -138,8 +140,9 @@ UPnPRouter::~UPnPRouter()
 void UPnPRouter::addService(UPnPService s)
 {
     for (const UPnPService &os : std::as_const(d->services)) {
-        if (s.servicetype == os.servicetype)
+        if (s.servicetype == os.servicetype) {
             return;
+        }
     }
     if (s.controlurl.startsWith('/'_L1)) {
         s.controlurl = "http://"_L1 + d->location.host() + ':'_L1 + QString::number(d->location.port()) + s.controlurl;
@@ -254,8 +257,9 @@ void UPnPRouter::getExternalIPResult(HTTPRequest *r)
                 Out(SYS_PNP | LOG_DEBUG) << "UPnP: External IP: " << d->external_ip << endl;
                 // Keep track of external IP so AccessManager can block it, makes no sense to connect to ourselves
                 AccessManager::instance().addExternalIP(d->external_ip);
-            } else
+            } else {
                 Out(SYS_PNP | LOG_DEBUG) << "UPnP: GetExternalIP failed: no IP address returned" << endl;
+            }
         }
     } else {
         Out(SYS_PNP | LOG_DEBUG) << "UPnP: GetExternalIP failed: " << r->errorString() << endl;
@@ -359,8 +363,9 @@ HTTPRequest *UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString &query, 
 {
     // if port is not set, 0 will be returned
     // thanks to Diego R. Brogna for spotting this bug
-    if (location.port() <= 0)
+    if (location.port() <= 0) {
         location.setPort(80);
+    }
 
     QUrl ctrlurl(controlurl);
     QString host = !ctrlurl.host().isEmpty() ? ctrlurl.host() : location.host();
@@ -431,10 +436,11 @@ void UPnPRouter::UPnPRouterPrivate::forward(const UPnPService *srv, const net::P
     QList<Forwarding>::iterator itr = fwds.begin();
     while (itr != fwds.end()) {
         Forwarding &fwo = *itr;
-        if (fwo.port == port && fwo.service == srv)
+        if (fwo.port == port && fwo.service == srv) {
             itr = fwds.erase(itr);
-        else
+        } else {
             ++itr;
+        }
     }
 
     fw.pending_req = sendSoapQuery(comm, srv->servicetype + '#'_L1 + action, srv->controlurl);
@@ -464,10 +470,11 @@ void UPnPRouter::UPnPRouterPrivate::undoForward(const UPnPService *srv, const ne
     QString comm = SOAP::createCommand(action, srv->servicetype, args);
     HTTPRequest *r = sendSoapQuery(comm, srv->servicetype + '#'_L1 + action, srv->controlurl, waitjob != nullptr);
 
-    if (waitjob)
+    if (waitjob) {
         waitjob->addExitOperation(r);
-    else
+    } else {
         connect(r, &HTTPRequest::result, parent, &UPnPRouter::undoForwardResult);
+    }
 }
 
 void UPnPRouter::UPnPRouterPrivate::getExternalIP()
@@ -498,8 +505,9 @@ void UPnPRouter::UPnPRouterPrivate::httpRequestDone(HTTPRequest *r, bool erase_f
     if (found) {
         Forwarding &fw = fwds[idx];
         fw.pending_req = nullptr;
-        if (erase_fwd)
+        if (erase_fwd) {
             fwds.removeAt(idx);
+        }
     }
 
     active_reqs.removeAll(r);

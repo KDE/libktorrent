@@ -57,8 +57,9 @@ int Poll::add(PollClient::Ptr pc)
 
 bool Poll::ready(int index, Poll::Mode mode) const
 {
-    if (index < 0 || index >= (int)num_sockets)
+    if (index < 0 || index >= (int)num_sockets) {
         return false;
+    }
 
     return fd_vec[index].revents & (mode == INPUT ? POLLIN : POLLOUT);
 }
@@ -70,8 +71,9 @@ void Poll::reset()
 
 int Poll::poll(int timeout)
 {
-    if (num_sockets == 0)
+    if (num_sockets == 0) {
         return 0;
+    }
 
     int ret = 0;
 #ifndef Q_OS_WIN
@@ -82,8 +84,9 @@ int Poll::poll(int timeout)
 
     std::map<int, PollClient::Ptr>::iterator itr = poll_clients.begin();
     while (itr != poll_clients.end()) {
-        if (ret > 0 && ready(itr->first, INPUT))
+        if (ret > 0 && ready(itr->first, INPUT)) {
             itr->second->handleData();
+        }
         itr->second->reset();
         ++itr;
     }

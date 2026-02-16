@@ -113,8 +113,9 @@ void ExtractFileJob::kill(bool quietly)
         extract_thread = nullptr;
     }
     setError(KIO::ERR_USER_CANCELED);
-    if (!quietly)
+    if (!quietly) {
         emitResult();
+    }
 }
 
 void ExtractFileJob::extractThreadDone()

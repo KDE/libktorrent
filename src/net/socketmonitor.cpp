@@ -127,8 +127,9 @@ void SocketMonitor::add(TrafficShapedSocket *sock)
 {
     QMutexLocker lock(&d->mutex);
 
-    if (!d->dt || !d->ut)
+    if (!d->dt || !d->ut) {
         return;
+    }
 
     bool start_threads = sockets.size() == 0;
     sockets.push_back(sock);
@@ -136,10 +137,12 @@ void SocketMonitor::add(TrafficShapedSocket *sock)
     if (start_threads) {
         Out(SYS_CON | LOG_DEBUG) << "Starting socketmonitor threads" << endl;
 
-        if (!d->dt->isRunning())
+        if (!d->dt->isRunning()) {
             d->dt->start(QThread::IdlePriority);
-        if (!d->ut->isRunning())
+        }
+        if (!d->ut->isRunning()) {
             d->ut->start(QThread::IdlePriority);
+        }
     }
     // wake up download thread so that it can start polling the new socket
     d->dt->wakeUp();
@@ -148,29 +151,33 @@ void SocketMonitor::add(TrafficShapedSocket *sock)
 void SocketMonitor::remove(TrafficShapedSocket *sock)
 {
     QMutexLocker lock(&d->mutex);
-    if (sockets.size() == 0)
+    if (sockets.size() == 0) {
         return;
+    }
 
     sockets.remove(sock);
 }
 
 void SocketMonitor::signalPacketReady()
 {
-    if (d->ut)
+    if (d->ut) {
         d->ut->signalDataReady();
+    }
 }
 
 Uint32 SocketMonitor::newGroup(GroupType type, Uint32 limit, Uint32 assured_rate)
 {
     QMutexLocker lock(&d->mutex);
-    if (!d->dt || !d->ut)
+    if (!d->dt || !d->ut) {
         return 0;
+    }
 
     Uint32 gid = d->next_group_id++;
-    if (type == UPLOAD_GROUP)
+    if (type == UPLOAD_GROUP) {
         d->ut->addGroup(gid, limit, assured_rate);
-    else
+    } else {
         d->dt->addGroup(gid, limit, assured_rate);
+    }
 
     return gid;
 }
@@ -178,37 +185,43 @@ Uint32 SocketMonitor::newGroup(GroupType type, Uint32 limit, Uint32 assured_rate
 void SocketMonitor::setGroupLimit(GroupType type, Uint32 gid, Uint32 limit)
 {
     QMutexLocker lock(&d->mutex);
-    if (!d->dt || !d->ut)
+    if (!d->dt || !d->ut) {
         return;
+    }
 
-    if (type == UPLOAD_GROUP)
+    if (type == UPLOAD_GROUP) {
         d->ut->setGroupLimit(gid, limit);
-    else
+    } else {
         d->dt->setGroupLimit(gid, limit);
+    }
 }
 
 void SocketMonitor::setGroupAssuredRate(GroupType type, Uint32 gid, Uint32 as)
 {
     QMutexLocker lock(&d->mutex);
-    if (!d->dt || !d->ut)
+    if (!d->dt || !d->ut) {
         return;
+    }
 
-    if (type == UPLOAD_GROUP)
+    if (type == UPLOAD_GROUP) {
         d->ut->setGroupAssuredRate(gid, as);
-    else
+    } else {
         d->dt->setGroupAssuredRate(gid, as);
+    }
 }
 
 void SocketMonitor::removeGroup(GroupType type, Uint32 gid)
 {
     QMutexLocker lock(&d->mutex);
-    if (!d->dt || !d->ut)
+    if (!d->dt || !d->ut) {
         return;
+    }
 
-    if (type == UPLOAD_GROUP)
+    if (type == UPLOAD_GROUP) {
         d->ut->removeGroup(gid);
-    else
+    } else {
         d->dt->removeGroup(gid);
+    }
 }
 
 }

@@ -29,8 +29,9 @@ UploadThread::~UploadThread()
 
 void UploadThread::update()
 {
-    if (waitForSocketsReady() <= 0)
+    if (waitForSocketsReady() <= 0) {
         return;
+    }
 
     bool group_limits = false;
     sm->lock();
@@ -48,12 +49,14 @@ void UploadThread::update()
         if (s->socketDevice()->ready(this, Poll::OUTPUT)) {
             // add to the correct group
             Uint32 gid = s->uploadGroupID();
-            if (gid > 0)
+            if (gid > 0) {
                 group_limits = true;
+            }
 
             SocketGroup *g = groups.find(gid);
-            if (!g)
+            if (!g) {
                 g = groups.find(0);
+            }
 
             g->add(s);
             num_ready++;
@@ -61,15 +64,17 @@ void UploadThread::update()
         ++itr;
     }
 
-    if (num_ready > 0)
+    if (num_ready > 0) {
         doGroups(num_ready, now, ucap);
+    }
     sm->unlock();
 
     // to prevent huge CPU usage sleep a bit if we are limited (either by a global limit or a group limit)
     if (ucap > 0 || group_limits) {
         TimeStamp diff = now - prev_run_time;
-        if (diff < sleep_time)
+        if (diff < sleep_time) {
             msleep(sleep_time - diff);
+        }
     }
     prev_run_time = now;
 }

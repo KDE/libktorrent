@@ -49,8 +49,9 @@ TrafficShapedSocket::TrafficShapedSocket(bool tcp, int ip_version)
 
     QString iface = NetworkInterface();
     QStringList ips = NetworkInterfaceIPAddresses(iface);
-    if (ips.size() > 0)
+    if (ips.size() > 0) {
         socket->bind(ips.front(), 0, false);
+    }
 
     sock = std::move(socket);
     down_speed = new Speed();
@@ -65,10 +66,11 @@ TrafficShapedSocket::~TrafficShapedSocket()
 
 void TrafficShapedSocket::setGroupID(Uint32 gid, bool upload)
 {
-    if (upload)
+    if (upload) {
         up_gid = gid;
-    else
+    } else {
         down_gid = gid;
+    }
 }
 
 int TrafficShapedSocket::getDownloadRate() const
@@ -106,10 +108,12 @@ Uint32 TrafficShapedSocket::read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now
 
     while ((br < max_bytes_to_read || no_limit) && ba > 0) {
         Uint32 tr = ba;
-        if (tr > OUTPUT_BUFFER_SIZE)
+        if (tr > OUTPUT_BUFFER_SIZE) {
             tr = OUTPUT_BUFFER_SIZE;
-        if (!no_limit && tr + br > max_bytes_to_read)
+        }
+        if (!no_limit && tr + br > max_bytes_to_read) {
             tr = max_bytes_to_read - br;
+        }
 
         int ret = sock->recv(input_buffer, tr);
         if (ret > 0) {

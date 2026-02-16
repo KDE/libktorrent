@@ -109,10 +109,11 @@ bool OpenFileAllowed()
 {
     const Uint32 headroom = 50;
     Uint32 max_open = MaxOpenFiles();
-    if (max_open == 0)
+    if (max_open == 0) {
         return true;
-    else
+    } else {
         return max_open - CurrentOpenFiles() > headroom;
+    }
 }
 
 bool MaximizeLimits()
@@ -178,21 +179,24 @@ QString NetworkInterface()
 QString NetworkInterfaceIPAddress(const QString &iface)
 {
     QNetworkInterface ni = QNetworkInterface::interfaceFromName(iface);
-    if (!ni.isValid())
+    if (!ni.isValid()) {
         return QString();
+    }
 
     QList<QNetworkAddressEntry> addr_list = ni.addressEntries();
-    if (addr_list.count() == 0)
+    if (addr_list.count() == 0) {
         return QString();
-    else
+    } else {
         return addr_list.front().ip().toString();
+    }
 }
 
 QStringList NetworkInterfaceIPAddresses(const QString &iface)
 {
     QNetworkInterface ni = QNetworkInterface::interfaceFromName(iface);
-    if (!ni.isValid())
+    if (!ni.isValid()) {
         return QStringList();
+    }
 
     QStringList ips;
     const QList<QNetworkAddressEntry> addr_list = ni.addressEntries();
@@ -210,16 +214,18 @@ QString CurrentIPv6Address()
         const QList<QHostAddress> addrs = QNetworkInterface::allAddresses();
         for (const QHostAddress &addr : addrs) {
             if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6
-                && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64))
+                && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64)) {
                 return addr.toString();
+            }
         }
     } else {
         const QList<QNetworkAddressEntry> addrs = ni.addressEntries();
         for (const QNetworkAddressEntry &entry : addrs) {
             QHostAddress addr = entry.ip();
             if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6
-                && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64))
+                && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64)) {
                 return addr.toString();
+            }
         }
     }
 
@@ -243,12 +249,13 @@ QString DurationToString(Uint32 nsecs)
     int ndays = nsecs / 86400;
     QTime t = QTime(0, 0, 0, 0).addSecs(nsecs % 86400);
     QString s;
-    if (ndays > 0)
+    if (ndays > 0) {
         s = i18np("1 day ", "%1 days ", ndays);
-    else if (t.hour())
+    } else if (t.hour()) {
         s = t.toString();
-    else
+    } else {
         s = t.toString(QStringLiteral("mm:ss"));
+    }
     return s;
 }
 
@@ -261,12 +268,13 @@ double Percentage(const TorrentStats &s)
             return 100.0;
         } else {
             double perc = 100.0 - ((double)s.bytes_left_to_download / s.total_bytes_to_download) * 100.0;
-            if (perc > 100.0)
+            if (perc > 100.0) {
                 perc = 100.0;
-            else if (perc > 99.9)
+            } else if (perc > 99.9) {
                 perc = 99.9;
-            else if (perc < 0.0)
+            } else if (perc < 0.0) {
                 perc = 0.0;
+            }
 
             return perc;
         }
@@ -286,14 +294,16 @@ QString getLastOpenSSLErrorString()
 static bool InitWindowsSocketsAPI()
 {
     static bool initialized = false;
-    if (initialized)
+    if (initialized) {
         return true;
+    }
 
     WSADATA wsaData;
     WORD wVersionRequested = MAKEWORD(2, 2);
     int err = WSAStartup(wVersionRequested, &wsaData);
-    if (err != 0)
+    if (err != 0) {
         return false;
+    }
 
     initialized = true;
     return true;
@@ -303,8 +313,9 @@ static bool InitWindowsSocketsAPI()
 static bool InitCryptoBackend()
 {
     static bool initialized = false;
-    if (initialized)
+    if (initialized) {
         return true;
+    }
 
 #if defined(LIBKTORRENT_USE_OPENSSL)
     // We need legacy provider for the RC4 cipher

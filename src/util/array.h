@@ -29,8 +29,9 @@ public:
     Array(Uint32 num = 0)
         : m_num(num)
     {
-        if (num > 0)
+        if (num > 0) {
             m_data = std::make_unique<T[]>(num);
+        }
     }
 
     /*!

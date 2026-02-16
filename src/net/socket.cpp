@@ -56,8 +56,9 @@ Socket::Socket(int fd, int ip_version)
     , w_poll_index(-1)
 {
     // check if the IP version is 4 or 6
-    if (m_ip_version != 4 && m_ip_version != 6)
+    if (m_ip_version != 4 && m_ip_version != 6) {
         m_ip_version = 4;
+    }
 
     if (m_fd >= 0) {
         int val = 0;
@@ -90,8 +91,9 @@ Socket::Socket(bool tcp, int ip_version)
     , w_poll_index(-1)
 {
     // check if the IP version is 4 or 6
-    if (m_ip_version != 4 && m_ip_version != 6)
+    if (m_ip_version != 4 && m_ip_version != 6) {
         m_ip_version = 4;
+    }
 
     m_state = CLOSED;
 
@@ -171,10 +173,11 @@ void Socket::setBlocking(bool on)
 {
 #ifndef Q_OS_WIN
     int flag = fcntl(m_fd, F_GETFL, 0);
-    if (!on)
+    if (!on) {
         fcntl(m_fd, F_SETFL, flag | O_NONBLOCK);
-    else
+    } else {
         fcntl(m_fd, F_SETFL, flag & ~O_NONBLOCK);
+    }
 #else
     /** This makes no sense...
 
@@ -308,8 +311,9 @@ int Socket::sendTo(const bt::Uint8 *buf, int len, const Address &a)
     int ret = ::sendto(m_fd, (char *)buf, len, 0, (struct sockaddr *)&ss, alen);
     if (ret < 0) {
         const int err = errno;
-        if (err == EAGAIN || err == EWOULDBLOCK)
+        if (err == EAGAIN || err == EWOULDBLOCK) {
             return SEND_WOULD_BLOCK;
+        }
 
         Out(SYS_CON | LOG_DEBUG) << "Send error : " << QString::fromUtf8(strerror(err)) << endl;
         return SEND_FAILURE;
@@ -356,8 +360,9 @@ int Socket::accept(Address &a)
 bool Socket::setTOS(unsigned char type_of_service)
 {
     // If type of service is 0, do nothing
-    if (type_of_service == 0)
+    if (type_of_service == 0) {
         return true;
+    }
 
     if (m_ip_version == 4) {
 #if defined(Q_OS_MACX) || defined(Q_OS_DARWIN) || defined(Q_OS_NETBSD) || defined(Q_OS_BSD4)
@@ -409,8 +414,9 @@ Uint32 Socket::bytesAvailable() const
 
 bool Socket::connectSuccesFull()
 {
-    if (m_state != CONNECTING && m_state != CONNECTED)
+    if (m_state != CONNECTING && m_state != CONNECTED) {
         return false;
+    }
 
     int err = 0;
     socklen_t len = sizeof(int);
@@ -444,10 +450,11 @@ Address Socket::getSockName() const
     struct sockaddr_storage ss; /* Where the peer adr goes. */
     socklen_t sslen = sizeof(ss);
 
-    if (getsockname(m_fd, (struct sockaddr *)&ss, &sslen) == 0)
+    if (getsockname(m_fd, (struct sockaddr *)&ss, &sslen) == 0) {
         return net::Address(&ss);
-    else
+    } else {
         return Address();
+    }
 }
 
 int Socket::take()
@@ -461,10 +468,11 @@ int Socket::take()
 void Socket::prepare(Poll *p, Poll::Mode mode)
 {
     if (m_fd >= 0) {
-        if (mode == Poll::OUTPUT)
+        if (mode == Poll::OUTPUT) {
             w_poll_index = p->add(m_fd, mode);
-        else
+        } else {
             r_poll_index = p->add(m_fd, mode);
+        }
     }
 }
 

@@ -52,8 +52,9 @@ BigInt BigInt::powerMod(const BigInt &x, const BigInt &e, const BigInt &d)
 BigInt BigInt::random()
 {
     Uint32 tmp[5];
-    for (Uint8 i = 0; i < 5; i++)
+    for (Uint8 i = 0; i < 5; i++) {
         tmp[i] = QRandomGenerator::global()->generate();
+    }
 
     return BigInt::fromBuffer(reinterpret_cast<Uint8 *>(tmp), 20);
 }

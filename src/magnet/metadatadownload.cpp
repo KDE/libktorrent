@@ -17,8 +17,9 @@ MetadataDownload::MetadataDownload(UTMetaData *ext, Uint32 size)
 {
     metadata.resize(size);
     Uint32 num_pieces = size / METADATA_PIECE_SIZE;
-    if (size % METADATA_PIECE_SIZE > 0)
+    if (size % METADATA_PIECE_SIZE > 0) {
         num_pieces++;
+    }
 
     pieces = BitSet(num_pieces);
     download(0);
@@ -44,8 +45,9 @@ bool MetadataDownload::data(Uint32 piece, QByteArrayView piece_data)
     }
 
     int size = METADATA_PIECE_SIZE;
-    if (piece == pieces.getNumBits() - 1 && total_size % METADATA_PIECE_SIZE > 0)
+    if (piece == pieces.getNumBits() - 1 && total_size % METADATA_PIECE_SIZE > 0) {
         size = total_size % METADATA_PIECE_SIZE;
+    }
 
     if (size != piece_data.size()) {
         Out(SYS_GEN | LOG_NOTICE) << "Metadata download, received piece " << piece << " has the wrong size " << endl;
@@ -63,8 +65,9 @@ bool MetadataDownload::data(Uint32 piece, QByteArrayView piece_data)
     memcpy(metadata.data() + off, piece_data.data(), size);
     pieces.set(piece, true);
 
-    if (!pieces.allOn())
+    if (!pieces.allOn()) {
         downloadNext();
+    }
 
     return pieces.allOn();
 }
@@ -85,9 +88,11 @@ void MetadataDownload::download(Uint32 piece)
 void MetadataDownload::downloadNext()
 {
     Out(SYS_GEN | LOG_NOTICE) << "Metadata download, requesting " << pieces.getNumBits() << " pieces" << endl;
-    for (Uint32 i = 0; i < pieces.getNumBits(); i++)
-        if (!pieces.get(i))
+    for (Uint32 i = 0; i < pieces.getNumBits(); i++) {
+        if (!pieces.get(i)) {
             download(i);
+        }
+    }
 }
 
 }

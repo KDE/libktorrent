@@ -31,15 +31,17 @@ bt::Uint32 DelayWindow::update(const utp::Header *hdr, bt::TimeStamp receive_tim
         if (receive_time - itr->receive_time > DELAY_WINDOW_SIZE) {
             // Old entry, can remove it
             itr = delay_window.erase(itr);
-        } else
+        } else {
             break;
+        }
     }
 
     // If we are on the end or the new value has a lower delay, clear the list and insert at front
     if (itr == delay_window.end() || hdr->timestamp_difference_microseconds < itr->timestamp_difference_microseconds) {
         delay_window.clear();
-        if (delay_window.full())
+        if (delay_window.full()) {
             delay_window.set_capacity(delay_window.capacity() + 100);
+        }
 
         delay_window.push_back(DelayEntry(hdr->timestamp_difference_microseconds, receive_time));
         return hdr->timestamp_difference_microseconds;
@@ -50,8 +52,9 @@ bt::Uint32 DelayWindow::update(const utp::Header *hdr, bt::TimeStamp receive_tim
     itr = std::lower_bound(delay_window.begin(), delay_window.end(), entry);
     // Everything until the end has a higher delay then the new sample and is older.
     // So they can all be dropped, because they can never be the minimum delay again.
-    if (itr != delay_window.end())
+    if (itr != delay_window.end()) {
         delay_window.erase(itr, delay_window.end());
+    }
 
     delay_window.push_back(entry);
 

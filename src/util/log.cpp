@@ -76,15 +76,17 @@ public:
 
     void rotateLogs(const QString &file)
     {
-        if (bt::Exists(file + "-10.gz"_L1))
+        if (bt::Exists(file + "-10.gz"_L1)) {
             bt::Delete(file + "-10.gz"_L1, true);
+        }
 
         // move all log files one up
         for (Uint32 i = 10; i > 1; i--) {
             QString prev = QStringLiteral("%1-%2.gz").arg(file).arg(i - 1);
             QString curr = QStringLiteral("%1-%2.gz").arg(file).arg(i);
-            if (bt::Exists(prev))
+            if (bt::Exists(prev)) {
                 QFile::rename(prev, curr);
+            }
         }
 
         // move current log to 1 and zip it
@@ -97,13 +99,15 @@ public:
     {
         QMutexLocker lock(&mutex);
 
-        if (handle_qt_messages)
+        if (handle_qt_messages) {
             qInstallMessageHandler(QtMessageOutput);
+        }
 
         cleanup();
 
-        if (bt::Exists(file) && rotate)
+        if (bt::Exists(file) && rotate) {
             rotateLogs(file);
+        }
 
         fptr = new QFile(file);
         if (!fptr->open(QIODevice::WriteOnly)) {
@@ -128,13 +132,14 @@ public:
         // only add stuff when we are not rotating the logs
         // this could result in the loss of some messages
         if (!rotate_job && fptr != nullptr) {
-            if (out)
+            if (out) {
                 *out << final << Qt::endl;
+            }
 
             fptr->flush();
-            if (to_cout)
+            if (to_cout) {
                 std::cout << final.toLocal8Bit().constData() << std::endl;
-            ;
+            };
         }
 
         if (monitors.count() > 0) {
@@ -193,8 +198,9 @@ void Log::addMonitor(LogMonitorInterface *m)
 void Log::removeMonitor(LogMonitorInterface *m)
 {
     int index = priv->monitors.indexOf(m);
-    if (index != -1)
+    if (index != -1) {
         priv->monitors.takeAt(index);
+    }
 }
 
 void Log::setOutputToConsole(bool on)

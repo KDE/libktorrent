@@ -26,16 +26,18 @@ TaskManager::~TaskManager()
 void TaskManager::addTask(Task *task)
 {
     connect(task, &Task::finished, this, &TaskManager::taskFinished);
-    if (task->isQueued())
+    if (task->isQueued()) {
         queued.append(QPointer<Task>(task));
-    else
+    } else {
         num_active++;
+    }
 }
 
 void TaskManager::taskFinished(Task *task)
 {
-    if (!task->isQueued() && num_active > 0)
+    if (!task->isQueued() && num_active > 0) {
         num_active--;
+    }
     task->deleteLater();
 
     while (dh_table->canStartTask() && !queued.isEmpty()) {

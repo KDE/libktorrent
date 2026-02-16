@@ -33,10 +33,11 @@ TorrentFile::TorrentFile(Torrent *tor, Uint32 index, const QString &path, Uint64
 {
     first_chunk = off / chunk_size;
     first_chunk_off = off % chunk_size;
-    if (size > 0)
+    if (size > 0) {
         last_chunk = (off + size - 1) / chunk_size;
-    else
+    } else {
         last_chunk = first_chunk;
+    }
     last_chunk_size = (off + size) - last_chunk * chunk_size;
     priority = old_priority = NORMAL_PRIORITY;
 }
@@ -66,30 +67,35 @@ TorrentFile::~TorrentFile()
 void TorrentFile::setDoNotDownload(bool dnd)
 {
     if (priority != EXCLUDED && dnd) {
-        if (emit_status_changed)
+        if (emit_status_changed) {
             old_priority = priority;
+        }
 
         priority = EXCLUDED;
 
-        if (emit_status_changed)
+        if (emit_status_changed) {
             tor->downloadPriorityChanged(this, priority, old_priority);
+        }
     }
     if (priority == EXCLUDED && (!dnd)) {
-        if (emit_status_changed)
+        if (emit_status_changed) {
             old_priority = priority;
+        }
 
         priority = NORMAL_PRIORITY;
 
-        if (emit_status_changed)
+        if (emit_status_changed) {
             tor->downloadPriorityChanged(this, priority, old_priority);
+        }
     }
 }
 
 void TorrentFile::emitDownloadStatusChanged()
 {
     // only emit when old_priority is not equal to the new priority
-    if (priority != old_priority)
+    if (priority != old_priority) {
         tor->downloadPriorityChanged(this, priority, old_priority);
+    }
 }
 
 bool TorrentFile::isMultimedia() const
@@ -102,12 +108,13 @@ bool TorrentFile::isMultimedia() const
         }
 
         QString name = ptr.name();
-        if (name.startsWith(QLatin1String("audio")) || name == QLatin1String("application/ogg"))
+        if (name.startsWith(QLatin1String("audio")) || name == QLatin1String("application/ogg")) {
             filetype = AUDIO;
-        else if (name.startsWith(QLatin1String("video")))
+        } else if (name.startsWith(QLatin1String("video"))) {
             filetype = VIDEO;
-        else
+        } else {
             filetype = NORMAL;
+        }
     }
     return filetype == AUDIO || filetype == VIDEO;
 }
@@ -157,10 +164,12 @@ Uint64 TorrentFile::fileOffset(Uint32 cindex, Uint64 chunk_size) const
     if (getFirstChunkOffset() == 0) {
         off = (cindex - getFirstChunk()) * chunk_size;
     } else {
-        if (cindex - this->getFirstChunk() > 0)
+        if (cindex - this->getFirstChunk() > 0) {
             off = (cindex - this->getFirstChunk() - 1) * chunk_size;
-        if (cindex > 0)
+        }
+        if (cindex > 0) {
             off += (chunk_size - this->getFirstChunkOffset());
+        }
     }
     return off;
 }
@@ -183,11 +192,13 @@ void TorrentFile::updateNumDownloadedChunks(ChunkManager &cman)
     }
     preview = isMultimedia() && preview;
 
-    if (num_chunks_downloaded != old_chunk_count)
+    if (num_chunks_downloaded != old_chunk_count) {
         tor->filePercentageChanged(this, getDownloadPercentage());
+    }
 
-    if (prev != preview)
+    if (prev != preview) {
         tor->filePreviewChanged(this, preview);
+    }
 }
 
 }

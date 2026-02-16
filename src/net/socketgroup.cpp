@@ -32,10 +32,11 @@ void SocketGroup::processUnlimited(bool up, bt::TimeStamp now)
     while (i != sockets.end()) {
         TrafficShapedSocket *s = *i;
         if (s) {
-            if (up)
+            if (up) {
                 s->write(0, now);
-            else
+            } else {
                 s->read(0, now);
+            }
         }
         ++i;
     }
@@ -50,37 +51,42 @@ bool SocketGroup::processLimited(bool up, bt::TimeStamp now, Uint32 &allowance)
     // while we can send and there are sockets left to send
     while (sockets.size() > 0 && allowance > 0) {
         Uint32 as = bslot;
-        if (as > allowance)
+        if (as > allowance) {
             as = allowance;
+        }
 
         TrafficShapedSocket *s = *itr;
         if (s) {
             Uint32 ret = 0;
-            if (up)
+            if (up) {
                 ret = s->write(as, now);
-            else
+            } else {
                 ret = s->read(as, now);
+            }
 
             // if this socket did what it was supposed to do,
             // it can have another go if stuff is leftover
             // if it doesn't, we erase it from the list
-            if (ret != as)
+            if (ret != as) {
                 itr = sockets.erase(itr);
-            else
+            } else {
                 ++itr;
+            }
 
-            if (ret > allowance)
+            if (ret > allowance) {
                 allowance = 0;
-            else
+            } else {
                 allowance -= ret;
+            }
         } else {
             // nullptr so just erase
             itr = sockets.erase(itr);
         }
 
         // wrap around if necessary
-        if (itr == sockets.end())
+        if (itr == sockets.end()) {
             itr = sockets.begin();
+        }
     }
 
     return sockets.size() > 0;
@@ -98,15 +104,17 @@ bool SocketGroup::upload(Uint32 &global_allowance, bt::TimeStamp now)
 
 void SocketGroup::calcAllowance(bt::TimeStamp now)
 {
-    if (limit > 0)
+    if (limit > 0) {
         group_allowance = (Uint32)ceil(1.0 * limit * (now - prev_run_time) * 0.001);
-    else
+    } else {
         group_allowance = 0;
+    }
 
-    if (assured_rate > 0)
+    if (assured_rate > 0) {
         group_assured = (Uint32)ceil(1.0 * assured_rate * (now - prev_run_time) * 0.001);
-    else
+    } else {
         group_assured = 0;
+    }
 
     prev_run_time = now;
 }
@@ -129,10 +137,11 @@ bool SocketGroup::process(bool up, bt::TimeStamp now, Uint32 &global_allowance)
             ret = processLimited(up, now, tmp);
 
             Uint32 done = (global_allowance - tmp);
-            if (group_allowance < done)
+            if (group_allowance < done) {
                 group_allowance = 0;
-            else
+            } else {
                 group_allowance -= done;
+            }
 
             global_allowance = tmp;
         } else {
@@ -140,10 +149,11 @@ bool SocketGroup::process(bool up, bt::TimeStamp now, Uint32 &global_allowance)
             ret = processLimited(up, now, p);
 
             Uint32 done = (group_allowance - p);
-            if (global_allowance < done)
+            if (global_allowance < done) {
                 global_allowance = 0;
-            else
+            } else {
                 global_allowance -= done;
+            }
 
             group_allowance = p;
         }
@@ -152,8 +162,9 @@ bool SocketGroup::process(bool up, bt::TimeStamp now, Uint32 &global_allowance)
         if (group_allowance == 0) {
             clear();
             return false;
-        } else
+        } else {
             return ret;
+        }
     } else if (global_allowance > 0) {
         return processLimited(up, now, global_allowance);
     } else {

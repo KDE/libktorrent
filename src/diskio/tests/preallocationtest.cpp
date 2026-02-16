@@ -81,8 +81,9 @@ private Q_SLOTS:
         cache.preparePreallocation(&prealloc);
         prealloc.run();
 
-        if (!prealloc.errorMessage().isEmpty())
+        if (!prealloc.errorMessage().isEmpty()) {
             Out(SYS_GEN | LOG_DEBUG) << "Preallocation failed: " << prealloc.errorMessage() << endl;
+        }
 
         Out(SYS_GEN | LOG_DEBUG) << "bw: " << prealloc.bytesWritten() << ", ts: " << multi_tor.getTotalSize() << endl;
         QVERIFY(prealloc.errorHappened() == false);
@@ -105,8 +106,9 @@ private Q_SLOTS:
         cache.preparePreallocation(&prealloc);
         prealloc.run();
 
-        if (!prealloc.errorMessage().isEmpty())
+        if (!prealloc.errorMessage().isEmpty()) {
             Out(SYS_GEN | LOG_DEBUG) << "Preallocation failed: " << prealloc.errorMessage() << endl;
+        }
 
         Out(SYS_GEN | LOG_DEBUG) << "bw: " << prealloc.bytesWritten() << ", ts: " << single_tor.getTotalSize() << endl;
         QVERIFY(prealloc.errorHappened() == false);

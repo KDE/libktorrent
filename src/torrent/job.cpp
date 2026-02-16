@@ -48,8 +48,9 @@ void Job::setJobTracker(KJobTrackerInterface *trk)
 
 void Job::registerWithTracker()
 {
-    if (tracker)
+    if (tracker) {
         tracker->registerJob(this);
+    }
 }
 
 }

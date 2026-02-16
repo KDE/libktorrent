@@ -153,10 +153,11 @@ private Q_SLOTS:
 
         port = 50000;
         while (port < 60000) {
-            if (!srv.changePort(port))
+            if (!srv.changePort(port)) {
                 port++;
-            else
+            } else {
                 break;
+            }
         }
 
         srv.setCreateSockets(false);
@@ -177,8 +178,9 @@ private Q_SLOTS:
         QVERIFY(outgoing);
         QVERIFY(incoming);
         QVERIFY(incoming->connectionState() == CS_CONNECTED);
-        if (outgoing->connectionState() != CS_CONNECTED)
+        if (outgoing->connectionState() != CS_CONNECTED) {
             QVERIFY(outgoing->waitUntilConnected());
+        }
         QVERIFY(outgoing->connectionState() == CS_CONNECTED);
     }
 

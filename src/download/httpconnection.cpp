@@ -128,8 +128,9 @@ void HttpConnection::onDataReady(Uint8 *buf, Uint32 size)
                 state = ERROR;
                 status = i18n("Error: request failed: %1", request->failure_reason);
                 response_code = request->response_code;
-            } else if (request->response_header_received)
+            } else if (request->response_header_received) {
                 Q_EMIT stopReplyTimer();
+            }
         }
     }
 }
@@ -203,8 +204,9 @@ void HttpConnection::hostResolved(net::AddressResolver *ar)
 bool HttpConnection::get(const QString &host, const QString &path, const QString &query, bt::Uint64 start, bt::Uint64 len)
 {
     QMutexLocker locker(&mutex);
-    if (state == ERROR || request)
+    if (state == ERROR || request) {
         return false;
+    }
 
     request = new HttpGet(host, path, query, start, len, using_proxy);
     if (sock) {
@@ -217,14 +219,16 @@ bool HttpConnection::get(const QString &host, const QString &path, const QString
 bool HttpConnection::getData(QByteArray &data)
 {
     QMutexLocker locker(&mutex);
-    if (!request)
+    if (!request) {
         return false;
+    }
 
     HttpGet *g = request;
     if (g->redirected) {
         // wait until we have the entire content if we are redirected
-        if (g->data_received < g->content_length)
+        if (g->data_received < g->content_length) {
             return false;
+        }
 
         // we have the content so we can redirect the connection
         redirected_url = g->redirected_to;
@@ -232,8 +236,9 @@ bool HttpConnection::getData(QByteArray &data)
         return false;
     }
 
-    if (g->piece_data.size() == 0)
+    if (g->piece_data.size() == 0) {
         return false;
+    }
 
     data = g->piece_data;
     g->piece_data.clear();
@@ -259,8 +264,9 @@ int HttpConnection::getDownloadRate() const
     if (sock) {
         sock->updateSpeeds(bt::CurrentTime());
         return sock->getDownloadRate();
-    } else
+    } else {
         return 0;
+    }
 }
 
 void HttpConnection::connectTimeout()
@@ -330,16 +336,18 @@ bool HttpConnection::HttpGet::onDataReady(Uint8 *buf, Uint32 size)
         buffer.append(QByteArray::fromRawData((char *)buf, size));
         // look for the end of the header
         int idx = buffer.indexOf("\r\n\r\n");
-        if (idx == -1) // haven't got the full header yet
+        if (idx == -1) { // haven't got the full header yet
             return true;
+        }
 
         response_header_received = true;
         HttpResponseHeader hdr(QString::fromLatin1(buffer.mid(0, idx + 4)));
 
-        if (hdr.hasKey(u"Content-Length"_s))
+        if (hdr.hasKey(u"Content-Length"_s)) {
             content_length = hdr.value(u"Content-Length"_s).toInt();
-        else
+        } else {
             content_length = 0;
+        }
 
         Out(SYS_CON | LOG_DEBUG) << "HttpConnection: http reply header received" << endl;
         Out(SYS_CON | LOG_DEBUG) << buffer.mid(0, idx + 4).constData() << endl;

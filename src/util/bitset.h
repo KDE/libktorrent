@@ -170,8 +170,9 @@ const Uint8 set_off_lookup[8] = {0x7F, 0xBF, 0xDF, 0xEF, 0xF7, 0xFB, 0xFD, 0xFE}
 
 inline bool BitSet::get(Uint32 i) const
 {
-    if (i >= num_bits)
+    if (i >= num_bits) {
         return false;
+    }
     // i >> 3 equal to i / 8
     // i & 7 equal to i % 8
     return (data[i >> 3] & set_on_lookup[i & 7]) != 0;
@@ -190,8 +191,9 @@ static const Uint8 BitCount[256] = {
 
 inline void BitSet::set(Uint32 i, bool on)
 {
-    if (i >= num_bits)
+    if (i >= num_bits) {
         return;
+    }
 
     Uint8 *d = data + (i >> 3);
     num_on -= BitCount[*d];

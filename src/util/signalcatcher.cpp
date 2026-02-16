@@ -23,8 +23,9 @@ static void sigbus_handler(int sig, siginfo_t *siginfo, void *ptr)
     Q_UNUSED(sig)
     // Jump to error handling code,
     // ignore signal if we are not safe to jump
-    if (siglongjmp_safe)
+    if (siglongjmp_safe) {
         siglongjmp(sigbus_env, 1);
+    }
 }
 
 static bool InstallBusHandler()
@@ -33,8 +34,9 @@ static bool InstallBusHandler()
 
     memset(&act, 0, sizeof(act));
 
-    if (sigaction(SIGBUS, nullptr, &act) != -1 && act.sa_sigaction == sigbus_handler)
+    if (sigaction(SIGBUS, nullptr, &act) != -1 && act.sa_sigaction == sigbus_handler) {
         return true;
+    }
 
     act.sa_sigaction = sigbus_handler;
     act.sa_flags = SA_SIGINFO;

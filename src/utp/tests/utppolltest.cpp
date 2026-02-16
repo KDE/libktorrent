@@ -30,8 +30,9 @@ public:
         utp::Connection::Ptr conn = bt::Globals::instance().getUTPServer().acceptedConnection();
         incoming[num_accepted++] = new UTPSocket(conn);
         Out(SYS_UTP | LOG_DEBUG) << "Accepted " << num_accepted << endl;
-        if (num_accepted >= NUM_SOCKETS)
+        if (num_accepted >= NUM_SOCKETS) {
             exit();
+        }
     }
 
     void doConnect()
@@ -55,10 +56,11 @@ private:
 
         port = 50000;
         while (port < 60000) {
-            if (!bt::Globals::instance().initUTPServer(port))
+            if (!bt::Globals::instance().initUTPServer(port)) {
                 port++;
-            else
+            } else {
                 break;
+            }
         }
 
         bt::Globals::instance().getUTPServer().setCreateSockets(false);
@@ -120,14 +122,16 @@ private:
         poller.reset();
         while (!bs.allOn()) {
             for (int i = 0; i < NUM_SOCKETS; i++) {
-                if (!bs.get(i))
+                if (!bs.get(i)) {
                     outgoing[i]->prepare(&poller, net::Poll::OUTPUT);
+                }
             }
 
             QVERIFY(poller.poll(1000) > 0);
             for (int i = 0; i < NUM_SOCKETS; i++) {
-                if (bs.get(i) || !outgoing[i]->ready(&poller, net::Poll::OUTPUT))
+                if (bs.get(i) || !outgoing[i]->ready(&poller, net::Poll::OUTPUT)) {
                     continue;
+                }
 
                 int ret = outgoing[i]->send((const bt::Uint8 *)test, strlen(test));
                 QVERIFY(ret == (int)strlen(test));
@@ -139,9 +143,11 @@ private:
 
         while (!bs.allOn()) {
             poller.reset();
-            for (int i = 0; i < NUM_SOCKETS; i++)
-                if (!bs.get(i))
+            for (int i = 0; i < NUM_SOCKETS; i++) {
+                if (!bs.get(i)) {
                     incoming[i]->prepare(&poller, Poll::INPUT);
+                }
+            }
 
             Out(SYS_GEN | LOG_DEBUG) << "Entering poll" << endl;
             QVERIFY(poller.poll(1000) > 0);

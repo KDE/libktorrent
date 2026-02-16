@@ -36,14 +36,16 @@ MagnetDownloader::MagnetDownloader(const bt::MagnetLink &mlink, QObject *parent)
 
 MagnetDownloader::~MagnetDownloader()
 {
-    if (running())
+    if (running()) {
         stop();
+    }
 }
 
 void MagnetDownloader::start()
 {
-    if (running())
+    if (running()) {
         return;
+    }
 
     if (!mlink.torrent().isEmpty()) {
         KIO::StoredTransferJob *job = KIO::storedGet(QUrl(mlink.torrent()), KIO::NoReload, KIO::HideProgressInfo);
@@ -56,10 +58,11 @@ void MagnetDownloader::start()
     const QList<QUrl> trackers_list = mlink.trackers();
     for (const QUrl &url : trackers_list) {
         Tracker *tracker;
-        if (url.scheme() == QLatin1String("udp"))
+        if (url.scheme() == QLatin1String("udp")) {
             tracker = new UDPTracker(url, this, tor.getPeerID(), 0);
-        else
+        } else {
             tracker = new HTTPTracker(url, this, tor.getPeerID(), 0);
+        }
         trackers << tracker;
         connect(tracker, &Tracker::peersReady, pman, &PeerManager::peerSourceReady);
         tracker->start();
@@ -78,8 +81,9 @@ void MagnetDownloader::start()
 
 void MagnetDownloader::stop()
 {
-    if (!running())
+    if (!running()) {
         return;
+    }
 
     for (Tracker *tracker : std::as_const(trackers)) {
         tracker->stop();
@@ -100,8 +104,9 @@ void MagnetDownloader::stop()
 
 void MagnetDownloader::update()
 {
-    if (pman)
+    if (pman) {
         pman->update();
+    }
 }
 
 bool MagnetDownloader::running() const
@@ -152,8 +157,9 @@ const bt::SHA1Hash &MagnetDownloader::infoHash() const
 
 void MagnetDownloader::onTorrentDownloaded(KJob *job)
 {
-    if (!job)
+    if (!job) {
         return;
+    }
 
     KIO::StoredTransferJob *stj = qobject_cast<KIO::StoredTransferJob *>(job);
     if (job->error()) {
@@ -178,8 +184,9 @@ void MagnetDownloader::onTorrentDownloaded(KJob *job)
 
 void MagnetDownloader::onMetadataDownloaded(const QByteArray &data)
 {
-    if (found)
+    if (found) {
         return;
+    }
 
     bt::SHA1Hash hash = bt::SHA1Hash::generate(data);
     if (hash != mlink.infoHash()) {

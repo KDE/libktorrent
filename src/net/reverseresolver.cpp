@@ -48,10 +48,11 @@ QString ReverseResolver::resolve(const net::Address &addr)
     char service[200];
     memset(host, 0, 200);
     memset(service, 0, 200);
-    if (getnameinfo((struct sockaddr *)&ss, slen, host, 199, service, 199, NI_NAMEREQD) == 0)
+    if (getnameinfo((struct sockaddr *)&ss, slen, host, 199, service, 199, NI_NAMEREQD) == 0) {
         return QString::fromUtf8(host);
-    else
+    } else {
         return QString();
+    }
 }
 
 void ReverseResolver::run()
@@ -104,8 +105,9 @@ void ReverseResolverThread::run()
     }
 
     // cleanup if necessary
-    for (ReverseResolver *rr : std::as_const(todo_list))
+    for (ReverseResolver *rr : std::as_const(todo_list)) {
         rr->deleteLater();
+    }
     todo_list.clear();
 }
 

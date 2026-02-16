@@ -71,8 +71,9 @@ void UTMetaData::data(BDictNode *dict, QByteArrayView piece_data)
 
 void UTMetaData::reject(BDictNode *dict)
 {
-    if (download)
+    if (download) {
         download->reject(dict->getInt(QByteArrayLiteral("piece")));
+    }
 }
 
 void UTMetaData::request(BDictNode *dict)

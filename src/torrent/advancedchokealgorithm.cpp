@@ -93,8 +93,9 @@ void AdvancedChokeAlgorithm::doChokingLeechingState(PeerManager &pman, ChunkMana
             // choke seeders they do not want to download from us anyway
             p->choke();
             i = ppl.erase(i);
-        } else
+        } else {
             ++i;
+        }
     }
 
     // sort list by ACA score
@@ -115,8 +116,9 @@ void AdvancedChokeAlgorithm::doUnchoking(const QList<Peer *> &ppl, Peer *poup)
             num_unchoked++;
         } else if (num_unchoked < num_slots - 1 || p == poup) {
             p->sendUnchoke();
-            if (p != poup)
+            if (p != poup) {
                 num_unchoked++;
+            }
         } else {
             p->choke();
         }
@@ -137,8 +139,9 @@ void AdvancedChokeAlgorithm::doChokingSeedingState(PeerManager &pman, ChunkManag
             // choke seeders they do not want to download from us anyway
             p->choke();
             i = ppl.erase(i);
-        } else
+        } else {
             ++i;
+        }
     }
 
     std::sort(ppl.begin(), ppl.end(), UploadRateGreaterThan);
@@ -149,16 +152,18 @@ void AdvancedChokeAlgorithm::doChokingSeedingState(PeerManager &pman, ChunkManag
 static Uint32 FindPlannedOptimisticUnchokedPeer(const QList<Peer *> &ppl)
 {
     Uint32 num_peers = ppl.size();
-    if (num_peers == 0)
+    if (num_peers == 0) {
         return UNDEFINED_ID;
+    }
 
     // find a random peer that is choked and interested
     Uint32 start = QRandomGenerator::global()->bounded(num_peers);
     Uint32 i = (start + 1) % num_peers;
     while (i != start) {
         Peer *p = ppl.at(i);
-        if (p && p->isChoked() && p->isInterested() && !p->isSeeder() && ppl.contains(p))
+        if (p && p->isChoked() && p->isInterested() && !p->isSeeder() && ppl.contains(p)) {
             return p->getID();
+        }
         i = (i + 1) % num_peers;
     }
 

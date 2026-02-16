@@ -33,8 +33,9 @@ WindowPacket::~WindowPacket()
 bt::Uint32 WindowPacket::read(bt::Uint8 *dst, bt::Uint32 max_len)
 {
     bt::Uint32 to_read = qMin(packet->size() - bytes_read, max_len);
-    if (to_read == 0)
+    if (to_read == 0) {
         return 0;
+    }
 
     memcpy(dst, packet->get() + bytes_read, to_read);
     bytes_read += to_read;
@@ -100,14 +101,16 @@ bt::Uint32 LocalWindow::read(bt::Uint8 *data, bt::Uint32 max_len)
             pkt.packet.clear();
             first_seq_nr++;
             off++;
-        } else
+        } else {
             break;
+        }
     }
 
     // Erase is inefficient, so lets do it when we have a whole bunch to throw away
     off = SeqNrDiff(incoming_packets.front().seq_nr, first_seq_nr);
-    if (off > 20)
+    if (off > 20) {
         incoming_packets.erase(incoming_packets.begin(), incoming_packets.begin() + off);
+    }
 
     return written;
 }
@@ -116,8 +119,9 @@ bool LocalWindow::packetReceived(const utp::Header *hdr, bt::Buffer::Ptr packet,
 {
     // Drop duplicate data packets
     // Make sure we take into account wrapping around
-    if (SeqNrCmpSE(hdr->seq_nr, last_seq_nr))
+    if (SeqNrCmpSE(hdr->seq_nr, last_seq_nr)) {
         return true;
+    }
 
     bt::Uint32 data_size = packet->size() - data_off;
     if (availableSpace() < data_size) {
@@ -127,12 +131,14 @@ bool LocalWindow::packetReceived(const utp::Header *hdr, bt::Buffer::Ptr packet,
 
     if (incoming_packets.empty()) {
         first_seq_nr = last_seq_nr + 1;
-        for (bt::Uint16 i = last_seq_nr + 1; SeqNrCmpS(i, hdr->seq_nr); i++)
+        for (bt::Uint16 i = last_seq_nr + 1; SeqNrCmpS(i, hdr->seq_nr); i++) {
             incoming_packets.push_back(WindowPacket(i));
+        }
         incoming_packets.push_back(WindowPacket(hdr->seq_nr, packet, data_off));
     } else if (SeqNrCmpS(incoming_packets.back().seq_nr, hdr->seq_nr)) {
-        for (bt::Uint16 i = incoming_packets.back().seq_nr + 1; SeqNrCmpS(i, hdr->seq_nr); i++)
+        for (bt::Uint16 i = incoming_packets.back().seq_nr + 1; SeqNrCmpS(i, hdr->seq_nr); i++) {
             incoming_packets.push_back(WindowPacket(i));
+        }
         incoming_packets.push_back(WindowPacket(hdr->seq_nr, packet, data_off));
     } else if (incoming_packets[SeqNrDiff(incoming_packets.front().seq_nr, hdr->seq_nr)].packet) {
         // Already got this one
@@ -157,8 +163,9 @@ bool LocalWindow::packetReceived(const utp::Header *hdr, bt::Buffer::Ptr packet,
                 last_seq_nr = next_seq_nr;
                 next_seq_nr++;
                 off++;
-            } else
+            } else {
                 break;
+            }
         }
     }
 
@@ -173,10 +180,11 @@ bool LocalWindow::packetReceived(const utp::Header *hdr, bt::Buffer::Ptr packet,
 
 bt::Uint32 LocalWindow::selectiveAckBits() const
 {
-    if (!incoming_packets.empty() && SeqNrCmpS(last_seq_nr, incoming_packets.back().seq_nr))
+    if (!incoming_packets.empty() && SeqNrCmpS(last_seq_nr, incoming_packets.back().seq_nr)) {
         return SeqNrDiff(last_seq_nr, incoming_packets.back().seq_nr) - 1;
-    else
+    } else {
         return 0;
+    }
 }
 
 void LocalWindow::fillSelectiveAck(SelectiveAck *sack)
@@ -186,8 +194,9 @@ void LocalWindow::fillSelectiveAck(SelectiveAck *sack)
 
     WindowPacketList::iterator itr = std::upper_bound(incoming_packets.begin(), incoming_packets.end(), last_seq_nr + 1);
     while (itr != incoming_packets.end()) {
-        if (itr->packet)
+        if (itr->packet) {
             Ack(sack, SeqNrDiff(last_seq_nr, itr->seq_nr));
+        }
         ++itr;
     }
 }

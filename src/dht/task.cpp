@@ -27,11 +27,13 @@ Task::~Task()
 void Task::start(const KClosestNodesSearch &kns, bool queued)
 {
     // fill the todo list
-    for (KClosestNodesSearch::CItr i = kns.begin(); i != kns.end(); ++i)
+    for (KClosestNodesSearch::CItr i = kns.begin(); i != kns.end(); ++i) {
         todo.insert(i->second);
+    }
     this->queued = queued;
-    if (!queued)
+    if (!queued) {
         update();
+    }
 }
 
 void Task::start()
@@ -44,34 +46,39 @@ void Task::start()
 
 void Task::onResponse(dht::RPCCall *c, dht::RPCMsg *rsp)
 {
-    if (outstanding_reqs > 0)
+    if (outstanding_reqs > 0) {
         outstanding_reqs--;
+    }
 
     if (!isFinished()) {
         callFinished(c, rsp);
 
-        if (canDoRequest() && !isFinished())
+        if (canDoRequest() && !isFinished()) {
             update();
+        }
     }
 }
 
 void Task::onTimeout(RPCCall *c)
 {
-    if (outstanding_reqs > 0)
+    if (outstanding_reqs > 0) {
         outstanding_reqs--;
+    }
 
     if (!isFinished()) {
         callTimeout(c);
 
-        if (canDoRequest() && !isFinished())
+        if (canDoRequest() && !isFinished()) {
             update();
+        }
     }
 }
 
 bool Task::rpcCall(std::unique_ptr<dht::RPCMsg> req)
 {
-    if (!canDoRequest())
+    if (!canDoRequest()) {
         return false;
+    }
 
     RPCCall *c = rpc->doCall(std::move(req));
     c->addListener(this);
@@ -102,14 +109,16 @@ void Task::addDHTNode(const QString &ip, bt::Uint16 port)
     if (addr.setAddress(ip)) {
         addr.setPort(port);
         todo.insert(KBucketEntry(addr, dht::Key()));
-    } else
+    } else {
         net::AddressResolver::resolve(ip, port, this, SLOT(onResolverResults(net::AddressResolver *)));
+    }
 }
 
 void Task::onResolverResults(net::AddressResolver *ar)
 {
-    if (!ar->succeeded())
+    if (!ar->succeeded()) {
         return;
+    }
 
     todo.insert(KBucketEntry(ar->address(), dht::Key()));
 }

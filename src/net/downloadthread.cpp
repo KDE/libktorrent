@@ -49,12 +49,14 @@ void DownloadThread::update()
             if (s->socketDevice()->ready(this, Poll::INPUT)) {
                 // add to the correct group
                 Uint32 gid = s->downloadGroupID();
-                if (gid > 0)
+                if (gid > 0) {
                     group_limits = true;
+                }
 
                 SocketGroup *g = groups.find(gid);
-                if (!g)
+                if (!g) {
                     g = groups.find(0);
+                }
 
                 g->add(s);
                 num_ready++;
@@ -62,15 +64,17 @@ void DownloadThread::update()
             ++itr;
         }
 
-        if (num_ready > 0)
+        if (num_ready > 0) {
             doGroups(num_ready, now, dcap);
+        }
         sm->unlock();
 
         // to prevent huge CPU usage sleep a bit if we are limited (either by a global limit or a group limit)
         if (dcap > 0 || group_limits) {
             TimeStamp diff = now - prev_run_time;
-            if (diff < sleep_time)
+            if (diff < sleep_time) {
                 msleep(sleep_time - diff);
+            }
         }
         prev_run_time = now;
     }

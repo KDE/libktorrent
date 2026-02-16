@@ -53,8 +53,9 @@ void AuthenticationMonitor::remove(AuthenticateBase *s)
 
 void AuthenticationMonitor::update()
 {
-    if (auths.size() == 0)
+    if (auths.size() == 0) {
         return;
+    }
 
     reset();
 
@@ -62,8 +63,9 @@ void AuthenticationMonitor::update()
     while (itr != auths.end()) {
         AuthenticateBase *ab = *itr;
         if (!ab || ab->isFinished()) {
-            if (ab)
+            if (ab) {
                 ab->deleteLater();
+            }
 
             itr = auths.erase(itr);
         } else {
@@ -90,8 +92,9 @@ void AuthenticationMonitor::handleData()
     while (itr != auths.end()) {
         AuthenticateBase *ab = *itr;
         if (!ab || ab->isFinished()) {
-            if (ab)
+            if (ab) {
                 ab->deleteLater();
+            }
             itr = auths.erase(itr);
         } else {
             mse::EncryptedPacketSocket *socket = ab->getSocket();
@@ -99,10 +102,12 @@ void AuthenticationMonitor::handleData()
                 net::SocketDevice *dev = socket->socketDevice();
                 bool r = dev && dev->ready(this, Poll::INPUT);
                 bool w = dev && dev->ready(this, Poll::OUTPUT);
-                if (r)
+                if (r) {
                     ab->onReadyRead();
-                if (w)
+                }
+                if (w) {
                     ab->onReadyWrite();
+                }
             }
             ++itr;
         }

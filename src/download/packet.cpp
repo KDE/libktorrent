@@ -96,8 +96,9 @@ bool Packet::isPiece(const Request &req) const
 
 Packet::Ptr Packet::makeRejectOfPiece() const
 {
-    if (getType() != PIECE)
+    if (getType() != PIECE) {
         return Ptr();
+    }
 
     const Uint8 *data = getData();
     Uint32 idx = bt::ReadUint32(data, 5);
@@ -133,14 +134,17 @@ QString Packet::debugString() const
 int Packet::send(net::SocketDevice *sock, Uint32 max_to_send)
 {
     Uint32 bw = size - written;
-    if (!bw) // nothing to write
+    if (!bw) { // nothing to write
         return 0;
+    }
 
-    if (bw > max_to_send && max_to_send > 0)
+    if (bw > max_to_send && max_to_send > 0) {
         bw = max_to_send;
+    }
     int ret = sock->send(getData() + written, bw);
-    if (ret > 0)
+    if (ret > 0) {
         written += ret;
+    }
     return ret;
 }
 

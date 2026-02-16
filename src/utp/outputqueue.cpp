@@ -45,14 +45,15 @@ void OutputQueue::send(net::ServerSocket *sock)
             }
 
             int ret = sock->sendTo(packet.data.data(), packet.data.bufferSize(), conn->remoteAddress());
-            if (ret == net::SEND_WOULD_BLOCK)
+            if (ret == net::SEND_WOULD_BLOCK) {
                 break;
-            else if (ret == net::SEND_FAILURE) {
+            } else if (ret == net::SEND_FAILURE) {
                 // Kill the connection of this packet
                 to_close.append(packet.conn);
                 queue.pop_front();
-            } else
+            } else {
                 queue.pop_front();
+            }
         }
     } catch (Connection::TransmissionError &err) {
         Out(SYS_UTP | LOG_NOTICE) << "UTP: " << err.location << endl;
@@ -62,8 +63,9 @@ void OutputQueue::send(net::ServerSocket *sock)
 
     for (const utp::Connection::WPtr &conn : std::as_const(to_close)) {
         Connection::Ptr c = conn.toStrongRef();
-        if (c)
+        if (c) {
             c->close();
+        }
     }
 }
 

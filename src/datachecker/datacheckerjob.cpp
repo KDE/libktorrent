@@ -31,10 +31,12 @@ DataCheckerJob::DataCheckerJob(bool auto_import, bt::TorrentControl *tc, bt::Uin
     , from(from)
     , to(to)
 {
-    if (this->from >= tc->getStats().total_chunks)
+    if (this->from >= tc->getStats().total_chunks) {
         this->from = 0;
-    if (this->to >= tc->getStats().total_chunks)
+    }
+    if (this->to >= tc->getStats().total_chunks) {
         this->to = tc->getStats().total_chunks - 1;
+    }
 }
 
 DataCheckerJob::~DataCheckerJob()
@@ -46,10 +48,11 @@ void DataCheckerJob::start()
     registerWithTracker();
     DataChecker *dc = nullptr;
     const TorrentStats &stats = torrent()->getStats();
-    if (stats.multi_file_torrent)
+    if (stats.multi_file_torrent) {
         dc = new MultiDataChecker(from, to);
-    else
+    } else {
         dc = new SingleDataChecker(from, to);
+    }
 
     connect(dc, &DataChecker::progress, this, &DataCheckerJob::progress, Qt::QueuedConnection);
     connect(dc, &DataChecker::status, this, &DataCheckerJob::status, Qt::QueuedConnection);
@@ -67,8 +70,9 @@ void DataCheckerJob::start()
 
     setTotalAmount(Bytes, to - from + 1);
     data_checker_slot.add(this);
-    if (!started)
+    if (!started) {
         Q_EMIT infoMessage(this, i18n("Waiting for other data checks to finish"));
+    }
 }
 
 void DataCheckerJob::acquired()
@@ -98,8 +102,9 @@ void DataCheckerJob::threadFinished()
         if (!dcheck_thread->getError().isEmpty()) {
             setErrorText(dcheck_thread->getError());
             setError(KIO::ERR_UNKNOWN);
-        } else
+        } else {
             setError(0);
+        }
 
         dcheck_thread->deleteLater();
         dcheck_thread = nullptr;

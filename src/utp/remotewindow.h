@@ -78,10 +78,11 @@ public:
     [[nodiscard]] bt::Uint32 availableSpace() const
     {
         bt::Uint32 m = qMin(wnd_size, max_window);
-        if (cur_window > m)
+        if (cur_window > m) {
             return 0;
-        else
+        } else {
             return m - cur_window;
+        }
     }
 
     //! See if all packets are acked

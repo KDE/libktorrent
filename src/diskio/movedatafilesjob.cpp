@@ -53,13 +53,15 @@ MoveDataFilesJob::MoveDataFilesJob(const QMap<TorrentFileInterface *, QString> &
         QString dest = i.value();
         if (QFileInfo(dest).isDir()) {
             QString path = tf->getUserModifiedPath();
-            if (!dest.endsWith(bt::DirSeparator()))
+            if (!dest.endsWith(bt::DirSeparator())) {
                 dest += bt::DirSeparator();
+            }
 
             int last = path.lastIndexOf(bt::DirSeparator());
             QString dst = dest + path.mid(last + 1);
-            if (QFileInfo(tf->getPathOnDisk()).canonicalPath() != QFileInfo(dst).canonicalPath())
+            if (QFileInfo(tf->getPathOnDisk()).canonicalPath() != QFileInfo(dst).canonicalPath()) {
                 addMove(tf->getPathOnDisk(), dst);
+            }
         } else if (QFileInfo(tf->getPathOnDisk()).canonicalPath() != QFileInfo(i.value()).canonicalPath()) {
             addMove(tf->getPathOnDisk(), i.value());
         }
@@ -79,12 +81,14 @@ void MoveDataFilesJob::addMove(const QString &src, const QString &dst)
 void MoveDataFilesJob::onJobDone(KJob *j)
 {
     if (j->error() || err) {
-        if (!err)
+        if (!err) {
             setError(KIO::ERR_INTERNAL);
+        }
 
         active_job = nullptr;
-        if (j->error())
+        if (j->error()) {
             static_cast<KIO::Job *>(j)->uiDelegate()->showErrorMessage();
+        }
 
         // shit happened cancel all previous moves
         err = true;
@@ -156,8 +160,9 @@ void MoveDataFilesJob::startMoving()
 
 void MoveDataFilesJob::recover(bool delete_active)
 {
-    if (delete_active && bt::Exists(active_dst))
+    if (delete_active && bt::Exists(active_dst)) {
         bt::Delete(active_dst, true);
+    }
 
     if (success.isEmpty()) {
         emitResult();
@@ -179,8 +184,9 @@ void MoveDataFilesJob::onRecoveryJobDone(KJob *j)
 {
     Q_UNUSED(j);
     running_recovery_jobs--;
-    if (running_recovery_jobs <= 0)
+    if (running_recovery_jobs <= 0) {
         emitResult();
+    }
 }
 
 void MoveDataFilesJob::onTransferred(KJob *job, KJob::Unit unit, qulonglong amount)

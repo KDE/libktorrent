@@ -33,14 +33,17 @@ static QString SanityzeName(const QString &name)
 #ifdef Q_OS_WIN
     const QLatin1Char invalid[] = {'<'_L1, '>'_L1, ':'_L1, '"'_L1, '/'_L1, '\\'_L1, '|'_L1, '?'_L1, '*'_L1};
     for (int i = 0; i < 9; i++) {
-        if (ret.contains(invalid[i]))
+        if (ret.contains(invalid[i])) {
             ret = ret.replace(invalid[i], '_'_L1);
+        }
     }
 #else
-    if (ret.endsWith('/'_L1))
+    if (ret.endsWith('/'_L1)) {
         ret.chop(1);
-    if (ret.startsWith('/'_L1))
+    }
+    if (ret.startsWith('/'_L1)) {
         ret = ret.mid(1);
+    }
 #endif
     // Don't allow directory traversal things in names
     if (ret.contains('/'_L1) || ret.contains(".."_L1)) {
@@ -87,23 +90,27 @@ void Torrent::load(const QByteArray &data, bool verbose)
 {
     BDecoder decoder(data, verbose);
     const std::unique_ptr<BDictNode> dict = decoder.decodeDict();
-    if (!dict)
+    if (!dict) {
         throw Error(i18n("Corrupted torrent."));
+    }
 
     BValueNode *c = dict->getValue(QByteArrayLiteral("comment"));
-    if (c)
+    if (c) {
         comments = c->data().toString();
+    }
 
     const BValueNode *announce = dict->getValue(QByteArrayLiteral("announce"));
     BListNode *nodes = dict->getList(QByteArrayLiteral("nodes"));
     // if (!announce && !nodes)
     //  throw Error(i18n("Torrent has no announce or nodes field."));
 
-    if (announce)
+    if (announce) {
         loadTrackerURL(dict->getString(QByteArrayLiteral("announce")));
+    }
 
-    if (nodes) // DHT torrrents have a node key
+    if (nodes) { // DHT torrrents have a node key
         loadNodes(nodes);
+    }
 
     loadInfo(dict->getDict(QByteArrayLiteral("info")));
     loadAnnounceList(dict->getData(QByteArrayLiteral("announce-list")));
@@ -114,8 +121,9 @@ void Torrent::load(const QByteArray &data, bool verbose)
         loadWebSeeds(urls);
     } else if (dict->getValue(QByteArrayLiteral("url-list"))) {
         QUrl url(dict->getString(QByteArrayLiteral("url-list")));
-        if (url.isValid())
+        if (url.isValid()) {
             web_seeds.append(url);
+        }
     }
 
     BNode *n = dict->getData(QByteArrayLiteral("info"));
@@ -129,31 +137,35 @@ void Torrent::load(const QByteArray &data, bool verbose)
 
 void Torrent::loadInfo(BDictNode *dict)
 {
-    if (!dict)
+    if (!dict) {
         throw Error(i18n("Corrupted torrent."));
+    }
 
     chunk_size = dict->getInt64(QByteArrayLiteral("piece length"));
     BListNode *files = dict->getList(QByteArrayLiteral("files"));
-    if (files)
+    if (files) {
         loadFiles(files);
-    else
+    } else {
         total_size = dict->getInt64(QByteArrayLiteral("length"));
+    }
 
     loadHash(dict);
     unencoded_name = dict->getByteArray(QByteArrayLiteral("name"));
     name_suggestion = QString::fromUtf8(unencoded_name);
     name_suggestion = SanityzeName(name_suggestion);
     BValueNode *n = dict->getValue(QByteArrayLiteral("private"));
-    if (n && n->data().toInt() == 1)
+    if (n && n->data().toInt() == 1) {
         priv_torrent = true;
+    }
 
     // do a safety check to see if the number of hashes matches the file_length
     Uint32 num_chunks = (total_size / chunk_size);
     last_chunk_size = total_size % chunk_size;
-    if (last_chunk_size > 0)
+    if (last_chunk_size > 0) {
         num_chunks++;
-    else
+    } else {
         last_chunk_size = chunk_size;
+    }
 
     if (num_chunks != (Uint32)hash_pieces.count()) {
         Out(SYS_GEN | LOG_DEBUG) << "File sizes and number of hashes do not match for " << name_suggestion << endl;
@@ -163,19 +175,22 @@ void Torrent::loadInfo(BDictNode *dict)
 
 void Torrent::loadFiles(BListNode *node)
 {
-    if (!node)
+    if (!node) {
         throw Error(i18n("Corrupted torrent."));
+    }
 
     Uint32 idx = 0;
     BListNode *fl = node;
     for (Uint32 i = 0; i < fl->getNumChildren(); i++) {
         BDictNode *d = fl->getDict(i);
-        if (!d)
+        if (!d) {
             throw Error(i18n("Corrupted torrent."));
+        }
 
         BListNode *ln = d->getList(QByteArrayLiteral("path"));
-        if (!ln)
+        if (!ln) {
             throw Error(i18n("Corrupted torrent."));
+        }
 
         QString path;
         QList<QByteArray> unencoded_path;
@@ -183,19 +198,23 @@ void Torrent::loadFiles(BListNode *node)
             QByteArray v = ln->getByteArray(j);
             unencoded_path.append(v);
             QString sd = QString::fromUtf8(v);
-            if (sd.contains('\n'_L1))
+            if (sd.contains('\n'_L1)) {
                 sd = sd.remove('\n'_L1);
+            }
             path += sd;
-            if (j + 1 < ln->getNumChildren())
+            if (j + 1 < ln->getNumChildren()) {
                 path += bt::DirSeparator();
+            }
         }
 
         // we do not want empty dirs
-        if (path.endsWith(bt::DirSeparator()))
+        if (path.endsWith(bt::DirSeparator())) {
             continue;
+        }
 
-        if (!checkPathForDirectoryTraversal(path))
+        if (!checkPathForDirectoryTraversal(path)) {
             throw Error(i18n("Corrupted torrent."));
+        }
 
         Uint64 s = d->getInt64(QByteArrayLiteral("length"));
         TorrentFile file(this, idx, path, total_size, s, chunk_size);
@@ -210,12 +229,14 @@ void Torrent::loadFiles(BListNode *node)
 
 void Torrent::loadTrackerURL(const QString &s)
 {
-    if (!trackers)
+    if (!trackers) {
         trackers = std::make_unique<TrackerTier>();
+    }
 
     QUrl url(s);
-    if (s.length() > 0 && url.isValid())
+    if (s.length() > 0 && url.isValid()) {
         trackers->urls.append(url);
+    }
 }
 
 void Torrent::loadHash(BDictNode *dict)
@@ -230,23 +251,27 @@ void Torrent::loadHash(BDictNode *dict)
 
 void Torrent::loadAnnounceList(BNode *node)
 {
-    if (!node)
+    if (!node) {
         return;
+    }
 
     BListNode *ml = dynamic_cast<BListNode *>(node);
-    if (!ml)
+    if (!ml) {
         return;
+    }
 
-    if (!trackers)
+    if (!trackers) {
         trackers = std::make_unique<TrackerTier>();
+    }
 
     TrackerTier *tier = trackers.get();
     // ml->printDebugInfo();
     for (Uint32 i = 0; i < ml->getNumChildren(); i++) {
         BListNode *url_list = ml->getList(i);
         if (url_list) {
-            for (Uint32 j = 0; j < url_list->getNumChildren(); j++)
+            for (Uint32 j = 0; j < url_list->getNumChildren(); j++) {
                 tier->urls.append(QUrl(url_list->getString(j)));
+            }
             tier->next = std::make_unique<TrackerTier>();
             tier = tier->next.get();
         }
@@ -257,8 +282,9 @@ void Torrent::loadNodes(BListNode *node)
 {
     for (Uint32 i = 0; i < node->getNumChildren(); i++) {
         BListNode *c = node->getList(i);
-        if (!c || c->getNumChildren() != 2)
+        if (!c || c->getNumChildren() != 2) {
             throw Error(i18n("Corrupted torrent."));
+        }
 
         // first child is the IP, second the port
         // add the DHT node
@@ -273,8 +299,9 @@ void Torrent::loadWebSeeds(BListNode *node)
 {
     for (Uint32 i = 0; i < node->getNumChildren(); i++) {
         QUrl url = QUrl(node->getString(i));
-        if (url.isValid())
+        if (url.isValid()) {
             web_seeds.append(url);
+        }
     }
 }
 
@@ -307,8 +334,9 @@ void Torrent::debugPrintInfo()
 
 bool Torrent::verifyHash(const SHA1Hash &h, Uint32 index)
 {
-    if (index >= (Uint32)hash_pieces.count())
+    if (index >= (Uint32)hash_pieces.count()) {
         return false;
+    }
 
     const SHA1Hash &ph = hash_pieces[index];
     return ph == h;
@@ -316,24 +344,27 @@ bool Torrent::verifyHash(const SHA1Hash &h, Uint32 index)
 
 const SHA1Hash &Torrent::getHash(Uint32 idx) const
 {
-    if (idx >= (Uint32)hash_pieces.count())
+    if (idx >= (Uint32)hash_pieces.count()) {
         throw Error(u"Torrent::getHash %1 is out of bounds"_s.arg(idx));
+    }
 
     return hash_pieces[idx];
 }
 
 TorrentFile &Torrent::getFile(Uint32 idx)
 {
-    if (idx >= (Uint32)files.size())
+    if (idx >= (Uint32)files.size()) {
         return TorrentFile::null;
+    }
 
     return files[idx];
 }
 
 const TorrentFile &Torrent::getFile(Uint32 idx) const
 {
-    if (idx >= (Uint32)files.size())
+    if (idx >= (Uint32)files.size()) {
         return TorrentFile::null;
+    }
 
     return files.at(idx);
 }
@@ -352,8 +383,9 @@ unsigned int Torrent::getNumTrackerURLs() const
 void Torrent::calcChunkPos(Uint32 chunk, FileIndexList &file_list, int max_files) const
 {
     file_list.clear();
-    if (chunk >= (Uint32)hash_pieces.size() || files.empty())
+    if (chunk >= (Uint32)hash_pieces.size() || files.empty()) {
         return;
+    }
 
     int start = (chunk >= this->pos_cache_chunk) ? this->pos_cache_file : 0;
     int end = (files.count() - 1);
@@ -390,10 +422,12 @@ void Torrent::calcChunkPos(Uint32 chunk, FileIndexList &file_list, int max_files
         const TorrentFile &f = files[i];
         if (chunk >= f.getFirstChunk() && chunk <= f.getLastChunk() && f.getSize() != 0) {
             file_list.append(f.getIndex());
-            if (file_list.count() >= max_files)
+            if (file_list.count() >= max_files) {
                 break;
-        } else if (chunk < f.getFirstChunk())
+            }
+        } else if (chunk < f.getFirstChunk()) {
             break;
+        }
     }
 
     pos_cache_chunk = chunk;
@@ -432,19 +466,22 @@ bool Torrent::checkPathForDirectoryTraversal(const QString &p)
 
 void Torrent::downloadPriorityChanged(TorrentFile *tf, Priority newpriority, Priority oldpriority)
 {
-    if (file_prio_listener)
+    if (file_prio_listener) {
         file_prio_listener->downloadPriorityChanged(tf, newpriority, oldpriority);
+    }
 }
 
 void Torrent::filePercentageChanged(TorrentFile *tf, float perc)
 {
-    if (tmon)
+    if (tmon) {
         tmon->filePercentageChanged(tf, perc);
+    }
 }
 
 void Torrent::filePreviewChanged(TorrentFile *tf, bool preview)
 {
-    if (tmon)
+    if (tmon) {
         tmon->filePreviewChanged(tf, preview);
+    }
 }
 }

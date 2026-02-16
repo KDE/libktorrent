@@ -23,14 +23,16 @@ WakeUpPipe::~WakeUpPipe()
 void WakeUpPipe::wakeUp()
 {
     QMutexLocker lock(&mutex);
-    if (woken_up)
+    if (woken_up) {
         return;
+    }
 
     char data[] = "d";
-    if (bt::Pipe::write((const bt::Uint8 *)data, 1) != 1)
+    if (bt::Pipe::write((const bt::Uint8 *)data, 1) != 1) {
         Out(SYS_GEN | LOG_DEBUG) << "WakeUpPipe: wake up failed " << endl;
-    else
+    } else {
         woken_up = true;
+    }
 }
 
 void WakeUpPipe::handleData()
@@ -38,8 +40,9 @@ void WakeUpPipe::handleData()
     QMutexLocker lock(&mutex);
     bt::Uint8 buf[20];
     int ret = bt::Pipe::read(buf, 20);
-    if (ret < 0)
+    if (ret < 0) {
         Out(SYS_GEN | LOG_DEBUG) << "WakeUpPipe: read failed " << endl;
+    }
 
     woken_up = false;
 }

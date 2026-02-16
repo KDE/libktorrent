@@ -18,8 +18,9 @@ WaitJob::WaitJob(Uint32 millis)
 
 WaitJob::~WaitJob()
 {
-    for (ExitOperation *op : std::as_const(exit_ops))
+    for (ExitOperation *op : std::as_const(exit_ops)) {
         delete op;
+    }
 }
 
 void WaitJob::kill(bool)
@@ -47,11 +48,13 @@ void WaitJob::operationFinished(ExitOperation *op)
 {
     if (exit_ops.count() > 0) {
         exit_ops.removeAll(op);
-        if (op->deleteAllowed())
+        if (op->deleteAllowed()) {
             op->deleteLater();
+        }
 
-        if (exit_ops.count() == 0)
+        if (exit_ops.count() == 0) {
             timerDone();
+        }
     }
 }
 

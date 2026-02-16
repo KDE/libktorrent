@@ -38,20 +38,23 @@ void PacketBuffer::clearPool()
 
 bool PacketBuffer::setHeader(const Header &hdr, bt::Uint32 extension_length)
 {
-    if (Header::size() - extension_length > headRoom())
+    if (Header::size() - extension_length > headRoom()) {
         return false;
+    }
 
-    if (payload)
+    if (payload) {
         header = payload - Header::size() - extension_length;
-    else
+    } else {
         header = buffer->get();
+    }
 
     hdr.write(header);
     extension = header + Header::size();
-    if (payload)
+    if (payload) {
         size = (buffer->get() + MAX_SIZE) - header;
-    else
+    } else {
         size = Header::size() + extension_length;
+    }
 
     return true;
 }
@@ -59,8 +62,9 @@ bool PacketBuffer::setHeader(const Header &hdr, bt::Uint32 extension_length)
 bt::Uint32 PacketBuffer::fillData(bt::CircularBuffer &cbuf, bt::Uint32 to_read)
 {
     // Make sure we leave enough room for a header
-    if (to_read > MAX_SIZE - Header::size())
+    if (to_read > MAX_SIZE - Header::size()) {
         to_read = MAX_SIZE - Header::size();
+    }
 
     // Data is put at the end of the buffer, so we can put headers easily in front of it
     payload = (buffer->get() + MAX_SIZE) - to_read;
@@ -73,8 +77,9 @@ bt::Uint32 PacketBuffer::fillData(bt::CircularBuffer &cbuf, bt::Uint32 to_read)
 
 bt::Uint32 PacketBuffer::fillData(const bt::Uint8 *data, bt::Uint32 data_size)
 {
-    if (data_size > MAX_SIZE)
+    if (data_size > MAX_SIZE) {
         data_size = MAX_SIZE;
+    }
 
     payload = (buffer->get() + MAX_SIZE) - data_size;
     memcpy(payload, data, data_size);

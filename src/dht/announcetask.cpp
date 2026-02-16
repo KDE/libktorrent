@@ -50,21 +50,25 @@ void AnnounceTask::callFinished(RPCCall *c, RPCMsg *rsp)
     // Out(SYS_DHT|LOG_DEBUG) << "AnnounceTask::callFinished" << endl;
     // if we do not have a get peers response, return
     // announce_peer's response are just empty anyway
-    if (c->getMsgMethod() != dht::GET_PEERS)
+    if (c->getMsgMethod() != dht::GET_PEERS) {
         return;
+    }
 
     const auto gpr = dynamic_cast<const GetPeersRsp *>(rsp);
-    if (!gpr)
+    if (!gpr) {
         return;
+    }
 
     if (gpr->containsNodes()) {
         const QByteArray &n = gpr->getNodes();
-        if (n.size() > 0)
+        if (n.size() > 0) {
             handleNodes(n, 4);
+        }
 
         const QByteArray &n6 = gpr->getNodes6();
-        if (n6.size() > 0)
+        if (n6.size() > 0) {
             handleNodes(n6, 6);
+        }
     }
 
     // store the items in the database if there are any present
@@ -76,8 +80,9 @@ void AnnounceTask::callFinished(RPCCall *c, RPCMsg *rsp)
         returned_items.append(i);
     }
 
-    if (items.size() > 0)
+    if (items.size() > 0) {
         emitDataReady();
+    }
 
     // add the peer who responded to the answered list, so we can do an announce
     KBucketEntry e(rsp->getOrigin(), rsp->getID());
@@ -138,8 +143,9 @@ void AnnounceTask::update()
 
 bool AnnounceTask::takeItem(DBItem &item)
 {
-    if (returned_items.empty())
+    if (returned_items.empty()) {
         return false;
+    }
 
     item = returned_items.first();
     returned_items.pop_front();

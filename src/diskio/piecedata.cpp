@@ -34,23 +34,27 @@ PieceData::~PieceData()
 
 void PieceData::unload()
 {
-    if (!ptr)
+    if (!ptr) {
         return;
+    }
 
-    if (!mapped())
+    if (!mapped()) {
         delete[] ptr;
-    else
+    } else {
         cache_file->unmap(ptr);
+    }
     ptr = nullptr;
 }
 
 Uint32 PieceData::write(const bt::Uint8 *buf, Uint32 buf_size, Uint32 off)
 {
-    if (off + buf_size > len || !ptr)
+    if (off + buf_size > len || !ptr) {
         return 0;
+    }
 
-    if (read_only)
+    if (read_only) {
         throw bt::Error(i18n("Unable to write to a piece mapped read only"));
+    }
 
 #ifndef Q_OS_WIN
     BUS_ERROR_WPROTECT();
@@ -61,8 +65,9 @@ Uint32 PieceData::write(const bt::Uint8 *buf, Uint32 buf_size, Uint32 off)
 
 Uint32 PieceData::read(Uint8 *buf, Uint32 to_read, Uint32 off)
 {
-    if (off + to_read > len || !ptr)
+    if (off + to_read > len || !ptr) {
         return 0;
+    }
 
 #ifndef Q_OS_WIN
     BUS_ERROR_RPROTECT();
@@ -73,8 +78,9 @@ Uint32 PieceData::read(Uint8 *buf, Uint32 to_read, Uint32 off)
 
 Uint32 PieceData::writeToFile(File &file, Uint32 size, Uint32 off)
 {
-    if (off + size > len || !ptr)
+    if (off + size > len || !ptr) {
         return 0;
+    }
 
 #ifndef Q_OS_WIN
     BUS_ERROR_RPROTECT();
@@ -84,11 +90,13 @@ Uint32 PieceData::writeToFile(File &file, Uint32 size, Uint32 off)
 
 Uint32 PieceData::readFromFile(File &file, Uint32 size, Uint32 off)
 {
-    if (off + size > len || !ptr)
+    if (off + size > len || !ptr) {
         return 0;
+    }
 
-    if (read_only)
+    if (read_only) {
         throw bt::Error(i18n("Unable to write to a piece mapped read only"));
+    }
 
 #ifndef Q_OS_WIN
     BUS_ERROR_WPROTECT();
@@ -98,8 +106,9 @@ Uint32 PieceData::readFromFile(File &file, Uint32 size, Uint32 off)
 
 void PieceData::updateHash(SHA1HashGen &hg)
 {
-    if (!ptr)
+    if (!ptr) {
         return;
+    }
 
 #ifndef Q_OS_WIN
     BUS_ERROR_RPROTECT();
@@ -109,8 +118,9 @@ void PieceData::updateHash(SHA1HashGen &hg)
 
 SHA1Hash PieceData::generateHash() const
 {
-    if (!ptr)
+    if (!ptr) {
         return SHA1Hash();
+    }
 
 #ifndef Q_OS_WIN
     BUS_ERROR_RPROTECT();

@@ -27,8 +27,9 @@ DummyTorrentCreator::~DummyTorrentCreator()
 
 bool DummyTorrentCreator::createMultiFileTorrent(const QMap<QString, bt::Uint64> &files, const QString &name)
 {
-    if (!tmpdir.isValid())
+    if (!tmpdir.isValid()) {
         return false;
+    }
 
     try {
         dpath = tmpdir.path() + QLatin1String("data") + bt::DirSeparator() + name + bt::DirSeparator();
@@ -37,8 +38,9 @@ bool DummyTorrentCreator::createMultiFileTorrent(const QMap<QString, bt::Uint64>
         QMap<QString, bt::Uint64>::const_iterator i = files.begin();
         while (i != files.end()) {
             MakeFilePath(dpath + i.key());
-            if (!createRandomFile(dpath + i.key(), i.value()))
+            if (!createRandomFile(dpath + i.key(), i.value())) {
                 return false;
+            }
             ++i;
         }
 
@@ -56,14 +58,16 @@ bool DummyTorrentCreator::createMultiFileTorrent(const QMap<QString, bt::Uint64>
 
 bool DummyTorrentCreator::createSingleFileTorrent(bt::Uint64 size, const QString &filename)
 {
-    if (!tmpdir.isValid())
+    if (!tmpdir.isValid()) {
         return false;
+    }
 
     try {
         bt::MakePath(tmpdir.path() + QLatin1String("data") + bt::DirSeparator());
         dpath = tmpdir.path() + QLatin1String("data") + bt::DirSeparator() + filename;
-        if (!createRandomFile(dpath, size))
+        if (!createRandomFile(dpath, size)) {
             return false;
+        }
 
         bt::TorrentCreator creator(dpath, trackers, QList<QUrl>(), chunk_size, filename, QString(), false, false);
         // Start the hashing thread and wait until it is done
@@ -88,12 +92,14 @@ bool DummyTorrentCreator::createRandomFile(const QString &path, bt::Uint64 size)
     bt::Uint64 written = 0;
     while (written < size) {
         char tmp[4096];
-        for (int i = 0; i < 4096; i++)
+        for (int i = 0; i < 4096; i++) {
             tmp[i] = rand() % 0xFF;
+        }
 
         bt::Uint64 to_write = 4096;
-        if (to_write + written > size)
+        if (to_write + written > size) {
             to_write = size - written;
+        }
         written += file.write(tmp, to_write);
     }
 

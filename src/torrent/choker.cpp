@@ -37,10 +37,11 @@ Choker::~Choker()
 
 void Choker::update(bool have_all, const TorrentStats &stats)
 {
-    if (have_all)
+    if (have_all) {
         choke->doChokingSeedingState(pman, cman, stats);
-    else
+    } else {
         choke->doChokingLeechingState(pman, cman, stats);
+    }
 }
 
 }

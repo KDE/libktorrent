@@ -34,15 +34,17 @@ DHTPeerSource::DHTPeerSource(DHTBase &dh_table, const bt::SHA1Hash &info_hash, c
 
 DHTPeerSource::~DHTPeerSource()
 {
-    if (curr_task)
+    if (curr_task) {
         curr_task->kill();
+    }
 }
 
 void DHTPeerSource::start()
 {
     started = true;
-    if (dh_table.isRunning())
+    if (dh_table.isRunning()) {
         doRequest();
+    }
 }
 
 void DHTPeerSource::dhtStopped()
@@ -62,23 +64,27 @@ void DHTPeerSource::stop(bt::WaitJob *)
 
 void DHTPeerSource::manualUpdate()
 {
-    if (dh_table.isRunning() && started)
+    if (dh_table.isRunning() && started) {
         doRequest();
+    }
 }
 
 bool DHTPeerSource::doRequest()
 {
-    if (!dh_table.isRunning())
+    if (!dh_table.isRunning()) {
         return false;
+    }
 
-    if (curr_task)
+    if (curr_task) {
         return true;
+    }
 
     Uint16 port = ServerInterface::getPort();
     curr_task = dh_table.announce(info_hash, port);
     if (curr_task) {
-        for (const bt::DHTNode &n : std::as_const(nodes))
+        for (const bt::DHTNode &n : std::as_const(nodes)) {
             curr_task->addDHTNode(n.ip, n.port);
+        }
 
         connect(curr_task, &AnnounceTask::dataReady, this, &DHTPeerSource::onDataReady);
         connect(curr_task, &AnnounceTask::finished, this, &DHTPeerSource::onFinished);
@@ -120,8 +126,9 @@ void DHTPeerSource::onDataReady(Task *t)
 
 void DHTPeerSource::onTimeout()
 {
-    if (dh_table.isRunning() && started)
+    if (dh_table.isRunning() && started) {
         doRequest();
+    }
 }
 
 void DHTPeerSource::addDHTNode(const bt::DHTNode &node)

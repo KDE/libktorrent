@@ -37,26 +37,29 @@ struct RareCmp {
 
     bool operator()(Uint32 a, Uint32 b)
     {
-        if (a >= cman->getNumChunks() || b >= cman->getNumChunks())
+        if (a >= cman->getNumChunks() || b >= cman->getNumChunks()) {
             return false;
+        }
         // the sorting is done on two criteria, priority and rareness
         Priority pa = cman->getChunk(a)->getPriority();
         Priority pb = cman->getChunk(b)->getPriority();
-        if (pa == pb)
+        if (pa == pb) {
             return normalCmp(a, b); // if both have same priority compare on rareness
-        else if (pa > pb) // pa has priority over pb, so select pa
+        } else if (pa > pb) { // pa has priority over pb, so select pa
             return true;
-        else // pb has priority over pa, so select pb
+        } else { // pb has priority over pa, so select pb
             return false;
+        }
     }
 
     bool normalCmp(Uint32 a, Uint32 b)
     {
         // during warmup mode choose most common chunks
-        if (!warmup)
+        if (!warmup) {
             return cc.get(a) < cc.get(b);
-        else
+        } else {
             return cc.get(a) > cc.get(b);
+        }
     }
 };
 
@@ -103,15 +106,17 @@ Uint32 ChunkSelector::leastPeers(const std::list<Uint32> &lp, Uint32 alternative
 
     if (!endgame && downer->numDownloadersForChunk(sel) >= max_peers_per_chunk) {
         ChunkDownload *cd = downer->download(sel);
-        if (!cd)
+        if (!cd) {
             return alternative;
+        }
 
         // if download speed is very small, use sel
         // even though the max_peers_per_chunk has been reached
-        if (cd->getDownloadSpeed() < 100)
+        if (cd->getDownloadSpeed() < 100) {
             return sel;
-        else
+        } else {
             return alternative;
+        }
     }
 
     return sel;
@@ -168,12 +173,14 @@ bool ChunkSelector::select(PieceDownloader *pd, Uint32 &chunk)
                 }
             }
             ++itr;
-        } else
+        } else {
             ++itr;
+        }
     }
 
-    if (sel >= cman->getNumChunks())
+    if (sel >= cman->getNumChunks()) {
         return false;
+    }
 
     chunk = sel;
     return true;
@@ -213,8 +220,9 @@ void ChunkSelector::reincluded(Uint32 from, Uint32 to)
 void ChunkSelector::reinsert(Uint32 chunk)
 {
     bool in_chunks = std::find(chunks.begin(), chunks.end(), chunk) != chunks.end();
-    if (!in_chunks)
+    if (!in_chunks) {
         chunks.push_back(chunk);
+    }
 }
 
 struct ChunkRange {
@@ -236,8 +244,9 @@ bool ChunkSelector::selectRange(Uint32 &from, Uint32 &to, Uint32 max_len)
             if (curr.start == 0 && curr.len == 0) { // we have a new current range
                 curr.start = i;
                 curr.len = 1;
-            } else
+            } else {
                 curr.len++; // expand the current range
+            }
 
             if (curr.len >= max_range_len) {
                 // current range is bigger then the maximum range length, select it
@@ -245,14 +254,16 @@ bool ChunkSelector::selectRange(Uint32 &from, Uint32 &to, Uint32 max_len)
                 to = curr.start + curr.len - 1;
                 return true;
             } else if (i == num_chunks - 1) {
-                if (curr.start > 0 && curr.len > best.len)
+                if (curr.start > 0 && curr.len > best.len) {
                     best = curr;
+                }
             }
         } else {
             // see if the current range has ended
             // and if it is better then the best range
-            if (curr.start > 0 && curr.len > best.len)
+            if (curr.start > 0 && curr.len > best.len) {
                 best = curr; // we have a new best range
+            }
 
             curr.start = curr.len = 0; // reset the current range
         }

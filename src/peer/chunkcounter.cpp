@@ -26,37 +26,42 @@ void ChunkCounter::reset()
 void ChunkCounter::incBitSet(const BitSet &bs)
 {
     for (Uint32 i = 0; i < cnt.size(); i++) {
-        if (bs.get(i))
+        if (bs.get(i)) {
             cnt[i]++;
+        }
     }
 }
 
 void ChunkCounter::decBitSet(const BitSet &bs)
 {
     for (Uint32 i = 0; i < cnt.size(); i++) {
-        if (bs.get(i))
+        if (bs.get(i)) {
             dec(i);
+        }
     }
 }
 
 void ChunkCounter::inc(Uint32 idx)
 {
-    if (idx < cnt.size())
+    if (idx < cnt.size()) {
         cnt[idx]++;
+    }
 }
 
 void ChunkCounter::dec(Uint32 idx)
 {
-    if (idx < cnt.size() && cnt[idx] > 0)
+    if (idx < cnt.size() && cnt[idx] > 0) {
         cnt[idx]--;
+    }
 }
 
 Uint32 ChunkCounter::get(Uint32 idx) const
 {
-    if (idx < cnt.size())
+    if (idx < cnt.size()) {
         return cnt[idx];
-    else
+    } else {
         return 0;
+    }
 }
 
 }

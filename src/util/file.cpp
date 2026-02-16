@@ -49,8 +49,9 @@ File &File::operator=(File &&other) noexcept
 bool File::open(const QString &file, const QString &mode)
 {
     this->file = file;
-    if (fptr)
+    if (fptr) {
         close();
+    }
 
 #ifdef HAVE_FOPEN64
     fptr = fopen64(QFile::encodeName(file).constData(), mode.toUtf8().constData());
@@ -70,19 +71,22 @@ void File::close()
 
 void File::flush()
 {
-    if (fptr)
+    if (fptr) {
         fflush(fptr);
+    }
 }
 
 Uint32 File::write(const void *buf, Uint32 size)
 {
-    if (!fptr)
+    if (!fptr) {
         return 0;
+    }
 
     Uint32 ret = fwrite(buf, 1, size, fptr);
     if (ret != size) {
-        if (errno == ENOSPC)
+        if (errno == ENOSPC) {
             Out(SYS_DIO | LOG_IMPORTANT) << "Disk full !" << endl;
+        }
 
         throw Error(i18n("Cannot write to %1: %2", file, QString::fromUtf8(strerror(errno))));
     }
@@ -91,8 +95,9 @@ Uint32 File::write(const void *buf, Uint32 size)
 
 Uint32 File::read(void *buf, Uint32 size)
 {
-    if (!fptr)
+    if (!fptr) {
         return 0;
+    }
 
     Uint32 ret = fread(buf, 1, size, fptr);
     if (ferror(fptr)) {
@@ -105,8 +110,9 @@ Uint32 File::read(void *buf, Uint32 size)
 Uint64 File::seek(SeekPos from, Int64 num)
 {
     //  printf("sizeof(off_t) = %i\n",sizeof(__off64_t));
-    if (!fptr)
+    if (!fptr) {
         return 0;
+    }
 
     int p = SEEK_CUR; // use a default to prevent compiler warning
     switch (from) {
@@ -136,16 +142,18 @@ Uint64 File::seek(SeekPos from, Int64 num)
 
 bool File::eof() const
 {
-    if (!fptr)
+    if (!fptr) {
         return true;
+    }
 
     return feof(fptr) != 0;
 }
 
 Uint64 File::tell() const
 {
-    if (!fptr)
+    if (!fptr) {
         return 0;
+    }
 #ifdef HAVE_FTELLO64
     return ftello64(fptr);
 #elif HAVE_FTELLO

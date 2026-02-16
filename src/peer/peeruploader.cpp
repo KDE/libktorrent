@@ -40,8 +40,9 @@ Uint32 PeerUploader::handleRequests(ChunkManager &cman)
     uploaded = 0;
 
     // if we have choked the peer do not upload
-    if (peer->areWeChoked())
+    if (peer->areWeChoked()) {
         return ret;
+    }
 
     while (requests.size() > 0) {
         Request r = requests.front();
@@ -49,14 +50,16 @@ Uint32 PeerUploader::handleRequests(ChunkManager &cman)
         Chunk *c = cman.getChunk(r.getIndex());
         if (c && c->getStatus() == Chunk::ON_DISK) {
             if (!peer->sendChunk(r.getIndex(), r.getOffset(), r.getLength(), c)) {
-                if (peer->getStats().fast_extensions)
+                if (peer->getStats().fast_extensions) {
                     peer->sendReject(r);
+                }
             }
         } else {
             // remove requests we can't satisfy
             Out(SYS_CON | LOG_DEBUG) << "Cannot satisfy request" << endl;
-            if (peer->getStats().fast_extensions)
+            if (peer->getStats().fast_extensions) {
                 peer->sendReject(r);
+            }
         }
 
         requests.pop_front();
@@ -72,8 +75,9 @@ void PeerUploader::clearAllRequests()
         // reject all requests
         // if the peer supports fast extensions,
         // choke doesn't mean reject all
-        for (const Request &r : std::as_const(requests))
+        for (const Request &r : std::as_const(requests)) {
             peer->sendReject(r);
+        }
     }
     requests.clear();
 }

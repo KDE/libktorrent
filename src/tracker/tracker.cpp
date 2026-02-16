@@ -42,23 +42,26 @@ Tracker::~Tracker()
 
 void Tracker::setCustomIP(const QString &ip)
 {
-    if (custom_ip == ip)
+    if (custom_ip == ip) {
         return;
+    }
 
     Out(SYS_TRK | LOG_NOTICE) << "Setting custom ip to " << ip << endl;
     custom_ip = ip;
     custom_ip_resolved = QString();
-    if (ip.isNull())
+    if (ip.isNull()) {
         return;
+    }
 
     if (custom_ip.endsWith(QLatin1String(".i2p"))) {
         custom_ip_resolved = custom_ip;
     } else {
         net::Address addr;
-        if (addr.setAddress(ip))
+        if (addr.setAddress(ip)) {
             custom_ip_resolved = custom_ip;
-        else
+        } else {
             custom_ip_resolved = net::AddressResolver::resolve(custom_ip, 7777).toString();
+        }
     }
 }
 
@@ -111,19 +114,21 @@ void Tracker::resetTrackerStats()
 Uint64 Tracker::bytesDownloaded() const
 {
     Uint64 bd = tds->bytesDownloaded();
-    if (bd > bytes_downloaded_at_start)
+    if (bd > bytes_downloaded_at_start) {
         return bd - bytes_downloaded_at_start;
-    else
+    } else {
         return 0;
+    }
 }
 
 Uint64 Tracker::bytesUploaded() const
 {
     Uint64 bu = tds->bytesUploaded();
-    if (bu > bytes_uploaded_at_start)
+    if (bu > bytes_uploaded_at_start) {
         return bu - bytes_uploaded_at_start;
-    else
+    } else {
         return 0;
+    }
 }
 
 }

@@ -158,12 +158,13 @@ KTORRENT_EXPORT QString DurationToString(bt::Uint32 nsecs);
 template<class T>
 int CompareVal(T a, T b)
 {
-    if (a < b)
+    if (a < b) {
         return -1;
-    else if (a > b)
+    } else if (a > b) {
         return 1;
-    else
+    } else {
         return 0;
+    }
 }
 
 template<class T>

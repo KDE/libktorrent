@@ -30,8 +30,9 @@ namespace bt
 {
 static bool UrlCompare(const QUrl &a, const QUrl &b)
 {
-    if (a == b)
+    if (a == b) {
         return true;
+    }
 
     return a.scheme() == b.scheme() && a.host() == b.host() && a.password() == b.password() && a.port(80) == b.port(80) && a.path() == b.path()
         && a.query() == b.query(); // TODO check if ported correctly
@@ -61,10 +62,11 @@ UPnPMCastSocket::UPnPMCastSocket(bool verbose)
     QObject::connect(this, &UPnPMCastSocket::errorOccurred, this, &UPnPMCastSocket::error);
 
     for (Uint32 i = 0; i < 10; i++) {
-        if (!bind(1900 + i, QUdpSocket::ShareAddress))
+        if (!bind(1900 + i, QUdpSocket::ShareAddress)) {
             Out(SYS_PNP | LOG_IMPORTANT) << "Cannot bind to UDP port 1900 : " << errorString() << endl;
-        else
+        } else {
             break;
+        }
     }
 
     d->joinUPnPMCastGroup(socketDescriptor());
@@ -144,8 +146,9 @@ void UPnPMCastSocket::onReadyRead()
     }
 
     QByteArray data(pendingDatagramSize(), 0);
-    if (readDatagram(data.data(), pendingDatagramSize()) == -1)
+    if (readDatagram(data.data(), pendingDatagramSize()) == -1) {
         return;
+    }
 
     if (d->verbose) {
         Out(SYS_PNP | LOG_NOTICE) << "Received : " << endl;
@@ -292,10 +295,12 @@ UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteAr
     auto line = lines.first();
     if (!line.contains(QLatin1String("HTTP"))) {
         // it is either a 200 OK or a NOTIFY
-        if (!line.contains(QLatin1String("NOTIFY")) && !line.contains(QLatin1String("200")))
+        if (!line.contains(QLatin1String("NOTIFY")) && !line.contains(QLatin1String("200"))) {
             return nullptr;
-    } else if (line.contains(QLatin1String("M-SEARCH"))) // ignore M-SEARCH
+        }
+    } else if (line.contains(QLatin1String("M-SEARCH"))) { // ignore M-SEARCH
         return nullptr;
+    }
 
     // quick check that the response being parsed is valid
     bool validDevice = false;
@@ -315,12 +320,14 @@ UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteAr
         line = lines[i];
         if (line.startsWith(QLatin1String("location"), Qt::CaseInsensitive)) {
             location = QUrl(line.mid(line.indexOf(':'_L1) + 1).trimmed().toString()); // TODO fromLocalFile()?
-            if (!location.isValid())
+            if (!location.isValid()) {
                 return nullptr;
+            }
         } else if (line.startsWith(QLatin1String("server"), Qt::CaseInsensitive)) {
             server = line.mid(line.indexOf(':'_L1) + 1).trimmed().toString();
-            if (server.length() == 0)
+            if (server.length() == 0) {
                 return nullptr;
+            }
         }
     }
 
@@ -336,8 +343,9 @@ UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteAr
 UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::findDevice(const QUrl &location)
 {
     for (UPnPRouter *r : std::as_const(routers)) {
-        if (UrlCompare(r->getLocation(), location))
+        if (UrlCompare(r->getLocation(), location)) {
             return r;
+        }
     }
 
     return nullptr;

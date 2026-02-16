@@ -35,8 +35,9 @@ BDecoder::~BDecoder()
 
 std::unique_ptr<BNode> BDecoder::decode()
 {
-    if (pos >= (Uint32)data.size())
+    if (pos >= (Uint32)data.size()) {
         return nullptr;
+    }
 
     if (data[pos] == 'd') {
         return parseDict();
@@ -54,8 +55,9 @@ std::unique_ptr<BNode> BDecoder::decode()
 std::unique_ptr<BDictNode> BDecoder::decodeDict()
 {
     std::unique_ptr<BNode> n = decode();
-    if (n && n->getType() == BNode::DICT)
+    if (n && n->getType() == BNode::DICT) {
         return std::unique_ptr<BDictNode>(static_cast<BDictNode *>(n.release()));
+    }
 
     return nullptr;
 }
@@ -63,8 +65,9 @@ std::unique_ptr<BDictNode> BDecoder::decodeDict()
 std::unique_ptr<BListNode> BDecoder::decodeList()
 {
     std::unique_ptr<BNode> n = decode();
-    if (n && n->getType() == BNode::LIST)
+    if (n && n->getType() == BNode::LIST) {
         return std::unique_ptr<BListNode>(static_cast<BListNode *>(n.release()));
+    }
 
     return nullptr;
 }
@@ -89,8 +92,9 @@ std::unique_ptr<BDictNode> BDecoder::parseDict()
         QByteArray key = k->data().toByteArray();
 
         auto value = decode();
-        if (!value)
+        if (!value) {
             throw Error(i18n("Decode error"));
+        }
 
         curr->insert(key, std::move(value));
     }
@@ -116,8 +120,9 @@ std::unique_ptr<BListNode> BDecoder::parseList()
 
     while (pos < (Uint32)data.size() && data[pos] != 'e') {
         std::unique_ptr<BNode> n = decode();
-        if (n)
+        if (n) {
             curr->append(std::move(n));
+        }
     }
 
     if (pos >= static_cast<Uint32>(data.size()) || data[pos] != 'e') {
@@ -160,8 +165,9 @@ std::unique_ptr<BValueNode> BDecoder::parseInt()
     } else {
         Int64 bi = 0LL;
         bi = n.toLongLong(&ok);
-        if (!ok)
+        if (!ok) {
             throw Error(i18n("Cannot convert %1 to an int", n));
+        }
 
         pos++;
         debugMsg(QStringLiteral("INT64 = %1").arg(n));
@@ -205,8 +211,9 @@ std::unique_ptr<BValueNode> BDecoder::parseString()
     }
     // move pos to the first part of the string
     pos++;
-    if (pos + len > (Uint32)data.size())
+    if (pos + len > (Uint32)data.size()) {
         throw Error(i18n("Torrent is incomplete."));
+    }
 
     const QByteArray arr(data.constData() + pos, len);
     pos += len;
@@ -216,22 +223,25 @@ std::unique_ptr<BValueNode> BDecoder::parseString()
     auto vn = std::make_unique<BValueNode>(Value(arr), off);
     vn->setLength(pos - off);
     if (verbose) {
-        if (arr.size() < 200)
+        if (arr.size() < 200) {
             debugMsg(QStringLiteral("STRING ") + QString::fromUtf8(arr));
-        else
+        } else {
             debugMsg(QStringLiteral("STRING really long string"));
+        }
     }
     return vn;
 }
 
 void BDecoder::debugMsg(const QString &msg)
 {
-    if (!verbose)
+    if (!verbose) {
         return;
+    }
 
     Log &log = Out(SYS_GEN | LOG_DEBUG);
-    for (int i = 0; i < level; i++)
+    for (int i = 0; i < level; i++) {
         log << "-";
+    }
 
     log << msg << endl;
 }

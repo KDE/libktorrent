@@ -31,13 +31,16 @@ void StreamingChunkSelector::init(ChunkManager *cman, Downloader *downer, PeerMa
     bt::ChunkSelector::init(cman, downer, pman);
     range_end = cman->getNumChunks() - 1;
     critical_window_size = CRITICAL_WINDOW_SIZE / cman->getTorrent().getChunkSize();
-    if (critical_window_size == 0)
+    if (critical_window_size == 0) {
         critical_window_size = 1;
+    }
 
     preview_chunks.clear();
-    for (Uint32 i = 0; i <= range_end; i++)
-        if (cman->getChunk(i)->isPreview())
+    for (Uint32 i = 0; i <= range_end; i++) {
+        if (cman->getChunk(i)->isPreview()) {
             preview_chunks.insert(i);
+        }
+    }
 }
 
 void StreamingChunkSelector::setCursor(Uint32 chunk)
@@ -62,16 +65,18 @@ void StreamingChunkSelector::initRange()
     const BitSet &bs = cman->getBitSet();
     range.clear();
     for (Uint32 i = cursor; i <= range_end; i++) {
-        if (!bs.get(i))
+        if (!bs.get(i)) {
             range.push_back(i);
+        }
     }
 }
 
 void StreamingChunkSelector::updateRange()
 {
     const BitSet &bs = cman->getBitSet();
-    if (range.empty() || cursor < range.front())
+    if (range.empty() || cursor < range.front()) {
         initRange(); // Reinitialize range
+    }
 
     std::list<Uint32>::iterator itr = range.begin();
     while (itr != range.end()) {
@@ -81,8 +86,9 @@ void StreamingChunkSelector::updateRange()
             std::list<Uint32>::iterator tmp = itr;
             ++itr;
             range.erase(tmp);
-        } else
+        } else {
             ++itr;
+        }
     }
 }
 
@@ -102,22 +108,25 @@ bool StreamingChunkSelector::selectFromPreview(PieceDownloader *pd, Uint32 &chun
         } else if (pd->hasChunk(*i) && *i >= range_start && *i <= range_end) {
             candidates.push_back(*i);
             ++i;
-        } else
+        } else {
             ++i;
+        }
     }
 
     if (!candidates.empty()) {
         chunk = leastPeers(candidates, INVALID_CHUNK, 3);
         return chunk != INVALID_CHUNK;
-    } else
+    } else {
         return false;
+    }
 }
 
 bool StreamingChunkSelector::select(bt::PieceDownloader *pd, bt::Uint32 &chunk)
 {
     // Always give precendence to preview chunks
-    if (selectFromPreview(pd, chunk))
+    if (selectFromPreview(pd, chunk)) {
         return true;
+    }
 
     const BitSet &bs = cman->getBitSet();
     Uint32 critical_chunk = INVALID_CHUNK;
@@ -149,8 +158,9 @@ bool StreamingChunkSelector::select(bt::PieceDownloader *pd, bt::Uint32 &chunk)
             }
 
             ++itr;
-        } else
+        } else {
             ++itr;
+        }
     }
 
     if (critical_chunk != INVALID_CHUNK) {
@@ -176,15 +186,18 @@ void StreamingChunkSelector::reincluded(bt::Uint32 from, bt::Uint32 to)
     bt::ChunkSelector::reincluded(from, to);
     initRange();
 
-    for (Uint32 chunk = from; chunk <= to; chunk++)
-        if (cman->getChunk(chunk)->isPreview())
+    for (Uint32 chunk = from; chunk <= to; chunk++) {
+        if (cman->getChunk(chunk)->isPreview()) {
             preview_chunks.insert(chunk);
+        }
+    }
 }
 
 void StreamingChunkSelector::reinsert(bt::Uint32 chunk)
 {
-    if (cman->getChunk(chunk)->isPreview())
+    if (cman->getChunk(chunk)->isPreview()) {
         preview_chunks.insert(chunk);
+    }
 
     bt::ChunkSelector::reinsert(chunk);
     if (chunk >= cursor && chunk <= range_end) {

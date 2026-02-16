@@ -82,8 +82,9 @@ PacketParser::~PacketParser()
 
 bool PacketParser::parse()
 {
-    if (size < Header::size())
+    if (size < Header::size()) {
         return false;
+    }
 
     data_off = Header::size();
 
@@ -95,8 +96,9 @@ bool PacketParser::parse()
             sack_found = true;
             sack.extension = ptr[0];
             sack.length = ptr[1];
-            if (data_off + 2 + sack.length > size)
+            if (data_off + 2 + sack.length > size) {
                 return false;
+            }
             sack.bitmask = (bt::Uint8 *)ptr + 2;
         }
 

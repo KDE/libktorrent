@@ -39,22 +39,26 @@ bt::Uint32 StreamSocket::write(bt::Uint32 max, bt::TimeStamp now)
     QMutexLocker lock(&mutex);
     if (sock->state() == net::SocketDevice::CONNECTING) {
         bool ok = sock->connectSuccesFull();
-        if (listener)
+        if (listener) {
             listener->connectFinished(ok);
-        if (!ok)
+        }
+        if (!ok) {
             return 0;
+        }
     }
 
-    if (buffer.isEmpty())
+    if (buffer.isEmpty()) {
         return 0;
+    }
 
     // max 0 means unlimited transfer, try to send the entire buffer then
     int to_send = (max == 0) ? buffer.size() : qMin<int>(buffer.size(), max);
     int ret = sock->send((const bt::Uint8 *)buffer.data(), to_send);
     if (ret == to_send) {
         buffer.clear();
-        if (listener)
+        if (listener) {
             listener->dataSent();
+        }
         return ret;
     } else if (ret > 0) {
         buffer = buffer.mid(ret);

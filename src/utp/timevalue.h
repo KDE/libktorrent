@@ -68,42 +68,46 @@ inline bt::Int64 operator-(const TimeValue &a, const TimeValue &b)
 
 inline bool operator<(const TimeValue &a, const TimeValue &b)
 {
-    if (a.seconds < b.seconds)
+    if (a.seconds < b.seconds) {
         return true;
-    else if (a.seconds == b.seconds)
+    } else if (a.seconds == b.seconds) {
         return a.microseconds < b.microseconds;
-    else
+    } else {
         return false;
+    }
 }
 
 inline bool operator<=(const TimeValue &a, const TimeValue &b)
 {
-    if (a.seconds < b.seconds)
+    if (a.seconds < b.seconds) {
         return true;
-    else if (a.seconds == b.seconds)
+    } else if (a.seconds == b.seconds) {
         return a.microseconds <= b.microseconds;
-    else
+    } else {
         return false;
+    }
 }
 
 inline bool operator>(const TimeValue &a, const TimeValue &b)
 {
-    if (a.seconds > b.seconds)
+    if (a.seconds > b.seconds) {
         return true;
-    else if (a.seconds == b.seconds)
+    } else if (a.seconds == b.seconds) {
         return a.microseconds > b.microseconds;
-    else
+    } else {
         return false;
+    }
 }
 
 inline bool operator>=(const TimeValue &a, const TimeValue &b)
 {
-    if (a.seconds > b.seconds)
+    if (a.seconds > b.seconds) {
         return true;
-    else if (a.seconds == b.seconds)
+    } else if (a.seconds == b.seconds) {
         return a.microseconds >= b.microseconds;
-    else
+    } else {
         return false;
+    }
 }
 
 }

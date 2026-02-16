@@ -51,8 +51,9 @@ void WebSeed::setGroupIDs(Uint32 up, Uint32 down)
 {
     up_gid = up;
     down_gid = down;
-    if (conn)
+    if (conn) {
         conn->setGroupIDs(up, down);
+    }
 }
 
 void WebSeed::setProxy(const QString &host, bt::Uint16 port)
@@ -69,8 +70,9 @@ void WebSeed::setProxyEnabled(bool on)
 void WebSeed::reset()
 {
     retry_timer.stop();
-    if (current)
+    if (current) {
         chunkStopped();
+    }
 
     if (conn) {
         conn->deleteLater();
@@ -101,16 +103,18 @@ bool WebSeed::busy() const
 
 Uint32 WebSeed::getDownloadRate() const
 {
-    if (conn)
+    if (conn) {
         return conn->getDownloadRate();
-    else
+    } else {
         return 0;
+    }
 }
 
 void WebSeed::connectToServer()
 {
-    if (!token)
+    if (!token) {
         token = PeerManager::connectionLimits().acquire(tor.getInfoHash());
+    }
 
     if (!token) {
         retryLater();
@@ -118,8 +122,9 @@ void WebSeed::connectToServer()
     }
 
     QUrl dst = url;
-    if (redirected_url.isValid())
+    if (redirected_url.isValid()) {
         dst = redirected_url;
+    }
 
     if (!proxy_enabled) {
         QList<QNetworkProxy> proxyList = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(dst));
@@ -136,18 +141,20 @@ void WebSeed::connectToServer()
             }
         }
     } else {
-        if (proxy_host.isNull())
+        if (proxy_host.isNull()) {
             conn->connectTo(dst); // direct connection
-        else
+        } else {
             conn->connectToProxy(proxy_host, proxy_port); // via a proxy
+        }
     }
     status = conn->getStatusString();
 }
 
 void WebSeed::download(Uint32 first, Uint32 last)
 {
-    if (!enabled)
+    if (!enabled) {
         return;
+    }
 
     // Out(SYS_CON|LOG_DEBUG) << "WebSeed: downloading " << first << "-" << last << " from " << url.toDisplayString() << endl;
     // open connection and connect if needed
@@ -174,8 +181,9 @@ void WebSeed::download(Uint32 first, Uint32 last)
 
     QString path = url.path();
     QString query = url.query();
-    if (path.endsWith('/'_L1))
+    if (path.endsWith('/'_L1)) {
         path += tor.getNameSuggestion();
+    }
 
     if (tor.isMultiFile()) {
         range_queue.clear();
@@ -195,10 +203,11 @@ void WebSeed::download(Uint32 first, Uint32 last)
     } else {
         Uint64 len = (last_chunk - first_chunk) * tor.getChunkSize();
         // last chunk can have a different size
-        if (last_chunk == tor.getNumChunks() - 1)
+        if (last_chunk == tor.getNumChunks() - 1) {
             len += tor.getLastChunkSize();
-        else
+        } else {
             len += tor.getChunkSize();
+        }
 
         QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
         conn->get(host, path, query, first_chunk * tor.getChunkSize(), len);
@@ -209,8 +218,9 @@ void WebSeed::continueCurChunk()
 {
     QString path = url.path();
     QString query = url.query();
-    if (path.endsWith('/'_L1) && !isUserCreated())
+    if (path.endsWith('/'_L1) && !isUserCreated()) {
         path += tor.getNameSuggestion();
+    }
 
     first_chunk = cur_chunk;
     if (tor.isMultiFile()) {
@@ -236,10 +246,11 @@ void WebSeed::continueCurChunk()
     } else {
         Uint64 len = (last_chunk - first_chunk) * tor.getChunkSize();
         // last chunk can have a different size
-        if (last_chunk == tor.getNumChunks() - 1)
+        if (last_chunk == tor.getNumChunks() - 1) {
             len += tor.getLastChunkSize();
-        else
+        } else {
             len += tor.getChunkSize();
+        }
 
         QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
         conn->get(host, path, query, first_chunk * tor.getChunkSize() + bytes_of_cur_chunk, len - bytes_of_cur_chunk);
@@ -251,8 +262,9 @@ void WebSeed::chunkStarted(Uint32 chunk)
 {
     Uint32 csize = cman.getChunk(chunk)->getSize();
     Uint32 pieces_count = csize / MAX_PIECE_LEN;
-    if (csize % MAX_PIECE_LEN > 0)
+    if (csize % MAX_PIECE_LEN > 0) {
         pieces_count++;
+    }
 
     if (!current) {
         current = new WebSeedChunkDownload(this, url.toDisplayString(), chunk, pieces_count);
@@ -276,8 +288,9 @@ void WebSeed::chunkStopped()
 Uint32 WebSeed::update()
 {
     try {
-        if (!conn || !busy())
+        if (!conn || !busy()) {
             return 0;
+        }
 
         if (!conn->ok()) {
             readData();
@@ -295,8 +308,9 @@ Uint32 WebSeed::update()
             chunkStopped();
             first_chunk = last_chunk = cur_chunk = tor.getNumChunks() + 1;
             num_failures++;
-            if (num_failures == 3)
+            if (num_failures == 3) {
                 retryLater();
+            }
             return 0;
         } else if (conn->closed()) {
             // Make sure we handle all data
@@ -332,8 +346,9 @@ Uint32 WebSeed::update()
 
                 QString path = url.path();
                 QString query = url.query();
-                if (path.endsWith('/'_L1))
+                if (path.endsWith('/'_L1)) {
                     path += tor.getNameSuggestion();
+                }
 
                 // ask for the next range
                 Range r = range_queue[0];
@@ -357,8 +372,9 @@ void WebSeed::readData()
     QByteArray tmp;
     while (conn->getData(tmp) && cur_chunk <= last_chunk) {
         // Out(SYS_CON|LOG_DEBUG) << "WebSeed: handleData " << tmp.size() << endl;
-        if (!current)
+        if (!current) {
             chunkStarted(cur_chunk);
+        }
         handleData(tmp);
         tmp.clear();
     }
@@ -377,16 +393,19 @@ void WebSeed::handleData(const QByteArray &tmp)
     while (off < (Uint32)tmp.size() && cur_chunk <= last_chunk) {
         Chunk *c = cman.getChunk(cur_chunk);
         Uint32 bl = c->getSize() - bytes_of_cur_chunk;
-        if (bl > tmp.size() - off)
+        if (bl > tmp.size() - off) {
             bl = tmp.size() - off;
+        }
 
         // ignore data if we already have it
         if (c->getStatus() != Chunk::ON_DISK) {
-            if (!cur_piece || cur_piece->parentChunk() != c)
+            if (!cur_piece || cur_piece->parentChunk() != c) {
                 cur_piece = c->getPiece(0, c->getSize(), false);
+            }
 
-            if (cur_piece)
+            if (cur_piece) {
                 cur_piece->write((const Uint8 *)tmp.data() + off, bl, bytes_of_cur_chunk);
+            }
             downloaded += bl;
         }
         off += bl;
@@ -400,8 +419,9 @@ void WebSeed::handleData(const QByteArray &tmp)
             if (c->getStatus() != Chunk::ON_DISK) {
                 Q_EMIT chunkReady(c);
                 // It is possible that the webseed has been disabled due receiving a bad chunk
-                if (!isEnabled())
+                if (!isEnabled()) {
                     throw AutoDisabled();
+                }
             }
 
             chunkStopped();
@@ -425,24 +445,26 @@ void WebSeed::fillRangeList(Uint32 chunk)
     for (int i = 0; i < tflist.count(); i++) {
         const TorrentFile &tf = tor.getFile(tflist[i]);
         Range r = {tflist[i], 0, 0};
-        if (i == 0)
+        if (i == 0) {
             r.off = tf.fileOffset(chunk, tor.getChunkSize());
+        }
 
-        if (tflist.count() == 1)
+        if (tflist.count() == 1) {
             r.len = c->getSize();
-        else if (i == 0)
+        } else if (i == 0) {
             r.len = tf.getLastChunkSize();
-        else if (i == tflist.count() - 1)
+        } else if (i == tflist.count() - 1) {
             r.len = c->getSize() - passed;
-        else
+        } else {
             r.len = tf.getSize();
+        }
 
         // add the range
-        if (range_queue.count() == 0)
+        if (range_queue.count() == 0) {
             range_queue.append(r);
-        else if (range_queue.back().file != r.file)
+        } else if (range_queue.back().file != r.file) {
             range_queue.append(r);
-        else {
+        } else {
             // the last range and this one are in the same file
             // so expand it
             Range &l = range_queue.back();

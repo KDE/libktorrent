@@ -28,8 +28,9 @@ public:
         : PeerInterface(PeerID(), NUM_CHUNKS)
     {
         QString name = QStringLiteral("%1").arg(peer_cnt++);
-        if (name.size() < 20)
+        if (name.size() < 20) {
             name = name.leftJustified(20, QLatin1Char(' '));
+        }
         peer_id = PeerID(name.toLatin1().constData());
         allowed_chunk = INVALID_CHUNK;
         allow_called = false;

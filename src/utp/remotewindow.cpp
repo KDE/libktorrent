@@ -43,8 +43,9 @@ RemoteWindow::~RemoteWindow()
 void RemoteWindow::packetReceived(const utp::Header *hdr, const SelectiveAck *sack, Retransmitter *conn)
 {
     if (hdr->ack_nr == last_ack_nr) {
-        if (hdr->type == ST_STATE)
+        if (hdr->type == ST_STATE) {
             last_ack_receive_count++;
+        }
     } else {
         last_ack_nr = hdr->ack_nr;
         last_ack_receive_count = 1;
@@ -65,10 +66,12 @@ void RemoteWindow::packetReceived(const utp::Header *hdr, const SelectiveAck *sa
                 conn->updateRTT(hdr, now - i->send_time, i->packet.payloadSize());
                 cur_window -= i->packet.payloadSize();
                 i = unacked_packets.erase(i);
-            } else
+            } else {
                 ++i;
-        } else
+            }
+        } else {
             break;
+        }
     }
 
     if (!unacked_packets.isEmpty()) {
@@ -136,8 +139,9 @@ bt::Uint16 RemoteWindow::lost(const SelectiveAck *sack)
     while (i >= 0 && acked < 3) {
         if (Acked(sack, i)) {
             acked++;
-            if (acked == 3)
+            if (acked == 3) {
                 return i;
+            }
         }
 
         i--;
@@ -166,10 +170,11 @@ void RemoteWindow::timeout(Retransmitter *conn)
 void RemoteWindow::updateWindowSize(double scaled_gain)
 {
     int d = qRound(scaled_gain);
-    if (max_window + d < MIN_PACKET_SIZE)
+    if (max_window + d < MIN_PACKET_SIZE) {
         max_window = MIN_PACKET_SIZE;
-    else
+    } else {
         max_window += d;
+    }
 
     // if (scaled_gain > 1000)
     //  Out(SYS_UTP|LOG_DEBUG) << "RemoteWindow::updateWindowSize " << scaled_gain << " " << max_window << endl;

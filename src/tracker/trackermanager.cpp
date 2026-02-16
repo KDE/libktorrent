@@ -48,8 +48,9 @@ TrackerManager::TrackerManager(bt::TorrentControl *tor, PeerManager *pman)
     // Load status of each tracker
     loadTrackerStatus();
 
-    if (tor->getStats().priv_torrent)
+    if (tor->getStats().priv_torrent) {
         switchTracker(selectTracker());
+    }
 }
 
 TrackerManager::~TrackerManager()
@@ -74,8 +75,9 @@ bool TrackerManager::noTrackersReachable() const
         // enabled, we must return true;
         for (PtrMap<QUrl, Tracker>::const_iterator i = trackers.begin(); i != trackers.end(); ++i) {
             if (i->second->isEnabled()) {
-                if (i->second->trackerStatus() != TRACKER_ERROR)
+                if (i->second->trackerStatus() != TRACKER_ERROR) {
                     return false;
+                }
                 enabled++;
             }
         }
@@ -91,11 +93,13 @@ void addTrackerStatusToInfo(const Tracker *tr, TrackersStatusInfo &info)
 
         if (tr->trackerStatus() == TRACKER_ERROR) {
             info.errors++;
-            if (tr->timeOut())
+            if (tr->timeOut()) {
                 info.timeout_errors++;
+            }
         }
-        if (tr->hasWarning())
+        if (tr->hasWarning()) {
             info.warnings++;
+        }
     }
 }
 
@@ -109,24 +113,29 @@ TrackersStatusInfo TrackerManager::getTrackersStatusInfo() const
         return tsi;
     }
 
-    for (PtrMap<QUrl, Tracker>::const_iterator i = trackers.begin(); i != trackers.end(); ++i)
-        if (i->second->isEnabled())
+    for (PtrMap<QUrl, Tracker>::const_iterator i = trackers.begin(); i != trackers.end(); ++i) {
+        if (i->second->isEnabled()) {
             addTrackerStatusToInfo(i->second, tsi);
+        }
+    }
     return tsi;
 }
 
 void TrackerManager::setCurrentTracker(bt::TrackerInterface *t)
 {
-    if (!tor->getStats().priv_torrent)
+    if (!tor->getStats().priv_torrent) {
         return;
+    }
 
     const auto trk = dynamic_cast<Tracker *>(t);
-    if (!trk)
+    if (!trk) {
         return;
+    }
 
     if (curr != trk) {
-        if (curr)
+        if (curr) {
             curr->stop();
+        }
         switchTracker(trk);
         trk->start();
     }
@@ -135,8 +144,9 @@ void TrackerManager::setCurrentTracker(bt::TrackerInterface *t)
 void TrackerManager::setCurrentTracker(const QUrl &url)
 {
     Tracker *trk = trackers.find(url);
-    if (trk)
+    if (trk) {
         setCurrentTracker(trk);
+    }
 }
 
 QList<TrackerInterface *> TrackerManager::getTrackers()
@@ -151,16 +161,18 @@ QList<TrackerInterface *> TrackerManager::getTrackers()
 
 TrackerInterface *TrackerManager::addTracker(const QUrl &url, bool custom, int tier)
 {
-    if (trackers.contains(url))
+    if (trackers.contains(url)) {
         return nullptr;
+    }
 
     Tracker *trk = nullptr;
-    if (url.scheme() == QLatin1String("udp"))
+    if (url.scheme() == QLatin1String("udp")) {
         trk = new UDPTracker(url, this, tor->getTorrent().getPeerID(), tier);
-    else if (url.scheme() == QLatin1String("http") || url.scheme() == QLatin1String("https"))
+    } else if (url.scheme() == QLatin1String("http") || url.scheme() == QLatin1String("https")) {
         trk = new HTTPTracker(url, this, tor->getTorrent().getPeerID(), tier);
-    else
+    } else {
         return nullptr;
+    }
 
     addTracker(trk);
     if (custom) {
@@ -181,8 +193,9 @@ bool TrackerManager::removeTracker(bt::TrackerInterface *t)
 
 bool TrackerManager::removeTracker(const QUrl &url)
 {
-    if (!custom_trackers.contains(url))
+    if (!custom_trackers.contains(url)) {
         return false;
+    }
 
     custom_trackers.removeAll(url);
     Tracker *trk = trackers.find(url);
@@ -197,8 +210,9 @@ bool TrackerManager::removeTracker(const QUrl &url)
 
         if (trackers.count() > 0) {
             switchTracker(selectTracker());
-            if (curr)
+            if (curr) {
                 curr->start();
+            }
         }
     } else {
         // just delete if not the current one
@@ -219,8 +233,9 @@ void TrackerManager::restoreDefault()
     while (i != custom_trackers.end()) {
         Tracker *t = trackers.find(*i);
         if (t) {
-            if (t->isStarted())
+            if (t->isStarted()) {
                 t->stop();
+            }
 
             if (curr == t && tor->getStats().priv_torrent) {
                 curr = nullptr;
@@ -234,8 +249,9 @@ void TrackerManager::restoreDefault()
 
     custom_trackers.clear();
     saveCustomURLs();
-    if (tor->getStats().priv_torrent && curr == nullptr)
+    if (tor->getStats().priv_torrent && curr == nullptr) {
         switchTracker(selectTracker());
+    }
 }
 
 void TrackerManager::addTracker(Tracker *trk)
@@ -249,23 +265,26 @@ void TrackerManager::addTracker(Tracker *trk)
 
 void TrackerManager::start()
 {
-    if (started)
+    if (started) {
         return;
+    }
 
     if (tor->getStats().priv_torrent) {
         if (!curr) {
             if (trackers.count() > 0) {
                 switchTracker(selectTracker());
-                if (curr)
+                if (curr) {
                     curr->start();
+                }
             }
         } else {
             curr->start();
         }
     } else {
         for (PtrMap<QUrl, Tracker>::const_iterator i = trackers.begin(); i != trackers.end(); ++i) {
-            if (i->second->isEnabled())
+            if (i->second->isEnabled()) {
                 i->second->start();
+            }
         }
     }
 
@@ -274,13 +293,15 @@ void TrackerManager::start()
 
 void TrackerManager::stop(bt::WaitJob *wjob)
 {
-    if (!started)
+    if (!started) {
         return;
+    }
 
     started = false;
     if (tor->getStats().priv_torrent) {
-        if (curr)
+        if (curr) {
             curr->stop(wjob);
+        }
 
         for (PtrMap<QUrl, Tracker>::const_iterator i = trackers.begin(); i != trackers.end(); ++i) {
             i->second->reset();
@@ -296,8 +317,9 @@ void TrackerManager::stop(bt::WaitJob *wjob)
 void TrackerManager::completed()
 {
     if (tor->getStats().priv_torrent) {
-        if (curr)
+        if (curr) {
             curr->completed();
+        }
     } else {
         for (PtrMap<QUrl, Tracker>::const_iterator i = trackers.begin(); i != trackers.end(); ++i) {
             i->second->completed();
@@ -320,8 +342,9 @@ void TrackerManager::manualUpdate()
         }
     } else {
         for (PtrMap<QUrl, Tracker>::const_iterator i = trackers.begin(); i != trackers.end(); ++i) {
-            if (i->second->isEnabled())
+            if (i->second->isEnabled()) {
                 i->second->manualUpdate();
+            }
         }
     }
 }
@@ -330,20 +353,23 @@ void TrackerManager::saveCustomURLs()
 {
     QString trackers_file = tor->getTorDir() + QLatin1String("trackers");
     QFile file(trackers_file);
-    if (!file.open(QIODevice::WriteOnly))
+    if (!file.open(QIODevice::WriteOnly)) {
         return;
+    }
 
     QTextStream stream(&file);
-    for (const QUrl &url : std::as_const(custom_trackers))
+    for (const QUrl &url : std::as_const(custom_trackers)) {
         stream << url.toDisplayString() << Qt::endl;
+    }
 }
 
 void TrackerManager::loadCustomURLs()
 {
     QString trackers_file = tor->getTorDir() + QLatin1String("trackers");
     QFile file(trackers_file);
-    if (!file.open(QIODevice::ReadOnly))
+    if (!file.open(QIODevice::ReadOnly)) {
         return;
+    }
 
     no_save_custom_trackers = true;
     QTextStream stream(&file);
@@ -357,8 +383,9 @@ void TrackerManager::saveTrackerStatus()
 {
     QString status_file = tor->getTorDir() + QLatin1String("tracker_status");
     QFile file(status_file);
-    if (!file.open(QIODevice::WriteOnly))
+    if (!file.open(QIODevice::WriteOnly)) {
         return;
+    }
 
     QTextStream stream(&file);
     PtrMap<QUrl, Tracker>::iterator i = trackers.begin();
@@ -375,19 +402,22 @@ void TrackerManager::loadTrackerStatus()
 {
     QString status_file = tor->getTorDir() + QLatin1String("tracker_status");
     QFile file(status_file);
-    if (!file.open(QIODevice::ReadOnly))
+    if (!file.open(QIODevice::ReadOnly)) {
         return;
+    }
 
     QTextStream stream(&file);
     while (!stream.atEnd()) {
         QString line = stream.readLine();
-        if (line.size() < 2)
+        if (line.size() < 2) {
             continue;
+        }
 
         if (line[0] == '0'_L1) {
             Tracker *trk = trackers.find(QUrl(line.mid(2))); // url starts at the second char
-            if (trk)
+            if (trk) {
                 trk->setEnabled(false);
+            }
         }
     }
 }
@@ -399,12 +429,13 @@ Tracker *TrackerManager::selectTracker()
     while (i != trackers.end()) {
         Tracker *t = i->second;
         if (t->isEnabled()) {
-            if (!n)
+            if (!n) {
                 n = t;
-            else if (t->failureCount() < n->failureCount())
+            } else if (t->failureCount() < n->failureCount()) {
                 n = t;
-            else if (t->failureCount() == n->failureCount())
+            } else if (t->failureCount() == n->failureCount()) {
                 n = t->getTier() < n->getTier() ? t : n;
+            }
         }
         ++i;
     }
@@ -419,8 +450,9 @@ Tracker *TrackerManager::selectTracker()
 void TrackerManager::onTrackerError(const QString &err)
 {
     Q_UNUSED(err);
-    if (!started)
+    if (!started) {
         return;
+    }
 
     if (!tor->getStats().priv_torrent) {
         const auto trk = static_cast<Tracker *>(sender());
@@ -435,39 +467,45 @@ void TrackerManager::onTrackerError(const QString &err)
             } else {
                 curr->stop();
                 switchTracker(trk);
-                if (curr->failureCount() > 0)
+                if (curr->failureCount() > 0) {
                     curr->handleFailure();
-                else
+                } else {
                     curr->start();
+                }
             }
-        } else
+        } else {
             trk->handleFailure();
+        }
     }
 }
 
 void TrackerManager::onTrackerOK()
 {
     const auto tracker = static_cast<Tracker *>(sender());
-    if (tracker->isStarted())
+    if (tracker->isStarted()) {
         tracker->scrape();
+    }
 }
 
 void TrackerManager::updateCurrentManually()
 {
-    if (!curr)
+    if (!curr) {
         return;
+    }
 
     curr->manualUpdate();
 }
 
 void TrackerManager::switchTracker(Tracker *trk)
 {
-    if (curr == trk)
+    if (curr == trk) {
         return;
+    }
 
     curr = trk;
-    if (curr)
+    if (curr) {
         Out(SYS_TRK | LOG_NOTICE) << "Switching to tracker " << trk->trackerURL() << endl;
+    }
 }
 
 Uint32 TrackerManager::getNumSeeders() const
@@ -479,8 +517,9 @@ Uint32 TrackerManager::getNumSeeders() const
     int r = 0;
     for (PtrMap<QUrl, Tracker>::const_iterator i = trackers.begin(); i != trackers.end(); ++i) {
         int v = i->second->getNumSeeders();
-        if (v > r)
+        if (v > r) {
             r = v;
+        }
     }
 
     return r;
@@ -488,14 +527,16 @@ Uint32 TrackerManager::getNumSeeders() const
 
 Uint32 TrackerManager::getNumLeechers() const
 {
-    if (tor->getStats().priv_torrent)
+    if (tor->getStats().priv_torrent) {
         return curr && curr->getNumLeechers() > 0 ? curr->getNumLeechers() : 0;
+    }
 
     int r = 0;
     for (PtrMap<QUrl, Tracker>::const_iterator i = trackers.begin(); i != trackers.end(); ++i) {
         int v = i->second->getNumLeechers();
-        if (v > r)
+        if (v > r) {
             r = v;
+        }
     }
 
     return r;
@@ -504,21 +545,24 @@ Uint32 TrackerManager::getNumLeechers() const
 void TrackerManager::setTrackerEnabled(const QUrl &url, bool enabled)
 {
     Tracker *trk = trackers.find(url);
-    if (!trk)
+    if (!trk) {
         return;
+    }
 
     trk->setEnabled(enabled);
     if (!enabled) {
         trk->stop();
         if (curr == trk) { // if the current tracker is disabled, switch to another one
             switchTracker(selectTracker());
-            if (curr)
+            if (curr) {
                 curr->start();
+            }
         }
     } else {
         // start tracker if necessary
-        if (!tor->getStats().priv_torrent && started)
+        if (!tor->getStats().priv_torrent && started) {
             trk->start();
+        }
     }
 
     saveTrackerStatus();
@@ -527,10 +571,11 @@ void TrackerManager::setTrackerEnabled(const QUrl &url, bool enabled)
 Uint64 TrackerManager::bytesDownloaded() const
 {
     const TorrentStats &s = tor->getStats();
-    if (s.imported_bytes > s.bytes_downloaded)
+    if (s.imported_bytes > s.bytes_downloaded) {
         return 0;
-    else
+    } else {
         return s.bytes_downloaded - s.imported_bytes;
+    }
 }
 
 Uint64 TrackerManager::bytesUploaded() const

@@ -36,8 +36,9 @@ RPCMsgFactory::~RPCMsgFactory()
 std::unique_ptr<RPCMsg> RPCMsgFactory::buildRequest(BDictNode *dict)
 {
     BDictNode *args = dict->getDict(ARG);
-    if (!args)
+    if (!args) {
         throw bt::Error(u"Invalid request, arguments missing"_s);
+    }
 
     std::unique_ptr<RPCMsg> msg;
     const auto str = dict->getByteArray(REQ);
@@ -60,20 +61,23 @@ std::unique_ptr<RPCMsg> RPCMsgFactory::buildRequest(BDictNode *dict)
     } else if (str == "vote") {
         // Some µTorrent extension to rate torrents, just ignore
         return msg;
-    } else
+    } else {
         throw bt::Error(u"Invalid request type %1"_s.arg(QLatin1StringView(str)));
+    }
 }
 
 std::unique_ptr<RPCMsg> RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver *method_resolver)
 {
     BDictNode *args = dict->getDict(RSP);
-    if (!args)
+    if (!args) {
         throw bt::Error(u"Arguments missing for DHT response"_s);
+    }
 
     QByteArray mtid = dict->getByteArray(TID);
     // check for empty byte arrays should prevent 144416
-    if (mtid.size() == 0)
+    if (mtid.size() == 0) {
         throw bt::Error(u"Empty transaction ID in DHT response"_s);
+    }
 
     std::unique_ptr<RPCMsg> msg;
 
@@ -115,8 +119,9 @@ std::unique_ptr<RPCMsg> RPCMsgFactory::build(bt::BDictNode *dict, RPCMethodResol
         auto msg = std::make_unique<ErrMsg>();
         msg->parse(dict);
         return msg;
-    } else
+    } else {
         throw bt::Error(u"Unknown message type %1"_s.arg(QLatin1StringView(t)));
+    }
 }
 
 }

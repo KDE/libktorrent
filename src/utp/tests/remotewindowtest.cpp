@@ -263,8 +263,9 @@ private Q_SLOTS:
         Header hdr;
         hdr.ack_nr = 0;
         hdr.wnd_size = 5000;
-        for (int i = 1; i < 8; i++)
+        for (int i = 1; i < 8; i++) {
             retransmit_seq_nr.insert(i);
+        }
         wnd.packetReceived(&hdr, &sack, this);
         QVERIFY(wnd.numUnackedPackets() == 7);
         QVERIFY(update_rtt_called);
@@ -296,8 +297,9 @@ private Q_SLOTS:
         Header hdr;
         hdr.ack_nr = 0;
         hdr.wnd_size = 5000;
-        for (int i = 1; i <= 2; i++)
+        for (int i = 1; i <= 2; i++) {
             retransmit_seq_nr.insert(i);
+        }
         wnd.packetReceived(&hdr, &sack, this);
         QVERIFY(wnd.numUnackedPackets() == 7);
         QVERIFY(update_rtt_called);
@@ -332,8 +334,9 @@ private Q_SLOTS:
         Header hdr;
         hdr.ack_nr = seq_nr - 1;
         hdr.wnd_size = 5000;
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++) {
             retransmit_seq_nr.insert(seq_nr + i);
+        }
         wnd.packetReceived(&hdr, &sack, this);
         QVERIFY(wnd.numUnackedPackets() == 7);
         QVERIFY(update_rtt_called);

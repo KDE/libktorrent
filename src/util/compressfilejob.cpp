@@ -52,8 +52,9 @@ void CompressThread::run()
     char buf[4096];
     while (!canceled && !in.atEnd()) {
         int len = in.read(buf, 4096);
-        if (len <= 0 || len > 4096)
+        if (len <= 0 || len > 4096) {
             break;
+        }
 
         dev.write(buf, len);
     }
@@ -101,8 +102,9 @@ void CompressFileJob::kill(bool quietly)
         compress_thread = nullptr;
     }
     setError(KIO::ERR_USER_CANCELED);
-    if (!quietly)
+    if (!quietly) {
         emitResult();
+    }
 }
 
 void CompressFileJob::compressThreadFinished()

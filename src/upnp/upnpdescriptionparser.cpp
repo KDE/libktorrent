@@ -63,8 +63,9 @@ UPnPDescriptionParser::~UPnPDescriptionParser()
 bool UPnPDescriptionParser::parse(const QString &file, UPnPRouter *router)
 {
     QFile fptr(file);
-    if (!fptr.open(QIODevice::ReadOnly))
+    if (!fptr.open(QIODevice::ReadOnly)) {
         return false;
+    }
 
     QByteArray data = fptr.readAll();
     XMLContentHandler chandler(router);
@@ -108,8 +109,9 @@ bool XMLContentHandler::parse(const QByteArray &data)
 
     while (!reader.atEnd()) {
         reader.readNext();
-        if (reader.hasError())
+        if (reader.hasError()) {
             return false;
+        }
 
         switch (reader.tokenType()) {
         case QXmlStreamReader::StartDocument:
@@ -134,8 +136,9 @@ bool XMLContentHandler::parse(const QByteArray &data)
             break;
         case QXmlStreamReader::Characters:
             if (!reader.isWhitespace() && !reader.text().trimmed().isEmpty()) {
-                if (!characters(reader.text()))
+                if (!characters(reader.text())) {
                     return false;
+                }
             }
             break;
         default:
@@ -143,8 +146,9 @@ bool XMLContentHandler::parse(const QByteArray &data)
         }
     }
 
-    if (!reader.isEndDocument())
+    if (!reader.isEndDocument()) {
         return false;
+    }
 
     return true;
 }
@@ -183,39 +187,44 @@ bool XMLContentHandler::startElement(const StringView &namespaceUri, const Strin
     switch (status_stack.top()) {
     case TOPLEVEL:
         // from toplevel we can only go to root
-        if (localName == QLatin1String("root"))
+        if (localName == QLatin1String("root")) {
             status_stack.push(ROOT);
-        else
+        } else {
             return false;
+        }
         break;
     case ROOT:
         // from the root we can go to device or specVersion
         // we are not interested in the specVersion
-        if (localName == QLatin1String("device"))
+        if (localName == QLatin1String("device")) {
             status_stack.push(DEVICE);
-        else
+        } else {
             status_stack.push(OTHER);
+        }
         break;
     case DEVICE:
         // see if it is a field we are interested in
-        if (interestingDeviceField(localName))
+        if (interestingDeviceField(localName)) {
             status_stack.push(FIELD);
-        else
+        } else {
             status_stack.push(OTHER);
+        }
         break;
     case SERVICE:
-        if (interestingServiceField(localName))
+        if (interestingServiceField(localName)) {
             status_stack.push(FIELD);
-        else
+        } else {
             status_stack.push(OTHER);
+        }
         break;
     case OTHER:
-        if (localName == QLatin1String("service"))
+        if (localName == QLatin1String("service")) {
             status_stack.push(SERVICE);
-        else if (localName == QLatin1String("device"))
+        } else if (localName == QLatin1String("device")) {
             status_stack.push(DEVICE);
-        else
+        } else {
             status_stack.push(OTHER);
+        }
         break;
     case FIELD:
         break;

@@ -32,8 +32,9 @@ UDPTracker::UDPTracker(const QUrl &url, TrackerDataSource *tds, const PeerID &id
     , event(NONE)
 {
     num_instances++;
-    if (!socket)
+    if (!socket) {
         socket = new UDPTrackerSocket();
+    }
 
     interval = 0;
 
@@ -91,29 +92,34 @@ void UDPTracker::completed()
 void UDPTracker::manualUpdate()
 {
     conn_timer.stop();
-    if (!started)
+    if (!started) {
         start();
-    else
+    } else {
         doRequest();
+    }
 }
 
 void UDPTracker::connectReceived(Int32 tid, Int64 cid)
 {
-    if (tid != transaction_id)
+    if (tid != transaction_id) {
         return;
+    }
 
     connection_id = cid;
     failures = 0;
-    if (todo & ANNOUNCE_REQUEST)
+    if (todo & ANNOUNCE_REQUEST) {
         sendAnnounce();
-    if (todo & SCRAPE_REQUEST)
+    }
+    if (todo & SCRAPE_REQUEST) {
         sendScrape();
+    }
 }
 
 void UDPTracker::announceReceived(Int32 tid, const bt::Uint8 *buf, bt::Uint32 size)
 {
-    if (tid != transaction_id || size < 20)
+    if (tid != transaction_id || size < 20) {
         return;
+    }
 
     /*
     0  32-bit integer  action  1
@@ -140,13 +146,15 @@ void UDPTracker::announceReceived(Int32 tid, const bt::Uint8 *buf, bt::Uint32 si
     connection_id = 0;
     conn_timer.stop();
     if (event != STOPPED) {
-        if (event == STARTED)
+        if (event == STARTED) {
             started = true;
+        }
         event = NONE;
         status = TRACKER_OK;
         Q_EMIT requestOK();
-        if (started)
+        if (started) {
             reannounce_timer.start(interval * 1000);
+        }
     } else {
         Q_EMIT stopDone();
         status = TRACKER_IDLE;
@@ -157,8 +165,9 @@ void UDPTracker::announceReceived(Int32 tid, const bt::Uint8 *buf, bt::Uint32 si
 
 void UDPTracker::onError(Int32 tid, const QString &error_string)
 {
-    if (tid != transaction_id)
+    if (tid != transaction_id) {
         return;
+    }
 
     Out(SYS_TRK | LOG_IMPORTANT) << "UDPTracker::error : " << error_string << endl;
     failed(error_string);
@@ -208,8 +217,9 @@ void UDPTracker::scrapeReceived(Int32 tid, const Uint8 *buf, Uint32 size)
     16 + 12 * n     32-bit integer  leechers
     8 + 12 * N
     */
-    if (tid != scrape_transaction_id || size < 20)
+    if (tid != scrape_transaction_id || size < 20) {
         return;
+    }
 
     seeders = ReadInt32(buf, 8);
     total_downloaded = ReadInt32(buf, 12);
@@ -222,8 +232,9 @@ void UDPTracker::sendConnect()
     transaction_id = socket->newTransactionID();
     socket->sendConnect(transaction_id, address);
     int tn = 1;
-    for (int i = 0; i < failures; i++)
+    for (int i = 0; i < failures; i++) {
         tn *= 2;
+    }
     time_out = false;
     conn_timer.start(60000 * tn);
 }
@@ -260,10 +271,11 @@ void UDPTracker::sendAnnounce()
     memcpy(buf + 16, info_hash.getData(), 20);
     memcpy(buf + 36, peer_id.data(), 20);
     WriteInt64(buf, 56, bytesDownloaded());
-    if (ev == COMPLETED)
+    if (ev == COMPLETED) {
         WriteInt64(buf, 64, 0);
-    else
+    } else {
         WriteInt64(buf, 64, tds->bytesLeft());
+    }
     WriteInt64(buf, 72, bytesUploaded());
     WriteInt32(buf, 80, ev);
     QString cip = Tracker::getCustomIP();
@@ -274,10 +286,11 @@ void UDPTracker::sendAnnounce()
         WriteUint32(buf, 84, addr.toIPv4Address());
     }
     WriteUint32(buf, 88, key);
-    if (ev != STOPPED)
+    if (ev != STOPPED) {
         WriteInt32(buf, 92, 100);
-    else
+    } else {
         WriteInt32(buf, 92, 0);
+    }
     WriteUint16(buf, 96, port);
 
     socket->sendAnnounce(transaction_id, buf, address);
@@ -310,9 +323,9 @@ void UDPTracker::onConnTimeout()
     if (connection_id) {
         connection_id = 0;
         failures++;
-        if (event != STOPPED)
+        if (event != STOPPED) {
             onError(transaction_id, i18n("Timeout contacting tracker %1", url.toDisplayString()));
-        else {
+        } else {
             status = TRACKER_IDLE;
             Q_EMIT stopDone();
         }
@@ -332,10 +345,12 @@ void UDPTracker::onResolverResults(net::AddressResolver *ar)
             failures = 0;
             sendConnect();
         } else {
-            if (todo & ANNOUNCE_REQUEST)
+            if (todo & ANNOUNCE_REQUEST) {
                 sendAnnounce();
-            if (todo & SCRAPE_REQUEST)
+            }
+            if (todo & SCRAPE_REQUEST) {
                 sendScrape();
+            }
         }
     } else {
         failures++;

@@ -63,8 +63,9 @@ EncryptedPacketSocket::EncryptedPacketSocket(std::unique_ptr<net::SocketDevice> 
 
 EncryptedPacketSocket::~EncryptedPacketSocket()
 {
-    if (monitored)
+    if (monitored) {
         stopMonitoring();
+    }
 
     delete[] reinserted_data;
 }
@@ -75,8 +76,9 @@ void EncryptedPacketSocket::startMonitoring(net::SocketReader *rdr)
     SocketMonitor::instance().add(this);
     monitored = true;
     if (reinserted_data) {
-        if (enc)
+        if (enc) {
             enc->decrypt(reinserted_data + reinserted_data_read, reinserted_data_size - reinserted_data_read);
+        }
 
         rdr->onDataReady(reinserted_data + reinserted_data_read, reinserted_data_size - reinserted_data_read);
         delete[] reinserted_data;
@@ -105,13 +107,15 @@ Uint32 EncryptedPacketSocket::sendData(const Uint8 *data, Uint32 len)
                 Out(SYS_CON | LOG_DEBUG) << "ret = 0" << endl;
             }
         }
-        if (ds != len)
+        if (ds != len) {
             Out(SYS_CON | LOG_DEBUG) << "ds != len" << endl;
+        }
         return ds;
     } else {
         Uint32 ret = sock->send(data, len);
-        if (ret != len)
+        if (ret != len) {
             Out(SYS_CON | LOG_DEBUG) << "ret != len" << endl;
+        }
         return ret;
     }
 }
@@ -127,24 +131,28 @@ Uint32 EncryptedPacketSocket::readData(Uint8 *buf, Uint32 len)
             reinserted_data = nullptr;
             reinserted_data_size = reinserted_data_read = 0;
             ret2 = tr;
-            if (enc)
+            if (enc) {
                 enc->decrypt(buf, tr);
+            }
         } else {
             tr = len;
             memcpy(buf, reinserted_data + reinserted_data_read, tr);
             reinserted_data_read += tr;
-            if (enc)
+            if (enc) {
                 enc->decrypt(buf, tr);
+            }
             return tr;
         }
     }
 
-    if (len == ret2)
+    if (len == ret2) {
         return ret2;
+    }
 
     Uint32 ret = sock->recv(buf + ret2, len - ret2);
-    if (ret + ret2 > 0 && enc)
+    if (ret + ret2 > 0 && enc) {
         enc->decrypt(buf, ret + ret2);
+    }
 
     return ret;
 }
@@ -152,10 +160,11 @@ Uint32 EncryptedPacketSocket::readData(Uint8 *buf, Uint32 len)
 Uint32 EncryptedPacketSocket::bytesAvailable() const
 {
     Uint32 ba = sock->bytesAvailable();
-    if (reinserted_data_size - reinserted_data_read > 0)
+    if (reinserted_data_size - reinserted_data_read > 0) {
         return ba + (reinserted_data_size - reinserted_data_read);
-    else
+    } else {
         return ba;
+    }
 }
 
 void EncryptedPacketSocket::close()
@@ -166,8 +175,9 @@ void EncryptedPacketSocket::close()
 bool EncryptedPacketSocket::connectTo(const QString &ip, Uint16 port)
 {
     // do a safety check
-    if (ip.isNull() || ip.length() == 0)
+    if (ip.isNull() || ip.length() == 0) {
         return false;
+    }
 
     return connectTo(net::Address(ip, port));
 }
@@ -177,8 +187,9 @@ bool EncryptedPacketSocket::connectTo(const net::Address &addr)
     // we don't wanna block the current thread so set non blocking
     sock->setBlocking(false);
     sock->setTOS(tos);
-    if (sock->connectTo(addr))
+    if (sock->connectTo(addr)) {
         return true;
+    }
 
     return false;
 }
@@ -250,14 +261,16 @@ void EncryptedPacketSocket::setRemoteAddress(const net::Address &addr)
 
 void EncryptedPacketSocket::preProcess(Uint8 *data, Uint32 size)
 {
-    if (enc)
+    if (enc) {
         enc->encryptReplace(data, size);
+    }
 }
 
 void EncryptedPacketSocket::postProcess(Uint8 *data, Uint32 size)
 {
-    if (enc)
+    if (enc) {
         enc->decrypt(data, size);
+    }
 }
 
 }

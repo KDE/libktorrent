@@ -43,10 +43,11 @@ UTPSocket::~UTPSocket()
 bt::Uint32 UTPSocket::bytesAvailable() const
 {
     Connection::Ptr ptr = conn.toStrongRef();
-    if (ptr)
+    if (ptr) {
         return ptr->bytesAvailable();
-    else
+    } else {
         return 0;
+    }
 }
 
 void UTPSocket::close()
@@ -68,29 +69,33 @@ bool UTPSocket::connectSuccesFull()
         setRemoteAddress(ptr->remoteAddress());
         m_state = CONNECTED;
         return true;
-    } else
+    } else {
         return false;
+    }
 }
 
 bool UTPSocket::connectTo(const net::Address &addr)
 {
-    if (!bt::Globals::instance().isUTPEnabled())
+    if (!bt::Globals::instance().isUTPEnabled()) {
         return false;
+    }
 
     UTPServer &srv = bt::Globals::instance().getUTPServer();
     reset();
 
     conn = srv.connectTo(addr);
     Connection::Ptr ptr = conn.toStrongRef();
-    if (!ptr)
+    if (!ptr) {
         return false;
+    }
 
     m_state = CONNECTING;
     ptr->setBlocking(blocking);
     if (blocking) {
         bool ret = ptr->waitUntilConnected();
-        if (ret)
+        if (ret) {
             m_state = CONNECTED;
+        }
 
         return ret;
     }
@@ -106,11 +111,11 @@ int UTPSocket::fd() const
 const net::Address &UTPSocket::getPeerName() const
 {
     Connection::Ptr ptr = conn.toStrongRef();
-    if (remote_addr_override)
+    if (remote_addr_override) {
         return addr;
-    else if (ptr)
+    } else if (ptr) {
         return ptr->remoteAddress();
-    else {
+    } else {
         static net::Address null;
         return null;
     }
@@ -130,20 +135,24 @@ bool UTPSocket::ok() const
 int UTPSocket::recv(bt::Uint8 *buf, int max_len)
 {
     Connection::Ptr ptr = conn.toStrongRef();
-    if (!ptr || ptr->connectionState() == CS_CLOSED)
+    if (!ptr || ptr->connectionState() == CS_CLOSED) {
         return 0;
+    }
 
     try {
         if (ptr->bytesAvailable() == 0) {
             if (blocking) {
-                if (ptr->waitForData())
+                if (ptr->waitForData()) {
                     return ptr->recv(buf, max_len);
-                else
+                } else {
                     return 0; // connection should be closed now
-            } else
+                }
+            } else {
                 return -1; // No data ready and not blocking so return -1
-        } else
+            }
+        } else {
             return ptr->recv(buf, max_len);
+        }
     } catch (Connection::TransmissionError &err) {
         close();
         return -1;
@@ -158,8 +167,9 @@ void UTPSocket::reset()
 int UTPSocket::send(const bt::Uint8 *buf, int len)
 {
     Connection::Ptr ptr = conn.toStrongRef();
-    if (!ptr)
+    if (!ptr) {
         return -1;
+    }
 
     try {
         return ptr->send(buf, len);
@@ -173,8 +183,9 @@ void UTPSocket::setBlocking(bool on)
 {
     blocking = on;
     Connection::Ptr ptr = conn.toStrongRef();
-    if (ptr)
+    if (ptr) {
         ptr->setBlocking(on);
+    }
 }
 
 bool UTPSocket::setTOS(unsigned char type_of_service)
@@ -189,10 +200,11 @@ void UTPSocket::prepare(net::Poll *p, net::Poll::Mode mode)
     if (ptr && ptr->connectionState() != CS_CLOSED) {
         UTPServer &srv = bt::Globals::instance().getUTPServer();
         srv.preparePolling(p, mode, ptr);
-        if (mode == net::Poll::OUTPUT)
+        if (mode == net::Poll::OUTPUT) {
             polled_for_writing = true;
-        else
+        } else {
             polled_for_reading = true;
+        }
     }
 }
 
@@ -200,8 +212,9 @@ bool UTPSocket::ready(const net::Poll *p, net::Poll::Mode mode) const
 {
     Q_UNUSED(p);
     Connection::Ptr ptr = conn.toStrongRef();
-    if (!ptr)
+    if (!ptr) {
         return false;
+    }
 
     if (mode == net::Poll::OUTPUT) {
         if (polled_for_writing) {

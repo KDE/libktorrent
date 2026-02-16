@@ -54,8 +54,9 @@ void PeerSourceManager::removePeerSource(PeerSource *ps)
 
 void PeerSourceManager::start()
 {
-    if (started)
+    if (started) {
         return;
+    }
 
     QList<PeerSource *>::iterator i = additional.begin();
     while (i != additional.end()) {
@@ -68,8 +69,9 @@ void PeerSourceManager::start()
 
 void PeerSourceManager::stop(WaitJob *wjob)
 {
-    if (!started)
+    if (!started) {
         return;
+    }
 
     QList<PeerSource *>::iterator i = additional.begin();
     while (i != additional.end()) {
@@ -110,8 +112,9 @@ void PeerSourceManager::addDHT()
     }
 
     m_dht = new dht::DHTPeerSource(Globals::instance().getDHT(), tor->getInfoHash(), tor->getStats().torrent_name);
-    for (Uint32 i = 0; i < tor->getNumDHTNodes(); i++)
+    for (Uint32 i = 0; i < tor->getNumDHTNodes(); i++) {
         m_dht->addDHTNode(tor->getDHTNode(i));
+    }
 
     // add the DHT source
     addPeerSource(m_dht);
@@ -119,8 +122,9 @@ void PeerSourceManager::addDHT()
 
 void PeerSourceManager::removeDHT()
 {
-    if (!m_dht)
+    if (!m_dht) {
         return;
+    }
 
     removePeerSource(m_dht);
     delete m_dht;

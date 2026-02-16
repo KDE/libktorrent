@@ -44,12 +44,14 @@ void AccessManager::removeBlockList(BlockListInterface *bl)
 bool AccessManager::allowed(const net::Address &addr) const
 {
     // Don't connect to the custom IP sent to the tracker, this should be our own'
-    if (isOurOwnAddress(addr))
+    if (isOurOwnAddress(addr)) {
         return false;
+    }
 
     for (const BlockListInterface *bl : std::as_const(blocklists)) {
-        if (bl->blocked(addr))
+        if (bl->blocked(addr)) {
             return false;
+        }
     }
     return true;
 }
@@ -67,13 +69,15 @@ void AccessManager::addExternalIP(const QString &addr)
 bool AccessManager::isOurOwnAddress(const net::Address &addr) const
 {
     Uint16 port = bt::Server::getPort();
-    if (!Tracker::getCustomIP().isEmpty() && net::Address(Tracker::getCustomIP(), port) == addr)
+    if (!Tracker::getCustomIP().isEmpty() && net::Address(Tracker::getCustomIP(), port) == addr) {
         return true;
+    }
 
     for (const QString &ip : std::as_const(external_addresses)) {
         net::Address address(ip, port);
-        if (address == addr)
+        if (address == addr) {
             return true;
+        }
     }
 
     return false;

@@ -74,8 +74,9 @@ Server::~Server()
 
 bool Server::changePort(Uint16 p)
 {
-    if (!d->sockets.empty() && p == port)
+    if (!d->sockets.empty() && p == port) {
         return true;
+    }
 
     Globals::instance().getPortList().removePort(port, net::TCP);
     d->reset();
@@ -94,8 +95,9 @@ bool Server::changePort(Uint16 p)
     if (!d->sockets.empty()) {
         Globals::instance().getPortList().addNewPort(p, net::TCP, true);
         return true;
-    } else
+    } else {
         return false;
+    }
 }
 
 }

@@ -33,14 +33,16 @@ void ConnectionLimit::setLimits(Uint32 global_limit, Uint32 torrent_limit)
 {
     this->global_limit = global_limit;
     this->torrent_limit = torrent_limit;
-    if (this->global_limit > SystemConnectionLimit())
+    if (this->global_limit > SystemConnectionLimit()) {
         this->global_limit = SystemConnectionLimit();
+    }
 }
 
 std::unique_ptr<ConnectionLimit::Token> ConnectionLimit::acquire(const SHA1Hash &hash)
 {
-    if (global_limit != 0 && global_total >= global_limit)
+    if (global_limit != 0 && global_total >= global_limit) {
         return {};
+    }
 
     QMap<SHA1Hash, bt::Uint32>::iterator i = torrent_totals.find(hash);
     if (i == torrent_totals.end()) {
@@ -60,15 +62,18 @@ void ConnectionLimit::release(const ConnectionLimit::Token &token)
 {
     QMap<SHA1Hash, bt::Uint32>::iterator i = torrent_totals.find(token.infoHash());
     if (i != torrent_totals.end()) {
-        if (i.value() > 0)
+        if (i.value() > 0) {
             i.value()--;
+        }
 
         // erase when torrent has no tokens left
-        if (i.value() == 0)
+        if (i.value() == 0) {
             torrent_totals.erase(i);
+        }
 
-        if (global_total > 0)
+        if (global_total > 0) {
             global_total--;
+        }
     }
 }
 

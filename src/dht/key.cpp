@@ -152,10 +152,11 @@ Key operator-(const Key &a, const Key &b)
 
 Key Key::mid(const dht::Key &a, const dht::Key &b)
 {
-    if (a <= b)
+    if (a <= b) {
         return a + (b - a) / 2;
-    else
+    } else {
         return b + (a - b) / 2;
+    }
 }
 
 #define rep4(v) v, v, v, v

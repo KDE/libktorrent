@@ -27,8 +27,9 @@ int PieceDownloader::grab()
 void PieceDownloader::release()
 {
     grabbed--;
-    if (grabbed < 0)
+    if (grabbed < 0) {
         grabbed = 0;
+    }
 }
 
 }

@@ -52,8 +52,9 @@ bool KTCLI::start()
 {
     bool ok = false;
     quint16 port = parser.value(u"port"_s).toInt(&ok);
-    if (!ok)
+    if (!ok) {
         port = 1024 + QRandomGenerator::global()->bounded((1 << 16) - 1 - 1024); // Use non-root ports
+    }
 
     if (parser.isSet(u"encryption"_s)) {
         Out(SYS_GEN | LOG_NOTICE) << "Enabled encryption" << endl;
@@ -82,8 +83,9 @@ bool KTCLI::start()
         }
     }
 
-    if (parser.positionalArguments().isEmpty())
+    if (parser.positionalArguments().isEmpty()) {
         return false;
+    }
     return load(QUrl::fromLocalFile(parser.positionalArguments().at(0)));
 }
 
@@ -117,12 +119,14 @@ QString KTCLI::tempDir()
 {
     QDir tmpdir = QDir(parser.value(u"tmpdir"_s));
     int i = 0;
-    while (tmpdir.exists(u"tor%1"_s.arg(i)))
+    while (tmpdir.exists(u"tor%1"_s.arg(i))) {
         i++;
+    }
 
     QString sd = u"tor%1"_s.arg(i);
-    if (!tmpdir.mkdir(sd))
+    if (!tmpdir.mkdir(sd)) {
         throw bt::Error(u"Failed to create temporary directory %1"_s.arg(sd));
+    }
 
     tmpdir.cd(sd);
     return tmpdir.absolutePath();
@@ -203,8 +207,9 @@ void KTCLI::shutdown()
 
     WaitJob *j = new WaitJob(2000);
     tc->stop(j);
-    if (j->needToWait())
+    if (j->needToWait()) {
         j->exec();
+    }
     j->deleteLater();
 
     Globals::instance().shutdownTCPServer();

@@ -38,12 +38,14 @@ PacketReader::~PacketReader()
 IncomingPacket::Ptr PacketReader::dequeuePacket()
 {
     QMutexLocker lock(&mutex);
-    if (packet_queue.empty())
+    if (packet_queue.empty()) {
         return IncomingPacket::Ptr();
+    }
 
     IncomingPacket::Ptr &pck = packet_queue.front();
-    if (pck->read != pck->size)
+    if (pck->read != pck->size) {
         return IncomingPacket::Ptr();
+    }
 
     IncomingPacket::Ptr p(std::move(pck));
     packet_queue.pop_front();
@@ -52,8 +54,9 @@ IncomingPacket::Ptr PacketReader::dequeuePacket()
 
 void PacketReader::update(PeerInterface &peer)
 {
-    if (error)
+    if (error) {
         return;
+    }
 
     IncomingPacket::Ptr pck = dequeuePacket();
     while (pck) {
@@ -86,8 +89,9 @@ Uint32 PacketReader::newPacket(Uint8 *buf, Uint32 size)
         am_of_len_read = 4;
     }
 
-    if (packet_length == 0)
+    if (packet_length == 0) {
         return am_of_len_read;
+    }
 
     if (packet_length > max_packet_size) {
         Out(SYS_CON | LOG_DEBUG) << " packet_length too large " << packet_length << endl;
@@ -101,8 +105,9 @@ Uint32 PacketReader::newPacket(Uint8 *buf, Uint32 size)
 
 Uint32 PacketReader::readPacket(Uint8 *buf, Uint32 size)
 {
-    if (!size)
+    if (!size) {
         return 0;
+    }
 
     IncomingPacket *pck = packet_queue.back().get();
     if (pck->read + size >= pck->size) {
@@ -122,15 +127,17 @@ Uint32 PacketReader::readPacket(Uint8 *buf, Uint32 size)
 
 void PacketReader::onDataReady(Uint8 *buf, Uint32 size)
 {
-    if (error)
+    if (error) {
         return;
+    }
 
     QMutexLocker lock(&mutex);
     Uint32 ret = 0;
     if (!packet_queue.empty()) {
         IncomingPacket *pck = packet_queue.back().get();
-        if (pck->read < pck->size) // last packet in queue is not fully read
+        if (pck->read < pck->size) { // last packet in queue is not fully read
             ret = readPacket(buf, size);
+        }
     }
 
     while (ret < size && !error) {

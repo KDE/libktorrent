@@ -33,10 +33,11 @@ void TrackerInterface::reset()
 
 Uint32 TrackerInterface::timeToNextUpdate() const
 {
-    if (!enabled || !isStarted())
+    if (!enabled || !isStarted()) {
         return 0;
-    else
+    } else {
         return interval - request_time.secsTo(QDateTime::currentDateTime());
+    }
 }
 
 QString TrackerInterface::trackerStatusString() const

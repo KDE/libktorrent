@@ -32,11 +32,13 @@ Cache::Cache(Torrent &tor, const QString &tmpdir, const QString &datadir)
     , datadir(datadir)
     , mmap_failures(0)
 {
-    if (!datadir.endsWith(bt::DirSeparator()))
+    if (!datadir.endsWith(bt::DirSeparator())) {
         this->datadir += bt::DirSeparator();
+    }
 
-    if (!tmpdir.endsWith(bt::DirSeparator()))
+    if (!tmpdir.endsWith(bt::DirSeparator())) {
         this->tmpdir += bt::DirSeparator();
+    }
 
     preexisting_files = false;
 }
@@ -79,12 +81,14 @@ Job *Cache::moveDataFiles(const QMap<TorrentFileInterface *, QString> &files)
 void Cache::moveDataFilesFinished(const QMap<TorrentFileInterface *, QString> &files, Job *job)
 {
     Q_UNUSED(files);
-    if (job->error())
+    if (job->error()) {
         return;
+    }
 
     QSet<QString> mps;
-    if (getMountPoints(mps))
+    if (getMountPoints(mps)) {
         saveMountPoints(mps);
+    }
 }
 
 PieceData::Ptr Cache::findPiece(Chunk *c, Uint32 off, Uint32 len, bool read_only)
@@ -95,8 +99,9 @@ PieceData::Ptr Cache::findPiece(Chunk *c, Uint32 off, Uint32 len, bool read_only
         const PieceDataInfoList &info_list = i.value();
         auto j = std::lower_bound(info_list.begin(), info_list.end(), key, PieceDataInfo::OrderByKey());
         while (j != info_list.end() && j->key == key) {
-            if (read_only || j->piece_data->writeable())
+            if (read_only || j->piece_data->writeable()) {
                 return j->piece_data;
+            }
             ++j;
         }
     }
@@ -127,10 +132,11 @@ void Cache::clearPieceCache()
         });
         info_list.erase(j, info_list.end());
 
-        if (info_list.isEmpty())
+        if (info_list.isEmpty()) {
             i = piece_cache.erase(i);
-        else
+        } else {
             ++i;
+        }
     }
 }
 
@@ -153,14 +159,16 @@ void Cache::checkMemoryUsage()
         });
         info_list.erase(j, info_list.end());
 
-        if (info_list.isEmpty())
+        if (info_list.isEmpty()) {
             i = piece_cache.erase(i);
-        else
+        } else {
             ++i;
+        }
     }
 
-    if (mem || freed)
+    if (mem || freed) {
         Out(SYS_DIO | LOG_DEBUG) << "Piece cache: memory in use " << BytesToString(mem) << ", memory freed " << BytesToString(freed) << endl;
+    }
 }
 
 void Cache::saveMountPoints(const QSet<QString> &mp)
@@ -169,8 +177,9 @@ void Cache::saveMountPoints(const QSet<QString> &mp)
 
     QString mp_file = tmpdir + u"mount_points"_s;
     QFile fptr(mp_file);
-    if (!fptr.open(QIODevice::WriteOnly))
+    if (!fptr.open(QIODevice::WriteOnly)) {
         throw Error(i18n("Failed to create %1: %2", mp_file, fptr.errorString()));
+    }
 
     QTextStream out(&fptr);
     for (const QString &mount_point : std::as_const(mount_points)) {
@@ -200,13 +209,15 @@ void Cache::loadMountPoints()
 
 bool Cache::isStorageMounted(QStringList &missing)
 {
-    if (mount_points.isEmpty())
+    if (mount_points.isEmpty()) {
         return true;
+    }
 
     missing.clear();
     for (const QString &mount_point : std::as_const(mount_points)) {
-        if (!IsMounted(mount_point))
+        if (!IsMounted(mount_point)) {
             missing.append(mount_point);
+        }
     }
 
     return missing.empty();

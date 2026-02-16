@@ -82,13 +82,15 @@ void Database::store(const dht::Key &key, const DBItem &dbi)
 void Database::sample(const dht::Key &key, DBItemList &tdbl, bt::Uint32 max_entries, bt::Uint32 ip_version)
 {
     DBItemList *dbl = items.find(key);
-    if (!dbl)
+    if (!dbl) {
         return;
+    }
 
     DBItemList::iterator i = dbl->begin();
     while (i != dbl->end() && tdbl.count() < (int)max_entries) {
-        if (ip_version == (bt::Uint32)i->getAddress().ipVersion())
+        if (ip_version == (bt::Uint32)i->getAddress().ipVersion()) {
             tdbl.append(*i);
+        }
         ++i;
     }
 }
@@ -156,8 +158,9 @@ QByteArray Database::genToken(const net::Address &addr)
 bool Database::checkToken(const QByteArray &token, const net::Address &addr)
 {
     // the token must be in the map
-    if (!tokens.contains(token))
+    if (!tokens.contains(token)) {
         return false;
+    }
 
     // in the map so now get the timestamp and regenerate the token
     // using the IP and port of the sender

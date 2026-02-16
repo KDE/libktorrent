@@ -69,8 +69,9 @@ const Uint8 tail_mask_lookup[8] = {0xFF, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7
 
 void BitSet::invert()
 {
-    if (num_bytes <= 0)
+    if (num_bytes <= 0) {
         return;
+    }
 
     num_on = 0;
     Uint32 i = 0;
@@ -209,8 +210,9 @@ bool BitSet::allOn() const
 
 bool BitSet::operator==(const BitSet &bs) const
 {
-    if (this->getNumBits() != bs.getNumBits())
+    if (this->getNumBits() != bs.getNumBits()) {
         return false;
+    }
 
     return memcmp(data, bs.data, num_bytes) == 0;
 }

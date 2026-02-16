@@ -52,10 +52,11 @@ PeerManager *ServerInterface::findPeerManager(const bt::SHA1Hash &hash)
     while (i != peer_managers.end()) {
         PeerManager *pm = *i;
         if (pm && pm->getTorrent().getInfoHash() == hash) {
-            if (!pm->isStarted())
+            if (!pm->isStarted()) {
                 return nullptr;
-            else
+            } else {
                 return pm;
+            }
         }
         ++i;
     }
@@ -113,15 +114,17 @@ void ServerInterface::newConnection(std::unique_ptr<mse::EncryptedPacketSocket> 
         }
 
         // Not enough free file descriptors
-        if (!OpenFileAllowed())
+        if (!OpenFileAllowed()) {
             return;
+        }
 
         ServerAuthenticate *auth = nullptr;
 
-        if (encryption)
+        if (encryption) {
             auth = new mse::EncryptedServerAuthenticate(std::move(s));
-        else
+        } else {
             auth = new ServerAuthenticate(std::move(s));
+        }
 
         AuthenticationMonitor::instance().add(auth);
     }

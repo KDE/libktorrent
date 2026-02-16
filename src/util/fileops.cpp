@@ -91,15 +91,17 @@ namespace bt
 void MakeDir(const QString &dir, bool nothrow)
 {
     QDir d(dir);
-    if (d.exists())
+    if (d.exists()) {
         return;
+    }
 
     QString n = d.dirName();
     if (!d.cdUp() || !d.mkdir(n)) {
         QString error = i18n("Cannot create directory %1", dir);
         Out(SYS_DIO | LOG_NOTICE) << error << endl;
-        if (!nothrow)
+        if (!nothrow) {
             throw Error(error);
+        }
     }
 }
 
@@ -117,8 +119,9 @@ void MakePath(const QString &dir, bool nothrow)
             try {
                 MakeDir(ctmp, false);
             } catch (...) {
-                if (!nothrow)
+                if (!nothrow) {
                     throw;
+                }
                 return;
             }
         }
@@ -137,14 +140,16 @@ void MakeFilePath(const QString &file, bool nothrow)
 
     for (int i = 0; i < sl.count() - 1; i++) {
         ctmp += sl[i];
-        if (!bt::Exists(ctmp))
+        if (!bt::Exists(ctmp)) {
             try {
                 MakeDir(ctmp, false);
             } catch (...) {
-                if (!nothrow)
+                if (!nothrow) {
                     throw;
+                }
                 return;
             }
+        }
 
         ctmp += bt::DirSeparator();
     }
@@ -158,10 +163,11 @@ void SymLink(const QString &link_to, const QString &link_url, bool nothrow)
     std::filesystem::create_directory_symlink(target_file.filesystemFileName(), symlink_file.filesystemFileName(), error);
     if (error) {
         const auto error_msg = QString::fromStdString(error.message());
-        if (!nothrow)
+        if (!nothrow) {
             throw Error(i18n("Cannot symlink %1 to %2: %3", link_url, link_to, error_msg));
-        else
+        } else {
             Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot symlink %1 to %2: %3").arg(link_url, link_to, error_msg) << endl;
+        }
     }
 }
 
@@ -170,10 +176,11 @@ void Move(const QString &src, const QString &dst, bool nothrow, bool silent)
     //  Out() << "Moving " << src << " -> " << dst << endl;
     KIO::CopyJob *mv = KIO::move(QUrl::fromLocalFile(src), QUrl::fromLocalFile(dst), silent ? KIO::HideProgressInfo | KIO::Overwrite : KIO::DefaultFlags);
     if (!mv->exec()) {
-        if (!nothrow)
+        if (!nothrow) {
             throw Error(i18n("Cannot move %1 to %2: %3", src, dst, mv->errorString()));
-        else
+        } else {
             Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot move %1 to %2: %3").arg(src, dst, mv->errorString()) << endl;
+        }
     }
 }
 
@@ -181,10 +188,11 @@ void CopyFile(const QString &src, const QString &dst, bool nothrow)
 {
     KIO::FileCopyJob *copy = KIO::file_copy(QUrl::fromLocalFile(src), QUrl::fromLocalFile(dst));
     if (!copy->exec()) {
-        if (!nothrow)
+        if (!nothrow) {
             throw Error(i18n("Cannot copy %1 to %2: %3", src, dst, copy->errorString()));
-        else
+        } else {
             Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot copy %1 to %2: %3").arg(src, dst, copy->errorString()) << endl;
+        }
     }
 }
 
@@ -192,10 +200,11 @@ void CopyDir(const QString &src, const QString &dst, bool nothrow)
 {
     KIO::CopyJob *copy = KIO::copy(QUrl::fromLocalFile(src), QUrl::fromLocalFile(dst));
     if (!copy->exec()) {
-        if (!nothrow)
+        if (!nothrow) {
             throw Error(i18n("Cannot copy %1 to %2: %3", src, dst, copy->errorString()));
-        else
+        } else {
             Out(SYS_DIO | LOG_NOTICE) << QStringLiteral("Error : Cannot copy %1 to %2: %3").arg(src, dst, copy->errorString()) << endl;
+        }
     }
 }
 
@@ -212,23 +221,27 @@ static bool DelDir(const QString &fn)
     for (auto i = subdirs.begin(); i != subdirs.end(); i++) {
         QString entry = *i;
 
-        if (!DelDir(d.absoluteFilePath(entry)))
+        if (!DelDir(d.absoluteFilePath(entry))) {
             return false;
+        }
     }
 
     const QStringList files = d.entryList(QDir::Files | QDir::System | QDir::Hidden);
     for (auto i = files.begin(); i != files.end(); i++) {
         QString file = d.absoluteFilePath(*i);
         QFile fp(file);
-        if (!QFileInfo(file).isWritable() && !fp.setPermissions(QFile::ReadUser | QFile::WriteUser))
+        if (!QFileInfo(file).isWritable() && !fp.setPermissions(QFile::ReadUser | QFile::WriteUser)) {
             return false;
+        }
 
-        if (!fp.remove())
+        if (!fp.remove()) {
             return false;
+        }
     }
 
-    if (!d.rmdir(d.absolutePath()))
+    if (!d.rmdir(d.absolutePath())) {
         return false;
+    }
 
     return true;
 }
@@ -245,24 +258,27 @@ void Delete(const QString &url, bool nothrow)
 
     if (!ok) {
         QString err = i18n("Cannot delete %1: %2", url, QString::fromUtf8(strerror(errno)));
-        if (!nothrow)
+        if (!nothrow) {
             throw Error(err);
-        else
+        } else {
             Out(SYS_DIO | LOG_NOTICE) << "Error : " << err << endl;
+        }
     }
 }
 
 void Touch(const QString &url, bool nothrow)
 {
-    if (Exists(url))
+    if (Exists(url)) {
         return;
+    }
 
     File fptr;
     if (!fptr.open(url, QStringLiteral("wb"))) {
-        if (!nothrow)
+        if (!nothrow) {
             throw Error(i18n("Cannot create %1: %2", url, fptr.errorString()));
-        else
+        } else {
             Out(SYS_DIO | LOG_NOTICE) << "Error : Cannot create " << url << " : " << fptr.errorString() << endl;
+        }
     }
 }
 
@@ -276,8 +292,9 @@ Uint64 FileSize(const QString &url)
     struct stat sb;
     ret = stat(QFile::encodeName(url).constData(), &sb);
 #endif
-    if (ret < 0)
+    if (ret < 0) {
         throw Error(i18n("Cannot calculate the filesize of %1: %2", url, QString::fromUtf8(strerror(errno))));
+    }
 
     return (Uint64)sb.st_size;
 }
@@ -292,8 +309,9 @@ Uint64 FileSize(int fd)
     struct stat sb;
     ret = fstat(fd, &sb);
 #endif
-    if (ret < 0)
+    if (ret < 0) {
         throw Error(i18n("Cannot calculate the filesize: %1", QString::fromUtf8(strerror(errno))));
+    }
 
     return (Uint64)sb.st_size;
 }
@@ -317,8 +335,9 @@ bool XfsPreallocate(int fd, Uint64 size)
 bool XfsPreallocate(const QString &path, Uint64 size)
 {
     int fd = ::open(QFile::encodeName(path).constData(), O_RDWR | O_LARGEFILE);
-    if (fd < 0)
+    if (fd < 0) {
         throw Error(i18n("Cannot open %1: %2", path, QString::fromUtf8(strerror(errno))));
+    }
 
     bool ret = XfsPreallocate(fd, size);
     close(fd);
@@ -329,8 +348,9 @@ bool XfsPreallocate(const QString &path, Uint64 size)
 
 void TruncateFile(int fd, Uint64 size, bool quick)
 {
-    if (FileSize(fd) == size)
+    if (FileSize(fd) == size) {
         return;
+    }
 
     if (quick) {
 #ifdef HAVE_FTRUNCATE64
@@ -360,8 +380,9 @@ void TruncateFile(int fd, Uint64 size, bool quick)
 void TruncateFile(const QString &path, Uint64 size)
 {
     int fd = ::open(QFile::encodeName(path).constData(), O_RDWR | O_LARGEFILE);
-    if (fd < 0)
+    if (fd < 0) {
         throw Error(i18n("Cannot open %1: %2", path, QString::fromUtf8(strerror(errno))));
+    }
 
     try {
         TruncateFile(fd, size, true);
@@ -393,8 +414,9 @@ bool FreeDiskSpace(const QString &path, Uint64 &bytes_free)
     if (statvfs(QFile::encodeName(path).constData(), &stfs) == 0)
 #endif
     {
-        if (stfs.f_blocks == 0) // if this is 0, then we are using gvfs
+        if (stfs.f_blocks == 0) { // if this is 0, then we are using gvfs
             return false;
+        }
 
         bytes_free = ((Uint64)stfs.f_bavail) * ((Uint64)stfs.f_frsize);
         return true;
@@ -425,8 +447,9 @@ bool FileNameTooLong(const QString &path)
     const QStringList names = path.split(QLatin1Char('/'));
     for (const QString &s : names) {
         QByteArray encoded = QFile::encodeName(s);
-        if (encoded.length() >= NAME_MAX)
+        if (encoded.length() >= NAME_MAX) {
             return true;
+        }
         length += encoded.length();
     }
 
@@ -442,14 +465,17 @@ static QString ShortenName(const QString &name, int extra_number)
 
     // calculate the fixed length, 1 is for the . between filename and extension
     int fixed_len = 0;
-    if (ext.length() > 0)
+    if (ext.length() > 0) {
         fixed_len += QFile::encodeName(ext).length() + 1;
-    if (extra_number > 0)
+    }
+    if (extra_number > 0) {
         fixed_len += QFile::encodeName(QString::number(extra_number)).length();
+    }
 
     // if we can't shorten it, give up
-    if (fixed_len > NAME_MAX - 4)
+    if (fixed_len > NAME_MAX - 4) {
         return name;
+    }
 
     do {
         base.chop(1);
@@ -458,10 +484,12 @@ static QString ShortenName(const QString &name, int extra_number)
     base += "... "_L1; // add ... so that the user knows the name is shortened
 
     QString ret = base;
-    if (extra_number > 0)
+    if (extra_number > 0) {
         ret += QString::number(extra_number);
-    if (ext.length() > 0)
+    }
+    if (ext.length() > 0) {
         ret += QLatin1Char('.') + ext;
+    }
     return ret;
 }
 
@@ -469,8 +497,9 @@ static QString ShortenPath(const QString &path, int extra_number)
 {
     int max_len = PATH_MAX;
     QByteArray encoded = QFile::encodeName(path);
-    if (encoded.length() < max_len)
+    if (encoded.length() < max_len) {
         return path;
+    }
 
     QFileInfo fi(path);
     QString ext = fi.suffix();
@@ -479,14 +508,17 @@ static QString ShortenPath(const QString &path, int extra_number)
 
     // calculate the fixed length, 1 is for the . between filename and extension
     int fixed_len = QFile::encodeName(fpath).length();
-    if (ext.length() > 0)
+    if (ext.length() > 0) {
         fixed_len += QFile::encodeName(ext).length() + 1;
-    if (extra_number > 0)
+    }
+    if (extra_number > 0) {
         fixed_len += QFile::encodeName(QString::number(extra_number)).length();
+    }
 
     // if we can't shorten it, give up
-    if (fixed_len > max_len - 4)
+    if (fixed_len > max_len - 4) {
         return path;
+    }
 
     do {
         name.chop(1);
@@ -495,10 +527,12 @@ static QString ShortenPath(const QString &path, int extra_number)
     name += QLatin1String("... "); // add ... so that the user knows the name is shortened
 
     QString ret = fpath + name;
-    if (extra_number > 0)
+    if (extra_number > 0) {
         ret += QString::number(extra_number);
-    if (ext.length() > 0)
+    }
+    if (ext.length() > 0) {
         ret += QLatin1Char('.') + ext;
+    }
 
     return ret;
 }
@@ -511,8 +545,9 @@ QString ShortenFileName(const QString &path, int extra_number)
     for (const QString &s : names) {
         QByteArray encoded = QFile::encodeName(s);
         assembled += (encoded.length() < NAME_MAX) ? s : ShortenName(s, extra_number);
-        if (cnt < names.count() - 1)
+        if (cnt < names.count() - 1) {
             assembled += QLatin1Char('/');
+        }
         cnt++;
     }
 
@@ -541,8 +576,9 @@ Uint64 DiskUsage(const QString &filename)
 #else
     DWORD high = 0;
     DWORD low = GetCompressedFileSize((LPWSTR)filename.utf16(), &high);
-    if (low != INVALID_FILE_SIZE)
+    if (low != INVALID_FILE_SIZE) {
         ret = (high * MAXDWORD) + low;
+    }
 #endif
     return ret;
 }
@@ -574,8 +610,9 @@ QSet<QString> AccessibleMountPoints()
     QSet<QString> result;
 #ifdef Q_OS_LINUX
     FILE *fptr = setmntent("/proc/mounts", "r");
-    if (!fptr)
+    if (!fptr) {
         return result;
+    }
 
     struct mntent mnt;
     char buf[PATH_MAX];
@@ -589,8 +626,9 @@ QSet<QString> AccessibleMountPoints()
     const QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
     for (const Solid::Device &dev : devs) {
         const Solid::StorageAccess *sa = dev.as<Solid::StorageAccess>();
-        if (!sa->filePath().isEmpty() && sa->isAccessible())
+        if (!sa->filePath().isEmpty() && sa->isAccessible()) {
             result.insert(sa->filePath());
+        }
     }
 #endif
     return result;
@@ -617,10 +655,11 @@ bool IsMounted(const QString &mount_point)
 QByteArray LoadFile(const QString &path)
 {
     QFile fptr(path);
-    if (fptr.open(QIODevice::ReadOnly))
+    if (fptr.open(QIODevice::ReadOnly)) {
         return fptr.readAll();
-    else
+    } else {
         throw Error(i18n("Unable to open file %1: %2", path, fptr.errorString()));
+    }
 }
 
 }

@@ -34,27 +34,31 @@ RPCMsg::~RPCMsg()
 void RPCMsg::parse(bt::BDictNode *dict)
 {
     mtid = dict->getByteArray(TID);
-    if (mtid.isEmpty())
+    if (mtid.isEmpty()) {
         throw bt::Error(u"Invalid DHT transaction ID"_s);
+    }
 
     const auto t = dict->getByteArray(TYP);
     if (t == REQ) {
         type = REQ_MSG;
         BDictNode *args = dict->getDict(ARG);
-        if (!args)
+        if (!args) {
             return;
+        }
 
         id = Key(args->getByteArray("id"));
     } else if (t == RSP) {
         type = RSP_MSG;
         BDictNode *args = dict->getDict(RSP);
-        if (!args)
+        if (!args) {
             return;
+        }
 
         id = Key(args->getByteArray("id"));
-    } else if (t == ERR_DHT)
+    } else if (t == ERR_DHT) {
         type = ERR_MSG;
-    else
+    } else {
         throw bt::Error(u"Unknown message type %1"_s.arg(QLatin1StringView(t)));
+    }
 }
 }

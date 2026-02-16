@@ -45,11 +45,13 @@ void TorrentFileInterface::setUnencodedPath(const QList<QByteArray> up)
 
 QString TorrentFileInterface::getMountPoint() const
 {
-    if (!bt::Exists(path_on_disk))
+    if (!bt::Exists(path_on_disk)) {
         return QString();
+    }
 
-    if (mount_point.isEmpty())
+    if (mount_point.isEmpty()) {
         mount_point = bt::MountPoint(path_on_disk);
+    }
 
     return mount_point;
 }

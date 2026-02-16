@@ -20,10 +20,11 @@ Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, co
     , pcon(pcon)
 {
     finished = succes = false;
-    if (proto == TCP)
+    if (proto == TCP) {
         sock = std::make_unique<mse::EncryptedPacketSocket>(addr.ipVersion());
-    else
+    } else {
         sock = std::make_unique<mse::EncryptedPacketSocket>(std::make_unique<utp::UTPSocket>());
+    }
 
     Out(SYS_CON | LOG_NOTICE) << "Initiating connection to " << addr.toString() << " via (" << (proto == TCP ? "TCP" : "UTP") << ")" << endl;
     if (net::Socks::enabled()) {
@@ -61,8 +62,9 @@ Authenticate::~Authenticate()
 
 void Authenticate::onReadyWrite()
 {
-    if (!sock)
+    if (!sock) {
         return;
+    }
 
     if (socks) {
         switch (socks->onReadyToWrite()) {
@@ -86,8 +88,9 @@ void Authenticate::onReadyWrite()
 
 void Authenticate::onReadyRead()
 {
-    if (!sock)
+    if (!sock) {
         return;
+    }
 
     if (!socks) {
         AuthenticateBase::onReadyRead();
@@ -101,8 +104,9 @@ void Authenticate::onReadyRead()
             // connection established, so get rid of socks shit
             socks.reset();
             connected();
-            if (sock->bytesAvailable() > 0)
+            if (sock->bytesAvailable() > 0) {
                 AuthenticateBase::onReadyRead();
+            }
             break;
         default:
             break;
@@ -128,8 +132,9 @@ void Authenticate::onFinish(bool succes)
 
     timer.stop();
     PeerConnector::Ptr pc = pcon.toStrongRef();
-    if (pc)
+    if (pc) {
         pc->authenticationFinished(this, succes);
+    }
 }
 
 void Authenticate::handshakeReceived(bool full)
@@ -167,8 +172,9 @@ void Authenticate::handshakeReceived(bool full)
 
 void Authenticate::stop()
 {
-    if (finished)
+    if (finished) {
         return;
+    }
 
     onFinish(false);
 }

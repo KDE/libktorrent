@@ -21,8 +21,9 @@ AddressResolver::AddressResolver(const QString &host, bt::Uint16 port, QObject *
 
 AddressResolver::~AddressResolver()
 {
-    if (ongoing)
+    if (ongoing) {
         QHostInfo::abortHostLookup(lookup_id);
+    }
 }
 
 void AddressResolver::hostResolved(const QHostInfo &res)
@@ -47,10 +48,11 @@ void AddressResolver::resolve(const QString &host, bt::Uint16 port, QObject *par
 Address AddressResolver::resolve(const QString &host, bt::Uint16 port)
 {
     QHostInfo info = QHostInfo::fromName(host);
-    if (info.error() == QHostInfo::NoError && info.addresses().size() > 0)
+    if (info.error() == QHostInfo::NoError && info.addresses().size() > 0) {
         return net::Address(info.addresses().constFirst(), port);
-    else
+    } else {
         return net::Address();
+    }
 }
 
 }

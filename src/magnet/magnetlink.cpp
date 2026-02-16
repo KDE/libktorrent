@@ -64,8 +64,9 @@ static QList<QUrl> GetTrackers(const QUrlQuery &url_query)
     const QStringList trackers = url_query.allQueryItemValues(u"tr"_s, QUrl::FullyDecoded);
     QList<QUrl> result;
     result.reserve(trackers.size());
-    for (QString tr : trackers)
+    for (QString tr : trackers) {
         result << QUrl(tr.replace(QLatin1Char('+'), QLatin1Char(' ')));
+    }
     return result;
 }
 
@@ -114,8 +115,9 @@ void MagnetLink::parse(const QUrl &url)
     }
 
     try {
-        if (ih.length() == 32)
+        if (ih.length() == 32) {
             ih = base32ToHexString(ih);
+        }
 
         Uint8 hash[20];
         memset(hash, 0, 20);
@@ -136,16 +138,19 @@ void MagnetLink::parse(const QUrl &url)
 
 Uint8 MagnetLink::charToHex(const QChar &ch)
 {
-    if (ch.isDigit())
+    if (ch.isDigit()) {
         return ch.digitValue();
+    }
 
-    if (!ch.isLetter())
+    if (!ch.isLetter()) {
         throw bt::Error(u"Invalid char"_s);
+    }
 
-    if (ch.isLower())
+    if (ch.isLower()) {
         return 10 + ch.toLatin1() - 'a';
-    else
+    } else {
         return 10 + ch.toLatin1() - 'A';
+    }
 }
 
 QString MagnetLink::base32ToHexString(const QString &s)
@@ -161,23 +166,26 @@ QString MagnetLink::base32ToHexString(const QString &s)
         part = 0;
         for (int j = 0; j < 4; j++) {
             ch = str[i * 4 + j];
-            if (ch.isDigit() && (ch.digitValue() < 2 || ch.digitValue() > 7))
+            if (ch.isDigit() && (ch.digitValue() < 2 || ch.digitValue() > 7)) {
                 throw bt::Error(u"Invalid char"_s);
+            }
 
-            if (ch.isDigit())
+            if (ch.isDigit()) {
                 tmp = ch.digitValue() + 24;
-            else
+            } else {
                 tmp = ch.toLatin1() - 'A';
+            }
             part = part + (tmp << 5 * (3 - j));
         }
 
         // part is a Uint32 with 20 bits (5 hex)
         for (int j = 0; j < 5; j++) {
             tmp = (part >> 4 * (4 - j)) & 0xf;
-            if (tmp >= 10)
+            if (tmp >= 10) {
                 ret.append(QChar((tmp - 10) + 'a'));
-            else
+            } else {
                 ret.append(QChar(tmp + '0'));
+            }
         }
     }
     return ret;

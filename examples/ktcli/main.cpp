@@ -42,10 +42,11 @@ int main(int argc, char **argv)
         QCoreApplication::setApplicationVersion(bt::GetVersionString());
 
         KTCLI app(argc, argv);
-        if (!app.start())
+        if (!app.start()) {
             return -1;
-        else
+        } else {
             return app.exec();
+        }
     } catch (bt::Error &err) {
         Out(SYS_GEN | LOG_IMPORTANT) << "Uncaught error: " << err.toString() << endl;
     } catch (std::exception &err) {

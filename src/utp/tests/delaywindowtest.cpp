@@ -46,8 +46,9 @@ private Q_SLOTS:
             bt::Uint32 val = QRandomGenerator::global()->generate();
             Header hdr;
             hdr.timestamp_difference_microseconds = val;
-            if (val < base_delay)
+            if (val < base_delay) {
                 base_delay = val;
+            }
 
             bt::Uint32 ret = wnd.update(&hdr, bt::Now());
             QVERIFY(ret == base_delay);
@@ -59,8 +60,9 @@ private Q_SLOTS:
         const int SAMPLE_COUNT = 2400000;
 
         std::unique_ptr<bt::Uint32[]> delay_samples(new bt::Uint32[SAMPLE_COUNT]);
-        for (int i = 0; i < SAMPLE_COUNT; i++)
+        for (int i = 0; i < SAMPLE_COUNT; i++) {
             delay_samples[i] = QRandomGenerator::global()->bounded(1000000);
+        }
 
         std::unique_ptr<bt::Uint32[]> returned_delay_new(new bt::Uint32[SAMPLE_COUNT]);
         std::unique_ptr<bt::Uint32[]> returned_delay_old(new bt::Uint32[SAMPLE_COUNT]);

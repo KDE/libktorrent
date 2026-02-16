@@ -41,15 +41,18 @@ public:
     void listen(const QString &ip, Uint16 port)
     {
         auto sock = std::make_unique<net::ServerSocket>(this);
-        if (sock->bind(ip, port))
+        if (sock->bind(ip, port)) {
             sockets.emplace_back(std::move(sock));
+        }
     }
 
     bool send(const Uint8 *buf, int size, const net::Address &addr)
     {
-        for (const net::ServerSocket::Ptr &sock : std::as_const(sockets))
-            if (sock->sendTo(buf, size, addr) == size)
+        for (const net::ServerSocket::Ptr &sock : std::as_const(sockets)) {
+            if (sock->sendTo(buf, size, addr) == size) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -57,8 +60,9 @@ public:
     void dataReceived(bt::Buffer::Ptr buffer, const net::Address &addr) override
     {
         Q_UNUSED(addr);
-        if (buffer->size() < 4)
+        if (buffer->size() < 4) {
             return;
+        }
 
         Uint32 type = ReadUint32(buffer->get(), 0);
         switch (type) {
@@ -90,12 +94,14 @@ public:
 UDPTrackerSocket::UDPTrackerSocket()
     : d(std::make_unique<Private>(this))
 {
-    if (port == 0)
+    if (port == 0) {
         port = 4444;
+    }
 
     const QStringList ips = NetworkInterfaceIPAddresses(NetworkInterface());
-    for (const QString &ip : ips)
+    for (const QString &ip : ips) {
         d->listen(ip, port);
+    }
 
     if (d->sockets.empty()) {
         // Try all addresses if the previous listen calls all failed
@@ -147,15 +153,17 @@ void UDPTrackerSocket::cancelTransaction(Int32 tid)
 
 void UDPTrackerSocket::handleConnect(bt::Buffer::Ptr buf)
 {
-    if (buf->size() < 12)
+    if (buf->size() < 12) {
         return;
+    }
 
     // Read the transaction_id and check it
     Int32 tid = ReadInt32(buf->get(), 4);
     QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
-    if (i == d->transactions.end())
+    if (i == d->transactions.end()) {
         return;
+    }
 
     // check whether the transaction is a CONNECT
     if (i.value() != CONNECT) {
@@ -171,15 +179,17 @@ void UDPTrackerSocket::handleConnect(bt::Buffer::Ptr buf)
 
 void UDPTrackerSocket::handleAnnounce(bt::Buffer::Ptr buf)
 {
-    if (buf->size() < 4)
+    if (buf->size() < 4) {
         return;
+    }
 
     // Read the transaction_id and check it
     Int32 tid = ReadInt32(buf->get(), 4);
     QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
-    if (i == d->transactions.end() || buf->size() < 20)
+    if (i == d->transactions.end() || buf->size() < 20) {
         return;
+    }
 
     // check whether the transaction is a ANNOUNCE
     if (i.value() != ANNOUNCE) {
@@ -195,21 +205,24 @@ void UDPTrackerSocket::handleAnnounce(bt::Buffer::Ptr buf)
 
 void UDPTrackerSocket::handleError(bt::Buffer::Ptr buf)
 {
-    if (buf->size() < 4)
+    if (buf->size() < 4) {
         return;
+    }
 
     // Read the transaction_id and check it
     Int32 tid = ReadInt32(buf->get(), 4);
     QMap<Int32, Action>::iterator it = d->transactions.find(tid);
     // if we can't find the transaction, just return
-    if (it == d->transactions.end())
+    if (it == d->transactions.end()) {
         return;
+    }
 
     // extract error message
     d->transactions.erase(it);
     QString msg;
-    for (Uint32 i = 8; i < buf->size(); i++)
+    for (Uint32 i = 8; i < buf->size(); i++) {
         msg += QLatin1Char(buf->get()[i]);
+    }
 
     // emit signal
     Q_EMIT error(tid, msg);
@@ -217,15 +230,17 @@ void UDPTrackerSocket::handleError(bt::Buffer::Ptr buf)
 
 void UDPTrackerSocket::handleScrape(bt::Buffer::Ptr buf)
 {
-    if (buf->size() < 4)
+    if (buf->size() < 4) {
         return;
+    }
 
     // Read the transaction_id and check it
     Int32 tid = ReadInt32(buf->get(), 4);
     QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
-    if (i == d->transactions.end())
+    if (i == d->transactions.end()) {
         return;
+    }
 
     // check whether the transaction is a SCRAPE
     if (i.value() != SCRAPE) {
@@ -242,8 +257,9 @@ void UDPTrackerSocket::handleScrape(bt::Buffer::Ptr buf)
 Int32 UDPTrackerSocket::newTransactionID()
 {
     Int32 transaction_id = rand() * time(nullptr);
-    while (d->transactions.contains(transaction_id))
+    while (d->transactions.contains(transaction_id)) {
         transaction_id++;
+    }
     return transaction_id;
 }
 

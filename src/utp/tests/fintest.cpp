@@ -36,10 +36,11 @@ private:
 
         port = 50000;
         while (port < 60000) {
-            if (!srv.changePort(port))
+            if (!srv.changePort(port)) {
                 port++;
-            else
+            } else {
                 break;
+            }
         }
 
         srv.setCreateSockets(false);
@@ -81,15 +82,17 @@ private:
             QVERIFY(memcmp(tmp, test, strlen(test)) == 0);
 
             outgoing->close();
-            if (incoming->connectionState() != CS_CLOSED)
+            if (incoming->connectionState() != CS_CLOSED) {
                 incoming->waitForData();
+            }
 
             // connection should be closed now
             ret = incoming->recv(tmp, 100);
             QVERIFY(incoming->connectionState() == CS_CLOSED);
             QVERIFY(ret == -1);
-        } else
+        } else {
             QFAIL("No data received");
+        }
     }
 
 private:

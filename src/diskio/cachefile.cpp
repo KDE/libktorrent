@@ -58,8 +58,9 @@ CacheFile::CacheFile()
 
 CacheFile::~CacheFile()
 {
-    if (fptr)
+    if (fptr) {
         close();
+    }
 }
 
 void CacheFile::changePath(const QString &npath)
@@ -75,8 +76,9 @@ void CacheFile::openFile(Mode mode)
     bool ok = false;
     if (!(ok = fptr->open(QIODevice::ReadWrite))) {
         // in case RDWR fails, try readonly if possible
-        if (mode == READ && (ok = fptr->open(QIODevice::ReadOnly)))
+        if (mode == READ && (ok = fptr->open(QIODevice::ReadOnly))) {
             read_only = true;
+        }
     }
 
     if (!ok) {
@@ -104,8 +106,9 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
     if (!fptr) {
         //  Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
         QStorageInfo mount(path); // ntfs cannot handle mmap properly
-        if (!OpenFileAllowed() || mount.fileSystemType() == "fuseblk" || mount.fileSystemType().startsWith("ntfs"))
+        if (!OpenFileAllowed() || mount.fileSystemType() == "fuseblk" || mount.fileSystemType().startsWith("ntfs")) {
             return nullptr; // Running out of file descriptors, force buffered mode
+        }
         openFile(mode);
     }
 
@@ -198,8 +201,9 @@ void CacheFile::growFile(Uint64 to_write)
         openFile(RW);
     }
 
-    if (read_only)
+    if (read_only) {
         throw Error(i18n("Cannot open %1 for writing: readonly filesystem", path));
+    }
 
     if (file_size + to_write > max_size) {
         Out(SYS_DIO | LOG_DEBUG) << "Warning : writing past the end of " << path << endl;
@@ -207,8 +211,9 @@ void CacheFile::growFile(Uint64 to_write)
         throw Error(i18n("Cannot expand file %1: attempting to grow the file beyond the maximum size", path));
     }
 
-    if (!fptr->resize(file_size + to_write))
+    if (!fptr->resize(file_size + to_write)) {
         throw Error(i18n("Cannot expand file %1: %2", path, fptr->errorString()));
+    }
 
     file_size = fptr->size();
 }
@@ -218,19 +223,22 @@ void CacheFile::unmap(void *ptr)
     int ret = 0;
     QMutexLocker lock(&mutex);
 #ifdef Q_OS_WIN
-    if (!fptr)
+    if (!fptr) {
         return;
+    }
 
     const auto it = mappings.constFind(ptr);
     if (it != mappings.constEnd()) {
         const CacheFile::Entry &e = it.value();
-        if (!fptr->unmap((uchar *)e.ptr))
+        if (!fptr->unmap((uchar *)e.ptr)) {
             Out(SYS_DIO | LOG_IMPORTANT) << u"Unmap failed : %1"_s.arg(fptr->errorString()) << endl;
+        }
 
         mappings.erase(it);
         // no mappings, close temporary
-        if (mappings.count() == 0)
+        if (mappings.count() == 0) {
             closeTemporary();
+        }
     }
 #else
     const auto it = mappings.constFind(ptr);
@@ -248,8 +256,9 @@ void CacheFile::unmap(void *ptr)
 
         mappings.erase(it);
         // no mappings, close temporary
-        if (mappings.count() == 0)
+        if (mappings.count() == 0) {
             closeTemporary();
+        }
     }
 #endif
 }
@@ -257,8 +266,9 @@ void CacheFile::unmap(void *ptr)
 void CacheFile::aboutToClose()
 {
     QMutexLocker lock(&mutex);
-    if (!fptr)
+    if (!fptr) {
         return;
+    }
     // Out(SYS_DIO|LOG_NOTICE) << "CacheFile " << path << " : about to be closed" << endl;
     unmapAll();
     if (!manual_close) {
@@ -302,8 +312,9 @@ void CacheFile::close()
 {
     QMutexLocker lock(&mutex);
 
-    if (!fptr)
+    if (!fptr) {
         return;
+    }
 
     unmapAll();
     manual_close = true;
@@ -330,19 +341,22 @@ void CacheFile::read(Uint8 *buf, Uint32 size, Uint64 off)
     }
 
     // jump to right position
-    if (!fptr->seek(off))
+    if (!fptr->seek(off)) {
         throw Error(i18n("Failed to seek file %1: %2", path, fptr->errorString()));
+    }
 
     Uint32 sz = 0;
     if ((sz = fptr->read((char *)buf, size)) != size) {
-        if (close_again)
+        if (close_again) {
             closeTemporary();
+        }
 
         throw Error(i18n("Error reading from %1", path));
     }
 
-    if (close_again)
+    if (close_again) {
         closeTemporary();
+    }
 }
 
 void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
@@ -357,8 +371,9 @@ void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
         close_again = true;
     }
 
-    if (read_only)
+    if (read_only) {
         throw Error(i18n("Cannot open %1 for writing: readonly filesystem", path));
+    }
 
     if (off + size > max_size) {
         Out(SYS_DIO | LOG_DEBUG) << "Warning : writing past the end of " << path << endl;
@@ -372,24 +387,28 @@ void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
     }
 
     // jump to right position
-    if (!fptr->seek(off))
+    if (!fptr->seek(off)) {
         throw Error(i18n("Failed to seek file %1: %2", path, fptr->errorString()));
+    }
 
     if (fptr->write((const char *)buf, size) != size) {
         throw Error(i18n("Failed to write to file %1: %2", path, fptr->errorString()));
     }
 
-    if (close_again)
+    if (close_again) {
         closeTemporary();
+    }
 
-    if (off + size > file_size)
+    if (off + size > file_size) {
         file_size = off + size;
+    }
 }
 
 void CacheFile::closeTemporary()
 {
-    if (!fptr || mappings.count() > 0)
+    if (!fptr || mappings.count() > 0) {
         return;
+    }
 
     delete fptr;
     fptr = nullptr;
@@ -414,8 +433,9 @@ void CacheFile::preallocate(PreallocationThread *prealloc)
     int fd = fptr->handle();
 
     if (read_only) {
-        if (close_again)
+        if (close_again) {
             closeTemporary();
+        }
 
         throw Error(i18n("Cannot open %1 for writing: readonly filesystem", path));
     }
@@ -440,16 +460,18 @@ void CacheFile::preallocate(PreallocationThread *prealloc)
     file_size = FileSize(fd);
     prealloc->written(file_size);
     Out(SYS_GEN | LOG_DEBUG) << "file_size = " << file_size << endl;
-    if (close_again)
+    if (close_again) {
         closeTemporary();
+    }
 }
 
 Uint64 CacheFile::diskUsage()
 {
-    if (!fptr)
+    if (!fptr) {
         return DiskUsage(path);
-    else
+    } else {
         return DiskUsage(fptr->handle());
+    }
 }
 
 bool CacheFile::allocateBytes(Uint64 off, Uint64 size)

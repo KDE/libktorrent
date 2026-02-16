@@ -55,10 +55,11 @@ TorrentStats::TorrentStats()
 
 float TorrentStats::shareRatio() const
 {
-    if (bytes_downloaded == 0)
+    if (bytes_downloaded == 0) {
         return 0.0f;
-    else
+    } else {
         return (float)bytes_uploaded / (bytes_downloaded /*+ stats.imported_bytes*/);
+    }
 }
 
 bool TorrentStats::overMaxRatio() const

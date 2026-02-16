@@ -46,10 +46,11 @@ MultiFileCache::MultiFileCache(Torrent &tor, const QString &tmpdir, const QStrin
     , cache_dir(tmpdir + "cache"_L1 + bt::DirSeparator())
     , opened(false)
 {
-    if (!custom_output_name)
+    if (!custom_output_name) {
         output_dir = this->datadir + tor.getNameSuggestion() + bt::DirSeparator();
-    else
+    } else {
         output_dir = this->datadir;
+    }
 }
 
 MultiFileCache::~MultiFileCache()
@@ -65,14 +66,16 @@ void MultiFileCache::loadFileMap()
         Uint32 num = tor.getNumFiles();
         for (Uint32 i = 0; i < num; i++) {
             TorrentFile &tf = tor.getFile(i);
-            if (tf.getPathOnDisk().isEmpty())
+            if (tf.getPathOnDisk().isEmpty()) {
                 tf.setPathOnDisk(output_dir + tf.getUserModifiedPath());
+            }
         }
         saveFileMap();
     } else {
         QFile fptr(tmpdir + "file_map"_L1);
-        if (!fptr.open(QIODevice::ReadOnly))
+        if (!fptr.open(QIODevice::ReadOnly)) {
             throw Error(i18n("Failed to open %1: %2", file_map, fptr.errorString()));
+        }
 
         Uint32 idx = 0;
         while (!fptr.atEnd() && idx < tor.getNumFiles()) {
@@ -85,8 +88,9 @@ void MultiFileCache::loadFileMap()
         idx = 0;
         while (!fptr.atEnd() && idx < tor.getNumFiles()) {
             QString path = QString::fromLocal8Bit(fptr.readLine().trimmed());
-            if (!path.isEmpty())
+            if (!path.isEmpty()) {
                 tor.getFile(idx).setUserModifiedPath(path);
+            }
             idx++;
         }
     }
@@ -96,8 +100,9 @@ void MultiFileCache::saveFileMap()
 {
     QString file_map = tmpdir + "file_map"_L1;
     QFile fptr(file_map);
-    if (!fptr.open(QIODevice::WriteOnly))
+    if (!fptr.open(QIODevice::WriteOnly)) {
         throw Error(i18n("Failed to create %1: %2", file_map, fptr.errorString()));
+    }
 
     QTextStream out(&fptr);
     // file map doesn't exist, so create it based upon the output_dir
@@ -122,24 +127,27 @@ QString MultiFileCache::getOutputPath() const
 void MultiFileCache::close()
 {
     clearPieceCache();
-    if (piece_cache.isEmpty())
+    if (piece_cache.isEmpty()) {
         files.clear();
+    }
     opened = false;
 }
 
 void MultiFileCache::open()
 {
     // Check if the cache is not yet open
-    if (opened)
+    if (opened) {
         return;
+    }
 
     QString dnd_dir = tmpdir + "dnd"_L1 + bt::DirSeparator();
     // open all files
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
         TorrentFile &tf = tor.getFile(i);
         if (!tf.doNotDownload()) {
-            if (files.contains(i))
+            if (files.contains(i)) {
                 files.remove(i);
+            }
 
             CacheFile::Ptr fd(new CacheFile());
             fd->open(tf.getPathOnDisk(), tf.getSize());
@@ -185,8 +193,9 @@ void MultiFileCache::changeTmpDir(const QString &ndir)
 void MultiFileCache::changeOutputPath(const QString &outputpath)
 {
     output_dir = outputpath;
-    if (!output_dir.endsWith(bt::DirSeparator()))
+    if (!output_dir.endsWith(bt::DirSeparator())) {
         output_dir += bt::DirSeparator();
+    }
 
     datadir = output_dir;
 
@@ -195,20 +204,23 @@ void MultiFileCache::changeOutputPath(const QString &outputpath)
         TorrentFile &tf = tor.getFile(i);
         tf.setPathOnDisk(output_dir + tf.getUserModifiedPath());
         CacheFile::Ptr cf = files[tf.getIndex()];
-        if (cf)
+        if (cf) {
             cf->changePath(tf.getPathOnDisk());
+        }
     }
     saveFileMap();
 }
 
 Job *MultiFileCache::moveDataFiles(const QString &ndir)
 {
-    if (!bt::Exists(ndir))
+    if (!bt::Exists(ndir)) {
         bt::MakeDir(ndir);
+    }
 
     QString nd = ndir;
-    if (!nd.endsWith(bt::DirSeparator()))
+    if (!nd.endsWith(bt::DirSeparator())) {
         nd += bt::DirSeparator();
+    }
 
     new_output_dir = nd;
 
@@ -217,8 +229,9 @@ Job *MultiFileCache::moveDataFiles(const QString &ndir)
 
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
         TorrentFile &tf = tor.getFile(i);
-        if (tf.doNotDownload())
+        if (tf.doNotDownload()) {
             continue;
+        }
 
         // check if every directory along the path exists, and if it doesn't
         // create it
@@ -240,15 +253,17 @@ Job *MultiFileCache::moveDataFiles(const QString &ndir)
 
 void MultiFileCache::moveDataFilesFinished(Job *job)
 {
-    if (job->error())
+    if (job->error()) {
         return;
+    }
 
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
         TorrentFile &tf = tor.getFile(i);
         tf.setPathOnDisk(new_output_dir + tf.getUserModifiedPath());
         CacheFile::Ptr cf = files[tf.getIndex()];
-        if (cf)
+        if (cf) {
             cf->changePath(tf.getPathOnDisk());
+        }
         // check for empty directories and delete them
         DeleteEmptyDirs(output_dir, tf.getUserModifiedPath());
     }
@@ -256,8 +271,9 @@ void MultiFileCache::moveDataFilesFinished(Job *job)
 
 Job *MultiFileCache::moveDataFiles(const QMap<TorrentFileInterface *, QString> &files)
 {
-    if (files.count() == 0)
+    if (files.count() == 0) {
         return nullptr;
+    }
 
     MoveDataFilesJob *job = new MoveDataFilesJob(files);
     return job;
@@ -265,8 +281,9 @@ Job *MultiFileCache::moveDataFiles(const QMap<TorrentFileInterface *, QString> &
 
 void MultiFileCache::moveDataFilesFinished(const QMap<TorrentFileInterface *, QString> &fmap, Job *job)
 {
-    if (job->error())
+    if (job->error()) {
         return;
+    }
 
     QMap<TorrentFileInterface *, QString>::const_iterator i = fmap.begin();
     while (i != fmap.end()) {
@@ -275,17 +292,20 @@ void MultiFileCache::moveDataFilesFinished(const QMap<TorrentFileInterface *, QS
         QString dest = i.value();
         if (QFileInfo(dest).isDir()) {
             QString path = tf->getUserModifiedPath();
-            if (!dest.endsWith(bt::DirSeparator()))
+            if (!dest.endsWith(bt::DirSeparator())) {
                 dest += bt::DirSeparator();
+            }
 
             int last = path.lastIndexOf(bt::DirSeparator());
             tf->setPathOnDisk(dest + path.mid(last + 1));
-        } else
+        } else {
             tf->setPathOnDisk(i.value());
+        }
 
         CacheFile::Ptr cf = files[tf->getIndex()];
-        if (cf)
+        if (cf) {
             cf->changePath(tf->getPathOnDisk());
+        }
         ++i;
     }
 
@@ -295,10 +315,12 @@ void MultiFileCache::moveDataFilesFinished(const QMap<TorrentFileInterface *, QS
 
 void MultiFileCache::create()
 {
-    if (!bt::Exists(output_dir))
+    if (!bt::Exists(output_dir)) {
         MakeDir(output_dir);
-    if (!bt::Exists(tmpdir + "dnd"_L1))
+    }
+    if (!bt::Exists(tmpdir + "dnd"_L1)) {
         bt::MakeDir(tmpdir + "dnd"_L1);
+    }
 
     QSet<QString> mount_points;
     QSet<QString> shortened_names;
@@ -321,8 +343,9 @@ void MultiFileCache::create()
         }
 #endif
         touch(tf);
-        if (!tf.doNotDownload())
+        if (!tf.doNotDownload()) {
             mount_points.insert(tf.getMountPoint());
+        }
     }
 
     saveMountPoints(mount_points);
@@ -359,8 +382,9 @@ PieceData::Ptr MultiFileCache::createPiece(Chunk *c, Uint32 off, Uint32 length, 
     if (tflist.count() == 1) {
         const TorrentFile &f = tor.getFile(tflist.first());
         CacheFile::Ptr fd = files[tflist.first()];
-        if (!fd)
+        if (!fd) {
             return PieceData::Ptr();
+        }
 
         if (Cache::mappedModeAllowed() && mmap_failures < 3) {
             Uint64 offset = FileOffset(c, f, tor.getChunkSize()) + off;
@@ -386,8 +410,9 @@ PieceData::Ptr MultiFileCache::createPiece(Chunk *c, Uint32 off, Uint32 length, 
 PieceData::Ptr MultiFileCache::preparePiece(Chunk *c, Uint32 off, Uint32 length)
 {
     PieceData::Ptr piece = findPiece(c, off, length, false);
-    if (piece)
+    if (piece) {
         return piece;
+    }
 
     return createPiece(c, off, length, false);
 }
@@ -419,13 +444,15 @@ PieceData::Ptr MultiFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
     open();
 
     PieceData::Ptr piece = findPiece(c, off, length, true);
-    if (piece)
+    if (piece) {
         return piece;
+    }
 
     // create piece and return it if it is mapped or the create failed
     piece = createPiece(c, off, length, true);
-    if (!piece || piece->mapped())
+    if (!piece || piece->mapped()) {
         return piece;
+    }
 
     // Now we need to load it
     Torrent::FileIndexList tflist;
@@ -454,19 +481,21 @@ PieceData::Ptr MultiFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
         // only the first file can have an offset
         // the following files will start at the beginning
         Uint64 file_off = 0;
-        if (i == 0)
+        if (i == 0) {
             file_off = FileOffset(c, f, tor.getChunkSize());
+        }
 
         Uint32 cdata = 0;
         // then the amount of data of the chunk which is located in this file
-        if (tflist.count() == 1)
+        if (tflist.count() == 1) {
             cdata = c->getSize();
-        else if (i == 0)
+        } else if (i == 0) {
             cdata = f.getLastChunkSize();
-        else if (i == tflist.count() - 1)
+        } else if (i == tflist.count() - 1) {
             cdata = c->getSize() - chunk_off;
-        else
+        } else {
             cdata = f.getSize();
+        }
 
         // if the piece does not lie in this part of the chunk, move on
         if (off + length <= chunk_off || off >= chunk_off + cdata) {
@@ -485,13 +514,15 @@ PieceData::Ptr MultiFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
             fd->read(ptr, read_length, read_offset);
         } else if (dfd) {
             Uint32 ret = 0;
-            if (i == 0)
+            if (i == 0) {
                 ret = dfd->readLastChunk(ptr, read_offset - file_off, read_length);
-            else
+            } else {
                 ret = dfd->readFirstChunk(ptr, read_offset, read_length);
+            }
 
-            if (ret > 0 && ret != read_length)
+            if (ret > 0 && ret != read_length) {
                 Out(SYS_DIO | LOG_DEBUG) << "Warning : MultiFileCache::loadPiece ret != to_read" << endl;
+            }
         }
 
         chunk_off += cdata;
@@ -505,12 +536,14 @@ void MultiFileCache::savePiece(PieceData::Ptr piece)
     open();
 
     // in mapped mode unload the piece if not in use
-    if (piece->mapped())
+    if (piece->mapped()) {
         return;
+    }
 
     Uint8 *data = piece->data();
-    if (!data) // this should not happen but just in case
+    if (!data) { // this should not happen but just in case
         return;
+    }
 
     Chunk *c = piece->parentChunk();
     Torrent::FileIndexList tflist;
@@ -529,19 +562,21 @@ void MultiFileCache::savePiece(PieceData::Ptr piece)
         // only the first file can have an offset
         // the following files will start at the beginning
         Uint64 file_off = 0;
-        if (i == 0)
+        if (i == 0) {
             file_off = FileOffset(c, f, tor.getChunkSize());
+        }
 
         Uint32 cdata = 0;
         // then the amount of data of the chunk which is located in this file
-        if (tflist.count() == 1)
+        if (tflist.count() == 1) {
             cdata = c->getSize();
-        else if (i == 0)
+        } else if (i == 0) {
             cdata = f.getLastChunkSize();
-        else if (i == tflist.count() - 1)
+        } else if (i == tflist.count() - 1) {
             cdata = c->getSize() - chunk_off;
-        else
+        } else {
             cdata = f.getSize();
+        }
 
         // if the piece does not lie in this part of the chunk, move on
         if (off + length <= chunk_off || off >= chunk_off + cdata) {
@@ -559,10 +594,11 @@ void MultiFileCache::savePiece(PieceData::Ptr piece)
         if (fd) {
             fd->write(ptr, write_length, write_offset);
         } else if (dfd) {
-            if (i == 0)
+            if (i == 0) {
                 dfd->writeLastChunk(ptr, write_offset - file_off, write_length);
-            else
+            } else {
                 dfd->writeFirstChunk(ptr, write_offset, write_length);
+            }
         }
 
         chunk_off += cdata;
@@ -576,9 +612,9 @@ void MultiFileCache::downloadStatusChanged(TorrentFile *tf, bool download)
     QString dnd_path = u"file%1.dnd"_s.arg(tf->getIndex());
     QString dnd_file = dnd_dir + dnd_path;
     // if it is dnd and it is already in the dnd tree do nothing
-    if (dnd && bt::Exists(dnd_dir + dnd_path))
+    if (dnd && bt::Exists(dnd_dir + dnd_path)) {
         return;
-    else if (dnd && bt::Exists(dnd_dir + tf->getUserModifiedPath() + ".dnd"_L1)) {
+    } else if (dnd && bt::Exists(dnd_dir + tf->getUserModifiedPath() + ".dnd"_L1)) {
         // old style dnd dir, move the file so that we can keep working
         // with the old file
         bt::Move(dnd_dir + tf->getUserModifiedPath() + ".dnd"_L1, dnd_file, true, true);
@@ -586,18 +622,21 @@ void MultiFileCache::downloadStatusChanged(TorrentFile *tf, bool download)
     }
 
     // if it is !dnd and it is already in the output_dir tree do nothing
-    if (!dnd && bt::Exists(tf->getPathOnDisk()))
+    if (!dnd && bt::Exists(tf->getPathOnDisk())) {
         return;
+    }
 
     try {
         if (dnd) {
             // save first and last chunk of the file
-            if (bt::Exists(tf->getPathOnDisk()))
+            if (bt::Exists(tf->getPathOnDisk())) {
                 saveFirstAndLastChunk(tf, tf->getPathOnDisk(), dnd_file);
+            }
 
             // delete data file
-            if (bt::Exists(tf->getPathOnDisk()))
+            if (bt::Exists(tf->getPathOnDisk())) {
                 bt::Delete(tf->getPathOnDisk(), true);
+            }
 
             files.remove(tf->getIndex());
             auto dfd = std::make_unique<DNDFile>(dnd_file, tf, tor.getChunkSize());
@@ -621,8 +660,9 @@ void MultiFileCache::saveFirstAndLastChunk(TorrentFile *tf, const QString &src_f
 {
     DNDFile out(dst_file, tf, tor.getChunkSize());
     File fptr;
-    if (!fptr.open(src_file, u"rb"_s))
+    if (!fptr.open(src_file, u"rb"_s)) {
         throw Error(i18n("Cannot open file %1: %2", src_file, fptr.errorString()));
+    }
 
     Uint32 cs = (tf->getFirstChunk() == tor.getNumChunks() - 1) ? tor.getLastChunkSize() : tor.getChunkSize();
 
@@ -656,27 +696,31 @@ void MultiFileCache::recreateFile(TorrentFile *tf, const QString &dnd_file, cons
     Uint32 cs = (tf->getFirstChunk() == tor.getNumChunks() - 1) ? tor.getLastChunkSize() : tor.getChunkSize();
 
     File fptr;
-    if (!fptr.open(output_file, u"r+b"_s))
+    if (!fptr.open(output_file, u"r+b"_s)) {
         throw Error(i18n("Cannot open file %1: %2", output_file, fptr.errorString()));
+    }
 
     Uint32 ts = cs - tf->getFirstChunkOffset() > tf->getLastChunkSize() ? cs - tf->getFirstChunkOffset() : tf->getLastChunkSize();
     Uint8 *tmp = new Uint8[ts];
 
     try {
         Uint32 to_read = cs - tf->getFirstChunkOffset();
-        if (to_read > tf->getSize()) // check for files which are smaller then a chunk
+        if (to_read > tf->getSize()) { // check for files which are smaller then a chunk
             to_read = tf->getSize();
+        }
 
         to_read = dnd.readFirstChunk(tmp, 0, to_read);
-        if (to_read > 0)
+        if (to_read > 0) {
             fptr.write(tmp, to_read);
+        }
 
         if (tf->getFirstChunk() != tf->getLastChunk()) {
             Uint64 off = FileOffset(tf->getLastChunk(), *tf, tor.getChunkSize());
             fptr.seek(File::BEGIN, off);
             to_read = dnd.readLastChunk(tmp, 0, tf->getLastChunkSize());
-            if (to_read > 0)
+            if (to_read > 0) {
                 fptr.write(tmp, to_read);
+            }
         }
         delete[] tmp;
 
@@ -691,8 +735,9 @@ void MultiFileCache::preparePreallocation(PreallocationThread *prealloc)
     QMap<Uint32, CacheFile::Ptr>::iterator i = files.begin();
     while (i != files.end()) {
         CacheFile::Ptr cf = i.value();
-        if (cf)
+        if (cf) {
             prealloc->add(cf);
+        }
         ++i;
     }
 }
@@ -702,16 +747,18 @@ bool MultiFileCache::hasMissingFiles(QStringList &sl)
     bool ret = false;
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
         TorrentFile &tf = tor.getFile(i);
-        if (tf.doNotDownload())
+        if (tf.doNotDownload()) {
             continue;
+        }
 
         QString p = tf.getPathOnDisk();
         if (!bt::Exists(p)) {
             ret = true;
             tf.setMissing(true);
             sl.append(p);
-        } else
+        } else {
             tf.setMissing(false);
+        }
     }
     return ret;
 }
@@ -725,8 +772,9 @@ static void DeleteEmptyDirs(const QString &output_dir, const QString &fpath)
     while (sl.count() > 0) {
         QString path = output_dir;
         // reassemble the full directory path
-        for (const QString &s : std::as_const(sl))
+        for (const QString &s : std::as_const(sl)) {
             path += s + bt::DirSeparator();
+        }
 
         QDir dir(path);
         if (dir.exists() && dir.isEmpty(QDir::AllEntries | QDir::System | QDir::Hidden | QDir::NoDotAndDotDot)) {
@@ -772,8 +820,9 @@ Uint64 MultiFileCache::diskUsage()
 
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
         TorrentFile &tf = tor.getFile(i);
-        if (tf.doNotDownload())
+        if (tf.doNotDownload()) {
             continue;
+        }
 
         try {
             CacheFile::Ptr cf = files[i];
@@ -798,12 +847,14 @@ bool MultiFileCache::getMountPoints(QSet<QString> &mps)
 {
     for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
         TorrentFile &tf = tor.getFile(i);
-        if (tf.doNotDownload())
+        if (tf.doNotDownload()) {
             continue;
+        }
 
         QString mp = tf.getMountPoint();
-        if (mp.isEmpty())
+        if (mp.isEmpty()) {
             return false;
+        }
 
         mps.insert(mp);
     }

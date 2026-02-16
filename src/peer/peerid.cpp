@@ -19,38 +19,42 @@ namespace bt
 char RandomLetterOrNumber()
 {
     int i = QRandomGenerator::global()->bounded(62);
-    if (i < 26)
+    if (i < 26) {
         return 'a' + i;
-    else if (i < 52)
+    } else if (i < 52) {
         return 'A' + (i - 26);
-    else
+    } else {
         return '0' + (i - 52);
+    }
 }
 
 QString charToNumber(QChar c)
 {
-    if (c >= 'A'_L1 && c <= 'F'_L1)
+    if (c >= 'A'_L1 && c <= 'F'_L1) {
         return QString::number(c.toLatin1() - 'A' + 10);
-    else if (c >= 'z'_L1 && c <= 'f'_L1)
+    } else if (c >= 'z'_L1 && c <= 'f'_L1) {
         return QString::number(c.toLatin1() - 'a' + 10);
-    else
+    } else {
         return c;
+    }
 }
 
 PeerID::PeerID()
 {
     memcpy(id, bt::PeerIDPrefix().toLatin1().constData(), 10);
-    for (int i = 10; i < 20; i++)
+    for (int i = 10; i < 20; i++) {
         id[i] = RandomLetterOrNumber();
+    }
     client_name = identifyClient();
 }
 
 PeerID::PeerID(const char *pid)
 {
-    if (pid)
+    if (pid) {
         memcpy(id, pid, 20);
-    else
+    } else {
         memset(id, 0, 20);
+    }
     client_name = identifyClient();
 }
 
@@ -73,9 +77,11 @@ PeerID &PeerID::operator=(const PeerID &pid)
 
 bool operator==(const PeerID &a, const PeerID &b)
 {
-    for (int i = 0; i < 20; i++)
-        if (a.id[i] != b.id[i])
+    for (int i = 0; i < 20; i++) {
+        if (a.id[i] != b.id[i]) {
             return false;
+        }
+    }
 
     return true;
 }
@@ -87,9 +93,11 @@ bool operator!=(const PeerID &a, const PeerID &b)
 
 bool operator<(const PeerID &a, const PeerID &b)
 {
-    for (int i = 0; i < 20; i++)
-        if (a.id[i] < b.id[i])
+    for (int i = 0; i < 20; i++) {
+        if (a.id[i] < b.id[i]) {
             return true;
+        }
+    }
 
     return false;
 }
@@ -98,15 +106,17 @@ QString PeerID::toString() const
 {
     QString r;
     r.reserve(20);
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 20; i++) {
         r += id[i] == 0 ? ' '_L1 : QLatin1Char(id[i]);
+    }
     return r;
 }
 
 QString PeerID::identifyClient() const
 {
-    if (!client_name.isNull())
+    if (!client_name.isNull()) {
         return client_name;
+    }
 
     QString peer_id = toString();
     // we only need to create this map once
@@ -250,8 +260,9 @@ QString PeerID::identifyClient() const
         if (ID == QLatin1String("ML")) {
             name = Map[ID];
             const int dash_pos = peer_id.indexOf('-'_L1, 3);
-            if (dash_pos != -1)
+            if (dash_pos != -1) {
                 name += ' '_L1 + peer_id.mid(3, dash_pos - 3);
+            }
         } else if (Map.contains(ID)) {
             if (peer_id.at(9) == '-'_L1) {
                 name = Map[ID] + ' '_L1 + charToNumber(peer_id.at(3)) + charToNumber(peer_id.at(4)) + '.'_L1 + charToNumber(peer_id.at(5))
@@ -262,14 +273,16 @@ QString PeerID::identifyClient() const
         }
     } else if (peer_id.at(0).isLetter() && peer_id.at(1).isDigit() && peer_id.at(2).isDigit()) { // Shadow's style
         QString ID = QString(peer_id.at(0));
-        if (Map.contains(ID))
+        if (Map.contains(ID)) {
             name = Map[ID] + ' '_L1 + peer_id.at(1) + '.'_L1 + peer_id.at(2) + '.'_L1 + peer_id.at(3);
+        }
     } else if (peer_id.at(0) == 'M'_L1 && peer_id.at(2) == '-'_L1 && (peer_id.at(4) == '-'_L1 || peer_id.at(5) == '-'_L1)) {
         name = Map[QStringLiteral("M")] + ' '_L1 + peer_id.at(1) + '.'_L1 + peer_id.at(3);
-        if (peer_id.at(4) == '-'_L1)
+        if (peer_id.at(4) == '-'_L1) {
             name += QStringLiteral(".%1").arg(peer_id.at(5));
-        else
+        } else {
             name += QStringLiteral("%1.%2").arg(peer_id.at(4)).arg(peer_id.at(6));
+        }
     } else if (peer_id.startsWith(QLatin1String("OP"))) {
         name = Map[QStringLiteral("OP")];
     } else if (peer_id.startsWith(QLatin1String("exbc"))) {

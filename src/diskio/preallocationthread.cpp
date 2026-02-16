@@ -35,8 +35,9 @@ PreallocationThread::~PreallocationThread()
 
 void PreallocationThread::add(CacheFile::Ptr cache_file)
 {
-    if (cache_file)
+    if (cache_file) {
         todo.append(cache_file);
+    }
 }
 
 void PreallocationThread::run()

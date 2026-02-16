@@ -37,8 +37,9 @@ void NodeLookup::handleNodes(const QByteArray &nodes, int ip_version)
         try {
             KBucketEntry e = UnpackBucketEntry(nodes, j * address_size, ip_version);
             // lets not talk to ourself
-            if (e.getID() != node->getOurID() && !todo.contains(e) && !visited.contains(e))
+            if (e.getID() != node->getOurID() && !todo.contains(e) && !visited.contains(e)) {
                 todo.insert(e);
+            }
         } catch (...) {
             // bad data, just ignore it
         }
@@ -48,22 +49,26 @@ void NodeLookup::handleNodes(const QByteArray &nodes, int ip_version)
 void NodeLookup::callFinished(RPCCall *, RPCMsg *rsp)
 {
     // Out(SYS_DHT|LOG_DEBUG) << "NodeLookup::callFinished" << endl;
-    if (isFinished())
+    if (isFinished()) {
         return;
+    }
 
     // check the response and see if it is a good one
     if (rsp->getMethod() == dht::FIND_NODE && rsp->getType() == dht::RSP_MSG) {
         auto fnr = dynamic_cast<FindNodeRsp *>(rsp);
-        if (!fnr)
+        if (!fnr) {
             return;
+        }
 
         const QByteArray &nodes = fnr->getNodes();
-        if (nodes.size() > 0)
+        if (nodes.size() > 0) {
             handleNodes(nodes, 4);
+        }
 
         const QByteArray &nodes6 = fnr->getNodes6();
-        if (nodes6.size() > 0)
+        if (nodes6.size() > 0) {
             handleNodes(nodes6, 6);
+        }
         num_nodes_rsp++;
     }
 }

@@ -10,8 +10,9 @@ bool HttpResponseHeader::parseLine(const QString &line, int number)
 {
     if (number != 0) {
         int i = line.indexOf(QLatin1Char(':'));
-        if (i == -1)
+        if (i == -1) {
             return false;
+        }
 
         values[QStringView(line).left(i).trimmed().toString().toLower()] = QStringView(line).mid(i + 1).trimmed().toString();
 
@@ -19,8 +20,9 @@ bool HttpResponseHeader::parseLine(const QString &line, int number)
     }
 
     QString l = line.simplified();
-    if (l.length() < 10)
+    if (l.length() < 10) {
         return false;
+    }
 
     if (l.startsWith(QLatin1String("HTTP/")) && l[5].isDigit() && l[6] == QLatin1Char('.') && l[7].isDigit() && l[8] == QLatin1Char(' ') && l[9].isDigit()) {
         _majVer = l[5].toLatin1() - '0';
@@ -45,14 +47,16 @@ bool HttpResponseHeader::parse(const QString &str)
 {
     QStringList lst;
     int pos = str.indexOf(QLatin1Char('\n'));
-    if (pos > 0 && str.at(pos - 1) == QLatin1Char('\r'))
+    if (pos > 0 && str.at(pos - 1) == QLatin1Char('\r')) {
         lst = str.trimmed().split(QLatin1String("\r\n"));
-    else
+    } else {
         lst = str.trimmed().split(QLatin1String("\n"));
+    }
     lst.removeAll(QString()); // No empties
 
-    if (lst.isEmpty())
+    if (lst.isEmpty()) {
         return true;
+    }
 
     QStringList lines;
     for (auto it = lst.begin(); it != lst.end(); ++it) {

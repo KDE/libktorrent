@@ -49,8 +49,9 @@ TorrentCreator::TorrentCreator(const QString &tar,
     this->chunk_size *= 1024;
     QFileInfo fi(target);
     if (fi.isDir()) {
-        if (!this->target.endsWith(bt::DirSeparator()))
+        if (!this->target.endsWith(bt::DirSeparator())) {
             this->target += bt::DirSeparator();
+        }
 
         tot_size = 0;
         buildFileList(QString());
@@ -96,8 +97,9 @@ void TorrentCreator::buildFileList(const QString &dir)
     const QStringList subdirs = d.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
     for (const QString &s : subdirs) {
         QString sd = dir + s;
-        if (!sd.endsWith(bt::DirSeparator()))
+        if (!sd.endsWith(bt::DirSeparator())) {
             sd += bt::DirSeparator();
+        }
         buildFileList(sd);
     }
 }
@@ -105,18 +107,20 @@ void TorrentCreator::buildFileList(const QString &dir)
 void TorrentCreator::saveTorrent(const QString &url)
 {
     File fptr;
-    if (!fptr.open(url, u"wb"_s))
+    if (!fptr.open(url, u"wb"_s)) {
         throw Error(i18n("Cannot open file %1: %2", url, fptr.errorString()));
+    }
 
     BEncoder enc(&fptr);
     enc.beginDict(); // top dict
 
     if (!decentralized) {
         enc.write(QByteArrayLiteral("announce"));
-        if (trackers.count() > 0)
+        if (trackers.count() > 0) {
             enc.write(trackers[0].toUtf8());
-        else
+        } else {
             enc.write(QByteArray());
+        }
 
         if (trackers.count() > 1) {
             enc.write(QByteArrayLiteral("announce-list"));
@@ -178,8 +182,9 @@ void TorrentCreator::saveInfo(BEncoder &enc)
     if (fi.isDir()) {
         enc.write(QByteArrayLiteral("files"));
         enc.beginList();
-        for (const TorrentFile &file : std::as_const(files))
+        for (const TorrentFile &file : std::as_const(files)) {
             saveFile(enc, file);
+        }
 
         enc.end();
     } else {
@@ -207,8 +212,9 @@ void TorrentCreator::saveFile(BEncoder &enc, const TorrentFile &file)
     enc.write(QByteArrayLiteral("path"));
     enc.beginList();
     const QStringList sl = file.getPath().split(bt::DirSeparator());
-    for (const QString &s : sl)
+    for (const QString &s : sl) {
         enc.write(s.toUtf8());
+    }
     enc.end();
     enc.end();
 }
@@ -226,8 +232,9 @@ bool TorrentCreator::calcHashSingle()
 {
     Array<Uint8> buf(chunk_size);
     File fptr;
-    if (!fptr.open(target, u"rb"_s))
+    if (!fptr.open(target, u"rb"_s)) {
         throw Error(i18n("Cannot open file %1: %2", target, fptr.errorString()));
+    }
 
     Uint32 s = cur_chunk != num_chunks - 1 ? chunk_size : last_size;
     fptr.seek(File::BEGIN, (Int64)cur_chunk * chunk_size);
@@ -266,19 +273,21 @@ bool TorrentCreator::calcHashMulti()
         // only the first file can have an offset
         // the following files will start at the beginning
         Uint64 off = 0;
-        if (i == 0)
+        if (i == 0) {
             off = f.fileOffset(cur_chunk, chunk_size);
+        }
 
         Uint32 to_read = 0;
         // then the amount of data we can read from this file
-        if (file_list.count() == 1)
+        if (file_list.count() == 1) {
             to_read = s;
-        else if (i == 0)
+        } else if (i == 0) {
             to_read = f.getLastChunkSize();
-        else if (i == file_list.count() - 1)
+        } else if (i == file_list.count() - 1) {
             to_read = s - read;
-        else
+        } else {
             to_read = f.getSize();
+        }
 
         // read part of data
         fptr.seek(File::BEGIN, (Int64)off);
@@ -297,37 +306,43 @@ bool TorrentCreator::calcHashMulti()
 
 bool TorrentCreator::calculateHash()
 {
-    if (cur_chunk >= num_chunks)
+    if (cur_chunk >= num_chunks) {
         return true;
-    if (files.empty())
+    }
+    if (files.empty()) {
         return calcHashSingle();
-    else
+    } else {
         return calcHashMulti();
+    }
 }
 
 void TorrentCreator::run()
 {
-    if (hashes.empty())
+    if (hashes.empty()) {
         while (!stopped && !calculateHash())
             ;
+    }
 }
 
 TorrentControl *TorrentCreator::makeTC(const QString &data_dir)
 {
     QString dd = data_dir;
-    if (!dd.endsWith(bt::DirSeparator()))
+    if (!dd.endsWith(bt::DirSeparator())) {
         dd += bt::DirSeparator();
+    }
 
     // make data dir if necessary
-    if (!bt::Exists(dd))
+    if (!bt::Exists(dd)) {
         bt::MakeDir(dd);
+    }
 
     // save the torrent
     saveTorrent(dd + QLatin1String("torrent"));
     // write full index file
     File fptr;
-    if (!fptr.open(dd + QLatin1String("index"), u"wb"_s))
+    if (!fptr.open(dd + QLatin1String("index"), u"wb"_s)) {
         throw Error(i18n("Cannot create index file: %1", fptr.errorString()));
+    }
 
     for (Uint32 i = 0; i < num_chunks; i++) {
         NewChunkHeader hdr;

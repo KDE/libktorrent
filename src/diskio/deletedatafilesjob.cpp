@@ -33,8 +33,9 @@ void DeleteDataFilesJob::addFile(const QString &file)
 
 void DeleteDataFilesJob::addEmptyDirectoryCheck(const QString &fpath)
 {
-    if (!directory_tree)
+    if (!directory_tree) {
         directory_tree = new DirTree(base);
+    }
 
     directory_tree->insert(fpath);
 }
@@ -47,15 +48,18 @@ void DeleteDataFilesJob::start()
 
 void DeleteDataFilesJob::onDeleteJobDone(KJob *j)
 {
-    if (j != active_job)
+    if (j != active_job) {
         return;
+    }
 
-    if (active_job->error())
+    if (active_job->error()) {
         active_job->uiDelegate()->showErrorMessage();
+    }
     active_job = nullptr;
 
-    if (directory_tree)
+    if (directory_tree) {
         directory_tree->doDeleteOnEmpty(base);
+    }
 
     setError(0);
     emitResult();
@@ -79,8 +83,9 @@ DeleteDataFilesJob::DirTree::~DirTree()
 void DeleteDataFilesJob::DirTree::insert(const QString &fpath)
 {
     int i = fpath.indexOf(bt::DirSeparator());
-    if (i == -1) // last part of fpath is a file, so we need to ignore that
+    if (i == -1) { // last part of fpath is a file, so we need to ignore that
         return;
+    }
 
     QString dn = fpath.left(i);
     DirTree *d = subdirs.find(dn);

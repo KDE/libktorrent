@@ -47,8 +47,9 @@ void ErrMsg::parse(BDictNode *dict)
 {
     RPCMsg::parse(dict);
     BListNode *ln = dict->getList(ERR_DHT);
-    if (!ln)
+    if (!ln) {
         throw bt::Error(u"Invalid error message"_s);
+    }
 
     msg = ln->getString(1);
 }

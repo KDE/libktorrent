@@ -37,10 +37,11 @@ private:
         incoming = nullptr;
         port = 50000;
         while (port < 60000) {
-            if (!bt::Globals::instance().initUTPServer(port))
+            if (!bt::Globals::instance().initUTPServer(port)) {
                 port++;
-            else
+            } else {
                 break;
+            }
         }
 
         bt::Globals::instance().getUTPServer().setCreateSockets(false);

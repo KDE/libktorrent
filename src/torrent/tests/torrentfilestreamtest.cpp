@@ -117,14 +117,16 @@ private Q_SLOTS:
             // Chunk size of last chunk can be smaller
             if (idx == tc.getStats().total_chunks - 1) {
                 chunk_size = tc.getStats().chunk_size % tc.getStats().total_bytes;
-                if (chunk_size == 0)
+                if (chunk_size == 0) {
                     chunk_size = tc.getStats().chunk_size;
+                }
             }
 
             // Lets read in two times, first at the back and then at the front
             qint64 split = QRandomGenerator::global()->bounded(chunk_size);
-            while (split == 0)
+            while (split == 0) {
                 split = QRandomGenerator::global()->bounded(chunk_size);
+            }
 
             QVERIFY(stream->seek(idx * tc.getStats().chunk_size + split));
             qint64 ret = stream->read(tmp.data() + split, chunk_size - split);
@@ -187,8 +189,9 @@ private Q_SLOTS:
 
         // Calculate the offset of the first chunk in range
         qint64 chunk_idx = off / tc.getStats().chunk_size;
-        if (off % tc.getStats().chunk_size != 0)
+        if (off % tc.getStats().chunk_size != 0) {
             chunk_idx++;
+        }
         qint64 chunk_off = chunk_idx * tc.getStats().chunk_size - off;
 
         Out(SYS_GEN | LOG_DEBUG) << "chunk_idx = " << chunk_idx << endl;

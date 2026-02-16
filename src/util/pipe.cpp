@@ -29,8 +29,9 @@ int socketpair(int sockets[2])
     sockets[0] = sockets[1] = -1;
 
     net::Socket sock(true, 4);
-    if (!sock.bind(u"127.0.0.1"_s, 0, true))
+    if (!sock.bind(u"127.0.0.1"_s, 0, true)) {
         return -1;
+    }
 
     net::Address local_addr = sock.getSockName();
     net::Socket writer(true, 4);
@@ -39,8 +40,9 @@ int socketpair(int sockets[2])
 
     net::Address dummy;
     sockets[1] = sock.accept(dummy);
-    if (sockets[1] < 0)
+    if (sockets[1] < 0) {
         return -1;
+    }
 
     if (!writer.connectSuccesFull()) {
         closesocket(sockets[1]);
@@ -79,15 +81,19 @@ Pipe::Pipe()
 Pipe::~Pipe()
 {
 #ifndef Q_OS_WIN
-    if (reader >= 0)
+    if (reader >= 0) {
         ::close(reader);
-    if (writer >= 0)
+    }
+    if (writer >= 0) {
         ::close(writer);
+    }
 #else
-    if (reader >= 0)
+    if (reader >= 0) {
         ::closesocket(reader);
-    if (writer >= 0)
+    }
+    if (writer >= 0) {
         ::closesocket(writer);
+    }
 #endif
 }
 

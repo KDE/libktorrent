@@ -228,8 +228,9 @@ char *mingw_strerror(int error)
 #endif
     char *p;
     for (p = cmessage; *p; p++) {
-        if (*p == '\n' || *p == '\r')
+        if (*p == '\n' || *p == '\r') {
             *p = ' ';
+        }
     }
 
     return cmessage;

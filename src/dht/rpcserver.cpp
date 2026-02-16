@@ -73,16 +73,18 @@ public:
             BDecoder bdec(ptr->get(), ptr->size(), false);
             const std::unique_ptr<BDictNode> dict = bdec.decodeDict();
 
-            if (!dict)
+            if (!dict) {
                 return;
+            }
 
             // try to make a RPCMsg of it
             std::unique_ptr<RPCMsg> msg = factory.build(dict.get(), this);
             if (msg) {
-                if (addr.ipVersion() == 6 && addr.isIPv4Mapped())
+                if (addr.ipVersion() == 6 && addr.isIPv4Mapped()) {
                     msg->setOrigin(addr.convertIPv4Mapped());
-                else
+                } else {
                     msg->setOrigin(addr);
+                }
 
                 msg->apply(dh_table);
                 // erase an existing call
@@ -108,17 +110,19 @@ public:
     Method findMethod(const QByteArray &mtid) override
     {
         const RPCCall *call = calls.find(mtid);
-        if (call)
+        if (call) {
             return call->getMsgMethod();
-        else
+        } else {
             return dht::NONE;
+        }
     }
 
     void send(const net::Address &addr, const QByteArray &msg)
     {
         for (const net::ServerSocket::Ptr &sock : std::as_const(sockets)) {
-            if (sock->sendTo((const bt::Uint8 *)msg.data(), msg.size(), addr) == msg.size())
+            if (sock->sendTo((const bt::Uint8 *)msg.data(), msg.size(), addr) == msg.size()) {
                 break;
+            }
         }
     }
 
@@ -128,8 +132,9 @@ public:
             RPCCall *c = call_queue.first();
             call_queue.removeFirst();
 
-            while (calls.contains(QByteArray(1, next_mtid)))
+            while (calls.contains(QByteArray(1, next_mtid))) {
                 next_mtid++;
+            }
 
             RPCMsg *msg = c->getRequest();
             QByteArray mtid(1, next_mtid);
@@ -219,8 +224,9 @@ void RPCServer::start()
         d->listen(QHostAddress(QHostAddress::Any).toString());
     }
 
-    if (!d->sockets.empty())
+    if (!d->sockets.empty()) {
         bt::Globals::instance().getPortList().addNewPort(d->port, net::UDP, true);
+    }
 }
 
 void RPCServer::stop()
@@ -248,8 +254,9 @@ static void PrintRawData(const QByteArray & data)
 RPCCall *RPCServer::doCall(std::unique_ptr<RPCMsg> msg)
 {
     RPCCall *c = d->doCall(std::move(msg));
-    if (c)
+    if (c) {
         connect(c, &RPCCall::timeout, this, &RPCServer::callTimeout);
+    }
 
     return c;
 }

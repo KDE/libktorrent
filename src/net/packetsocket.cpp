@@ -50,31 +50,36 @@ Packet::Ptr PacketSocket::selectPacket()
 
     if (ctrl_packets_sent < 3) {
         // try to send another control packet
-        if (control_packets.size() > 0)
+        if (control_packets.size() > 0) {
             ret = control_packets.front();
-        else if (data_packets.size() > 0)
+        } else if (data_packets.size() > 0) {
             ret = data_packets.front();
+        }
     } else {
         if (data_packets.size() > 0) {
             ctrl_packets_sent = 0;
             ret = data_packets.front();
-        } else if (control_packets.size() > 0)
+        } else if (control_packets.size() > 0) {
             ret = control_packets.front();
+        }
     }
 
-    if (ret)
+    if (ret) {
         preProcess(ret->getData(), ret->getDataLength());
+    }
 
     return ret;
 }
 
 Uint32 PacketSocket::write(Uint32 max, bt::TimeStamp now)
 {
-    if (sock->state() == net::SocketDevice::CONNECTING && !sock->connectSuccesFull())
+    if (sock->state() == net::SocketDevice::CONNECTING && !sock->connectSuccesFull()) {
         return 0;
+    }
 
-    if (!curr_packet)
+    if (!curr_packet) {
         curr_packet = selectPacket();
+    }
 
     Uint32 written = 0;
     while (curr_packet && (written < max || max == 0)) {
@@ -88,21 +93,24 @@ Uint32 PacketSocket::write(Uint32 max, bt::TimeStamp now)
                 pending_upload_data_bytes -= ret;
                 uploaded_data_bytes += ret;
             }
-        } else
+        } else {
             break; // Socket buffer full, so stop sending for now
+        }
 
         if (curr_packet->isSent()) {
             // packet sent, so remove it
             if (curr_packet->getType() == PIECE) {
                 QMutexLocker locker(&mutex);
-                if (!data_packets.empty())
+                if (!data_packets.empty()) {
                     data_packets.pop_front();
+                }
                 // reset ctrl_packets_sent so the next packet should be a ctrl packet
                 ctrl_packets_sent = 0;
             } else {
                 QMutexLocker locker(&mutex);
-                if (!control_packets.empty())
+                if (!control_packets.empty()) {
                     control_packets.pop_front();
+                }
                 ctrl_packets_sent++;
             }
             curr_packet = selectPacket();
@@ -122,8 +130,9 @@ void PacketSocket::addPacket(Packet::Ptr packet)
     if (packet->getType() == PIECE) {
         data_packets.push_back(packet);
         pending_upload_data_bytes += packet->getDataLength();
-    } else
+    } else {
         control_packets.push_back(packet);
+    }
     // tell upload thread we have data ready should it be sleeping
     net::SocketMonitor::instance().signalPacketReady();
 }
@@ -156,8 +165,9 @@ void PacketSocket::clearPieces(bool reject)
     while (i != data_packets.end()) {
         Packet::Ptr p = *i;
         if (p->getType() == bt::PIECE && !p->sending() && curr_packet != p) {
-            if (reject)
+            if (reject) {
                 addPacket(p->makeRejectOfPiece());
+            }
             pending_upload_data_bytes -= p->getDataLength();
             i = data_packets.erase(i);
         } else {

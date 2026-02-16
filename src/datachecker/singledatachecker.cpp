@@ -38,10 +38,12 @@ void SingleDataChecker::check(const QString &path, const Torrent &tor, const QSt
         throw Error(i18n("Cannot open file %1: %2", path, fptr.errorString()));
     }
 
-    if (from >= tor.getNumChunks())
+    if (from >= tor.getNumChunks()) {
         from = 0;
-    if (to >= tor.getNumChunks())
+    }
+    if (to >= tor.getNumChunks()) {
         to = tor.getNumChunks() - 1;
+    }
 
     // initialize the bitset
     result = BitSet(num_chunks);
@@ -59,21 +61,23 @@ void SingleDataChecker::check(const QString &path, const Torrent &tor, const QSt
             SHA1Hash h = SHA1Hash::generate(buf.data(), size);
             bool ok = (h == tor.getHash(i));
             result.set(i, ok);
-            if (ok && current_status.get(i))
+            if (ok && current_status.get(i)) {
                 downloaded++;
-            else if (!ok && current_status.get(i))
+            } else if (!ok && current_status.get(i)) {
                 failed++;
-            else if (!ok && !current_status.get(i))
+            } else if (!ok && !current_status.get(i)) {
                 not_downloaded++;
-            else if (ok && !current_status.get(i))
+            } else if (ok && !current_status.get(i)) {
                 found++;
+            }
         } else {
             // at end of file so set to default values for a failed chunk
             result.set(i, false);
-            if (!current_status.get(i))
+            if (!current_status.get(i)) {
                 not_downloaded++;
-            else
+            } else {
                 failed++;
+            }
         }
 
         TimeStamp now = Now();

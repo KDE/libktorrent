@@ -58,8 +58,9 @@ void EncryptedServerAuthenticate::handleYA()
 
 void EncryptedServerAuthenticate::findReq1()
 {
-    if (buf_size < 116) // safety check
+    if (buf_size < 116) { // safety check
         return;
+    }
 
     //  Out() << "Find Req1" << endl;
     Uint8 tmp[100];
@@ -85,8 +86,9 @@ void EncryptedServerAuthenticate::calculateSKey()
 {
     //  Out(SYS_CON|LOG_DEBUG) << "Calculate SKEY" << endl;
     // not enough data return
-    if (req1_off + 40 > buf_size)
+    if (req1_off + 40 > buf_size) {
         return;
+    }
 
     Uint8 tmp[100];
     memcpy(tmp, "req3", 4);
@@ -119,8 +121,9 @@ void EncryptedServerAuthenticate::processVC()
     }
 
     // if we do not have everything return
-    if (buf_size < req1_off + 40 + 14)
+    if (buf_size < req1_off + 40 + 14) {
         return;
+    }
 
     Uint32 off = req1_off + 40;
     // now decrypt the vc and crypto_provide and the length of pad_C
@@ -172,8 +175,9 @@ void EncryptedServerAuthenticate::handlePadC()
 {
     //  Out(SYS_CON|LOG_DEBUG) << "Handle PAD C" << endl;
     // not enough data, so return, we need padC and the length of IA
-    if (buf_size < req1_off + 54 + pad_C_len + 2)
+    if (buf_size < req1_off + 54 + pad_C_len + 2) {
         return;
+    }
 
     // we have decrypted everything up to pad_C_len
     Uint32 off = req1_off + 54;
@@ -191,8 +195,9 @@ void EncryptedServerAuthenticate::handleIA()
 {
     //  Out(SYS_CON|LOG_DEBUG) << "Handle IA" << endl;
     // not enough data, so return, we need padC and the length of IA
-    if (buf_size < req1_off + 54 + pad_C_len + 2 + ia_len)
+    if (buf_size < req1_off + 54 + pad_C_len + 2 + ia_len) {
         return;
+    }
 
     // decrypt the initial argument
     if (ia_len > 0) {
@@ -221,8 +226,9 @@ void EncryptedServerAuthenticate::handleIA()
 
 void EncryptedServerAuthenticate::onReadyRead()
 {
-    if (!sock)
+    if (!sock) {
         return;
+    }
 
     Uint32 ba = sock->bytesAvailable();
     if (!ba) {
@@ -231,8 +237,9 @@ void EncryptedServerAuthenticate::onReadyRead()
     }
 
     // make sure we don't write past the end of the buffer
-    if (buf_size + ba > MAX_SEA_BUF_SIZE)
+    if (buf_size + ba > MAX_SEA_BUF_SIZE) {
         ba = MAX_SEA_BUF_SIZE - buf_size;
+    }
 
     switch (state) {
     case WAITING_FOR_YA:
@@ -260,41 +267,47 @@ void EncryptedServerAuthenticate::onReadyRead()
             ServerAuthenticate::onReadyRead();
         } else {
             buf_size += sock->readData(buf + buf_size, ba);
-            if (buf_size >= 96)
+            if (buf_size >= 96) {
                 handleYA();
+            }
         }
         break;
     case WAITING_FOR_REQ1:
-        if (buf_size + ba > MAX_SEA_BUF_SIZE)
+        if (buf_size + ba > MAX_SEA_BUF_SIZE) {
             ba = MAX_SEA_BUF_SIZE - buf_size;
+        }
 
         buf_size += sock->readData(buf + buf_size, ba);
         findReq1();
         break;
     case FOUND_REQ1:
-        if (buf_size + ba > MAX_SEA_BUF_SIZE)
+        if (buf_size + ba > MAX_SEA_BUF_SIZE) {
             ba = MAX_SEA_BUF_SIZE - buf_size;
+        }
 
         buf_size += sock->readData(buf + buf_size, ba);
         calculateSKey();
         break;
     case FOUND_INFO_HASH:
-        if (buf_size + ba > MAX_SEA_BUF_SIZE)
+        if (buf_size + ba > MAX_SEA_BUF_SIZE) {
             ba = MAX_SEA_BUF_SIZE - buf_size;
+        }
 
         buf_size += sock->readData(buf + buf_size, ba);
         processVC();
         break;
     case WAIT_FOR_PAD_C:
-        if (buf_size + ba > MAX_SEA_BUF_SIZE)
+        if (buf_size + ba > MAX_SEA_BUF_SIZE) {
             ba = MAX_SEA_BUF_SIZE - buf_size;
+        }
 
         buf_size += sock->readData(buf + buf_size, ba);
         handlePadC();
         break;
     case WAIT_FOR_IA:
-        if (buf_size + ba > MAX_SEA_BUF_SIZE)
+        if (buf_size + ba > MAX_SEA_BUF_SIZE) {
             ba = MAX_SEA_BUF_SIZE - buf_size;
+        }
 
         buf_size += sock->readData(buf + buf_size, ba);
         handleIA();

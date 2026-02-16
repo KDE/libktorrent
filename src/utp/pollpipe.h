@@ -35,8 +35,9 @@ public:
     {
         QMutexLocker lock(&mutex);
         conn_ids.set(conn_id, true);
-        if (poll_index < 0)
+        if (poll_index < 0) {
             poll_index = p->add(qSharedPointerCast<PollClient>(self));
+        }
     }
 
     //! Are we polling a connection

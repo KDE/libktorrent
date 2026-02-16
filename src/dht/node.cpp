@@ -93,10 +93,11 @@ Node::~Node()
 
 void Node::received(dht::DHT *dh_table, const dht::RPCMsg &msg)
 {
-    if (msg.getOrigin().ipVersion() == 4)
+    if (msg.getOrigin().ipVersion() == 4) {
         d->ipv4_table->insert(KBucketEntry(msg.getOrigin(), msg.getID()), d->srv);
-    else
+    } else {
         d->ipv6_table->insert(KBucketEntry(msg.getOrigin(), msg.getID()), d->srv);
+    }
 
     d->num_receives++;
     if (d->num_receives == 3) {
@@ -110,18 +111,21 @@ void Node::received(dht::DHT *dh_table, const dht::RPCMsg &msg)
 
 void Node::findKClosestNodes(KClosestNodesSearch &kns, bt::Uint32 want)
 {
-    if (want & WANT_IPV4)
+    if (want & WANT_IPV4) {
         d->ipv4_table->findKClosestNodes(kns);
-    if (want & WANT_IPV6)
+    }
+    if (want & WANT_IPV6) {
         d->ipv6_table->findKClosestNodes(kns);
+    }
 }
 
 void Node::onTimeout(const RPCMsg &msg)
 {
-    if (msg.getOrigin().ipVersion() == 4)
+    if (msg.getOrigin().ipVersion() == 4) {
         d->ipv4_table->onTimeout(msg.getOrigin());
-    else
+    } else {
         d->ipv6_table->onTimeout(msg.getOrigin());
+    }
 }
 
 void Node::refreshBuckets(DHT *dh_table)

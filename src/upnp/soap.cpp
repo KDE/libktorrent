@@ -34,8 +34,9 @@ QString SOAP::createCommand(const QString &action, const QString &service, const
                        "<m:%1 xmlns:m=\"%2\">")
                        .arg(action, service);
 
-    for (const Arg &a : args)
+    for (const Arg &a : args) {
         comm += '<'_L1 + a.element + '>'_L1 + a.value + "</"_L1 + a.element + '>'_L1;
+    }
 
     comm += u"</m:%1></SOAP-ENV:Body></SOAP-ENV:Envelope>"_s.arg(action);
     return comm;

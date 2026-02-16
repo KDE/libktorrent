@@ -89,11 +89,13 @@ TorrentControl::~TorrentControl()
         stop(nullptr);
     }
 
-    if (tmon)
+    if (tmon) {
         tmon->destroyed();
+    }
 
-    if (downloader)
+    if (downloader) {
         downloader->saveWebSeeds(tordir + "webseeds"_L1);
+    }
 }
 
 void TorrentControl::update()
@@ -114,8 +116,9 @@ void TorrentControl::update()
         return;
     }
 
-    if (prealloc && preallocate())
+    if (prealloc && preallocate()) {
         return;
+    }
 
     try {
         // first update peermanager
@@ -140,8 +143,9 @@ void TorrentControl::update()
 
             // download has just been completed
             // only sent completed to tracker when we have all chunks (so no excluded chunks)
-            if (cman->haveAllChunks())
+            if (cman->haveAllChunks()) {
                 psman->completed();
+            }
             pman->setPartialSeed(!cman->haveAllChunks() && cman->chunksLeft() == 0);
 
             Q_EMIT finished(this);
@@ -150,21 +154,24 @@ void TorrentControl::update()
             moveCompleted = !completed_dir.isEmpty();
 
             // See if we need to do a data check
-            if (completed_datacheck)
+            if (completed_datacheck) {
                 checkOnCompletion = true;
+            }
         } else if (!stats.completed && comp) {
             // restart download if necesarry
             // when user selects that files which were previously excluded,
             // should now be downloaded
-            if (!psman->isStarted())
+            if (!psman->isStarted()) {
                 psman->start();
-            else
+            } else {
                 psman->manualUpdate();
+            }
             istats.time_started_dl = QDateTime::currentDateTime();
             // Tell QM to redo queue
             Q_EMIT updateQueue();
-            if (stats.superseeding)
+            if (stats.superseeding) {
                 pman->setSuperSeeding(false, cman->getBitSet());
+            }
         }
         updateStatus();
 
@@ -235,20 +242,23 @@ void TorrentControl::update()
         }
 
         // Emit the needDataCheck signal if needed
-        if (checkOnCompletion)
+        if (checkOnCompletion) {
             Q_EMIT needDataCheck(this);
+        }
 
         // Move completed files if needed:
-        if (moveCompleted)
+        if (moveCompleted) {
             moveToCompletedDir();
+        }
     }
 #ifndef Q_OS_WIN
     catch (BusError &e) {
         Out(SYS_DIO | LOG_IMPORTANT) << "Caught SIGBUS " << endl;
-        if (!e.write_operation)
+        if (!e.write_operation) {
             onIOError(e.toString());
-        else
+        } else {
             onIOError(i18n("Error writing to disk, do you have enough diskspace?"));
+        }
     }
 #endif
     catch (Error &e) {
@@ -268,8 +278,9 @@ void TorrentControl::onIOError(const QString &msg)
 
 void TorrentControl::pause()
 {
-    if (!stats.running || stats.paused)
+    if (!stats.running || stats.paused) {
         return;
+    }
 
     pman->pause();
 
@@ -295,8 +306,9 @@ void TorrentControl::pause()
 
 void TorrentControl::unpause()
 {
-    if (!stats.running || !stats.paused || job_queue->runningJobs())
+    if (!stats.running || !stats.paused || job_queue->runningJobs()) {
         return;
+    }
 
     cman->start();
 
@@ -320,8 +332,9 @@ void TorrentControl::unpause()
 void TorrentControl::start()
 {
     // do not start running torrents or when there is a job running
-    if (stats.running || job_queue->runningJobs())
+    if (stats.running || job_queue->runningJobs()) {
         return;
+    }
 
     if (stats.running && stats.paused) {
         unpause();
@@ -335,8 +348,9 @@ void TorrentControl::start()
     try {
         bool ret = true;
         Q_EMIT aboutToBeStarted(this, ret);
-        if (!ret)
+        if (!ret) {
             return;
+        }
     } catch (Error &err) {
         // something went wrong when files were recreated, set error and rethrow
         onIOError(err.toString());
@@ -353,8 +367,9 @@ void TorrentControl::start()
     istats.time_started_ul = istats.time_started_dl = QDateTime::currentDateTime();
 
     if (prealloc) {
-        if (preallocate())
+        if (preallocate()) {
             return;
+        }
     }
 
     continueStart();
@@ -390,26 +405,30 @@ void TorrentControl::continueStart()
 void TorrentControl::updateRunningTimes()
 {
     QDateTime now = QDateTime::currentDateTime();
-    if (!stats.completed)
+    if (!stats.completed) {
         istats.running_time_dl += istats.time_started_dl.secsTo(now);
+    }
     istats.running_time_ul += istats.time_started_ul.secsTo(now);
     istats.time_started_ul = istats.time_started_dl = now;
 }
 
 void TorrentControl::stop(WaitJob *wjob)
 {
-    if (!stats.paused)
+    if (!stats.paused) {
         updateRunningTimes();
+    }
 
     // stop preallocation
-    if (job_queue->currentJob() && job_queue->currentJob()->torrentStatus() == ALLOCATING_DISKSPACE)
+    if (job_queue->currentJob() && job_queue->currentJob()->torrentStatus() == ALLOCATING_DISKSPACE) {
         job_queue->currentJob()->kill(false);
+    }
 
     if (stats.running) {
         psman->stop(wjob);
 
-        if (tmon)
+        if (tmon) {
             tmon->stopped();
+        }
 
         try {
             downloader->saveDownloads(tordir + "current_chunks"_L1);
@@ -443,8 +462,9 @@ void TorrentControl::setMonitor(MonitorInterface *tmo)
     downloader->setMonitor(tmon);
     if (tmon) {
         const QList<Peer *> ppl = pman->getPeers();
-        for (Peer *peer : ppl)
+        for (Peer *peer : ppl) {
             tmon->peerAdded(peer);
+        }
     }
 
     tor->setMonitor(tmon);
@@ -470,8 +490,9 @@ void TorrentControl::init(QueueManagerInterface *qman, const QByteArray &data, c
     // copy data into torrent file
     QString tor_copy = tordir + "torrent"_L1;
     QFile fptr(tor_copy);
-    if (!fptr.open(QIODevice::WriteOnly))
+    if (!fptr.open(QIODevice::WriteOnly)) {
         throw Error(i18n("Unable to create %1: %2", tor_copy, fptr.errorString()));
+    }
 
     fptr.write(data.data(), data.size());
 }
@@ -497,12 +518,14 @@ void TorrentControl::setupDirs(const QString &tmpdir, const QString &ddir)
 {
     tordir = tmpdir;
 
-    if (!tordir.endsWith(DirSeparator()))
+    if (!tordir.endsWith(DirSeparator())) {
         tordir += DirSeparator();
+    }
 
     outputdir = ddir.trimmed();
-    if (outputdir.length() > 0 && !outputdir.endsWith(DirSeparator()))
+    if (outputdir.length() > 0 && !outputdir.endsWith(DirSeparator())) {
         outputdir += DirSeparator();
+    }
 
     if (!bt::Exists(tordir)) {
         bt::MakeDir(tordir);
@@ -519,19 +542,22 @@ void TorrentControl::setupStats()
     stats.priv_torrent = tor->isPrivate();
 
     // check the stats file for the custom_output_name variable
-    if (!stats_file)
+    if (!stats_file) {
         stats_file = std::make_unique<StatsFile>(tordir + "stats"_L1);
+    }
 
     if (stats_file->hasKey(u"CUSTOM_OUTPUT_NAME"_s) && stats_file->readULong(u"CUSTOM_OUTPUT_NAME"_s) == 1) {
         istats.custom_output_name = true;
     }
 
-    if (stats.time_added.isNull())
+    if (stats.time_added.isNull()) {
         stats.time_added = QDateTime::currentDateTime();
+    }
 
     // load outputdir if outputdir is null
-    if (outputdir.isNull() || outputdir.length() == 0)
+    if (outputdir.isNull() || outputdir.length() == 0) {
         loadOutputDir();
+    }
 }
 
 void TorrentControl::setupData()
@@ -544,8 +570,9 @@ void TorrentControl::setupData()
     // Create chunkmanager, load the index file if it exists
     // else create all the necesarry files
     cman = std::make_unique<ChunkManager>(*tor, tordir, outputdir, istats.custom_output_name, cache_factory.get());
-    if (bt::Exists(tordir + "index"_L1))
+    if (bt::Exists(tordir + "index"_L1)) {
         cman->loadIndexFile();
+    }
 
     connect(cman.get(), &ChunkManager::updateStats, this, &TorrentControl::updateStats);
     updateStats();
@@ -625,42 +652,47 @@ void TorrentControl::onNewPeer(Peer *p)
         // Only send which chunks we have when we are not superseeding
         if (p->getStats().fast_extensions) {
             const BitSet &bs = cman->getBitSet();
-            if (bs.allOn())
+            if (bs.allOn()) {
                 p->sendHaveAll();
-            else if (bs.numOnBits() == 0)
+            } else if (bs.numOnBits() == 0) {
                 p->sendHaveNone();
-            else
+            } else {
                 p->sendBitSet(bs);
+            }
         } else {
             p->sendBitSet(cman->getBitSet());
         }
     }
 
-    if (!stats.completed && !stats.paused)
+    if (!stats.completed && !stats.paused) {
         p->sendInterested();
+    }
 
     if (!stats.priv_torrent) {
-        if (p->isDHTSupported())
+        if (p->isDHTSupported()) {
             p->sendPort(Globals::instance().getDHT().getPort());
-        else
+        } else {
             // WORKAROUND so we can contact µTorrent's DHT
             // They do not properly support the standard and do not turn on
             // the DHT bit in the handshake, so we just ping each peer by default.
             p->emitPortPacket();
+        }
     }
 
     // set group ID's for traffic shaping
     p->setGroupIDs(upload_gid, download_gid);
     downloader->addPieceDownloader(p->getPeerDownloader());
-    if (tmon)
+    if (tmon) {
         tmon->peerAdded(p);
+    }
 }
 
 void TorrentControl::onPeerRemoved(Peer *p)
 {
     downloader->removePieceDownloader(p->getPeerDownloader());
-    if (tmon)
+    if (tmon) {
         tmon->peerRemoved(p);
+    }
 }
 
 void TorrentControl::doChoking()
@@ -696,8 +728,9 @@ bool TorrentControl::changeOutputDir(const QString &ndir, ChangeOutputOptions fl
 {
     // check if torrent is running and stop it before moving data
     QString new_dir = ndir;
-    if (!new_dir.endsWith(bt::DirSeparator()))
+    if (!new_dir.endsWith(bt::DirSeparator())) {
         new_dir += bt::DirSeparator();
+    }
 
     try {
         QString nd;
@@ -716,10 +749,11 @@ bool TorrentControl::changeOutputDir(const QString &ndir, ChangeOutputOptions fl
             move_data_files_destination_path = nd;
             Job *j = nullptr;
             if (flags & bt::TorrentInterface::MOVE_FILES) {
-                if (stats.multi_file_torrent)
+                if (stats.multi_file_torrent) {
                     j = cman->moveDataFiles(nd);
-                else
+                } else {
                     j = cman->moveDataFiles(new_dir);
+                }
             }
 
             if (j) {
@@ -744,8 +778,9 @@ bool TorrentControl::changeOutputDir(const QString &ndir, ChangeOutputOptions fl
 void TorrentControl::moveDataFilesFinished(KJob *kj)
 {
     const auto job = static_cast<bt::Job *>(kj);
-    if (job)
+    if (job) {
         cman->moveDataFilesFinished(job);
+    }
 
     if (!job || (job && !job->error())) {
         cman->changeOutputPath(move_data_files_destination_path);
@@ -778,8 +813,9 @@ bool TorrentControl::moveTorrentFiles(const QMap<TorrentFileInterface *, QString
 
 void TorrentControl::moveDataFilesWithMapFinished(KJob *j)
 {
-    if (!j)
+    if (!j) {
         return;
+    }
 
     const auto job = static_cast<MoveDataFilesJob *>(j);
     cman->moveDataFilesFinished(job->fileMap(), job);
@@ -800,86 +836,96 @@ void TorrentControl::rollback()
 void TorrentControl::updateStatus()
 {
     TorrentStatus old = stats.status;
-    if (stats.stopped_by_error)
+    if (stats.stopped_by_error) {
         stats.status = ERROR;
-    else if (job_queue->currentJob() && job_queue->currentJob()->torrentStatus() != INVALID_STATUS)
+    } else if (job_queue->currentJob() && job_queue->currentJob()->torrentStatus() != INVALID_STATUS) {
         stats.status = job_queue->currentJob()->torrentStatus();
-    else if (stats.queued)
+    } else if (stats.queued) {
         stats.status = QUEUED;
-    else if (stats.completed && (overMaxRatio() || overMaxSeedTime()))
+    } else if (stats.completed && (overMaxRatio() || overMaxSeedTime())) {
         stats.status = SEEDING_COMPLETE;
-    else if (!stats.running && stats.completed)
+    } else if (!stats.running && stats.completed) {
         stats.status = DOWNLOAD_COMPLETE;
-    else if (!stats.started)
+    } else if (!stats.started) {
         stats.status = NOT_STARTED;
-    else if (!stats.running)
+    } else if (!stats.running) {
         stats.status = STOPPED;
-    else if (stats.running && stats.paused)
+    } else if (stats.running && stats.paused) {
         stats.status = PAUSED;
-    else if (stats.running && stats.completed)
+    } else if (stats.running && stats.completed) {
         stats.status = stats.superseeding ? SUPERSEEDING : SEEDING;
-    else if (stats.running)
+    } else if (stats.running) {
         // protocol messages are also included in speed calculation, so lets not compare with 0
         stats.status = downloader->downloadRate() > 100 ? DOWNLOADING : STALLED;
+    }
 
-    if (old != stats.status)
+    if (old != stats.status) {
         Q_EMIT statusChanged(this);
+    }
 }
 
 const BitSet &TorrentControl::downloadedChunksBitSet() const
 {
-    if (cman)
+    if (cman) {
         return cman->getBitSet();
-    else
+    } else {
         return BitSet::null;
+    }
 }
 
 const BitSet &TorrentControl::availableChunksBitSet() const
 {
-    if (!pman)
+    if (!pman) {
         return BitSet::null;
-    else
+    } else {
         return pman->getAvailableChunksBitSet();
+    }
 }
 
 const BitSet &TorrentControl::excludedChunksBitSet() const
 {
-    if (!cman)
+    if (!cman) {
         return BitSet::null;
-    else
+    } else {
         return cman->getExcludedBitSet();
+    }
 }
 
 const BitSet &TorrentControl::onlySeedChunksBitSet() const
 {
-    if (!cman)
+    if (!cman) {
         return BitSet::null;
-    else
+    } else {
         return cman->getOnlySeedBitSet();
+    }
 }
 
 void TorrentControl::saveStats()
 {
-    if (loading_stats) // don't save while we are loading
+    if (loading_stats) { // don't save while we are loading
         return;
+    }
 
-    if (!stats_file)
+    if (!stats_file) {
         stats_file = std::make_unique<StatsFile>(tordir + "stats"_L1);
+    }
 
     stats_file->write(u"OUTPUTDIR"_s, cman->getDataDir());
     stats_file->write(u"COMPLETEDDIR"_s, completed_dir);
 
-    if (cman->getDataDir() != outputdir)
+    if (cman->getDataDir() != outputdir) {
         outputdir = cman->getDataDir();
+    }
 
     stats_file->write(u"UPLOADED"_s, QString::number(uploader->bytesUploaded()));
 
     if (stats.running) {
         QDateTime now = QDateTime::currentDateTime();
-        if (!stats.completed)
+        if (!stats.completed) {
             stats_file->write(u"RUNNING_TIME_DL"_s, QString::number(istats.running_time_dl + istats.time_started_dl.secsTo(now)));
-        else
+        } else {
             stats_file->write(u"RUNNING_TIME_DL"_s, QString::number(istats.running_time_dl));
+        }
         stats_file->write(u"RUNNING_TIME_UL"_s, QString::number(istats.running_time_ul + istats.time_started_ul.secsTo(now)));
     } else {
         stats_file->write(u"RUNNING_TIME_DL"_s, QString::number(istats.running_time_dl));
@@ -908,8 +954,9 @@ void TorrentControl::saveStats()
     stats_file->write(u"DOWNLOAD_LIMIT"_s, QString::number(download_limit));
     stats_file->write(u"ASSURED_UPLOAD_SPEED"_s, QString::number(assured_upload_speed));
     stats_file->write(u"ASSURED_DOWNLOAD_SPEED"_s, QString::number(assured_download_speed));
-    if (!user_modified_name.isEmpty())
+    if (!user_modified_name.isEmpty()) {
         stats_file->write(u"USER_MODIFIED_NAME"_s, user_modified_name);
+    }
     stats_file->write(u"DISPLAY_NAME"_s, display_name);
     stats_file->write(u"URL"_s, url.toDisplayString());
 
@@ -928,8 +975,9 @@ void TorrentControl::loadStats()
     }
 
     RecursiveEntryGuard guard(&loading_stats);
-    if (!stats_file)
+    if (!stats_file) {
         stats_file = std::make_unique<StatsFile>(tordir + "stats"_L1);
+    }
 
     Uint64 val = stats_file->readUint64(u"UPLOADED"_s);
     // stats.session_bytes_uploaded will be calculated based upon prev_bytes_ul
@@ -942,8 +990,9 @@ void TorrentControl::loadStats()
     istats.running_time_ul = stats_file->readULong(u"RUNNING_TIME_UL"_s);
     // make sure runtime ul is always equal or largen then running time dl
     // in case something got corrupted
-    if (istats.running_time_ul < istats.running_time_dl)
+    if (istats.running_time_ul < istats.running_time_dl) {
         istats.running_time_ul = istats.running_time_dl;
+    }
 
     outputdir = stats_file->readString(u"OUTPUTDIR"_s).trimmed();
     if (stats_file->hasKey(u"CUSTOM_OUTPUT_NAME"_s) && stats_file->readULong(u"CUSTOM_OUTPUT_NAME"_s) == 1) {
@@ -952,15 +1001,18 @@ void TorrentControl::loadStats()
 
     if (stats_file->hasKey(u"COMPLETEDDIR"_s)) {
         completed_dir = stats_file->readString(u"COMPLETEDDIR"_s);
-        if (completed_dir == outputdir)
+        if (completed_dir == outputdir) {
             completed_dir = QString();
+        }
     }
 
-    if (stats_file->hasKey(u"USER_MODIFIED_NAME"_s))
+    if (stats_file->hasKey(u"USER_MODIFIED_NAME"_s)) {
         user_modified_name = stats_file->readString(u"USER_MODIFIED_NAME"_s);
+    }
 
-    if (stats_file->hasKey(u"DISPLAY_NAME"_s))
+    if (stats_file->hasKey(u"DISPLAY_NAME"_s)) {
         display_name = stats_file->readString(u"DISPLAY_NAME"_s);
+    }
 
     istats.priority = stats_file->readInt(u"PRIORITY"_s);
     stats.autostart = stats_file->readBoolean(u"AUTOSTART"_s);
@@ -970,18 +1022,21 @@ void TorrentControl::loadStats()
     stats.qm_can_start = stats_file->readBoolean(u"QM_CAN_START"_s);
     stats.auto_stopped = stats_file->readBoolean(u"AUTO_STOPPED"_s);
 
-    if (stats_file->hasKey(u"RESTART_DISK_PREALLOCATION"_s))
+    if (stats_file->hasKey(u"RESTART_DISK_PREALLOCATION"_s)) {
         prealloc = stats_file->readString(u"RESTART_DISK_PREALLOCATION"_s) == '1'_L1;
+    }
 
     if (!stats.priv_torrent) {
-        if (stats_file->hasKey(u"DHT"_s))
+        if (stats_file->hasKey(u"DHT"_s)) {
             istats.dht_on = stats_file->readBoolean(u"DHT"_s);
-        else
+        } else {
             istats.dht_on = true;
+        }
 
         setFeatureEnabled(DHT_FEATURE, istats.dht_on);
-        if (stats_file->hasKey(u"UT_PEX"_s))
+        if (stats_file->hasKey(u"UT_PEX"_s)) {
             setFeatureEnabled(UT_PEX_FEATURE, stats_file->readBoolean(u"UT_PEX"_s));
+        }
     }
 
     Uint32 aup = stats_file->readInt(u"ASSURED_UPLOAD_SPEED"_s);
@@ -994,10 +1049,11 @@ void TorrentControl::loadStats()
 
     url = QUrl(stats_file->readString(u"URL"_s));
 
-    if (stats_file->hasKey(u"TIME_ADDED"_s))
+    if (stats_file->hasKey(u"TIME_ADDED"_s)) {
         stats.time_added.setSecsSinceEpoch(stats_file->readULong(u"TIME_ADDED"_s));
-    else
+    } else {
         stats.time_added = QDateTime::currentDateTime();
+    }
 
     if (stats_file->hasKey(u"LAST_DOWNLOAD_ACTIVITY"_s)) {
         stats.last_download_activity_time = stats_file->readULong(u"LAST_DOWNLOAD_ACTIVITY"_s);
@@ -1017,11 +1073,13 @@ void TorrentControl::loadStats()
 
 void TorrentControl::loadOutputDir()
 {
-    if (!stats_file)
+    if (!stats_file) {
         stats_file = std::make_unique<StatsFile>(tordir + "stats"_L1);
+    }
 
-    if (!stats_file->hasKey(u"OUTPUTDIR"_s))
+    if (!stats_file->hasKey(u"OUTPUTDIR"_s)) {
         return;
+    }
 
     outputdir = stats_file->readString(u"OUTPUTDIR"_s).trimmed();
     if (stats_file->hasKey(u"CUSTOM_OUTPUT_NAME"_s) && stats_file->readULong(u"CUSTOM_OUTPUT_NAME"_s) == 1) {
@@ -1031,17 +1089,20 @@ void TorrentControl::loadOutputDir()
 
 bool TorrentControl::readyForPreview() const
 {
-    if (tor->isMultiFile() || !tor->isMultimedia())
+    if (tor->isMultiFile() || !tor->isMultimedia()) {
         return false;
+    }
 
     Uint32 preview_range = cman->previewChunkRangeSize();
-    if (preview_range == 0)
+    if (preview_range == 0) {
         return false;
+    }
 
     const BitSet &bs = downloadedChunksBitSet();
     for (Uint32 i = 0; i < qMin(preview_range, bs.getNumBits()); i++) {
-        if (!bs.get(i))
+        if (!bs.get(i)) {
             return false;
+        }
     }
     return true;
 }
@@ -1068,15 +1129,17 @@ void TorrentControl::updateStats()
     stats.num_chunks_left = cman ? cman->chunksLeft() : 0;
     stats.total_bytes_to_download = (tor && cman) ? tor->getTotalSize() - cman->bytesExcluded() : 0;
 
-    if (stats.bytes_downloaded >= istats.prev_bytes_dl)
+    if (stats.bytes_downloaded >= istats.prev_bytes_dl) {
         stats.session_bytes_downloaded = stats.bytes_downloaded - istats.prev_bytes_dl;
-    else
+    } else {
         stats.session_bytes_downloaded = 0;
+    }
 
-    if (stats.bytes_uploaded >= istats.prev_bytes_ul)
+    if (stats.bytes_uploaded >= istats.prev_bytes_ul) {
         stats.session_bytes_uploaded = (stats.bytes_uploaded - istats.prev_bytes_ul) + istats.session_bytes_uploaded;
-    else
+    } else {
         stats.session_bytes_uploaded = istats.session_bytes_uploaded;
+    }
 
     getSeederInfo(stats.seeders_total, stats.seeders_connected_to);
     getLeecherInfo(stats.leechers_total, stats.leechers_connected_to);
@@ -1100,73 +1163,83 @@ void TorrentControl::getSeederInfo(Uint32 &total, Uint32 &connected_to) const
 {
     total = 0;
     connected_to = 0;
-    if (!pman || !psman)
+    if (!pman || !psman) {
         return;
+    }
 
     connected_to = pman->getNumConnectedSeeders();
     total = psman->getNumSeeders();
-    if (total == 0)
+    if (total == 0) {
         total = connected_to;
+    }
 }
 
 void TorrentControl::getLeecherInfo(Uint32 &total, Uint32 &connected_to) const
 {
     total = 0;
     connected_to = 0;
-    if (!pman || !psman)
+    if (!pman || !psman) {
         return;
+    }
 
     connected_to = pman->getNumConnectedLeechers();
     total = psman->getNumLeechers();
-    if (total == 0)
+    if (total == 0) {
         total = connected_to;
+    }
 }
 
 Uint32 TorrentControl::getRunningTimeDL() const
 {
-    if (!stats.running || stats.completed || stats.paused)
+    if (!stats.running || stats.completed || stats.paused) {
         return istats.running_time_dl;
-    else
+    } else {
         return istats.running_time_dl + istats.time_started_dl.secsTo(QDateTime::currentDateTime());
+    }
 }
 
 Uint32 TorrentControl::getRunningTimeUL() const
 {
-    if (!stats.running || stats.paused)
+    if (!stats.running || stats.paused) {
         return istats.running_time_ul;
-    else
+    } else {
         return istats.running_time_ul + istats.time_started_ul.secsTo(QDateTime::currentDateTime());
+    }
 }
 
 Uint32 TorrentControl::getNumFiles() const
 {
-    if (tor && tor->isMultiFile())
+    if (tor && tor->isMultiFile()) {
         return tor->getNumFiles();
-    else
+    } else {
         return 0;
+    }
 }
 
 TorrentFileInterface &TorrentControl::getTorrentFile(Uint32 index)
 {
-    if (tor)
+    if (tor) {
         return tor->getFile(index);
-    else
+    } else {
         return TorrentFile::null;
+    }
 }
 
 const TorrentFileInterface &TorrentControl::getTorrentFile(Uint32 index) const
 {
-    if (tor)
+    if (tor) {
         return tor->getFile(index);
-    else
+    } else {
         return TorrentFile::null;
+    }
 }
 
 void TorrentControl::setPriority(int p)
 {
     istats.priority = p;
-    if (!stats_file)
+    if (!stats_file) {
         stats_file = std::make_unique<StatsFile>(tordir + "stats"_L1);
+    }
 
     stats_file->write(u"PRIORITY"_s, QString::number(istats.priority));
     updateStatus();
@@ -1175,10 +1248,12 @@ void TorrentControl::setPriority(int p)
 void TorrentControl::setMaxShareRatio(float ratio)
 {
     if (ratio == 1.00f) {
-        if (stats.max_share_ratio != ratio)
+        if (stats.max_share_ratio != ratio) {
             stats.max_share_ratio = ratio;
-    } else
+        }
+    } else {
         stats.max_share_ratio = ratio;
+    }
 
     saveStats();
     Q_EMIT maxRatioChanged(this);
@@ -1200,8 +1275,9 @@ bool TorrentControl::overMaxSeedTime()
     if (stats.completed && stats.max_seed_time > 0) {
         Uint32 dl = getRunningTimeDL();
         Uint32 ul = getRunningTimeUL();
-        if ((ul - dl) / 3600.0f > stats.max_seed_time)
+        if ((ul - dl) / 3600.0f > stats.max_seed_time) {
             return true;
+        }
     }
 
     return false;
@@ -1246,8 +1322,9 @@ void TorrentControl::afterDataCheck(DataCheckerJob *job, const BitSet &result)
             Uint64 downloaded = stats.bytes_downloaded;
             downloader->recalcDownloaded();
             updateStats();
-            if (stats.bytes_downloaded > downloaded)
+            if (stats.bytes_downloaded > downloaded) {
                 stats.imported_bytes = stats.bytes_downloaded - downloaded;
+            }
 
             stats.completed = cman->completed();
             pman->setPartialSeed(!cman->haveAllChunks() && cman->chunksLeft() == 0);
@@ -1266,8 +1343,9 @@ void TorrentControl::afterDataCheck(DataCheckerJob *job, const BitSet &result)
         // queue might need to be redone
         // use QTimer because we need to ensure this is run after the JobQueue removes the job
         QTimer::singleShot(0, this, SIGNAL(updateQueue()));
-        if (stats.completed)
+        if (stats.completed) {
             QTimer::singleShot(0, this, &TorrentControl::emitFinished);
+        }
     }
 }
 
@@ -1281,8 +1359,9 @@ void TorrentControl::markExistingFilesAsDownloaded()
     cman->markExistingFilesAsDownloaded();
     downloader->recalcDownloaded();
     stats.imported_bytes = downloader->bytesDownloaded();
-    if (cman->haveAllChunks())
+    if (cman->haveAllChunks()) {
         stats.completed = true;
+    }
 
     updateStats();
 }
@@ -1344,12 +1423,14 @@ const DHTNode &TorrentControl::getDHTNode(Uint32 i) const
 
 void TorrentControl::deleteDataFiles()
 {
-    if (!cman)
+    if (!cman) {
         return;
+    }
 
     Job *job = cman->deleteDataFiles();
-    if (job)
+    if (job) {
         job->start(); // don't use queue, this is only done when removing the torrent
+    }
 }
 
 const bt::SHA1Hash &TorrentControl::getInfoHash() const
@@ -1359,22 +1440,25 @@ const bt::SHA1Hash &TorrentControl::getInfoHash() const
 
 void TorrentControl::addPeerSource(PeerSource *ps)
 {
-    if (psman)
+    if (psman) {
         psman->addPeerSource(ps);
+    }
 }
 
 void TorrentControl::removePeerSource(PeerSource *ps)
 {
-    if (psman)
+    if (psman) {
         psman->removePeerSource(ps);
+    }
 }
 
 void TorrentControl::corrupted(Uint32 chunk)
 {
     // make sure we will redownload the chunk
     downloader->corrupted(chunk);
-    if (stats.completed)
+    if (stats.completed) {
         stats.completed = false;
+    }
 
     // emit signal to show a systray message
     stats.num_corrupted_chunks++;
@@ -1454,8 +1538,9 @@ bool TorrentControl::checkDiskSpace(bool emit_sig)
             Out(SYS_GEN | LOG_DEBUG) << "Error : " << err.toString() << endl;
         }
         Uint64 remaining = 0;
-        if (downloaded <= bytes_to_download)
+        if (downloaded <= bytes_to_download) {
             remaining = bytes_to_download - downloaded;
+        }
 
         Out(SYS_GEN | LOG_DEBUG) << "Remaining " << BytesToString(remaining) << endl;
         if (remaining > bytes_free) {
@@ -1562,8 +1647,9 @@ void TorrentControl::preallocFinished(const QString &error, bool completed)
     Out(SYS_GEN | LOG_DEBUG) << "preallocFinished " << error << " " << completed << endl;
     if (!error.isEmpty() || !completed) {
         // upon error just call onIOError and return
-        if (!error.isEmpty())
+        if (!error.isEmpty()) {
             onIOError(error);
+        }
         prealloc = true; // still need to do preallocation
     } else {
         // continue the startup of the torrent
@@ -1608,8 +1694,9 @@ bool TorrentControl::addWebSeed(const QUrl &url)
 bool TorrentControl::removeWebSeed(const QUrl &url)
 {
     bool ret = downloader->removeWebSeed(url);
-    if (ret)
+    if (ret) {
         downloader->saveWebSeeds(tordir + "webseeds"_L1);
+    }
     return ret;
 }
 
@@ -1647,8 +1734,9 @@ void TorrentControl::downloaded(Uint32 chunk)
 void TorrentControl::moveToCompletedDir()
 {
     QString outdir = completed_dir;
-    if (!outdir.endsWith(bt::DirSeparator()))
+    if (!outdir.endsWith(bt::DirSeparator())) {
         outdir += bt::DirSeparator();
+    }
 
     changeOutputDir(outdir, bt::TorrentInterface::MOVE_FILES);
 }
@@ -1684,8 +1772,9 @@ void TorrentControl::allJobsDone()
 
 void TorrentControl::setChunkSelector(std::unique_ptr<ChunkSelectorInterface> csel)
 {
-    if (!downloader)
+    if (!downloader) {
         return;
+    }
 
     downloader->setChunkSelector(std::move(csel));
 }
@@ -1714,8 +1803,9 @@ bool TorrentControl::preallocate()
 
 void TorrentControl::downloadPriorityChanged(TorrentFile *tf, Priority newpriority, Priority oldpriority)
 {
-    if (cman)
+    if (cman) {
         cman->downloadPriorityChanged(tf, newpriority, oldpriority);
+    }
 
     // If a file has been reenabled, preallocate it and update stats
     if (oldpriority == EXCLUDED) {
@@ -1730,13 +1820,15 @@ void TorrentControl::downloadPriorityChanged(TorrentFile *tf, Priority newpriori
 
 void TorrentControl::setSuperSeeding(bool on)
 {
-    if (stats.superseeding == on)
+    if (stats.superseeding == on) {
         return;
+    }
 
     stats.superseeding = on;
     if (on) {
-        if (stats.running && stats.completed)
+        if (stats.running && stats.completed) {
             pman->setSuperSeeding(true, cman->getBitSet());
+        }
     } else {
         pman->setSuperSeeding(false, cman->getBitSet());
     }
@@ -1746,21 +1838,25 @@ void TorrentControl::setSuperSeeding(bool on)
 
 TorrentFileStream::Ptr TorrentControl::createTorrentFileStream(Uint32 index, bool streaming_mode, QObject *parent)
 {
-    if (streaming_mode && !stream.toStrongRef().isNull())
+    if (streaming_mode && !stream.toStrongRef().isNull()) {
         return TorrentFileStream::Ptr(nullptr);
+    }
 
     if (stats.multi_file_torrent) {
-        if (index >= tor->getNumFiles())
+        if (index >= tor->getNumFiles()) {
             return TorrentFileStream::Ptr(nullptr);
+        }
 
         TorrentFileStream::Ptr ptr(new TorrentFileStream(this, index, cman.get(), streaming_mode, parent));
-        if (streaming_mode)
+        if (streaming_mode) {
             stream = ptr;
+        }
         return ptr;
     } else {
         TorrentFileStream::Ptr ptr(new TorrentFileStream(this, cman.get(), streaming_mode, parent));
-        if (streaming_mode)
+        if (streaming_mode) {
             stream = ptr;
+        }
         return ptr;
     }
 }

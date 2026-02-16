@@ -45,8 +45,9 @@ AuthenticateBase::~AuthenticateBase()
 void AuthenticateBase::sendHandshake(const SHA1Hash &info_hash, const PeerID &our_peer_id)
 {
     //  Out() << "AuthenticateBase::sendHandshake" << endl;
-    if (!sock)
+    if (!sock) {
         return;
+    }
 
     Uint8 hs[68];
     makeHandshake(hs, info_hash, our_peer_id);
@@ -59,8 +60,9 @@ void AuthenticateBase::makeHandshake(Uint8 *hs, const SHA1Hash &info_hash, const
     hs[0] = 19;
     memcpy(hs + 1, pstr, 19);
     memset(hs + 20, 0x00, 8);
-    if (Globals::instance().getDHT().isRunning())
+    if (Globals::instance().getDHT().isRunning()) {
         hs[27] |= 0x01; // DHT support
+    }
     hs[25] |= 0x10; // extension protocol
     hs[27] |= 0x04; // fast extensions
     memcpy(hs + 28, info_hash.getData(), 20);
@@ -76,8 +78,9 @@ void AuthenticateBase::onReadyRead()
         return;
     }
 
-    if (!sock || finished || ba < 48)
+    if (!sock || finished || ba < 48) {
         return;
+    }
 
     // first see if we already have some bytes from the handshake
     if (bytes_of_handshake_received == 0) {
@@ -85,8 +88,9 @@ void AuthenticateBase::onReadyRead()
             // read partial
             sock->readData(handshake, ba);
             bytes_of_handshake_received += ba;
-            if (ba >= 27 && handshake[27] & 0x01)
+            if (ba >= 27 && handshake[27] & 0x01) {
                 ext_support |= bt::DHT_SUPPORT;
+            }
             // tell subclasses of a partial handshake
             handshakeReceived(false);
             return;
@@ -111,29 +115,34 @@ void AuthenticateBase::onReadyRead()
         return;
     }
 
-    if (Globals::instance().getDHT().isRunning() && (handshake[27] & 0x01))
+    if (Globals::instance().getDHT().isRunning() && (handshake[27] & 0x01)) {
         ext_support |= bt::DHT_SUPPORT;
+    }
 
-    if (handshake[27] & 0x04)
+    if (handshake[27] & 0x04) {
         ext_support |= bt::FAST_EXT_SUPPORT;
+    }
 
-    if (handshake[25] & 0x10)
+    if (handshake[25] & 0x10) {
         ext_support |= bt::EXT_PROT_SUPPORT;
+    }
 
     handshakeReceived(true);
 }
 
 void AuthenticateBase::onError(int)
 {
-    if (finished)
+    if (finished) {
         return;
+    }
     onFinish(false);
 }
 
 void AuthenticateBase::onTimeout()
 {
-    if (finished)
+    if (finished) {
         return;
+    }
 
     Out(SYS_CON | LOG_DEBUG) << "Timeout occurred" << endl;
     onFinish(false);

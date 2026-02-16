@@ -18,8 +18,9 @@ Buffer::Buffer(Data data, bt::Uint32 fill, QWeakPointer<BufferPool> pool)
 Buffer::~Buffer()
 {
     QSharedPointer<BufferPool> ptr = pool.toStrongRef();
-    if (ptr)
+    if (ptr) {
         ptr->release(std::move(data));
+    }
 }
 
 BufferPool::BufferPool()

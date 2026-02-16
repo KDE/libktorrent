@@ -97,8 +97,9 @@ ConnectionLimit &PeerManager::connectionLimits()
 
 void PeerManager::pause()
 {
-    if (d->paused)
+    if (d->paused) {
         return;
+    }
 
     for (const auto &[p_id, p] : std::as_const(d->peer_map)) {
         p->pause();
@@ -108,13 +109,15 @@ void PeerManager::pause()
 
 void PeerManager::unpause()
 {
-    if (!d->paused)
+    if (!d->paused) {
         return;
+    }
 
     for (const auto &[p_id, p] : std::as_const(d->peer_map)) {
         p->unpause();
-        if (p->hasWantedChunks(d->wanted_chunks)) // send interested when it has wanted chunks
+        if (p->hasWantedChunks(d->wanted_chunks)) { // send interested when it has wanted chunks
             p->sendInterested();
+        }
     }
     d->paused = false;
 }
@@ -155,8 +158,9 @@ void PeerManager::addPotentialPeer(const net::Address &addr, bool local)
 void PeerManager::killSeeders()
 {
     for (const auto &[peer_id, peer] : std::as_const(d->peer_map)) {
-        if (peer->isSeeder())
+        if (peer->isSeeder()) {
             peer->kill();
+        }
     }
 }
 
@@ -164,8 +168,9 @@ void PeerManager::killUninterested()
 {
     QTime now = QTime::currentTime();
     for (const auto &[peer_id, peer] : std::as_const(d->peer_map)) {
-        if (!peer->isInterested() && (peer->getConnectTime().secsTo(now) > 30))
+        if (!peer->isInterested() && (peer->getConnectTime().secsTo(now) > 30)) {
             peer->kill();
+        }
     }
 }
 
@@ -179,24 +184,28 @@ void PeerManager::bitSetReceived(Peer *p, const BitSet &bs)
     bool interested = false;
     for (Uint32 i = 0; i < bs.getNumBits(); i++) {
         if (bs.get(i)) {
-            if (d->wanted_chunks.get(i))
+            if (d->wanted_chunks.get(i)) {
                 interested = true;
+            }
             d->available_chunks.set(i, true);
             d->cnt.inc(i);
         }
     }
 
-    if (interested && !d->paused)
+    if (interested && !d->paused) {
         p->sendInterested();
+    }
 
-    if (d->superseeder)
+    if (d->superseeder) {
         d->superseeder->bitset(p, bs);
+    }
 }
 
 void PeerManager::newConnection(std::unique_ptr<mse::EncryptedPacketSocket> sock, const PeerID &peer_id, Uint32 support)
 {
-    if (!d->started)
+    if (!d->started) {
         return;
+    }
 
     std::unique_ptr<ConnectionLimit::Token> token = climit.acquire(d->tor.getInfoHash());
     if (!token) {
@@ -204,15 +213,17 @@ void PeerManager::newConnection(std::unique_ptr<mse::EncryptedPacketSocket> sock
         token = climit.acquire(d->tor.getInfoHash());
     }
 
-    if (token)
+    if (token) {
         d->createPeer(std::move(sock), peer_id, support, false, std::move(token));
+    }
 }
 
 void PeerManager::peerAuthenticated(bt::Authenticate *auth, bt::PeerConnector::WPtr pcon, bool ok, std::unique_ptr<ConnectionLimit::Token> token)
 {
     if (d->started) {
-        if (ok && !connectedTo(auth->getPeerID()))
+        if (ok && !connectedTo(auth->getPeerID())) {
             d->createPeer(auth->takeSocket(), auth->getPeerID(), auth->supportedExtensions(), auth->isLocal(), std::move(token));
+        }
     }
 
     PeerConnector::Ptr ptr = pcon.toStrongRef();
@@ -221,12 +232,14 @@ void PeerManager::peerAuthenticated(bt::Authenticate *auth, bt::PeerConnector::W
 
 bool PeerManager::connectedTo(const PeerID &peer_id)
 {
-    if (!d->started)
+    if (!d->started) {
         return false;
+    }
 
     for (const auto &[p_id, p] : std::as_const(d->peer_map)) {
-        if (p->getPeerID() == peer_id)
+        if (p->getPeerID() == peer_id) {
             return true;
+        }
     }
     return false;
 }
@@ -240,8 +253,9 @@ void PeerManager::savePeerList(const QString &file)
 {
     // Lets save the entries line based
     QFile fptr(file);
-    if (!fptr.open(QIODevice::WriteOnly))
+    if (!fptr.open(QIODevice::WriteOnly)) {
         return;
+    }
 
     try {
         Out(SYS_GEN | LOG_DEBUG) << "Saving list of peers to " << file << endl;
@@ -267,21 +281,24 @@ void PeerManager::savePeerList(const QString &file)
 void PeerManager::loadPeerList(const QString &file)
 {
     QFile fptr(file);
-    if (!fptr.open(QIODevice::ReadOnly))
+    if (!fptr.open(QIODevice::ReadOnly)) {
         return;
+    }
 
     try {
         Out(SYS_GEN | LOG_DEBUG) << "Loading list of peers from " << file << endl;
 
         while (!fptr.atEnd()) {
             QStringList sl = QString::fromUtf8(fptr.readLine()).split(' '_L1);
-            if (sl.count() != 2)
+            if (sl.count() != 2) {
                 continue;
+            }
 
             bool ok = false;
             net::Address addr(sl[0], sl[1].toInt(&ok));
-            if (ok)
+            if (ok) {
                 addPotentialPeer(addr, false);
+            }
         }
     } catch (bt::Error &err) {
         Out(SYS_GEN | LOG_DEBUG) << "Error happened during saving of peer list : " << err.toString() << endl;
@@ -291,8 +308,9 @@ void PeerManager::loadPeerList(const QString &file)
 void PeerManager::start(bool superseed)
 {
     d->started = true;
-    if (superseed && !d->superseeder)
+    if (superseed && !d->superseeder) {
         d->superseeder.reset(new SuperSeeder(d->cnt.getNumChunks()));
+    }
 
     unpause();
     ServerInterface::addPeerManager(this);
@@ -312,17 +330,19 @@ void PeerManager::stop()
 Peer *PeerManager::findPeer(Uint32 peer_id)
 {
     PeerMap::iterator i = d->peer_map.find(peer_id);
-    if (i == d->peer_map.end())
+    if (i == d->peer_map.end()) {
         return nullptr;
-    else
+    } else {
         return i->second.get();
+    }
 }
 
 Peer *PeerManager::findPeer(PieceDownloader *pd)
 {
     for (const auto &[p_id, p] : std::as_const(d->peer_map)) {
-        if ((PieceDownloader *)p->getPeerDownloader() == pd)
+        if ((PieceDownloader *)p->getPeerDownloader() == pd) {
             return p.get();
+        }
     }
     return nullptr;
 }
@@ -341,14 +361,16 @@ void PeerManager::peerSourceReady(PeerSource *ps)
 {
     net::Address addr;
     bool local = false;
-    while (ps->takePeer(addr, local))
+    while (ps->takePeer(addr, local)) {
         addPotentialPeer(addr, local);
+    }
 }
 
 void PeerManager::pex(const QByteArray &arr, int ip_version)
 {
-    if (!d->pex_on)
+    if (!d->pex_on) {
         return;
+    }
 
     if (ip_version == 4) {
         Out(SYS_CON | LOG_NOTICE) << "PEX: found " << (arr.size() / 6) << " IPv4 peers" << endl;
@@ -369,11 +391,13 @@ void PeerManager::pex(const QByteArray &arr, int ip_version)
 
 void PeerManager::setPexEnabled(bool on)
 {
-    if (on && d->tor.isPrivate())
+    if (on && d->tor.isPrivate()) {
         return;
+    }
 
-    if (d->pex_on == on)
+    if (d->pex_on == on) {
         return;
+    }
 
     for (const auto &[p_id, p] : std::as_const(d->peer_map)) {
         if (!p->isKilled()) {
@@ -387,20 +411,23 @@ void PeerManager::setPexEnabled(bool on)
 
 void PeerManager::setGroupIDs(Uint32 up, Uint32 down)
 {
-    for (const auto &[p_id, p] : std::as_const(d->peer_map))
+    for (const auto &[p_id, p] : std::as_const(d->peer_map)) {
         p->setGroupIDs(up, down);
+    }
 }
 
 void PeerManager::portPacketReceived(const QString &ip, Uint16 port)
 {
-    if (Globals::instance().getDHT().isRunning() && !d->tor.isPrivate())
+    if (Globals::instance().getDHT().isRunning() && !d->tor.isPrivate()) {
         Globals::instance().getDHT().portReceived(ip, port);
+    }
 }
 
 void PeerManager::pieceReceived(const Piece &p)
 {
-    if (d->piece_handler)
+    if (d->piece_handler) {
         d->piece_handler->pieceReceived(p);
+    }
 }
 
 void PeerManager::setPieceHandler(PieceHandler *ph)
@@ -411,16 +438,18 @@ void PeerManager::setPieceHandler(PieceHandler *ph)
 void PeerManager::killStalePeers()
 {
     for (const auto &[p_id, p] : std::as_const(d->peer_map)) {
-        if (p->getDownloadRate() == 0 && p->getUploadRate() == 0)
+        if (p->getDownloadRate() == 0 && p->getUploadRate() == 0) {
             p->kill();
+        }
     }
 }
 
 void PeerManager::setSuperSeeding(bool on, const BitSet &chunks)
 {
     Q_UNUSED(chunks);
-    if ((d->superseeder && on) || (!d->superseeder && !on))
+    if ((d->superseeder && on) || (!d->superseeder && !on)) {
         return;
+    }
 
     d->superseeder.reset(on ? new SuperSeeder(d->cnt.getNumChunks()) : nullptr);
 
@@ -435,8 +464,9 @@ void PeerManager::setSuperSeeding(bool on, const BitSet &chunks)
 
 void PeerManager::sendHave(Uint32 index)
 {
-    if (d->superseeder)
+    if (d->superseeder) {
         return;
+    }
 
     for (const auto &[peer_id, peer] : std::as_const(d->peer_map)) {
         peer->sendHave(index);
@@ -452,8 +482,9 @@ Uint32 PeerManager::getNumConnectedLeechers() const
 {
     Uint32 cnt = 0;
     for (const auto &[peer_id, peer] : std::as_const(d->peer_map)) {
-        if (!peer->isSeeder())
+        if (!peer->isSeeder()) {
             cnt++;
+        }
     }
 
     return cnt;
@@ -463,8 +494,9 @@ Uint32 PeerManager::getNumConnectedSeeders() const
 {
     Uint32 cnt = 0;
     for (const auto &[peer_id, peer] : std::as_const(d->peer_map)) {
-        if (peer->isSeeder())
+        if (peer->isSeeder()) {
             cnt++;
+        }
     }
 
     return cnt;
@@ -572,8 +604,9 @@ PeerManager::Private::~Private()
 
 void PeerManager::Private::update()
 {
-    if (!started)
+    if (!started) {
         return;
+    }
 
     num_cleared = 0;
 
@@ -590,17 +623,19 @@ void PeerManager::Private::update()
             cnt.decBitSet(peer->getBitSet());
             updateAvailableChunks();
             Q_EMIT p->peerKilled(peer.get());
-            if (superseeder)
+            if (superseeder) {
                 superseeder->peerRemoved(peer.get());
+            }
             i = peer_map.erase(i);
             num_cleared++;
         } else {
             peer->update();
             if (wanted_changed) {
-                if (peer->hasWantedChunks(wanted_chunks))
+                if (peer->hasWantedChunks(wanted_chunks)) {
                     peer->sendInterested();
-                else
+                } else {
                     peer->sendNotInterested();
+                }
             }
             ++i;
         }
@@ -612,12 +647,14 @@ void PeerManager::Private::update()
 
 void PeerManager::Private::have(Peer *peer, Uint32 index)
 {
-    if (wanted_chunks.get(index) && !paused)
+    if (wanted_chunks.get(index) && !paused) {
         peer->sendInterested();
+    }
     available_chunks.set(index, true);
     cnt.inc(index);
-    if (superseeder)
+    if (superseeder) {
         superseeder->have(peer, index);
+    }
 }
 
 void PeerManager::Private::updateAvailableChunks()
@@ -654,16 +691,18 @@ void PeerManager::Private::createPeer(std::unique_ptr<mse::EncryptedPacketSocket
     bt::Uint16 port = ServerInterface::getPort();
     peer_ptr->sendExtProtHandshake(port, tor.getMetaData().size(), partial_seed);
 
-    if (superseeder)
+    if (superseeder) {
         superseeder->peerAdded(peer_ptr);
+    }
 }
 
 bool PeerManager::Private::connectedTo(const net::Address &addr) const
 {
     PeerMap::const_iterator i = peer_map.begin();
     while (i != peer_map.end()) {
-        if (i->second->getAddress() == addr)
+        if (i->second->getAddress() == addr) {
             return true;
+        }
         ++i;
     }
     return false;
@@ -671,12 +710,14 @@ bool PeerManager::Private::connectedTo(const net::Address &addr) const
 
 void PeerManager::Private::connectToPeers()
 {
-    if (paused || potential_peers.size() == 0 || (Uint32)connectors.size() > MAX_SIMULTANIOUS_AUTHS)
+    if (paused || potential_peers.size() == 0 || (Uint32)connectors.size() > MAX_SIMULTANIOUS_AUTHS) {
         return;
+    }
 
     while (!potential_peers.empty()) {
-        if ((Uint32)connectors.size() > MAX_SIMULTANIOUS_AUTHS)
+        if ((Uint32)connectors.size() > MAX_SIMULTANIOUS_AUTHS) {
             return;
+        }
 
         PPItr itr = potential_peers.begin();
 
@@ -684,8 +725,9 @@ void PeerManager::Private::connectToPeers()
 
         if (aman.allowed(itr->first) && !connectedTo(itr->first)) {
             std::unique_ptr<ConnectionLimit::Token> token = climit.acquire(tor.getInfoHash());
-            if (!token)
+            if (!token) {
                 break;
+            }
 
             PeerConnector::Ptr pcon(new PeerConnector(itr->first, itr->second, p, std::move(token)));
             pcon->setWeakPointer(PeerConnector::WPtr(pcon));

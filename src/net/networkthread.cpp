@@ -31,8 +31,9 @@ void NetworkThread::run()
 {
     running = true;
     prev_run_time = bt::Now();
-    while (running)
+    while (running) {
         update();
+    }
 }
 
 void NetworkThread::addGroup(Uint32 gid, Uint32 limit, Uint32 assured_rate)
@@ -51,8 +52,9 @@ void NetworkThread::addGroup(Uint32 gid, Uint32 limit, Uint32 assured_rate)
 void NetworkThread::removeGroup(Uint32 gid)
 {
     // make sure the 0 group is never erased
-    if (gid != 0)
+    if (gid != 0) {
         groups.erase(gid);
+    }
 }
 
 void NetworkThread::setGroupLimit(Uint32 gid, Uint32 limit)
@@ -83,21 +85,24 @@ Uint32 NetworkThread::doGroupsLimited(Uint32 num_ready, bt::TimeStamp now, Uint3
             Uint32 group_allowance = (Uint32)ceil(((double)g->numSockets() / num_ready) * allowance);
 
             // lets not do to much and make sure we don't pass 0 to the socket group (0 is unlimited)
-            if (group_allowance > allowance || group_allowance == 0)
+            if (group_allowance > allowance || group_allowance == 0) {
                 group_allowance = allowance;
+            }
 
             Uint32 ga = group_allowance;
 
-            if (!doGroup(g, ga, now))
+            if (!doGroup(g, ga, now)) {
                 g->clear(); // group is done, so clear it
-            else
+            } else {
                 num_still_ready += g->numSockets(); // keep track of the number of sockets which are still ready
+            }
 
             Uint32 done = group_allowance - ga;
-            if (allowance >= done)
+            if (allowance >= done) {
                 allowance -= done;
-            else
+            } else {
                 allowance = 0;
+            }
         }
         ++itr;
     }
@@ -143,8 +148,9 @@ void NetworkThread::doGroups(Uint32 num_ready, bt::TimeStamp now, bt::Uint32 lim
             if (g->numSockets() > 0 && g->getAssuredAllowance() > 0) {
                 // do assured stuff
                 Uint32 as = g->getAssuredAllowance();
-                if (as > allowance)
+                if (as > allowance) {
                     as = allowance; // make sure we do not do to much
+                }
 
                 Uint32 tmp = as;
                 doGroup(g, as, now);

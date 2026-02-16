@@ -55,8 +55,9 @@ Address::Address(const struct sockaddr_storage *ss)
             quint32 ip = ipv6[12] << 24 | ipv6[13] << 16 | ipv6[14] << 8 | ipv6[15];
             setAddress(ip);
         }
-    } else
+    } else {
         Out(SYS_GEN | LOG_DEBUG) << "Unknown address family" << endl;
+    }
 }
 
 Address::Address(const QString &host, Uint16 port)
@@ -112,16 +113,17 @@ bool Address::operator<(const net::Address &other) const
     } else if (other.ipVersion() == 4) {
         return toIPv4Address() == other.toIPv4Address() ? port_number < other.port_number : toIPv4Address() < other.toIPv4Address();
     } else { // IPv6
-        if (QHostAddress::operator==(other))
+        if (QHostAddress::operator==(other)) {
             return port_number < other.port_number;
-        else {
+        } else {
             Q_IPV6ADDR a = toIPv6Address();
             Q_IPV6ADDR b = other.toIPv6Address();
             for (int i = 0; i < 16; i++) {
-                if (a[i] < b[i])
+                if (a[i] < b[i]) {
                     return true;
-                else if (a[i] > b[i])
+                } else if (a[i] > b[i]) {
                     return false;
+                }
             }
             return false;
         }
@@ -156,9 +158,11 @@ Address &Address::operator=(const struct sockaddr_storage &ss)
 bool Address::isIPv4Mapped() const
 {
     Q_IPV6ADDR addr = toIPv6Address();
-    for (int i = 0; i < 10; i++)
-        if (addr[i] != 0)
+    for (int i = 0; i < 10; i++) {
+        if (addr[i] != 0) {
             return false;
+        }
+    }
 
     return addr[10] == 0xff && addr[11] == 0xff;
 }

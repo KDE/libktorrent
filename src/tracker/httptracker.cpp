@@ -83,10 +83,11 @@ void HTTPTracker::completed()
 
 void HTTPTracker::manualUpdate()
 {
-    if (!started)
+    if (!started) {
         start();
-    else
+    } else {
         doRequest();
+    }
 }
 
 void HTTPTracker::scrape()
@@ -106,8 +107,9 @@ void HTTPTracker::scrape()
 
     QString epq = scrape_url.query(QUrl::FullyEncoded);
     const SHA1Hash &info_hash = tds->infoHash();
-    if (epq.length())
+    if (epq.length()) {
         epq += '&'_L1;
+    }
     epq += QLatin1String("info_hash=") + info_hash.toURLString();
     scrape_url.setQuery(epq, QUrl::StrictMode);
 
@@ -181,30 +183,36 @@ void HTTPTracker::doRequest(WaitJob *wjob)
     query.addQueryItem(QStringLiteral("uploaded"), QString::number(bytesUploaded()));
     query.addQueryItem(QStringLiteral("downloaded"), QString::number(bytesDownloaded()));
 
-    if (event == QLatin1String("completed"))
+    if (event == QLatin1String("completed")) {
         query.addQueryItem(QStringLiteral("left"), QStringLiteral("0")); // need to send 0 when we are completed
-    else
+    } else {
         query.addQueryItem(QStringLiteral("left"), QString::number(tds->bytesLeft()));
+    }
 
     query.addQueryItem(QStringLiteral("compact"), QStringLiteral("1"));
-    if (event != QLatin1String("stopped"))
+    if (event != QLatin1String("stopped")) {
         query.addQueryItem(QStringLiteral("numwant"), QStringLiteral("200"));
-    else
+    } else {
         query.addQueryItem(QStringLiteral("numwant"), QStringLiteral("0"));
+    }
 
     query.addQueryItem(QStringLiteral("key"), QString::number(key));
     QString cip = Tracker::getCustomIP();
-    if (cip.isNull())
+    if (cip.isNull()) {
         cip = CurrentIPv6Address();
+    }
 
-    if (!cip.isEmpty())
+    if (!cip.isEmpty()) {
         query.addQueryItem(QStringLiteral("ip"), cip);
+    }
 
-    if (event.isEmpty() && supports_partial_seed_extension && tds->isPartialSeed())
+    if (event.isEmpty() && supports_partial_seed_extension && tds->isPartialSeed()) {
         event = QStringLiteral("paused");
+    }
 
-    if (!event.isEmpty())
+    if (!event.isEmpty()) {
         query.addQueryItem(QStringLiteral("event"), event);
+    }
 
     const SHA1Hash &info_hash = tds->infoHash();
     QString epq = query.toString(QUrl::FullyEncoded) + QLatin1String("&info_hash=") + info_hash.toURLString();
@@ -218,8 +226,9 @@ void HTTPTracker::doRequest(WaitJob *wjob)
     } else {
         doAnnounce(u);
         // if there is a wait job, add this job to the waitjob
-        if (wjob)
+        if (wjob) {
             wjob->addExitOperation(new ExitJobOperation(active_job));
+        }
     }
 }
 
@@ -233,8 +242,9 @@ bool HTTPTracker::updateData(const QByteArray &data)
     // search for dictionary, there might be random garbage infront of the data
     int i = 0;
     while (i < data.size()) {
-        if (data[i] == 'd')
+        if (data[i] == 'd') {
             break;
+        }
         i++;
     }
 
@@ -271,24 +281,28 @@ bool HTTPTracker::updateData(const QByteArray &data)
     if (dict->getData(QByteArrayLiteral("warning message"))) {
         BValueNode *vn = dict->getValue(QByteArrayLiteral("warning message"));
         warning = vn->data().toString();
-    } else
+    } else {
         warning.clear();
+    }
 
     BValueNode *vn = dict->getValue(QByteArrayLiteral("interval"));
 
     // if no interval is specified, use 5 minutes
-    if (vn)
+    if (vn) {
         interval = vn->data().toInt();
-    else
+    } else {
         interval = 5 * 60;
+    }
 
     vn = dict->getValue(QByteArrayLiteral("incomplete"));
-    if (vn)
+    if (vn) {
         leechers = vn->data().toInt();
+    }
 
     vn = dict->getValue(QByteArrayLiteral("complete"));
-    if (vn)
+    if (vn) {
         seeders = vn->data().toInt();
+    }
 
     BListNode *ln = dict->getList(QByteArrayLiteral("peers"));
     if (!ln) {
@@ -298,8 +312,9 @@ bool HTTPTracker::updateData(const QByteArray &data)
             QByteArray arr = vn->data().toByteArray();
             for (int i = 0; i < arr.size(); i += 6) {
                 Uint8 buf[6];
-                for (int j = 0; j < 6; j++)
+                for (int j = 0; j < 6; j++) {
                     buf[j] = arr[i + j];
+                }
 
                 Uint32 ip = ReadUint32(buf, 0);
                 addPeer(net::Address(ip, ReadUint16(buf, 4)), false);
@@ -309,14 +324,16 @@ bool HTTPTracker::updateData(const QByteArray &data)
         for (Uint32 i = 0; i < ln->getNumChildren(); i++) {
             BDictNode *dict = dynamic_cast<BDictNode *>(ln->getChild(i));
 
-            if (!dict)
+            if (!dict) {
                 continue;
+            }
 
             BValueNode *ip_node = dict->getValue(QByteArrayLiteral("ip"));
             BValueNode *port_node = dict->getValue(QByteArrayLiteral("port"));
 
-            if (!ip_node || !port_node)
+            if (!ip_node || !port_node) {
                 continue;
+            }
 
             net::Address addr(ip_node->data().toString(), port_node->data().toInt());
             addPeer(addr, false);
@@ -352,8 +369,9 @@ void HTTPTracker::onAnnounceResult(const QUrl &url, const QByteArray &data, cons
     if (j->error() && data.size() == 0) {
         QString err = error;
         error.clear();
-        if (err.isEmpty())
+        if (err.isEmpty()) {
             err = j->errorString();
+        }
 
         Out(SYS_TRK | LOG_IMPORTANT) << "Error : " << err << endl;
 
@@ -372,10 +390,12 @@ void HTTPTracker::onAnnounceResult(const QUrl &url, const QByteArray &data, cons
                     Q_EMIT peersReady(this);
                     request_time = QDateTime::currentDateTime();
                     status = TRACKER_OK;
-                    if (QUrlQuery(url).queryItemValue(QStringLiteral("event")) == QLatin1String("started"))
+                    if (QUrlQuery(url).queryItemValue(QStringLiteral("event")) == QLatin1String("started")) {
                         started = true;
-                    if (started)
+                    }
+                    if (started) {
                         reannounce_timer.start(interval * 1000);
+                    }
                     Q_EMIT requestOK();
                 }
             } catch (bt::Error &err) {
@@ -407,8 +427,9 @@ void HTTPTracker::setupMetaData(KIO::MetaData &md)
     md[u"accept"_s] = u"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2"_s;
     if (proxy_on) {
         QString p = u"%1:%2"_s.arg(proxy).arg(proxy_port);
-        if (!p.startsWith(QLatin1String("http://")))
+        if (!p.startsWith(QLatin1String("http://"))) {
             p = "http://"_L1 + p;
+        }
         // set the proxy if the doNotUseKDEProxy ix enabled (URL must be valid to)
         QUrl url(p);
         if (url.isValid() && proxy.trimmed().length() > 0) {
@@ -425,8 +446,9 @@ void HTTPTracker::setupMetaData(KIO::MetaData &md)
 
 void HTTPTracker::doAnnounceQueue()
 {
-    if (announce_queue.empty())
+    if (announce_queue.empty()) {
         return;
+    }
 
     QUrl u = announce_queue.front();
     announce_queue.pop_front();

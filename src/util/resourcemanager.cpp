@@ -16,8 +16,9 @@ Resource::Resource(bt::ResourceManager *rman, const QString &group)
 
 Resource::~Resource()
 {
-    if (rman)
+    if (rman) {
         rman->remove(this);
+    }
 }
 
 void Resource::release()
@@ -40,12 +41,14 @@ ResourceManager::~ResourceManager()
 void ResourceManager::add(Resource *r)
 {
     QMap<QString, Resource::List>::iterator i = pending.find(r->groupName());
-    if (i == pending.end())
+    if (i == pending.end()) {
         i = pending.insert(r->groupName(), Resource::List());
+    }
 
     i.value().append(r);
-    if (current.isEmpty())
+    if (current.isEmpty()) {
         current = r->groupName();
+    }
     update();
 }
 
@@ -54,8 +57,9 @@ bool ResourceManager::acquire(Resource *r)
     if ((Uint32)active.size() < max_active_resources && pending.isEmpty()) {
         add(r);
         return true;
-    } else
+    } else {
         return false;
+    }
 }
 
 void ResourceManager::remove(Resource *r)
@@ -64,19 +68,22 @@ void ResourceManager::remove(Resource *r)
         update();
     } else {
         QMap<QString, Resource::List>::iterator i = pending.find(r->groupName());
-        if (i != pending.end())
+        if (i != pending.end()) {
             i.value().removeAll(r);
+        }
     }
 }
 
 void ResourceManager::update()
 {
-    if ((Uint32)active.size() >= max_active_resources)
+    if ((Uint32)active.size() >= max_active_resources) {
         return;
+    }
 
     QMap<QString, Resource::List>::iterator i = pending.find(current);
-    if (i == pending.end())
+    if (i == pending.end()) {
         i = pending.begin();
+    }
 
     QMap<QString, Resource::List>::iterator start = i;
     Uint32 activated = 0;
@@ -88,14 +95,16 @@ void ResourceManager::update()
             activated++;
         }
         ++i;
-        if (i == pending.end()) // Loop around
+        if (i == pending.end()) { // Loop around
             i = pending.begin();
+        }
 
         if (i == start) { // we have completed an antire cycle
-            if (activated == 0) // Nothing was activated, so exit the loop
+            if (activated == 0) { // Nothing was activated, so exit the loop
                 break;
-            else
+            } else {
                 activated = 0;
+            }
         }
     }
 

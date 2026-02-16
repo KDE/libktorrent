@@ -30,8 +30,9 @@ LogSystemManager::~LogSystemManager()
 
 LogSystemManager &LogSystemManager::instance()
 {
-    if (!self)
+    if (!self) {
         self.reset(new LogSystemManager());
+    }
     return *self;
 }
 
@@ -43,17 +44,19 @@ void LogSystemManager::registerSystem(const QString &name, Uint32 id)
 
 void LogSystemManager::unregisterSystem(const QString &name)
 {
-    if (systems.remove(name))
+    if (systems.remove(name)) {
         Q_EMIT unregisted(name);
+    }
 }
 
 Uint32 LogSystemManager::systemID(const QString &name)
 {
     iterator i = systems.find(name);
-    if (i == systems.end())
+    if (i == systems.end()) {
         return 0;
-    else
+    } else {
         return i.value();
+    }
 }
 
 }

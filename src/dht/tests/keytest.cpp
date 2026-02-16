@@ -17,14 +17,15 @@ using namespace Qt::Literals::StringLiterals;
 
 static bt::Uint8 HexCharToUint8(char c)
 {
-    if (c >= 'a' && c <= 'f')
+    if (c >= 'a' && c <= 'f') {
         return 10 + (c - 'a');
-    else if (c >= 'A' && c <= 'F')
+    } else if (c >= 'A' && c <= 'F') {
         return 10 + (c - 'A');
-    else if (c >= '0' && c <= '9')
+    } else if (c >= '0' && c <= '9') {
         return c - '0';
-    else
+    } else {
         return 0;
+    }
 }
 
 static dht::Key KeyFromHexString(const QString &str)
@@ -33,8 +34,9 @@ static dht::Key KeyFromHexString(const QString &str)
     std::fill(result, result + 20, 0);
 
     QString s = str.toLower();
-    if (s.size() % 2 != 0)
+    if (s.size() % 2 != 0) {
         s.prepend('0'_L1);
+    }
 
     int j = 19;
 

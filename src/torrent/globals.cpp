@@ -35,8 +35,9 @@ Globals::~Globals()
 
 Globals &Globals::instance()
 {
-    if (!inst)
+    if (!inst) {
         inst = new Globals();
+    }
     return *inst;
 }
 
@@ -48,12 +49,14 @@ void Globals::cleanup()
 
 bool Globals::initTCPServer(Uint16 port)
 {
-    if (tcp_server)
+    if (tcp_server) {
         shutdownTCPServer();
+    }
 
     tcp_server = new Server();
-    if (!tcp_server->changePort(port))
+    if (!tcp_server->changePort(port)) {
         return false;
+    }
 
     return true;
 }
@@ -66,12 +69,14 @@ void Globals::shutdownTCPServer()
 
 bool Globals::initUTPServer(Uint16 port)
 {
-    if (utp_server)
+    if (utp_server) {
         shutdownUTPServer();
+    }
 
     utp_server = new utp::UTPServer();
-    if (!utp_server->changePort(port))
+    if (!utp_server->changePort(port)) {
         return false;
+    }
 
     utp_server->start();
     return true;

@@ -60,8 +60,9 @@ void Socks::resolved(net::AddressResolver *ar)
 
     socks_server_addr = ar->address();
     socks_server_addr_resolved = true;
-    if (state == CONNECTING_TO_SERVER)
+    if (state == CONNECTING_TO_SERVER) {
         setup();
+    }
 }
 
 Socks::State Socks::setup()
@@ -97,8 +98,9 @@ Socks::State Socks::onReadyToWrite()
 
 Socks::State Socks::onReadyToRead()
 {
-    if (state == CONNECTED)
+    if (state == CONNECTED) {
         return state;
+    }
 
     if (sock->bytesAvailable() == 0) {
         state = FAILED;
@@ -126,10 +128,11 @@ Socks::State Socks::sendAuthRequest()
         socks5::AuthRequest req;
         memset(&req, 0, sizeof(socks5::AuthRequest));
         req.version = socks5::Version::VERSION_5;
-        if (socks_username.length() > 0 && socks_password.length() > 0)
+        if (socks_username.length() > 0 && socks_password.length() > 0) {
             req.nmethods = 2;
-        else
+        } else {
             req.nmethods = 1;
+        }
         req.methods[0] = socks5::AuthMethod::NONE; // No authentication
         req.methods[1] = socks5::AuthMethod::USERNAME_PASSWORD; // Username and password
         req.methods[2] = socks5::AuthMethod::GSSAPI; // GSSAPI

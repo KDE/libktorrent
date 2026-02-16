@@ -73,19 +73,23 @@ void FindNodeRsp::parse(BDictNode *dict)
 {
     dht::RPCMsg::parse(dict);
     BDictNode *args = dict->getDict(RSP);
-    if (!args)
+    if (!args) {
         throw bt::Error(u"Invalid response, arguments missing"_s);
+    }
 
-    if (!args->getValue("nodes") && !args->getList("nodes6"))
+    if (!args->getValue("nodes") && !args->getList("nodes6")) {
         throw bt::Error(u"Missing nodes or nodes6 parameter"_s);
+    }
 
     BValueNode *v = args->getValue("nodes");
-    if (v)
+    if (v) {
         nodes = v->data().toByteArray();
+    }
 
     v = args->getValue("nodes6");
-    if (v)
+    if (v) {
         nodes6 = v->data().toByteArray();
+    }
 }
 
 }

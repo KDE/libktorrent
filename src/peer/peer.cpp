@@ -55,8 +55,9 @@ Peer::Peer(std::unique_ptr<mse::EncryptedPacketSocket> sock,
 
     Uint32 max_packet_len = 9 + MAX_PIECE_LEN; // size of piece packet
     Uint32 bitfield_length = num_chunks / 8 + 1 + (num_chunks % 8 == 0 ? 0 : 1);
-    if (bitfield_length > max_packet_len) // bitfield can be longer
+    if (bitfield_length > max_packet_len) { // bitfield can be longer
         max_packet_len = bitfield_length;
+    }
 
     // to be future proof use 10 times the max packet length,
     // in case some extension message comes along which is larger
@@ -123,8 +124,9 @@ void Peer::handleChoke(Uint32 len)
         return;
     }
 
-    if (!stats.choked)
+    if (!stats.choked) {
         stats.time_choked = CurrentTime();
+    }
     stats.choked = true;
     downloader->choked();
 }
@@ -211,8 +213,9 @@ void Peer::handleHaveNone(Uint32 len)
 void Peer::handleBitField(const bt::Uint8 *packet, Uint32 len)
 {
     if (len != 1 + pieces.getNumBytes()) {
-        if (pman->getTorrent().isLoaded())
+        if (pman->getTorrent().isLoaded()) {
             kill();
+        }
     } else {
         pieces = BitSet(packet + 1, pieces.getNumBits());
         pman->bitSetReceived(this, pieces);
@@ -228,16 +231,18 @@ void Peer::handleRequest(const bt::Uint8 *packet, Uint32 len)
 
     Request r(ReadUint32(packet, 1), ReadUint32(packet, 5), ReadUint32(packet, 9), downloader);
 
-    if (stats.has_upload_slot)
+    if (stats.has_upload_slot) {
         uploader->addRequest(r);
-    else if (stats.fast_extensions)
+    } else if (stats.fast_extensions) {
         sendReject(r);
+    }
 }
 
 void Peer::handlePiece(const bt::Uint8 *packet, Uint32 len)
 {
-    if (paused)
+    if (paused) {
         return;
+    }
 
     if (len < 9) {
         kill();
@@ -288,8 +293,9 @@ void Peer::handlePort(const bt::Uint8 *packet, Uint32 len)
 
 void Peer::handlePacket(const bt::Uint8 *packet, Uint32 size)
 {
-    if (killed || size == 0)
+    if (killed || size == 0) {
         return;
+    }
 
     switch (packet[0]) {
     case CHOKE:
@@ -345,8 +351,9 @@ void Peer::handlePacket(const bt::Uint8 *packet, Uint32 size)
 
 void Peer::pause()
 {
-    if (paused)
+    if (paused) {
         return;
+    }
 
     downloader->cancelAll();
     // choke the peer and tell it we are not interested
@@ -362,8 +369,9 @@ void Peer::unpause()
 
 void Peer::handleExtendedPacket(const Uint8 *packet, Uint32 size)
 {
-    if (size <= 2)
+    if (size <= 2) {
         return;
+    }
 
     PeerProtocolExtension *ext = extensions.find(packet[1]);
     if (ext) {
@@ -397,10 +405,11 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
                 extensions.erase(UT_PEX_ID);
             } else {
                 PeerProtocolExtension *ext = extensions.find(UT_PEX_ID);
-                if (ext)
+                if (ext) {
                     ext->changeID(ut_pex_id);
-                else if (pex_allowed)
+                } else if (pex_allowed) {
                     extensions.insert(UT_PEX_ID, new UTPex(this, ut_pex_id));
+                }
             }
         }
 
@@ -415,8 +424,9 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
                     ext->changeID(ut_metadata_id);
                 } else {
                     int metadata_size = 0;
-                    if (dict->getValue(QByteArrayLiteral("metadata_size")))
+                    if (dict->getValue(QByteArrayLiteral("metadata_size"))) {
                         metadata_size = dict->getInt(QByteArrayLiteral("metadata_size"));
+                    }
 
                     if (metadata_size > MAX_METADATA_SIZE) { // check for wrong metadata_size values
                         Out(SYS_GEN | LOG_NOTICE) << "Wrong or too high metadata size: " << metadata_size << ". Killing peer... " << endl;
@@ -447,25 +457,29 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
 
 Uint32 Peer::sendData(const Uint8 *data, Uint32 len)
 {
-    if (killed)
+    if (killed) {
         return 0;
+    }
 
     Uint32 ret = sock->sendData(data, len);
-    if (!sock->ok())
+    if (!sock->ok()) {
         kill();
+    }
 
     return ret;
 }
 
 Uint32 Peer::readData(Uint8 *buf, Uint32 len)
 {
-    if (killed)
+    if (killed) {
         return 0;
+    }
 
     Uint32 ret = sock->readData(buf, len);
 
-    if (!sock->ok())
+    if (!sock->ok()) {
         kill();
+    }
 
     return ret;
 }
@@ -477,24 +491,27 @@ Uint32 Peer::bytesAvailable() const
 
 Uint32 Peer::getUploadRate() const
 {
-    if (sock)
+    if (sock) {
         return sock->getUploadRate();
-    else
+    } else {
         return 0;
+    }
 }
 
 Uint32 Peer::getDownloadRate() const
 {
-    if (sock)
+    if (sock) {
         return sock->getDownloadRate();
-    else
+    } else {
         return 0;
+    }
 }
 
 void Peer::update()
 {
-    if (killed)
+    if (killed) {
         return;
+    }
 
     if (!sock->ok() || !preader->ok()) {
         Out(SYS_CON | LOG_DEBUG) << "Connection closed" << endl;
@@ -515,8 +532,9 @@ void Peer::update()
     if (!paused) {
         PtrMap<Uint32, PeerProtocolExtension>::iterator i = extensions.begin();
         while (i != extensions.end()) {
-            if (i->second->needsUpdate())
+            if (i->second->needsUpdate()) {
                 i->second->update();
+            }
             ++i;
         }
     }
@@ -524,8 +542,9 @@ void Peer::update()
     // if no data is being sent or received, and there are pending requests
     // increment the connection stalled timer
     if (getUploadRate() > 100 || getDownloadRate() > 100
-        || (uploader->getNumRequests() == 0 && sock->numPendingPieceUploads() == 0 && downloader->getNumRequests() == 0))
+        || (uploader->getNumRequests() == 0 && sock->numPendingPieceUploads() == 0 && downloader->getNumRequests() == 0)) {
         stalled_timer.update();
+    }
 
     stats.download_rate = this->getDownloadRate();
     stats.upload_rate = this->getUploadRate();
@@ -548,26 +567,29 @@ bool Peer::isSnubbed() const
 
 QString Peer::getIPAddresss() const
 {
-    if (sock)
+    if (sock) {
         return sock->getRemoteIPAddress();
-    else
+    } else {
         return QString();
+    }
 }
 
 Uint16 Peer::getPort() const
 {
-    if (!sock)
+    if (!sock) {
         return 0;
-    else
+    } else {
         return sock->getRemotePort();
+    }
 }
 
 net::Address Peer::getAddress() const
 {
-    if (!sock)
+    if (!sock) {
         return net::Address();
-    else
+    } else {
         return sock->getRemoteAddress();
+    }
 }
 
 Uint32 Peer::getTimeSinceLastPiece() const
@@ -581,10 +603,11 @@ float Peer::percentAvailable() const
     // the last chunk can have a different size
     const Torrent &tor = pman->getTorrent();
     Uint64 bytes = 0;
-    if (pieces.get(tor.getNumChunks() - 1))
+    if (pieces.get(tor.getNumChunks() - 1)) {
         bytes = tor.getChunkSize() * (pieces.numOnBits() - 1) + tor.getLastChunkSize();
-    else
+    } else {
         bytes = tor.getChunkSize() * pieces.numOnBits();
+    }
 
     Uint64 tbytes = tor.getChunkSize() * (pieces.getNumBits() - 1) + tor.getLastChunkSize();
     return (float)bytes / (float)tbytes * 100.0;
@@ -597,8 +620,9 @@ void Peer::setACAScore(double s)
 
 void Peer::choke()
 {
-    if (!stats.has_upload_slot)
+    if (!stats.has_upload_slot) {
         return;
+    }
 
     sendChoke();
     uploader->clearAllRequests();
@@ -616,8 +640,9 @@ void Peer::emitPex(const QByteArray &data, int ip_version)
 
 void Peer::setPexEnabled(bool on)
 {
-    if (!stats.extension_protocol)
+    if (!stats.extension_protocol) {
         return;
+    }
 
     PeerProtocolExtension *ext = extensions.find(UT_PEX_ID);
     if (ext && (!on || !UTPex::isEnabled())) {
@@ -632,8 +657,9 @@ void Peer::setPexEnabled(bool on)
 
 void Peer::sendExtProtHandshake(Uint16 port, Uint32 metadata_size, bool partial_seed)
 {
-    if (!stats.extension_protocol)
+    if (!stats.extension_protocol) {
         return;
+    }
 
     QByteArray arr;
     BEncoder enc(std::make_unique<BEncoderBufferOutput>(arr));
@@ -694,20 +720,23 @@ bool Peer::hasWantedChunks(const bt::BitSet &wanted_chunks) const
 
 Uint32 Peer::averageDownloadSpeed() const
 {
-    if (stats.choked)
+    if (stats.choked) {
         return 0;
+    }
 
     TimeStamp now = CurrentTime();
-    if (now >= getUnchokeTime())
+    if (now >= getUnchokeTime()) {
         return 0;
-    else
+    } else {
         return bytes_downloaded_since_unchoke / (getUnchokeTime() - now);
+    }
 }
 
 void Peer::sendChoke()
 {
-    if (!stats.has_upload_slot)
+    if (!stats.has_upload_slot) {
         return;
+    }
 
     sock->addPacket(Packet::create(CHOKE));
     stats.has_upload_slot = false;
@@ -715,8 +744,9 @@ void Peer::sendChoke()
 
 void Peer::sendUnchoke()
 {
-    if (stats.has_upload_slot)
+    if (stats.has_upload_slot) {
         return;
+    }
 
     sock->addPacket(Packet::create(UNCHOKE));
     stats.has_upload_slot = true;
@@ -730,8 +760,9 @@ void Peer::sendEvilUnchoke()
 
 void Peer::sendInterested()
 {
-    if (stats.am_interested == true)
+    if (stats.am_interested == true) {
         return;
+    }
 
     sock->addPacket(Packet::create(INTERESTED));
     stats.am_interested = true;
@@ -739,8 +770,9 @@ void Peer::sendInterested()
 
 void Peer::sendNotInterested()
 {
-    if (stats.am_interested == false)
+    if (stats.am_interested == false) {
         return;
+    }
 
     sock->addPacket(Packet::create(NOT_INTERESTED));
     stats.am_interested = false;

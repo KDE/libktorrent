@@ -91,11 +91,13 @@ qint64 TorrentFileStream::readData(char *data, qint64 maxlen)
 
 bool TorrentFileStream::open(QIODevice::OpenMode mode)
 {
-    if (mode != QIODevice::ReadOnly)
+    if (mode != QIODevice::ReadOnly) {
         return false;
+    }
 
-    if (d->opened)
+    if (d->opened) {
         return true;
+    }
 
     QIODevice::open(mode | QIODevice::Unbuffered);
     d->opened = true;
@@ -115,8 +117,9 @@ qint64 TorrentFileStream::pos() const
 
 qint64 TorrentFileStream::size() const
 {
-    if (!d->tc)
+    if (!d->tc) {
         return 0;
+    }
 
     if (d->tc->getStats().multi_file_torrent) {
         return d->tc->getTorrentFile(d->file_index).getSize();
@@ -138,8 +141,9 @@ bool TorrentFileStream::atEnd() const
 
 bool TorrentFileStream::reset()
 {
-    if (!d->opened)
+    if (!d->opened) {
         return false;
+    }
 
     d->reset();
     return true;
@@ -152,8 +156,9 @@ qint64 TorrentFileStream::bytesAvailable() const
 
 QString TorrentFileStream::path() const
 {
-    if (!d->tc)
+    if (!d->tc) {
         return QString();
+    }
 
     if (d->tc->getStats().multi_file_torrent) {
         return d->tc->getTorrentFile(d->file_index).getPathOnDisk();
@@ -222,8 +227,9 @@ TorrentFileStream::Private::Private(TorrentControl *tc, Uint32 file_index, Chunk
 
 TorrentFileStream::Private::~Private()
 {
-    if (csel && tc)
+    if (csel && tc) {
         tc->setChunkSelector(nullptr); // Force creation of new chunk selector
+    }
 }
 
 void TorrentFileStream::Private::reset()
@@ -256,72 +262,82 @@ void TorrentFileStream::Private::update()
     }
 
     // Update the bitset
-    for (Uint32 i = first; i <= last; i++)
+    for (Uint32 i = first; i <= last; i++) {
         bitset.set(i - first, chunks.get(i));
+    }
 
     bytes_readable = 0;
-    if (!bitset.get(current_chunk - first)) // If we don't have the current chunk, we can't read anything
+    if (!bitset.get(current_chunk - first)) { // If we don't have the current chunk, we can't read anything
         return;
+    }
 
     // Add all chunks past the current one
     for (Uint32 i = current_chunk + 1; i <= last; i++) {
         // If we don't have the chunk we cannot read it, so break out of loop
-        if (!bitset.get(i - first))
+        if (!bitset.get(i - first)) {
             break;
+        }
 
-        if (i != last)
+        if (i != last) {
             bytes_readable += cman->getChunk(i)->getSize();
-        else
+        } else {
             bytes_readable += lastChunkSize();
+        }
     }
 
     // Finally add the bytes from the first chunk
-    if (current_chunk == last)
+    if (current_chunk == last) {
         bytes_readable += lastChunkSize() - current_chunk_offset;
-    else
+    } else {
         bytes_readable += cman->getChunk(current_chunk)->getSize() - current_chunk_offset;
+    }
 }
 
 Uint32 TorrentFileStream::Private::firstChunk()
 {
-    if (tc && tc->getStats().multi_file_torrent)
+    if (tc && tc->getStats().multi_file_torrent) {
         return tc->getTorrentFile(file_index).getFirstChunk();
-    else
+    } else {
         return 0;
+    }
 }
 
 Uint32 TorrentFileStream::Private::firstChunkOffset()
 {
-    if (tc && tc->getStats().multi_file_torrent)
+    if (tc && tc->getStats().multi_file_torrent) {
         return tc->getTorrentFile(file_index).getFirstChunkOffset();
-    else
+    } else {
         return 0;
+    }
 }
 
 Uint32 TorrentFileStream::Private::lastChunk()
 {
-    if (!tc)
+    if (!tc) {
         return 0;
-    else if (tc->getStats().multi_file_torrent)
+    } else if (tc->getStats().multi_file_torrent) {
         return tc->getTorrentFile(file_index).getLastChunk();
-    else
+    } else {
         return tc->getStats().total_chunks - 1;
+    }
 }
 
 Uint32 TorrentFileStream::Private::lastChunkSize()
 {
-    if (!tc)
+    if (!tc) {
         return 0;
-    else if (tc->getStats().multi_file_torrent)
+    } else if (tc->getStats().multi_file_torrent) {
         return tc->getTorrentFile(file_index).getLastChunkSize();
-    else
+    } else {
         return cman->getChunk(lastChunk())->getSize();
+    }
 }
 
 bool TorrentFileStream::Private::seek(qint64 pos)
 {
-    if (pos < 0 || !tc)
+    if (pos < 0 || !tc) {
         return false;
+    }
 
     current_byte_offset = pos;
     current_chunk_offset = 0;
@@ -336,30 +352,34 @@ bool TorrentFileStream::Private::seek(qint64 pos)
         current_chunk_offset = current_byte_offset % tc->getStats().chunk_size;
     }
 
-    if (csel)
+    if (csel) {
         csel->setCursor(current_chunk);
+    }
     return true;
 }
 
 qint64 TorrentFileStream::Private::readData(char *data, qint64 maxlen)
 {
-    if (!tc)
+    if (!tc) {
         return 0;
+    }
 
     // First update so we now until how far we can go
     update();
 
     // Check if there is something to read
-    if (bytes_readable == 0)
+    if (bytes_readable == 0) {
         return 0;
+    }
 
     qint64 bytes_read = 0;
     while (bytes_read < maxlen && bytes_read < (qint64)bytes_readable) {
         qint64 allowed = qMin((qint64)bytes_readable - bytes_read, maxlen - bytes_read);
         qint64 ret = readCurrentChunk(data + bytes_read, allowed);
         bytes_read += ret;
-        if (ret == 0)
+        if (ret == 0) {
             break;
+        }
     }
 
     bytes_readable -= bytes_read;
@@ -375,22 +395,26 @@ qint64 TorrentFileStream::Private::readData(char *data, qint64 maxlen)
 
 qint64 TorrentFileStream::Private::readCurrentChunk(char *data, qint64 maxlen)
 {
-    if (!tc)
+    if (!tc) {
         return 0;
+    }
 
     // Out(SYS_GEN|LOG_DEBUG) << "readCurrentChunk s " << current_chunk << " " << current_chunk_offset << endl;
     Chunk *c = cman->getChunk(current_chunk);
     // First make sure we have the chunk
-    if (!current_chunk_data)
+    if (!current_chunk_data) {
         current_chunk_data = c->getPiece(0, c->getSize(), true);
+    }
 
-    if (!current_chunk_data || !current_chunk_data->ok())
+    if (!current_chunk_data || !current_chunk_data->ok()) {
         return 0;
+    }
 
     // Calculate how much we can read
     qint64 allowed = c->getSize() - current_chunk_offset;
-    if (allowed > maxlen)
+    if (allowed > maxlen) {
         allowed = maxlen;
+    }
 
     // Out(SYS_GEN|LOG_DEBUG) << "readCurrentChunk r " << allowed << endl;
 
@@ -405,8 +429,9 @@ qint64 TorrentFileStream::Private::readCurrentChunk(char *data, qint64 maxlen)
         current_chunk++;
         current_chunk_data = PieceData::Ptr();
         current_chunk_offset = 0;
-        if (csel)
+        if (csel) {
             csel->setCursor(current_chunk);
+        }
     }
 
     // Out(SYS_GEN|LOG_DEBUG) << "readCurrentChunk f " << current_chunk << " " << current_chunk_offset << endl;

@@ -92,8 +92,9 @@ Uint32 PeerDownloader::getNumRequests() const
 
 void PeerDownloader::download(const Request &req)
 {
-    if (!peer)
+    if (!peer) {
         return;
+    }
 
     wait_queue.append(req);
     update();
@@ -101,8 +102,9 @@ void PeerDownloader::download(const Request &req)
 
 void PeerDownloader::cancel(const Request &req)
 {
-    if (!peer)
+    if (!peer) {
         return;
+    }
 
     if (!wait_queue.removeAll(req)) {
         reqs.removeAll(req);
@@ -112,11 +114,13 @@ void PeerDownloader::cancel(const Request &req)
 
 void PeerDownloader::onRejected(const Request &req)
 {
-    if (!peer)
+    if (!peer) {
         return;
+    }
 
-    if (reqs.removeAll(req))
+    if (reqs.removeAll(req)) {
         Q_EMIT rejected(req);
+    }
 }
 
 void PeerDownloader::cancelAll()
@@ -137,8 +141,9 @@ void PeerDownloader::cancelAll()
 void PeerDownloader::piece(const Piece &p)
 {
     Request r(p);
-    if (!reqs.removeOne(r))
+    if (!reqs.removeOne(r)) {
         wait_queue.removeAll(r);
+    }
 }
 
 void PeerDownloader::peerDestroyed()
@@ -148,26 +153,29 @@ void PeerDownloader::peerDestroyed()
 
 bool PeerDownloader::isChoked() const
 {
-    if (peer)
+    if (peer) {
         return peer->isChoked();
-    else
+    } else {
         return true;
+    }
 }
 
 bool PeerDownloader::hasChunk(Uint32 idx) const
 {
-    if (peer)
+    if (peer) {
         return peer->getBitSet().get(idx);
-    else
+    } else {
         return false;
+    }
 }
 
 Uint32 PeerDownloader::getDownloadRate() const
 {
-    if (peer)
+    if (peer) {
         return peer->getDownloadRate();
-    else
+    } else {
         return 0;
+    }
 }
 
 void PeerDownloader::checkTimeouts()
@@ -179,8 +187,9 @@ void PeerDownloader::checkTimeouts()
     // expire any timed-out requests: the list is sorted with the
     // oldest requests at the front, so we simply pop off requests
     // until we find one that shouldn't be expired
-    while (!reqs.isEmpty() && (now - reqs.first().time_stamp > MAX_INTERVAL))
+    while (!reqs.isEmpty() && (now - reqs.first().time_stamp > MAX_INTERVAL)) {
         Q_EMIT timedout(reqs.takeFirst().req);
+    }
 }
 
 Uint32 PeerDownloader::getMaxChunkDownloads() const
@@ -201,8 +210,9 @@ void PeerDownloader::choked()
 {
     // when the peers supports the fast extensions, choke does not mean that all
     // requests are rejected, so lets do nothing
-    if (peer->getStats().fast_extensions)
+    if (peer->getStats().fast_extensions) {
         return;
+    }
 
     QList<TimeStampedRequest>::iterator i = reqs.begin();
     while (i != reqs.end()) {
@@ -227,8 +237,9 @@ void PeerDownloader::update()
     double pieces_per_sec = (double)peer->getDownloadRate() / MAX_PIECE_LEN;
     int max_reqs = 1 + (int)ceil(10 * pieces_per_sec);
     // cap if client has supplied a reqq in extended protocol handshake
-    if (max_reqs > (int)peer->getStats().max_request_queue && peer->getStats().max_request_queue != 0)
+    if (max_reqs > (int)peer->getStats().max_request_queue && peer->getStats().max_request_queue != 0) {
         max_reqs = peer->getStats().max_request_queue;
+    }
 
     while (wait_queue.count() > 0 && reqs.count() < max_reqs) {
         // get a request from the wait queue and send that
@@ -240,8 +251,9 @@ void PeerDownloader::update()
     }
 
     max_wait_queue_size = 2 * max_reqs;
-    if (max_wait_queue_size < 10)
+    if (max_wait_queue_size < 10) {
         max_wait_queue_size = 10;
+    }
 }
 }
 

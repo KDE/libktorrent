@@ -43,10 +43,11 @@ private:
 
         port = 50000;
         while (port < 60000) {
-            if (!srv.changePort(port))
+            if (!srv.changePort(port)) {
                 port++;
-            else
+            } else {
                 break;
+            }
         }
 
         srv.setCreateSockets(false);

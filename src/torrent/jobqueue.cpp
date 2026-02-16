@@ -25,8 +25,9 @@ JobQueue::~JobQueue()
 void JobQueue::enqueue(Job *job)
 {
     queue.append(job);
-    if (queue.count() == 1)
+    if (queue.count() == 1) {
         startNextJob();
+    }
 }
 
 bool JobQueue::runningJobs() const
@@ -41,8 +42,9 @@ Job *JobQueue::currentJob()
 
 void JobQueue::startNextJob()
 {
-    if (queue.isEmpty())
+    if (queue.isEmpty()) {
         return;
+    }
 
     Job *j = queue.front();
     connect(j, &Job::result, this, &JobQueue::jobDone);
@@ -56,8 +58,9 @@ void JobQueue::startNextJob()
 
 void JobQueue::jobDone(KJob *job)
 {
-    if (queue.isEmpty() || queue.front() != job)
+    if (queue.isEmpty() || queue.front() != job) {
         return;
+    }
 
     // remove the job and start the next
     queue.pop_front();
@@ -68,15 +71,17 @@ void JobQueue::jobDone(KJob *job)
             tc->unpause();
             tc->allJobsDone();
             restart = false;
-        } else
+        } else {
             tc->allJobsDone();
+        }
     }
 }
 
 void JobQueue::killAll()
 {
-    if (queue.isEmpty())
+    if (queue.isEmpty()) {
         return;
+    }
 
     queue.front()->kill();
     qDeleteAll(queue);

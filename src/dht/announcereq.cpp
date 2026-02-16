@@ -78,8 +78,9 @@ void AnnounceReq::parse(BDictNode *dict)
 {
     dht::GetPeersReq::parse(dict);
     BDictNode *args = dict->getDict(ARG);
-    if (!args)
+    if (!args) {
         throw bt::Error(u"Invalid request, arguments missing"_s);
+    }
 
     info_hash = Key(args->getByteArray("info_hash"));
     port = args->getInt("port");

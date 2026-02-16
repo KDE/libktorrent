@@ -53,11 +53,13 @@ bool KBucket::keyInRange(const dht::Key &k) const
 
 bool KBucket::splitAllowed() const
 {
-    if (!keyInRange(our_id))
+    if (!keyInRange(our_id)) {
         return false;
+    }
 
-    if (min_key + dht::K >= max_key)
+    if (min_key + dht::K >= max_key) {
         return false;
+    }
 
     return true;
 }
@@ -65,8 +67,9 @@ bool KBucket::splitAllowed() const
 std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() noexcept(false)
 {
     dht::Key m = dht::Key::mid(min_key, max_key);
-    if (m == min_key || m + 1 == max_key)
+    if (m == min_key || m + 1 == max_key) {
         throw UnableToSplit();
+    }
 
     auto left = std::make_unique<KBucket>(min_key, m, srv, our_id);
     auto right = std::make_unique<KBucket>(m + 1, max_key, srv, our_id);
@@ -74,10 +77,11 @@ std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() noexcept(false)
     QList<KBucketEntry>::iterator i;
     for (i = entries.begin(); i != entries.end(); ++i) {
         KBucketEntry &e = *i;
-        if (left->keyInRange(e.getID()))
+        if (left->keyInRange(e.getID())) {
             left->insert(e);
-        else
+        } else {
             right->insert(e);
+        }
     }
 
     return std::make_pair(std::move(left), std::move(right));
@@ -119,22 +123,25 @@ void KBucket::onResponse(RPCCall *c, RPCMsg *rsp)
     Q_UNUSED(rsp);
     last_modified = bt::CurrentTime();
 
-    if (!pending_entries_busy_pinging.contains(c))
+    if (!pending_entries_busy_pinging.contains(c)) {
         return;
+    }
 
     KBucketEntry entry = pending_entries_busy_pinging[c];
     pending_entries_busy_pinging.remove(c); // call is done so erase it
 
     // we have a response so try to find the next bad or questionable node
     // if we do not have room see if we can get rid of some bad peers
-    if (!replaceBadEntry(entry)) // if no bad peers ping a questionable one
+    if (!replaceBadEntry(entry)) { // if no bad peers ping a questionable one
         pingQuestionable(entry);
+    }
 }
 
 void KBucket::onTimeout(RPCCall *c)
 {
-    if (!pending_entries_busy_pinging.contains(c))
+    if (!pending_entries_busy_pinging.contains(c)) {
         return;
+    }
 
     KBucketEntry entry = pending_entries_busy_pinging[c];
 
@@ -154,8 +161,9 @@ void KBucket::onTimeout(RPCCall *c)
     if (pending_entries_busy_pinging.count() < 2 && pending_entries.count() > 0) {
         KBucketEntry pe = pending_entries.front();
         pending_entries.pop_front();
-        if (!replaceBadEntry(pe)) // if no bad peers ping a questionable one
+        if (!replaceBadEntry(pe)) { // if no bad peers ping a questionable one
             pingQuestionable(pe);
+        }
     }
 }
 
@@ -288,13 +296,15 @@ void KBucket::load(bt::BDictNode *dict)
     min_key = dht::Key(dict->getByteArray("min"));
     max_key = dht::Key(dict->getByteArray("max"));
     BListNode *entry_list = dict->getList("entries");
-    if (!entry_list || entry_list->getNumChildren() == 0)
+    if (!entry_list || entry_list->getNumChildren() == 0) {
         return;
+    }
 
     for (Uint32 i = 0; i < entry_list->getNumChildren(); i++) {
         BDictNode *entry = entry_list->getDict(i);
-        if (!entry)
+        if (!entry) {
             continue;
+        }
 
         Key id = Key(entry->getByteArray("id"));
         QByteArray addr = entry->getByteArray("address");
@@ -310,8 +320,9 @@ void KBucket::load(bt::BDictNode *dict)
 
 void KBucket::onFinished(Task *t)
 {
-    if (t == refresh_task)
+    if (t == refresh_task) {
         refresh_task = nullptr;
+    }
 }
 
 void KBucket::setRefreshTask(Task *t)

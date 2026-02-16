@@ -69,14 +69,16 @@ void FindNodeReq::parse(BDictNode *dict)
 {
     dht::RPCMsg::parse(dict);
     BDictNode *args = dict->getDict(ARG);
-    if (!args)
+    if (!args) {
         throw bt::Error(u"Invalid request, arguments missing"_s);
+    }
 
     target = Key(args->getByteArray("target"));
     BListNode *ln = args->getList("want");
     if (ln) {
-        for (bt::Uint32 i = 0; i < ln->getNumChildren(); i++)
+        for (bt::Uint32 i = 0; i < ln->getNumChildren(); i++) {
             want.append(ln->getString(i));
+        }
     }
 }
 

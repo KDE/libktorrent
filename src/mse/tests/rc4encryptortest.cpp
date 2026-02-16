@@ -50,8 +50,9 @@ private Q_SLOTS:
             for (int i = 0; i < 1000; i++) {
                 memset(tmp, 0, 1024);
                 bt::Uint32 data[256];
-                for (int j = 0; j < 256; j++)
+                for (int j = 0; j < 256; j++) {
                     data[j] = QRandomGenerator::global()->generate();
+                }
 
                 memcpy(tmp, data, 1024);
                 a.encryptReplace(reinterpret_cast<bt::Uint8 *>(data), 1024);

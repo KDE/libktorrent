@@ -115,8 +115,9 @@ private Q_SLOTS:
             TestResource *r = new TestResource(&rm, classes[QRandomGenerator::global()->bounded(4)]);
             tr.append(r);
             rm.add(r);
-            if (r->acq)
+            if (r->acq) {
                 num_acquired++;
+            }
         }
 
         QVERIFY(num_acquired == 4);
@@ -128,9 +129,11 @@ private Q_SLOTS:
             QVERIFY(last_acquired);
             if (last_acquired->groupName() == last_acquired_group) {
                 // This is only possible if there are no other groups which are still pending
-                for (TestResource *r : std::as_const(tr))
-                    if (!r->acq)
+                for (TestResource *r : std::as_const(tr)) {
+                    if (!r->acq) {
                         QVERIFY(r->groupName() == last_acquired_group);
+                    }
+                }
             }
             last_acquired_group = last_acquired->groupName();
         }

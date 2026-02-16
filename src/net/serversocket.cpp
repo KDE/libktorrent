@@ -104,8 +104,9 @@ bool ServerSocket::bind(const net::Address &addr)
             connect(d->wsn, &QSocketNotifier::activated, this, &ServerSocket::readyToWrite);
         }
         return true;
-    } else
+    } else {
         d->reset();
+    }
 
     return false;
 }
@@ -114,8 +115,9 @@ void ServerSocket::readyToAccept(int)
 {
     net::Address addr;
     int fd = d->sock->accept(addr);
-    if (fd >= 0)
+    if (fd >= 0) {
         d->chandler->newConnection(fd, addr);
+    }
 }
 
 void ServerSocket::readyToRead(int)
@@ -137,14 +139,16 @@ void ServerSocket::readyToRead(int)
 
 void ServerSocket::setWriteNotificationsEnabled(bool on)
 {
-    if (d->wsn && d->wsn->isEnabled() != on)
+    if (d->wsn && d->wsn->isEnabled() != on) {
         d->wsn->setEnabled(on);
+    }
 }
 
 void ServerSocket::setReadNotificationsEnabled(bool on)
 {
-    if (d->rsn && d->rsn->isEnabled() != on)
+    if (d->rsn && d->rsn->isEnabled() != on) {
         d->rsn->setEnabled(on);
+    }
 }
 
 void ServerSocket::readyToWrite(int)
@@ -155,8 +159,9 @@ void ServerSocket::readyToWrite(int)
 int ServerSocket::sendTo(const QByteArray &data, const net::Address &addr)
 {
     // Only UDP server socket can send
-    if (!d->dhandler)
+    if (!d->dhandler) {
         return 0;
+    }
 
     return d->sock->sendTo((const Uint8 *)data.data(), data.size(), addr);
 }
@@ -164,18 +169,20 @@ int ServerSocket::sendTo(const QByteArray &data, const net::Address &addr)
 int ServerSocket::sendTo(const bt::Uint8 *buf, int size, const net::Address &addr)
 {
     // Only UDP server socket can send
-    if (!d->dhandler)
+    if (!d->dhandler) {
         return 0;
+    }
 
     return d->sock->sendTo(buf, size, addr);
 }
 
 bool ServerSocket::setTOS(unsigned char type_of_service)
 {
-    if (d->sock)
+    if (d->sock) {
         return d->sock->setTOS(type_of_service);
-    else
+    } else {
         return false;
+    }
 }
 
 }

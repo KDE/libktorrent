@@ -27,8 +27,9 @@ CircularBuffer::~CircularBuffer()
 
 bt::Uint32 CircularBuffer::read(bt::Uint8 *ptr, bt::Uint32 max_len)
 {
-    if (empty())
+    if (empty()) {
         return 0;
+    }
 
     bt::Uint32 to_read = buf_size < max_len ? buf_size : max_len;
 
@@ -51,8 +52,9 @@ bt::Uint32 CircularBuffer::read(bt::Uint8 *ptr, bt::Uint32 max_len)
 
 bt::Uint32 CircularBuffer::write(const bt::Uint8 *ptr, bt::Uint32 len)
 {
-    if (full())
+    if (full()) {
         return 0;
+    }
 
     bt::Uint32 free_space = buf_capacity - buf_size;
     bt::Uint32 to_write = free_space < len ? free_space : len;
@@ -74,18 +76,20 @@ bt::Uint32 CircularBuffer::write(const bt::Uint8 *ptr, bt::Uint32 len)
 
 CircularBuffer::Range CircularBuffer::firstRange()
 {
-    if (start + buf_size > buf_capacity)
+    if (start + buf_size > buf_capacity) {
         return Range(data + start, buf_capacity - start);
-    else
+    } else {
         return Range(data + start, buf_size);
+    }
 }
 
 CircularBuffer::Range CircularBuffer::secondRange()
 {
-    if (start + buf_size > buf_capacity)
+    if (start + buf_size > buf_capacity) {
         return Range(data, buf_size - (buf_capacity - start));
-    else
+    } else {
         return Range((bt::Uint8 *)nullptr, 0);
+    }
 }
 
 }
