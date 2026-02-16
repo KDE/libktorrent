@@ -43,7 +43,7 @@
 #include "win32.h"
 #endif
 
-#include "limits.h"
+#include <climits>
 
 #ifndef NAME_MAX
 #define NAME_MAX 255

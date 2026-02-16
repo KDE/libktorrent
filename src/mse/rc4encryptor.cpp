@@ -9,7 +9,7 @@
 #include <openssl/params.h>
 #include <openssl/core_names.h>
 #include <openssl/evp.h>
-#include <limits.h>
+#include <climits>
 #include <memory>
 #elif defined(LIBKTORRENT_USE_LIBGCRYPT)
 #include <gcrypt.h>

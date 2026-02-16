@@ -8,7 +8,7 @@
 #include <QRandomGenerator>
 #include <QTest>
 
-#include <string.h>
+#include <cstring>
 #include <iostream>
 #include <dht/key.h>
 #include <mse/rc4encryptor.h>
