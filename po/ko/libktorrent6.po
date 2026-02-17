@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-14 00:43+0000\n"
+"POT-Creation-Date: 2026-02-17 00:44+0000\n"
 "PO-Revision-Date: 2020-04-04 15:11+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -18,79 +18,79 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 19.04.3\n"
 
-#: src/bcodec/bdecoder.cpp:50
+#: src/bcodec/bdecoder.cpp:51
 #, kde-format
 msgid "Illegal token: %1"
 msgstr "잘못된 토크: %1"
 
-#: src/bcodec/bdecoder.cpp:86 src/bcodec/bdecoder.cpp:93
+#: src/bcodec/bdecoder.cpp:89 src/bcodec/bdecoder.cpp:96
 #, kde-format
 msgid "Decode error"
 msgstr "디코드 오류"
 
-#: src/bcodec/bdecoder.cpp:99 src/bcodec/bdecoder.cpp:124
-#: src/bcodec/bdecoder.cpp:147 src/bcodec/bdecoder.cpp:185
+#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:129
+#: src/bcodec/bdecoder.cpp:152 src/bcodec/bdecoder.cpp:191
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "예상하지 못한 입력의 끝"
 
-#: src/bcodec/bdecoder.cpp:164 src/bcodec/bdecoder.cpp:204
+#: src/bcodec/bdecoder.cpp:169 src/bcodec/bdecoder.cpp:210
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "%1을(를) 정수로 변환할 수 없음"
 
-#: src/bcodec/bdecoder.cpp:209
+#: src/bcodec/bdecoder.cpp:215
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "토렌트가 완료되지 않았습니다."
 
-#: src/datachecker/datacheckerjob.cpp:71
+#: src/datachecker/datacheckerjob.cpp:74
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr "다른 데이터 조각 완료 대기 중"
 
-#: src/datachecker/datacheckerjob.cpp:77 src/torrent/torrentstats.cpp:93
+#: src/datachecker/datacheckerjob.cpp:81 src/torrent/torrentstats.cpp:94
 #, kde-format
 msgid "Checking data"
 msgstr "데이터 검사 중"
 
-#: src/datachecker/datacheckerjob.cpp:124
+#: src/datachecker/datacheckerjob.cpp:129
 #, kde-format
 msgid "Checking Data"
 msgstr "데이터 검사 중"
 
-#: src/datachecker/multidatachecker.cpp:185
-#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:625
-#: src/diskio/multifilecache.cpp:660 src/torrent/torrentcreator.cpp:109
-#: src/torrent/torrentcreator.cpp:230 src/torrent/torrentcreator.cpp:262
+#: src/datachecker/multidatachecker.cpp:202
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:664
+#: src/diskio/multifilecache.cpp:700 src/torrent/torrentcreator.cpp:111
+#: src/torrent/torrentcreator.cpp:236 src/torrent/torrentcreator.cpp:269
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "파일 %1을(를) 열 수 없음: %2"
 
-#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:100
-#: src/diskio/singlefilecache.cpp:72
+#: src/diskio/cache.cpp:181 src/diskio/multifilecache.cpp:104
+#: src/diskio/singlefilecache.cpp:74
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "%1을(를) 만들 수 없음: %2"
 
-#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:321
-#: src/util/fileops.cpp:364
+#: src/diskio/cachefile.cpp:88 src/util/fileops.cpp:339
+#: src/util/fileops.cpp:384
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "%1을(를) 열 수 없음: %2"
 
-#: src/diskio/cachefile.cpp:113 src/diskio/cachefile.cpp:202
-#: src/diskio/cachefile.cpp:361 src/diskio/cachefile.cpp:420
+#: src/diskio/cachefile.cpp:116 src/diskio/cachefile.cpp:205
+#: src/diskio/cachefile.cpp:375 src/diskio/cachefile.cpp:440
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "%1을(를) 열 수 없음: 읽기 전용 파일 시스템"
 
-#: src/diskio/cachefile.cpp:119 src/diskio/cachefile.cpp:366
+#: src/diskio/cachefile.cpp:122 src/diskio/cachefile.cpp:381
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "%1의 최대 크기를 벗어나서 기록을 시도함"
 
-#: src/diskio/cachefile.cpp:207
+#: src/diskio/cachefile.cpp:211
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
@@ -98,37 +98,37 @@ msgstr ""
 "파일 %1을(를) 확장할 수 없음: 파일 크기를 최대 크기 이상으로 확장하려고 시도"
 "함"
 
-#: src/diskio/cachefile.cpp:211
+#: src/diskio/cachefile.cpp:215
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "파일 %1을(를) 확장할 수 없음: %2"
 
-#: src/diskio/cachefile.cpp:329
+#: src/diskio/cachefile.cpp:340
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "오류: 파일 %1의 끝을 넘어서 읽으려고 함"
 
-#: src/diskio/cachefile.cpp:334 src/diskio/cachefile.cpp:376
+#: src/diskio/cachefile.cpp:345 src/diskio/cachefile.cpp:391
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "파일 %1에서 검색할 수 없음: %2"
 
-#: src/diskio/cachefile.cpp:341
+#: src/diskio/cachefile.cpp:354
 #, kde-format
 msgid "Error reading from %1"
 msgstr "%1에서 읽는 중 오류 발생"
 
-#: src/diskio/cachefile.cpp:379
+#: src/diskio/cachefile.cpp:395
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "파일 %1에 쓸 수 없음: %2"
 
-#: src/diskio/cachefile.cpp:437
+#: src/diskio/cachefile.cpp:457
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "디스크 공간을 미리 할당할 수 없음: %1"
 
-#: src/diskio/chunkmanager.cpp:839 src/diskio/chunkmanager.cpp:862
+#: src/diskio/chunkmanager.cpp:871 src/diskio/chunkmanager.cpp:895
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "인덱스 파일 %1을(를) 열 수 없음: %2"
@@ -138,62 +138,62 @@ msgstr "인덱스 파일 %1을(를) 열 수 없음: %2"
 msgid "Cannot create file %1: %2"
 msgstr "파일 %1을(를) 만들 수 없음: %2"
 
-#: src/diskio/dndfile.cpp:118
+#: src/diskio/dndfile.cpp:121
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "첫 번째 조각을 DND 파일에 기록할 수 없음: %1"
 
-#: src/diskio/dndfile.cpp:133
+#: src/diskio/dndfile.cpp:136
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "마지막 조각을 DND 파일에 기록할 수 없음: %1"
 
-#: src/diskio/movedatafilesjob.cpp:115
+#: src/diskio/movedatafilesjob.cpp:119
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr "다른 이동 작업 완료 대기 중"
 
-#: src/diskio/movedatafilesjob.cpp:116 src/diskio/movedatafilesjob.cpp:152
+#: src/diskio/movedatafilesjob.cpp:120 src/diskio/movedatafilesjob.cpp:156
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "원본"
 
-#: src/diskio/movedatafilesjob.cpp:117 src/diskio/movedatafilesjob.cpp:153
+#: src/diskio/movedatafilesjob.cpp:121 src/diskio/movedatafilesjob.cpp:157
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "대상"
 
-#: src/diskio/movedatafilesjob.cpp:151
+#: src/diskio/movedatafilesjob.cpp:155
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
 msgstr "이동 중"
 
-#: src/diskio/multifilecache.cpp:75 src/diskio/singlefilecache.cpp:62
+#: src/diskio/multifilecache.cpp:77 src/diskio/singlefilecache.cpp:63
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr "%1을(를) 열 수 없음: %2"
 
-#: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
+#: src/diskio/piecedata.cpp:56 src/diskio/piecedata.cpp:98
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
 msgstr "읽기 전용으로 매핑된 조각에 기록할 수 없음"
 
-#: src/download/chunkdownload.cpp:341
+#: src/download/chunkdownload.cpp:355
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
 msgstr[0] "피어 %1개"
 
-#: src/download/downloader.cpp:691
+#: src/download/downloader.cpp:734
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "웹 시드와 토렌트가 달라서 비활성화됨"
 
 #: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
-#: src/download/webseed.cpp:82
+#: src/download/webseed.cpp:84
 #, kde-format
 msgid "Not connected"
 msgstr "연결되지 않음"
@@ -213,7 +213,7 @@ msgstr "시스템 자원이 충분하지 않음"
 msgid "Resolving hostname %1"
 msgstr "호스트 이름 %1 해석 중"
 
-#: src/download/httpconnection.cpp:125 src/download/webseed.cpp:310
+#: src/download/httpconnection.cpp:125 src/download/webseed.cpp:324
 #, kde-format
 msgid "Connection closed"
 msgstr "연결이 닫힘"
@@ -223,101 +223,101 @@ msgstr "연결이 닫힘"
 msgid "Error: request failed: %1"
 msgstr "오류: 요청 실패: %1"
 
-#: src/download/httpconnection.cpp:153 src/download/httpconnection.cpp:180
+#: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
 #, kde-format
 msgid "Connected"
 msgstr "연결됨"
 
-#: src/download/httpconnection.cpp:161
+#: src/download/httpconnection.cpp:162
 #, kde-format
 msgid "Error: Failed to connect to webseed"
 msgstr "오류: 웹 시드에 연결할 수 없음"
 
-#: src/download/httpconnection.cpp:185
+#: src/download/httpconnection.cpp:186
 #, kde-format
 msgid "Connecting"
 msgstr "연결 중"
 
-#: src/download/httpconnection.cpp:194
+#: src/download/httpconnection.cpp:195
 #, kde-format
 msgid "Failed to connect to webseed"
 msgstr "웹 시드에 연결할 수 없음"
 
-#: src/download/httpconnection.cpp:199
+#: src/download/httpconnection.cpp:200
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
 msgstr "웹 시드의 호스트 이름을 해석할 수 없음"
 
-#: src/download/httpconnection.cpp:270
+#: src/download/httpconnection.cpp:276
 #, kde-format
 msgid "Error: failed to connect, server not responding"
 msgstr "오류: 연결할 수 없음, 서버가 응답하지 않음"
 
-#: src/download/httpconnection.cpp:280
+#: src/download/httpconnection.cpp:286
 #, kde-format
 msgid "Error: request timed out"
 msgstr "오류: 요청 시간 초과됨"
 
-#: src/download/httpconnection.cpp:350
+#: src/download/httpconnection.cpp:358
 #, kde-format
 msgid "Redirected without a new location."
 msgstr "새 위치를 지정하지 않고 넘겨주기를 시도했습니다."
 
-#: src/download/webseed.cpp:497
+#: src/download/webseed.cpp:519
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
 msgstr[0] "%1초 동안 사용되지 않음(연결 오류가 너무 많음)"
 
-#: src/interfaces/trackerinterface.cpp:46
+#: src/interfaces/trackerinterface.cpp:47
 #, kde-format
 msgid "OK"
 msgstr "확인"
 
-#: src/interfaces/trackerinterface.cpp:46
+#: src/interfaces/trackerinterface.cpp:47
 #, kde-format
 msgid "Warning: %1"
 msgstr "경고: %1"
 
-#: src/interfaces/trackerinterface.cpp:48
+#: src/interfaces/trackerinterface.cpp:49
 #, kde-format
 msgid "Announcing"
 msgstr "선언 중"
 
-#: src/interfaces/trackerinterface.cpp:50 src/torrent/torrentstats.cpp:87
+#: src/interfaces/trackerinterface.cpp:51 src/torrent/torrentstats.cpp:88
 #, kde-format
 msgid "Error: %1"
 msgstr "오류: %1"
 
-#: src/peer/peerid.cpp:301
+#: src/peer/peerid.cpp:314
 #, kde-format
 msgid "Unknown client"
 msgstr "알 수 없는 클라이언트"
 
-#: src/torrent/torrent.cpp:91 src/torrent/torrent.cpp:133
-#: src/torrent/torrent.cpp:160 src/torrent/torrent.cpp:167
-#: src/torrent/torrent.cpp:174 src/torrent/torrent.cpp:178
-#: src/torrent/torrent.cpp:198 src/torrent/torrent.cpp:261
+#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:141
+#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
+#: src/torrent/torrent.cpp:187 src/torrent/torrent.cpp:192
+#: src/torrent/torrent.cpp:216 src/torrent/torrent.cpp:286
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "토렌트가 잘못되었습니다."
 
-#: src/torrent/torrentcontrol.cpp:251
+#: src/torrent/torrentcontrol.cpp:260
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "디스크에 쓸 수 없습니다. 디스크 공간이 충분합니까?"
 
-#: src/torrent/torrentcontrol.cpp:464
+#: src/torrent/torrentcontrol.cpp:484
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "<b>%1</b>을(를) 불러오는 중 오류 발생:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:474
+#: src/torrent/torrentcontrol.cpp:494
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "%1을(를) 만들 수 없음: %2"
 
-#: src/torrent/torrentcontrol.cpp:487
+#: src/torrent/torrentcontrol.cpp:508
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -326,105 +326,105 @@ msgstr ""
 "이미 토렌트 <b>%1</b>을(를) 다운로드하고 있습니다. 두 토렌트의 트래커 목록을 "
 "합쳤습니다."
 
-#: src/torrent/torrentcontrol.cpp:491
+#: src/torrent/torrentcontrol.cpp:512
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "이미 토렌트 <b>%1</b>을(를) 다운로드하고 있습니다."
 
-#: src/torrent/torrentcreator.cpp:330
+#: src/torrent/torrentcreator.cpp:344
 #, kde-format
 msgid "Cannot create index file: %1"
 msgstr "인덱스 파일을 만들 수 없음: %1"
 
-#: src/torrent/torrentstats.cpp:73
+#: src/torrent/torrentstats.cpp:74
 #, kde-format
 msgid "Not started"
 msgstr "시작되지 않음"
 
-#: src/torrent/torrentstats.cpp:75
+#: src/torrent/torrentstats.cpp:76
 #, kde-format
 msgid "Download completed"
 msgstr "다운로드 완료됨"
 
-#: src/torrent/torrentstats.cpp:77
+#: src/torrent/torrentstats.cpp:78
 #, kde-format
 msgid "Seeding completed"
 msgstr "시드 완료됨"
 
-#: src/torrent/torrentstats.cpp:79
+#: src/torrent/torrentstats.cpp:80
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
 msgstr "시드 중"
 
-#: src/torrent/torrentstats.cpp:81
+#: src/torrent/torrentstats.cpp:82
 #, kde-format
 msgid "Downloading"
 msgstr "다운로드 중"
 
-#: src/torrent/torrentstats.cpp:83
+#: src/torrent/torrentstats.cpp:84
 #, kde-format
 msgid "Stalled"
 msgstr "지연됨"
 
-#: src/torrent/torrentstats.cpp:85
+#: src/torrent/torrentstats.cpp:86
 #, kde-format
 msgid "Stopped"
 msgstr "정지됨"
 
-#: src/torrent/torrentstats.cpp:89
+#: src/torrent/torrentstats.cpp:90
 #, kde-format
 msgid "Allocating diskspace"
 msgstr "디스크 공간 할당 중"
 
-#: src/torrent/torrentstats.cpp:91
+#: src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Queued for seeding"
 msgstr "시드 대기열에 추가됨"
 
-#: src/torrent/torrentstats.cpp:91
+#: src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Queued for downloading"
 msgstr "다운로드 대기열에 추가됨"
 
-#: src/torrent/torrentstats.cpp:95
+#: src/torrent/torrentstats.cpp:96
 #, kde-format
 msgid "Stopped. No space left on device."
 msgstr "정지됨. 장치에 남은 공간이 없습니다."
 
-#: src/torrent/torrentstats.cpp:97
+#: src/torrent/torrentstats.cpp:98
 #, kde-format
 msgid "Paused"
 msgstr "일시 정지됨"
 
-#: src/torrent/torrentstats.cpp:99
+#: src/torrent/torrentstats.cpp:100
 #, kde-format
 msgid "Superseeding"
 msgstr "수퍼시딩"
 
-#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
-#: src/tracker/httptracker.cpp:383
+#: src/tracker/httptracker.cpp:253 src/tracker/httptracker.cpp:269
+#: src/tracker/httptracker.cpp:403
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "트래커에서 잘못된 응답을 받음"
 
-#: src/tracker/httptracker.cpp:253
+#: src/tracker/httptracker.cpp:263
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "트래커에서 잘못된 데이터를 받음"
 
-#: src/tracker/httptracker.cpp:398
+#: src/tracker/httptracker.cpp:418
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "잘못된 트래커 URL"
 
-#: src/tracker/httptracker.cpp:456 src/tracker/udptracker.cpp:314
-#: src/tracker/udptracker.cpp:321
+#: src/tracker/httptracker.cpp:478 src/tracker/udptracker.cpp:327
+#: src/tracker/udptracker.cpp:334
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "트래커 %1 연결 시간 초과됨"
 
-#: src/tracker/udptracker.cpp:342
+#: src/tracker/udptracker.cpp:357
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "호스트 이름 %1을(를) 해석할 수 없음"
@@ -434,17 +434,17 @@ msgstr "호스트 이름 %1을(를) 해석할 수 없음"
 msgid "Operation timed out"
 msgstr "작업 시간 초과됨"
 
-#: src/upnp/upnprouter.cpp:156
+#: src/upnp/upnprouter.cpp:159
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "%1을(를) 다운로드할 수 없음: %2"
 
-#: src/upnp/upnprouter.cpp:166
+#: src/upnp/upnprouter.cpp:169
 #, kde-format
 msgid "Error parsing router description."
 msgstr "라우터 설명을 처리할 수 없습니다."
 
-#: src/upnp/upnprouter.cpp:200
+#: src/upnp/upnprouter.cpp:203
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -453,82 +453,82 @@ msgstr ""
 "포워딩 실패:\n"
 "장치에 WANIPConnection 또는 WANPPPConnection 정보가 없습니다."
 
-#: src/upnp/upnprouter.cpp:279
+#: src/upnp/upnprouter.cpp:283
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "장치 설명에서 포트 포워딩 서비스를 찾을 수 없습니다."
 
-#: src/util/file.cpp:87
+#: src/util/file.cpp:91
 #, kde-format
 msgid "Cannot write to %1: %2"
 msgstr "%1에 쓸 수 없음: %2"
 
-#: src/util/file.cpp:100
+#: src/util/file.cpp:105
 #, kde-format
 msgid "Cannot read from %1"
 msgstr "%1에서 읽을 수 없음"
 
-#: src/util/fileops.cpp:99
+#: src/util/fileops.cpp:100
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "디렉터리 %1을(를) 만들 수 없음"
 
-#: src/util/fileops.cpp:162
+#: src/util/fileops.cpp:167
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "%1을(를) %2(으)로 링크할 수 없음: %3"
 
-#: src/util/fileops.cpp:174
+#: src/util/fileops.cpp:180
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "%1을(를) %2(으)로 이동할 수 없음: %3"
 
-#: src/util/fileops.cpp:185 src/util/fileops.cpp:196
+#: src/util/fileops.cpp:192 src/util/fileops.cpp:204
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "%1을(를) %2(으)로 복사할 수 없음: %3"
 
-#: src/util/fileops.cpp:247
+#: src/util/fileops.cpp:260
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "%1을(를) 삭제할 수 없음: %2"
 
-#: src/util/fileops.cpp:263
+#: src/util/fileops.cpp:278
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "%1을(를) 만들 수 없음: %2"
 
-#: src/util/fileops.cpp:280
+#: src/util/fileops.cpp:296
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "파일 %1의 크기를 계산할 수 없음: %2"
 
-#: src/util/fileops.cpp:296
+#: src/util/fileops.cpp:313
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "파일 크기를 계산할 수 없음: %1"
 
-#: src/util/fileops.cpp:343 src/util/fileops.cpp:356
+#: src/util/fileops.cpp:363 src/util/fileops.cpp:376
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "파일을 확장할 수 없음: %1"
 
-#: src/util/fileops.cpp:382
+#: src/util/fileops.cpp:403
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "파일에서 검색할 수 없음: %1"
 
-#: src/util/fileops.cpp:623
+#: src/util/fileops.cpp:661
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "파일 %1을(를) 열 수 없음: %2"
 
-#: src/util/functions.cpp:238
+#: src/util/functions.cpp:244
 #, kde-format
 msgid "%1/s"
 msgstr "%1/초"
 
-#: src/util/functions.cpp:247
+#: src/util/functions.cpp:253
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
@@ -564,12 +564,12 @@ msgstr "디스크 입출력"
 msgid "µTP"
 msgstr "µTP"
 
-#: src/util/signalcatcher.cpp:62
+#: src/util/signalcatcher.cpp:64
 #, kde-format
 msgid "Error when writing to disk"
 msgstr "디스크에 쓰는 중 오류 발생"
 
-#: src/util/signalcatcher.cpp:62
+#: src/util/signalcatcher.cpp:64
 #, kde-format
 msgid "Error when reading from disk"
 msgstr "디스크에서 읽는 중 오류 발생"

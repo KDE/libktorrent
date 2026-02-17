@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-14 00:43+0000\n"
+"POT-Creation-Date: 2026-02-17 00:44+0000\n"
 "PO-Revision-Date: 2013-02-02 17:29+0100\n"
 "Last-Translator: Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -22,79 +22,79 @@ msgstr ""
 "X-Generator: Lokalize 1.4\n"
 "X-Project-Style: kde\n"
 
-#: src/bcodec/bdecoder.cpp:50
+#: src/bcodec/bdecoder.cpp:51
 #, kde-format
 msgid "Illegal token: %1"
 msgstr "Token ez-baliozkoa: %1"
 
-#: src/bcodec/bdecoder.cpp:86 src/bcodec/bdecoder.cpp:93
+#: src/bcodec/bdecoder.cpp:89 src/bcodec/bdecoder.cpp:96
 #, kde-format
 msgid "Decode error"
 msgstr "Deskodetze-errorea"
 
-#: src/bcodec/bdecoder.cpp:99 src/bcodec/bdecoder.cpp:124
-#: src/bcodec/bdecoder.cpp:147 src/bcodec/bdecoder.cpp:185
+#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:129
+#: src/bcodec/bdecoder.cpp:152 src/bcodec/bdecoder.cpp:191
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Ustekabeko sarrera-amaiera"
 
-#: src/bcodec/bdecoder.cpp:164 src/bcodec/bdecoder.cpp:204
+#: src/bcodec/bdecoder.cpp:169 src/bcodec/bdecoder.cpp:210
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "%1 ezin da osoko zenbaki bihurtu"
 
-#: src/bcodec/bdecoder.cpp:209
+#: src/bcodec/bdecoder.cpp:215
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Torrent-a osatu gabe dago."
 
-#: src/datachecker/datacheckerjob.cpp:71
+#: src/datachecker/datacheckerjob.cpp:74
 #, kde-format
 msgid "Waiting for other data checks to finish"
 msgstr "Beste datu-egiaztapen batzuk amaitzeko zain"
 
-#: src/datachecker/datacheckerjob.cpp:77 src/torrent/torrentstats.cpp:93
+#: src/datachecker/datacheckerjob.cpp:81 src/torrent/torrentstats.cpp:94
 #, kde-format
 msgid "Checking data"
 msgstr "Datuak egiaztatzen"
 
-#: src/datachecker/datacheckerjob.cpp:124
+#: src/datachecker/datacheckerjob.cpp:129
 #, kde-format
 msgid "Checking Data"
 msgstr "Datuak egiaztatzen"
 
-#: src/datachecker/multidatachecker.cpp:185
-#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:625
-#: src/diskio/multifilecache.cpp:660 src/torrent/torrentcreator.cpp:109
-#: src/torrent/torrentcreator.cpp:230 src/torrent/torrentcreator.cpp:262
+#: src/datachecker/multidatachecker.cpp:202
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:664
+#: src/diskio/multifilecache.cpp:700 src/torrent/torrentcreator.cpp:111
+#: src/torrent/torrentcreator.cpp:236 src/torrent/torrentcreator.cpp:269
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "%1 fitxategia ezin da ireki: %2"
 
-#: src/diskio/cache.cpp:172 src/diskio/multifilecache.cpp:100
-#: src/diskio/singlefilecache.cpp:72
+#: src/diskio/cache.cpp:181 src/diskio/multifilecache.cpp:104
+#: src/diskio/singlefilecache.cpp:74
 #, kde-format
 msgid "Failed to create %1: %2"
 msgstr "Huts egin du %1 sortzean: %2"
 
-#: src/diskio/cachefile.cpp:86 src/util/fileops.cpp:321
-#: src/util/fileops.cpp:364
+#: src/diskio/cachefile.cpp:88 src/util/fileops.cpp:339
+#: src/util/fileops.cpp:384
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Ezin da %1 ireki : %2"
 
-#: src/diskio/cachefile.cpp:113 src/diskio/cachefile.cpp:202
-#: src/diskio/cachefile.cpp:361 src/diskio/cachefile.cpp:420
+#: src/diskio/cachefile.cpp:116 src/diskio/cachefile.cpp:205
+#: src/diskio/cachefile.cpp:375 src/diskio/cachefile.cpp:440
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "%1 ezin da idazteko ireki: fitxategi-sistema irakurtzeko soilik"
 
-#: src/diskio/cachefile.cpp:119 src/diskio/cachefile.cpp:366
+#: src/diskio/cachefile.cpp:122 src/diskio/cachefile.cpp:381
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "%1 gehienezko neurritik gora idaztea saiatzen"
 
-#: src/diskio/cachefile.cpp:207
+#: src/diskio/cachefile.cpp:211
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
@@ -102,37 +102,37 @@ msgstr ""
 "%1 fitxategia ezin da zabaldu: fitxategia gehienezko neurritik gora "
 "handitzea saiatzen"
 
-#: src/diskio/cachefile.cpp:211
+#: src/diskio/cachefile.cpp:215
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "%1 fitxategia ezin da zabaldu: %2"
 
-#: src/diskio/cachefile.cpp:329
+#: src/diskio/cachefile.cpp:340
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "Errorea: %1 fitxategiaren amaieratik harago irakurtzen"
 
-#: src/diskio/cachefile.cpp:334 src/diskio/cachefile.cpp:376
+#: src/diskio/cachefile.cpp:345 src/diskio/cachefile.cpp:391
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "Huts egin du %1 fitxategia bilatzean: %2"
 
-#: src/diskio/cachefile.cpp:341
+#: src/diskio/cachefile.cpp:354
 #, kde-format
 msgid "Error reading from %1"
 msgstr "Errorea gertatu da %1(e)tik irakurtzean"
 
-#: src/diskio/cachefile.cpp:379
+#: src/diskio/cachefile.cpp:395
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "Huts egin du %1 fitxategian idaztean: %2"
 
-#: src/diskio/cachefile.cpp:437
+#: src/diskio/cachefile.cpp:457
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Diskoko lekua ezin da aurretiaz esleitu: %1"
 
-#: src/diskio/chunkmanager.cpp:839 src/diskio/chunkmanager.cpp:862
+#: src/diskio/chunkmanager.cpp:871 src/diskio/chunkmanager.cpp:895
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "%1 indize-fitxategia ezin da ireki: %2"
@@ -142,63 +142,63 @@ msgstr "%1 indize-fitxategia ezin da ireki: %2"
 msgid "Cannot create file %1: %2"
 msgstr "%1 fitxategia ezin da sortu: %2"
 
-#: src/diskio/dndfile.cpp:118
+#: src/diskio/dndfile.cpp:121
 #, kde-format
 msgid "Failed to write first chunk to DND file: %1"
 msgstr "Huts egin du lehen zatia DND fitxategian idaztean: %1"
 
-#: src/diskio/dndfile.cpp:133
+#: src/diskio/dndfile.cpp:136
 #, kde-format
 msgid "Failed to write last chunk to DND file: %1"
 msgstr "Huts egin du azken zatia DND fitxategian idaztean: %1"
 
-#: src/diskio/movedatafilesjob.cpp:115
+#: src/diskio/movedatafilesjob.cpp:119
 #, kde-format
 msgid "Waiting for other move jobs to finish"
 msgstr "Beste eramate-lan batzuk amaitzeko zain"
 
-#: src/diskio/movedatafilesjob.cpp:116 src/diskio/movedatafilesjob.cpp:152
+#: src/diskio/movedatafilesjob.cpp:120 src/diskio/movedatafilesjob.cpp:156
 #, kde-format
 msgctxt "The source of a file operation"
 msgid "Source"
 msgstr "Iturburua"
 
-#: src/diskio/movedatafilesjob.cpp:117 src/diskio/movedatafilesjob.cpp:153
+#: src/diskio/movedatafilesjob.cpp:121 src/diskio/movedatafilesjob.cpp:157
 #, kde-format
 msgctxt "The destination of a file operation"
 msgid "Destination"
 msgstr "Helburua"
 
-#: src/diskio/movedatafilesjob.cpp:151
+#: src/diskio/movedatafilesjob.cpp:155
 #, kde-format
 msgctxt "@title job"
 msgid "Moving"
 msgstr "Eramaten"
 
-#: src/diskio/multifilecache.cpp:75 src/diskio/singlefilecache.cpp:62
+#: src/diskio/multifilecache.cpp:77 src/diskio/singlefilecache.cpp:63
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr "Huts egin du %1 irekitzean: %2"
 
-#: src/diskio/piecedata.cpp:53 src/diskio/piecedata.cpp:91
+#: src/diskio/piecedata.cpp:56 src/diskio/piecedata.cpp:98
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
 msgstr "Ezin izan da idatzi irakurtzeko soilik mapatutako zati batean"
 
-#: src/download/chunkdownload.cpp:341
+#: src/download/chunkdownload.cpp:355
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
 msgstr[0] "Pare 1"
 msgstr[1] "%1 pare"
 
-#: src/download/downloader.cpp:691
+#: src/download/downloader.cpp:734
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
 msgstr "Desgaituta, web-hazia eta torrent-a bat ez datozelako"
 
 #: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
-#: src/download/webseed.cpp:82
+#: src/download/webseed.cpp:84
 #, kde-format
 msgid "Not connected"
 msgstr "Konektatu gabe"
@@ -218,7 +218,7 @@ msgstr "Ez dago nahikoa sistema-baliabide erabilgarri"
 msgid "Resolving hostname %1"
 msgstr "%1 ostalari-izena ebazten"
 
-#: src/download/httpconnection.cpp:125 src/download/webseed.cpp:310
+#: src/download/httpconnection.cpp:125 src/download/webseed.cpp:324
 #, kde-format
 msgid "Connection closed"
 msgstr "Konexioa itxi da"
@@ -228,102 +228,102 @@ msgstr "Konexioa itxi da"
 msgid "Error: request failed: %1"
 msgstr "Errorea: eskaerak huts egin du: %1"
 
-#: src/download/httpconnection.cpp:153 src/download/httpconnection.cpp:180
+#: src/download/httpconnection.cpp:154 src/download/httpconnection.cpp:181
 #, kde-format
 msgid "Connected"
 msgstr "Konektatuta"
 
-#: src/download/httpconnection.cpp:161
+#: src/download/httpconnection.cpp:162
 #, kde-format
 msgid "Error: Failed to connect to webseed"
 msgstr "Errorea: huts egin du web-hazira konektatzean"
 
-#: src/download/httpconnection.cpp:185
+#: src/download/httpconnection.cpp:186
 #, kde-format
 msgid "Connecting"
 msgstr "Konektatzen"
 
-#: src/download/httpconnection.cpp:194
+#: src/download/httpconnection.cpp:195
 #, kde-format
 msgid "Failed to connect to webseed"
 msgstr "Huts egin du web-hazira konektatzean"
 
-#: src/download/httpconnection.cpp:199
+#: src/download/httpconnection.cpp:200
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
 msgstr "Huts egin du web-haziaren ostalari-izena ebaztean"
 
-#: src/download/httpconnection.cpp:270
+#: src/download/httpconnection.cpp:276
 #, kde-format
 msgid "Error: failed to connect, server not responding"
 msgstr "Errorea: huts egin du konektatzean, zerbitzariak ez du erantzuten"
 
-#: src/download/httpconnection.cpp:280
+#: src/download/httpconnection.cpp:286
 #, kde-format
 msgid "Error: request timed out"
 msgstr "Errorea: eskaerak denbora-muga gainditu du"
 
-#: src/download/httpconnection.cpp:350
+#: src/download/httpconnection.cpp:358
 #, kde-format
 msgid "Redirected without a new location."
 msgstr "Kokaleku berririk gabe birbideratu da."
 
-#: src/download/webseed.cpp:497
+#: src/download/webseed.cpp:519
 #, kde-format
 msgid "Unused for %1 second (Too many connection failures)"
 msgid_plural "Unused for %1 seconds (Too many connection failures)"
 msgstr[0] "Ez da erabili segundu 1ean (konexio-hutsegite gehiegi)"
 msgstr[1] "Ez da erabili %1 segunduan (konexio-hutsegite gehiegi)"
 
-#: src/interfaces/trackerinterface.cpp:46
+#: src/interfaces/trackerinterface.cpp:47
 #, kde-format
 msgid "OK"
 msgstr "Ados"
 
-#: src/interfaces/trackerinterface.cpp:46
+#: src/interfaces/trackerinterface.cpp:47
 #, kde-format
 msgid "Warning: %1"
 msgstr "Abisua: %1"
 
-#: src/interfaces/trackerinterface.cpp:48
+#: src/interfaces/trackerinterface.cpp:49
 #, kde-format
 msgid "Announcing"
 msgstr "Iragartzen"
 
-#: src/interfaces/trackerinterface.cpp:50 src/torrent/torrentstats.cpp:87
+#: src/interfaces/trackerinterface.cpp:51 src/torrent/torrentstats.cpp:88
 #, kde-format
 msgid "Error: %1"
 msgstr "Errorea: %1"
 
-#: src/peer/peerid.cpp:301
+#: src/peer/peerid.cpp:314
 #, kde-format
 msgid "Unknown client"
 msgstr "Bezero ezezaguna"
 
-#: src/torrent/torrent.cpp:91 src/torrent/torrent.cpp:133
-#: src/torrent/torrent.cpp:160 src/torrent/torrent.cpp:167
-#: src/torrent/torrent.cpp:174 src/torrent/torrent.cpp:178
-#: src/torrent/torrent.cpp:198 src/torrent/torrent.cpp:261
+#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:141
+#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
+#: src/torrent/torrent.cpp:187 src/torrent/torrent.cpp:192
+#: src/torrent/torrent.cpp:216 src/torrent/torrent.cpp:286
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Torrent hondatua."
 
-#: src/torrent/torrentcontrol.cpp:251
+#: src/torrent/torrentcontrol.cpp:260
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Errorea diskora idaztean, diskoan lekurik gelditzen da?"
 
-#: src/torrent/torrentcontrol.cpp:464
+#: src/torrent/torrentcontrol.cpp:484
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "Errore bat gertatu da <b>%1</b> kargatzean:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:474
+#: src/torrent/torrentcontrol.cpp:494
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Ezin da %1 sortu: %2"
 
-#: src/torrent/torrentcontrol.cpp:487
+#: src/torrent/torrentcontrol.cpp:508
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -332,105 +332,105 @@ msgstr ""
 "Dagoeneko <b>%1</b> torrent-a deskargatzen ari zara. Bi torrent-en "
 "kontrolatzaile-zerrendak fusionatu egin dira."
 
-#: src/torrent/torrentcontrol.cpp:491
+#: src/torrent/torrentcontrol.cpp:512
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Dagoeneko <b>%1</b> torrent-a deskargatzen ari zara."
 
-#: src/torrent/torrentcreator.cpp:330
+#: src/torrent/torrentcreator.cpp:344
 #, kde-format
 msgid "Cannot create index file: %1"
 msgstr "Ezin da sortu indize-fitxategia: %1"
 
-#: src/torrent/torrentstats.cpp:73
+#: src/torrent/torrentstats.cpp:74
 #, kde-format
 msgid "Not started"
 msgstr "Abiarazi gabe"
 
-#: src/torrent/torrentstats.cpp:75
+#: src/torrent/torrentstats.cpp:76
 #, kde-format
 msgid "Download completed"
 msgstr "Deskarga osatuta"
 
-#: src/torrent/torrentstats.cpp:77
+#: src/torrent/torrentstats.cpp:78
 #, kde-format
 msgid "Seeding completed"
 msgstr "Ereitea osatuta"
 
-#: src/torrent/torrentstats.cpp:79
+#: src/torrent/torrentstats.cpp:80
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
 msgstr "Ereiten"
 
-#: src/torrent/torrentstats.cpp:81
+#: src/torrent/torrentstats.cpp:82
 #, kde-format
 msgid "Downloading"
 msgstr "Deskargatzen"
 
-#: src/torrent/torrentstats.cpp:83
+#: src/torrent/torrentstats.cpp:84
 #, kde-format
 msgid "Stalled"
 msgstr "Trabatuta"
 
-#: src/torrent/torrentstats.cpp:85
+#: src/torrent/torrentstats.cpp:86
 #, kde-format
 msgid "Stopped"
 msgstr "Geldituta"
 
-#: src/torrent/torrentstats.cpp:89
+#: src/torrent/torrentstats.cpp:90
 #, kde-format
 msgid "Allocating diskspace"
 msgstr "Diskoko lekua esleitzen"
 
-#: src/torrent/torrentstats.cpp:91
+#: src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Queued for seeding"
 msgstr "Ereiteko ilaran"
 
-#: src/torrent/torrentstats.cpp:91
+#: src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Queued for downloading"
 msgstr "Deskargatzeko ilaran"
 
-#: src/torrent/torrentstats.cpp:95
+#: src/torrent/torrentstats.cpp:96
 #, kde-format
 msgid "Stopped. No space left on device."
 msgstr "Geldituta. Gailuan ez da lekurik geratzen."
 
-#: src/torrent/torrentstats.cpp:97
+#: src/torrent/torrentstats.cpp:98
 #, kde-format
 msgid "Paused"
 msgstr "Pausarazita"
 
-#: src/torrent/torrentstats.cpp:99
+#: src/torrent/torrentstats.cpp:100
 #, kde-format
 msgid "Superseeding"
 msgstr "Superereiten"
 
-#: src/tracker/httptracker.cpp:243 src/tracker/httptracker.cpp:259
-#: src/tracker/httptracker.cpp:383
+#: src/tracker/httptracker.cpp:253 src/tracker/httptracker.cpp:269
+#: src/tracker/httptracker.cpp:403
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Kontrolatzailearen erantzun baliogabea"
 
-#: src/tracker/httptracker.cpp:253
+#: src/tracker/httptracker.cpp:263
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Datu baliogabeak kontrolatzailearengandik"
 
-#: src/tracker/httptracker.cpp:398
+#: src/tracker/httptracker.cpp:418
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Kontrolatzaile-URL baliogabea"
 
-#: src/tracker/httptracker.cpp:456 src/tracker/udptracker.cpp:314
-#: src/tracker/udptracker.cpp:321
+#: src/tracker/httptracker.cpp:478 src/tracker/udptracker.cpp:327
+#: src/tracker/udptracker.cpp:334
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "Denbora-mugara iritsi da %1 kontrolatzailea kontaktatzean"
 
-#: src/tracker/udptracker.cpp:342
+#: src/tracker/udptracker.cpp:357
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "Ezin da ebatzi %1 ostalari-izena"
@@ -440,17 +440,17 @@ msgstr "Ezin da ebatzi %1 ostalari-izena"
 msgid "Operation timed out"
 msgstr "Eragiketaren denbora-muga gainditu da"
 
-#: src/upnp/upnprouter.cpp:156
+#: src/upnp/upnprouter.cpp:159
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "Huts egin du %1 deskargatzean: %2"
 
-#: src/upnp/upnprouter.cpp:166
+#: src/upnp/upnprouter.cpp:169
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Errorea gertatu da bideratzailearen deskribapena analizatzean."
 
-#: src/upnp/upnprouter.cpp:200
+#: src/upnp/upnprouter.cpp:203
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -459,83 +459,83 @@ msgstr ""
 "Birbideratzeak huts egin du:\n"
 "Gailuak ez du ez WANIPConnection-ik ez WANPPPConnection-ik."
 
-#: src/upnp/upnprouter.cpp:279
+#: src/upnp/upnprouter.cpp:283
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr ""
 "Ezin da aurkitu ataka birbideratzeko zerbitzua gailuaren deskribapenean."
 
-#: src/util/file.cpp:87
+#: src/util/file.cpp:91
 #, kde-format
 msgid "Cannot write to %1: %2"
 msgstr "Ezin da %1(e)(a)n idatzi: %2"
 
-#: src/util/file.cpp:100
+#: src/util/file.cpp:105
 #, kde-format
 msgid "Cannot read from %1"
 msgstr "Ezin da %1 irakurri"
 
-#: src/util/fileops.cpp:99
+#: src/util/fileops.cpp:100
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "Ezin da %1 direktorioa sortu"
 
-#: src/util/fileops.cpp:162
+#: src/util/fileops.cpp:167
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "Ezin da esteka sinbolikoa sortu %1(e)tik %2(e)ra: %3"
 
-#: src/util/fileops.cpp:174
+#: src/util/fileops.cpp:180
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "%1 ezin da %2(e)ra eraman: %3"
 
-#: src/util/fileops.cpp:185 src/util/fileops.cpp:196
+#: src/util/fileops.cpp:192 src/util/fileops.cpp:204
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "%1 ezin da %2(e)(a)n kopiatu: %3"
 
-#: src/util/fileops.cpp:247
+#: src/util/fileops.cpp:260
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Ezin da %1 ezabatu: %2"
 
-#: src/util/fileops.cpp:263
+#: src/util/fileops.cpp:278
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Ezin da %1 sortu: %2"
 
-#: src/util/fileops.cpp:280
+#: src/util/fileops.cpp:296
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Ezin da kalkulatu %1(r)en fitxategi-neurria: %2"
 
-#: src/util/fileops.cpp:296
+#: src/util/fileops.cpp:313
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Ezin da kalkulatu fitxategi-neurria: %1"
 
-#: src/util/fileops.cpp:343 src/util/fileops.cpp:356
+#: src/util/fileops.cpp:363 src/util/fileops.cpp:376
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Fitxategia ezin da zabaldu: %1"
 
-#: src/util/fileops.cpp:382
+#: src/util/fileops.cpp:403
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Ezin da fitxategian bilatu: %1"
 
-#: src/util/fileops.cpp:623
+#: src/util/fileops.cpp:661
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Ezin da %1 fitxategia ireki : %2"
 
-#: src/util/functions.cpp:238
+#: src/util/functions.cpp:244
 #, kde-format
 msgid "%1/s"
 msgstr "%1/s"
 
-#: src/util/functions.cpp:247
+#: src/util/functions.cpp:253
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
@@ -572,12 +572,12 @@ msgstr "Diskoaren sarrera/irteera"
 msgid "µTP"
 msgstr "µTP"
 
-#: src/util/signalcatcher.cpp:62
+#: src/util/signalcatcher.cpp:64
 #, kde-format
 msgid "Error when writing to disk"
 msgstr "Errorea gertatu da diskora idaztean."
 
-#: src/util/signalcatcher.cpp:62
+#: src/util/signalcatcher.cpp:64
 #, kde-format
 msgid "Error when reading from disk"
 msgstr "Errorea diskotik irakurtzerakoan"
