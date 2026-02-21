@@ -97,19 +97,37 @@ private Q_SLOTS:
         QVERIFY(check(data2 + 4, 10));
     }
 
+    void testChunked_data()
+    {
+        QTest::addColumn<bt::Uint32>("chunk_size");
+
+        QTest::addRow("7") << 7u;
+        QTest::addRow("1") << 1u;
+    }
+
     void testChunked()
     {
+        QFETCH(bt::Uint32, chunk_size);
+
         reset();
 
         bt::Uint8 data[] = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
         bt::PacketReader pr(1024);
 
-        pr.onDataReady(data, 7);
-        QVERIFY(pr.ok());
-        pr.update(*this);
-        QVERIFY(received_packet_size == 0);
+        const auto num_full_chunks = std::size(data) / chunk_size;
+        QCOMPARE_GT(num_full_chunks, 1); // Ensure data is actually chunked
 
-        pr.onDataReady(data + 7, 7);
+        size_t num_bytes_read = 0;
+        for (size_t i = 0; i < (num_full_chunks - 1); ++i) {
+            pr.onDataReady(data + num_bytes_read, chunk_size);
+            QVERIFY(pr.ok());
+            pr.update(*this);
+            QVERIFY(received_packet_size == 0);
+            num_bytes_read += chunk_size;
+        }
+
+        const auto remaining_data_len = std::size(data) - num_bytes_read;
+        pr.onDataReady(data + num_bytes_read, remaining_data_len);
         QVERIFY(pr.ok());
         pr.update(*this);
         QVERIFY(check(data + 4, 10));
@@ -145,6 +163,27 @@ private Q_SLOTS:
 
         pr.update(*this);
         QVERIFY(received_packet_size == 0);
+
+        // Subsequent attempts to write data should also fail
+        pr.onDataReady(data, 1);
+        QVERIFY(!pr.ok());
+
+        pr.update(*this);
+        QVERIFY(received_packet_size == 0);
+    }
+
+    void testPacketLengthZero()
+    {
+        reset();
+
+        std::array<bt::Uint8, 10> data = {0, 0, 0, 0, 0, 0, 0, 2, 0xEE, 0xEE};
+        bt::PacketReader pr(1024);
+
+        pr.onDataReady(data.data(), data.size());
+        QVERIFY(pr.ok());
+
+        pr.update(*this);
+        QVERIFY(received_packet_size == 2);
     }
 
     void testUnicodeLiteral()
