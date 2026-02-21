@@ -10,6 +10,7 @@
 #include <boost/smart_ptr/intrusive_ptr.hpp>
 #include <boost/smart_ptr/intrusive_ref_counter.hpp>
 #include <cstddef>
+#include <ktorrent_export.h>
 #include <new>
 #include <util/constants.h>
 
@@ -31,7 +32,7 @@ class Peer;
  *
  * \brief Packet of data, which gets sent to a Peer.
  */
-class Packet : public boost::intrusive_ref_counter<Packet>
+class KTORRENT_EXPORT Packet : public boost::intrusive_ref_counter<Packet>
 {
 public:
     using Ptr = boost::intrusive_ptr<Packet>;
