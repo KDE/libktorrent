@@ -10,6 +10,7 @@
 #include <deque>
 #include <download/packet.h>
 #include <download/request.h>
+#include <ktorrent_export.h>
 #include <net/socket.h>
 #include <net/trafficshapedsocket.h>
 
@@ -21,7 +22,7 @@ namespace net
  *
  * \brief Extends the TrafficShapedSocket with outbound bittorrent packet queues.
  */
-class PacketSocket : public TrafficShapedSocket
+class KTORRENT_EXPORT PacketSocket : public TrafficShapedSocket
 {
 public:
     PacketSocket(std::unique_ptr<SocketDevice> sock);
