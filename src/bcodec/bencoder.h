@@ -52,11 +52,12 @@ public:
 /*!
  * \headerfile bcodec/bencoder.h
  * \brief Writes the output of a BEncoder to a QByteArray.
+ *
+ * The encoder will write to the beginning of the array, and any pre-existing contents will be overwritten.
  */
 class KTORRENT_EXPORT BEncoderBufferOutput : public BEncoderOutput
 {
     QByteArray &data;
-    Uint32 ptr;
 
 public:
     BEncoderBufferOutput(QByteArray &data);

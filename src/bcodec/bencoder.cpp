@@ -27,19 +27,15 @@ void BEncoderFileOutput::write(const char *str, Uint32 len)
 
 BEncoderBufferOutput::BEncoderBufferOutput(QByteArray &data)
     : data(data)
-    , ptr(0)
 {
+    // Using resize here since clear() will destroy the array's internal buffer and create a new one. resize() just sets the size property to 0, re-using the
+    // old buffer.
+    data.resize(0);
 }
 
 void BEncoderBufferOutput::write(const char *str, Uint32 len)
 {
-    if (ptr + len > (Uint32)data.size()) {
-        data.resize(ptr + len);
-    }
-
-    for (Uint32 i = 0; i < len; i++) {
-        data[ptr++] = str[i];
-    }
+    data.append(str, len);
 }
 
 ////////////////////////////////////
