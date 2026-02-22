@@ -83,12 +83,13 @@ private Q_SLOTS:
         QByteArray buffer;
         bt::BEncoder encoder(std::make_unique<bt::BEncoderBufferOutput>(buffer));
         encoder.beginDict();
-        encoder.write("cow");
-        encoder.write("moo");
+        // Test key-value write function
+        encoder.write("cow", "moo");
+        // Test writing key and value separately
         encoder.write("spam");
         encoder.write("eggs");
-        encoder.write("kde2026");
-        encoder.write(30u);
+        // Test with non-string
+        encoder.write("kde2026", 30u);
         encoder.end();
         QCOMPARE(buffer, "d3:cow3:moo4:spam4:eggs7:kde2026i30ee");
     }

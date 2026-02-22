@@ -48,14 +48,11 @@ void AnnounceRsp::encode(QByteArray &arr) const
         enc.write(RSP);
         enc.beginDict();
         {
-            enc.write("id");
-            enc.write(id);
+            enc.write("id", id);
         }
         enc.end();
-        enc.write(TID);
-        enc.write(mtid);
-        enc.write(TYP);
-        enc.write(RSP);
+        enc.write(TID, mtid);
+        enc.write(TYP, RSP);
     }
     enc.end();
 }

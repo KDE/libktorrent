@@ -57,20 +57,16 @@ void GetPeersRsp::encode(QByteArray &arr) const
         enc.write(RSP);
         enc.beginDict();
         {
-            enc.write("id");
-            enc.write(id);
+            enc.write("id", id);
             if (nodes.size() > 0) {
-                enc.write("nodes");
-                enc.write(nodes);
+                enc.write("nodes", nodes);
             }
 
             if (nodes6.size() > 0) {
-                enc.write("nodes6");
-                enc.write(nodes6);
+                enc.write("nodes6", nodes6);
             }
 
-            enc.write("token");
-            enc.write(token);
+            enc.write("token", token);
 
             if (items.size() > 0) {
                 enc.write("values");
@@ -87,10 +83,8 @@ void GetPeersRsp::encode(QByteArray &arr) const
             }
         }
         enc.end();
-        enc.write(TID);
-        enc.write(mtid);
-        enc.write(TYP);
-        enc.write(RSP);
+        enc.write(TID, mtid);
+        enc.write(TYP, RSP);
     }
     enc.end();
 }

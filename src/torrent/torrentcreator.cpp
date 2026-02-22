@@ -135,13 +135,10 @@ void TorrentCreator::saveTorrent(const QString &url)
     }
 
     if (comments.length() > 0) {
-        enc.write("comment");
-        enc.write(comments.toUtf8());
+        enc.write("comment", comments.toUtf8());
     }
-    enc.write("created by");
-    enc.write(bt::GetVersionString().toLatin1());
-    enc.write("creation date");
-    enc.write((Uint64)time(nullptr));
+    enc.write("created by", bt::GetVersionString().toLatin1());
+    enc.write("creation date", (Uint64)time(nullptr));
     enc.write("info");
     saveInfo(enc);
     // save the nodes list after the info hash, keys must be sorted !
@@ -160,8 +157,7 @@ void TorrentCreator::saveTorrent(const QString &url)
     }
 
     if (webseeds.count() == 1) {
-        enc.write("url-list");
-        enc.write(webseeds[0].toDisplayString().toUtf8());
+        enc.write("url-list", webseeds[0].toDisplayString().toUtf8());
     } else if (webseeds.count() > 0) {
         enc.write("url-list");
         enc.beginList();
@@ -188,18 +184,14 @@ void TorrentCreator::saveInfo(BEncoder &enc)
 
         enc.end();
     } else {
-        enc.write("length");
-        enc.write(bt::FileSize(target));
+        enc.write("length", bt::FileSize(target));
     }
-    enc.write("name");
-    enc.write(name.toUtf8());
-    enc.write("piece length");
-    enc.write((Uint64)chunk_size);
+    enc.write("name", name.toUtf8());
+    enc.write("piece length", (Uint64)chunk_size);
     enc.write("pieces");
     savePieces(enc);
     if (priv) {
-        enc.write("private");
-        enc.write((Uint64)1);
+        enc.write("private", (Uint64)1);
     }
     enc.end();
 }
@@ -207,8 +199,7 @@ void TorrentCreator::saveInfo(BEncoder &enc)
 void TorrentCreator::saveFile(BEncoder &enc, const TorrentFile &file)
 {
     enc.beginDict();
-    enc.write("length");
-    enc.write(file.getSize());
+    enc.write("length", file.getSize());
     enc.write("path");
     enc.beginList();
     const QStringList sl = file.getPath().split(bt::DirSeparator());

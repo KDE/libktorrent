@@ -667,25 +667,19 @@ void Peer::sendExtProtHandshake(Uint16 port, Uint32 metadata_size, bool partial_
     enc.write("m");
     // supported messages
     enc.beginDict();
-    enc.write("ut_pex");
-    enc.write(pex_allowed ? UT_PEX_ID : 0);
-    enc.write("ut_metadata");
-    enc.write(UT_METADATA_ID);
+    enc.write("ut_pex", pex_allowed ? UT_PEX_ID : 0);
+    enc.write("ut_metadata", UT_METADATA_ID);
     enc.end();
     if (port > 0) {
-        enc.write("p");
-        enc.write((Uint32)port);
+        enc.write("p", (Uint32)port);
     }
-    enc.write("reqq");
-    enc.write((bt::Uint32)250);
+    enc.write("reqq", (bt::Uint32)250);
     if (metadata_size) {
-        enc.write("metadata_size");
-        enc.write(metadata_size);
+        enc.write("metadata_size", metadata_size);
     }
 
     enc.write("upload_only", partial_seed);
-    enc.write("v");
-    enc.write(bt::GetVersionString().toLatin1());
+    enc.write("v", bt::GetVersionString().toLatin1());
     enc.end();
     sendExtProtMsg(0, arr);
 }

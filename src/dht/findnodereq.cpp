@@ -49,18 +49,13 @@ void FindNodeReq::encode(QByteArray &arr) const
         enc.write(ARG);
         enc.beginDict();
         {
-            enc.write("id");
-            enc.write(id);
-            enc.write("target");
-            enc.write(target);
+            enc.write("id", id);
+            enc.write("target", target);
         }
         enc.end();
-        enc.write(REQ);
-        enc.write("find_node");
-        enc.write(TID);
-        enc.write(mtid);
-        enc.write(TYP);
-        enc.write(REQ);
+        enc.write(REQ, "find_node");
+        enc.write(TID, mtid);
+        enc.write(TYP, REQ);
     }
     enc.end();
 }

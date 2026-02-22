@@ -46,16 +46,12 @@ void PingReq::encode(QByteArray &arr) const
         enc.write(ARG);
         enc.beginDict();
         {
-            enc.write("id");
-            enc.write(id);
+            enc.write("id", id);
         }
         enc.end();
-        enc.write(REQ);
-        enc.write("ping");
-        enc.write(TID);
-        enc.write(mtid);
-        enc.write(TYP);
-        enc.write(REQ);
+        enc.write(REQ, "ping");
+        enc.write(TID, mtid);
+        enc.write(TYP, REQ);
     }
     enc.end();
 }

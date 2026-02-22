@@ -104,10 +104,8 @@ void UTMetaData::sendReject(int piece)
     QByteArray data;
     BEncoder enc(std::make_unique<BEncoderBufferOutput>(data));
     enc.beginDict();
-    enc.write("msg_type");
-    enc.write((bt::Uint32)2);
-    enc.write("piece");
-    enc.write((bt::Uint32)piece);
+    enc.write("msg_type", (bt::Uint32)2);
+    enc.write("piece", (bt::Uint32)piece);
     enc.end();
     sendPacket(data);
 }
@@ -118,12 +116,9 @@ void UTMetaData::sendData(int piece, int total_size, QByteArrayView data)
     QByteArray tmp;
     BEncoder enc(std::make_unique<BEncoderBufferOutput>(tmp));
     enc.beginDict();
-    enc.write("msg_type");
-    enc.write((bt::Uint32)1);
-    enc.write("piece");
-    enc.write((bt::Uint32)piece);
-    enc.write("total_size");
-    enc.write((bt::Uint32)total_size);
+    enc.write("msg_type", (bt::Uint32)1);
+    enc.write("piece", (bt::Uint32)piece);
+    enc.write("total_size", (bt::Uint32)total_size);
     enc.end();
     tmp.append(data);
     sendPacket(tmp);
