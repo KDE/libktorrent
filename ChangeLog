@@ -1,3 +1,70 @@
+Changes in 26.04:
+- Fixed the header file include statements in the API reference docs
+- Renamed the function FileNameToLong to FileNameTooLong
+- Ported the Array class to be implicitly convertible to std::span and QByteArrayView. It is no longer implicitly convertible to char *.
+- Modernized the codebase by converting typedef's to type aliases and adding [[nodiscard]] attributes to const functions
+- Fixed minor memory leaks in SuperSeeder and the UTP server
+- Require C++20
+- ConnectionLimit tokens are now given as unique_ptr instead of QSharedPointer
+
+Changes in 25.12.0:
+- Fixed a crash when killing the DataCheckerJob
+- Cleaned up the brief line for class documentation
+- Implemented move semantics for File and deleted its unsafe copy constructor
+- Fixed superseeding to prefer sending the rarest pieces to the swarm
+- Removed some enums, made some enums private, and ported an enum to QFlags
+- Modernized a few things with unique_ptr and move semantics
+
+Changes in 25.08.1:
+- Fixed the parsing of the UDP tracker scrape response
+
+Changes in 25.08.0:
+- Removed `using <typename>` directives in header files to avoid namespace pollution
+- BEncoder now takes a unique_ptr to its output class
+- BDecoder now returns a unique_ptr to the root node
+- Removed the broken custom doxygen style
+- Optimized packet allocations
+- Optimized cache file
+- Save the last download/upload activity time to the stats file
+- Fixed building the docs and fixed some minor issues with documented function parameters
+- Added an OpenSSL backend to the RC4 encryptor
+
+Changes in 25.04.0:
+- Send and receive IPv6 peers via peer exchange
+
+Changes in 24.12.0:
+- Allow loading HTTPS webseeds
+- Re-added support for Windows
+
+Changes in 24.05.0:
+- Fixed two issues the UPnP port forwarding
+- Implement changes to allow renaming files in KTorrent
+
+Changes in 24.02.0:
+- Fixed HTTP webseeds
+- Switched to only support Qt6
+- Changed the crypto backend for SHA1 hash from QCA to QCryptographicHash
+
+Changes in 22.08.0:
+- Added initial build support for Qt6
+
+Changes in 22.04.0:
+- Limit the number of pieces a peer can request at one time to 512 pieces and 8 MiB per piece. This is to prevent excessive RAM usage when confronted by bad actors
+
+Changes in 21.12.0:
+- Fixes to DHT to prevent unbounded memory usage
+- Fixed UPnP port forwarding (404135)
+- Handle URLs without a host and port in UPnP
+
+Changes in 21.08.0:
+- Split the PREVIEW_PRIORITY level of the chunk selector priority enum to allow setting first, normal, and last priority previews
+
+Changes in 21.04.0:
+- Increased the maximum torrent metadata size for the ut_metadata extension to allow downloading large torrents via a magnet link
+
+Changes in 20.12.0:
+- libktorrent is now a part of KDE Gear and will follow its version scheme
+
 Changes in 2.0.1:
 - Fix ui lags and hangs when downloading to ntfs partition
 
