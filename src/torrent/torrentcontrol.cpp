@@ -51,6 +51,7 @@
 #include <util/fileops.h>
 #include <util/functions.h>
 #include <util/log.h>
+#include <util/signalcatcher.h>
 #include <util/waitjob.h>
 
 using namespace Qt::Literals::StringLiterals;
@@ -250,18 +251,14 @@ void TorrentControl::update()
         if (moveCompleted) {
             moveToCompletedDir();
         }
-    }
-#ifndef Q_OS_WIN
-    catch (BusError &e) {
+    } catch (BusError &e) {
         Out(SYS_DIO | LOG_IMPORTANT) << "Caught SIGBUS " << endl;
         if (!e.write_operation) {
             onIOError(e.toString());
         } else {
             onIOError(i18n("Error writing to disk, do you have enough diskspace?"));
         }
-    }
-#endif
-    catch (Error &e) {
+    } catch (Error &e) {
         onIOError(e.toString());
     }
 }

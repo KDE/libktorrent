@@ -32,6 +32,7 @@ target_sources(KTorrent6 PRIVATE
     util/circularbuffer.cpp
     util/resourcemanager.cpp
     util/bufferpool.cpp
+    util/signalcatcher.cpp
 
     bcodec/bdecoder.cpp
     bcodec/bencoder.cpp
@@ -214,11 +215,6 @@ target_sources(KTorrent6 PRIVATE
 
     version.cpp
 )
-
-if(NOT WIN32)
-# Add signalcatcher.cpp for all builds except WIN32
-    target_sources(KTorrent6 PRIVATE util/signalcatcher.cpp)
-endif(NOT WIN32)
 
 if(WIN32)
 # Compile stuff for windows

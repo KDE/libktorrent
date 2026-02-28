@@ -5,15 +5,16 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "piecedata.h"
+
 #include <KLocalizedString>
-#include <util/log.h>
-#ifndef Q_OS_WIN
-#include <util/signalcatcher.h>
-#endif
-#include "chunk.h"
+
 #include <util/error.h>
 #include <util/file.h>
+#include <util/log.h>
 #include <util/sha1hashgen.h>
+#include <util/signalcatcher.h>
+
+#include "chunk.h"
 
 namespace bt
 {
@@ -56,10 +57,9 @@ Uint32 PieceData::write(const bt::Uint8 *buf, Uint32 buf_size, Uint32 off)
         throw bt::Error(i18n("Unable to write to a piece mapped read only"));
     }
 
-#ifndef Q_OS_WIN
-    BUS_ERROR_WPROTECT();
-#endif
-    memcpy(ptr + off, buf, buf_size);
+    WithBusErrorProtection(BusOperation::Write, [&] {
+        memcpy(ptr + off, buf, buf_size);
+    });
     return buf_size;
 }
 
@@ -69,10 +69,9 @@ Uint32 PieceData::read(Uint8 *buf, Uint32 to_read, Uint32 off)
         return 0;
     }
 
-#ifndef Q_OS_WIN
-    BUS_ERROR_RPROTECT();
-#endif
-    memcpy(buf, ptr + off, to_read);
+    WithBusErrorProtection(BusOperation::Read, [&] {
+        memcpy(buf, ptr + off, to_read);
+    });
     return to_read;
 }
 
@@ -82,10 +81,9 @@ Uint32 PieceData::writeToFile(File &file, Uint32 size, Uint32 off)
         return 0;
     }
 
-#ifndef Q_OS_WIN
-    BUS_ERROR_RPROTECT();
-#endif
-    return file.write(ptr + off, size);
+    return WithBusErrorProtection(BusOperation::Read, [&] {
+        return file.write(ptr + off, size);
+    });
 }
 
 Uint32 PieceData::readFromFile(File &file, Uint32 size, Uint32 off)
@@ -98,10 +96,9 @@ Uint32 PieceData::readFromFile(File &file, Uint32 size, Uint32 off)
         throw bt::Error(i18n("Unable to write to a piece mapped read only"));
     }
 
-#ifndef Q_OS_WIN
-    BUS_ERROR_WPROTECT();
-#endif
-    return file.read(ptr + off, size);
+    return WithBusErrorProtection(BusOperation::Write, [&] {
+        return file.read(ptr + off, size);
+    });
 }
 
 void PieceData::updateHash(SHA1HashGen &hg)
@@ -110,10 +107,9 @@ void PieceData::updateHash(SHA1HashGen &hg)
         return;
     }
 
-#ifndef Q_OS_WIN
-    BUS_ERROR_RPROTECT();
-#endif
-    hg.update(ptr, len);
+    WithBusErrorProtection(BusOperation::Read, [&] {
+        hg.update(ptr, len);
+    });
 }
 
 SHA1Hash PieceData::generateHash() const
@@ -122,10 +118,9 @@ SHA1Hash PieceData::generateHash() const
         return SHA1Hash();
     }
 
-#ifndef Q_OS_WIN
-    BUS_ERROR_RPROTECT();
-#endif
-    return SHA1Hash::generate(ptr, len);
+    return WithBusErrorProtection(BusOperation::Read, [&] {
+        return SHA1Hash::generate(ptr, len);
+    });
 }
 
 void PieceData::unmapped()

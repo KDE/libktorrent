@@ -73,8 +73,9 @@ private Q_SLOTS:
     void testBus()
     {
         try {
-            BUS_ERROR_WPROTECT();
-            kill(getpid(), SIGBUS);
+            WithBusErrorProtection(BusOperation::Write, [&] {
+                kill(getpid(), SIGBUS);
+            });
             QFAIL("Didn't catch SIGBUS");
         } catch (bt::BusError &e) {
             Out(SYS_GEN | LOG_DEBUG) << u"Caught signal: %1"_s.arg(e.toString()) << endl;
@@ -100,8 +101,9 @@ private Q_SLOTS:
 
         // First try a write which should not fail
         try {
-            BUS_ERROR_WPROTECT();
-            memcpy(ptr, "Testing", 7);
+            WithBusErrorProtection(BusOperation::Write, [&] {
+                memcpy(ptr, "Testing", 7);
+            });
         } catch (bt::BusError &e) {
             const QString msg = u"Caught signal: %s"_s.arg(e.toString());
             QFAIL(msg.toLocal8Bit().constData());
@@ -109,9 +111,10 @@ private Q_SLOTS:
 
         // Lets try one which should fail
         try {
-            BUS_ERROR_WPROTECT();
             TruncateFile(fd, 0, true);
-            memcpy(ptr, "Testing", 7);
+            WithBusErrorProtection(BusOperation::Write, [&] {
+                memcpy(ptr, "Testing", 7);
+            });
             QFAIL("Didn't catch SIGBUS");
         } catch (bt::BusError &e) {
             Out(SYS_GEN | LOG_DEBUG) << u"Caught signal: %1"_s.arg(e.toString()) << endl;

@@ -41,7 +41,6 @@
 #include <KLocalizedString>
 
 #include <interfaces/torrentinterface.h>
-#include <util/signalcatcher.h>
 
 #include "error.h"
 #include "log.h"

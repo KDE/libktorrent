@@ -4,13 +4,30 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef Q_OS_WIN
 #include "signalcatcher.h"
-#include "log.h"
+
 #include <KLocalizedString>
+
+#ifndef Q_OS_WIN
+#include "log.h"
 #include <sys/socket.h>
 #include <unistd.h>
+#endif
 
+namespace bt
+{
+BusError::BusError(bool write_operation)
+    : Error(write_operation ? i18n("Error when writing to disk") : i18n("Error when reading from disk"))
+    , write_operation(write_operation)
+{
+}
+
+BusError::~BusError()
+{
+}
+}
+
+#ifndef Q_OS_WIN
 namespace bt
 {
 sigjmp_buf sigbus_env;
@@ -58,16 +75,6 @@ BusErrorGuard::BusErrorGuard()
 BusErrorGuard::~BusErrorGuard()
 {
     siglongjmp_safe = false;
-}
-
-BusError::BusError(bool write_operation)
-    : Error(write_operation ? i18n("Error when writing to disk") : i18n("Error when reading from disk"))
-    , write_operation(write_operation)
-{
-}
-
-BusError::~BusError()
-{
 }
 
 int SignalCatcher::signal_received_pipe[2];

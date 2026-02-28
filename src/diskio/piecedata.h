@@ -8,12 +8,9 @@
 #define BTPIECEDATA_H
 
 #include <QSharedDataPointer>
+#include <diskio/cachefile.h>
 #include <ktorrent_export.h>
 #include <util/constants.h>
-#ifndef Q_OS_WIN
-#include <util/signalcatcher.h>
-#endif
-#include <diskio/cachefile.h>
 
 namespace bt
 {
