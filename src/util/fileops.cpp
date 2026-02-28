@@ -362,18 +362,35 @@ void TruncateFile(int fd, Uint64 size, bool quick)
 #endif
             throw Error(i18n("Cannot expand file: %1", QString::fromUtf8(strerror(errno))));
     } else {
-#ifdef HAVE_POSIX_FALLOCATE64
-        if (posix_fallocate64(fd, 0, size) != 0)
-#elif HAVE_POSIX_FALLOCATE
-        if (posix_fallocate(fd, 0, size) != 0)
-#elif HAVE_FTRUNCATE64
-        if (ftruncate64(fd, size) == -1)
-#elif defined Q_OS_WIN
-        if (_chsize_s(fd, size) != 0)
-#else
-        if (ftruncate(fd, size) == -1)
-#endif
+#ifdef Q_OS_WIN
+        if (_chsize_s(fd, size) != 0) {
             throw Error(i18n("Cannot expand file: %1", QString::fromUtf8(strerror(errno))));
+        }
+#else
+        // NOTE: posix_fallocate returns an error code and does not set errno
+#ifdef HAVE_POSIX_FALLOCATE64
+        if (const auto error_code = posix_fallocate64(fd, 0, size); error_code != 0)
+#elif HAVE_POSIX_FALLOCATE
+        if (const auto error_code = posix_fallocate(fd, 0, size); error_code != 0)
+#else
+        constexpr auto error_code = 0;
+#endif
+        {
+            if (error_code != 0) {
+                // Only possible if we tried to use posix_fallocate and got an error
+                bt::Out(SYS_DIO | LOG_DEBUG) << "Failed to allocate with posix_fallocate: " << QString::fromUtf8(strerror(error_code))
+                                             << "; attempting to use ftruncate instead" << bt::endl;
+            }
+#if HAVE_FTRUNCATE64
+            if (ftruncate64(fd, size) == -1)
+#else
+            if (ftruncate(fd, size) == -1)
+#endif
+            {
+                throw Error(i18n("Cannot expand file: %1", QString::fromUtf8(strerror(errno))));
+            }
+        }
+#endif // Q_OS_WIN
     }
 }
 
