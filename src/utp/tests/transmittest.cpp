@@ -18,11 +18,11 @@
 #include <utp/utpserver.h>
 #include <utp/utpsocket.h>
 
-#define BYTES_TO_SEND 10 * 1024 * 1024
-
 using namespace utp;
 using namespace bt;
 using namespace Qt::Literals::StringLiterals;
+
+constexpr auto BYTES_TO_SEND = 10 * 1024 * 1024;
 
 static QByteArray Generate(int size)
 {

@@ -15,32 +15,32 @@
 #include <memory>
 
 // LOG MESSAGES CONSTANTS
-#define LOG_NONE 0x00
-#define LOG_IMPORTANT 0x01
-#define LOG_NOTICE 0x03
-#define LOG_DEBUG 0x07
-#define LOG_ALL 0x0F
+constexpr unsigned int LOG_NONE = 0x00;
+constexpr unsigned int LOG_IMPORTANT = 0x01;
+constexpr unsigned int LOG_NOTICE = 0x03;
+constexpr unsigned int LOG_DEBUG = 0x07;
+constexpr unsigned int LOG_ALL = 0x0F;
 
-#define SYS_GEN 0x0010 // Genereral info messages
-#define SYS_CON 0x0020 // Connections
-#define SYS_TRK 0x0040 // Tracker
-#define SYS_DHT 0x0080 // DHT
-#define SYS_DIO 0x0100 // Disk IO related stuff, saving and loading of chunks ...
-#define SYS_UTP 0x0200 // UTP
+constexpr unsigned int SYS_GEN = 0x0010; // Genereral info messages
+constexpr unsigned int SYS_CON = 0x0020; // Connections
+constexpr unsigned int SYS_TRK = 0x0040; // Tracker
+constexpr unsigned int SYS_DHT = 0x0080; // DHT
+constexpr unsigned int SYS_DIO = 0x0100; // Disk IO related stuff, saving and loading of chunks ...
+constexpr unsigned int SYS_UTP = 0x0200; // UTP
 
 // plugins
-#define SYS_IPF 0x1000 // IPFilter
-#define SYS_SRC 0x2000 // Search plugin
-#define SYS_PNP 0x4000 // UPnP plugin
-#define SYS_INW 0x8000 // InfoWidget
-#define SYS_SNF 0x10000 // ScanFolder plugin
-#define SYS_MPL 0x20000 // Media player plugin
-#define SYS_SCD 0x40000 // Scheduler plugin
-#define SYS_BTF 0x80000 // BitFinder plugin
-#define SYS_WEB 0x100000 // WebInterface plugin
-#define SYS_ZCO 0x200000 // ZeroConf plugin
-#define SYS_SCR 0x400000 // Scripting plugin
-#define SYS_SYN 0x800000 // Syndication plugin
+constexpr unsigned int SYS_IPF = 0x1000; // IPFilter
+constexpr unsigned int SYS_SRC = 0x2000; // Search plugin
+constexpr unsigned int SYS_PNP = 0x4000; // UPnP plugin
+constexpr unsigned int SYS_INW = 0x8000; // InfoWidget
+constexpr unsigned int SYS_SNF = 0x10000; // ScanFolder plugin
+constexpr unsigned int SYS_MPL = 0x20000; // Media player plugin
+constexpr unsigned int SYS_SCD = 0x40000; // Scheduler plugin
+constexpr unsigned int SYS_BTF = 0x80000; // BitFinder plugin
+constexpr unsigned int SYS_WEB = 0x100000; // WebInterface plugin
+constexpr unsigned int SYS_ZCO = 0x200000; // ZeroConf plugin
+constexpr unsigned int SYS_SCR = 0x400000; // Scripting plugin
+constexpr unsigned int SYS_SYN = 0x800000; // Syndication plugin
 
 namespace bt
 {

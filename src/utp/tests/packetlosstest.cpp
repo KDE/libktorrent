@@ -21,7 +21,7 @@ using namespace utp;
 using namespace bt;
 using namespace Qt::Literals::StringLiterals;
 
-#define PACKETS_TO_SEND 20
+constexpr auto PACKETS_TO_SEND = 20;
 const QLatin1StringView TEST_DATA = "This is the packet loss test\n"_L1;
 
 /*!

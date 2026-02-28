@@ -234,11 +234,6 @@ void HTTPTracker::doRequest(WaitJob *wjob)
 
 bool HTTPTracker::updateData(const QByteArray &data)
 {
-// #define DEBUG_PRINT_RESPONSE
-#ifdef DEBUG_PRINT_RESPONSE
-    Out(SYS_TRK | LOG_DEBUG) << "Data : " << endl;
-    Out(SYS_TRK | LOG_DEBUG) << QString(data) << endl;
-#endif
     // search for dictionary, there might be random garbage infront of the data
     int i = 0;
     while (i < data.size()) {

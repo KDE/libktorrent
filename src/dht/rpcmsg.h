@@ -19,7 +19,7 @@ class BDictNode;
 
 namespace dht
 {
-#define MAX_TOKEN_SIZE 40
+constexpr auto MAX_TOKEN_SIZE = 40;
 
 class DHT;
 

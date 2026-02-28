@@ -159,10 +159,8 @@ Key Key::mid(const dht::Key &a, const dht::Key &b)
     }
 }
 
-#define rep4(v) v, v, v, v
-#define rep20(v) rep4(v), rep4(v), rep4(v), rep4(v), rep4(v)
-const bt::Uint8 val_max[20] = {rep20(0xFF)};
-const bt::Uint8 val_min[20] = {rep20(0x00)};
+constexpr bt::Uint8 val_max[20] = {0xFF};
+constexpr bt::Uint8 val_min[20] = {0x00};
 
 Key Key::max()
 {

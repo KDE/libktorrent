@@ -14,8 +14,8 @@
 #include <utp/utpserver.h>
 #include <utp/utpsocket.h>
 
-#define PACKETS_TO_SEND 20
-#define TEST_DATA "This is the packet loss test\n"
+constexpr auto PACKETS_TO_SEND = 20;
+constexpr auto TEST_DATA = "This is the packet loss test\n";
 
 using namespace utp;
 using namespace bt;

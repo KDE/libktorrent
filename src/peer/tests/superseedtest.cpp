@@ -16,8 +16,8 @@
 using namespace bt;
 using namespace Qt::Literals::StringLiterals;
 
-#define NUM_CHUNKS 10
-#define INVALID_CHUNK 0xFFFFFFFF
+constexpr auto NUM_CHUNKS = 10;
+constexpr bt::Uint32 INVALID_CHUNK = 0xFFFFFFFF;
 
 static int peer_cnt = 0;
 

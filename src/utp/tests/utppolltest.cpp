@@ -20,7 +20,7 @@ using namespace net;
 using namespace bt;
 using namespace Qt::Literals::StringLiterals;
 
-#define NUM_SOCKETS 20
+constexpr auto NUM_SOCKETS = 20;
 
 class UTPPollTest : public QEventLoop
 {
