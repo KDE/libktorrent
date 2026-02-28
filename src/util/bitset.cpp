@@ -49,7 +49,7 @@ void BitSet::updateNumOnBits()
     num_on = 0;
     Uint32 i = 0;
     while (i < num_bytes) {
-        num_on += BitCount[data[i]];
+        num_on += std::popcount(data[i]);
         i++;
     }
 }
@@ -77,12 +77,12 @@ void BitSet::invert()
     Uint32 i = 0;
     while (i < num_bytes - 1) {
         data[i] = ~data[i];
-        num_on += BitCount[data[i]];
+        num_on += std::popcount(data[i]);
         i++;
     }
     // i == num_bytes-1
     data[i] = ~data[i] & tail_mask_lookup[num_bits & 7];
-    num_on += BitCount[data[i]];
+    num_on += std::popcount(data[i]);
 }
 
 BitSet &BitSet::operator-=(const BitSet &bs)
@@ -90,7 +90,7 @@ BitSet &BitSet::operator-=(const BitSet &bs)
     num_on = 0;
     for (Uint32 i = 0; i < num_bytes; i++) {
         data[i] &= ~(data[i] & bs.data[i]);
-        num_on += BitCount[data[i]];
+        num_on += std::popcount(data[i]);
     }
     return *this;
 }
@@ -119,7 +119,7 @@ void BitSet::orBitSet(const BitSet &other)
         // best case
         for (Uint32 i = 0; i < num_bytes; i++) {
             data[i] |= other.data[i];
-            num_on += BitCount[data[i]];
+            num_on += std::popcount(data[i]);
         }
         return;
     }
@@ -128,13 +128,13 @@ void BitSet::orBitSet(const BitSet &other)
     // whatether comes first
     for (Uint32 i = 0; i < qMin(num_bytes - 1, other.num_bytes); i++) {
         data[i] |= other.data[i];
-        num_on += BitCount[data[i]];
+        num_on += std::popcount(data[i]);
     }
 
     // if last-1 not reached yet then the end of other data is reached
-    // so just add BitCount till last-1 byte
+    // so just add std::popcount till last-1 byte
     for (Uint32 i = other.num_bytes; i < num_bytes - 1; i++) {
-        num_on += BitCount[data[i]];
+        num_on += std::popcount(data[i]);
     }
 
     // if other has matching byte for our last byte - OR it with proper mask
@@ -143,7 +143,7 @@ void BitSet::orBitSet(const BitSet &other)
     }
 
     // count bits set in last byte
-    num_on += BitCount[data[num_bytes - 1]];
+    num_on += std::popcount(data[num_bytes - 1]);
 }
 
 void BitSet::andBitSet(const BitSet &other)
@@ -154,7 +154,7 @@ void BitSet::andBitSet(const BitSet &other)
         // best case
         for (Uint32 i = 0; i < num_bytes; i++) {
             data[i] &= other.data[i];
-            num_on += BitCount[data[i]];
+            num_on += std::popcount(data[i]);
         }
         return;
     }
@@ -164,7 +164,7 @@ void BitSet::andBitSet(const BitSet &other)
     // no need to worry about mask for last byte
     for (Uint32 i = 0; i < qMin(num_bytes, other.num_bytes); i++) {
         data[i] &= other.data[i];
-        num_on += BitCount[data[i]];
+        num_on += std::popcount(data[i]);
     }
 
     if (num_bytes > other.num_bytes) {

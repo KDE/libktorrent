@@ -6,6 +6,8 @@
 #ifndef BTBITSET_H
 #define BTBITSET_H
 
+#include <bit>
+
 #include "constants.h"
 #include <ktorrent_export.h>
 
@@ -179,17 +181,6 @@ inline bool BitSet::get(Uint32 i) const
     return (data[i >> 3] & set_on_lookup[i & 7]) != 0;
 }
 
-// Fast lookup table to see how many bits are there in a byte
-// (macro compacted variant)
-static const Uint8 BitCount[256] = {
-#define B2(n) n, n + 1, n + 1, n + 2
-#define B4(n) B2(n), B2(n + 1), B2(n + 1), B2(n + 2)
-#define B6(n) B4(n), B4(n + 1), B4(n + 1), B4(n + 2)
-    B6(0),
-    B6(1),
-    B6(1),
-    B6(2)};
-
 inline void BitSet::set(Uint32 i, bool on)
 {
     if (i >= num_bits) {
@@ -197,13 +188,13 @@ inline void BitSet::set(Uint32 i, bool on)
     }
 
     Uint8 *d = data + (i >> 3);
-    num_on -= BitCount[*d];
+    num_on -= std::popcount(*d);
     if (on) {
         *d |= set_on_lookup[i & 7];
     } else {
         *d &= set_off_lookup[i & 7];
     }
-    num_on += BitCount[*d];
+    num_on += std::popcount(*d);
 }
 }
 
