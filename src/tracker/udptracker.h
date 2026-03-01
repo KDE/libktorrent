@@ -22,7 +22,7 @@ namespace bt
 class UDPTrackerSocket;
 
 /*!
- * \headerfile torrent/udptracker.h
+ * \headerfile tracker/udptracker.h
  * \author Joris Guisson
  * \brief Communicates with a UDP tracker.
  *

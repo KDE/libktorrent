@@ -13,7 +13,7 @@
 namespace bt
 {
 /*!
- * \headerfile torrent/soap.h
+ * \headerfile upnp/soap.h
  * \author Joris Guisson
  * \brief Empty class for constructing SOAP commands.
  *
@@ -31,7 +31,7 @@ public:
     static QString createCommand(const QString &action, const QString &service);
 
     /*!
-     * \headerfile torrent/soap.h
+     * \headerfile upnp/soap.h
      * \brief An argument for a UPnP SOAP command.
      */
     struct Arg {

@@ -22,7 +22,7 @@ namespace bt
 class UPnPRouter;
 
 /*!
- * \headerfile torrent/upnpmcastsocket.h
+ * \headerfile upnp/upnpmcastsocket.h
  * \author Joris Guisson
  *
  * \brief Socket used to discover and keep track of UPnP devices.

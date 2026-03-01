@@ -20,7 +20,7 @@ class ChunkManager;
 struct TorrentStats;
 
 /*!
- * \headerfile torrent/chokealgorithm.h
+ * \headerfile torrent/choker.h
  * \brief Base class for all choke algorithms.
  */
 class ChokeAlgorithm
@@ -56,7 +56,7 @@ public:
 };
 
 /*!
- * \headerfile torrent/chokealgorithm.h
+ * \headerfile torrent/choker.h
  * \author Joris Guisson
  * \brief Runs the ChokeAlgorithm for a given torrent.
  *

@@ -26,7 +26,7 @@ class Address;
 namespace bt
 {
 /*!
- * \headerfile torrent/udptrackersocket.h
+ * \headerfile tracker/udptrackersocket.h
  * \author Joris Guisson
  *
  * \brief Handles communication with one or more UDP trackers.

@@ -16,7 +16,7 @@
 namespace bt
 {
 /*!
- * \headerfile torrent/httprequest.h
+ * \headerfile upnp/httprequest.h
  * \author Joris Guisson
  *
  * \brief Simple HTTP request class.
