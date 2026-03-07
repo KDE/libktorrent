@@ -58,6 +58,8 @@ public:
 /*!
  * \headerfile utp/remotewindow.h
  * \brief Keeps track of the remote sides window including all packets in-flight.
+ *
+ * An in-flight packet is one which has been sent but not yet acked.
  */
 class KTORRENT_EXPORT RemoteWindow
 {
@@ -112,14 +114,25 @@ public:
     //! Update the window size
     void updateWindowSize(double scaled_gain);
 
+    /*!
+     * Returns the number of bytes in-flight.
+     */
     [[nodiscard]] bt::Uint32 currentWindow() const
     {
         return cur_window;
     }
+
+    /*!
+     * Returns the maximum number of bytes that we allow to be in-flight.
+     */
     [[nodiscard]] bt::Uint32 maxWindow() const
     {
         return max_window;
     }
+
+    /*!
+     * Returns the maximum number of bytes that the remote will allow to be in-flight.
+     */
     [[nodiscard]] bt::Uint32 windowSize() const
     {
         return wnd_size;
