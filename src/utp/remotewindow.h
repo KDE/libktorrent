@@ -109,12 +109,6 @@ public:
     //! A timeout occurred
     void timeout(Retransmitter *conn);
 
-    //! Get the window usage factor
-    [[nodiscard]] double windowUsageFactor() const
-    {
-        return qMax((double)cur_window / max_window, 1.0);
-    }
-
     //! Update the window size
     void updateWindowSize(double scaled_gain);
 
