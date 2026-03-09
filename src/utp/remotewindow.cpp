@@ -5,6 +5,9 @@
 */
 
 #include "remotewindow.h"
+
+#include <cmath>
+
 #include "connection.h"
 #include "utpprotocol.h"
 #include <util/functions.h>
@@ -127,7 +130,7 @@ void RemoteWindow::checkLostPackets(const utp::Header *hdr, const utp::Selective
 
     if (lost_packets) {
         Out(SYS_UTP | LOG_DEBUG) << "UTP: lost packets on connection " << hdr->connection_id << endl;
-        max_window = (bt::Uint32)qRound(0.78 * max_window);
+        max_window = static_cast<bt::Uint32>(std::round(0.78 * max_window));
     }
 }
 
