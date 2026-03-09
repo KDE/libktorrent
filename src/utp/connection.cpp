@@ -365,11 +365,15 @@ void Connection::updateDelayMeasurement(const utp::Header *hdr)
         stats.reply_micro = hdr->timestamp_difference_microseconds - tms;
     }
 
-    bt::Uint32 base_delay = delay_window->update(hdr, now.toTimeStamp());
+    // us suffix = microseconds
+    const bt::Uint32 base_delay_us = delay_window->update(hdr, now.toTimeStamp());
 
-    int our_delay = hdr->timestamp_difference_microseconds / 1000 - base_delay;
-    int off_target = CCONTROL_TARGET - our_delay;
-    double delay_factor = (double)off_target / (double)CCONTROL_TARGET;
+    // base delay is the min packet delay over 2 minutes, including the packet we are currently checking. Hence it is guaranteed that this calculation will
+    // never underflow.
+    const bt::Uint32 our_delay_us = hdr->timestamp_difference_microseconds - base_delay_us;
+    constexpr double control_target_us{CCONTROL_TARGET * 1000};
+    const double off_target_us = control_target_us - our_delay_us;
+    const double delay_factor = off_target_us / control_target_us;
     double window_factor = remote_wnd->windowUsageFactor();
     double scaled_gain = MAX_CWND_INCREASE_PACKETS_PER_RTT * delay_factor * window_factor;
 
