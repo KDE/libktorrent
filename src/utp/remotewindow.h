@@ -65,8 +65,12 @@ public:
     RemoteWindow();
     virtual ~RemoteWindow();
 
-    //! A packet was received (update window size and check for acks)
-    void packetReceived(const Header *hdr, const SelectiveAck *sack, Retransmitter *conn);
+    /*!
+     * A packet was received (update window size and check for acks)
+     *
+     * Returns the proportion of bytes in the window that were acked by this packet.
+     */
+    double packetReceived(const Header *hdr, const SelectiveAck *sack, Retransmitter *conn);
 
     //! Add a packet to the remote window (should include headers)
     void addPacket(const PacketBuffer &packet, bt::Uint16 seq_nr, bt::TimeStamp send_time);

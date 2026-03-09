@@ -185,7 +185,7 @@ private:
     void sendState();
     void sendFIN();
     void sendReset();
-    void updateDelayMeasurement(const Header *hdr);
+    void updateDelayMeasurement(const Header *hdr, double window_factor);
     void sendStateOrData();
     void sendPackets();
     void sendPacket(bt::Uint32 type, bt::Uint16 p_ack_nr);

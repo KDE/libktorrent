@@ -118,8 +118,8 @@ ConnectionState Connection::handlePacket(const PacketParser &parser, bt::Buffer:
 
     // DumpPacket(*hdr,sack);
 
-    updateDelayMeasurement(hdr);
-    remote_wnd->packetReceived(hdr, sack, this);
+    const auto window_factor = remote_wnd->packetReceived(hdr, sack, this);
+    updateDelayMeasurement(hdr, window_factor);
     switch (stats.state) {
     case CS_SYN_SENT:
         // now we should have a state packet
@@ -355,7 +355,7 @@ void Connection::sendReset()
     sendPacket(ST_RESET, local_wnd->lastSeqNr());
 }
 
-void Connection::updateDelayMeasurement(const utp::Header *hdr)
+void Connection::updateDelayMeasurement(const utp::Header *hdr, double window_factor)
 {
     TimeValue now;
     bt::Uint32 tms = now.timestampMicroSeconds();
@@ -372,10 +372,9 @@ void Connection::updateDelayMeasurement(const utp::Header *hdr)
     // never underflow.
     const bt::Uint32 our_delay_us = hdr->timestamp_difference_microseconds - base_delay_us;
     constexpr double control_target_us{CCONTROL_TARGET * 1000};
-    const double off_target_us = control_target_us - our_delay_us;
+    const double off_target_us = control_target_us - static_cast<double>(our_delay_us);
     const double delay_factor = off_target_us / control_target_us;
-    double window_factor = remote_wnd->windowUsageFactor();
-    double scaled_gain = MAX_CWND_INCREASE_PACKETS_PER_RTT * delay_factor * window_factor;
+    const double scaled_gain = MAX_CWND_INCREASE_PACKETS_PER_RTT * delay_factor * window_factor;
 
     remote_wnd->updateWindowSize(scaled_gain);
     if (remote_wnd->maxWindow() <= MIN_PACKET_SIZE) {

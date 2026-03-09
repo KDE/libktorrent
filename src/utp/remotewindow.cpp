@@ -43,7 +43,7 @@ RemoteWindow::~RemoteWindow()
     clear();
 }
 
-void RemoteWindow::packetReceived(const utp::Header *hdr, const SelectiveAck *sack, Retransmitter *conn)
+double RemoteWindow::packetReceived(const utp::Header *hdr, const SelectiveAck *sack, Retransmitter *conn)
 {
     if (hdr->ack_nr == last_ack_nr) {
         if (hdr->type == ST_STATE) {
@@ -56,6 +56,7 @@ void RemoteWindow::packetReceived(const utp::Header *hdr, const SelectiveAck *sa
 
     wnd_size = hdr->wnd_size;
 
+    const auto window_size_before_acks = cur_window;
     bt::TimeStamp now = bt::Now();
     QList<UnackedPacket>::iterator i = unacked_packets.begin();
     while (i != unacked_packets.end()) {
@@ -77,9 +78,14 @@ void RemoteWindow::packetReceived(const utp::Header *hdr, const SelectiveAck *sa
         }
     }
 
+    const auto bytes_acked = window_size_before_acks - cur_window;
+    // max_window can shrink whilst packets are still in flight so it is possible that bytes_acked > max_window
+    const auto window_factor = std::min(static_cast<double>(bytes_acked) / max_window, 1.);
+
     if (!unacked_packets.isEmpty()) {
         checkLostPackets(hdr, sack, conn);
     }
+    return window_factor;
 }
 
 void RemoteWindow::addPacket(const PacketBuffer &packet, bt::Uint16 seq_nr, bt::TimeStamp send_time)
