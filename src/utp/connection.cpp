@@ -107,7 +107,7 @@ static void DumpPacket(const Header & hdr, const SelectiveAck* sack)
 }
 #endif
 
-ConnectionState Connection::handlePacket(const PacketParser &parser, bt::Buffer::Ptr packet)
+ConnectionState Connection::handlePacket(const PacketParser &parser, std::unique_ptr<bt::Buffer> packet)
 {
     QMutexLocker lock(&mutex);
     stats.packets_received++;
@@ -159,7 +159,7 @@ ConnectionState Connection::handlePacket(const PacketParser &parser, bt::Buffer:
     case CS_CONNECTED:
         if (hdr->type == ST_DATA) {
             // push data into local window
-            if (!local_wnd->packetReceived(hdr, packet, data_off)) {
+            if (!local_wnd->packetReceived(hdr, std::move(packet), data_off)) {
                 // Panick
                 sendReset();
                 stats.state = CS_CLOSED;
@@ -200,7 +200,7 @@ ConnectionState Connection::handlePacket(const PacketParser &parser, bt::Buffer:
         if (hdr->type == ST_DATA) {
             if (SeqNrCmpSE(hdr->seq_nr, stats.eof_seq_nr)) {
                 // push data into local window
-                if (!local_wnd->packetReceived(hdr, packet, data_off)) {
+                if (!local_wnd->packetReceived(hdr, std::move(packet), data_off)) {
                     // Panick
                     sendReset();
                     stats.state = CS_CLOSED;

@@ -57,7 +57,7 @@ public:
         return false;
     }
 
-    void dataReceived(bt::Buffer::Ptr buffer, const net::Address &addr) override
+    void dataReceived(std::unique_ptr<bt::Buffer> buffer, const net::Address &addr) override
     {
         Q_UNUSED(addr);
         if (buffer->size() < 4) {
@@ -67,16 +67,16 @@ public:
         Uint32 type = ReadUint32(buffer->get(), 0);
         switch (type) {
         case CONNECT:
-            p->handleConnect(buffer);
+            p->handleConnect(*buffer);
             break;
         case ANNOUNCE:
-            p->handleAnnounce(buffer);
+            p->handleAnnounce(*buffer);
             break;
         case ERROR:
-            p->handleError(buffer);
+            p->handleError(*buffer);
             break;
         case SCRAPE:
-            p->handleScrape(buffer);
+            p->handleScrape(*buffer);
             break;
         }
     }
@@ -151,14 +151,14 @@ void UDPTrackerSocket::cancelTransaction(Int32 tid)
     d->transactions.remove(tid);
 }
 
-void UDPTrackerSocket::handleConnect(bt::Buffer::Ptr buf)
+void UDPTrackerSocket::handleConnect(const bt::Buffer &buf)
 {
-    if (buf->size() < 12) {
+    if (buf.size() < 12) {
         return;
     }
 
     // Read the transaction_id and check it
-    Int32 tid = ReadInt32(buf->get(), 4);
+    Int32 tid = ReadInt32(buf.get(), 4);
     QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (i == d->transactions.end()) {
@@ -174,20 +174,20 @@ void UDPTrackerSocket::handleConnect(bt::Buffer::Ptr buf)
 
     // everything ok, emit signal
     d->transactions.erase(i);
-    Q_EMIT connectReceived(tid, ReadInt64(buf->get(), 8));
+    Q_EMIT connectReceived(tid, ReadInt64(buf.get(), 8));
 }
 
-void UDPTrackerSocket::handleAnnounce(bt::Buffer::Ptr buf)
+void UDPTrackerSocket::handleAnnounce(const bt::Buffer &buf)
 {
-    if (buf->size() < 4) {
+    if (buf.size() < 4) {
         return;
     }
 
     // Read the transaction_id and check it
-    Int32 tid = ReadInt32(buf->get(), 4);
+    Int32 tid = ReadInt32(buf.get(), 4);
     QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
-    if (i == d->transactions.end() || buf->size() < 20) {
+    if (i == d->transactions.end() || buf.size() < 20) {
         return;
     }
 
@@ -200,17 +200,17 @@ void UDPTrackerSocket::handleAnnounce(bt::Buffer::Ptr buf)
 
     // everything ok, emit signal
     d->transactions.erase(i);
-    Q_EMIT announceReceived(tid, buf->get(), buf->size());
+    Q_EMIT announceReceived(tid, buf.get(), buf.size());
 }
 
-void UDPTrackerSocket::handleError(bt::Buffer::Ptr buf)
+void UDPTrackerSocket::handleError(const bt::Buffer &buf)
 {
-    if (buf->size() < 4) {
+    if (buf.size() < 4) {
         return;
     }
 
     // Read the transaction_id and check it
-    Int32 tid = ReadInt32(buf->get(), 4);
+    Int32 tid = ReadInt32(buf.get(), 4);
     QMap<Int32, Action>::iterator it = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (it == d->transactions.end()) {
@@ -220,22 +220,22 @@ void UDPTrackerSocket::handleError(bt::Buffer::Ptr buf)
     // extract error message
     d->transactions.erase(it);
     QString msg;
-    for (Uint32 i = 8; i < buf->size(); i++) {
-        msg += QLatin1Char(buf->get()[i]);
+    for (Uint32 i = 8; i < buf.size(); i++) {
+        msg += QLatin1Char(buf.get()[i]);
     }
 
     // emit signal
     Q_EMIT error(tid, msg);
 }
 
-void UDPTrackerSocket::handleScrape(bt::Buffer::Ptr buf)
+void UDPTrackerSocket::handleScrape(const bt::Buffer &buf)
 {
-    if (buf->size() < 4) {
+    if (buf.size() < 4) {
         return;
     }
 
     // Read the transaction_id and check it
-    Int32 tid = ReadInt32(buf->get(), 4);
+    Int32 tid = ReadInt32(buf.get(), 4);
     QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (i == d->transactions.end()) {
@@ -251,7 +251,7 @@ void UDPTrackerSocket::handleScrape(bt::Buffer::Ptr buf)
 
     // everything ok, emit signal
     d->transactions.erase(i);
-    Q_EMIT scrapeReceived(tid, buf->get(), buf->size());
+    Q_EMIT scrapeReceived(tid, buf.get(), buf.size());
 }
 
 Int32 UDPTrackerSocket::newTransactionID()

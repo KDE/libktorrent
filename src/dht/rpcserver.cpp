@@ -66,7 +66,7 @@ public:
         }
     }
 
-    void dataReceived(bt::Buffer::Ptr ptr, const net::Address &addr) override
+    void dataReceived(std::unique_ptr<bt::Buffer> ptr, const net::Address &addr) override
     {
         try {
             // read and decode the packet

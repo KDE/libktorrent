@@ -66,7 +66,7 @@ public:
             \param buffer The packet
             \param addr The address from which it was received
         */
-        virtual void dataReceived(bt::Buffer::Ptr buffer, const net::Address &addr) = 0;
+        virtual void dataReceived(std::unique_ptr<bt::Buffer> buffer, const net::Address &addr) = 0;
 
         /*!
             Socket has become writeable

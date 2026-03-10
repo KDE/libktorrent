@@ -7,13 +7,16 @@
 #ifndef BUFFERPOOL_H_
 #define BUFFERPOOL_H_
 
-#include "array.h"
+#include <list>
+#include <map>
+#include <memory>
+
 #include <QMutex>
 #include <QSharedPointer>
 #include <QWeakPointer>
+
 #include <ktorrent_export.h>
-#include <list>
-#include <map>
+#include <util/array.h>
 #include <util/constants.h>
 
 namespace bt
@@ -27,7 +30,6 @@ class BufferPool;
 class KTORRENT_EXPORT Buffer
 {
 public:
-    using Ptr = QSharedPointer<Buffer>;
     // TODO(Qt6.8) use QByteArray with Qt::Initialization overload
     using Data = Array<bt::Uint8>;
 
@@ -50,6 +52,12 @@ public:
     void setSize(bt::Uint32 s)
     {
         fill = s;
+    }
+
+    //! Get a pointer to the data
+    const bt::Uint8 *get() const
+    {
+        return data.data();
     }
 
     //! Get a pointer to the data
@@ -89,7 +97,7 @@ public:
      * \param min_size The minimum size it should be
      * \return A new Buffer
      **/
-    Buffer::Ptr get(bt::Uint32 min_size);
+    std::unique_ptr<Buffer> get(bt::Uint32 min_size);
 
     /*!
      * Release a buffer, puts it into the free list.

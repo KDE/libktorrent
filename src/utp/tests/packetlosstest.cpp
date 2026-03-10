@@ -42,7 +42,7 @@ public:
     {
     }
 
-    void handlePacket(bt::Buffer::Ptr packet, const net::Address &addr) override
+    void handlePacket(std::unique_ptr<bt::Buffer> packet, const net::Address &addr) override
     {
         if (packet_loss) {
             // pick a random number from 0 to 100
@@ -53,7 +53,7 @@ public:
             }
         }
 
-        UTPServer::handlePacket(packet, addr);
+        UTPServer::handlePacket(std::move(packet), addr);
     }
 
     void setPacketLossSimulation(bool on, float lf)

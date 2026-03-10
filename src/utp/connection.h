@@ -103,7 +103,7 @@ public:
     }
 
     //! Handle a single packet
-    ConnectionState handlePacket(const PacketParser &parser, bt::Buffer::Ptr packet);
+    ConnectionState handlePacket(const PacketParser &parser, std::unique_ptr<bt::Buffer> packet);
 
     //! Get the remote address
     const net::Address &remoteAddress() const

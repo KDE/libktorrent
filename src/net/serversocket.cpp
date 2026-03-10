@@ -127,11 +127,11 @@ void ServerSocket::readyToRead(int)
     bool first = true;
     while ((ba = d->sock->bytesAvailable()) > 0 || first) {
         // The first packet may be 0 bytes in size
-        Buffer::Ptr buf = d->pool->get(ba < 1500 ? 1500 : ba);
+        std::unique_ptr<Buffer> buf = d->pool->get(ba < 1500 ? 1500 : ba);
         int bytes_read = d->sock->recvFrom(buf->get(), ba, addr);
         if (bytes_read <= (int)ba && ba > 0) {
             buf->setSize(bytes_read);
-            d->dhandler->dataReceived(buf, addr);
+            d->dhandler->dataReceived(std::move(buf), addr);
         }
         first = false;
     }

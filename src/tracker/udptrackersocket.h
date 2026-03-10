@@ -127,10 +127,10 @@ Q_SIGNALS:
     void error(Int32 tid, const QString &error_string);
 
 private:
-    void handleConnect(bt::Buffer::Ptr buf);
-    void handleAnnounce(bt::Buffer::Ptr buf);
-    void handleError(bt::Buffer::Ptr buf);
-    void handleScrape(bt::Buffer::Ptr buf);
+    void handleConnect(const bt::Buffer &buf);
+    void handleAnnounce(const bt::Buffer &buf);
+    void handleError(const bt::Buffer &buf);
+    void handleScrape(const bt::Buffer &buf);
 
 private:
     class Private;

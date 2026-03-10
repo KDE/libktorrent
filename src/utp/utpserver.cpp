@@ -109,7 +109,7 @@ bool UTPServer::Private::bind(const net::Address &addr)
     }
 }
 
-void UTPServer::Private::syn(const PacketParser &parser, bt::Buffer::Ptr buffer, const net::Address &addr)
+void UTPServer::Private::syn(const PacketParser &parser, std::unique_ptr<bt::Buffer> buffer, const net::Address &addr)
 {
     const Header *hdr = parser.header();
     quint16 recv_conn_id = hdr->connection_id + 1;
@@ -122,7 +122,7 @@ void UTPServer::Private::syn(const PacketParser &parser, bt::Buffer::Ptr buffer,
         Connection::Ptr conn(new Connection(recv_conn_id, Connection::INCOMING, addr, p));
         try {
             conn->setWeakPointer(conn);
-            conn->handlePacket(parser, buffer);
+            conn->handlePacket(parser, std::move(buffer));
             connections.insert(recv_conn_id, conn);
             if (create_sockets) {
                 auto ss = std::make_unique<mse::EncryptedPacketSocket>(std::make_unique<UTPSocket>(conn));
@@ -175,13 +175,13 @@ void UTPServer::Private::wakeUpPollPipes(utp::Connection::Ptr conn, bool readabl
     }
 }
 
-void UTPServer::Private::dataReceived(bt::Buffer::Ptr buffer, const net::Address &addr)
+void UTPServer::Private::dataReceived(std::unique_ptr<bt::Buffer> buffer, const net::Address &addr)
 {
     QMutexLocker lock(&mutex);
     // Out(SYS_UTP|LOG_NOTICE) << "UTP: received " << ba << " bytes packet from " << addr.toString() << endl;
     try {
         if (buffer->size() >= utp::Header::size()) { // discard packets which are to small
-            p->handlePacket(buffer, addr);
+            p->handlePacket(std::move(buffer), addr);
         }
     } catch (utp::Connection::TransmissionError &err) {
         Out(SYS_UTP | LOG_NOTICE) << "UTP: " << err.location << endl;
@@ -304,7 +304,7 @@ static void DumpPacket(const Header & hdr)
 }
 #endif
 
-void UTPServer::handlePacket(bt::Buffer::Ptr buffer, const net::Address &addr)
+void UTPServer::handlePacket(std::unique_ptr<bt::Buffer> buffer, const net::Address &addr)
 {
     PacketParser parser(buffer->get(), buffer->size());
     if (!parser.parse()) {
@@ -321,7 +321,7 @@ void UTPServer::handlePacket(bt::Buffer::Ptr buffer, const net::Address &addr)
     case ST_STATE:
         try {
             c = d->find(hdr->connection_id);
-            if (c && c->handlePacket(parser, buffer) == CS_CLOSED) {
+            if (c && c->handlePacket(parser, std::move(buffer)) == CS_CLOSED) {
                 d->connections.remove(c->receiveConnectionID());
             }
         } catch (Connection::TransmissionError &err) {
@@ -335,7 +335,7 @@ void UTPServer::handlePacket(bt::Buffer::Ptr buffer, const net::Address &addr)
         d->reset(hdr);
         break;
     case ST_SYN:
-        d->syn(parser, buffer, addr);
+        d->syn(parser, std::move(buffer), addr);
         break;
     }
 }

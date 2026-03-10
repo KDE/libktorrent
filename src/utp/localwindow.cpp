@@ -19,9 +19,9 @@ WindowPacket::WindowPacket(bt::Uint16 seq_nr)
 {
 }
 
-WindowPacket::WindowPacket(bt::Uint16 seq_nr, bt::Buffer::Ptr packet, bt::Uint32 data_off)
+WindowPacket::WindowPacket(bt::Uint16 seq_nr, std::unique_ptr<bt::Buffer> packet, bt::Uint32 data_off)
     : seq_nr(seq_nr)
-    , packet(packet)
+    , packet(std::move(packet))
     , bytes_read(data_off)
 {
 }
@@ -47,9 +47,9 @@ bool WindowPacket::fullyRead() const
     return bytes_read == packet->size();
 }
 
-void WindowPacket::set(bt::Buffer::Ptr packet, bt::Uint32 data_off)
+void WindowPacket::set(std::unique_ptr<bt::Buffer> packet, bt::Uint32 data_off)
 {
-    this->packet = packet;
+    this->packet = std::move(packet);
     bytes_read = data_off;
 }
 
@@ -98,7 +98,7 @@ bt::Uint32 LocalWindow::read(bt::Uint8 *data, bt::Uint32 max_len)
         window_space += ret;
         bytes_available -= ret;
         if (pkt.fullyRead()) {
-            pkt.packet.clear();
+            pkt.packet.reset();
             first_seq_nr++;
             off++;
         } else {
@@ -115,7 +115,7 @@ bt::Uint32 LocalWindow::read(bt::Uint8 *data, bt::Uint32 max_len)
     return written;
 }
 
-bool LocalWindow::packetReceived(const utp::Header *hdr, bt::Buffer::Ptr packet, bt::Uint32 data_off)
+bool LocalWindow::packetReceived(const utp::Header *hdr, std::unique_ptr<bt::Buffer> packet, bt::Uint32 data_off)
 {
     // Drop duplicate data packets
     // Make sure we take into account wrapping around
@@ -134,18 +134,18 @@ bool LocalWindow::packetReceived(const utp::Header *hdr, bt::Buffer::Ptr packet,
         for (bt::Uint16 i = last_seq_nr + 1; SeqNrCmpS(i, hdr->seq_nr); i++) {
             incoming_packets.push_back(WindowPacket(i));
         }
-        incoming_packets.push_back(WindowPacket(hdr->seq_nr, packet, data_off));
+        incoming_packets.push_back(WindowPacket(hdr->seq_nr, std::move(packet), data_off));
     } else if (SeqNrCmpS(incoming_packets.back().seq_nr, hdr->seq_nr)) {
         for (bt::Uint16 i = incoming_packets.back().seq_nr + 1; SeqNrCmpS(i, hdr->seq_nr); i++) {
             incoming_packets.push_back(WindowPacket(i));
         }
-        incoming_packets.push_back(WindowPacket(hdr->seq_nr, packet, data_off));
+        incoming_packets.push_back(WindowPacket(hdr->seq_nr, std::move(packet), data_off));
     } else if (incoming_packets[SeqNrDiff(incoming_packets.front().seq_nr, hdr->seq_nr)].packet) {
         // Already got this one
         return true;
     } else {
         bt::Uint16 off = SeqNrDiff(incoming_packets.front().seq_nr, hdr->seq_nr);
-        incoming_packets[off].set(packet, data_off);
+        incoming_packets[off].set(std::move(packet), data_off);
     }
 
     bt::Uint16 next_seq_nr = last_seq_nr + 1;

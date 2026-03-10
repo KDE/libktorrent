@@ -24,7 +24,7 @@ PacketBuffer::PacketBuffer()
         pool = bt::BufferPool::Ptr(new bt::BufferPool());
         pool->setWeakPointer(pool.toWeakRef());
     }
-    buffer = pool->get(MAX_SIZE);
+    buffer = QSharedPointer<bt::Buffer>(pool->get(MAX_SIZE).release());
 }
 
 PacketBuffer::~PacketBuffer()

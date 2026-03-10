@@ -26,15 +26,21 @@ const bt::Uint32 DEFAULT_CAPACITY = 64 * 1024;
  */
 struct WindowPacket {
     WindowPacket(bt::Uint16 seq_nr);
-    WindowPacket(bt::Uint16 seq_nr, bt::Buffer::Ptr packet, bt::Uint32 data_off);
+    WindowPacket(bt::Uint16 seq_nr, std::unique_ptr<bt::Buffer> packet, bt::Uint32 data_off);
     ~WindowPacket();
+
+    WindowPacket(const WindowPacket &) = delete;
+    WindowPacket &operator=(const WindowPacket &) = delete;
+
+    WindowPacket(WindowPacket &&other) = default;
+    WindowPacket &operator=(WindowPacket &&other) = default;
 
     bt::Uint32 read(bt::Uint8 *dst, bt::Uint32 max_len);
     [[nodiscard]] bool fullyRead() const;
-    void set(bt::Buffer::Ptr packet, bt::Uint32 data_off);
+    void set(std::unique_ptr<bt::Buffer> packet, bt::Uint32 data_off);
 
     bt::Uint16 seq_nr;
-    bt::Buffer::Ptr packet;
+    std::unique_ptr<bt::Buffer> packet;
     bt::Uint32 bytes_read;
 };
 
@@ -47,6 +53,12 @@ class KTORRENT_EXPORT LocalWindow
 public:
     LocalWindow(bt::Uint32 cap = DEFAULT_CAPACITY);
     virtual ~LocalWindow();
+
+    LocalWindow(const LocalWindow &) = delete;
+    LocalWindow &operator=(const LocalWindow &) = delete;
+
+    LocalWindow(LocalWindow &&) = delete;
+    LocalWindow &operator=(LocalWindow &&) = delete;
 
     //! Get back the available space
     [[nodiscard]] bt::Uint32 availableSpace() const
@@ -67,7 +79,7 @@ public:
     }
 
     //! A packet was received
-    bool packetReceived(const Header *hdr, bt::Buffer::Ptr packet, bt::Uint32 data_off);
+    bool packetReceived(const Header *hdr, std::unique_ptr<bt::Buffer> packet, bt::Uint32 data_off);
 
     //! Set the last sequence number
     void setLastSeqNr(bt::Uint16 lsn);

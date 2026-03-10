@@ -31,16 +31,16 @@ BufferPool::~BufferPool()
 {
 }
 
-Buffer::Ptr BufferPool::get(bt::Uint32 min_size)
+std::unique_ptr<Buffer> BufferPool::get(bt::Uint32 min_size)
 {
     QMutexLocker lock(&mutex);
     FreeBufferMap::iterator i = free_buffers.lower_bound(min_size);
     if (i != free_buffers.end() && !i->second.empty()) {
         Buffer::Data data = std::move(i->second.front());
         i->second.pop_front();
-        return Buffer::Ptr(new Buffer(std::move(data), min_size, self));
+        return std::make_unique<Buffer>(std::move(data), min_size, self);
     } else {
-        return Buffer::Ptr(new Buffer(Buffer::Data(min_size), min_size, self));
+        return std::make_unique<Buffer>(Buffer::Data(min_size), min_size, self);
     }
 }
 

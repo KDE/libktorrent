@@ -64,7 +64,7 @@ public:
     void handlePendingConnections();
 
 protected:
-    virtual void handlePacket(bt::Buffer::Ptr buffer, const net::Address &addr);
+    virtual void handlePacket(std::unique_ptr<bt::Buffer> buffer, const net::Address &addr);
     void stateChanged(Connection::Ptr conn, bool readable, bool writeable) override;
     void closed(Connection::Ptr conn) override;
     void customEvent(QEvent *ev) override;

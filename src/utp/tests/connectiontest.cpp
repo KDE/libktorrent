@@ -42,10 +42,10 @@ public:
         Q_UNUSED(conn)
     }
 
-    bt::Buffer::Ptr buildPacket(bt::Uint32 type, bt::Uint32 recv_conn_id, bt::Uint32 send_conn_id, bt::Uint16 seq_nr, bt::Uint16 ack_nr)
+    std::unique_ptr<bt::Buffer> buildPacket(bt::Uint32 type, bt::Uint32 recv_conn_id, bt::Uint32 send_conn_id, bt::Uint16 seq_nr, bt::Uint16 ack_nr)
     {
         TimeValue tv;
-        bt::Buffer::Ptr packet = pool->get(Header::size());
+        auto packet = pool->get(Header::size());
         Header hdr;
         hdr.version = 1;
         hdr.type = type;
@@ -99,10 +99,10 @@ private:
         QVERIFY(s.state == utp::CS_SYN_SENT);
         QVERIFY(s.seq_nr == 2);
 
-        bt::Buffer::Ptr pkt = buildPacket(ST_STATE, conn_id, conn_id + 1, 1, 1);
+        auto pkt = buildPacket(ST_STATE, conn_id, conn_id + 1, 1, 1);
         PacketParser pp(pkt->get(), pkt->size());
         QVERIFY(pp.parse());
-        conn.handlePacket(pp, pkt);
+        conn.handlePacket(pp, std::move(pkt));
         QVERIFY(s.state == CS_CONNECTED);
         QVERIFY(sent_packets.count() == 1);
     }
@@ -113,9 +113,9 @@ private:
         Connection conn(conn_id, utp::Connection::INCOMING, remote, this);
         const Connection::Stats &s = conn.connectionStats();
 
-        bt::Buffer::Ptr pkt = buildPacket(ST_SYN, conn_id - 1, conn_id, 1, 1);
+        auto pkt = buildPacket(ST_SYN, conn_id - 1, conn_id, 1, 1);
         PacketParser pp(pkt->get(), pkt->size());
-        conn.handlePacket(pp, pkt);
+        conn.handlePacket(pp, std::move(pkt));
         QVERIFY(s.state == CS_CONNECTED);
     }
 

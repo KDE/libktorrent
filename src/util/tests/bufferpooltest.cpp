@@ -31,18 +31,18 @@ private Q_SLOTS:
         bt::BufferPool::Ptr pool(new bt::BufferPool());
         pool->setWeakPointer(pool.toWeakRef());
 
-        bt::Buffer::Ptr a = pool->get(1000);
+        auto a = pool->get(1000);
         QVERIFY(a);
         QVERIFY(a->size() == 1000);
         QVERIFY(a->capacity() == 1000);
-        a.clear();
+        a.reset();
 
         a = pool->get(500);
         QVERIFY(a);
         QVERIFY(a->size() == 500);
         QVERIFY(a->capacity() == 1000);
 
-        bt::Buffer::Ptr b = pool->get(2000);
+        auto b = pool->get(2000);
         QVERIFY(b);
         QVERIFY(b->size() == 2000);
         QVERIFY(b->capacity() == 2000);

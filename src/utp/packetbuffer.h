@@ -106,7 +106,7 @@ public:
     static const bt::Uint32 MAX_SIZE = 1500;
 
 private:
-    bt::Buffer::Ptr buffer;
+    QSharedPointer<bt::Buffer> buffer;
     bt::Uint8 *header;
     bt::Uint8 *extension;
     bt::Uint8 *payload;
