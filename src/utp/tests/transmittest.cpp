@@ -18,7 +18,7 @@
 #include <utp/utpserver.h>
 #include <utp/utpsocket.h>
 
-#define BYTES_TO_SEND 100 * 1024 * 1024
+#define BYTES_TO_SEND 10 * 1024 * 1024
 
 using namespace utp;
 using namespace bt;
