@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-17 00:44+0000\n"
+"POT-Creation-Date: 2026-03-13 00:43+0000\n"
 "PO-Revision-Date: 2022-11-27 22:23+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -74,7 +74,7 @@ msgid "Failed to create %1: %2"
 msgstr "%1-ის შექმნის შეცდომა: %2"
 
 #: src/diskio/cachefile.cpp:88 src/util/fileops.cpp:339
-#: src/util/fileops.cpp:384
+#: src/util/fileops.cpp:401
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "გახსნის შეცდომა: %1: %2"
@@ -509,17 +509,17 @@ msgstr "%1-ის ფაილის ზომის გამოთვლის
 msgid "Cannot calculate the filesize: %1"
 msgstr "ფაილის ზომის გამოთვლის შეცდომა: %1"
 
-#: src/util/fileops.cpp:363 src/util/fileops.cpp:376
+#: src/util/fileops.cpp:363 src/util/fileops.cpp:367 src/util/fileops.cpp:390
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "ფაილის გაფართოების შეცდომა: %1"
 
-#: src/util/fileops.cpp:403
+#: src/util/fileops.cpp:420
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "ფაილში გადახვევის შეცდომა: %1"
 
-#: src/util/fileops.cpp:661
+#: src/util/fileops.cpp:678
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "ფაილის (%1) გახსნის შეცდომა: %2"

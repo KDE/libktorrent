@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-17 00:44+0000\n"
+"POT-Creation-Date: 2026-03-13 00:43+0000\n"
 "PO-Revision-Date: 2021-09-17 20:07+0530\n"
 "Last-Translator: Raghavendra Kamath <raghu@raghukamath.com>\n"
 "Language-Team: kde-hindi\n"
@@ -77,7 +77,7 @@ msgid "Failed to create %1: %2"
 msgstr "बना नहीं सकता %1: %2"
 
 #: src/diskio/cachefile.cpp:88 src/util/fileops.cpp:339
-#: src/util/fileops.cpp:384
+#: src/util/fileops.cpp:401
 #, fuzzy, kde-format
 #| msgid "Cannot create %1: %2"
 msgid "Cannot open %1: %2"
@@ -543,19 +543,19 @@ msgstr "बना नहीं सकता %1: %2"
 msgid "Cannot calculate the filesize: %1"
 msgstr "बना नहीं सकता %1: %2"
 
-#: src/util/fileops.cpp:363 src/util/fileops.cpp:376
+#: src/util/fileops.cpp:363 src/util/fileops.cpp:367 src/util/fileops.cpp:390
 #, fuzzy, kde-format
 #| msgid "Cannot create %1: %2"
 msgid "Cannot expand file: %1"
 msgstr "बना नहीं सकता %1: %2"
 
-#: src/util/fileops.cpp:403
+#: src/util/fileops.cpp:420
 #, fuzzy, kde-format
 #| msgid "Cannot create %1: %2"
 msgid "Cannot seek in file: %1"
 msgstr "बना नहीं सकता %1: %2"
 
-#: src/util/fileops.cpp:661
+#: src/util/fileops.cpp:678
 #, fuzzy, kde-format
 #| msgid "Cannot create %1: %2"
 msgid "Unable to open file %1: %2"

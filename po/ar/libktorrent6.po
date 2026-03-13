@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-17 00:44+0000\n"
+"POT-Creation-Date: 2026-03-13 00:43+0000\n"
 "PO-Revision-Date: 2024-02-12 14:04+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -74,7 +74,7 @@ msgid "Failed to create %1: %2"
 msgstr "فشل إنشاء %1: %2"
 
 #: src/diskio/cachefile.cpp:88 src/util/fileops.cpp:339
-#: src/util/fileops.cpp:384
+#: src/util/fileops.cpp:401
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "تعذّر فتح %1: %2"
@@ -516,17 +516,17 @@ msgstr "تعذّر حساب حجم الملف %1: %2"
 msgid "Cannot calculate the filesize: %1"
 msgstr "تعذّر حساب حجم الملف: %1"
 
-#: src/util/fileops.cpp:363 src/util/fileops.cpp:376
+#: src/util/fileops.cpp:363 src/util/fileops.cpp:367 src/util/fileops.cpp:390
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "تعذّر توسيع الملف: %1"
 
-#: src/util/fileops.cpp:403
+#: src/util/fileops.cpp:420
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "لا يمكن البحث في الملف: %1"
 
-#: src/util/fileops.cpp:661
+#: src/util/fileops.cpp:678
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "تعذّر فتح الملف %1: %2"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-17 00:44+0000\n"
+"POT-Creation-Date: 2026-03-13 00:43+0000\n"
 "PO-Revision-Date: 2024-06-02 18:51+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -78,7 +78,7 @@ msgid "Failed to create %1: %2"
 msgstr "無法建立 %1:%2"
 
 #: src/diskio/cachefile.cpp:88 src/util/fileops.cpp:339
-#: src/util/fileops.cpp:384
+#: src/util/fileops.cpp:401
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "無法開啟 %1：%2"
@@ -508,17 +508,17 @@ msgstr "無法計算 %1 的檔案大小：%2"
 msgid "Cannot calculate the filesize: %1"
 msgstr "無法計算檔案大小：%1"
 
-#: src/util/fileops.cpp:363 src/util/fileops.cpp:376
+#: src/util/fileops.cpp:363 src/util/fileops.cpp:367 src/util/fileops.cpp:390
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "無法展開檔案：%1"
 
-#: src/util/fileops.cpp:403
+#: src/util/fileops.cpp:420
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "無法在檔案中搜尋：%1"
 
-#: src/util/fileops.cpp:661
+#: src/util/fileops.cpp:678
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "無法開啟檔案 %1：%2"

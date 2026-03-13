@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-17 00:44+0000\n"
+"POT-Creation-Date: 2026-03-13 00:43+0000\n"
 "PO-Revision-Date: 2008-08-05 22:26+0200\n"
 "Last-Translator: Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan (lengadocian) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
@@ -75,7 +75,7 @@ msgid "Failed to create %1: %2"
 msgstr "Descargat"
 
 #: src/diskio/cachefile.cpp:88 src/util/fileops.cpp:339
-#: src/util/fileops.cpp:384
+#: src/util/fileops.cpp:401
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr ""
@@ -526,17 +526,17 @@ msgstr ""
 msgid "Cannot calculate the filesize: %1"
 msgstr ""
 
-#: src/util/fileops.cpp:363 src/util/fileops.cpp:376
+#: src/util/fileops.cpp:363 src/util/fileops.cpp:367 src/util/fileops.cpp:390
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr ""
 
-#: src/util/fileops.cpp:403
+#: src/util/fileops.cpp:420
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr ""
 
-#: src/util/fileops.cpp:661
+#: src/util/fileops.cpp:678
 #, fuzzy, kde-format
 #| msgid "Downloaded"
 msgid "Unable to open file %1: %2"

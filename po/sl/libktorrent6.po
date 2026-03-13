@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-17 00:44+0000\n"
+"POT-Creation-Date: 2026-03-13 00:43+0000\n"
 "PO-Revision-Date: 2020-02-21 22:15+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -77,7 +77,7 @@ msgid "Failed to create %1: %2"
 msgstr "Ni bilo mogoče ustvariti %1: %2"
 
 #: src/diskio/cachefile.cpp:88 src/util/fileops.cpp:339
-#: src/util/fileops.cpp:384
+#: src/util/fileops.cpp:401
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Ni mogoče odpreti %1: %2"
@@ -517,17 +517,17 @@ msgstr "Ni mogoče izračunati velikosti datoteke %1: %2"
 msgid "Cannot calculate the filesize: %1"
 msgstr "Ni mogoče izračunati velikosti datoteke: %1"
 
-#: src/util/fileops.cpp:363 src/util/fileops.cpp:376
+#: src/util/fileops.cpp:363 src/util/fileops.cpp:367 src/util/fileops.cpp:390
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Ni mogoče razširiti datoteke: %1"
 
-#: src/util/fileops.cpp:403
+#: src/util/fileops.cpp:420
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Ni mogoče iskati v datoteki: %1"
 
-#: src/util/fileops.cpp:661
+#: src/util/fileops.cpp:678
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Ni mogoče odpreti datoteke %1: %2"
