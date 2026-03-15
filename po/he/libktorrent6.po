@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the libktorrent package.
 #
-# SPDX-FileCopyrightText: 2024, 2025 Yaron Shahrabani <sh.yaron@gmail.com>
+# SPDX-FileCopyrightText: 2024, 2025, 2026 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-02-17 00:44+0000\n"
-"PO-Revision-Date: 2025-10-09 13:17+0300\n"
+"PO-Revision-Date: 2026-03-14 13:14+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 25.12.2\n"
 
 #: src/bcodec/bdecoder.cpp:51
 #, kde-format
@@ -192,7 +192,7 @@ msgstr[3] "%1 עמיתים"
 #: src/download/downloader.cpp:734
 #, kde-format
 msgid "Disabled because webseed does not match torrent"
-msgstr "מושבת כי אין התאמה של הטורנט בשרת השיתוף"
+msgstr "מושבת כי אין התאמה של הטורנט במקור הרשת"
 
 #: src/download/httpconnection.cpp:29 src/download/webseed.cpp:39
 #: src/download/webseed.cpp:84
@@ -233,7 +233,7 @@ msgstr "מחובר"
 #: src/download/httpconnection.cpp:162
 #, kde-format
 msgid "Error: Failed to connect to webseed"
-msgstr "שגיאה: ההתחברות לשרת השיתוף נכשלה"
+msgstr "שגיאה: ההתחברות למקור הרשת נכשלה"
 
 #: src/download/httpconnection.cpp:186
 #, kde-format
@@ -243,12 +243,12 @@ msgstr "מתבצעת התחברות"
 #: src/download/httpconnection.cpp:195
 #, kde-format
 msgid "Failed to connect to webseed"
-msgstr "ההתחברות לשרת השיתוף נכשלה"
+msgstr "ההתחברות למקור הרשת נכשלה"
 
 #: src/download/httpconnection.cpp:200
 #, kde-format
 msgid "Failed to resolve hostname of webseed"
-msgstr "פתרון שם המארח של שרת השיתוף נכשל"
+msgstr "פתרון שם המארח של מקור הרשת נכשל"
 
 #: src/download/httpconnection.cpp:276
 #, kde-format
