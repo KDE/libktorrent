@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-13 00:43+0000\n"
+"POT-Creation-Date: 2026-03-17 00:43+0000\n"
 "PO-Revision-Date: 2013-04-09 17:20+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: Dutch <kde-i18n-nl@kde.org>\n"
@@ -67,7 +67,7 @@ msgstr "Gegevens controleren"
 #: src/datachecker/multidatachecker.cpp:202
 #: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:664
 #: src/diskio/multifilecache.cpp:700 src/torrent/torrentcreator.cpp:111
-#: src/torrent/torrentcreator.cpp:236 src/torrent/torrentcreator.cpp:269
+#: src/torrent/torrentcreator.cpp:227 src/torrent/torrentcreator.cpp:260
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "Kan bestand %1 niet openen: %2"
@@ -339,7 +339,7 @@ msgstr ""
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "De torrent <b>%1</b> wordt op het moment al gedownload."
 
-#: src/torrent/torrentcreator.cpp:344
+#: src/torrent/torrentcreator.cpp:335
 #, kde-format
 msgid "Cannot create index file: %1"
 msgstr "Kan indexbestand %1 niet aanmaken"

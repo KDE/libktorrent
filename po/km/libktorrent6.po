@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-13 00:43+0000\n"
+"POT-Creation-Date: 2026-03-17 00:43+0000\n"
 "PO-Revision-Date: 2012-07-04 08:47+0700\n"
 "Last-Translator: Sophea <sophea@khmeros.info>\n"
 "Language-Team: Khmer <>\n"
@@ -67,7 +67,7 @@ msgstr "ពិនិត្យ​ទិន្នន័យ​​"
 #: src/datachecker/multidatachecker.cpp:202
 #: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:664
 #: src/diskio/multifilecache.cpp:700 src/torrent/torrentcreator.cpp:111
-#: src/torrent/torrentcreator.cpp:236 src/torrent/torrentcreator.cpp:269
+#: src/torrent/torrentcreator.cpp:227 src/torrent/torrentcreator.cpp:260
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "មិន​អាច​បើក​ឯកសារ %1 ៖​ %2 បានទេ"
@@ -335,7 +335,7 @@ msgstr ""
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "អ្នក​កំពុងតែ​ទាញ​យក torrent <b>%1</b> ហើយ ។"
 
-#: src/torrent/torrentcreator.cpp:344
+#: src/torrent/torrentcreator.cpp:335
 #, kde-format
 msgid "Cannot create index file: %1"
 msgstr "មិន​អាច​បង្កើត​ឯកសារ​លិបិក្រម ៖ %1"
