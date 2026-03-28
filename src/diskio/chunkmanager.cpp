@@ -229,10 +229,10 @@ bool ChunkManager::completed() const
 
 Uint64 ChunkManager::bytesLeft() const
 {
-    Uint32 num_left = bitset.getNumBits() - bitset.numOnBits();
-    Uint32 last = d->chunks.size() - 1;
+    const Uint32 num_left = bitset.getNumBits() - bitset.numOnBits();
+    const Uint32 last = d->chunks.size() - 1;
     if (last < (Uint32)d->chunks.size() && !bitset.get(last)) {
-        Chunk *c = d->chunks[last];
+        const Chunk *c = d->chunks[last];
         if (c) {
             return (num_left - 1) * tor.getChunkSize() + c->getSize();
         } else {
@@ -245,10 +245,10 @@ Uint64 ChunkManager::bytesLeft() const
 
 Uint64 ChunkManager::bytesLeftToDownload() const
 {
-    Uint32 num_left = d->todo.numOnBits();
-    Uint32 last = d->chunks.size() - 1;
+    const Uint32 num_left = d->todo.numOnBits();
+    const Uint32 last = d->chunks.size() - 1;
     if (last < (Uint32)d->chunks.size() && d->todo.get(last)) {
-        Chunk *c = d->chunks[last];
+        const Chunk *c = d->chunks[last];
         if (c) {
             return (num_left - 1) * tor.getChunkSize() + c->getSize();
         } else {
@@ -274,16 +274,16 @@ Uint64 ChunkManager::bytesExcluded() const
 {
     Uint64 excl = 0;
     if (excluded_chunks.get(tor.getNumChunks() - 1)) {
-        Chunk *c = d->chunks[tor.getNumChunks() - 1];
-        Uint32 num = excluded_chunks.numOnBits() - 1;
+        const Chunk *c = d->chunks[tor.getNumChunks() - 1];
+        const Uint32 num = excluded_chunks.numOnBits() - 1;
         excl = tor.getChunkSize() * num + c->getSize();
     } else {
         excl = tor.getChunkSize() * excluded_chunks.numOnBits();
     }
 
     if (only_seed_chunks.get(tor.getNumChunks() - 1)) {
-        Chunk *c = d->chunks[tor.getNumChunks() - 1];
-        Uint32 num = only_seed_chunks.numOnBits() - 1;
+        const Chunk *c = d->chunks[tor.getNumChunks() - 1];
+        const Uint32 num = only_seed_chunks.numOnBits() - 1;
         excl += tor.getChunkSize() * num + c->getSize();
     } else {
         excl += tor.getChunkSize() * only_seed_chunks.numOnBits();
@@ -472,7 +472,7 @@ void ChunkManager::Private::loadPriorityInfo()
     fptr.close();
 
     for (Uint32 i = 0; i < num; i += 2) {
-        Uint32 idx = buf[i];
+        const Uint32 idx = buf[i];
         if (idx >= tor.getNumFiles()) {
             Out(SYS_DIO | LOG_IMPORTANT) << "Warning : error reading chunk_info file" << endl;
             loadFileInfo();
@@ -622,7 +622,7 @@ void ChunkManager::markExistingFilesAsDownloaded()
         // loop over all files and mark all chunks of all existing files as
         // downloaded
         for (Uint32 i = 0; i < tor.getNumFiles(); i++) {
-            TorrentFile &tf = tor.getFile(i);
+            const TorrentFile &tf = tor.getFile(i);
             if (!tf.isPreExistingFile()) {
                 continue;
             }
@@ -638,7 +638,7 @@ void ChunkManager::markExistingFilesAsDownloaded()
 
             // all files of the first chunk must be preexisting
             if (d->allFilesExistOfChunk(tf.getFirstChunk())) {
-                Uint32 idx = tf.getFirstChunk();
+                const Uint32 idx = tf.getFirstChunk();
                 Chunk *c = d->chunks[idx];
                 c->setStatus(Chunk::ON_DISK);
                 bitset.set(idx, true);
@@ -648,7 +648,7 @@ void ChunkManager::markExistingFilesAsDownloaded()
 
             // all files of the last chunk must be preexisting
             if (d->allFilesExistOfChunk(tf.getLastChunk())) {
-                Uint32 idx = tf.getLastChunk();
+                const Uint32 idx = tf.getLastChunk();
                 Chunk *c = d->chunks[idx];
                 c->setStatus(Chunk::ON_DISK);
                 bitset.set(idx, true);
@@ -765,7 +765,7 @@ Uint32 ChunkManager::previewChunkRangeSize(const TorrentFile &file) const
 
 Uint32 ChunkManager::previewChunkRangeSize() const
 {
-    QMimeType ptr = QMimeDatabase().mimeTypeForFile(tor.getNameSuggestion());
+    const QMimeType ptr = QMimeDatabase().mimeTypeForFile(tor.getNameSuggestion());
     Uint32 preview_size = 0;
     if (ptr.name().startsWith(QLatin1String("video"))) {
         preview_size = preview_size_video;
@@ -817,9 +817,9 @@ ChunkManager::Private::Private(ChunkManager *p, Torrent &tor, const QString &tmp
     index_file = tmpdir + QLatin1String("index");
     file_info_file = tmpdir + QLatin1String("file_info");
     file_priority_file = tmpdir + QLatin1String("file_priority");
-    Uint64 tsize = tor.getTotalSize(); // total size
-    Uint64 csize = tor.getChunkSize(); // chunk size
-    Uint64 lsize = tsize - (csize * (tor.getNumChunks() - 1)); // size of last chunk
+    const Uint64 tsize = tor.getTotalSize(); // total size
+    const Uint64 csize = tor.getChunkSize(); // chunk size
+    const Uint64 lsize = tsize - (csize * (tor.getNumChunks() - 1)); // size of last chunk
 
     for (Uint32 i = 0; i < tor.getNumChunks(); i++) {
         if (i + 1 < tor.getNumChunks()) {
@@ -847,7 +847,7 @@ void ChunkManager::Private::setupPriorities()
     }
 
     if (tor.isMultiFile()) {
-        Uint32 nfiles = tor.getNumFiles();
+        const Uint32 nfiles = tor.getNumFiles();
         for (Uint32 i = 0; i < nfiles; i++) {
             TorrentFile &tf = tor.getFile(i);
             if (tf.isMultimedia()) {
@@ -855,7 +855,7 @@ void ChunkManager::Private::setupPriorities()
             }
         }
     } else if (tor.isMultimedia()) {
-        Uint32 nchunks = p->previewChunkRangeSize();
+        const Uint32 nchunks = p->previewChunkRangeSize();
 
         p->prioritisePreview(0, nchunks);
         if (tor.getNumChunks() > nchunks) {
@@ -872,7 +872,7 @@ void ChunkManager::Private::saveIndexFile()
     }
 
     for (unsigned int i = 0; i < p->getNumChunks(); i++) {
-        Chunk *c = p->getChunk(i);
+        const Chunk *c = p->getChunk(i);
         if (c->getStatus() != Chunk::NOT_DOWNLOADED) {
             NewChunkHeader hdr;
             hdr.index = i;
@@ -1009,7 +1009,7 @@ void ChunkManager::Private::doPreviewPriority(TorrentFile &file)
         return;
     }
 
-    Uint32 nchunks = p->previewChunkRangeSize(file);
+    const Uint32 nchunks = p->previewChunkRangeSize(file);
     if (!nchunks) {
         return;
     }
@@ -1025,8 +1025,8 @@ bool ChunkManager::Private::allFilesExistOfChunk(Uint32 idx)
     Torrent::FileIndexList files;
     Torrent &tor = p->tor;
     tor.calcChunkPos(idx, files);
-    for (Uint32 fidx : std::as_const(files)) {
-        TorrentFile &tf = tor.getFile(fidx);
+    for (const Uint32 fidx : std::as_const(files)) {
+        const TorrentFile &tf = tor.getFile(fidx);
         if (!tf.isPreExistingFile()) {
             return false;
         }
@@ -1036,8 +1036,8 @@ bool ChunkManager::Private::allFilesExistOfChunk(Uint32 idx)
 
 void ChunkManager::Private::dumpPriority(TorrentFile *tf)
 {
-    Uint32 first = tf->getFirstChunk();
-    Uint32 last = tf->getLastChunk();
+    const Uint32 first = tf->getFirstChunk();
+    const Uint32 last = tf->getLastChunk();
     Out(SYS_DIO | LOG_DEBUG) << "DumpPriority : " << tf->getPath() << " " << first << " " << last << endl;
     for (Uint32 i = first; i <= last; i++) {
         QString prio;
@@ -1081,8 +1081,8 @@ void ChunkManager::Private::setBorderChunkPriority(Uint32 idx, Priority prio)
     Priority highest = prio;
     // get list of files where first chunk lies in
     tor.calcChunkPos(idx, files);
-    for (Uint32 file : std::as_const(files)) {
-        Priority np = tor.getFile(file).getPriority();
+    for (const Uint32 file : std::as_const(files)) {
+        const Priority np = tor.getFile(file).getPriority();
         if (np > highest) {
             highest = np;
         }
@@ -1098,7 +1098,7 @@ bool ChunkManager::Private::resetBorderChunk(Uint32 idx, TorrentFile *tf)
     Torrent::FileIndexList files;
     Torrent &tor = p->tor;
     tor.calcChunkPos(idx, files);
-    for (Uint32 file : std::as_const(files)) {
+    for (const Uint32 file : std::as_const(files)) {
         const TorrentFile &other = tor.getFile(file);
         if (file == tf->getIndex()) {
             continue;
@@ -1123,8 +1123,8 @@ void ChunkManager::Private::createBorderChunkSet()
     Torrent &tor = p->tor;
     // figure out border chunks
     for (Uint32 i = 0; i < tor.getNumFiles() - 1; i++) {
-        TorrentFile &a = tor.getFile(i);
-        TorrentFile &b = tor.getFile(i + 1);
+        const TorrentFile &a = tor.getFile(i);
+        const TorrentFile &b = tor.getFile(i + 1);
         if (a.getLastChunk() == b.getFirstChunk()) {
             border_chunks.insert(a.getLastChunk());
         }
@@ -1205,7 +1205,7 @@ void ChunkManager::Private::recalculateChunksLeft()
     }
 
     Uint32 num = 0;
-    Uint32 tot = chunks.size();
+    const Uint32 tot = chunks.size();
     for (Uint32 i = 0; i < tot; i++) {
         const Chunk *c = chunks[i];
         if (c && !p->bitset.get(i) && !c->isExcluded()) {

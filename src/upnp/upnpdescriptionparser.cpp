@@ -67,7 +67,7 @@ bool UPnPDescriptionParser::parse(const QString &file, UPnPRouter *router)
         return false;
     }
 
-    QByteArray data = fptr.readAll();
+    const QByteArray data = fptr.readAll();
     XMLContentHandler chandler(router);
 
     const bool ret = chandler.parse(data);

@@ -41,8 +41,8 @@ private Q_SLOTS:
     void testRC4()
     {
         try {
-            bt::SHA1Hash dkey = randomKey();
-            bt::SHA1Hash ekey = randomKey();
+            const bt::SHA1Hash dkey = randomKey();
+            const bt::SHA1Hash ekey = randomKey();
             mse::RC4Encryptor a(dkey, ekey);
             mse::RC4Encryptor b(ekey, dkey);
 

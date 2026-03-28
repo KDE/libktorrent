@@ -31,10 +31,10 @@ bt::Uint32 CircularBuffer::read(bt::Uint8 *ptr, bt::Uint32 max_len)
         return 0;
     }
 
-    bt::Uint32 to_read = buf_size < max_len ? buf_size : max_len;
+    const bt::Uint32 to_read = buf_size < max_len ? buf_size : max_len;
 
     Range r = firstRange();
-    bt::Uint32 s = r.second;
+    const bt::Uint32 s = r.second;
     if (s >= to_read) {
         memcpy(ptr, r.first, to_read);
     } else { // s < to_read
@@ -56,12 +56,12 @@ bt::Uint32 CircularBuffer::write(const bt::Uint8 *ptr, bt::Uint32 len)
         return 0;
     }
 
-    bt::Uint32 free_space = buf_capacity - buf_size;
-    bt::Uint32 to_write = free_space < len ? free_space : len;
+    const bt::Uint32 free_space = buf_capacity - buf_size;
+    const bt::Uint32 to_write = free_space < len ? free_space : len;
 
-    bt::Uint32 write_pos = (start + buf_size) % buf_capacity;
+    const bt::Uint32 write_pos = (start + buf_size) % buf_capacity;
     if (write_pos + to_write > buf_capacity) {
-        bt::Uint32 w = (buf_capacity - write_pos);
+        const bt::Uint32 w = (buf_capacity - write_pos);
         memcpy(data + write_pos, ptr, w);
         memcpy(data, ptr + w, to_write - w);
     } else {

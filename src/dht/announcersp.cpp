@@ -60,7 +60,7 @@ void AnnounceRsp::encode(QByteArray &arr) const
 void AnnounceRsp::parse(BDictNode *dict)
 {
     dht::RPCMsg::parse(dict);
-    BDictNode *args = dict->getDict(RSP);
+    const BDictNode *args = dict->getDict(RSP);
     if (!args) {
         throw bt::Error(u"Invalid response, arguments missing"_s);
     }

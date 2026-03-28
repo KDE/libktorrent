@@ -80,10 +80,10 @@ void StreamingChunkSelector::updateRange()
 
     std::list<Uint32>::iterator itr = range.begin();
     while (itr != range.end()) {
-        Uint32 i = *itr;
+        const Uint32 i = *itr;
         // if we have the chunk or it falls before the cursor remove it from the list
         if (bs.get(i) || i < cursor) {
-            std::list<Uint32>::iterator tmp = itr;
+            const std::list<Uint32>::iterator tmp = itr;
             ++itr;
             range.erase(tmp);
         } else {
@@ -102,7 +102,7 @@ bool StreamingChunkSelector::selectFromPreview(PieceDownloader *pd, Uint32 &chun
     std::set<Uint32>::iterator i = preview_chunks.begin();
     while (i != preview_chunks.end()) {
         if (bs.get(*i)) {
-            std::set<Uint32>::iterator j = i;
+            const std::set<Uint32>::iterator j = i;
             ++i;
             preview_chunks.erase(j);
         } else if (pd->hasChunk(*i) && *i >= range_start && *i <= range_end) {
@@ -135,18 +135,18 @@ bool StreamingChunkSelector::select(bt::PieceDownloader *pd, bt::Uint32 &chunk)
 
     std::list<Uint32>::iterator itr = range.begin();
     while (itr != range.end()) {
-        Uint32 i = *itr;
+        const Uint32 i = *itr;
         const Chunk *c = cman->getChunk(i);
 
         // if we have the chunk remove it from the list
         if (bs.get(i)) {
-            std::list<Uint32>::iterator tmp = itr;
+            const std::list<Uint32>::iterator tmp = itr;
             ++itr;
             range.erase(tmp);
         } else if (pd->hasChunk(i) && !c->isExcluded() && !c->isExcludedForDownloading()) {
             if (i < cursor + critical_window_size) {
                 // Attempt to find the critical chunk with the least downloaders
-                Uint32 nd = downer->numDownloadersForChunk(i);
+                const Uint32 nd = downer->numDownloadersForChunk(i);
                 if (critical_chunk == INVALID_CHUNK || nd < critical_chunk_downloaders) {
                     critical_chunk = i;
                     critical_chunk_downloaders = nd;
@@ -203,7 +203,7 @@ void StreamingChunkSelector::reinsert(bt::Uint32 chunk)
     if (chunk >= cursor && chunk <= range_end) {
         std::list<Uint32>::iterator itr = range.begin();
         while (itr != range.end()) {
-            Uint32 i = *itr;
+            const Uint32 i = *itr;
             if (i == chunk) {
                 return;
             }

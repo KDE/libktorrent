@@ -95,9 +95,9 @@ void MakeDir(const QString &dir, bool nothrow)
         return;
     }
 
-    QString n = d.dirName();
+    const QString n = d.dirName();
     if (!d.cdUp() || !d.mkdir(n)) {
-        QString error = i18n("Cannot create directory %1", dir);
+        const QString error = i18n("Cannot create directory %1", dir);
         Out(SYS_DIO | LOG_NOTICE) << error << endl;
         if (!nothrow) {
             throw Error(error);
@@ -215,11 +215,11 @@ bool Exists(const QString &url)
 
 static bool DelDir(const QString &fn)
 {
-    QDir d(fn);
+    const QDir d(fn);
     const QStringList subdirs = d.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
     for (auto i = subdirs.begin(); i != subdirs.end(); i++) {
-        QString entry = *i;
+        const QString entry = *i;
 
         if (!DelDir(d.absoluteFilePath(entry))) {
             return false;
@@ -228,7 +228,7 @@ static bool DelDir(const QString &fn)
 
     const QStringList files = d.entryList(QDir::Files | QDir::System | QDir::Hidden);
     for (auto i = files.begin(); i != files.end(); i++) {
-        QString file = d.absoluteFilePath(*i);
+        const QString file = d.absoluteFilePath(*i);
         QFile fp(file);
         if (!QFileInfo(file).isWritable() && !fp.setPermissions(QFile::ReadUser | QFile::WriteUser)) {
             return false;
@@ -257,7 +257,7 @@ void Delete(const QString &url, bool nothrow)
     }
 
     if (!ok) {
-        QString err = i18n("Cannot delete %1: %2", url, QString::fromUtf8(strerror(errno)));
+        const QString err = i18n("Cannot delete %1: %2", url, QString::fromUtf8(strerror(errno)));
         if (!nothrow) {
             throw Error(err);
         } else {
@@ -396,7 +396,7 @@ void TruncateFile(int fd, Uint64 size, bool quick)
 
 void TruncateFile(const QString &path, Uint64 size)
 {
-    int fd = ::open(QFile::encodeName(path).constData(), O_RDWR | O_LARGEFILE);
+    const int fd = ::open(QFile::encodeName(path).constData(), O_RDWR | O_LARGEFILE);
     if (fd < 0) {
         throw Error(i18n("Cannot open %1: %2", path, QString::fromUtf8(strerror(errno))));
     }
@@ -463,7 +463,7 @@ bool FileNameTooLong(const QString &path)
     int length = 0;
     const QStringList names = path.split(QLatin1Char('/'));
     for (const QString &s : names) {
-        QByteArray encoded = QFile::encodeName(s);
+        const QByteArray encoded = QFile::encodeName(s);
         if (encoded.length() >= NAME_MAX) {
             return true;
         }
@@ -476,7 +476,7 @@ bool FileNameTooLong(const QString &path)
 
 static QString ShortenName(const QString &name, int extra_number)
 {
-    QFileInfo fi(name);
+    const QFileInfo fi(name);
     QString ext = fi.suffix();
     QString base = fi.completeBaseName();
 
@@ -512,13 +512,13 @@ static QString ShortenName(const QString &name, int extra_number)
 
 static QString ShortenPath(const QString &path, int extra_number)
 {
-    int max_len = PATH_MAX;
-    QByteArray encoded = QFile::encodeName(path);
+    const int max_len = PATH_MAX;
+    const QByteArray encoded = QFile::encodeName(path);
     if (encoded.length() < max_len) {
         return path;
     }
 
-    QFileInfo fi(path);
+    const QFileInfo fi(path);
     QString ext = fi.suffix();
     QString name = fi.completeBaseName();
     QString fpath = fi.path() + '/'_L1;
@@ -560,7 +560,7 @@ QString ShortenFileName(const QString &path, int extra_number)
     const QStringList names = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
     int cnt = 0;
     for (const QString &s : names) {
-        QByteArray encoded = QFile::encodeName(s);
+        const QByteArray encoded = QFile::encodeName(s);
         assembled += (encoded.length() < NAME_MAX) ? s : ShortenName(s, extra_number);
         if (cnt < names.count() - 1) {
             assembled += QLatin1Char('/');

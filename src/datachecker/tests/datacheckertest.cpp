@@ -25,7 +25,7 @@ const bt::Uint64 TEST_FILE_SIZE = 15 * 1024 * 1024;
 
 bt::Uint64 RandomSize(bt::Uint64 min_size, bt::Uint64 max_size)
 {
-    bt::Uint64 r = max_size - min_size;
+    const bt::Uint64 r = max_size - min_size;
     return min_size + QRandomGenerator64::global()->generate() % r;
 }
 
@@ -60,7 +60,7 @@ private Q_SLOTS:
 
         SingleDataChecker dc(0, tc.getStats().total_chunks);
         try {
-            QString dnd = tc.getTorDir() + "dnd"_L1 + bt::DirSeparator();
+            const QString dnd = tc.getTorDir() + "dnd"_L1 + bt::DirSeparator();
             dc.check(tc.getStats().output_path, tc.getTorrent(), dnd, tc.downloadedChunksBitSet());
             QVERIFY(dc.getResult().allOn());
         } catch (bt::Error &err) {
@@ -93,7 +93,7 @@ private Q_SLOTS:
 
         MultiDataChecker dc(0, tc.getStats().total_chunks);
         try {
-            QString dnd = tc.getTorDir() + "dnd"_L1 + bt::DirSeparator();
+            const QString dnd = tc.getTorDir() + "dnd"_L1 + bt::DirSeparator();
             dc.check(tc.getStats().output_path, tc.getTorrent(), dnd, tc.downloadedChunksBitSet());
             QVERIFY(dc.getResult().allOn());
         } catch (bt::Error &err) {
@@ -128,7 +128,7 @@ private Q_SLOTS:
             const bt::TorrentFileInterface &fi = tc.getTorrentFile(file);
             MultiDataChecker dc(fi.getFirstChunk(), fi.getLastChunk());
             try {
-                QString dnd = tc.getTorDir() + "dnd"_L1 + bt::DirSeparator();
+                const QString dnd = tc.getTorDir() + "dnd"_L1 + bt::DirSeparator();
                 dc.check(tc.getStats().output_path, tc.getTorrent(), dnd, tc.downloadedChunksBitSet());
                 for (Uint32 i = 0; i < tc.getStats().total_chunks; i++) {
                     QVERIFY(dc.getResult().get(i) == (i >= fi.getFirstChunk() && i <= fi.getLastChunk()));

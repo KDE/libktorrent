@@ -33,14 +33,14 @@ private Q_SLOTS:
     void testMountPointDetermination()
     {
         const QList<Solid::Device> devs = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
-        QString mountpoint;
+        const QString mountpoint;
 
         for (const Solid::Device &dev : devs) {
             const Solid::StorageAccess *sa = dev.as<Solid::StorageAccess>();
             if (sa->isAccessible()) {
                 QVERIFY(bt::MountPoint(sa->filePath()) == sa->filePath());
 
-                QString path = sa->filePath() + "/some/random/path/test.foobar"_L1;
+                const QString path = sa->filePath() + "/some/random/path/test.foobar"_L1;
                 Out(SYS_GEN | LOG_DEBUG) << "Testing " << path << endl;
                 QVERIFY(bt::MountPoint(path) == sa->filePath());
             }

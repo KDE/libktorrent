@@ -101,7 +101,7 @@ Uint32 EncryptedPacketSocket::sendData(const Uint8 *data, Uint32 len)
         Uint32 ds = 0;
         const Uint8 *ed = enc->encrypt(data, len);
         while (sock->ok() && ds < len) {
-            Uint32 ret = sock->send(ed + ds, len - ds);
+            const Uint32 ret = sock->send(ed + ds, len - ds);
             ds += ret;
             if (ret == 0) {
                 Out(SYS_CON | LOG_DEBUG) << "ret = 0" << endl;
@@ -112,7 +112,7 @@ Uint32 EncryptedPacketSocket::sendData(const Uint8 *data, Uint32 len)
         }
         return ds;
     } else {
-        Uint32 ret = sock->send(data, len);
+        const Uint32 ret = sock->send(data, len);
         if (ret != len) {
             Out(SYS_CON | LOG_DEBUG) << "ret != len" << endl;
         }
@@ -149,7 +149,7 @@ Uint32 EncryptedPacketSocket::readData(Uint8 *buf, Uint32 len)
         return ret2;
     }
 
-    Uint32 ret = sock->recv(buf + ret2, len - ret2);
+    const Uint32 ret = sock->recv(buf + ret2, len - ret2);
     if (ret + ret2 > 0 && enc) {
         enc->decrypt(buf, ret + ret2);
     }
@@ -159,7 +159,7 @@ Uint32 EncryptedPacketSocket::readData(Uint8 *buf, Uint32 len)
 
 Uint32 EncryptedPacketSocket::bytesAvailable() const
 {
-    Uint32 ba = sock->bytesAvailable();
+    const Uint32 ba = sock->bytesAvailable();
     if (reinserted_data_size - reinserted_data_read > 0) {
         return ba + (reinserted_data_size - reinserted_data_read);
     } else {

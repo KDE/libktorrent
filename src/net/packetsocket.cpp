@@ -42,7 +42,7 @@ PacketSocket::~PacketSocket()
 
 Packet::Ptr PacketSocket::selectPacket()
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     Packet::Ptr ret(nullptr);
     // this function should ensure that between
     // each data packet at least 3 control packets are sent
@@ -83,11 +83,11 @@ Uint32 PacketSocket::write(Uint32 max, bt::TimeStamp now)
 
     Uint32 written = 0;
     while (curr_packet && (written < max || max == 0)) {
-        Uint32 limit = (max == 0) ? 0 : max - written;
-        int ret = curr_packet->send(sock.get(), limit);
+        const Uint32 limit = (max == 0) ? 0 : max - written;
+        const int ret = curr_packet->send(sock.get(), limit);
         if (ret > 0) {
             written += ret;
-            QMutexLocker locker(&mutex);
+            const QMutexLocker locker(&mutex);
             if (curr_packet->getType() == PIECE) {
                 up_speed->onData(ret, now);
                 pending_upload_data_bytes -= ret;
@@ -100,14 +100,14 @@ Uint32 PacketSocket::write(Uint32 max, bt::TimeStamp now)
         if (curr_packet->isSent()) {
             // packet sent, so remove it
             if (curr_packet->getType() == PIECE) {
-                QMutexLocker locker(&mutex);
+                const QMutexLocker locker(&mutex);
                 if (!data_packets.empty()) {
                     data_packets.pop_front();
                 }
                 // reset ctrl_packets_sent so the next packet should be a ctrl packet
                 ctrl_packets_sent = 0;
             } else {
-                QMutexLocker locker(&mutex);
+                const QMutexLocker locker(&mutex);
                 if (!control_packets.empty()) {
                     control_packets.pop_front();
                 }
@@ -126,7 +126,7 @@ Uint32 PacketSocket::write(Uint32 max, bt::TimeStamp now)
 void PacketSocket::addPacket(Packet::Ptr packet)
 {
     Q_ASSERT(!packet->sending());
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     if (packet->getType() == PIECE) {
         data_packets.push_back(packet);
         pending_upload_data_bytes += packet->getDataLength();
@@ -139,7 +139,7 @@ void PacketSocket::addPacket(Packet::Ptr packet)
 
 bool PacketSocket::bytesReadyToWrite() const
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     return !data_packets.empty() || !control_packets.empty();
 }
 
@@ -151,19 +151,19 @@ void PacketSocket::preProcess(Uint8 *data, Uint32 size)
 
 Uint32 PacketSocket::dataBytesUploaded()
 {
-    QMutexLocker locker(&mutex);
-    Uint32 ret = uploaded_data_bytes;
+    const QMutexLocker locker(&mutex);
+    const Uint32 ret = uploaded_data_bytes;
     uploaded_data_bytes = 0;
     return ret;
 }
 
 void PacketSocket::clearPieces(bool reject)
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
 
     auto i = data_packets.begin();
     while (i != data_packets.end()) {
-        Packet::Ptr p = *i;
+        const Packet::Ptr p = *i;
         if (p->getType() == bt::PIECE && !p->sending() && curr_packet != p) {
             if (reject) {
                 addPacket(p->makeRejectOfPiece());
@@ -178,10 +178,10 @@ void PacketSocket::clearPieces(bool reject)
 
 void PacketSocket::doNotSendPiece(const bt::Request &req, bool reject)
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     auto i = data_packets.begin();
     while (i != data_packets.end()) {
-        Packet::Ptr p = *i;
+        const Packet::Ptr p = *i;
         if (p->isPiece(req) && !p->sending() && p != curr_packet) {
             pending_upload_data_bytes -= p->getDataLength();
             i = data_packets.erase(i);
@@ -197,13 +197,13 @@ void PacketSocket::doNotSendPiece(const bt::Request &req, bool reject)
 
 Uint32 PacketSocket::numPendingPieceUploads() const
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     return data_packets.size();
 }
 
 Uint32 PacketSocket::numPendingPieceUploadBytes() const
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     return pending_upload_data_bytes;
 }
 

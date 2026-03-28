@@ -97,7 +97,7 @@ Uint32 NetworkThread::doGroupsLimited(Uint32 num_ready, bt::TimeStamp now, Uint3
                 num_still_ready += g->numSockets(); // keep track of the number of sockets which are still ready
             }
 
-            Uint32 done = group_allowance - ga;
+            const Uint32 done = group_allowance - ga;
             if (allowance >= done) {
                 allowance -= done;
             } else {
@@ -152,7 +152,7 @@ void NetworkThread::doGroups(Uint32 num_ready, bt::TimeStamp now, bt::Uint32 lim
                     as = allowance; // make sure we do not do to much
                 }
 
-                Uint32 tmp = as;
+                const Uint32 tmp = as;
                 doGroup(g, as, now);
                 allowance -= (tmp - as); // subtract from allowance
             }

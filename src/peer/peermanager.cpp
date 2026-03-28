@@ -166,7 +166,7 @@ void PeerManager::killSeeders()
 
 void PeerManager::killUninterested()
 {
-    QTime now = QTime::currentTime();
+    const QTime now = QTime::currentTime();
     for (const auto &[peer_id, peer] : std::as_const(d->peer_map)) {
         if (!peer->isInterested() && (peer->getConnectTime().secsTo(now) > 30)) {
             peer->kill();
@@ -226,7 +226,7 @@ void PeerManager::peerAuthenticated(bt::Authenticate *auth, bt::PeerConnector::W
         }
     }
 
-    PeerConnector::Ptr ptr = pcon.toStrongRef();
+    const PeerConnector::Ptr ptr = pcon.toStrongRef();
     d->connectors.remove(ptr);
 }
 
@@ -295,7 +295,7 @@ void PeerManager::loadPeerList(const QString &file)
             }
 
             bool ok = false;
-            net::Address addr(sl[0], sl[1].toInt(&ok));
+            const net::Address addr(sl[0], sl[1].toInt(&ok));
             if (ok) {
                 addPotentialPeer(addr, false);
             }
@@ -329,7 +329,7 @@ void PeerManager::stop()
 
 Peer *PeerManager::findPeer(Uint32 peer_id)
 {
-    PeerMap::iterator i = d->peer_map.find(peer_id);
+    const PeerMap::iterator i = d->peer_map.find(peer_id);
     if (i == d->peer_map.end()) {
         return nullptr;
     } else {
@@ -383,7 +383,7 @@ void PeerManager::pex(const QByteArray &arr, int ip_version)
         for (int i = 0; i < arr.size(); i += 18) {
             Q_IPV6ADDR ip;
             memcpy(ip.c, arr.data() + i, 16);
-            quint16 port = ReadUint16((const Uint8 *)arr.data() + i, 16);
+            const quint16 port = ReadUint16((const Uint8 *)arr.data() + i, 16);
             addPotentialPeer(net::Address(ip, port), false);
         }
     }
@@ -402,7 +402,7 @@ void PeerManager::setPexEnabled(bool on)
     for (const auto &[p_id, p] : std::as_const(d->peer_map)) {
         if (!p->isKilled()) {
             p->setPexEnabled(on);
-            bt::Uint16 port = ServerInterface::getPort();
+            const bt::Uint16 port = ServerInterface::getPort();
             p->sendExtProtHandshake(port, d->tor.getMetaData().size(), d->partial_seed);
         }
     }
@@ -564,7 +564,7 @@ void PeerManager::setPartialSeed(bool partial_seed)
         d->partial_seed = partial_seed;
 
         // If partial seeding status changes, update all peers
-        bt::Uint16 port = ServerInterface::getPort();
+        const bt::Uint16 port = ServerInterface::getPort();
         for (const auto &[peer_id, peer] : std::as_const(d->peer_map)) {
             peer->sendExtProtHandshake(port, d->tor.getMetaData().size(), d->partial_seed);
         }
@@ -688,7 +688,7 @@ void PeerManager::Private::createPeer(std::unique_ptr<mse::EncryptedPacketSocket
     Q_EMIT p->newPeer(peer_ptr);
     peer_ptr->setPexEnabled(pex_on);
     // send extension protocol handshake
-    bt::Uint16 port = ServerInterface::getPort();
+    const bt::Uint16 port = ServerInterface::getPort();
     peer_ptr->sendExtProtHandshake(port, tor.getMetaData().size(), partial_seed);
 
     if (superseeder) {
@@ -719,9 +719,9 @@ void PeerManager::Private::connectToPeers()
             return;
         }
 
-        PPItr itr = potential_peers.begin();
+        const PPItr itr = potential_peers.begin();
 
-        AccessManager &aman = AccessManager::instance();
+        const AccessManager &aman = AccessManager::instance();
 
         if (aman.allowed(itr->first) && !connectedTo(itr->first)) {
             std::unique_ptr<ConnectionLimit::Token> token = climit.acquire(tor.getInfoHash());
@@ -729,7 +729,7 @@ void PeerManager::Private::connectToPeers()
                 break;
             }
 
-            PeerConnector::Ptr pcon(new PeerConnector(itr->first, itr->second, p, std::move(token)));
+            const PeerConnector::Ptr pcon(new PeerConnector(itr->first, itr->second, p, std::move(token)));
             pcon->setWeakPointer(PeerConnector::WPtr(pcon));
             connectors.insert(pcon);
             pcon->start();

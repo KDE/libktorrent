@@ -175,7 +175,7 @@ void HTTPTracker::doRequest(WaitJob *wjob)
         return;
     }
 
-    Uint16 port = ServerInterface::getPort();
+    const Uint16 port = ServerInterface::getPort();
 
     QUrlQuery query(url);
     query.addQueryItem(QStringLiteral("peer_id"), peer_id.toString());
@@ -215,7 +215,7 @@ void HTTPTracker::doRequest(WaitJob *wjob)
     }
 
     const SHA1Hash &info_hash = tds->infoHash();
-    QString epq = query.toString(QUrl::FullyEncoded) + QLatin1String("&info_hash=") + info_hash.toURLString();
+    const QString epq = query.toString(QUrl::FullyEncoded) + QLatin1String("&info_hash=") + info_hash.toURLString();
 
     QUrl u = url;
     u.setQuery(epq, QUrl::StrictMode);
@@ -271,7 +271,7 @@ bool HTTPTracker::updateData(const QByteArray &data)
     }
 
     if (dict->getData("failure reason")) {
-        BValueNode *vn = dict->getValue("failure reason");
+        const BValueNode *vn = dict->getValue("failure reason");
         error = vn->data().toString();
         failures++;
         failed(error);
@@ -279,13 +279,13 @@ bool HTTPTracker::updateData(const QByteArray &data)
     }
 
     if (dict->getData("warning message")) {
-        BValueNode *vn = dict->getValue("warning message");
+        const BValueNode *vn = dict->getValue("warning message");
         warning = vn->data().toString();
     } else {
         warning.clear();
     }
 
-    BValueNode *vn = dict->getValue("interval");
+    const BValueNode *vn = dict->getValue("interval");
 
     // if no interval is specified, use 5 minutes
     if (vn) {
@@ -316,7 +316,7 @@ bool HTTPTracker::updateData(const QByteArray &data)
                     buf[j] = arr[i + j];
                 }
 
-                Uint32 ip = ReadUint32(buf, 0);
+                const Uint32 ip = ReadUint32(buf, 0);
                 addPeer(net::Address(ip, ReadUint16(buf, 4)), false);
             }
         }
@@ -328,14 +328,14 @@ bool HTTPTracker::updateData(const QByteArray &data)
                 continue;
             }
 
-            BValueNode *ip_node = dict->getValue("ip");
-            BValueNode *port_node = dict->getValue("port");
+            const BValueNode *ip_node = dict->getValue("ip");
+            const BValueNode *port_node = dict->getValue("port");
 
             if (!ip_node || !port_node) {
                 continue;
             }
 
-            net::Address addr(ip_node->data().toString(), port_node->data().toInt());
+            const net::Address addr(ip_node->data().toString(), port_node->data().toInt());
             addPeer(addr, false);
         }
     }
@@ -347,7 +347,7 @@ bool HTTPTracker::updateData(const QByteArray &data)
         for (int i = 0; i < arr.size(); i += 18) {
             Q_IPV6ADDR ip;
             memcpy(ip.c, arr.data() + i, 16);
-            quint16 port = ReadUint16((const Uint8 *)arr.data() + i, 16);
+            const quint16 port = ReadUint16((const Uint8 *)arr.data() + i, 16);
 
             addPeer(net::Address(ip, port), false);
         }
@@ -431,7 +431,7 @@ void HTTPTracker::setupMetaData(KIO::MetaData &md)
             p = "http://"_L1 + p;
         }
         // set the proxy if the doNotUseKDEProxy ix enabled (URL must be valid to)
-        QUrl url(p);
+        const QUrl url(p);
         if (url.isValid() && proxy.trimmed().length() > 0) {
             md[u"UseProxy"_s] = p;
             md[u"ProxyUrls"_s] = p;
@@ -450,7 +450,7 @@ void HTTPTracker::doAnnounceQueue()
         return;
     }
 
-    QUrl u = announce_queue.front();
+    const QUrl u = announce_queue.front();
     announce_queue.pop_front();
     doAnnounce(u);
 }

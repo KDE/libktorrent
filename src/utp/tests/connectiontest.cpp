@@ -44,7 +44,7 @@ public:
 
     std::unique_ptr<bt::Buffer> buildPacket(bt::Uint32 type, bt::Uint32 recv_conn_id, bt::Uint32 send_conn_id, bt::Uint16 seq_nr, bt::Uint16 ack_nr)
     {
-        TimeValue tv;
+        const TimeValue tv;
         auto packet = pool->get(Header::size());
         Header hdr;
         hdr.version = 1;
@@ -80,19 +80,19 @@ private:
 
     void testConnID()
     {
-        bt::Uint32 conn_id = 666;
-        Connection conn(conn_id, utp::Connection::INCOMING, remote, this);
+        const bt::Uint32 conn_id = 666;
+        const Connection conn(conn_id, utp::Connection::INCOMING, remote, this);
         QVERIFY(conn.connectionStats().recv_connection_id == conn_id);
         QVERIFY(conn.connectionStats().send_connection_id == conn_id - 1);
 
-        Connection conn2(conn_id, utp::Connection::OUTGOING, remote, this);
+        const Connection conn2(conn_id, utp::Connection::OUTGOING, remote, this);
         QVERIFY(conn2.connectionStats().recv_connection_id == conn_id);
         QVERIFY(conn2.connectionStats().send_connection_id == conn_id + 1);
     }
 
     void testOutgoingConnectionSetup()
     {
-        bt::Uint32 conn_id = 666;
+        const bt::Uint32 conn_id = 666;
         Connection conn(conn_id, utp::Connection::OUTGOING, remote, this);
         conn.startConnecting();
         const Connection::Stats &s = conn.connectionStats();
@@ -109,12 +109,12 @@ private:
 
     void testIncomingConnectionSetup()
     {
-        bt::Uint32 conn_id = 666;
+        const bt::Uint32 conn_id = 666;
         Connection conn(conn_id, utp::Connection::INCOMING, remote, this);
         const Connection::Stats &s = conn.connectionStats();
 
         auto pkt = buildPacket(ST_SYN, conn_id - 1, conn_id, 1, 1);
-        PacketParser pp(pkt->get(), pkt->size());
+        const PacketParser pp(pkt->get(), pkt->size());
         conn.handlePacket(pp, std::move(pkt));
         QVERIFY(s.state == CS_CONNECTED);
     }

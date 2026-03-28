@@ -51,7 +51,7 @@ void DecompressThread::run()
     // copy the data
     char buf[4096];
     while (!canceled && !dev.atEnd()) {
-        int len = dev.read(buf, 4096);
+        const int len = dev.read(buf, 4096);
         if (len <= 0 || len > 4096) {
             break;
         }

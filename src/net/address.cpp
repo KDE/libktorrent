@@ -52,7 +52,7 @@ Address::Address(const struct sockaddr_storage *ss)
         port_number = ntohs(((const struct sockaddr_in6 *)ss)->sin6_port);
         if (isIPv4Mapped()) {
             Q_IPV6ADDR ipv6 = toIPv6Address();
-            quint32 ip = ipv6[12] << 24 | ipv6[13] << 16 | ipv6[14] << 8 | ipv6[15];
+            const quint32 ip = ipv6[12] << 24 | ipv6[13] << 16 | ipv6[14] << 8 | ipv6[15];
             setAddress(ip);
         }
     } else {
@@ -147,7 +147,7 @@ Address &Address::operator=(const struct sockaddr_storage &ss)
         port_number = ntohs(((const struct sockaddr_in6 *)&ss)->sin6_port);
         if (isIPv4Mapped()) {
             Q_IPV6ADDR ipv6 = toIPv6Address();
-            quint32 ip = ipv6[12] << 24 | ipv6[13] << 16 | ipv6[14] << 8 | ipv6[15];
+            const quint32 ip = ipv6[12] << 24 | ipv6[13] << 16 | ipv6[14] << 8 | ipv6[15];
             setAddress(ip);
         }
     }
@@ -171,7 +171,7 @@ Address Address::convertIPv4Mapped() const
 {
     if (isIPv4Mapped()) {
         Q_IPV6ADDR ipv6 = toIPv6Address();
-        quint32 ip = ipv6[12] << 24 | ipv6[13] << 16 | ipv6[14] << 8 | ipv6[15];
+        const quint32 ip = ipv6[12] << 24 | ipv6[13] << 16 | ipv6[14] << 8 | ipv6[15];
         return net::Address(ip, port());
     }
 

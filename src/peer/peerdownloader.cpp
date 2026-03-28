@@ -128,7 +128,7 @@ void PeerDownloader::cancelAll()
     if (peer) {
         QList<TimeStampedRequest>::iterator i = reqs.begin();
         while (i != reqs.end()) {
-            TimeStampedRequest &tr = *i;
+            const TimeStampedRequest &tr = *i;
             peer->sendCancel(tr.req);
             ++i;
         }
@@ -140,7 +140,7 @@ void PeerDownloader::cancelAll()
 
 void PeerDownloader::piece(const Piece &p)
 {
-    Request r(p);
+    const Request r(p);
     if (!reqs.removeOne(r)) {
         wait_queue.removeAll(r);
     }
@@ -180,7 +180,7 @@ Uint32 PeerDownloader::getDownloadRate() const
 
 void PeerDownloader::checkTimeouts()
 {
-    TimeStamp now = bt::CurrentTime();
+    const TimeStamp now = bt::CurrentTime();
     // we use a 60 second interval
     const Uint32 MAX_INTERVAL = 60 * 1000;
 
@@ -197,7 +197,7 @@ Uint32 PeerDownloader::getMaxChunkDownloads() const
     // get the download rate in KB/sec
     Uint32 rate_kbs = peer->getDownloadRate();
     rate_kbs = rate_kbs / 1024;
-    Uint32 num_extra = rate_kbs / 25;
+    const Uint32 num_extra = rate_kbs / 25;
 
     if (chunk_size >= 16) {
         return 1 + 16 * num_extra / chunk_size;
@@ -216,7 +216,7 @@ void PeerDownloader::choked()
 
     QList<TimeStampedRequest>::iterator i = reqs.begin();
     while (i != reqs.end()) {
-        TimeStampedRequest &tr = *i;
+        const TimeStampedRequest &tr = *i;
         Q_EMIT rejected(tr.req);
         ++i;
     }
@@ -224,7 +224,7 @@ void PeerDownloader::choked()
 
     QList<Request>::iterator j = wait_queue.begin();
     while (j != wait_queue.end()) {
-        Request &req = *j;
+        const Request &req = *j;
         Q_EMIT rejected(req);
         ++j;
     }
@@ -234,7 +234,7 @@ void PeerDownloader::choked()
 void PeerDownloader::update()
 {
     // modify the interval if necessary
-    double pieces_per_sec = (double)peer->getDownloadRate() / MAX_PIECE_LEN;
+    const double pieces_per_sec = (double)peer->getDownloadRate() / MAX_PIECE_LEN;
     int max_reqs = 1 + (int)ceil(10 * pieces_per_sec);
     // cap if client has supplied a reqq in extended protocol handshake
     if (max_reqs > (int)peer->getStats().max_request_queue && peer->getStats().max_request_queue != 0) {
@@ -243,9 +243,9 @@ void PeerDownloader::update()
 
     while (wait_queue.count() > 0 && reqs.count() < max_reqs) {
         // get a request from the wait queue and send that
-        Request req = wait_queue.front();
+        const Request req = wait_queue.front();
         wait_queue.pop_front();
-        TimeStampedRequest r = TimeStampedRequest(req);
+        const TimeStampedRequest r = TimeStampedRequest(req);
         reqs.append(r);
         peer->sendRequest(req);
     }

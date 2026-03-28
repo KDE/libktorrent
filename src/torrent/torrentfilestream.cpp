@@ -247,8 +247,8 @@ void TorrentFileStream::Private::update()
 {
     const BitSet &chunks = cman->getBitSet();
     // Update the current limit
-    bt::Uint32 first = firstChunk();
-    bt::Uint32 last = lastChunk();
+    const bt::Uint32 first = firstChunk();
+    const bt::Uint32 last = lastChunk();
     if (first == last) {
         // Special case
         if (chunks.get(first)) {
@@ -374,8 +374,8 @@ qint64 TorrentFileStream::Private::readData(char *data, qint64 maxlen)
 
     qint64 bytes_read = 0;
     while (bytes_read < maxlen && bytes_read < (qint64)bytes_readable) {
-        qint64 allowed = qMin((qint64)bytes_readable - bytes_read, maxlen - bytes_read);
-        qint64 ret = readCurrentChunk(data + bytes_read, allowed);
+        const qint64 allowed = qMin((qint64)bytes_readable - bytes_read, maxlen - bytes_read);
+        const qint64 ret = readCurrentChunk(data + bytes_read, allowed);
         bytes_read += ret;
         if (ret == 0) {
             break;

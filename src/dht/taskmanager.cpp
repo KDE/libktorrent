@@ -41,7 +41,7 @@ void TaskManager::taskFinished(Task *task)
     task->deleteLater();
 
     while (dh_table->canStartTask() && !queued.isEmpty()) {
-        QPointer<Task> t = queued.takeFirst();
+        const QPointer<Task> t = queued.takeFirst();
         if (t) {
             Out(SYS_DHT | LOG_NOTICE) << "DHT: starting queued task" << endl;
             t.data()->start();

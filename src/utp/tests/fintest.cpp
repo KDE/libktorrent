@@ -54,7 +54,7 @@ private:
 
     void testConnect()
     {
-        net::Address addr(u"127.0.0.1"_s, port);
+        const net::Address addr(u"127.0.0.1"_s, port);
         connect(&srv, &utp::UTPServer::accepted, this, &FinTest::accepted, Qt::QueuedConnection);
         outgoing = srv.connectTo(addr).toStrongRef();
         QVERIFY(outgoing);

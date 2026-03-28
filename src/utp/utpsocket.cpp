@@ -26,7 +26,7 @@ UTPSocket::UTPSocket(Connection::WPtr conn)
     , polled_for_reading(false)
     , polled_for_writing(false)
 {
-    Connection::Ptr ptr = conn.toStrongRef();
+    const Connection::Ptr ptr = conn.toStrongRef();
     if (ptr) {
         setRemoteAddress(ptr->remoteAddress());
         ptr->setBlocking(blocking);
@@ -42,7 +42,7 @@ UTPSocket::~UTPSocket()
 
 bt::Uint32 UTPSocket::bytesAvailable() const
 {
-    Connection::Ptr ptr = conn.toStrongRef();
+    const Connection::Ptr ptr = conn.toStrongRef();
     if (ptr) {
         return ptr->bytesAvailable();
     } else {
@@ -52,7 +52,7 @@ bt::Uint32 UTPSocket::bytesAvailable() const
 
 void UTPSocket::close()
 {
-    Connection::Ptr ptr = conn.toStrongRef();
+    const Connection::Ptr ptr = conn.toStrongRef();
     if (ptr) {
         try {
             ptr->close();
@@ -64,7 +64,7 @@ void UTPSocket::close()
 
 bool UTPSocket::connectSuccesFull()
 {
-    Connection::Ptr ptr = conn.toStrongRef();
+    const Connection::Ptr ptr = conn.toStrongRef();
     if (ptr && ptr->connectionState() == CS_CONNECTED) {
         setRemoteAddress(ptr->remoteAddress());
         m_state = CONNECTED;
@@ -84,7 +84,7 @@ bool UTPSocket::connectTo(const net::Address &addr)
     reset();
 
     conn = srv.connectTo(addr);
-    Connection::Ptr ptr = conn.toStrongRef();
+    const Connection::Ptr ptr = conn.toStrongRef();
     if (!ptr) {
         return false;
     }
@@ -92,7 +92,7 @@ bool UTPSocket::connectTo(const net::Address &addr)
     m_state = CONNECTING;
     ptr->setBlocking(blocking);
     if (blocking) {
-        bool ret = ptr->waitUntilConnected();
+        const bool ret = ptr->waitUntilConnected();
         if (ret) {
             m_state = CONNECTED;
         }
@@ -110,13 +110,13 @@ int UTPSocket::fd() const
 
 const net::Address &UTPSocket::getPeerName() const
 {
-    Connection::Ptr ptr = conn.toStrongRef();
+    const Connection::Ptr ptr = conn.toStrongRef();
     if (remote_addr_override) {
         return addr;
     } else if (ptr) {
         return ptr->remoteAddress();
     } else {
-        static net::Address null;
+        static const net::Address null;
         return null;
     }
 }
@@ -128,13 +128,13 @@ net::Address UTPSocket::getSockName() const
 
 bool UTPSocket::ok() const
 {
-    Connection::Ptr ptr = conn.toStrongRef();
+    const Connection::Ptr ptr = conn.toStrongRef();
     return ptr && ptr->connectionState() != CS_CLOSED;
 }
 
 int UTPSocket::recv(bt::Uint8 *buf, int max_len)
 {
-    Connection::Ptr ptr = conn.toStrongRef();
+    const Connection::Ptr ptr = conn.toStrongRef();
     if (!ptr || ptr->connectionState() == CS_CLOSED) {
         return 0;
     }
@@ -166,7 +166,7 @@ void UTPSocket::reset()
 
 int UTPSocket::send(const bt::Uint8 *buf, int len)
 {
-    Connection::Ptr ptr = conn.toStrongRef();
+    const Connection::Ptr ptr = conn.toStrongRef();
     if (!ptr) {
         return -1;
     }
@@ -182,7 +182,7 @@ int UTPSocket::send(const bt::Uint8 *buf, int len)
 void UTPSocket::setBlocking(bool on)
 {
     blocking = on;
-    Connection::Ptr ptr = conn.toStrongRef();
+    const Connection::Ptr ptr = conn.toStrongRef();
     if (ptr) {
         ptr->setBlocking(on);
     }
@@ -211,7 +211,7 @@ void UTPSocket::prepare(net::Poll *p, net::Poll::Mode mode)
 bool UTPSocket::ready(const net::Poll *p, net::Poll::Mode mode) const
 {
     Q_UNUSED(p);
-    Connection::Ptr ptr = conn.toStrongRef();
+    const Connection::Ptr ptr = conn.toStrongRef();
     if (!ptr) {
         return false;
     }

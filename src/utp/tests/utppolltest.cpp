@@ -27,7 +27,7 @@ class UTPPollTest : public QEventLoop
 public:
     void accepted()
     {
-        utp::Connection::Ptr conn = bt::Globals::instance().getUTPServer().acceptedConnection();
+        const utp::Connection::Ptr conn = bt::Globals::instance().getUTPServer().acceptedConnection();
         incoming[num_accepted++] = new UTPSocket(conn);
         Out(SYS_UTP | LOG_DEBUG) << "Accepted " << num_accepted << endl;
         if (num_accepted >= NUM_SOCKETS) {
@@ -100,7 +100,7 @@ private:
     void testConnect()
     {
         Out(SYS_UTP | LOG_DEBUG) << "testConnect " << endl;
-        utp::UTPServer &srv = bt::Globals::instance().getUTPServer();
+        const utp::UTPServer &srv = bt::Globals::instance().getUTPServer();
         connect(&srv, &UTPServer::accepted, this, &UTPPollTest::accepted, Qt::QueuedConnection);
 
         QTimer::singleShot(0, this, &UTPPollTest::doConnect);
@@ -133,7 +133,7 @@ private:
                     continue;
                 }
 
-                int ret = outgoing[i]->send((const bt::Uint8 *)test, strlen(test));
+                const int ret = outgoing[i]->send((const bt::Uint8 *)test, strlen(test));
                 QVERIFY(ret == (int)strlen(test));
                 bs.set(i, true);
             }

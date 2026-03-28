@@ -34,22 +34,22 @@ void UTPex::handlePacket(const Uint8 *packet, Uint32 size)
         return;
     }
 
-    QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
+    const QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
     try {
         BDecoder dec(tmp, false, 2);
         const std::unique_ptr<BDictNode> dict = dec.decodeDict();
         if (dict) {
             // ut_pex packet, emit signal to notify PeerManager
-            BValueNode *peers4 = dict->getValue("added");
+            const BValueNode *peers4 = dict->getValue("added");
             if (peers4) {
-                QByteArray data = peers4->data().toByteArray();
+                const QByteArray data = peers4->data().toByteArray();
                 if (!data.isEmpty()) {
                     peer->emitPex(data, 4);
                 }
             }
-            BValueNode *peers6 = dict->getValue("added6");
+            const BValueNode *peers6 = dict->getValue("added6");
             if (peers6) {
-                QByteArray data = peers6->data().toByteArray();
+                const QByteArray data = peers6->data().toByteArray();
                 if (!data.isEmpty()) {
                     peer->emitPex(data, 6);
                 }

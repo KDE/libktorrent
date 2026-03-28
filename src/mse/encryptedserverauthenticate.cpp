@@ -66,7 +66,7 @@ void EncryptedServerAuthenticate::findReq1()
     Uint8 tmp[100];
     memcpy(tmp, "req1", 4);
     s.toBuffer(tmp + 4, 96);
-    SHA1Hash req1 = SHA1Hash::generate(tmp, 100);
+    const SHA1Hash req1 = SHA1Hash::generate(tmp, 100);
     for (Uint32 i = 96; i < buf_size - 20; i++) {
         if (buf[i] == req1.getData()[0] && memcmp(buf + i, req1.getData(), 20) == 0) {
             state = FOUND_REQ1;
@@ -93,11 +93,11 @@ void EncryptedServerAuthenticate::calculateSKey()
     Uint8 tmp[100];
     memcpy(tmp, "req3", 4);
     s.toBuffer(tmp + 4, 96);
-    SHA1Hash r3 = SHA1Hash::generate(tmp, 100);
-    SHA1Hash r(buf + req1_off + 20);
+    const SHA1Hash r3 = SHA1Hash::generate(tmp, 100);
+    const SHA1Hash r(buf + req1_off + 20);
 
     // r = HASH('req2', SKEY) xor HASH('req3', S)
-    SHA1Hash r2 = r ^ r3; // now calculate HASH('req2', SKEY)
+    const SHA1Hash r2 = r ^ r3; // now calculate HASH('req2', SKEY)
     if (!ServerInterface::findInfoHash(r2, info_hash)) {
         //      Out(SYS_CON|LOG_DEBUG) << "Unknown info_hash" << endl;
         onFinish(false);
@@ -113,8 +113,8 @@ void EncryptedServerAuthenticate::processVC()
     //  Out(SYS_CON|LOG_DEBUG) << "Process VC" << endl;
     if (!our_rc4) {
         // calculate the keys
-        SHA1Hash enc = mse::EncryptionKey(false, s, info_hash);
-        SHA1Hash dec = mse::EncryptionKey(true, s, info_hash);
+        const SHA1Hash enc = mse::EncryptionKey(false, s, info_hash);
+        const SHA1Hash dec = mse::EncryptionKey(true, s, info_hash);
         // Out() << "enc = " << enc.toString() << endl;
         // Out() << "dec = " << dec.toString() << endl;
         our_rc4 = std::make_unique<RC4Encryptor>(dec, enc);
@@ -125,7 +125,7 @@ void EncryptedServerAuthenticate::processVC()
         return;
     }
 
-    Uint32 off = req1_off + 40;
+    const Uint32 off = req1_off + 40;
     // now decrypt the vc and crypto_provide and the length of pad_C
     our_rc4->decrypt(buf + off, 14);
 
@@ -180,7 +180,7 @@ void EncryptedServerAuthenticate::handlePadC()
     }
 
     // we have decrypted everything up to pad_C_len
-    Uint32 off = req1_off + 54;
+    const Uint32 off = req1_off + 54;
     our_rc4->decrypt(buf + off, pad_C_len + 2);
     ia_len = bt::ReadUint16(buf, off + pad_C_len);
     if (buf_size < off + ia_len) {
@@ -201,12 +201,12 @@ void EncryptedServerAuthenticate::handleIA()
 
     // decrypt the initial argument
     if (ia_len > 0) {
-        Uint32 off = req1_off + 54 + pad_C_len + 2;
+        const Uint32 off = req1_off + 54 + pad_C_len + 2;
         // reinsert everything so that the normal authentication can handle it
         sock->reinsert(buf + off, buf_size - off);
     }
 
-    bool allow_unenc = ServerInterface::unencryptedConnectionsAllowed();
+    const bool allow_unenc = ServerInterface::unencryptedConnectionsAllowed();
 
     if (crypto_select & 0x0000002) {
         sock->setRC4Encryptor(std::move(our_rc4));

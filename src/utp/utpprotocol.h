@@ -143,8 +143,8 @@ inline bool Acked(const SelectiveAck *sack, bt::Uint16 bit)
     }
 
     const bt::Uint8 *bitset = sack->bitmask;
-    int byte = (bit - 2) / 8;
-    int bit_off = (bit - 2) % 8;
+    const int byte = (bit - 2) / 8;
+    const int bit_off = (bit - 2) % 8;
     return bitset[byte] & (0x01 << bit_off);
 }
 
@@ -157,8 +157,8 @@ inline void Ack(SelectiveAck *sack, bt::Uint16 bit)
     }
 
     bt::Uint8 *bitset = sack->bitmask;
-    int byte = (bit - 2) / 8;
-    int bit_off = (bit - 2) % 8;
+    const int byte = (bit - 2) / 8;
+    const int bit_off = (bit - 2) % 8;
     bitset[byte] |= (0x01 << bit_off);
 }
 

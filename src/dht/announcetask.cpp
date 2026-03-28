@@ -29,12 +29,12 @@ AnnounceTask::~AnnounceTask()
 
 void AnnounceTask::handleNodes(const QByteArray &nodes, int ip_version)
 {
-    Uint32 address_size = ip_version == 4 ? 26 : 38;
-    Uint32 nval = nodes.size() / address_size;
+    const Uint32 address_size = ip_version == 4 ? 26 : 38;
+    const Uint32 nval = nodes.size() / address_size;
     for (Uint32 i = 0; i < nval; i++) {
         // add node to todo list
         try {
-            KBucketEntry e = UnpackBucketEntry(nodes, i * address_size, ip_version);
+            const KBucketEntry e = UnpackBucketEntry(nodes, i * address_size, ip_version);
             if (!visited.contains(e) && todo.size() < 100) {
                 todo.insert(e);
                 //  Out(SYS_DHT|LOG_DEBUG) << "DHT: GetPeers returned node " << e.getAddress().toString() << endl;
@@ -85,7 +85,7 @@ void AnnounceTask::callFinished(RPCCall *c, RPCMsg *rsp)
     }
 
     // add the peer who responded to the answered list, so we can do an announce
-    KBucketEntry e(rsp->getOrigin(), rsp->getID());
+    const KBucketEntry e(rsp->getOrigin(), rsp->getID());
     if (!answered_visited.contains(e)) {
         answered.insert(KBucketEntryAndToken(e, gpr->getToken()));
     }
@@ -103,7 +103,7 @@ void AnnounceTask::update()
         Out(SYS_DHT|LOG_DEBUG) << "visited " << visited.count() << " ; answered_visited " << answered_visited.count() << endl;
     */
     while (!answered.empty() && canDoRequest()) {
-        std::set<KBucketEntryAndToken>::iterator itr = answered.begin();
+        const std::set<KBucketEntryAndToken>::iterator itr = answered.begin();
         if (!answered_visited.contains(*itr)) {
             auto anr = std::make_unique<AnnounceReq>(node->getOurID(), info_hash, port, itr->getToken());
             anr->setOrigin(itr->getAddress());
@@ -117,7 +117,7 @@ void AnnounceTask::update()
     // go over the todo list and send get_peers requests
     // until we have nothing left
     while (!todo.empty() && canDoRequest()) {
-        KBucketEntrySet::iterator itr = todo.begin();
+        const KBucketEntrySet::iterator itr = todo.begin();
         // onLy send a findNode if we haven't allrready visited the node
         if (!visited.contains(*itr)) {
             // send a findNode to the node

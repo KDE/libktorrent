@@ -43,14 +43,14 @@ int Poll::add(int fd, Poll::Mode mode)
         pfd.events = mode == INPUT ? POLLIN : POLLOUT;
     }
 
-    int ret = num_sockets;
+    const int ret = num_sockets;
     num_sockets++;
     return ret;
 }
 
 int Poll::add(PollClient::Ptr pc)
 {
-    int idx = add(pc->fd(), INPUT);
+    const int idx = add(pc->fd(), INPUT);
     poll_clients[idx] = pc;
     return idx;
 }

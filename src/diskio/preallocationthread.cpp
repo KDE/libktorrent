@@ -43,7 +43,7 @@ void PreallocationThread::add(CacheFile::Ptr cache_file)
 void PreallocationThread::run()
 {
     try {
-        for (CacheFile::Ptr cache_file : std::as_const(todo)) {
+        for (const CacheFile::Ptr &cache_file : std::as_const(todo)) {
             if (!isStopped()) {
                 cache_file->preallocate(this);
             } else {
@@ -56,63 +56,63 @@ void PreallocationThread::run()
         setErrorMsg(err.toString());
     }
 
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     done = true;
     Out(SYS_DIO | LOG_NOTICE) << "PreallocationThread has finished" << endl;
 }
 
 void PreallocationThread::stop()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     stopped = true;
 }
 
 void PreallocationThread::setErrorMsg(const QString &msg)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     error_msg = msg;
     stopped = true;
 }
 
 bool PreallocationThread::isStopped() const
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     return stopped;
 }
 
 bool PreallocationThread::errorHappened() const
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     return !error_msg.isNull();
 }
 
 void PreallocationThread::written(Uint64 nb)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     bytes_written += nb;
 }
 
 Uint64 PreallocationThread::bytesWritten()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     return bytes_written;
 }
 
 bool PreallocationThread::isDone() const
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     return done;
 }
 
 bool PreallocationThread::isNotFinished() const
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     return not_finished;
 }
 
 void PreallocationThread::setNotFinished()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     not_finished = true;
 }
 }

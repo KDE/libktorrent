@@ -46,7 +46,7 @@ public:
     {
         if (packet_loss) {
             // pick a random number from 0 to 100
-            int r = QRandomGenerator::global()->bounded(100);
+            const int r = QRandomGenerator::global()->bounded(100);
             if (r <= qRound(100 * loss_factor)) {
                 Out(SYS_UTP | LOG_DEBUG) << "Dropping packet " << endl;
                 return;
@@ -80,7 +80,7 @@ public:
     {
         int sent = 0;
         while (sent < PACKETS_TO_SEND && outgoing->connectionState() != CS_CLOSED) {
-            int ret = outgoing->send((const bt::Uint8 *)TEST_DATA.constData(), TEST_DATA.size());
+            const int ret = outgoing->send((const bt::Uint8 *)TEST_DATA.constData(), TEST_DATA.size());
             if (ret > 0) {
                 sent++;
             }
@@ -142,7 +142,7 @@ private:
 
     void testConnect()
     {
-        net::Address addr(u"127.0.0.1"_s, port);
+        const net::Address addr(u"127.0.0.1"_s, port);
         connect(&srv, &PacketLossServer::accepted, this, &PacketLoss::accepted, Qt::QueuedConnection);
         outgoing = srv.connectTo(addr).toStrongRef();
         QVERIFY(outgoing);
@@ -167,10 +167,10 @@ private:
         QString received_data;
 
         while (received_data.count(TEST_DATA) < PACKETS_TO_SEND) {
-            bt::Uint32 ba = incoming->bytesAvailable();
+            const bt::Uint32 ba = incoming->bytesAvailable();
             if (ba > 0) {
                 QByteArray data(ba, 0);
-                int ret = incoming->recv((bt::Uint8 *)data.data(), ba);
+                const int ret = incoming->recv((bt::Uint8 *)data.data(), ba);
                 if (ret > 0) {
                     received_data.append(QLatin1StringView(data));
                     received += ret;

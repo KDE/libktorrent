@@ -54,7 +54,7 @@ Peer::Peer(std::unique_ptr<mse::EncryptedPacketSocket> sock,
     peer_id_counter++;
 
     Uint32 max_packet_len = 9 + MAX_PIECE_LEN; // size of piece packet
-    Uint32 bitfield_length = num_chunks / 8 + 1 + (num_chunks % 8 == 0 ? 0 : 1);
+    const Uint32 bitfield_length = num_chunks / 8 + 1 + (num_chunks % 8 == 0 ? 0 : 1);
     if (bitfield_length > max_packet_len) { // bitfield can be longer
         max_packet_len = bitfield_length;
     }
@@ -179,7 +179,7 @@ void Peer::handleHave(const bt::Uint8 *packet, Uint32 len)
     if (len != 5) {
         kill();
     } else {
-        Uint32 ch = ReadUint32(packet, 1);
+        const Uint32 ch = ReadUint32(packet, 1);
         if (ch < pieces.getNumBits()) {
             pman->have(this, ch);
             pieces.set(ch, true);
@@ -229,7 +229,7 @@ void Peer::handleRequest(const bt::Uint8 *packet, Uint32 len)
         return;
     }
 
-    Request r(ReadUint32(packet, 1), ReadUint32(packet, 5), ReadUint32(packet, 9), downloader);
+    const Request r(ReadUint32(packet, 1), ReadUint32(packet, 5), ReadUint32(packet, 9), downloader);
 
     if (stats.has_upload_slot) {
         uploader->addRequest(r);
@@ -253,7 +253,7 @@ void Peer::handlePiece(const bt::Uint8 *packet, Uint32 len)
 
     stats.bytes_downloaded += (len - 9);
     bytes_downloaded_since_unchoke += (len - 9);
-    Piece p(ReadUint32(packet, 1), ReadUint32(packet, 5), len - 9, downloader, packet + 9);
+    const Piece p(ReadUint32(packet, 1), ReadUint32(packet, 5), len - 9, downloader, packet + 9);
     downloader->piece(p);
     pman->pieceReceived(p);
     downloader->update();
@@ -264,7 +264,7 @@ void Peer::handleCancel(const bt::Uint8 *packet, Uint32 len)
     if (len != 13) {
         kill();
     } else {
-        Request r(ReadUint32(packet, 1), ReadUint32(packet, 5), ReadUint32(packet, 9), downloader);
+        const Request r(ReadUint32(packet, 1), ReadUint32(packet, 5), ReadUint32(packet, 9), downloader);
         uploader->removeRequest(r);
         sock->doNotSendPiece(r, stats.fast_extensions);
     }
@@ -275,7 +275,7 @@ void Peer::handleReject(const bt::Uint8 *packet, Uint32 len)
     if (len != 13) {
         kill();
     } else {
-        Request r(ReadUint32(packet, 1), ReadUint32(packet, 5), ReadUint32(packet, 9), downloader);
+        const Request r(ReadUint32(packet, 1), ReadUint32(packet, 5), ReadUint32(packet, 9), downloader);
         downloader->onRejected(r);
     }
 }
@@ -285,7 +285,7 @@ void Peer::handlePort(const bt::Uint8 *packet, Uint32 len)
     if (len != 3) {
         kill();
     } else {
-        Uint16 port = ReadUint16(packet, 1);
+        const Uint16 port = ReadUint16(packet, 1);
         //  Out(SYS_CON|LOG_DEBUG) << "Got PORT packet : " << port << endl;
         pman->portPacketReceived(getIPAddresss(), port);
     }
@@ -383,7 +383,7 @@ void Peer::handleExtendedPacket(const Uint8 *packet, Uint32 size)
 
 void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
 {
-    QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
+    const QByteArray tmp = QByteArray::fromRawData((const char *)packet, size);
     try {
         BDecoder dec(tmp, false, 2);
         const std::unique_ptr<BDictNode> dict = dec.decodeDict();
@@ -396,7 +396,7 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
             return;
         }
 
-        BValueNode *val = nullptr;
+        const BValueNode *val = nullptr;
 
         if ((val = mdict->getValue("ut_pex")) && UTPex::isEnabled()) {
             // ut_pex packet
@@ -415,7 +415,7 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
 
         if ((val = mdict->getValue("ut_metadata"))) {
             // meta data
-            Uint32 ut_metadata_id = val->data().toInt();
+            const Uint32 ut_metadata_id = val->data().toInt();
             if (ut_metadata_id == 0) { // disabled by other side
                 extensions.erase(UT_METADATA_ID);
             } else {
@@ -461,7 +461,7 @@ Uint32 Peer::sendData(const Uint8 *data, Uint32 len)
         return 0;
     }
 
-    Uint32 ret = sock->sendData(data, len);
+    const Uint32 ret = sock->sendData(data, len);
     if (!sock->ok()) {
         kill();
     }
@@ -475,7 +475,7 @@ Uint32 Peer::readData(Uint8 *buf, Uint32 len)
         return 0;
     }
 
-    Uint32 ret = sock->readData(buf, len);
+    const Uint32 ret = sock->readData(buf, len);
 
     if (!sock->ok()) {
         kill();
@@ -522,7 +522,7 @@ void Peer::update()
     sock->updateSpeeds(bt::CurrentTime());
     preader->update(*this);
 
-    Uint32 data_bytes = sock->dataBytesUploaded();
+    const Uint32 data_bytes = sock->dataBytesUploaded();
 
     if (data_bytes > 0) {
         stats.bytes_uploaded += data_bytes;
@@ -609,7 +609,7 @@ float Peer::percentAvailable() const
         bytes = tor.getChunkSize() * pieces.numOnBits();
     }
 
-    Uint64 tbytes = tor.getChunkSize() * (pieces.getNumBits() - 1) + tor.getLastChunkSize();
+    const Uint64 tbytes = tor.getChunkSize() * (pieces.getNumBits() - 1) + tor.getLastChunkSize();
     return (float)bytes / (float)tbytes * 100.0;
 }
 
@@ -644,7 +644,7 @@ void Peer::setPexEnabled(bool on)
         return;
     }
 
-    PeerProtocolExtension *ext = extensions.find(UT_PEX_ID);
+    const PeerProtocolExtension *ext = extensions.find(UT_PEX_ID);
     if (ext && (!on || !UTPex::isEnabled())) {
         extensions.erase(UT_PEX_ID);
     } else if (!ext && on && ut_pex_id > 0 && UTPex::isEnabled()) {
@@ -718,7 +718,7 @@ Uint32 Peer::averageDownloadSpeed() const
         return 0;
     }
 
-    TimeStamp now = CurrentTime();
+    const TimeStamp now = CurrentTime();
     if (now >= getUnchokeTime()) {
         return 0;
     } else {

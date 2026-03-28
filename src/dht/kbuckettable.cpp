@@ -35,7 +35,7 @@ void KBucketTable::insert(const dht::KBucketEntry &entry, dht::RPCServerInterfac
         buckets.emplace_back(std::make_unique<KBucket>(srv, our_id));
     }
 
-    KBucketList::iterator kb = findBucket(entry.getID());
+    const KBucketList::iterator kb = findBucket(entry.getID());
 
     // return if we can't find a bucket, should never happen'
     if (kb == buckets.end()) {
@@ -97,7 +97,7 @@ void KBucketTable::refreshBuckets(DHT *dh_table)
     for (const KBucket::Ptr &b : std::as_const(buckets)) {
         if (b->needsToBeRefreshed()) {
             // the key needs to be the refreshed
-            dht::Key m = dht::Key::mid(b->minKey(), b->maxKey());
+            const dht::Key m = dht::Key::mid(b->minKey(), b->maxKey());
             NodeLookup *nl = dh_table->refreshBucket(m, *b);
             if (nl) {
                 b->setRefreshTask(nl);
@@ -124,7 +124,7 @@ void KBucketTable::loadTable(const QString &file, RPCServerInterface *srv)
     }
 
     try {
-        QByteArray data = fptr.readAll();
+        const QByteArray data = fptr.readAll();
         bt::BDecoder dec(data, false, 0);
 
         const std::unique_ptr<BListNode> bucket_list = dec.decodeList();

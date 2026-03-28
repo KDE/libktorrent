@@ -91,7 +91,7 @@ bool KTCLI::start()
 
 bool KTCLI::load(const QUrl &url)
 {
-    QDir dir(url.toLocalFile());
+    const QDir dir(url.toLocalFile());
     if (dir.exists() && dir.exists(u"torrent"_s) && dir.exists(u"stats"_s)) {
         // Load existing torrent
         if (loadFromDir(dir.absolutePath())) {
@@ -101,7 +101,7 @@ bool KTCLI::load(const QUrl &url)
             return true;
         }
     } else if (url.isLocalFile()) {
-        QString path = url.toLocalFile();
+        const QString path = url.toLocalFile();
         if (loadFromFile(path)) {
             tc->start();
             connect(&timer, &QTimer::timeout, this, &KTCLI::update);
@@ -123,7 +123,7 @@ QString KTCLI::tempDir()
         i++;
     }
 
-    QString sd = u"tor%1"_s.arg(i);
+    const QString sd = u"tor%1"_s.arg(i);
     if (!tmpdir.mkdir(sd)) {
         throw bt::Error(u"Failed to create temporary directory %1"_s.arg(sd));
     }

@@ -18,7 +18,7 @@ namespace bt
 {
 char RandomLetterOrNumber()
 {
-    int i = QRandomGenerator::global()->bounded(62);
+    const int i = QRandomGenerator::global()->bounded(62);
     if (i < 26) {
         return 'a' + i;
     } else if (i < 52) {
@@ -118,7 +118,7 @@ QString PeerID::identifyClient() const
         return client_name;
     }
 
-    QString peer_id = toString();
+    const QString peer_id = toString();
     // we only need to create this map once
     // so make it static
     static QMap<QString, QString> Map;
@@ -256,7 +256,7 @@ QString PeerID::identifyClient() const
 
     QString name;
     if (peer_id.at(0) == '-'_L1 && peer_id.at(1).isLetter() && peer_id.at(2).isLetter()) { // AZ style
-        QString ID(peer_id.mid(1, 2));
+        const QString ID(peer_id.mid(1, 2));
         if (ID == QLatin1String("ML")) {
             name = Map[ID];
             const int dash_pos = peer_id.indexOf('-'_L1, 3);
@@ -272,7 +272,7 @@ QString PeerID::identifyClient() const
             }
         }
     } else if (peer_id.at(0).isLetter() && peer_id.at(1).isDigit() && peer_id.at(2).isDigit()) { // Shadow's style
-        QString ID = QString(peer_id.at(0));
+        const QString ID = QString(peer_id.at(0));
         if (Map.contains(ID)) {
             name = Map[ID] + ' '_L1 + peer_id.at(1) + '.'_L1 + peer_id.at(2) + '.'_L1 + peer_id.at(3);
         }

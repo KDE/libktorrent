@@ -50,8 +50,8 @@ namespace bt
 {
 bool IsMultimediaFile(const QString &filename)
 {
-    QMimeType ptr = QMimeDatabase().mimeTypeForFile(filename);
-    QString name = ptr.name();
+    const QMimeType ptr = QMimeDatabase().mimeTypeForFile(filename);
+    const QString name = ptr.name();
     return name.startsWith(QLatin1String("audio")) || name.startsWith(QLatin1String("video")) || name == QLatin1String("application/ogg");
 }
 
@@ -108,7 +108,7 @@ Uint32 CurrentOpenFiles()
 bool OpenFileAllowed()
 {
     const Uint32 headroom = 50;
-    Uint32 max_open = MaxOpenFiles();
+    const Uint32 max_open = MaxOpenFiles();
     if (max_open == 0) {
         return true;
     } else {
@@ -178,7 +178,7 @@ QString NetworkInterface()
 
 QString NetworkInterfaceIPAddress(const QString &iface)
 {
-    QNetworkInterface ni = QNetworkInterface::interfaceFromName(iface);
+    const QNetworkInterface ni = QNetworkInterface::interfaceFromName(iface);
     if (!ni.isValid()) {
         return QString();
     }
@@ -193,7 +193,7 @@ QString NetworkInterfaceIPAddress(const QString &iface)
 
 QStringList NetworkInterfaceIPAddresses(const QString &iface)
 {
-    QNetworkInterface ni = QNetworkInterface::interfaceFromName(iface);
+    const QNetworkInterface ni = QNetworkInterface::interfaceFromName(iface);
     if (!ni.isValid()) {
         return QStringList();
     }
@@ -209,7 +209,7 @@ QStringList NetworkInterfaceIPAddresses(const QString &iface)
 
 QString CurrentIPv6Address()
 {
-    QNetworkInterface ni = QNetworkInterface::interfaceFromName(net_iface);
+    const QNetworkInterface ni = QNetworkInterface::interfaceFromName(net_iface);
     if (!ni.isValid()) {
         const QList<QHostAddress> addrs = QNetworkInterface::allAddresses();
         for (const QHostAddress &addr : addrs) {
@@ -221,7 +221,7 @@ QString CurrentIPv6Address()
     } else {
         const QList<QNetworkAddressEntry> addrs = ni.addressEntries();
         for (const QNetworkAddressEntry &entry : addrs) {
-            QHostAddress addr = entry.ip();
+            const QHostAddress addr = entry.ip();
             if (addr.protocol() == QAbstractSocket::IPv6Protocol && addr != QHostAddress::LocalHostIPv6
                 && !addr.isInSubnet(QHostAddress(QStringLiteral("FE80::")), 64)) {
                 return addr.toString();
@@ -234,20 +234,20 @@ QString CurrentIPv6Address()
 
 QString BytesToString(Uint64 bytes)
 {
-    static KFormat format;
+    static const KFormat format;
     return format.formatByteSize(bytes, 2);
 }
 
 QString BytesPerSecToString(double speed)
 {
-    static KFormat format;
+    static const KFormat format;
     return i18n("%1/s", format.formatByteSize(speed, 2));
 }
 
 QString DurationToString(Uint32 nsecs)
 {
-    int ndays = nsecs / 86400;
-    QTime t = QTime(0, 0, 0, 0).addSecs(nsecs % 86400);
+    const int ndays = nsecs / 86400;
+    const QTime t = QTime(0, 0, 0, 0).addSecs(nsecs % 86400);
     QString s;
     if (ndays > 0) {
         s = i18np("1 day ", "%1 days ", ndays);
@@ -300,7 +300,7 @@ static bool InitWindowsSocketsAPI()
 
     WSADATA wsaData;
     WORD wVersionRequested = MAKEWORD(2, 2);
-    int err = WSAStartup(wVersionRequested, &wsaData);
+    const int err = WSAStartup(wVersionRequested, &wsaData);
     if (err != 0) {
         return false;
     }
@@ -319,7 +319,7 @@ static bool InitCryptoBackend()
 
 #if defined(LIBKTORRENT_USE_OPENSSL)
     // We need legacy provider for the RC4 cipher
-    OSSL_PROVIDER *legacy_provider = OSSL_PROVIDER_try_load(nullptr, "legacy", true);
+    const OSSL_PROVIDER *legacy_provider = OSSL_PROVIDER_try_load(nullptr, "legacy", true);
     if (!legacy_provider) {
         Out(SYS_GEN | LOG_NOTICE) << "Failed to initialize legacy crypto provider in OpenSSL: " << getLastOpenSSLErrorString() << endl;
         return false;
@@ -347,7 +347,7 @@ static bool InitCryptoBackend()
 bool InitLibKTorrent()
 {
     MaximizeLimits();
-    bool ret = InitCryptoBackend();
+    bool ret = InitCryptoBackend(); // NOLINT(misc-const-correctness)
 #ifdef Q_OS_WIN
     ret = InitWindowsSocketsAPI() && ret;
 #endif

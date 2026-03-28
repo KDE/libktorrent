@@ -33,7 +33,7 @@ int socketpair(int sockets[2])
         return -1;
     }
 
-    net::Address local_addr = sock.getSockName();
+    const net::Address local_addr = sock.getSockName();
     net::Socket writer(true, 4);
     writer.setBlocking(false);
     writer.connectTo(local_addr);

@@ -88,7 +88,7 @@ Uint32 DNDFile::readFirstChunk(Uint8 *buf, Uint32 off, Uint32 size)
         return 0;
     }
 
-    Uint64 read_pos = sizeof(DNDFileHeader) + off;
+    const Uint64 read_pos = sizeof(DNDFileHeader) + off;
     if (fptr.seek(File::BEGIN, read_pos) != read_pos) {
         return 0;
     }
@@ -104,7 +104,7 @@ Uint32 DNDFile::readLastChunk(Uint8 *buf, Uint32 off, Uint32 size)
         return 0;
     }
 
-    Uint64 read_pos = sizeof(DNDFileHeader) + first_size + off;
+    const Uint64 read_pos = sizeof(DNDFileHeader) + first_size + off;
     if (fptr.seek(File::BEGIN, read_pos) != read_pos) {
         return 0;
     }

@@ -119,7 +119,7 @@ void UPnPMCastSocket::onXmlFileDownloaded(UPnPRouter *r, bool success)
         r->deleteLater();
     } else {
         // add it to the list and emit the signal
-        QUrl location = r->getLocation();
+        const QUrl location = r->getLocation();
         if (d->findDevice(location)) {
             r->deleteLater();
         } else {
@@ -135,7 +135,7 @@ void UPnPMCastSocket::onReadyRead()
         Out(SYS_PNP | LOG_NOTICE) << "0 byte UDP packet " << endl;
         // KDatagramSocket wrongly handles UDP packets with no payload
         // so we need to deal with it oursleves
-        int fd = socketDescriptor();
+        const int fd = socketDescriptor();
         char tmp;
 #ifndef Q_OS_WIN
         ::read(fd, &tmp, 1);
@@ -220,7 +220,7 @@ Uint32 UPnPMCastSocket::getNumDevicesDiscovered() const
 
 UPnPRouter *UPnPMCastSocket::findDevice(const QString &name)
 {
-    QUrl location(name);
+    const QUrl location(name);
     return d->findDevice(location);
 }
 

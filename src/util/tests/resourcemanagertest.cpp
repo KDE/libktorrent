@@ -91,8 +91,8 @@ private Q_SLOTS:
 
         QString last_group;
         for (int i = 0; i < 12; i++) {
-            Resource *r = tr.takeFirst();
-            QString g = r->groupName();
+            const Resource *r = tr.takeFirst();
+            const QString g = r->groupName();
             delete r;
             QVERIFY(tr.at(3)->acq); // The next availabe one should now be acquired
             QVERIFY(g != last_group);
@@ -129,7 +129,7 @@ private Q_SLOTS:
             QVERIFY(last_acquired);
             if (last_acquired->groupName() == last_acquired_group) {
                 // This is only possible if there are no other groups which are still pending
-                for (TestResource *r : std::as_const(tr)) {
+                for (const TestResource *r : std::as_const(tr)) {
                     if (!r->acq) {
                         QVERIFY(r->groupName() == last_acquired_group);
                     }

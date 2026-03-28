@@ -82,12 +82,12 @@ DeleteDataFilesJob::DirTree::~DirTree()
 
 void DeleteDataFilesJob::DirTree::insert(const QString &fpath)
 {
-    int i = fpath.indexOf(bt::DirSeparator());
+    const int i = fpath.indexOf(bt::DirSeparator());
     if (i == -1) { // last part of fpath is a file, so we need to ignore that
         return;
     }
 
-    QString dn = fpath.left(i);
+    const QString dn = fpath.left(i);
     DirTree *d = subdirs.find(dn);
     if (!d) {
         d = new DirTree(dn);
@@ -105,7 +105,7 @@ void DeleteDataFilesJob::DirTree::doDeleteOnEmpty(const QString &base)
         ++i;
     }
 
-    QDir dir(base);
+    const QDir dir(base);
     if (dir.isEmpty(QDir::AllEntries | QDir::System | QDir::Hidden | QDir::NoDotAndDotDot)) {
         // no childern so delete the directory
         Out(SYS_DIO | LOG_DEBUG) << "Deleting empty directory : " << base << endl;

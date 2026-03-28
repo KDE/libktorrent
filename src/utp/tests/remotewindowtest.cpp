@@ -314,7 +314,7 @@ private Q_SLOTS:
         pkt.fillDummyData(200);
 
         RemoteWindow wnd;
-        bt::Uint16 seq_nr = 65530;
+        const bt::Uint16 seq_nr = 65530;
         for (bt::Uint32 i = 0; i < 10; i++) {
             wnd.addPacket(pkt, seq_nr + i, bt::Now());
             QVERIFY(!wnd.allPacketsAcked());

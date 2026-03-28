@@ -114,7 +114,7 @@ bool ServerSocket::bind(const net::Address &addr)
 void ServerSocket::readyToAccept(int)
 {
     net::Address addr;
-    int fd = d->sock->accept(addr);
+    const int fd = d->sock->accept(addr);
     if (fd >= 0) {
         d->chandler->newConnection(fd, addr);
     }
@@ -128,7 +128,7 @@ void ServerSocket::readyToRead(int)
     while ((ba = d->sock->bytesAvailable()) > 0 || first) {
         // The first packet may be 0 bytes in size
         std::unique_ptr<Buffer> buf = d->pool->get(ba < 1500 ? 1500 : ba);
-        int bytes_read = d->sock->recvFrom(buf->get(), ba, addr);
+        const int bytes_read = d->sock->recvFrom(buf->get(), ba, addr);
         if (bytes_read <= (int)ba && ba > 0) {
             buf->setSize(bytes_read);
             d->dhandler->dataReceived(std::move(buf), addr);

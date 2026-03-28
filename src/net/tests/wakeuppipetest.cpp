@@ -36,7 +36,7 @@ private Q_SLOTS:
     void testWakeUp()
     {
         Poll poll;
-        WakeUpPipe::Ptr p(new WakeUpPipe);
+        const WakeUpPipe::Ptr p(new WakeUpPipe);
         p->wakeUp();
 
         poll.add(p);
@@ -45,7 +45,7 @@ private Q_SLOTS:
 
     void testEmptyWakeUp()
     {
-        WakeUpPipe::Ptr p(new WakeUpPipe);
+        const WakeUpPipe::Ptr p(new WakeUpPipe);
         Poll poll;
         poll.add(p);
         QVERIFY(poll.poll(100) == 0);

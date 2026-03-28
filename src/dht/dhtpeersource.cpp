@@ -79,7 +79,7 @@ bool DHTPeerSource::doRequest()
         return true;
     }
 
-    Uint16 port = ServerInterface::getPort();
+    const Uint16 port = ServerInterface::getPort();
     curr_task = dh_table.announce(info_hash, port);
     if (curr_task) {
         for (const bt::DHTNode &n : std::as_const(nodes)) {

@@ -69,7 +69,7 @@ bool ServerInterface::findInfoHash(const bt::SHA1Hash &skey, SHA1Hash &info_hash
     memcpy(buf, "req2", 4);
     QList<PeerManager *>::iterator i = peer_managers.begin();
     while (i != peer_managers.end()) {
-        PeerManager *pm = *i;
+        const PeerManager *pm = *i;
         memcpy(buf + 4, pm->getTorrent().getInfoHash().getData(), 20);
         if (SHA1Hash::generate(buf, 24) == skey) {
             info_hash = pm->getTorrent().getInfoHash();
@@ -93,7 +93,7 @@ void ServerInterface::enableEncryption(bool unencrypted_allowed)
 
 QStringList ServerInterface::bindAddresses()
 {
-    QString iface = NetworkInterface();
+    const QString iface = NetworkInterface();
     QStringList ips = NetworkInterfaceIPAddresses(iface);
     if (ips.count() == 0) {
         // Interface does not exist, so add any addresses

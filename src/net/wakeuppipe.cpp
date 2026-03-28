@@ -22,7 +22,7 @@ WakeUpPipe::~WakeUpPipe()
 
 void WakeUpPipe::wakeUp()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     if (woken_up) {
         return;
     }
@@ -37,9 +37,9 @@ void WakeUpPipe::wakeUp()
 
 void WakeUpPipe::handleData()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     bt::Uint8 buf[20];
-    int ret = bt::Pipe::read(buf, 20);
+    const int ret = bt::Pipe::read(buf, 20);
     if (ret < 0) {
         Out(SYS_GEN | LOG_DEBUG) << "WakeUpPipe: read failed " << endl;
     }

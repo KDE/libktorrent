@@ -67,7 +67,7 @@ void ResourceManager::remove(Resource *r)
     if (active.remove(r)) {
         update();
     } else {
-        QMap<QString, Resource::List>::iterator i = pending.find(r->groupName());
+        const QMap<QString, Resource::List>::iterator i = pending.find(r->groupName());
         if (i != pending.end()) {
             i.value().removeAll(r);
         }
@@ -85,7 +85,7 @@ void ResourceManager::update()
         i = pending.begin();
     }
 
-    QMap<QString, Resource::List>::iterator start = i;
+    const QMap<QString, Resource::List>::iterator start = i;
     Uint32 activated = 0;
     while ((Uint32)active.size() < max_active_resources) {
         if (!i.value().isEmpty()) {

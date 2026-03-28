@@ -112,14 +112,14 @@ bool UTPServer::Private::bind(const net::Address &addr)
 void UTPServer::Private::syn(const PacketParser &parser, std::unique_ptr<bt::Buffer> buffer, const net::Address &addr)
 {
     const Header *hdr = parser.header();
-    quint16 recv_conn_id = hdr->connection_id + 1;
+    const quint16 recv_conn_id = hdr->connection_id + 1;
     if (connections.contains(recv_conn_id)) {
         // Send a reset packet if the ID is in use
-        Connection::Ptr conn(new Connection(recv_conn_id, Connection::INCOMING, addr, p));
+        const Connection::Ptr conn(new Connection(recv_conn_id, Connection::INCOMING, addr, p));
         conn->setWeakPointer(conn);
         conn->sendReset();
     } else {
-        Connection::Ptr conn(new Connection(recv_conn_id, Connection::INCOMING, addr, p));
+        const Connection::Ptr conn(new Connection(recv_conn_id, Connection::INCOMING, addr, p));
         try {
             conn->setWeakPointer(conn);
             conn->handlePacket(parser, std::move(buffer));
@@ -127,7 +127,7 @@ void UTPServer::Private::syn(const PacketParser &parser, std::unique_ptr<bt::Buf
             if (create_sockets) {
                 auto ss = std::make_unique<mse::EncryptedPacketSocket>(std::make_unique<UTPSocket>(conn));
                 {
-                    QMutexLocker lock(&pending_mutex);
+                    const QMutexLocker lock(&pending_mutex);
                     pending.emplace_back(std::move(ss));
                 }
                 Q_EMIT p->handlePendingConnectionsDelayed();
@@ -144,7 +144,7 @@ void UTPServer::Private::syn(const PacketParser &parser, std::unique_ptr<bt::Buf
 
 void UTPServer::Private::reset(const utp::Header *hdr)
 {
-    Connection::Ptr c = find(hdr->connection_id);
+    const Connection::Ptr c = find(hdr->connection_id);
     if (c) {
         c->reset();
     }
@@ -152,7 +152,7 @@ void UTPServer::Private::reset(const utp::Header *hdr)
 
 Connection::Ptr UTPServer::Private::find(quint16 conn_id)
 {
-    ConnectionMapItr i = connections.find(conn_id);
+    const ConnectionMapItr i = connections.find(conn_id);
     if (i != connections.end()) {
         return i.value();
     } else {
@@ -162,9 +162,9 @@ Connection::Ptr UTPServer::Private::find(quint16 conn_id)
 
 void UTPServer::Private::wakeUpPollPipes(utp::Connection::Ptr conn, bool readable, bool writeable)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     for (PollPipePairItr itr = poll_pipes.begin(); itr != poll_pipes.end(); ++itr) {
-        PollPipePair *pp = itr->second;
+        const PollPipePair *pp = itr->second;
         if (readable && pp->read_pipe->polling(conn->receiveConnectionID())) {
             itr->second->read_pipe->wakeUp();
         }
@@ -177,7 +177,7 @@ void UTPServer::Private::wakeUpPollPipes(utp::Connection::Ptr conn, bool readabl
 
 void UTPServer::Private::dataReceived(std::unique_ptr<bt::Buffer> buffer, const net::Address &addr)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     // Out(SYS_UTP|LOG_NOTICE) << "UTP: received " << ba << " bytes packet from " << addr.toString() << endl;
     try {
         if (buffer->size() >= utp::Header::size()) { // discard packets which are to small
@@ -212,7 +212,7 @@ void UTPServer::handlePendingConnections()
     // This should be called from the main thread
     std::vector<std::unique_ptr<mse::EncryptedPacketSocket>> p;
     {
-        QMutexLocker lock(&d->pending_mutex);
+        const QMutexLocker lock(&d->pending_mutex);
         // Copy the pending list and clear it before using it's contents to avoid a deadlock
         std::swap(p, d->pending);
     }
@@ -372,13 +372,13 @@ Connection::WPtr UTPServer::connectTo(const net::Address &addr)
         return Connection::WPtr();
     }
 
-    QMutexLocker lock(&d->mutex);
+    const QMutexLocker lock(&d->mutex);
     quint16 recv_conn_id = QRandomGenerator::global()->bounded(32535);
     while (d->connections.contains(recv_conn_id)) {
         recv_conn_id = QRandomGenerator::global()->bounded(32535);
     }
 
-    Connection::Ptr conn(new Connection(recv_conn_id, Connection::OUTGOING, addr, this));
+    const Connection::Ptr conn(new Connection(recv_conn_id, Connection::OUTGOING, addr, this));
     conn->setWeakPointer(conn);
     conn->moveToThread(d->utp_thread);
     d->connections.insert(recv_conn_id, conn);
@@ -411,7 +411,7 @@ void UTPServer::start()
 
 void UTPServer::preparePolling(net::Poll *p, net::Poll::Mode mode, utp::Connection::Ptr &conn)
 {
-    QMutexLocker lock(&d->mutex);
+    const QMutexLocker lock(&d->mutex);
     PollPipePair *pair = d->poll_pipes.find(p);
     if (!pair) {
         pair = new PollPipePair();
@@ -466,7 +466,7 @@ void UTPServer::closed(Connection::Ptr conn)
 
 void UTPServer::cleanup()
 {
-    QMutexLocker lock(&d->mutex);
+    const QMutexLocker lock(&d->mutex);
     QMap<quint16, Connection::Ptr>::iterator i = d->connections.begin();
     while (i != d->connections.end()) {
         if (i.value()->connectionState() == CS_CLOSED) {
@@ -479,9 +479,9 @@ void UTPServer::cleanup()
 
 void UTPServer::checkTimeouts()
 {
-    QMutexLocker lock(&d->mutex);
+    const QMutexLocker lock(&d->mutex);
 
-    TimeValue now;
+    const TimeValue now;
     QMap<quint16, Connection::Ptr>::iterator itr = d->connections.begin();
     while (itr != d->connections.end()) {
         itr.value()->checkTimeout(now);

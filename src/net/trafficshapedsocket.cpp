@@ -47,7 +47,7 @@ TrafficShapedSocket::TrafficShapedSocket(bool tcp, int ip_version)
 {
     auto socket = std::make_unique<Socket>(tcp, ip_version);
 
-    QString iface = NetworkInterface();
+    const QString iface = NetworkInterface();
     QStringList ips = NetworkInterfaceIPAddresses(iface);
     if (ips.size() > 0) {
         socket->bind(ips.front(), 0, false);
@@ -98,7 +98,7 @@ static bt::Uint8 input_buffer[OUTPUT_BUFFER_SIZE];
 Uint32 TrafficShapedSocket::read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now)
 {
     Uint32 br = 0;
-    bool no_limit = (max_bytes_to_read == 0);
+    const bool no_limit = (max_bytes_to_read == 0);
     Uint32 ba = sock->bytesAvailable();
     if (ba == 0) {
         // For some strange reason, sometimes bytesAvailable returns 0, while there are
@@ -115,7 +115,7 @@ Uint32 TrafficShapedSocket::read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now
             tr = max_bytes_to_read - br;
         }
 
-        int ret = sock->recv(input_buffer, tr);
+        const int ret = sock->recv(input_buffer, tr);
         if (ret > 0) {
             mutex.lock();
             down_speed->onData(ret, now);

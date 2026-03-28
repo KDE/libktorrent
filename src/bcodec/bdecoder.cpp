@@ -74,7 +74,7 @@ std::unique_ptr<BListNode> BDecoder::decodeList()
 
 std::unique_ptr<BDictNode> BDecoder::parseDict()
 {
-    Uint32 off = pos;
+    const Uint32 off = pos;
     // we're now entering a dictionary
     auto curr = std::make_unique<BDictNode>(off);
     pos++;
@@ -89,7 +89,7 @@ std::unique_ptr<BDictNode> BDecoder::parseDict()
             throw Error(i18n("Decode error"));
         }
 
-        QByteArray key = k->data().toByteArray();
+        const QByteArray key = k->data().toByteArray();
 
         auto value = decode();
         if (!value) {
@@ -112,7 +112,7 @@ std::unique_ptr<BDictNode> BDecoder::parseDict()
 
 std::unique_ptr<BListNode> BDecoder::parseList()
 {
-    Uint32 off = pos;
+    const Uint32 off = pos;
     debugMsg(u"LIST"_s);
     level++;
     auto curr = std::make_unique<BListNode>(off);
@@ -138,7 +138,7 @@ std::unique_ptr<BListNode> BDecoder::parseList()
 
 std::unique_ptr<BValueNode> BDecoder::parseInt()
 {
-    Uint32 off = pos;
+    const Uint32 off = pos;
     pos++;
     QString n;
     // look for e and add everything between i and e to n
@@ -198,7 +198,7 @@ std::unique_ptr<BValueNode> BDecoder::parseString()
     const char *start = data.constData() + off;
     const char *end = start + pos - off;
     while (start < end) {
-        int n = *start++ - '0';
+        const int n = *start++ - '0';
         if (n < 0 || n > 9) {
             ok = false;
             break;

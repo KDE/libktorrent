@@ -351,7 +351,7 @@ void TrackerManager::manualUpdate()
 
 void TrackerManager::saveCustomURLs()
 {
-    QString trackers_file = tor->getTorDir() + QLatin1String("trackers");
+    const QString trackers_file = tor->getTorDir() + QLatin1String("trackers");
     QFile file(trackers_file);
     if (!file.open(QIODevice::WriteOnly)) {
         return;
@@ -365,7 +365,7 @@ void TrackerManager::saveCustomURLs()
 
 void TrackerManager::loadCustomURLs()
 {
-    QString trackers_file = tor->getTorDir() + QLatin1String("trackers");
+    const QString trackers_file = tor->getTorDir() + QLatin1String("trackers");
     QFile file(trackers_file);
     if (!file.open(QIODevice::ReadOnly)) {
         return;
@@ -381,7 +381,7 @@ void TrackerManager::loadCustomURLs()
 
 void TrackerManager::saveTrackerStatus()
 {
-    QString status_file = tor->getTorDir() + QLatin1String("tracker_status");
+    const QString status_file = tor->getTorDir() + QLatin1String("tracker_status");
     QFile file(status_file);
     if (!file.open(QIODevice::WriteOnly)) {
         return;
@@ -390,8 +390,8 @@ void TrackerManager::saveTrackerStatus()
     QTextStream stream(&file);
     PtrMap<QUrl, Tracker>::iterator i = trackers.begin();
     while (i != trackers.end()) {
-        QUrl url = i->first;
-        Tracker *trk = i->second;
+        const QUrl url = i->first;
+        const Tracker *trk = i->second;
 
         stream << (trk->isEnabled() ? "1:" : "0:") << url.toDisplayString() << Qt::endl;
         ++i;
@@ -400,7 +400,7 @@ void TrackerManager::saveTrackerStatus()
 
 void TrackerManager::loadTrackerStatus()
 {
-    QString status_file = tor->getTorDir() + QLatin1String("tracker_status");
+    const QString status_file = tor->getTorDir() + QLatin1String("tracker_status");
     QFile file(status_file);
     if (!file.open(QIODevice::ReadOnly)) {
         return;
@@ -516,7 +516,7 @@ Uint32 TrackerManager::getNumSeeders() const
 
     int r = 0;
     for (PtrMap<QUrl, Tracker>::const_iterator i = trackers.begin(); i != trackers.end(); ++i) {
-        int v = i->second->getNumSeeders();
+        const int v = i->second->getNumSeeders();
         if (v > r) {
             r = v;
         }
@@ -533,7 +533,7 @@ Uint32 TrackerManager::getNumLeechers() const
 
     int r = 0;
     for (PtrMap<QUrl, Tracker>::const_iterator i = trackers.begin(); i != trackers.end(); ++i) {
-        int v = i->second->getNumLeechers();
+        const int v = i->second->getNumLeechers();
         if (v > r) {
             r = v;
         }

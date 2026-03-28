@@ -36,10 +36,10 @@ void AutoRotateLogJob::kill(bool)
 void AutoRotateLogJob::update()
 {
     while (cnt > 1) {
-        QString prev = QStringLiteral("%1-%2.gz").arg(file).arg(cnt - 1);
-        QString curr = QStringLiteral("%1-%2.gz").arg(file).arg(cnt);
+        const QString prev = QStringLiteral("%1-%2.gz").arg(file).arg(cnt - 1);
+        const QString curr = QStringLiteral("%1-%2.gz").arg(file).arg(cnt);
         if (bt::Exists(prev)) { // if file exists start the move job
-            KIO::Job *sj = KIO::file_move(QUrl::fromLocalFile(prev), QUrl::fromLocalFile(curr), -1, KIO::Overwrite | KIO::HideProgressInfo);
+            const KIO::Job *sj = KIO::file_move(QUrl::fromLocalFile(prev), QUrl::fromLocalFile(curr), -1, KIO::Overwrite | KIO::HideProgressInfo);
             connect(sj, &KIO::Job::result, this, &AutoRotateLogJob::moveJobDone);
             return;
         } else {
@@ -49,7 +49,8 @@ void AutoRotateLogJob::update()
 
     if (cnt == 1) {
         // move current log to 1 and zip it
-        KIO::Job *sj = KIO::file_move(QUrl::fromLocalFile(file), QUrl::fromLocalFile(file + QLatin1String("-1")), -1, KIO::Overwrite | KIO::HideProgressInfo);
+        const KIO::Job *sj =
+            KIO::file_move(QUrl::fromLocalFile(file), QUrl::fromLocalFile(file + QLatin1String("-1")), -1, KIO::Overwrite | KIO::HideProgressInfo);
         connect(sj, &KIO::Job::result, this, &AutoRotateLogJob::moveJobDone);
     } else {
         // final log file is moved, now zip it and end the job

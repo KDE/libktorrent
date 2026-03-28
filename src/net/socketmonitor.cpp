@@ -125,13 +125,13 @@ void SocketMonitor::setSleepTime(Uint32 sleep_time)
 
 void SocketMonitor::add(TrafficShapedSocket *sock)
 {
-    QMutexLocker lock(&d->mutex);
+    const QMutexLocker lock(&d->mutex);
 
     if (!d->dt || !d->ut) {
         return;
     }
 
-    bool start_threads = sockets.size() == 0;
+    const bool start_threads = sockets.size() == 0;
     sockets.push_back(sock);
 
     if (start_threads) {
@@ -150,7 +150,7 @@ void SocketMonitor::add(TrafficShapedSocket *sock)
 
 void SocketMonitor::remove(TrafficShapedSocket *sock)
 {
-    QMutexLocker lock(&d->mutex);
+    const QMutexLocker lock(&d->mutex);
     if (sockets.size() == 0) {
         return;
     }
@@ -167,12 +167,12 @@ void SocketMonitor::signalPacketReady()
 
 Uint32 SocketMonitor::newGroup(GroupType type, Uint32 limit, Uint32 assured_rate)
 {
-    QMutexLocker lock(&d->mutex);
+    const QMutexLocker lock(&d->mutex);
     if (!d->dt || !d->ut) {
         return 0;
     }
 
-    Uint32 gid = d->next_group_id++;
+    const Uint32 gid = d->next_group_id++;
     if (type == UPLOAD_GROUP) {
         d->ut->addGroup(gid, limit, assured_rate);
     } else {
@@ -184,7 +184,7 @@ Uint32 SocketMonitor::newGroup(GroupType type, Uint32 limit, Uint32 assured_rate
 
 void SocketMonitor::setGroupLimit(GroupType type, Uint32 gid, Uint32 limit)
 {
-    QMutexLocker lock(&d->mutex);
+    const QMutexLocker lock(&d->mutex);
     if (!d->dt || !d->ut) {
         return;
     }
@@ -198,7 +198,7 @@ void SocketMonitor::setGroupLimit(GroupType type, Uint32 gid, Uint32 limit)
 
 void SocketMonitor::setGroupAssuredRate(GroupType type, Uint32 gid, Uint32 as)
 {
-    QMutexLocker lock(&d->mutex);
+    const QMutexLocker lock(&d->mutex);
     if (!d->dt || !d->ut) {
         return;
     }
@@ -212,7 +212,7 @@ void SocketMonitor::setGroupAssuredRate(GroupType type, Uint32 gid, Uint32 as)
 
 void SocketMonitor::removeGroup(GroupType type, Uint32 gid)
 {
-    QMutexLocker lock(&d->mutex);
+    const QMutexLocker lock(&d->mutex);
     if (!d->dt || !d->ut) {
         return;
     }

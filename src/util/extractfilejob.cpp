@@ -57,11 +57,11 @@ ExtractFileJob::~ExtractFileJob()
 void ExtractFileJob::start()
 {
     // first find the file in the archive
-    QStringList path_components = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    const QStringList path_components = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
     const KArchiveDirectory *dir = archive->directory();
     for (int i = 0; i < path_components.count(); i++) {
         // if we can't find it give back an error
-        QString pc = path_components.at(i);
+        const QString pc = path_components.at(i);
         if (!dir->entries().contains(pc)) {
             setError(KIO::ERR_DOES_NOT_EXIST);
             emitResult();

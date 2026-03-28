@@ -109,12 +109,12 @@ static void DumpPacket(const Header & hdr, const SelectiveAck* sack)
 
 ConnectionState Connection::handlePacket(const PacketParser &parser, std::unique_ptr<bt::Buffer> packet)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     stats.packets_received++;
 
     const Header *hdr = parser.header();
     const SelectiveAck *sack = parser.selectiveAck();
-    int data_off = parser.dataOffset();
+    const int data_off = parser.dataOffset();
 
     // DumpPacket(*hdr,sack);
 
@@ -255,10 +255,10 @@ ConnectionState Connection::handlePacket(const PacketParser &parser, std::unique
 void Connection::checkState()
 {
     // Check if we have become readable or writeable, and notify if necessary
-    bool r = local_wnd->isReadable() > 0 || stats.state == CS_CLOSED;
-    bool w = remote_wnd->availableSpace() > 0 && stats.state == CS_CONNECTED;
-    bool r_changed = !stats.readable && r;
-    bool w_changed = !stats.writeable && w;
+    const bool r = local_wnd->isReadable() > 0 || stats.state == CS_CLOSED;
+    const bool w = remote_wnd->availableSpace() > 0 && stats.state == CS_CONNECTED;
+    const bool r_changed = !stats.readable && r;
+    const bool w_changed = !stats.writeable && w;
     stats.readable = r;
     stats.writeable = w;
 
@@ -287,7 +287,7 @@ void Connection::checkIfClosed()
 void Connection::updateRTT(const utp::Header *hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size)
 {
     Q_UNUSED(hdr);
-    int delta = stats.rtt - (int)packet_rtt;
+    const int delta = stats.rtt - (int)packet_rtt;
     stats.rtt_var += (qAbs(delta) - stats.rtt_var) / 4;
     stats.rtt += ((int)packet_rtt - stats.rtt) / 8;
     stats.timeout = qMax(stats.rtt + stats.rtt_var * 4, 500);
@@ -296,10 +296,10 @@ void Connection::updateRTT(const utp::Header *hdr, bt::Uint32 packet_rtt, bt::Ui
 
 void Connection::sendPacket(Uint32 type, Uint16 p_ack_nr)
 {
-    bt::Uint32 extension_length = extensionLength();
+    const bt::Uint32 extension_length = extensionLength();
 
     PacketBuffer packet;
-    TimeValue tv;
+    const TimeValue tv;
 
     Header hdr;
     hdr.version = 1;
@@ -357,8 +357,8 @@ void Connection::sendReset()
 
 void Connection::updateDelayMeasurement(const utp::Header *hdr, double window_factor)
 {
-    TimeValue now;
-    bt::Uint32 tms = now.timestampMicroSeconds();
+    const TimeValue now;
+    const bt::Uint32 tms = now.timestampMicroSeconds();
     if (tms > hdr->timestamp_microseconds) {
         stats.reply_micro = tms - hdr->timestamp_microseconds;
     } else {
@@ -400,13 +400,13 @@ void Connection::updateDelayMeasurement(const utp::Header *hdr, double window_fa
 
 int Connection::send(const bt::Uint8 *data, Uint32 len)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     if (stats.state != CS_CONNECTED) {
         return -1;
     }
 
     // first put data in the output buffer then send packets
-    bt::Uint32 ret = output_buffer.write(data, len);
+    const bt::Uint32 ret = output_buffer.write(data, len);
     sendPackets();
     stats.writeable = !output_buffer.full();
     return ret;
@@ -427,7 +427,7 @@ void Connection::sendPackets()
         PacketBuffer packet;
         packet.fillData(output_buffer, to_read);
 
-        TimeValue now;
+        const TimeValue now;
         sendDataPacket(packet, stats.seq_nr, now);
 
         remote_wnd->addPacket(packet, stats.seq_nr, now.toTimeStamp());
@@ -453,7 +453,7 @@ void Connection::sendStateOrData()
 
 void Connection::sendDataPacket(PacketBuffer &packet, Uint16 seq_nr, const utp::TimeValue &now)
 {
-    bt::Uint32 extension_length = extensionLength();
+    const bt::Uint32 extension_length = extensionLength();
 
     Header hdr;
     hdr.version = 1;
@@ -489,26 +489,26 @@ void Connection::sendDataPacket(PacketBuffer &packet, Uint16 seq_nr, const utp::
 
 void Connection::retransmit(PacketBuffer &packet, Uint16 p_seq_nr)
 {
-    TimeValue now;
+    const TimeValue now;
     sendDataPacket(packet, p_seq_nr, now);
     startTimer();
 }
 
 bt::Uint32 Connection::bytesAvailable() const
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     return local_wnd->bytesAvailable();
 }
 
 bool Connection::isWriteable() const
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     return remote_wnd->availableSpace() > 0 && stats.state == CS_CONNECTED;
 }
 
 int Connection::recv(Uint8 *buf, Uint32 max_len)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     if (stats.state == CS_FINISHED) {
         checkIfClosed();
     }
@@ -517,7 +517,7 @@ int Connection::recv(Uint8 *buf, Uint32 max_len)
         return -1;
     }
 
-    bt::Uint32 ret = local_wnd->read(buf, max_len);
+    const bt::Uint32 ret = local_wnd->read(buf, max_len);
     // Update the window if there is room again
     if (stats.last_window_size_transmitted < 2000 && local_wnd->availableSpace() > 2000) {
         sendState();
@@ -530,7 +530,7 @@ int Connection::recv(Uint8 *buf, Uint32 max_len)
 
 bool Connection::waitUntilConnected()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     if (stats.state == CS_CONNECTED) {
         return true;
     }
@@ -541,7 +541,7 @@ bool Connection::waitUntilConnected()
 
 bool Connection::waitForData(Uint32 timeout)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     if (local_wnd->isReadable()) {
         return true;
     }
@@ -552,7 +552,7 @@ bool Connection::waitForData(Uint32 timeout)
 
 void Connection::close()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     if (stats.state == CS_CONNECTED) {
         stats.state = CS_FINISHED;
         sendPackets();
@@ -561,7 +561,7 @@ void Connection::close()
 
 void Connection::reset()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     if (stats.state != CS_CLOSED) {
         sendReset();
         stats.state = CS_CLOSED;
@@ -574,7 +574,7 @@ void Connection::reset()
 
 void Connection::checkTimeout(const TimeValue &now)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     if (now >= stats.absolute_timeout) {
         handleTimeout();
     }
@@ -641,7 +641,7 @@ void Connection::dumpStats()
 
 bool Connection::allDataSent() const
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     return remote_wnd->allPacketsAcked() && output_buffer.size() == 0;
 }
 
@@ -653,7 +653,7 @@ void Connection::startTimer()
 
 bt::Uint32 Connection::extensionLength() const
 {
-    bt::Uint32 sack_bits = local_wnd->selectiveAckBits();
+    const bt::Uint32 sack_bits = local_wnd->selectiveAckBits();
     if (sack_bits > 0) {
         return 2 + qMin(sack_bits / 8, (bt::Uint32)4);
     } else {

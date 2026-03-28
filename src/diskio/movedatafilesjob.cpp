@@ -49,16 +49,16 @@ MoveDataFilesJob::MoveDataFilesJob(const QMap<TorrentFileInterface *, QString> &
 {
     QMap<TorrentFileInterface *, QString>::const_iterator i = file_map.constBegin();
     while (i != file_map.constEnd()) {
-        TorrentFileInterface *tf = i.key();
+        const TorrentFileInterface *tf = i.key();
         QString dest = i.value();
         if (QFileInfo(dest).isDir()) {
-            QString path = tf->getUserModifiedPath();
+            const QString path = tf->getUserModifiedPath();
             if (!dest.endsWith(bt::DirSeparator())) {
                 dest += bt::DirSeparator();
             }
 
-            int last = path.lastIndexOf(bt::DirSeparator());
-            QString dst = dest + path.mid(last + 1);
+            const int last = path.lastIndexOf(bt::DirSeparator());
+            const QString dst = dest + path.mid(last + 1);
             if (QFileInfo(tf->getPathOnDisk()).canonicalPath() != QFileInfo(dst).canonicalPath()) {
                 addMove(tf->getPathOnDisk(), dst);
             }
@@ -108,7 +108,7 @@ void MoveDataFilesJob::start()
     registerWithTracker();
     QMap<QString, QString>::iterator i = todo.begin();
     while (i != todo.end()) {
-        QFileInfo fi(i.key());
+        const QFileInfo fi(i.key());
         total_bytes += fi.size();
         ++i;
     }
@@ -141,7 +141,7 @@ void MoveDataFilesJob::startMoving()
         return;
     }
 
-    QMap<QString, QString>::iterator i = todo.begin();
+    const QMap<QString, QString>::iterator i = todo.begin();
     active_job = KIO::file_move(QUrl::fromLocalFile(i.key()), QUrl::fromLocalFile(i.value()), -1, KIO::HideProgressInfo);
     active_src = i.key();
     active_dst = i.value();
@@ -172,7 +172,7 @@ void MoveDataFilesJob::recover(bool delete_active)
     running_recovery_jobs = 0;
     QMap<QString, QString>::iterator i = success.begin();
     while (i != success.end()) {
-        KIO::Job *j = KIO::file_move(QUrl::fromLocalFile(i.value()), QUrl::fromLocalFile(i.key()), -1, KIO::HideProgressInfo);
+        const KIO::Job *j = KIO::file_move(QUrl::fromLocalFile(i.value()), QUrl::fromLocalFile(i.key()), -1, KIO::HideProgressInfo);
         connect(j, &KIO::Job::result, this, &MoveDataFilesJob::onRecoveryJobDone);
         running_recovery_jobs++;
         ++i;

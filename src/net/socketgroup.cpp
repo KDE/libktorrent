@@ -44,7 +44,7 @@ void SocketGroup::processUnlimited(bool up, bt::TimeStamp now)
 
 bool SocketGroup::processLimited(bool up, bt::TimeStamp now, Uint32 &allowance)
 {
-    Uint32 bslot = allowance / sockets.size() + 1;
+    const Uint32 bslot = allowance / sockets.size() + 1;
 
     std::list<TrafficShapedSocket *>::iterator itr = sockets.begin();
 
@@ -136,7 +136,7 @@ bool SocketGroup::process(bool up, bt::TimeStamp now, Uint32 &global_allowance)
             Uint32 tmp = global_allowance;
             ret = processLimited(up, now, tmp);
 
-            Uint32 done = (global_allowance - tmp);
+            const Uint32 done = (global_allowance - tmp);
             if (group_allowance < done) {
                 group_allowance = 0;
             } else {
@@ -148,7 +148,7 @@ bool SocketGroup::process(bool up, bt::TimeStamp now, Uint32 &global_allowance)
             Uint32 p = group_allowance;
             ret = processLimited(up, now, p);
 
-            Uint32 done = (group_allowance - p);
+            const Uint32 done = (group_allowance - p);
             if (global_allowance < done) {
                 global_allowance = 0;
             } else {

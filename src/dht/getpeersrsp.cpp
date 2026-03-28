@@ -75,7 +75,7 @@ void GetPeersRsp::encode(QByteArray &arr) const
                 while (i != items.end()) {
                     const DBItem &item = *i;
                     std::array<Uint8, 18> tmp;
-                    Uint32 b = item.pack(tmp.data());
+                    const Uint32 b = item.pack(tmp.data());
                     enc.write(QByteArrayView{tmp}.chopped(b));
                     ++i;
                 }
@@ -104,22 +104,22 @@ void GetPeersRsp::parse(BDictNode *dict)
         for (Uint32 i = 0; i < vals->getNumChildren(); i++) {
             QByteArray d = vals->getByteArray(i);
             if (d.length() == 6) { // IPv4
-                Uint16 port = bt::ReadUint16((const Uint8 *)d.data(), 4);
-                Uint32 ip = bt::ReadUint32((const Uint8 *)d.data(), 0);
-                net::Address addr(QHostAddress(ip), port);
+                const Uint16 port = bt::ReadUint16((const Uint8 *)d.data(), 4);
+                const Uint32 ip = bt::ReadUint32((const Uint8 *)d.data(), 0);
+                const net::Address addr(QHostAddress(ip), port);
                 items.append(DBItem(addr));
             } else if (d.length() == 18) { // IPv6
-                Uint16 port = bt::ReadUint16((const Uint8 *)d.data(), 16);
+                const Uint16 port = bt::ReadUint16((const Uint8 *)d.data(), 16);
                 Q_IPV6ADDR ip;
                 memcpy(ip.c, d.data(), 16);
-                net::Address addr(QHostAddress(ip), port);
+                const net::Address addr(QHostAddress(ip), port);
                 items.append(DBItem(addr));
             }
         }
     }
 
     if (args->getValue("nodes") || args->getList("nodes6")) {
-        BValueNode *v = args->getValue("nodes");
+        const BValueNode *v = args->getValue("nodes");
         if (v) {
             nodes = v->data().toByteArray();
         }

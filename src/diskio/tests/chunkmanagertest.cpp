@@ -96,7 +96,7 @@ private Q_SLOTS:
         QVERIFY(f->writeable());
 
         try {
-            QString path = creator.dataPath() + tor.getFile(0).getPath();
+            const QString path = creator.dataPath() + tor.getFile(0).getPath();
             bt::TruncateFile(path, 0);
 
             Uint8 tmp[20];

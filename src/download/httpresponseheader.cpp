@@ -9,7 +9,7 @@
 bool HttpResponseHeader::parseLine(const QString &line, int number)
 {
     if (number != 0) {
-        int i = line.indexOf(QLatin1Char(':'));
+        const int i = line.indexOf(QLatin1Char(':'));
         if (i == -1) {
             return false;
         }
@@ -28,7 +28,7 @@ bool HttpResponseHeader::parseLine(const QString &line, int number)
         _majVer = l[5].toLatin1() - '0';
         _minVer = l[7].toLatin1() - '0';
 
-        int pos = l.indexOf(QLatin1Char(' '), 9);
+        const int pos = l.indexOf(QLatin1Char(' '), 9);
         if (pos != -1) {
             _reasonPhr = l.mid(pos + 1);
             _statCode = QStringView(l).mid(9, pos - 9).toInt();
@@ -46,7 +46,7 @@ bool HttpResponseHeader::parseLine(const QString &line, int number)
 bool HttpResponseHeader::parse(const QString &str)
 {
     QStringList lst;
-    int pos = str.indexOf(QLatin1Char('\n'));
+    const int pos = str.indexOf(QLatin1Char('\n'));
     if (pos > 0 && str.at(pos - 1) == QLatin1Char('\r')) {
         lst = str.trimmed().split(QLatin1String("\r\n"));
     } else {

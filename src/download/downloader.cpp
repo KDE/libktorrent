@@ -50,7 +50,7 @@ Downloader::Downloader(Torrent &tor, PeerManager &pman, ChunkManager &cman)
     pman.setPieceHandler(this);
     chunk_selector->init(&cman, this, &pman);
 
-    Uint64 total = tor.getTotalSize();
+    const Uint64 total = tor.getTotalSize();
     bytes_downloaded = (total - cman.bytesLeft());
     curr_chunks_downloaded = 0;
     unnecessary_data = 0;
@@ -342,7 +342,7 @@ bool Downloader::canDownloadFromWebSeed(Uint32 chunk) const
         return true;
     }
 
-    for (WebSeed *ws : std::as_const(webseeds)) {
+    for (const WebSeed *ws : std::as_const(webseeds)) {
         if (ws->busy() && ws->inCurrentRange(chunk)) {
             return false;
         }
@@ -377,9 +377,9 @@ void Downloader::removePieceDownloader(PieceDownloader *peer)
 
 bool Downloader::finished(ChunkDownload *cd)
 {
-    Chunk *c = cd->getChunk();
+    const Chunk *c = cd->getChunk();
     // verify the data
-    SHA1Hash h = cd->getHash();
+    const SHA1Hash h = cd->getHash();
 
     if (tor.verifyHash(h, c->getIndex())) {
         // hash ok so save it
@@ -419,7 +419,7 @@ bool Downloader::finished(ChunkDownload *cd)
                 return false;
             }
 
-            QString ip = p->getIPAddresss();
+            const QString ip = p->getIPAddresss();
             Out(SYS_GEN | LOG_NOTICE) << "Peer " << ip << " sent bad data" << endl;
             AccessManager::instance().banPeer(ip);
             p->kill();
@@ -458,13 +458,13 @@ Uint32 Downloader::downloadRate() const
 {
     // sum of the download rate of each peer
     Uint32 rate = 0;
-    for (PieceDownloader *pd : std::as_const(piece_downloaders)) {
+    for (const PieceDownloader *pd : std::as_const(piece_downloaders)) {
         if (pd) {
             rate += pd->getDownloadRate();
         }
     }
 
-    for (WebSeed *ws : std::as_const(webseeds)) {
+    for (const WebSeed *ws : std::as_const(webseeds)) {
         rate += ws->getDownloadRate();
     }
 
@@ -682,7 +682,7 @@ void Downloader::dataChecked(const bt::BitSet &ok_chunks, Uint32 from, Uint32 to
 
 void Downloader::recalcDownloaded()
 {
-    Uint64 total = tor.getTotalSize();
+    const Uint64 total = tor.getTotalSize();
     bytes_downloaded = (total - cman.bytesLeft());
 }
 
@@ -690,7 +690,7 @@ void Downloader::onChunkReady(Chunk *c)
 {
     WebSeed *ws = webseeds_chunks.find(c->getIndex());
     webseeds_chunks.erase(c->getIndex());
-    PieceData::Ptr piece = c->getPiece(0, c->getSize(), true);
+    const PieceData::Ptr piece = c->getPiece(0, c->getSize(), true);
     if (piece && c->checkHash(tor.getHash(c->getIndex()))) {
         // hash ok so save it
         try {
@@ -759,7 +759,7 @@ void Downloader::chunkDownloadFinished(WebSeedChunkDownload *cd, Uint32 chunk)
 WebSeed *Downloader::addWebSeed(const QUrl &url)
 {
     // Check for dupes
-    for (WebSeed *ws : std::as_const(webseeds)) {
+    for (const WebSeed *ws : std::as_const(webseeds)) {
         if (ws->getUrl() == url) {
             return nullptr;
         }
@@ -775,7 +775,7 @@ WebSeed *Downloader::addWebSeed(const QUrl &url)
 
 bool Downloader::removeWebSeed(const QUrl &url)
 {
-    for (WebSeed *ws : std::as_const(webseeds)) {
+    for (const WebSeed *ws : std::as_const(webseeds)) {
         if (ws->getUrl() == url && ws->isUserCreated()) {
             PtrMap<Uint32, WebSeed>::iterator i = webseeds_chunks.begin();
             while (i != webseeds_chunks.end()) {
@@ -808,13 +808,13 @@ void Downloader::saveWebSeeds(const QString &file)
     }
 
     QTextStream out(&fptr);
-    for (WebSeed *ws : std::as_const(webseeds)) {
+    for (const WebSeed *ws : std::as_const(webseeds)) {
         if (ws->isUserCreated()) {
             out << ws->getUrl().toDisplayString() << Qt::endl;
         }
     }
     out << "====disabled====" << Qt::endl;
-    for (WebSeed *ws : std::as_const(webseeds)) {
+    for (const WebSeed *ws : std::as_const(webseeds)) {
         if (!ws->isEnabled()) {
             out << ws->getUrl().toDisplayString() << Qt::endl;
         }
@@ -832,13 +832,13 @@ void Downloader::loadWebSeeds(const QString &file)
     bool disabled_list_found = false;
     QTextStream in(&fptr);
     while (!in.atEnd()) {
-        QString line = in.readLine();
+        const QString line = in.readLine();
         if (line == QLatin1String("====disabled====")) {
             disabled_list_found = true;
             continue;
         }
 
-        QUrl url(line);
+        const QUrl url(line);
         if (!url.isValid() || (url.scheme() != "http"_L1 && url.scheme() != "https"_L1)) {
             continue;
         }

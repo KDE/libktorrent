@@ -93,9 +93,9 @@ void Cache::moveDataFilesFinished(const QMap<TorrentFileInterface *, QString> &f
 
 PieceData::Ptr Cache::findPiece(Chunk *c, Uint32 off, Uint32 len, bool read_only)
 {
-    PieceCache::const_iterator i = piece_cache.constFind(c);
+    const PieceCache::const_iterator i = piece_cache.constFind(c);
     if (i != piece_cache.constEnd()) {
-        Uint64 key = PieceDataInfo::makeKey(off, len);
+        const Uint64 key = PieceDataInfo::makeKey(off, len);
         const PieceDataInfoList &info_list = i.value();
         auto j = std::lower_bound(info_list.begin(), info_list.end(), key, PieceDataInfo::OrderByKey());
         while (j != info_list.end() && j->key == key) {
@@ -112,7 +112,7 @@ PieceData::Ptr Cache::findPiece(Chunk *c, Uint32 off, Uint32 len, bool read_only
 void Cache::insertPiece(Chunk *c, PieceData::Ptr p)
 {
     PieceDataInfoList &info_list = piece_cache[c];
-    Uint64 key = PieceDataInfo::makeKey(p->offset(), p->length());
+    const Uint64 key = PieceDataInfo::makeKey(p->offset(), p->length());
     auto i = std::upper_bound(info_list.begin(), info_list.end(), key, PieceDataInfo::OrderByKey());
     info_list.insert(i, PieceDataInfo(std::move(p), key));
 }
@@ -148,7 +148,7 @@ void Cache::checkMemoryUsage()
     while (i != piece_cache.end()) {
         PieceDataInfoList &info_list = i.value();
         auto j = std::remove_if(info_list.begin(), info_list.end(), [&](const PieceDataInfo &info) {
-            Uint32 len = info.piece_data->length();
+            const Uint32 len = info.piece_data->length();
             if (!info.piece_data->inUse()) {
                 freed += len;
                 return true;
@@ -175,7 +175,7 @@ void Cache::saveMountPoints(const QSet<QString> &mp)
 {
     mount_points = mp;
 
-    QString mp_file = tmpdir + u"mount_points"_s;
+    const QString mp_file = tmpdir + u"mount_points"_s;
     QFile fptr(mp_file);
     if (!fptr.open(QIODevice::WriteOnly)) {
         throw Error(i18n("Failed to create %1: %2", mp_file, fptr.errorString()));
@@ -189,7 +189,7 @@ void Cache::saveMountPoints(const QSet<QString> &mp)
 
 void Cache::loadMountPoints()
 {
-    QString mp_file = tmpdir + u"mount_points"_s;
+    const QString mp_file = tmpdir + u"mount_points"_s;
     QFile fptr(mp_file);
     if (!fptr.open(QIODevice::ReadOnly)) {
         Out(SYS_DIO | LOG_NOTICE) << "Failed to load " << mp_file << ": " << fptr.errorString() << endl;

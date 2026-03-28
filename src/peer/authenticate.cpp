@@ -131,7 +131,7 @@ void Authenticate::onFinish(bool succes)
     }
 
     timer.stop();
-    PeerConnector::Ptr pc = pcon.toStrongRef();
+    const PeerConnector::Ptr pc = pcon.toStrongRef();
     if (pc) {
         pc->authenticationFinished(this, succes);
     }
@@ -146,7 +146,7 @@ void Authenticate::handshakeReceived(bool full)
         return;
     }
 
-    SHA1Hash rh(hs + 28);
+    const SHA1Hash rh(hs + 28);
     if (rh != info_hash) {
         Out(SYS_CON | LOG_DEBUG) << "Wrong info_hash : " << rh.toString() << endl;
         onFinish(false);

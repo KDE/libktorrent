@@ -64,7 +64,7 @@ public:
             return;
         }
 
-        Uint32 type = ReadUint32(buffer->get(), 0);
+        const Uint32 type = ReadUint32(buffer->get(), 0);
         switch (type) {
         case CONNECT:
             p->handleConnect(*buffer);
@@ -123,7 +123,7 @@ UDPTrackerSocket::~UDPTrackerSocket()
 
 void UDPTrackerSocket::sendConnect(Int32 tid, const net::Address &addr)
 {
-    Int64 cid = 0x41727101980LL;
+    const Int64 cid = 0x41727101980LL;
     Uint8 buf[16];
 
     WriteInt64(buf, 0, cid);
@@ -158,8 +158,8 @@ void UDPTrackerSocket::handleConnect(const bt::Buffer &buf)
     }
 
     // Read the transaction_id and check it
-    Int32 tid = ReadInt32(buf.get(), 4);
-    QMap<Int32, Action>::iterator i = d->transactions.find(tid);
+    const Int32 tid = ReadInt32(buf.get(), 4);
+    const QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (i == d->transactions.end()) {
         return;
@@ -184,8 +184,8 @@ void UDPTrackerSocket::handleAnnounce(const bt::Buffer &buf)
     }
 
     // Read the transaction_id and check it
-    Int32 tid = ReadInt32(buf.get(), 4);
-    QMap<Int32, Action>::iterator i = d->transactions.find(tid);
+    const Int32 tid = ReadInt32(buf.get(), 4);
+    const QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (i == d->transactions.end() || buf.size() < 20) {
         return;
@@ -210,8 +210,8 @@ void UDPTrackerSocket::handleError(const bt::Buffer &buf)
     }
 
     // Read the transaction_id and check it
-    Int32 tid = ReadInt32(buf.get(), 4);
-    QMap<Int32, Action>::iterator it = d->transactions.find(tid);
+    const Int32 tid = ReadInt32(buf.get(), 4);
+    const QMap<Int32, Action>::iterator it = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (it == d->transactions.end()) {
         return;
@@ -235,8 +235,8 @@ void UDPTrackerSocket::handleScrape(const bt::Buffer &buf)
     }
 
     // Read the transaction_id and check it
-    Int32 tid = ReadInt32(buf.get(), 4);
-    QMap<Int32, Action>::iterator i = d->transactions.find(tid);
+    const Int32 tid = ReadInt32(buf.get(), 4);
+    const QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (i == d->transactions.end()) {
         return;

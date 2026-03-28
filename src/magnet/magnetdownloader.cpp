@@ -29,7 +29,7 @@ MagnetDownloader::MagnetDownloader(const bt::MagnetLink &mlink, QObject *parent)
     , tor(mlink.infoHash())
     , found(false)
 {
-    dht::DHTBase &dht_table = Globals::instance().getDHT();
+    const dht::DHTBase &dht_table = Globals::instance().getDHT();
     connect(&dht_table, &dht::DHTBase::started, this, &MagnetDownloader::dhtStarted);
     connect(&dht_table, &dht::DHTBase::stopped, this, &MagnetDownloader::dhtStopped);
 }
@@ -48,7 +48,7 @@ void MagnetDownloader::start()
     }
 
     if (!mlink.torrent().isEmpty()) {
-        KIO::StoredTransferJob *job = KIO::storedGet(QUrl(mlink.torrent()), KIO::NoReload, KIO::HideProgressInfo);
+        const KIO::StoredTransferJob *job = KIO::storedGet(QUrl(mlink.torrent()), KIO::NoReload, KIO::HideProgressInfo);
         connect(job, &KIO::StoredTransferJob::result, this, &MagnetDownloader::onTorrentDownloaded);
     }
 
@@ -161,13 +161,13 @@ void MagnetDownloader::onTorrentDownloaded(KJob *job)
         return;
     }
 
-    KIO::StoredTransferJob *stj = qobject_cast<KIO::StoredTransferJob *>(job);
+    const KIO::StoredTransferJob *stj = qobject_cast<KIO::StoredTransferJob *>(job);
     if (job->error()) {
         Out(SYS_GEN | LOG_DEBUG) << "Failed to download " << stj->url() << ": " << stj->errorString() << endl;
         return;
     }
 
-    QByteArray data = stj->data();
+    const QByteArray data = stj->data();
     try {
         Torrent tor;
         tor.load(data, false);
@@ -188,7 +188,7 @@ void MagnetDownloader::onMetadataDownloaded(const QByteArray &data)
         return;
     }
 
-    bt::SHA1Hash hash = bt::SHA1Hash::generate(data);
+    const bt::SHA1Hash hash = bt::SHA1Hash::generate(data);
     if (hash != mlink.infoHash()) {
         Out(SYS_GEN | LOG_NOTICE) << "Metadata downloaded, but hash check failed" << endl;
         return;

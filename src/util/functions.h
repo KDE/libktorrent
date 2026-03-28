@@ -30,7 +30,7 @@ inline void WriteUint64(Uint8 *buf, Uint32 off, Uint64 val)
 
 inline Uint64 ReadUint64(const Uint8 *buf, Uint64 off)
 {
-    Uint64 tmp = ((Uint64)buf[off] << 56) | ((Uint64)buf[off + 1] << 48) | ((Uint64)buf[off + 2] << 40) | ((Uint64)buf[off + 3] << 32)
+    const Uint64 tmp = ((Uint64)buf[off] << 56) | ((Uint64)buf[off + 1] << 48) | ((Uint64)buf[off + 2] << 40) | ((Uint64)buf[off + 3] << 32)
         | ((Uint64)buf[off + 4] << 24) | ((Uint64)buf[off + 5] << 16) | ((Uint64)buf[off + 6] << 8) | ((Uint64)buf[off + 7] << 0);
 
     return tmp;
@@ -74,8 +74,8 @@ inline void WriteInt64(Uint8 *buf, Uint32 off, Int64 val)
 
 inline Int64 ReadInt64(const Uint8 *buf, Uint32 off)
 {
-    Int64 tmp = ((Int64)buf[off] << 56) | ((Int64)buf[off + 1] << 48) | ((Int64)buf[off + 2] << 40) | ((Int64)buf[off + 3] << 32) | ((Int64)buf[off + 4] << 24)
-        | ((Int64)buf[off + 5] << 16) | ((Int64)buf[off + 6] << 8) | ((Int64)buf[off + 7] << 0);
+    const Int64 tmp = ((Int64)buf[off] << 56) | ((Int64)buf[off + 1] << 48) | ((Int64)buf[off + 2] << 40) | ((Int64)buf[off + 3] << 32)
+        | ((Int64)buf[off + 4] << 24) | ((Int64)buf[off + 5] << 16) | ((Int64)buf[off + 6] << 8) | ((Int64)buf[off + 7] << 0);
 
     return tmp;
 }

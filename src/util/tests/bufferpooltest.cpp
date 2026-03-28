@@ -28,7 +28,7 @@ private Q_SLOTS:
 
     void testPool()
     {
-        bt::BufferPool::Ptr pool(new bt::BufferPool());
+        const bt::BufferPool::Ptr pool(new bt::BufferPool());
         pool->setWeakPointer(pool.toWeakRef());
 
         auto a = pool->get(1000);

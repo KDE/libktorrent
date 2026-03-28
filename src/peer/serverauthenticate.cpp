@@ -42,8 +42,8 @@ void ServerAuthenticate::onFinish(bool succes)
 
 void ServerAuthenticate::handshakeReceived(bool full)
 {
-    Uint8 *hs = handshake;
-    AccessManager &aman = AccessManager::instance();
+    const Uint8 *hs = handshake;
+    const AccessManager &aman = AccessManager::instance();
 
     if (!aman.allowed(sock->getRemoteAddress())) {
         Out(SYS_GEN | LOG_NOTICE) << "The IP address " << sock->getRemoteIPAddress() << " is blocked" << endl;
@@ -52,7 +52,7 @@ void ServerAuthenticate::handshakeReceived(bool full)
     }
 
     // try to find a PeerManager which has the right info hash
-    SHA1Hash rh(hs + 28);
+    const SHA1Hash rh(hs + 28);
     PeerManager *pman = ServerInterface::findPeerManager(rh);
     if (!pman) {
         onFinish(false);
@@ -64,7 +64,7 @@ void ServerAuthenticate::handshakeReceived(bool full)
         char tmp[21];
         tmp[20] = '\0';
         memcpy(tmp, hs + 48, 20);
-        PeerID peer_id = PeerID(tmp);
+        const PeerID peer_id = PeerID(tmp);
         if (pman->getTorrent().getPeerID() == peer_id) {
             Out(SYS_CON | LOG_NOTICE) << "Lets not connect to our self" << endl;
             onFinish(false);

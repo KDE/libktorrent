@@ -41,7 +41,7 @@ inline void RC4Encryptor::EVP_CIPHER_CTXDeleter::operator()(EVP_CIPHER_CTX *ctx)
 
 RC4Encryptor::RC4Encryptor(const bt::SHA1Hash &dk, const bt::SHA1Hash &ek)
 {
-    std::unique_ptr<EVP_CIPHER, EVP_CIPHERDeleter> cipher(EVP_CIPHER_fetch(nullptr, "RC4", "provider=legacy"));
+    const std::unique_ptr<EVP_CIPHER, EVP_CIPHERDeleter> cipher(EVP_CIPHER_fetch(nullptr, "RC4", "provider=legacy"));
     if (!cipher) {
         throw bt::Error(QStringLiteral("RC4 cipher not available: ") + getLastOpenSSLErrorString());
     }

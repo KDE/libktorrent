@@ -51,7 +51,7 @@ void LogSystemManager::unregisterSystem(const QString &name)
 
 Uint32 LogSystemManager::systemID(const QString &name)
 {
-    iterator i = systems.find(name);
+    const iterator i = systems.find(name);
     if (i == systems.end()) {
         return 0;
     } else {

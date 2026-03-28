@@ -82,8 +82,8 @@ public:
 
         // move all log files one up
         for (Uint32 i = 10; i > 1; i--) {
-            QString prev = QStringLiteral("%1-%2.gz").arg(file).arg(i - 1);
-            QString curr = QStringLiteral("%1-%2.gz").arg(file).arg(i);
+            const QString prev = QStringLiteral("%1-%2.gz").arg(file).arg(i - 1);
+            const QString curr = QStringLiteral("%1-%2.gz").arg(file).arg(i);
             if (bt::Exists(prev)) {
                 QFile::rename(prev, curr);
             }
@@ -97,7 +97,7 @@ public:
 
     void setOutputFile(const QString &file, bool rotate, bool handle_qt_messages)
     {
-        QMutexLocker lock(&mutex);
+        const QMutexLocker lock(&mutex);
 
         if (handle_qt_messages) {
             qInstallMessageHandler(QtMessageOutput);
@@ -111,7 +111,7 @@ public:
 
         fptr = new QFile(file);
         if (!fptr->open(QIODevice::WriteOnly)) {
-            QString err = fptr->errorString();
+            const QString err = fptr->errorString();
             std::cout << "Failed to open log file " << file.toLocal8Bit().constData() << ": " << err.toLocal8Bit().constData() << std::endl;
             cleanup();
             return;
@@ -127,7 +127,7 @@ public:
 
     void finishLine()
     {
-        QString final = QDateTime::currentDateTime().toString() + ": "_L1 + tmp;
+        const QString final = QDateTime::currentDateTime().toString() + ": "_L1 + tmp;
 
         // only add stuff when we are not rotating the logs
         // this could result in the loss of some messages
@@ -159,7 +159,7 @@ public:
         if (fptr && fptr->size() > MAX_LOG_FILE_SIZE && !rotate_job) {
             tmp = QStringLiteral("Log larger then 10 MB, rotating");
             finishLine();
-            QString file = fptr->fileName();
+            const QString file = fptr->fileName();
             fptr->close(); // close the log file
             out->setDevice(nullptr);
             rotateLogs(file);
@@ -197,7 +197,7 @@ void Log::addMonitor(LogMonitorInterface *m)
 
 void Log::removeMonitor(LogMonitorInterface *m)
 {
-    int index = priv->monitors.indexOf(m);
+    const int index = priv->monitors.indexOf(m);
     if (index != -1) {
         priv->monitors.takeAt(index);
     }

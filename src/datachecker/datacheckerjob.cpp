@@ -57,7 +57,7 @@ void DataCheckerJob::start()
     connect(dc, &DataChecker::progress, this, &DataCheckerJob::progress, Qt::QueuedConnection);
     connect(dc, &DataChecker::status, this, &DataCheckerJob::status, Qt::QueuedConnection);
 
-    TorrentControl *tor = torrent();
+    const TorrentControl *tor = torrent();
     dcheck_thread = new DataCheckerThread(dc, //
                                           tor->downloadedChunksBitSet(),
                                           stats.output_path,
@@ -124,8 +124,8 @@ void DataCheckerJob::progress(quint32 num, quint32 total)
 
 void DataCheckerJob::status(quint32 num_failed, quint32 num_found, quint32 num_downloaded, quint32 num_not_downloaded)
 {
-    QPair<QString, QString> field1 = qMakePair(QString::number(num_failed), QString::number(num_found));
-    QPair<QString, QString> field2 = qMakePair(QString::number(num_downloaded), QString::number(num_not_downloaded));
+    const QPair<QString, QString> field1 = qMakePair(QString::number(num_failed), QString::number(num_found));
+    const QPair<QString, QString> field2 = qMakePair(QString::number(num_downloaded), QString::number(num_not_downloaded));
     Q_EMIT description(this, i18n("Checking Data"), field1, field2);
 }
 }

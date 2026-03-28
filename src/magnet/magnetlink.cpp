@@ -95,7 +95,7 @@ void MagnetLink::parse(const QUrl &url)
 
     QString xt = url_query.queryItemValue(QLatin1String("xt"));
     if (xt.isEmpty() || !xt.startsWith(QLatin1String("urn:btih:"))) {
-        static QRegularExpression btihHash(QLatin1String("([^\\.]+).btih"));
+        static const QRegularExpression btihHash(QLatin1String("([^\\.]+).btih"));
 
         const QRegularExpressionMatch match = btihHash.match(url.host());
 
@@ -122,8 +122,8 @@ void MagnetLink::parse(const QUrl &url)
         Uint8 hash[20];
         memset(hash, 0, 20);
         for (int i = 0; i < 20; i++) {
-            Uint8 low = charToHex(ih[2 * i + 1]);
-            Uint8 high = charToHex(ih[2 * i]);
+            const Uint8 low = charToHex(ih[2 * i + 1]);
+            const Uint8 high = charToHex(ih[2 * i]);
             hash[i] = (high << 4) | low;
         }
 

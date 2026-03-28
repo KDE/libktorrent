@@ -32,7 +32,7 @@ WindowPacket::~WindowPacket()
 
 bt::Uint32 WindowPacket::read(bt::Uint8 *dst, bt::Uint32 max_len)
 {
-    bt::Uint32 to_read = qMin(packet->size() - bytes_read, max_len);
+    const bt::Uint32 to_read = qMin(packet->size() - bytes_read, max_len);
     if (to_read == 0) {
         return 0;
     }
@@ -93,7 +93,7 @@ bt::Uint32 LocalWindow::read(bt::Uint8 *data, bt::Uint32 max_len)
     bt::Uint32 written = 0;
     while (off < incoming_packets.size() && incoming_packets[off].packet && SeqNrCmpSE(incoming_packets[off].seq_nr, last_seq_nr) && written < max_len) {
         WindowPacket &pkt = incoming_packets[off];
-        bt::Uint32 ret = pkt.read(data + written, max_len - written);
+        const bt::Uint32 ret = pkt.read(data + written, max_len - written);
         written += ret;
         window_space += ret;
         bytes_available -= ret;
@@ -123,7 +123,7 @@ bool LocalWindow::packetReceived(const utp::Header *hdr, std::unique_ptr<bt::Buf
         return true;
     }
 
-    bt::Uint32 data_size = packet->size() - data_off;
+    const bt::Uint32 data_size = packet->size() - data_off;
     if (availableSpace() < data_size) {
         Out(SYS_UTP | LOG_DEBUG) << "Not enough space in local window " << availableSpace() << " " << data_size << endl;
         return false;
@@ -144,7 +144,7 @@ bool LocalWindow::packetReceived(const utp::Header *hdr, std::unique_ptr<bt::Buf
         // Already got this one
         return true;
     } else {
-        bt::Uint16 off = SeqNrDiff(incoming_packets.front().seq_nr, hdr->seq_nr);
+        const bt::Uint16 off = SeqNrDiff(incoming_packets.front().seq_nr, hdr->seq_nr);
         incoming_packets[off].set(std::move(packet), data_off);
     }
 

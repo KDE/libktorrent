@@ -30,12 +30,12 @@ NodeLookup::~NodeLookup()
 
 void NodeLookup::handleNodes(const QByteArray &nodes, int ip_version)
 {
-    Uint32 address_size = ip_version == 4 ? 26 : 38;
-    Uint32 nnodes = nodes.size() / address_size;
+    const Uint32 address_size = ip_version == 4 ? 26 : 38;
+    const Uint32 nnodes = nodes.size() / address_size;
     for (Uint32 j = 0; j < nnodes; j++) {
         // unpack an entry and add it to the todo list
         try {
-            KBucketEntry e = UnpackBucketEntry(nodes, j * address_size, ip_version);
+            const KBucketEntry e = UnpackBucketEntry(nodes, j * address_size, ip_version);
             // lets not talk to ourself
             if (e.getID() != node->getOurID() && !todo.contains(e) && !visited.contains(e)) {
                 todo.insert(e);
@@ -85,7 +85,7 @@ void NodeLookup::update()
     // go over the todo list and send find node calls
     // until we have nothing left
     while (!todo.empty() && canDoRequest()) {
-        KBucketEntrySet::iterator itr = todo.begin();
+        const KBucketEntrySet::iterator itr = todo.begin();
         // only send a findNode if we haven't allrready visited the node
         if (!visited.contains(*itr)) {
             // send a findNode to the node

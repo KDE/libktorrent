@@ -135,10 +135,10 @@ void UDPTracker::announceReceived(Int32 tid, const bt::Uint8 *buf, bt::Uint32 si
     leechers = ReadInt32(buf, 12);
     seeders = ReadInt32(buf, 16);
 
-    Uint32 nip = leechers + seeders;
+    const Uint32 nip = leechers + seeders;
     Uint32 j = 0;
     for (Uint32 i = 20; i < size && j < nip; i += 6, j++) {
-        Uint32 ip = ReadUint32(buf, i);
+        const Uint32 ip = ReadUint32(buf, i);
         addPeer(net::Address(ip, ReadUint16(buf, i + 4)), false);
     }
 
@@ -261,8 +261,8 @@ void UDPTracker::sendAnnounce()
     98
     */
 
-    Uint32 ev = event;
-    Uint16 port = ServerInterface::getPort();
+    const Uint32 ev = event;
+    const Uint16 port = ServerInterface::getPort();
     Uint8 buf[98];
     WriteInt64(buf, 0, connection_id);
     WriteInt32(buf, 8, UDPTrackerSocket::ANNOUNCE);
@@ -278,11 +278,11 @@ void UDPTracker::sendAnnounce()
     }
     WriteInt64(buf, 72, bytesUploaded());
     WriteInt32(buf, 80, ev);
-    QString cip = Tracker::getCustomIP();
+    const QString cip = Tracker::getCustomIP();
     if (cip.isNull()) {
         WriteUint32(buf, 84, 0);
     } else {
-        net::Address addr(cip, 999);
+        const net::Address addr(cip, 999);
         WriteUint32(buf, 84, addr.toIPv4Address());
     }
     WriteUint32(buf, 88, key);

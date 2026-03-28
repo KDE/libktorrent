@@ -95,7 +95,7 @@ void BEncoder::write(bool val)
         return;
     }
 
-    QByteArray s = QStringLiteral("i%1e").arg(val ? 1 : 0).toUtf8();
+    const QByteArray s = QStringLiteral("i%1e").arg(val ? 1 : 0).toUtf8();
     out->write(s);
 }
 
@@ -114,7 +114,7 @@ void BEncoder::write(Uint32 val)
         return;
     }
 
-    QByteArray s = QStringLiteral("i%1e").arg(val).toUtf8();
+    const QByteArray s = QStringLiteral("i%1e").arg(val).toUtf8();
     out->write(s);
 }
 
@@ -124,7 +124,7 @@ void BEncoder::write(Uint64 val)
         return;
     }
 
-    QByteArray s = QStringLiteral("i%1e").arg(val).toUtf8();
+    const QByteArray s = QStringLiteral("i%1e").arg(val).toUtf8();
     out->write(s);
 }
 
@@ -134,7 +134,7 @@ void BEncoder::write(QByteArrayView data)
         return;
     }
 
-    QByteArray s = QByteArray::number(data.size());
+    const QByteArray s = QByteArray::number(data.size());
     out->write(s);
     out->write(":");
     out->write(data);

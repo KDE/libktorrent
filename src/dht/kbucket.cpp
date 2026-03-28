@@ -66,7 +66,7 @@ bool KBucket::splitAllowed() const
 
 std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() noexcept(false)
 {
-    dht::Key m = dht::Key::mid(min_key, max_key);
+    const dht::Key m = dht::Key::mid(min_key, max_key);
     if (m == min_key || m + 1 == max_key) {
         throw UnableToSplit();
     }
@@ -76,7 +76,7 @@ std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() noexcept(false)
 
     QList<KBucketEntry>::iterator i;
     for (i = entries.begin(); i != entries.end(); ++i) {
-        KBucketEntry &e = *i;
+        const KBucketEntry &e = *i;
         if (left->keyInRange(e.getID())) {
             left->insert(e);
         } else {
@@ -89,7 +89,7 @@ std::pair<KBucket::Ptr, KBucket::Ptr> KBucket::split() noexcept(false)
 
 bool KBucket::insert(const KBucketEntry &entry)
 {
-    QList<KBucketEntry>::iterator i = std::find(entries.begin(), entries.end(), entry);
+    const QList<KBucketEntry>::iterator i = std::find(entries.begin(), entries.end(), entry);
 
     // If in the list, move it to the end
     if (i != entries.end()) {
@@ -127,7 +127,7 @@ void KBucket::onResponse(RPCCall *c, RPCMsg *rsp)
         return;
     }
 
-    KBucketEntry entry = pending_entries_busy_pinging[c];
+    const KBucketEntry entry = pending_entries_busy_pinging[c];
     pending_entries_busy_pinging.remove(c); // call is done so erase it
 
     // we have a response so try to find the next bad or questionable node
@@ -143,12 +143,12 @@ void KBucket::onTimeout(RPCCall *c)
         return;
     }
 
-    KBucketEntry entry = pending_entries_busy_pinging[c];
+    const KBucketEntry entry = pending_entries_busy_pinging[c];
 
     // replace the entry which timed out
     QList<KBucketEntry>::iterator i;
     for (i = entries.begin(); i != entries.end(); ++i) {
-        KBucketEntry &e = *i;
+        const KBucketEntry &e = *i;
         if (e.getAddress() == c->getRequest()->getOrigin()) {
             last_modified = bt::CurrentTime();
             entries.erase(i);
@@ -159,7 +159,7 @@ void KBucket::onTimeout(RPCCall *c)
     pending_entries_busy_pinging.remove(c); // call is done so erase it
     // see if we can do another pending entry
     if (pending_entries_busy_pinging.count() < 2 && pending_entries.count() > 0) {
-        KBucketEntry pe = pending_entries.front();
+        const KBucketEntry pe = pending_entries.front();
         pending_entries.pop_front();
         if (!replaceBadEntry(pe)) { // if no bad peers ping a questionable one
             pingQuestionable(pe);
@@ -204,7 +204,7 @@ bool KBucket::replaceBadEntry(const KBucketEntry &entry)
 {
     QList<KBucketEntry>::iterator i;
     for (i = entries.begin(); i != entries.end(); ++i) {
-        KBucketEntry &e = *i;
+        const KBucketEntry &e = *i;
         if (e.isBad()) {
             // bad one get rid of it
             last_modified = bt::CurrentTime();
@@ -244,7 +244,7 @@ bool KBucket::onTimeout(const net::Address &addr)
 
 bool KBucket::needsToBeRefreshed() const
 {
-    bt::TimeStamp now = bt::CurrentTime();
+    const bt::TimeStamp now = bt::CurrentTime();
     if (last_modified > now) {
         last_modified = now;
         return false;
@@ -268,7 +268,7 @@ void KBucket::save(bt::BEncoder &enc)
     QList<KBucketEntry>::iterator i;
     for (i = entries.begin(); i != entries.end(); ++i) {
         enc.beginDict();
-        KBucketEntry &e = *i;
+        const KBucketEntry &e = *i;
 
         enc.write("id", e.getID());
         enc.write("address");
@@ -306,7 +306,7 @@ void KBucket::load(bt::BDictNode *dict)
             continue;
         }
 
-        Key id = Key(entry->getByteArray("id"));
+        const Key id = Key(entry->getByteArray("id"));
         QByteArray addr = entry->getByteArray("address");
         if (addr.size() == 6) {
             entries.append(KBucketEntry(net::Address(bt::ReadUint32((const Uint8 *)addr.data(), 0), bt::ReadUint16((const Uint8 *)addr.data(), 4)), id));

@@ -44,7 +44,7 @@ std::unique_ptr<ConnectionLimit::Token> ConnectionLimit::acquire(const SHA1Hash 
         return {};
     }
 
-    QMap<SHA1Hash, bt::Uint32>::iterator i = torrent_totals.find(hash);
+    const QMap<SHA1Hash, bt::Uint32>::iterator i = torrent_totals.find(hash);
     if (i == torrent_totals.end()) {
         torrent_totals[hash] = 1;
         global_total++;
@@ -60,7 +60,7 @@ std::unique_ptr<ConnectionLimit::Token> ConnectionLimit::acquire(const SHA1Hash 
 
 void ConnectionLimit::release(const ConnectionLimit::Token &token)
 {
-    QMap<SHA1Hash, bt::Uint32>::iterator i = torrent_totals.find(token.infoHash());
+    const QMap<SHA1Hash, bt::Uint32>::iterator i = torrent_totals.find(token.infoHash());
     if (i != torrent_totals.end()) {
         if (i.value() > 0) {
             i.value()--;

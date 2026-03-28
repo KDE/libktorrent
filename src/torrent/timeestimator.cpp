@@ -40,8 +40,8 @@ Uint64 TimeEstimator::bytesLeft() const
     const TorrentStats &s = m_tc->getStats();
     if (s.completed) {
         if (s.max_share_ratio >= 0.01f) {
-            float ratio = s.shareRatio();
-            float delta = s.max_share_ratio - ratio;
+            const float ratio = s.shareRatio();
+            const float delta = s.max_share_ratio - ratio;
             if (delta <= 0.0f) {
                 return 0;
             }
@@ -87,7 +87,7 @@ int TimeEstimator::estimateGASA()
         if (s.imported_bytes <= s.bytes_downloaded) {
             d -= s.imported_bytes;
         }
-        double avg_speed = (double)d / (double)m_tc->getRunningTimeDL();
+        const double avg_speed = (double)d / (double)m_tc->getRunningTimeDL();
         return (Uint32)floor((double)bytesLeft() / avg_speed);
     }
 
@@ -199,12 +199,12 @@ int TimeEstimator::estimateKT()
         return estimateWINX();
     }
 
-    double perc = (double)s.bytes_downloaded / (double)s.total_bytes;
+    const double perc = (double)s.bytes_downloaded / (double)s.total_bytes;
 
-    int percentage = perc * 100;
+    const int percentage = perc * 100;
 
     // calculate percentage increasement
-    double delta = 1 - 1 / (perc / m_perc);
+    const double delta = 1 - 1 / (perc / m_perc);
 
     // remember last percentage
     m_perc = perc;

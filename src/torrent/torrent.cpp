@@ -94,7 +94,7 @@ void Torrent::load(const QByteArray &data, bool verbose)
         throw Error(i18n("Corrupted torrent."));
     }
 
-    BValueNode *c = dict->getValue("comment");
+    const BValueNode *c = dict->getValue("comment");
     if (c) {
         comments = c->data().toString();
     }
@@ -120,13 +120,13 @@ void Torrent::load(const QByteArray &data, bool verbose)
     if (urls) {
         loadWebSeeds(urls);
     } else if (dict->getValue("url-list")) {
-        QUrl url(dict->getString("url-list"));
+        const QUrl url(dict->getString("url-list"));
         if (url.isValid()) {
             web_seeds.append(url);
         }
     }
 
-    BNode *n = dict->getData("info");
+    const BNode *n = dict->getData("info");
     SHA1HashGen hg;
     // save info dict
     metadata = data.mid(n->getOffset(), n->getLength());
@@ -153,7 +153,7 @@ void Torrent::loadInfo(BDictNode *dict)
     unencoded_name = dict->getByteArray("name");
     name_suggestion = QString::fromUtf8(unencoded_name);
     name_suggestion = SanityzeName(name_suggestion);
-    BValueNode *n = dict->getValue("private");
+    const BValueNode *n = dict->getValue("private");
     if (n && n->data().toInt() == 1) {
         priv_torrent = true;
     }
@@ -195,7 +195,7 @@ void Torrent::loadFiles(BListNode *node)
         QString path;
         QList<QByteArray> unencoded_path;
         for (Uint32 j = 0; j < ln->getNumChildren(); j++) {
-            QByteArray v = ln->getByteArray(j);
+            const QByteArray v = ln->getByteArray(j);
             unencoded_path.append(v);
             QString sd = QString::fromUtf8(v);
             if (sd.contains('\n'_L1)) {
@@ -216,7 +216,7 @@ void Torrent::loadFiles(BListNode *node)
             throw Error(i18n("Corrupted torrent."));
         }
 
-        Uint64 s = d->getInt64("length");
+        const Uint64 s = d->getInt64("length");
         TorrentFile file(this, idx, path, total_size, s, chunk_size);
         file.setUnencodedPath(unencoded_path);
 
@@ -233,7 +233,7 @@ void Torrent::loadTrackerURL(const QString &s)
         trackers = std::make_unique<TrackerTier>();
     }
 
-    QUrl url(s);
+    const QUrl url(s);
     if (s.length() > 0 && url.isValid()) {
         trackers->urls.append(url);
     }
@@ -244,7 +244,7 @@ void Torrent::loadHash(BDictNode *dict)
     const QByteArray hash_string = dict->getByteArray("pieces");
     const QByteArrayView hash_string_view{hash_string};
     for (int i = 0; i < hash_string.size(); i += 20) {
-        SHA1Hash hash(hash_string_view.sliced(i, 20));
+        const SHA1Hash hash(hash_string_view.sliced(i, 20));
         hash_pieces.append(hash);
     }
 }
@@ -298,7 +298,7 @@ void Torrent::loadNodes(BListNode *node)
 void Torrent::loadWebSeeds(BListNode *node)
 {
     for (Uint32 i = 0; i < node->getNumChildren(); i++) {
-        QUrl url = QUrl(node->getString(i));
+        const QUrl url = QUrl(node->getString(i));
         if (url.isValid()) {
             web_seeds.append(url);
         }
@@ -317,7 +317,7 @@ void Torrent::debugPrintInfo()
         Out(SYS_GEN | LOG_DEBUG) << "Files : " << endl;
         Out(SYS_GEN | LOG_DEBUG) << "===================================" << endl;
         for (Uint32 i = 0; i < getNumFiles(); i++) {
-            TorrentFile &tf = getFile(i);
+            const TorrentFile &tf = getFile(i);
             Out(SYS_GEN | LOG_DEBUG) << "Path : " << tf.getPath() << endl;
             Out(SYS_GEN | LOG_DEBUG) << "Size : " << tf.getSize() << endl;
             Out(SYS_GEN | LOG_DEBUG) << "First Chunk : " << tf.getFirstChunk() << endl;
@@ -372,7 +372,7 @@ const TorrentFile &Torrent::getFile(Uint32 idx) const
 unsigned int Torrent::getNumTrackerURLs() const
 {
     Uint32 count = 0;
-    TrackerTier *tt = trackers.get();
+    const TrackerTier *tt = trackers.get();
     while (tt) {
         count += tt->urls.count();
         tt = tt->next.get();
@@ -452,7 +452,7 @@ void Torrent::updateFilePercentage(Uint32 chunk, ChunkManager &cman)
     FileIndexList cfiles;
     calcChunkPos(chunk, cfiles);
 
-    for (Uint32 cfindex : std::as_const(cfiles)) {
+    for (const Uint32 cfindex : std::as_const(cfiles)) {
         TorrentFile &f = getFile(cfindex);
         f.updateNumDownloadedChunks(cman);
     }
@@ -460,7 +460,7 @@ void Torrent::updateFilePercentage(Uint32 chunk, ChunkManager &cman)
 
 bool Torrent::checkPathForDirectoryTraversal(const QString &p)
 {
-    QStringList sl = p.split(bt::DirSeparator());
+    const QStringList sl = p.split(bt::DirSeparator());
     return !sl.contains(QLatin1String(".."));
 }
 

@@ -31,7 +31,7 @@ PacketReader::~PacketReader()
 
 std::optional<IncomingPacket> PacketReader::dequeuePacket()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     if (packet_queue.empty()) {
         return std::nullopt;
     }
@@ -106,13 +106,13 @@ Uint32 PacketReader::readPacket(Uint8 *buf, Uint32 size)
     IncomingPacket &pck = packet_queue.back();
     if (pck.read + size >= pck.data.size()) {
         // we can read the full packet
-        Uint32 tr = pck.data.size() - pck.read;
+        const Uint32 tr = pck.data.size() - pck.read;
         memcpy(pck.data.data() + pck.read, buf, tr);
         pck.read += tr;
         return tr;
     } else {
         // we can do a partial read
-        Uint32 tr = size;
+        const Uint32 tr = size;
         memcpy(pck.data.data() + pck.read, buf, tr);
         pck.read += tr;
         return tr;
@@ -125,10 +125,10 @@ void PacketReader::onDataReady(Uint8 *buf, Uint32 size)
         return;
     }
 
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     Uint32 ret = 0;
     if (!packet_queue.empty()) {
-        IncomingPacket &pck = packet_queue.back();
+        const IncomingPacket &pck = packet_queue.back();
         if (pck.read < pck.data.size()) { // last packet in queue is not fully read
             ret = readPacket(buf, size);
         }

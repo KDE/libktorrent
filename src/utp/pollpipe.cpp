@@ -24,7 +24,7 @@ PollPipe::~PollPipe()
 
 void PollPipe::reset()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     poll_index = -1;
     conn_ids.reset();
 }

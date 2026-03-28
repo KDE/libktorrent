@@ -24,7 +24,7 @@ OutputQueue::~OutputQueue()
 
 int OutputQueue::add(const PacketBuffer &packet, Connection::WPtr conn)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     queue.push_back(Entry(packet, conn));
     return queue.size();
 }
@@ -37,14 +37,14 @@ void OutputQueue::send(net::ServerSocket *sock)
         // Keep sending until the output queue is empty or the socket
         // can't handle the data anymore
         while (!queue.empty()) {
-            Entry &packet = queue.front();
-            Connection::Ptr conn = packet.conn.toStrongRef();
+            const Entry &packet = queue.front();
+            const Connection::Ptr conn = packet.conn.toStrongRef();
             if (!conn) {
                 queue.pop_front();
                 continue;
             }
 
-            int ret = sock->sendTo(packet.data.data(), packet.data.bufferSize(), conn->remoteAddress());
+            const int ret = sock->sendTo(packet.data.data(), packet.data.bufferSize(), conn->remoteAddress());
             if (ret == net::SEND_WOULD_BLOCK) {
                 break;
             } else if (ret == net::SEND_FAILURE) {
@@ -62,7 +62,7 @@ void OutputQueue::send(net::ServerSocket *sock)
     lock.unlock(); // unlock, so we can't get deadlocked in any subsequent close calls
 
     for (const utp::Connection::WPtr &conn : std::as_const(to_close)) {
-        Connection::Ptr c = conn.toStrongRef();
+        const Connection::Ptr c = conn.toStrongRef();
         if (c) {
             c->close();
         }

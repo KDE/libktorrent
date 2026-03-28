@@ -27,7 +27,7 @@ KClosestNodesSearch::~KClosestNodesSearch()
 void KClosestNodesSearch::tryInsert(const KBucketEntry &e)
 {
     // calculate distance between key and e
-    dht::Key d = dht::Key::distance(key, e.getID());
+    const dht::Key d = dht::Key::distance(key, e.getID());
 
     if (emap.size() < max_entries) {
         // room in the map so just insert

@@ -109,7 +109,7 @@ void Socket::reset()
 {
     close();
 
-    int fd = socket(m_ip_version == 4 ? PF_INET : PF_INET6, transport_protocol == bt::TCP ? SOCK_STREAM : SOCK_DGRAM, 0);
+    const int fd = socket(m_ip_version == 4 ? PF_INET : PF_INET6, transport_protocol == bt::TCP ? SOCK_STREAM : SOCK_DGRAM, 0);
     if (fd < 0) {
         const int err = errno;
         Out(SYS_GEN | LOG_IMPORTANT) << QStringLiteral("Cannot create socket : %1").arg(QString::fromUtf8(strerror(err))) << endl;
@@ -172,7 +172,7 @@ void Socket::close()
 void Socket::setBlocking(bool on)
 {
 #ifndef Q_OS_WIN
-    int flag = fcntl(m_fd, F_GETFL, 0);
+    const int flag = fcntl(m_fd, F_GETFL, 0);
     if (!on) {
         fcntl(m_fd, F_SETFL, flag | O_NONBLOCK);
     } else {
@@ -264,9 +264,9 @@ bool Socket::bind(const net::Address &addr, bool also_listen)
 int Socket::send(const bt::Uint8 *buf, int len)
 {
 #ifndef Q_OS_WIN
-    int ret = ::send(m_fd, buf, len, MSG_NOSIGNAL);
+    const int ret = ::send(m_fd, buf, len, MSG_NOSIGNAL);
 #else
-    int ret = ::send(m_fd, (char *)buf, len, MSG_NOSIGNAL);
+    const int ret = ::send(m_fd, (char *)buf, len, MSG_NOSIGNAL);
 #endif
     if (ret < 0) {
         const int err = errno;
@@ -282,9 +282,9 @@ int Socket::send(const bt::Uint8 *buf, int len)
 int Socket::recv(bt::Uint8 *buf, int max_len)
 {
 #ifndef Q_OS_WIN
-    int ret = ::recv(m_fd, buf, max_len, 0);
+    const int ret = ::recv(m_fd, buf, max_len, 0);
 #else
-    int ret = ::recv(m_fd, (char *)buf, max_len, 0);
+    const int ret = ::recv(m_fd, (char *)buf, max_len, 0);
 #endif
     if (ret < 0) {
         const int err = errno;
@@ -308,7 +308,7 @@ int Socket::sendTo(const bt::Uint8 *buf, int len, const Address &a)
     int alen = 0;
     struct sockaddr_storage ss;
     a.toSocketAddress(&ss, alen, dualstack);
-    int ret = ::sendto(m_fd, (char *)buf, len, 0, (struct sockaddr *)&ss, alen);
+    const int ret = ::sendto(m_fd, (char *)buf, len, 0, (struct sockaddr *)&ss, alen);
     if (ret < 0) {
         const int err = errno;
         if (err == EAGAIN || err == EWOULDBLOCK) {
@@ -327,9 +327,9 @@ int Socket::recvFrom(bt::Uint8 *buf, int max_len, Address &a)
     struct sockaddr_storage ss;
     socklen_t slen = sizeof(ss);
 #ifndef Q_OS_WIN
-    int ret = ::recvfrom(m_fd, buf, max_len, 0, (struct sockaddr *)&ss, &slen);
+    const int ret = ::recvfrom(m_fd, buf, max_len, 0, (struct sockaddr *)&ss, &slen);
 #else
-    int ret = ::recvfrom(m_fd, (char *)buf, max_len, 0, (struct sockaddr *)&ss, &slen);
+    const int ret = ::recvfrom(m_fd, (char *)buf, max_len, 0, (struct sockaddr *)&ss, &slen);
 #endif
     if (ret < 0) {
         const int err = errno;
@@ -344,7 +344,7 @@ int Socket::accept(Address &a)
 {
     struct sockaddr_storage ss;
     socklen_t slen = sizeof(ss);
-    int sfd = ::accept(m_fd, (struct sockaddr *)&ss, &slen);
+    const int sfd = ::accept(m_fd, (struct sockaddr *)&ss, &slen);
 
     if (sfd < 0) {
         const int err = errno;
@@ -459,7 +459,7 @@ Address Socket::getSockName() const
 
 int Socket::take()
 {
-    int ret = m_fd;
+    const int ret = m_fd;
     m_fd = -1;
     m_state = CLOSED;
     return ret;

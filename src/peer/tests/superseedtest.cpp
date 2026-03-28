@@ -127,10 +127,10 @@ private Q_SLOTS:
         // Simulate normal superseeding operation
         for (int i = 0; i < 4; i++) {
             Out(SYS_GEN | LOG_DEBUG) << "======================================" << endl;
-            Uint32 prev_uploader_chunk = uploader->allowed_chunk;
-            Uint32 prev_downloader_chunk = downloader->allowed_chunk;
+            const Uint32 prev_uploader_chunk = uploader->allowed_chunk;
+            const Uint32 prev_downloader_chunk = downloader->allowed_chunk;
             // Now simulate b downloaded the first chunk from a
-            Uint32 chunk = prev_uploader_chunk;
+            const Uint32 chunk = prev_uploader_chunk;
 
             Out(SYS_GEN | LOG_DEBUG) << "uploader = " << uploader->getPeerID().toString() << endl;
             Out(SYS_GEN | LOG_DEBUG) << "downloader = " << downloader->getPeerID().toString() << endl;

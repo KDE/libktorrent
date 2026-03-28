@@ -18,7 +18,7 @@ WaitJob::WaitJob(Uint32 millis)
 
 WaitJob::~WaitJob()
 {
-    for (ExitOperation *op : std::as_const(exit_ops)) {
+    for (const ExitOperation *op : std::as_const(exit_ops)) {
         delete op;
     }
 }

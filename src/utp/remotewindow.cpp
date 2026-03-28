@@ -57,7 +57,7 @@ double RemoteWindow::packetReceived(const utp::Header *hdr, const SelectiveAck *
     wnd_size = hdr->wnd_size;
 
     const auto window_size_before_acks = cur_window;
-    bt::TimeStamp now = bt::Now();
+    const bt::TimeStamp now = bt::Now();
     QList<UnackedPacket>::iterator i = unacked_packets.begin();
     while (i != unacked_packets.end()) {
         if (SeqNrCmpSE(i->seq_nr, hdr->ack_nr)) {
@@ -97,7 +97,7 @@ void RemoteWindow::addPacket(const PacketBuffer &packet, bt::Uint16 seq_nr, bt::
 
 void RemoteWindow::checkLostPackets(const utp::Header *hdr, const utp::SelectiveAck *sack, Retransmitter *conn)
 {
-    bt::TimeStamp now = bt::Now();
+    const bt::TimeStamp now = bt::Now();
     bool lost_packets = false;
 
     QList<UnackedPacket>::iterator itr = unacked_packets.begin();
@@ -118,9 +118,9 @@ void RemoteWindow::checkLostPackets(const utp::Header *hdr, const utp::Selective
     }
 
     if (sack) {
-        bt::Uint16 lost_index = lost(sack);
+        const bt::Uint16 lost_index = lost(sack);
         while (lost_index > 0 && itr != unacked_packets.end()) {
-            bt::Uint16 d = itr->seq_nr - hdr->ack_nr;
+            const bt::Uint16 d = itr->seq_nr - hdr->ack_nr;
             if (d < lost_index && (!itr->retransmitted || now - itr->send_time > conn->currentTimeout())) {
                 try {
                     conn->retransmit(itr->packet, itr->seq_nr);
@@ -163,7 +163,7 @@ void RemoteWindow::timeout(Retransmitter *conn)
 {
     try {
         max_window = MIN_PACKET_SIZE;
-        bt::TimeStamp now = bt::Now();
+        const bt::TimeStamp now = bt::Now();
         // When a timeout occurs retransmit packets which are lost longer then the current timeout
         for (UnackedPacket &pkt : unacked_packets) {
             if (!pkt.retransmitted || now - pkt.send_time > conn->currentTimeout()) {
@@ -178,7 +178,7 @@ void RemoteWindow::timeout(Retransmitter *conn)
 
 void RemoteWindow::updateWindowSize(double scaled_gain)
 {
-    int d = qRound(scaled_gain);
+    const int d = qRound(scaled_gain);
     if (max_window + d < MIN_PACKET_SIZE) {
         max_window = MIN_PACKET_SIZE;
     } else {

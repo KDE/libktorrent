@@ -42,7 +42,7 @@ void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
             return;
         }
 
-        int type = dict->getInt("msg_type");
+        const int type = dict->getInt("msg_type");
         switch (type) {
         case 0: // request
             request(dict.get());
@@ -78,7 +78,7 @@ void UTMetaData::reject(BDictNode *dict)
 
 void UTMetaData::request(BDictNode *dict)
 {
-    int piece = dict->getInt("piece");
+    const int piece = dict->getInt("piece");
     Out(SYS_CON | LOG_DEBUG) << "Received request for metadata piece " << piece << endl;
     if (!tor.isLoaded()) {
         sendReject(piece);
@@ -87,15 +87,15 @@ void UTMetaData::request(BDictNode *dict)
 
     const QByteArray &md_ref = tor.getMetaData();
     const QByteArrayView md{md_ref};
-    int num_pieces = md.size() / METADATA_PIECE_SIZE + (md.size() % METADATA_PIECE_SIZE == 0 ? 0 : 1);
+    const int num_pieces = md.size() / METADATA_PIECE_SIZE + (md.size() % METADATA_PIECE_SIZE == 0 ? 0 : 1);
     if (piece < 0 || piece >= num_pieces) {
         sendReject(piece);
         return;
     }
 
-    int off = piece * METADATA_PIECE_SIZE;
-    int last_len = (md.size() % METADATA_PIECE_SIZE == 0) ? METADATA_PIECE_SIZE : (md.size() % METADATA_PIECE_SIZE);
-    int len = piece == num_pieces - 1 ? last_len : METADATA_PIECE_SIZE;
+    const int off = piece * METADATA_PIECE_SIZE;
+    const int last_len = (md.size() % METADATA_PIECE_SIZE == 0) ? METADATA_PIECE_SIZE : (md.size() % METADATA_PIECE_SIZE);
+    const int len = piece == num_pieces - 1 ? last_len : METADATA_PIECE_SIZE;
     sendData(piece, md.size(), md.sliced(off, len));
 }
 

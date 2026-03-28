@@ -26,7 +26,7 @@ static const BigInt P = BigInt(QStringLiteral(
 
 void GeneratePublicPrivateKey(BigInt &priv, BigInt &pub)
 {
-    BigInt G = BigInt(u"0x02"_s);
+    const BigInt G = BigInt(u"0x02"_s);
     priv = BigInt::random();
     pub = BigInt::powerMod(G, priv, P);
 }
@@ -49,7 +49,7 @@ bt::SHA1Hash EncryptionKey(bool a, const BigInt &s, const bt::SHA1Hash &skey)
 void DumpBigInt(const QString &name, const BigInt &bi)
 {
     static Uint8 buf[512];
-    Uint32 nb = bi.toBuffer(buf, 512);
+    const Uint32 nb = bi.toBuffer(buf, 512);
     bt::Log &lg = Out(SYS_GEN | LOG_DEBUG);
     lg << name << " (" << nb << ") = ";
     for (Uint32 i = 0; i < nb; i++) {

@@ -55,7 +55,7 @@ public:
 
     void listen(const QString &ip)
     {
-        net::Address addr(ip, port);
+        const net::Address addr(ip, port);
         auto sock = std::make_unique<net::ServerSocket>(this);
         if (!sock->bind(addr)) {
             Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Failed to bind to " << addr.toString() << endl;
@@ -137,7 +137,7 @@ public:
             }
 
             RPCMsg *msg = c->getRequest();
-            QByteArray mtid(1, next_mtid);
+            const QByteArray mtid(1, next_mtid);
             msg->setMTID(mtid);
             next_mtid++;
             sendMsg(*msg);
@@ -148,7 +148,7 @@ public:
 
     RPCCall *doCall(std::unique_ptr<RPCMsg> msg)
     {
-        Uint8 start = next_mtid;
+        const Uint8 start = next_mtid;
         QByteArray mtid(1, start);
 
         while (calls.contains(mtid)) {

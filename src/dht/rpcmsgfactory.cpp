@@ -35,7 +35,7 @@ RPCMsgFactory::~RPCMsgFactory()
 
 std::unique_ptr<RPCMsg> RPCMsgFactory::buildRequest(BDictNode *dict)
 {
-    BDictNode *args = dict->getDict(ARG);
+    const BDictNode *args = dict->getDict(ARG);
     if (!args) {
         throw bt::Error(u"Invalid request, arguments missing"_s);
     }
@@ -68,7 +68,7 @@ std::unique_ptr<RPCMsg> RPCMsgFactory::buildRequest(BDictNode *dict)
 
 std::unique_ptr<RPCMsg> RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMethodResolver *method_resolver)
 {
-    BDictNode *args = dict->getDict(RSP);
+    const BDictNode *args = dict->getDict(RSP);
     if (!args) {
         throw bt::Error(u"Arguments missing for DHT response"_s);
     }
@@ -82,7 +82,7 @@ std::unique_ptr<RPCMsg> RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMe
     std::unique_ptr<RPCMsg> msg;
 
     // find the call
-    Method method = method_resolver->findMethod(mtid);
+    const Method method = method_resolver->findMethod(mtid);
     switch (method) {
     case PING:
         msg = std::make_unique<PingRsp>();

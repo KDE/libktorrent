@@ -73,7 +73,7 @@ void AuthenticationMonitor::update()
             if (socket) {
                 net::SocketDevice *dev = socket->socketDevice();
                 if (dev) {
-                    net::Poll::Mode m = socket->connecting() ? Poll::OUTPUT : Poll::INPUT;
+                    const net::Poll::Mode m = socket->connecting() ? Poll::OUTPUT : Poll::INPUT;
                     dev->prepare(this, m);
                 }
             }
@@ -99,9 +99,9 @@ void AuthenticationMonitor::handleData()
         } else {
             mse::EncryptedPacketSocket *socket = ab->getSocket();
             if (socket) {
-                net::SocketDevice *dev = socket->socketDevice();
-                bool r = dev && dev->ready(this, Poll::INPUT);
-                bool w = dev && dev->ready(this, Poll::OUTPUT);
+                const net::SocketDevice *dev = socket->socketDevice();
+                const bool r = dev && dev->ready(this, Poll::INPUT);
+                const bool w = dev && dev->ready(this, Poll::OUTPUT);
                 if (r) {
                     ab->onReadyRead();
                 }

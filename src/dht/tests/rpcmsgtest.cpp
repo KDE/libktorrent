@@ -66,7 +66,7 @@ private Q_SLOTS:
             bt::BDecoder dec(QByteArray(msg[idx]), false);
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
-                std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
+                const std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
                 QFAIL("No exception thrown");
             } catch (bt::Error &) {
                 // OK

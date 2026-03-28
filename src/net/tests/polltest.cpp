@@ -55,7 +55,7 @@ private Q_SLOTS:
     void testOutput()
     {
         Poll p;
-        Pipe pipe;
+        const Pipe pipe;
 
         QVERIFY(pipe.readerSocket() >= 0);
         QVERIFY(pipe.writerSocket() >= 0);
@@ -90,7 +90,7 @@ private Q_SLOTS:
     void testTimeout()
     {
         Poll p;
-        Pipe pipe;
+        const Pipe pipe;
 
         QVERIFY(pipe.readerSocket() >= 0);
         QVERIFY(pipe.writerSocket() >= 0);
@@ -116,7 +116,7 @@ private Q_SLOTS:
         net::Socket sock(true, reader_ip_version);
         QVERIFY(sock.bind(reader_ip_version == 4 ? u"127.0.0.1"_s : u"::1"_s, 0, true));
 
-        net::Address local_addr = sock.getSockName();
+        const net::Address local_addr = sock.getSockName();
         net::Socket writer(true, writer_ip_version);
         writer.setBlocking(false);
         writer.connectTo(local_addr);
@@ -126,7 +126,7 @@ private Q_SLOTS:
         sock.prepare(&poll, net::Poll::INPUT);
 
         QVERIFY(poll.poll(1000) > 0);
-        int fd = sock.accept(dummy);
+        const int fd = sock.accept(dummy);
         QVERIFY(fd >= 0);
 
         poll.reset();

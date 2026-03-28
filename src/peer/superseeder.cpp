@@ -56,7 +56,7 @@ void SuperSeeder::haveAll(PeerInterface *peer)
 {
     // Lets just ignore seeders
     if (active_peers.contains(peer)) {
-        Uint32 chunk = active_peers[peer];
+        const Uint32 chunk = active_peers[peer];
         active_chunks.remove(chunk, peer);
         active_peers.remove(peer);
     }
@@ -93,7 +93,7 @@ void SuperSeeder::peerRemoved(PeerInterface *peer)
 {
     // remove the peer
     if (active_peers.contains(peer)) {
-        Uint32 chunk = active_peers[peer];
+        const Uint32 chunk = active_peers[peer];
         active_chunks.remove(chunk, peer);
         active_peers.remove(peer);
     }
@@ -118,11 +118,11 @@ void SuperSeeder::sendChunk(PeerInterface *peer)
     }
 
     // Use random chunk to start searching for a potential chunk we can send
-    Uint32 num_chunks = chunk_counter->getNumChunks();
-    Uint32 start = QRandomGenerator::global()->bounded(num_chunks);
+    const Uint32 num_chunks = chunk_counter->getNumChunks();
+    const Uint32 start = QRandomGenerator::global()->bounded(num_chunks);
     Uint32 chunk = (start + 1) % num_chunks;
     Uint32 alternative = num_chunks;
-    Uint32 alternative_num_owners = std::numeric_limits<Uint32>::max();
+    const Uint32 alternative_num_owners = std::numeric_limits<Uint32>::max();
     while (chunk != start) {
         chunk = (chunk + 1) % num_chunks;
         if (bs.get(chunk)) {

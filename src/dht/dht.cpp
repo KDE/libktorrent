@@ -189,7 +189,7 @@ void DHT::announce(const AnnounceReq &r)
 
     node->received(this, r);
     // first check if the token is OK
-    QByteArray token = r.getToken();
+    const QByteArray token = r.getToken();
     if (!db->checkToken(token, r.getOrigin())) {
         return;
     }
@@ -218,7 +218,7 @@ void DHT::getPeers(const GetPeersReq &r)
     db->sample(r.getInfoHash(), dbl, 50, r.getOrigin().ipVersion());
 
     // generate a token
-    QByteArray token = db->genToken(r.getOrigin());
+    const QByteArray token = db->genToken(r.getOrigin());
 
     bt::Uint32 wants = 0;
     if (r.wants(4) || r.getOrigin().ipVersion() == 4) {
@@ -406,7 +406,7 @@ QMap<QString, int> DHT::getClosestGoodNodes(int maxNodes)
 
     KClosestNodesSearch::Itr it;
     for (it = kns.begin(); it != kns.end(); ++it) {
-        KBucketEntry e = it->second;
+        const KBucketEntry e = it->second;
 
         if (!e.isGood()) {
             continue;

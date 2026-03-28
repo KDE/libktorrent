@@ -41,8 +41,8 @@ struct RareCmp {
             return false;
         }
         // the sorting is done on two criteria, priority and rareness
-        Priority pa = cman->getChunk(a)->getPriority();
-        Priority pb = cman->getChunk(b)->getPriority();
+        const Priority pa = cman->getChunk(a)->getPriority();
+        const Priority pb = cman->getChunk(b)->getPriority();
         if (pa == pb) {
             return normalCmp(a, b); // if both have same priority compare on rareness
         } else if (pa > pb) { // pa has priority over pb, so select pa
@@ -92,12 +92,12 @@ void ChunkSelector::init(ChunkManager *cman, Downloader *downer, PeerManager *pm
 
 Uint32 ChunkSelector::leastPeers(const std::list<Uint32> &lp, Uint32 alternative, Uint32 max_peers_per_chunk)
 {
-    bool endgame = downer->endgameMode();
+    const bool endgame = downer->endgameMode();
 
     Uint32 sel = lp.front();
     Uint32 cnt = downer->numDownloadersForChunk(sel);
-    for (Uint32 i : lp) {
-        Uint32 cnt_i = downer->numDownloadersForChunk(i);
+    for (const Uint32 i : lp) {
+        const Uint32 cnt_i = downer->numDownloadersForChunk(i);
         if (cnt_i < cnt) {
             sel = i;
             cnt = cnt_i;
@@ -105,7 +105,7 @@ Uint32 ChunkSelector::leastPeers(const std::list<Uint32> &lp, Uint32 alternative
     }
 
     if (!endgame && downer->numDownloadersForChunk(sel) >= max_peers_per_chunk) {
-        ChunkDownload *cd = downer->download(sel);
+        const ChunkDownload *cd = downer->download(sel);
         if (!cd) {
             return alternative;
         }
@@ -132,19 +132,19 @@ bool ChunkSelector::select(PieceDownloader *pd, Uint32 &chunk)
 
     // sort the chunks every 2 seconds
     if (sort_timer.getElapsedSinceUpdate() > 2000) {
-        bool warmup = cman->getNumChunks() - cman->chunksLeft() <= 4;
+        const bool warmup = cman->getNumChunks() - cman->chunksLeft() <= 4;
         chunks.sort(RareCmp(cman, pman->getChunkCounter(), warmup));
         sort_timer.update();
     }
 
     std::list<Uint32>::iterator itr = chunks.begin();
     while (itr != chunks.end()) {
-        Uint32 i = *itr;
-        Chunk *c = cman->getChunk(*itr);
+        const Uint32 i = *itr;
+        const Chunk *c = cman->getChunk(*itr);
 
         // if we have the chunk remove it from the list
         if (c->isExcludedForDownloading() || c->isExcluded() || bs.get(i)) {
-            std::list<Uint32>::iterator tmp = itr;
+            const std::list<Uint32>::iterator tmp = itr;
             ++itr;
             chunks.erase(tmp);
         } else if (c->getPriority() < sel_prio) {
@@ -152,7 +152,7 @@ bool ChunkSelector::select(PieceDownloader *pd, Uint32 &chunk)
             break;
         } else if (pd->hasChunk(i)) {
             // pd has to have the selected chunk and it needs to be not excluded
-            Uint32 dl = downer->numDownloadersForChunk(i);
+            const Uint32 dl = downer->numDownloadersForChunk(i);
             if (dl == 0) {
                 // we found a chunk that has no downloaders, so select it
                 sel = i;
@@ -189,7 +189,7 @@ bool ChunkSelector::select(PieceDownloader *pd, Uint32 &chunk)
 void ChunkSelector::dataChecked(const BitSet &ok_chunks, Uint32 from, Uint32 to)
 {
     for (Uint32 i = from; i < ok_chunks.getNumBits() && i <= to; i++) {
-        bool in_chunks = std::find(chunks.begin(), chunks.end(), i) != chunks.end();
+        const bool in_chunks = std::find(chunks.begin(), chunks.end(), i) != chunks.end();
         if (in_chunks && ok_chunks.get(i)) {
             // if we have the chunk, remove it from the chunks list
             chunks.remove(i);
@@ -209,7 +209,7 @@ void ChunkSelector::reincluded(Uint32 from, Uint32 to)
     }
 
     for (Uint32 i = from; i <= to; i++) {
-        bool in_chunks = std::find(chunks.begin(), chunks.end(), i) != chunks.end();
+        const bool in_chunks = std::find(chunks.begin(), chunks.end(), i) != chunks.end();
         if (!in_chunks && cman->getChunk(i)->getStatus() != Chunk::ON_DISK) {
             //  Out(SYS_DIO|LOG_DEBUG) << "ChunkSelector::reIncluded " << i << endl;
             chunks.push_back(i);
@@ -219,7 +219,7 @@ void ChunkSelector::reincluded(Uint32 from, Uint32 to)
 
 void ChunkSelector::reinsert(Uint32 chunk)
 {
-    bool in_chunks = std::find(chunks.begin(), chunks.end(), chunk) != chunks.end();
+    const bool in_chunks = std::find(chunks.begin(), chunks.end(), chunk) != chunks.end();
     if (!in_chunks) {
         chunks.push_back(chunk);
     }
@@ -232,10 +232,10 @@ struct ChunkRange {
 
 bool ChunkSelector::selectRange(Uint32 &from, Uint32 &to, Uint32 max_len)
 {
-    Uint32 max_range_len = max_len;
+    const Uint32 max_range_len = max_len;
 
     const BitSet &bs = cman->getBitSet();
-    Uint32 num_chunks = cman->getNumChunks();
+    const Uint32 num_chunks = cman->getNumChunks();
     ChunkRange curr = {0, 0};
     ChunkRange best = {0, 0};
 

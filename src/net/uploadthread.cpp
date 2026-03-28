@@ -36,7 +36,7 @@ void UploadThread::update()
     bool group_limits = false;
     sm->lock();
 
-    TimeStamp now = bt::Now();
+    const TimeStamp now = bt::Now();
     Uint32 num_ready = 0;
     SocketMonitor::Itr itr = sm->begin();
     while (itr != sm->end()) {
@@ -48,7 +48,7 @@ void UploadThread::update()
 
         if (s->socketDevice()->ready(this, Poll::OUTPUT)) {
             // add to the correct group
-            Uint32 gid = s->uploadGroupID();
+            const Uint32 gid = s->uploadGroupID();
             if (gid > 0) {
                 group_limits = true;
             }
@@ -71,7 +71,7 @@ void UploadThread::update()
 
     // to prevent huge CPU usage sleep a bit if we are limited (either by a global limit or a group limit)
     if (ucap > 0 || group_limits) {
-        TimeStamp diff = now - prev_run_time;
+        const TimeStamp diff = now - prev_run_time;
         if (diff < sleep_time) {
             msleep(sleep_time - diff);
         }

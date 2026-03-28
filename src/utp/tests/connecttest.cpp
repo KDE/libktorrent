@@ -31,7 +31,7 @@ public:
 
     void startConnect()
     {
-        net::Address addr(u"127.0.0.1"_s, port);
+        const net::Address addr(u"127.0.0.1"_s, port);
         srv.connectTo(addr);
         QTimer::singleShot(5000, this, &ConnectTest::endEventLoop); // use a 5 second timeout
     }

@@ -24,7 +24,7 @@ const bt::Uint32 TEST_FILE_SIZE = 5 * 1024 * 1024;
 
 bt::Uint64 RandomSize(bt::Uint64 min_size, bt::Uint64 max_size)
 {
-    bt::Uint64 r = max_size - min_size;
+    const bt::Uint64 r = max_size - min_size;
     return min_size + QRandomGenerator64::global()->generate() % r;
 }
 
@@ -87,7 +87,7 @@ private Q_SLOTS:
         // Simple test read each file and check if they are the same on disk
         for (bt::Uint32 i = 0; i < tc.getNumFiles(); i++) {
             Out(SYS_GEN | LOG_DEBUG) << "Doing file " << i << endl;
-            bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(i, false, this);
+            const bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(i, false, this);
             QVERIFY(stream);
             QVERIFY(!stream->open(QIODevice::ReadWrite));
             QVERIFY(stream->open(QIODevice::ReadOnly));
@@ -96,7 +96,7 @@ private Q_SLOTS:
             QByteArray tmp(stream->size(), 0);
             qint64 written = 0;
             while (written < stream->size()) {
-                qint64 ret = stream->read(tmp.data(), stream->size());
+                const qint64 ret = stream->read(tmp.data(), stream->size());
                 Out(SYS_GEN | LOG_DEBUG) << "Returned " << ret << endl;
                 QVERIFY(ret == stream->size());
                 written += ret;
@@ -120,7 +120,7 @@ private Q_SLOTS:
 
         // In each file take a couple of random samples and compare them with the actual file
         for (bt::Uint32 i = 0; i < tc.getNumFiles(); i++) {
-            bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(i, false, this);
+            const bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(i, false, this);
             QVERIFY(stream);
             QVERIFY(!stream->open(QIODevice::ReadWrite));
             QVERIFY(stream->open(QIODevice::ReadOnly));
@@ -130,7 +130,7 @@ private Q_SLOTS:
             QVERIFY(fptr.open(QIODevice::ReadOnly));
 
             for (bt::Uint32 j = 0; j < 10; j++) {
-                qint64 off = QRandomGenerator64::global()->generate() % (stream->size() - 256);
+                const qint64 off = QRandomGenerator64::global()->generate() % (stream->size() - 256);
                 QVERIFY(stream->seek(off));
                 QVERIFY(fptr.seek(off));
 

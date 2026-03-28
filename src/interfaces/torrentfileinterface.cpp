@@ -34,7 +34,7 @@ TorrentFileInterface::~TorrentFileInterface()
 
 float TorrentFileInterface::getDownloadPercentage() const
 {
-    Uint32 num = last_chunk - first_chunk + 1;
+    const Uint32 num = last_chunk - first_chunk + 1;
     return 100.0f * (float)num_chunks_downloaded / num;
 }
 

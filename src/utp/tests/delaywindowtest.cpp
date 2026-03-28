@@ -43,14 +43,14 @@ private Q_SLOTS:
         DelayWindow wnd;
 
         for (int i = 0; i < 100; i++) {
-            bt::Uint32 val = QRandomGenerator::global()->generate();
+            const bt::Uint32 val = QRandomGenerator::global()->generate();
             Header hdr;
             hdr.timestamp_difference_microseconds = val;
             if (val < base_delay) {
                 base_delay = val;
             }
 
-            bt::Uint32 ret = wnd.update(&hdr, bt::Now());
+            const bt::Uint32 ret = wnd.update(&hdr, bt::Now());
             QVERIFY(ret == base_delay);
         }
     }
@@ -59,24 +59,24 @@ private Q_SLOTS:
     {
         const int SAMPLE_COUNT = 2400000;
 
-        std::unique_ptr<bt::Uint32[]> delay_samples(new bt::Uint32[SAMPLE_COUNT]);
+        const std::unique_ptr<bt::Uint32[]> delay_samples(new bt::Uint32[SAMPLE_COUNT]);
         for (int i = 0; i < SAMPLE_COUNT; i++) {
             delay_samples[i] = QRandomGenerator::global()->bounded(1000000);
         }
 
-        std::unique_ptr<bt::Uint32[]> returned_delay_new(new bt::Uint32[SAMPLE_COUNT]);
-        std::unique_ptr<bt::Uint32[]> returned_delay_old(new bt::Uint32[SAMPLE_COUNT]);
-        std::unique_ptr<bt::Uint32[]> returned_delay_circular(new bt::Uint32[SAMPLE_COUNT]);
+        const std::unique_ptr<bt::Uint32[]> returned_delay_new(new bt::Uint32[SAMPLE_COUNT]);
+        const std::unique_ptr<bt::Uint32[]> returned_delay_old(new bt::Uint32[SAMPLE_COUNT]);
+        const std::unique_ptr<bt::Uint32[]> returned_delay_circular(new bt::Uint32[SAMPLE_COUNT]);
 
         {
             DelayWindow wnd;
-            bt::TimeStamp start = bt::Now();
+            const bt::TimeStamp start = bt::Now();
             for (int i = 0; i < SAMPLE_COUNT; i++) {
                 Header hdr;
                 hdr.timestamp_difference_microseconds = delay_samples[i];
                 returned_delay_new[i] = wnd.update(&hdr, i);
             }
-            bt::TimeStamp duration = bt::Now() - start;
+            const bt::TimeStamp duration = bt::Now() - start;
             Out(SYS_GEN | LOG_DEBUG) << "New algorithm took: " << duration << endl;
         }
     }
@@ -88,7 +88,7 @@ private Q_SLOTS:
 
         Header hdr;
         hdr.timestamp_difference_microseconds = 1000;
-        bt::TimeStamp ts = 1000;
+        const bt::TimeStamp ts = 1000;
         QVERIFY(wnd.update(&hdr, ts) == 1000);
 
         hdr.timestamp_difference_microseconds = 2000;

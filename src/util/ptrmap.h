@@ -104,7 +104,7 @@ public:
      */
     bool insert(const Key &k, Data *d, bool overwrite = true)
     {
-        iterator itr = pmap.find(k);
+        const iterator itr = pmap.find(k);
         if (itr != pmap.end()) {
             if (overwrite) {
                 if (autodel) {
@@ -128,7 +128,7 @@ public:
      */
     Data *find(const Key &k)
     {
-        iterator i = pmap.find(k);
+        const iterator i = pmap.find(k);
         return (i == pmap.end()) ? nullptr : i->second;
     }
 
@@ -139,7 +139,7 @@ public:
      */
     [[nodiscard]] const Data *find(const Key &k) const
     {
-        const_iterator i = pmap.find(k);
+        const const_iterator i = pmap.find(k);
         return (i == pmap.end()) ? nullptr : i->second;
     }
 
@@ -150,7 +150,7 @@ public:
      */
     [[nodiscard]] bool contains(const Key &k) const
     {
-        const_iterator i = pmap.find(k);
+        const const_iterator i = pmap.find(k);
         return i != pmap.end();
     }
 
@@ -162,7 +162,7 @@ public:
      */
     virtual bool erase(const Key &key)
     {
-        iterator i = pmap.find(key);
+        const iterator i = pmap.find(key);
         if (i == pmap.end()) {
             return false;
         }

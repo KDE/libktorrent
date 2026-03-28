@@ -51,7 +51,7 @@ void CompressThread::run()
     // copy the data
     char buf[4096];
     while (!canceled && !in.atEnd()) {
-        int len = in.read(buf, 4096);
+        const int len = in.read(buf, 4096);
         if (len <= 0 || len > 4096) {
             break;
         }

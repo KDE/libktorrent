@@ -68,13 +68,13 @@ void AccessManager::addExternalIP(const QString &addr)
 
 bool AccessManager::isOurOwnAddress(const net::Address &addr) const
 {
-    Uint16 port = bt::Server::getPort();
+    const Uint16 port = bt::Server::getPort();
     if (!Tracker::getCustomIP().isEmpty() && net::Address(Tracker::getCustomIP(), port) == addr) {
         return true;
     }
 
     for (const QString &ip : std::as_const(external_addresses)) {
-        net::Address address(ip, port);
+        const net::Address address(ip, port);
         if (address == addr) {
             return true;
         }

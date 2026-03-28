@@ -82,7 +82,7 @@ Uint32 File::write(const void *buf, Uint32 size)
         return 0;
     }
 
-    Uint32 ret = fwrite(buf, 1, size, fptr);
+    const Uint32 ret = fwrite(buf, 1, size, fptr);
     if (ret != size) {
         if (errno == ENOSPC) {
             Out(SYS_DIO | LOG_IMPORTANT) << "Disk full !" << endl;
@@ -99,7 +99,7 @@ Uint32 File::read(void *buf, Uint32 size)
         return 0;
     }
 
-    Uint32 ret = fread(buf, 1, size, fptr);
+    const Uint32 ret = fread(buf, 1, size, fptr);
     if (ferror(fptr)) {
         clearerr(fptr);
         throw Error(i18n("Cannot read from %1", file));

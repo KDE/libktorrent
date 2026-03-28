@@ -37,7 +37,7 @@ SingleFileCache::SingleFileCache(Torrent &tor, const QString &tmpdir, const QStr
     , cache_file(tmpdir + "cache"_L1)
     , fd(nullptr)
 {
-    QFileInfo fi(cache_file);
+    const QFileInfo fi(cache_file);
     if (fi.isSymLink()) { // old style symlink
         output_file = fi.symLinkTarget();
     } else {
@@ -52,7 +52,7 @@ SingleFileCache::~SingleFileCache()
 
 void SingleFileCache::loadFileMap()
 {
-    QString file_map = tmpdir + "file_map"_L1;
+    const QString file_map = tmpdir + "file_map"_L1;
     if (!bt::Exists(file_map)) {
         saveFileMap();
         return;
@@ -68,7 +68,7 @@ void SingleFileCache::loadFileMap()
 
 void SingleFileCache::saveFileMap()
 {
-    QString file_map = tmpdir + "file_map"_L1;
+    const QString file_map = tmpdir + "file_map"_L1;
     QFile fptr(file_map);
     if (!fptr.open(QIODevice::WriteOnly)) {
         throw Error(i18n("Failed to create %1: %2", file_map, fptr.errorString()));
@@ -126,7 +126,7 @@ PieceData::Ptr SingleFileCache::createPiece(Chunk *c, Uint64 off, Uint32 length,
         open();
     }
 
-    Uint64 piece_off = c->getIndex() * tor.getChunkSize() + off;
+    const Uint64 piece_off = c->getIndex() * tor.getChunkSize() + off;
     Uint8 *buf = nullptr;
     if (mmap_failures >= 3) {
         buf = new Uint8[length];
@@ -161,7 +161,7 @@ PieceData::Ptr SingleFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
     cp = createPiece(c, off, length, true);
     if (cp && !cp->mapped()) {
         // read data from file if piece isn't mapped
-        Uint64 piece_off = c->getIndex() * tor.getChunkSize() + off;
+        const Uint64 piece_off = c->getIndex() * tor.getChunkSize() + off;
         fd->read(cp->data(), length, piece_off);
     }
 
@@ -186,7 +186,7 @@ void SingleFileCache::savePiece(PieceData::Ptr piece)
 
     // mapped pieces will be unmapped when they are destroyed, buffered ones need to be written
     if (!piece->mapped()) {
-        Uint64 off = piece->parentChunk()->getIndex() * tor.getChunkSize() + piece->offset();
+        const Uint64 off = piece->parentChunk()->getIndex() * tor.getChunkSize() + piece->offset();
         if (piece->ok()) {
             fd->write(piece->data(), piece->length(), off);
         }
@@ -215,7 +215,7 @@ void SingleFileCache::create()
 
 bool SingleFileCache::getMountPoints(QSet<QString> &mps)
 {
-    QString mp = MountPoint(output_file);
+    const QString mp = MountPoint(output_file);
     if (mp.isEmpty()) {
         return false;
     }
@@ -238,7 +238,7 @@ void SingleFileCache::open()
         return;
     }
 
-    CacheFile::Ptr tmp(new CacheFile());
+    const CacheFile::Ptr tmp(new CacheFile());
     tmp->open(output_file, tor.getTotalSize());
     fd = tmp;
 }

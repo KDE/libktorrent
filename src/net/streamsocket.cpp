@@ -21,14 +21,14 @@ StreamSocket::~StreamSocket()
 
 void StreamSocket::addData(const QByteArray &data)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     buffer.append(data);
     net::SocketMonitor::instance().signalPacketReady();
 }
 
 bool StreamSocket::bytesReadyToWrite() const
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     return !buffer.isEmpty() || sock->state() == net::SocketDevice::CONNECTING;
 }
 
@@ -36,9 +36,9 @@ bt::Uint32 StreamSocket::write(bt::Uint32 max, bt::TimeStamp now)
 {
     Q_UNUSED(now);
 
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     if (sock->state() == net::SocketDevice::CONNECTING) {
-        bool ok = sock->connectSuccesFull();
+        const bool ok = sock->connectSuccesFull();
         if (listener) {
             listener->connectFinished(ok);
         }
@@ -52,8 +52,8 @@ bt::Uint32 StreamSocket::write(bt::Uint32 max, bt::TimeStamp now)
     }
 
     // max 0 means unlimited transfer, try to send the entire buffer then
-    int to_send = (max == 0) ? buffer.size() : qMin<int>(buffer.size(), max);
-    int ret = sock->send((const bt::Uint8 *)buffer.data(), to_send);
+    const int to_send = (max == 0) ? buffer.size() : qMin<int>(buffer.size(), max);
+    const int ret = sock->send((const bt::Uint8 *)buffer.data(), to_send);
     if (ret == to_send) {
         buffer.clear();
         if (listener) {

@@ -57,7 +57,7 @@ QString ReverseResolver::resolve(const net::Address &addr)
 
 void ReverseResolver::run()
 {
-    QString res = resolve(addr_to_resolve);
+    const QString res = resolve(addr_to_resolve);
     Q_EMIT resolved(res);
 }
 

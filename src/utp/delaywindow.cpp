@@ -48,7 +48,7 @@ bt::Uint32 DelayWindow::update(const utp::Header *hdr, bt::TimeStamp receive_tim
     }
 
     // Use binary search to find the position where we need to insert
-    DelayEntry entry(hdr->timestamp_difference_microseconds, receive_time);
+    const DelayEntry entry(hdr->timestamp_difference_microseconds, receive_time);
     itr = std::lower_bound(delay_window.begin(), delay_window.end(), entry);
     // Everything until the end has a higher delay then the new sample and is older.
     // So they can all be dropped, because they can never be the minimum delay again.

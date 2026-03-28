@@ -76,7 +76,7 @@ void FindNodeRsp::parse(BDictNode *dict)
         throw bt::Error(u"Missing nodes or nodes6 parameter"_s);
     }
 
-    BValueNode *v = args->getValue("nodes");
+    const BValueNode *v = args->getValue("nodes");
     if (v) {
         nodes = v->data().toByteArray();
     }

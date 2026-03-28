@@ -87,11 +87,11 @@ private Q_SLOTS:
     {
         QTemporaryFile tmp;
         QVERIFY(tmp.open());
-        int fd = tmp.handle();
+        const int fd = tmp.handle();
         try {
             TruncateFile(fd, 4096, true);
         } catch (bt::Error &err) {
-            QString msg = u"Exception thrown: %s"_s.arg(err.toString());
+            const QString msg = u"Exception thrown: %s"_s.arg(err.toString());
             QFAIL(msg.toLocal8Bit().constData());
         }
 
@@ -103,7 +103,7 @@ private Q_SLOTS:
             BUS_ERROR_WPROTECT();
             memcpy(ptr, "Testing", 7);
         } catch (bt::BusError &e) {
-            QString msg = u"Caught signal: %s"_s.arg(e.toString());
+            const QString msg = u"Caught signal: %s"_s.arg(e.toString());
             QFAIL(msg.toLocal8Bit().constData());
         }
 

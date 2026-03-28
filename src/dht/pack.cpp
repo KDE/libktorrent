@@ -52,8 +52,8 @@ KBucketEntry UnpackBucketEntry(const QByteArray &ba, Uint32 off, int ip_version)
         const Uint8 *ptr = data + off;
 
         // get the port, ip and key);
-        Uint16 port = bt::ReadUint16(ptr, 24);
-        Uint32 ip = bt::ReadUint32(ptr, 20);
+        const Uint16 port = bt::ReadUint16(ptr, 24);
+        const Uint32 ip = bt::ReadUint32(ptr, 20);
         Uint8 key[20];
         memcpy(key, ptr, 20);
 
@@ -67,7 +67,7 @@ KBucketEntry UnpackBucketEntry(const QByteArray &ba, Uint32 off, int ip_version)
         const Uint8 *ptr = data + off;
 
         // get the port, ip and key);
-        Uint16 port = bt::ReadUint16(ptr, 36);
+        const Uint16 port = bt::ReadUint16(ptr, 36);
         Uint8 key[20];
         memcpy(key, ptr, 20);
 

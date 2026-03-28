@@ -27,8 +27,8 @@ Timer::~Timer()
 
 TimeStamp Timer::update()
 {
-    TimeStamp now = Now();
-    TimeStamp d = (now > last) ? now - last : 0;
+    const TimeStamp now = Now();
+    const TimeStamp d = (now > last) ? now - last : 0;
     elapsed = d;
     last = now;
     return last;
@@ -36,7 +36,7 @@ TimeStamp Timer::update()
 
 TimeStamp Timer::getElapsedSinceUpdate() const
 {
-    TimeStamp now = Now();
+    const TimeStamp now = Now();
     return (now > last) ? now - last : 0;
 }
 

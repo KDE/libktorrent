@@ -78,7 +78,7 @@ private Q_SLOTS:
     void testSimple()
     {
         Out(SYS_GEN | LOG_DEBUG) << "Begin: testSimple() " << endl;
-        bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(0, false, this);
+        const bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(0, false, this);
         QVERIFY(stream);
         QVERIFY(!stream->open(QIODevice::ReadWrite));
         QVERIFY(stream->open(QIODevice::ReadOnly));
@@ -87,12 +87,12 @@ private Q_SLOTS:
         bt::Uint64 written = 0;
         bt::Uint32 idx = 0;
         while (written < TEST_FILE_SIZE) {
-            qint64 ret = stream->read(tmp.data(), tc.getStats().chunk_size);
+            const qint64 ret = stream->read(tmp.data(), tc.getStats().chunk_size);
             QVERIFY(ret == tc.getStats().chunk_size);
             written += tc.getStats().chunk_size;
 
             // Verify the hash
-            bt::SHA1Hash hash = bt::SHA1Hash::generate(tmp);
+            const bt::SHA1Hash hash = bt::SHA1Hash::generate(tmp);
             QVERIFY(hash == tc.getTorrent().getHash(idx));
             idx++;
         }
@@ -104,7 +104,7 @@ private Q_SLOTS:
     void testSeek()
     {
         Out(SYS_GEN | LOG_DEBUG) << "Begin: testSeek() " << endl;
-        bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(0, false, this);
+        const bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(0, false, this);
         QVERIFY(stream);
         QVERIFY(!stream->open(QIODevice::ReadWrite));
         QVERIFY(stream->open(QIODevice::ReadOnly));
@@ -139,7 +139,7 @@ private Q_SLOTS:
             written += ret;
 
             // Verify the hash
-            bt::SHA1Hash hash = bt::SHA1Hash::generate(tmp);
+            const bt::SHA1Hash hash = bt::SHA1Hash::generate(tmp);
             QVERIFY(hash == tc.getTorrent().getHash(idx));
             idx++;
         }
@@ -151,15 +151,15 @@ private Q_SLOTS:
     void testRandomAccess()
     {
         Out(SYS_GEN | LOG_DEBUG) << "Begin: testRandomAccess() " << endl;
-        bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(0, false, this);
+        const bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(0, false, this);
         QVERIFY(stream);
         QVERIFY(!stream->open(QIODevice::ReadWrite));
         QVERIFY(stream->open(QIODevice::ReadOnly));
 
         // Read an area of around 5 chunks in at a random location
         // And verify the 3 middle chunks
-        qint64 range_size = tc.getStats().chunk_size * 5;
-        qint64 off = QRandomGenerator::global()->bounded(100) / 100.0 * (tc.getStats().total_bytes - range_size);
+        const qint64 range_size = tc.getStats().chunk_size * 5;
+        const qint64 off = QRandomGenerator::global()->bounded(100) / 100.0 * (tc.getStats().total_bytes - range_size);
         QVERIFY(stream->seek(off));
 
         Out(SYS_GEN | LOG_DEBUG) << "Reading random range" << endl;
@@ -169,7 +169,7 @@ private Q_SLOTS:
         QByteArray range(range_size, 0);
         qint64 bytes_read = 0;
         while (bytes_read < range_size) {
-            qint64 ret = stream->read(range.data() + bytes_read, range_size - bytes_read);
+            const qint64 ret = stream->read(range.data() + bytes_read, range_size - bytes_read);
             Out(SYS_GEN | LOG_DEBUG) << "ret = " << ret << endl;
             Out(SYS_GEN | LOG_DEBUG) << "read = " << bytes_read << endl;
             QVERIFY(ret > 0);
@@ -200,7 +200,7 @@ private Q_SLOTS:
         // Verify the hashes
         const QByteArrayView range_view{range};
         for (int i = 0; i < 3; i++) {
-            bt::SHA1Hash hash = bt::SHA1Hash::generate(range_view.sliced(chunk_off, tc.getStats().chunk_size));
+            const bt::SHA1Hash hash = bt::SHA1Hash::generate(range_view.sliced(chunk_off, tc.getStats().chunk_size));
 
             Out(SYS_GEN | LOG_DEBUG) << "chash = " << hash.toString() << endl;
             Out(SYS_GEN | LOG_DEBUG) << "whash = " << tc.getTorrent().getHash(chunk_idx).toString() << endl;
@@ -216,7 +216,7 @@ private Q_SLOTS:
     void testMultiSeek()
     {
         Out(SYS_GEN | LOG_DEBUG) << "Begin: testMultiSeek() " << endl;
-        bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(0, false, this);
+        const bt::TorrentFileStream::Ptr stream = tc.createTorrentFileStream(0, false, this);
         QVERIFY(stream);
         QVERIFY(!stream->open(QIODevice::ReadWrite));
         QVERIFY(stream->open(QIODevice::ReadOnly));
@@ -224,7 +224,7 @@ private Q_SLOTS:
         QFile fptr(stream->path());
         QVERIFY(fptr.open(QIODevice::ReadOnly));
         for (int i = 0; i < 20; i++) {
-            qint64 off = QRandomGenerator::global()->bounded(TEST_FILE_SIZE - 100);
+            const qint64 off = QRandomGenerator::global()->bounded(TEST_FILE_SIZE - 100);
             // Seek to a random location
             QVERIFY(stream->seek(off));
             QByteArray tmp(100, 0);
@@ -254,7 +254,7 @@ private Q_SLOTS:
 
     void testSeekToUndownloadedSection()
     {
-        bt::TorrentFileStream::Ptr a = incomplete_tc.createTorrentFileStream(0, true, this);
+        const bt::TorrentFileStream::Ptr a = incomplete_tc.createTorrentFileStream(0, true, this);
         QVERIFY(incomplete_tc.getStats().completed == false);
         QVERIFY(a->seek(TEST_FILE_SIZE / 2));
         QVERIFY(a->bytesAvailable() == 0);

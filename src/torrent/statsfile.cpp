@@ -27,21 +27,21 @@ void StatsFile::write(const QString &key, const QString &value)
 
 QString StatsFile::readString(const QString &key)
 {
-    KConfigGroup g = cfg->group(QString());
+    const KConfigGroup g = cfg->group(QString());
     return g.readEntry(key).trimmed();
 }
 
 Uint64 StatsFile::readUint64(const QString &key)
 {
     bool ok = true;
-    Uint64 val = readString(key).toULongLong(&ok);
+    const Uint64 val = readString(key).toULongLong(&ok);
     return val;
 }
 
 int StatsFile::readInt(const QString &key)
 {
     bool ok = true;
-    int val = readString(key).toInt(&ok);
+    const int val = readString(key).toInt(&ok);
     return val;
 }
 

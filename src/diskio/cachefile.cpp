@@ -93,7 +93,7 @@ void CacheFile::openFile(Mode mode)
 
 void CacheFile::open(const QString &path, Uint64 size)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     // only set the path and the max size, we only open the file when it is needed
     this->path = path;
     max_size = size;
@@ -101,11 +101,11 @@ void CacheFile::open(const QString &path, Uint64 size)
 
 void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     // reopen the file if necessary
     if (!fptr) {
         //  Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
-        QStorageInfo mount(path); // ntfs cannot handle mmap properly
+        const QStorageInfo mount(path); // ntfs cannot handle mmap properly
         if (!OpenFileAllowed() || mount.fileSystemType() == "fuseblk" || mount.fileSystemType().startsWith("ntfs")) {
             return nullptr; // Running out of file descriptors, force buffered mode
         }
@@ -128,7 +128,7 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
     */
 
     if (off + size > file_size) {
-        Uint64 to_write = (off + size) - file_size;
+        const Uint64 to_write = (off + size) - file_size;
         //  Out(SYS_DIO|LOG_DEBUG) << "Growing file with " << to_write << " bytes" << endl;
         growFile(to_write);
     }
@@ -147,11 +147,11 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
         break;
     }
 
-    int fd = fptr->handle();
+    const int fd = fptr->handle();
     // off may not be a multiple of the page_size
     // so we play around a bit
-    Uint64 diff = (off % page_size);
-    Uint64 noff = off - diff;
+    const Uint64 diff = (off % page_size);
+    const Uint64 noff = off - diff;
     //  Out(SYS_DIO|LOG_DEBUG) << "Offsetted mmap : " << diff << endl;
 #ifdef HAVE_MMAP64
     char *ptr = (char *)mmap64(nullptr, size + diff, mmap_flag, MAP_SHARED, fd, noff);
@@ -221,7 +221,7 @@ void CacheFile::growFile(Uint64 to_write)
 void CacheFile::unmap(void *ptr)
 {
     int ret = 0;
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
 #ifdef Q_OS_WIN
     if (!fptr) {
         return;
@@ -265,7 +265,7 @@ void CacheFile::unmap(void *ptr)
 
 void CacheFile::aboutToClose()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     if (!fptr) {
         return;
     }
@@ -284,7 +284,7 @@ void CacheFile::unmapAll()
     auto i = mappings.begin();
     while (i != mappings.end()) {
         int ret = 0;
-        CacheFile::Entry &e = i.value();
+        const CacheFile::Entry &e = i.value();
 #ifdef Q_OS_WIN
         fptr->unmap((uchar *)e.ptr);
 #else
@@ -310,7 +310,7 @@ void CacheFile::unmapAll()
 
 void CacheFile::close()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
 
     if (!fptr) {
         return;
@@ -326,7 +326,7 @@ void CacheFile::close()
 
 void CacheFile::read(Uint8 *buf, Uint32 size, Uint64 off)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     bool close_again = false;
 
     // reopen the file if necessary
@@ -361,7 +361,7 @@ void CacheFile::read(Uint8 *buf, Uint32 size, Uint64 off)
 
 void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     bool close_again = false;
 
     // reopen the file if necessary
@@ -416,7 +416,7 @@ void CacheFile::closeTemporary()
 
 void CacheFile::preallocate(PreallocationThread *prealloc)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
 
     if (FileSize(path) == max_size) {
         Out(SYS_GEN | LOG_NOTICE) << "File " << path << " already big enough" << endl;
@@ -430,7 +430,7 @@ void CacheFile::preallocate(PreallocationThread *prealloc)
         close_again = true;
     }
 
-    int fd = fptr->handle();
+    const int fd = fptr->handle();
 
     if (read_only) {
         if (close_again) {
@@ -441,7 +441,7 @@ void CacheFile::preallocate(PreallocationThread *prealloc)
     }
 
     try {
-        bool res = false;
+        bool res = false; // NOLINT(misc-const-correctness)
 
 #ifdef HAVE_XFS_XFS_H
         if (Cache::preallocateFully()) {

@@ -188,7 +188,7 @@ private Q_SLOTS:
 
     void testUnicodeLiteral()
     {
-        QString a = u"%1Torrent"_s.arg(QChar(0x00B5));
+        const QString a = u"%1Torrent"_s.arg(QChar(0x00B5));
         QVERIFY(a == QStringLiteral("µTorrent"));
     }
 

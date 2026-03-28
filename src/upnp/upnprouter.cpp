@@ -164,7 +164,7 @@ void UPnPRouter::downloadFinished(const KJob *j)
     const auto st = static_cast<const KIO::StoredTransferJob *>(j);
     // load in the file (target is always local)
     UPnPDescriptionParser desc_parse;
-    bool ret = desc_parse.parse(st->data(), this);
+    const bool ret = desc_parse.parse(st->data(), this);
     if (!ret) {
         d->error = i18n("Error parsing router description.");
     }
@@ -178,7 +178,7 @@ void UPnPRouter::downloadXMLFile()
     d->error = QString();
     // downlaod XML description into a temporary file in /tmp
     Out(SYS_PNP | LOG_DEBUG) << "Downloading XML file " << d->location << endl;
-    KIO::Job *job = KIO::storedGet(d->location, KIO::NoReload, KIO::Overwrite | KIO::HideProgressInfo);
+    const KIO::Job *job = KIO::storedGet(d->location, KIO::NoReload, KIO::Overwrite | KIO::HideProgressInfo);
     connect(job, &KIO::Job::result, this, &UPnPRouter::downloadFinished);
 }
 
@@ -212,7 +212,7 @@ void UPnPRouter::undoForward(const net::Port &port, bt::WaitJob *waitjob)
 
     QList<Forwarding>::iterator itr = d->fwds.begin();
     while (itr != d->fwds.end()) {
-        Forwarding &wd = *itr;
+        const Forwarding &wd = *itr;
         if (wd.port == port) {
             d->undoForward(wd.service, wd.port, waitjob);
             itr = d->fwds.erase(itr);
@@ -251,7 +251,7 @@ void UPnPRouter::getExternalIPResult(HTTPRequest *r)
         if (!doc.setContent(r->replyData())) {
             Out(SYS_PNP | LOG_DEBUG) << "UPnP: GetExternalIP failed: invalid reply" << endl;
         } else {
-            QDomNodeList nodes = doc.elementsByTagName(u"NewExternalIPAddress"_s);
+            const QDomNodeList nodes = doc.elementsByTagName(u"NewExternalIPAddress"_s);
             if (nodes.count() > 0) {
                 d->external_ip = nodes.item(0).firstChild().nodeValue();
                 Out(SYS_PNP | LOG_DEBUG) << "UPnP: External IP: " << d->external_ip << endl;
@@ -367,9 +367,9 @@ HTTPRequest *UPnPRouter::UPnPRouterPrivate::sendSoapQuery(const QString &query, 
         location.setPort(80);
     }
 
-    QUrl ctrlurl(controlurl);
-    QString host = !ctrlurl.host().isEmpty() ? ctrlurl.host() : location.host();
-    bt::Uint16 port = ctrlurl.port() != -1 ? ctrlurl.port() : location.port(80);
+    const QUrl ctrlurl(controlurl);
+    const QString host = !ctrlurl.host().isEmpty() ? ctrlurl.host() : location.host();
+    const bt::Uint16 port = ctrlurl.port() != -1 ? ctrlurl.port() : location.port(80);
 
     QNetworkRequest networkReq;
     networkReq.setUrl(ctrlurl);
@@ -429,13 +429,13 @@ void UPnPRouter::UPnPRouterPrivate::forward(const UPnPService *srv, const net::P
     args.append(a);
 
     QString action = u"AddPortMapping"_s;
-    QString comm = SOAP::createCommand(action, srv->servicetype, args);
+    const QString comm = SOAP::createCommand(action, srv->servicetype, args);
 
     Forwarding fw = {port, nullptr, srv};
     // erase old forwarding if one exists
     QList<Forwarding>::iterator itr = fwds.begin();
     while (itr != fwds.end()) {
-        Forwarding &fwo = *itr;
+        const Forwarding &fwo = *itr;
         if (fwo.port == port && fwo.service == srv) {
             itr = fwds.erase(itr);
         } else {
@@ -467,7 +467,7 @@ void UPnPRouter::UPnPRouterPrivate::undoForward(const UPnPService *srv, const ne
     args.append(a);
 
     QString action = u"DeletePortMapping"_s;
-    QString comm = SOAP::createCommand(action, srv->servicetype, args);
+    const QString comm = SOAP::createCommand(action, srv->servicetype, args);
     HTTPRequest *r = sendSoapQuery(comm, srv->servicetype + '#'_L1 + action, srv->controlurl, waitjob != nullptr);
 
     if (waitjob) {
@@ -482,8 +482,8 @@ void UPnPRouter::UPnPRouterPrivate::getExternalIP()
     for (const UPnPService &s : std::as_const(services)) {
         if (s.servicetype.contains("WANIPConnection"_L1) || s.servicetype.contains("WANPPPConnection"_L1)) {
             QString action = u"GetExternalIPAddress"_s;
-            QString comm = SOAP::createCommand(action, s.servicetype);
-            HTTPRequest *r = sendSoapQuery(comm, s.servicetype + '#'_L1 + action, s.controlurl);
+            const QString comm = SOAP::createCommand(action, s.servicetype);
+            const HTTPRequest *r = sendSoapQuery(comm, s.servicetype + '#'_L1 + action, s.controlurl);
             connect(r, &HTTPRequest::result, parent, &UPnPRouter::getExternalIPResult);
             break;
         }

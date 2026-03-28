@@ -101,13 +101,13 @@ void TorrentFile::emitDownloadStatusChanged()
 bool TorrentFile::isMultimedia() const
 {
     if (filetype == UNKNOWN) {
-        QMimeType ptr = QMimeDatabase().mimeTypeForFile(getPath());
+        const QMimeType ptr = QMimeDatabase().mimeTypeForFile(getPath());
         if (!ptr.isValid()) {
             filetype = NORMAL;
             return false;
         }
 
-        QString name = ptr.name();
+        const QString name = ptr.name();
         if (name.startsWith(QLatin1String("audio")) || name == QLatin1String("application/ogg")) {
             filetype = AUDIO;
         } else if (name.startsWith(QLatin1String("video"))) {
@@ -177,11 +177,11 @@ Uint64 TorrentFile::fileOffset(Uint32 cindex, Uint64 chunk_size) const
 void TorrentFile::updateNumDownloadedChunks(ChunkManager &cman)
 {
     const BitSet &bs = cman.getBitSet();
-    Uint32 old_chunk_count = num_chunks_downloaded;
+    const Uint32 old_chunk_count = num_chunks_downloaded;
     num_chunks_downloaded = 0;
 
-    Uint32 preview_range = cman.previewChunkRangeSize(*this);
-    bool prev = preview;
+    const Uint32 preview_range = cman.previewChunkRangeSize(*this);
+    const bool prev = preview;
     preview = true;
     for (Uint32 i = first_chunk; i <= last_chunk; i++) {
         if (bs.get(i)) {

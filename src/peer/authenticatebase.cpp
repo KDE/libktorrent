@@ -71,7 +71,7 @@ void AuthenticateBase::makeHandshake(Uint8 *hs, const SHA1Hash &info_hash, const
 
 void AuthenticateBase::onReadyRead()
 {
-    Uint32 ba = sock->bytesAvailable();
+    const Uint32 ba = sock->bytesAvailable();
     //  Out() << "AuthenticateBase::onReadyRead " << ba << endl;
     if (ba == 0) {
         onFinish(false);
@@ -100,7 +100,7 @@ void AuthenticateBase::onReadyRead()
         }
     } else {
         // read remaining part
-        Uint32 to_read = 68 - bytes_of_handshake_received;
+        const Uint32 to_read = 68 - bytes_of_handshake_received;
         sock->readData(handshake + bytes_of_handshake_received, to_read);
     }
 

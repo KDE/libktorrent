@@ -85,14 +85,14 @@ void PeerConnector::start()
 
 void PeerConnector::acquired()
 {
-    PeerManager *pm = d->pman.data();
+    const PeerManager *pm = d->pman.data();
     if (!pm || !pm->isStarted()) {
         return;
     }
 
-    bt::TransportProtocol primary = ServerInterface::primaryTransportProtocol();
-    bool encryption = ServerInterface::isEncryptionEnabled();
-    bool utp = ServerInterface::isUtpEnabled();
+    const bt::TransportProtocol primary = ServerInterface::primaryTransportProtocol();
+    const bool encryption = ServerInterface::isEncryptionEnabled();
+    const bool utp = ServerInterface::isUtpEnabled();
 
     if (encryption) {
         if (utp && primary == bt::UTP) {
@@ -133,14 +133,14 @@ void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
 
     tried_methods.insert(current_method);
 
-    bt::TransportProtocol primary = ServerInterface::primaryTransportProtocol();
+    const bt::TransportProtocol primary = ServerInterface::primaryTransportProtocol();
     //      QList<Method> allowed;
 
-    bool tcp_allowed = OpenFileAllowed();
-    bool encryption = ServerInterface::isEncryptionEnabled();
-    bool only_use_encryption = !ServerInterface::unencryptedConnectionsAllowed();
-    bool utp = ServerInterface::isUtpEnabled();
-    bool only_use_utp = ServerInterface::onlyUseUtp();
+    const bool tcp_allowed = OpenFileAllowed();
+    const bool encryption = ServerInterface::isEncryptionEnabled();
+    const bool only_use_encryption = !ServerInterface::unencryptedConnectionsAllowed();
+    const bool utp = ServerInterface::isUtpEnabled();
+    const bool only_use_utp = ServerInterface::onlyUseUtp();
 
     if (primary == bt::UTP) {
         if (utp && encryption && !tried_methods.contains(UTP_WITH_ENCRYPTION)) {
@@ -171,14 +171,14 @@ void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
 
 void PeerConnector::Private::start(PeerConnector::Method method)
 {
-    PeerManager *pm = pman.data();
+    const PeerManager *pm = pman.data();
     if (!pm) {
         return;
     }
 
     current_method = method;
     const Torrent &tor = pm->getTorrent();
-    TransportProtocol proto = (method == TCP_WITH_ENCRYPTION || method == TCP_WITHOUT_ENCRYPTION) ? TCP : UTP;
+    const TransportProtocol proto = (method == TCP_WITH_ENCRYPTION || method == TCP_WITHOUT_ENCRYPTION) ? TCP : UTP;
     if (method == TCP_WITH_ENCRYPTION || method == UTP_WITH_ENCRYPTION) {
         auth = new mse::EncryptedAuthenticate(addr, proto, tor.getInfoHash(), tor.getPeerID(), self);
     } else {

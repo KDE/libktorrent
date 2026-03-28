@@ -17,7 +17,7 @@ using namespace Qt::StringLiterals;
 
 bt::Uint64 RandomSize(bt::Uint64 min_size, bt::Uint64 max_size)
 {
-    bt::Uint64 r = max_size - min_size;
+    const bt::Uint64 r = max_size - min_size;
     return min_size + QRandomGenerator64::global()->generate() % r;
 }
 
@@ -28,13 +28,13 @@ std::optional<SocketPair> CreateSocketPair(int ip_version)
         return {};
     }
 
-    net::Address local_addr = sock->getSockName();
+    const net::Address local_addr = sock->getSockName();
     auto writer = std::make_unique<net::Socket>(true, ip_version);
     writer->setBlocking(false);
     writer->connectTo(local_addr);
 
     net::Address dummy;
-    int fd = sock->accept(dummy);
+    const int fd = sock->accept(dummy);
     if (fd < 0) {
         return {};
     }

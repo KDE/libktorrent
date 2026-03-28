@@ -54,12 +54,12 @@ bool AdvancedChokeAlgorithm::calcACAScore(Peer *p, ChunkManager &cman, const Tor
 
     double nb = 0.0; // newbie bonus
     double cp = 0.0; // choke penalty
-    double sp = s.snubbed ? SNUB_PENALTY : 0.0; // snubbing penalty
-    double lb = s.local ? 10.0 : 0.0; // local peers get a bonus of 10
-    double bd = s.bytes_downloaded; // bytes downloaded
-    double tbd = stats.session_bytes_downloaded; // total bytes downloaded
-    double ds = s.download_rate; // current download rate
-    double tds = stats.download_rate; // total download speed
+    const double sp = s.snubbed ? SNUB_PENALTY : 0.0; // snubbing penalty
+    const double lb = s.local ? 10.0 : 0.0; // local peers get a bonus of 10
+    const double bd = s.bytes_downloaded; // bytes downloaded
+    const double tbd = stats.session_bytes_downloaded; // total bytes downloaded
+    const double ds = s.download_rate; // current download rate
+    const double tds = stats.download_rate; // total download speed
 
     // if the peer has less than 1 MB or 0.5 % of the torrent it is a newbie
     if (p->percentAvailable() < 0.5 && stats.total_bytes * p->percentAvailable() < 1024 * 1024) {
@@ -71,9 +71,9 @@ bool AdvancedChokeAlgorithm::calcACAScore(Peer *p, ChunkManager &cman, const Tor
     }
 
     // NB + K * (BD/TBD) - CP - SP + L * (DS / TDS)
-    double K = 5.0;
-    double L = 5.0;
-    double aca = lb + nb + (tbd > 0 ? K * (bd / tbd) : 0.0) + (tds > 0 ? L * (ds / tds) : 0.0) - cp - sp;
+    const double K = 5.0;
+    const double L = 5.0;
+    const double aca = lb + nb + (tbd > 0 ? K * (bd / tbd) : 0.0) + (tds > 0 ? L * (ds / tds) : 0.0) - cp - sp;
 
     p->setACAScore(aca);
     return true;
@@ -107,7 +107,7 @@ void AdvancedChokeAlgorithm::doChokingLeechingState(PeerManager &pman, ChunkMana
 void AdvancedChokeAlgorithm::doUnchoking(const QList<Peer *> &ppl, Peer *poup)
 {
     // Get the number of upload slots
-    Uint32 num_slots = Choker::getNumUploadSlots();
+    const Uint32 num_slots = Choker::getNumUploadSlots();
     // Do the choking and unchoking
     Uint32 num_unchoked = 0;
     for (Peer *p : ppl) {
@@ -151,16 +151,16 @@ void AdvancedChokeAlgorithm::doChokingSeedingState(PeerManager &pman, ChunkManag
 
 static Uint32 FindPlannedOptimisticUnchokedPeer(const QList<Peer *> &ppl)
 {
-    Uint32 num_peers = ppl.size();
+    const Uint32 num_peers = ppl.size();
     if (num_peers == 0) {
         return UNDEFINED_ID;
     }
 
     // find a random peer that is choked and interested
-    Uint32 start = QRandomGenerator::global()->bounded(num_peers);
+    const Uint32 start = QRandomGenerator::global()->bounded(num_peers);
     Uint32 i = (start + 1) % num_peers;
     while (i != start) {
-        Peer *p = ppl.at(i);
+        const Peer *p = ppl.at(i);
         if (p && p->isChoked() && p->isInterested() && !p->isSeeder() && ppl.contains(p)) {
             return p->getID();
         }
@@ -175,7 +175,7 @@ Peer *AdvancedChokeAlgorithm::updateOptimisticPeer(PeerManager &pman, const QLis
 {
     // get the planned optimistic unchoked peer and change it if necessary
     Peer *poup = pman.findPeer(opt_unchoked_peer_id);
-    TimeStamp now = CurrentTime();
+    const TimeStamp now = CurrentTime();
     if (now - last_opt_sel_time > OPT_SEL_INTERVAL || !poup) {
         opt_unchoked_peer_id = FindPlannedOptimisticUnchokedPeer(ppl);
         last_opt_sel_time = now;

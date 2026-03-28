@@ -34,7 +34,7 @@ public:
     //! Prepare the poll
     void prepare(net::Poll *p, bt::Uint16 conn_id, PollPipe::Ptr self)
     {
-        QMutexLocker lock(&mutex);
+        const QMutexLocker lock(&mutex);
         conn_ids.set(conn_id, true);
         if (poll_index < 0) {
             poll_index = p->add(qSharedPointerCast<PollClient>(self));
@@ -44,7 +44,7 @@ public:
     //! Are we polling a connection
     bool polling(bt::Uint16 conn) const
     {
-        QMutexLocker lock(&mutex);
+        const QMutexLocker lock(&mutex);
         return poll_index >= 0 && conn_ids[conn];
     }
 

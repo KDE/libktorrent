@@ -54,7 +54,7 @@ public:
         bt::File fptr;
         if (!fptr.open(key_file, u"rb"_s)) {
             Out(SYS_DHT | LOG_IMPORTANT) << "DHT: Cannot open file " << key_file << " : " << fptr.errorString() << endl;
-            dht::Key r = dht::Key::random();
+            const dht::Key r = dht::Key::random();
             saveKey(r, key_file);
             new_key = true;
             return r;
@@ -62,7 +62,7 @@ public:
 
         Uint8 data[20];
         if (fptr.read(data, 20) != 20) {
-            dht::Key r = dht::Key::random();
+            const dht::Key r = dht::Key::random();
             saveKey(r, key_file);
             new_key = true;
             return r;

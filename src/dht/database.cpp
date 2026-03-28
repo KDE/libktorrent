@@ -128,7 +128,7 @@ QByteArray Database::genToken(const net::Address &addr)
 {
     if (addr.ipVersion() == 4) {
         Uint8 tdata[14];
-        TimeStamp now = bt::CurrentTime();
+        const TimeStamp now = bt::CurrentTime();
         // generate a hash of the ip port and the current time
         // should prevent anybody from crapping things up
         bt::WriteUint32(tdata, 0, addr.toIPv4Address());
@@ -141,7 +141,7 @@ QByteArray Database::genToken(const net::Address &addr)
         return token;
     } else {
         Uint8 tdata[26];
-        TimeStamp now = bt::CurrentTime();
+        const TimeStamp now = bt::CurrentTime();
         // generate a hash of the ip port and the current time
         // should prevent anybody from crapping things up
         memcpy(tdata, addr.toIPv6Address().c, 16);
@@ -164,14 +164,14 @@ bool Database::checkToken(const QByteArray &token, const net::Address &addr)
 
     // in the map so now get the timestamp and regenerate the token
     // using the IP and port of the sender
-    TimeStamp ts = tokens[token];
+    const TimeStamp ts = tokens[token];
 
     if (addr.ipVersion() == 4) {
         Uint8 tdata[14];
         bt::WriteUint32(tdata, 0, addr.toIPv4Address());
         bt::WriteUint16(tdata, 4, addr.port());
         bt::WriteUint64(tdata, 6, ts);
-        QByteArray ct = SHA1Hash::generate(tdata, 14).toByteArray();
+        const QByteArray ct = SHA1Hash::generate(tdata, 14).toByteArray();
 
         // compare the generated token to the one received
         if (token != ct) { // not good, this peer didn't went through the proper channels
@@ -185,7 +185,7 @@ bool Database::checkToken(const QByteArray &token, const net::Address &addr)
         bt::WriteUint16(tdata, 16, addr.port());
         bt::WriteUint64(tdata, 18, ts);
 
-        QByteArray ct = SHA1Hash::generate(tdata, 26).toByteArray();
+        const QByteArray ct = SHA1Hash::generate(tdata, 26).toByteArray();
         // compare the generated token to the one received
         if (token != ct) { // not good, this peer didn't went through the proper channels
             Out(SYS_DHT | LOG_DEBUG) << "Invalid token" << endl;

@@ -58,8 +58,8 @@ private:
     {
         bt::Out(SYS_UTP | LOG_DEBUG) << "testConnect" << bt::endl;
 
-        net::Address addr(u"127.0.0.1"_s, port);
-        utp::UTPServer &srv = bt::Globals::instance().getUTPServer();
+        const net::Address addr(u"127.0.0.1"_s, port);
+        const utp::UTPServer &srv = bt::Globals::instance().getUTPServer();
         connect(&srv, &utp::UTPServer::accepted, this, &SendTest::accepted, Qt::QueuedConnection);
         outgoing = new utp::UTPSocket();
         outgoing->setBlocking(false);
@@ -96,11 +96,11 @@ private:
     void testSend2()
     {
         bt::Out(SYS_UTP | LOG_DEBUG) << "testSend2" << bt::endl;
-        bt::Uint8 *sdata = new bt::Uint8[1000];
+        const bt::Uint8 *sdata = new bt::Uint8[1000];
         outgoing->send(sdata, 1000);
 
         bt::Uint8 *rdata = new bt::Uint8[1000];
-        int ret = incoming->recv(rdata, 1000);
+        const int ret = incoming->recv(rdata, 1000);
         QVERIFY(ret == 1000);
         QVERIFY(memcmp(sdata, rdata, ret) == 0);
 

@@ -58,31 +58,31 @@ void HttpConnection::setGroupIDs(Uint32 up, Uint32 down)
 
 const QString HttpConnection::getStatusString() const
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     return status;
 }
 
 bool HttpConnection::ok() const
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     return state != ERROR;
 }
 
 bool HttpConnection::connected() const
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     return state == ACTIVE;
 }
 
 bool HttpConnection::closed() const
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     return state == CLOSED || (sock && !sock->socketDevice()->ok());
 }
 
 bool HttpConnection::ready() const
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     return !request;
 }
 
@@ -116,7 +116,7 @@ void HttpConnection::connectTo(const QUrl &url)
 
 void HttpConnection::onDataReady(Uint8 *buf, Uint32 size)
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
 
     if (state != ERROR && request) {
         if (size == 0) {
@@ -137,7 +137,7 @@ void HttpConnection::onDataReady(Uint8 *buf, Uint32 size)
 
 void HttpConnection::dataSent()
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     if (state == ACTIVE && request) {
         request->buffer.clear();
         // wait 60 seconds for a reply
@@ -147,7 +147,7 @@ void HttpConnection::dataSent()
 
 void HttpConnection::connectFinished(bool succeeded)
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     if (state == CONNECTING) {
         if (succeeded) {
             state = ACTIVE;
@@ -168,7 +168,7 @@ void HttpConnection::connectFinished(bool succeeded)
 void HttpConnection::hostResolved(net::AddressResolver *ar)
 {
     if (ar->succeeded()) {
-        net::Address addr = ar->address();
+        const net::Address addr = ar->address();
         if (!sock) {
             sock = new net::StreamSocket(true, addr.ipVersion(), this);
             sock->socketDevice()->setBlocking(false);
@@ -203,7 +203,7 @@ void HttpConnection::hostResolved(net::AddressResolver *ar)
 
 bool HttpConnection::get(const QString &host, const QString &path, const QString &query, bt::Uint64 start, bt::Uint64 len)
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     if (state == ERROR || request) {
         return false;
     }
@@ -218,7 +218,7 @@ bool HttpConnection::get(const QString &host, const QString &path, const QString
 
 bool HttpConnection::getData(QByteArray &data)
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     if (!request) {
         return false;
     }
@@ -271,7 +271,7 @@ int HttpConnection::getDownloadRate() const
 
 void HttpConnection::connectTimeout()
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     if (state == CONNECTING) {
         status = i18n("Error: failed to connect, server not responding");
         state = ERROR;
@@ -281,7 +281,7 @@ void HttpConnection::connectTimeout()
 
 void HttpConnection::replyTimeout()
 {
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
     if (!request || !request->response_header_received) {
         status = i18n("Error: request timed out");
         state = ERROR;
@@ -335,7 +335,7 @@ bool HttpConnection::HttpGet::onDataReady(Uint8 *buf, Uint32 size)
         // append the data
         buffer.append(QByteArray::fromRawData((char *)buf, size));
         // look for the end of the header
-        int idx = buffer.indexOf("\r\n\r\n");
+        const int idx = buffer.indexOf("\r\n\r\n");
         if (idx == -1) { // haven't got the full header yet
             return true;
         }

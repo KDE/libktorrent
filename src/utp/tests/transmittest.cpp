@@ -79,7 +79,7 @@ public:
 
     void run() override
     {
-        int step = 64 * 1024;
+        const int step = 64 * 1024;
         const QByteArray data = Generate(step);
         const QByteArrayView data_view{data};
         bt::SHA1HashGen hgen;
@@ -88,8 +88,8 @@ public:
         int off = 0;
         net::Poll poller;
         while (sent < BYTES_TO_SEND && outgoing->connectionState() != CS_CLOSED) {
-            int to_send = step - off;
-            int ret = outgoing->send((const bt::Uint8 *)data.data() + off, to_send);
+            const int to_send = step - off;
+            const int ret = outgoing->send((const bt::Uint8 *)data.data() + off, to_send);
             if (ret > 0) {
                 hgen.update(data_view.sliced(off, ret));
                 sent += ret;
@@ -135,7 +135,7 @@ public:
 
     void startConnect()
     {
-        net::Address addr(u"127.0.0.1"_s, port);
+        const net::Address addr(u"127.0.0.1"_s, port);
         outgoing = srv.connectTo(addr);
         outgoing->setBlocking(true);
     }
@@ -200,12 +200,12 @@ private Q_SLOTS:
         // int failures = 0;
         incoming->setBlocking(true);
         while (received < BYTES_TO_SEND && incoming->connectionState() != CS_CLOSED) {
-            bt::Uint32 ba = incoming->bytesAvailable();
+            const bt::Uint32 ba = incoming->bytesAvailable();
             if (ba > 0) {
                 // failures = 0;
                 QByteArray data(ba, 0);
-                int to_read = ba; //;qMin<bt::Uint32>(1024,ba);
-                int ret = incoming->recv((bt::Uint8 *)data.data(), to_read);
+                const int to_read = ba; //;qMin<bt::Uint32>(1024,ba);
+                const int ret = incoming->recv((bt::Uint8 *)data.data(), to_read);
                 QVERIFY(ret == to_read);
                 if (ret > 0) {
                     hgen.update(data);
@@ -225,7 +225,7 @@ private Q_SLOTS:
         QVERIFY(received >= BYTES_TO_SEND);
 
         hgen.end();
-        SHA1Hash rhash = hgen.get();
+        const SHA1Hash rhash = hgen.get();
         Out(SYS_UTP | LOG_DEBUG) << "Received data hash: " << rhash.toString() << endl;
         Out(SYS_UTP | LOG_DEBUG) << "Sent data hash:     " << st.sent_hash.toString() << endl;
         QVERIFY(rhash == st.sent_hash);

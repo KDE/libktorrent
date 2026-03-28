@@ -57,8 +57,8 @@ private:
 
     void testConnect()
     {
-        UTPServer &srv = bt::Globals::instance().getUTPServer();
-        net::Address addr(u"127.0.0.1"_s, port);
+        const UTPServer &srv = bt::Globals::instance().getUTPServer();
+        const net::Address addr(u"127.0.0.1"_s, port);
         connect(&srv, &UTPServer::accepted, this, &SocketTest::accepted, Qt::QueuedConnection);
         outgoing = new UTPSocket();
         outgoing->connectTo(addr);
@@ -95,14 +95,14 @@ private:
         outgoing->setBlocking(true);
         incoming->close();
         bt::Uint8 tmp[20];
-        int ret = outgoing->recv(tmp, 20);
+        const int ret = outgoing->recv(tmp, 20);
         QVERIFY(ret == 0);
     }
 
     void testConnectionTimeout()
     {
         UTPSocket sock;
-        net::Address addr(u"127.0.0.1"_s, port + 1);
+        const net::Address addr(u"127.0.0.1"_s, port + 1);
         sock.setBlocking(true);
         QVERIFY(sock.connectTo(addr) == false);
     }
@@ -110,7 +110,7 @@ private:
     void testInvalidAddress()
     {
         UTPSocket sock;
-        net::Address addr(u"127.0.0.1"_s, 0);
+        const net::Address addr(u"127.0.0.1"_s, 0);
         sock.setBlocking(true);
         QVERIFY(sock.connectTo(addr) == false);
     }

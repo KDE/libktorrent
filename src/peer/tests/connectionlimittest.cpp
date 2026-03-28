@@ -30,7 +30,7 @@ private Q_SLOTS:
     {
         bt::ConnectionLimit climit;
         climit.setLimits(10, 20);
-        bt::SHA1Hash hash;
+        const bt::SHA1Hash hash;
 
         std::vector<std::unique_ptr<bt::ConnectionLimit::Token>> tokens;
         for (int i = 0; i < 10; i++) {
@@ -52,7 +52,7 @@ private Q_SLOTS:
     {
         bt::ConnectionLimit climit;
         climit.setLimits(20, 10);
-        bt::SHA1Hash hash;
+        const bt::SHA1Hash hash;
 
         std::vector<std::unique_ptr<bt::ConnectionLimit::Token>> tokens;
         for (int i = 0; i < 10; i++) {
@@ -77,10 +77,10 @@ private Q_SLOTS:
         climit.setLimits(15, 10);
 
         memset(tmp, 0xFF, 20);
-        bt::SHA1Hash hash1 = bt::SHA1Hash::generate(tmp, 20);
+        const bt::SHA1Hash hash1 = bt::SHA1Hash::generate(tmp, 20);
 
         memset(tmp, 0xEE, 20);
-        bt::SHA1Hash hash2 = bt::SHA1Hash::generate(tmp, 20);
+        const bt::SHA1Hash hash2 = bt::SHA1Hash::generate(tmp, 20);
 
         std::vector<std::unique_ptr<bt::ConnectionLimit::Token>> tokens;
         for (int i = 0; i < 10; i++) {

@@ -57,7 +57,7 @@ bool MetadataDownload::data(Uint32 piece, QByteArrayView piece_data)
 
     // piece fits, so copy into data
     // Out(SYS_GEN|LOG_NOTICE) << "Metadata download, dowloaded " << piece << endl;
-    Uint32 off = piece * METADATA_PIECE_SIZE;
+    const Uint32 off = piece * METADATA_PIECE_SIZE;
     if (static_cast<size_t>(metadata.size()) < off + size) {
         Out(SYS_GEN | LOG_NOTICE) << "Metadata download, received large piece " << (off + size) << ", max " << metadata.size() << endl;
         metadata.resize(off + size);

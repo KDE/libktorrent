@@ -123,7 +123,7 @@ void TorrentControl::update()
     try {
         // first update peermanager
         pman->update();
-        bool comp = stats.completed;
+        const bool comp = stats.completed;
 
         // then the downloader and uploader
         uploader->update();
@@ -136,7 +136,7 @@ void TorrentControl::update()
         stats.completed = cman->completed();
         if (stats.completed && !comp) {
             pman->killSeeders();
-            QDateTime now = QDateTime::currentDateTime();
+            const QDateTime now = QDateTime::currentDateTime();
             istats.running_time_dl += istats.time_started_dl.secsTo(now);
             updateStatus();
             updateStats();
@@ -212,7 +212,7 @@ void TorrentControl::update()
         }
 
         // to satisfy people obsessed with their share ratio
-        bool save_stats = m_qman ? m_qman->permitStatsSync(this) : (stats_save_timer.getElapsedSinceUpdate() >= 5 * 60 * 1000);
+        const bool save_stats = m_qman ? m_qman->permitStatsSync(this) : (stats_save_timer.getElapsedSinceUpdate() >= 5 * 60 * 1000);
 
         if (save_stats) {
             saveStats();
@@ -404,7 +404,7 @@ void TorrentControl::continueStart()
 
 void TorrentControl::updateRunningTimes()
 {
-    QDateTime now = QDateTime::currentDateTime();
+    const QDateTime now = QDateTime::currentDateTime();
     if (!stats.completed) {
         istats.running_time_dl += istats.time_started_dl.secsTo(now);
     }
@@ -488,7 +488,7 @@ void TorrentControl::init(QueueManagerInterface *qman, const QByteArray &data, c
     initInternal(qman, tmpdir, ddir);
 
     // copy data into torrent file
-    QString tor_copy = tordir + "torrent"_L1;
+    const QString tor_copy = tordir + "torrent"_L1;
     QFile fptr(tor_copy);
     if (!fptr.open(QIODevice::WriteOnly)) {
         throw Error(i18n("Unable to create %1: %2", tor_copy, fptr.errorString()));
@@ -604,8 +604,8 @@ void TorrentControl::initInternal(QueueManagerInterface *qman, const QString &tm
     // to get rid of phantom bytes we need to take into account
     // the data from downloads already in progress
     try {
-        Uint64 db = downloader->bytesDownloaded();
-        Uint64 cb = downloader->getDownloadedBytesOfCurrentChunksFile(tordir + "current_chunks"_L1);
+        const Uint64 db = downloader->bytesDownloaded();
+        const Uint64 cb = downloader->getDownloadedBytesOfCurrentChunksFile(tordir + "current_chunks"_L1);
         istats.prev_bytes_dl = db + cb;
 
         //  Out() << "Downloaded : " << BytesToString(db) << endl;
@@ -702,13 +702,13 @@ void TorrentControl::doChoking()
 
 bool TorrentControl::changeTorDir(const QString &new_dir)
 {
-    int pos = tordir.lastIndexOf(bt::DirSeparator(), -2);
+    const int pos = tordir.lastIndexOf(bt::DirSeparator(), -2);
     if (pos == -1) {
         Out(SYS_GEN | LOG_DEBUG) << "Could not find torX part in " << tordir << endl;
         return false;
     }
 
-    QString ntordir = new_dir + tordir.mid(pos + 1);
+    const QString ntordir = new_dir + tordir.mid(pos + 1);
 
     Out(SYS_GEN | LOG_DEBUG) << tordir << " -> " << ntordir << endl;
     try {
@@ -736,7 +736,7 @@ bool TorrentControl::changeOutputDir(const QString &ndir, ChangeOutputOptions fl
         QString nd;
         if (!(flags & bt::TorrentInterface::FULL_PATH)) {
             if (istats.custom_output_name) {
-                int slash_pos = stats.output_path.lastIndexOf(bt::DirSeparator(), -2);
+                const int slash_pos = stats.output_path.lastIndexOf(bt::DirSeparator(), -2);
                 nd = new_dir + stats.output_path.mid(slash_pos + 1);
             } else {
                 nd = new_dir + tor->getNameSuggestion();
@@ -835,7 +835,7 @@ void TorrentControl::rollback()
 
 void TorrentControl::updateStatus()
 {
-    TorrentStatus old = stats.status;
+    const TorrentStatus old = stats.status;
     if (stats.stopped_by_error) {
         stats.status = ERROR;
     } else if (job_queue->currentJob() && job_queue->currentJob()->torrentStatus() != INVALID_STATUS) {
@@ -920,7 +920,7 @@ void TorrentControl::saveStats()
     stats_file->write(u"UPLOADED"_s, QString::number(uploader->bytesUploaded()));
 
     if (stats.running) {
-        QDateTime now = QDateTime::currentDateTime();
+        const QDateTime now = QDateTime::currentDateTime();
         if (!stats.completed) {
             stats_file->write(u"RUNNING_TIME_DL"_s, QString::number(istats.running_time_dl + istats.time_started_dl.secsTo(now)));
         } else {
@@ -974,12 +974,12 @@ void TorrentControl::loadStats()
         return;
     }
 
-    RecursiveEntryGuard guard(&loading_stats);
+    const RecursiveEntryGuard guard(&loading_stats);
     if (!stats_file) {
         stats_file = std::make_unique<StatsFile>(tordir + "stats"_L1);
     }
 
-    Uint64 val = stats_file->readUint64(u"UPLOADED"_s);
+    const Uint64 val = stats_file->readUint64(u"UPLOADED"_s);
     // stats.session_bytes_uploaded will be calculated based upon prev_bytes_ul
     // seeing that this will change here, we need to save it
     istats.session_bytes_uploaded = stats.session_bytes_uploaded;
@@ -1039,10 +1039,10 @@ void TorrentControl::loadStats()
         }
     }
 
-    Uint32 aup = stats_file->readInt(u"ASSURED_UPLOAD_SPEED"_s);
-    Uint32 adown = stats_file->readInt(u"ASSURED_DOWNLOAD_SPEED"_s);
-    Uint32 up = stats_file->readInt(u"UPLOAD_LIMIT"_s);
-    Uint32 down = stats_file->readInt(u"DOWNLOAD_LIMIT"_s);
+    const Uint32 aup = stats_file->readInt(u"ASSURED_UPLOAD_SPEED"_s);
+    const Uint32 adown = stats_file->readInt(u"ASSURED_DOWNLOAD_SPEED"_s);
+    const Uint32 up = stats_file->readInt(u"UPLOAD_LIMIT"_s);
+    const Uint32 down = stats_file->readInt(u"DOWNLOAD_LIMIT"_s);
     setDownloadProps(down, adown);
     setUploadProps(up, aup);
     pman->setGroupIDs(upload_gid, download_gid);
@@ -1067,7 +1067,7 @@ void TorrentControl::loadStats()
         stats.last_upload_activity_time = QDateTime::currentMSecsSinceEpoch();
     }
 
-    bool ss = stats_file->hasKey(u"SUPERSEEDING"_s) && stats_file->readBoolean(u"SUPERSEEDING"_s);
+    const bool ss = stats_file->hasKey(u"SUPERSEEDING"_s) && stats_file->readBoolean(u"SUPERSEEDING"_s);
     setSuperSeeding(ss);
 }
 
@@ -1093,7 +1093,7 @@ bool TorrentControl::readyForPreview() const
         return false;
     }
 
-    Uint32 preview_range = cman->previewChunkRangeSize();
+    const Uint32 preview_range = cman->previewChunkRangeSize();
     if (preview_range == 0) {
         return false;
     }
@@ -1273,8 +1273,8 @@ bool TorrentControl::overMaxRatio()
 bool TorrentControl::overMaxSeedTime()
 {
     if (stats.completed && stats.max_seed_time > 0) {
-        Uint32 dl = getRunningTimeDL();
-        Uint32 ul = getRunningTimeUL();
+        const Uint32 dl = getRunningTimeDL();
+        const Uint32 ul = getRunningTimeUL();
         if ((ul - dl) / 3600.0f > stats.max_seed_time) {
             return true;
         }
@@ -1309,7 +1309,7 @@ void TorrentControl::beforeDataCheck()
 
 void TorrentControl::afterDataCheck(DataCheckerJob *job, const BitSet &result)
 {
-    bool completed = stats.completed;
+    const bool completed = stats.completed;
     if (job && !job->isStopped()) {
         downloader->dataChecked(result, job->firstChunk(), job->lastChunk());
         // update chunk manager
@@ -1319,7 +1319,7 @@ void TorrentControl::afterDataCheck(DataCheckerJob *job, const BitSet &result)
             stats.imported_bytes = downloader->bytesDownloaded();
             stats.completed = cman->completed();
         } else {
-            Uint64 downloaded = stats.bytes_downloaded;
+            const Uint64 downloaded = stats.bytes_downloaded;
             downloader->recalcDownloaded();
             updateStats();
             if (stats.bytes_downloaded > downloaded) {
@@ -1529,7 +1529,7 @@ bool TorrentControl::checkDiskSpace(bool emit_sig)
     Uint64 bytes_free = 0;
     if (FreeDiskSpace(getDataDir(), bytes_free)) {
         Out(SYS_GEN | LOG_DEBUG) << "FreeBytes " << BytesToString(bytes_free) << endl;
-        Uint64 bytes_to_download = stats.total_bytes_to_download;
+        const Uint64 bytes_to_download = stats.total_bytes_to_download;
         Uint64 downloaded = 0;
         try {
             downloaded = cman->diskUsage();
@@ -1544,7 +1544,7 @@ bool TorrentControl::checkDiskSpace(bool emit_sig)
 
         Out(SYS_GEN | LOG_DEBUG) << "Remaining " << BytesToString(remaining) << endl;
         if (remaining > bytes_free) {
-            bool toStop = bytes_free < (Uint64)min_diskspace * 1024 * 1024;
+            const bool toStop = bytes_free < (Uint64)min_diskspace * 1024 * 1024;
 
             // if we don't need to stop the torrent, only emit the signal once
             // so that we do bother the user continuously
@@ -1693,7 +1693,7 @@ bool TorrentControl::addWebSeed(const QUrl &url)
 
 bool TorrentControl::removeWebSeed(const QUrl &url)
 {
-    bool ret = downloader->removeWebSeed(url);
+    const bool ret = downloader->removeWebSeed(url);
     if (ret) {
         downloader->saveWebSeeds(tordir + "webseeds"_L1);
     }

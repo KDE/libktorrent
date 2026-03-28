@@ -47,7 +47,7 @@ TorrentCreator::TorrentCreator(const QString &tar,
     , stopped(false)
 {
     this->chunk_size *= 1024;
-    QFileInfo fi(target);
+    const QFileInfo fi(target);
     if (fi.isDir()) {
         if (!this->target.endsWith(bt::DirSeparator())) {
             this->target += bt::DirSeparator();
@@ -79,14 +79,14 @@ TorrentCreator::~TorrentCreator()
 
 void TorrentCreator::buildFileList(const QString &dir)
 {
-    QDir d(target + dir);
+    const QDir d(target + dir);
     // first get all files (we ignore symlinks)
     const QStringList dfiles = d.entryList(QDir::Files);
     Uint32 cnt = 0; // counter to keep track of file index
     for (const QString &s : dfiles) {
         // add a TorrentFile to the list
-        Uint64 fs = bt::FileSize(target + dir + s);
-        TorrentFile f(nullptr, cnt, dir + s, tot_size, fs, chunk_size);
+        const Uint64 fs = bt::FileSize(target + dir + s);
+        const TorrentFile f(nullptr, cnt, dir + s, tot_size, fs, chunk_size);
         files.append(f);
         // update total size
         tot_size += fs;
@@ -174,7 +174,7 @@ void TorrentCreator::saveInfo(BEncoder &enc)
 {
     enc.beginDict();
 
-    QFileInfo fi(target);
+    const QFileInfo fi(target);
     if (fi.isDir()) {
         enc.write("files");
         enc.beginList();
@@ -227,10 +227,10 @@ bool TorrentCreator::calcHashSingle()
         throw Error(i18n("Cannot open file %1: %2", target, fptr.errorString()));
     }
 
-    Uint32 s = cur_chunk != num_chunks - 1 ? chunk_size : last_size;
+    const Uint32 s = cur_chunk != num_chunks - 1 ? chunk_size : last_size;
     fptr.seek(File::BEGIN, (Int64)cur_chunk * chunk_size);
     fptr.read(buf.data(), s);
-    SHA1Hash h = SHA1Hash::generate(buf.data(), s);
+    const SHA1Hash h = SHA1Hash::generate(buf.data(), s);
     hashes.append(h);
     cur_chunk++;
     return cur_chunk >= num_chunks;
@@ -238,7 +238,7 @@ bool TorrentCreator::calcHashSingle()
 
 bool TorrentCreator::calcHashMulti()
 {
-    Uint32 s = cur_chunk != num_chunks - 1 ? chunk_size : last_size;
+    const Uint32 s = cur_chunk != num_chunks - 1 ? chunk_size : last_size;
     // first find the file(s) the chunk lies in
     Array<Uint8> buf(s);
     QList<TorrentFile> file_list;
@@ -287,7 +287,7 @@ bool TorrentCreator::calcHashMulti()
     }
 
     // generate hash
-    SHA1Hash h = SHA1Hash::generate(buf.data(), s);
+    const SHA1Hash h = SHA1Hash::generate(buf.data(), s);
     hashes.append(h);
 
     cur_chunk++;
@@ -346,7 +346,7 @@ TorrentControl *TorrentCreator::makeTC(const QString &data_dir)
     TorrentControl *tc = new TorrentControl();
     try {
         // get the parent dir of target
-        QFileInfo fi = QFileInfo(target);
+        const QFileInfo fi = QFileInfo(target);
 
         QString odir;
         StatsFile st(dd + QLatin1String("stats"));

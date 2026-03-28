@@ -96,7 +96,7 @@ private Q_SLOTS:
 
     void testPreallocationSingleFileCache()
     {
-        QFileInfo info(single_creator.dataPath());
+        const QFileInfo info(single_creator.dataPath());
         bt::SingleFileCache cache(single_tor, single_creator.tempPath(), info.absoluteDir().absolutePath() + bt::DirSeparator());
         cache.loadFileMap();
         cache.setPreallocateFully(true);

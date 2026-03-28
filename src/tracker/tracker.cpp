@@ -113,7 +113,7 @@ void Tracker::resetTrackerStats()
 
 Uint64 Tracker::bytesDownloaded() const
 {
-    Uint64 bd = tds->bytesDownloaded();
+    const Uint64 bd = tds->bytesDownloaded();
     if (bd > bytes_downloaded_at_start) {
         return bd - bytes_downloaded_at_start;
     } else {
@@ -123,7 +123,7 @@ Uint64 Tracker::bytesDownloaded() const
 
 Uint64 Tracker::bytesUploaded() const
 {
-    Uint64 bu = tds->bytesUploaded();
+    const Uint64 bu = tds->bytesUploaded();
     if (bu > bytes_uploaded_at_start) {
         return bu - bytes_uploaded_at_start;
     } else {

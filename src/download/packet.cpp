@@ -101,9 +101,9 @@ Packet::Ptr Packet::makeRejectOfPiece() const
     }
 
     const Uint8 *data = getData();
-    Uint32 idx = bt::ReadUint32(data, 5);
-    Uint32 off = bt::ReadUint32(data, 9);
-    Uint32 len = size - 13;
+    const Uint32 idx = bt::ReadUint32(data, 5);
+    const Uint32 off = bt::ReadUint32(data, 9);
+    const Uint32 len = size - 13;
 
     //  Out(SYS_CON|LOG_DEBUG) << "Packet::makeRejectOfPiece " << idx << " " << off << " " << len << endl;
     return create(Request(idx, off, len, nullptr), bt::REJECT_REQUEST);
@@ -141,7 +141,7 @@ int Packet::send(net::SocketDevice *sock, Uint32 max_to_send)
     if (bw > max_to_send && max_to_send > 0) {
         bw = max_to_send;
     }
-    int ret = sock->send(getData() + written, bw);
+    const int ret = sock->send(getData() + written, bw);
     if (ret > 0) {
         written += ret;
     }

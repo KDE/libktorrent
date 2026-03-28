@@ -132,7 +132,7 @@ void WebSeed::connectToServer()
         if (proxyList.isEmpty()) {
             conn->connectTo(dst); // direct connection
         } else {
-            QNetworkProxy proxy = proxyList.first();
+            const QNetworkProxy proxy = proxyList.first();
 
             if (proxy.type() == QNetworkProxy::NoProxy) {
                 conn->connectTo(dst); // direct connection
@@ -180,7 +180,7 @@ void WebSeed::download(Uint32 first, Uint32 last)
     bytes_of_cur_chunk = 0;
 
     QString path = url.path();
-    QString query = url.query();
+    const QString query = url.query();
     if (path.endsWith('/'_L1)) {
         path += tor.getNameSuggestion();
     }
@@ -194,10 +194,10 @@ void WebSeed::download(Uint32 first, Uint32 last)
 
         if (range_queue.count() > 0) {
             // send the first request
-            Range r = range_queue[0];
+            const Range r = range_queue[0];
             range_queue.pop_front();
             const TorrentFile &tf = tor.getFile(r.file);
-            QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
+            const QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
             conn->get(host, path + '/'_L1 + tf.getPath(), query, r.off, r.len);
         }
     } else {
@@ -209,7 +209,7 @@ void WebSeed::download(Uint32 first, Uint32 last)
             len += tor.getChunkSize();
         }
 
-        QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
+        const QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
         conn->get(host, path, query, first_chunk * tor.getChunkSize(), len);
     }
 }
@@ -217,7 +217,7 @@ void WebSeed::download(Uint32 first, Uint32 last)
 void WebSeed::continueCurChunk()
 {
     QString path = url.path();
-    QString query = url.query();
+    const QString query = url.query();
     if (path.endsWith('/'_L1) && !isUserCreated()) {
         path += tor.getNameSuggestion();
     }
@@ -233,11 +233,11 @@ void WebSeed::continueCurChunk()
         bt::Uint32 length = 0;
         while (range_queue.count() > 0) {
             // send the first request, but skip the data we already have
-            Range r = range_queue[0];
+            const Range r = range_queue[0];
             range_queue.pop_front();
             if (length >= bytes_of_cur_chunk) {
                 const TorrentFile &tf = tor.getFile(r.file);
-                QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
+                const QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
                 conn->get(host, path + '/'_L1 + tf.getPath(), query, r.off, r.len);
                 break;
             }
@@ -252,7 +252,7 @@ void WebSeed::continueCurChunk()
             len += tor.getChunkSize();
         }
 
-        QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
+        const QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
         conn->get(host, path, query, first_chunk * tor.getChunkSize() + bytes_of_cur_chunk, len - bytes_of_cur_chunk);
     }
     chunkStarted(cur_chunk);
@@ -260,7 +260,7 @@ void WebSeed::continueCurChunk()
 
 void WebSeed::chunkStarted(Uint32 chunk)
 {
-    Uint32 csize = cman.getChunk(chunk)->getSize();
+    const Uint32 csize = cman.getChunk(chunk)->getSize();
     Uint32 pieces_count = csize / MAX_PIECE_LEN;
     if (csize % MAX_PIECE_LEN > 0) {
         pieces_count++;
@@ -345,23 +345,23 @@ Uint32 WebSeed::update()
                 }
 
                 QString path = url.path();
-                QString query = url.query();
+                const QString query = url.query();
                 if (path.endsWith('/'_L1)) {
                     path += tor.getNameSuggestion();
                 }
 
                 // ask for the next range
-                Range r = range_queue[0];
+                const Range r = range_queue[0];
                 range_queue.pop_front();
                 const TorrentFile &tf = tor.getFile(r.file);
-                QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
+                const QString host = redirected_url.isValid() ? redirected_url.host() : url.host();
                 conn->get(host, path + '/'_L1 + tf.getPath(), query, r.off, r.len);
             }
             status = conn->getStatusString();
         }
     } catch (AutoDisabled &) {
     }
-    Uint32 ret = downloaded;
+    const Uint32 ret = downloaded;
     downloaded = 0;
     total_downloaded += ret;
     return ret;
@@ -439,7 +439,7 @@ void WebSeed::fillRangeList(Uint32 chunk)
 {
     Torrent::FileIndexList tflist;
     tor.calcChunkPos(chunk, tflist);
-    Chunk *c = cman.getChunk(chunk);
+    const Chunk *c = cman.getChunk(chunk);
 
     Uint64 passed = 0; // number of bytes of the chunk which we have passed
     for (int i = 0; i < tflist.count(); i++) {

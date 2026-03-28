@@ -17,7 +17,7 @@ Buffer::Buffer(Data data, bt::Uint32 fill, QWeakPointer<BufferPool> pool)
 
 Buffer::~Buffer()
 {
-    QSharedPointer<BufferPool> ptr = pool.toStrongRef();
+    const QSharedPointer<BufferPool> ptr = pool.toStrongRef();
     if (ptr) {
         ptr->release(std::move(data));
     }
@@ -33,8 +33,8 @@ BufferPool::~BufferPool()
 
 std::unique_ptr<Buffer> BufferPool::get(bt::Uint32 min_size)
 {
-    QMutexLocker lock(&mutex);
-    FreeBufferMap::iterator i = free_buffers.lower_bound(min_size);
+    const QMutexLocker lock(&mutex);
+    const FreeBufferMap::iterator i = free_buffers.lower_bound(min_size);
     if (i != free_buffers.end() && !i->second.empty()) {
         Buffer::Data data = std::move(i->second.front());
         i->second.pop_front();
@@ -46,13 +46,13 @@ std::unique_ptr<Buffer> BufferPool::get(bt::Uint32 min_size)
 
 void BufferPool::release(Buffer::Data data)
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     free_buffers[data.size()].push_back(std::move(data));
 }
 
 void BufferPool::clear()
 {
-    QMutexLocker lock(&mutex);
+    const QMutexLocker lock(&mutex);
     free_buffers.clear();
 }
 

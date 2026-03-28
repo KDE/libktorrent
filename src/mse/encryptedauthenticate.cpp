@@ -128,7 +128,7 @@ void EncryptedAuthenticate::findVC()
     RC4Encryptor rc4(enc, dec);
     memcpy(vc, rc4.encrypt(vc, 8), 8);
 
-    Uint32 max_i = buf_size - 8;
+    const Uint32 max_i = buf_size - 8;
     for (Uint32 i = 96; i < max_i; i++) {
         if (vc[0] == buf[i] && memcmp(buf + i, vc, 8) == 0) {
             state = FOUND_VC;
@@ -198,7 +198,7 @@ void EncryptedAuthenticate::handlePadD()
     state = NORMAL_HANDSHAKE;
     // if we have read more then the crypto handshake, reinsert it
     if (buf_size > vc_off + 14 + pad_D_len) {
-        Uint32 off = vc_off + 14 + pad_D_len;
+        const Uint32 off = vc_off + 14 + pad_D_len;
         sock->reinsert(buf + off, buf_size - off);
         Authenticate::onReadyRead();
     }

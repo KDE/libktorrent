@@ -36,7 +36,7 @@ void PeerUploader::removeRequest(const Request &r)
 
 Uint32 PeerUploader::handleRequests(ChunkManager &cman)
 {
-    Uint32 ret = uploaded;
+    const Uint32 ret = uploaded;
     uploaded = 0;
 
     // if we have choked the peer do not upload
@@ -45,7 +45,7 @@ Uint32 PeerUploader::handleRequests(ChunkManager &cman)
     }
 
     while (requests.size() > 0) {
-        Request r = requests.front();
+        const Request r = requests.front();
 
         Chunk *c = cman.getChunk(r.getIndex());
         if (c && c->getStatus() == Chunk::ON_DISK) {

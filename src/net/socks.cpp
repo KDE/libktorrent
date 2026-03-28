@@ -192,8 +192,8 @@ Socks::State Socks::handleAuthReply()
 void Socks::sendUsernamePassword()
 {
     //  Out(SYS_CON|LOG_DEBUG) << "Socks: sending username and password " << endl;
-    QByteArray user = socks_username.toLocal8Bit();
-    QByteArray pwd = socks_password.toLocal8Bit();
+    const QByteArray user = socks_username.toLocal8Bit();
+    const QByteArray pwd = socks_password.toLocal8Bit();
     Uint32 off = 0;
     Uint8 buffer[3 + 2 * 256];
     buffer[off++] = 0x01; // version

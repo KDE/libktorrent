@@ -27,7 +27,7 @@ private Q_SLOTS:
 
     void testEmpty()
     {
-        QByteArray buffer = "";
+        const QByteArray buffer = "";
         bt::BDecoder decoder(buffer, verbose);
         QCOMPARE(decoder.decode(), nullptr);
     }

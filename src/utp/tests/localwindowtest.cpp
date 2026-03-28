@@ -128,7 +128,7 @@ private Q_SLOTS:
         wnd.setLastSeqNr(0);
 
         // first write first and last packet
-        bt::Uint32 step = 200;
+        const bt::Uint32 step = 200;
         hdr.seq_nr = 1;
         QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
         QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - step);
@@ -197,7 +197,7 @@ private Q_SLOTS:
         wnd.setLastSeqNr(0);
 
         // first write first and last packet
-        bt::Uint32 step = 200;
+        const bt::Uint32 step = 200;
         hdr.seq_nr = 1;
         QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
         QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - step);
@@ -306,7 +306,7 @@ private Q_SLOTS:
         wnd.setLastSeqNr(65535);
 
         // first write first and last packet
-        bt::Uint32 step = 200;
+        const bt::Uint32 step = 200;
         hdr.seq_nr = 0;
         QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
         QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - step);

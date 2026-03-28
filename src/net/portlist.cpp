@@ -45,7 +45,7 @@ PortList::~PortList()
 
 void PortList::addNewPort(bt::Uint16 number, Protocol proto, bool forward)
 {
-    Port p = Port(number, proto, forward);
+    const Port p = Port(number, proto, forward);
     append(p);
     if (lst) {
         lst->portAdded(p);
@@ -54,7 +54,7 @@ void PortList::addNewPort(bt::Uint16 number, Protocol proto, bool forward)
 
 void PortList::removePort(bt::Uint16 number, Protocol proto)
 {
-    PortList::iterator itr = std::find(begin(), end(), Port(number, proto, false));
+    const PortList::iterator itr = std::find(begin(), end(), Port(number, proto, false));
     if (itr == end()) {
         return;
     }

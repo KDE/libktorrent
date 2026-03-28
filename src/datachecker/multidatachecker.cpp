@@ -36,7 +36,7 @@ MultiDataChecker::~MultiDataChecker()
 
 void MultiDataChecker::check(const QString &path, const Torrent &tor, const QString &dnddir, const BitSet &current_status)
 {
-    Uint32 num_chunks = tor.getNumChunks();
+    const Uint32 num_chunks = tor.getNumChunks();
     // initialize the bitset
     result = BitSet(num_chunks);
 
@@ -57,7 +57,7 @@ void MultiDataChecker::check(const QString &path, const Torrent &tor, const QStr
         dnd_dir += bt::DirSeparator();
     }
 
-    Uint64 chunk_size = tor.getChunkSize();
+    const Uint64 chunk_size = tor.getChunkSize();
     Uint32 cur_chunk = 0;
     buf = new Uint8[chunk_size];
 
@@ -77,7 +77,7 @@ void MultiDataChecker::check(const QString &path, const Torrent &tor, const QStr
             continue;
         }
 
-        bool ok = (SHA1Hash::generate(buf, cs) == tor.getHash(cur_chunk));
+        const bool ok = (SHA1Hash::generate(buf, cs) == tor.getHash(cur_chunk));
         result.set(cur_chunk, ok);
         if (ok && current_status.get(cur_chunk)) {
             downloaded++;
@@ -89,7 +89,7 @@ void MultiDataChecker::check(const QString &path, const Torrent &tor, const QStr
             found++;
         }
 
-        TimeStamp now = Now();
+        const TimeStamp now = Now();
         if (now - last_emitted > 1000 || cur_chunk == num_chunks - 1) { // Emit signals once every second
             Q_EMIT status(failed, found, downloaded, not_downloaded);
             Q_EMIT progress(cur_chunk - from, from - to + 1);
@@ -112,7 +112,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
         const TorrentFile &f = tor.getFile(tflist.first());
         if (!f.doNotDownload()) {
             File *fptr = open(tor, tflist.first());
-            Uint64 off = f.fileOffset(ci, tor.getChunkSize());
+            const Uint64 off = f.fileOffset(ci, tor.getChunkSize());
             if (fptr->seek(File::BEGIN, off) != off) {
                 return false;
             }
@@ -199,7 +199,7 @@ File *MultiDataChecker::open(const bt::Torrent &tor, Uint32 idx)
     const TorrentFile &tf = tor.getFile(idx);
     File file;
     if (!file.open(tf.getPathOnDisk(), u"rb"_s)) {
-        QString err = i18n("Cannot open file %1: %2", tf.getPathOnDisk(), file.errorString());
+        const QString err = i18n("Cannot open file %1: %2", tf.getPathOnDisk(), file.errorString());
         Out(SYS_GEN | LOG_DEBUG) << err << endl;
         throw Error(err);
     } else {
