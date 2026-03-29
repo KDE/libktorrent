@@ -9,8 +9,25 @@
 #include "urlencoder.h"
 #include <QHash>
 #include <algorithm>
+#include <array>
 #include <cstdio>
 #include <cstring>
+
+namespace
+{
+constexpr std::array<char, 81> HexStr20Fmt()
+{
+    std::array<char, 81> ret;
+    for (size_t i = 0; i < 20; ++i) {
+        ret[i * 4] = '%';
+        ret[i * 4 + 1] = '0';
+        ret[i * 4 + 2] = '2';
+        ret[i * 4 + 3] = 'x';
+    }
+    ret[80] = '\0';
+    return ret;
+}
+}
 
 namespace bt
 {
@@ -61,15 +78,34 @@ SHA1Hash SHA1Hash::generate(const Uint8 *data, Uint32 len)
     return generate(QByteArrayView(data, len));
 }
 
-#define hex_str '%', '0', '2', 'x'
-#define hex_str4 hex_str, hex_str, hex_str, hex_str
-#define hex_str20 hex_str4, hex_str4, hex_str4, hex_str4, hex_str4
 QString SHA1Hash::toString() const
 {
     char tmp[41];
-    char fmt[81] = {hex_str20, '\0'};
+    constexpr auto fmt = HexStr20Fmt();
     const Uint8 *h = getData();
-    snprintf(tmp, 41, fmt, h[0], h[1], h[2], h[3], h[4], h[5], h[6], h[7], h[8], h[9], h[10], h[11], h[12], h[13], h[14], h[15], h[16], h[17], h[18], h[19]);
+    snprintf(tmp,
+             41,
+             fmt.data(),
+             h[0],
+             h[1],
+             h[2],
+             h[3],
+             h[4],
+             h[5],
+             h[6],
+             h[7],
+             h[8],
+             h[9],
+             h[10],
+             h[11],
+             h[12],
+             h[13],
+             h[14],
+             h[15],
+             h[16],
+             h[17],
+             h[18],
+             h[19]);
     return QString::fromLatin1(tmp, 40);
 }
 
