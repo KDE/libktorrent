@@ -1,0 +1,24 @@
+/*!
+    \namespace bt
+    \brief Contains classes and functions used for the base BitTorrent protocol as well as some extensions.
+*/
+
+/*!
+    \namespace dht
+    \brief Contains classes and functions used to implement the DHT extension.
+*/
+
+/*!
+    \namespace mse
+    \brief Contains classes and functions for handling the protocol encryption extension (Message Stream Encryption).
+*/
+
+/*!
+    \namespace net
+    \brief Contains classes for handling network I/O.
+*/
+
+/*!
+    \namespace utp
+    \brief Contains classes and functions used to implement the uTorrent Transfer Protocol.
+*/
