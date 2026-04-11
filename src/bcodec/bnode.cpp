@@ -98,7 +98,7 @@ int BDictNode::getInt(QByteArrayView key)
 {
     const BValueNode *v = getValue(key);
     if (!v) {
-        throw bt::Error(QStringLiteral("Key not found in dict"));
+        throw bt::Error(QStringLiteral("Key %1 not found in dict").arg(key));
     }
 
     if (v->data().getType() != bt::Value::INT) {
@@ -112,7 +112,7 @@ qint64 BDictNode::getInt64(QByteArrayView key)
 {
     const BValueNode *v = getValue(key);
     if (!v) {
-        throw bt::Error(QStringLiteral("Key not found in dict"));
+        throw bt::Error(QStringLiteral("Key %1 not found in dict").arg(key));
     }
 
     if (v->data().getType() != bt::Value::INT64 && v->data().getType() != bt::Value::INT) {
@@ -126,7 +126,7 @@ QString BDictNode::getString(QByteArrayView key)
 {
     const BValueNode *v = getValue(key);
     if (!v) {
-        throw bt::Error(QStringLiteral("Key not found in dict"));
+        throw bt::Error(QStringLiteral("Key %1 not found in dict").arg(key));
     }
 
     if (v->data().getType() != bt::Value::STRING) {
@@ -140,7 +140,7 @@ QByteArrayView BDictNode::getByteArrayView(QByteArrayView key)
 {
     const BValueNode *v = getValue(key);
     if (!v) {
-        throw bt::Error(QStringLiteral("Key not found in dict"));
+        throw bt::Error(QStringLiteral("Key %1 not found in dict").arg(key));
     }
 
     if (v->data().getType() != bt::Value::STRING) {
