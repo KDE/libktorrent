@@ -70,6 +70,83 @@ private Q_SLOTS:
         }
         QVERIFY(error);
     }
+
+    void testList()
+    {
+        const QByteArrayView buffer = "li1e3:kdeli2eed1:ai3eee";
+        bt::BDecoder dec(buffer.toByteArray(), verbose);
+
+        bool error = false;
+        try {
+            const auto list = dec.decodeList();
+            QVERIFY(list != nullptr);
+
+            QCOMPARE(list->getInt(0), 1);
+            QCOMPARE(list->getByteArray(1), "kde");
+            const auto n2 = list->getList(2);
+            QCOMPARE(buffer.mid(n2->getOffset(), n2->getLength()), "li2ee");
+            const auto n3 = list->getDict(3);
+            QCOMPARE(buffer.mid(n3->getOffset(), n3->getLength()), "d1:ai3ee");
+        } catch (bt::Error &e) {
+            bt::Out(SYS_GEN | LOG_NOTICE) << e.toString() << bt::endl;
+            error = true;
+        }
+        QVERIFY(!error);
+    }
+
+    void testDict()
+    {
+        const QByteArrayView buffer = "d1:ai1e1:bli2e3:kdee1:cd2:aai11eee";
+        bt::BDecoder dec(buffer.toByteArray(), verbose);
+
+        bool error = false;
+        try {
+            const auto dict = dec.decodeDict();
+            QVERIFY(dict != nullptr);
+
+            QCOMPARE(dict->getInt("a"), 1);
+            const auto node_b = dict->getList("b");
+            QCOMPARE(buffer.mid(node_b->getOffset(), node_b->getLength()), "li2e3:kdee");
+            const auto node_c = dict->getDict("c");
+            QCOMPARE(buffer.mid(node_c->getOffset(), node_c->getLength()), "d2:aai11ee");
+        } catch (bt::Error &e) {
+            bt::Out(SYS_GEN | LOG_NOTICE) << e.toString() << bt::endl;
+            error = true;
+        }
+        QVERIFY(!error);
+    }
+
+    void testNestedStructures()
+    {
+        const QByteArrayView buffer = "d1:ai1e1:bli2e3:kded2:aali5eeee1:cd3:aaai11eee";
+        bt::BDecoder dec(buffer.toByteArray(), verbose);
+
+        bool error = false;
+        try {
+            const auto dict = dec.decodeDict();
+            QVERIFY(dict != nullptr);
+
+            QCOMPARE(dict->getInt("a"), 1);
+
+            bt::BNode *n = dict->getList("b");
+            QCOMPARE(buffer.mid(n->getOffset(), n->getLength()), "li2e3:kded2:aali5eeee");
+            QCOMPARE(dict->getList("b")->getInt(0), 2);
+            QCOMPARE(dict->getList("b")->getByteArray(1), "kde");
+            n = dict->getList("b")->getDict(2);
+            QCOMPARE(buffer.mid(n->getOffset(), n->getLength()), "d2:aali5eee");
+            n = dict->getList("b")->getDict(2)->getList("aa");
+            QCOMPARE(buffer.mid(n->getOffset(), n->getLength()), "li5ee");
+            QCOMPARE(dict->getList("b")->getDict(2)->getList("aa")->getInt(0), 5);
+
+            n = dict->getDict("c");
+            QCOMPARE(buffer.mid(n->getOffset(), n->getLength()), "d3:aaai11ee");
+            QCOMPARE(dict->getDict("c")->getInt("aaa"), 11);
+        } catch (bt::Error &e) {
+            bt::Out(SYS_GEN | LOG_NOTICE) << e.toString() << bt::endl;
+            error = true;
+        }
+        QVERIFY(!error);
+    }
 };
 
 QTEST_MAIN(BDecoderTest)
