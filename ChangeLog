@@ -1,3 +1,6 @@
+Changes in 26.04.1:
+- Fixed a bug where we would try to connect with TCP even if the only use uTP setting was enabled.
+
 Changes in 26.04:
 - Fixed the header file include statements in the API reference docs
 - Renamed the function FileNameToLong to FileNameTooLong
