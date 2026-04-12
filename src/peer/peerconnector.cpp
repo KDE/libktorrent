@@ -93,15 +93,16 @@ void PeerConnector::acquired()
     const bt::TransportProtocol primary = ServerInterface::primaryTransportProtocol();
     const bool encryption = ServerInterface::isEncryptionEnabled();
     const bool utp = ServerInterface::isUtpEnabled();
+    const bool only_use_utp = ServerInterface::onlyUseUtp();
 
     if (encryption) {
-        if (utp && primary == bt::UTP) {
+        if (utp && (primary == bt::UTP || only_use_utp)) {
             d->start(UTP_WITH_ENCRYPTION);
         } else {
             d->start(TCP_WITH_ENCRYPTION);
         }
     } else {
-        if (utp && primary == bt::UTP) {
+        if (utp && (primary == bt::UTP || only_use_utp)) {
             d->start(UTP_WITHOUT_ENCRYPTION);
         } else {
             d->start(TCP_WITHOUT_ENCRYPTION);
