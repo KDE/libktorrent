@@ -4,6 +4,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <array>
+
+#include <QByteArrayView>
 #include <QTest>
 
 #include <bcodec/bdecoder.h>
@@ -38,7 +41,7 @@ private Q_SLOTS:
 
     void testErrMsg()
     {
-        const char *msg = "d1:eli201e23:A Generic Error Ocurrede1:t2:aa1:y1:ee";
+        constexpr QByteArrayView msg = "d1:eli201e23:A Generic Error Ocurrede1:t2:aa1:y1:ee";
 
         try {
             bt::BDecoder dec(QByteArray(msg), false);
@@ -59,11 +62,13 @@ private Q_SLOTS:
 
     void testWrongErrMsg()
     {
-        const char *msg[] = {"d1:t2:aa1:y1:ee", "d1:eli201e1:t2:aa1:y1:eee", nullptr};
+        constexpr std::array<QByteArrayView, 2> msgs = {
+            "d1:t2:aa1:y1:ee",
+            "d1:eli201e1:t2:aa1:y1:eee",
+        };
 
-        int idx = 0;
-        while (msg[idx]) {
-            bt::BDecoder dec(QByteArray(msg[idx]), false);
+        for (const auto msg : msgs) {
+            bt::BDecoder dec(QByteArray(msg), false);
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
                 const std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
@@ -71,18 +76,19 @@ private Q_SLOTS:
             } catch (bt::Error &) {
                 // OK
             }
-            idx++;
         }
     }
 
     void testPing()
     {
-        const char *msg[] = {"d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe", "d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re", nullptr};
+        constexpr std::array<QByteArrayView, 2> msgs = {
+            "d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe",
+            "d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re",
+        };
         current_method = dht::PING;
 
-        int idx = 0;
-        while (msg[idx]) {
-            bt::BDecoder dec(QByteArray(msg[idx]), false);
+        for (const auto msg : msgs) {
+            bt::BDecoder dec(QByteArray(msg), false);
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
@@ -92,21 +98,20 @@ private Q_SLOTS:
             } catch (bt::Error &e) {
                 QFAIL(e.toString().toLocal8Bit().data());
             }
-            idx++;
         }
     }
 
     void testFindNode()
     {
-        const char *msg[] = {"d1:ad2:id20:abcdefghij01234567896:target20:mnopqrstuvwxyz123456e1:q9:find_node1:t2:aa1:y1:qe",
-                             "d1:rd2:id20:0123456789abcdefghij5:nodes9:def456...e1:t2:aa1:y1:re",
-                             nullptr};
+        constexpr std::array<QByteArrayView, 2> msgs = {
+            "d1:ad2:id20:abcdefghij01234567896:target20:mnopqrstuvwxyz123456e1:q9:find_node1:t2:aa1:y1:qe",
+            "d1:rd2:id20:0123456789abcdefghij5:nodes9:def456...e1:t2:aa1:y1:re",
+        };
 
         current_method = dht::FIND_NODE;
 
-        int idx = 0;
-        while (msg[idx]) {
-            bt::BDecoder dec(QByteArray(msg[idx]), false);
+        for (const auto msg : msgs) {
+            bt::BDecoder dec(QByteArray(msg), false);
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
@@ -116,21 +121,20 @@ private Q_SLOTS:
             } catch (bt::Error &e) {
                 QFAIL(e.toString().toLocal8Bit().data());
             }
-            idx++;
         }
     }
 
     void testGetPeers()
     {
-        const char *msg[] = {"d1:ad2:id20:abcdefghij01234567899:info_hash20:mnopqrstuvwxyz123456e1:q9:get_peers1:t2:aa1:y1:qe",
-                             "d1:rd2:id20:abcdefghij01234567895:token8:aoeusnth6:valuesl6:axje.u6:idhtnmee1:t2:aa1:y1:re",
-                             "d1:rd2:id20:abcdefghij01234567895:nodes9:def456...5:token8:aoeusnthe1:t2:aa1:y1:re",
-                             nullptr};
+        constexpr std::array<QByteArrayView, 3> msgs = {
+            "d1:ad2:id20:abcdefghij01234567899:info_hash20:mnopqrstuvwxyz123456e1:q9:get_peers1:t2:aa1:y1:qe",
+            "d1:rd2:id20:abcdefghij01234567895:token8:aoeusnth6:valuesl6:axje.u6:idhtnmee1:t2:aa1:y1:re",
+            "d1:rd2:id20:abcdefghij01234567895:nodes9:def456...5:token8:aoeusnthe1:t2:aa1:y1:re",
+        };
         current_method = dht::GET_PEERS;
 
-        int idx = 0;
-        while (msg[idx]) {
-            bt::BDecoder dec(QByteArray(msg[idx]), false);
+        for (const auto msg : msgs) {
+            bt::BDecoder dec(QByteArray(msg), false);
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
@@ -140,20 +144,19 @@ private Q_SLOTS:
             } catch (bt::Error &e) {
                 QFAIL(e.toString().toLocal8Bit().data());
             }
-            idx++;
         }
     }
 
     void testAnnounce()
     {
-        const char *msg[] = {
+        constexpr std::array<QByteArrayView, 2> msgs = {
             "d1:ad2:id20:abcdefghij01234567899:info_hash20:mnopqrstuvwxyz1234564:porti6881e5:token8:aoeusnthe1:q13:announce_peer1:t2:aa1:y1:qe",
             "d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re",
-            nullptr};
+        };
         current_method = dht::ANNOUNCE_PEER;
-        int idx = 0;
-        while (msg[idx]) {
-            bt::BDecoder dec(QByteArray(msg[idx]), false);
+
+        for (const auto msg : msgs) {
+            bt::BDecoder dec(QByteArray(msg), false);
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             try {
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
@@ -163,7 +166,6 @@ private Q_SLOTS:
             } catch (bt::Error &e) {
                 QFAIL(e.toString().toLocal8Bit().data());
             }
-            idx++;
         }
     }
 
