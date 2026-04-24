@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent5\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-17 00:43+0000\n"
+"POT-Creation-Date: 2026-04-24 00:43+0000\n"
 "PO-Revision-Date: 2015-06-25 19:31+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -20,28 +20,28 @@ msgstr ""
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: src/bcodec/bdecoder.cpp:51
+#: src/bcodec/bdecoder.cpp:41
 #, kde-format
 msgid "Illegal token: %1"
 msgstr "Недозволена лексема: %1"
 
-#: src/bcodec/bdecoder.cpp:89 src/bcodec/bdecoder.cpp:96
+#: src/bcodec/bdecoder.cpp:79 src/bcodec/bdecoder.cpp:86
 #, kde-format
 msgid "Decode error"
 msgstr "Помилка декодування"
 
-#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:129
-#: src/bcodec/bdecoder.cpp:152 src/bcodec/bdecoder.cpp:191
+#: src/bcodec/bdecoder.cpp:93 src/bcodec/bdecoder.cpp:119
+#: src/bcodec/bdecoder.cpp:142 src/bcodec/bdecoder.cpp:179
 #, kde-format
 msgid "Unexpected end of input"
 msgstr "Несподіваний кінець вводу"
 
-#: src/bcodec/bdecoder.cpp:169 src/bcodec/bdecoder.cpp:210
+#: src/bcodec/bdecoder.cpp:158 src/bcodec/bdecoder.cpp:198
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr "Не вдалося перетворити %1 в int"
 
-#: src/bcodec/bdecoder.cpp:215
+#: src/bcodec/bdecoder.cpp:203
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr "Торент не повний."
@@ -311,10 +311,10 @@ msgstr "Помилка: %1"
 msgid "Unknown client"
 msgstr "Невідомий клієнт"
 
-#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:141
-#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
-#: src/torrent/torrent.cpp:187 src/torrent/torrent.cpp:192
-#: src/torrent/torrent.cpp:216 src/torrent/torrent.cpp:286
+#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:140
+#: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
+#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:191
+#: src/torrent/torrent.cpp:215 src/torrent/torrent.cpp:284
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Пошкоджений торент."

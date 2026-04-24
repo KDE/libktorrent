@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-17 00:43+0000\n"
+"POT-Creation-Date: 2026-04-24 00:43+0000\n"
 "PO-Revision-Date: 2009-06-07 23:54+0800\n"
 "Last-Translator: Sharuzzaman Ahmat Raslan <sharuzzaman@myrealbox.com>\n"
 "Language-Team: Malay <kedidiemas@yahoogroups.com>\n"
@@ -18,28 +18,28 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=1;\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/bcodec/bdecoder.cpp:51
+#: src/bcodec/bdecoder.cpp:41
 #, kde-format
 msgid "Illegal token: %1"
 msgstr ""
 
-#: src/bcodec/bdecoder.cpp:89 src/bcodec/bdecoder.cpp:96
+#: src/bcodec/bdecoder.cpp:79 src/bcodec/bdecoder.cpp:86
 #, kde-format
 msgid "Decode error"
 msgstr ""
 
-#: src/bcodec/bdecoder.cpp:103 src/bcodec/bdecoder.cpp:129
-#: src/bcodec/bdecoder.cpp:152 src/bcodec/bdecoder.cpp:191
+#: src/bcodec/bdecoder.cpp:93 src/bcodec/bdecoder.cpp:119
+#: src/bcodec/bdecoder.cpp:142 src/bcodec/bdecoder.cpp:179
 #, kde-format
 msgid "Unexpected end of input"
 msgstr ""
 
-#: src/bcodec/bdecoder.cpp:169 src/bcodec/bdecoder.cpp:210
+#: src/bcodec/bdecoder.cpp:158 src/bcodec/bdecoder.cpp:198
 #, kde-format
 msgid "Cannot convert %1 to an int"
 msgstr ""
 
-#: src/bcodec/bdecoder.cpp:215
+#: src/bcodec/bdecoder.cpp:203
 #, kde-format
 msgid "Torrent is incomplete."
 msgstr ""
@@ -294,10 +294,10 @@ msgstr "Ralat:"
 msgid "Unknown client"
 msgstr "Tidak diketahui"
 
-#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:141
-#: src/torrent/torrent.cpp:172 src/torrent/torrent.cpp:179
-#: src/torrent/torrent.cpp:187 src/torrent/torrent.cpp:192
-#: src/torrent/torrent.cpp:216 src/torrent/torrent.cpp:286
+#: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:140
+#: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
+#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:191
+#: src/torrent/torrent.cpp:215 src/torrent/torrent.cpp:284
 #, fuzzy, kde-format
 msgid "Corrupted torrent."
 msgstr "Hasilkan fax"
