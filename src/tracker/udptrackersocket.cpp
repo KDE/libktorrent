@@ -153,7 +153,7 @@ void UDPTrackerSocket::cancelTransaction(Int32 tid)
 
 void UDPTrackerSocket::handleConnect(const bt::Buffer &buf)
 {
-    if (buf.size() < 12) {
+    if (buf.size() < 16) {
         return;
     }
 
@@ -179,7 +179,7 @@ void UDPTrackerSocket::handleConnect(const bt::Buffer &buf)
 
 void UDPTrackerSocket::handleAnnounce(const bt::Buffer &buf)
 {
-    if (buf.size() < 4) {
+    if (buf.size() < 20) {
         return;
     }
 
@@ -187,7 +187,7 @@ void UDPTrackerSocket::handleAnnounce(const bt::Buffer &buf)
     const Int32 tid = ReadInt32(buf.get(), 4);
     const QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
-    if (i == d->transactions.end() || buf.size() < 20) {
+    if (i == d->transactions.end()) {
         return;
     }
 
@@ -205,7 +205,7 @@ void UDPTrackerSocket::handleAnnounce(const bt::Buffer &buf)
 
 void UDPTrackerSocket::handleError(const bt::Buffer &buf)
 {
-    if (buf.size() < 4) {
+    if (buf.size() < 8) {
         return;
     }
 
@@ -230,7 +230,7 @@ void UDPTrackerSocket::handleError(const bt::Buffer &buf)
 
 void UDPTrackerSocket::handleScrape(const bt::Buffer &buf)
 {
-    if (buf.size() < 4) {
+    if (buf.size() < 20) {
         return;
     }
 
