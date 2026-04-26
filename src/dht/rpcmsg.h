@@ -38,12 +38,12 @@ enum Method {
     NONE,
 };
 
-const QByteArray TID = QByteArrayLiteral("t");
-const QByteArray REQ = "q";
-const QByteArray RSP = "r";
-const QByteArray TYP = "y";
-const QByteArray ARG = "a";
-const QByteArray ERR_DHT = "e";
+constexpr QByteArrayView TID = "t";
+constexpr QByteArrayView REQ = "q";
+constexpr QByteArrayView RSP = "r";
+constexpr QByteArrayView TYP = "y";
+constexpr QByteArrayView ARG = "a";
+constexpr QByteArrayView ERR_DHT = "e";
 
 /*!
  * \headerfile dht/rpcmsg.h

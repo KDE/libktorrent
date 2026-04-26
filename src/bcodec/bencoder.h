@@ -122,7 +122,7 @@ public:
     void beginList();
 
     template<class T>
-    void write(const QByteArray &key, T val)
+    void write(QByteArrayView key, T val)
     {
         write(key);
         write(val);
