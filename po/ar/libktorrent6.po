@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-24 00:43+0000\n"
+"POT-Creation-Date: 2026-04-27 00:43+0000\n"
 "PO-Revision-Date: 2024-02-12 14:04+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -176,7 +176,7 @@ msgstr "ينقل"
 msgid "Failed to open %1: %2"
 msgstr "فشل فتح %1: %2"
 
-#: src/diskio/piecedata.cpp:56 src/diskio/piecedata.cpp:98
+#: src/diskio/piecedata.cpp:57 src/diskio/piecedata.cpp:96
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
 msgstr "غير قادر على الكتابة إلى قطعة معينة للقراءة فقط"
@@ -312,29 +312,29 @@ msgstr "عميل مجهول"
 msgid "Corrupted torrent."
 msgstr "قُوطع السيل."
 
-#: src/torrent/torrentcontrol.cpp:260
+#: src/torrent/torrentcontrol.cpp:259
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "خطأ في الكتابة على القرص، ألديك مساحة فارغة على القرص؟"
 
-#: src/torrent/torrentcontrol.cpp:484
+#: src/torrent/torrentcontrol.cpp:481
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "حدث خطأ أثناء تحميل <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:494
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "تعذّر إنشاء %1: %2"
 
-#: src/torrent/torrentcontrol.cpp:508
+#: src/torrent/torrentcontrol.cpp:505
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
 "both torrents have been merged."
 msgstr "أنت تنزّل السيل <b>%1</b> فعلًا. قوائم المتتبّعين من السيلان معًا دُمِجَا."
 
-#: src/torrent/torrentcontrol.cpp:512
+#: src/torrent/torrentcontrol.cpp:509
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "أنت تنزّل السيل <b>%1</b> فعلًا."
@@ -410,23 +410,23 @@ msgstr "أُلبِث"
 msgid "Superseeding"
 msgstr "التزويد الخارق"
 
-#: src/tracker/httptracker.cpp:253 src/tracker/httptracker.cpp:269
-#: src/tracker/httptracker.cpp:403
+#: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
+#: src/tracker/httptracker.cpp:398
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "إجابة غير صالحة من المتتبّع"
 
-#: src/tracker/httptracker.cpp:263
+#: src/tracker/httptracker.cpp:258
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "بيانات غير صالحة من المتتبّع"
 
-#: src/tracker/httptracker.cpp:418
+#: src/tracker/httptracker.cpp:413
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "عنوان URL لمتتبّع غير صالح"
 
-#: src/tracker/httptracker.cpp:478 src/tracker/udptracker.cpp:327
+#: src/tracker/httptracker.cpp:473 src/tracker/udptracker.cpp:327
 #: src/tracker/udptracker.cpp:334
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -531,12 +531,12 @@ msgstr "لا يمكن البحث في الملف: %1"
 msgid "Unable to open file %1: %2"
 msgstr "تعذّر فتح الملف %1: %2"
 
-#: src/util/functions.cpp:244
+#: src/util/functions.cpp:243
 #, kde-format
 msgid "%1/s"
 msgstr "%1/ث"
 
-#: src/util/functions.cpp:253
+#: src/util/functions.cpp:252
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
@@ -577,12 +577,12 @@ msgstr "دَخل/خَرج القرص"
 msgid "µTP"
 msgstr "µTP"
 
-#: src/util/signalcatcher.cpp:64
+#: src/util/signalcatcher.cpp:20
 #, kde-format
 msgid "Error when writing to disk"
 msgstr "خطأ أثناء الكتابة إلى القرص"
 
-#: src/util/signalcatcher.cpp:64
+#: src/util/signalcatcher.cpp:20
 #, kde-format
 msgid "Error when reading from disk"
 msgstr "خطأ أثناء القراءة من القرص"

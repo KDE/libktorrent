@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-24 00:43+0000\n"
+"POT-Creation-Date: 2026-04-27 00:43+0000\n"
 "PO-Revision-Date: 2013-04-03 15:56+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -175,7 +175,7 @@ msgstr "Flyttar"
 msgid "Failed to open %1: %2"
 msgstr "Misslyckades öppna %1: %2"
 
-#: src/diskio/piecedata.cpp:56 src/diskio/piecedata.cpp:98
+#: src/diskio/piecedata.cpp:57 src/diskio/piecedata.cpp:96
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
 msgstr "Kunde inte skriva till en del som är avbildad som skrivskyddad"
@@ -303,22 +303,22 @@ msgstr "Okänd klient"
 msgid "Corrupted torrent."
 msgstr "Skadat dataflöde."
 
-#: src/torrent/torrentcontrol.cpp:260
+#: src/torrent/torrentcontrol.cpp:259
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Fel vid skrivning till disk. Finns det tillräckligt med diskutrymme?"
 
-#: src/torrent/torrentcontrol.cpp:484
+#: src/torrent/torrentcontrol.cpp:481
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "Ett fel uppstod vid laddning av <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:494
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Kan inte skapa %1: %2"
 
-#: src/torrent/torrentcontrol.cpp:508
+#: src/torrent/torrentcontrol.cpp:505
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -327,7 +327,7 @@ msgstr ""
 "Du laddar redan ner dataflödet <b>%1</b>. Listan med spårare för båda "
 "dataflöden har slagits ihop."
 
-#: src/torrent/torrentcontrol.cpp:512
+#: src/torrent/torrentcontrol.cpp:509
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Du laddar redan ner dataflödet <b>%1</b>."
@@ -403,23 +403,23 @@ msgstr "Paus"
 msgid "Superseeding"
 msgstr "Supererbjudning"
 
-#: src/tracker/httptracker.cpp:253 src/tracker/httptracker.cpp:269
-#: src/tracker/httptracker.cpp:403
+#: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
+#: src/tracker/httptracker.cpp:398
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Ogiltigt svar från spårare"
 
-#: src/tracker/httptracker.cpp:263
+#: src/tracker/httptracker.cpp:258
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Ogiltig data från spårare"
 
-#: src/tracker/httptracker.cpp:418
+#: src/tracker/httptracker.cpp:413
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Ogiltig webbadress för spårare"
 
-#: src/tracker/httptracker.cpp:478 src/tracker/udptracker.cpp:327
+#: src/tracker/httptracker.cpp:473 src/tracker/udptracker.cpp:327
 #: src/tracker/udptracker.cpp:334
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -525,12 +525,12 @@ msgstr "Kan inte söka i indexfil: %1"
 msgid "Unable to open file %1: %2"
 msgstr "Kan inte öppna filen %1: %2"
 
-#: src/util/functions.cpp:244
+#: src/util/functions.cpp:243
 #, kde-format
 msgid "%1/s"
 msgstr "%1/s"
 
-#: src/util/functions.cpp:253
+#: src/util/functions.cpp:252
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
@@ -567,12 +567,12 @@ msgstr "Diskinmatning och utmatning"
 msgid "µTP"
 msgstr "µTP"
 
-#: src/util/signalcatcher.cpp:64
+#: src/util/signalcatcher.cpp:20
 #, kde-format
 msgid "Error when writing to disk"
 msgstr "Fel vid skrivning på disk"
 
-#: src/util/signalcatcher.cpp:64
+#: src/util/signalcatcher.cpp:20
 #, kde-format
 msgid "Error when reading from disk"
 msgstr "Fel vid läsning från disk"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-24 00:43+0000\n"
+"POT-Creation-Date: 2026-04-27 00:43+0000\n"
 "PO-Revision-Date: 2013-04-05 17:54+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -180,7 +180,7 @@ msgid "Failed to open %1: %2"
 msgstr "Не могу да отворим %1: %2"
 
 # >? Wth?
-#: src/diskio/piecedata.cpp:56 src/diskio/piecedata.cpp:98
+#: src/diskio/piecedata.cpp:57 src/diskio/piecedata.cpp:96
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
 msgstr "Не могу да пишем у подеоно мапирани само за читање"
@@ -312,22 +312,22 @@ msgstr "Непознат клијент"
 msgid "Corrupted torrent."
 msgstr "Оштећен торент."
 
-#: src/torrent/torrentcontrol.cpp:260
+#: src/torrent/torrentcontrol.cpp:259
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "Грешка при писању на диск, има ли довољно простора?"
 
-#: src/torrent/torrentcontrol.cpp:484
+#: src/torrent/torrentcontrol.cpp:481
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "Грешка при учитавању <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:494
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Не могу да направим %1: %2"
 
-#: src/torrent/torrentcontrol.cpp:508
+#: src/torrent/torrentcontrol.cpp:505
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -335,7 +335,7 @@ msgid ""
 msgstr ""
 "Торент <b>%1</b> се већ преузима. Спискови пратилаца оба торента су стопљени."
 
-#: src/torrent/torrentcontrol.cpp:512
+#: src/torrent/torrentcontrol.cpp:509
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Већ преузимате торент <b>%1</b>."
@@ -411,24 +411,24 @@ msgstr "Паузирано"
 msgid "Superseeding"
 msgstr "Суперсијање"
 
-#: src/tracker/httptracker.cpp:253 src/tracker/httptracker.cpp:269
-#: src/tracker/httptracker.cpp:403
+#: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
+#: src/tracker/httptracker.cpp:398
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Неисправан одговор са пратиоца"
 
-#: src/tracker/httptracker.cpp:263
+#: src/tracker/httptracker.cpp:258
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Неисправни подаци са пратиоца"
 
-#: src/tracker/httptracker.cpp:418
+#: src/tracker/httptracker.cpp:413
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Неисправан УРЛ пратиоца"
 
 # rewrite-msgid: /Timeout/Timed out while/
-#: src/tracker/httptracker.cpp:478 src/tracker/udptracker.cpp:327
+#: src/tracker/httptracker.cpp:473 src/tracker/udptracker.cpp:327
 #: src/tracker/udptracker.cpp:334
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -533,12 +533,12 @@ msgstr "Не могу да премотавам у фајлу: %1"
 msgid "Unable to open file %1: %2"
 msgstr "Не могу да отворим фајл %1: %2"
 
-#: src/util/functions.cpp:244
+#: src/util/functions.cpp:243
 #, kde-format
 msgid "%1/s"
 msgstr "%1/s"
 
-#: src/util/functions.cpp:253
+#: src/util/functions.cpp:252
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
@@ -577,12 +577,12 @@ msgstr "Улаз/излаз диска"
 msgid "µTP"
 msgstr "µТП"
 
-#: src/util/signalcatcher.cpp:64
+#: src/util/signalcatcher.cpp:20
 #, kde-format
 msgid "Error when writing to disk"
 msgstr "Грешка при писању на диск"
 
-#: src/util/signalcatcher.cpp:64
+#: src/util/signalcatcher.cpp:20
 #, kde-format
 msgid "Error when reading from disk"
 msgstr "Грешка при читању са диска"

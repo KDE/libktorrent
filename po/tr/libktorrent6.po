@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-network-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-24 00:43+0000\n"
+"POT-Creation-Date: 2026-04-27 00:43+0000\n"
 "PO-Revision-Date: 2024-03-16 14:01+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -185,7 +185,7 @@ msgstr "Taşınıyor"
 msgid "Failed to open %1: %2"
 msgstr "%1 açılamıyor: %2"
 
-#: src/diskio/piecedata.cpp:56 src/diskio/piecedata.cpp:98
+#: src/diskio/piecedata.cpp:57 src/diskio/piecedata.cpp:96
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
 msgstr "Saltokunur parça eşlemesine yazılamadı"
@@ -313,23 +313,23 @@ msgstr "Bilinmeyen istemci"
 msgid "Corrupted torrent."
 msgstr "Bozuk torrent."
 
-#: src/torrent/torrentcontrol.cpp:260
+#: src/torrent/torrentcontrol.cpp:259
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
 "Diske yazılamadı, yeterli disk alanına sahip olduğunuzdan emin misiniz?"
 
-#: src/torrent/torrentcontrol.cpp:484
+#: src/torrent/torrentcontrol.cpp:481
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "<b>%1</b> yüklenirken bir hata oluştu:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:494
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "%1 oluşturulamıyor: %2"
 
-#: src/torrent/torrentcontrol.cpp:508
+#: src/torrent/torrentcontrol.cpp:505
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -338,7 +338,7 @@ msgstr ""
 "<b>%1</b> torrentini zaten indiriyorsunuz. İki torrentin izleyici listesi "
 "birleştirildi."
 
-#: src/torrent/torrentcontrol.cpp:512
+#: src/torrent/torrentcontrol.cpp:509
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "<b>%1</b> torrentini zaten indiriyorsunuz."
@@ -414,23 +414,23 @@ msgstr "Duraklatıldı"
 msgid "Superseeding"
 msgstr "Süper besleme"
 
-#: src/tracker/httptracker.cpp:253 src/tracker/httptracker.cpp:269
-#: src/tracker/httptracker.cpp:403
+#: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
+#: src/tracker/httptracker.cpp:398
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "İzleyiciden geçersiz yanıt"
 
-#: src/tracker/httptracker.cpp:263
+#: src/tracker/httptracker.cpp:258
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "İzleyiciden geçersiz veri"
 
-#: src/tracker/httptracker.cpp:418
+#: src/tracker/httptracker.cpp:413
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Geçersiz izleyici URL’si"
 
-#: src/tracker/httptracker.cpp:478 src/tracker/udptracker.cpp:327
+#: src/tracker/httptracker.cpp:473 src/tracker/udptracker.cpp:327
 #: src/tracker/udptracker.cpp:334
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -535,12 +535,12 @@ msgstr "Dosyada aranamıyor: %1"
 msgid "Unable to open file %1: %2"
 msgstr "%1 dosyası açılamıyor: %2"
 
-#: src/util/functions.cpp:244
+#: src/util/functions.cpp:243
 #, kde-format
 msgid "%1/s"
 msgstr "%1/sn"
 
-#: src/util/functions.cpp:253
+#: src/util/functions.cpp:252
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
@@ -577,12 +577,12 @@ msgstr "Disk Girişi/Çıkışı"
 msgid "µTP"
 msgstr "µTP"
 
-#: src/util/signalcatcher.cpp:64
+#: src/util/signalcatcher.cpp:20
 #, kde-format
 msgid "Error when writing to disk"
 msgstr "Diske yazılırken hata oluştu"
 
-#: src/util/signalcatcher.cpp:64
+#: src/util/signalcatcher.cpp:20
 #, kde-format
 msgid "Error when reading from disk"
 msgstr "Diskten okunurken hata oluştu"

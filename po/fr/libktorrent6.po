@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-24 00:43+0000\n"
+"POT-Creation-Date: 2026-04-27 00:43+0000\n"
 "PO-Revision-Date: 2023-01-05 12:47+0100\n"
 "Last-Translator: Xavier BESNARD <xavier.besnard]neuf.fr>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
@@ -214,7 +214,7 @@ msgstr "Déplacement"
 msgid "Failed to open %1: %2"
 msgstr "Impossible d'ouvrir %1 : %2"
 
-#: src/diskio/piecedata.cpp:56 src/diskio/piecedata.cpp:98
+#: src/diskio/piecedata.cpp:57 src/diskio/piecedata.cpp:96
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
 msgstr "Impossible d'écrire sur un fragment marqué en lecture seule"
@@ -349,26 +349,26 @@ msgstr "Client inconnu"
 msgid "Corrupted torrent."
 msgstr "Torrent corrompu."
 
-#: src/torrent/torrentcontrol.cpp:260
+#: src/torrent/torrentcontrol.cpp:259
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
 "Erreur lors de l'écriture sur le disque. Avez-vous suffisamment d'espace "
 "disponible ?"
 
-#: src/torrent/torrentcontrol.cpp:484
+#: src/torrent/torrentcontrol.cpp:481
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr ""
 "Un erreur est survenue lors du chargement de <b>%1</b> : <br/><b>%2</b>"
 
 # unreviewed-context
-#: src/torrent/torrentcontrol.cpp:494
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "Impossible de créer %1 : %2"
 
-#: src/torrent/torrentcontrol.cpp:508
+#: src/torrent/torrentcontrol.cpp:505
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -377,7 +377,7 @@ msgstr ""
 "Vous téléchargez déjà actuellement le torrent <b>%1</b>. Les listes de "
 "traqueurs des deux torrents ont été fusionnées."
 
-#: src/torrent/torrentcontrol.cpp:512
+#: src/torrent/torrentcontrol.cpp:509
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "Vous téléchargez déjà actuellement le torrent <b>%1</b>."
@@ -456,23 +456,23 @@ msgstr "En pause"
 msgid "Superseeding"
 msgstr "Super-partage"
 
-#: src/tracker/httptracker.cpp:253 src/tracker/httptracker.cpp:269
-#: src/tracker/httptracker.cpp:403
+#: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
+#: src/tracker/httptracker.cpp:398
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Réponse du traqueur non valable"
 
-#: src/tracker/httptracker.cpp:263
+#: src/tracker/httptracker.cpp:258
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Données non valables venant du traqueur"
 
-#: src/tracker/httptracker.cpp:418
+#: src/tracker/httptracker.cpp:413
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "URL du traqueur mal formée"
 
-#: src/tracker/httptracker.cpp:478 src/tracker/udptracker.cpp:327
+#: src/tracker/httptracker.cpp:473 src/tracker/udptracker.cpp:327
 #: src/tracker/udptracker.cpp:334
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -592,12 +592,12 @@ msgstr "Impossible de rechercher dans un fichier : %1"
 msgid "Unable to open file %1: %2"
 msgstr "Impossible d'ouvrir le fichier %1 : %2"
 
-#: src/util/functions.cpp:244
+#: src/util/functions.cpp:243
 #, kde-format
 msgid "%1/s"
 msgstr "%1 / s"
 
-#: src/util/functions.cpp:253
+#: src/util/functions.cpp:252
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
@@ -637,12 +637,12 @@ msgstr "Entrées / Sorties du disque"
 msgid "µTP"
 msgstr "µTP"
 
-#: src/util/signalcatcher.cpp:64
+#: src/util/signalcatcher.cpp:20
 #, kde-format
 msgid "Error when writing to disk"
 msgstr "Erreur lors de l'écriture sur le disque"
 
-#: src/util/signalcatcher.cpp:64
+#: src/util/signalcatcher.cpp:20
 #, kde-format
 msgid "Error when reading from disk"
 msgstr "Erreur lors de la lecture depuis le disque"

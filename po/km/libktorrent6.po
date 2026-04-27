@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-24 00:43+0000\n"
+"POT-Creation-Date: 2026-04-27 00:43+0000\n"
 "PO-Revision-Date: 2012-07-04 08:47+0700\n"
 "Last-Translator: Sophea <sophea@khmeros.info>\n"
 "Language-Team: Khmer <>\n"
@@ -179,7 +179,7 @@ msgstr "ការ​ផ្លាស់ទី"
 msgid "Failed to open %1: %2"
 msgstr "បរាជ័យ​ក្នុង​ការ​បើក %1 ៖ %2"
 
-#: src/diskio/piecedata.cpp:56 src/diskio/piecedata.cpp:98
+#: src/diskio/piecedata.cpp:57 src/diskio/piecedata.cpp:96
 #, kde-format
 msgid "Unable to write to a piece mapped read only"
 msgstr "មិន​អាច​សរសេរ​ទៅ​កាន់​ផ្នែក​ដែល​ផ្គូផ្គង​បានតែ​អាន​ឡើយ​"
@@ -306,22 +306,22 @@ msgstr "មិន​ស្គាល់​ម៉ាស៊ីន​ភ្ញៀវ
 msgid "Corrupted torrent."
 msgstr "torrent ខូច !"
 
-#: src/torrent/torrentcontrol.cpp:260
+#: src/torrent/torrentcontrol.cpp:259
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "កំហុស​ក្នុង​ការ​សរសេរ​ទៅកាន់​ថាស តើ​អ្នក​មាន​ទំហំ​ថាស​គ្រប់គ្រាន់​ដែរ​ឬទេ ?"
 
-#: src/torrent/torrentcontrol.cpp:484
+#: src/torrent/torrentcontrol.cpp:481
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "កំហុស​មួយ​បាន​កើតឡើង​អំឡុង​ពេល​ផ្ទុក <b>%1</b> ៖<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:494
+#: src/torrent/torrentcontrol.cpp:491
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "មិន​អាច​បង្កើត %1 ៖ %2"
 
-#: src/torrent/torrentcontrol.cpp:508
+#: src/torrent/torrentcontrol.cpp:505
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -330,7 +330,7 @@ msgstr ""
 "អ្នក​កំពុង​តែ​ទាញ​យក torrent <b>%1</b> រួច​ហើយ ។ បញ្ជី​កម្មវិធី​តាមដាន​របស់​ torrents ទាំងពីរ​ត្រូវ​"
 "បាន​បញ្ចូល​ចូល​គ្នា ។"
 
-#: src/torrent/torrentcontrol.cpp:512
+#: src/torrent/torrentcontrol.cpp:509
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "អ្នក​កំពុងតែ​ទាញ​យក torrent <b>%1</b> ហើយ ។"
@@ -406,23 +406,23 @@ msgstr "បាន​ផ្អាក"
 msgid "Superseeding"
 msgstr "ការ​បណ្ដុះ​ពិសេស​"
 
-#: src/tracker/httptracker.cpp:253 src/tracker/httptracker.cpp:269
-#: src/tracker/httptracker.cpp:403
+#: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
+#: src/tracker/httptracker.cpp:398
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "ការ​ឆ្លើយ​តប​មិន​ត្រឹមត្រូវ​ពី​កម្មវិធី​តាមដាន"
 
-#: src/tracker/httptracker.cpp:263
+#: src/tracker/httptracker.cpp:258
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "ទិន្នន័យ​មិន​ត្រឹម​ត្រូវ​ពី​កម្មវិធី​តាមដាន"
 
-#: src/tracker/httptracker.cpp:418
+#: src/tracker/httptracker.cpp:413
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "URL កម្មវិធី​តាមដាន​បទ​មិន​ត្រឹមត្រូវ"
 
-#: src/tracker/httptracker.cpp:478 src/tracker/udptracker.cpp:327
+#: src/tracker/httptracker.cpp:473 src/tracker/udptracker.cpp:327
 #: src/tracker/udptracker.cpp:334
 #, kde-format
 msgid "Timeout contacting tracker %1"
@@ -528,12 +528,12 @@ msgstr "មិន​អាច​ស្វែងរក​ក្នុង​ឯក
 msgid "Unable to open file %1: %2"
 msgstr " មិន​អាច​បើក​ឯកសារ​ torrent %1 ៖ %2 បានទេ"
 
-#: src/util/functions.cpp:244
+#: src/util/functions.cpp:243
 #, kde-format
 msgid "%1/s"
 msgstr "%1/វិ."
 
-#: src/util/functions.cpp:253
+#: src/util/functions.cpp:252
 #, kde-format
 msgid "1 day "
 msgid_plural "%1 days "
@@ -569,12 +569,12 @@ msgstr "ការ​ចេញ/ចូល​របស់​ថាស"
 msgid "µTP"
 msgstr "µTP"
 
-#: src/util/signalcatcher.cpp:64
+#: src/util/signalcatcher.cpp:20
 #, kde-format
 msgid "Error when writing to disk"
 msgstr "កំហុស​នៅ​ពេល​សរសេរ​ទៅកាន់​ថាស​"
 
-#: src/util/signalcatcher.cpp:64
+#: src/util/signalcatcher.cpp:20
 #, kde-format
 msgid "Error when reading from disk"
 msgstr "កំហុស​នៅ​ពេល​អាន​ពី​ថាស"
