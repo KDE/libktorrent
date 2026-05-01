@@ -178,6 +178,23 @@ public:
     }
 
 protected:
+    /*!
+     * \enum FileType
+     *
+     * An indicator of the file type which can be used to determine whether to prioritise chunks for a preview.
+     *
+     * \var UNKNOWN
+     * The file type has not yet been queried.
+     *
+     * \var AUDIO
+     * Audio file.
+     *
+     * \var VIDEO
+     * Video file.
+     *
+     * \var NORMAL
+     * Any other type of file.
+     */
     enum FileType {
         UNKNOWN,
         AUDIO,

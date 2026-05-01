@@ -15,6 +15,29 @@ class QString;
 
 namespace bt
 {
+
+/*!
+ * \enum VersionType
+ *
+ * The release type used for setting the peer ID.
+ *
+ * \warning This enum is no longer used.
+ *
+ * \var ALPHA
+ * Alpha release.
+ *
+ * \var BETA
+ * Beta release.
+ *
+ * \var RELEASE_CANDIDATE
+ * Release candidate.
+ *
+ * \var DEVEL
+ * Development build.
+ *
+ * \var NORMAL
+ * Normal release.
+ */
 enum VersionType {
     ALPHA,
     BETA,

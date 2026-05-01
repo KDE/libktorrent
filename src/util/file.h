@@ -84,6 +84,20 @@ public:
      */
     Uint32 read(void *buf, Uint32 size);
 
+    /*!
+     * \enum SeekPos
+     *
+     * The offset in the file from which to seek from.
+     *
+     * \var BEGIN
+     * Seek forwards from the beginning of the file, the number of bytes must be positive.
+     *
+     * \var END
+     * Seek backwards from the end of the file, the number of bytes must be negative.
+     *
+     * \var CURRENT
+     * Seek from the current position, the number of bytes can be positive to seek forwards or negative to seek backwards.
+     */
     enum SeekPos {
         BEGIN,
         END,

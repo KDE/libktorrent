@@ -99,6 +99,27 @@ const bt::Uint8 ST_SYN = 4;
 
 KTORRENT_EXPORT QString TypeToString(bt::Uint8 type);
 
+/*!
+ * \enum ConnectionState
+ *
+ * The current state of a UTP connection.
+ *
+ * \var CS_IDLE
+ * Used for INCOMING connections before we have processed the first SYN packet.
+ *
+ * \var CS_SYN_SENT
+ * Used after an OUTGOING connection has sent a SYN packet.
+ *
+ * \var CS_CONNECTED
+ * The SYN packet exchange has been successful.
+ *
+ * \var CS_FINISHED
+ * We have either sent or received an ST_FIN packet to close the connection. We can still receive packets in this state until all packets have been
+ * ACKed.
+ *
+ * \var CS_CLOSED
+ * The connection has been closed and no more packets will be sent or received.
+ */
 enum ConnectionState {
     CS_IDLE,
     CS_SYN_SENT,

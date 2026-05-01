@@ -24,6 +24,26 @@ class KTORRENT_EXPORT Socks : public QObject
 {
     Q_OBJECT
 public:
+    /*!
+     * \enum State
+     *
+     * The current state of the SOCKS connection.
+     *
+     * \var IDLE
+     * The initial state before attempting to connect to the proxy.
+     *
+     * \var CONNECTING_TO_SERVER
+     * The socket is connecting to the proxy server via TCP or UDP.
+     *
+     * \var CONNECTING_TO_HOST
+     * The socket connection has been established and the authentication is ongoing.
+     *
+     * \var CONNECTED
+     * The socket is connected and authentication has been completed.
+     *
+     * \var FAILED
+     * The socket failed to connect to the proxy or failed the authentication.
+     */
     enum State {
         IDLE,
         CONNECTING_TO_SERVER,

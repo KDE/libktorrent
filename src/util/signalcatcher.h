@@ -97,9 +97,10 @@ private:
  * Specifies whether the caller intends to read or write to memory mapped data when calling WithBusErrorProtection.
  *
  * \var Read
- *      Reading from a memory mapped region.
+ * Reading from a memory mapped region.
+ *
  * \var Write
- *      Writing from a memory mapped region.
+ * Writing from a memory mapped region.
  */
 enum class BusOperation : Uint8 {
     Read,

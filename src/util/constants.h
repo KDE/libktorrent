@@ -22,6 +22,35 @@ using Int8 = qint8;
 
 using TimeStamp = Uint64;
 
+/*!
+ * \enum Priority
+ *
+ * Describes the requested priority for a file or chunk. A higher enum value is a higher priority.
+ *
+ * \var FIRST_PREVIEW_PRIORITY
+ * Download these specific chunks first because they are necessary for generating a preview, inside a highest priority file.
+ *
+ * \var FIRST_PRIORITY
+ * Prefer to download this file first.
+ *
+ * \var NORMAL_PREVIEW_PRIORITY
+ * Download these specific chunks first because they are necessary for generating a preview, inside a non-prioritized file.
+ *
+ * \var NORMAL_PRIORITY
+ * No preference when downloading this file.
+ *
+ * \var LAST_PREVIEW_PRIORITY
+ * Download these specific chunks first because they are necessary for generating a preview, inside a lowest priority file.
+ *
+ * \var LAST_PRIORITY
+ * Prefer to download this file last.
+ *
+ * \var ONLY_SEED_PRIORITY
+ * This file must not be downloaded, but any existing chunks of it can be seeded.
+ *
+ * \var EXCLUDED
+ * This file must not be downloaded or seeded.
+ */
 enum Priority {
     // also leave some room if we want to add new priorities in the future
     FIRST_PREVIEW_PRIORITY = 55,
@@ -39,6 +68,61 @@ const Uint16 MIN_PORT = 6881;
 const Uint16 MAX_PORT = 6889;
 const Uint32 MAX_PIECE_LEN = 16384;
 
+/*!
+ * \enum PeerMessageType
+ *
+ * Specifies the type byte in a BitTorrent peer message.
+ *
+ * \var CHOKE
+ * The sender is choking the receiver.
+ *
+ * \var UNCHOKE
+ * The sender is no longer choking the receiver.
+ *
+ * \var INTERESTED
+ * The receiver has a piece that the sender wants.
+ *
+ * \var NOT_INTERESTED
+ * The sender is not interested in downloading any pieces from the receiver.
+ *
+ * \var HAVE
+ * The sender has a specified piece.
+ *
+ * \var BITFIELD
+ * Indicates all the pieces that the sender currently has.
+ *
+ * \var REQUEST
+ * The sender wants to download some specific pieces.
+ *
+ * \var PIECE
+ * The sender has sent a specified piece.
+ *
+ * \var CANCEL
+ * The sender wants to cancel the request for the specified piece.
+ *
+ * \var PORT
+ * The sender is on the DHT network at the given port. This is part of the DHT Protocol extension BEP 0005.
+ *
+ * \var SUGGEST_PIECE
+ * The sender is recommending that the receiver request a specified piece. This is part of the Fast Extension BEP 0006.
+ * \note This message type is currently not supported.
+ *
+ * \var HAVE_ALL
+ * The sender has all of the specified pieces. This is part of the Fast Extension BEP 0006.
+ *
+ * \var HAVE_NONE
+ * The sender has none of the specified pieces. This is part of the Fast Extension BEP 0006.
+ *
+ * \var REJECT_REQUEST
+ * The sender will not satisfy a given request. This is part of the Fast Extension BEP 0006.
+ *
+ * \var ALLOWED_FAST
+ * The sender will send the specified piece even if the receiver is choked. This is part of the Fast Extension BEP 0006.
+ * \note This message type is currently not supported.
+ *
+ * \var EXTENDED
+ * Indicates that this is an extension message of the specified type. This is part of the Extension Protocol BEP 0010. \sa PeerProtocolExtension.
+ */
 enum PeerMessageType : Uint8 {
     CHOKE = 0,
     UNCHOKE = 1,
@@ -66,6 +150,17 @@ const Uint32 DHT_SUPPORT = 0x01;
 const Uint32 EXT_PROT_SUPPORT = 0x10;
 const Uint32 FAST_EXT_SUPPORT = 0x04;
 
+/*!
+ * \enum TransportProtocol
+ *
+ * Describes the BitTorrent transport protocol.
+ *
+ * \var TCP
+ * A connection using the TCP protocol.
+ *
+ * \var UTP
+ * A connection using the uTorrent transport protocol (BEP 0029).
+ */
 enum TransportProtocol {
     TCP,
     UTP

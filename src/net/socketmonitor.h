@@ -60,6 +60,17 @@ public:
     //! Tell upload thread a packet is ready
     void signalPacketReady();
 
+    /*!
+     * \enum GroupType
+     *
+     * Specifies whether a group should limit upload or download rate.
+     *
+     * \var UPLOAD_GROUP
+     * Limits upload rate.
+     *
+     * \var DOWNLOAD_GROUP
+     * Limits download rate.
+     */
     enum GroupType {
         UPLOAD_GROUP,
         DOWNLOAD_GROUP,

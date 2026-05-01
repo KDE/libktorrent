@@ -36,6 +36,31 @@ class WebSeedInterface;
 class JobQueue;
 class ChunkSelectorInterface;
 
+/*!
+ * \enum TorrentStartResponse
+ *
+ * The response when attempting to start a torrent. The value will describe the reason if the torrent failed to start.
+ *
+ * TODO move to the KTorrent app as these are not used in libktorrent.
+ *
+ * \var START_OK
+ * The torrent started okay.
+ *
+ * \var USER_CANCELED
+ * This value is currently unused.
+ *
+ * \var NOT_ENOUGH_DISKSPACE
+ * There is not enough disk space to complete this torrent.
+ *
+ * \var MAX_SHARE_RATIO_REACHED
+ * The torrent is completed and has reached the maximum share ratio, therefore it will not continue seeding.
+ *
+ * \var BUSY_WITH_JOB
+ * The torrent is currently busy running a job (e.g. moving files or checking data) but will start later.
+ *
+ * \var QM_LIMITS_REACHED
+ * This value is currently unused.
+ */
 enum TorrentStartResponse {
     START_OK,
     USER_CANCELED,
@@ -45,6 +70,17 @@ enum TorrentStartResponse {
     QM_LIMITS_REACHED, // Max seeds or downloads reached
 };
 
+/*!
+ * \enum AutoStopReason
+ *
+ * The reason why a torrent has stopped itself.
+ *
+ * \var MAX_RATIO_REACHED
+ * The torrent has reached the maximum configured share ratio.
+ *
+ * \var MAX_SEED_TIME_REACHED
+ * The torrent has reached the maximum configured seed duration.
+ */
 enum AutoStopReason {
     MAX_RATIO_REACHED,
     MAX_SEED_TIME_REACHED,
@@ -59,9 +95,20 @@ struct DHTNode {
     bt::Uint16 port;
 };
 
+/*!
+ * \enum TorrentFeature
+ *
+ * The list of extensions that a torrent can support.
+ *
+ * \var DHT_FEATURE
+ * The DHT extension.
+ *
+ * \var UT_PEX_FEATURE
+ * The uTorrent Peer Exchange extension.
+ */
 enum TorrentFeature {
     DHT_FEATURE,
-    UT_PEX_FEATURE, // µTorrent peer exchange
+    UT_PEX_FEATURE,
 };
 
 /*!
@@ -174,6 +221,22 @@ public:
      */
     virtual bool changeTorDir(const QString &new_dir) = 0;
 
+    /*!
+     * \enum ChangeOutputOption
+     *
+     * Options used with bt::TorrentInterface::changeOutputDir to specify how to move the output directory.
+     *
+     * \var NO_OPTIONS
+     * Set the output directory without moving any files.
+     *
+     * \var MOVE_FILES
+     * Move all downloaded or partially downloaded files to the new output directory. If none of the files have been downloaded then you can omit this option.
+     *
+     * \var FULL_PATH
+     * The given path refers to the path of the torrent itself, rather than the parent directory. This option should be used for multi-file torrents to indicate
+     * that the output directory is the top-level directory of the torrent. For single-file torrents this option should be omitted and the new output directory
+     * is the parent directory of the file.
+     */
     enum ChangeOutputOption {
         NO_OPTIONS = 0,
         MOVE_FILES = 1,

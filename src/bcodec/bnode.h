@@ -31,6 +31,20 @@ class BListNode;
 class KTORRENT_EXPORT BNode
 {
 public:
+    /*!
+     * \enum Type
+     *
+     * Specifies the type of a bencoded node.
+     *
+     * \var VALUE
+     * A value node containing either a string or int.
+     *
+     * \var DICT
+     * A dictionary node.
+     *
+     * \var LIST
+     * A list node.
+     */
     enum Type {
         VALUE,
         DICT,

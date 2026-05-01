@@ -13,6 +13,23 @@
 
 namespace bt
 {
+/*!
+ * \enum TrackerStatus
+ *
+ * The current status of a tracker.
+ *
+ * \var TRACKER_OK
+ * The tracker has given a valid response.
+ *
+ * \var TRACKER_ANNOUNCING
+ * We have sent an announce request to a tracker and are awaiting a response.
+ *
+ * \var TRACKER_ERROR
+ * The tracker has sent an invalid response or has replied with a failure message.
+ *
+ * \var TRACKER_IDLE
+ * We are no longer communicating with this tracker, probably because the torrent has finished downloading.
+ */
 enum TrackerStatus {
     TRACKER_OK,
     TRACKER_ANNOUNCING,

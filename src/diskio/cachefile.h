@@ -48,6 +48,20 @@ public:
     CacheFile();
     ~CacheFile() override;
 
+    /*!
+     * \enum Mode
+     *
+     * Specifies how the cache file will be opened.
+     *
+     * \var READ
+     * Opened for read-only.
+     *
+     * \var WRITE
+     * Opened for write-only.
+     *
+     * \var RW
+     * Opened for read and write.
+     */
     enum Mode {
         READ,
         WRITE,

@@ -38,6 +38,23 @@ public:
     UDPTrackerSocket();
     ~UDPTrackerSocket() override;
 
+    /*!
+     * \enum Action
+     *
+     * The action field of a UDP tracker packet.
+     *
+     * \var CONNECT
+     * A connect packet.
+     *
+     * \var ANNOUNCE
+     * An announce packet.
+     *
+     * \var SCRAPE
+     * A scrape packet.
+     *
+     * \var ERROR
+     * An error packet.
+     */
     enum Action {
         CONNECT = 0,
         ANNOUNCE = 1,

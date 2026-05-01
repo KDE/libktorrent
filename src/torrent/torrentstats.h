@@ -18,6 +18,56 @@
 
 namespace bt
 {
+/*!
+ * \enum TorrentStatus
+ *
+ * Describes the status of the torrent.
+ *
+ * \var NOT_STARTED
+ * The torrent has not started downloading yet.
+ *
+ * \var SEEDING_COMPLETE
+ * The torrent has finished downloading and has reached the upload limit for seeding.
+ *
+ * \var DOWNLOAD_COMPLETE
+ * The torrent has finished downloading and is not running and therefore also not seeding.
+ *
+ * \var SEEDING
+ * The torrent has finished downloading and is available to seed.
+ *
+ * \var DOWNLOADING
+ * The torrent is actively being downloaded.
+ *
+ * \var STALLED
+ * The torrent is running but not being downloaded.
+ *
+ * \var STOPPED
+ * The torrent is not yet complete and not running.
+ *
+ * \var ALLOCATING_DISKSPACE
+ * The torrent is allocating space on the disk.
+ *
+ * \var ERROR
+ * An error has occurred.
+ *
+ * \var QUEUED
+ * The torrent is queued and therefore not running.
+ *
+ * \var CHECKING_DATA
+ * The torrent is checking the validity of the downloaded data.
+ *
+ * \var NO_SPACE_LEFT
+ * The torrent is not running and there is no disk space left for downloading.
+ *
+ * \var PAUSED
+ * The torrent is paused for this session.
+ *
+ * \var SUPERSEEDING
+ * The torrent is superseeding.
+ *
+ * \var INVALID_STATUS
+ * An unknown or invalid torrent status.
+ */
 enum TorrentStatus {
     NOT_STARTED,
     SEEDING_COMPLETE,

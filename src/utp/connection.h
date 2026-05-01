@@ -33,6 +33,17 @@ class KTORRENT_EXPORT Connection : public QObject, public Retransmitter
 {
     Q_OBJECT
 public:
+    /*!
+     * \enum Type
+     *
+     * Used in the constructor to set the initial state of the connection.
+     *
+     * \var INCOMING
+     * A peer has initiated the connection by sending us a SYN packet.
+     *
+     * \var OUTGOING
+     * We are initiating a connection and will send the first SYN packet.
+     */
     enum Type {
         INCOMING,
         OUTGOING,

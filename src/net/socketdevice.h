@@ -24,6 +24,26 @@ public:
     SocketDevice(bt::TransportProtocol proto);
     virtual ~SocketDevice();
 
+    /*!
+     * \enum State
+     *
+     * Describes the current state of the socket.
+     *
+     * \var IDLE
+     * The socket is open but not connected or bound.
+     *
+     * \var CONNECTING
+     * The socket is connecting to a remote address.
+     *
+     * \var CONNECTED
+     * The socket is connected to a remote address.
+     *
+     * \var BOUND
+     * The socket is bound to a specific address.
+     *
+     * \var CLOSED
+     * The socket is not open and therefore will not send or receive data.
+     */
     enum State {
         IDLE,
         CONNECTING,

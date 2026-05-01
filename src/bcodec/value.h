@@ -20,6 +20,20 @@ namespace bt
 class KTORRENT_EXPORT Value
 {
 public:
+    /*!
+     * \enum Type
+     *
+     * Specifies the type of a bencoded value node.
+     *
+     * \var STRING
+     * A string.
+     *
+     * \var INT
+     * A signed 32-bit integer.
+     *
+     * \var INT64
+     * A signed 64-bit integer.
+     */
     enum Type {
         STRING,
         INT,

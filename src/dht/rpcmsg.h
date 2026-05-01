@@ -23,6 +23,23 @@ constexpr auto MAX_TOKEN_SIZE = 40;
 
 class DHT;
 
+/*!
+ * \enum Type
+ *
+ * Specifies the type of a KRPC message, corresponding to the "y" key of the message.
+ *
+ * \var REQ_MSG
+ * A request message.
+ *
+ * \var RSP_MSG
+ * A response message.
+ *
+ * \var ERR_MSG
+ * An error message.
+ *
+ * \var INVALID
+ * An unknown or invalid message.
+ */
 enum Type {
     REQ_MSG,
     RSP_MSG,
@@ -30,6 +47,26 @@ enum Type {
     INVALID,
 };
 
+/*!
+ * \enum Method
+ *
+ * Specifies the type of a KRPC query message, corresponding to the "q" key of a query.
+ *
+ * \var PING
+ * A ping query.
+ *
+ * \var FIND_NODE
+ * A find_node query.
+ *
+ * \var GET_PEERS
+ * A get_peers query.
+ *
+ * \var ANNOUNCE_PEER
+ * An announce_peer query.
+ *
+ * \var NONE
+ * Used for non-query messages.
+ */
 enum Method {
     PING,
     FIND_NODE,

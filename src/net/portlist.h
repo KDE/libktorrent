@@ -12,6 +12,17 @@
 
 namespace net
 {
+/*!
+ * \enum Protocol
+ *
+ * Describes the transport layer protocols used by sockets.
+ *
+ * \var TCP
+ * Transmission control protocol.
+ *
+ * \var UDP
+ * User datagram protocol.
+ */
 enum Protocol {
     TCP,
     UDP,

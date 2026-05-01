@@ -20,14 +20,6 @@ class PieceData;
  * \headerfile diskio/chunk.h
  * \author Joris Guisson
  * \brief Keeps track of a chunk of a file. This can contain multiple bittorrent pieces.
- *
- * The Chunk has 3 possible states :
- * - MMAPPED : It is memory mapped
- * - BUFFERED : It is in a buffer in dynamically allocated memory
- *  (because the chunk is located in 2 or more separate files, so we cannot just set a pointer
- *   to a region of mmapped memory)
- * - ON_DISK : On disk
- * - NOT_DOWNLOADED : It hasn't been dowloaded yet, and there is no buffer allocated
  */
 class KTORRENT_EXPORT Chunk
 {
@@ -35,6 +27,17 @@ public:
     Chunk(Uint32 index, Uint32 size, Cache *cache);
     ~Chunk();
 
+    /*!
+     * \enum Status
+     *
+     * Indicates the current download status of a chunk.
+     *
+     * \var ON_DISK
+     * The chunk has been downloaded.
+     *
+     * \var NOT_DOWNLOADED
+     * The chunk has not been dowloaded yet and there is no buffer allocated.
+     */
     enum Status {
         ON_DISK,
         NOT_DOWNLOADED,

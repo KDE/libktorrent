@@ -57,6 +57,17 @@ public:
     Poll();
     virtual ~Poll();
 
+    /*!
+     * \enum Mode
+     *
+     * Describes whether the file descriptor should be polled for receiving or sending data.
+     *
+     * \var INPUT
+     * Checks whether there is data for the file descriptor to read.
+     *
+     * \var OUTPUT
+     * Checks whether the file descriptor can write without blocking.
+     */
     enum Mode {
         INPUT,
         OUTPUT,
