@@ -41,12 +41,12 @@ private Q_SLOTS:
         QVERIFY(!SeqNrCmpS(1, 65000));
         QVERIFY(SeqNrCmpS(65000, 1));
 
-        QVERIFY(SeqNrDiff(65535, 0) == 1);
-        QVERIFY(SeqNrDiff(0, 65535) == 1);
-        QVERIFY(SeqNrDiff(65535, 6) == 7);
-        QVERIFY(SeqNrDiff(6, 65535) == 7);
-        QVERIFY(SeqNrDiff(65530, 5) == 11);
-        QVERIFY(SeqNrDiff(5, 65530) == 11);
+        QCOMPARE(SeqNrDiff(65535, 0), 1);
+        QCOMPARE(SeqNrDiff(0, 65535), 1);
+        QCOMPARE(SeqNrDiff(65535, 6), 7);
+        QCOMPARE(SeqNrDiff(6, 65535), 7);
+        QCOMPARE(SeqNrDiff(65530, 5), 11);
+        QCOMPARE(SeqNrDiff(5, 65530), 11);
     }
 
     void testLocalWindow()
@@ -62,20 +62,20 @@ private Q_SLOTS:
 
         // write 500 bytes to it
         hdr.seq_nr = 2;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(500), 0) == true);
-        QVERIFY(wnd.availableSpace() == 500);
-        QVERIFY(wnd.currentWindow() == 500);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(500), 0));
+        QCOMPARE(wnd.availableSpace(), 500);
+        QCOMPARE(wnd.currentWindow(), 500);
 
         // write another 100 to it
         hdr.seq_nr++;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(100), 0) == true);
-        QVERIFY(wnd.availableSpace() == 400);
-        QVERIFY(wnd.currentWindow() == 600);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(100), 0));
+        QCOMPARE(wnd.availableSpace(), 400);
+        QCOMPARE(wnd.currentWindow(), 600);
 
         // read 300 from it
-        QVERIFY(wnd.read(wdata, 300) == 300);
-        QVERIFY(wnd.availableSpace() == 700);
-        QVERIFY(wnd.currentWindow() == 300);
+        QCOMPARE(wnd.read(wdata, 300), 300);
+        QCOMPARE(wnd.availableSpace(), 700);
+        QCOMPARE(wnd.currentWindow(), 300);
     }
 
     void testPacketLoss()
@@ -90,29 +90,29 @@ private Q_SLOTS:
 
         // write 500 bytes to it
         hdr.seq_nr = 2;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(500), 0) == true);
-        QVERIFY(wnd.availableSpace() == 500);
-        QVERIFY(wnd.currentWindow() == 500);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(500), 0));
+        QCOMPARE(wnd.availableSpace(), 500);
+        QCOMPARE(wnd.currentWindow(), 500);
 
         // write 100 bytes to it bit with the wrong sequence number
         hdr.seq_nr = 4;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(100), 0) == true);
-        QVERIFY(wnd.availableSpace() == 400);
-        QVERIFY(wnd.currentWindow() == 600);
-        QVERIFY(wnd.bytesAvailable() == 500);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(100), 0));
+        QCOMPARE(wnd.availableSpace(), 400);
+        QCOMPARE(wnd.currentWindow(), 600);
+        QCOMPARE(wnd.bytesAvailable(), 500);
 
         // Try to read all of it, but we should only get back 500
-        QVERIFY(wnd.read(wdata, 600) == 500);
-        QVERIFY(wnd.availableSpace() == 900);
-        QVERIFY(wnd.currentWindow() == 100);
-        QVERIFY(wnd.bytesAvailable() == 0);
+        QCOMPARE(wnd.read(wdata, 600), 500);
+        QCOMPARE(wnd.availableSpace(), 900);
+        QCOMPARE(wnd.currentWindow(), 100);
+        QCOMPARE(wnd.bytesAvailable(), 0);
 
         // write the missing packet
         hdr.seq_nr = 3;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(100), 0) == true);
-        QVERIFY(wnd.availableSpace() == 800);
-        QVERIFY(wnd.currentWindow() == 200);
-        QVERIFY(wnd.bytesAvailable() == 200);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(100), 0));
+        QCOMPARE(wnd.availableSpace(), 800);
+        QCOMPARE(wnd.currentWindow(), 200);
+        QCOMPARE(wnd.bytesAvailable(), 200);
     }
 
     void testPacketLoss2()
@@ -130,35 +130,35 @@ private Q_SLOTS:
         // first write first and last packet
         const bt::Uint32 step = 200;
         hdr.seq_nr = 1;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - step);
-        QVERIFY(wnd.currentWindow() == step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - step);
+        QCOMPARE(wnd.currentWindow(), step);
         hdr.seq_nr = 5;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - 2 * step);
-        QVERIFY(wnd.currentWindow() == 2 * step);
-        QVERIFY(wnd.bytesAvailable() == step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - 2 * step);
+        QCOMPARE(wnd.currentWindow(), 2 * step);
+        QCOMPARE(wnd.bytesAvailable(), step);
 
         // Now write 4
         hdr.seq_nr = 4;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - 3 * step);
-        QVERIFY(wnd.currentWindow() == 3 * step);
-        QVERIFY(wnd.bytesAvailable() == step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - 3 * step);
+        QCOMPARE(wnd.currentWindow(), 3 * step);
+        QCOMPARE(wnd.bytesAvailable(), step);
 
         // And then 3
         hdr.seq_nr = 3;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - 4 * step);
-        QVERIFY(wnd.currentWindow() == 4 * step);
-        QVERIFY(wnd.bytesAvailable() == step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - 4 * step);
+        QCOMPARE(wnd.currentWindow(), 4 * step);
+        QCOMPARE(wnd.bytesAvailable(), step);
 
         // And then 2
         hdr.seq_nr = 2;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - 5 * step);
-        QVERIFY(wnd.currentWindow() == 5 * step);
-        QVERIFY(wnd.bytesAvailable() == 5 * step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - 5 * step);
+        QCOMPARE(wnd.currentWindow(), 5 * step);
+        QCOMPARE(wnd.bytesAvailable(), 5 * step);
     }
 
     void testToMuchData()
@@ -174,15 +174,15 @@ private Q_SLOTS:
 
         // write 500 bytes to it
         hdr.seq_nr = 2;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(500), 0) == true);
-        QVERIFY(wnd.availableSpace() == 0);
-        QVERIFY(wnd.currentWindow() == 500);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(500), 0));
+        QCOMPARE(wnd.availableSpace(), 0);
+        QCOMPARE(wnd.currentWindow(), 500);
 
         // writing more data should now have no effect at all
         hdr.seq_nr = 3;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(500), 0) == false);
-        QVERIFY(wnd.availableSpace() == 0);
-        QVERIFY(wnd.currentWindow() == 500);
+        QVERIFY(!wnd.packetReceived(&hdr, pool.get(500), 0));
+        QCOMPARE(wnd.availableSpace(), 0);
+        QCOMPARE(wnd.currentWindow(), 500);
     }
 
     void testSelectiveAck()
@@ -199,70 +199,70 @@ private Q_SLOTS:
         // first write first and last packet
         const bt::Uint32 step = 200;
         hdr.seq_nr = 1;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - step);
-        QVERIFY(wnd.currentWindow() == step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - step);
+        QCOMPARE(wnd.currentWindow(), step);
         hdr.seq_nr = 5;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - 2 * step);
-        QVERIFY(wnd.currentWindow() == 2 * step);
-        QVERIFY(wnd.bytesAvailable() == step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - 2 * step);
+        QCOMPARE(wnd.currentWindow(), 2 * step);
+        QCOMPARE(wnd.bytesAvailable(), step);
 
         // Check SelectiveAck generation
-        QVERIFY(wnd.selectiveAckBits() == 3);
+        QCOMPARE(wnd.selectiveAckBits(), 3);
         bt::Uint8 sack_data[6];
         SelectiveAck sack;
         sack.length = 4;
         sack.extension = 0;
         sack.bitmask = sack_data + 2;
         wnd.fillSelectiveAck(&sack);
-        QVERIFY(sack_data[2] == 0x4);
-        QVERIFY(sack_data[3] == 0x0);
-        QVERIFY(sack_data[4] == 0x0);
-        QVERIFY(sack_data[5] == 0x0);
+        QCOMPARE(sack_data[2], 0x4);
+        QCOMPARE(sack_data[3], 0x0);
+        QCOMPARE(sack_data[4], 0x0);
+        QCOMPARE(sack_data[5], 0x0);
 
         // Now write 4
         hdr.seq_nr = 4;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - 3 * step);
-        QVERIFY(wnd.currentWindow() == 3 * step);
-        QVERIFY(wnd.bytesAvailable() == step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - 3 * step);
+        QCOMPARE(wnd.currentWindow(), 3 * step);
+        QCOMPARE(wnd.bytesAvailable(), step);
 
         // Check selective ack again
-        QVERIFY(wnd.selectiveAckBits() == 3);
+        QCOMPARE(wnd.selectiveAckBits(), 3);
         sack.length = 4;
         sack.extension = 0;
         wnd.fillSelectiveAck(&sack);
-        QVERIFY(sack_data[2] == 0x6);
-        QVERIFY(sack_data[3] == 0x0);
-        QVERIFY(sack_data[4] == 0x0);
-        QVERIFY(sack_data[5] == 0x0);
+        QCOMPARE(sack_data[2], 0x6);
+        QCOMPARE(sack_data[3], 0x0);
+        QCOMPARE(sack_data[4], 0x0);
+        QCOMPARE(sack_data[5], 0x0);
 
         // Now write 3
         hdr.seq_nr = 3;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - 4 * step);
-        QVERIFY(wnd.currentWindow() == 4 * step);
-        QVERIFY(wnd.bytesAvailable() == step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - 4 * step);
+        QCOMPARE(wnd.currentWindow(), 4 * step);
+        QCOMPARE(wnd.bytesAvailable(), step);
 
         // Check selective ack again
-        QVERIFY(wnd.selectiveAckBits() == 3);
+        QCOMPARE(wnd.selectiveAckBits(), 3);
         sack.length = 4;
         sack.extension = 0;
         wnd.fillSelectiveAck(&sack);
-        QVERIFY(sack_data[2] == 0x7);
-        QVERIFY(sack_data[3] == 0x0);
-        QVERIFY(sack_data[4] == 0x0);
-        QVERIFY(sack_data[5] == 0x0);
+        QCOMPARE(sack_data[2], 0x7);
+        QCOMPARE(sack_data[3], 0x0);
+        QCOMPARE(sack_data[4], 0x0);
+        QCOMPARE(sack_data[5], 0x0);
 
         // And then 2
         hdr.seq_nr = 2;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - 5 * step);
-        QVERIFY(wnd.currentWindow() == 5 * step);
-        QVERIFY(wnd.bytesAvailable() == 5 * step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - 5 * step);
+        QCOMPARE(wnd.currentWindow(), 5 * step);
+        QCOMPARE(wnd.bytesAvailable(), 5 * step);
         // selective ack should now be unnecessary
-        QVERIFY(wnd.selectiveAckBits() == 0);
+        QCOMPARE(wnd.selectiveAckBits(), 0);
     }
 
     void testSeqNrWrapAround()
@@ -278,20 +278,20 @@ private Q_SLOTS:
 
         // write 500 bytes to it
         hdr.seq_nr = 0;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(500), 0) == true);
-        QVERIFY(wnd.availableSpace() == 500);
-        QVERIFY(wnd.currentWindow() == 500);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(500), 0));
+        QCOMPARE(wnd.availableSpace(), 500);
+        QCOMPARE(wnd.currentWindow(), 500);
 
         // write another 100 to it
         hdr.seq_nr++;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(100), 0) == true);
-        QVERIFY(wnd.availableSpace() == 400);
-        QVERIFY(wnd.currentWindow() == 600);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(100), 0));
+        QCOMPARE(wnd.availableSpace(), 400);
+        QCOMPARE(wnd.currentWindow(), 600);
 
         // read 300 from it
-        QVERIFY(wnd.read(wdata, 300) == 300);
-        QVERIFY(wnd.availableSpace() == 700);
-        QVERIFY(wnd.currentWindow() == 300);
+        QCOMPARE(wnd.read(wdata, 300), 300);
+        QCOMPARE(wnd.availableSpace(), 700);
+        QCOMPARE(wnd.currentWindow(), 300);
     }
 
     void testSeqNrWrapAroundSelectiveAck()
@@ -308,70 +308,70 @@ private Q_SLOTS:
         // first write first and last packet
         const bt::Uint32 step = 200;
         hdr.seq_nr = 0;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - step);
-        QVERIFY(wnd.currentWindow() == step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - step);
+        QCOMPARE(wnd.currentWindow(), step);
         hdr.seq_nr = 4;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - 2 * step);
-        QVERIFY(wnd.currentWindow() == 2 * step);
-        QVERIFY(wnd.bytesAvailable() == step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - 2 * step);
+        QCOMPARE(wnd.currentWindow(), 2 * step);
+        QCOMPARE(wnd.bytesAvailable(), step);
 
         // Check SelectiveAck generation
-        QVERIFY(wnd.selectiveAckBits() == 3);
+        QCOMPARE(wnd.selectiveAckBits(), 3);
         bt::Uint8 sack_data[6];
         SelectiveAck sack;
         sack.length = 4;
         sack.extension = 0;
         sack.bitmask = sack_data + 2;
         wnd.fillSelectiveAck(&sack);
-        QVERIFY(sack_data[2] == 0x4);
-        QVERIFY(sack_data[3] == 0x0);
-        QVERIFY(sack_data[4] == 0x0);
-        QVERIFY(sack_data[5] == 0x0);
+        QCOMPARE(sack_data[2], 0x4);
+        QCOMPARE(sack_data[3], 0x0);
+        QCOMPARE(sack_data[4], 0x0);
+        QCOMPARE(sack_data[5], 0x0);
 
         // Now write 4
         hdr.seq_nr = 3;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - 3 * step);
-        QVERIFY(wnd.currentWindow() == 3 * step);
-        QVERIFY(wnd.bytesAvailable() == step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - 3 * step);
+        QCOMPARE(wnd.currentWindow(), 3 * step);
+        QCOMPARE(wnd.bytesAvailable(), step);
 
         // Check selective ack again
-        QVERIFY(wnd.selectiveAckBits() == 3);
+        QCOMPARE(wnd.selectiveAckBits(), 3);
         sack.length = 4;
         sack.extension = 0;
         wnd.fillSelectiveAck(&sack);
-        QVERIFY(sack_data[2] == 0x6);
-        QVERIFY(sack_data[3] == 0x0);
-        QVERIFY(sack_data[4] == 0x0);
-        QVERIFY(sack_data[5] == 0x0);
+        QCOMPARE(sack_data[2], 0x6);
+        QCOMPARE(sack_data[3], 0x0);
+        QCOMPARE(sack_data[4], 0x0);
+        QCOMPARE(sack_data[5], 0x0);
 
         // Now write 3
         hdr.seq_nr = 2;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - 4 * step);
-        QVERIFY(wnd.currentWindow() == 4 * step);
-        QVERIFY(wnd.bytesAvailable() == step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - 4 * step);
+        QCOMPARE(wnd.currentWindow(), 4 * step);
+        QCOMPARE(wnd.bytesAvailable(), step);
 
         // Check selective ack again
-        QVERIFY(wnd.selectiveAckBits() == 3);
+        QCOMPARE(wnd.selectiveAckBits(), 3);
         sack.length = 4;
         sack.extension = 0;
         wnd.fillSelectiveAck(&sack);
-        QVERIFY(sack_data[2] == 0x7);
-        QVERIFY(sack_data[3] == 0x0);
-        QVERIFY(sack_data[4] == 0x0);
-        QVERIFY(sack_data[5] == 0x0);
+        QCOMPARE(sack_data[2], 0x7);
+        QCOMPARE(sack_data[3], 0x0);
+        QCOMPARE(sack_data[4], 0x0);
+        QCOMPARE(sack_data[5], 0x0);
 
         // And then 2
         hdr.seq_nr = 1;
-        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0) == true);
-        QVERIFY(wnd.availableSpace() == wnd.windowCapacity() - 5 * step);
-        QVERIFY(wnd.currentWindow() == 5 * step);
-        QVERIFY(wnd.bytesAvailable() == 5 * step);
+        QVERIFY(wnd.packetReceived(&hdr, pool.get(step), 0));
+        QCOMPARE(wnd.availableSpace(), wnd.windowCapacity() - 5 * step);
+        QCOMPARE(wnd.currentWindow(), 5 * step);
+        QCOMPARE(wnd.bytesAvailable(), 5 * step);
         // selective ack should now be unnecessary
-        QVERIFY(wnd.selectiveAckBits() == 0);
+        QCOMPARE(wnd.selectiveAckBits(), 0);
     }
 
 private:

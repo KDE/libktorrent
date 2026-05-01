@@ -31,18 +31,15 @@ private Q_SLOTS:
         TimeValue a(1, 500000);
         TimeValue b(3, 200000);
 
-        QVERIFY(b >= a);
+        QCOMPARE_GT(b, a);
         bt::Int64 diff = b - a;
         Out(SYS_GEN | LOG_DEBUG) << "diff = " << diff << endl;
-        QVERIFY(b - a == 1700);
+        QCOMPARE(diff, 1700);
 
-        QVERIFY(b >= TimeValue(3, 200000));
-        QVERIFY(b >= TimeValue(3, 100000));
-        QVERIFY(b <= TimeValue(3, 200000));
-        QVERIFY(b <= TimeValue(3, 500000));
-
-        QVERIFY(b < TimeValue(3, 500000));
-        QVERIFY(b > TimeValue(3, 100000));
+        QCOMPARE_GT(b, TimeValue(3, 100000));
+        QCOMPARE_GE(b, TimeValue(3, 200000));
+        QCOMPARE_LE(b, TimeValue(3, 200000));
+        QCOMPARE_LT(b, TimeValue(3, 500000));
     }
 };
 

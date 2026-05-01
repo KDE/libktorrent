@@ -78,8 +78,8 @@ private:
             bt::Uint8 tmp[100];
             memset(tmp, 0, 100);
             int ret = incoming->recv(tmp, 100);
-            QVERIFY(ret == (int)strlen(test));
-            QVERIFY(memcmp(tmp, test, strlen(test)) == 0);
+            QCOMPARE(ret, (int)strlen(test));
+            QCOMPARE(memcmp(tmp, test, strlen(test)), 0);
 
             outgoing->close();
             if (incoming->connectionState() != CS_CLOSED) {
@@ -88,8 +88,8 @@ private:
 
             // connection should be closed now
             ret = incoming->recv(tmp, 100);
-            QVERIFY(incoming->connectionState() == CS_CLOSED);
-            QVERIFY(ret == -1);
+            QCOMPARE(incoming->connectionState(), CS_CLOSED);
+            QCOMPARE(ret, -1);
         } else {
             QFAIL("No data received");
         }

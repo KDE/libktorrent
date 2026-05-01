@@ -86,11 +86,11 @@ private Q_SLOTS:
         }
 
         Out(SYS_GEN | LOG_DEBUG) << "bw: " << prealloc.bytesWritten() << ", ts: " << multi_tor.getTotalSize() << endl;
-        QVERIFY(prealloc.errorHappened() == false);
-        QVERIFY(prealloc.bytesWritten() == multi_tor.getTotalSize());
+        QVERIFY(!prealloc.errorHappened());
+        QCOMPARE(prealloc.bytesWritten(), multi_tor.getTotalSize());
 
         for (bt::Uint32 i = 0; i < multi_tor.getNumFiles(); i++) {
-            QVERIFY(bt::FileSize(multi_tor.getFile(i).getPathOnDisk()) == multi_tor.getFile(i).getSize());
+            QCOMPARE(bt::FileSize(multi_tor.getFile(i).getPathOnDisk()), multi_tor.getFile(i).getSize());
         }
     }
 
@@ -111,9 +111,9 @@ private Q_SLOTS:
         }
 
         Out(SYS_GEN | LOG_DEBUG) << "bw: " << prealloc.bytesWritten() << ", ts: " << single_tor.getTotalSize() << endl;
-        QVERIFY(prealloc.errorHappened() == false);
-        QVERIFY(prealloc.bytesWritten() == single_tor.getTotalSize());
-        QVERIFY(bt::FileSize(single_creator.dataPath()) == single_tor.getTotalSize());
+        QVERIFY(!prealloc.errorHappened());
+        QCOMPARE(prealloc.bytesWritten(), single_tor.getTotalSize());
+        QCOMPARE(bt::FileSize(single_creator.dataPath()), single_tor.getTotalSize());
     }
 
 private:

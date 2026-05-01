@@ -79,7 +79,7 @@ private Q_SLOTS:
         bool error = false;
         try {
             const auto list = dec.decodeList();
-            QVERIFY(list != nullptr);
+            QVERIFY(list);
 
             QCOMPARE(list->getInt(0), 1);
             QCOMPARE(list->getByteArray(1), "kde");
@@ -100,7 +100,7 @@ private Q_SLOTS:
         bool error = false;
         try {
             const auto dict = dec.decodeDict();
-            QVERIFY(dict != nullptr);
+            QVERIFY(dict);
 
             QCOMPARE(dict->getInt("a"), 1);
             QCOMPARE(dict->getList("b")->getBytes(), "li2e3:kdee");
@@ -120,7 +120,7 @@ private Q_SLOTS:
         bool error = false;
         try {
             const auto dict = dec.decodeDict();
-            QVERIFY(dict != nullptr);
+            QVERIFY(dict);
 
             QCOMPARE(dict->getInt("a"), 1);
 

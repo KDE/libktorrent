@@ -49,11 +49,11 @@ private Q_SLOTS:
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), nullptr);
 
-            QVERIFY(msg->getType() == dht::ERR_MSG);
+            QCOMPARE(msg->getType(), dht::ERR_MSG);
             const auto err = dynamic_cast<const dht::ErrMsg *>(msg.get());
             QVERIFY(err);
             QCOMPARE(err->message(), "A Generic Error Ocurred"_L1);
-            QVERIFY(err->getMTID() == QByteArray("aa"));
+            QCOMPARE(err->getMTID(), QByteArray("aa"));
 
         } catch (bt::Error &e) {
             QFAIL(e.toString().toLocal8Bit().data());
@@ -93,8 +93,8 @@ private Q_SLOTS:
             try {
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
                 QVERIFY(msg);
-                QVERIFY(msg->getMTID() == QByteArray("aa"));
-                QVERIFY(msg->getMethod() == dht::PING);
+                QCOMPARE(msg->getMTID(), QByteArray("aa"));
+                QCOMPARE(msg->getMethod(), dht::PING);
             } catch (bt::Error &e) {
                 QFAIL(e.toString().toLocal8Bit().data());
             }
@@ -116,8 +116,8 @@ private Q_SLOTS:
             try {
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
                 QVERIFY(msg);
-                QVERIFY(msg->getMTID() == QByteArray("aa"));
-                QVERIFY(msg->getMethod() == dht::FIND_NODE);
+                QCOMPARE(msg->getMTID(), QByteArray("aa"));
+                QCOMPARE(msg->getMethod(), dht::FIND_NODE);
             } catch (bt::Error &e) {
                 QFAIL(e.toString().toLocal8Bit().data());
             }
@@ -139,8 +139,8 @@ private Q_SLOTS:
             try {
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
                 QVERIFY(msg);
-                QVERIFY(msg->getMTID() == QByteArray("aa"));
-                QVERIFY(msg->getMethod() == dht::GET_PEERS);
+                QCOMPARE(msg->getMTID(), QByteArray("aa"));
+                QCOMPARE(msg->getMethod(), dht::GET_PEERS);
             } catch (bt::Error &e) {
                 QFAIL(e.toString().toLocal8Bit().data());
             }
@@ -161,8 +161,8 @@ private Q_SLOTS:
             try {
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
                 QVERIFY(msg);
-                QVERIFY(msg->getMTID() == QByteArray("aa"));
-                QVERIFY(msg->getMethod() == dht::ANNOUNCE_PEER);
+                QCOMPARE(msg->getMTID(), QByteArray("aa"));
+                QCOMPARE(msg->getMethod(), dht::ANNOUNCE_PEER);
             } catch (bt::Error &e) {
                 QFAIL(e.toString().toLocal8Bit().data());
             }

@@ -91,22 +91,22 @@ private Q_SLOTS:
             QVERIFY(stream);
             QVERIFY(!stream->open(QIODevice::ReadWrite));
             QVERIFY(stream->open(QIODevice::ReadOnly));
-            QVERIFY(stream->size() == (qint64)tc.getTorrentFile(i).getSize());
+            QCOMPARE(stream->size(), (qint64)tc.getTorrentFile(i).getSize());
 
             QByteArray tmp(stream->size(), 0);
             qint64 written = 0;
             while (written < stream->size()) {
                 const qint64 ret = stream->read(tmp.data(), stream->size());
                 Out(SYS_GEN | LOG_DEBUG) << "Returned " << ret << endl;
-                QVERIFY(ret == stream->size());
+                QCOMPARE(ret, stream->size());
                 written += ret;
 
                 // Load the file and check if the data is the same
                 QFile fptr(stream->path());
                 QVERIFY(fptr.open(QIODevice::ReadOnly));
                 QByteArray tmp2(stream->size(), 0);
-                QVERIFY(fptr.read(tmp2.data(), stream->size()) == stream->size());
-                QVERIFY(tmp == tmp2);
+                QCOMPARE(fptr.read(tmp2.data(), stream->size()), stream->size());
+                QCOMPARE(tmp, tmp2);
             }
 
             stream->close();
@@ -124,7 +124,7 @@ private Q_SLOTS:
             QVERIFY(stream);
             QVERIFY(!stream->open(QIODevice::ReadWrite));
             QVERIFY(stream->open(QIODevice::ReadOnly));
-            QVERIFY(stream->size() == (qint64)tc.getTorrentFile(i).getSize());
+            QCOMPARE(stream->size(), (qint64)tc.getTorrentFile(i).getSize());
 
             QFile fptr(stream->path());
             QVERIFY(fptr.open(QIODevice::ReadOnly));
@@ -135,11 +135,11 @@ private Q_SLOTS:
                 QVERIFY(fptr.seek(off));
 
                 QByteArray sdata(256, 0);
-                QVERIFY(stream->read(sdata.data(), 256) == 256);
+                QCOMPARE(stream->read(sdata.data(), 256), 256);
 
                 QByteArray fdata(256, 0);
-                QVERIFY(fptr.read(fdata.data(), 256) == 256);
-                QVERIFY(sdata == fdata);
+                QCOMPARE(fptr.read(fdata.data(), 256), 256);
+                QCOMPARE(sdata, fdata);
             }
             stream->close();
         }

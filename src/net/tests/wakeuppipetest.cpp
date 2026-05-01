@@ -40,7 +40,7 @@ private Q_SLOTS:
         p->wakeUp();
 
         poll.add(p);
-        QVERIFY(poll.poll() > 0);
+        QCOMPARE_GT(poll.poll(), 0);
     }
 
     void testEmptyWakeUp()
@@ -48,7 +48,7 @@ private Q_SLOTS:
         const WakeUpPipe::Ptr p(new WakeUpPipe);
         Poll poll;
         poll.add(p);
-        QVERIFY(poll.poll(100) == 0);
+        QCOMPARE(poll.poll(100), 0);
     }
 
 private:

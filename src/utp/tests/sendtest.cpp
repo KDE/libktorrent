@@ -67,7 +67,7 @@ private:
 
         QTimer::singleShot(5000, this, &SendTest::endEventLoop); // use a 5 second timeout
         exec();
-        QVERIFY(incoming != nullptr);
+        QVERIFY(incoming);
 
         // Wait until connection is complete
         int times = 0;
@@ -84,13 +84,13 @@ private:
         char test[] = "TEST";
 
         int ret = outgoing->send((const bt::Uint8 *)test, strlen(test));
-        QVERIFY(ret == (int)strlen(test));
+        QCOMPARE(ret, (int)strlen(test));
 
         char tmp[20];
         memset(tmp, 0, 20);
         ret = incoming->recv((bt::Uint8 *)tmp, 20);
-        QVERIFY(ret == 4);
-        QVERIFY(memcmp(tmp, test, ret) == 0);
+        QCOMPARE(ret, 4);
+        QCOMPARE(memcmp(tmp, test, ret), 0);
     }
 
     void testSend2()
@@ -101,8 +101,8 @@ private:
 
         bt::Uint8 *rdata = new bt::Uint8[1000];
         const int ret = incoming->recv(rdata, 1000);
-        QVERIFY(ret == 1000);
-        QVERIFY(memcmp(sdata, rdata, ret) == 0);
+        QCOMPARE(ret, 1000);
+        QCOMPARE(memcmp(sdata, rdata, ret), 0);
 
         delete[] rdata;
         delete[] sdata;
@@ -119,13 +119,13 @@ private:
         char tmp[20];
         memset(tmp, 0, 20);
         int ret = incoming->recv((bt::Uint8 *)tmp, 20);
-        QVERIFY(ret == 4);
-        QVERIFY(memcmp(tmp, test, ret) == 0);
+        QCOMPARE(ret, 4);
+        QCOMPARE(memcmp(tmp, test, ret), 0);
 
         memset(tmp, 0, 20);
         ret = outgoing->recv((bt::Uint8 *)tmp, 20);
-        QVERIFY(ret == 4);
-        QVERIFY(memcmp(tmp, test, ret) == 0);
+        QCOMPARE(ret, 4);
+        QCOMPARE(memcmp(tmp, test, ret), 0);
     }
 
     void testSend4()
@@ -140,14 +140,14 @@ private:
         memset(tmp, 0, 20);
         int ret = incoming->recv((bt::Uint8 *)tmp, 20);
         QVERIFY(ret == 4 || ret == 8);
-        QVERIFY(memcmp(tmp, test, 4) == 0);
+        QCOMPARE(memcmp(tmp, test, 4), 0);
         if (ret != 8) {
             memset(tmp, 0, 20);
             ret = incoming->recv((bt::Uint8 *)tmp, 20);
-            QVERIFY(ret == 4);
-            QVERIFY(memcmp(tmp, test, ret) == 0);
+            QCOMPARE(ret, 4);
+            QCOMPARE(memcmp(tmp, test, ret), 0);
         } else {
-            QVERIFY(memcmp(tmp + 4, test, 4) == 0);
+            QCOMPARE(memcmp(tmp + 4, test, 4), 0);
         }
     }
 

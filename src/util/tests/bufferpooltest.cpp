@@ -33,19 +33,19 @@ private Q_SLOTS:
 
         auto a = pool->get(1000);
         QVERIFY(a);
-        QVERIFY(a->size() == 1000);
-        QVERIFY(a->capacity() == 1000);
+        QCOMPARE(a->size(), 1000);
+        QCOMPARE(a->capacity(), 1000);
         a.reset();
 
         a = pool->get(500);
         QVERIFY(a);
-        QVERIFY(a->size() == 500);
-        QVERIFY(a->capacity() == 1000);
+        QCOMPARE(a->size(), 500);
+        QCOMPARE(a->capacity(), 1000);
 
         auto b = pool->get(2000);
         QVERIFY(b);
-        QVERIFY(b->size() == 2000);
-        QVERIFY(b->capacity() == 2000);
+        QCOMPARE(b->size(), 2000);
+        QCOMPARE(b->capacity(), 2000);
     }
 };
 

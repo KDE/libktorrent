@@ -88,12 +88,12 @@ private Q_SLOTS:
         bt::Uint32 idx = 0;
         while (written < TEST_FILE_SIZE) {
             const qint64 ret = stream->read(tmp.data(), tc.getStats().chunk_size);
-            QVERIFY(ret == tc.getStats().chunk_size);
+            QCOMPARE(ret, tc.getStats().chunk_size);
             written += tc.getStats().chunk_size;
 
             // Verify the hash
             const bt::SHA1Hash hash = bt::SHA1Hash::generate(tmp);
-            QVERIFY(hash == tc.getTorrent().getHash(idx));
+            QCOMPARE(hash, tc.getTorrent().getHash(idx));
             idx++;
         }
 
@@ -130,17 +130,17 @@ private Q_SLOTS:
 
             QVERIFY(stream->seek(idx * tc.getStats().chunk_size + split));
             qint64 ret = stream->read(tmp.data() + split, chunk_size - split);
-            QVERIFY(ret == (chunk_size - split));
+            QCOMPARE(ret, (chunk_size - split));
             written += ret;
 
             QVERIFY(stream->seek(idx * tc.getStats().chunk_size));
             ret = stream->read(tmp.data(), split);
-            QVERIFY(ret == split);
+            QCOMPARE(ret, split);
             written += ret;
 
             // Verify the hash
             const bt::SHA1Hash hash = bt::SHA1Hash::generate(tmp);
-            QVERIFY(hash == tc.getTorrent().getHash(idx));
+            QCOMPARE(hash, tc.getTorrent().getHash(idx));
             idx++;
         }
 
@@ -172,7 +172,7 @@ private Q_SLOTS:
             const qint64 ret = stream->read(range.data() + bytes_read, range_size - bytes_read);
             Out(SYS_GEN | LOG_DEBUG) << "ret = " << ret << endl;
             Out(SYS_GEN | LOG_DEBUG) << "read = " << bytes_read << endl;
-            QVERIFY(ret > 0);
+            QCOMPARE_GT(ret, 0);
             bytes_read += ret;
         }
 
@@ -181,11 +181,11 @@ private Q_SLOTS:
             QVERIFY(fptr.open(QIODevice::ReadOnly));
             QByteArray tmp(range_size, 0);
             fptr.seek(off);
-            QVERIFY(fptr.read(tmp.data(), range_size) == range_size);
-            QVERIFY(tmp == range);
+            QCOMPARE(fptr.read(tmp.data(), range_size), range_size);
+            QCOMPARE(tmp, range);
         }
 
-        QVERIFY(bytes_read == range_size);
+        QCOMPARE(bytes_read, range_size);
 
         // Calculate the offset of the first chunk in range
         qint64 chunk_idx = off / tc.getStats().chunk_size;
@@ -204,7 +204,7 @@ private Q_SLOTS:
 
             Out(SYS_GEN | LOG_DEBUG) << "chash = " << hash.toString() << endl;
             Out(SYS_GEN | LOG_DEBUG) << "whash = " << tc.getTorrent().getHash(chunk_idx).toString() << endl;
-            QVERIFY(hash == tc.getTorrent().getHash(chunk_idx));
+            QCOMPARE(hash, tc.getTorrent().getHash(chunk_idx));
             chunk_idx++;
             chunk_off += tc.getStats().chunk_size;
         }
@@ -228,13 +228,13 @@ private Q_SLOTS:
             // Seek to a random location
             QVERIFY(stream->seek(off));
             QByteArray tmp(100, 0);
-            QVERIFY(stream->read(tmp.data(), 100) == 100);
+            QCOMPARE(stream->read(tmp.data(), 100), 100);
 
             // Verify those
             QByteArray tmp2(100, 0);
             fptr.seek(off);
-            QVERIFY(fptr.read(tmp2.data(), 100) == 100);
-            QVERIFY(tmp == tmp2);
+            QCOMPARE(fptr.read(tmp2.data(), 100), 100);
+            QCOMPARE(tmp, tmp2);
         }
 
         stream->close();
@@ -255,9 +255,9 @@ private Q_SLOTS:
     void testSeekToUndownloadedSection()
     {
         const bt::TorrentFileStream::Ptr a = incomplete_tc.createTorrentFileStream(0, true, this);
-        QVERIFY(incomplete_tc.getStats().completed == false);
+        QVERIFY(!incomplete_tc.getStats().completed);
         QVERIFY(a->seek(TEST_FILE_SIZE / 2));
-        QVERIFY(a->bytesAvailable() == 0);
+        QCOMPARE(a->bytesAvailable(), 0);
     }
 
 private:

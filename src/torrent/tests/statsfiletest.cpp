@@ -76,12 +76,12 @@ private Q_SLOTS:
         int idx = 0;
         for (const QString &key : std::as_const(keys)) {
             QVERIFY(st.hasKey(key));
-            QVERIFY(st.readString(key) == values[idx++]);
+            QCOMPARE(st.readString(key), values[idx++]);
         }
 
-        QVERIFY(st.readInt(u"RUNNING_TIME_DL"_s) == 7042);
-        QVERIFY(st.readInt(u"RUNNING_TIME_UL"_s) == 7042);
-        QVERIFY(st.readBoolean(u"DHT"_s) == true);
+        QCOMPARE(st.readInt(u"RUNNING_TIME_DL"_s), 7042);
+        QCOMPARE(st.readInt(u"RUNNING_TIME_UL"_s), 7042);
+        QVERIFY(st.readBoolean(u"DHT"_s));
     }
 
     void testWrite()
@@ -91,7 +91,7 @@ private Q_SLOTS:
         sta.sync();
 
         StatsFile stb(file.fileName());
-        QVERIFY(stb.readInt(u"DINGES"_s) == 1234);
+        QCOMPARE(stb.readInt(u"DINGES"_s), 1234);
     }
 
 private:

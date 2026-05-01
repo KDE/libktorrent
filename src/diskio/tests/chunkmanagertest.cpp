@@ -64,7 +64,9 @@ private Q_SLOTS:
 
         try {
             PieceData::Ptr ptr = c->getPiece(0, MAX_PIECE_LEN, true);
-            QVERIFY(ptr && ptr->data() && ptr->inUse());
+            QVERIFY(ptr);
+            QVERIFY(ptr->data());
+            QVERIFY(ptr->inUse());
 
             PieceData::Ptr f = c->getPiece(0, c->getSize(), true);
             QVERIFY(f);

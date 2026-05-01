@@ -52,7 +52,7 @@ private:
 
         srv.setCreateSockets(false);
         srv.start();
-        QVERIFY(port < 60000);
+        QCOMPARE_LT(port, 60000);
     }
 
     void cleanupTestCase()
@@ -65,7 +65,7 @@ private:
         connect(&srv, &utp::UTPServer::accepted, this, &ConnectTest::accepted, Qt::QueuedConnection);
         QTimer::singleShot(0, this, &ConnectTest::startConnect);
         exec();
-        QVERIFY(accepted_conn != nullptr);
+        QVERIFY(accepted_conn);
     }
 
 private:

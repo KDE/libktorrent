@@ -187,8 +187,8 @@ private:
         Out(SYS_UTP | LOG_DEBUG) << "Received " << received << " bytes:" << endl;
         Out(SYS_UTP | LOG_DEBUG) << received_data << endl;
         incoming->dumpStats();
-        QVERIFY(incoming->bytesAvailable() == 0);
-        QVERIFY(received_data.count(TEST_DATA) == PACKETS_TO_SEND);
+        QCOMPARE(incoming->bytesAvailable(), 0);
+        QCOMPARE(received_data.count(TEST_DATA), PACKETS_TO_SEND);
         QVERIFY(outgoing->allDataSent());
     }
 

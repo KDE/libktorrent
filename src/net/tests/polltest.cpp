@@ -39,17 +39,17 @@ private Q_SLOTS:
         Poll p;
         Pipe pipe;
 
-        QVERIFY(pipe.readerSocket() >= 0);
-        QVERIFY(pipe.writerSocket() >= 0);
-        QVERIFY(p.add(pipe.readerSocket(), Poll::INPUT) == 0);
+        QCOMPARE_GE(pipe.readerSocket(), 0);
+        QCOMPARE_GE(pipe.writerSocket(), 0);
+        QCOMPARE(p.add(pipe.readerSocket(), Poll::INPUT), 0);
         char test[] = "TEST";
-        QVERIFY(pipe.write((const bt::Uint8 *)test, 4) == 4);
-        QVERIFY(p.poll() == 1);
+        QCOMPARE(pipe.write((const bt::Uint8 *)test, 4), 4);
+        QCOMPARE(p.poll(), 1);
         QVERIFY(p.ready(0, net::Poll::INPUT));
 
         bt::Uint8 tmp[20];
-        QVERIFY(pipe.read(tmp, 20) == 4);
-        QVERIFY(memcmp(tmp, test, 4) == 0);
+        QCOMPARE(pipe.read(tmp, 20), 4);
+        QCOMPARE(memcmp(tmp, test, 4), 0);
     }
 
     void testOutput()
@@ -57,10 +57,10 @@ private Q_SLOTS:
         Poll p;
         const Pipe pipe;
 
-        QVERIFY(pipe.readerSocket() >= 0);
-        QVERIFY(pipe.writerSocket() >= 0);
-        QVERIFY(p.add(pipe.writerSocket(), Poll::OUTPUT) == 0);
-        QVERIFY(p.poll() == 1);
+        QCOMPARE_GE(pipe.readerSocket(), 0);
+        QCOMPARE_GE(pipe.writerSocket(), 0);
+        QCOMPARE(p.add(pipe.writerSocket(), Poll::OUTPUT), 0);
+        QCOMPARE(p.poll(), 1);
     }
 
     void testMultiplePolls()
@@ -68,23 +68,23 @@ private Q_SLOTS:
         Poll p;
         Pipe pipe;
 
-        QVERIFY(pipe.readerSocket() >= 0);
-        QVERIFY(pipe.writerSocket() >= 0);
+        QCOMPARE_GE(pipe.readerSocket(), 0);
+        QCOMPARE_GE(pipe.writerSocket(), 0);
 
         char test[] = "TEST";
-        QVERIFY(pipe.write((const bt::Uint8 *)test, 4) == 4);
+        QCOMPARE(pipe.write((const bt::Uint8 *)test, 4), 4);
 
         for (int i = 0; i < 10; i++) {
-            QVERIFY(p.add(pipe.readerSocket(), Poll::INPUT) == 0);
-            QVERIFY(p.poll() == 1);
+            QCOMPARE(p.add(pipe.readerSocket(), Poll::INPUT), 0);
+            QCOMPARE(p.poll(), 1);
             QVERIFY(p.ready(0, net::Poll::INPUT));
             p.reset();
         }
 
         bt::Uint8 tmp[20];
-        QVERIFY(pipe.read(tmp, 20) == 4);
-        QVERIFY(memcmp(tmp, test, 4) == 0);
-        QVERIFY(p.poll(100) == 0);
+        QCOMPARE(pipe.read(tmp, 20), 4);
+        QCOMPARE(memcmp(tmp, test, 4), 0);
+        QCOMPARE(p.poll(100), 0);
     }
 
     void testTimeout()
@@ -92,10 +92,10 @@ private Q_SLOTS:
         Poll p;
         const Pipe pipe;
 
-        QVERIFY(pipe.readerSocket() >= 0);
-        QVERIFY(pipe.writerSocket() >= 0);
-        QVERIFY(p.add(pipe.readerSocket(), Poll::INPUT) == 0);
-        QVERIFY(p.poll(100) == 0);
+        QCOMPARE_GE(pipe.readerSocket(), 0);
+        QCOMPARE_GE(pipe.writerSocket(), 0);
+        QCOMPARE(p.add(pipe.readerSocket(), Poll::INPUT), 0);
+        QCOMPARE(p.poll(100), 0);
     }
 
     void testSocket_data()
@@ -125,9 +125,9 @@ private Q_SLOTS:
         net::Poll poll;
         sock.prepare(&poll, net::Poll::INPUT);
 
-        QVERIFY(poll.poll(1000) > 0);
+        QCOMPARE_GT(poll.poll(1000), 0);
         const int fd = sock.accept(dummy);
-        QVERIFY(fd >= 0);
+        QCOMPARE_GE(fd, 0);
 
         poll.reset();
         QVERIFY(writer.connectSuccesFull());
@@ -136,14 +136,14 @@ private Q_SLOTS:
 
         bt::Uint8 data[20];
         memset(data, 0xFF, 20);
-        QVERIFY(writer.send(data, 20) == 20);
+        QCOMPARE(writer.send(data, 20), 20);
         reader.prepare(&poll, net::Poll::INPUT);
 
-        QVERIFY(poll.poll(1000) > 0);
+        QCOMPARE_GT(poll.poll(1000), 0);
 
         bt::Uint8 tmp[20];
-        QVERIFY(reader.recv(tmp, 20) == 20);
-        QVERIFY(memcmp(tmp, data, 20) == 0);
+        QCOMPARE(reader.recv(tmp, 20), 20);
+        QCOMPARE(memcmp(tmp, data, 20), 0);
     }
 
 private:

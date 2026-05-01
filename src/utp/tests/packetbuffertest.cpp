@@ -37,10 +37,10 @@ private Q_SLOTS:
         cbuf.write(tmp, 200);
 
         utp::PacketBuffer pbuf;
-        QVERIFY(pbuf.fillData(cbuf, 200) == 200);
-        QVERIFY(pbuf.payloadSize() == 200);
-        QVERIFY(pbuf.bufferSize() == 200);
-        QVERIFY(memcmp(pbuf.data(), tmp, 200) == 0);
+        QCOMPARE(pbuf.fillData(cbuf, 200), 200);
+        QCOMPARE(pbuf.payloadSize(), 200);
+        QCOMPARE(pbuf.bufferSize(), 200);
+        QCOMPARE(memcmp(pbuf.data(), tmp, 200), 0);
 
         utp::Header hdr;
         memset(&hdr, 0, sizeof(utp::Header));
@@ -54,24 +54,24 @@ private Q_SLOTS:
         hdr.wnd_size = 6000;
 
         pbuf.setHeader(hdr, 0);
-        QVERIFY(pbuf.bufferSize() == 200 + utp::Header::size());
-        QVERIFY(memcmp(pbuf.data() + utp::Header::size(), tmp, 200) == 0);
-        QVERIFY(pbuf.payloadSize() == 200);
+        QCOMPARE(pbuf.bufferSize(), 200 + utp::Header::size());
+        QCOMPARE(memcmp(pbuf.data() + utp::Header::size(), tmp, 200), 0);
+        QCOMPARE(pbuf.payloadSize(), 200);
 
         utp::Header hdr2;
         memset(&hdr2, 0, sizeof(utp::Header));
         hdr2.read(pbuf.data());
-        QVERIFY(memcmp(&hdr, &hdr2, sizeof(utp::Header)) == 0);
+        QCOMPARE(memcmp(&hdr, &hdr2, sizeof(utp::Header)), 0);
 
         pbuf.setHeader(hdr, 4);
-        QVERIFY(pbuf.bufferSize() == 200 + utp::Header::size() + 4);
-        QVERIFY(memcmp(pbuf.data() + utp::Header::size() + 4, tmp, 200) == 0);
-        QVERIFY(pbuf.payloadSize() == 200);
+        QCOMPARE(pbuf.bufferSize(), 200 + utp::Header::size() + 4);
+        QCOMPARE(memcmp(pbuf.data() + utp::Header::size() + 4, tmp, 200), 0);
+        QCOMPARE(pbuf.payloadSize(), 200);
 
         utp::Header hdr3;
         memset(&hdr3, 0, sizeof(utp::Header));
         hdr3.read(pbuf.data());
-        QVERIFY(memcmp(&hdr, &hdr3, sizeof(utp::Header)) == 0);
+        QCOMPARE(memcmp(&hdr, &hdr3, sizeof(utp::Header)), 0);
     }
 
     void testData()
@@ -81,9 +81,9 @@ private Q_SLOTS:
 
         utp::PacketBuffer pbuf;
         pbuf.fillData(tmp, 200);
-        QVERIFY(pbuf.bufferSize() == 200);
-        QVERIFY(pbuf.payloadSize() == 200);
-        QVERIFY(memcmp(pbuf.data(), tmp, 200) == 0);
+        QCOMPARE(pbuf.bufferSize(), 200);
+        QCOMPARE(pbuf.payloadSize(), 200);
+        QCOMPARE(memcmp(pbuf.data(), tmp, 200), 0);
     }
 };
 

@@ -126,7 +126,6 @@ private Q_SLOTS:
 
         ExtendedStreamingChunkSelector *csel = new ExtendedStreamingChunkSelector();
         tc.setChunkSelector(std::unique_ptr<ExtendedStreamingChunkSelector>(csel));
-        QVERIFY(csel != nullptr);
         csel->setSequentialRange(0, 50);
 
         for (Uint32 i = 0; i < 50; i++) {
@@ -134,7 +133,7 @@ private Q_SLOTS:
             Uint32 selected = 0xFFFFFFFF;
             QVERIFY(csel->select(&dd, selected));
             Out(SYS_GEN) << "i = " << i << ", selected = " << selected << endl;
-            QVERIFY(selected == i);
+            QCOMPARE(selected, i);
             csel->markDownloaded(i);
         }
 
@@ -159,9 +158,8 @@ private Q_SLOTS:
 
         ExtendedStreamingChunkSelector *csel = new ExtendedStreamingChunkSelector();
         tc.setChunkSelector(std::unique_ptr<ExtendedStreamingChunkSelector>(csel));
-        QVERIFY(csel != nullptr);
         Downloader *downer = csel->downloader();
-        QVERIFY(downer != nullptr);
+        QVERIFY(downer);
 
         // Check that critical chunks are spread over multiple peers
         csel->setSequentialRange(20, 60);
@@ -174,11 +172,11 @@ private Q_SLOTS:
         downer->update();
         for (Uint32 i = 20; i < csel->criticialWindowSize(); i++) {
             QVERIFY(downer->downloading(i));
-            QVERIFY(downer->download(i)->getNumDownloaders() == 32 / csel->criticialWindowSize());
+            QCOMPARE(downer->download(i)->getNumDownloaders(), 32 / csel->criticialWindowSize());
         }
 
         for (Uint32 i = 0; i < 32; i++) {
-            QVERIFY(dd[i].getNumGrabbed() == 1);
+            QCOMPARE(dd[i].getNumGrabbed(), 1);
         }
 
         for (Uint32 i = 0; i < 32; i++) {

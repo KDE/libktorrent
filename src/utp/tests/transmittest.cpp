@@ -177,11 +177,11 @@ private Q_SLOTS:
         exec();
         QVERIFY(outgoing);
         QVERIFY(incoming);
-        QVERIFY(incoming->connectionState() == CS_CONNECTED);
+        QCOMPARE(incoming->connectionState(), CS_CONNECTED);
         if (outgoing->connectionState() != CS_CONNECTED) {
             QVERIFY(outgoing->waitUntilConnected());
         }
-        QVERIFY(outgoing->connectionState() == CS_CONNECTED);
+        QCOMPARE(outgoing->connectionState(), CS_CONNECTED);
     }
 
     void testThreaded()
@@ -206,7 +206,7 @@ private Q_SLOTS:
                 QByteArray data(ba, 0);
                 const int to_read = ba; //;qMin<bt::Uint32>(1024,ba);
                 const int ret = incoming->recv((bt::Uint8 *)data.data(), to_read);
-                QVERIFY(ret == to_read);
+                QCOMPARE(ret, to_read);
                 if (ret > 0) {
                     hgen.update(data);
                     received += ret;
@@ -220,15 +220,15 @@ private Q_SLOTS:
         st.wait();
         Out(SYS_UTP | LOG_DEBUG) << "Received " << received << endl;
         incoming->dumpStats();
-        QVERIFY(incoming->bytesAvailable() == 0);
+        QCOMPARE(incoming->bytesAvailable(), 0);
         QVERIFY(outgoing->allDataSent());
-        QVERIFY(received >= BYTES_TO_SEND);
+        QCOMPARE_GE(received, BYTES_TO_SEND);
 
         hgen.end();
         const SHA1Hash rhash = hgen.get();
         Out(SYS_UTP | LOG_DEBUG) << "Received data hash: " << rhash.toString() << endl;
         Out(SYS_UTP | LOG_DEBUG) << "Sent data hash:     " << st.sent_hash.toString() << endl;
-        QVERIFY(rhash == st.sent_hash);
+        QCOMPARE(rhash, st.sent_hash);
     }
 
 private:

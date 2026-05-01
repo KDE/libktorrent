@@ -140,7 +140,8 @@ private Q_SLOTS:
             downloader->have(chunk);
             ss.have(downloader, chunk);
             Out(SYS_GEN | LOG_DEBUG) << "prev_chunk = " << chunk << ", uploader->allowed_chunk = " << uploader->allowed_chunk << endl;
-            QVERIFY(uploader->allowed_chunk != prev_uploader_chunk && uploader->allowed_chunk != INVALID_CHUNK);
+            QCOMPARE_NE(uploader->allowed_chunk, prev_uploader_chunk);
+            QCOMPARE_NE(uploader->allowed_chunk, INVALID_CHUNK);
             QVERIFY(allowCalled(uploader));
             uploader->allow_called = false;
 
@@ -171,7 +172,7 @@ private Q_SLOTS:
             DummyPeer* p = &peer[i];
             ss.peerAdded(p);
             QVERIFY(allowCalled(p));
-            QVERIFY(p->allowed_chunk != INVALID_CHUNK);
+            QCOMPARE_NE(p->allowed_chunk, INVALID_CHUNK);
             target.clear();
         }
 
@@ -180,7 +181,7 @@ private Q_SLOTS:
         // Now simulate a seed sending a have all message
         peer[3].haveAll();
         ss.haveAll(&peer[3]);
-        QVERIFY(allow_called == false);
+        QVERIFY(!allow_called);
         target.clear();
 
         // Continue superseeding
@@ -203,7 +204,8 @@ private Q_SLOTS:
             QVERIFY(allowCalled(uploader)); // allow should be called again on the uploader
 
             Out(SYS_GEN | LOG_DEBUG) << "prev_chunk = " << chunk << ", uploader->allowed_chunk = " << uploader->allowed_chunk << endl;
-            QVERIFY(uploader->allowed_chunk != prev_chunk && uploader->allowed_chunk != INVALID_CHUNK);
+            QCOMPARE_NE(uploader->allowed_chunk, prev_chunk)
+            QCOMPARE_NE(uploader->allowed_chunk, INVALID_CHUNK);
             target.clear();
 
             // Cycle through peers

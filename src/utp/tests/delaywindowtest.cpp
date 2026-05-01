@@ -51,7 +51,7 @@ private Q_SLOTS:
             }
 
             const bt::Uint32 ret = wnd.update(&hdr, bt::Now());
-            QVERIFY(ret == base_delay);
+            QCOMPARE(ret, base_delay);
         }
     }
 #if 1
@@ -89,14 +89,14 @@ private Q_SLOTS:
         Header hdr;
         hdr.timestamp_difference_microseconds = 1000;
         const bt::TimeStamp ts = 1000;
-        QVERIFY(wnd.update(&hdr, ts) == 1000);
+        QCOMPARE(wnd.update(&hdr, ts), 1000);
 
         hdr.timestamp_difference_microseconds = 2000;
-        QVERIFY(wnd.update(&hdr, ts + 1000) == 1000);
+        QCOMPARE(wnd.update(&hdr, ts + 1000), 1000);
 
         // Now simulate timeout, oldest must get removed
         hdr.timestamp_difference_microseconds = 3000;
-        QVERIFY(wnd.update(&hdr, ts + utp::DELAY_WINDOW_SIZE + 1) == 2000);
+        QCOMPARE(wnd.update(&hdr, ts + utp::DELAY_WINDOW_SIZE + 1), 2000);
     }
 
 private:

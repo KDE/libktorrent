@@ -82,12 +82,12 @@ private:
     {
         const bt::Uint32 conn_id = 666;
         const Connection conn(conn_id, utp::Connection::INCOMING, remote, this);
-        QVERIFY(conn.connectionStats().recv_connection_id == conn_id);
-        QVERIFY(conn.connectionStats().send_connection_id == conn_id - 1);
+        QCOMPARE(conn.connectionStats().recv_connection_id, conn_id);
+        QCOMPARE(conn.connectionStats().send_connection_id, conn_id - 1);
 
         const Connection conn2(conn_id, utp::Connection::OUTGOING, remote, this);
-        QVERIFY(conn2.connectionStats().recv_connection_id == conn_id);
-        QVERIFY(conn2.connectionStats().send_connection_id == conn_id + 1);
+        QCOMPARE(conn2.connectionStats().recv_connection_id, conn_id);
+        QCOMPARE(conn2.connectionStats().send_connection_id, conn_id + 1);
     }
 
     void testOutgoingConnectionSetup()
@@ -96,15 +96,15 @@ private:
         Connection conn(conn_id, utp::Connection::OUTGOING, remote, this);
         conn.startConnecting();
         const Connection::Stats &s = conn.connectionStats();
-        QVERIFY(s.state == utp::CS_SYN_SENT);
-        QVERIFY(s.seq_nr == 2);
+        QCOMPARE(s.state, utp::CS_SYN_SENT);
+        QCOMPARE(s.seq_nr, 2);
 
         auto pkt = buildPacket(ST_STATE, conn_id, conn_id + 1, 1, 1);
         PacketParser pp(pkt->get(), pkt->size());
         QVERIFY(pp.parse());
         conn.handlePacket(pp, std::move(pkt));
-        QVERIFY(s.state == CS_CONNECTED);
-        QVERIFY(sent_packets.count() == 1);
+        QCOMPARE(s.state, CS_CONNECTED);
+        QCOMPARE(sent_packets.count(), 1);
     }
 
     void testIncomingConnectionSetup()
@@ -116,7 +116,7 @@ private:
         auto pkt = buildPacket(ST_SYN, conn_id - 1, conn_id, 1, 1);
         const PacketParser pp(pkt->get(), pkt->size());
         conn.handlePacket(pp, std::move(pkt));
-        QVERIFY(s.state == CS_CONNECTED);
+        QCOMPARE(s.state, CS_CONNECTED);
     }
 
 private:

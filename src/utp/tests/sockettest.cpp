@@ -79,13 +79,13 @@ private:
         UTPSocket *b = outgoing;
         for (int i = 0; i < 10; i++) {
             int ret = a->send((const bt::Uint8 *)test, strlen(test));
-            QVERIFY(ret == (int)strlen(test));
+            QCOMPARE(ret, (int)strlen(test));
 
             char tmp[20];
             memset(tmp, 0, 20);
             ret = b->recv((bt::Uint8 *)tmp, 20);
-            QVERIFY(ret == 4);
-            QVERIFY(memcmp(tmp, test, ret) == 0);
+            QCOMPARE(ret, 4);
+            QCOMPARE(memcmp(tmp, test, ret), 0);
             std::swap(a, b);
         }
     }
@@ -96,7 +96,7 @@ private:
         incoming->close();
         bt::Uint8 tmp[20];
         const int ret = outgoing->recv(tmp, 20);
-        QVERIFY(ret == 0);
+        QCOMPARE(ret, 0);
     }
 
     void testConnectionTimeout()
@@ -104,7 +104,7 @@ private:
         UTPSocket sock;
         const net::Address addr(u"127.0.0.1"_s, port + 1);
         sock.setBlocking(true);
-        QVERIFY(sock.connectTo(addr) == false);
+        QVERIFY(!sock.connectTo(addr));
     }
 
     void testInvalidAddress()
@@ -112,7 +112,7 @@ private:
         UTPSocket sock;
         const net::Address addr(u"127.0.0.1"_s, 0);
         sock.setBlocking(true);
-        QVERIFY(sock.connectTo(addr) == false);
+        QVERIFY(!sock.connectTo(addr));
     }
 
 private:

@@ -63,7 +63,7 @@ private Q_SLOTS:
             tr.append(r);
             rm.add(r);
             // The first 4 should get acquired
-            QVERIFY(r->acq == (i < 4));
+            QCOMPARE(r->acq, i < 4);
         }
 
         for (int i = 0; i < 4; i++) {
@@ -86,7 +86,7 @@ private Q_SLOTS:
             tr.append(r);
             rm.add(r);
             // The first 4 should get acquired
-            QVERIFY(r->acq == (i < 4));
+            QCOMPARE(r->acq, i < 4);
         }
 
         QString last_group;
@@ -95,7 +95,7 @@ private Q_SLOTS:
             const QString g = r->groupName();
             delete r;
             QVERIFY(tr.at(3)->acq); // The next availabe one should now be acquired
-            QVERIFY(g != last_group);
+            QCOMPARE_NE(g, last_group);
             last_group = g;
         }
         qDeleteAll(tr);
@@ -120,7 +120,7 @@ private Q_SLOTS:
             }
         }
 
-        QVERIFY(num_acquired == 4);
+        QCOMPARE(num_acquired, 4);
 
         QString last_acquired_group;
         for (int i = 0; i < 496; i++) {
@@ -131,7 +131,7 @@ private Q_SLOTS:
                 // This is only possible if there are no other groups which are still pending
                 for (const TestResource *r : std::as_const(tr)) {
                     if (!r->acq) {
-                        QVERIFY(r->groupName() == last_acquired_group);
+                        QCOMPARE(r->groupName(), last_acquired_group);
                     }
                 }
             }

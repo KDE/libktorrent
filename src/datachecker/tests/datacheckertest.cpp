@@ -131,7 +131,7 @@ private Q_SLOTS:
                 const QString dnd = tc.getTorDir() + "dnd"_L1 + bt::DirSeparator();
                 dc.check(tc.getStats().output_path, tc.getTorrent(), dnd, tc.downloadedChunksBitSet());
                 for (Uint32 i = 0; i < tc.getStats().total_chunks; i++) {
-                    QVERIFY(dc.getResult().get(i) == (i >= fi.getFirstChunk() && i <= fi.getLastChunk()));
+                    QCOMPARE(dc.getResult().get(i), i >= fi.getFirstChunk() && i <= fi.getLastChunk());
                 }
             } catch (bt::Error &err) {
                 Out(SYS_GEN | LOG_DEBUG) << "Datacheck failed: " << err.toString() << endl;

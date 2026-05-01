@@ -122,7 +122,7 @@ private Q_SLOTS:
             pr.onDataReady(data + num_bytes_read, chunk_size);
             QVERIFY(pr.ok());
             pr.update(*this);
-            QVERIFY(received_packet_size == 0);
+            QCOMPARE(received_packet_size, 0);
             num_bytes_read += chunk_size;
         }
 
@@ -143,7 +143,7 @@ private Q_SLOTS:
         pr.onDataReady(data, 3);
         QVERIFY(pr.ok());
         pr.update(*this);
-        QVERIFY(received_packet_size == 0);
+        QCOMPARE(received_packet_size, 0);
 
         pr.onDataReady(data + 3, 11);
         QVERIFY(pr.ok());
@@ -162,14 +162,14 @@ private Q_SLOTS:
         QVERIFY(!pr.ok());
 
         pr.update(*this);
-        QVERIFY(received_packet_size == 0);
+        QCOMPARE(received_packet_size, 0);
 
         // Subsequent attempts to write data should also fail
         pr.onDataReady(data, 1);
         QVERIFY(!pr.ok());
 
         pr.update(*this);
-        QVERIFY(received_packet_size == 0);
+        QCOMPARE(received_packet_size, 0);
     }
 
     void testPacketLengthZero()
@@ -183,13 +183,13 @@ private Q_SLOTS:
         QVERIFY(pr.ok());
 
         pr.update(*this);
-        QVERIFY(received_packet_size == 2);
+        QCOMPARE(received_packet_size, 2);
     }
 
     void testUnicodeLiteral()
     {
         const QString a = u"%1Torrent"_s.arg(QChar(0x00B5));
-        QVERIFY(a == QStringLiteral("µTorrent"));
+        QCOMPARE(a, QStringLiteral("µTorrent"));
     }
 
 private:

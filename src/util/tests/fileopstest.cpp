@@ -38,11 +38,11 @@ private Q_SLOTS:
         for (const Solid::Device &dev : devs) {
             const Solid::StorageAccess *sa = dev.as<Solid::StorageAccess>();
             if (sa->isAccessible()) {
-                QVERIFY(bt::MountPoint(sa->filePath()) == sa->filePath());
+                QCOMPARE(bt::MountPoint(sa->filePath()), sa->filePath());
 
                 const QString path = sa->filePath() + "/some/random/path/test.foobar"_L1;
                 Out(SYS_GEN | LOG_DEBUG) << "Testing " << path << endl;
-                QVERIFY(bt::MountPoint(path) == sa->filePath());
+                QCOMPARE(bt::MountPoint(path), sa->filePath());
             }
         }
     }

@@ -87,7 +87,7 @@ private:
         s.setBlocking(false);
         s.connectTo(net::Address(u"127.0.0.1"_s, port));
         s.prepare(&poller, Poll::OUTPUT);
-        QVERIFY(poller.poll() > 0);
+        QCOMPARE_GT(poller.poll(), 0);
         QVERIFY(s.ready(&poller, Poll::OUTPUT));
         QVERIFY(s.connectSuccesFull());
         poller.reset();
@@ -106,7 +106,7 @@ private:
         QTimer::singleShot(0, this, &UTPPollTest::doConnect);
         QTimer::singleShot(5000, this, &UTPPollTest::endEventLoop); // use a 5 second timeout
         exec();
-        QVERIFY(num_accepted == NUM_SOCKETS);
+        QCOMPARE(num_accepted, NUM_SOCKETS);
         for (int i = 0; i < num_accepted; i++) {
             Out(SYS_UTP | LOG_DEBUG) << "Check OK incoming " << i << endl;
             QVERIFY(incoming[i]->ok());
@@ -127,14 +127,14 @@ private:
                 }
             }
 
-            QVERIFY(poller.poll(1000) > 0);
+            QCOMPARE_GT(poller.poll(1000), 0);
             for (int i = 0; i < NUM_SOCKETS; i++) {
                 if (bs.get(i) || !outgoing[i]->ready(&poller, net::Poll::OUTPUT)) {
                     continue;
                 }
 
                 const int ret = outgoing[i]->send((const bt::Uint8 *)test, strlen(test));
-                QVERIFY(ret == (int)strlen(test));
+                QCOMPARE(ret, (int)strlen(test));
                 bs.set(i, true);
             }
         }
@@ -150,12 +150,12 @@ private:
             }
 
             Out(SYS_GEN | LOG_DEBUG) << "Entering poll" << endl;
-            QVERIFY(poller.poll(1000) > 0);
+            QCOMPARE_GT(poller.poll(1000), 0);
             for (int i = 0; i < NUM_SOCKETS; i++) {
                 if (!bs.get(i) && incoming[i]->ready(&poller, net::Poll::INPUT)) {
                     bt::Uint8 tmp[20];
-                    QVERIFY(incoming[i]->recv(tmp, 20) == (int)strlen(test));
-                    QVERIFY(memcmp(tmp, test, strlen(test)) == 0);
+                    QCOMPARE(incoming[i]->recv(tmp, 20), (int)strlen(test));
+                    QCOMPARE(memcmp(tmp, test, strlen(test)), 0);
                     bs.set(i, true);
                 }
             }
@@ -173,7 +173,7 @@ private:
             incoming[i]->prepare(&poller, Poll::OUTPUT);
         }
 
-        QVERIFY(poller.poll(10000) > 0);
+        QCOMPARE_GT(poller.poll(10000), 0);
         for (int i = 0; i < NUM_SOCKETS; i++) {
             QVERIFY(incoming[i]->ready(&poller, Poll::OUTPUT));
         }
@@ -189,7 +189,7 @@ private:
             outgoing[i]->prepare(&poller, net::Poll::INPUT);
         }
 
-        QVERIFY(poller.poll() > 0);
+        QCOMPARE_GT(poller.poll(), 0);
         poller.reset();
     }
 

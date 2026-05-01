@@ -79,31 +79,31 @@ private Q_SLOTS:
         RemoteWindow wnd;
         wnd.addPacket(pkt, 1, bt::Now());
         QVERIFY(!wnd.allPacketsAcked());
-        QVERIFY(wnd.numUnackedPackets() == 1);
+        QCOMPARE(wnd.numUnackedPackets(), 1);
 
         wnd.addPacket(pkt, 2, bt::Now());
-        QVERIFY(wnd.numUnackedPackets() == 2);
+        QCOMPARE(wnd.numUnackedPackets(), 2);
 
         wnd.addPacket(pkt, 3, bt::Now());
-        QVERIFY(wnd.numUnackedPackets() == 3);
+        QCOMPARE(wnd.numUnackedPackets(), 3);
 
         Header hdr;
         hdr.ack_nr = 1;
         hdr.wnd_size = 5000;
         wnd.packetReceived(&hdr, nullptr, this);
-        QVERIFY(wnd.numUnackedPackets() == 2);
+        QCOMPARE(wnd.numUnackedPackets(), 2);
         QVERIFY(update_rtt_called);
 
         reset();
         hdr.ack_nr = 2;
         wnd.packetReceived(&hdr, nullptr, this);
-        QVERIFY(wnd.numUnackedPackets() == 1);
+        QCOMPARE(wnd.numUnackedPackets(), 1);
         QVERIFY(update_rtt_called);
 
         reset();
         hdr.ack_nr = 3;
         wnd.packetReceived(&hdr, nullptr, this);
-        QVERIFY(wnd.numUnackedPackets() == 0);
+        QCOMPARE(wnd.numUnackedPackets(), 0);
         QVERIFY(update_rtt_called);
     }
 
@@ -115,19 +115,19 @@ private Q_SLOTS:
         RemoteWindow wnd;
         wnd.addPacket(pkt, 1, bt::Now());
         QVERIFY(!wnd.allPacketsAcked());
-        QVERIFY(wnd.numUnackedPackets() == 1);
+        QCOMPARE(wnd.numUnackedPackets(), 1);
 
         wnd.addPacket(pkt, 2, bt::Now());
-        QVERIFY(wnd.numUnackedPackets() == 2);
+        QCOMPARE(wnd.numUnackedPackets(), 2);
 
         wnd.addPacket(pkt, 3, bt::Now());
-        QVERIFY(wnd.numUnackedPackets() == 3);
+        QCOMPARE(wnd.numUnackedPackets(), 3);
 
         Header hdr;
         hdr.ack_nr = 3;
         hdr.wnd_size = 5000;
         wnd.packetReceived(&hdr, nullptr, this);
-        QVERIFY(wnd.numUnackedPackets() == 0);
+        QCOMPARE(wnd.numUnackedPackets(), 0);
         QVERIFY(update_rtt_called);
     }
 
@@ -139,13 +139,13 @@ private Q_SLOTS:
         RemoteWindow wnd;
         wnd.addPacket(pkt, 1, bt::Now());
         QVERIFY(!wnd.allPacketsAcked());
-        QVERIFY(wnd.numUnackedPackets() == 1);
+        QCOMPARE(wnd.numUnackedPackets(), 1);
 
         wnd.addPacket(pkt, 2, bt::Now());
-        QVERIFY(wnd.numUnackedPackets() == 2);
+        QCOMPARE(wnd.numUnackedPackets(), 2);
 
         wnd.addPacket(pkt, 3, bt::Now());
-        QVERIFY(wnd.numUnackedPackets() == 3);
+        QCOMPARE(wnd.numUnackedPackets(), 3);
 
         // Selectively ack 3
         bt::Uint8 sack_data[6];
@@ -160,7 +160,7 @@ private Q_SLOTS:
         hdr.ack_nr = 0;
         hdr.wnd_size = 5000;
         wnd.packetReceived(&hdr, &sack, this);
-        QVERIFY(wnd.numUnackedPackets() == 2);
+        QCOMPARE(wnd.numUnackedPackets(), 2);
         QVERIFY(update_rtt_called);
 
         reset();
@@ -169,7 +169,7 @@ private Q_SLOTS:
         hdr.ack_nr = 3;
         hdr.wnd_size = 5000;
         wnd.packetReceived(&hdr, nullptr, this);
-        QVERIFY(wnd.numUnackedPackets() == 0);
+        QCOMPARE(wnd.numUnackedPackets(), 0);
         QVERIFY(update_rtt_called);
     }
 
@@ -183,7 +183,7 @@ private Q_SLOTS:
         for (bt::Uint32 i = 0; i < 4; i++) {
             wnd.addPacket(pkt, i + 1, bt::Now());
             QVERIFY(!wnd.allPacketsAcked());
-            QVERIFY(wnd.numUnackedPackets() == i + 1);
+            QCOMPARE(wnd.numUnackedPackets(), i + 1);
         }
 
         // Selectively ack the last 3 packets
@@ -201,7 +201,7 @@ private Q_SLOTS:
         hdr.wnd_size = 5000;
         retransmit_seq_nr.insert(1);
         wnd.packetReceived(&hdr, &sack, this);
-        QVERIFY(wnd.numUnackedPackets() == 1);
+        QCOMPARE(wnd.numUnackedPackets(), 1);
         QVERIFY(update_rtt_called);
         QVERIFY(retransmit_ok);
     }
@@ -215,7 +215,7 @@ private Q_SLOTS:
         for (bt::Uint32 i = 0; i < 4; i++) {
             wnd.addPacket(pkt, i + 1, bt::Now());
             QVERIFY(!wnd.allPacketsAcked());
-            QVERIFY(wnd.numUnackedPackets() == i + 1);
+            QCOMPARE(wnd.numUnackedPackets(), i + 1);
         }
 
         // Selectively ack the last 3 packets
@@ -233,7 +233,7 @@ private Q_SLOTS:
         hdr.wnd_size = 5000;
         retransmit_seq_nr.insert(1);
         wnd.packetReceived(&hdr, &sack, this);
-        QVERIFY(wnd.numUnackedPackets() == 1);
+        QCOMPARE(wnd.numUnackedPackets(), 1);
         QVERIFY(update_rtt_called);
         QVERIFY(retransmit_ok);
     }
@@ -247,7 +247,7 @@ private Q_SLOTS:
         for (bt::Uint32 i = 0; i < 10; i++) {
             wnd.addPacket(pkt, i + 1, bt::Now());
             QVERIFY(!wnd.allPacketsAcked());
-            QVERIFY(wnd.numUnackedPackets() == i + 1);
+            QCOMPARE(wnd.numUnackedPackets(), i + 1);
         }
 
         // Selectively ack the last 3 packets
@@ -267,7 +267,7 @@ private Q_SLOTS:
             retransmit_seq_nr.insert(i);
         }
         wnd.packetReceived(&hdr, &sack, this);
-        QVERIFY(wnd.numUnackedPackets() == 7);
+        QCOMPARE(wnd.numUnackedPackets(), 7);
         QVERIFY(update_rtt_called);
         QVERIFY(retransmit_ok);
     }
@@ -281,7 +281,7 @@ private Q_SLOTS:
         for (bt::Uint32 i = 0; i < 10; i++) {
             wnd.addPacket(pkt, i + 1, bt::Now());
             QVERIFY(!wnd.allPacketsAcked());
-            QVERIFY(wnd.numUnackedPackets() == i + 1);
+            QCOMPARE(wnd.numUnackedPackets(), i + 1);
         }
 
         // Selectively ack 3 random packets
@@ -301,7 +301,7 @@ private Q_SLOTS:
             retransmit_seq_nr.insert(i);
         }
         wnd.packetReceived(&hdr, &sack, this);
-        QVERIFY(wnd.numUnackedPackets() == 7);
+        QCOMPARE(wnd.numUnackedPackets(), 7);
         QVERIFY(update_rtt_called);
         QVERIFY(retransmit_ok);
     }
@@ -318,7 +318,7 @@ private Q_SLOTS:
         for (bt::Uint32 i = 0; i < 10; i++) {
             wnd.addPacket(pkt, seq_nr + i, bt::Now());
             QVERIFY(!wnd.allPacketsAcked());
-            QVERIFY(wnd.numUnackedPackets() == i + 1);
+            QCOMPARE(wnd.numUnackedPackets(), i + 1);
         }
 
         // Selectively ack 3 random packets
@@ -338,7 +338,7 @@ private Q_SLOTS:
             retransmit_seq_nr.insert(seq_nr + i);
         }
         wnd.packetReceived(&hdr, &sack, this);
-        QVERIFY(wnd.numUnackedPackets() == 7);
+        QCOMPARE(wnd.numUnackedPackets(), 7);
         QVERIFY(update_rtt_called);
         QVERIFY(retransmit_ok);
     }
