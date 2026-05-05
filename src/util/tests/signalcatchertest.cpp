@@ -52,7 +52,7 @@ bool TestSigBusHandling()
         return true;
     }
 
-    kill(getpid(), SIGBUS);
+    raise(SIGBUS);
     return false;
 }
 */
@@ -74,7 +74,7 @@ private Q_SLOTS:
     {
         try {
             WithBusErrorProtection(BusOperation::Write, [&] {
-                kill(getpid(), SIGBUS);
+                raise(SIGBUS);
             });
             QFAIL("Didn't catch SIGBUS");
         } catch (bt::BusError &e) {
