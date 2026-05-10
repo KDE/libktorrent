@@ -23,7 +23,7 @@ class ExtractFileThread;
 class KTORRENT_EXPORT ExtractFileJob : public KIO::Job
 {
 public:
-    ExtractFileJob(KArchive *archive, const QString &path, const QString &dest);
+    ExtractFileJob(std::unique_ptr<KArchive> archive, const QString &path, const QString &dest);
     ~ExtractFileJob() override;
 
     void start() override;
@@ -33,7 +33,7 @@ private:
     void extractThreadDone();
 
 private:
-    KArchive *archive;
+    std::unique_ptr<KArchive> archive;
     QString path;
     QString dest;
     ExtractFileThread *extract_thread;

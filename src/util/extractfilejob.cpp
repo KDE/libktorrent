@@ -41,8 +41,8 @@ public:
     bool canceled;
 };
 
-ExtractFileJob::ExtractFileJob(KArchive *archive, const QString &path, const QString &dest)
-    : archive(archive)
+ExtractFileJob::ExtractFileJob(std::unique_ptr<KArchive> archive, const QString &path, const QString &dest)
+    : archive(std::move(archive))
     , path(path)
     , dest(dest)
     , extract_thread(nullptr)
@@ -51,7 +51,6 @@ ExtractFileJob::ExtractFileJob(KArchive *archive, const QString &path, const QSt
 
 ExtractFileJob::~ExtractFileJob()
 {
-    delete archive;
 }
 
 void ExtractFileJob::start()
