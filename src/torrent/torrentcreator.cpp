@@ -315,7 +315,7 @@ void TorrentCreator::run()
     }
 }
 
-TorrentControl *TorrentCreator::makeTC(const QString &data_dir)
+std::unique_ptr<TorrentControl> TorrentCreator::makeTC(const QString &data_dir)
 {
     QString dd = data_dir;
     if (!dd.endsWith(bt::DirSeparator())) {
@@ -343,7 +343,7 @@ TorrentControl *TorrentCreator::makeTC(const QString &data_dir)
     fptr.close();
 
     // now create the torrentcontrol object
-    TorrentControl *tc = new TorrentControl();
+    auto tc = std::make_unique<TorrentControl>();
     try {
         // get the parent dir of target
         const QFileInfo fi = QFileInfo(target);
@@ -370,7 +370,6 @@ TorrentControl *TorrentCreator::makeTC(const QString &data_dir)
         tc->createFiles();
     } catch (...) {
         bt::Delete(dd, true);
-        delete tc;
         throw;
     }
 

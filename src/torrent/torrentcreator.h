@@ -98,7 +98,7 @@ public:
      * \throw Error if something goes wrong
      * \return The newly created object
      */
-    TorrentControl *makeTC(const QString &data_dir);
+    std::unique_ptr<TorrentControl> makeTC(const QString &data_dir);
 
     //! Stop the thread
     void stop()
