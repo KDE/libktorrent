@@ -11,20 +11,19 @@
 
 namespace bt
 {
-DataCheckerThread::DataCheckerThread(DataChecker *dc, const BitSet &status, const QString &path, const Torrent &tor, const QString &dnddir)
-    : dc(dc)
+DataCheckerThread::DataCheckerThread(std::unique_ptr<DataChecker> dc, const BitSet &status, const QString &path, const Torrent &tor, const QString &dnddir)
+    : dc(std::move(dc))
     , path(path)
     , tor(tor)
     , dnddir(dnddir)
     , status(status)
 {
     running = true;
-    dc->moveToThread(this);
+    this->dc->moveToThread(this);
 }
 
 DataCheckerThread::~DataCheckerThread()
 {
-    delete dc;
 }
 
 void DataCheckerThread::run()

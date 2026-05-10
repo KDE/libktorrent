@@ -23,7 +23,7 @@ class DataChecker;
 */
 class KTORRENT_EXPORT DataCheckerThread : public QThread
 {
-    DataChecker *dc;
+    std::unique_ptr<DataChecker> dc;
     QString path;
     const Torrent &tor;
     QString dnddir;
@@ -32,7 +32,7 @@ class KTORRENT_EXPORT DataCheckerThread : public QThread
     BitSet status;
 
 public:
-    DataCheckerThread(DataChecker *dc, const BitSet &status, const QString &path, const Torrent &tor, const QString &dnddir);
+    DataCheckerThread(std::unique_ptr<DataChecker> dc, const BitSet &status, const QString &path, const Torrent &tor, const QString &dnddir);
     ~DataCheckerThread() override;
 
     void run() override;
@@ -40,7 +40,7 @@ public:
     //! Get the data checker
     DataChecker *getDataChecker()
     {
-        return dc;
+        return dc.get();
     }
 
     //! Are we still running

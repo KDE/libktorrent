@@ -46,19 +46,19 @@ DataCheckerJob::~DataCheckerJob()
 void DataCheckerJob::start()
 {
     registerWithTracker();
-    DataChecker *dc = nullptr;
+    std::unique_ptr<DataChecker> dc;
     const TorrentStats &stats = torrent()->getStats();
     if (stats.multi_file_torrent) {
-        dc = new MultiDataChecker(from, to);
+        dc = std::make_unique<MultiDataChecker>(from, to);
     } else {
-        dc = new SingleDataChecker(from, to);
+        dc = std::make_unique<SingleDataChecker>(from, to);
     }
 
-    connect(dc, &DataChecker::progress, this, &DataCheckerJob::progress, Qt::QueuedConnection);
-    connect(dc, &DataChecker::status, this, &DataCheckerJob::status, Qt::QueuedConnection);
+    connect(dc.get(), &DataChecker::progress, this, &DataCheckerJob::progress, Qt::QueuedConnection);
+    connect(dc.get(), &DataChecker::status, this, &DataCheckerJob::status, Qt::QueuedConnection);
 
     const TorrentControl *tor = torrent();
-    dcheck_thread = new DataCheckerThread(dc, //
+    dcheck_thread = new DataCheckerThread(std::move(dc),
                                           tor->downloadedChunksBitSet(),
                                           stats.output_path,
                                           tor->getTorrent(),
