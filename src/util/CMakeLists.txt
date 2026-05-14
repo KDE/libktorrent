@@ -34,4 +34,4 @@ set(util_HDR ${util_HDR}
     )
 endif(NOT WIN32)
 
-install(FILES ${util_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent/util COMPONENT Devel)
+install(FILES ${util_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/util COMPONENT Devel)

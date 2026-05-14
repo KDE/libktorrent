@@ -10,4 +10,4 @@ set(datachecker_HDR
     datacheckerjob.h
 )
 
-install(FILES ${datachecker_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent/datachecker COMPONENT Devel)
+install(FILES ${datachecker_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/datachecker COMPONENT Devel)

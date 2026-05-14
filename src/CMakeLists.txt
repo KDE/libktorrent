@@ -253,7 +253,7 @@ endif(WIN32)
 if(HAIKU)
 target_link_libraries(KTorrent6 PUBLIC network)
 endif(HAIKU)
-target_include_directories(KTorrent6 INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent>")
+target_include_directories(KTorrent6 INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR}/libktorrent>")
 target_include_directories(KTorrent6 PUBLIC "$<BUILD_INTERFACE:;${LIBKTORRENT_BINARY_DIR}>") # for config and export headers
 
 
@@ -292,10 +292,10 @@ set (bcodec_HDR
     bcodec/value.h
 )
 
-install(FILES ${bcodec_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent/bcodec COMPONENT Devel)
-install(FILES ${interfaces_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent/interfaces COMPONENT Devel)
-install(FILES ${migrate_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent/migrate COMPONENT Devel)
-install(FILES ${ktorrent_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent COMPONENT Devel)
+install(FILES ${bcodec_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/bcodec COMPONENT Devel)
+install(FILES ${interfaces_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/interfaces COMPONENT Devel)
+install(FILES ${migrate_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/migrate COMPONENT Devel)
+install(FILES ${ktorrent_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent COMPONENT Devel)
 
 add_subdirectory(torrent)
 add_subdirectory(datachecker)

@@ -12,4 +12,4 @@ set (download_HDR
     webseed.h
 )
 
-install(FILES ${download_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/libktorrent/download COMPONENT Devel)
+install(FILES ${download_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/download COMPONENT Devel)
