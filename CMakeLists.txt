@@ -156,7 +156,6 @@ set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KTorrent6")
 configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KTorrent6Config.cmake.in"
                               "${CMAKE_CURRENT_BINARY_DIR}/KTorrent6Config.cmake"
                               INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
-                              PATH_VARS KDE_INSTALL_INCLUDEDIR
                               )
 
 # Install the CMake modules needed to use libktorrent
