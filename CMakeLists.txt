@@ -13,7 +13,7 @@ set(Boost_MIN_VERSION "1.71.0")
 set(LibGMP_MIN_VERSION "6.0.0")
 set(LibGcrypt_MIN_VERSION "1.4.5")
 set(OpenSSL_MIN_VERSION "3.0.0")
-set(KF_MIN_VERSION "5.240.0")
+set(KF_MIN_VERSION "6.0.0")
 set(QT_MIN_VERSION "6.5.0")
 
 set (SOVERSION 6)
