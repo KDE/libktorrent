@@ -134,13 +134,9 @@ private:
     void unmapAll();
     bool allocateBytes(bt::Uint64 off, bt::Uint64 size);
 
-private Q_SLOTS:
-    void aboutToClose();
-
 private:
     QFile *fptr;
     bool read_only;
-    bool manual_close;
     Uint64 max_size, file_size;
     QString path;
     struct Entry {

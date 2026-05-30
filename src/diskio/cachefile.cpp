@@ -53,7 +53,6 @@ CacheFile::CacheFile()
     , mutex()
 {
     read_only = false;
-    manual_close = false;
 }
 
 CacheFile::~CacheFile()
@@ -72,7 +71,6 @@ void CacheFile::openFile(Mode mode)
 {
     // by default always try read write
     fptr = new QFile(path);
-    connect(fptr, &QFile::aboutToClose, this, &CacheFile::aboutToClose);
     bool ok = false;
     if (!(ok = fptr->open(QIODevice::ReadWrite))) {
         // in case RDWR fails, try readonly if possible
@@ -263,22 +261,6 @@ void CacheFile::unmap(void *ptr)
 #endif
 }
 
-void CacheFile::aboutToClose()
-{
-    const QMutexLocker lock(&mutex);
-    if (!fptr) {
-        return;
-    }
-    // Out(SYS_DIO|LOG_NOTICE) << "CacheFile " << path << " : about to be closed" << endl;
-    unmapAll();
-    if (!manual_close) {
-        manual_close = true;
-        fptr->deleteLater();
-        fptr = nullptr;
-        manual_close = false;
-    }
-}
-
 void CacheFile::unmapAll()
 {
     auto i = mappings.begin();
@@ -317,11 +299,9 @@ void CacheFile::close()
     }
 
     unmapAll();
-    manual_close = true;
     fptr->close();
     delete fptr;
     fptr = nullptr;
-    manual_close = false;
 }
 
 void CacheFile::read(Uint8 *buf, Uint32 size, Uint64 off)
