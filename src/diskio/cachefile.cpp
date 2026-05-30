@@ -57,7 +57,7 @@ CacheFile::CacheFile()
 
 CacheFile::~CacheFile()
 {
-    if (fptr) {
+    if (fptr.isOpen()) {
         close();
     }
 }
@@ -70,23 +70,22 @@ void CacheFile::changePath(const QString &npath)
 void CacheFile::openFile(Mode mode)
 {
     // by default always try read write
-    fptr = new QFile(path);
+    fptr.setFileName(path);
     bool ok = false;
-    if (!(ok = fptr->open(QIODevice::ReadWrite))) {
+    if (!(ok = fptr.open(QIODevice::ReadWrite))) {
         // in case RDWR fails, try readonly if possible
-        if (mode == READ && (ok = fptr->open(QIODevice::ReadOnly))) {
+        if (mode == READ && (ok = fptr.open(QIODevice::ReadOnly))) {
             read_only = true;
         }
     }
 
     if (!ok) {
-        delete fptr;
-        fptr = nullptr;
+        fptr.close();
         const int err = errno;
         throw Error(i18n("Cannot open %1: %2", path, QString::fromUtf8(strerror(err))));
     }
 
-    file_size = fptr->size();
+    file_size = fptr.size();
 }
 
 void CacheFile::open(const QString &path, Uint64 size)
@@ -101,7 +100,7 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
 {
     const QMutexLocker lock(&mutex);
     // reopen the file if necessary
-    if (!fptr) {
+    if (!fptr.isOpen()) {
         //  Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
         const QStorageInfo mount(path); // ntfs cannot handle mmap properly
         if (!OpenFileAllowed() || mount.fileSystemType() == "fuseblk" || mount.fileSystemType().startsWith("ntfs")) {
@@ -145,7 +144,7 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
         break;
     }
 
-    const int fd = fptr->handle();
+    const int fd = fptr.handle();
     // off may not be a multiple of the page_size
     // so we play around a bit
     const Uint64 diff = (off % page_size);
@@ -171,11 +170,11 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
         return ptr + diff;
     }
 #else // Q_OS_WIN
-    char *ptr = (char *)fptr->map(off, size);
+    char *ptr = (char *)fptr.map(off, size);
 
     if (!ptr) {
         const int err = errno;
-        Out(SYS_DIO | LOG_DEBUG) << "mmap failed3 : " << fptr->handle() << " " << QString::fromUtf8(strerror(err)) << endl;
+        Out(SYS_DIO | LOG_DEBUG) << "mmap failed3 : " << fptr.handle() << " " << QString::fromUtf8(strerror(err)) << endl;
         Out(SYS_DIO | LOG_DEBUG) << off << " " << size << endl;
         return nullptr;
     } else {
@@ -194,7 +193,7 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
 void CacheFile::growFile(Uint64 to_write)
 {
     // reopen the file if necessary
-    if (!fptr) {
+    if (!fptr.isOpen()) {
         //  Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
         openFile(RW);
     }
@@ -209,11 +208,11 @@ void CacheFile::growFile(Uint64 to_write)
         throw Error(i18n("Cannot expand file %1: attempting to grow the file beyond the maximum size", path));
     }
 
-    if (!fptr->resize(file_size + to_write)) {
-        throw Error(i18n("Cannot expand file %1: %2", path, fptr->errorString()));
+    if (!fptr.resize(file_size + to_write)) {
+        throw Error(i18n("Cannot expand file %1: %2", path, fptr.errorString()));
     }
 
-    file_size = fptr->size();
+    file_size = fptr.size();
 }
 
 void CacheFile::unmap(void *ptr)
@@ -221,15 +220,15 @@ void CacheFile::unmap(void *ptr)
     int ret = 0;
     const QMutexLocker lock(&mutex);
 #ifdef Q_OS_WIN
-    if (!fptr) {
+    if (!fptr.isOpen()) {
         return;
     }
 
     const auto it = mappings.constFind(ptr);
     if (it != mappings.constEnd()) {
         const CacheFile::Entry &e = it.value();
-        if (!fptr->unmap((uchar *)e.ptr)) {
-            Out(SYS_DIO | LOG_IMPORTANT) << u"Unmap failed : %1"_s.arg(fptr->errorString()) << endl;
+        if (!fptr.unmap((uchar *)e.ptr)) {
+            Out(SYS_DIO | LOG_IMPORTANT) << u"Unmap failed : %1"_s.arg(fptr.errorString()) << endl;
         }
 
         mappings.erase(it);
@@ -268,7 +267,7 @@ void CacheFile::unmapAll()
         int ret = 0;
         const CacheFile::Entry &e = i.value();
 #ifdef Q_OS_WIN
-        fptr->unmap((uchar *)e.ptr);
+        fptr.unmap((uchar *)e.ptr);
 #else
 #ifdef HAVE_MUNMAP64
         ret = munmap64(e.ptr, e.size);
@@ -294,14 +293,12 @@ void CacheFile::close()
 {
     const QMutexLocker lock(&mutex);
 
-    if (!fptr) {
+    if (!fptr.isOpen()) {
         return;
     }
 
     unmapAll();
-    fptr->close();
-    delete fptr;
-    fptr = nullptr;
+    fptr.close();
 }
 
 void CacheFile::read(Uint8 *buf, Uint32 size, Uint64 off)
@@ -310,7 +307,7 @@ void CacheFile::read(Uint8 *buf, Uint32 size, Uint64 off)
     bool close_again = false;
 
     // reopen the file if necessary
-    if (!fptr) {
+    if (!fptr.isOpen()) {
         //  Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
         openFile(READ);
         close_again = true;
@@ -321,12 +318,12 @@ void CacheFile::read(Uint8 *buf, Uint32 size, Uint64 off)
     }
 
     // jump to right position
-    if (!fptr->seek(off)) {
-        throw Error(i18n("Failed to seek file %1: %2", path, fptr->errorString()));
+    if (!fptr.seek(off)) {
+        throw Error(i18n("Failed to seek file %1: %2", path, fptr.errorString()));
     }
 
     Uint32 sz = 0;
-    if ((sz = fptr->read((char *)buf, size)) != size) {
+    if ((sz = fptr.read((char *)buf, size)) != size) {
         if (close_again) {
             closeTemporary();
         }
@@ -345,7 +342,7 @@ void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
     bool close_again = false;
 
     // reopen the file if necessary
-    if (!fptr) {
+    if (!fptr.isOpen()) {
         //  Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
         openFile(RW);
         close_again = true;
@@ -367,12 +364,12 @@ void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
     }
 
     // jump to right position
-    if (!fptr->seek(off)) {
-        throw Error(i18n("Failed to seek file %1: %2", path, fptr->errorString()));
+    if (!fptr.seek(off)) {
+        throw Error(i18n("Failed to seek file %1: %2", path, fptr.errorString()));
     }
 
-    if (fptr->write((const char *)buf, size) != size) {
-        throw Error(i18n("Failed to write to file %1: %2", path, fptr->errorString()));
+    if (fptr.write((const char *)buf, size) != size) {
+        throw Error(i18n("Failed to write to file %1: %2", path, fptr.errorString()));
     }
 
     if (close_again) {
@@ -386,12 +383,11 @@ void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
 
 void CacheFile::closeTemporary()
 {
-    if (!fptr || mappings.count() > 0) {
+    if (!fptr.isOpen() || mappings.count() > 0) {
         return;
     }
 
-    delete fptr;
-    fptr = nullptr;
+    fptr.close();
 }
 
 void CacheFile::preallocate(PreallocationThread *prealloc)
@@ -405,12 +401,12 @@ void CacheFile::preallocate(PreallocationThread *prealloc)
 
     Out(SYS_GEN | LOG_NOTICE) << "Preallocating file " << path << " (" << max_size << " bytes)" << endl;
     bool close_again = false;
-    if (!fptr) {
+    if (!fptr.isOpen()) {
         openFile(RW);
         close_again = true;
     }
 
-    const int fd = fptr->handle();
+    const int fd = fptr.handle();
 
     if (read_only) {
         if (close_again) {
@@ -447,19 +443,19 @@ void CacheFile::preallocate(PreallocationThread *prealloc)
 
 Uint64 CacheFile::diskUsage()
 {
-    if (!fptr) {
+    if (!fptr.isOpen()) {
         return DiskUsage(path);
     } else {
-        return DiskUsage(fptr->handle());
+        return DiskUsage(fptr.handle());
     }
 }
 
 bool CacheFile::allocateBytes(Uint64 off, Uint64 size)
 {
 #ifdef HAVE_POSIX_FALLOCATE64
-    return posix_fallocate64(fptr->handle(), off, size) != ENOSPC;
+    return posix_fallocate64(fptr.handle(), off, size) != ENOSPC;
 #elif HAVE_POSIX_FALLOCATE
-    return posix_fallocate(fptr->handle(), off, size) != ENOSPC;
+    return posix_fallocate(fptr.handle(), off, size) != ENOSPC;
 #else
     return true;
 #endif

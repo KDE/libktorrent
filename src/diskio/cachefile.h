@@ -135,7 +135,7 @@ private:
     bool allocateBytes(bt::Uint64 off, bt::Uint64 size);
 
 private:
-    QFile *fptr;
+    QFile fptr;
     bool read_only;
     Uint64 max_size, file_size;
     QString path;
