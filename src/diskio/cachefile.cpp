@@ -80,9 +80,9 @@ void CacheFile::openFile(Mode mode)
     }
 
     if (!ok) {
+        const auto error = fptr.errorString();
         fptr.close();
-        const int err = errno;
-        throw Error(i18n("Cannot open %1: %2", path, QString::fromUtf8(strerror(err))));
+        throw Error(i18n("Cannot open %1: %2", path, error));
     }
 
     file_size = fptr.size();
