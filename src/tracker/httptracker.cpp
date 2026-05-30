@@ -304,15 +304,9 @@ bool HTTPTracker::updateData(const QByteArray &data)
         // no list, it might however be a compact response
         vn = dict->getValue("peers");
         if (vn && vn->data().getType() == Value::STRING) {
-            QByteArray arr = vn->data().toByteArray();
+            const auto arr = vn->data().toByteArrayView();
             for (int i = 0; i < arr.size(); i += 6) {
-                Uint8 buf[6];
-                for (int j = 0; j < 6; j++) {
-                    buf[j] = arr[i + j];
-                }
-
-                const Uint32 ip = ReadUint32(buf, 0);
-                addPeer(net::Address(ip, ReadUint16(buf, 4)), false);
+                addPeer(net::Address::fromCompactIPv4(arr.sliced(i * 6, 6)), false);
             }
         }
     } else {
@@ -338,13 +332,9 @@ bool HTTPTracker::updateData(const QByteArray &data)
     // Check for IPv6 compact peers
     vn = dict->getValue("peers6");
     if (vn && vn->data().getType() == Value::STRING) {
-        QByteArray arr = vn->data().toByteArray();
+        const auto arr = vn->data().toByteArrayView();
         for (int i = 0; i < arr.size(); i += 18) {
-            Q_IPV6ADDR ip;
-            memcpy(ip.c, arr.data() + i, 16);
-            const quint16 port = ReadUint16((const Uint8 *)arr.data() + i, 16);
-
-            addPeer(net::Address(ip, port), false);
+            addPeer(net::Address::fromCompactIPv6(arr.sliced(i * 18, 18)), false);
         }
     }
 

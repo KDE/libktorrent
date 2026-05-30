@@ -18,60 +18,36 @@ void PackBucketEntry(const KBucketEntry &e, QByteArray &ba, Uint32 off)
     Uint8 *data = (Uint8 *)ba.data();
     Uint8 *ptr = data + off;
 
+    // first check size
     if (addr.ipVersion() == 4) {
-        // first check size
         if ((int)off + 26 > ba.size()) {
             throw bt::Error(u"Not enough room in buffer"_s);
         }
-
-        // copy ID, IP address and port into the buffer
-        memcpy(ptr, e.getID().getData(), 20);
-        bt::WriteUint32(ptr, 20, addr.toIPv4Address());
-        bt::WriteUint16(ptr, 24, addr.port());
     } else {
-        // first check size
         if ((int)off + 38 > ba.size()) {
             throw bt::Error(u"Not enough room in buffer"_s);
         }
-
-        // copy ID, IP address and port into the buffer
-        memcpy(ptr, e.getID().getData(), 20);
-        memcpy(ptr + 20, addr.toIPv6Address().c, 16);
-        bt::WriteUint16(ptr, 36, addr.port());
     }
+
+    // copy ID, IP address and port into the buffer
+    memcpy(ptr, e.getID().getData(), 20);
+    addr.writeCompact(ptr + 20);
 }
 
-KBucketEntry UnpackBucketEntry(const QByteArray &ba, Uint32 off, int ip_version)
+KBucketEntry UnpackBucketEntry(QByteArrayView ba, int ip_version)
 {
     if (ip_version == 4) {
-        if ((int)off + 26 > ba.size()) {
+        if (ba.size() < 26) {
             throw bt::Error(u"Not enough room in buffer"_s);
         }
 
-        const Uint8 *data = (Uint8 *)ba.data();
-        const Uint8 *ptr = data + off;
-
-        // get the port, ip and key);
-        const Uint16 port = bt::ReadUint16(ptr, 24);
-        const Uint32 ip = bt::ReadUint32(ptr, 20);
-        Uint8 key[20];
-        memcpy(key, ptr, 20);
-
-        return KBucketEntry(net::Address(ip, port), dht::Key(key));
+        return KBucketEntry(net::Address::fromCompactIPv4(ba.sliced(20)), dht::Key(ba.first(20)));
     } else {
-        if ((int)off + 38 > ba.size()) {
+        if (ba.size() < 38) {
             throw bt::Error(u"Not enough room in buffer"_s);
         }
 
-        const Uint8 *data = (Uint8 *)ba.data();
-        const Uint8 *ptr = data + off;
-
-        // get the port, ip and key);
-        const Uint16 port = bt::ReadUint16(ptr, 36);
-        Uint8 key[20];
-        memcpy(key, ptr, 20);
-
-        return KBucketEntry(net::Address((quint8 *)ptr + 20, port), dht::Key(key));
+        return KBucketEntry(net::Address::fromCompactIPv6(ba.sliced(20)), dht::Key(ba.first(20)));
     }
 }
 

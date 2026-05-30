@@ -372,19 +372,16 @@ void PeerManager::pex(const QByteArray &arr, int ip_version)
         return;
     }
 
+    const QByteArrayView arr_view = arr;
     if (ip_version == 4) {
         Out(SYS_CON | LOG_NOTICE) << "PEX: found " << (arr.size() / 6) << " IPv4 peers" << endl;
         for (int i = 0; i + 6 <= arr.size(); i += 6) {
-            const Uint8 *tmp = (const Uint8 *)arr.data() + i;
-            addPotentialPeer(net::Address(ReadUint32(tmp, 0), ReadUint16(tmp, 4)), false);
+            addPotentialPeer(net::Address::fromCompactIPv4(arr_view.sliced(i * 6, 6)), false);
         }
     } else if (ip_version == 6) {
         Out(SYS_CON | LOG_NOTICE) << "PEX: found " << (arr.size() / 18) << " IPv6 peers" << endl;
         for (int i = 0; i < arr.size(); i += 18) {
-            Q_IPV6ADDR ip;
-            memcpy(ip.c, arr.data() + i, 16);
-            const quint16 port = ReadUint16((const Uint8 *)arr.data() + i, 16);
-            addPotentialPeer(net::Address(ip, port), false);
+            addPotentialPeer(net::Address::fromCompactIPv6(arr_view.sliced(i * 18, 18)), false);
         }
     }
 }

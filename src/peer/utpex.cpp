@@ -172,23 +172,15 @@ void UTPex::encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps, int 
     }
 
     Uint32 size = 0;
+    const auto compact_width = ip_version == 4 ? 6 : 18;
+    auto tmp = buf;
 
     for (const auto &[id, addr] : ps) {
         if (addr.ipVersion() != ip_version) {
             continue;
         }
-        if (ip_version == 4) {
-            quint32 ip = htonl(addr.toIPv4Address());
-            memcpy(buf + size, &ip, 4);
-            WriteUint16(buf, size + 4, addr.port());
-            size += 6;
-        } else if (ip_version == 6) {
-            const Q_IPV6ADDR ip6 = addr.toIPv6Address();
-            const quint8 *ip = ip6.c;
-            memcpy(buf + size, ip, 16);
-            WriteUint16(buf, size + 16, addr.port());
-            size += 18;
-        }
+        addr.writeCompact(tmp);
+        tmp += compact_width;
     }
 
     enc.write(QByteArrayView{buf, size});

@@ -102,17 +102,12 @@ void GetPeersRsp::parse(BDictNode *dict)
     BListNode *vals = args->getList("values");
     if (vals) {
         for (Uint32 i = 0; i < vals->getNumChildren(); i++) {
-            QByteArray d = vals->getByteArray(i);
+            const auto d = vals->getByteArrayView(i);
             if (d.length() == 6) { // IPv4
-                const Uint16 port = bt::ReadUint16((const Uint8 *)d.data(), 4);
-                const Uint32 ip = bt::ReadUint32((const Uint8 *)d.data(), 0);
-                const net::Address addr(QHostAddress(ip), port);
+                const auto addr = net::Address::fromCompactIPv4(d);
                 items.append(DBItem(addr));
             } else if (d.length() == 18) { // IPv6
-                const Uint16 port = bt::ReadUint16((const Uint8 *)d.data(), 16);
-                Q_IPV6ADDR ip;
-                memcpy(ip.c, d.data(), 16);
-                const net::Address addr(QHostAddress(ip), port);
+                const auto addr = net::Address::fromCompactIPv6(d);
                 items.append(DBItem(addr));
             }
         }

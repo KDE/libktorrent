@@ -274,13 +274,11 @@ void KBucket::save(bt::BEncoder &enc)
         enc.write("address");
         if (e.getAddress().ipVersion() == 4) {
             std::array<Uint8, 6> tmp;
-            bt::WriteUint32(tmp.data(), 0, e.getAddress().toIPv4Address());
-            bt::WriteUint16(tmp.data(), 4, e.getAddress().port());
+            e.getAddress().writeCompact(tmp.data());
             enc.write(tmp);
         } else {
             std::array<Uint8, 18> tmp;
-            memcpy(tmp.data(), e.getAddress().toIPv6Address().c, 16);
-            bt::WriteUint16(tmp.data(), 16, e.getAddress().port());
+            e.getAddress().writeCompact(tmp.data());
             enc.write(tmp);
         }
 
@@ -309,11 +307,9 @@ void KBucket::load(bt::BDictNode *dict)
         const Key id = Key(entry->getByteArrayView("id"));
         const auto addr = entry->getByteArrayView("address");
         if (addr.size() == 6) {
-            entries.append(KBucketEntry(net::Address(bt::ReadUint32((const Uint8 *)addr.data(), 0), bt::ReadUint16((const Uint8 *)addr.data(), 4)), id));
+            entries.append(KBucketEntry(net::Address::fromCompactIPv4(addr), id));
         } else {
-            Q_IPV6ADDR ip;
-            memcpy(ip.c, addr.data(), 16);
-            entries.append(KBucketEntry(net::Address(ip, bt::ReadUint16((const Uint8 *)addr.data(), 16)), id));
+            entries.append(KBucketEntry(net::Address::fromCompactIPv6(addr), id));
         }
     }
 }

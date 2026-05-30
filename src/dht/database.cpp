@@ -47,15 +47,7 @@ DBItem &DBItem::operator=(const DBItem &it)
 
 Uint32 DBItem::pack(Uint8 *buf) const
 {
-    if (addr.ipVersion() == 4) {
-        WriteUint32(buf, 0, addr.toIPv4Address());
-        WriteUint16(buf, 4, addr.port());
-        return 6;
-    } else {
-        memcpy(buf, addr.toIPv6Address().c, 16);
-        WriteUint16(buf, 16, addr.port());
-        return 18;
-    }
+    return addr.writeCompact(buf);
 }
 
 ///////////////////////////////////////////////
@@ -131,8 +123,7 @@ QByteArray Database::genToken(const net::Address &addr)
         const TimeStamp now = bt::CurrentTime();
         // generate a hash of the ip port and the current time
         // should prevent anybody from crapping things up
-        bt::WriteUint32(tdata, 0, addr.toIPv4Address());
-        bt::WriteUint16(tdata, 4, addr.port());
+        addr.writeCompact(tdata);
         bt::WriteUint64(tdata, 6, now);
 
         QByteArray token = SHA1Hash::generate(tdata, 14).toByteArray();
@@ -144,8 +135,7 @@ QByteArray Database::genToken(const net::Address &addr)
         const TimeStamp now = bt::CurrentTime();
         // generate a hash of the ip port and the current time
         // should prevent anybody from crapping things up
-        memcpy(tdata, addr.toIPv6Address().c, 16);
-        bt::WriteUint16(tdata, 16, addr.port());
+        addr.writeCompact(tdata);
         bt::WriteUint64(tdata, 18, now);
 
         QByteArray token = SHA1Hash::generate(tdata, 26).toByteArray();
@@ -168,8 +158,7 @@ bool Database::checkToken(const QByteArray &token, const net::Address &addr)
 
     if (addr.ipVersion() == 4) {
         Uint8 tdata[14];
-        bt::WriteUint32(tdata, 0, addr.toIPv4Address());
-        bt::WriteUint16(tdata, 4, addr.port());
+        addr.writeCompact(tdata);
         bt::WriteUint64(tdata, 6, ts);
         const QByteArray ct = SHA1Hash::generate(tdata, 14).toByteArray();
 
@@ -180,9 +169,7 @@ bool Database::checkToken(const QByteArray &token, const net::Address &addr)
         }
     } else {
         Uint8 tdata[26];
-
-        memcpy(tdata, addr.toIPv6Address().c, 16);
-        bt::WriteUint16(tdata, 16, addr.port());
+        addr.writeCompact(tdata);
         bt::WriteUint64(tdata, 18, ts);
 
         const QByteArray ct = SHA1Hash::generate(tdata, 26).toByteArray();

@@ -39,6 +39,20 @@ public:
     Address(const Address &addr);
     virtual ~Address();
 
+    /*!
+     * Constructs an Address from a byte array containing a compact IPv4 address.
+     *
+     * An IPv4 address in compact format is 6 bytes long: 4 bytes for the IP and 2 bytes for the port.
+     */
+    static Address fromCompactIPv4(QByteArrayView ba);
+
+    /*!
+     * Constructs an Address from a byte array containing a compact IPv4 address.
+     *
+     * An IPv6 address in compact format is 18 bytes long: 16 bytes for the IP and 2 bytes for the port.
+     */
+    static Address fromCompactIPv6(QByteArrayView ba);
+
     //! Get the port number
     [[nodiscard]] bt::Uint16 port() const
     {
@@ -84,6 +98,13 @@ public:
 
     //! Convert an IPv4 mapped IPv6 address to an IPv4 address
     [[nodiscard]] Address convertIPv4Mapped() const;
+
+    /*!
+     * Writes the compact form of this address into \a buf. Returns the number of bytes written.
+     *
+     * The buffer must be at least 6 bytes long for an IPv4 address or 18 bytes long for an IPv6 address.
+     */
+    bt::Uint32 writeCompact(bt::Uint8 *buf) const;
 
 private:
     bt::Uint16 port_number;

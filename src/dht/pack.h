@@ -23,12 +23,10 @@ void PackBucketEntry(const KBucketEntry &e, QByteArray &ba, bt::Uint32 off);
  * Unpack a KBucketEntry from a byte array.
  * If a full entry cannot be read an error will be thrown.
  * \param ba The byte array
- * \param off The offset
  * \param ip_version The ip version (4 or 6)
  * \return The entry
  */
-KBucketEntry UnpackBucketEntry(const QByteArray &ba, bt::Uint32 off, int ip_version);
-
+KBucketEntry UnpackBucketEntry(QByteArrayView ba, int ip_version);
 }
 
 #endif

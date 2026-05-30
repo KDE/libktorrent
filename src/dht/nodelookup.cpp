@@ -28,14 +28,14 @@ NodeLookup::~NodeLookup()
 {
 }
 
-void NodeLookup::handleNodes(const QByteArray &nodes, int ip_version)
+void NodeLookup::handleNodes(QByteArrayView nodes, int ip_version)
 {
     const Uint32 address_size = ip_version == 4 ? 26 : 38;
     const Uint32 nnodes = nodes.size() / address_size;
     for (Uint32 j = 0; j < nnodes; j++) {
         // unpack an entry and add it to the todo list
         try {
-            const KBucketEntry e = UnpackBucketEntry(nodes, j * address_size, ip_version);
+            const KBucketEntry e = UnpackBucketEntry(nodes.sliced(j * address_size), ip_version);
             // lets not talk to ourself
             if (e.getID() != node->getOurID() && !todo.contains(e) && !visited.contains(e)) {
                 todo.insert(e);

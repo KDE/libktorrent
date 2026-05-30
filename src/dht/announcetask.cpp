@@ -27,14 +27,14 @@ AnnounceTask::~AnnounceTask()
 {
 }
 
-void AnnounceTask::handleNodes(const QByteArray &nodes, int ip_version)
+void AnnounceTask::handleNodes(QByteArrayView nodes, int ip_version)
 {
     const Uint32 address_size = ip_version == 4 ? 26 : 38;
     const Uint32 nval = nodes.size() / address_size;
     for (Uint32 i = 0; i < nval; i++) {
         // add node to todo list
         try {
-            const KBucketEntry e = UnpackBucketEntry(nodes, i * address_size, ip_version);
+            const KBucketEntry e = UnpackBucketEntry(nodes.sliced(i * address_size), ip_version);
             if (!visited.contains(e) && todo.size() < 100) {
                 todo.insert(e);
                 //  Out(SYS_DHT|LOG_DEBUG) << "DHT: GetPeers returned node " << e.getAddress().toString() << endl;

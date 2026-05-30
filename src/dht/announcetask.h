@@ -64,7 +64,7 @@ public:
     bool takeItem(DBItem &item);
 
 private:
-    void handleNodes(const QByteArray &nodes, int ip_version);
+    void handleNodes(QByteArrayView nodes, int ip_version);
 
 private:
     dht::Key info_hash;

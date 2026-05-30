@@ -6,6 +6,7 @@
 
 #include "address.h"
 
+#include <util/functions.h>
 #include <util/log.h>
 
 #ifndef Q_OS_WIN
@@ -80,6 +81,19 @@ Address::Address(const QHostAddress &addr, Uint16 port)
 
 Address::~Address()
 {
+}
+
+Address Address::fromCompactIPv4(QByteArrayView ba)
+{
+    const Uint32 ip = bt::ReadUint32(reinterpret_cast<const Uint8 *>(ba.data()), 0);
+    const Uint16 port = bt::ReadUint16(reinterpret_cast<const Uint8 *>(ba.data()), 4);
+    return Address{ip, port};
+}
+
+Address Address::fromCompactIPv6(QByteArrayView ba)
+{
+    const Uint16 port = bt::ReadUint16(reinterpret_cast<const Uint8 *>(ba.data()), 16);
+    return Address{reinterpret_cast<const quint8 *>(ba.data()), port};
 }
 
 void Address::toSocketAddress(sockaddr_storage *ss, int &length, bool as_ipv6) const
@@ -176,5 +190,19 @@ Address Address::convertIPv4Mapped() const
     }
 
     return net::Address(*this);
+}
+
+Uint32 Address::writeCompact(Uint8 *buf) const
+{
+    if (ipVersion() == 4) {
+        WriteUint32(buf, 0, toIPv4Address());
+        WriteUint16(buf, 4, port_number);
+        return 6;
+    } else {
+        const auto ipv6 = toIPv6Address();
+        memcpy(buf, ipv6.c, 16);
+        WriteUint16(buf, 16, port_number);
+        return 18;
+    }
 }
 }
