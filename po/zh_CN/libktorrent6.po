@@ -20,7 +20,7 @@ msgstr ""
 #: src/bcodec/bdecoder.cpp:51
 #, kde-format
 msgid "Illegal token: %1"
-msgstr "非法标记：%1"
+msgstr "非法令牌：%1"
 
 #: src/bcodec/bdecoder.cpp:89 src/bcodec/bdecoder.cpp:96
 #, kde-format
