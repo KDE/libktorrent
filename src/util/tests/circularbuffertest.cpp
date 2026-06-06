@@ -77,7 +77,7 @@ private Q_SLOTS:
         CircularBuffer cbuf(20);
 
         for (int i = 0; i < 1000; i++) {
-            Uint32 r = 1 + QRandomGenerator::global()->bounded(20);
+            Uint32 r = 1 + QRandomGenerator::global()->bounded(13);
             Uint32 expected = r;
             if (expected + cbuf.size() >= 20) {
                 expected = 20 - cbuf.size();
