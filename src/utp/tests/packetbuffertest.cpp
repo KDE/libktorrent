@@ -30,17 +30,16 @@ public:
 private Q_SLOTS:
     void testPacketBuffer()
     {
-        bt::Uint8 tmp[200];
-        memset(tmp, 0xFF, 200);
+        constexpr std::array<bt::Uint8, 200> tmp{0xFF};
 
         bt::CircularBuffer cbuf;
-        cbuf.write(tmp, 200);
+        cbuf.write(tmp);
 
         utp::PacketBuffer pbuf;
         QCOMPARE(pbuf.fillData(cbuf, 200), 200);
         QCOMPARE(pbuf.payloadSize(), 200);
         QCOMPARE(pbuf.bufferSize(), 200);
-        QCOMPARE(memcmp(pbuf.data(), tmp, 200), 0);
+        QCOMPARE(memcmp(pbuf.data(), tmp.data(), 200), 0);
 
         utp::Header hdr;
         memset(&hdr, 0, sizeof(utp::Header));
@@ -55,7 +54,7 @@ private Q_SLOTS:
 
         pbuf.setHeader(hdr, 0);
         QCOMPARE(pbuf.bufferSize(), 200 + utp::Header::size());
-        QCOMPARE(memcmp(pbuf.data() + utp::Header::size(), tmp, 200), 0);
+        QCOMPARE(memcmp(pbuf.data() + utp::Header::size(), tmp.data(), 200), 0);
         QCOMPARE(pbuf.payloadSize(), 200);
 
         utp::Header hdr2;
@@ -65,7 +64,7 @@ private Q_SLOTS:
 
         pbuf.setHeader(hdr, 4);
         QCOMPARE(pbuf.bufferSize(), 200 + utp::Header::size() + 4);
-        QCOMPARE(memcmp(pbuf.data() + utp::Header::size() + 4, tmp, 200), 0);
+        QCOMPARE(memcmp(pbuf.data() + utp::Header::size() + 4, tmp.data(), 200), 0);
         QCOMPARE(pbuf.payloadSize(), 200);
 
         utp::Header hdr3;

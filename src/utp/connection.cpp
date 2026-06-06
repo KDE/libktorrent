@@ -406,7 +406,7 @@ int Connection::send(const bt::Uint8 *data, Uint32 len)
     }
 
     // first put data in the output buffer then send packets
-    const bt::Uint32 ret = output_buffer.write(data, len);
+    const bt::Uint32 ret = output_buffer.write(QByteArrayView{data, len});
     sendPackets();
     stats.writeable = !output_buffer.full();
     return ret;

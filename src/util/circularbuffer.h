@@ -7,9 +7,12 @@
 #ifndef BT_CIRCULARBUFFER_H
 #define BT_CIRCULARBUFFER_H
 
+#include <utility>
+
+#include <QByteArrayView>
+
 #include <ktorrent_export.h>
 #include <util/constants.h>
-#include <utility>
 
 namespace bt
 {
@@ -32,12 +35,9 @@ public:
     virtual bt::Uint32 read(bt::Uint8 *ptr, bt::Uint32 max_len);
 
     /*!
-        Write up to len bytes from data and store it in the window.
-        \param ptr The data to copy
-        \param len Amount to write
-        \return The amount written
+        Write bytes from \c buf and store it in the window. Returns the number of bytes written.
     */
-    virtual bt::Uint32 write(const bt::Uint8 *ptr, bt::Uint32 len);
+    virtual bt::Uint32 write(QByteArrayView buf);
 
     //! Is the buffer empty
     [[nodiscard]] bool empty() const

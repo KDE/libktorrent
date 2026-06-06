@@ -50,22 +50,22 @@ bt::Uint32 CircularBuffer::read(bt::Uint8 *ptr, bt::Uint32 max_len)
     return to_read;
 }
 
-bt::Uint32 CircularBuffer::write(const bt::Uint8 *ptr, bt::Uint32 len)
+bt::Uint32 CircularBuffer::write(QByteArrayView buf)
 {
     if (full()) {
         return 0;
     }
 
     const bt::Uint32 free_space = buf_capacity - buf_size;
-    const bt::Uint32 to_write = free_space < len ? free_space : len;
+    const bt::Uint32 to_write = free_space < buf.size() ? free_space : buf.size();
 
     const bt::Uint32 write_pos = (start + buf_size) % buf_capacity;
     if (write_pos + to_write > buf_capacity) {
         const bt::Uint32 w = (buf_capacity - write_pos);
-        memcpy(data + write_pos, ptr, w);
-        memcpy(data, ptr + w, to_write - w);
+        memcpy(data + write_pos, buf.data(), w);
+        memcpy(data, buf.data() + w, to_write - w);
     } else {
-        memcpy(data + write_pos, ptr, to_write);
+        memcpy(data + write_pos, buf.data(), to_write);
     }
 
     buf_size += to_write;
