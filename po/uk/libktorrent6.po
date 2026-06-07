@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent5\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-27 00:43+0000\n"
+"POT-Creation-Date: 2026-06-07 00:44+0000\n"
 "PO-Revision-Date: 2015-06-25 19:31+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -421,7 +421,7 @@ msgid "Superseeding"
 msgstr "Суперпоширення"
 
 #: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
-#: src/tracker/httptracker.cpp:398
+#: src/tracker/httptracker.cpp:388
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Некоректна відповідь координатора"
@@ -431,18 +431,18 @@ msgstr "Некоректна відповідь координатора"
 msgid "Invalid data from tracker"
 msgstr "Некоректні дані від координатора"
 
-#: src/tracker/httptracker.cpp:413
+#: src/tracker/httptracker.cpp:403
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Некоректна адреса URL координатора"
 
-#: src/tracker/httptracker.cpp:473 src/tracker/udptracker.cpp:327
-#: src/tracker/udptracker.cpp:334
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:326
+#: src/tracker/udptracker.cpp:333
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "Перевищення часу очікування на з’єднання з координатором %1"
 
-#: src/tracker/udptracker.cpp:357
+#: src/tracker/udptracker.cpp:356
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "Не вдалося обробити назву вузла %1"

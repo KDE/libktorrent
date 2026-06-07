@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-27 00:43+0000\n"
+"POT-Creation-Date: 2026-06-07 00:44+0000\n"
 "PO-Revision-Date: 2020-02-21 22:15+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -412,7 +412,7 @@ msgid "Superseeding"
 msgstr "Super-sejanje"
 
 #: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
-#: src/tracker/httptracker.cpp:398
+#: src/tracker/httptracker.cpp:388
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Neveljaven odgovor sledilnika"
@@ -422,18 +422,18 @@ msgstr "Neveljaven odgovor sledilnika"
 msgid "Invalid data from tracker"
 msgstr "Neveljavni podatki s sledilnika"
 
-#: src/tracker/httptracker.cpp:413
+#: src/tracker/httptracker.cpp:403
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Neveljaven URL sledilnika"
 
-#: src/tracker/httptracker.cpp:473 src/tracker/udptracker.cpp:327
-#: src/tracker/udptracker.cpp:334
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:326
+#: src/tracker/udptracker.cpp:333
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "Čas za povezavo s sledilnikom %1 je pretekel"
 
-#: src/tracker/udptracker.cpp:357
+#: src/tracker/udptracker.cpp:356
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "Ni mogoče razrešiti imena gostitelja %1"

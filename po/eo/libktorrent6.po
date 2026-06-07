@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-27 00:43+0000\n"
+"POT-Creation-Date: 2026-06-07 00:44+0000\n"
 "PO-Revision-Date: 2023-02-12 18:47+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -406,7 +406,7 @@ msgid "Superseeding"
 msgstr "Anstataŭante"
 
 #: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
-#: src/tracker/httptracker.cpp:398
+#: src/tracker/httptracker.cpp:388
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Nevalida respondo de servilo"
@@ -416,18 +416,18 @@ msgstr "Nevalida respondo de servilo"
 msgid "Invalid data from tracker"
 msgstr "Nevalida datumo de servilo"
 
-#: src/tracker/httptracker.cpp:413
+#: src/tracker/httptracker.cpp:403
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Nevalida servila retadreso"
 
-#: src/tracker/httptracker.cpp:473 src/tracker/udptracker.cpp:327
-#: src/tracker/udptracker.cpp:334
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:326
+#: src/tracker/udptracker.cpp:333
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "Tempo ekskluzive kontaktante spurilon %1"
 
-#: src/tracker/udptracker.cpp:357
+#: src/tracker/udptracker.cpp:356
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "Ne eblas solvi gastigan nomon %1"

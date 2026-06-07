@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-27 00:43+0000\n"
+"POT-Creation-Date: 2026-06-07 00:44+0000\n"
 "PO-Revision-Date: 2023-01-05 12:47+0100\n"
 "Last-Translator: Xavier BESNARD <xavier.besnard]neuf.fr>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
@@ -457,7 +457,7 @@ msgid "Superseeding"
 msgstr "Super-partage"
 
 #: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
-#: src/tracker/httptracker.cpp:398
+#: src/tracker/httptracker.cpp:388
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Réponse du traqueur non valable"
@@ -467,18 +467,18 @@ msgstr "Réponse du traqueur non valable"
 msgid "Invalid data from tracker"
 msgstr "Données non valables venant du traqueur"
 
-#: src/tracker/httptracker.cpp:413
+#: src/tracker/httptracker.cpp:403
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "URL du traqueur mal formée"
 
-#: src/tracker/httptracker.cpp:473 src/tracker/udptracker.cpp:327
-#: src/tracker/udptracker.cpp:334
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:326
+#: src/tracker/udptracker.cpp:333
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "Temps imparti dépassé pour contacter le traqueur %1"
 
-#: src/tracker/udptracker.cpp:357
+#: src/tracker/udptracker.cpp:356
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "Impossible de résoudre le nom d'hôte %1"
