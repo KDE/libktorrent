@@ -74,9 +74,10 @@ void GetPeersRsp::encode(QByteArray &arr) const
                 DBItemList::const_iterator i = items.begin();
                 while (i != items.end()) {
                     const DBItem &item = *i;
+                    // Buffer large enough for a compact IPv6 address but we may also write a compact IPv4 address.
                     std::array<Uint8, 18> tmp;
                     const Uint32 b = item.pack(tmp.data());
-                    enc.write(QByteArrayView{tmp}.chopped(b));
+                    enc.write(QByteArrayView{tmp}.first(b));
                     ++i;
                 }
                 enc.end();
