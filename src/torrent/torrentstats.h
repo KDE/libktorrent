@@ -179,7 +179,10 @@ struct KTORRENT_EXPORT TorrentStats {
     TimeStamp last_download_activity_time;
     //! TimeStamp when we last saw upload activity
     TimeStamp last_upload_activity_time;
-
+    //! TimeStamp when we last saw download activity during the current session
+    TimeStamp session_last_download_activity_time;
+    //! TimeStamp when we last saw upload activity during the current session
+    TimeStamp session_last_upload_activity_time;
     TorrentStats();
 
     //! Calculate the share ratio

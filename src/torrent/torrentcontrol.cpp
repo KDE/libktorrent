@@ -206,10 +206,12 @@ void TorrentControl::update()
         if (stats.download_rate > 100 && stats.bytes_left > 0) {
             stalled_timer.update();
             stats.last_download_activity_time = CurrentTime();
+            stats.session_last_download_activity_time = CurrentTime();
         }
 
         if (stats.upload_rate > 100) {
             stats.last_upload_activity_time = CurrentTime();
+            stats.session_last_upload_activity_time = CurrentTime();
         }
 
         // to satisfy people obsessed with their share ratio
@@ -223,7 +225,7 @@ void TorrentControl::update()
         // Update DownloadCap
         updateStats();
 
-        // do a manual update if we are stalled for more then 2 minutes
+        // do a manual update if we are stalled for more than 2 minutes
         // we do not do this for private torrents
         if (stalled_timer.getElapsedSinceUpdate() > 120000 && !stats.completed && !stats.priv_torrent) {
             Out(SYS_TRK | LOG_NOTICE) << "Stalled for too long, time to get some fresh blood" << endl;
@@ -389,6 +391,7 @@ void TorrentControl::continueStart()
     stats.running = true;
     stats.started = true;
     stats.queued = false;
+    stats.session_last_download_activity_time = stats.session_last_upload_activity_time = CurrentTime();
     choker_update_timer.update();
     stats_save_timer.update();
     wanted_update_timer.update();

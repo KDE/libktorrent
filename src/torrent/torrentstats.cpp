@@ -50,6 +50,8 @@ TorrentStats::TorrentStats()
     , num_corrupted_chunks(0)
     , last_download_activity_time(bt::CurrentTime())
     , last_upload_activity_time(last_download_activity_time)
+    , session_last_download_activity_time(bt::CurrentTime())
+    , session_last_upload_activity_time(session_last_download_activity_time)
 {
 }
 
