@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-network-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-07 00:44+0000\n"
+"POT-Creation-Date: 2026-06-17 00:45+0000\n"
 "PO-Revision-Date: 2024-03-16 14:01+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -58,7 +58,7 @@ msgstr "Torrent tamamlanmamış."
 msgid "Waiting for other data checks to finish"
 msgstr "Tamamlamak için diğer veri denetimleri bekleniyor"
 
-#: src/datachecker/datacheckerjob.cpp:81 src/torrent/torrentstats.cpp:94
+#: src/datachecker/datacheckerjob.cpp:81 src/torrent/torrentstats.cpp:96
 #, kde-format
 msgid "Checking data"
 msgstr "Veri denetleniyor"
@@ -82,24 +82,24 @@ msgstr "%1 dosyası açılamıyor: %2"
 msgid "Failed to create %1: %2"
 msgstr "%1 oluşturulamıyor: %2"
 
-#: src/diskio/cachefile.cpp:88 src/util/fileops.cpp:339
+#: src/diskio/cachefile.cpp:85 src/util/fileops.cpp:339
 #: src/util/fileops.cpp:401
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "%1 açılamıyor: %2"
 
-#: src/diskio/cachefile.cpp:116 src/diskio/cachefile.cpp:205
-#: src/diskio/cachefile.cpp:375 src/diskio/cachefile.cpp:440
+#: src/diskio/cachefile.cpp:113 src/diskio/cachefile.cpp:202
+#: src/diskio/cachefile.cpp:352 src/diskio/cachefile.cpp:416
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "%1 yazmak için açılamadı: Saltokunur dosya sistemi"
 
-#: src/diskio/cachefile.cpp:122 src/diskio/cachefile.cpp:381
+#: src/diskio/cachefile.cpp:119 src/diskio/cachefile.cpp:358
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "%1 en büyük boyutunun dışına yazılmaya çalışılıyor"
 
-#: src/diskio/cachefile.cpp:211
+#: src/diskio/cachefile.cpp:208
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
@@ -107,32 +107,32 @@ msgstr ""
 "%1 dosyası genişletilemiyor: Dosya, maksimum boyutunun dışına büyütülmeye "
 "çalışılıyor"
 
-#: src/diskio/cachefile.cpp:215
+#: src/diskio/cachefile.cpp:212
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "%1 dosyası genişletilemiyor: %2"
 
-#: src/diskio/cachefile.cpp:340
+#: src/diskio/cachefile.cpp:317
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "Hata: %1 dosyasında sonundan okunamıyor"
 
-#: src/diskio/cachefile.cpp:345 src/diskio/cachefile.cpp:391
+#: src/diskio/cachefile.cpp:322 src/diskio/cachefile.cpp:368
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "%1 dosyası bulunamıyor: %2"
 
-#: src/diskio/cachefile.cpp:354
+#: src/diskio/cachefile.cpp:331
 #, kde-format
 msgid "Error reading from %1"
 msgstr "%1 konumundan okunamıyor"
 
-#: src/diskio/cachefile.cpp:395
+#: src/diskio/cachefile.cpp:372
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "%1 dosyasına yazılamıyor: %2"
 
-#: src/diskio/cachefile.cpp:457
+#: src/diskio/cachefile.cpp:433
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Disk alanı önceden ayrılamıyor: %1"
@@ -295,7 +295,7 @@ msgstr "Uyarı: %1"
 msgid "Announcing"
 msgstr "Bildiriliyor"
 
-#: src/interfaces/trackerinterface.cpp:51 src/torrent/torrentstats.cpp:88
+#: src/interfaces/trackerinterface.cpp:51 src/torrent/torrentstats.cpp:90
 #, kde-format
 msgid "Error: %1"
 msgstr "Hata: %1"
@@ -313,23 +313,23 @@ msgstr "Bilinmeyen istemci"
 msgid "Corrupted torrent."
 msgstr "Bozuk torrent."
 
-#: src/torrent/torrentcontrol.cpp:259
+#: src/torrent/torrentcontrol.cpp:261
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr ""
 "Diske yazılamadı, yeterli disk alanına sahip olduğunuzdan emin misiniz?"
 
-#: src/torrent/torrentcontrol.cpp:481
+#: src/torrent/torrentcontrol.cpp:484
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "<b>%1</b> yüklenirken bir hata oluştu:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:491
+#: src/torrent/torrentcontrol.cpp:494
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "%1 oluşturulamıyor: %2"
 
-#: src/torrent/torrentcontrol.cpp:505
+#: src/torrent/torrentcontrol.cpp:508
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -338,7 +338,7 @@ msgstr ""
 "<b>%1</b> torrentini zaten indiriyorsunuz. İki torrentin izleyici listesi "
 "birleştirildi."
 
-#: src/torrent/torrentcontrol.cpp:509
+#: src/torrent/torrentcontrol.cpp:512
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "<b>%1</b> torrentini zaten indiriyorsunuz."
@@ -348,68 +348,68 @@ msgstr "<b>%1</b> torrentini zaten indiriyorsunuz."
 msgid "Cannot create index file: %1"
 msgstr "İçerik dosyası oluşturulamıyor: %1"
 
-#: src/torrent/torrentstats.cpp:74
+#: src/torrent/torrentstats.cpp:76
 #, kde-format
 msgid "Not started"
 msgstr "Başlatılmadı"
 
-#: src/torrent/torrentstats.cpp:76
+#: src/torrent/torrentstats.cpp:78
 #, kde-format
 msgid "Download completed"
 msgstr "İndirme tamamlandı"
 
-#: src/torrent/torrentstats.cpp:78
+#: src/torrent/torrentstats.cpp:80
 #, kde-format
 msgid "Seeding completed"
 msgstr "Besleme tamamlandı"
 
-#: src/torrent/torrentstats.cpp:80
+#: src/torrent/torrentstats.cpp:82
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
 msgstr "Besleniyor"
 
-#: src/torrent/torrentstats.cpp:82
+#: src/torrent/torrentstats.cpp:84
 #, kde-format
 msgid "Downloading"
 msgstr "İndiriliyor"
 
-#: src/torrent/torrentstats.cpp:84
+#: src/torrent/torrentstats.cpp:86
 #, kde-format
 msgid "Stalled"
 msgstr "Duraklatıldı"
 
-#: src/torrent/torrentstats.cpp:86
+#: src/torrent/torrentstats.cpp:88
 #, kde-format
 msgid "Stopped"
 msgstr "Durdu"
 
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Allocating diskspace"
 msgstr "Disk alanı ayrılıyor"
 
-#: src/torrent/torrentstats.cpp:92
+#: src/torrent/torrentstats.cpp:94
 #, kde-format
 msgid "Queued for seeding"
 msgstr "Besleme için kuyruğa eklendi"
 
-#: src/torrent/torrentstats.cpp:92
+#: src/torrent/torrentstats.cpp:94
 #, kde-format
 msgid "Queued for downloading"
 msgstr "İndirme için kuyruğa eklendi"
 
-#: src/torrent/torrentstats.cpp:96
+#: src/torrent/torrentstats.cpp:98
 #, kde-format
 msgid "Stopped. No space left on device."
 msgstr "Durduruldu. Aygıtta yer kalmadı."
 
-#: src/torrent/torrentstats.cpp:98
+#: src/torrent/torrentstats.cpp:100
 #, kde-format
 msgid "Paused"
 msgstr "Duraklatıldı"
 
-#: src/torrent/torrentstats.cpp:100
+#: src/torrent/torrentstats.cpp:102
 #, kde-format
 msgid "Superseeding"
 msgstr "Süper besleme"

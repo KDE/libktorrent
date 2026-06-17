@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-07 00:44+0000\n"
+"POT-Creation-Date: 2026-06-17 00:45+0000\n"
 "PO-Revision-Date: 2022-11-27 22:23+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -49,7 +49,7 @@ msgstr "Torrent-ი არასრულია."
 msgid "Waiting for other data checks to finish"
 msgstr "სხვა მონაცემების შემოწმებების დასასრულის მოლოდინი"
 
-#: src/datachecker/datacheckerjob.cpp:81 src/torrent/torrentstats.cpp:94
+#: src/datachecker/datacheckerjob.cpp:81 src/torrent/torrentstats.cpp:96
 #, kde-format
 msgid "Checking data"
 msgstr "მონაცემების შემოწმება"
@@ -73,56 +73,56 @@ msgstr "ფაილის (%1) გახსნის შეცდომა: %2"
 msgid "Failed to create %1: %2"
 msgstr "%1-ის შექმნის შეცდომა: %2"
 
-#: src/diskio/cachefile.cpp:88 src/util/fileops.cpp:339
+#: src/diskio/cachefile.cpp:85 src/util/fileops.cpp:339
 #: src/util/fileops.cpp:401
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "გახსნის შეცდომა: %1: %2"
 
-#: src/diskio/cachefile.cpp:116 src/diskio/cachefile.cpp:205
-#: src/diskio/cachefile.cpp:375 src/diskio/cachefile.cpp:440
+#: src/diskio/cachefile.cpp:113 src/diskio/cachefile.cpp:202
+#: src/diskio/cachefile.cpp:352 src/diskio/cachefile.cpp:416
 #, kde-format
 msgid "Cannot open %1 for writing: readonly filesystem"
 msgstr "%1-ს ჩასაწერად გახსნის შეცდომა: მხოლოდ წაკითხვადი ფაილური სისტემა"
 
-#: src/diskio/cachefile.cpp:122 src/diskio/cachefile.cpp:381
+#: src/diskio/cachefile.cpp:119 src/diskio/cachefile.cpp:358
 #, kde-format
 msgid "Attempting to write beyond the maximum size of %1"
 msgstr "%1-ის მაქსიმალური ზომის მიღმა ჩაწერის მცდელობა"
 
-#: src/diskio/cachefile.cpp:211
+#: src/diskio/cachefile.cpp:208
 #, kde-format
 msgid ""
 "Cannot expand file %1: attempting to grow the file beyond the maximum size"
 msgstr ""
 "ფაილის %1 გაფართოების შეცდომა: მაქსიმალური ზომის მიღმა ჩაწერის მცდელობა"
 
-#: src/diskio/cachefile.cpp:215
+#: src/diskio/cachefile.cpp:212
 #, kde-format
 msgid "Cannot expand file %1: %2"
 msgstr "ფაილის %1 გაფართოების შეცდომა: %2"
 
-#: src/diskio/cachefile.cpp:340
+#: src/diskio/cachefile.cpp:317
 #, kde-format
 msgid "Error: Reading past the end of the file %1"
 msgstr "შეცდომა: ფაილის \"%1\" დასასრულის შემდეგ წაკითხვის მცდელობა"
 
-#: src/diskio/cachefile.cpp:345 src/diskio/cachefile.cpp:391
+#: src/diskio/cachefile.cpp:322 src/diskio/cachefile.cpp:368
 #, kde-format
 msgid "Failed to seek file %1: %2"
 msgstr "ფაილის %1 გადახვევის შეცდომა: %2"
 
-#: src/diskio/cachefile.cpp:354
+#: src/diskio/cachefile.cpp:331
 #, kde-format
 msgid "Error reading from %1"
 msgstr "%1-დან წაკითხვის შეცდომა"
 
-#: src/diskio/cachefile.cpp:395
+#: src/diskio/cachefile.cpp:372
 #, kde-format
 msgid "Failed to write to file %1: %2"
 msgstr "ფაილში %1 ჩაწერის შეცდომა: %2"
 
-#: src/diskio/cachefile.cpp:457
+#: src/diskio/cachefile.cpp:433
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "დისკური ადგილის წინასწარი გამოთხოვის შეცდომა: %1"
@@ -285,7 +285,7 @@ msgstr "გაფრთხილება: %1"
 msgid "Announcing"
 msgstr "გამოცხადება"
 
-#: src/interfaces/trackerinterface.cpp:51 src/torrent/torrentstats.cpp:88
+#: src/interfaces/trackerinterface.cpp:51 src/torrent/torrentstats.cpp:90
 #, kde-format
 msgid "Error: %1"
 msgstr "შეცდომა: %1"
@@ -303,22 +303,22 @@ msgstr "უცნობი კლიენტი"
 msgid "Corrupted torrent."
 msgstr "დაზიანებული Torrent."
 
-#: src/torrent/torrentcontrol.cpp:259
+#: src/torrent/torrentcontrol.cpp:261
 #, kde-format
 msgid "Error writing to disk, do you have enough diskspace?"
 msgstr "დისკზე ჩაწერის შეცდომა. ადგილი საკმარისია?"
 
-#: src/torrent/torrentcontrol.cpp:481
+#: src/torrent/torrentcontrol.cpp:484
 #, kde-format
 msgid "An error occurred while loading <b>%1</b>:<br/><b>%2</b>"
 msgstr "შეცდომა ჩატვირთვისას: <b>%1</b>:<br/><b>%2</b>"
 
-#: src/torrent/torrentcontrol.cpp:491
+#: src/torrent/torrentcontrol.cpp:494
 #, kde-format
 msgid "Unable to create %1: %2"
 msgstr "%1-ის შექმნის შეცდომა: %2"
 
-#: src/torrent/torrentcontrol.cpp:505
+#: src/torrent/torrentcontrol.cpp:508
 #, kde-format
 msgid ""
 "You are already downloading the torrent <b>%1</b>. The tracker lists from "
@@ -327,7 +327,7 @@ msgstr ""
 "ტორენტს <b>%1</b> უკვე იწერთ. ტრეკერების სია ორივე ტორენტიდან ახლა "
 "შერწყმულია."
 
-#: src/torrent/torrentcontrol.cpp:509
+#: src/torrent/torrentcontrol.cpp:512
 #, kde-format
 msgid "You are already downloading the torrent <b>%1</b>."
 msgstr "ტორენტს <b>%1</b> უკვე იწერტ."
@@ -337,68 +337,68 @@ msgstr "ტორენტს <b>%1</b> უკვე იწერტ."
 msgid "Cannot create index file: %1"
 msgstr "ინდექსის ფაილის შექმნის შეცდომა: %1"
 
-#: src/torrent/torrentstats.cpp:74
+#: src/torrent/torrentstats.cpp:76
 #, kde-format
 msgid "Not started"
 msgstr "არ არის გაშვებული"
 
-#: src/torrent/torrentstats.cpp:76
+#: src/torrent/torrentstats.cpp:78
 #, kde-format
 msgid "Download completed"
 msgstr "გადმოწერა დასრულდა"
 
-#: src/torrent/torrentstats.cpp:78
+#: src/torrent/torrentstats.cpp:80
 #, kde-format
 msgid "Seeding completed"
 msgstr "Seeding -ი დასრულდა"
 
-#: src/torrent/torrentstats.cpp:80
+#: src/torrent/torrentstats.cpp:82
 #, kde-format
 msgctxt "Status of a torrent file"
 msgid "Seeding"
 msgstr "Seeding"
 
-#: src/torrent/torrentstats.cpp:82
+#: src/torrent/torrentstats.cpp:84
 #, kde-format
 msgid "Downloading"
 msgstr "გადმოწერა"
 
-#: src/torrent/torrentstats.cpp:84
+#: src/torrent/torrentstats.cpp:86
 #, kde-format
 msgid "Stalled"
 msgstr "გაჭედილი"
 
-#: src/torrent/torrentstats.cpp:86
+#: src/torrent/torrentstats.cpp:88
 #, kde-format
 msgid "Stopped"
 msgstr "გაჩერებულია"
 
-#: src/torrent/torrentstats.cpp:90
+#: src/torrent/torrentstats.cpp:92
 #, kde-format
 msgid "Allocating diskspace"
 msgstr "დისკზე ადგილის გამოყოფა"
 
-#: src/torrent/torrentstats.cpp:92
+#: src/torrent/torrentstats.cpp:94
 #, kde-format
 msgid "Queued for seeding"
 msgstr "რიგშია Seeding-სთვის"
 
-#: src/torrent/torrentstats.cpp:92
+#: src/torrent/torrentstats.cpp:94
 #, kde-format
 msgid "Queued for downloading"
 msgstr "რიგშია გადმოსაწერად"
 
-#: src/torrent/torrentstats.cpp:96
+#: src/torrent/torrentstats.cpp:98
 #, kde-format
 msgid "Stopped. No space left on device."
 msgstr "შეჩერდა. მოწყობილობაზე ადგილი აღარ დარჩა."
 
-#: src/torrent/torrentstats.cpp:98
+#: src/torrent/torrentstats.cpp:100
 #, kde-format
 msgid "Paused"
 msgstr "შეჩერებულია"
 
-#: src/torrent/torrentstats.cpp:100
+#: src/torrent/torrentstats.cpp:102
 #, kde-format
 msgid "Superseeding"
 msgstr "Superseeding"
