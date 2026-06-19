@@ -39,7 +39,7 @@ std::optional<SocketPair> CreateSocketPair(int ip_version)
         return {};
     }
 
-    if (!writer->connectSuccesFull()) {
+    if (!writer->connectSuccessful()) {
         return {};
     }
 

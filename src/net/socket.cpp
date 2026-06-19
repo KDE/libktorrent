@@ -412,7 +412,7 @@ Uint32 Socket::bytesAvailable() const
     return ret;
 }
 
-bool Socket::connectSuccesFull()
+bool Socket::connectSuccessful()
 {
     if (m_state != CONNECTING && m_state != CONNECTED) {
         return false;

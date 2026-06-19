@@ -30,7 +30,7 @@ public:
 
     void setBlocking(bool on) override;
     bool connectTo(const Address &addr) override;
-    bool connectSuccesFull() override;
+    bool connectSuccessful() override;
     void close() override;
     [[nodiscard]] bt::Uint32 bytesAvailable() const override;
     int send(const bt::Uint8 *buf, int len) override;

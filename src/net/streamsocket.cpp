@@ -38,7 +38,7 @@ bt::Uint32 StreamSocket::write(bt::Uint32 max, bt::TimeStamp now)
 
     const QMutexLocker lock(&mutex);
     if (sock->state() == net::SocketDevice::CONNECTING) {
-        const bool ok = sock->connectSuccesFull();
+        const bool ok = sock->connectSuccessful();
         if (listener) {
             listener->connectFinished(ok);
         }

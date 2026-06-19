@@ -71,7 +71,7 @@ private:
 
         // Wait until connection is complete
         int times = 0;
-        while (!outgoing->connectSuccesFull() && times < 5) {
+        while (!outgoing->connectSuccessful() && times < 5) {
             QTest::qSleep(1000);
             times++;
         }

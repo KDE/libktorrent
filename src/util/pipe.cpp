@@ -44,7 +44,7 @@ int socketpair(int sockets[2])
         return -1;
     }
 
-    if (!writer.connectSuccesFull()) {
+    if (!writer.connectSuccessful()) {
         closesocket(sockets[1]);
         return -1;
     }

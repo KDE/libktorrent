@@ -34,7 +34,7 @@ public:
     bt::Uint32 bytesAvailable() const override;
     bool setTOS(unsigned char type_of_service) override;
     bool connectTo(const net::Address &addr) override;
-    bool connectSuccesFull() override;
+    bool connectSuccessful() override;
     const net::Address &getPeerName() const override;
     net::Address getSockName() const override;
     void reset() override;

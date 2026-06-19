@@ -249,9 +249,9 @@ bool EncryptedPacketSocket::connecting() const
     return sock->state() == net::SocketDevice::CONNECTING;
 }
 
-bool EncryptedPacketSocket::connectSuccesFull() const
+bool EncryptedPacketSocket::connectSuccessful() const
 {
-    return sock->connectSuccesFull();
+    return sock->connectSuccessful();
 }
 
 void EncryptedPacketSocket::setRemoteAddress(const net::Address &addr)

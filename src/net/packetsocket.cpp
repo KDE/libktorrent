@@ -75,7 +75,7 @@ void PacketSocket::selectPacket()
 
 Uint32 PacketSocket::write(Uint32 max, bt::TimeStamp now)
 {
-    if (sock->state() == net::SocketDevice::CONNECTING && !sock->connectSuccesFull()) {
+    if (sock->state() == net::SocketDevice::CONNECTING && !sock->connectSuccessful()) {
         return 0;
     }
 

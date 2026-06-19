@@ -86,7 +86,7 @@ Socks::State Socks::setup()
 
 Socks::State Socks::onReadyToWrite()
 {
-    if (sock->connectSuccesFull()) {
+    if (sock->connectSuccessful()) {
         state = CONNECTING_TO_HOST;
         sock->setRemoteAddress(dest);
         return sendAuthRequest();

@@ -65,8 +65,8 @@ private:
         QTimer::singleShot(5000, this, &SocketTest::endEventLoop); // use a 5 second timeout
         exec();
         QVERIFY(incoming != nullptr);
-        QVERIFY(incoming->connectSuccesFull());
-        QVERIFY(outgoing->connectSuccesFull());
+        QVERIFY(incoming->connectSuccessful());
+        QVERIFY(outgoing->connectSuccessful());
     }
 
     void testSend()

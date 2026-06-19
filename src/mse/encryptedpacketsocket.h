@@ -113,7 +113,7 @@ public:
     bool connecting() const;
 
     //! See if a connect was success full
-    bool connectSuccesFull() const;
+    bool connectSuccessful() const;
 
     /*!
      * Set the TOS byte for new sockets.

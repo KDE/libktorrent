@@ -79,7 +79,7 @@ void Authenticate::onReadyWrite()
         default:
             break;
         }
-    } else if (sock->connectSuccesFull()) {
+    } else if (sock->connectSuccessful()) {
         connected();
     } else {
         onFinish(false);

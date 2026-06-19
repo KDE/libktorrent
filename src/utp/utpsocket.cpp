@@ -62,7 +62,7 @@ void UTPSocket::close()
     }
 }
 
-bool UTPSocket::connectSuccesFull()
+bool UTPSocket::connectSuccessful()
 {
     const Connection::Ptr ptr = conn.toStrongRef();
     if (ptr && ptr->connectionState() == CS_CONNECTED) {

@@ -130,7 +130,7 @@ private Q_SLOTS:
         QCOMPARE_GE(fd, 0);
 
         poll.reset();
-        QVERIFY(writer.connectSuccesFull());
+        QVERIFY(writer.connectSuccessful());
 
         net::Socket reader(fd, reader_ip_version);
 

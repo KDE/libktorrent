@@ -89,7 +89,7 @@ private:
         s.prepare(&poller, Poll::OUTPUT);
         QCOMPARE_GT(poller.poll(), 0);
         QVERIFY(s.ready(&poller, Poll::OUTPUT));
-        QVERIFY(s.connectSuccesFull());
+        QVERIFY(s.connectSuccessful());
         poller.reset();
 
         // Purge accepted connection

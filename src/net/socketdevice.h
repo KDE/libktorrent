@@ -61,8 +61,8 @@ public:
     [[nodiscard]] virtual bt::Uint32 bytesAvailable() const = 0;
     virtual bool setTOS(unsigned char type_of_service) = 0;
     virtual bool connectTo(const Address &addr) = 0;
-    //! See if a connectTo was succesfull in non blocking mode
-    virtual bool connectSuccesFull() = 0;
+    //! See if a connectTo was successful in non blocking mode
+    virtual bool connectSuccessful() = 0;
     [[nodiscard]] virtual const Address &getPeerName() const = 0;
     [[nodiscard]] virtual Address getSockName() const = 0;
 
