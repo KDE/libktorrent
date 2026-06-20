@@ -112,7 +112,7 @@ public:
     //! Is this socket connecting to a remote host
     bool connecting() const;
 
-    //! See if a connect was success full
+    //! See if a connect was successful
     bool connectSuccessful() const;
 
     /*!

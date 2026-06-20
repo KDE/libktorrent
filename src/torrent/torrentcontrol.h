@@ -284,7 +284,7 @@ private:
     void moveToCompletedDir();
     void emitFinished();
 
-    void updateTracker(const QString &ev, bool last_succes = true);
+    void updateTracker(const QString &ev, bool last_success = true);
     void updateStatus() override;
     void saveStats();
     void loadStats();

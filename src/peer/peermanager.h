@@ -184,7 +184,7 @@ public:
      * A peer has authenticated.
      * \param auth The Authenticate object
      * \param pcon The PeerConnector
-     * \param ok Whether or not the attempt was succesfull
+     * \param ok Whether or not the attempt was successful
      * \param token The ConnectionLimit::Token
      */
     void peerAuthenticated(Authenticate *auth, PeerConnector::WPtr pcon, bool ok, std::unique_ptr<ConnectionLimit::Token> token);

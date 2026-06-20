@@ -74,7 +74,7 @@ public:
     //! We can read from the socket
     virtual void onReadyRead();
 
-    //! We can write to the socket (used to detect a succesfull connection)
+    //! We can write to the socket (used to detect a successful connection)
     virtual void onReadyWrite();
 
 protected:
@@ -87,9 +87,9 @@ protected:
 
     /*!
      * Authentication finished.
-     * \param succes Succes or not
+     * \param success Success or not
      */
-    virtual void onFinish(bool succes) = 0;
+    virtual void onFinish(bool success) = 0;
 
     /*!
      * The other side send a handshake. The first 20 bytes

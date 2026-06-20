@@ -27,13 +27,13 @@ ServerAuthenticate::~ServerAuthenticate()
 {
 }
 
-void ServerAuthenticate::onFinish(bool succes)
+void ServerAuthenticate::onFinish(bool success)
 {
-    Out(SYS_CON | LOG_NOTICE) << "Authentication(S) to " << sock->getRemoteIPAddress() << " : " << (succes ? "ok" : "failure") << endl;
+    Out(SYS_CON | LOG_NOTICE) << "Authentication(S) to " << sock->getRemoteIPAddress() << " : " << (success ? "ok" : "failure") << endl;
     finished = true;
     setFirewalled(false);
 
-    if (!succes) {
+    if (!success) {
         sock.reset();
     }
 

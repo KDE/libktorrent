@@ -30,7 +30,7 @@ public:
     static void setFirewalled(bool Firewalled);
 
 protected:
-    void onFinish(bool succes) override;
+    void onFinish(bool success) override;
     void handshakeReceived(bool full) override;
 
 private:

@@ -19,7 +19,7 @@ Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, co
     , addr(addr)
     , pcon(pcon)
 {
-    finished = succes = false;
+    finished = success = false;
     if (proto == TCP) {
         sock = std::make_unique<mse::EncryptedPacketSocket>(addr.ipVersion());
     } else {
@@ -119,13 +119,13 @@ void Authenticate::connected()
     sendHandshake(info_hash, our_peer_id);
 }
 
-void Authenticate::onFinish(bool succes)
+void Authenticate::onFinish(bool success)
 {
-    Out(SYS_CON | LOG_NOTICE) << "Authentication to " << addr.toString() << " : " << (succes ? "ok" : "failure") << endl;
+    Out(SYS_CON | LOG_NOTICE) << "Authentication to " << addr.toString() << " : " << (success ? "ok" : "failure") << endl;
     finished = true;
-    this->succes = succes;
+    this->success = success;
 
-    if (!succes) {
+    if (!success) {
         socks.reset();
         sock.reset();
     }
@@ -133,7 +133,7 @@ void Authenticate::onFinish(bool succes)
     timer.stop();
     const PeerConnector::Ptr pc = pcon.toStrongRef();
     if (pc) {
-        pc->authenticationFinished(this, succes);
+        pc->authenticationFinished(this, success);
     }
 }
 

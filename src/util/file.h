@@ -52,7 +52,7 @@ public:
      * Open the file similar to fopen
      * \param file Filename
      * \param mode Mode
-     * \return true upon succes
+     * \return true upon success
      */
     bool open(const QString &file, const QString &mode);
 

@@ -217,7 +217,7 @@ public:
      * Change to a new torX dir. If this fails
      * we will fall back on the old directory.
      * \param new_dir The new directory
-     * \return true upon succes
+     * \return true upon success
      */
     virtual bool changeTorDir(const QString &new_dir) = 0;
 
@@ -249,7 +249,7 @@ public:
      * we will fall back on the old directory.
      * \param new_dir The new directory
      * \param flags A combination of ChangeOutputOption
-     * \return true upon succes
+     * \return true upon success
      */
     virtual bool changeOutputDir(const QString &new_dir, ChangeOutputOptions flags = bt::TorrentInterface::NO_OPTIONS) = 0;
 

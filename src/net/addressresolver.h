@@ -36,7 +36,7 @@ public:
     //! Did the resolver succeed ?
     [[nodiscard]] bool succeeded() const
     {
-        return succesfull;
+        return successful;
     }
 
     //! Get the resulting address
@@ -75,7 +75,7 @@ private Q_SLOTS:
 private:
     int lookup_id;
     net::Address result;
-    bool succesfull;
+    bool successful;
     bool ongoing;
 };
 

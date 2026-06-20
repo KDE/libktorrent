@@ -44,10 +44,10 @@ public:
         return peer_id;
     }
 
-    //! See if the authentication is succesfull
-    [[nodiscard]] bool isSuccesfull() const
+    //! See if the authentication is successful
+    [[nodiscard]] bool isSuccessful() const
     {
-        return succes;
+        return success;
     }
 
 public Q_SLOTS:
@@ -59,7 +59,7 @@ protected Q_SLOTS:
     void onReadyRead() override;
 
 protected:
-    void onFinish(bool succes) override;
+    void onFinish(bool success) override;
     void handshakeReceived(bool full) override;
     virtual void connected();
 
@@ -67,7 +67,7 @@ protected:
     SHA1Hash info_hash;
     PeerID our_peer_id, peer_id;
     net::Address addr;
-    bool succes;
+    bool success;
     PeerConnector::WPtr pcon;
     std::unique_ptr<net::Socks> socks;
 };

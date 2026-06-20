@@ -11,7 +11,7 @@ namespace net
 AddressResolver::AddressResolver(const QString &host, bt::Uint16 port, QObject *parent, const char *slot)
     : QObject(parent)
     , lookup_id(-1)
-    , succesfull(false)
+    , successful(false)
 {
     result.setPort(port);
     lookup_id = QHostInfo::lookupHost(host, this, &AddressResolver::hostResolved);
@@ -29,8 +29,8 @@ AddressResolver::~AddressResolver()
 void AddressResolver::hostResolved(const QHostInfo &res)
 {
     ongoing = false;
-    succesfull = res.error() == QHostInfo::NoError && res.addresses().count() > 0;
-    if (!succesfull) {
+    successful = res.error() == QHostInfo::NoError && res.addresses().count() > 0;
+    if (!successful) {
         Q_EMIT resolved(this);
     } else {
         result = net::Address(res.addresses().constFirst(), result.port());

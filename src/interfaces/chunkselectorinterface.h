@@ -43,7 +43,7 @@ public:
      * Select which chunk to download for a PieceDownloader.
      * \param pd The PieceDownloader
      * \param chunk Index of chunk gets stored here
-     * \return true upon succes, false otherwise
+     * \return true upon success, false otherwise
      */
     virtual bool select(PieceDownloader *pd, Uint32 &chunk) = 0;
 

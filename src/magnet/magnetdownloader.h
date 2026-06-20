@@ -67,7 +67,7 @@ public:
 
 Q_SIGNALS:
     /*!
-        Emitted when downloading the metadata was succesfull.
+        Emitted when downloading the metadata was successful.
     */
     void foundMetadata(bt::MagnetDownloader *self, const QByteArray &metadata);
 
