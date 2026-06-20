@@ -8,6 +8,7 @@
 #define UTP_CONNECTION_H
 
 #include <QBasicTimer>
+#include <QByteArrayView>
 #include <QMutex>
 #include <QPair>
 #include <QSharedPointer>
@@ -129,7 +130,7 @@ public:
     }
 
     //! Send some data, returns the amount of bytes sent (or -1 on error)
-    int send(const bt::Uint8 *data, bt::Uint32 len);
+    int send(QByteArrayView data);
 
     //! Read available data from local window, returns the amount of bytes read
     int recv(bt::Uint8 *buf, bt::Uint32 max_len);

@@ -78,7 +78,7 @@ private:
         UTPSocket *a = incoming;
         UTPSocket *b = outgoing;
         for (int i = 0; i < 10; i++) {
-            int ret = a->send((const bt::Uint8 *)test, strlen(test));
+            int ret = a->send(test);
             QCOMPARE(ret, (int)strlen(test));
 
             char tmp[20];

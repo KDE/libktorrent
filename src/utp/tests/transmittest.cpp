@@ -89,7 +89,7 @@ public:
         net::Poll poller;
         while (sent < BYTES_TO_SEND && outgoing->connectionState() != CS_CLOSED) {
             const int to_send = step - off;
-            const int ret = outgoing->send((const bt::Uint8 *)data.data() + off, to_send);
+            const int ret = outgoing->send(data_view.sliced(off, to_send));
             if (ret > 0) {
                 hgen.update(data_view.sliced(off, ret));
                 sent += ret;

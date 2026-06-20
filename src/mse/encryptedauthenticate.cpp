@@ -5,8 +5,10 @@
 */
 #include "encryptedauthenticate.h"
 
-#include <QRandomGenerator>
 #include <algorithm>
+#include <array>
+
+#include <QRandomGenerator>
 
 #include "encryptedpacketsocket.h"
 #include "functions.h"
@@ -46,9 +48,9 @@ EncryptedAuthenticate::~EncryptedAuthenticate()
 void EncryptedAuthenticate::connected()
 {
     // we are connected so send ya and some padding
-    Uint8 tmp[608];
-    ya.toBuffer(tmp, 96);
-    sock->sendData(tmp, 96 + QRandomGenerator::global()->bounded(512));
+    std::array<Uint8, 96 + 512> tmp;
+    ya.toBuffer(tmp.data(), 96);
+    sock->sendData(QByteArrayView{tmp}.chopped(QRandomGenerator::global()->bounded(512)));
     state = SENT_YA;
 }
 
@@ -84,7 +86,7 @@ void EncryptedAuthenticate::handleYB()
     memcpy(tmp_buf, "req1", 4);
     s.toBuffer(tmp_buf + 4, 96);
     h1 = SHA1Hash::generate(tmp_buf, 100);
-    sock->sendData(h1.getData(), 20);
+    sock->sendData(h1);
 
     // generate second and third hash and xor them
     memcpy(tmp_buf, "req2", 4);
@@ -94,7 +96,7 @@ void EncryptedAuthenticate::handleYB()
     memcpy(tmp_buf, "req3", 4);
     s.toBuffer(tmp_buf + 4, 96);
     h2 = SHA1Hash::generate(tmp_buf, 100);
-    sock->sendData((h1 ^ h2).getData(), 20);
+    sock->sendData(h1 ^ h2);
 
     // now we enter encrypted mode the keys are :
     // HASH('keyA', S, SKEY) for the encryption key
@@ -115,7 +117,7 @@ void EncryptedAuthenticate::handleYB()
     WriteUint16(tmp_buf, 14, 68); // length of IA, which will be the bittorrent handshake
     // send IA which is the handshake
     makeHandshake(tmp_buf + 16, info_hash, our_peer_id);
-    sock->sendData(our_rc4->encrypt(tmp_buf, 84), 84);
+    sock->sendData(QByteArrayView{our_rc4->encrypt(tmp_buf, 84), 84});
 
     // search for the encrypted VC in the data
     findVC();

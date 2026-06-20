@@ -94,27 +94,27 @@ void EncryptedPacketSocket::stopMonitoring()
     rdr = nullptr;
 }
 
-Uint32 EncryptedPacketSocket::sendData(const Uint8 *data, Uint32 len)
+Uint32 EncryptedPacketSocket::sendData(QByteArrayView data)
 {
     if (enc) {
         // we need to make sure all data is sent because of the encryption
         Uint32 ds = 0;
-        const Uint8 *ed = enc->encrypt(data, len);
-        while (sock->ok() && ds < len) {
-            const Uint32 ret = sock->send(ed + ds, len - ds);
+        const Uint8 *ed = enc->encrypt(reinterpret_cast<const Uint8 *>(data.data()), data.size());
+        while (sock->ok() && ds < data.size()) {
+            const Uint32 ret = sock->send(QByteArrayView{ed, data.size()}.sliced(ds));
             ds += ret;
             if (ret == 0) {
                 Out(SYS_CON | LOG_DEBUG) << "ret = 0" << endl;
             }
         }
-        if (ds != len) {
-            Out(SYS_CON | LOG_DEBUG) << "ds != len" << endl;
+        if (ds != data.size()) {
+            Out(SYS_CON | LOG_DEBUG) << "ds != data.size()" << endl;
         }
         return ds;
     } else {
-        const Uint32 ret = sock->send(data, len);
-        if (ret != len) {
-            Out(SYS_CON | LOG_DEBUG) << "ret != len" << endl;
+        const Uint32 ret = sock->send(data);
+        if (ret != data.size()) {
+            Out(SYS_CON | LOG_DEBUG) << "ret != data.size()" << endl;
         }
         return ret;
     }

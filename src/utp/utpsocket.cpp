@@ -164,7 +164,7 @@ void UTPSocket::reset()
     conn.clear();
 }
 
-int UTPSocket::send(const bt::Uint8 *buf, int len)
+int UTPSocket::send(QByteArrayView buf)
 {
     const Connection::Ptr ptr = conn.toStrongRef();
     if (!ptr) {
@@ -172,7 +172,7 @@ int UTPSocket::send(const bt::Uint8 *buf, int len)
     }
 
     try {
-        return ptr->send(buf, len);
+        return ptr->send(buf);
     } catch (Connection::TransmissionError &err) {
         close();
         return -1;

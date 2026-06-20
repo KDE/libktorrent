@@ -459,13 +459,13 @@ void Peer::handleExtendedHandshake(const Uint8 *packet, Uint32 size)
     }
 }
 
-Uint32 Peer::sendData(const Uint8 *data, Uint32 len)
+Uint32 Peer::sendData(QByteArrayView data)
 {
     if (killed) {
         return 0;
     }
 
-    const Uint32 ret = sock->sendData(data, len);
+    const Uint32 ret = sock->sendData(data);
     if (!sock->ok()) {
         kill();
     }

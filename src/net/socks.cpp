@@ -136,7 +136,7 @@ Socks::State Socks::sendAuthRequest()
         req.methods[0] = socks5::AuthMethod::NONE; // No authentication
         req.methods[1] = socks5::AuthMethod::USERNAME_PASSWORD; // Username and password
         req.methods[2] = socks5::AuthMethod::GSSAPI; // GSSAPI
-        sock->sendData((const Uint8 *)&req, req.size());
+        sock->sendData(QByteArrayView{reinterpret_cast<const Uint8 *>(&req), req.size()});
         internal_state = AUTH_REQUEST_SENT;
     } else {
         if (dest.protocol() == QAbstractSocket::IPv6Protocol) {
@@ -154,7 +154,7 @@ Socks::State Socks::sendAuthRequest()
         quint32 ip = htonl(dest.toIPv4Address());
         memcpy(req.ip, &ip, 4);
         strcpy(req.user_id, "KTorrent");
-        sock->sendData((const Uint8 *)&req, req.size());
+        sock->sendData(QByteArrayView{reinterpret_cast<const Uint8 *>(&req), req.size()});
         internal_state = CONNECT_REQUEST_SENT;
         // Out(SYS_CON|LOG_DEBUG) << "SOCKSV4 send connect" << endl;
     }
@@ -195,15 +195,15 @@ void Socks::sendUsernamePassword()
     const QByteArray user = socks_username.toLocal8Bit();
     const QByteArray pwd = socks_password.toLocal8Bit();
     Uint32 off = 0;
-    Uint8 buffer[3 + 2 * 256];
+    std::array<Uint8, 3 + 2 * 256> buffer;
     buffer[off++] = 0x01; // version
     buffer[off++] = user.size();
-    memcpy(buffer + off, user.constData(), user.size());
+    memcpy(buffer.data() + off, user.constData(), user.size());
     off += user.size();
     buffer[off++] = pwd.size();
-    memcpy(buffer + off, pwd.constData(), pwd.size());
+    memcpy(buffer.data() + off, pwd.constData(), pwd.size());
     off += pwd.size();
-    sock->sendData(buffer, off);
+    sock->sendData(QByteArrayView{buffer}.first(off));
     internal_state = USERNAME_AND_PASSWORD_SENT;
 }
 
@@ -247,7 +247,7 @@ void Socks::sendConnectRequest()
         len += 16;
         req.address_type = socks5::AddressType::ADDR_IPV6;
     }
-    sock->sendData((const Uint8 *)&req, len);
+    sock->sendData(QByteArrayView{reinterpret_cast<const Uint8 *>(&req), len});
     internal_state = CONNECT_REQUEST_SENT;
 }
 

@@ -4,6 +4,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "authenticatebase.h"
+
+#include <array>
+
 #include <dht/dhtbase.h>
 #include <mse/encryptedpacketsocket.h>
 #include <peer/peerid.h>
@@ -49,9 +52,9 @@ void AuthenticateBase::sendHandshake(const SHA1Hash &info_hash, const PeerID &ou
         return;
     }
 
-    Uint8 hs[68];
-    makeHandshake(hs, info_hash, our_peer_id);
-    sock->sendData(hs, 68);
+    std::array<Uint8, 68> hs;
+    makeHandshake(hs.data(), info_hash, our_peer_id);
+    sock->sendData(hs);
 }
 
 void AuthenticateBase::makeHandshake(Uint8 *hs, const SHA1Hash &info_hash, const PeerID &our_peer_id)

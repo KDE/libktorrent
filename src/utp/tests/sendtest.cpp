@@ -3,6 +3,9 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
+
+#include <array>
+
 #include <QObject>
 #include <QTest>
 #include <QTimer>
@@ -83,7 +86,7 @@ private:
         outgoing->setBlocking(true);
         char test[] = "TEST";
 
-        int ret = outgoing->send((const bt::Uint8 *)test, strlen(test));
+        int ret = outgoing->send(test);
         QCOMPARE(ret, (int)strlen(test));
 
         char tmp[20];
@@ -96,16 +99,15 @@ private:
     void testSend2()
     {
         bt::Out(SYS_UTP | LOG_DEBUG) << "testSend2" << bt::endl;
-        const bt::Uint8 *sdata = new bt::Uint8[1000];
-        outgoing->send(sdata, 1000);
+        constexpr std::array<bt::Uint8, 1000> sdata{0xFF};
+        outgoing->send(sdata);
 
         bt::Uint8 *rdata = new bt::Uint8[1000];
         const int ret = incoming->recv(rdata, 1000);
         QCOMPARE(ret, 1000);
-        QCOMPARE(memcmp(sdata, rdata, ret), 0);
+        QCOMPARE(memcmp(sdata.data(), rdata, ret), 0);
 
         delete[] rdata;
-        delete[] sdata;
     }
 
     void testSend3()
@@ -113,8 +115,8 @@ private:
         bt::Out(SYS_UTP | LOG_DEBUG) << "testSend3" << bt::endl;
         char test[] = "TEST";
 
-        outgoing->send((const bt::Uint8 *)test, strlen(test));
-        incoming->send((const bt::Uint8 *)test, strlen(test));
+        outgoing->send(test);
+        incoming->send(test);
 
         char tmp[20];
         memset(tmp, 0, 20);
@@ -133,8 +135,8 @@ private:
         bt::Out(SYS_UTP | LOG_DEBUG) << "testSend4" << bt::endl;
         char test[] = "TEST";
 
-        outgoing->send((const bt::Uint8 *)test, strlen(test));
-        outgoing->send((const bt::Uint8 *)test, strlen(test));
+        outgoing->send(test);
+        outgoing->send(test);
 
         char tmp[20];
         memset(tmp, 0, 20);

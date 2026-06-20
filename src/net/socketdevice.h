@@ -7,6 +7,8 @@
 #ifndef NET_SOCKETDEVICE_H
 #define NET_SOCKETDEVICE_H
 
+#include <QByteArrayView>
+
 #include <ktorrent_export.h>
 #include <net/address.h>
 #include <net/poll.h>
@@ -54,7 +56,7 @@ public:
 
     [[nodiscard]] virtual int fd() const = 0;
     [[nodiscard]] virtual bool ok() const = 0;
-    virtual int send(const bt::Uint8 *buf, int len) = 0;
+    virtual int send(QByteArrayView buf) = 0;
     virtual int recv(bt::Uint8 *buf, int max_len) = 0;
     virtual void close() = 0;
     virtual void setBlocking(bool on) = 0;

@@ -53,7 +53,7 @@ bt::Uint32 StreamSocket::write(bt::Uint32 max, bt::TimeStamp now)
 
     // max 0 means unlimited transfer, try to send the entire buffer then
     const int to_send = (max == 0) ? buffer.size() : qMin<int>(buffer.size(), max);
-    const int ret = sock->send((const bt::Uint8 *)buffer.data(), to_send);
+    const int ret = sock->send(QByteArrayView{buffer}.first(to_send));
     if (ret == to_send) {
         buffer.clear();
         if (listener) {

@@ -5,6 +5,8 @@
 */
 #include "encryptedserverauthenticate.h"
 
+#include <array>
+
 #include <QRandomGenerator>
 
 #include "encryptedpacketsocket.h"
@@ -36,11 +38,11 @@ EncryptedServerAuthenticate::~EncryptedServerAuthenticate()
 
 void EncryptedServerAuthenticate::sendYB()
 {
-    Uint8 tmp[608];
-    yb.toBuffer(tmp, 96);
+    std::array<Uint8, 96 + 512> tmp;
+    yb.toBuffer(tmp.data(), 96);
     //  DumpBigInt("Xb",xb);
     //  DumpBigInt("Yb",yb);
-    sock->sendData(tmp, 96 + QRandomGenerator::global()->bounded(512));
+    sock->sendData(QByteArrayView{tmp}.chopped(QRandomGenerator::global()->bounded(512)));
     // Out() << "Sent YB" << endl;
 }
 
@@ -161,7 +163,7 @@ void EncryptedServerAuthenticate::processVC()
     }
     bt::WriteUint16(tmp, 12, 0); // no pad D
 
-    sock->sendData(our_rc4->encrypt(tmp, 14), 14);
+    sock->sendData(QByteArrayView{our_rc4->encrypt(tmp, 14), 14});
 
     // handle pad C
     if (buf_size < req1_off + 14 + pad_C_len) {

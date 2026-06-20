@@ -4,6 +4,8 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <array>
+
 #include <QObject>
 #include <QTest>
 
@@ -134,16 +136,15 @@ private Q_SLOTS:
 
         net::Socket reader(fd, reader_ip_version);
 
-        bt::Uint8 data[20];
-        memset(data, 0xFF, 20);
-        QCOMPARE(writer.send(data, 20), 20);
+        constexpr std::array<bt::Uint8, 20> data = {0xFF};
+        QCOMPARE(writer.send(data), data.size());
         reader.prepare(&poll, net::Poll::INPUT);
 
         QCOMPARE_GT(poll.poll(1000), 0);
 
         bt::Uint8 tmp[20];
         QCOMPARE(reader.recv(tmp, 20), 20);
-        QCOMPARE(memcmp(tmp, data, 20), 0);
+        QCOMPARE(memcmp(tmp, data.data(), 20), 0);
     }
 
 private:

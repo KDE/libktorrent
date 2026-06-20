@@ -6,6 +6,8 @@
 #ifndef MSESTREAMSOCKET_H
 #define MSESTREAMSOCKET_H
 
+#include <QByteArrayView>
+
 #include <ktorrent_export.h>
 #include <net/packetsocket.h>
 #include <util/constants.h>
@@ -40,10 +42,9 @@ public:
     /*!
      * Send a chunk of data. (Does not encrypt the data)
      * \param data The data
-     * \param len The length
      * \return Number of bytes written
      */
-    bt::Uint32 sendData(const bt::Uint8 *data, bt::Uint32 len);
+    bt::Uint32 sendData(QByteArrayView data);
 
     /*!
      * Reads data from the peer.

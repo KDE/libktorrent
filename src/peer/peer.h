@@ -127,10 +127,9 @@ public:
     /*!
      * Send a chunk of data.
      * \param data The data
-     * \param len The length
      * \return Number of bytes written
      */
-    Uint32 sendData(const Uint8 *data, Uint32 len);
+    Uint32 sendData(QByteArrayView data);
 
     /*!
      * Reads data from the peer.

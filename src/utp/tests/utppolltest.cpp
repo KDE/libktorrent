@@ -133,7 +133,7 @@ private:
                     continue;
                 }
 
-                const int ret = outgoing[i]->send((const bt::Uint8 *)test, strlen(test));
+                const int ret = outgoing[i]->send(test);
                 QCOMPARE(ret, (int)strlen(test));
                 bs.set(i, true);
             }

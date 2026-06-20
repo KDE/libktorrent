@@ -74,7 +74,7 @@ public:
         char test[] = TEST_DATA;
         int sent = 0;
         while (sent < PACKETS_TO_SEND) {
-            int ret = outgoing->send((const bt::Uint8 *)test, strlen(test));
+            int ret = outgoing->send(test);
             if (ret > 0) {
                 sent++;
             }

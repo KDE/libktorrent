@@ -261,12 +261,12 @@ bool Socket::bind(const net::Address &addr, bool also_listen)
     return true;
 }
 
-int Socket::send(const bt::Uint8 *buf, int len)
+int Socket::send(QByteArrayView buf)
 {
 #ifndef Q_OS_WIN
-    const int ret = ::send(m_fd, buf, len, MSG_NOSIGNAL);
+    const int ret = ::send(m_fd, buf.data(), buf.size(), MSG_NOSIGNAL);
 #else
-    const int ret = ::send(m_fd, (char *)buf, len, MSG_NOSIGNAL);
+    const int ret = ::send(m_fd, buf.data(), buf.size(), MSG_NOSIGNAL);
 #endif
     if (ret < 0) {
         const int err = errno;

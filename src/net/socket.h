@@ -33,7 +33,7 @@ public:
     bool connectSuccessful() override;
     void close() override;
     [[nodiscard]] bt::Uint32 bytesAvailable() const override;
-    int send(const bt::Uint8 *buf, int len) override;
+    int send(QByteArrayView buf) override;
     int recv(bt::Uint8 *buf, int max_len) override;
     [[nodiscard]] bool ok() const override
     {

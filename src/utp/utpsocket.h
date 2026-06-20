@@ -27,7 +27,7 @@ public:
 
     int fd() const override;
     bool ok() const override;
-    int send(const bt::Uint8 *buf, int len) override;
+    int send(QByteArrayView buf) override;
     int recv(bt::Uint8 *buf, int max_len) override;
     void close() override;
     void setBlocking(bool on) override;

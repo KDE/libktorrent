@@ -80,7 +80,7 @@ public:
     {
         int sent = 0;
         while (sent < PACKETS_TO_SEND && outgoing->connectionState() != CS_CLOSED) {
-            const int ret = outgoing->send((const bt::Uint8 *)TEST_DATA.constData(), TEST_DATA.size());
+            const int ret = outgoing->send(TEST_DATA);
             if (ret > 0) {
                 sent++;
             }

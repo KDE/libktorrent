@@ -135,7 +135,7 @@ int Packet::send(net::SocketDevice *sock, Uint32 max_to_send)
     if (bw > max_to_send && max_to_send > 0) {
         bw = max_to_send;
     }
-    const int ret = sock->send(getData() + written, bw);
+    const int ret = sock->send(QByteArrayView{getData() + written, bw});
     if (ret > 0) {
         written += ret;
     }

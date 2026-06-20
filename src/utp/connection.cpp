@@ -398,7 +398,7 @@ void Connection::updateDelayMeasurement(const utp::Header *hdr, double window_fa
     */
 }
 
-int Connection::send(const bt::Uint8 *data, Uint32 len)
+int Connection::send(QByteArrayView data)
 {
     const QMutexLocker lock(&mutex);
     if (stats.state != CS_CONNECTED) {
@@ -406,7 +406,7 @@ int Connection::send(const bt::Uint8 *data, Uint32 len)
     }
 
     // first put data in the output buffer then send packets
-    const bt::Uint32 ret = output_buffer.write(QByteArrayView{data, len});
+    const bt::Uint32 ret = output_buffer.write(data);
     sendPackets();
     stats.writeable = !output_buffer.full();
     return ret;
