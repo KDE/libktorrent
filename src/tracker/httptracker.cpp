@@ -306,7 +306,7 @@ bool HTTPTracker::updateData(const QByteArray &data)
         if (vn && vn->data().getType() == Value::STRING) {
             const auto arr = vn->data().toByteArrayView();
             for (int i = 0; i < arr.size(); i += 6) {
-                addPeer(net::Address::fromCompactIPv4(arr.sliced(i * 6, 6)), false);
+                addPeer(net::Address::fromCompactIPv4(arr.sliced(i, 6)), false);
             }
         }
     } else {
@@ -334,7 +334,7 @@ bool HTTPTracker::updateData(const QByteArray &data)
     if (vn && vn->data().getType() == Value::STRING) {
         const auto arr = vn->data().toByteArrayView();
         for (int i = 0; i < arr.size(); i += 18) {
-            addPeer(net::Address::fromCompactIPv6(arr.sliced(i * 18, 18)), false);
+            addPeer(net::Address::fromCompactIPv6(arr.sliced(i, 18)), false);
         }
     }
 
