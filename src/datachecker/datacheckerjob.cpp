@@ -80,6 +80,8 @@ void DataCheckerJob::acquired()
     started = true;
     Q_EMIT description(this, i18n("Checking data"));
     dcheck_thread->start(QThread::IdlePriority);
+    // Clear the previous message if we were waiting for another thread to finish
+    Q_EMIT infoMessage(this, QString());
 }
 
 void DataCheckerJob::kill(bool quietly)
