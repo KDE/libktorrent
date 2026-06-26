@@ -241,7 +241,7 @@ PRIVATE
     KF6::I18n
     Qt6::Xml
 )
-
+target_compile_features(KTorrent6 PUBLIC cxx_std_20)
 if (USE_OPENSSL)
     target_compile_definitions(KTorrent6 PUBLIC LIBKTORRENT_USE_OPENSSL=1)
     target_link_libraries(KTorrent6 PUBLIC OpenSSL::Crypto)
