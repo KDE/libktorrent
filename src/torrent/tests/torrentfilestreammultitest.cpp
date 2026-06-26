@@ -1,7 +1,3 @@
-#ifndef QT_GUI_LIB
-#define QT_GUI_LIB
-#endif
-
 #include <QLocale>
 #include <QObject>
 #include <QRandomGenerator64>
