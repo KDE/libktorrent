@@ -231,12 +231,15 @@ target_link_libraries(KTorrent6
 PUBLIC
     KF6::Archive
     KF6::KIOCore
+    KF6::ConfigCore
+    Qt6::Network
+    Boost::boost
+    LibGMP::LibGMP
+PRIVATE
     KF6::KIOWidgets
     KF6::Solid
     KF6::I18n
     Qt6::Xml
-    Boost::boost
-    LibGMP::LibGMP
 )
 
 if (USE_OPENSSL)
