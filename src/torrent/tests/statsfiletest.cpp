@@ -4,9 +4,6 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#include <KConfigGroup>
-#include <KSharedConfig>
-
 #include <QObject>
 #include <QTemporaryFile>
 #include <QTest>
