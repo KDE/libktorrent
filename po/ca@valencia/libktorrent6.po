@@ -128,7 +128,7 @@ msgstr "S'ha produït un error mentre es llegia des de %1"
 #: src/diskio/cachefile.cpp:395
 #, kde-format
 msgid "Failed to write to file %1: %2"
-msgstr "Ha fallat mentre s'escrivia al fitxer %1: %2"
+msgstr "Ha fallat mentre s'escrivia en el fitxer %1: %2"
 
 #: src/diskio/cachefile.cpp:457
 #, kde-format
@@ -485,7 +485,7 @@ msgstr "No s'ha pogut llegir des de %1"
 #: src/util/fileops.cpp:100
 #, kde-format
 msgid "Cannot create directory %1"
-msgstr "No s'ha pogut crear el directori %1"
+msgstr "No s'ha pogut crear la carpeta %1"
 
 #: src/util/fileops.cpp:167
 #, kde-format
