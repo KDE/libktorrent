@@ -18,7 +18,6 @@ set(util_HDR
     sha1hash.h
     sha1hashgen.h
     error.h
-    win32.h
     logsystemmanager.h
     compressfilejob.h
     decompressfilejob.h
@@ -28,7 +27,11 @@ set(util_HDR
     resourcemanager.h
     bufferpool.h
 )
-if(NOT WIN32)
+if(WIN32)
+set(util_HDR ${util_HDR}
+    win32.h
+    )
+else()
 set(util_HDR ${util_HDR}
     signalcatcher.h
     )
