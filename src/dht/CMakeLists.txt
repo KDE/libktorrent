@@ -27,6 +27,7 @@ set(dht_HDR
     getpeersreq.h
     getpeersrsp.h
     rpcmsgfactory.h
+    packednodecontainer.h
 )
 
 install(FILES ${dht_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/dht COMPONENT Devel)
