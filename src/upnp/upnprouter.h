@@ -7,6 +7,7 @@
 #ifndef KTUPNPROUTER_H
 #define KTUPNPROUTER_H
 
+#include <QObject>
 #include <QStringList>
 #include <QUrl>
 
