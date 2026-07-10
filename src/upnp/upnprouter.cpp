@@ -4,6 +4,8 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include "upnprouter.h"
+
 #include <cstdlib>
 
 #include <QDir>
@@ -17,7 +19,6 @@
 #include "httprequest.h"
 #include "soap.h"
 #include "upnpdescriptionparser.h"
-#include "upnprouter.h"
 #include <peer/accessmanager.h>
 #include <torrent/globals.h>
 #include <util/array.h>
