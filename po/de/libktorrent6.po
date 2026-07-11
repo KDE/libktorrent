@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent6\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-17 00:45+0000\n"
+"POT-Creation-Date: 2026-07-11 00:43+0000\n"
 "PO-Revision-Date: 2013-04-04 06:04+0200\n"
 "Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -445,17 +445,17 @@ msgstr "Der Rechnername %1 wurde nicht gefunden"
 msgid "Operation timed out"
 msgstr "Zeitüberschreitung bei dieser Operation"
 
-#: src/upnp/upnprouter.cpp:159
+#: src/upnp/upnprouter.cpp:160
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "%1 lässt sich nicht herunterladen: %2"
 
-#: src/upnp/upnprouter.cpp:169
+#: src/upnp/upnprouter.cpp:170
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Fehler beim Einlesen der Router-Beschreibung."
 
-#: src/upnp/upnprouter.cpp:203
+#: src/upnp/upnprouter.cpp:204
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -464,7 +464,7 @@ msgstr ""
 "Weiterleitung fehlgeschlagen:\n"
 "Das Gerät hat keine WANIP- oder WANPPP-Verbindung."
 
-#: src/upnp/upnprouter.cpp:283
+#: src/upnp/upnprouter.cpp:284
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr ""

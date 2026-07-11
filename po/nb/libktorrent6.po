@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-17 00:45+0000\n"
+"POT-Creation-Date: 2026-07-11 00:43+0000\n"
 "PO-Revision-Date: 2013-09-18 13:04+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@nuug.no>\n"
@@ -435,17 +435,17 @@ msgstr "Klarte ikke slå opp vertsnavnet %1"
 msgid "Operation timed out"
 msgstr "Handlingen fikk tidsavbrudd"
 
-#: src/upnp/upnprouter.cpp:159
+#: src/upnp/upnprouter.cpp:160
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "Klarte ikke laste ned %1: %2"
 
-#: src/upnp/upnprouter.cpp:169
+#: src/upnp/upnprouter.cpp:170
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Klarte ikke tolke ruter-beskrivelse."
 
-#: src/upnp/upnprouter.cpp:203
+#: src/upnp/upnprouter.cpp:204
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -454,7 +454,7 @@ msgstr ""
 "Klarte ikke videresende: \n"
 "Enheten støtter ikke WANIPConnection eller WANPPPConnection."
 
-#: src/upnp/upnprouter.cpp:283
+#: src/upnp/upnprouter.cpp:284
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-17 00:45+0000\n"
+"POT-Creation-Date: 2026-07-11 00:43+0000\n"
 "PO-Revision-Date: 2015-08-27 05:22+0300\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@linux.ee>\n"
@@ -435,17 +435,17 @@ msgstr "%1 masinanime lahendamine nurjus"
 msgid "Operation timed out"
 msgstr "Toiming aegus"
 
-#: src/upnp/upnprouter.cpp:159
+#: src/upnp/upnprouter.cpp:160
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "%1 allalaadimine nurjus: %2"
 
-#: src/upnp/upnprouter.cpp:169
+#: src/upnp/upnprouter.cpp:170
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Viga ruuteri kirjelduse parsimisel."
 
-#: src/upnp/upnprouter.cpp:203
+#: src/upnp/upnprouter.cpp:204
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -454,7 +454,7 @@ msgstr ""
 "Edasisuunamine nurjus:\n"
 "Seadmel puudub WANIPConnection või WANPPPConnection."
 
-#: src/upnp/upnprouter.cpp:283
+#: src/upnp/upnprouter.cpp:284
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "Seadme pakutavate teenuste hulgas pole pordi edasisuunamist."

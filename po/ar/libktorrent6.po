@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-17 00:45+0000\n"
+"POT-Creation-Date: 2026-07-11 00:43+0000\n"
 "PO-Revision-Date: 2024-02-12 14:04+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -442,17 +442,17 @@ msgstr "غير قادر على حل اسم المضيف %1"
 msgid "Operation timed out"
 msgstr "انتهت مهلة العملية"
 
-#: src/upnp/upnprouter.cpp:159
+#: src/upnp/upnprouter.cpp:160
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "فشل تنزيل %1: %2"
 
-#: src/upnp/upnprouter.cpp:169
+#: src/upnp/upnprouter.cpp:170
 #, kde-format
 msgid "Error parsing router description."
 msgstr "فشل تحليل وصف المُوجِّه."
 
-#: src/upnp/upnprouter.cpp:203
+#: src/upnp/upnprouter.cpp:204
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -461,7 +461,7 @@ msgstr ""
 "فشل إعادة التوجيه:\n"
 "لا يحتوي الجهاز على WANIPConnection أو WANPPPConnection."
 
-#: src/upnp/upnprouter.cpp:283
+#: src/upnp/upnprouter.cpp:284
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "لا يمكن العثور على خدمة إعادة توجيه المنفذ في وصف الجهاز."

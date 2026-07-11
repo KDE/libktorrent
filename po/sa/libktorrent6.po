@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-17 00:45+0000\n"
+"POT-Creation-Date: 2026-07-11 00:43+0000\n"
 "PO-Revision-Date: 2024-12-14 13:33+0530\n"
 "Last-Translator: Kali <EMAIL@ADDRESS>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -434,17 +434,17 @@ msgstr "होस्ट्नाम %1 समाधानं कर्तुं 
 msgid "Operation timed out"
 msgstr "ऑपरेशनस्य समयः समाप्तः"
 
-#: src/upnp/upnprouter.cpp:159
+#: src/upnp/upnprouter.cpp:160
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "%1: %2 अवतरणं कर्तुं असफलम्"
 
-#: src/upnp/upnprouter.cpp:169
+#: src/upnp/upnprouter.cpp:170
 #, kde-format
 msgid "Error parsing router description."
 msgstr "रूटरविवरणं विश्लेषणं कृत्वा त्रुटिः।"
 
-#: src/upnp/upnprouter.cpp:203
+#: src/upnp/upnprouter.cpp:204
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -453,7 +453,7 @@ msgstr ""
 "अग्रे प्रेषणं विफलम् : १.\n"
 "उपकरणे WANIPConnection अथवा WANPPPConnection नास्ति ।"
 
-#: src/upnp/upnprouter.cpp:283
+#: src/upnp/upnprouter.cpp:284
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "यन्त्रस्य विवरणे पोर्ट् अग्रेषणसेवा न प्राप्यते ।"

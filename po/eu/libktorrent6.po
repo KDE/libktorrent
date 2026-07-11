@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-17 00:45+0000\n"
+"POT-Creation-Date: 2026-07-11 00:43+0000\n"
 "PO-Revision-Date: 2013-02-02 17:29+0100\n"
 "Last-Translator: Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -440,17 +440,17 @@ msgstr "Ezin da ebatzi %1 ostalari-izena"
 msgid "Operation timed out"
 msgstr "Eragiketaren denbora-muga gainditu da"
 
-#: src/upnp/upnprouter.cpp:159
+#: src/upnp/upnprouter.cpp:160
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "Huts egin du %1 deskargatzean: %2"
 
-#: src/upnp/upnprouter.cpp:169
+#: src/upnp/upnprouter.cpp:170
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Errorea gertatu da bideratzailearen deskribapena analizatzean."
 
-#: src/upnp/upnprouter.cpp:203
+#: src/upnp/upnprouter.cpp:204
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -459,7 +459,7 @@ msgstr ""
 "Birbideratzeak huts egin du:\n"
 "Gailuak ez du ez WANIPConnection-ik ez WANPPPConnection-ik."
 
-#: src/upnp/upnprouter.cpp:283
+#: src/upnp/upnprouter.cpp:284
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr ""

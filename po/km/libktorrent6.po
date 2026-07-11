@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-17 00:45+0000\n"
+"POT-Creation-Date: 2026-07-11 00:43+0000\n"
 "PO-Revision-Date: 2012-07-04 08:47+0700\n"
 "Last-Translator: Sophea <sophea@khmeros.info>\n"
 "Language-Team: Khmer <>\n"
@@ -438,17 +438,17 @@ msgstr "មិន​អាច​ដោះស្រាយ​ឈ្មោះ​ម
 msgid "Operation timed out"
 msgstr "អស់​ពេល​ប្រតិបត្តិ​​ការ​"
 
-#: src/upnp/upnprouter.cpp:159
+#: src/upnp/upnprouter.cpp:160
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "បាន​បរាជ័យ​ក្នុង​ការ​ទាញ​យក %1 ៖ %2"
 
-#: src/upnp/upnprouter.cpp:169
+#: src/upnp/upnprouter.cpp:170
 #, kde-format
 msgid "Error parsing router description."
 msgstr "កំហុស​ក្នុង​ការ​ញែក​សេចក្ដី​ពិពណ៌នា​​រ៉ោតទ័រ​ ។"
 
-#: src/upnp/upnprouter.cpp:203
+#: src/upnp/upnprouter.cpp:204
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -457,7 +457,7 @@ msgstr ""
 "បាន​បរាជ័យ​ក្នុង​កា​រ​បញ្ជូន​បន្ត ៖ \n"
 "ឧបករណ៍​មិន​មានការ​តភ្ជាប់​ WANIP ឬ​ការ​តភ្ជាប់ WANPPP ឡើយ ។"
 
-#: src/upnp/upnprouter.cpp:283
+#: src/upnp/upnprouter.cpp:284
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "រក​មិន​ឃើញ​ច្រក​ដែល​បញ្ជូន​បន្ត​សេវា​ក្នុង​ការ​ពិពណ៌នា​របស់​ឧបករណ៍​ឡើយ​ ។"

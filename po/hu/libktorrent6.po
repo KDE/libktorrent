@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KTorrent 3.1\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-17 00:45+0000\n"
+"POT-Creation-Date: 2026-07-11 00:43+0000\n"
 "PO-Revision-Date: 2013-07-03 19:36+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -438,17 +438,17 @@ msgstr "%1 hosztnév nem oldható fel"
 msgid "Operation timed out"
 msgstr "A művelet átlépte az időkorlátot"
 
-#: src/upnp/upnprouter.cpp:159
+#: src/upnp/upnprouter.cpp:160
 #, kde-format
 msgid "Failed to download %1: %2"
 msgstr "A(z) %1 letöltése nem sikerült: %2"
 
-#: src/upnp/upnprouter.cpp:169
+#: src/upnp/upnprouter.cpp:170
 #, kde-format
 msgid "Error parsing router description."
 msgstr "Nem sikerült feldolgozni a router leírását."
 
-#: src/upnp/upnprouter.cpp:203
+#: src/upnp/upnprouter.cpp:204
 #, kde-format
 msgid ""
 "Forwarding failed:\n"
@@ -458,7 +458,7 @@ msgstr ""
 "Az eszköz nem rendelkezik WANIPConnection vagy WANPPPConnection "
 "lehetőségekkel."
 
-#: src/upnp/upnprouter.cpp:283
+#: src/upnp/upnprouter.cpp:284
 #, kde-format
 msgid "Cannot find port forwarding service in the device's description."
 msgstr "Az eszköz leírásában nem található port-átirányítási szolgáltatás."
