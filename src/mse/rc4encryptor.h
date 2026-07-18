@@ -12,6 +12,9 @@
 #elif defined(LIBKTORRENT_USE_LIBGCRYPT)
 #include <gcrypt.h>
 #endif
+
+#include <QByteArrayView>
+
 #include <ktorrent_export.h>
 #include <util/constants.h>
 #include <util/sha1hash.h>
@@ -46,10 +49,9 @@ public:
      * If we send pieces we point directly to the mmap region of data,
      * this cannot be overwritten, hence the static buffer.
      * \param data The data
-     * \param len The length of the data
-     * \return Pointer to the static buffer
+     * \return View over the static buffer
      */
-    const bt::Uint8 *encrypt(const bt::Uint8 *data, bt::Uint32 len);
+    QByteArrayView encrypt(QByteArrayView data);
 
     /*!
      * Encrypt data, encryption will happen in the same buffer. So data will

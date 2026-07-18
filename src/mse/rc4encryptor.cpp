@@ -82,16 +82,16 @@ void RC4Encryptor::decrypt(Uint8 *data, Uint32 len)
     EVP_DecryptUpdate(dec.get(), data, &out_len, data, static_cast<int>(len));
 }
 
-const Uint8 *RC4Encryptor::encrypt(const Uint8 *data, Uint32 len)
+QByteArrayView RC4Encryptor::encrypt(QByteArrayView data)
 {
     static_assert(sizeof(rc4_enc_buffer) <= static_cast<unsigned int>(INT_MAX), "rc4_enc_buffer size is too large");
-    if (len > sizeof(rc4_enc_buffer)) {
-        throw bt::Error(QStringLiteral("RC4Encryptor::encrypt is called with a too large input: ") + QString::number(len) + QStringLiteral(" bytes"));
+    if (static_cast<size_t>(data.size()) > sizeof(rc4_enc_buffer)) {
+        throw bt::Error(QStringLiteral("RC4Encryptor::encrypt is called with a too large input: %1 bytes").arg(data.size()));
     }
 
     int out_len = 0;
-    EVP_EncryptUpdate(enc.get(), rc4_enc_buffer, &out_len, data, static_cast<int>(len));
-    return rc4_enc_buffer;
+    EVP_EncryptUpdate(enc.get(), rc4_enc_buffer, &out_len, reinterpret_cast<const Uint8 *>(data.data()), static_cast<int>(data.size()));
+    return QByteArrayView{rc4_enc_buffer, data.size()};
 }
 
 void RC4Encryptor::encryptReplace(Uint8 *data, Uint32 len)
@@ -130,13 +130,13 @@ void RC4Encryptor::decrypt(Uint8 *data, Uint32 len)
     gcry_cipher_decrypt(dec, data, len, data, len);
 }
 
-const Uint8 *RC4Encryptor::encrypt(const Uint8 *data, Uint32 len)
+QByteArrayView RC4Encryptor::encrypt(QByteArrayView data)
 {
-    if (len > sizeof(rc4_enc_buffer)) {
-        throw bt::Error(QStringLiteral("RC4Encryptor::encrypt is called with a too large input: ") + QString::number(len) + QStringLiteral(" bytes"));
+    if (static_cast<size_t>(data.size()) > sizeof(rc4_enc_buffer)) {
+        throw bt::Error(QStringLiteral("RC4Encryptor::encrypt is called with a too large input: %1 bytes").arg(data.size()));
     }
-    gcry_cipher_encrypt(enc, rc4_enc_buffer, len, data, len);
-    return rc4_enc_buffer;
+    gcry_cipher_encrypt(enc, rc4_enc_buffer, data.size(), data.data(), data.size());
+    return QByteArrayView{rc4_enc_buffer, data.size()};
 }
 
 void RC4Encryptor::encryptReplace(Uint8 *data, Uint32 len)

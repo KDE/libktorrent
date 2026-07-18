@@ -117,7 +117,7 @@ void EncryptedAuthenticate::handleYB()
     WriteUint16(tmp_buf, 14, 68); // length of IA, which will be the bittorrent handshake
     // send IA which is the handshake
     makeHandshake(tmp_buf + 16, info_hash, our_peer_id);
-    sock->sendData(QByteArrayView{our_rc4->encrypt(tmp_buf, 84), 84});
+    sock->sendData(our_rc4->encrypt(QByteArrayView{tmp_buf, 84}));
 
     // search for the encrypted VC in the data
     findVC();
@@ -128,7 +128,7 @@ void EncryptedAuthenticate::findVC()
     Uint8 vc[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
     RC4Encryptor rc4(enc, dec);
-    memcpy(vc, rc4.encrypt(vc, 8), 8);
+    rc4.encryptReplace(vc, 8);
 
     const Uint32 max_i = buf_size - 8;
     for (Uint32 i = 96; i < max_i; i++) {

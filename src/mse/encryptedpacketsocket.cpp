@@ -99,9 +99,9 @@ Uint32 EncryptedPacketSocket::sendData(QByteArrayView data)
     if (enc) {
         // we need to make sure all data is sent because of the encryption
         Uint32 ds = 0;
-        const Uint8 *ed = enc->encrypt(reinterpret_cast<const Uint8 *>(data.data()), data.size());
+        const auto ed = enc->encrypt(data);
         while (sock->ok() && ds < data.size()) {
-            const Uint32 ret = sock->send(QByteArrayView{ed, data.size()}.sliced(ds));
+            const Uint32 ret = sock->send(ed.sliced(ds));
             ds += ret;
             if (ret == 0) {
                 Out(SYS_CON | LOG_DEBUG) << "ret = 0" << endl;

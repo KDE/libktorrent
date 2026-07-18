@@ -6,6 +6,7 @@
 #include "encryptedserverauthenticate.h"
 
 #include <array>
+#include <cstddef>
 
 #include <QRandomGenerator>
 
@@ -152,18 +153,17 @@ void EncryptedServerAuthenticate::processVC()
 
     // now we have crypto_provide we can send
     // ENCRYPT(VC, crypto_select, len(padD), padD)
-    Uint8 tmp[14];
-    memset(tmp, 0, 14); // VC
+    std::array<std::byte, 14> tmp{};
+    memset(tmp.data(), 0, 8); // VC
     if (crypto_provide & 0x0000002) { // RC4
-        WriteUint32(tmp, 8, 0x0000002);
         crypto_select = 0x0000002;
     } else {
-        WriteUint32(tmp, 8, 0x0000001);
         crypto_select = 0x0000001;
     }
-    bt::WriteUint16(tmp, 12, 0); // no pad D
+    WriteUint32(tmp.data(), 8, crypto_select);
+    WriteUint16(tmp.data(), 12, 0); // no pad D
 
-    sock->sendData(QByteArrayView{our_rc4->encrypt(tmp, 14), 14});
+    sock->sendData(our_rc4->encrypt(tmp));
 
     // handle pad C
     if (buf_size < req1_off + 14 + pad_C_len) {
