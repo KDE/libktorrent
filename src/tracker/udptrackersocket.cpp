@@ -3,7 +3,12 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
+
 #include "udptrackersocket.h"
+
+#include <array>
+#include <cstddef>
+
 #include <KLocalizedString>
 #include <QHostAddress>
 #include <QRandomGenerator>
@@ -45,10 +50,10 @@ public:
         }
     }
 
-    bool send(const Uint8 *buf, int size, const net::Address &addr)
+    bool send(QByteArrayView buf, const net::Address &addr)
     {
         for (const net::ServerSocket::Ptr &sock : std::as_const(sockets)) {
-            if (sock->sendTo(buf, size, addr) == size) {
+            if (sock->sendTo(buf, addr) == buf.size()) {
                 return true;
             }
         }
@@ -123,25 +128,25 @@ UDPTrackerSocket::~UDPTrackerSocket()
 void UDPTrackerSocket::sendConnect(Int32 tid, const net::Address &addr)
 {
     const Int64 cid = 0x41727101980LL;
-    Uint8 buf[16];
+    std::array<std::byte, 16> buf;
 
-    WriteInt64(buf, 0, cid);
-    WriteInt32(buf, 8, CONNECT);
-    WriteInt32(buf, 12, tid);
+    WriteInt64(buf.data(), 0, cid);
+    WriteInt32(buf.data(), 8, CONNECT);
+    WriteInt32(buf.data(), 12, tid);
 
-    d->send(buf, 16, addr);
+    d->send(buf, addr);
     d->transactions.insert(tid, CONNECT);
 }
 
 void UDPTrackerSocket::sendAnnounce(Int32 tid, const Uint8 *data, const net::Address &addr)
 {
-    d->send(data, 98, addr);
+    d->send(QByteArrayView{data, 98}, addr);
     d->transactions.insert(tid, ANNOUNCE);
 }
 
 void UDPTrackerSocket::sendScrape(Int32 tid, const bt::Uint8 *data, const net::Address &addr)
 {
-    d->send(data, 36, addr);
+    d->send(QByteArrayView{data, 36}, addr);
     d->transactions.insert(tid, SCRAPE);
 }
 

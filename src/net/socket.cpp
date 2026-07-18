@@ -303,12 +303,12 @@ int Socket::recv(bt::Uint8 *buf, int max_len)
     return ret;
 }
 
-int Socket::sendTo(const bt::Uint8 *buf, int len, const Address &a)
+int Socket::sendTo(QByteArrayView buf, const Address &a)
 {
     int alen = 0;
     struct sockaddr_storage ss;
     a.toSocketAddress(&ss, alen, dualstack);
-    const int ret = ::sendto(m_fd, (char *)buf, len, 0, (struct sockaddr *)&ss, alen);
+    const int ret = ::sendto(m_fd, buf.data(), buf.size(), 0, (struct sockaddr *)&ss, alen);
     if (ret < 0) {
         const int err = errno;
         if (err == EAGAIN || err == EWOULDBLOCK) {

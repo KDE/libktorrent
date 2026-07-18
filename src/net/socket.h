@@ -58,7 +58,7 @@ public:
     bool bind(const Address &addr, bool also_listen);
     int accept(Address &a);
 
-    int sendTo(const bt::Uint8 *buf, int size, const Address &addr);
+    int sendTo(QByteArrayView buf, const Address &addr);
     int recvFrom(bt::Uint8 *buf, int max_size, Address &addr);
 
     [[nodiscard]] bool isIPv4() const

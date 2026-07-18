@@ -156,24 +156,14 @@ void ServerSocket::readyToWrite(int)
     d->dhandler->readyToWrite(this);
 }
 
-int ServerSocket::sendTo(const QByteArray &data, const net::Address &addr)
+int ServerSocket::sendTo(QByteArrayView data, const net::Address &addr)
 {
     // Only UDP server socket can send
     if (!d->dhandler) {
         return 0;
     }
 
-    return d->sock->sendTo((const Uint8 *)data.data(), data.size(), addr);
-}
-
-int ServerSocket::sendTo(const bt::Uint8 *buf, int size, const net::Address &addr)
-{
-    // Only UDP server socket can send
-    if (!d->dhandler) {
-        return 0;
-    }
-
-    return d->sock->sendTo(buf, size, addr);
+    return d->sock->sendTo(data, addr);
 }
 
 bool ServerSocket::setTOS(unsigned char type_of_service)

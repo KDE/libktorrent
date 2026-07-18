@@ -7,8 +7,10 @@
 #ifndef NET_SERVERSOCKET_H
 #define NET_SERVERSOCKET_H
 
+#include <QByteArrayView>
 #include <QObject>
 #include <QSharedPointer>
+
 #include <ktorrent_export.h>
 #include <util/bufferpool.h>
 #include <util/constants.h>
@@ -111,17 +113,7 @@ public:
         \param addr The address to send to
         \return The number of bytes sent
     */
-    int sendTo(const QByteArray &data, const net::Address &addr);
-
-    /*!
-        Method to send data with the socket. Only use this when
-        the socket is a UDP socket. It will fail for TCP server sockets.
-        \param buf The data to send
-        \param size The size of the data
-        \param addr The address to send to
-        \return The number of bytes sent
-    */
-    int sendTo(const bt::Uint8 *buf, int size, const net::Address &addr);
+    int sendTo(QByteArrayView data, const net::Address &addr);
 
     /*!
         Enable write notifications.

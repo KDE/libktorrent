@@ -120,7 +120,7 @@ public:
     void send(const net::Address &addr, const QByteArray &msg)
     {
         for (const net::ServerSocket::Ptr &sock : std::as_const(sockets)) {
-            if (sock->sendTo((const bt::Uint8 *)msg.data(), msg.size(), addr) == msg.size()) {
+            if (sock->sendTo(msg, addr) == msg.size()) {
                 break;
             }
         }

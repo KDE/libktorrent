@@ -44,7 +44,7 @@ void OutputQueue::send(net::ServerSocket *sock)
                 continue;
             }
 
-            const int ret = sock->sendTo(packet.data.data(), packet.data.bufferSize(), conn->remoteAddress());
+            const int ret = sock->sendTo(QByteArrayView{packet.data.data(), packet.data.bufferSize()}, conn->remoteAddress());
             if (ret == net::SEND_WOULD_BLOCK) {
                 break;
             } else if (ret == net::SEND_FAILURE) {

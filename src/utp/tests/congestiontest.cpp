@@ -38,11 +38,7 @@ public:
     {
     }
 
-    virtual bool sendTo(const QByteArray &data, const net::Address &addr)
-    {
-    }
-
-    virtual bool sendTo(const bt::Uint8 *data, const bt::Uint32 size, const net::Address &addr)
+    virtual bool sendTo(QByteArrayView data, const net::Address &addr)
     {
     }
 
