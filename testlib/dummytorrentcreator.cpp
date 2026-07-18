@@ -5,7 +5,10 @@
 */
 
 #include "dummytorrentcreator.h"
+
 #include <QFile>
+#include <QRandomGenerator>
+
 #include <torrent/torrentcreator.h>
 #include <util/error.h>
 #include <util/fileops.h>
@@ -93,7 +96,7 @@ bool DummyTorrentCreator::createRandomFile(const QString &path, bt::Uint64 size)
     while (written < size) {
         char tmp[4096];
         for (int i = 0; i < 4096; i++) {
-            tmp[i] = rand() % 0xFF;
+            tmp[i] = QRandomGenerator::global()->bounded(0xFF);
         }
 
         bt::Uint64 to_write = 4096;

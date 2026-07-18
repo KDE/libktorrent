@@ -6,8 +6,7 @@
 #include "udptrackersocket.h"
 #include <KLocalizedString>
 #include <QHostAddress>
-#include <cstdlib>
-#include <ctime>
+#include <QRandomGenerator>
 #include <net/portlist.h>
 #include <net/serversocket.h>
 #include <net/socket.h>
@@ -256,7 +255,7 @@ void UDPTrackerSocket::handleScrape(const bt::Buffer &buf)
 
 Int32 UDPTrackerSocket::newTransactionID()
 {
-    Int32 transaction_id = rand() * time(nullptr);
+    Int32 transaction_id = QRandomGenerator::global()->generate();
     while (d->transactions.contains(transaction_id)) {
         transaction_id++;
     }

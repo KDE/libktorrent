@@ -4,10 +4,12 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "encryptedserverauthenticate.h"
+
+#include <QRandomGenerator>
+
 #include "encryptedpacketsocket.h"
 #include "functions.h"
 #include "rc4encryptor.h"
-#include <cstdlib>
 #include <torrent/globals.h>
 #include <torrent/server.h>
 #include <util/functions.h>
@@ -38,7 +40,7 @@ void EncryptedServerAuthenticate::sendYB()
     yb.toBuffer(tmp, 96);
     //  DumpBigInt("Xb",xb);
     //  DumpBigInt("Yb",yb);
-    sock->sendData(tmp, 96 + rand() % 512);
+    sock->sendData(tmp, 96 + QRandomGenerator::global()->bounded(512));
     // Out() << "Sent YB" << endl;
 }
 
