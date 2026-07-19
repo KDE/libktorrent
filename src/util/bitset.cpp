@@ -3,65 +3,60 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
+
 #include "bitset.h"
+
 #include <algorithm>
 #include <cstring>
+#include <utility>
 
 namespace bt
 {
+namespace
+{
+constexpr auto NumBytesFromNumBits(const auto num_bits)
+{
+    return (num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0);
+}
+}
+
 BitSet BitSet::null;
 
 BitSet::BitSet(Uint32 num_bits)
     : num_bits(num_bits)
-    , num_bytes((num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0))
-    , data(new Uint8[num_bytes])
-    , num_on(0)
+    , data(NumBytesFromNumBits(num_bits))
 {
-    std::fill(data, data + num_bytes, 0x00);
 }
 
 BitSet::BitSet(const Uint8 *d, Uint32 num_bits)
     : num_bits(num_bits)
-    , num_bytes((num_bits >> 3) + (((num_bits & 7) > 0) ? 1 : 0))
-    , data(new Uint8[num_bytes])
-    , num_on(0)
 {
-    memcpy(data, d, num_bytes);
+    data.assign(d, d + NumBytesFromNumBits(num_bits));
     updateNumOnBits();
 }
 
-BitSet::BitSet(const BitSet &bs)
-    : num_bits(bs.num_bits)
-    , num_bytes(bs.num_bytes)
-    , data(new Uint8[num_bytes])
-    , num_on(bs.num_on)
+BitSet::BitSet(BitSet &&bs)
+    : num_bits(std::exchange(bs.num_bits, 0))
+    , data(std::move(bs.data))
+    , num_on(std::exchange(bs.num_on, 0))
 {
-    std::copy(bs.data, bs.data + num_bytes, data);
-}
-
-BitSet::~BitSet()
-{
-    delete[] data;
 }
 
 void BitSet::updateNumOnBits()
 {
     num_on = 0;
     Uint32 i = 0;
-    while (i < num_bytes) {
+    while (i < data.size()) {
         num_on += std::popcount(data[i]);
         i++;
     }
 }
 
-BitSet &BitSet::operator=(const BitSet &bs)
+BitSet &BitSet::operator=(BitSet &&bs)
 {
-    delete[] data;
-    num_bytes = bs.num_bytes;
-    num_bits = bs.num_bits;
-    data = new Uint8[num_bytes];
-    std::copy(bs.data, bs.data + num_bytes, data);
-    num_on = bs.num_on;
+    num_bits = std::exchange(bs.num_bits, 0);
+    data = std::move(bs.data);
+    num_on = std::exchange(bs.num_on, 0);
     return *this;
 }
 
@@ -69,18 +64,18 @@ const Uint8 tail_mask_lookup[8] = {0xFF, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7
 
 void BitSet::invert()
 {
-    if (num_bytes <= 0) {
+    if (data.size() <= 0) {
         return;
     }
 
     num_on = 0;
     Uint32 i = 0;
-    while (i < num_bytes - 1) {
+    while (i < data.size() - 1) {
         data[i] = ~data[i];
         num_on += std::popcount(data[i]);
         i++;
     }
-    // i == num_bytes-1
+    // i == data.size()-1
     data[i] = ~data[i] & tail_mask_lookup[num_bits & 7];
     num_on += std::popcount(data[i]);
 }
@@ -88,7 +83,7 @@ void BitSet::invert()
 BitSet &BitSet::operator-=(const BitSet &bs)
 {
     num_on = 0;
-    for (Uint32 i = 0; i < num_bytes; i++) {
+    for (Uint32 i = 0; i < data.size(); i++) {
         data[i] &= ~(data[i] & bs.data[i]);
         num_on += std::popcount(data[i]);
     }
@@ -102,7 +97,7 @@ BitSet BitSet::operator-(const BitSet &bs) const
 
 void BitSet::setAll(bool on)
 {
-    std::fill(data, data + num_bytes, on ? 0xFF : 0x00);
+    data.fill(on ? 0xFF : 0x00);
     num_on = on ? num_bits : 0;
 }
 
@@ -117,7 +112,7 @@ void BitSet::orBitSet(const BitSet &other)
 
     if (num_bits == other.num_bits) {
         // best case
-        for (Uint32 i = 0; i < num_bytes; i++) {
+        for (Uint32 i = 0; i < data.size(); i++) {
             data[i] |= other.data[i];
             num_on += std::popcount(data[i]);
         }
@@ -126,24 +121,24 @@ void BitSet::orBitSet(const BitSet &other)
 
     // process till the end of other data or last-1 byte in our data
     // whatether comes first
-    for (Uint32 i = 0; i < qMin(num_bytes - 1, other.num_bytes); i++) {
+    for (Uint32 i = 0; i < qMin(data.size() - 1, other.data.size()); i++) {
         data[i] |= other.data[i];
         num_on += std::popcount(data[i]);
     }
 
     // if last-1 not reached yet then the end of other data is reached
     // so just add std::popcount till last-1 byte
-    for (Uint32 i = other.num_bytes; i < num_bytes - 1; i++) {
+    for (Uint32 i = other.data.size(); i < data.size() - 1; i++) {
         num_on += std::popcount(data[i]);
     }
 
     // if other has matching byte for our last byte - OR it with proper mask
-    if (other.num_bytes >= num_bytes) {
-        data[num_bytes - 1] = (data[num_bytes - 1] | other.data[num_bytes - 1]) & tail_mask_lookup[num_bytes & 7];
+    if (other.data.size() >= data.size()) {
+        data[data.size() - 1] = (data[data.size() - 1] | other.data[data.size() - 1]) & tail_mask_lookup[data.size() & 7];
     }
 
     // count bits set in last byte
-    num_on += std::popcount(data[num_bytes - 1]);
+    num_on += std::popcount(data[data.size() - 1]);
 }
 
 void BitSet::andBitSet(const BitSet &other)
@@ -152,7 +147,7 @@ void BitSet::andBitSet(const BitSet &other)
 
     if (num_bits == other.num_bits) {
         // best case
-        for (Uint32 i = 0; i < num_bytes; i++) {
+        for (Uint32 i = 0; i < data.size(); i++) {
             data[i] &= other.data[i];
             num_on += std::popcount(data[i]);
         }
@@ -162,13 +157,13 @@ void BitSet::andBitSet(const BitSet &other)
     // we expect 0's at the tail of last byte (if any)
     // so just AND matching bytes and clear the others
     // no need to worry about mask for last byte
-    for (Uint32 i = 0; i < qMin(num_bytes, other.num_bytes); i++) {
+    for (Uint32 i = 0; i < qMin(data.size(), other.data.size()); i++) {
         data[i] &= other.data[i];
         num_on += std::popcount(data[i]);
     }
 
-    if (num_bytes > other.num_bytes) {
-        memset(data + other.num_bytes, 0, num_bytes - other.num_bytes);
+    if (data.size() > other.data.size()) {
+        std::fill(data.begin() + other.data.size(), data.end(), 0);
     }
 }
 
@@ -176,7 +171,7 @@ bool BitSet::includesBitSet(const BitSet &other) const
 {
     if (num_bits == other.num_bits) {
         // best case
-        for (Uint32 i = 0; i < num_bytes; i++) {
+        for (Uint32 i = 0; i < data.size(); i++) {
             if ((data[i] | other.data[i]) != data[i]) {
                 return false;
             }
@@ -186,16 +181,16 @@ bool BitSet::includesBitSet(const BitSet &other) const
 
     // process till the end of other data or last-1 byte in our data
     // whatether comes first
-    for (Uint32 i = 0; i < qMin(num_bytes - 1, other.num_bytes); i++) {
+    for (Uint32 i = 0; i < qMin(data.size() - 1, other.data.size()); i++) {
         if ((data[i] | other.data[i]) != data[i]) {
             return false;
         }
     }
 
     // if other has matching byte for our last byte - OR it with proper mask
-    if (other.num_bytes >= num_bytes) {
-        const Uint8 d = data[num_bytes - 1];
-        if (((d | other.data[num_bytes - 1]) & tail_mask_lookup[num_bytes & 7]) != d) {
+    if (other.data.size() >= data.size()) {
+        const Uint8 d = data[data.size() - 1];
+        if (((d | other.data[data.size() - 1]) & tail_mask_lookup[data.size() & 7]) != d) {
             return false;
         }
     }
@@ -214,6 +209,6 @@ bool BitSet::operator==(const BitSet &bs) const
         return false;
     }
 
-    return memcmp(data, bs.data, num_bytes) == 0;
+    return data == bs.data;
 }
 }

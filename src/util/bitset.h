@@ -8,6 +8,8 @@
 
 #include <bit>
 
+#include <QList>
+
 #include "constants.h"
 #include <ktorrent_export.h>
 
@@ -23,9 +25,9 @@ namespace bt
  */
 class KTORRENT_EXPORT BitSet
 {
-    Uint32 num_bits, num_bytes;
-    Uint8 *data;
-    Uint32 num_on;
+    Uint32 num_bits = 0;
+    QList<Uint8> data;
+    Uint32 num_on = 0;
 
 public:
     /*!
@@ -45,8 +47,18 @@ public:
      * Copy constructor.
      * \param bs BitSet to copy
      */
-    BitSet(const BitSet &bs);
-    virtual ~BitSet();
+    BitSet(const BitSet &bs) = default;
+
+    /*!
+     * Move constructor.
+     * \param bs BitSet to move
+     */
+    BitSet(BitSet &&bs);
+
+    /*!
+     * Destructor
+     */
+    ~BitSet() = default;
 
     //! See if the BitSet is null
     [[nodiscard]] bool isNull() const
@@ -72,7 +84,7 @@ public:
 
     [[nodiscard]] Uint32 getNumBytes() const
     {
-        return num_bytes;
+        return data.size();
     }
     [[nodiscard]] Uint32 getNumBits() const
     {
@@ -80,11 +92,11 @@ public:
     }
     [[nodiscard]] const Uint8 *getData() const
     {
-        return data;
+        return data.data();
     }
     Uint8 *getData()
     {
-        return data;
+        return data.data();
     }
 
     //! Get the number of on bits
@@ -122,11 +134,18 @@ public:
     [[nodiscard]] bool includesBitSet(const BitSet &other) const;
 
     /*!
-     * Assignment operator.
+     * Copy assignment operator.
      * \param bs BitSet to copy
      * \return *this
      */
-    BitSet &operator=(const BitSet &bs);
+    BitSet &operator=(const BitSet &bs) = default;
+
+    /*!
+     * Move assignment operator.
+     * \param bs BitSet to move
+     * \return *this
+     */
+    BitSet &operator=(BitSet &&bs);
 
     /*!
      * Subtraction assignment operator.
@@ -187,7 +206,7 @@ inline void BitSet::set(Uint32 i, bool on)
         return;
     }
 
-    Uint8 *d = data + (i >> 3);
+    Uint8 *d = data.data() + (i >> 3);
     num_on -= std::popcount(*d);
     if (on) {
         *d |= set_on_lookup[i & 7];
