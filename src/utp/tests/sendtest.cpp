@@ -5,6 +5,7 @@
 */
 
 #include <array>
+#include <vector>
 
 #include <QObject>
 #include <QTest>
@@ -102,12 +103,10 @@ private:
         constexpr std::array<bt::Uint8, 1000> sdata{0xFF};
         outgoing->send(sdata);
 
-        bt::Uint8 *rdata = new bt::Uint8[1000];
-        const int ret = incoming->recv(rdata, 1000);
-        QCOMPARE(ret, 1000);
-        QCOMPARE(memcmp(sdata.data(), rdata, ret), 0);
-
-        delete[] rdata;
+        std::vector<bt::Uint8> rdata(1000);
+        const int ret = incoming->recv(rdata.data(), rdata.size());
+        QCOMPARE(ret, rdata.size());
+        QCOMPARE(memcmp(sdata.data(), rdata.data(), ret), 0);
     }
 
     void testSend3()
