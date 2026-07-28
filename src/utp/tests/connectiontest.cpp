@@ -56,7 +56,7 @@ public:
         hdr.wnd_size = 6666;
         hdr.seq_nr = seq_nr;
         hdr.ack_nr = ack_nr;
-        hdr.write(packet->get());
+        hdr.write(packet->data());
         return packet;
     }
 
@@ -100,7 +100,7 @@ private:
         QCOMPARE(s.seq_nr, 2);
 
         auto pkt = buildPacket(ST_STATE, conn_id, conn_id + 1, 1, 1);
-        PacketParser pp(pkt->get(), pkt->size());
+        PacketParser pp(pkt->data(), pkt->size());
         QVERIFY(pp.parse());
         conn.handlePacket(pp, std::move(pkt));
         QCOMPARE(s.state, CS_CONNECTED);
@@ -114,7 +114,7 @@ private:
         const Connection::Stats &s = conn.connectionStats();
 
         auto pkt = buildPacket(ST_SYN, conn_id - 1, conn_id, 1, 1);
-        const PacketParser pp(pkt->get(), pkt->size());
+        const PacketParser pp(pkt->data(), pkt->size());
         conn.handlePacket(pp, std::move(pkt));
         QCOMPARE(s.state, CS_CONNECTED);
     }

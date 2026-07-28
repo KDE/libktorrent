@@ -55,15 +55,35 @@ public:
     }
 
     //! Get a pointer to the data
-    const bt::Uint8 *get() const
+    const bt::Uint8 *data() const
     {
         return m_data.data();
     }
 
     //! Get a pointer to the data
-    bt::Uint8 *get()
+    bt::Uint8 *data()
     {
         return m_data.data();
+    }
+
+    auto begin()
+    {
+        return m_data.begin();
+    }
+
+    auto begin() const
+    {
+        return m_data.begin();
+    }
+
+    auto end()
+    {
+        return m_data.end();
+    }
+
+    auto end() const
+    {
+        return m_data.end();
     }
 
 private:

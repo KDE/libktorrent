@@ -94,13 +94,13 @@ public:
     //! Get the size of the payload
     [[nodiscard]] bt::Uint32 payloadSize() const
     {
-        return payload ? (buffer->get() + MAX_SIZE) - payload : 0;
+        return payload ? (buffer->data() + MAX_SIZE) - payload : 0;
     }
 
     //! Get the amount of headroom (room in front of payload)
     [[nodiscard]] bt::Uint32 headRoom() const
     {
-        return payload ? payload - buffer->get() : MAX_SIZE;
+        return payload ? payload - buffer->data() : MAX_SIZE;
     }
 
     static const bt::Uint32 MAX_SIZE = 1500;

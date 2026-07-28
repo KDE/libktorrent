@@ -37,7 +37,7 @@ bt::Uint32 WindowPacket::read(bt::Uint8 *dst, bt::Uint32 max_len)
         return 0;
     }
 
-    memcpy(dst, packet->get() + bytes_read, to_read);
+    memcpy(dst, packet->data() + bytes_read, to_read);
     bytes_read += to_read;
     return to_read;
 }

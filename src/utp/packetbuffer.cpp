@@ -45,13 +45,13 @@ bool PacketBuffer::setHeader(const Header &hdr, bt::Uint32 extension_length)
     if (payload) {
         header = payload - Header::size() - extension_length;
     } else {
-        header = buffer->get();
+        header = buffer->data();
     }
 
     hdr.write(header);
     extension = header + Header::size();
     if (payload) {
-        size = (buffer->get() + MAX_SIZE) - header;
+        size = (buffer->data() + MAX_SIZE) - header;
     } else {
         size = Header::size() + extension_length;
     }
@@ -67,7 +67,7 @@ bt::Uint32 PacketBuffer::fillData(bt::CircularBuffer &cbuf, bt::Uint32 to_read)
     }
 
     // Data is put at the end of the buffer, so we can put headers easily in front of it
-    payload = (buffer->get() + MAX_SIZE) - to_read;
+    payload = (buffer->data() + MAX_SIZE) - to_read;
     cbuf.read(payload, to_read);
     size = to_read;
 
@@ -81,7 +81,7 @@ bt::Uint32 PacketBuffer::fillData(const bt::Uint8 *data, bt::Uint32 data_size)
         data_size = MAX_SIZE;
     }
 
-    payload = (buffer->get() + MAX_SIZE) - data_size;
+    payload = (buffer->data() + MAX_SIZE) - data_size;
     memcpy(payload, data, data_size);
     header = extension = payload;
     size = data_size;
@@ -90,7 +90,7 @@ bt::Uint32 PacketBuffer::fillData(const bt::Uint8 *data, bt::Uint32 data_size)
 
 void PacketBuffer::fillDummyData(bt::Uint32 amount)
 {
-    header = extension = payload = (buffer->get() + MAX_SIZE) - amount;
+    header = extension = payload = (buffer->data() + MAX_SIZE) - amount;
     size += amount;
 }
 
