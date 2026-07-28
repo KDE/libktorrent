@@ -9,17 +9,17 @@
 namespace bt
 {
 Buffer::Buffer(Data data, bt::Uint32 fill, QWeakPointer<BufferPool> pool)
-    : data(std::move(data))
-    , fill(fill)
-    , pool(pool)
+    : m_data(std::move(data))
+    , m_fill(fill)
+    , m_pool(pool)
 {
 }
 
 Buffer::~Buffer()
 {
-    const QSharedPointer<BufferPool> ptr = pool.toStrongRef();
+    const QSharedPointer<BufferPool> ptr = m_pool.toStrongRef();
     if (ptr) {
-        ptr->release(std::move(data));
+        ptr->release(std::move(m_data));
     }
 }
 

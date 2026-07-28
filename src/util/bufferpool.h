@@ -39,37 +39,37 @@ public:
     //! Get the buffers capacity
     [[nodiscard]] bt::Uint32 capacity() const
     {
-        return data.size();
+        return m_data.size();
     }
 
     //! Get the current size
     [[nodiscard]] bt::Uint32 size() const
     {
-        return fill;
+        return m_fill;
     }
 
     //! Set the current size
     void setSize(bt::Uint32 s)
     {
-        fill = s;
+        m_fill = s;
     }
 
     //! Get a pointer to the data
     const bt::Uint8 *get() const
     {
-        return data.data();
+        return m_data.data();
     }
 
     //! Get a pointer to the data
     bt::Uint8 *get()
     {
-        return data.data();
+        return m_data.data();
     }
 
 private:
-    Data data;
-    bt::Uint32 fill;
-    QWeakPointer<BufferPool> pool;
+    Data m_data;
+    bt::Uint32 m_fill;
+    QWeakPointer<BufferPool> m_pool;
 };
 
 /*!
