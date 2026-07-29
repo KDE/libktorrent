@@ -8,6 +8,7 @@
 
 #include "constants.h"
 #include <QString>
+#include <QtEndian>
 #include <ktorrent_export.h>
 
 namespace bt
@@ -16,92 +17,88 @@ struct TorrentStats;
 
 KTORRENT_EXPORT double Percentage(const TorrentStats &s);
 
-inline void WriteUint64(Uint8 *buf, Uint32 off, Uint64 val)
+template<typename Byte>
+    requires(sizeof(Byte) == 1)
+inline void WriteUint64(Byte *buf, Uint32 off, Uint64 val)
 {
-    buf[off + 0] = (Uint8)((val & 0xFF00000000000000ULL) >> 56);
-    buf[off + 1] = (Uint8)((val & 0x00FF000000000000ULL) >> 48);
-    buf[off + 2] = (Uint8)((val & 0x0000FF0000000000ULL) >> 40);
-    buf[off + 3] = (Uint8)((val & 0x000000FF00000000ULL) >> 32);
-    buf[off + 4] = (Uint8)((val & 0x00000000FF000000ULL) >> 24);
-    buf[off + 5] = (Uint8)((val & 0x0000000000FF0000ULL) >> 16);
-    buf[off + 6] = (Uint8)((val & 0x000000000000FF00ULL) >> 8);
-    buf[off + 7] = (Uint8)((val & 0x00000000000000FFULL) >> 0);
+    qToBigEndian(val, buf + off);
 }
 
-inline Uint64 ReadUint64(const Uint8 *buf, Uint64 off)
+template<typename Byte>
+    requires(sizeof(Byte) == 1)
+inline Uint64 ReadUint64(const Byte *buf, Uint64 off)
 {
-    const Uint64 tmp = ((Uint64)buf[off] << 56) | ((Uint64)buf[off + 1] << 48) | ((Uint64)buf[off + 2] << 40) | ((Uint64)buf[off + 3] << 32)
-        | ((Uint64)buf[off + 4] << 24) | ((Uint64)buf[off + 5] << 16) | ((Uint64)buf[off + 6] << 8) | ((Uint64)buf[off + 7] << 0);
-
-    return tmp;
+    return qFromBigEndian<Uint64>(buf + off);
 }
 
-inline void WriteUint32(Uint8 *buf, Uint32 off, Uint32 val)
+template<typename Byte>
+    requires(sizeof(Byte) == 1)
+inline void WriteUint32(Byte *buf, Uint32 off, Uint32 val)
 {
-    buf[off + 0] = (Uint8)((val & 0xFF000000) >> 24);
-    buf[off + 1] = (Uint8)((val & 0x00FF0000) >> 16);
-    buf[off + 2] = (Uint8)((val & 0x0000FF00) >> 8);
-    buf[off + 3] = (Uint8)(val & 0x000000FF);
+    qToBigEndian(val, buf + off);
 }
 
-inline Uint32 ReadUint32(const Uint8 *buf, Uint32 off)
+template<typename Byte>
+    requires(sizeof(Byte) == 1)
+inline Uint32 ReadUint32(const Byte *buf, Uint32 off)
 {
-    return (buf[off] << 24) | (buf[off + 1] << 16) | (buf[off + 2] << 8) | buf[off + 3];
+    return qFromBigEndian<Uint32>(buf + off);
 }
 
-inline void WriteUint16(Uint8 *buf, Uint32 off, Uint16 val)
+template<typename Byte>
+    requires(sizeof(Byte) == 1)
+inline void WriteUint16(Byte *buf, Uint32 off, Uint16 val)
 {
-    buf[off + 0] = (Uint8)((val & 0xFF00) >> 8);
-    buf[off + 1] = (Uint8)(val & 0x000FF);
+    qToBigEndian(val, buf + off);
 }
 
-inline Uint16 ReadUint16(const Uint8 *buf, Uint32 off)
+template<typename Byte>
+    requires(sizeof(Byte) == 1)
+inline Uint16 ReadUint16(const Byte *buf, Uint32 off)
 {
-    return (buf[off] << 8) | buf[off + 1];
+    return qFromBigEndian<Uint16>(buf + off);
 }
 
-inline void WriteInt64(Uint8 *buf, Uint32 off, Int64 val)
+template<typename Byte>
+    requires(sizeof(Byte) == 1)
+inline void WriteInt64(Byte *buf, Uint32 off, Int64 val)
 {
-    buf[off + 0] = (Uint8)((val & 0xFF00000000000000ULL) >> 56);
-    buf[off + 1] = (Uint8)((val & 0x00FF000000000000ULL) >> 48);
-    buf[off + 2] = (Uint8)((val & 0x0000FF0000000000ULL) >> 40);
-    buf[off + 3] = (Uint8)((val & 0x000000FF00000000ULL) >> 32);
-    buf[off + 4] = (Uint8)((val & 0x00000000FF000000ULL) >> 24);
-    buf[off + 5] = (Uint8)((val & 0x0000000000FF0000ULL) >> 16);
-    buf[off + 6] = (Uint8)((val & 0x000000000000FF00ULL) >> 8);
-    buf[off + 7] = (Uint8)((val & 0x00000000000000FFULL) >> 0);
+    qToBigEndian(val, buf + off);
 }
 
-inline Int64 ReadInt64(const Uint8 *buf, Uint32 off)
+template<typename Byte>
+    requires(sizeof(Byte) == 1)
+inline Int64 ReadInt64(const Byte *buf, Uint32 off)
 {
-    const Int64 tmp = ((Int64)buf[off] << 56) | ((Int64)buf[off + 1] << 48) | ((Int64)buf[off + 2] << 40) | ((Int64)buf[off + 3] << 32)
-        | ((Int64)buf[off + 4] << 24) | ((Int64)buf[off + 5] << 16) | ((Int64)buf[off + 6] << 8) | ((Int64)buf[off + 7] << 0);
-
-    return tmp;
+    return qFromBigEndian<Int64>(buf + off);
 }
 
-inline void WriteInt32(Uint8 *buf, Uint32 off, Int32 val)
+template<typename Byte>
+    requires(sizeof(Byte) == 1)
+inline void WriteInt32(Byte *buf, Uint32 off, Int32 val)
 {
-    buf[off + 0] = (Uint8)((val & 0xFF000000) >> 24);
-    buf[off + 1] = (Uint8)((val & 0x00FF0000) >> 16);
-    buf[off + 2] = (Uint8)((val & 0x0000FF00) >> 8);
-    buf[off + 3] = (Uint8)(val & 0x000000FF);
+    qToBigEndian(val, buf + off);
 }
 
-inline Int32 ReadInt32(const Uint8 *buf, Uint32 off)
+template<typename Byte>
+    requires(sizeof(Byte) == 1)
+inline Int32 ReadInt32(const Byte *buf, Uint32 off)
 {
-    return (Int32)(buf[off] << 24) | (buf[off + 1] << 16) | (buf[off + 2] << 8) | buf[off + 3];
+    return qFromBigEndian<Int64>(buf + off);
 }
 
-inline void WriteInt16(Uint8 *buf, Uint32 off, Int16 val)
+template<typename Byte>
+    requires(sizeof(Byte) == 1)
+inline void WriteInt16(Byte *buf, Uint32 off, Int16 val)
 {
-    buf[off + 0] = (Uint8)((val & 0xFF00) >> 8);
-    buf[off + 1] = (Uint8)(val & 0x000FF);
+    qToBigEndian(val, buf + off);
 }
 
-inline Int16 ReadInt16(const Uint8 *buf, Uint32 off)
+template<typename Byte>
+    requires(sizeof(Byte) == 1)
+inline Int16 ReadInt16(const Byte *buf, Uint32 off)
 {
-    return (Int16)(buf[off] << 8) | buf[off + 1];
+    return qFromBigEndian<Int64>(buf + off);
 }
 
 KTORRENT_EXPORT void UpdateCurrentTime();

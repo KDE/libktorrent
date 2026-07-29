@@ -85,14 +85,14 @@ Address::~Address()
 
 Address Address::fromCompactIPv4(QByteArrayView ba)
 {
-    const Uint32 ip = bt::ReadUint32(reinterpret_cast<const Uint8 *>(ba.data()), 0);
-    const Uint16 port = bt::ReadUint16(reinterpret_cast<const Uint8 *>(ba.data()), 4);
+    const Uint32 ip = bt::ReadUint32(ba.data(), 0);
+    const Uint16 port = bt::ReadUint16(ba.data(), 4);
     return Address{ip, port};
 }
 
 Address Address::fromCompactIPv6(QByteArrayView ba)
 {
-    const Uint16 port = bt::ReadUint16(reinterpret_cast<const Uint8 *>(ba.data()), 16);
+    const Uint16 port = bt::ReadUint16(ba.data(), 16);
     return Address{reinterpret_cast<const quint8 *>(ba.data()), port};
 }
 
