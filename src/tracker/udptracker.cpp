@@ -135,9 +135,9 @@ void UDPTracker::announceReceived(Int32 tid, const bt::Uint8 *buf, bt::Uint32 si
     leechers = ReadInt32(buf, 12);
     seeders = ReadInt32(buf, 16);
 
-    const Uint32 nip = leechers + seeders;
     const auto ip_list = QByteArrayView{buf, size}.sliced(20);
-    for (Uint32 i = 0; i < nip; ++i) {
+    const auto num_peers = ip_list.size() / 6;
+    for (Uint32 i = 0; i < num_peers; ++i) {
         addPeer(net::Address::fromCompactIPv4(ip_list.sliced(i * 6, 6)), false);
     }
 
