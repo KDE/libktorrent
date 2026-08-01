@@ -35,7 +35,7 @@ BitSet::BitSet(const Uint8 *d, Uint32 num_bits)
     updateNumOnBits();
 }
 
-BitSet::BitSet(BitSet &&bs)
+BitSet::BitSet(BitSet &&bs) noexcept
     : num_bits(std::exchange(bs.num_bits, 0))
     , data(std::move(bs.data))
     , num_on(std::exchange(bs.num_on, 0))
@@ -52,7 +52,7 @@ void BitSet::updateNumOnBits()
     }
 }
 
-BitSet &BitSet::operator=(BitSet &&bs)
+BitSet &BitSet::operator=(BitSet &&bs) noexcept
 {
     num_bits = std::exchange(bs.num_bits, 0);
     data = std::move(bs.data);

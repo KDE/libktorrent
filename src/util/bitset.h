@@ -53,7 +53,7 @@ public:
      * Move constructor.
      * \param bs BitSet to move
      */
-    BitSet(BitSet &&bs);
+    BitSet(BitSet &&bs) noexcept;
 
     /*!
      * Destructor
@@ -145,7 +145,7 @@ public:
      * \param bs BitSet to move
      * \return *this
      */
-    BitSet &operator=(BitSet &&bs);
+    BitSet &operator=(BitSet &&bs) noexcept;
 
     /*!
      * Subtraction assignment operator.
