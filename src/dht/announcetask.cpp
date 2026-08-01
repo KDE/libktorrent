@@ -117,7 +117,7 @@ void AnnounceTask::update()
     // go over the todo list and send get_peers requests
     // until we have nothing left
     while (!todo.empty() && canDoRequest()) {
-        const KBucketEntrySet::iterator itr = todo.begin();
+        const auto itr = todo.begin();
         // onLy send a findNode if we haven't allrready visited the node
         if (!visited.contains(*itr)) {
             // send a findNode to the node

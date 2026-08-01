@@ -70,7 +70,7 @@ private:
     dht::Key info_hash;
     bt::Uint16 port;
     std::set<KBucketEntryAndToken> answered; // nodes which have answered with values
-    KBucketEntrySet answered_visited; // nodes which have answered with values which have been visited
+    std::set<dht::KBucketEntry> answered_visited; // nodes which have answered with values which have been visited
     Database *db;
     DBItemList returned_items;
 };

@@ -102,27 +102,6 @@ private:
     bt::Uint32 failed_queries;
     bt::Uint32 questionable_pings;
 };
-
-/*!
- * \headerfile dht/kbucketentry.h
- * \brief Convenience wrapper around a std::set of KBucketEntry.
- */
-class KBucketEntrySet : public std::set<KBucketEntry>
-{
-public:
-    KBucketEntrySet()
-    {
-    }
-    virtual ~KBucketEntrySet()
-    {
-    }
-
-    [[nodiscard]] bool contains(const KBucketEntry &entry) const
-    {
-        return find(entry) != end();
-    }
-};
-
 }
 
 #endif // DHT_KBUCKETENTRY_H

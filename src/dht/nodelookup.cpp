@@ -85,7 +85,7 @@ void NodeLookup::update()
     // go over the todo list and send find node calls
     // until we have nothing left
     while (!todo.empty() && canDoRequest()) {
-        const KBucketEntrySet::iterator itr = todo.begin();
+        const auto itr = todo.begin();
         // only send a findNode if we haven't allrready visited the node
         if (!visited.contains(*itr)) {
             // send a findNode to the node

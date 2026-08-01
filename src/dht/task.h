@@ -146,8 +146,8 @@ protected Q_SLOTS:
     void onResolverResults(net::AddressResolver *res);
 
 protected:
-    dht::KBucketEntrySet visited; // nodes visited
-    dht::KBucketEntrySet todo; // nodes todo
+    std::set<dht::KBucketEntry> visited; // nodes visited
+    std::set<dht::KBucketEntry> todo; // nodes todo
     Node *node;
 
 private:
