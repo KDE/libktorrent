@@ -70,11 +70,9 @@ public:
     }
 
 private:
-    using Range = std::pair<bt::Uint8 *, bt::Uint32>;
-
     //! Get the first range
-    Range firstRange();
-    Range secondRange();
+    QByteArrayView firstRange();
+    QByteArrayView secondRange();
 
 private:
     bt::Uint8 *data;
