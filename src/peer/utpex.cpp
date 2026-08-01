@@ -179,7 +179,7 @@ void UTPex::encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps, int 
         if (addr.ipVersion() != ip_version) {
             continue;
         }
-        addr.writeCompact(tmp);
+        size += addr.writeCompact(tmp);
         tmp += compact_width;
     }
 
