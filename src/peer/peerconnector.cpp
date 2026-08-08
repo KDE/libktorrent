@@ -21,11 +21,11 @@ static ResourceManager half_open_connections(50);
 class PeerConnector::Private
 {
 public:
-    Private(PeerConnector *p, const net::Address &addr, bool local, PeerManager &pman, std::unique_ptr<ConnectionLimit::Token> token)
+    Private(PeerConnector *p, const net::Address &addr, bool local, PeerManager *pman, std::unique_ptr<ConnectionLimit::Token> token)
         : p(p)
         , addr(addr)
         , local(local)
-        , m_pman(pman)
+        , pman(pman)
         , stopping(false)
         , do_not_start(false)
         , token(std::move(token))
@@ -50,15 +50,15 @@ public:
     Method current_method;
     net::Address addr;
     bool local;
-    PeerManager &m_pman;
+    QPointer<PeerManager> pman;
     QPointer<Authenticate> auth;
     bool stopping;
     bool do_not_start;
     std::unique_ptr<ConnectionLimit::Token> token;
 };
 
-PeerConnector::PeerConnector(const net::Address &addr, bool local, bt::PeerManager &pman, std::unique_ptr<ConnectionLimit::Token> token)
-    : Resource(&half_open_connections, pman.getTorrent().getInfoHash().toString())
+PeerConnector::PeerConnector(const net::Address &addr, bool local, bt::PeerManager *pman, std::unique_ptr<ConnectionLimit::Token> token)
+    : Resource(&half_open_connections, pman->getTorrent().getInfoHash().toString())
     , d(std::make_unique<Private>(this, addr, local, pman, std::move(token)))
 {
 }
@@ -79,7 +79,8 @@ void PeerConnector::start()
 
 void PeerConnector::acquired()
 {
-    if (!d->m_pman.isStarted()) {
+    const PeerManager *pm = d->pman.data();
+    if (!pm || !pm->isStarted()) {
         return;
     }
 
@@ -115,8 +116,13 @@ void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
         return;
     }
 
+    PeerManager *pm = pman.data();
+    if (!pm) {
+        return;
+    }
+
     if (ok) {
-        m_pman.peerAuthenticated(auth, p, ok, std::move(token));
+        pm->peerAuthenticated(auth, p, ok, std::move(token));
         return;
     }
 
@@ -141,7 +147,7 @@ void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
         } else if (!only_use_utp && !only_use_encryption && !tried_methods.contains(TCP_WITHOUT_ENCRYPTION) && tcp_allowed) {
             start(TCP_WITHOUT_ENCRYPTION);
         } else {
-            m_pman.peerAuthenticated(auth, p, false, std::move(token));
+            pm->peerAuthenticated(auth, p, false, std::move(token));
         }
     } else { // Primary is TCP
         if (!only_use_utp && encryption && !tried_methods.contains(TCP_WITH_ENCRYPTION) && tcp_allowed) {
@@ -153,15 +159,20 @@ void PeerConnector::Private::authenticationFinished(Authenticate *auth, bool ok)
         } else if (utp && !only_use_encryption && !tried_methods.contains(UTP_WITHOUT_ENCRYPTION)) {
             start(UTP_WITHOUT_ENCRYPTION);
         } else {
-            m_pman.peerAuthenticated(auth, p, false, std::move(token));
+            pm->peerAuthenticated(auth, p, false, std::move(token));
         }
     }
 }
 
 void PeerConnector::Private::start(PeerConnector::Method method)
 {
+    const PeerManager *pm = pman.data();
+    if (!pm) {
+        return;
+    }
+
     current_method = method;
-    const Torrent &tor = m_pman.getTorrent();
+    const Torrent &tor = pm->getTorrent();
     const TransportProtocol proto = (method == TCP_WITH_ENCRYPTION || method == TCP_WITHOUT_ENCRYPTION) ? TCP : UTP;
     if (method == TCP_WITH_ENCRYPTION || method == UTP_WITH_ENCRYPTION) {
         auth = new mse::EncryptedAuthenticate(addr, proto, tor.getInfoHash(), tor.getPeerID(), p);
@@ -175,4 +186,5 @@ void PeerConnector::Private::start(PeerConnector::Method method)
 
     AuthenticationMonitor::instance().add(auth.data());
 }
+
 }
