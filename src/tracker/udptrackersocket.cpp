@@ -9,9 +9,12 @@
 #include <array>
 #include <cstddef>
 
-#include <KLocalizedString>
 #include <QHostAddress>
 #include <QRandomGenerator>
+#include <QtAssert>
+
+#include <KLocalizedString>
+
 #include <net/portlist.h>
 #include <net/serversocket.h>
 #include <net/socket.h>
@@ -138,15 +141,17 @@ void UDPTrackerSocket::sendConnect(Int32 tid, const net::Address &addr)
     d->transactions.insert(tid, CONNECT);
 }
 
-void UDPTrackerSocket::sendAnnounce(Int32 tid, const Uint8 *data, const net::Address &addr)
+void UDPTrackerSocket::sendAnnounce(Int32 tid, QByteArrayView data, const net::Address &addr)
 {
-    d->send(QByteArrayView{data, 98}, addr);
+    Q_ASSERT(data.size() == 98);
+    d->send(data, addr);
     d->transactions.insert(tid, ANNOUNCE);
 }
 
-void UDPTrackerSocket::sendScrape(Int32 tid, const bt::Uint8 *data, const net::Address &addr)
+void UDPTrackerSocket::sendScrape(Int32 tid, QByteArrayView data, const net::Address &addr)
 {
-    d->send(QByteArrayView{data, 36}, addr);
+    Q_ASSERT(data.size() == 36);
+    d->send(data, addr);
     d->transactions.insert(tid, SCRAPE);
 }
 
@@ -155,7 +160,7 @@ void UDPTrackerSocket::cancelTransaction(Int32 tid)
     d->transactions.remove(tid);
 }
 
-void UDPTrackerSocket::handleConnect(const bt::Buffer &buf)
+void UDPTrackerSocket::handleConnect(QByteArrayView buf)
 {
     if (buf.size() < 16) {
         return;
@@ -181,7 +186,7 @@ void UDPTrackerSocket::handleConnect(const bt::Buffer &buf)
     Q_EMIT connectReceived(tid, ReadInt64(buf.data(), 8));
 }
 
-void UDPTrackerSocket::handleAnnounce(const bt::Buffer &buf)
+void UDPTrackerSocket::handleAnnounce(QByteArrayView buf)
 {
     if (buf.size() < 20) {
         return;
@@ -204,10 +209,10 @@ void UDPTrackerSocket::handleAnnounce(const bt::Buffer &buf)
 
     // everything ok, emit signal
     d->transactions.erase(i);
-    Q_EMIT announceReceived(tid, buf.data(), buf.size());
+    Q_EMIT announceReceived(tid, buf);
 }
 
-void UDPTrackerSocket::handleError(const bt::Buffer &buf)
+void UDPTrackerSocket::handleError(QByteArrayView buf)
 {
     if (buf.size() < 8) {
         return;
@@ -232,7 +237,7 @@ void UDPTrackerSocket::handleError(const bt::Buffer &buf)
     Q_EMIT error(tid, msg);
 }
 
-void UDPTrackerSocket::handleScrape(const bt::Buffer &buf)
+void UDPTrackerSocket::handleScrape(QByteArrayView buf)
 {
     if (buf.size() < 20) {
         return;
@@ -255,7 +260,7 @@ void UDPTrackerSocket::handleScrape(const bt::Buffer &buf)
 
     // everything ok, emit signal
     d->transactions.erase(i);
-    Q_EMIT scrapeReceived(tid, buf.data(), buf.size());
+    Q_EMIT scrapeReceived(tid, buf);
 }
 
 Int32 UDPTrackerSocket::newTransactionID()

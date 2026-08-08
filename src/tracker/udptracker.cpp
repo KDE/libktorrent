@@ -4,9 +4,13 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "udptracker.h"
+
+#include <array>
+#include <cstddef>
+#include <cstdlib>
+
 #include "udptrackersocket.h"
 #include <KLocalizedString>
-#include <cstdlib>
 #include <interfaces/torrentinterface.h>
 #include <net/addressresolver.h>
 #include <peer/peermanager.h>
@@ -115,9 +119,9 @@ void UDPTracker::connectReceived(Int32 tid, Int64 cid)
     }
 }
 
-void UDPTracker::announceReceived(Int32 tid, const bt::Uint8 *buf, bt::Uint32 size)
+void UDPTracker::announceReceived(Int32 tid, QByteArrayView buf)
 {
-    if (tid != transaction_id || size < 20) {
+    if (tid != transaction_id || buf.size() < 20) {
         return;
     }
 
@@ -131,11 +135,11 @@ void UDPTracker::announceReceived(Int32 tid, const bt::Uint8 *buf, bt::Uint32 si
     24 + 6 * n  16-bit integer  TCP port
     20 + 6 * N
     */
-    interval = ReadInt32(buf, 8);
-    leechers = ReadInt32(buf, 12);
-    seeders = ReadInt32(buf, 16);
+    interval = ReadInt32(buf.data(), 8);
+    leechers = ReadInt32(buf.data(), 12);
+    seeders = ReadInt32(buf.data(), 16);
 
-    const auto ip_list = QByteArrayView{buf, size}.sliced(20);
+    const auto ip_list = buf.sliced(20);
     const auto num_peers = ip_list.size() / 6;
     for (Uint32 i = 0; i < num_peers; ++i) {
         addPeer(net::Address::fromCompactIPv4(ip_list.sliced(i * 6, 6)), false);
@@ -206,7 +210,7 @@ void UDPTracker::scrape()
     }
 }
 
-void UDPTracker::scrapeReceived(Int32 tid, const Uint8 *buf, Uint32 size)
+void UDPTracker::scrapeReceived(Int32 tid, QByteArrayView buf)
 {
     /*
     0               32-bit integer  action  2
@@ -216,13 +220,13 @@ void UDPTracker::scrapeReceived(Int32 tid, const Uint8 *buf, Uint32 size)
     16 + 12 * n     32-bit integer  leechers
     8 + 12 * N
     */
-    if (tid != scrape_transaction_id || size < 20) {
+    if (tid != scrape_transaction_id || buf.size() < 20) {
         return;
     }
 
-    seeders = ReadInt32(buf, 8);
-    total_downloaded = ReadInt32(buf, 12);
-    leechers = ReadInt32(buf, 16);
+    seeders = ReadInt32(buf.data(), 8);
+    total_downloaded = ReadInt32(buf.data(), 12);
+    leechers = ReadInt32(buf.data(), 16);
     Out(SYS_TRK | LOG_DEBUG) << "Scrape : leechers = " << leechers << ", seeders = " << seeders << ", downloaded = " << total_downloaded << endl;
 }
 
@@ -268,20 +272,20 @@ void UDPTracker::sendAnnounce()
     const Uint32 ip_addr = cip.isNull() ? 0 : QHostAddress{cip}.toIPv4Address();
     const Int32 num_want = ev != STOPPED ? 100 : 0;
 
-    Uint8 buf[98];
-    WriteInt64(buf, 0, connection_id);
-    WriteInt32(buf, 8, UDPTrackerSocket::ANNOUNCE);
-    WriteInt32(buf, 12, transaction_id);
-    memcpy(buf + 16, info_hash.getData(), 20);
-    memcpy(buf + 36, peer_id.data(), 20);
-    WriteInt64(buf, 56, bytesDownloaded());
-    WriteInt64(buf, 64, bytes_left);
-    WriteInt64(buf, 72, bytesUploaded());
-    WriteInt32(buf, 80, ev);
-    WriteUint32(buf, 84, ip_addr);
-    WriteUint32(buf, 88, key);
-    WriteInt32(buf, 92, num_want);
-    WriteUint16(buf, 96, port);
+    std::array<std::byte, 98> buf;
+    WriteInt64(buf.data(), 0, connection_id);
+    WriteInt32(buf.data(), 8, UDPTrackerSocket::ANNOUNCE);
+    WriteInt32(buf.data(), 12, transaction_id);
+    memcpy(buf.data() + 16, info_hash.getData(), 20);
+    memcpy(buf.data() + 36, peer_id.data(), 20);
+    WriteInt64(buf.data(), 56, bytesDownloaded());
+    WriteInt64(buf.data(), 64, bytes_left);
+    WriteInt64(buf.data(), 72, bytesUploaded());
+    WriteInt32(buf.data(), 80, ev);
+    WriteUint32(buf.data(), 84, ip_addr);
+    WriteUint32(buf.data(), 88, key);
+    WriteInt32(buf.data(), 92, num_want);
+    WriteUint16(buf.data(), 96, port);
 
     socket->sendAnnounce(transaction_id, buf, address);
 }
@@ -299,11 +303,11 @@ void UDPTracker::sendScrape()
     scrape_transaction_id = socket->newTransactionID();
     const SHA1Hash &info_hash = tds->infoHash();
 
-    Uint8 buf[36];
-    WriteInt64(buf, 0, connection_id);
-    WriteInt32(buf, 8, UDPTrackerSocket::SCRAPE);
-    WriteInt32(buf, 12, scrape_transaction_id);
-    memcpy(buf + 16, info_hash.getData(), 20);
+    std::array<std::byte, 36> buf;
+    WriteInt64(buf.data(), 0, connection_id);
+    WriteInt32(buf.data(), 8, UDPTrackerSocket::SCRAPE);
+    WriteInt32(buf.data(), 12, scrape_transaction_id);
+    memcpy(buf.data() + 16, info_hash.getData(), 20);
 
     socket->sendScrape(scrape_transaction_id, buf, address);
 }

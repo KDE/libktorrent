@@ -48,8 +48,8 @@ public:
 private Q_SLOTS:
     void onConnTimeout();
     void connectReceived(Int32 tid, Int64 connection_id);
-    void announceReceived(Int32 tid, const Uint8 *buf, Uint32 size);
-    void scrapeReceived(Int32 tid, const Uint8 *buf, Uint32 size);
+    void announceReceived(Int32 tid, QByteArrayView buf);
+    void scrapeReceived(Int32 tid, QByteArrayView buf);
     void onError(Int32 tid, const QString &error_string);
     void onResolverResults(net::AddressResolver *ar);
     void manualUpdate() override;

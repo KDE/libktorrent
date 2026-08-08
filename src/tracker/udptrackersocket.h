@@ -7,6 +7,7 @@
 #define BTUDPTRACKERSOCKET_H
 
 #include <QByteArray>
+#include <QByteArrayView>
 #include <QObject>
 #include <ktorrent_export.h>
 #include <util/bufferpool.h>
@@ -76,20 +77,20 @@ public:
      * signal will be emitted, classes recieving this signal should check if
      * the transaction_id is the same.
      * \param tid The transaction_id
-     * \param data The data to send (connect input structure, in UDP Tracker specifaction)
+     * \param data The data to send (announce input structure, in UDP Tracker specification)
      * \param addr The address to send to
      */
-    void sendAnnounce(Int32 tid, const Uint8 *data, const net::Address &addr);
+    void sendAnnounce(Int32 tid, QByteArrayView data, const net::Address &addr);
 
     /*!
      * Send a scrape message. As a response to this, the scrapeReceived
      * signal will be emitted, classes recieving this signal should check if
      * the transaction_id is the same.
      * \param tid The transaction_id
-     * \param data The data to send (connect input structure, in UDP Tracker specifaction)
+     * \param data The data to send (scrape input structure, in UDP Tracker specification)
      * \param addr The address to send to
      */
-    void sendScrape(Int32 tid, const Uint8 *data, const net::Address &addr);
+    void sendScrape(Int32 tid, QByteArrayView data, const net::Address &addr);
 
     /*!
      * If a transaction times out, this should be used to cancel it.
@@ -124,17 +125,15 @@ Q_SIGNALS:
      * Emitted when an announce message is received.
      * \param tid The transaction_id
      * \param buf The data
-     * \param size The data size
      */
-    void announceReceived(Int32 tid, const Uint8 *buf, Uint32 size);
+    void announceReceived(Int32 tid, QByteArrayView buf);
 
     /*!
      * Emitted when a scrape message is received.
      * \param tid The transaction_id
      * \param buf The data
-     * \param size The data size
      */
-    void scrapeReceived(Int32 tid, const Uint8 *buf, Uint32 size);
+    void scrapeReceived(Int32 tid, QByteArrayView buf);
 
     /*!
      * Signal emitted, when an error occurs during a transaction.
@@ -144,10 +143,10 @@ Q_SIGNALS:
     void error(Int32 tid, const QString &error_string);
 
 private:
-    void handleConnect(const bt::Buffer &buf);
-    void handleAnnounce(const bt::Buffer &buf);
-    void handleError(const bt::Buffer &buf);
-    void handleScrape(const bt::Buffer &buf);
+    void handleConnect(QByteArrayView buf);
+    void handleAnnounce(QByteArrayView buf);
+    void handleError(QByteArrayView buf);
+    void handleScrape(QByteArrayView buf);
 
 private:
     class Private;
