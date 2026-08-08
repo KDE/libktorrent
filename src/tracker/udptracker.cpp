@@ -260,36 +260,27 @@ void UDPTracker::sendAnnounce()
     98
     */
 
+    const SHA1Hash &info_hash = tds->infoHash();
     const Uint32 ev = event;
     const Uint16 port = ServerInterface::getPort();
+    const Int64 bytes_left = ev == COMPLETED ? 0 : tds->bytesLeft();
+    const QString cip = Tracker::getCustomIP();
+    const Uint32 ip_addr = cip.isNull() ? 0 : QHostAddress{cip}.toIPv4Address();
+    const Int32 num_want = ev != STOPPED ? 100 : 0;
+
     Uint8 buf[98];
     WriteInt64(buf, 0, connection_id);
     WriteInt32(buf, 8, UDPTrackerSocket::ANNOUNCE);
     WriteInt32(buf, 12, transaction_id);
-    const SHA1Hash &info_hash = tds->infoHash();
     memcpy(buf + 16, info_hash.getData(), 20);
     memcpy(buf + 36, peer_id.data(), 20);
     WriteInt64(buf, 56, bytesDownloaded());
-    if (ev == COMPLETED) {
-        WriteInt64(buf, 64, 0);
-    } else {
-        WriteInt64(buf, 64, tds->bytesLeft());
-    }
+    WriteInt64(buf, 64, bytes_left);
     WriteInt64(buf, 72, bytesUploaded());
     WriteInt32(buf, 80, ev);
-    const QString cip = Tracker::getCustomIP();
-    if (cip.isNull()) {
-        WriteUint32(buf, 84, 0);
-    } else {
-        const net::Address addr(cip, 999);
-        WriteUint32(buf, 84, addr.toIPv4Address());
-    }
+    WriteUint32(buf, 84, ip_addr);
     WriteUint32(buf, 88, key);
-    if (ev != STOPPED) {
-        WriteInt32(buf, 92, 100);
-    } else {
-        WriteInt32(buf, 92, 0);
-    }
+    WriteInt32(buf, 92, num_want);
     WriteUint16(buf, 96, port);
 
     socket->sendAnnounce(transaction_id, buf, address);
@@ -306,11 +297,12 @@ void UDPTracker::sendScrape()
     16 + 20 * N
     */
     scrape_transaction_id = socket->newTransactionID();
+    const SHA1Hash &info_hash = tds->infoHash();
+
     Uint8 buf[36];
     WriteInt64(buf, 0, connection_id);
     WriteInt32(buf, 8, UDPTrackerSocket::SCRAPE);
     WriteInt32(buf, 12, scrape_transaction_id);
-    const SHA1Hash &info_hash = tds->infoHash();
     memcpy(buf + 16, info_hash.getData(), 20);
 
     socket->sendScrape(scrape_transaction_id, buf, address);
