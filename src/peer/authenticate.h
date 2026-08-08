@@ -7,6 +7,7 @@
 #define BTAUTHENTICATE_H
 
 #include "authenticatebase.h"
+#include <peer/peerconnector.h>
 #include <peer/peerid.h>
 #include <util/sha1hash.h>
 
@@ -17,8 +18,6 @@ class Socks;
 
 namespace bt
 {
-class PeerConnector;
-
 /*!
  * \headerfile peer/authenticate.h
  * \author Joris Guisson
@@ -36,7 +35,7 @@ public:
      * \param peer_id Peer ID
      * \param pcon PeerConnector
      */
-    Authenticate(const net::Address &addr, TransportProtocol proto, const SHA1Hash &info_hash, const PeerID &peer_id, PeerConnector *pcon);
+    Authenticate(const net::Address &addr, TransportProtocol proto, const SHA1Hash &info_hash, const PeerID &peer_id, PeerConnector::WPtr pcon);
 
     ~Authenticate() override;
 
@@ -69,7 +68,7 @@ protected:
     PeerID our_peer_id, peer_id;
     net::Address addr;
     bool success;
-    PeerConnector *pcon;
+    PeerConnector::WPtr pcon;
     std::unique_ptr<net::Socks> socks;
 };
 }

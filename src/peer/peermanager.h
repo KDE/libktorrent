@@ -187,7 +187,7 @@ public:
      * \param ok Whether or not the attempt was successful
      * \param token The ConnectionLimit::Token
      */
-    void peerAuthenticated(Authenticate *auth, PeerConnector *pcon, bool ok, std::unique_ptr<ConnectionLimit::Token> token);
+    void peerAuthenticated(Authenticate *auth, PeerConnector::WPtr pcon, bool ok, std::unique_ptr<ConnectionLimit::Token> token);
 
     /*!
      * Save the IP's and port numbers of all peers.

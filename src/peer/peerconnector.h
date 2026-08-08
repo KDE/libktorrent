@@ -8,6 +8,7 @@
 #define BT_PEERCONNECTOR_H
 
 #include "connectionlimit.h"
+#include <QSharedPointer>
 #include <ktorrent_export.h>
 #include <net/address.h>
 #include <util/constants.h>
@@ -40,6 +41,12 @@ public:
      * Set the maximum number of active PeerConnectors allowed
      */
     static void setMaxActive(Uint32 mc);
+
+    using Ptr = QSharedPointer<PeerConnector>;
+    using WPtr = QWeakPointer<PeerConnector>;
+
+    //! Set a weak pointer to this object
+    void setWeakPointer(WPtr ptr);
 
 private:
     void acquired() override;
