@@ -104,11 +104,11 @@ public:
     }
     [[nodiscard]] const_iterator begin() const
     {
-        return begin();
+        return m_data.get();
     }
     [[nodiscard]] const_iterator end() const
     {
-        return end();
+        return begin() + size();
     }
 };
 
