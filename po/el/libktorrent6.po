@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-11 00:43+0000\n"
+"POT-Creation-Date: 2026-08-09 00:45+0000\n"
 "PO-Revision-Date: 2013-04-06 10:53+0200\n"
 "Last-Translator: Stelios <sstavragmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -60,7 +60,7 @@ msgstr "Αναμονή για ολοκλήρωση άλλων ελέγχων σ�
 msgid "Checking data"
 msgstr "Έλεγχος δεδομένων"
 
-#: src/datachecker/datacheckerjob.cpp:129
+#: src/datachecker/datacheckerjob.cpp:131
 #, kde-format
 msgid "Checking Data"
 msgstr "Έλεγχος δεδομένων"

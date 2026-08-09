@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KTorrent 3.1\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-11 00:43+0000\n"
+"POT-Creation-Date: 2026-08-09 00:45+0000\n"
 "PO-Revision-Date: 2013-07-03 19:36+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -57,7 +57,7 @@ msgstr "Várakozás a további adatellenőrzés befejezésére"
 msgid "Checking data"
 msgstr "Adatellenőrzés"
 
-#: src/datachecker/datacheckerjob.cpp:129
+#: src/datachecker/datacheckerjob.cpp:131
 #, kde-format
 msgid "Checking Data"
 msgstr "Adatellenőrzés"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-11 00:43+0000\n"
+"POT-Creation-Date: 2026-08-09 00:45+0000\n"
 "PO-Revision-Date: 2015-08-27 05:22+0300\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@linux.ee>\n"
@@ -54,7 +54,7 @@ msgstr "Teiste andmekontrollide järel ootamine enne lõpetamist"
 msgid "Checking data"
 msgstr "Andmete kontroll"
 
-#: src/datachecker/datacheckerjob.cpp:129
+#: src/datachecker/datacheckerjob.cpp:131
 #, kde-format
 msgid "Checking Data"
 msgstr "Andmete kontroll"
