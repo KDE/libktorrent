@@ -39,7 +39,7 @@ public:
     }
 
     //! Handle a packet
-    virtual void handlePacket(const bt::Uint8 *packet, Uint32 size) = 0;
+    virtual void handlePacket(QByteArrayView packet) = 0;
 
     //! Send an extension protocol packet
     void sendPacket(QByteArrayView data);

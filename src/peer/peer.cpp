@@ -375,7 +375,7 @@ void Peer::handleExtendedPacket(const Uint8 *packet, Uint32 size)
 
     PeerProtocolExtension *ext = extensions.find(packet[1]);
     if (ext) {
-        ext->handlePacket(packet, size);
+        ext->handlePacket(QByteArrayView{packet, size});
     } else if (packet[1] == 0) {
         handleExtendedHandshake(packet, size);
     }

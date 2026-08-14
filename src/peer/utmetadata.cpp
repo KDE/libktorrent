@@ -28,14 +28,14 @@ UTMetaData::~UTMetaData()
 {
 }
 
-void UTMetaData::handlePacket(const bt::Uint8 *packet, Uint32 size)
+void UTMetaData::handlePacket(QByteArrayView packet)
 {
-    if (size <= 2) {
+    if (packet.size() <= 2) {
         return;
     }
 
-    const auto tmp = QByteArrayView{packet, size}.sliced(2);
     try {
+        const auto tmp = packet.sliced(2);
         BDecoder dec(tmp, false);
         const std::unique_ptr<BDictNode> dict = dec.decodeDict();
         if (!dict) {

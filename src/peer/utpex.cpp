@@ -28,15 +28,14 @@ UTPex::~UTPex()
 {
 }
 
-void UTPex::handlePacket(const Uint8 *packet, Uint32 size)
+void UTPex::handlePacket(QByteArrayView packet)
 {
-    if (size <= 2 || packet[1] != 1) {
+    if (packet.size() <= 2 || packet[1] != 1) {
         return;
     }
 
-    const auto tmp = QByteArrayView{packet, size}.sliced(2);
     try {
-        BDecoder dec(tmp, false);
+        BDecoder dec(packet.sliced(2), false);
         const std::unique_ptr<BDictNode> dict = dec.decodeDict();
         if (dict) {
             // ut_pex packet, emit signal to notify PeerManager
