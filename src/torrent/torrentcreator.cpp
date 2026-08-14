@@ -228,7 +228,7 @@ bool TorrentCreator::calcHashSingle()
     }
 
     const Uint32 s = cur_chunk != num_chunks - 1 ? chunk_size : last_size;
-    fptr.seek(File::BEGIN, (Int64)cur_chunk * chunk_size);
+    fptr.seek(File::SeekPos::BEGIN, (Int64)cur_chunk * chunk_size);
     fptr.read(buf.data(), s);
     const SHA1Hash h = SHA1Hash::generate(buf.data(), s);
     hashes.append(h);
@@ -281,7 +281,7 @@ bool TorrentCreator::calcHashMulti()
         }
 
         // read part of data
-        fptr.seek(File::BEGIN, (Int64)off);
+        fptr.seek(File::SeekPos::BEGIN, (Int64)off);
         fptr.read(buf.data() + read, to_read);
         read += to_read;
     }

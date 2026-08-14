@@ -116,13 +116,13 @@ Uint64 File::seek(SeekPos from, Int64 num)
 
     int p = SEEK_CUR; // use a default to prevent compiler warning
     switch (from) {
-    case BEGIN:
+    case SeekPos::BEGIN:
         p = SEEK_SET;
         break;
-    case END:
+    case SeekPos::END:
         p = SEEK_END;
         break;
-    case CURRENT:
+    case SeekPos::CURRENT:
         p = SEEK_CUR;
         break;
     default:

@@ -896,7 +896,7 @@ void ChunkManager::Private::writeIndexFileEntry(Chunk *c)
         }
     }
 
-    fptr.seek(File::END, 0);
+    fptr.seek(File::SeekPos::END, 0);
     NewChunkHeader hdr;
     hdr.index = c->getIndex();
     fptr.write(&hdr, sizeof(NewChunkHeader));
@@ -916,8 +916,8 @@ void ChunkManager::Private::loadIndexFile()
         return;
     }
 
-    if (fptr.seek(File::END, 0) != 0) {
-        fptr.seek(File::BEGIN, 0);
+    if (fptr.seek(File::SeekPos::END, 0) != 0) {
+        fptr.seek(File::SeekPos::BEGIN, 0);
 
         while (!fptr.eof()) {
             NewChunkHeader hdr;

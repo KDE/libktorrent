@@ -89,7 +89,7 @@ Uint32 DNDFile::readFirstChunk(Uint8 *buf, Uint32 off, Uint32 size)
     }
 
     const Uint64 read_pos = sizeof(DNDFileHeader) + off;
-    if (fptr.seek(File::BEGIN, read_pos) != read_pos) {
+    if (fptr.seek(File::SeekPos::BEGIN, read_pos) != read_pos) {
         return 0;
     }
 
@@ -105,7 +105,7 @@ Uint32 DNDFile::readLastChunk(Uint8 *buf, Uint32 off, Uint32 size)
     }
 
     const Uint64 read_pos = sizeof(DNDFileHeader) + first_size + off;
-    if (fptr.seek(File::BEGIN, read_pos) != read_pos) {
+    if (fptr.seek(File::SeekPos::BEGIN, read_pos) != read_pos) {
         return 0;
     }
 
@@ -123,7 +123,7 @@ void DNDFile::writeFirstChunk(const Uint8 *buf, Uint32 off, Uint32 size)
     }
 
     // write data
-    fptr.seek(File::BEGIN, sizeof(DNDFileHeader) + off);
+    fptr.seek(File::SeekPos::BEGIN, sizeof(DNDFileHeader) + off);
     fptr.write(buf, size);
 }
 
@@ -137,7 +137,7 @@ void DNDFile::writeLastChunk(const Uint8 *buf, Uint32 off, Uint32 size)
         }
     }
 
-    fptr.seek(File::BEGIN, sizeof(DNDFileHeader) + first_size + off);
+    fptr.seek(File::SeekPos::BEGIN, sizeof(DNDFileHeader) + first_size + off);
     fptr.write(buf, size);
 }
 

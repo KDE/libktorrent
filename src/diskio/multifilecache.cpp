@@ -673,7 +673,7 @@ void MultiFileCache::saveFirstAndLastChunk(TorrentFile *tf, const QString &src_f
 
         if (tf->getFirstChunk() != tf->getLastChunk()) {
             const Uint64 off = FileOffset(tf->getLastChunk(), *tf, tor.getChunkSize());
-            fptr.seek(File::BEGIN, off);
+            fptr.seek(File::SeekPos::BEGIN, off);
             fptr.read(tmp, tf->getLastChunkSize());
             out.writeLastChunk(tmp, 0, tf->getLastChunkSize());
         }
@@ -716,7 +716,7 @@ void MultiFileCache::recreateFile(TorrentFile *tf, const QString &dnd_file, cons
 
         if (tf->getFirstChunk() != tf->getLastChunk()) {
             const Uint64 off = FileOffset(tf->getLastChunk(), *tf, tor.getChunkSize());
-            fptr.seek(File::BEGIN, off);
+            fptr.seek(File::SeekPos::BEGIN, off);
             to_read = dnd.readLastChunk(tmp, 0, tf->getLastChunkSize());
             if (to_read > 0) {
                 fptr.write(tmp, to_read);

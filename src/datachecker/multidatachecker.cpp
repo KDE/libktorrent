@@ -113,7 +113,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
         if (!f.doNotDownload()) {
             File *fptr = open(tor, tflist.first());
             const Uint64 off = f.fileOffset(ci, tor.getChunkSize());
-            if (fptr->seek(File::BEGIN, off) != off) {
+            if (fptr->seek(File::SeekPos::BEGIN, off) != off) {
                 return false;
             }
 
@@ -172,7 +172,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
                 }
 
                 File *fptr = open(tor, tflist[i]);
-                if (fptr->seek(File::BEGIN, off) != off) {
+                if (fptr->seek(File::SeekPos::BEGIN, off) != off) {
                     return false;
                 }
 

@@ -98,7 +98,7 @@ public:
      * \var CURRENT
      * Seek from the current position, the number of bytes can be positive to seek forwards or negative to seek backwards.
      */
-    enum SeekPos {
+    enum class SeekPos {
         BEGIN,
         END,
         CURRENT,
