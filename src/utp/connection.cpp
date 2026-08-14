@@ -51,7 +51,7 @@ Connection::Connection(bt::Uint16 recv_connection_id, Type type, const net::Addr
         stats.send_connection_id = recv_connection_id + 1;
     } else {
         stats.send_connection_id = recv_connection_id - 1;
-        stats.state = CS_IDLE;
+        stats.state = ConnectionState::IDLE;
         stats.seq_nr = 5;
     }
 
@@ -121,11 +121,11 @@ ConnectionState Connection::handlePacket(const PacketParser &parser, std::unique
     const auto window_factor = remote_wnd->packetReceived(hdr, sack, this);
     updateDelayMeasurement(hdr, window_factor);
     switch (stats.state) {
-    case CS_SYN_SENT:
+    case ConnectionState::SYN_SENT:
         // now we should have a state packet
         if (hdr->type == ST_STATE) {
             // connection estabished
-            stats.state = CS_CONNECTED;
+            stats.state = ConnectionState::CONNECTED;
             local_wnd->setLastSeqNr(hdr->seq_nr - 1);
             if (blocking) {
                 connected.wakeAll();
@@ -134,35 +134,35 @@ ConnectionState Connection::handlePacket(const PacketParser &parser, std::unique
             Out(SYS_UTP | LOG_NOTICE) << "UTP: established connection with " << stats.remote.toString() << endl;
         } else {
             sendReset();
-            stats.state = CS_CLOSED;
+            stats.state = ConnectionState::CLOSED;
             if (blocking) {
                 data_ready.wakeAll();
             }
         }
         break;
-    case CS_IDLE:
+    case ConnectionState::IDLE:
         if (hdr->type == ST_SYN) {
             // Send back a state packet
             local_wnd->setLastSeqNr(hdr->seq_nr);
             sendState();
-            stats.state = CS_CONNECTED;
+            stats.state = ConnectionState::CONNECTED;
             stats.timeout = 1000;
             Out(SYS_UTP | LOG_NOTICE) << "UTP: established connection with " << stats.remote.toString() << endl;
         } else {
             sendReset();
-            stats.state = CS_CLOSED;
+            stats.state = ConnectionState::CLOSED;
             if (blocking) {
                 data_ready.wakeAll();
             }
         }
         break;
-    case CS_CONNECTED:
+    case ConnectionState::CONNECTED:
         if (hdr->type == ST_DATA) {
             // push data into local window
             if (!local_wnd->packetReceived(hdr, std::move(packet), data_off)) {
                 // Panick
                 sendReset();
-                stats.state = CS_CLOSED;
+                stats.state = ConnectionState::CLOSED;
                 if (blocking) {
                     data_ready.wakeAll();
                 }
@@ -182,7 +182,7 @@ ConnectionState Connection::handlePacket(const PacketParser &parser, std::unique
         } else if (hdr->type == ST_FIN) {
             stats.eof_seq_nr = hdr->seq_nr;
             // other side now has closed the connection
-            stats.state = CS_FINISHED; // state becomes finished
+            stats.state = ConnectionState::FINISHED; // state becomes finished
             sendPackets();
             checkIfClosed();
             if (blocking && local_wnd->isReadable() > 0) {
@@ -190,20 +190,20 @@ ConnectionState Connection::handlePacket(const PacketParser &parser, std::unique
             }
         } else {
             sendReset();
-            stats.state = CS_CLOSED;
+            stats.state = ConnectionState::CLOSED;
             if (blocking) {
                 data_ready.wakeAll();
             }
         }
         break;
-    case CS_FINISHED:
+    case ConnectionState::FINISHED:
         if (hdr->type == ST_DATA) {
             if (SeqNrCmpSE(hdr->seq_nr, stats.eof_seq_nr)) {
                 // push data into local window
                 if (!local_wnd->packetReceived(hdr, std::move(packet), data_off)) {
                     // Panick
                     sendReset();
-                    stats.state = CS_CLOSED;
+                    stats.state = ConnectionState::CLOSED;
                     if (blocking) {
                         data_ready.wakeAll();
                     }
@@ -213,7 +213,7 @@ ConnectionState Connection::handlePacket(const PacketParser &parser, std::unique
 
             // send back an ACK
             sendStateOrData();
-            if (stats.state == CS_FINISHED && !fin_sent && output_buffer.size() == 0) {
+            if (stats.state == ConnectionState::FINISHED && !fin_sent && output_buffer.size() == 0) {
                 sendFIN();
                 fin_sent = true;
             }
@@ -237,13 +237,13 @@ ConnectionState Connection::handlePacket(const PacketParser &parser, std::unique
             }
         } else {
             sendReset();
-            stats.state = CS_CLOSED;
+            stats.state = ConnectionState::CLOSED;
             if (blocking) {
                 data_ready.wakeAll();
             }
         }
         break;
-    case CS_CLOSED:
+    case ConnectionState::CLOSED:
         break;
     }
 
@@ -255,8 +255,8 @@ ConnectionState Connection::handlePacket(const PacketParser &parser, std::unique
 void Connection::checkState()
 {
     // Check if we have become readable or writeable, and notify if necessary
-    const bool r = local_wnd->isReadable() > 0 || stats.state == CS_CLOSED;
-    const bool w = remote_wnd->availableSpace() > 0 && stats.state == CS_CONNECTED;
+    const bool r = local_wnd->isReadable() > 0 || stats.state == ConnectionState::CLOSED;
+    const bool w = remote_wnd->availableSpace() > 0 && stats.state == ConnectionState::CONNECTED;
     const bool r_changed = !stats.readable && r;
     const bool w_changed = !stats.writeable && w;
     stats.readable = r;
@@ -275,8 +275,8 @@ void Connection::checkIfClosed()
     // Check if we need to go to the closed state
     // We can do this if all our packets have been acked and the local window
     // has been fully read
-    if (stats.state == CS_FINISHED && remote_wnd->allPacketsAcked() && local_wnd->isEmpty()) {
-        stats.state = CS_CLOSED;
+    if (stats.state == ConnectionState::FINISHED && remote_wnd->allPacketsAcked() && local_wnd->isEmpty()) {
+        stats.state = ConnectionState::CLOSED;
         Out(SYS_UTP | LOG_NOTICE) << "UTP: Connection " << stats.recv_connection_id << "|" << stats.send_connection_id << " closed " << endl;
         if (blocking) {
             data_ready.wakeAll();
@@ -334,7 +334,7 @@ void Connection::sendPacket(Uint32 type, Uint16 p_ack_nr)
 void Connection::sendSYN()
 {
     stats.seq_nr = 1;
-    stats.state = CS_SYN_SENT;
+    stats.state = ConnectionState::SYN_SENT;
     stats.timeout = CONNECT_TIMEOUT;
     sendPacket(ST_SYN, 0);
     stats.seq_nr++;
@@ -401,7 +401,7 @@ void Connection::updateDelayMeasurement(const utp::Header *hdr, double window_fa
 int Connection::send(QByteArrayView data)
 {
     const QMutexLocker lock(&mutex);
-    if (stats.state != CS_CONNECTED) {
+    if (stats.state != ConnectionState::CONNECTED) {
         return -1;
     }
 
@@ -434,7 +434,7 @@ void Connection::sendPackets()
         stats.seq_nr++;
     }
 
-    if (stats.state == CS_FINISHED && !fin_sent && output_buffer.size() == 0) {
+    if (stats.state == ConnectionState::FINISHED && !fin_sent && output_buffer.size() == 0) {
         sendFIN();
         fin_sent = true;
     } else {
@@ -503,17 +503,17 @@ bt::Uint32 Connection::bytesAvailable() const
 bool Connection::isWriteable() const
 {
     const QMutexLocker lock(&mutex);
-    return remote_wnd->availableSpace() > 0 && stats.state == CS_CONNECTED;
+    return remote_wnd->availableSpace() > 0 && stats.state == ConnectionState::CONNECTED;
 }
 
 int Connection::recv(Uint8 *buf, Uint32 max_len)
 {
     const QMutexLocker lock(&mutex);
-    if (stats.state == CS_FINISHED) {
+    if (stats.state == ConnectionState::FINISHED) {
         checkIfClosed();
     }
 
-    if (!local_wnd->bytesAvailable() && stats.state == CS_CLOSED) {
+    if (!local_wnd->bytesAvailable() && stats.state == ConnectionState::CLOSED) {
         return -1;
     }
 
@@ -531,12 +531,12 @@ int Connection::recv(Uint8 *buf, Uint32 max_len)
 bool Connection::waitUntilConnected()
 {
     const QMutexLocker lock(&mutex);
-    if (stats.state == CS_CONNECTED) {
+    if (stats.state == ConnectionState::CONNECTED) {
         return true;
     }
 
     connected.wait(&mutex);
-    return stats.state == CS_CONNECTED;
+    return stats.state == ConnectionState::CONNECTED;
 }
 
 bool Connection::waitForData(Uint32 timeout)
@@ -553,8 +553,8 @@ bool Connection::waitForData(Uint32 timeout)
 void Connection::close()
 {
     const QMutexLocker lock(&mutex);
-    if (stats.state == CS_CONNECTED) {
-        stats.state = CS_FINISHED;
+    if (stats.state == ConnectionState::CONNECTED) {
+        stats.state = ConnectionState::FINISHED;
         sendPackets();
     }
 }
@@ -562,9 +562,9 @@ void Connection::close()
 void Connection::reset()
 {
     const QMutexLocker lock(&mutex);
-    if (stats.state != CS_CLOSED) {
+    if (stats.state != ConnectionState::CLOSED) {
         sendReset();
-        stats.state = CS_CLOSED;
+        stats.state = ConnectionState::CLOSED;
         remote_wnd->clear();
         if (blocking) {
             data_ready.wakeAll();
@@ -583,20 +583,20 @@ void Connection::checkTimeout(const TimeValue &now)
 void Connection::handleTimeout()
 {
     switch (stats.state) {
-    case CS_SYN_SENT:
+    case ConnectionState::SYN_SENT:
         // No answer to SYN, so just close the connection
-        stats.state = CS_CLOSED;
+        stats.state = ConnectionState::CLOSED;
         if (blocking) {
             connected.wakeAll();
         }
         break;
-    case CS_FINISHED:
-        stats.state = CS_CLOSED;
+    case ConnectionState::FINISHED:
+        stats.state = ConnectionState::CLOSED;
         if (blocking) {
             data_ready.wakeAll();
         }
         break;
-    case CS_CONNECTED:
+    case ConnectionState::CONNECTED:
         remote_wnd->timeout(this);
         stats.packet_size = MIN_PACKET_SIZE;
         stats.timeout *= 2;
@@ -604,7 +604,7 @@ void Connection::handleTimeout()
         if (stats.timeout >= MAX_TIMEOUT) {
             // If we have reached the max timeout, kill the connection
             Out(SYS_UTP | LOG_DEBUG) << "Connection " << stats.recv_connection_id << "|" << stats.send_connection_id << " max timeout reached, closing" << endl;
-            stats.state = CS_FINISHED;
+            stats.state = ConnectionState::FINISHED;
             sendReset();
         } else {
             sendPackets();
@@ -614,15 +614,15 @@ void Connection::handleTimeout()
             }
         }
         break;
-    case CS_IDLE:
+    case ConnectionState::IDLE:
         startTimer();
         break;
-    case CS_CLOSED:
+    case ConnectionState::CLOSED:
         break;
     }
 
     checkState();
-    if (stats.state == CS_CLOSED) {
+    if (stats.state == ConnectionState::CLOSED) {
         transmitter->closed(self.toStrongRef());
     }
 }

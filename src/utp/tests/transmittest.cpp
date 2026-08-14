@@ -87,7 +87,7 @@ public:
         bt::Int64 sent = 0;
         int off = 0;
         net::Poll poller;
-        while (sent < BYTES_TO_SEND && outgoing->connectionState() != CS_CLOSED) {
+        while (sent < BYTES_TO_SEND && outgoing->connectionState() != ConnectionState::CLOSED) {
             const int to_send = step - off;
             const int ret = outgoing->send(data_view.sliced(off, to_send));
             if (ret > 0) {
@@ -177,17 +177,17 @@ private Q_SLOTS:
         exec();
         QVERIFY(outgoing);
         QVERIFY(incoming);
-        QCOMPARE(incoming->connectionState(), CS_CONNECTED);
-        if (outgoing->connectionState() != CS_CONNECTED) {
+        QCOMPARE(incoming->connectionState(), ConnectionState::CONNECTED);
+        if (outgoing->connectionState() != ConnectionState::CONNECTED) {
             QVERIFY(outgoing->waitUntilConnected());
         }
-        QCOMPARE(outgoing->connectionState(), CS_CONNECTED);
+        QCOMPARE(outgoing->connectionState(), ConnectionState::CONNECTED);
     }
 
     void testThreaded()
     {
         bt::Out(SYS_UTP | LOG_DEBUG) << "testThreaded" << bt::endl;
-        if (outgoing->connectionState() != CS_CONNECTED || incoming->connectionState() != CS_CONNECTED) {
+        if (outgoing->connectionState() != ConnectionState::CONNECTED || incoming->connectionState() != ConnectionState::CONNECTED) {
             QSKIP("Not Connected", SkipAll);
             return;
         }
@@ -199,7 +199,7 @@ private Q_SLOTS:
         bt::Int64 received = 0;
         // int failures = 0;
         incoming->setBlocking(true);
-        while (received < BYTES_TO_SEND && incoming->connectionState() != CS_CLOSED) {
+        while (received < BYTES_TO_SEND && incoming->connectionState() != ConnectionState::CLOSED) {
             const bt::Uint32 ba = incoming->bytesAvailable();
             if (ba > 0) {
                 // failures = 0;
@@ -212,7 +212,7 @@ private Q_SLOTS:
                     received += ret;
                     // Out(SYS_UTP|LOG_DEBUG) << "Received " << received << endl;
                 }
-            } else if (incoming->connectionState() != CS_CLOSED) {
+            } else if (incoming->connectionState() != ConnectionState::CLOSED) {
                 incoming->waitForData(1000);
             }
         }

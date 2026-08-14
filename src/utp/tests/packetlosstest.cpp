@@ -79,7 +79,7 @@ public:
     void run() override
     {
         int sent = 0;
-        while (sent < PACKETS_TO_SEND && outgoing->connectionState() != CS_CLOSED) {
+        while (sent < PACKETS_TO_SEND && outgoing->connectionState() != ConnectionState::CLOSED) {
             const int ret = outgoing->send(TEST_DATA);
             if (ret > 0) {
                 sent++;
@@ -88,7 +88,7 @@ public:
             msleep(200);
         }
 
-        while (!outgoing->allDataSent() && outgoing->connectionState() != CS_CLOSED) {
+        while (!outgoing->allDataSent() && outgoing->connectionState() != ConnectionState::CLOSED) {
             sleep(1);
         }
 
@@ -154,7 +154,7 @@ private:
     void testPacketLoss()
     {
         bt::Out(SYS_UTP | LOG_DEBUG) << "testPacketLoss" << bt::endl;
-        if (outgoing->connectionState() != CS_CONNECTED || incoming->connectionState() != CS_CONNECTED) {
+        if (outgoing->connectionState() != ConnectionState::CONNECTED || incoming->connectionState() != ConnectionState::CONNECTED) {
             QSKIP("Not Connected", SkipAll);
             return;
         }
@@ -175,7 +175,7 @@ private:
                     received_data.append(QLatin1StringView(data));
                     received += ret;
                 }
-            } else if (incoming->connectionState() == CS_CLOSED) {
+            } else if (incoming->connectionState() == ConnectionState::CLOSED) {
                 Out(SYS_UTP | LOG_DEBUG) << "Connection closed " << endl;
                 break;
             } else {

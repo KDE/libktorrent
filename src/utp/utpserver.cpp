@@ -321,7 +321,7 @@ void UTPServer::handlePacket(std::unique_ptr<bt::Buffer> buffer, const net::Addr
     case ST_STATE:
         try {
             c = d->find(hdr->connection_id);
-            if (c && c->handlePacket(parser, std::move(buffer)) == CS_CLOSED) {
+            if (c && c->handlePacket(parser, std::move(buffer)) == ConnectionState::CLOSED) {
                 d->connections.remove(c->receiveConnectionID());
             }
         } catch (Connection::TransmissionError &err) {
@@ -423,7 +423,7 @@ void UTPServer::preparePolling(net::Poll *p, net::Poll::Mode mode, utp::Connecti
             return;
         }
 
-        if (conn->bytesAvailable() > 0 || conn->connectionState() == CS_CLOSED) {
+        if (conn->bytesAvailable() > 0 || conn->connectionState() == ConnectionState::CLOSED) {
             pair->read_pipe->wakeUp();
         }
         pair->read_pipe->prepare(p, conn->receiveConnectionID(), pair->read_pipe);
@@ -469,7 +469,7 @@ void UTPServer::cleanup()
     const QMutexLocker lock(&d->mutex);
     QMap<quint16, Connection::Ptr>::iterator i = d->connections.begin();
     while (i != d->connections.end()) {
-        if (i.value()->connectionState() == CS_CLOSED) {
+        if (i.value()->connectionState() == ConnectionState::CLOSED) {
             i = d->connections.erase(i);
         } else {
             ++i;

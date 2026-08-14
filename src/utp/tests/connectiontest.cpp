@@ -96,14 +96,14 @@ private:
         Connection conn(conn_id, utp::Connection::OUTGOING, remote, this);
         conn.startConnecting();
         const Connection::Stats &s = conn.connectionStats();
-        QCOMPARE(s.state, utp::CS_SYN_SENT);
+        QCOMPARE(s.state, utp::ConnectionState::SYN_SENT);
         QCOMPARE(s.seq_nr, 2);
 
         auto pkt = buildPacket(ST_STATE, conn_id, conn_id + 1, 1, 1);
         PacketParser pp(pkt->data(), pkt->size());
         QVERIFY(pp.parse());
         conn.handlePacket(pp, std::move(pkt));
-        QCOMPARE(s.state, CS_CONNECTED);
+        QCOMPARE(s.state, ConnectionState::CONNECTED);
         QCOMPARE(sent_packets.count(), 1);
     }
 
@@ -116,7 +116,7 @@ private:
         auto pkt = buildPacket(ST_SYN, conn_id - 1, conn_id, 1, 1);
         const PacketParser pp(pkt->data(), pkt->size());
         conn.handlePacket(pp, std::move(pkt));
-        QCOMPARE(s.state, CS_CONNECTED);
+        QCOMPARE(s.state, ConnectionState::CONNECTED);
     }
 
 private:

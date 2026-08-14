@@ -147,7 +147,7 @@ private:
     void testCongestionTest()
     {
         bt::Out(SYS_UTP | LOG_DEBUG) << "testCongestionTest" << bt::endl;
-        if (outgoing->connectionState() != CS_CONNECTED || incoming->connectionState() != CS_CONNECTED) {
+        if (outgoing->connectionState() != ConnectionState::CONNECTED || incoming->connectionState() != ConnectionState::CONNECTED) {
             QSKIP("Not Connected", SkipAll);
             return;
         }

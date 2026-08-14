@@ -65,7 +65,7 @@ void UTPSocket::close()
 bool UTPSocket::connectSuccessful()
 {
     const Connection::Ptr ptr = conn.toStrongRef();
-    if (ptr && ptr->connectionState() == CS_CONNECTED) {
+    if (ptr && ptr->connectionState() == ConnectionState::CONNECTED) {
         setRemoteAddress(ptr->remoteAddress());
         m_state = CONNECTED;
         return true;
@@ -100,7 +100,7 @@ bool UTPSocket::connectTo(const net::Address &addr)
         return ret;
     }
 
-    return ptr->connectionState() == CS_CONNECTED;
+    return ptr->connectionState() == ConnectionState::CONNECTED;
 }
 
 int UTPSocket::fd() const
@@ -129,13 +129,13 @@ net::Address UTPSocket::getSockName() const
 bool UTPSocket::ok() const
 {
     const Connection::Ptr ptr = conn.toStrongRef();
-    return ptr && ptr->connectionState() != CS_CLOSED;
+    return ptr && ptr->connectionState() != ConnectionState::CLOSED;
 }
 
 int UTPSocket::recv(bt::Uint8 *buf, int max_len)
 {
     const Connection::Ptr ptr = conn.toStrongRef();
-    if (!ptr || ptr->connectionState() == CS_CLOSED) {
+    if (!ptr || ptr->connectionState() == ConnectionState::CLOSED) {
         return 0;
     }
 
@@ -197,7 +197,7 @@ bool UTPSocket::setTOS(unsigned char type_of_service)
 void UTPSocket::prepare(net::Poll *p, net::Poll::Mode mode)
 {
     Connection::Ptr ptr = conn.toStrongRef();
-    if (ptr && ptr->connectionState() != CS_CLOSED) {
+    if (ptr && ptr->connectionState() != ConnectionState::CLOSED) {
         UTPServer &srv = bt::Globals::instance().getUTPServer();
         srv.preparePolling(p, mode, ptr);
         if (mode == net::Poll::OUTPUT) {
@@ -224,7 +224,7 @@ bool UTPSocket::ready(const net::Poll *p, net::Poll::Mode mode) const
     } else {
         if (polled_for_reading) {
             polled_for_reading = false;
-            return bytesAvailable() > 0 || ptr->connectionState() == CS_CLOSED;
+            return bytesAvailable() > 0 || ptr->connectionState() == ConnectionState::CLOSED;
         }
     }
 

@@ -66,7 +66,7 @@ private:
     void testFin()
     {
         bt::Out(SYS_UTP | LOG_DEBUG) << "testFin" << bt::endl;
-        if (outgoing->connectionState() != CS_CONNECTED || incoming->connectionState() != CS_CONNECTED) {
+        if (outgoing->connectionState() != ConnectionState::CONNECTED || incoming->connectionState() != ConnectionState::CONNECTED) {
             QSKIP("Not Connected", SkipAll);
             return;
         }
@@ -82,13 +82,13 @@ private:
             QCOMPARE(memcmp(tmp, test, strlen(test)), 0);
 
             outgoing->close();
-            if (incoming->connectionState() != CS_CLOSED) {
+            if (incoming->connectionState() != ConnectionState::CLOSED) {
                 incoming->waitForData();
             }
 
             // connection should be closed now
             ret = incoming->recv(tmp, 100);
-            QCOMPARE(incoming->connectionState(), CS_CLOSED);
+            QCOMPARE(incoming->connectionState(), ConnectionState::CLOSED);
             QCOMPARE(ret, -1);
         } else {
             QFAIL("No data received");

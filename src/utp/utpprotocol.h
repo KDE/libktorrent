@@ -104,28 +104,28 @@ KTORRENT_EXPORT QString TypeToString(bt::Uint8 type);
  *
  * The current state of a UTP connection.
  *
- * \var CS_IDLE
+ * \var IDLE
  * Used for INCOMING connections before we have processed the first SYN packet.
  *
- * \var CS_SYN_SENT
+ * \var SYN_SENT
  * Used after an OUTGOING connection has sent a SYN packet.
  *
- * \var CS_CONNECTED
+ * \var CONNECTED
  * The SYN packet exchange has been successful.
  *
- * \var CS_FINISHED
+ * \var FINISHED
  * We have either sent or received an ST_FIN packet to close the connection. We can still receive packets in this state until all packets have been
  * ACKed.
  *
- * \var CS_CLOSED
+ * \var CLOSED
  * The connection has been closed and no more packets will be sent or received.
  */
-enum ConnectionState {
-    CS_IDLE,
-    CS_SYN_SENT,
-    CS_CONNECTED,
-    CS_FINISHED,
-    CS_CLOSED,
+enum class ConnectionState {
+    IDLE,
+    SYN_SENT,
+    CONNECTED,
+    FINISHED,
+    CLOSED,
 };
 
 const bt::Uint32 MIN_PACKET_SIZE = 150;
