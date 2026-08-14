@@ -9,6 +9,8 @@
 #include <cstddef>
 #include <optional>
 
+#include <QByteArrayView>
+
 #include <ktorrent_export.h>
 #include <util/array.h>
 #include <util/constants.h>
@@ -48,7 +50,7 @@ public:
     static Packet create(const BitSet &bs);
     static Packet create(const Request &req, Uint8 type);
     static Packet create(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch);
-    static Packet create(Uint8 ext_id, const QByteArray &ext_data); // extension protocol packet
+    static Packet create(Uint8 ext_id, QByteArrayView ext_data); // extension protocol packet
 
     //! Get the packet type
     Uint8 getType() const

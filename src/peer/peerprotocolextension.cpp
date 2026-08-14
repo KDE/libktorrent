@@ -20,7 +20,7 @@ PeerProtocolExtension::~PeerProtocolExtension()
 {
 }
 
-void PeerProtocolExtension::sendPacket(const QByteArray &data)
+void PeerProtocolExtension::sendPacket(QByteArrayView data)
 {
     peer->sendExtProtMsg(id, data);
 }

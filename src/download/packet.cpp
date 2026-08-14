@@ -74,7 +74,7 @@ Packet Packet::create(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch)
     return pkt;
 }
 
-Packet Packet::create(Uint8 ext_id, const QByteArray &ext_data)
+Packet Packet::create(Uint8 ext_id, QByteArrayView ext_data)
 {
     const Uint32 size = 6 + ext_data.size();
     Packet pkt(size, EXTENDED);

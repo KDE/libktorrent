@@ -9,6 +9,7 @@
 #include "connectionlimit.h"
 #include "peerid.h"
 #include "peerprotocolextension.h"
+#include <QByteArrayView>
 #include <QDateTime>
 #include <QObject>
 #include <interfaces/peerinterface.h>
@@ -299,7 +300,7 @@ public:
     void sendSuggestPiece(Uint32 index);
 
     //! Send an extended protocol message
-    void sendExtProtMsg(Uint8 id, const QByteArray &data);
+    void sendExtProtMsg(Uint8 id, QByteArrayView data);
 
     /*!
      * Clear all pending piece uploads we are not in the progress of sending.

@@ -8,6 +8,7 @@
 #include <cstring>
 #include <vector>
 
+#include <QByteArrayView>
 #include <QObject>
 #include <QRandomGenerator>
 #include <QTest>
@@ -180,7 +181,7 @@ private Q_SLOTS:
     void testExtensionMessage()
     {
         constexpr uint8_t extension_id = 0;
-        const auto message = QByteArrayLiteral("{'m': {'ut_metadata', 3}, 'metadata_size': 31235}");
+        constexpr QByteArrayView message = "{'m': {'ut_metadata', 3}, 'metadata_size': 31235}";
 
         const auto packet = bt::Packet::create(extension_id, message);
         QVERIFY(ComparePacketSize(packet, 1 + message.size()));
@@ -203,7 +204,7 @@ private Q_SLOTS:
     void testSend()
     {
         constexpr uint8_t extension_id = 0;
-        const auto message = QByteArrayLiteral("{'m': {'ut_metadata', 3}, 'metadata_size': 31235}");
+        constexpr QByteArrayView message = "{'m': {'ut_metadata', 3}, 'metadata_size': 31235}";
         constexpr bt::Uint32 max_bytes_to_send = 10;
 
         // In case the message is changed, ensure that the data is chunked

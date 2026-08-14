@@ -7,6 +7,8 @@
 #ifndef BT_PEERPROTOCOLEXTENSION_H
 #define BT_PEERPROTOCOLEXTENSION_H
 
+#include <QByteArrayView>
+
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
@@ -40,7 +42,7 @@ public:
     virtual void handlePacket(const bt::Uint8 *packet, Uint32 size) = 0;
 
     //! Send an extension protocol packet
-    void sendPacket(const QByteArray &data);
+    void sendPacket(QByteArrayView data);
 
     //! Change the ID
     void changeID(Uint32 id);

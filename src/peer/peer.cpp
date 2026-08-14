@@ -855,7 +855,7 @@ bool Peer::sendChunk(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch)
     return true;
 }
 
-void Peer::sendExtProtMsg(Uint8 id, const QByteArray &data)
+void Peer::sendExtProtMsg(Uint8 id, QByteArrayView data)
 {
     sock->addPacket(Packet::create(id, data));
 }
