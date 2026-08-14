@@ -170,7 +170,7 @@ Socks::State Socks::handleAuthReply()
         return state;
     }
 
-    if (reply.version != socks5::Version::VERSION_5 || reply.method == 0xFF) {
+    if (reply.version != socks5::Version::VERSION_5 || reply.method == socks5::AuthMethod::NO_ACCEPTABLE_METHOD) {
         // Out(SYS_CON|LOG_DEBUG) << "socks5::AuthReply = " << reply.version << " " << reply.method << endl;
         state = FAILED;
         return state;
@@ -184,6 +184,7 @@ Socks::State Socks::handleAuthReply()
         sendUsernamePassword();
         break;
     case socks5::AuthMethod::GSSAPI:
+    case socks5::AuthMethod::NO_ACCEPTABLE_METHOD:
         break;
     }
     return state;

@@ -15,16 +15,16 @@ namespace net
 {
 namespace socks4
 {
-enum Version : bt::Uint8 {
+enum class Version : bt::Uint8 {
     VERSION_4 = 0x04,
 };
 
-enum Command : bt::Uint8 {
+enum class Command : bt::Uint8 {
     CONNECT = 0x01,
     BIND = 0x02,
 };
 
-enum Reply : bt::Uint8 {
+enum class Reply : bt::Uint8 {
     OK = 0x5a,
     FAILED = 0x5b,
     FAILED_2 = 0x5c,
@@ -32,8 +32,8 @@ enum Reply : bt::Uint8 {
 };
 
 struct ConnectRequest {
-    bt::Uint8 version;
-    bt::Uint8 cmd;
+    Version version;
+    Command cmd;
     bt::Uint16 port;
     bt::Uint8 ip[4];
     char user_id[100];
@@ -46,30 +46,30 @@ struct ConnectRequest {
 
 struct ConnectReply {
     bt::Uint8 null_byte;
-    bt::Uint8 reply;
+    Reply reply;
     bt::Uint8 dummy[6];
 };
 } // namespace socks4
 
 namespace socks5
 {
-enum Version : bt::Uint8 {
+enum class Version : bt::Uint8 {
     VERSION_5 = 0x05,
 };
 
-enum AddressType : bt::Uint8 {
+enum class AddressType : bt::Uint8 {
     ADDR_IPV4 = 0x01,
     ADDR_DOMAIN = 0x03,
     ADDR_IPV6 = 0x04,
 };
 
-enum Command : bt::Uint8 {
+enum class Command : bt::Uint8 {
     CONNECT = 0x01,
     BIND = 0x02,
     UDP_ASSOCIATE = 0x03,
 };
 
-enum Reply : bt::Uint8 {
+enum class Reply : bt::Uint8 {
     OK = 0x00, // succeeded
     SERVER_FAILURE = 0x01, // general SOCKS server failure
     NOT_ALLOWED = 0x02, // connection not allowed by ruleset
@@ -81,16 +81,17 @@ enum Reply : bt::Uint8 {
     ADDR_TYPE_NOT_SUPPORTED = 0x08,
 };
 
-enum AuthMethod : bt::Uint8 {
+enum class AuthMethod : bt::Uint8 {
     NONE = 0x00,
     GSSAPI = 0x01,
     USERNAME_PASSWORD = 0x02,
+    NO_ACCEPTABLE_METHOD = 0xFF,
 };
 
 struct AuthRequest {
-    bt::Uint8 version;
+    Version version;
     bt::Uint8 nmethods;
-    bt::Uint8 methods[5];
+    AuthMethod methods[5];
 
     [[nodiscard]] int size() const
     {
@@ -99,15 +100,15 @@ struct AuthRequest {
 };
 
 struct AuthReply {
-    bt::Uint8 version;
-    bt::Uint8 method;
+    Version version;
+    AuthMethod method;
 };
 
 struct ConnectRequest {
-    bt::Uint8 version;
-    bt::Uint8 cmd;
+    Version version;
+    Command cmd;
     bt::Uint8 reserved;
-    bt::Uint8 address_type;
+    AddressType address_type;
     union {
         struct {
             bt::Uint8 ip[4];
@@ -127,10 +128,10 @@ struct ConnectRequest {
 };
 
 struct ConnectReply {
-    bt::Uint8 version;
-    bt::Uint8 reply;
+    Version version;
+    Reply reply;
     bt::Uint8 reserved;
-    bt::Uint8 address_type;
+    AddressType address_type;
 #if 0
     union {
         bt::Uint8 ip_v4[4];
