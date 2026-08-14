@@ -47,7 +47,7 @@ Connection::Connection(bt::Uint16 recv_connection_id, Type type, const net::Addr
     stats.timeout = 1000;
     stats.packet_size = 1500 - IP_AND_UDP_OVERHEAD - sizeof(utp::Header);
     stats.last_window_size_transmitted = 128 * 1024;
-    if (type == OUTGOING) {
+    if (type == Type::OUTGOING) {
         stats.send_connection_id = recv_connection_id + 1;
     } else {
         stats.send_connection_id = recv_connection_id - 1;
@@ -73,7 +73,7 @@ Connection::~Connection()
 
 void Connection::startConnecting()
 {
-    if (stats.type == OUTGOING) {
+    if (stats.type == Type::OUTGOING) {
         sendSYN();
     }
 }

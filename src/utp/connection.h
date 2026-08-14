@@ -45,7 +45,7 @@ public:
      * \var OUTGOING
      * We are initiating a connection and will send the first SYN packet.
      */
-    enum Type {
+    enum class Type {
         INCOMING,
         OUTGOING,
     };
@@ -105,7 +105,7 @@ public:
     //! Dump connection stats
     void dumpStats();
 
-    //! Start connecting (OUTGOING only)
+    //! Start connecting (Type::OUTGOING only)
     void startConnecting();
 
     //! Get the connection stats

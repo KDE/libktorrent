@@ -105,10 +105,10 @@ KTORRENT_EXPORT QString TypeToString(bt::Uint8 type);
  * The current state of a UTP connection.
  *
  * \var IDLE
- * Used for INCOMING connections before we have processed the first SYN packet.
+ * Used for Type::INCOMING connections before we have processed the first SYN packet.
  *
  * \var SYN_SENT
- * Used after an OUTGOING connection has sent a SYN packet.
+ * Used after an Type::OUTGOING connection has sent a SYN packet.
  *
  * \var CONNECTED
  * The SYN packet exchange has been successful.

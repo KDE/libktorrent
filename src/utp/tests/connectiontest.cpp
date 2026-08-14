@@ -81,11 +81,11 @@ private:
     void testConnID()
     {
         const bt::Uint32 conn_id = 666;
-        const Connection conn(conn_id, utp::Connection::INCOMING, remote, this);
+        const Connection conn(conn_id, utp::Connection::Type::INCOMING, remote, this);
         QCOMPARE(conn.connectionStats().recv_connection_id, conn_id);
         QCOMPARE(conn.connectionStats().send_connection_id, conn_id - 1);
 
-        const Connection conn2(conn_id, utp::Connection::OUTGOING, remote, this);
+        const Connection conn2(conn_id, utp::Connection::Type::OUTGOING, remote, this);
         QCOMPARE(conn2.connectionStats().recv_connection_id, conn_id);
         QCOMPARE(conn2.connectionStats().send_connection_id, conn_id + 1);
     }
@@ -93,7 +93,7 @@ private:
     void testOutgoingConnectionSetup()
     {
         const bt::Uint32 conn_id = 666;
-        Connection conn(conn_id, utp::Connection::OUTGOING, remote, this);
+        Connection conn(conn_id, utp::Connection::Type::OUTGOING, remote, this);
         conn.startConnecting();
         const Connection::Stats &s = conn.connectionStats();
         QCOMPARE(s.state, utp::ConnectionState::SYN_SENT);
@@ -110,7 +110,7 @@ private:
     void testIncomingConnectionSetup()
     {
         const bt::Uint32 conn_id = 666;
-        Connection conn(conn_id, utp::Connection::INCOMING, remote, this);
+        Connection conn(conn_id, utp::Connection::Type::INCOMING, remote, this);
         const Connection::Stats &s = conn.connectionStats();
 
         auto pkt = buildPacket(ST_SYN, conn_id - 1, conn_id, 1, 1);

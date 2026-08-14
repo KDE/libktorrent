@@ -115,11 +115,11 @@ void UTPServer::Private::syn(const PacketParser &parser, std::unique_ptr<bt::Buf
     const quint16 recv_conn_id = hdr->connection_id + 1;
     if (connections.contains(recv_conn_id)) {
         // Send a reset packet if the ID is in use
-        const Connection::Ptr conn(new Connection(recv_conn_id, Connection::INCOMING, addr, p));
+        const Connection::Ptr conn(new Connection(recv_conn_id, Connection::Type::INCOMING, addr, p));
         conn->setWeakPointer(conn);
         conn->sendReset();
     } else {
-        const Connection::Ptr conn(new Connection(recv_conn_id, Connection::INCOMING, addr, p));
+        const Connection::Ptr conn(new Connection(recv_conn_id, Connection::Type::INCOMING, addr, p));
         try {
             conn->setWeakPointer(conn);
             conn->handlePacket(parser, std::move(buffer));
@@ -378,7 +378,7 @@ Connection::WPtr UTPServer::connectTo(const net::Address &addr)
         recv_conn_id = QRandomGenerator::global()->bounded(32535);
     }
 
-    const Connection::Ptr conn(new Connection(recv_conn_id, Connection::OUTGOING, addr, this));
+    const Connection::Ptr conn(new Connection(recv_conn_id, Connection::Type::OUTGOING, addr, this));
     conn->setWeakPointer(conn);
     conn->moveToThread(d->utp_thread);
     d->connections.insert(recv_conn_id, conn);
