@@ -6,6 +6,7 @@
 #ifndef BTDNDFILE_H
 #define BTDNDFILE_H
 
+#include <QByteArrayView>
 #include <QString>
 #include <QtClassHelperMacros>
 #include <util/constants.h>
@@ -58,17 +59,15 @@ public:
      * Write the partial first chunk.
      * \param buf The buffer
      * \param off Offset into partial chunk
-     * \param size Size to write
      */
-    void writeFirstChunk(const Uint8 *buf, Uint32 off, Uint32 size);
+    void writeFirstChunk(QByteArrayView buf, Uint32 off);
 
     /*!
      * Write the partial last chunk.
      * \param buf The buffer
      * \param off Offset into partial chunk
-     * \param size Size to write
      */
-    void writeLastChunk(const Uint8 *buf, Uint32 off, Uint32 size);
+    void writeLastChunk(QByteArrayView buf, Uint32 off);
 
 private:
     void create();

@@ -336,7 +336,7 @@ void CacheFile::read(Uint8 *buf, Uint32 size, Uint64 off)
     }
 }
 
-void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
+void CacheFile::write(QByteArrayView buf, Uint64 off)
 {
     const QMutexLocker lock(&mutex);
     bool close_again = false;
@@ -352,9 +352,9 @@ void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
         throw Error(i18n("Cannot open %1 for writing: readonly filesystem", path));
     }
 
-    if (off + size > max_size) {
+    if (off + buf.size() > max_size) {
         Out(SYS_DIO | LOG_DEBUG) << "Warning : writing past the end of " << path << endl;
-        Out(SYS_DIO | LOG_DEBUG) << (off + size) << " " << max_size << endl;
+        Out(SYS_DIO | LOG_DEBUG) << (off + buf.size()) << " " << max_size << endl;
         throw Error(i18n("Attempting to write beyond the maximum size of %1", path));
     }
 
@@ -368,7 +368,7 @@ void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
         throw Error(i18n("Failed to seek file %1: %2", path, fptr.errorString()));
     }
 
-    if (fptr.write((const char *)buf, size) != size) {
+    if (fptr.write(buf.data(), buf.size()) != buf.size()) {
         throw Error(i18n("Failed to write to file %1: %2", path, fptr.errorString()));
     }
 
@@ -376,8 +376,8 @@ void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
         closeTemporary();
     }
 
-    if (off + size > file_size) {
-        file_size = off + size;
+    if (off + buf.size() > file_size) {
+        file_size = off + buf.size();
     }
 }
 

@@ -6,6 +6,7 @@
 #ifndef BTCACHEFILE_H
 #define BTCACHEFILE_H
 
+#include <QByteArrayView>
 #include <QFile>
 #include <QHash>
 #include <QRecursiveMutex>
@@ -112,10 +113,9 @@ public:
     /*!
      * Write to the file.
      * \param buf Buffer to write
-     * \param size Size to read
      * \param off Offset to read from in file
      */
-    void write(const Uint8 *buf, Uint32 size, Uint64 off);
+    void write(QByteArrayView buf, Uint64 off);
 
     /*!
      * Preallocate disk space

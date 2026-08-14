@@ -12,6 +12,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QSet>
+#include <QSpan>
 #include <QStringList>
 #include <QTextStream>
 
@@ -591,13 +592,14 @@ void MultiFileCache::savePiece(PieceData::Ptr piece)
         const Uint8 *ptr = data + piece_off; // location to read from
         piece_off += write_length;
 
+        const QByteArrayView piece{ptr, write_length};
         if (fd) {
-            fd->write(ptr, write_length, write_offset);
+            fd->write(piece, write_offset);
         } else if (dfd) {
             if (i == 0) {
-                dfd->writeLastChunk(ptr, write_offset - file_off, write_length);
+                dfd->writeLastChunk(piece, write_offset - file_off);
             } else {
-                dfd->writeFirstChunk(ptr, write_offset, write_length);
+                dfd->writeFirstChunk(piece, write_offset);
             }
         }
 
@@ -668,14 +670,16 @@ void MultiFileCache::saveFirstAndLastChunk(TorrentFile *tf, const QString &src_f
 
     Uint8 *tmp = new Uint8[tor.getChunkSize()];
     try {
-        fptr.read(tmp, cs - tf->getFirstChunkOffset());
-        out.writeFirstChunk(tmp, 0, cs - tf->getFirstChunkOffset());
+        const QSpan first_chunk{tmp, static_cast<qsizetype>(cs - tf->getFirstChunkOffset())};
+        fptr.read(first_chunk.data(), first_chunk.size());
+        out.writeFirstChunk(first_chunk, 0);
 
         if (tf->getFirstChunk() != tf->getLastChunk()) {
+            const auto last_chunk = QSpan{tmp, static_cast<qsizetype>(tf->getLastChunkSize())};
             const Uint64 off = FileOffset(tf->getLastChunk(), *tf, tor.getChunkSize());
             fptr.seek(File::SeekPos::BEGIN, off);
-            fptr.read(tmp, tf->getLastChunkSize());
-            out.writeLastChunk(tmp, 0, tf->getLastChunkSize());
+            fptr.read(last_chunk.data(), last_chunk.size());
+            out.writeLastChunk(last_chunk, 0);
         }
         delete[] tmp;
     } catch (...) {

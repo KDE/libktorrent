@@ -188,7 +188,7 @@ void SingleFileCache::savePiece(PieceData::Ptr piece)
     if (!piece->mapped()) {
         const Uint64 off = piece->parentChunk()->getIndex() * tor.getChunkSize() + piece->offset();
         if (piece->ok()) {
-            fd->write(piece->data(), piece->length(), off);
+            fd->write(QByteArrayView{piece->data(), piece->length()}, off);
         }
     }
 }
