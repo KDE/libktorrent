@@ -124,7 +124,7 @@ void DNDFile::writeFirstChunk(QByteArrayView buf, Uint32 off)
 
     // write data
     fptr.seek(File::SeekPos::BEGIN, sizeof(DNDFileHeader) + off);
-    fptr.write(buf.data(), buf.size());
+    fptr.write(buf);
 }
 
 void DNDFile::writeLastChunk(QByteArrayView buf, Uint32 off)
@@ -138,7 +138,7 @@ void DNDFile::writeLastChunk(QByteArrayView buf, Uint32 off)
     }
 
     fptr.seek(File::SeekPos::BEGIN, sizeof(DNDFileHeader) + first_size + off);
-    fptr.write(buf.data(), buf.size());
+    fptr.write(buf);
 }
 
 }

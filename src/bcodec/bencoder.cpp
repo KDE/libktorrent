@@ -19,7 +19,7 @@ BEncoderFileOutput::BEncoderFileOutput(File *fptr)
 void BEncoderFileOutput::write(QByteArrayView str)
 {
     if (fptr) {
-        fptr->write(str.data(), str.size());
+        fptr->write(str);
     }
 }
 

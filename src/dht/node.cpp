@@ -45,7 +45,7 @@ public:
             return;
         }
 
-        fptr.write(key.getData(), 20);
+        fptr.write(key);
         fptr.close();
     }
 

@@ -6,11 +6,13 @@
 #ifndef BTFILE_H
 #define BTFILE_H
 
-#include "constants.h"
 #include <cstdio>
-#include <ktorrent_export.h>
 
+#include <QByteArrayView>
 #include <QString>
+
+#include "constants.h"
+#include <ktorrent_export.h>
 
 namespace bt
 {
@@ -74,6 +76,17 @@ public:
      * \return The number of bytes written
      */
     Uint32 write(const void *buf, Uint32 size);
+
+    /*!
+     * Write a bunch of data. If anything goes wrong
+     * an Error will be thrown.
+     * \param buf The data
+     * \return The number of bytes written
+     */
+    Uint32 write(QByteArrayView buf)
+    {
+        return write(buf.data(), buf.size());
+    }
 
     /*!
      * Read a bunch of data. If anything goes wrong
