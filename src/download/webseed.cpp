@@ -404,7 +404,7 @@ void WebSeed::handleData(const QByteArray &tmp)
             }
 
             if (cur_piece) {
-                cur_piece->write((const Uint8 *)tmp.data() + off, bl, bytes_of_cur_chunk);
+                cur_piece->write(QByteArrayView{tmp}.sliced(off, bl), bytes_of_cur_chunk);
             }
             downloaded += bl;
         }

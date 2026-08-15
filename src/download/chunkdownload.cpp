@@ -97,7 +97,7 @@ bool ChunkDownload::piece(const Piece &p, bool &ok)
     }
 
     PieceData::Ptr buf = chunk->getPiece(p.getOffset(), p.getLength(), false);
-    if (buf && buf->write(p.getData(), p.getLength()) == p.getLength()) {
+    if (buf && buf->write(QByteArrayView{p.getData(), p.getLength()}) == p.getLength()) {
         piece_data[pp] = buf;
         ok = true;
         pieces.set(pp, true);

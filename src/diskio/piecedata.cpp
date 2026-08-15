@@ -47,9 +47,9 @@ void PieceData::unload()
     ptr = nullptr;
 }
 
-Uint32 PieceData::write(const bt::Uint8 *buf, Uint32 buf_size, Uint32 off)
+Uint32 PieceData::write(QByteArrayView buf, Uint32 off)
 {
-    if (off + buf_size > len || !ptr) {
+    if (off + buf.size() > len || !ptr) {
         return 0;
     }
 
@@ -58,9 +58,9 @@ Uint32 PieceData::write(const bt::Uint8 *buf, Uint32 buf_size, Uint32 off)
     }
 
     WithBusErrorProtection(BusOperation::Write, [&] {
-        memcpy(ptr + off, buf, buf_size);
+        memcpy(ptr + off, buf.data(), buf.size());
     });
-    return buf_size;
+    return buf.size();
 }
 
 Uint32 PieceData::read(Uint8 *buf, Uint32 to_read, Uint32 off)

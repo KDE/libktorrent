@@ -7,7 +7,9 @@
 #ifndef BTPIECEDATA_H
 #define BTPIECEDATA_H
 
+#include <QByteArrayView>
 #include <QSharedDataPointer>
+
 #include <diskio/cachefile.h>
 #include <ktorrent_export.h>
 #include <util/constants.h>
@@ -86,12 +88,11 @@ public:
         Write data into the PieceData. This function should always be used
         for writing into a PieceData object, as it protects against bus errors.
         \param buf The buffer to write
-        \param buf_size Size of the buffer
         \param off Offset to write
         \return The number of bytes written
         \throw BusError When writing results in a SIGBUS
     */
-    Uint32 write(const Uint8 *buf, Uint32 buf_size, Uint32 off = 0);
+    Uint32 write(QByteArrayView buf, Uint32 off = 0);
 
     /*!
         Read data from the PieceData. This function should always be used

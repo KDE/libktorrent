@@ -4,6 +4,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <array>
+#include <cstddef>
+
 #include <QLocale>
 #include <QTest>
 
@@ -75,12 +78,12 @@ private Q_SLOTS:
             QVERIFY(!f);
 
             cman.checkMemoryUsage();
-            Uint8 tmp[20];
-            QVERIFY(memcpy(tmp, ptr->data(), 20));
+            std::array<std::byte, 20> tmp;
+            QVERIFY(memcpy(tmp.data(), ptr->data(), 20));
 
-            memset(tmp, 0xFF, 20);
+            tmp.fill(std::byte{0xFF});
             QVERIFY(!ptr->writeable());
-            ptr->write(tmp, 20);
+            ptr->write(tmp);
             QFAIL("No exception thrown");
         } catch (bt::Error &err) {
         }
@@ -101,10 +104,9 @@ private Q_SLOTS:
             const QString path = creator.dataPath() + tor.getFile(0).getPath();
             bt::TruncateFile(path, 0);
 
-            Uint8 tmp[20];
-            memset(tmp, 0xFF, 20);
+            std::array<std::byte, 20> tmp = {std::byte{0xFF}};
 
-            f->write(tmp, 20);
+            f->write(tmp);
             QFAIL("No BusError thrown\n");
         } catch (bt::BusError &err) {
         } catch (bt::Error &err) {
