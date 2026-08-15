@@ -114,17 +114,18 @@ void HttpConnection::connectTo(const QUrl &url)
     }
 }
 
-void HttpConnection::onDataReady(Uint8 *buf, Uint32 size)
+void HttpConnection::onDataReady(Uint8 *buf_ptr, Uint32 size)
 {
+    const QByteArrayView buf{buf_ptr, size};
     const QMutexLocker locker(&mutex);
 
     if (state != State::ERROR && request) {
-        if (size == 0) {
+        if (buf.isEmpty()) {
             // connection closed
             state = State::CLOSED;
             status = i18n("Connection closed");
         } else {
-            if (!request->onDataReady(buf, size)) {
+            if (!request->onDataReady(buf)) {
                 state = State::ERROR;
                 status = i18n("Error: request failed: %1", request->failure_reason);
                 response_code = request->response_code;
@@ -329,11 +330,11 @@ HttpConnection::HttpGet::~HttpGet()
 {
 }
 
-bool HttpConnection::HttpGet::onDataReady(Uint8 *buf, Uint32 size)
+bool HttpConnection::HttpGet::onDataReady(QByteArrayView buf)
 {
     if (!response_header_received) {
         // append the data
-        buffer.append(QByteArray::fromRawData((char *)buf, size));
+        buffer.append(buf);
         // look for the end of the header
         const int idx = buffer.indexOf("\r\n\r\n");
         if (idx == -1) { // haven't got the full header yet
@@ -374,8 +375,8 @@ bool HttpConnection::HttpGet::onDataReady(Uint8 *buf, Uint32 size)
         }
     } else {
         // append the data to the list
-        data_received += size;
-        piece_data.append(QByteArray((char *)buf, size));
+        data_received += buf.size();
+        piece_data.append(buf);
     }
     return true;
 }

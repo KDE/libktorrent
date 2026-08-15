@@ -7,6 +7,7 @@
 #ifndef BTHTTPCONNECTION_H
 #define BTHTTPCONNECTION_H
 
+#include <QByteArrayView>
 #include <QRecursiveMutex>
 #include <QTimer>
 #include <QUrl>
@@ -151,7 +152,7 @@ private:
         HttpGet(const QString &host, const QString &path, const QString &query, bt::Uint64 start, bt::Uint64 len, bool using_proxy);
         virtual ~HttpGet();
 
-        bool onDataReady(Uint8 *buf, Uint32 size);
+        bool onDataReady(QByteArrayView buf);
         [[nodiscard]] bool finished() const
         {
             return data_received >= len;
