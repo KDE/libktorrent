@@ -99,7 +99,7 @@ public:
      * This data will be the first to read out. The data will be copied to a temporary buffer
      * which will be destroyed when the reinserted data has been read.
      */
-    void reinsert(const bt::Uint8 *d, bt::Uint32 size);
+    void reinsert(QByteArrayView buf);
 
     //! see if the socket is still OK
     bool ok() const;

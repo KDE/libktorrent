@@ -229,19 +229,19 @@ void EncryptedPacketSocket::setRC4Encryptor(std::unique_ptr<RC4Encryptor> e)
     enc = std::move(e);
 }
 
-void EncryptedPacketSocket::reinsert(const Uint8 *d, Uint32 size)
+void EncryptedPacketSocket::reinsert(QByteArrayView buf)
 {
     //      Out() << "Reinsert : " << size << endl;
     Uint32 off = 0;
     if (reinserted_data) {
         off = reinserted_data_size;
-        reinserted_data = (Uint8 *)realloc(reinserted_data, reinserted_data_size + size);
-        reinserted_data_size += size;
+        reinserted_data = (Uint8 *)realloc(reinserted_data, reinserted_data_size + buf.size());
+        reinserted_data_size += buf.size();
     } else {
-        reinserted_data = new Uint8[size];
-        reinserted_data_size = size;
+        reinserted_data = new Uint8[buf.size()];
+        reinserted_data_size = buf.size();
     }
-    memcpy(reinserted_data + off, d, size);
+    memcpy(reinserted_data + off, buf.data(), buf.size());
 }
 
 bool EncryptedPacketSocket::connecting() const

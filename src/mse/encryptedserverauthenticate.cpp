@@ -207,7 +207,7 @@ void EncryptedServerAuthenticate::handleIA()
     if (ia_len > 0) {
         const Uint32 off = req1_off + 54 + pad_C_len + 2;
         // reinsert everything so that the normal authentication can handle it
-        sock->reinsert(buf + off, buf_size - off);
+        sock->reinsert(QByteArrayView{buf, buf_size}.sliced(off));
     }
 
     const bool allow_unenc = ServerInterface::unencryptedConnectionsAllowed();
