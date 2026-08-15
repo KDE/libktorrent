@@ -30,13 +30,13 @@ Authenticate::Authenticate(const net::Address &addr, TransportProtocol proto, co
     if (net::Socks::enabled()) {
         socks = std::make_unique<net::Socks>(sock.get(), addr);
         switch (socks->setup()) {
-        case net::Socks::FAILED:
+        case net::Socks::State::FAILED:
             Out(SYS_CON | LOG_NOTICE) << "Failed to connect to " << addr.toString() << " via socks server " << endl;
             // Don't call onFinish here, will lead to problems
             // Instead change the interval of timeout timer, to force a failure
             timer.setInterval(1);
             break;
-        case net::Socks::CONNECTED:
+        case net::Socks::State::CONNECTED:
             socks.reset();
             connected();
             break;
@@ -68,11 +68,11 @@ void Authenticate::onReadyWrite()
 
     if (socks) {
         switch (socks->onReadyToWrite()) {
-        case net::Socks::FAILED:
+        case net::Socks::State::FAILED:
             Out(SYS_CON | LOG_NOTICE) << "Failed to connect to socks server " << endl;
             onFinish(false);
             break;
-        case net::Socks::CONNECTED:
+        case net::Socks::State::CONNECTED:
             socks.reset();
             connected();
             break;
@@ -96,11 +96,11 @@ void Authenticate::onReadyRead()
         AuthenticateBase::onReadyRead();
     } else {
         switch (socks->onReadyToRead()) {
-        case net::Socks::FAILED:
+        case net::Socks::State::FAILED:
             Out(SYS_CON | LOG_NOTICE) << "Failed to connect to host via socks server " << endl;
             onFinish(false);
             break;
-        case net::Socks::CONNECTED:
+        case net::Socks::State::CONNECTED:
             // connection established, so get rid of socks shit
             socks.reset();
             connected();

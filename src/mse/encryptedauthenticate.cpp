@@ -214,11 +214,11 @@ void EncryptedAuthenticate::onReadyRead()
 
     if (socks) {
         switch (socks->onReadyToRead()) {
-        case net::Socks::FAILED:
+        case net::Socks::State::FAILED:
             Out(SYS_CON | LOG_NOTICE) << "Failed to connect to host via socks server " << endl;
             onFinish(false);
             break;
-        case net::Socks::CONNECTED:
+        case net::Socks::State::CONNECTED:
             // connection established, so get rid of socks shit
             socks.reset();
             connected();

@@ -44,7 +44,7 @@ public:
      * \var FAILED
      * The socket failed to connect to the proxy or failed the authentication.
      */
-    enum State {
+    enum class State {
         IDLE,
         CONNECTING_TO_SERVER,
         CONNECTING_TO_HOST,
