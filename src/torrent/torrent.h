@@ -103,7 +103,7 @@ public:
      * \param verbose Whether to print information to the log
      * \throw Error if something goes wrong
      */
-    void load(const QByteArray &data, bool verbose);
+    void load(QByteArrayView data, bool verbose);
 
     void debugPrintInfo();
 

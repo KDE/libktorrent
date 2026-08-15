@@ -641,7 +641,7 @@ void Peer::emitPortPacket()
     pman->portPacketReceived(sock->getRemoteIPAddress(), sock->getRemotePort());
 }
 
-void Peer::emitPex(const QByteArray &data, int ip_version)
+void Peer::emitPex(QByteArrayView data, int ip_version)
 {
     pman->pex(data, ip_version);
 }

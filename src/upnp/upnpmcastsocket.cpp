@@ -44,7 +44,7 @@ public:
     UPnPMCastSocketPrivate(bool verbose);
     ~UPnPMCastSocketPrivate();
 
-    UPnPRouter *parseResponse(const QByteArray &arr);
+    UPnPRouter *parseResponse(QByteArrayView arr);
     void joinUPnPMCastGroup(int fd);
     void leaveUPnPMCastGroup(int fd);
     void onXmlFileDownloaded(UPnPRouter *r, bool success);
@@ -278,7 +278,7 @@ void UPnPMCastSocket::UPnPMCastSocketPrivate::leaveUPnPMCastGroup(int fd)
     }
 }
 
-UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(const QByteArray &arr)
+UPnPRouter *UPnPMCastSocket::UPnPMCastSocketPrivate::parseResponse(QByteArrayView arr)
 {
     const QString response = QString::fromLatin1(arr);
     QList<QStringView> lines = QStringView(response).split(QStringLiteral("\r\n"));

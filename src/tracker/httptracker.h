@@ -55,11 +55,11 @@ private Q_SLOTS:
 
 private:
     void doRequest(WaitJob *wjob = nullptr);
-    bool updateData(const QByteArray &data);
+    bool updateData(QByteArrayView data);
     void setupMetaData(KIO::MetaData &md);
     void doAnnounceQueue();
     void doAnnounce(const QUrl &u);
-    void onAnnounceResult(const QUrl &url, const QByteArray &data, const KJob *j);
+    void onAnnounceResult(const QUrl &url, QByteArrayView data, const KJob *j);
 
 private:
     KJob *active_job;

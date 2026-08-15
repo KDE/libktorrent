@@ -117,7 +117,7 @@ public:
         }
     }
 
-    void send(const net::Address &addr, const QByteArray &msg)
+    void send(const net::Address &addr, QByteArrayView msg)
     {
         for (const net::ServerSocket::Ptr &sock : std::as_const(sockets)) {
             if (sock->sendTo(msg, addr) == msg.size()) {
@@ -236,7 +236,7 @@ void RPCServer::stop()
 }
 
 #if 0
-static void PrintRawData(const QByteArray & data)
+static void PrintRawData(QByteArrayView data)
 {
     QString tmp;
     for (int i = 0; i < data.size(); i++) {

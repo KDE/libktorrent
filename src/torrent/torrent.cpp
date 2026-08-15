@@ -86,7 +86,7 @@ Torrent::~Torrent()
 {
 }
 
-void Torrent::load(const QByteArray &data, bool verbose)
+void Torrent::load(QByteArrayView data, bool verbose)
 {
     BDecoder decoder(data, verbose);
     const std::unique_ptr<BDictNode> dict = decoder.decodeDict();

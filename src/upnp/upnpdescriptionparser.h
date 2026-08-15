@@ -30,7 +30,7 @@ public:
      * \param router The router off the xml description
      * \return true upon success
      */
-    bool parse(const QString &file, UPnPRouter *router);
+    bool parseFile(const QString &file, UPnPRouter *router);
 
     /*!
      * Parse the xml description.
@@ -38,7 +38,7 @@ public:
      * \param router The router off the xml description
      * \return true upon success
      */
-    bool parse(const QByteArray &data, UPnPRouter *router);
+    bool parse(QByteArrayView data, UPnPRouter *router);
 };
 
 }

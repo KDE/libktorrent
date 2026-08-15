@@ -267,7 +267,7 @@ void UTPServer::threadStarted()
 }
 
 #if 0
-static void Dump(const QByteArray & data, const net::Address& addr)
+static void Dump(QByteArrayView data, const net::Address& addr)
 {
     Out(SYS_UTP | LOG_DEBUG) << QString("Received packet from %1 (%2 bytes)").arg(addr.toString()).arg(data.size()) << endl;
     const bt::Uint8* pkt = (const bt::Uint8*)data.data();

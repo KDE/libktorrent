@@ -235,7 +235,7 @@ void HTTPTracker::doRequest(WaitJob *wjob)
     }
 }
 
-bool HTTPTracker::updateData(const QByteArray &data)
+bool HTTPTracker::updateData(QByteArrayView data)
 {
     // search for dictionary, there might be random garbage infront of the data
     int i = 0;
@@ -350,7 +350,7 @@ void HTTPTracker::onKIOAnnounceResult(const KJob *j)
     onAnnounceResult(st->announceUrl(), st->replyData(), j);
 }
 
-void HTTPTracker::onAnnounceResult(const QUrl &url, const QByteArray &data, const KJob *j)
+void HTTPTracker::onAnnounceResult(const QUrl &url, QByteArrayView data, const KJob *j)
 {
     timer.stop();
     active_job = nullptr;

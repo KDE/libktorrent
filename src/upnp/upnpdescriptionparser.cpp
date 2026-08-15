@@ -40,7 +40,7 @@ public:
     XMLContentHandler(UPnPRouter *router);
     ~XMLContentHandler();
 
-    bool parse(const QByteArray &data);
+    bool parse(QByteArrayView data);
 
     bool startDocument();
     bool endDocument();
@@ -60,7 +60,7 @@ UPnPDescriptionParser::~UPnPDescriptionParser()
 {
 }
 
-bool UPnPDescriptionParser::parse(const QString &file, UPnPRouter *router)
+bool UPnPDescriptionParser::parseFile(const QString &file, UPnPRouter *router)
 {
     QFile fptr(file);
     if (!fptr.open(QIODevice::ReadOnly)) {
@@ -79,7 +79,7 @@ bool UPnPDescriptionParser::parse(const QString &file, UPnPRouter *router)
     return true;
 }
 
-bool UPnPDescriptionParser::parse(const QByteArray &data, UPnPRouter *router)
+bool UPnPDescriptionParser::parse(QByteArrayView data, UPnPRouter *router)
 {
     XMLContentHandler chandler(router);
 
@@ -103,7 +103,7 @@ XMLContentHandler::~XMLContentHandler()
 {
 }
 
-bool XMLContentHandler::parse(const QByteArray &data)
+bool XMLContentHandler::parse(QByteArrayView data)
 {
     QXmlStreamReader reader(data);
 

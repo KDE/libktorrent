@@ -470,7 +470,7 @@ void TorrentControl::setMonitor(MonitorInterface *tmo)
     tor->setMonitor(tmon);
 }
 
-void TorrentControl::init(QueueManagerInterface *qman, const QByteArray &data, const QString &tmpdir, const QString &ddir)
+void TorrentControl::init(QueueManagerInterface *qman, QByteArrayView data, const QString &tmpdir, const QString &ddir)
 {
     m_qman = qman;
 

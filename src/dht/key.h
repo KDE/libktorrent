@@ -36,10 +36,10 @@ public:
     Key(const bt::SHA1Hash &k);
 
     /*!
-     * Make a key out of a bytearray
-     * \param ba The QByteArray
+     * Make a key out of a byte array
+     * \param ba The byte array
      */
-    Key(const QByteArray &ba);
+    Key(QByteArrayView ba);
 
     /*!
      * Make a key out of a 20 byte array.

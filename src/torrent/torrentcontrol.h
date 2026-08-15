@@ -74,7 +74,7 @@ public:
      *      (only used the first time we load a torrent)
      * \throw Error when something goes wrong
      */
-    void init(QueueManagerInterface *qman, const QByteArray &data, const QString &tmpdir, const QString &datadir);
+    void init(QueueManagerInterface *qman, QByteArrayView data, const QString &tmpdir, const QString &datadir);
 
     //! Tell the TorrentControl obj to preallocate diskspace in the next update
     void setPreallocateDiskSpace(bool pa)

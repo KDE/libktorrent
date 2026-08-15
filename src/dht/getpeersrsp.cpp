@@ -18,7 +18,7 @@ using namespace Qt::Literals::StringLiterals;
 namespace dht
 {
 GetPeersRsp::GetPeersRsp()
-    : RPCMsg(QByteArray(), dht::Method::GET_PEERS, dht::Type::RSP_MSG, QByteArray())
+    : RPCMsg(QByteArray(), dht::Method::GET_PEERS, dht::Type::RSP_MSG, Key())
 {
 }
 
