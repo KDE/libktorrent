@@ -29,7 +29,7 @@ Socks::Socks(mse::EncryptedPacketSocket *sock, const Address &dest)
     : sock(sock)
     , dest(dest)
     , state(IDLE)
-    , internal_state(NONE)
+    , internal_state(SetupState::NONE)
 {
     version = socks_version; // copy version in case it changes
 }
@@ -108,13 +108,13 @@ Socks::State Socks::onReadyToRead()
     }
 
     switch (internal_state) {
-    case AUTH_REQUEST_SENT:
+    case SetupState::AUTH_REQUEST_SENT:
         return handleAuthReply();
         break;
-    case USERNAME_AND_PASSWORD_SENT:
+    case SetupState::USERNAME_AND_PASSWORD_SENT:
         return handleUsernamePasswordReply();
         break;
-    case CONNECT_REQUEST_SENT:
+    case SetupState::CONNECT_REQUEST_SENT:
         return handleConnectReply();
         break;
     default:
@@ -137,7 +137,7 @@ Socks::State Socks::sendAuthRequest()
         req.methods[1] = socks5::AuthMethod::USERNAME_PASSWORD; // Username and password
         req.methods[2] = socks5::AuthMethod::GSSAPI; // GSSAPI
         sock->sendData(QByteArrayView{reinterpret_cast<const Uint8 *>(&req), req.size()});
-        internal_state = AUTH_REQUEST_SENT;
+        internal_state = SetupState::AUTH_REQUEST_SENT;
     } else {
         if (dest.protocol() == QAbstractSocket::IPv6Protocol) {
             Out(SYS_CON | LOG_IMPORTANT) << "SOCKSV4 does not support IPv6" << endl;
@@ -155,7 +155,7 @@ Socks::State Socks::sendAuthRequest()
         memcpy(req.ip, &ip, 4);
         strcpy(req.user_id, "KTorrent");
         sock->sendData(QByteArrayView{reinterpret_cast<const Uint8 *>(&req), req.size()});
-        internal_state = CONNECT_REQUEST_SENT;
+        internal_state = SetupState::CONNECT_REQUEST_SENT;
         // Out(SYS_CON|LOG_DEBUG) << "SOCKSV4 send connect" << endl;
     }
     return state;
@@ -205,7 +205,7 @@ void Socks::sendUsernamePassword()
     memcpy(buffer.data() + off, pwd.constData(), pwd.size());
     off += pwd.size();
     sock->sendData(QByteArrayView{buffer}.first(off));
-    internal_state = USERNAME_AND_PASSWORD_SENT;
+    internal_state = SetupState::USERNAME_AND_PASSWORD_SENT;
 }
 
 Socks::State Socks::handleUsernamePasswordReply()
@@ -249,7 +249,7 @@ void Socks::sendConnectRequest()
         req.address_type = socks5::AddressType::ADDR_IPV6;
     }
     sock->sendData(QByteArrayView{reinterpret_cast<const Uint8 *>(&req), len});
-    internal_state = CONNECT_REQUEST_SENT;
+    internal_state = SetupState::CONNECT_REQUEST_SENT;
 }
 
 Socks::State Socks::handleConnectReply()

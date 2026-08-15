@@ -110,7 +110,7 @@ private Q_SLOTS:
     void resolved(net::AddressResolver *ar);
 
 private:
-    enum SetupState {
+    enum class SetupState {
         NONE,
         AUTH_REQUEST_SENT,
         USERNAME_AND_PASSWORD_SENT,
