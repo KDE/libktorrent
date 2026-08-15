@@ -14,7 +14,7 @@ namespace dht
 {
 RPCMsg::RPCMsg()
     : mtid(nullptr)
-    , method(NONE)
+    , method(Method::NONE)
     , type(Type::INVALID)
 {
 }

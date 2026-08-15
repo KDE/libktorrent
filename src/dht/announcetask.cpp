@@ -50,7 +50,7 @@ void AnnounceTask::callFinished(RPCCall *c, RPCMsg *rsp)
     // Out(SYS_DHT|LOG_DEBUG) << "AnnounceTask::callFinished" << endl;
     // if we do not have a get peers response, return
     // announce_peer's response are just empty anyway
-    if (c->getMsgMethod() != dht::GET_PEERS) {
+    if (c->getMsgMethod() != dht::Method::GET_PEERS) {
         return;
     }
 

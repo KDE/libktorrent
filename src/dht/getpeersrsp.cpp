@@ -18,18 +18,18 @@ using namespace Qt::Literals::StringLiterals;
 namespace dht
 {
 GetPeersRsp::GetPeersRsp()
-    : RPCMsg(QByteArray(), dht::GET_PEERS, dht::Type::RSP_MSG, QByteArray())
+    : RPCMsg(QByteArray(), dht::Method::GET_PEERS, dht::Type::RSP_MSG, QByteArray())
 {
 }
 
 GetPeersRsp::GetPeersRsp(const QByteArray &mtid, const Key &id, const QByteArray &token)
-    : RPCMsg(mtid, dht::GET_PEERS, dht::Type::RSP_MSG, id)
+    : RPCMsg(mtid, dht::Method::GET_PEERS, dht::Type::RSP_MSG, id)
     , token(token)
 {
 }
 
 GetPeersRsp::GetPeersRsp(const QByteArray &mtid, const Key &id, const DBItemList &values, const QByteArray &token)
-    : RPCMsg(mtid, dht::GET_PEERS, dht::Type::RSP_MSG, id)
+    : RPCMsg(mtid, dht::Method::GET_PEERS, dht::Type::RSP_MSG, id)
     , token(token)
     , items(values)
 {

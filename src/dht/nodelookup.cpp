@@ -54,7 +54,7 @@ void NodeLookup::callFinished(RPCCall *, RPCMsg *rsp)
     }
 
     // check the response and see if it is a good one
-    if (rsp->getMethod() == dht::FIND_NODE && rsp->getType() == dht::Type::RSP_MSG) {
+    if (rsp->getMethod() == dht::Method::FIND_NODE && rsp->getType() == dht::Type::RSP_MSG) {
         auto fnr = dynamic_cast<FindNodeRsp *>(rsp);
         if (!fnr) {
             return;

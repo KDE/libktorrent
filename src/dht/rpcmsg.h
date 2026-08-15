@@ -67,7 +67,7 @@ enum class Type {
  * \var NONE
  * Used for non-query messages.
  */
-enum Method {
+enum class Method {
     PING,
     FIND_NODE,
     GET_PEERS,

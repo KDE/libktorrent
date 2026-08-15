@@ -54,7 +54,7 @@ Method RPCCall::getMsgMethod() const
     if (msg) {
         return msg->getMethod();
     } else {
-        return dht::NONE;
+        return dht::Method::NONE;
     }
 }
 

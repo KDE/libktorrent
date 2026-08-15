@@ -17,12 +17,12 @@ using namespace Qt::Literals::StringLiterals;
 namespace dht
 {
 AnnounceRsp::AnnounceRsp()
-    : RPCMsg(QByteArray(), ANNOUNCE_PEER, Type::RSP_MSG, Key())
+    : RPCMsg(QByteArray(), Method::ANNOUNCE_PEER, Type::RSP_MSG, Key())
 {
 }
 
 AnnounceRsp::AnnounceRsp(const QByteArray &mtid, const Key &id)
-    : RPCMsg(mtid, ANNOUNCE_PEER, Type::RSP_MSG, id)
+    : RPCMsg(mtid, Method::ANNOUNCE_PEER, Type::RSP_MSG, id)
 {
 }
 

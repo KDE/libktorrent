@@ -84,23 +84,23 @@ std::unique_ptr<RPCMsg> RPCMsgFactory::buildResponse(BDictNode *dict, dht::RPCMe
     // find the call
     const Method method = method_resolver->findMethod(mtid);
     switch (method) {
-    case PING:
+    case Method::PING:
         msg = std::make_unique<PingRsp>();
         msg->parse(dict);
         break;
-    case FIND_NODE:
+    case Method::FIND_NODE:
         msg = std::make_unique<FindNodeRsp>();
         msg->parse(dict);
         break;
-    case GET_PEERS:
+    case Method::GET_PEERS:
         msg = std::make_unique<GetPeersRsp>();
         msg->parse(dict);
         break;
-    case ANNOUNCE_PEER:
+    case Method::ANNOUNCE_PEER:
         msg = std::make_unique<AnnounceRsp>();
         msg->parse(dict);
         break;
-    case NONE:
+    case Method::NONE:
     default:
         throw bt::Error(u"Unknown DHT rpc call (transaction id = %1)"_s.arg(mtid[0]));
     }

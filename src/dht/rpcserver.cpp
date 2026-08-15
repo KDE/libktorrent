@@ -113,7 +113,7 @@ public:
         if (call) {
             return call->getMsgMethod();
         } else {
-            return dht::NONE;
+            return dht::Method::NONE;
         }
     }
 

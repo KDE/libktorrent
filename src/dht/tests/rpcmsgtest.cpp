@@ -85,7 +85,7 @@ private Q_SLOTS:
             "d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe",
             "d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re",
         };
-        current_method = dht::PING;
+        current_method = dht::Method::PING;
 
         for (const auto msg : msgs) {
             bt::BDecoder dec(msg, false);
@@ -94,7 +94,7 @@ private Q_SLOTS:
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
                 QVERIFY(msg);
                 QCOMPARE(msg->getMTID(), QByteArray("aa"));
-                QCOMPARE(msg->getMethod(), dht::PING);
+                QCOMPARE(msg->getMethod(), dht::Method::PING);
             } catch (bt::Error &e) {
                 QFAIL(e.toString().toLocal8Bit().data());
             }
@@ -108,7 +108,7 @@ private Q_SLOTS:
             "d1:rd2:id20:0123456789abcdefghij5:nodes9:def456...e1:t2:aa1:y1:re",
         };
 
-        current_method = dht::FIND_NODE;
+        current_method = dht::Method::FIND_NODE;
 
         for (const auto msg : msgs) {
             bt::BDecoder dec(msg, false);
@@ -117,7 +117,7 @@ private Q_SLOTS:
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
                 QVERIFY(msg);
                 QCOMPARE(msg->getMTID(), QByteArray("aa"));
-                QCOMPARE(msg->getMethod(), dht::FIND_NODE);
+                QCOMPARE(msg->getMethod(), dht::Method::FIND_NODE);
             } catch (bt::Error &e) {
                 QFAIL(e.toString().toLocal8Bit().data());
             }
@@ -131,7 +131,7 @@ private Q_SLOTS:
             "d1:rd2:id20:abcdefghij01234567895:token8:aoeusnth6:valuesl6:axje.u6:idhtnmee1:t2:aa1:y1:re",
             "d1:rd2:id20:abcdefghij01234567895:nodes9:def456...5:token8:aoeusnthe1:t2:aa1:y1:re",
         };
-        current_method = dht::GET_PEERS;
+        current_method = dht::Method::GET_PEERS;
 
         for (const auto msg : msgs) {
             bt::BDecoder dec(msg, false);
@@ -140,7 +140,7 @@ private Q_SLOTS:
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
                 QVERIFY(msg);
                 QCOMPARE(msg->getMTID(), QByteArray("aa"));
-                QCOMPARE(msg->getMethod(), dht::GET_PEERS);
+                QCOMPARE(msg->getMethod(), dht::Method::GET_PEERS);
             } catch (bt::Error &e) {
                 QFAIL(e.toString().toLocal8Bit().data());
             }
@@ -153,7 +153,7 @@ private Q_SLOTS:
             "d1:ad2:id20:abcdefghij01234567899:info_hash20:mnopqrstuvwxyz1234564:porti6881e5:token8:aoeusnthe1:q13:announce_peer1:t2:aa1:y1:qe",
             "d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re",
         };
-        current_method = dht::ANNOUNCE_PEER;
+        current_method = dht::Method::ANNOUNCE_PEER;
 
         for (const auto msg : msgs) {
             bt::BDecoder dec(msg, false);
@@ -162,7 +162,7 @@ private Q_SLOTS:
                 std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), this);
                 QVERIFY(msg);
                 QCOMPARE(msg->getMTID(), QByteArray("aa"));
-                QCOMPARE(msg->getMethod(), dht::ANNOUNCE_PEER);
+                QCOMPARE(msg->getMethod(), dht::Method::ANNOUNCE_PEER);
             } catch (bt::Error &e) {
                 QFAIL(e.toString().toLocal8Bit().data());
             }

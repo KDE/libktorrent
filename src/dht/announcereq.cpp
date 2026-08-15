@@ -18,7 +18,7 @@ namespace dht
 {
 AnnounceReq::AnnounceReq()
 {
-    method = dht::ANNOUNCE_PEER;
+    method = dht::Method::ANNOUNCE_PEER;
 }
 
 AnnounceReq::AnnounceReq(const Key &id, const Key &info_hash, Uint16 port, const QByteArray &token)
@@ -26,7 +26,7 @@ AnnounceReq::AnnounceReq(const Key &id, const Key &info_hash, Uint16 port, const
     , port(port)
     , token(token)
 {
-    method = dht::ANNOUNCE_PEER;
+    method = dht::Method::ANNOUNCE_PEER;
 }
 
 AnnounceReq::~AnnounceReq()
