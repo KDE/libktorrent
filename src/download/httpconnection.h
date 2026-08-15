@@ -122,7 +122,7 @@ private Q_SLOTS:
     void hostResolved(net::AddressResolver *ar);
 
 private:
-    enum State {
+    enum class State {
         IDLE,
         RESOLVING,
         CONNECTING,

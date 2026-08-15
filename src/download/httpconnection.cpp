@@ -22,7 +22,7 @@ namespace bt
 {
 HttpConnection::HttpConnection()
     : sock(nullptr)
-    , state(IDLE)
+    , state(State::IDLE)
     , mutex()
     , request(nullptr)
     , using_proxy(false)
@@ -65,19 +65,19 @@ const QString HttpConnection::getStatusString() const
 bool HttpConnection::ok() const
 {
     const QMutexLocker locker(&mutex);
-    return state != ERROR;
+    return state != State::ERROR;
 }
 
 bool HttpConnection::connected() const
 {
     const QMutexLocker locker(&mutex);
-    return state == ACTIVE;
+    return state == State::ACTIVE;
 }
 
 bool HttpConnection::closed() const
 {
     const QMutexLocker locker(&mutex);
-    return state == CLOSED || (sock && !sock->socketDevice()->ok());
+    return state == State::CLOSED || (sock && !sock->socketDevice()->ok());
 }
 
 bool HttpConnection::ready() const
@@ -91,11 +91,11 @@ void HttpConnection::connectToProxy(const QString &proxy, Uint16 proxy_port)
     if (OpenFileAllowed()) {
         using_proxy = true;
         net::AddressResolver::resolve(proxy, proxy_port, this, SLOT(hostResolved(net::AddressResolver *)));
-        state = RESOLVING;
+        state = State::RESOLVING;
         status = i18n("Resolving proxy %1:%2", proxy, proxy_port);
     } else {
         Out(SYS_CON | LOG_IMPORTANT) << "HttpConnection: not enough system resources available" << endl;
-        state = ERROR;
+        state = State::ERROR;
         status = i18n("Not enough system resources available");
     }
 }
@@ -105,11 +105,11 @@ void HttpConnection::connectTo(const QUrl &url)
     if (OpenFileAllowed()) {
         using_proxy = false;
         net::AddressResolver::resolve(url.host(), url.port() <= 0 ? 80 : url.port(), this, SLOT(hostResolved(net::AddressResolver *)));
-        state = RESOLVING;
+        state = State::RESOLVING;
         status = i18n("Resolving hostname %1", url.host());
     } else {
         Out(SYS_CON | LOG_IMPORTANT) << "HttpConnection: not enough system resources available" << endl;
-        state = ERROR;
+        state = State::ERROR;
         status = i18n("Not enough system resources available");
     }
 }
@@ -118,14 +118,14 @@ void HttpConnection::onDataReady(Uint8 *buf, Uint32 size)
 {
     const QMutexLocker locker(&mutex);
 
-    if (state != ERROR && request) {
+    if (state != State::ERROR && request) {
         if (size == 0) {
             // connection closed
-            state = CLOSED;
+            state = State::CLOSED;
             status = i18n("Connection closed");
         } else {
             if (!request->onDataReady(buf, size)) {
-                state = ERROR;
+                state = State::ERROR;
                 status = i18n("Error: request failed: %1", request->failure_reason);
                 response_code = request->response_code;
             } else if (request->response_header_received) {
@@ -138,7 +138,7 @@ void HttpConnection::onDataReady(Uint8 *buf, Uint32 size)
 void HttpConnection::dataSent()
 {
     const QMutexLocker locker(&mutex);
-    if (state == ACTIVE && request) {
+    if (state == State::ACTIVE && request) {
         request->buffer.clear();
         // wait 60 seconds for a reply
         Q_EMIT startReplyTimer(60 * 1000);
@@ -148,9 +148,9 @@ void HttpConnection::dataSent()
 void HttpConnection::connectFinished(bool succeeded)
 {
     const QMutexLocker locker(&mutex);
-    if (state == CONNECTING) {
+    if (state == State::CONNECTING) {
         if (succeeded) {
-            state = ACTIVE;
+            state = State::ACTIVE;
             status = i18n("Connected");
             if (request && !request->request_sent) {
                 sock->addData(request->buffer);
@@ -158,7 +158,7 @@ void HttpConnection::connectFinished(bool succeeded)
             }
         } else {
             Out(SYS_CON | LOG_IMPORTANT) << "HttpConnection: failed to connect to webseed " << endl;
-            state = ERROR;
+            state = State::ERROR;
             status = i18n("Error: Failed to connect to webseed");
         }
         Q_EMIT stopConnectTimer();
@@ -179,24 +179,24 @@ void HttpConnection::hostResolved(net::AddressResolver *ar)
 
         if (sock->socketDevice()->connectTo(addr)) {
             status = i18n("Connected");
-            state = ACTIVE;
+            state = State::ACTIVE;
             net::SocketMonitor::instance().add(sock);
             net::SocketMonitor::instance().signalPacketReady();
         } else if (sock->socketDevice()->state() == net::SocketDevice::CONNECTING) {
             status = i18n("Connecting");
-            state = CONNECTING;
+            state = State::CONNECTING;
             net::SocketMonitor::instance().add(sock);
             net::SocketMonitor::instance().signalPacketReady();
             // 60 second connect timeout
             connect_timer.start(60000);
         } else {
             Out(SYS_CON | LOG_IMPORTANT) << "HttpConnection: failed to connect to webseed" << endl;
-            state = ERROR;
+            state = State::ERROR;
             status = i18n("Failed to connect to webseed");
         }
     } else {
         Out(SYS_CON | LOG_IMPORTANT) << "HttpConnection: failed to resolve hostname of webseed" << endl;
-        state = ERROR;
+        state = State::ERROR;
         status = i18n("Failed to resolve hostname of webseed");
     }
 }
@@ -204,7 +204,7 @@ void HttpConnection::hostResolved(net::AddressResolver *ar)
 bool HttpConnection::get(const QString &host, const QString &path, const QString &query, bt::Uint64 start, bt::Uint64 len)
 {
     const QMutexLocker locker(&mutex);
-    if (state == ERROR || request) {
+    if (state == State::ERROR || request) {
         return false;
     }
 
@@ -249,7 +249,7 @@ bool HttpConnection::getData(QByteArray &data)
         delete g;
         request = nullptr;
         if (close_when_finished) {
-            state = CLOSED;
+            state = State::CLOSED;
             Out(SYS_CON | LOG_DEBUG) << "HttpConnection: closing connection due to redirection" << endl;
             // reset connection
             sock->socketDevice()->reset();
@@ -272,9 +272,9 @@ int HttpConnection::getDownloadRate() const
 void HttpConnection::connectTimeout()
 {
     const QMutexLocker locker(&mutex);
-    if (state == CONNECTING) {
+    if (state == State::CONNECTING) {
         status = i18n("Error: failed to connect, server not responding");
-        state = ERROR;
+        state = State::ERROR;
     }
     connect_timer.stop();
 }
@@ -284,7 +284,7 @@ void HttpConnection::replyTimeout()
     const QMutexLocker locker(&mutex);
     if (!request || !request->response_header_received) {
         status = i18n("Error: request timed out");
-        state = ERROR;
+        state = State::ERROR;
         reply_timer.stop();
     }
 }
