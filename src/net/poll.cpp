@@ -33,14 +33,14 @@ int Poll::add(int fd, Poll::Mode mode)
         struct pollfd pfd;
         pfd.fd = fd;
         pfd.revents = 0;
-        pfd.events = mode == INPUT ? POLLIN : POLLOUT;
+        pfd.events = mode == Mode::INPUT ? POLLIN : POLLOUT;
         fd_vec.push_back(pfd);
     } else {
         // use existing slot
         struct pollfd &pfd = fd_vec[num_sockets];
         pfd.fd = fd;
         pfd.revents = 0;
-        pfd.events = mode == INPUT ? POLLIN : POLLOUT;
+        pfd.events = mode == Mode::INPUT ? POLLIN : POLLOUT;
     }
 
     const int ret = num_sockets;
@@ -50,7 +50,7 @@ int Poll::add(int fd, Poll::Mode mode)
 
 int Poll::add(PollClient::Ptr pc)
 {
-    const int idx = add(pc->fd(), INPUT);
+    const int idx = add(pc->fd(), Mode::INPUT);
     poll_clients[idx] = pc;
     return idx;
 }
@@ -61,7 +61,7 @@ bool Poll::ready(int index, Poll::Mode mode) const
         return false;
     }
 
-    return fd_vec[index].revents & (mode == INPUT ? POLLIN : POLLOUT);
+    return fd_vec[index].revents & (mode == Mode::INPUT ? POLLIN : POLLOUT);
 }
 
 void Poll::reset()
@@ -84,7 +84,7 @@ int Poll::poll(int timeout)
 
     std::map<int, PollClient::Ptr>::iterator itr = poll_clients.begin();
     while (itr != poll_clients.end()) {
-        if (ret > 0 && ready(itr->first, INPUT)) {
+        if (ret > 0 && ready(itr->first, Mode::INPUT)) {
             itr->second->handleData();
         }
         itr->second->reset();

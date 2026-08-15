@@ -86,9 +86,9 @@ private:
         utp::UTPSocket s;
         s.setBlocking(false);
         s.connectTo(net::Address(u"127.0.0.1"_s, port));
-        s.prepare(&poller, Poll::OUTPUT);
+        s.prepare(&poller, Poll::Mode::OUTPUT);
         QCOMPARE_GT(poller.poll(), 0);
-        QVERIFY(s.ready(&poller, Poll::OUTPUT));
+        QVERIFY(s.ready(&poller, Poll::Mode::OUTPUT));
         QVERIFY(s.connectSuccessful());
         poller.reset();
 
@@ -123,13 +123,13 @@ private:
         while (!bs.allOn()) {
             for (int i = 0; i < NUM_SOCKETS; i++) {
                 if (!bs.get(i)) {
-                    outgoing[i]->prepare(&poller, net::Poll::OUTPUT);
+                    outgoing[i]->prepare(&poller, net::Poll::Mode::OUTPUT);
                 }
             }
 
             QCOMPARE_GT(poller.poll(1000), 0);
             for (int i = 0; i < NUM_SOCKETS; i++) {
-                if (bs.get(i) || !outgoing[i]->ready(&poller, net::Poll::OUTPUT)) {
+                if (bs.get(i) || !outgoing[i]->ready(&poller, net::Poll::Mode::OUTPUT)) {
                     continue;
                 }
 
@@ -145,14 +145,14 @@ private:
             poller.reset();
             for (int i = 0; i < NUM_SOCKETS; i++) {
                 if (!bs.get(i)) {
-                    incoming[i]->prepare(&poller, Poll::INPUT);
+                    incoming[i]->prepare(&poller, Poll::Mode::INPUT);
                 }
             }
 
             Out(SYS_GEN | LOG_DEBUG) << "Entering poll" << endl;
             QCOMPARE_GT(poller.poll(1000), 0);
             for (int i = 0; i < NUM_SOCKETS; i++) {
-                if (!bs.get(i) && incoming[i]->ready(&poller, net::Poll::INPUT)) {
+                if (!bs.get(i) && incoming[i]->ready(&poller, net::Poll::Mode::INPUT)) {
                     bt::Uint8 tmp[20];
                     QCOMPARE(incoming[i]->recv(tmp, 20), (int)strlen(test));
                     QCOMPARE(memcmp(tmp, test, strlen(test)), 0);
@@ -170,12 +170,12 @@ private:
         poller.reset();
         Out(SYS_UTP | LOG_DEBUG) << "testPollOutput " << endl;
         for (int i = 0; i < NUM_SOCKETS; i++) {
-            incoming[i]->prepare(&poller, Poll::OUTPUT);
+            incoming[i]->prepare(&poller, Poll::Mode::OUTPUT);
         }
 
         QCOMPARE_GT(poller.poll(10000), 0);
         for (int i = 0; i < NUM_SOCKETS; i++) {
-            QVERIFY(incoming[i]->ready(&poller, Poll::OUTPUT));
+            QVERIFY(incoming[i]->ready(&poller, Poll::Mode::OUTPUT));
         }
 
         poller.reset();
@@ -186,7 +186,7 @@ private:
         Out(SYS_UTP | LOG_DEBUG) << "testPollClose " << endl;
         for (int i = 0; i < NUM_SOCKETS; i++) {
             incoming[i]->close();
-            outgoing[i]->prepare(&poller, net::Poll::INPUT);
+            outgoing[i]->prepare(&poller, net::Poll::Mode::INPUT);
         }
 
         QCOMPARE_GT(poller.poll(), 0);

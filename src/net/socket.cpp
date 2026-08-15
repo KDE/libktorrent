@@ -468,7 +468,7 @@ int Socket::take()
 void Socket::prepare(Poll *p, Poll::Mode mode)
 {
     if (m_fd >= 0) {
-        if (mode == Poll::OUTPUT) {
+        if (mode == Poll::Mode::OUTPUT) {
             w_poll_index = p->add(m_fd, mode);
         } else {
             r_poll_index = p->add(m_fd, mode);
@@ -478,7 +478,7 @@ void Socket::prepare(Poll *p, Poll::Mode mode)
 
 bool Socket::ready(const Poll *p, Poll::Mode mode) const
 {
-    return p->ready(mode == Poll::OUTPUT ? w_poll_index : r_poll_index, mode);
+    return p->ready(mode == Poll::Mode::OUTPUT ? w_poll_index : r_poll_index, mode);
 }
 
 }

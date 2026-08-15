@@ -97,7 +97,7 @@ public:
                 off = off % step;
                 // Out(SYS_UTP|LOG_DEBUG) << "Transmitted " << sent << endl;
             } else if (ret == 0) {
-                srv.preparePolling(&poller, net::Poll::OUTPUT, outgoing);
+                srv.preparePolling(&poller, net::Poll::Mode::OUTPUT, outgoing);
                 poller.poll(1000);
             } else {
                 break;

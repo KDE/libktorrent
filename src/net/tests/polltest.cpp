@@ -43,11 +43,11 @@ private Q_SLOTS:
 
         QCOMPARE_GE(pipe.readerSocket(), 0);
         QCOMPARE_GE(pipe.writerSocket(), 0);
-        QCOMPARE(p.add(pipe.readerSocket(), Poll::INPUT), 0);
+        QCOMPARE(p.add(pipe.readerSocket(), Poll::Mode::INPUT), 0);
         char test[] = "TEST";
         QCOMPARE(pipe.write((const bt::Uint8 *)test, 4), 4);
         QCOMPARE(p.poll(), 1);
-        QVERIFY(p.ready(0, net::Poll::INPUT));
+        QVERIFY(p.ready(0, net::Poll::Mode::INPUT));
 
         bt::Uint8 tmp[20];
         QCOMPARE(pipe.read(tmp, 20), 4);
@@ -61,7 +61,7 @@ private Q_SLOTS:
 
         QCOMPARE_GE(pipe.readerSocket(), 0);
         QCOMPARE_GE(pipe.writerSocket(), 0);
-        QCOMPARE(p.add(pipe.writerSocket(), Poll::OUTPUT), 0);
+        QCOMPARE(p.add(pipe.writerSocket(), Poll::Mode::OUTPUT), 0);
         QCOMPARE(p.poll(), 1);
     }
 
@@ -77,9 +77,9 @@ private Q_SLOTS:
         QCOMPARE(pipe.write((const bt::Uint8 *)test, 4), 4);
 
         for (int i = 0; i < 10; i++) {
-            QCOMPARE(p.add(pipe.readerSocket(), Poll::INPUT), 0);
+            QCOMPARE(p.add(pipe.readerSocket(), Poll::Mode::INPUT), 0);
             QCOMPARE(p.poll(), 1);
-            QVERIFY(p.ready(0, net::Poll::INPUT));
+            QVERIFY(p.ready(0, net::Poll::Mode::INPUT));
             p.reset();
         }
 
@@ -96,7 +96,7 @@ private Q_SLOTS:
 
         QCOMPARE_GE(pipe.readerSocket(), 0);
         QCOMPARE_GE(pipe.writerSocket(), 0);
-        QCOMPARE(p.add(pipe.readerSocket(), Poll::INPUT), 0);
+        QCOMPARE(p.add(pipe.readerSocket(), Poll::Mode::INPUT), 0);
         QCOMPARE(p.poll(100), 0);
     }
 
@@ -125,7 +125,7 @@ private Q_SLOTS:
 
         net::Address dummy;
         net::Poll poll;
-        sock.prepare(&poll, net::Poll::INPUT);
+        sock.prepare(&poll, net::Poll::Mode::INPUT);
 
         QCOMPARE_GT(poll.poll(1000), 0);
         const int fd = sock.accept(dummy);
@@ -138,7 +138,7 @@ private Q_SLOTS:
 
         constexpr std::array<bt::Uint8, 20> data = {0xFF};
         QCOMPARE(writer.send(data), data.size());
-        reader.prepare(&poll, net::Poll::INPUT);
+        reader.prepare(&poll, net::Poll::Mode::INPUT);
 
         QCOMPARE_GT(poll.poll(1000), 0);
 

@@ -418,7 +418,7 @@ void UTPServer::preparePolling(net::Poll *p, net::Poll::Mode mode, utp::Connecti
         d->poll_pipes.insert(p, pair);
     }
 
-    if (mode == net::Poll::INPUT) {
+    if (mode == net::Poll::Mode::INPUT) {
         if (pair->read_pipe->wokenUp()) {
             return;
         }
@@ -492,8 +492,8 @@ void UTPServer::checkTimeouts()
 ///////////////////////////////////////////////////////
 
 PollPipePair::PollPipePair()
-    : read_pipe(new PollPipe(net::Poll::INPUT))
-    , write_pipe(new PollPipe(net::Poll::OUTPUT))
+    : read_pipe(new PollPipe(net::Poll::Mode::INPUT))
+    , write_pipe(new PollPipe(net::Poll::Mode::OUTPUT))
 {
 }
 }

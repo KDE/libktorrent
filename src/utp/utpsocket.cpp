@@ -200,7 +200,7 @@ void UTPSocket::prepare(net::Poll *p, net::Poll::Mode mode)
     if (ptr && ptr->connectionState() != ConnectionState::CLOSED) {
         UTPServer &srv = bt::Globals::instance().getUTPServer();
         srv.preparePolling(p, mode, ptr);
-        if (mode == net::Poll::OUTPUT) {
+        if (mode == net::Poll::Mode::OUTPUT) {
             polled_for_writing = true;
         } else {
             polled_for_reading = true;
@@ -216,7 +216,7 @@ bool UTPSocket::ready(const net::Poll *p, net::Poll::Mode mode) const
         return false;
     }
 
-    if (mode == net::Poll::OUTPUT) {
+    if (mode == net::Poll::Mode::OUTPUT) {
         if (polled_for_writing) {
             polled_for_writing = false;
             return ptr->isWriteable();

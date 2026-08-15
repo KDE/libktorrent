@@ -46,7 +46,7 @@ void DownloadThread::update()
                 continue;
             }
 
-            if (s->socketDevice()->ready(this, Poll::INPUT)) {
+            if (s->socketDevice()->ready(this, Poll::Mode::INPUT)) {
                 // add to the correct group
                 const Uint32 gid = s->downloadGroupID();
                 if (gid > 0) {
@@ -103,7 +103,7 @@ int DownloadThread::waitForSocketReady()
     while (itr != sm->end()) {
         TrafficShapedSocket *s = *itr;
         if (s && s->socketDevice()) {
-            s->socketDevice()->prepare(this, Poll::INPUT);
+            s->socketDevice()->prepare(this, Poll::Mode::INPUT);
         }
         ++itr;
     }

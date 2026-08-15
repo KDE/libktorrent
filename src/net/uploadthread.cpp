@@ -46,7 +46,7 @@ void UploadThread::update()
             continue;
         }
 
-        if (s->socketDevice()->ready(this, Poll::OUTPUT)) {
+        if (s->socketDevice()->ready(this, Poll::Mode::OUTPUT)) {
             // add to the correct group
             const Uint32 gid = s->uploadGroupID();
             if (gid > 0) {
@@ -106,7 +106,7 @@ int UploadThread::waitForSocketsReady()
     while (itr != sm->end()) {
         TrafficShapedSocket *s = *itr;
         if (s && s->socketDevice()->ok() && s->bytesReadyToWrite()) {
-            s->socketDevice()->prepare(this, Poll::OUTPUT);
+            s->socketDevice()->prepare(this, Poll::Mode::OUTPUT);
         }
         ++itr;
     }

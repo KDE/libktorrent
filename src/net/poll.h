@@ -68,7 +68,7 @@ public:
      * \var OUTPUT
      * Checks whether the file descriptor can write without blocking.
      */
-    enum Mode {
+    enum class Mode {
         INPUT,
         OUTPUT,
     };
