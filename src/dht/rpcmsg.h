@@ -40,7 +40,7 @@ class DHT;
  * \var INVALID
  * An unknown or invalid message.
  */
-enum Type {
+enum class Type {
     REQ_MSG,
     RSP_MSG,
     ERR_MSG,

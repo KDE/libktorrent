@@ -15,7 +15,7 @@ namespace dht
 RPCMsg::RPCMsg()
     : mtid(nullptr)
     , method(NONE)
-    , type(INVALID)
+    , type(Type::INVALID)
 {
 }
 
@@ -40,7 +40,7 @@ void RPCMsg::parse(bt::BDictNode *dict)
 
     const auto t = dict->getByteArrayView(TYP);
     if (t == REQ) {
-        type = REQ_MSG;
+        type = Type::REQ_MSG;
         BDictNode *args = dict->getDict(ARG);
         if (!args) {
             return;
@@ -48,7 +48,7 @@ void RPCMsg::parse(bt::BDictNode *dict)
 
         id = Key(args->getByteArrayView("id"));
     } else if (t == RSP) {
-        type = RSP_MSG;
+        type = Type::RSP_MSG;
         BDictNode *args = dict->getDict(RSP);
         if (!args) {
             return;
@@ -56,7 +56,7 @@ void RPCMsg::parse(bt::BDictNode *dict)
 
         id = Key(args->getByteArrayView("id"));
     } else if (t == ERR_DHT) {
-        type = ERR_MSG;
+        type = Type::ERR_MSG;
     } else {
         throw bt::Error(u"Unknown message type %1"_s.arg(QLatin1StringView(t)));
     }

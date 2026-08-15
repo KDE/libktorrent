@@ -17,12 +17,12 @@ using namespace Qt::Literals::StringLiterals;
 namespace dht
 {
 FindNodeReq::FindNodeReq()
-    : RPCMsg(QByteArray(), FIND_NODE, REQ_MSG, Key())
+    : RPCMsg(QByteArray(), FIND_NODE, Type::REQ_MSG, Key())
 {
 }
 
 FindNodeReq::FindNodeReq(const Key &id, const Key &target)
-    : RPCMsg(QByteArray(), FIND_NODE, REQ_MSG, id)
+    : RPCMsg(QByteArray(), FIND_NODE, Type::REQ_MSG, id)
     , target(target)
 {
 }

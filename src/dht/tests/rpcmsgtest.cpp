@@ -49,7 +49,7 @@ private Q_SLOTS:
             const std::unique_ptr<bt::BDictNode> dict = dec.decodeDict();
             std::unique_ptr<dht::RPCMsg> msg = factory.build(dict.get(), nullptr);
 
-            QCOMPARE(msg->getType(), dht::ERR_MSG);
+            QCOMPARE(msg->getType(), dht::Type::ERR_MSG);
             const auto err = dynamic_cast<const dht::ErrMsg *>(msg.get());
             QVERIFY(err);
             QCOMPARE(err->message(), "A Generic Error Ocurred"_L1);

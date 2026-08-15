@@ -15,12 +15,12 @@ using namespace Qt::Literals::StringLiterals;
 namespace dht
 {
 PingReq::PingReq()
-    : RPCMsg(QByteArray(), PING, REQ_MSG, Key())
+    : RPCMsg(QByteArray(), PING, Type::REQ_MSG, Key())
 {
 }
 
 PingReq::PingReq(const Key &id)
-    : RPCMsg(QByteArray(), PING, REQ_MSG, id)
+    : RPCMsg(QByteArray(), PING, Type::REQ_MSG, id)
 {
 }
 

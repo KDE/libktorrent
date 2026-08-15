@@ -17,12 +17,12 @@ using namespace Qt::Literals::StringLiterals;
 namespace dht
 {
 FindNodeRsp::FindNodeRsp()
-    : RPCMsg(QByteArray(), FIND_NODE, RSP_MSG, Key())
+    : RPCMsg(QByteArray(), FIND_NODE, Type::RSP_MSG, Key())
 {
 }
 
 FindNodeRsp::FindNodeRsp(const QByteArray &mtid, const Key &id)
-    : RPCMsg(mtid, FIND_NODE, RSP_MSG, id)
+    : RPCMsg(mtid, FIND_NODE, Type::RSP_MSG, id)
 {
 }
 

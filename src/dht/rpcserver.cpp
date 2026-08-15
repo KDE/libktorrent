@@ -88,7 +88,7 @@ public:
 
                 msg->apply(dh_table);
                 // erase an existing call
-                if (msg->getType() == RSP_MSG && calls.contains(msg->getMTID())) {
+                if (msg->getType() == Type::RSP_MSG && calls.contains(msg->getMTID())) {
                     // delete the call, but first notify it off the response
                     RPCCall *c = calls.find(msg->getMTID());
                     c->response(msg.get());

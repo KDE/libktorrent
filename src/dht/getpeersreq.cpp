@@ -17,12 +17,12 @@ using namespace Qt::Literals::StringLiterals;
 namespace dht
 {
 GetPeersReq::GetPeersReq()
-    : RPCMsg(QByteArray(), GET_PEERS, REQ_MSG, Key())
+    : RPCMsg(QByteArray(), GET_PEERS, Type::REQ_MSG, Key())
 {
 }
 
 GetPeersReq::GetPeersReq(const Key &id, const Key &info_hash)
-    : RPCMsg(QByteArray(), GET_PEERS, REQ_MSG, id)
+    : RPCMsg(QByteArray(), GET_PEERS, Type::REQ_MSG, id)
     , info_hash(info_hash)
 {
 }

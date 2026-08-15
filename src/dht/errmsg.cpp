@@ -20,7 +20,7 @@ ErrMsg::ErrMsg()
 }
 
 ErrMsg::ErrMsg(const QByteArray &mtid, const Key &id, const QString &msg)
-    : RPCMsg(mtid, NONE, ERR_MSG, id)
+    : RPCMsg(mtid, NONE, Type::ERR_MSG, id)
     , msg(msg)
 {
 }
