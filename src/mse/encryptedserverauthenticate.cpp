@@ -26,7 +26,7 @@ EncryptedServerAuthenticate::EncryptedServerAuthenticate(std::unique_ptr<mse::En
     : bt::ServerAuthenticate(std::move(sock))
 {
     mse::GeneratePublicPrivateKey(xb, yb);
-    state = WAITING_FOR_YA;
+    state = State::WAITING_FOR_YA;
     buf_size = 0;
     req1_off = 0;
     pad_C_len = 0;
@@ -56,7 +56,7 @@ void EncryptedServerAuthenticate::handleYA()
     // now calculate secret
     s = mse::DHSecret(xb, ya);
     //  DumpBigInt("S",s);
-    state = WAITING_FOR_REQ1;
+    state = State::WAITING_FOR_REQ1;
     // see if we can find req1
     findReq1();
 }
@@ -74,7 +74,7 @@ void EncryptedServerAuthenticate::findReq1()
     const SHA1Hash req1 = SHA1Hash::generate(tmp, 100);
     for (Uint32 i = 96; i < buf_size - 20; i++) {
         if (buf[i] == req1.getData()[0] && memcmp(buf + i, req1.getData(), 20) == 0) {
-            state = FOUND_REQ1;
+            state = State::FOUND_REQ1;
             req1_off = i;
             calculateSKey();
             return;
@@ -109,7 +109,7 @@ void EncryptedServerAuthenticate::calculateSKey()
         return;
     }
     // we have found the info_hash, now process VC and the rest
-    state = FOUND_INFO_HASH;
+    state = State::FOUND_INFO_HASH;
     processVC();
 }
 
@@ -168,7 +168,7 @@ void EncryptedServerAuthenticate::processVC()
     // handle pad C
     if (buf_size < req1_off + 14 + pad_C_len) {
         // we do not have the full padC
-        state = WAIT_FOR_PAD_C;
+        state = State::WAIT_FOR_PAD_C;
         return;
     }
 
@@ -189,7 +189,7 @@ void EncryptedServerAuthenticate::handlePadC()
     ia_len = bt::ReadUint16(buf, off + pad_C_len);
     if (buf_size < off + ia_len) {
         // we do not have the IA, so wait for it
-        state = WAIT_FOR_IA;
+        state = State::WAIT_FOR_IA;
         return;
     }
     handleIA();
@@ -224,7 +224,7 @@ void EncryptedServerAuthenticate::handleIA()
     }
 
     // hand it over to ServerAuthenticate
-    state = NON_ENCRYPTED_HANDSHAKE;
+    state = State::NON_ENCRYPTED_HANDSHAKE;
     ServerAuthenticate::onReadyRead();
 }
 
@@ -246,7 +246,7 @@ void EncryptedServerAuthenticate::onReadyRead()
     }
 
     switch (state) {
-    case WAITING_FOR_YA:
+    case State::WAITING_FOR_YA:
         if (ba <= 68 && ServerInterface::unencryptedConnectionsAllowed()) {
             // this is most likely an unencrypted handshake, so if we can find a peer manager
             // for the info hash in it, add it to the list of potential peers of that peer manager
@@ -267,7 +267,7 @@ void EncryptedServerAuthenticate::onReadyRead()
                 onFinish(false);
             */
             Out(SYS_CON | LOG_DEBUG) << "Switching back to normal server authenticate" << endl;
-            state = NON_ENCRYPTED_HANDSHAKE;
+            state = State::NON_ENCRYPTED_HANDSHAKE;
             ServerAuthenticate::onReadyRead();
         } else {
             buf_size += sock->readData(buf + buf_size, ba);
@@ -276,7 +276,7 @@ void EncryptedServerAuthenticate::onReadyRead()
             }
         }
         break;
-    case WAITING_FOR_REQ1:
+    case State::WAITING_FOR_REQ1:
         if (buf_size + ba > MAX_SEA_BUF_SIZE) {
             ba = MAX_SEA_BUF_SIZE - buf_size;
         }
@@ -284,7 +284,7 @@ void EncryptedServerAuthenticate::onReadyRead()
         buf_size += sock->readData(buf + buf_size, ba);
         findReq1();
         break;
-    case FOUND_REQ1:
+    case State::FOUND_REQ1:
         if (buf_size + ba > MAX_SEA_BUF_SIZE) {
             ba = MAX_SEA_BUF_SIZE - buf_size;
         }
@@ -292,7 +292,7 @@ void EncryptedServerAuthenticate::onReadyRead()
         buf_size += sock->readData(buf + buf_size, ba);
         calculateSKey();
         break;
-    case FOUND_INFO_HASH:
+    case State::FOUND_INFO_HASH:
         if (buf_size + ba > MAX_SEA_BUF_SIZE) {
             ba = MAX_SEA_BUF_SIZE - buf_size;
         }
@@ -300,7 +300,7 @@ void EncryptedServerAuthenticate::onReadyRead()
         buf_size += sock->readData(buf + buf_size, ba);
         processVC();
         break;
-    case WAIT_FOR_PAD_C:
+    case State::WAIT_FOR_PAD_C:
         if (buf_size + ba > MAX_SEA_BUF_SIZE) {
             ba = MAX_SEA_BUF_SIZE - buf_size;
         }
@@ -308,7 +308,7 @@ void EncryptedServerAuthenticate::onReadyRead()
         buf_size += sock->readData(buf + buf_size, ba);
         handlePadC();
         break;
-    case WAIT_FOR_IA:
+    case State::WAIT_FOR_IA:
         if (buf_size + ba > MAX_SEA_BUF_SIZE) {
             ba = MAX_SEA_BUF_SIZE - buf_size;
         }
@@ -316,7 +316,7 @@ void EncryptedServerAuthenticate::onReadyRead()
         buf_size += sock->readData(buf + buf_size, ba);
         handleIA();
         break;
-    case NON_ENCRYPTED_HANDSHAKE:
+    case State::NON_ENCRYPTED_HANDSHAKE:
         ServerAuthenticate::onReadyRead();
         break;
     }

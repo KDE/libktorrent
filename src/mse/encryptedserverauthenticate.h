@@ -42,7 +42,7 @@ private:
     void handleIA();
 
 private:
-    enum State {
+    enum class State {
         WAITING_FOR_YA,
         WAITING_FOR_REQ1,
         FOUND_REQ1,
