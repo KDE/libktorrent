@@ -22,7 +22,7 @@ namespace bt
 {
 class XMLContentHandler
 {
-    enum Status {
+    enum class Status {
         TOPLEVEL,
         ROOT,
         DEVICE,
@@ -155,7 +155,7 @@ bool XMLContentHandler::parse(const QByteArray &data)
 
 bool XMLContentHandler::startDocument()
 {
-    status_stack.push(TOPLEVEL);
+    status_stack.push(Status::TOPLEVEL);
     return true;
 }
 
@@ -185,48 +185,48 @@ bool XMLContentHandler::startElement(const StringView &namespaceUri, const Strin
 
     tmp = QString();
     switch (status_stack.top()) {
-    case TOPLEVEL:
+    case Status::TOPLEVEL:
         // from toplevel we can only go to root
         if (localName == QLatin1String("root")) {
-            status_stack.push(ROOT);
+            status_stack.push(Status::ROOT);
         } else {
             return false;
         }
         break;
-    case ROOT:
+    case Status::ROOT:
         // from the root we can go to device or specVersion
         // we are not interested in the specVersion
         if (localName == QLatin1String("device")) {
-            status_stack.push(DEVICE);
+            status_stack.push(Status::DEVICE);
         } else {
-            status_stack.push(OTHER);
+            status_stack.push(Status::OTHER);
         }
         break;
-    case DEVICE:
+    case Status::DEVICE:
         // see if it is a field we are interested in
         if (interestingDeviceField(localName)) {
-            status_stack.push(FIELD);
+            status_stack.push(Status::FIELD);
         } else {
-            status_stack.push(OTHER);
+            status_stack.push(Status::OTHER);
         }
         break;
-    case SERVICE:
+    case Status::SERVICE:
         if (interestingServiceField(localName)) {
-            status_stack.push(FIELD);
+            status_stack.push(Status::FIELD);
         } else {
-            status_stack.push(OTHER);
+            status_stack.push(Status::OTHER);
         }
         break;
-    case OTHER:
+    case Status::OTHER:
         if (localName == QLatin1String("service")) {
-            status_stack.push(SERVICE);
+            status_stack.push(Status::SERVICE);
         } else if (localName == QLatin1String("device")) {
-            status_stack.push(DEVICE);
+            status_stack.push(Status::DEVICE);
         } else {
-            status_stack.push(OTHER);
+            status_stack.push(Status::OTHER);
         }
         break;
-    case FIELD:
+    case Status::FIELD:
         break;
     }
     return true;
@@ -238,18 +238,18 @@ bool XMLContentHandler::endElement(const StringView &namespaceUri, const StringV
     Q_UNUSED(qName)
 
     switch (status_stack.top()) {
-    case FIELD:
+    case Status::FIELD:
         // we have a field so set it
         status_stack.pop();
-        if (status_stack.top() == DEVICE) {
+        if (status_stack.top() == Status::DEVICE) {
             // if we are in a device
             router->getDescription().setProperty(localName.toString(), tmp);
-        } else if (status_stack.top() == SERVICE) {
+        } else if (status_stack.top() == Status::SERVICE) {
             // set a property of a service
             curr_service.setProperty(localName.toString(), tmp);
         }
         break;
-    case SERVICE:
+    case Status::SERVICE:
         // add the service
         router->addService(curr_service);
         curr_service.clear();
