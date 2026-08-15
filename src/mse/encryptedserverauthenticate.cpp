@@ -68,10 +68,10 @@ void EncryptedServerAuthenticate::findReq1()
     }
 
     //  Out() << "Find Req1" << endl;
-    Uint8 tmp[100];
-    memcpy(tmp, "req1", 4);
-    s.toBuffer(tmp + 4, 96);
-    const SHA1Hash req1 = SHA1Hash::generate(tmp, 100);
+    std::array<Uint8, 100> tmp;
+    memcpy(tmp.data(), "req1", 4);
+    s.toBuffer(tmp.data() + 4, 96);
+    const SHA1Hash req1 = SHA1Hash::generate(tmp);
     for (Uint32 i = 96; i < buf_size - 20; i++) {
         if (buf[i] == req1.getData()[0] && memcmp(buf + i, req1.getData(), 20) == 0) {
             state = State::FOUND_REQ1;
@@ -95,10 +95,10 @@ void EncryptedServerAuthenticate::calculateSKey()
         return;
     }
 
-    Uint8 tmp[100];
-    memcpy(tmp, "req3", 4);
-    s.toBuffer(tmp + 4, 96);
-    const SHA1Hash r3 = SHA1Hash::generate(tmp, 100);
+    std::array<Uint8, 100> tmp;
+    memcpy(tmp.data(), "req3", 4);
+    s.toBuffer(tmp.data() + 4, 96);
+    const SHA1Hash r3 = SHA1Hash::generate(tmp);
     const SHA1Hash r(buf + req1_off + 20);
 
     // r = HASH('req2', SKEY) xor HASH('req3', S)

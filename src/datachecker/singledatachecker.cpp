@@ -58,7 +58,7 @@ void SingleDataChecker::check(const QString &path, const Torrent &tor, const QSt
             fptr.seek(File::SeekPos::BEGIN, (Int64)i * tor.getChunkSize());
             fptr.read(buf.data(), size);
             // generate and test hash
-            const SHA1Hash h = SHA1Hash::generate(buf.data(), size);
+            const SHA1Hash h = SHA1Hash::generate(QByteArrayView{buf}.first(size));
             const bool ok = (h == tor.getHash(i));
             result.set(i, ok);
             if (ok && current_status.get(i)) {

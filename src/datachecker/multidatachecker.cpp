@@ -77,7 +77,7 @@ void MultiDataChecker::check(const QString &path, const Torrent &tor, const QStr
             continue;
         }
 
-        const bool ok = (SHA1Hash::generate(buf, cs) == tor.getHash(cur_chunk));
+        const bool ok = (SHA1Hash::generate(QByteArrayView{buf, cs}) == tor.getHash(cur_chunk));
         result.set(cur_chunk, ok);
         if (ok && current_status.get(cur_chunk)) {
             downloaded++;

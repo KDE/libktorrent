@@ -3,7 +3,11 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
+
 #include "functions.h"
+
+#include <array>
+
 #include "bigint.h"
 #include <util/log.h>
 #include <util/sha1hash.h>
@@ -38,12 +42,12 @@ BigInt DHSecret(const BigInt &our_priv, const BigInt &peer_pub)
 
 bt::SHA1Hash EncryptionKey(bool a, const BigInt &s, const bt::SHA1Hash &skey)
 {
-    Uint8 buf[120];
-    memcpy(buf, "key", 3);
+    std::array<Uint8, 120> buf;
+    memcpy(buf.data(), "key", 3);
     buf[3] = (Uint8)(a ? 'A' : 'B');
-    s.toBuffer(buf + 4, 96);
-    memcpy(buf + 100, skey.getData(), 20);
-    return bt::SHA1Hash::generate(buf, 120);
+    s.toBuffer(buf.data() + 4, 96);
+    memcpy(buf.data() + 100, skey.getData(), 20);
+    return bt::SHA1Hash::generate(buf);
 }
 
 void DumpBigInt(const QString &name, const BigInt &bi)

@@ -119,7 +119,7 @@ SHA1Hash PieceData::generateHash() const
     }
 
     return WithBusErrorProtection(BusOperation::Read, [&] {
-        return SHA1Hash::generate(ptr, len);
+        return SHA1Hash::generate(QByteArrayView{ptr, len});
     });
 }
 

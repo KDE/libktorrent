@@ -221,16 +221,16 @@ void TorrentCreator::savePieces(BEncoder &enc)
 
 bool TorrentCreator::calcHashSingle()
 {
-    Array<Uint8> buf(chunk_size);
     File fptr;
     if (!fptr.open(target, u"rb"_s)) {
         throw Error(i18n("Cannot open file %1: %2", target, fptr.errorString()));
     }
 
     const Uint32 s = cur_chunk != num_chunks - 1 ? chunk_size : last_size;
+    Array<Uint8> buf(s);
     fptr.seek(File::SeekPos::BEGIN, (Int64)cur_chunk * chunk_size);
-    fptr.read(buf.data(), s);
-    const SHA1Hash h = SHA1Hash::generate(buf.data(), s);
+    fptr.read(buf.data(), buf.size());
+    const SHA1Hash h = SHA1Hash::generate(buf);
     hashes.append(h);
     cur_chunk++;
     return cur_chunk >= num_chunks;
@@ -287,7 +287,7 @@ bool TorrentCreator::calcHashMulti()
     }
 
     // generate hash
-    const SHA1Hash h = SHA1Hash::generate(buf.data(), s);
+    const SHA1Hash h = SHA1Hash::generate(buf);
     hashes.append(h);
 
     cur_chunk++;

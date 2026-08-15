@@ -5,7 +5,11 @@
 */
 
 #include "serverinterface.h"
+
+#include <array>
+
 #include <QHostAddress>
+
 #include <mse/encryptedpacketsocket.h>
 #include <mse/encryptedserverauthenticate.h>
 #include <peer/accessmanager.h>
@@ -65,13 +69,13 @@ PeerManager *ServerInterface::findPeerManager(const bt::SHA1Hash &hash)
 
 bool ServerInterface::findInfoHash(const bt::SHA1Hash &skey, SHA1Hash &info_hash)
 {
-    Uint8 buf[24];
-    memcpy(buf, "req2", 4);
+    std::array<Uint8, 24> buf;
+    memcpy(buf.data(), "req2", 4);
     QList<PeerManager *>::iterator i = peer_managers.begin();
     while (i != peer_managers.end()) {
         const PeerManager *pm = *i;
-        memcpy(buf + 4, pm->getTorrent().getInfoHash().getData(), 20);
-        if (SHA1Hash::generate(buf, 24) == skey) {
+        memcpy(buf.data() + 4, pm->getTorrent().getInfoHash().getData(), 20);
+        if (SHA1Hash::generate(buf) == skey) {
             info_hash = pm->getTorrent().getInfoHash();
             return true;
         }

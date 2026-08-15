@@ -4,6 +4,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <array>
+#include <cstddef>
+
 #include <QObject>
 #include <QTest>
 
@@ -72,15 +75,15 @@ private Q_SLOTS:
 
     void testMulitpleTorrents()
     {
-        bt::Uint8 tmp[20];
+        std::array<std::byte, 20> tmp;
         bt::ConnectionLimit climit;
         climit.setLimits(15, 10);
 
-        memset(tmp, 0xFF, 20);
-        const bt::SHA1Hash hash1 = bt::SHA1Hash::generate(tmp, 20);
+        tmp.fill(std::byte{0xFF});
+        const bt::SHA1Hash hash1 = bt::SHA1Hash::generate(tmp);
 
-        memset(tmp, 0xEE, 20);
-        const bt::SHA1Hash hash2 = bt::SHA1Hash::generate(tmp, 20);
+        tmp.fill(std::byte{0xEE});
+        const bt::SHA1Hash hash2 = bt::SHA1Hash::generate(tmp);
 
         std::vector<std::unique_ptr<bt::ConnectionLimit::Token>> tokens;
         for (int i = 0; i < 10; i++) {

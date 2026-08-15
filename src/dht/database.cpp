@@ -3,7 +3,11 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
+
 #include "database.h"
+
+#include <array>
+
 #include <torrent/globals.h>
 #include <util/endian.h>
 #include <util/functions.h>
@@ -120,26 +124,26 @@ void Database::expire(bt::TimeStamp now)
 QByteArray Database::genToken(const net::Address &addr)
 {
     if (addr.ipVersion() == 4) {
-        Uint8 tdata[14];
+        std::array<Uint8, 14> tdata;
         const TimeStamp now = bt::CurrentTime();
         // generate a hash of the ip port and the current time
         // should prevent anybody from crapping things up
-        addr.writeCompact(tdata);
-        bt::WriteUint64(tdata, 6, now);
+        addr.writeCompact(tdata.data());
+        bt::WriteUint64(tdata.data(), 6, now);
 
-        QByteArray token = SHA1Hash::generate(tdata, 14).toByteArray();
+        const QByteArray token = SHA1Hash::generate(tdata).toByteArray();
         // keep track of the token, tokens will expire after a while
         tokens.insert(token, now);
         return token;
     } else {
-        Uint8 tdata[26];
+        std::array<Uint8, 26> tdata;
         const TimeStamp now = bt::CurrentTime();
         // generate a hash of the ip port and the current time
         // should prevent anybody from crapping things up
-        addr.writeCompact(tdata);
-        bt::WriteUint64(tdata, 18, now);
+        addr.writeCompact(tdata.data());
+        bt::WriteUint64(tdata.data(), 18, now);
 
-        QByteArray token = SHA1Hash::generate(tdata, 26).toByteArray();
+        const QByteArray token = SHA1Hash::generate(tdata).toByteArray();
         // keep track of the token, tokens will expire after a while
         tokens.insert(token, now);
         return token;
@@ -158,10 +162,10 @@ bool Database::checkToken(const QByteArray &token, const net::Address &addr)
     const TimeStamp ts = tokens[token];
 
     if (addr.ipVersion() == 4) {
-        Uint8 tdata[14];
-        addr.writeCompact(tdata);
-        bt::WriteUint64(tdata, 6, ts);
-        const QByteArray ct = SHA1Hash::generate(tdata, 14).toByteArray();
+        std::array<Uint8, 14> tdata;
+        addr.writeCompact(tdata.data());
+        bt::WriteUint64(tdata.data(), 6, ts);
+        const QByteArray ct = SHA1Hash::generate(tdata).toByteArray();
 
         // compare the generated token to the one received
         if (token != ct) { // not good, this peer didn't went through the proper channels
@@ -169,11 +173,11 @@ bool Database::checkToken(const QByteArray &token, const net::Address &addr)
             return false;
         }
     } else {
-        Uint8 tdata[26];
-        addr.writeCompact(tdata);
-        bt::WriteUint64(tdata, 18, ts);
+        std::array<Uint8, 26> tdata;
+        addr.writeCompact(tdata.data());
+        bt::WriteUint64(tdata.data(), 18, ts);
 
-        const QByteArray ct = SHA1Hash::generate(tdata, 26).toByteArray();
+        const QByteArray ct = SHA1Hash::generate(tdata).toByteArray();
         // compare the generated token to the one received
         if (token != ct) { // not good, this peer didn't went through the proper channels
             Out(SYS_DHT | LOG_DEBUG) << "Invalid token" << endl;

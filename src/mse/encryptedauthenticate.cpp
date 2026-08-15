@@ -80,22 +80,23 @@ void EncryptedAuthenticate::handleYB()
     state = State::GOT_YB;
     // now we must send line 3
     Uint8 tmp_buf[120]; // temporary buffer
+    const QByteArrayView tmp_buf_view{tmp_buf, 120};
     bt::SHA1Hash h1, h2; // temporary hash
 
     // generate and send the first hash
     memcpy(tmp_buf, "req1", 4);
     s.toBuffer(tmp_buf + 4, 96);
-    h1 = SHA1Hash::generate(tmp_buf, 100);
+    h1 = SHA1Hash::generate(tmp_buf_view.first(100));
     sock->sendData(h1);
 
     // generate second and third hash and xor them
     memcpy(tmp_buf, "req2", 4);
     memcpy(tmp_buf + 4, info_hash.getData(), 20);
-    h1 = SHA1Hash::generate(tmp_buf, 24);
+    h1 = SHA1Hash::generate(tmp_buf_view.first(24));
 
     memcpy(tmp_buf, "req3", 4);
     s.toBuffer(tmp_buf + 4, 96);
-    h2 = SHA1Hash::generate(tmp_buf, 100);
+    h2 = SHA1Hash::generate(tmp_buf_view.first(100));
     sock->sendData(h1 ^ h2);
 
     // now we enter encrypted mode the keys are :
