@@ -308,7 +308,7 @@ public:
     void clearPendingPieceUploads();
 
     void chunkAllowed(Uint32 chunk) override;
-    void handlePacket(const bt::Uint8 *packet, bt::Uint32 size) override;
+    void handlePacket(QByteArrayView packet) override;
 
 private Q_SLOTS:
     void resolved(const QString &hinfo);

@@ -296,9 +296,8 @@ void Peer::handlePort(QByteArrayView packet)
     }
 }
 
-void Peer::handlePacket(const bt::Uint8 *packet_ptr, Uint32 size)
+void Peer::handlePacket(QByteArrayView packet)
 {
-    QByteArrayView packet{packet_ptr, size};
     if (killed || packet.isEmpty()) {
         return;
     }

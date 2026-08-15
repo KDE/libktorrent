@@ -54,7 +54,7 @@ void PacketReader::update(PeerInterface &peer)
 
     std::optional<IncomingPacket> pck = dequeuePacket();
     while (pck.has_value()) {
-        peer.handlePacket(pck->data.data(), pck->data.size());
+        peer.handlePacket(pck->data);
         pck = dequeuePacket();
     }
 }
