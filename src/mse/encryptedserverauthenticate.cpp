@@ -51,7 +51,7 @@ void EncryptedServerAuthenticate::handleYA()
 {
     sendYB();
 
-    ya = BigInt::fromBuffer(buf, 96);
+    ya = BigInt::fromBuffer(QByteArrayView{buf, 96});
     //  DumpBigInt("Ya",ya);
     // now calculate secret
     s = mse::DHSecret(xb, ya);

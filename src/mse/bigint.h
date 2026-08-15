@@ -69,7 +69,7 @@ public:
     bt::Uint32 toBuffer(bt::Uint8 *buf, bt::Uint32 max_size) const;
 
     //! Make a BigInt out of a buffer
-    static BigInt fromBuffer(const bt::Uint8 *buf, bt::Uint32 size);
+    static BigInt fromBuffer(QByteArrayView buf);
 
 private:
     mpz_t val;

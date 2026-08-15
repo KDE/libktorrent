@@ -72,7 +72,7 @@ void EncryptedAuthenticate::handleYB()
     }
 
     // read Yb
-    yb = BigInt::fromBuffer(buf, 96);
+    yb = BigInt::fromBuffer(QByteArrayView{buf, 96});
 
     // calculate s
     s = mse::DHSecret(xa, yb);

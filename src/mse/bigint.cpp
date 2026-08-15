@@ -6,6 +6,7 @@
 #include "bigint.h"
 
 #include <QRandomGenerator>
+#include <QSpan>
 
 #include <cstring>
 #include <util/functions.h>
@@ -56,7 +57,7 @@ BigInt BigInt::random()
         tmp[i] = QRandomGenerator::global()->generate();
     }
 
-    return BigInt::fromBuffer(reinterpret_cast<Uint8 *>(tmp), 20);
+    return BigInt::fromBuffer(as_bytes(QSpan{tmp}));
 }
 
 Uint32 BigInt::toBuffer(Uint8 *buf, Uint32 /*max_size*/) const
@@ -66,10 +67,10 @@ Uint32 BigInt::toBuffer(Uint8 *buf, Uint32 /*max_size*/) const
     return foo;
 }
 
-BigInt BigInt::fromBuffer(const Uint8 *buf, Uint32 size)
+BigInt BigInt::fromBuffer(QByteArrayView buf)
 {
-    BigInt r(size * 8);
-    mpz_import(r.val, size, 1, 1, 1, 0, buf);
+    BigInt r(buf.size() * 8);
+    mpz_import(r.val, buf.size(), 1, 1, 1, 0, buf.data());
     return r;
 }
 
