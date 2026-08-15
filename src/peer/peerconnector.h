@@ -51,7 +51,7 @@ public:
 private:
     void acquired() override;
 
-    enum Method {
+    enum class Method {
         TCP_WITH_ENCRYPTION,
         TCP_WITHOUT_ENCRYPTION,
         UTP_WITH_ENCRYPTION,
