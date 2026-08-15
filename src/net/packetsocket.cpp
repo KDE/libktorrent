@@ -89,7 +89,7 @@ Uint32 PacketSocket::write(Uint32 max, bt::TimeStamp now)
         const int ret = curr_packet->send(sock.get(), limit);
         if (ret > 0) {
             written += ret;
-            if (curr_packet->getType() == PIECE) {
+            if (curr_packet->getType() == PeerMessageType::PIECE) {
                 up_speed->onData(ret, now);
                 const QMutexLocker locker(&mutex);
                 pending_upload_data_bytes -= ret;
@@ -101,7 +101,7 @@ Uint32 PacketSocket::write(Uint32 max, bt::TimeStamp now)
 
         if (curr_packet->isSent()) {
             // packet sent, so remove it
-            if (curr_packet->getType() == PIECE) {
+            if (curr_packet->getType() == PeerMessageType::PIECE) {
                 // reset ctrl_packets_sent so the next packet should be a ctrl packet
                 ctrl_packets_sent = 0;
             } else {
@@ -121,7 +121,7 @@ void PacketSocket::addPacket(Packet packet)
 {
     Q_ASSERT(!packet.sending());
     const QMutexLocker locker(&mutex);
-    if (packet.getType() == PIECE) {
+    if (packet.getType() == PeerMessageType::PIECE) {
         pending_upload_data_bytes += packet.getDataLength();
         data_packets.push_back(std::move(packet));
     } else {
@@ -158,7 +158,7 @@ void PacketSocket::clearPieces(bool reject)
     auto i = data_packets.begin();
     while (i != data_packets.end()) {
         const Packet &p = *i;
-        if (p.getType() == bt::PIECE && !p.sending()) {
+        if (p.getType() == bt::PeerMessageType::PIECE && !p.sending()) {
             if (reject) {
                 auto reject_pkt = p.makeRejectOfPiece();
                 if (reject_pkt.has_value()) {
@@ -198,7 +198,7 @@ void PacketSocket::doNotSendPiece(const bt::Request &req, bool reject)
 Uint32 PacketSocket::numPendingPieceUploads() const
 {
     const QMutexLocker locker(&mutex);
-    const bool curr_packet_is_piece = curr_packet && curr_packet->getType() == bt::PIECE;
+    const bool curr_packet_is_piece = curr_packet && curr_packet->getType() == bt::PeerMessageType::PIECE;
     return data_packets.size() + (curr_packet_is_piece ? 1 : 0);
 }
 

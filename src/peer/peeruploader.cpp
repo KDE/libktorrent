@@ -48,7 +48,7 @@ Uint32 PeerUploader::handleRequests(ChunkManager &cman)
         const Request r = requests.front();
 
         Chunk *c = cman.getChunk(r.getIndex());
-        if (c && c->getStatus() == Chunk::ON_DISK) {
+        if (c && c->getStatus() == Chunk::Status::ON_DISK) {
             if (!peer->sendChunk(r.getIndex(), r.getOffset(), r.getLength(), c)) {
                 if (peer->getStats().fast_extensions) {
                     peer->sendReject(r);

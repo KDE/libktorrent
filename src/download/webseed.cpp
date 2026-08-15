@@ -398,7 +398,7 @@ void WebSeed::handleData(const QByteArray &tmp)
         }
 
         // ignore data if we already have it
-        if (c->getStatus() != Chunk::ON_DISK) {
+        if (c->getStatus() != Chunk::Status::ON_DISK) {
             if (!cur_piece || cur_piece->parentChunk() != c) {
                 cur_piece = c->getPiece(0, c->getSize(), false);
             }
@@ -416,7 +416,7 @@ void WebSeed::handleData(const QByteArray &tmp)
             // we have one ready
             bytes_of_cur_chunk = 0;
             cur_chunk++;
-            if (c->getStatus() != Chunk::ON_DISK) {
+            if (c->getStatus() != Chunk::Status::ON_DISK) {
                 Q_EMIT chunkReady(c);
                 // It is possible that the webseed has been disabled due receiving a bad chunk
                 if (!isEnabled()) {

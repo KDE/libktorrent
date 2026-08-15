@@ -210,7 +210,7 @@ void ChunkSelector::reincluded(Uint32 from, Uint32 to)
 
     for (Uint32 i = from; i <= to; i++) {
         const bool in_chunks = std::find(chunks.begin(), chunks.end(), i) != chunks.end();
-        if (!in_chunks && cman->getChunk(i)->getStatus() != Chunk::ON_DISK) {
+        if (!in_chunks && cman->getChunk(i)->getStatus() != Chunk::Status::ON_DISK) {
             //  Out(SYS_DIO|LOG_DEBUG) << "ChunkSelector::reIncluded " << i << endl;
             chunks.push_back(i);
         }

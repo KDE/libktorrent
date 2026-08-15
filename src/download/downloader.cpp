@@ -571,7 +571,7 @@ void Downloader::loadDownloads(const QString &file)
             ret = false;
         }
 
-        if (!ret || c->getStatus() == Chunk::ON_DISK || c->isExcluded()) {
+        if (!ret || c->getStatus() == Chunk::Status::ON_DISK || c->isExcluded()) {
             delete cd;
         } else {
             current_chunks.insert(hdr.index, cd);

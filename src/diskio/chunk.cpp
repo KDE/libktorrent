@@ -12,7 +12,7 @@
 namespace bt
 {
 Chunk::Chunk(Uint32 index, Uint32 size, Cache *cache)
-    : status(Chunk::NOT_DOWNLOADED)
+    : status(Chunk::Status::NOT_DOWNLOADED)
     , index(index)
     , size(size)
     , priority(NORMAL_PRIORITY)

@@ -38,7 +38,7 @@ public:
      * \var NOT_DOWNLOADED
      * The chunk has not been dowloaded yet and there is no buffer allocated.
      */
-    enum Status {
+    enum class Status {
         ON_DISK,
         NOT_DOWNLOADED,
     };

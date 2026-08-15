@@ -185,7 +185,7 @@ void ChunkManager::resetChunk(unsigned int i)
 
     Chunk *c = d->chunks[i];
     d->cache->clearPieces(c);
-    c->setStatus(Chunk::NOT_DOWNLOADED);
+    c->setStatus(Chunk::Status::NOT_DOWNLOADED);
     bitset.set(i, false);
     d->todo.set(i, !excluded_chunks.get(i) && !only_seed_chunks.get(i));
     tor.updateFilePercentage(i, *this);
@@ -210,7 +210,7 @@ void ChunkManager::chunkDownloaded(unsigned int i)
         d->todo.set(i, false);
         d->recalc_chunks_left = true;
         d->writeIndexFileEntry(c);
-        c->setStatus(Chunk::ON_DISK);
+        c->setStatus(Chunk::Status::ON_DISK);
         tor.updateFilePercentage(i, *this);
     } else {
         Out(SYS_DIO | LOG_IMPORTANT) << "Warning: attempted to save a chunk which was excluded" << endl;
@@ -585,15 +585,15 @@ void ChunkManager::dataChecked(const bt::BitSet &ok_chunks, bt::Uint32 from, bt:
             bitset.set(i, true);
             d->todo.set(i, false);
             // the chunk must be on disk
-            c->setStatus(Chunk::ON_DISK);
+            c->setStatus(Chunk::Status::ON_DISK);
             tor.updateFilePercentage(i, *this);
         } else if (!ok_chunks.get(i) && bitset.get(i)) {
             Out(SYS_DIO | LOG_IMPORTANT) << "Previously OK chunk " << i << " is corrupt !!!!!" << endl;
             // We think we have a chunk, but we don't
             bitset.set(i, false);
             d->todo.set(i, !only_seed_chunks.get(i) && !excluded_chunks.get(i));
-            if (c->getStatus() == Chunk::ON_DISK) {
-                c->setStatus(Chunk::NOT_DOWNLOADED);
+            if (c->getStatus() == Chunk::Status::ON_DISK) {
+                c->setStatus(Chunk::Status::NOT_DOWNLOADED);
                 tor.updateFilePercentage(i, *this);
             } else {
                 tor.updateFilePercentage(i, *this);
@@ -630,7 +630,7 @@ void ChunkManager::markExistingFilesAsDownloaded()
             // all the chunks in the middle of the file are OK
             for (Uint32 j = tf.getFirstChunk() + 1; j < tf.getLastChunk(); j++) {
                 Chunk *c = d->chunks[j];
-                c->setStatus(Chunk::ON_DISK);
+                c->setStatus(Chunk::Status::ON_DISK);
                 bitset.set(j, true);
                 d->todo.set(j, false);
                 tor.updateFilePercentage(j, *this);
@@ -640,7 +640,7 @@ void ChunkManager::markExistingFilesAsDownloaded()
             if (d->allFilesExistOfChunk(tf.getFirstChunk())) {
                 const Uint32 idx = tf.getFirstChunk();
                 Chunk *c = d->chunks[idx];
-                c->setStatus(Chunk::ON_DISK);
+                c->setStatus(Chunk::Status::ON_DISK);
                 bitset.set(idx, true);
                 d->todo.set(idx, false);
                 tor.updateFilePercentage(idx, *this);
@@ -650,7 +650,7 @@ void ChunkManager::markExistingFilesAsDownloaded()
             if (d->allFilesExistOfChunk(tf.getLastChunk())) {
                 const Uint32 idx = tf.getLastChunk();
                 Chunk *c = d->chunks[idx];
-                c->setStatus(Chunk::ON_DISK);
+                c->setStatus(Chunk::Status::ON_DISK);
                 bitset.set(idx, true);
                 d->todo.set(idx, false);
                 tor.updateFilePercentage(idx, *this);
@@ -659,7 +659,7 @@ void ChunkManager::markExistingFilesAsDownloaded()
     } else if (d->cache->hasExistingFiles()) {
         for (Uint32 i = 0; i < d->chunks.size(); i++) {
             Chunk *c = d->chunks[i];
-            c->setStatus(Chunk::ON_DISK);
+            c->setStatus(Chunk::Status::ON_DISK);
             bitset.set(i, true);
             d->todo.set(i, false);
             tor.updateFilePercentage(i, *this);
@@ -873,7 +873,7 @@ void ChunkManager::Private::saveIndexFile()
 
     for (unsigned int i = 0; i < p->getNumChunks(); i++) {
         const Chunk *c = p->getChunk(i);
-        if (c->getStatus() != Chunk::NOT_DOWNLOADED) {
+        if (c->getStatus() != Chunk::Status::NOT_DOWNLOADED) {
             NewChunkHeader hdr;
             hdr.index = i;
             fptr.write(&hdr, sizeof(NewChunkHeader));
@@ -924,7 +924,7 @@ void ChunkManager::Private::loadIndexFile()
             fptr.read(&hdr, sizeof(NewChunkHeader));
             Chunk *c = p->getChunk(hdr.index);
             if (c) {
-                c->setStatus(Chunk::ON_DISK);
+                c->setStatus(Chunk::Status::ON_DISK);
                 p->bitset.set(hdr.index, true);
                 todo.set(hdr.index, false);
                 recalc_chunks_left = true;
