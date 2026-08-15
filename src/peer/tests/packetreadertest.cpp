@@ -6,6 +6,7 @@
 
 #include <array>
 
+#include <QByteArrayView>
 #include <QObject>
 #include <QTest>
 
@@ -33,14 +34,7 @@ public:
 
     void handlePacket(QByteArrayView packet) override
     {
-        received_packet.reset(new bt::Uint8[packet.size()]);
-        memcpy(received_packet.data(), packet.data(), packet.size());
-        received_packet_size = packet.size();
-    }
-
-    bool check(const bt::Uint8 *packet, bt::Uint32 size)
-    {
-        return received_packet_size == size && memcmp(packet, received_packet.data(), size) == 0;
+        received_packet = packet.toByteArray();
     }
 
     bt::Uint32 averageDownloadSpeed() const override
@@ -54,8 +48,7 @@ public:
 
     void reset()
     {
-        received_packet_size = 0;
-        received_packet.reset();
+        received_packet.clear();
     }
 
 private Q_SLOTS:
@@ -78,7 +71,7 @@ private Q_SLOTS:
         pr.onDataReady(data);
         QVERIFY(pr.ok());
         pr.update(*this);
-        QVERIFY(check(data.data() + 4, 10));
+        QCOMPARE(received_packet, QByteArrayView{data}.sliced(4));
     }
 
     void testMultiplePackets()
@@ -92,12 +85,12 @@ private Q_SLOTS:
         pr.onDataReady(data);
         QVERIFY(pr.ok());
         pr.update(*this);
-        QVERIFY(check(data.data() + 4, 10));
+        QCOMPARE(received_packet, QByteArrayView{data}.sliced(4));
 
         pr.onDataReady(data2);
         QVERIFY(pr.ok());
         pr.update(*this);
-        QVERIFY(check(data2.data() + 4, 10));
+        QCOMPARE(received_packet, QByteArrayView{data2}.sliced(4));
     }
 
     void testChunked_data()
@@ -126,13 +119,13 @@ private Q_SLOTS:
             data_view.slice(chunk_size);
             QVERIFY(pr.ok());
             pr.update(*this);
-            QCOMPARE(received_packet_size, 0);
+            QVERIFY(received_packet.isEmpty());
         }
 
         pr.onDataReady(data_view);
         QVERIFY(pr.ok());
         pr.update(*this);
-        QVERIFY(check(data.data() + 4, 10));
+        QCOMPARE(received_packet, QByteArrayView{data}.sliced(4));
     }
 
     void testIncompleteLength()
@@ -146,12 +139,12 @@ private Q_SLOTS:
         pr.onDataReady(data_view.first(3));
         QVERIFY(pr.ok());
         pr.update(*this);
-        QCOMPARE(received_packet_size, 0);
+        QVERIFY(received_packet.isEmpty());
 
         pr.onDataReady(data_view.sliced(3));
         QVERIFY(pr.ok());
         pr.update(*this);
-        QVERIFY(check(data.data() + 4, 10));
+        QCOMPARE(received_packet, QByteArrayView{data}.sliced(4));
     }
 
     void testLengthToLarge()
@@ -165,14 +158,14 @@ private Q_SLOTS:
         QVERIFY(!pr.ok());
 
         pr.update(*this);
-        QCOMPARE(received_packet_size, 0);
+        QVERIFY(received_packet.isEmpty());
 
         // Subsequent attempts to write data should also fail
         pr.onDataReady(QByteArrayView{data}.first(1));
         QVERIFY(!pr.ok());
 
         pr.update(*this);
-        QCOMPARE(received_packet_size, 0);
+        QVERIFY(received_packet.isEmpty());
     }
 
     void testPacketLengthZero()
@@ -186,7 +179,7 @@ private Q_SLOTS:
         QVERIFY(pr.ok());
 
         pr.update(*this);
-        QCOMPARE(received_packet_size, 2);
+        QCOMPARE(received_packet.size(), 2);
     }
 
     void testUnicodeLiteral()
@@ -196,8 +189,7 @@ private Q_SLOTS:
     }
 
 private:
-    QScopedArrayPointer<bt::Uint8> received_packet;
-    bt::Uint32 received_packet_size;
+    QByteArray received_packet;
 };
 
 QTEST_MAIN(PacketReaderTest)
