@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-09 00:45+0000\n"
+"POT-Creation-Date: 2026-08-15 00:45+0000\n"
 "PO-Revision-Date: 2026-04-21 14:10+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -421,13 +421,13 @@ msgstr "נתונים שגויים מהעוקב"
 msgid "Invalid tracker URL"
 msgstr "כתובת עוקב שגויה"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:326
-#: src/tracker/udptracker.cpp:333
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:322
+#: src/tracker/udptracker.cpp:329
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "הזמן שהוקצב ליצירת קשר עם העוקב %1 תם"
 
-#: src/tracker/udptracker.cpp:356
+#: src/tracker/udptracker.cpp:352
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "לא ניתן לפתור את שם המארח %1"

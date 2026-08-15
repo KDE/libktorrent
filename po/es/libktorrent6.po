@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent6\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-09 00:45+0000\n"
+"POT-Creation-Date: 2026-08-15 00:45+0000\n"
 "PO-Revision-Date: 2025-06-09 02:17+0100\n"
 "Last-Translator: Víctor Rodrigo Córdoba <vrcordoba@gmail.com>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -428,13 +428,13 @@ msgstr "Datos no válidos del rastreador"
 msgid "Invalid tracker URL"
 msgstr "URL no válido del rastreador"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:326
-#: src/tracker/udptracker.cpp:333
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:322
+#: src/tracker/udptracker.cpp:329
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "Superado el tiempo de espera de contacto con el rastreador %1"
 
-#: src/tracker/udptracker.cpp:356
+#: src/tracker/udptracker.cpp:352
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "No fue posible resolver el nombre de máquina %1"

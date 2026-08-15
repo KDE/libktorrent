@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-network-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-09 00:45+0000\n"
+"POT-Creation-Date: 2026-08-15 00:45+0000\n"
 "PO-Revision-Date: 2024-03-16 14:01+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -430,13 +430,13 @@ msgstr "İzleyiciden geçersiz veri"
 msgid "Invalid tracker URL"
 msgstr "Geçersiz izleyici URL’si"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:326
-#: src/tracker/udptracker.cpp:333
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:322
+#: src/tracker/udptracker.cpp:329
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "%1 izleyicisiyle iletişime geçilirken zaman aşımı"
 
-#: src/tracker/udptracker.cpp:356
+#: src/tracker/udptracker.cpp:352
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "%1 makine adı çözümlenemedi"

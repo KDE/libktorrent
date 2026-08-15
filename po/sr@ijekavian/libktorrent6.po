@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-09 00:45+0000\n"
+"POT-Creation-Date: 2026-08-15 00:45+0000\n"
 "PO-Revision-Date: 2013-04-05 17:54+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -428,13 +428,13 @@ msgid "Invalid tracker URL"
 msgstr "Неисправан УРЛ пратиоца"
 
 # rewrite-msgid: /Timeout/Timed out while/
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:326
-#: src/tracker/udptracker.cpp:333
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:322
+#: src/tracker/udptracker.cpp:329
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "Истекло вријеме при контактирању пратиоца %1"
 
-#: src/tracker/udptracker.cpp:356
+#: src/tracker/udptracker.cpp:352
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "Не могу да разријешим име домаћина %1"

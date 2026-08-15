@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent(2)\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-09 00:45+0000\n"
+"POT-Creation-Date: 2026-08-15 00:45+0000\n"
 "PO-Revision-Date: 2026-02-05 10:47+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -425,13 +425,13 @@ msgstr "Date eronate de la tracker"
 msgid "Invalid tracker URL"
 msgstr "URL eronat pentru tracker"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:326
-#: src/tracker/udptracker.cpp:333
+#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:322
+#: src/tracker/udptracker.cpp:329
 #, kde-format
 msgid "Timeout contacting tracker %1"
 msgstr "Contactarea tracker-ului %1 a expirat"
 
-#: src/tracker/udptracker.cpp:356
+#: src/tracker/udptracker.cpp:352
 #, kde-format
 msgid "Unable to resolve hostname %1"
 msgstr "Nu s-a putut rezolva numele gazdei %1"
