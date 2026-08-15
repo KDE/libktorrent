@@ -246,7 +246,7 @@ void EncryptedPacketSocket::reinsert(const Uint8 *d, Uint32 size)
 
 bool EncryptedPacketSocket::connecting() const
 {
-    return sock->state() == net::SocketDevice::CONNECTING;
+    return sock->state() == net::SocketDevice::State::CONNECTING;
 }
 
 bool EncryptedPacketSocket::connectSuccessful() const

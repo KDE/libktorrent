@@ -30,7 +30,7 @@ UTPSocket::UTPSocket(Connection::WPtr conn)
     if (ptr) {
         setRemoteAddress(ptr->remoteAddress());
         ptr->setBlocking(blocking);
-        m_state = CONNECTED;
+        m_state = State::CONNECTED;
     }
 }
 
@@ -67,7 +67,7 @@ bool UTPSocket::connectSuccessful()
     const Connection::Ptr ptr = conn.toStrongRef();
     if (ptr && ptr->connectionState() == ConnectionState::CONNECTED) {
         setRemoteAddress(ptr->remoteAddress());
-        m_state = CONNECTED;
+        m_state = State::CONNECTED;
         return true;
     } else {
         return false;
@@ -89,12 +89,12 @@ bool UTPSocket::connectTo(const net::Address &addr)
         return false;
     }
 
-    m_state = CONNECTING;
+    m_state = State::CONNECTING;
     ptr->setBlocking(blocking);
     if (blocking) {
         const bool ret = ptr->waitUntilConnected();
         if (ret) {
-            m_state = CONNECTED;
+            m_state = State::CONNECTED;
         }
 
         return ret;

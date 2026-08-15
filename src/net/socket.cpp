@@ -79,7 +79,7 @@ Socket::Socket(int fd, int ip_version)
         configureFd();
         cacheAddress();
     } else {
-        m_state = CLOSED;
+        m_state = State::CLOSED;
     }
 }
 
@@ -95,7 +95,7 @@ Socket::Socket(bool tcp, int ip_version)
         m_ip_version = 4;
     }
 
-    m_state = CLOSED;
+    m_state = State::CLOSED;
 
     reset();
 }
@@ -119,7 +119,7 @@ void Socket::reset()
 
     configureFd();
 
-    m_state = IDLE;
+    m_state = State::IDLE;
 }
 
 void Socket::configureFd()
@@ -165,7 +165,7 @@ void Socket::close()
         ::close(fd);
 #endif
         m_fd = -1;
-        m_state = CLOSED;
+        m_state = State::CLOSED;
     }
 }
 
@@ -210,14 +210,14 @@ bool Socket::connectTo(const Address &a)
 #endif
         {
             //  Out(SYS_CON|LOG_DEBUG) << "Socket is connecting" << endl;
-            m_state = CONNECTING;
+            m_state = State::CONNECTING;
             return false;
         } else {
             Out(SYS_CON | LOG_NOTICE) << QStringLiteral("Cannot connect to host %1 : %2").arg(a.toString(), QString::fromUtf8(strerror(err))) << endl;
             return false;
         }
     }
-    m_state = CONNECTED;
+    m_state = State::CONNECTED;
     cacheAddress();
     return true;
 }
@@ -257,7 +257,7 @@ bool Socket::bind(const net::Address &addr, bool also_listen)
         return false;
     }
 
-    m_state = BOUND;
+    m_state = State::BOUND;
     return true;
 }
 
@@ -414,7 +414,7 @@ Uint32 Socket::bytesAvailable() const
 
 bool Socket::connectSuccessful()
 {
-    if (m_state != CONNECTING && m_state != CONNECTED) {
+    if (m_state != State::CONNECTING && m_state != State::CONNECTED) {
         return false;
     }
 
@@ -428,7 +428,7 @@ bool Socket::connectSuccessful()
         return false;
 
     if (err == 0) {
-        m_state = CONNECTED;
+        m_state = State::CONNECTED;
         cacheAddress();
     }
 
@@ -461,7 +461,7 @@ int Socket::take()
 {
     const int ret = m_fd;
     m_fd = -1;
-    m_state = CLOSED;
+    m_state = State::CLOSED;
     return ret;
 }
 

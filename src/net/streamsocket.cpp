@@ -29,7 +29,7 @@ void StreamSocket::addData(const QByteArray &data)
 bool StreamSocket::bytesReadyToWrite() const
 {
     const QMutexLocker lock(&mutex);
-    return !buffer.isEmpty() || sock->state() == net::SocketDevice::CONNECTING;
+    return !buffer.isEmpty() || sock->state() == net::SocketDevice::State::CONNECTING;
 }
 
 bt::Uint32 StreamSocket::write(bt::Uint32 max, bt::TimeStamp now)
@@ -37,7 +37,7 @@ bt::Uint32 StreamSocket::write(bt::Uint32 max, bt::TimeStamp now)
     Q_UNUSED(now);
 
     const QMutexLocker lock(&mutex);
-    if (sock->state() == net::SocketDevice::CONNECTING) {
+    if (sock->state() == net::SocketDevice::State::CONNECTING) {
         const bool ok = sock->connectSuccessful();
         if (listener) {
             listener->connectFinished(ok);

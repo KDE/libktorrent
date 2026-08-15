@@ -182,7 +182,7 @@ void HttpConnection::hostResolved(net::AddressResolver *ar)
             state = State::ACTIVE;
             net::SocketMonitor::instance().add(sock);
             net::SocketMonitor::instance().signalPacketReady();
-        } else if (sock->socketDevice()->state() == net::SocketDevice::CONNECTING) {
+        } else if (sock->socketDevice()->state() == net::SocketDevice::State::CONNECTING) {
             status = i18n("Connecting");
             state = State::CONNECTING;
             net::SocketMonitor::instance().add(sock);

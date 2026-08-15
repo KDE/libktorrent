@@ -9,7 +9,7 @@
 namespace net
 {
 SocketDevice::SocketDevice(bt::TransportProtocol proto)
-    : m_state(IDLE)
+    : m_state(State::IDLE)
     , remote_addr_override(false)
     , transport_protocol(proto)
 {

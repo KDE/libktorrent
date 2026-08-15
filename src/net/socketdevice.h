@@ -46,7 +46,7 @@ public:
      * \var CLOSED
      * The socket is not open and therefore will not send or receive data.
      */
-    enum State {
+    enum class State {
         IDLE,
         CONNECTING,
         CONNECTED,
