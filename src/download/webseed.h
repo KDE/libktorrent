@@ -165,7 +165,7 @@ private:
     }; // Exception
 
     void fillRangeList(Uint32 chunk);
-    void handleData(const QByteArray &data);
+    void handleData(QByteArrayView data);
     void chunkStarted(Uint32 chunk);
     void chunkStopped();
     void connectToServer();

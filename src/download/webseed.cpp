@@ -387,7 +387,7 @@ void WebSeed::readData()
     }
 }
 
-void WebSeed::handleData(const QByteArray &tmp)
+void WebSeed::handleData(QByteArrayView tmp)
 {
     Uint32 off = 0;
     while (off < (Uint32)tmp.size() && cur_chunk <= last_chunk) {
@@ -404,7 +404,7 @@ void WebSeed::handleData(const QByteArray &tmp)
             }
 
             if (cur_piece) {
-                cur_piece->write(QByteArrayView{tmp}.sliced(off, bl), bytes_of_cur_chunk);
+                cur_piece->write(tmp.sliced(off, bl), bytes_of_cur_chunk);
             }
             downloaded += bl;
         }
