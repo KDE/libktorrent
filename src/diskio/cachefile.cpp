@@ -74,7 +74,7 @@ void CacheFile::openFile(Mode mode)
     bool ok = false;
     if (!(ok = fptr.open(QIODevice::ReadWrite))) {
         // in case RDWR fails, try readonly if possible
-        if (mode == READ && (ok = fptr.open(QIODevice::ReadOnly))) {
+        if (mode == Mode::READ && (ok = fptr.open(QIODevice::ReadOnly))) {
             read_only = true;
         }
     }
@@ -109,7 +109,7 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
         openFile(mode);
     }
 
-    if (read_only && mode != READ) {
+    if (read_only && mode != Mode::READ) {
         throw Error(i18n("Cannot open %1 for writing: readonly filesystem", path));
     }
 
@@ -133,13 +133,13 @@ void *CacheFile::map(MMappeable *thing, Uint64 off, Uint32 size, Mode mode)
 #ifndef Q_OS_WIN
     int mmap_flag = 0;
     switch (mode) {
-    case READ:
+    case Mode::READ:
         mmap_flag = PROT_READ;
         break;
-    case WRITE:
+    case Mode::WRITE:
         mmap_flag = PROT_WRITE;
         break;
-    case RW:
+    case Mode::RW:
         mmap_flag = PROT_READ | PROT_WRITE;
         break;
     }
@@ -195,7 +195,7 @@ void CacheFile::growFile(Uint64 to_write)
     // reopen the file if necessary
     if (!fptr.isOpen()) {
         //  Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
-        openFile(RW);
+        openFile(Mode::RW);
     }
 
     if (read_only) {
@@ -309,7 +309,7 @@ void CacheFile::read(Uint8 *buf, Uint32 size, Uint64 off)
     // reopen the file if necessary
     if (!fptr.isOpen()) {
         //  Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
-        openFile(READ);
+        openFile(Mode::READ);
         close_again = true;
     }
 
@@ -344,7 +344,7 @@ void CacheFile::write(const Uint8 *buf, Uint32 size, Uint64 off)
     // reopen the file if necessary
     if (!fptr.isOpen()) {
         //  Out(SYS_DIO|LOG_DEBUG) << "Reopening " << path << endl;
-        openFile(RW);
+        openFile(Mode::RW);
         close_again = true;
     }
 
@@ -402,7 +402,7 @@ void CacheFile::preallocate(PreallocationThread *prealloc)
     Out(SYS_GEN | LOG_NOTICE) << "Preallocating file " << path << " (" << max_size << " bytes)" << endl;
     bool close_again = false;
     if (!fptr.isOpen()) {
-        openFile(RW);
+        openFile(Mode::RW);
         close_again = true;
     }
 

@@ -135,7 +135,7 @@ PieceData::Ptr SingleFileCache::createPiece(Chunk *c, Uint64 off, Uint32 length,
         return cp;
     } else {
         PieceData::Ptr cp(new PieceData(c, off, length, nullptr, fd, read_only));
-        buf = (Uint8 *)fd->map(cp.data(), piece_off, length, read_only ? CacheFile::READ : CacheFile::RW);
+        buf = (Uint8 *)fd->map(cp.data(), piece_off, length, read_only ? CacheFile::Mode::READ : CacheFile::Mode::RW);
         if (buf) {
             cp->setData(buf);
         } else {

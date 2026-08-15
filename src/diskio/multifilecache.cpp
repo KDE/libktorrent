@@ -389,7 +389,7 @@ PieceData::Ptr MultiFileCache::createPiece(Chunk *c, Uint32 off, Uint32 length, 
         if (Cache::mappedModeAllowed() && mmap_failures < 3) {
             const Uint64 offset = FileOffset(c, f, tor.getChunkSize()) + off;
             PieceData::Ptr piece(new PieceData(c, off, length, nullptr, fd, read_only));
-            Uint8 *buf = (Uint8 *)fd->map(piece.data(), offset, length, read_only ? CacheFile::READ : CacheFile::RW);
+            Uint8 *buf = (Uint8 *)fd->map(piece.data(), offset, length, read_only ? CacheFile::Mode::READ : CacheFile::Mode::RW);
             if (buf) {
                 piece->setData(buf);
                 insertPiece(c, piece);

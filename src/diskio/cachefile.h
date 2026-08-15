@@ -62,7 +62,7 @@ public:
      * \var RW
      * Opened for read and write.
      */
-    enum Mode {
+    enum class Mode {
         READ,
         WRITE,
         RW,
