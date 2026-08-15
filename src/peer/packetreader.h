@@ -64,8 +64,8 @@ public:
     void onDataReady(Uint8 *buf, Uint32 size) override;
 
 private:
-    Uint32 newPacket(Uint8 *buf, Uint32 size);
-    Uint32 readPacket(Uint8 *buf, Uint32 size);
+    Uint32 newPacket(QByteArrayView buf);
+    Uint32 readPacket(QByteArrayView buf);
     std::optional<IncomingPacket> dequeuePacket();
 
 private:
