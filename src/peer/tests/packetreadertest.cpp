@@ -4,11 +4,14 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <array>
+
 #include <QObject>
 #include <QTest>
 
 #include <interfaces/peerinterface.h>
 #include <peer/packetreader.h>
+#include <util/constants.h>
 #include <util/log.h>
 
 using namespace Qt::Literals::StringLiterals;
@@ -69,32 +72,32 @@ private Q_SLOTS:
     {
         reset();
 
-        bt::Uint8 data[] = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
+        constexpr std::array<bt::Uint8, 14> data = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
         bt::PacketReader pr(1024);
 
-        pr.onDataReady(data, 14);
+        pr.onDataReady(data);
         QVERIFY(pr.ok());
         pr.update(*this);
-        QVERIFY(check(data + 4, 10));
+        QVERIFY(check(data.data() + 4, 10));
     }
 
     void testMultiplePackets()
     {
         reset();
 
-        bt::Uint8 data[] = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
-        bt::Uint8 data2[] = {0, 0, 0, 10, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+        constexpr std::array<bt::Uint8, 14> data = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
+        constexpr std::array<bt::Uint8, 14> data2 = {0, 0, 0, 10, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
         bt::PacketReader pr(1024);
 
-        pr.onDataReady(data, 14);
+        pr.onDataReady(data);
         QVERIFY(pr.ok());
         pr.update(*this);
-        QVERIFY(check(data + 4, 10));
+        QVERIFY(check(data.data() + 4, 10));
 
-        pr.onDataReady(data2, 14);
+        pr.onDataReady(data2);
         QVERIFY(pr.ok());
         pr.update(*this);
-        QVERIFY(check(data2 + 4, 10));
+        QVERIFY(check(data2.data() + 4, 10));
     }
 
     void testChunked_data()
@@ -111,61 +114,61 @@ private Q_SLOTS:
 
         reset();
 
-        bt::Uint8 data[] = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
+        constexpr std::array<bt::Uint8, 14> data = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
+        QByteArrayView data_view{data};
         bt::PacketReader pr(1024);
 
         const auto num_full_chunks = std::size(data) / chunk_size;
         QCOMPARE_GT(num_full_chunks, 1); // Ensure data is actually chunked
 
-        size_t num_bytes_read = 0;
         for (size_t i = 0; i < (num_full_chunks - 1); ++i) {
-            pr.onDataReady(data + num_bytes_read, chunk_size);
+            pr.onDataReady(data_view.first(chunk_size));
+            data_view.slice(chunk_size);
             QVERIFY(pr.ok());
             pr.update(*this);
             QCOMPARE(received_packet_size, 0);
-            num_bytes_read += chunk_size;
         }
 
-        const auto remaining_data_len = std::size(data) - num_bytes_read;
-        pr.onDataReady(data + num_bytes_read, remaining_data_len);
+        pr.onDataReady(data_view);
         QVERIFY(pr.ok());
         pr.update(*this);
-        QVERIFY(check(data + 4, 10));
+        QVERIFY(check(data.data() + 4, 10));
     }
 
     void testIncompleteLength()
     {
         reset();
 
-        bt::Uint8 data[] = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
+        constexpr std::array<bt::Uint8, 14> data = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
+        QByteArrayView data_view{data};
         bt::PacketReader pr(1024);
 
-        pr.onDataReady(data, 3);
+        pr.onDataReady(data_view.first(3));
         QVERIFY(pr.ok());
         pr.update(*this);
         QCOMPARE(received_packet_size, 0);
 
-        pr.onDataReady(data + 3, 11);
+        pr.onDataReady(data_view.sliced(3));
         QVERIFY(pr.ok());
         pr.update(*this);
-        QVERIFY(check(data + 4, 10));
+        QVERIFY(check(data.data() + 4, 10));
     }
 
     void testLengthToLarge()
     {
         reset();
 
-        bt::Uint8 data[] = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
+        constexpr std::array<bt::Uint8, 14> data = {0, 0, 0, 10, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE};
         bt::PacketReader pr(7);
 
-        pr.onDataReady(data, 14);
+        pr.onDataReady(data);
         QVERIFY(!pr.ok());
 
         pr.update(*this);
         QCOMPARE(received_packet_size, 0);
 
         // Subsequent attempts to write data should also fail
-        pr.onDataReady(data, 1);
+        pr.onDataReady(QByteArrayView{data}.first(1));
         QVERIFY(!pr.ok());
 
         pr.update(*this);
@@ -176,10 +179,10 @@ private Q_SLOTS:
     {
         reset();
 
-        std::array<bt::Uint8, 10> data = {0, 0, 0, 0, 0, 0, 0, 2, 0xEE, 0xEE};
+        constexpr std::array<bt::Uint8, 10> data = {0, 0, 0, 0, 0, 0, 0, 2, 0xEE, 0xEE};
         bt::PacketReader pr(1024);
 
-        pr.onDataReady(data.data(), data.size());
+        pr.onDataReady(data);
         QVERIFY(pr.ok());
 
         pr.update(*this);

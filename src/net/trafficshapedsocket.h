@@ -7,7 +7,9 @@
 #ifndef NET_TRAFFICSHAPEDSOCKET_H
 #define NET_TRAFFICSHAPEDSOCKET_H
 
+#include <QByteArrayView>
 #include <QRecursiveMutex>
+
 #include <net/socketdevice.h>
 #include <util/constants.h>
 
@@ -33,9 +35,8 @@ public:
      * Function which will be called whenever data has been read from the socket.
      * This data should be dealt with, otherwise it will be discarded.
      * \param buf The buffer
-     * \param size The size of the buffer
      */
-    virtual void onDataReady(bt::Uint8 *buf, bt::Uint32 size) = 0;
+    virtual void onDataReady(QByteArrayView buf) = 0;
 };
 
 /*!

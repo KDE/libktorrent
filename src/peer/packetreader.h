@@ -61,7 +61,7 @@ public:
         return !error;
     }
 
-    void onDataReady(Uint8 *buf, Uint32 size) override;
+    void onDataReady(QByteArrayView buf) override;
 
 private:
     Uint32 newPacket(QByteArrayView buf);

@@ -114,9 +114,8 @@ void HttpConnection::connectTo(const QUrl &url)
     }
 }
 
-void HttpConnection::onDataReady(Uint8 *buf_ptr, Uint32 size)
+void HttpConnection::onDataReady(QByteArrayView buf)
 {
-    const QByteArrayView buf{buf_ptr, size};
     const QMutexLocker locker(&mutex);
 
     if (state != State::ERROR && request) {

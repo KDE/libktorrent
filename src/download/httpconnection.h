@@ -93,7 +93,7 @@ public:
      */
     bool get(const QString &host, const QString &path, const QString &query, bt::Uint64 start, bt::Uint64 len);
 
-    void onDataReady(Uint8 *buf, Uint32 size) override;
+    void onDataReady(QByteArrayView buf) override;
     void connectFinished(bool succeeded) override;
     void dataSent() override;
 

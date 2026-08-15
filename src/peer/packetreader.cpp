@@ -119,10 +119,8 @@ Uint32 PacketReader::readPacket(QByteArrayView buf)
     }
 }
 
-void PacketReader::onDataReady(Uint8 *buf_ptr, Uint32 size)
+void PacketReader::onDataReady(QByteArrayView buf)
 {
-    QByteArrayView buf{buf_ptr, size};
-
     if (error) {
         return;
     }
