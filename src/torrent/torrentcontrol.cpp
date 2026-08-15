@@ -1570,15 +1570,15 @@ void TorrentControl::setUploadProps(Uint32 limit, Uint32 rate)
     net::SocketMonitor &smon = net::SocketMonitor::instance();
     if (upload_gid) {
         if (!limit && !rate) {
-            smon.removeGroup(net::SocketMonitor::UPLOAD_GROUP, upload_gid);
+            smon.removeGroup(net::SocketMonitor::GroupType::UPLOAD_GROUP, upload_gid);
             upload_gid = 0;
         } else {
-            smon.setGroupLimit(net::SocketMonitor::UPLOAD_GROUP, upload_gid, limit);
-            smon.setGroupAssuredRate(net::SocketMonitor::UPLOAD_GROUP, upload_gid, rate);
+            smon.setGroupLimit(net::SocketMonitor::GroupType::UPLOAD_GROUP, upload_gid, limit);
+            smon.setGroupAssuredRate(net::SocketMonitor::GroupType::UPLOAD_GROUP, upload_gid, rate);
         }
     } else {
         if (limit || rate) {
-            upload_gid = smon.newGroup(net::SocketMonitor::UPLOAD_GROUP, limit, rate);
+            upload_gid = smon.newGroup(net::SocketMonitor::GroupType::UPLOAD_GROUP, limit, rate);
         }
     }
 
@@ -1591,15 +1591,15 @@ void TorrentControl::setDownloadProps(Uint32 limit, Uint32 rate)
     net::SocketMonitor &smon = net::SocketMonitor::instance();
     if (download_gid) {
         if (!limit && !rate) {
-            smon.removeGroup(net::SocketMonitor::DOWNLOAD_GROUP, download_gid);
+            smon.removeGroup(net::SocketMonitor::GroupType::DOWNLOAD_GROUP, download_gid);
             download_gid = 0;
         } else {
-            smon.setGroupLimit(net::SocketMonitor::DOWNLOAD_GROUP, download_gid, limit);
-            smon.setGroupAssuredRate(net::SocketMonitor::DOWNLOAD_GROUP, download_gid, rate);
+            smon.setGroupLimit(net::SocketMonitor::GroupType::DOWNLOAD_GROUP, download_gid, limit);
+            smon.setGroupAssuredRate(net::SocketMonitor::GroupType::DOWNLOAD_GROUP, download_gid, rate);
         }
     } else {
         if (limit || rate) {
-            download_gid = smon.newGroup(net::SocketMonitor::DOWNLOAD_GROUP, limit, rate);
+            download_gid = smon.newGroup(net::SocketMonitor::GroupType::DOWNLOAD_GROUP, limit, rate);
         }
     }
 

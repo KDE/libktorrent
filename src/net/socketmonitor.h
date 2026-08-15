@@ -71,7 +71,7 @@ public:
      * \var DOWNLOAD_GROUP
      * Limits download rate.
      */
-    enum GroupType {
+    enum class GroupType {
         UPLOAD_GROUP,
         DOWNLOAD_GROUP,
     };

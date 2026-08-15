@@ -173,7 +173,7 @@ Uint32 SocketMonitor::newGroup(GroupType type, Uint32 limit, Uint32 assured_rate
     }
 
     const Uint32 gid = d->next_group_id++;
-    if (type == UPLOAD_GROUP) {
+    if (type == GroupType::UPLOAD_GROUP) {
         d->ut->addGroup(gid, limit, assured_rate);
     } else {
         d->dt->addGroup(gid, limit, assured_rate);
@@ -189,7 +189,7 @@ void SocketMonitor::setGroupLimit(GroupType type, Uint32 gid, Uint32 limit)
         return;
     }
 
-    if (type == UPLOAD_GROUP) {
+    if (type == GroupType::UPLOAD_GROUP) {
         d->ut->setGroupLimit(gid, limit);
     } else {
         d->dt->setGroupLimit(gid, limit);
@@ -203,7 +203,7 @@ void SocketMonitor::setGroupAssuredRate(GroupType type, Uint32 gid, Uint32 as)
         return;
     }
 
-    if (type == UPLOAD_GROUP) {
+    if (type == GroupType::UPLOAD_GROUP) {
         d->ut->setGroupAssuredRate(gid, as);
     } else {
         d->dt->setGroupAssuredRate(gid, as);
@@ -217,7 +217,7 @@ void SocketMonitor::removeGroup(GroupType type, Uint32 gid)
         return;
     }
 
-    if (type == UPLOAD_GROUP) {
+    if (type == GroupType::UPLOAD_GROUP) {
         d->ut->removeGroup(gid);
     } else {
         d->dt->removeGroup(gid);
