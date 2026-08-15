@@ -31,7 +31,7 @@ EncryptedAuthenticate::EncryptedAuthenticate(const net::Address &addr,
     : Authenticate(addr, proto, info_hash, peer_id, pcon)
 {
     mse::GeneratePublicPrivateKey(xa, ya);
-    state = NOT_CONNECTED;
+    state = State::NOT_CONNECTED;
     buf_size = 0;
     vc_off = 0;
     dec_bytes = 0;
@@ -51,7 +51,7 @@ void EncryptedAuthenticate::connected()
     std::array<Uint8, 96 + 512> tmp;
     ya.toBuffer(tmp.data(), 96);
     sock->sendData(QByteArrayView{tmp}.chopped(QRandomGenerator::global()->bounded(512)));
-    state = SENT_YA;
+    state = State::SENT_YA;
 }
 
 /*
@@ -77,7 +77,7 @@ void EncryptedAuthenticate::handleYB()
     // calculate s
     s = mse::DHSecret(xa, yb);
 
-    state = GOT_YB;
+    state = State::GOT_YB;
     // now we must send line 3
     Uint8 tmp_buf[120]; // temporary buffer
     bt::SHA1Hash h1, h2; // temporary hash
@@ -133,7 +133,7 @@ void EncryptedAuthenticate::findVC()
     const Uint32 max_i = buf_size - 8;
     for (Uint32 i = 96; i < max_i; i++) {
         if (vc[0] == buf[i] && memcmp(buf + i, vc, 8) == 0) {
-            state = FOUND_VC;
+            state = State::FOUND_VC;
             vc_off = i;
             handleCryptoSelect();
             return;
@@ -175,7 +175,7 @@ void EncryptedAuthenticate::handleCryptoSelect()
     end_of_crypto_handshake = vc_off + 14 + pad_D_len;
     if (!(vc_off + 14 + pad_D_len < buf_size)) {
         // padD is not complete, wait for that
-        state = WAIT_FOR_PAD_D;
+        state = State::WAIT_FOR_PAD_D;
         return;
     }
 
@@ -197,7 +197,7 @@ void EncryptedAuthenticate::handlePadD()
     }
 
     // noz we wait for the normal handshake
-    state = NORMAL_HANDSHAKE;
+    state = State::NORMAL_HANDSHAKE;
     // if we have read more then the crypto handshake, reinsert it
     if (buf_size > vc_off + 14 + pad_D_len) {
         const Uint32 off = vc_off + 14 + pad_D_len;
@@ -238,7 +238,7 @@ void EncryptedAuthenticate::onReadyRead()
         return;
     }
 
-    if (state != NORMAL_HANDSHAKE) {
+    if (state != State::NORMAL_HANDSHAKE) {
         if (buf_size + ba > MAX_EA_BUF_SIZE) {
             ba = MAX_EA_BUF_SIZE - buf_size;
         }
@@ -252,23 +252,23 @@ void EncryptedAuthenticate::onReadyRead()
     }
 
     switch (state) {
-    case SENT_YA:
+    case State::SENT_YA:
         if (ba > 608) {
             onFinish(false);
         } else {
             handleYB();
         }
         break;
-    case GOT_YB:
+    case State::GOT_YB:
         findVC();
         break;
-    case FOUND_VC:
+    case State::FOUND_VC:
         handleCryptoSelect();
         break;
-    case WAIT_FOR_PAD_D:
+    case State::WAIT_FOR_PAD_D:
         handlePadD();
         break;
-    case NORMAL_HANDSHAKE:
+    case State::NORMAL_HANDSHAKE:
         // let AuthenticateBase deal with the data
         AuthenticateBase::onReadyRead();
         break;

@@ -47,7 +47,7 @@ private:
     void handlePadD();
 
 private:
-    enum State {
+    enum class State {
         NOT_CONNECTED,
         SENT_YA,
         GOT_YB,
