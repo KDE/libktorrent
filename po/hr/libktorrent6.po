@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-15 00:45+0000\n"
+"POT-Creation-Date: 2026-08-16 00:44+0000\n"
 "PO-Revision-Date: 2011-06-28 12:49+0200\n"
 "Last-Translator: Marko Dimjašević <marko@dimjasevic.net>\n"
 "Language-Team: Croatian <kde-croatia-list@lists.sourceforge.net>\n"
@@ -65,14 +65,14 @@ msgid "Checking Data"
 msgstr ""
 
 #: src/datachecker/multidatachecker.cpp:202
-#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:664
-#: src/diskio/multifilecache.cpp:700 src/torrent/torrentcreator.cpp:111
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:666
+#: src/diskio/multifilecache.cpp:704 src/torrent/torrentcreator.cpp:111
 #: src/torrent/torrentcreator.cpp:227 src/torrent/torrentcreator.cpp:260
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr ""
 
-#: src/diskio/cache.cpp:181 src/diskio/multifilecache.cpp:104
+#: src/diskio/cache.cpp:181 src/diskio/multifilecache.cpp:105
 #: src/diskio/singlefilecache.cpp:74
 #, kde-format
 msgid "Failed to create %1: %2"
@@ -174,7 +174,7 @@ msgctxt "@title job"
 msgid "Moving"
 msgstr ""
 
-#: src/diskio/multifilecache.cpp:77 src/diskio/singlefilecache.cpp:63
+#: src/diskio/multifilecache.cpp:78 src/diskio/singlefilecache.cpp:63
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr ""

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-15 00:45+0000\n"
+"POT-Creation-Date: 2026-08-16 00:44+0000\n"
 "PO-Revision-Date: 2020-08-30 20:07+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@nuug.no>\n"
@@ -62,14 +62,14 @@ msgid "Checking Data"
 msgstr "Sjekkar data"
 
 #: src/datachecker/multidatachecker.cpp:202
-#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:664
-#: src/diskio/multifilecache.cpp:700 src/torrent/torrentcreator.cpp:111
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:666
+#: src/diskio/multifilecache.cpp:704 src/torrent/torrentcreator.cpp:111
 #: src/torrent/torrentcreator.cpp:227 src/torrent/torrentcreator.cpp:260
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "Klarar ikkje opna fila «%1»: %2"
 
-#: src/diskio/cache.cpp:181 src/diskio/multifilecache.cpp:104
+#: src/diskio/cache.cpp:181 src/diskio/multifilecache.cpp:105
 #: src/diskio/singlefilecache.cpp:74
 #, kde-format
 msgid "Failed to create %1: %2"
@@ -172,7 +172,7 @@ msgctxt "@title job"
 msgid "Moving"
 msgstr "Flyttar"
 
-#: src/diskio/multifilecache.cpp:77 src/diskio/singlefilecache.cpp:63
+#: src/diskio/multifilecache.cpp:78 src/diskio/singlefilecache.cpp:63
 #, kde-format
 msgid "Failed to open %1: %2"
 msgstr "Klarte ikkje opna «%1»: %2"
