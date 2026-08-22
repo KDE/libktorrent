@@ -11,6 +11,7 @@ set_target_properties(KTorrent6 PROPERTIES
 
 target_sources(KTorrent6 PRIVATE
     util/bitset.cpp
+    util/endian.cpp
     util/timer.cpp
     util/urlencoder.cpp
     util/sha1hashgen.cpp

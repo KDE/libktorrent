@@ -11,7 +11,7 @@
 #include <net/socketdevice.h>
 #include <peer/peer.h>
 #include <util/bitset.h>
-#include <util/functions.h>
+#include <util/endian.h>
 #include <util/log.h>
 
 namespace bt

@@ -4,6 +4,7 @@ endif()
 
 set(util_HDR
     autorotatelogjob.h
+    endian.h
     fileops.h
     timer.h
     ptrmap.h

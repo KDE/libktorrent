@@ -23,6 +23,7 @@
 #include <net/reverseresolver.h>
 #include <torrent/server.h>
 #include <torrent/torrent.h>
+#include <util/endian.h>
 #include <util/functions.h>
 #include <util/log.h>
 #include <version.h>

@@ -22,6 +22,7 @@
 #include <net/socket.h>
 #include <util/bitset.h>
 #include <util/constants.h>
+#include <util/endian.h>
 #include <util/error.h>
 #include <util/fileops.h>
 #include <util/functions.h>

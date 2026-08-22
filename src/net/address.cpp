@@ -6,7 +6,7 @@
 
 #include "address.h"
 
-#include <util/functions.h>
+#include <util/endian.h>
 #include <util/log.h>
 
 #ifndef Q_OS_WIN

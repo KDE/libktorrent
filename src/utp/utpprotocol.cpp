@@ -4,7 +4,8 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "utpprotocol.h"
-#include <util/functions.h>
+
+#include <util/endian.h>
 
 namespace utp
 {

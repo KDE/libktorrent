@@ -20,6 +20,7 @@
 #include <net/socket.h>
 #include <torrent/globals.h>
 #include <util/array.h>
+#include <util/endian.h>
 #include <util/functions.h>
 #include <util/log.h>
 

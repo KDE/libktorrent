@@ -5,6 +5,7 @@
 */
 #include "database.h"
 #include <torrent/globals.h>
+#include <util/endian.h>
 #include <util/functions.h>
 #include <util/log.h>
 

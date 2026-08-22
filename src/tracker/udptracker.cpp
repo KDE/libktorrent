@@ -16,7 +16,7 @@
 #include <peer/peermanager.h>
 #include <torrent/globals.h>
 #include <torrent/server.h>
-#include <util/functions.h>
+#include <util/endian.h>
 #include <util/log.h>
 
 namespace bt

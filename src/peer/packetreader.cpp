@@ -6,8 +6,8 @@
 #include "packetreader.h"
 #include "peer.h"
 #include <QtAlgorithms>
+#include <util/endian.h>
 #include <util/file.h>
-#include <util/functions.h>
 #include <util/log.h>
 #include <utility>
 
