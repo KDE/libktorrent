@@ -135,9 +135,9 @@ void UDPTracker::announceReceived(Int32 tid, QByteArrayView buf)
     24 + 6 * n  16-bit integer  TCP port
     20 + 6 * N
     */
-    interval = ReadInt32(buf.data(), 8);
-    leechers = ReadInt32(buf.data(), 12);
-    seeders = ReadInt32(buf.data(), 16);
+    interval = ReadInt32(buf, 8);
+    leechers = ReadInt32(buf, 12);
+    seeders = ReadInt32(buf, 16);
 
     const auto ip_list = buf.sliced(20);
     const auto num_peers = ip_list.size() / 6;
@@ -224,9 +224,9 @@ void UDPTracker::scrapeReceived(Int32 tid, QByteArrayView buf)
         return;
     }
 
-    seeders = ReadInt32(buf.data(), 8);
-    total_downloaded = ReadInt32(buf.data(), 12);
-    leechers = ReadInt32(buf.data(), 16);
+    seeders = ReadInt32(buf, 8);
+    total_downloaded = ReadInt32(buf, 12);
+    leechers = ReadInt32(buf, 16);
     Out(SYS_TRK | LOG_DEBUG) << "Scrape : leechers = " << leechers << ", seeders = " << seeders << ", downloaded = " << total_downloaded << endl;
 }
 

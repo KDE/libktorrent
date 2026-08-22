@@ -72,7 +72,7 @@ public:
             return;
         }
 
-        const Uint32 type = ReadUint32(buffer->data(), 0);
+        const Uint32 type = ReadUint32(*buffer, 0);
         switch (type) {
         case CONNECT:
             p->handleConnect(*buffer);
@@ -168,7 +168,7 @@ void UDPTrackerSocket::handleConnect(QByteArrayView buf)
     }
 
     // Read the transaction_id and check it
-    const Int32 tid = ReadInt32(buf.data(), 4);
+    const Int32 tid = ReadInt32(buf, 4);
     const QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (i == d->transactions.end()) {
@@ -184,7 +184,7 @@ void UDPTrackerSocket::handleConnect(QByteArrayView buf)
 
     // everything ok, emit signal
     d->transactions.erase(i);
-    Q_EMIT connectReceived(tid, ReadInt64(buf.data(), 8));
+    Q_EMIT connectReceived(tid, ReadInt64(buf, 8));
 }
 
 void UDPTrackerSocket::handleAnnounce(QByteArrayView buf)
@@ -194,7 +194,7 @@ void UDPTrackerSocket::handleAnnounce(QByteArrayView buf)
     }
 
     // Read the transaction_id and check it
-    const Int32 tid = ReadInt32(buf.data(), 4);
+    const Int32 tid = ReadInt32(buf, 4);
     const QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (i == d->transactions.end()) {
@@ -220,7 +220,7 @@ void UDPTrackerSocket::handleError(QByteArrayView buf)
     }
 
     // Read the transaction_id and check it
-    const Int32 tid = ReadInt32(buf.data(), 4);
+    const Int32 tid = ReadInt32(buf, 4);
     const QMap<Int32, Action>::iterator it = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (it == d->transactions.end()) {
@@ -245,7 +245,7 @@ void UDPTrackerSocket::handleScrape(QByteArrayView buf)
     }
 
     // Read the transaction_id and check it
-    const Int32 tid = ReadInt32(buf.data(), 4);
+    const Int32 tid = ReadInt32(buf, 4);
     const QMap<Int32, Action>::iterator i = d->transactions.find(tid);
     // if we can't find the transaction, just return
     if (i == d->transactions.end()) {

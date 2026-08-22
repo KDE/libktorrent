@@ -243,7 +243,7 @@ private Q_SLOTS:
         }
 
         QCOMPARE(num_sends, expected_num_sends);
-        QCOMPARE(bt::ReadUint32(reader_data.data(), 0), 2 + message.size());
+        QCOMPARE(bt::ReadUint32(reader_data, 0), 2 + message.size());
         QCOMPARE(reader_data[4], bt::PeerMessageType::EXTENDED);
         QCOMPARE(reader_data[5], extension_id);
         QCOMPARE(QByteArrayView{reader_data}.sliced(6), message);

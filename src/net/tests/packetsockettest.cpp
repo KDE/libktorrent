@@ -51,28 +51,26 @@ struct PiecePacket {
             return false;
         }
 
-        const auto bytes = reinterpret_cast<const bt::Uint8 *>(buffer.data());
-
         // size does not include the message length at the start of the buffer
-        const auto packet_size = bt::ReadUint32(bytes, 0);
-        if (bt::ReadUint32(bytes, 0) != (size() - 4)) {
+        const auto packet_size = bt::ReadUint32(buffer, 0);
+        if (bt::ReadUint32(buffer, 0) != (size() - 4)) {
             bt::Out() << "Piece::VerifyBuffer incorrect message size, expected " << size() << " got " << packet_size << bt::endl;
             return false;
         }
 
-        const auto packet_type = bytes[4];
+        const auto packet_type = bt::ReadUint8(buffer, 4);
         if (packet_type != m_packet_type) {
             bt::Out() << "Piece::VerifyBuffer incorrect packet type, expected " << m_packet_type << " got " << packet_type << bt::endl;
             return false;
         }
 
-        const auto chunk_index = bt::ReadUint32(bytes, 5);
+        const auto chunk_index = bt::ReadUint32(buffer, 5);
         if (chunk_index != m_chunk_index) {
             bt::Out() << "Piece::VerifyBuffer incorrect chunk index, expected " << m_chunk_index << " got " << chunk_index << bt::endl;
             return false;
         }
 
-        const auto offset = bt::ReadUint32(bytes, 9);
+        const auto offset = bt::ReadUint32(buffer, 9);
         if (offset != m_offset) {
             bt::Out() << "Piece::VerifyBuffer incorrect piece offset, expected " << m_offset << " got " << offset << bt::endl;
             return false;
@@ -110,22 +108,20 @@ struct ExtensionPacket {
             return false;
         }
 
-        const auto bytes = reinterpret_cast<const bt::Uint8 *>(buffer.data());
-
         // size does not include the message length at the start of the buffer
-        const auto packet_size = bt::ReadUint32(bytes, 0);
-        if (bt::ReadUint32(bytes, 0) != (size() - 4)) {
+        const auto packet_size = bt::ReadUint32(buffer, 0);
+        if (bt::ReadUint32(buffer, 0) != (size() - 4)) {
             bt::Out() << "Piece::VerifyBuffer incorrect message size, expected " << size() << " got " << packet_size << bt::endl;
             return false;
         }
 
-        const auto packet_type = bytes[4];
+        const auto packet_type = bt::ReadUint8(buffer, 4);
         if (packet_type != m_packet_type) {
             bt::Out() << "Piece::VerifyBuffer incorrect packet type, expected " << m_packet_type << " got " << packet_type << bt::endl;
             return false;
         }
 
-        const auto extension_id = bytes[5];
+        const auto extension_id = bt::ReadUint8(buffer, 5);
         if (extension_id != m_extension_id) {
             bt::Out() << "Piece::VerifyBuffer incorrect extension ID, expected " << m_extension_id << " got " << extension_id << bt::endl;
             return false;
@@ -164,34 +160,32 @@ struct RequestPacket {
             return false;
         }
 
-        const auto bytes = reinterpret_cast<const bt::Uint8 *>(buffer.data());
-
         // size does not include the message length at the start of the buffer
-        const auto packet_size = bt::ReadUint32(bytes, 0);
-        if (bt::ReadUint32(bytes, 0) != (size() - 4)) {
+        const auto packet_size = bt::ReadUint32(buffer, 0);
+        if (bt::ReadUint32(buffer, 0) != (size() - 4)) {
             bt::Out() << "Piece::VerifyBuffer incorrect message size, expected " << size() << " got " << packet_size << bt::endl;
             return false;
         }
 
-        const auto packet_type = bytes[4];
+        const auto packet_type = bt::ReadUint8(buffer, 4);
         if (packet_type != m_packet_type) {
             bt::Out() << "Piece::VerifyBuffer incorrect packet type, expected " << m_packet_type << " got " << packet_type << bt::endl;
             return false;
         }
 
-        const auto chunk_index = bt::ReadUint32(bytes, 5);
+        const auto chunk_index = bt::ReadUint32(buffer, 5);
         if (chunk_index != m_chunk_index) {
             bt::Out() << "Piece::VerifyBuffer incorrect chunk index, expected " << m_chunk_index << " got " << chunk_index << bt::endl;
             return false;
         }
 
-        const auto offset = bt::ReadUint32(bytes, 9);
+        const auto offset = bt::ReadUint32(buffer, 9);
         if (offset != m_offset) {
             bt::Out() << "Piece::VerifyBuffer incorrect piece offset, expected " << m_offset << " got " << offset << bt::endl;
             return false;
         }
 
-        const auto length = bt::ReadUint32(bytes, 13);
+        const auto length = bt::ReadUint32(buffer, 13);
         if (length != m_length) {
             bt::Out() << "Piece::VerifyBuffer incorrect piece offset, expected " << m_length << " got " << length << bt::endl;
             return false;

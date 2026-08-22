@@ -7,6 +7,7 @@
 #ifndef BTENDIAN_H
 #define BTENDIAN_H
 
+#include <QByteArrayView>
 #include <QtEndian>
 
 #include "constants.h"
@@ -53,6 +54,54 @@ template<typename Byte>
 inline void WriteInt16(Byte *buf, Uint32 off, Int16 val)
 {
     qToBigEndian(val, buf + off);
+}
+
+template<typename T>
+    requires(std::is_integral_v<T>)
+inline T ReadIntegral(QByteArrayView buf, Uint64 off)
+{
+    buf.slice(off, sizeof(T));
+    return qFromBigEndian<T>(buf.data());
+}
+
+inline Uint64 ReadUint64(QByteArrayView buf, Uint64 off)
+{
+    return ReadIntegral<Uint64>(buf, off);
+}
+
+inline Uint32 ReadUint32(QByteArrayView buf, Uint64 off)
+{
+    return ReadIntegral<Uint32>(buf, off);
+}
+
+inline Uint16 ReadUint16(QByteArrayView buf, Uint64 off)
+{
+    return ReadIntegral<Uint16>(buf, off);
+}
+
+inline Uint8 ReadUint8(QByteArrayView buf, Uint64 off)
+{
+    return ReadIntegral<Uint8>(buf, off);
+}
+
+inline Int64 ReadInt64(QByteArrayView buf, Uint64 off)
+{
+    return ReadIntegral<Int64>(buf, off);
+}
+
+inline Int32 ReadInt32(QByteArrayView buf, Uint64 off)
+{
+    return ReadIntegral<Int32>(buf, off);
+}
+
+inline Int16 ReadInt16(QByteArrayView buf, Uint64 off)
+{
+    return ReadIntegral<Int16>(buf, off);
+}
+
+inline Int8 ReadInt8(QByteArrayView buf, Uint64 off)
+{
+    return ReadIntegral<Int8>(buf, off);
 }
 
 template<typename Byte>

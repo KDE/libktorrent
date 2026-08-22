@@ -85,8 +85,7 @@ Packet Packet::create(Uint8 ext_id, QByteArrayView ext_data)
 
 bool Packet::isPiece(const Request &req) const
 {
-    return (data[4] == PIECE) && (ReadUint32(data.data(), 5) == req.getIndex()) && (ReadUint32(data.data(), 9) == req.getOffset())
-        && (data.size() - 13 == req.getLength());
+    return (data[4] == PIECE) && (ReadUint32(data, 5) == req.getIndex()) && (ReadUint32(data, 9) == req.getOffset()) && (data.size() - 13 == req.getLength());
 }
 
 std::optional<Packet> Packet::makeRejectOfPiece() const
@@ -95,8 +94,8 @@ std::optional<Packet> Packet::makeRejectOfPiece() const
         return std::nullopt;
     }
 
-    const Uint32 idx = bt::ReadUint32(data.data(), 5);
-    const Uint32 off = bt::ReadUint32(data.data(), 9);
+    const Uint32 idx = bt::ReadUint32(data, 5);
+    const Uint32 off = bt::ReadUint32(data, 9);
     const Uint32 len = data.size() - 13;
 
     //  Out(SYS_CON|LOG_DEBUG) << "Packet::makeRejectOfPiece " << idx << " " << off << " " << len << endl;
