@@ -59,7 +59,7 @@ private Q_SLOTS:
 
         utp::Header hdr2;
         memset(&hdr2, 0, sizeof(utp::Header));
-        hdr2.read(pbuf.data());
+        hdr2.read(QByteArrayView{pbuf.data(), pbuf.bufferSize()});
         QCOMPARE(memcmp(&hdr, &hdr2, sizeof(utp::Header)), 0);
 
         pbuf.setHeader(hdr, 4);
@@ -69,7 +69,7 @@ private Q_SLOTS:
 
         utp::Header hdr3;
         memset(&hdr3, 0, sizeof(utp::Header));
-        hdr3.read(pbuf.data());
+        hdr3.read(QByteArrayView{pbuf.data(), pbuf.bufferSize()});
         QCOMPARE(memcmp(&hdr, &hdr3, sizeof(utp::Header)), 0);
     }
 

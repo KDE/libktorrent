@@ -306,7 +306,7 @@ static void DumpPacket(const Header & hdr)
 
 void UTPServer::handlePacket(std::unique_ptr<bt::Buffer> buffer, const net::Address &addr)
 {
-    PacketParser parser(buffer->data(), buffer->size());
+    PacketParser parser(*buffer);
     if (!parser.parse()) {
         return;
     }

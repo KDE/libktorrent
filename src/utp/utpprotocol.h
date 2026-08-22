@@ -46,7 +46,7 @@ struct KTORRENT_EXPORT Header {
     bt::Uint16 seq_nr;
     bt::Uint16 ack_nr;
 
-    void read(const bt::Uint8 *data);
+    void read(QByteArrayView data);
     void write(bt::Uint8 *data) const;
     static bt::Uint32 size();
 };
@@ -190,8 +190,7 @@ inline void Ack(SelectiveAck *sack, bt::Uint16 bit)
 class KTORRENT_EXPORT PacketParser
 {
 public:
-    PacketParser(const QByteArray &packet);
-    PacketParser(const bt::Uint8 *packet, bt::Uint32 size);
+    PacketParser(QByteArrayView packet);
     ~PacketParser();
 
     //! Parses the packet, returns false on error
@@ -212,11 +211,10 @@ public:
     }
 
 private:
-    const bt::Uint8 *packet;
+    QByteArrayView packet;
     Header hdr;
     SelectiveAck sack;
     bool sack_found;
-    bt::Uint32 size;
     bt::Uint32 data_off;
     bt::Uint32 data_size;
 };

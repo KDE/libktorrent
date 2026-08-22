@@ -100,7 +100,7 @@ private:
         QCOMPARE(s.seq_nr, 2);
 
         auto pkt = buildPacket(ST_STATE, conn_id, conn_id + 1, 1, 1);
-        PacketParser pp(pkt->data(), pkt->size());
+        PacketParser pp(*pkt);
         QVERIFY(pp.parse());
         conn.handlePacket(pp, std::move(pkt));
         QCOMPARE(s.state, ConnectionState::CONNECTED);
@@ -114,7 +114,7 @@ private:
         const Connection::Stats &s = conn.connectionStats();
 
         auto pkt = buildPacket(ST_SYN, conn_id - 1, conn_id, 1, 1);
-        const PacketParser pp(pkt->data(), pkt->size());
+        const PacketParser pp(*pkt);
         conn.handlePacket(pp, std::move(pkt));
         QCOMPARE(s.state, ConnectionState::CONNECTED);
     }

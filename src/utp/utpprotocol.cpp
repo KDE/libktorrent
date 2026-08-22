@@ -27,11 +27,12 @@ QString TypeToString(bt::Uint8 type)
     }
 }
 
-void Header::read(const bt::Uint8 *data)
+void Header::read(QByteArrayView data)
 {
-    type = (data[0] & 0xF0) >> 4;
-    version = data[0] & 0x0F;
-    extension = data[1];
+    const auto first_byte = bt::ReadUint8(data, 0);
+    type = (first_byte & 0xF0) >> 4;
+    version = first_byte & 0x0F;
+    extension = bt::ReadUint8(data, 1);
     connection_id = bt::ReadUint16(data, 2);
     timestamp_microseconds = bt::ReadUint32(data, 4);
     timestamp_difference_microseconds = bt::ReadUint32(data, 8);
@@ -57,20 +58,9 @@ bt::Uint32 Header::size()
     return 20;
 }
 
-PacketParser::PacketParser(const QByteArray &pkt)
-    : packet((const bt::Uint8 *)pkt.data())
+PacketParser::PacketParser(QByteArrayView pkt)
+    : packet(pkt)
     , sack_found(false)
-    , size(pkt.size())
-    , data_off(0)
-    , data_size(0)
-{
-    hdr.read(packet);
-}
-
-PacketParser::PacketParser(const bt::Uint8 *packet, bt::Uint32 size)
-    : packet(packet)
-    , sack_found(false)
-    , size(size)
     , data_off(0)
     , data_size(0)
 {
@@ -83,31 +73,40 @@ PacketParser::~PacketParser()
 
 bool PacketParser::parse()
 {
-    if (size < Header::size()) {
+    if (packet.size() < Header::size()) {
         return false;
     }
 
     data_off = Header::size();
+    auto remaining_packet = packet.sliced(Header::size());
 
     // go over all header extensions to increase the data offset and watch out for selective acks
     int ext_id = hdr.extension;
-    while (data_off < size && ext_id != 0) {
-        const bt::Uint8 *ptr = packet + data_off;
+    while (!remaining_packet.isEmpty() && ext_id != 0) {
+        if (remaining_packet.size() < 2) {
+            return false;
+        }
+        const auto next_ext_id = bt::ReadUint8(remaining_packet, 0);
+        const auto ext_length = bt::ReadUint8(remaining_packet, 1);
+        remaining_packet.slice(2);
+
         if (ext_id == SELECTIVE_ACK_ID) {
             sack_found = true;
-            sack.extension = ptr[0];
-            sack.length = ptr[1];
-            if (data_off + 2 + sack.length > size) {
+            sack.extension = next_ext_id;
+            sack.length = ext_length;
+            if (sack.length > packet.size()) {
                 return false;
             }
-            sack.bitmask = (bt::Uint8 *)ptr + 2;
+            // NOTE: sack.bitmask is of non-const type as the same struct is used for sending data.
+            // We only return a const pointer to sack so there is no non-const access to the bitmask and thus no undefined behaviour.
+            sack.bitmask = const_cast<bt::Uint8 *>(reinterpret_cast<const bt::Uint8 *>(remaining_packet.data()));
         }
 
-        data_off += 2 + ptr[1];
-        ext_id = ptr[0];
+        ext_id = next_ext_id;
     }
 
-    data_size = size - data_off;
+    data_off = packet.size() - remaining_packet.size();
+    data_size = remaining_packet.size();
     return true;
 }
 
