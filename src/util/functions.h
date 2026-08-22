@@ -84,7 +84,7 @@ template<typename Byte>
     requires(sizeof(Byte) == 1)
 inline Int32 ReadInt32(const Byte *buf, Uint32 off)
 {
-    return qFromBigEndian<Int64>(buf + off);
+    return qFromBigEndian<Int32>(buf + off);
 }
 
 template<typename Byte>
@@ -98,7 +98,7 @@ template<typename Byte>
     requires(sizeof(Byte) == 1)
 inline Int16 ReadInt16(const Byte *buf, Uint32 off)
 {
-    return qFromBigEndian<Int64>(buf + off);
+    return qFromBigEndian<Int16>(buf + off);
 }
 
 KTORRENT_EXPORT void UpdateCurrentTime();
