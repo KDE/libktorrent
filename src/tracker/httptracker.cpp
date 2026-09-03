@@ -46,6 +46,9 @@ HTTPTracker::HTTPTracker(const QUrl &url, TrackerDataSource *tds, const PeerID &
 
 HTTPTracker::~HTTPTracker()
 {
+    if (active_job) {
+        active_job->kill();
+    }
 }
 
 void HTTPTracker::start()
