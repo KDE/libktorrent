@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-17 00:45+0000\n"
+"POT-Creation-Date: 2026-09-04 02:44+0000\n"
 "PO-Revision-Date: 2020-04-04 15:11+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -402,23 +402,23 @@ msgstr "일시 정지됨"
 msgid "Superseeding"
 msgstr "수퍼시딩"
 
-#: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
-#: src/tracker/httptracker.cpp:388
+#: src/tracker/httptracker.cpp:251 src/tracker/httptracker.cpp:267
+#: src/tracker/httptracker.cpp:391
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "트래커에서 잘못된 응답을 받음"
 
-#: src/tracker/httptracker.cpp:258
+#: src/tracker/httptracker.cpp:261
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "트래커에서 잘못된 데이터를 받음"
 
-#: src/tracker/httptracker.cpp:403
+#: src/tracker/httptracker.cpp:406
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "잘못된 트래커 URL"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:326
+#: src/tracker/httptracker.cpp:466 src/tracker/udptracker.cpp:326
 #: src/tracker/udptracker.cpp:333
 #, kde-format
 msgid "Timeout contacting tracker %1"

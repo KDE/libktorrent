@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-17 00:45+0000\n"
+"POT-Creation-Date: 2026-09-04 02:44+0000\n"
 "PO-Revision-Date: 2022-11-27 22:23+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -403,23 +403,23 @@ msgstr "შეჩერებულია"
 msgid "Superseeding"
 msgstr "Superseeding"
 
-#: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
-#: src/tracker/httptracker.cpp:388
+#: src/tracker/httptracker.cpp:251 src/tracker/httptracker.cpp:267
+#: src/tracker/httptracker.cpp:391
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "ტრეკერის პასუხი არასწორია"
 
-#: src/tracker/httptracker.cpp:258
+#: src/tracker/httptracker.cpp:261
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "ტრეკერის არასწორი მონაცემები"
 
-#: src/tracker/httptracker.cpp:403
+#: src/tracker/httptracker.cpp:406
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "ტრეკერის არასწორი URL"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:326
+#: src/tracker/httptracker.cpp:466 src/tracker/udptracker.cpp:326
 #: src/tracker/udptracker.cpp:333
 #, kde-format
 msgid "Timeout contacting tracker %1"

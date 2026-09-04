@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-17 00:45+0000\n"
+"POT-Creation-Date: 2026-09-04 02:44+0000\n"
 "PO-Revision-Date: 2024-06-07 11:37+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -405,23 +405,23 @@ msgstr "Пауза"
 msgid "Superseeding"
 msgstr "Суперкачване"
 
-#: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
-#: src/tracker/httptracker.cpp:388
+#: src/tracker/httptracker.cpp:251 src/tracker/httptracker.cpp:267
+#: src/tracker/httptracker.cpp:391
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Невалиден отговор от координиращия сървър"
 
-#: src/tracker/httptracker.cpp:258
+#: src/tracker/httptracker.cpp:261
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Невалидни данни от координиращия сървър"
 
-#: src/tracker/httptracker.cpp:403
+#: src/tracker/httptracker.cpp:406
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Невалиден адрес на координиращия сървър"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:326
+#: src/tracker/httptracker.cpp:466 src/tracker/udptracker.cpp:326
 #: src/tracker/udptracker.cpp:333
 #, kde-format
 msgid "Timeout contacting tracker %1"
