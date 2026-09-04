@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-16 00:44+0000\n"
+"POT-Creation-Date: 2026-09-04 00:44+0000\n"
 "PO-Revision-Date: 2025-01-15 23:54+0000\n"
 "Last-Translator: Andrius Štikonas <andrius@stikonas.eu>\n"
 "Language-Team: Lithuanian <kde-i18n-doc@kde.org>\n"
@@ -409,23 +409,23 @@ msgstr "Pristabdyta"
 msgid "Superseeding"
 msgstr "Supersėjimas"
 
-#: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
-#: src/tracker/httptracker.cpp:388
+#: src/tracker/httptracker.cpp:251 src/tracker/httptracker.cpp:267
+#: src/tracker/httptracker.cpp:391
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Klaidingas atsakymas iš vedlio"
 
-#: src/tracker/httptracker.cpp:258
+#: src/tracker/httptracker.cpp:261
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Klaidingi duomenys iš vedlio"
 
-#: src/tracker/httptracker.cpp:403
+#: src/tracker/httptracker.cpp:406
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Klaidingas vedlio URL"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:322
+#: src/tracker/httptracker.cpp:466 src/tracker/udptracker.cpp:322
 #: src/tracker/udptracker.cpp:329
 #, kde-format
 msgid "Timeout contacting tracker %1"

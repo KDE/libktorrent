@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-16 00:44+0000\n"
+"POT-Creation-Date: 2026-09-04 00:44+0000\n"
 "PO-Revision-Date: 2021-09-17 20:07+0530\n"
 "Last-Translator: Raghavendra Kamath <raghu@raghukamath.com>\n"
 "Language-Team: kde-hindi\n"
@@ -427,25 +427,25 @@ msgstr "ठहरा"
 msgid "Superseeding"
 msgstr "गति"
 
-#: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
-#: src/tracker/httptracker.cpp:388
+#: src/tracker/httptracker.cpp:251 src/tracker/httptracker.cpp:267
+#: src/tracker/httptracker.cpp:391
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr ""
 
-#: src/tracker/httptracker.cpp:258
+#: src/tracker/httptracker.cpp:261
 #, fuzzy, kde-format
 #| msgid "Invalid URL: %1"
 msgid "Invalid data from tracker"
 msgstr "अवैध यूआरएल: %1"
 
-#: src/tracker/httptracker.cpp:403
+#: src/tracker/httptracker.cpp:406
 #, fuzzy, kde-format
 #| msgid "Invalid URL: %1"
 msgid "Invalid tracker URL"
 msgstr "अवैध यूआरएल: %1"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:322
+#: src/tracker/httptracker.cpp:466 src/tracker/udptracker.cpp:322
 #: src/tracker/udptracker.cpp:329
 #, kde-format
 msgid "Timeout contacting tracker %1"

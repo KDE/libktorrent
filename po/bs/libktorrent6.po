@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-16 00:44+0000\n"
+"POT-Creation-Date: 2026-09-04 00:44+0000\n"
 "PO-Revision-Date: 2015-02-04 15:43+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: bosanski <bs@li.org>\n"
@@ -413,23 +413,23 @@ msgstr "Pauzirano"
 msgid "Superseeding"
 msgstr "Supersijanje"
 
-#: src/tracker/httptracker.cpp:248 src/tracker/httptracker.cpp:264
-#: src/tracker/httptracker.cpp:388
+#: src/tracker/httptracker.cpp:251 src/tracker/httptracker.cpp:267
+#: src/tracker/httptracker.cpp:391
 #, kde-format
 msgid "Invalid response from tracker"
 msgstr "Neispravan odgovor sa pratioca"
 
-#: src/tracker/httptracker.cpp:258
+#: src/tracker/httptracker.cpp:261
 #, kde-format
 msgid "Invalid data from tracker"
 msgstr "Neispravni podaci sa pratioca"
 
-#: src/tracker/httptracker.cpp:403
+#: src/tracker/httptracker.cpp:406
 #, kde-format
 msgid "Invalid tracker URL"
 msgstr "Neispravan URL pratioca"
 
-#: src/tracker/httptracker.cpp:463 src/tracker/udptracker.cpp:322
+#: src/tracker/httptracker.cpp:466 src/tracker/udptracker.cpp:322
 #: src/tracker/udptracker.cpp:329
 #, kde-format
 msgid "Timeout contacting tracker %1"
