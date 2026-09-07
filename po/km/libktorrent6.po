@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-04 00:44+0000\n"
+"POT-Creation-Date: 2026-09-07 00:44+0000\n"
 "PO-Revision-Date: 2012-07-04 08:47+0700\n"
 "Last-Translator: Sophea <sophea@khmeros.info>\n"
 "Language-Team: Khmer <>\n"
@@ -67,7 +67,7 @@ msgstr "ពិនិត្យ​ទិន្នន័យ​​"
 #: src/datachecker/multidatachecker.cpp:202
 #: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:666
 #: src/diskio/multifilecache.cpp:704 src/torrent/torrentcreator.cpp:111
-#: src/torrent/torrentcreator.cpp:227 src/torrent/torrentcreator.cpp:260
+#: src/torrent/torrentcreator.cpp:226 src/torrent/torrentcreator.cpp:260
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "មិន​អាច​បើក​ឯកសារ %1 ៖​ %2 បានទេ"

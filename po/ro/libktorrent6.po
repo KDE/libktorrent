@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent(2)\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-04 00:44+0000\n"
+"POT-Creation-Date: 2026-09-07 00:44+0000\n"
 "PO-Revision-Date: 2026-02-05 10:47+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -63,7 +63,7 @@ msgstr "Se verifică datele"
 #: src/datachecker/multidatachecker.cpp:202
 #: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:666
 #: src/diskio/multifilecache.cpp:704 src/torrent/torrentcreator.cpp:111
-#: src/torrent/torrentcreator.cpp:227 src/torrent/torrentcreator.cpp:260
+#: src/torrent/torrentcreator.cpp:226 src/torrent/torrentcreator.cpp:260
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "Nu se poate deschide fișierul %1: %2"

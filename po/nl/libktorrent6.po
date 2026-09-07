@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-04 00:44+0000\n"
+"POT-Creation-Date: 2026-09-07 00:44+0000\n"
 "PO-Revision-Date: 2013-04-09 17:20+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: Dutch <kde-i18n-nl@kde.org>\n"
@@ -67,7 +67,7 @@ msgstr "Gegevens controleren"
 #: src/datachecker/multidatachecker.cpp:202
 #: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:666
 #: src/diskio/multifilecache.cpp:704 src/torrent/torrentcreator.cpp:111
-#: src/torrent/torrentcreator.cpp:227 src/torrent/torrentcreator.cpp:260
+#: src/torrent/torrentcreator.cpp:226 src/torrent/torrentcreator.cpp:260
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "Kan bestand %1 niet openen: %2"

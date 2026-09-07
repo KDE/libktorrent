@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-04 00:44+0000\n"
+"POT-Creation-Date: 2026-09-07 00:44+0000\n"
 "PO-Revision-Date: 2010-03-17 12:32+0530\n"
 "Last-Translator: Danishka Navin\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -61,7 +61,7 @@ msgstr ""
 #: src/datachecker/multidatachecker.cpp:202
 #: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:666
 #: src/diskio/multifilecache.cpp:704 src/torrent/torrentcreator.cpp:111
-#: src/torrent/torrentcreator.cpp:227 src/torrent/torrentcreator.cpp:260
+#: src/torrent/torrentcreator.cpp:226 src/torrent/torrentcreator.cpp:260
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr ""

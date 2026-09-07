@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-network-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-04 00:44+0000\n"
+"POT-Creation-Date: 2026-09-07 00:44+0000\n"
 "PO-Revision-Date: 2024-03-16 14:01+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -71,7 +71,7 @@ msgstr "Veri denetleniyor"
 #: src/datachecker/multidatachecker.cpp:202
 #: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:666
 #: src/diskio/multifilecache.cpp:704 src/torrent/torrentcreator.cpp:111
-#: src/torrent/torrentcreator.cpp:227 src/torrent/torrentcreator.cpp:260
+#: src/torrent/torrentcreator.cpp:226 src/torrent/torrentcreator.cpp:260
 #, kde-format
 msgid "Cannot open file %1: %2"
 msgstr "%1 dosyası açılamıyor: %2"
