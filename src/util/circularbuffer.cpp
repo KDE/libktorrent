@@ -25,21 +25,21 @@ CircularBuffer::~CircularBuffer()
     delete[] data;
 }
 
-bt::Uint32 CircularBuffer::read(bt::Uint8 *ptr, bt::Uint32 max_len)
+bt::Uint32 CircularBuffer::read(QSpan<std::byte> buf)
 {
     if (empty()) {
         return 0;
     }
 
-    const bt::Uint32 to_read = buf_size < max_len ? buf_size : max_len;
+    const bt::Uint32 to_read = buf_size < buf.size() ? buf_size : buf.size();
 
     const auto r1 = firstRange();
     if (r1.size() >= to_read) {
-        memcpy(ptr, r1.data(), to_read);
+        memcpy(buf.data(), r1.data(), to_read);
     } else { // s < to_read
-        memcpy(ptr, r1.data(), r1.size());
+        memcpy(buf.data(), r1.data(), r1.size());
         const auto r2 = secondRange();
-        memcpy(ptr + r1.size(), r2.data(), to_read - r1.size());
+        memcpy(buf.data() + r1.size(), r2.data(), to_read - r1.size());
     }
 
     start = (start + to_read) % buf_capacity;

@@ -7,9 +7,11 @@
 #ifndef BT_CIRCULARBUFFER_H
 #define BT_CIRCULARBUFFER_H
 
+#include <cstddef>
 #include <utility>
 
 #include <QByteArrayView>
+#include <QSpan>
 
 #include <ktorrent_export.h>
 #include <util/constants.h>
@@ -28,11 +30,10 @@ public:
 
     /*!
         Read up to max_len bytes from the buffer and store it in data
-        \param ptr The place to store the data
-        \param max_len Maximum amount to read
+        \param buf The place to store the data
         \return The amount read
     */
-    virtual bt::Uint32 read(bt::Uint8 *ptr, bt::Uint32 max_len);
+    virtual bt::Uint32 read(QSpan<std::byte> buf);
 
     /*!
         Write bytes from \c buf and store it in the window. Returns the number of bytes written.

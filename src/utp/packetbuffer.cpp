@@ -68,7 +68,7 @@ bt::Uint32 PacketBuffer::fillData(bt::CircularBuffer &cbuf, bt::Uint32 to_read)
 
     // Data is put at the end of the buffer, so we can put headers easily in front of it
     payload = (buffer->data() + MAX_SIZE) - to_read;
-    cbuf.read(payload, to_read);
+    cbuf.read(as_writable_bytes(QSpan{payload, to_read}));
     size = to_read;
 
     header = extension = payload;

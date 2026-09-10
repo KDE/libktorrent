@@ -4,11 +4,12 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <cstddef>
+#include <ctime>
+
 #include <QObject>
 #include <QRandomGenerator>
 #include <QTest>
-
-#include <ctime>
 
 #include <util/circularbuffer.h>
 #include <util/log.h>
@@ -48,8 +49,8 @@ private Q_SLOTS:
         QCOMPARE(wnd.write(data), 13);
         QCOMPARE(wnd.write(data2), 6);
 
-        bt::Uint8 ret[19];
-        QCOMPARE(wnd.read(ret, 19), 19);
+        std::byte ret[19];
+        QCOMPARE(wnd.read(ret), 19);
         QCOMPARE(wnd.size(), 0);
         QCOMPARE(memcmp(ret, data.data(), 13), 0);
         QCOMPARE(memcmp(ret + 13, data2.data(), 6), 0);
@@ -60,7 +61,7 @@ private Q_SLOTS:
         QCOMPARE(wnd.write(data2), 6);
         QCOMPARE(wnd.size(), 19);
 
-        QCOMPARE(wnd.read(ret, 19), 19);
+        QCOMPARE(wnd.read(ret), 19);
         QCOMPARE(wnd.size(), 0);
         QCOMPARE(memcmp(ret, data.data(), 13), 0);
         QCOMPARE(memcmp(ret + 13, data2.data(), 6), 0);
@@ -79,11 +80,11 @@ private Q_SLOTS:
 
             QCOMPARE(cbuf.write(QByteArrayView{data}.first(r)), expected);
 
-            bt::Uint8 ret[20];
+            std::byte ret[20];
             memset(ret, 0, 20);
             r = 1 + QRandomGenerator::global()->bounded(20);
             expected = qMin(r, cbuf.size());
-            QCOMPARE(cbuf.read(ret, expected), expected);
+            QCOMPARE(cbuf.read(QSpan{ret}.first(expected)), expected);
         }
     }
 
