@@ -21,7 +21,7 @@ namespace net
     One end needs to be part of the poll or select, and the other end will send dummy data to it.
     Waking up the select or poll call.
 */
-class KTORRENT_EXPORT WakeUpPipe : public bt::Pipe, public PollClient
+class KTORRENT_EXPORT WakeUpPipe : public PollClient
 {
 public:
     WakeUpPipe();
@@ -35,7 +35,7 @@ public:
 
     int fd() const override
     {
-        return readerSocket();
+        return pipe.readerSocket();
     }
 
     void reset() override;
@@ -51,6 +51,9 @@ public:
 protected:
     mutable QMutex mutex;
     bool woken_up;
+
+private:
+    bt::Pipe pipe;
 };
 
 }

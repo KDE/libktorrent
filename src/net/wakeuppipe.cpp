@@ -28,7 +28,7 @@ void WakeUpPipe::wakeUp()
     }
 
     char data[] = "d";
-    if (bt::Pipe::write((const bt::Uint8 *)data, 1) != 1) {
+    if (pipe.write((const bt::Uint8 *)data, 1) != 1) {
         Out(SYS_GEN | LOG_DEBUG) << "WakeUpPipe: wake up failed " << endl;
     } else {
         woken_up = true;
@@ -39,7 +39,7 @@ void WakeUpPipe::handleData()
 {
     const QMutexLocker lock(&mutex);
     bt::Uint8 buf[20];
-    const int ret = bt::Pipe::read(buf, 20);
+    const int ret = pipe.read(buf, 20);
     if (ret < 0) {
         Out(SYS_GEN | LOG_DEBUG) << "WakeUpPipe: read failed " << endl;
     }

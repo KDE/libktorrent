@@ -22,7 +22,7 @@ class KTORRENT_EXPORT Pipe
 {
 public:
     Pipe();
-    virtual ~Pipe();
+    ~Pipe();
 
     //! Get the reader socket
     [[nodiscard]] int readerSocket() const
