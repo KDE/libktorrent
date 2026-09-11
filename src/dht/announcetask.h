@@ -14,33 +14,6 @@ namespace dht
 class Database;
 
 /*!
- * \headerfile dht/announcetask.h
- * \brief Stores the response of a GetPeersReq to be used in a follow-up AnnounceReq.
- */
-class KBucketEntryAndToken : public KBucketEntry
-{
-    QByteArray token;
-
-public:
-    KBucketEntryAndToken()
-    {
-    }
-    KBucketEntryAndToken(const KBucketEntry &e, const QByteArray &token)
-        : KBucketEntry(e)
-        , token(token)
-    {
-    }
-    ~KBucketEntryAndToken() override
-    {
-    }
-
-    [[nodiscard]] const QByteArray &getToken() const
-    {
-        return token;
-    }
-};
-
-/*!
     \headerfile dht/announcetask.h
     \author Joris Guisson <joris.guisson@gmail.com>
     \brief Task that announces we are downloading a torrent and gets peers for it.
@@ -67,6 +40,18 @@ private:
     void handleNodes(QByteArrayView nodes, int ip_version);
 
 private:
+    /*!
+     * \internal
+     * \headerfile dht/announcetask.h
+     * \brief Stores the response of a GetPeersReq to be used in a follow-up AnnounceReq.
+     */
+    struct KBucketEntryAndToken {
+        KBucketEntry bucket_entry;
+        QByteArray token;
+
+        bool operator<(const KBucketEntryAndToken &entry) const;
+    };
+
     dht::Key info_hash;
     bt::Uint16 port;
     std::set<KBucketEntryAndToken> answered; // nodes which have answered with values

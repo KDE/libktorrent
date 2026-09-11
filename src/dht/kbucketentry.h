@@ -41,7 +41,7 @@ public:
     KBucketEntry(const KBucketEntry &other);
 
     //! Destructor
-    virtual ~KBucketEntry();
+    ~KBucketEntry();
 
     /*!
      * Assignment operator.

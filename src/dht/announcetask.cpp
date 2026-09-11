@@ -87,7 +87,7 @@ void AnnounceTask::callFinished(RPCCall *c, RPCMsg *rsp)
     // add the peer who responded to the answered list, so we can do an announce
     const KBucketEntry e(rsp->getOrigin(), rsp->getID());
     if (!answered_visited.contains(e)) {
-        answered.insert(KBucketEntryAndToken(e, gpr->getToken()));
+        answered.emplace(e, gpr->getToken());
     }
 }
 
@@ -104,12 +104,12 @@ void AnnounceTask::update()
     */
     while (!answered.empty() && canDoRequest()) {
         const std::set<KBucketEntryAndToken>::iterator itr = answered.begin();
-        if (!answered_visited.contains(*itr)) {
-            auto anr = std::make_unique<AnnounceReq>(node->getOurID(), info_hash, port, itr->getToken());
-            anr->setOrigin(itr->getAddress());
+        if (!answered_visited.contains(itr->bucket_entry)) {
+            auto anr = std::make_unique<AnnounceReq>(node->getOurID(), info_hash, port, itr->token);
+            anr->setOrigin(itr->bucket_entry.getAddress());
             //      Out(SYS_DHT|LOG_DEBUG) << "DHT: Announcing to " << e.getAddress().toString() << endl;
             rpcCall(std::move(anr));
-            answered_visited.insert(*itr);
+            answered_visited.insert(itr->bucket_entry);
         }
         answered.erase(itr);
     }
@@ -150,5 +150,10 @@ bool AnnounceTask::takeItem(DBItem &item)
     item = returned_items.first();
     returned_items.pop_front();
     return true;
+}
+
+bool AnnounceTask::KBucketEntryAndToken::operator<(const KBucketEntryAndToken &other) const
+{
+    return bucket_entry < other.bucket_entry;
 }
 }
