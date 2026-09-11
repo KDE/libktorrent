@@ -27,7 +27,7 @@ public:
     ~ExtractFileJob() override;
 
     void start() override;
-    virtual void kill(bool quietly = true);
+    void kill(bool quietly = true);
 
 private:
     void extractThreadDone();

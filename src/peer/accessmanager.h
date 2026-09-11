@@ -30,7 +30,7 @@ class KTORRENT_EXPORT AccessManager
     AccessManager();
 
 public:
-    virtual ~AccessManager();
+    ~AccessManager();
 
     //! Get the singleton instance
     static AccessManager &instance();

@@ -35,7 +35,7 @@ public:
     /*!
      * Destructor, closes the file.
      */
-    virtual ~File();
+    ~File();
 
     File(const File &) = delete;
     File &operator=(const File &) = delete;

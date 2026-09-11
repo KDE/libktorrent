@@ -42,7 +42,7 @@ class KTORRENT_EXPORT Warning
 
 public:
     Warning(const QString &msg);
-    virtual ~Warning();
+    ~Warning();
 
     [[nodiscard]] QString toString() const
     {

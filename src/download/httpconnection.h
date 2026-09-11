@@ -150,7 +150,7 @@ private:
         int response_code;
 
         HttpGet(const QString &host, const QString &path, const QString &query, bt::Uint64 start, bt::Uint64 len, bool using_proxy);
-        virtual ~HttpGet();
+        ~HttpGet();
 
         bool onDataReady(QByteArrayView buf);
         [[nodiscard]] bool finished() const

@@ -29,7 +29,7 @@ class KTORRENT_EXPORT SocketMonitor
     SocketMonitor();
 
 public:
-    virtual ~SocketMonitor();
+    ~SocketMonitor();
 
     //! Add a new socket, will start the threads if necessary
     void add(TrafficShapedSocket *sock);

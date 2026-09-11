@@ -34,12 +34,15 @@ public:
     {
     }
 
-    virtual ~CongestionTestServer()
+    ~CongestionTestServer() override
     {
     }
 
-    virtual bool sendTo(QByteArrayView data, const net::Address &addr)
+    bool sendTo(Connection::Ptr conn, const PacketBuffer &packet) override
     {
+        Q_UNUSED(conn)
+        Q_UNUSED(packet)
+        return false;
     }
 
     void setCongestionDelay(int cd)
@@ -65,7 +68,7 @@ public:
     {
     }
 
-    virtual void run()
+    void run() override
     {
         char test[] = TEST_DATA;
         int sent = 0;

@@ -26,7 +26,7 @@ class Speed
 
 public:
     Speed();
-    virtual ~Speed();
+    ~Speed();
 
     void onData(bt::Uint32 bytes, bt::TimeStamp ts);
     void update(bt::TimeStamp now);

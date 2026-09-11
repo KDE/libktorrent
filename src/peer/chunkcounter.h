@@ -25,7 +25,7 @@ class KTORRENT_EXPORT ChunkCounter
 
 public:
     ChunkCounter(Uint32 num_chunks);
-    virtual ~ChunkCounter();
+    ~ChunkCounter();
 
     /*!
      * If a bit in the bitset is one, increment the corresponding counter.

@@ -31,7 +31,7 @@ public:
     DBItem();
     DBItem(const net::Address &addr);
     DBItem(const DBItem &item);
-    virtual ~DBItem();
+    ~DBItem();
 
     //! See if the item is expired
     [[nodiscard]] bool expired(bt::TimeStamp now) const;
@@ -68,7 +68,7 @@ class Database
 {
 public:
     Database();
-    virtual ~Database();
+    ~Database();
 
     /*!
      * Store an entry in the database

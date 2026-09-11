@@ -37,7 +37,7 @@ public:
     Address(const QString &host, bt::Uint16 port);
     Address(const QHostAddress &addr, bt::Uint16 port);
     Address(const Address &addr);
-    virtual ~Address();
+    ~Address();
 
     /*!
      * Constructs an Address from a byte array containing a compact IPv4 address.

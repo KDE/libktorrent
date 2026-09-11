@@ -25,7 +25,7 @@ public:
      * Constructs StatsFile object and calls readSync().
      */
     StatsFile(const QString &filename);
-    virtual ~StatsFile();
+    ~StatsFile();
 
     QString readString(const QString &key);
 

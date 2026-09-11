@@ -72,7 +72,7 @@ class KTORRENT_EXPORT Choker
 
 public:
     Choker(PeerManager &pman, ChunkManager &cman);
-    virtual ~Choker();
+    ~Choker();
 
     /*!
      * Update which peers are choked or not.

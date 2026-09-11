@@ -58,7 +58,7 @@ class KTORRENT_EXPORT ResourceManager
 {
 public:
     ResourceManager(Uint32 max_active_resources);
-    virtual ~ResourceManager();
+    ~ResourceManager();
 
     /*!
         Set max active resources

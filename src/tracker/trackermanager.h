@@ -75,7 +75,7 @@ public:
     /*!
      * Do a scrape on the current tracker
      * */
-    virtual void scrape();
+    void scrape();
 
 protected:
     void saveCustomURLs();

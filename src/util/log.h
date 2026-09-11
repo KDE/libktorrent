@@ -75,7 +75,7 @@ public:
     /*!
      * Destructor, closes the file.
      */
-    virtual ~Log();
+    ~Log();
 
     /*!
      * Enable or disable the printing of log messages to the standard

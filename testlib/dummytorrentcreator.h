@@ -29,7 +29,7 @@ class DummyTorrentCreator
 {
 public:
     DummyTorrentCreator();
-    virtual ~DummyTorrentCreator();
+    ~DummyTorrentCreator();
 
     //! Set the tracker URL's (by default http://localhost:5000/announce is used)
     void setTrackers(const QStringList &urls)

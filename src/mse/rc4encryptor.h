@@ -34,7 +34,7 @@ class KTORRENT_EXPORT RC4Encryptor
 {
 public:
     RC4Encryptor(const bt::SHA1Hash &dkey, const bt::SHA1Hash &ekey);
-    virtual ~RC4Encryptor();
+    ~RC4Encryptor();
 
     /*!
      * Decrypt some data, decryption happens in place (original data gets overwritten)

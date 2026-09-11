@@ -55,7 +55,7 @@ public:
     }
 
 private:
-    virtual void onResult(KJob *j);
+    void onResult(KJob *j);
 };
 }
 

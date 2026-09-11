@@ -26,7 +26,7 @@ class OutputQueue
 {
 public:
     OutputQueue();
-    virtual ~OutputQueue();
+    ~OutputQueue();
 
     /*!
      * Add an entry to the queue.

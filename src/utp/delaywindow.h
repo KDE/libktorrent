@@ -24,7 +24,7 @@ class KTORRENT_EXPORT DelayWindow
 {
 public:
     DelayWindow();
-    virtual ~DelayWindow();
+    ~DelayWindow();
 
     //! Update the window with a new packet, returns the base delay in microseconds
     bt::Uint32 update(const Header *hdr, bt::TimeStamp receive_time);

@@ -34,7 +34,7 @@ public:
     using Data = Array<bt::Uint8>;
 
     Buffer(Data data, bt::Uint32 fill, QWeakPointer<BufferPool> pool);
-    virtual ~Buffer();
+    ~Buffer();
 
     //! Get the buffers capacity
     [[nodiscard]] bt::Uint32 capacity() const
@@ -100,7 +100,7 @@ class KTORRENT_EXPORT BufferPool
 {
 public:
     BufferPool();
-    virtual ~BufferPool();
+    ~BufferPool();
 
     /*!
      * Set the weak pointer to the buffer pool itself.

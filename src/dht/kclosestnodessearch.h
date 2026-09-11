@@ -35,7 +35,7 @@ public:
      * \param max_entries The maximum number of entries can be in the map
      */
     KClosestNodesSearch(const dht::Key &key, bt::Uint32 max_entries);
-    virtual ~KClosestNodesSearch();
+    ~KClosestNodesSearch();
 
     using Itr = std::map<dht::Key, KBucketEntry>::iterator;
     using CItr = std::map<dht::Key, KBucketEntry>::const_iterator;

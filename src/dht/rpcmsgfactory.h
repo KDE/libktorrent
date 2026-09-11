@@ -35,7 +35,7 @@ class KTORRENT_EXPORT RPCMsgFactory
 {
 public:
     RPCMsgFactory();
-    virtual ~RPCMsgFactory();
+    ~RPCMsgFactory();
 
     /*!
      * Creates a message out of a BDictNode.

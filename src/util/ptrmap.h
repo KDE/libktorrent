@@ -38,7 +38,7 @@ public:
     /*!
      * Destructor. Will delete all objects, if auto deletion is on.
      */
-    virtual ~PtrMap()
+    ~PtrMap()
     {
         clear();
     }
@@ -160,7 +160,7 @@ public:
      * \param key The key
      * \return true if an erase took place
      */
-    virtual bool erase(const Key &key)
+    bool erase(const Key &key)
     {
         const iterator i = pmap.find(key);
         if (i == pmap.end()) {

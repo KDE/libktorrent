@@ -24,7 +24,7 @@ class KTORRENT_EXPORT ConnectionLimit
 {
 public:
     ConnectionLimit();
-    virtual ~ConnectionLimit();
+    ~ConnectionLimit();
 
     //! Get the total number of connections currently in use
     [[nodiscard]] bt::Uint32 totalConnections() const

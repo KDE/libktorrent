@@ -109,7 +109,7 @@ public:
      */
     BEncoder(QIODevice *dev);
 
-    virtual ~BEncoder();
+    ~BEncoder();
 
     /*!
      * Begin a dictionary.Should have a corresponding end call.

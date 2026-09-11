@@ -25,7 +25,7 @@ class MetadataDownload
 {
 public:
     MetadataDownload(UTMetaData *ext, Uint32 size);
-    virtual ~MetadataDownload();
+    ~MetadataDownload();
 
     //! A reject of a piece was received
     void reject(Uint32 piece);

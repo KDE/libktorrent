@@ -36,7 +36,7 @@ public:
      * If \a verbose is true, debug output is written to the log.
      */
     BDecoder(QByteArrayView data, bool verbose);
-    virtual ~BDecoder();
+    ~BDecoder();
 
     /*!
      * Decode the data, the root node gets returned.

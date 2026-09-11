@@ -29,7 +29,7 @@ class SocketGroup
 
 public:
     SocketGroup(bt::Uint32 limit, bt::Uint32 assured_rate);
-    virtual ~SocketGroup();
+    ~SocketGroup();
 
     //! Clear the lists of sockets
     void clear()

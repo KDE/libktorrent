@@ -65,7 +65,7 @@ class KTORRENT_EXPORT RemoteWindow
 {
 public:
     RemoteWindow();
-    virtual ~RemoteWindow();
+    ~RemoteWindow();
 
     /*!
      * A packet was received (update window size and check for acks)

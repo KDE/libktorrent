@@ -26,7 +26,7 @@ class KTORRENT_EXPORT Timer
 public:
     Timer();
     Timer(const Timer &t);
-    virtual ~Timer();
+    ~Timer();
 
     [[nodiscard]] TimeStamp getLast() const
     {

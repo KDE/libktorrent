@@ -35,7 +35,7 @@ public:
         \param num_chunks The number of chunks
     */
     SuperSeeder(Uint32 num_chunks);
-    virtual ~SuperSeeder();
+    ~SuperSeeder();
 
     /*!
         A HAVE message was sent by a Peer

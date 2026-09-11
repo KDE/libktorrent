@@ -25,7 +25,7 @@ public:
     PeerID();
     PeerID(const char *pid);
     PeerID(const PeerID &pid);
-    virtual ~PeerID();
+    ~PeerID();
 
     PeerID &operator=(const PeerID &pid);
 

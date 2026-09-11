@@ -28,7 +28,7 @@ public:
     ~WakeUpPipe() override;
 
     //! Wake up the other socket
-    virtual void wakeUp();
+    void wakeUp();
 
     //! Read all the dummy data
     void handleData() override;

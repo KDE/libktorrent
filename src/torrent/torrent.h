@@ -64,7 +64,7 @@ class KTORRENT_EXPORT Torrent
 public:
     Torrent();
     Torrent(const bt::SHA1Hash &hash);
-    virtual ~Torrent();
+    ~Torrent();
 
     /*!
      * Set the FilePriorityListener

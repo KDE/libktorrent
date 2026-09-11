@@ -20,7 +20,7 @@ class KBucketTable
 {
 public:
     KBucketTable(const Key &our_id);
-    virtual ~KBucketTable();
+    ~KBucketTable();
 
     //! Insert a KBucketEntry into the table
     void insert(const KBucketEntry &entry, RPCServerInterface *srv);

@@ -26,19 +26,19 @@ class KTORRENT_EXPORT CircularBuffer
 {
 public:
     CircularBuffer(bt::Uint32 cap = 64 * 1024);
-    virtual ~CircularBuffer();
+    ~CircularBuffer();
 
     /*!
         Read up to max_len bytes from the buffer and store it in data
         \param buf The place to store the data
         \return The amount read
     */
-    virtual bt::Uint32 read(QSpan<std::byte> buf);
+    bt::Uint32 read(QSpan<std::byte> buf);
 
     /*!
         Write bytes from \c buf and store it in the window. Returns the number of bytes written.
     */
-    virtual bt::Uint32 write(QByteArrayView buf);
+    bt::Uint32 write(QByteArrayView buf);
 
     //! Is the buffer empty
     [[nodiscard]] bool empty() const

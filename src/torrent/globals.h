@@ -35,7 +35,7 @@ class Server;
 class KTORRENT_EXPORT Globals
 {
 public:
-    virtual ~Globals();
+    ~Globals();
 
     bool initTCPServer(Uint16 port);
     void shutdownTCPServer();

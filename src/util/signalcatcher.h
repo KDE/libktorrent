@@ -53,7 +53,7 @@ class KTORRENT_EXPORT BusErrorGuard
 {
 public:
     BusErrorGuard();
-    virtual ~BusErrorGuard();
+    ~BusErrorGuard();
 };
 
 /*!

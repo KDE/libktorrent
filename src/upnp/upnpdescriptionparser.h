@@ -22,7 +22,7 @@ class UPnPDescriptionParser
 {
 public:
     UPnPDescriptionParser();
-    virtual ~UPnPDescriptionParser();
+    ~UPnPDescriptionParser();
 
     /*!
      * Parse the xml description.

@@ -52,7 +52,7 @@ class KTORRENT_EXPORT LocalWindow
 {
 public:
     LocalWindow(bt::Uint32 cap = DEFAULT_CAPACITY);
-    virtual ~LocalWindow();
+    ~LocalWindow();
 
     LocalWindow(const LocalWindow &) = delete;
     LocalWindow &operator=(const LocalWindow &) = delete;

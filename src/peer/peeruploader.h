@@ -38,7 +38,7 @@ public:
      * \param peer The Peer
      */
     PeerUploader(Peer *peer);
-    virtual ~PeerUploader();
+    ~PeerUploader();
 
     /*!
      * Add a Request to the list of Requests.

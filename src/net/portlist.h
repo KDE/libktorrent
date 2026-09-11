@@ -80,7 +80,7 @@ class KTORRENT_EXPORT PortList : public QList<Port>
 
 public:
     PortList();
-    virtual ~PortList();
+    ~PortList();
 
     /*!
      * When a port is in use, this function needs to be called.
