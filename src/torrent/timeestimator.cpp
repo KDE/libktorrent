@@ -106,7 +106,7 @@ int TimeEstimator::estimateWINX()
 int TimeEstimator::estimateMAVG()
 {
     if (m_samples.count() > 0) {
-        double lavg;
+        double lavg{};
 
         if (m_lastAvg == 0) {
             lavg = m_samples.sum() / m_samples.count();

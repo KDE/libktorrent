@@ -62,7 +62,7 @@ BigInt BigInt::random()
 
 Uint32 BigInt::toBuffer(Uint8 *buf, Uint32 /*max_size*/) const
 {
-    size_t foo;
+    size_t foo{};
     mpz_export(buf, &foo, 1, 1, 1, 0, val);
     return foo;
 }

@@ -136,7 +136,7 @@ void UPnPMCastSocket::onReadyRead()
         // KDatagramSocket wrongly handles UDP packets with no payload
         // so we need to deal with it oursleves
         const int fd = socketDescriptor();
-        char tmp;
+        char tmp{};
 #ifndef Q_OS_WIN
         ::read(fd, &tmp, 1);
 #else

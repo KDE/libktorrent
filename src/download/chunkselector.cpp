@@ -165,7 +165,7 @@ bool ChunkSelector::select(PieceDownloader *pd, Uint32 &chunk)
             //   - it is downloading very slowly
             if (dl < sel_dl) {
                 const Uint32 max_peers_per_chunk = c->isPreview() ? 3 : 2;
-                ChunkDownload *cd;
+                ChunkDownload *cd = nullptr;
                 if (dl < max_peers_per_chunk || downer->endgameMode() || ((cd = downer->download(i)) && cd->getDownloadSpeed() < 100)) {
                     sel = i;
                     sel_dl = dl;

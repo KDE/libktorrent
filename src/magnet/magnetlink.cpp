@@ -155,21 +155,20 @@ Uint8 MagnetLink::charToHex(const QChar &ch)
 
 QString MagnetLink::base32ToHexString(const QString &s)
 {
-    Uint32 part;
-    Uint32 tmp;
     QString ret;
     QChar ch;
     QString str = s.toUpper();
     // 32 base32 chars -> 40 hex chars
     // 4 base32 chars -> 5 hex chars
     for (int i = 0; i < 8; i++) {
-        part = 0;
+        Uint32 part = 0;
         for (int j = 0; j < 4; j++) {
             ch = str[i * 4 + j];
             if (ch.isDigit() && (ch.digitValue() < 2 || ch.digitValue() > 7)) {
                 throw bt::Error(u"Invalid char"_s);
             }
 
+            Uint32 tmp{};
             if (ch.isDigit()) {
                 tmp = ch.digitValue() + 24;
             } else {
@@ -180,7 +179,7 @@ QString MagnetLink::base32ToHexString(const QString &s)
 
         // part is a Uint32 with 20 bits (5 hex)
         for (int j = 0; j < 5; j++) {
-            tmp = (part >> 4 * (4 - j)) & 0xf;
+            Uint32 tmp = (part >> 4 * (4 - j)) & 0xf;
             if (tmp >= 10) {
                 ret.append(QChar((tmp - 10) + 'a'));
             } else {
@@ -190,5 +189,4 @@ QString MagnetLink::base32ToHexString(const QString &s)
     }
     return ret;
 }
-
 }

@@ -57,7 +57,7 @@ void MagnetDownloader::start()
 
     const QList<QUrl> trackers_list = mlink.trackers();
     for (const QUrl &url : trackers_list) {
-        Tracker *tracker;
+        Tracker *tracker = nullptr;
         if (url.scheme() == QLatin1String("udp")) {
             tracker = new UDPTracker(url, this, tor.getPeerID(), 0);
         } else {
