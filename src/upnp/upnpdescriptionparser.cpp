@@ -47,8 +47,8 @@ public:
     bool endElement(const QStringView &namespaceUri, const QStringView &localName, const QStringView &qName);
     bool characters(const QStringView &chars);
 
-    bool interestingDeviceField(const QStringView &name);
-    bool interestingServiceField(const QStringView &name);
+    static bool interestingDeviceField(const QStringView &name);
+    static bool interestingServiceField(const QStringView &name);
 };
 
 UPnPDescriptionParser::UPnPDescriptionParser()
