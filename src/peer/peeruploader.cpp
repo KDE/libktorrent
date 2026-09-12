@@ -44,7 +44,7 @@ Uint32 PeerUploader::handleRequests(ChunkManager &cman)
         return ret;
     }
 
-    while (requests.size() > 0) {
+    while (!requests.isEmpty()) {
         const Request r = requests.front();
 
         Chunk *c = cman.getChunk(r.getIndex());

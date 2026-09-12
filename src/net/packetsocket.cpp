@@ -50,19 +50,19 @@ void PacketSocket::selectPacket()
 
     if (ctrl_packets_sent < 3) {
         // try to send another control packet
-        if (control_packets.size() > 0) {
+        if (!control_packets.empty()) {
             curr_packet = std::move(control_packets.front());
             control_packets.pop_front();
-        } else if (data_packets.size() > 0) {
+        } else if (!data_packets.empty()) {
             curr_packet = std::move(data_packets.front());
             data_packets.pop_front();
         }
     } else {
-        if (data_packets.size() > 0) {
+        if (!data_packets.empty()) {
             ctrl_packets_sent = 0;
             curr_packet = std::move(data_packets.front());
             data_packets.pop_front();
-        } else if (control_packets.size() > 0) {
+        } else if (!control_packets.empty()) {
             curr_packet = std::move(control_packets.front());
             control_packets.pop_front();
         }

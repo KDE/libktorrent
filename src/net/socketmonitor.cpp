@@ -131,7 +131,7 @@ void SocketMonitor::add(TrafficShapedSocket *sock)
         return;
     }
 
-    const bool start_threads = sockets.size() == 0;
+    const bool start_threads = sockets.empty();
     sockets.push_back(sock);
 
     if (start_threads) {
@@ -151,7 +151,7 @@ void SocketMonitor::add(TrafficShapedSocket *sock)
 void SocketMonitor::remove(TrafficShapedSocket *sock)
 {
     const QMutexLocker lock(&d->mutex);
-    if (sockets.size() == 0) {
+    if (sockets.empty()) {
         return;
     }
 

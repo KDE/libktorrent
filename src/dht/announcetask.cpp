@@ -80,7 +80,7 @@ void AnnounceTask::callFinished(RPCCall *c, RPCMsg *rsp)
         returned_items.append(i);
     }
 
-    if (items.size() > 0) {
+    if (!items.isEmpty()) {
         emitDataReady();
     }
 

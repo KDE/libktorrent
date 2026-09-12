@@ -48,7 +48,7 @@ void AddressResolver::resolve(const QString &host, bt::Uint16 port, QObject *par
 Address AddressResolver::resolve(const QString &host, bt::Uint16 port)
 {
     const QHostInfo info = QHostInfo::fromName(host);
-    if (info.error() == QHostInfo::NoError && info.addresses().size() > 0) {
+    if (info.error() == QHostInfo::NoError && !info.addresses().isEmpty()) {
         return net::Address(info.addresses().constFirst(), port);
     } else {
         return net::Address();

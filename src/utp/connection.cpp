@@ -213,7 +213,7 @@ ConnectionState Connection::handlePacket(const PacketParser &parser, std::unique
 
             // send back an ACK
             sendStateOrData();
-            if (stats.state == ConnectionState::FINISHED && !fin_sent && output_buffer.size() == 0) {
+            if (stats.state == ConnectionState::FINISHED && !fin_sent && output_buffer.empty()) {
                 sendFIN();
                 fin_sent = true;
             }
@@ -416,7 +416,7 @@ void Connection::sendPackets()
 {
     // chop output_buffer data in packets and keep sending
     // until we are no longer allowed or the buffer is empty
-    while (output_buffer.size() > 0 && remote_wnd->availableSpace() > 0) {
+    while (!output_buffer.empty() && remote_wnd->availableSpace() > 0) {
         bt::Uint32 to_read = qMin((bt::Uint32)output_buffer.size(), remote_wnd->availableSpace());
         to_read = qMin(to_read, stats.packet_size);
         to_read = qMin(to_read, PacketBuffer::MAX_SIZE - extensionLength() - Header::size());
@@ -434,7 +434,7 @@ void Connection::sendPackets()
         stats.seq_nr++;
     }
 
-    if (stats.state == ConnectionState::FINISHED && !fin_sent && output_buffer.size() == 0) {
+    if (stats.state == ConnectionState::FINISHED && !fin_sent && output_buffer.empty()) {
         sendFIN();
         fin_sent = true;
     } else {
@@ -444,7 +444,7 @@ void Connection::sendPackets()
 
 void Connection::sendStateOrData()
 {
-    if (output_buffer.size() > 0 && remote_wnd->availableSpace() > 0) {
+    if (!output_buffer.empty() && remote_wnd->availableSpace() > 0) {
         sendPackets();
     } else {
         sendState();

@@ -68,7 +68,7 @@ void GetPeersRsp::encode(QByteArray &arr) const
 
             enc.write("token", token);
 
-            if (items.size() > 0) {
+            if (!items.isEmpty()) {
                 enc.write("values");
                 enc.beginList();
                 DBItemList::const_iterator i = items.begin();

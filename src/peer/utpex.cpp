@@ -158,7 +158,7 @@ void UTPex::encodePeers(BEncoder &enc,
 
 void UTPex::encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps, int ip_version)
 {
-    if (ps.size() == 0) {
+    if (ps.empty()) {
         enc.write(QByteArray());
         return;
     }
@@ -188,7 +188,7 @@ void UTPex::encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps, int 
 
 void UTPex::encodeFlags(BEncoder &enc, const std::map<Uint32, Uint8> &flags)
 {
-    if (flags.size() == 0) {
+    if (flags.empty()) {
         enc.write(QByteArray());
         return;
     }

@@ -57,7 +57,7 @@ void AuthenticationMonitor::remove(AuthenticateBase *s)
 
 void AuthenticationMonitor::update()
 {
-    if (auths.size() == 0) {
+    if (auths.empty()) {
         return;
     }
 

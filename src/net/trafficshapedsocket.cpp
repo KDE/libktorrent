@@ -48,8 +48,8 @@ TrafficShapedSocket::TrafficShapedSocket(bool tcp, int ip_version)
     auto socket = std::make_unique<Socket>(tcp, ip_version);
 
     const QString iface = NetworkInterface();
-    QStringList ips = NetworkInterfaceIPAddresses(iface);
-    if (ips.size() > 0) {
+    const QStringList ips = NetworkInterfaceIPAddresses(iface);
+    if (!ips.isEmpty()) {
         socket->bind(ips.front(), 0, false);
     }
 

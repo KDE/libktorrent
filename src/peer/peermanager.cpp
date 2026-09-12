@@ -706,7 +706,7 @@ bool PeerManager::Private::connectedTo(const net::Address &addr) const
 
 void PeerManager::Private::connectToPeers()
 {
-    if (paused || potential_peers.size() == 0 || (Uint32)connectors.size() > MAX_SIMULTANIOUS_AUTHS) {
+    if (paused || potential_peers.empty() || (Uint32)connectors.size() > MAX_SIMULTANIOUS_AUTHS) {
         return;
     }
 

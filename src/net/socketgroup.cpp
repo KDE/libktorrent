@@ -49,7 +49,7 @@ bool SocketGroup::processLimited(bool up, bt::TimeStamp now, Uint32 &allowance)
     std::list<TrafficShapedSocket *>::iterator itr = sockets.begin();
 
     // while we can send and there are sockets left to send
-    while (sockets.size() > 0 && allowance > 0) {
+    while (!sockets.empty() && allowance > 0) {
         Uint32 as = bslot;
         if (as > allowance) {
             as = allowance;
@@ -89,7 +89,7 @@ bool SocketGroup::processLimited(bool up, bt::TimeStamp now, Uint32 &allowance)
         }
     }
 
-    return sockets.size() > 0;
+    return !sockets.empty();
 }
 
 bool SocketGroup::download(Uint32 &global_allowance, bt::TimeStamp now)
