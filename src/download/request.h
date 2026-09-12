@@ -29,7 +29,7 @@ public:
     /*!
      * Constructor, set everything to 0.
      */
-    inline Request()
+    Request()
         : index(0)
         , off(0)
         , len(0)
@@ -44,7 +44,7 @@ public:
      * \param len The length of the piece
      * \param pd Pointer to PieceDownloader of the request
      */
-    inline Request(Uint32 index, Uint32 off, Uint32 len, PieceDownloader *pd)
+    Request(Uint32 index, Uint32 off, Uint32 len, PieceDownloader *pd)
         : index(index)
         , off(off)
         , len(len)
@@ -56,7 +56,7 @@ public:
      * Copy constructor.
      * \param r Request to copy
      */
-    inline Request(const Request &r)
+    Request(const Request &r)
         : index(r.index)
         , off(r.off)
         , len(r.len)
@@ -86,7 +86,7 @@ public:
     }
 
     //! Get the sending Peer
-    [[nodiscard]] inline PieceDownloader *getPieceDownloader() const
+    [[nodiscard]] PieceDownloader *getPieceDownloader() const
     {
         return pd;
     }
@@ -95,7 +95,7 @@ public:
      * Assignment operator.
      * \param r The Request to copy
      */
-    inline Request &operator=(const Request &r)
+    Request &operator=(const Request &r)
     {
         index = r.index;
         off = r.off;
@@ -111,7 +111,7 @@ public:
      * \param b The second request
      * \return true if they are equal
      */
-    friend inline bool operator==(const Request &a, const Request &b)
+    friend bool operator==(const Request &a, const Request &b)
     {
         return a.index == b.index && a.len == b.len && a.off == b.off;
     }

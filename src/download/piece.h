@@ -18,7 +18,7 @@ namespace bt
 class Piece : public Request
 {
 public:
-    inline Piece(Uint32 index, Uint32 off, Uint32 len, PieceDownloader *pd, const Uint8 *data)
+    Piece(Uint32 index, Uint32 off, Uint32 len, PieceDownloader *pd, const Uint8 *data)
         : Request(index, off, len, pd)
         , data(data)
     {
