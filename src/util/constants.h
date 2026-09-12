@@ -163,7 +163,7 @@ const Uint32 FAST_EXT_SUPPORT = 0x04;
  */
 enum TransportProtocol {
     TCP,
-    UTP
+    UTP,
 };
 }
 
