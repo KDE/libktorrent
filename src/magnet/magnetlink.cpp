@@ -179,7 +179,7 @@ QString MagnetLink::base32ToHexString(const QString &s)
 
         // part is a Uint32 with 20 bits (5 hex)
         for (int j = 0; j < 5; j++) {
-            Uint32 tmp = (part >> 4 * (4 - j)) & 0xf;
+            const Uint32 tmp = (part >> 4 * (4 - j)) & 0xf;
             if (tmp >= 10) {
                 ret.append(QChar((tmp - 10) + 'a'));
             } else {
