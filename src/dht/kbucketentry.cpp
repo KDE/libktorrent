@@ -56,7 +56,7 @@ bool KBucketEntry::operator==(const KBucketEntry &entry) const
 
 bool KBucketEntry::isGood() const
 {
-    return bt::CurrentTime() - last_responded >= 15 * 60 * 1000;
+    return bt::CurrentTime() - last_responded <= 15 * 60 * 1000;
 }
 
 bool KBucketEntry::isQuestionable() const
