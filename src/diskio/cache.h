@@ -289,13 +289,13 @@ protected:
             , key(0)
         {
         }
-        template<typename Ptr, typename = typename std::enable_if<std::is_constructible<PieceData::Ptr, Ptr &&>::value>::type>
+        template<typename Ptr, typename = std::enable_if<std::is_constructible<PieceData::Ptr, Ptr &&>::value>::type>
         explicit PieceDataInfo(Ptr &&p)
             : piece_data(std::forward<Ptr>(p))
             , key(makeKey(piece_data->offset(), piece_data->length()))
         {
         }
-        template<typename Ptr, typename = typename std::enable_if<std::is_constructible<PieceData::Ptr, Ptr &&>::value>::type>
+        template<typename Ptr, typename = std::enable_if<std::is_constructible<PieceData::Ptr, Ptr &&>::value>::type>
         PieceDataInfo(Ptr &&p, Uint64 k)
             : piece_data(std::forward<Ptr>(p))
             , key(k)
