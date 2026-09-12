@@ -46,7 +46,7 @@ struct PiecePacket {
 
     bool verifyBuffer(QByteArrayView buffer) const
     {
-        if (buffer.size() < (size())) {
+        if (buffer.size() < size()) {
             bt::Out() << "Piece::VerifyBuffer incorrect buffer size, expected " << size() << " got " << buffer.size() << bt::endl;
             return false;
         }
@@ -155,7 +155,7 @@ struct RequestPacket {
 
     bool verifyBuffer(QByteArrayView buffer) const
     {
-        if (buffer.size() < (size())) {
+        if (buffer.size() < size()) {
             bt::Out() << "Piece::VerifyBuffer incorrect buffer size, expected " << size() << " got " << buffer.size() << bt::endl;
             return false;
         }
