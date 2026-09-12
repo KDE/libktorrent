@@ -13,7 +13,6 @@ namespace bt
 QScopedPointer<LogSystemManager> LogSystemManager::self;
 
 LogSystemManager::LogSystemManager()
-    : QObject()
 {
     // register default systems
     registerSystem(i18n("General"), SYS_GEN);

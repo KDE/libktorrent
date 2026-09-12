@@ -11,7 +11,6 @@
 namespace bt
 {
 WaitJob::WaitJob(Uint32 millis)
-    : KIO::Job(/*false*/)
 {
     QTimer::singleShot(millis, this, &WaitJob::timerDone);
 }

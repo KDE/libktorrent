@@ -285,8 +285,7 @@ protected:
         Uint64 key;
 
         PieceDataInfo()
-            : piece_data()
-            , key(0)
+            : key(0)
         {
         }
         template<typename Ptr, typename = std::enable_if<std::is_constructible<PieceData::Ptr, Ptr &&>::value>::type>

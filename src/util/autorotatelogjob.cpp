@@ -16,8 +16,7 @@
 namespace bt
 {
 AutoRotateLogJob::AutoRotateLogJob(const QString &file, Log *lg)
-    : KIO::Job()
-    , file(file)
+    : file(file)
     , cnt(10)
     , lg(lg)
 {
