@@ -8,13 +8,12 @@
 
 #include <QFile>
 #include <QStack>
+#include <QStringView>
 #include <QXmlStreamReader>
 
 #include "upnprouter.h"
 #include <util/fileops.h>
 #include <util/log.h>
-
-using StringView = QStringView;
 
 using namespace bt;
 
@@ -44,12 +43,12 @@ public:
 
     bool startDocument();
     bool endDocument();
-    bool startElement(const StringView &namespaceUri, const StringView &localName, const StringView &qName, const QXmlStreamAttributes &atts);
-    bool endElement(const StringView &namespaceUri, const StringView &localName, const StringView &qName);
-    bool characters(const StringView &chars);
+    bool startElement(const QStringView &namespaceUri, const QStringView &localName, const QStringView &qName, const QXmlStreamAttributes &atts);
+    bool endElement(const QStringView &namespaceUri, const QStringView &localName, const QStringView &qName);
+    bool characters(const QStringView &chars);
 
-    bool interestingDeviceField(const StringView &name);
-    bool interestingServiceField(const StringView &name);
+    bool interestingDeviceField(const QStringView &name);
+    bool interestingServiceField(const QStringView &name);
 };
 
 UPnPDescriptionParser::UPnPDescriptionParser()
@@ -161,19 +160,19 @@ bool XMLContentHandler::endDocument()
     return true;
 }
 
-bool XMLContentHandler::interestingDeviceField(const StringView &name)
+bool XMLContentHandler::interestingDeviceField(const QStringView &name)
 {
     return name == QLatin1String("friendlyName") || name == QLatin1String("manufacturer") || name == QLatin1String("modelDescription")
         || name == QLatin1String("modelName") || name == QLatin1String("modelNumber");
 }
 
-bool XMLContentHandler::interestingServiceField(const StringView &name)
+bool XMLContentHandler::interestingServiceField(const QStringView &name)
 {
     return name == QLatin1String("serviceType") || name == QLatin1String("serviceId") || name == QLatin1String("SCPDURL") || name == QLatin1String("controlURL")
         || name == QLatin1String("eventSubURL");
 }
 
-bool XMLContentHandler::startElement(const StringView &namespaceUri, const StringView &localName, const StringView &qName, const QXmlStreamAttributes &atts)
+bool XMLContentHandler::startElement(const QStringView &namespaceUri, const QStringView &localName, const QStringView &qName, const QXmlStreamAttributes &atts)
 {
     Q_UNUSED(namespaceUri)
     Q_UNUSED(qName)
@@ -228,7 +227,7 @@ bool XMLContentHandler::startElement(const StringView &namespaceUri, const Strin
     return true;
 }
 
-bool XMLContentHandler::endElement(const StringView &namespaceUri, const StringView &localName, const StringView &qName)
+bool XMLContentHandler::endElement(const QStringView &namespaceUri, const QStringView &localName, const QStringView &qName)
 {
     Q_UNUSED(namespaceUri)
     Q_UNUSED(qName)
@@ -262,7 +261,7 @@ bool XMLContentHandler::endElement(const StringView &namespaceUri, const StringV
     return true;
 }
 
-bool XMLContentHandler::characters(const StringView &chars)
+bool XMLContentHandler::characters(const QStringView &chars)
 {
     tmp.append(chars);
     return true;
