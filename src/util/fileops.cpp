@@ -218,9 +218,7 @@ static bool DelDir(const QString &fn)
     const QDir d(fn);
     const QStringList subdirs = d.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
-    for (auto i = subdirs.begin(); i != subdirs.end(); i++) {
-        const QString entry = *i;
-
+    for (const QString &entry : subdirs) {
         if (!DelDir(d.absoluteFilePath(entry))) {
             return false;
         }

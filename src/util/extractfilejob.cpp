@@ -60,7 +60,7 @@ void ExtractFileJob::start()
     const KArchiveDirectory *dir = archive->directory();
     for (int i = 0; i < path_components.count(); i++) {
         // if we can't find it give back an error
-        const QString pc = path_components.at(i);
+        const QString &pc = path_components.at(i);
         if (!dir->entries().contains(pc)) {
             setError(KIO::ERR_DOES_NOT_EXIST);
             emitResult();

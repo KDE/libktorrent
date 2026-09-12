@@ -189,7 +189,7 @@ void DHT::announce(const AnnounceReq &r)
 
     node->received(this, r);
     // first check if the token is OK
-    const QByteArray token = r.getToken();
+    const QByteArray &token = r.getToken();
     if (!db->checkToken(token, r.getOrigin())) {
         return;
     }

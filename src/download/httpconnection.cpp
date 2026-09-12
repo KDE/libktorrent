@@ -168,7 +168,7 @@ void HttpConnection::connectFinished(bool succeeded)
 void HttpConnection::hostResolved(net::AddressResolver *ar)
 {
     if (ar->succeeded()) {
-        const net::Address addr = ar->address();
+        const net::Address &addr = ar->address();
         if (!sock) {
             sock = new net::StreamSocket(true, addr.ipVersion(), this);
             sock->socketDevice()->setBlocking(false);

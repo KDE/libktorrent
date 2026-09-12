@@ -127,12 +127,12 @@ void WebSeed::connectToServer()
     }
 
     if (!proxy_enabled) {
-        QList<QNetworkProxy> proxyList = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(dst));
+        const QList<QNetworkProxy> proxyList = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(dst));
 
         if (proxyList.isEmpty()) {
             conn->connectTo(dst); // direct connection
         } else {
-            const QNetworkProxy proxy = proxyList.first();
+            const QNetworkProxy &proxy = proxyList.first();
 
             if (proxy.type() == QNetworkProxy::NoProxy) {
                 conn->connectTo(dst); // direct connection
