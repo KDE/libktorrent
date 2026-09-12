@@ -56,20 +56,12 @@ bool KBucketEntry::operator==(const KBucketEntry &entry) const
 
 bool KBucketEntry::isGood() const
 {
-    if (bt::CurrentTime() - last_responded > 15 * 60 * 1000) {
-        return false;
-    } else {
-        return true;
-    }
+    return bt::CurrentTime() - last_responded >= 15 * 60 * 1000;
 }
 
 bool KBucketEntry::isQuestionable() const
 {
-    if (bt::CurrentTime() - last_responded > 15 * 60 * 1000) {
-        return true;
-    } else {
-        return false;
-    }
+    return !isGood();
 }
 
 bool KBucketEntry::isBad() const

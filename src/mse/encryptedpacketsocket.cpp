@@ -187,11 +187,8 @@ bool EncryptedPacketSocket::connectTo(const net::Address &addr)
     // we don't wanna block the current thread so set non blocking
     sock->setBlocking(false);
     sock->setTOS(tos);
-    if (sock->connectTo(addr)) {
-        return true;
-    }
 
-    return false;
+    return sock->connectTo(addr);
 }
 
 void EncryptedPacketSocket::initCrypt(const bt::SHA1Hash &dkey, const bt::SHA1Hash &ekey)

@@ -54,11 +54,8 @@ bool Globals::initTCPServer(Uint16 port)
     }
 
     tcp_server = new Server();
-    if (!tcp_server->changePort(port)) {
-        return false;
-    }
 
-    return true;
+    return tcp_server->changePort(port);
 }
 
 void Globals::shutdownTCPServer()

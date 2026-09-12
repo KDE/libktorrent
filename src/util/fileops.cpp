@@ -237,11 +237,7 @@ static bool DelDir(const QString &fn)
         }
     }
 
-    if (!d.rmdir(d.absolutePath())) {
-        return false;
-    }
-
-    return true;
+    return d.rmdir(d.absolutePath());
 }
 
 void Delete(const QString &url, bool nothrow)

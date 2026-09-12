@@ -146,11 +146,7 @@ bool XMLContentHandler::parse(QByteArrayView data)
         }
     }
 
-    if (!reader.isEndDocument()) {
-        return false;
-    }
-
-    return true;
+    return reader.isEndDocument();
 }
 
 bool XMLContentHandler::startDocument()

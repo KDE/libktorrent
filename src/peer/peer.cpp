@@ -762,7 +762,7 @@ void Peer::sendEvilUnchoke()
 
 void Peer::sendInterested()
 {
-    if (stats.am_interested == true) {
+    if (!stats.am_interested) {
         return;
     }
 
@@ -772,7 +772,7 @@ void Peer::sendInterested()
 
 void Peer::sendNotInterested()
 {
-    if (stats.am_interested == false) {
+    if (!stats.am_interested) {
         return;
     }
 
