@@ -149,7 +149,7 @@ Uint32 EncryptedPacketSocket::readData(Uint8 *buf, Uint32 len)
         return ret2;
     }
 
-    const Uint32 ret = sock->recv(buf + ret2, len - ret2);
+    const Uint32 ret = sock->recv(as_writable_bytes(QSpan{buf, len}).subspan(ret2));
     if (ret + ret2 > 0 && enc) {
         enc->decrypt(buf, ret + ret2);
     }

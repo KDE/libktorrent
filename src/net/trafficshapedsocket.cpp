@@ -115,7 +115,7 @@ Uint32 TrafficShapedSocket::read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now
             tr = max_bytes_to_read - br;
         }
 
-        const int ret = sock->recv(input_buffer, tr);
+        const int ret = sock->recv(as_writable_bytes(QSpan{input_buffer}).first(tr));
         if (ret > 0) {
             mutex.lock();
             down_speed->onData(ret, now);

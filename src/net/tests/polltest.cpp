@@ -5,6 +5,7 @@
 */
 
 #include <array>
+#include <cstddef>
 
 #include <QObject>
 #include <QTest>
@@ -142,8 +143,8 @@ private Q_SLOTS:
 
         QCOMPARE_GT(poll.poll(1000), 0);
 
-        bt::Uint8 tmp[20];
-        QCOMPARE(reader.recv(tmp, 20), 20);
+        std::byte tmp[20];
+        QCOMPARE(reader.recv(tmp), 20);
         QCOMPARE(memcmp(tmp, data.data(), 20), 0);
     }
 

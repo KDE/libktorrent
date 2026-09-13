@@ -34,7 +34,7 @@ public:
     void close() override;
     [[nodiscard]] bt::Uint32 bytesAvailable() const override;
     int send(QByteArrayView buf) override;
-    int recv(bt::Uint8 *buf, int max_len) override;
+    int recv(QSpan<std::byte> buf) override;
     [[nodiscard]] bool ok() const override
     {
         return m_fd >= 0;

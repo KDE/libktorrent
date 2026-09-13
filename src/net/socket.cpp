@@ -279,12 +279,12 @@ int Socket::send(QByteArrayView buf)
     return ret;
 }
 
-int Socket::recv(bt::Uint8 *buf, int max_len)
+int Socket::recv(QSpan<std::byte> buf)
 {
 #ifndef Q_OS_WIN
-    const int ret = ::recv(m_fd, buf, max_len, 0);
+    const int ret = ::recv(m_fd, buf.data(), static_cast<size_t>(buf.size()), 0);
 #else
-    const int ret = ::recv(m_fd, (char *)buf, max_len, 0);
+    const int ret = ::recv(m_fd, reinterpret_cast<char *>(buf.data()), static_cast<int>(buf.size()), 0);
 #endif
     if (ret < 0) {
         const int err = errno;

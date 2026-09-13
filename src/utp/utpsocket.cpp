@@ -132,7 +132,7 @@ bool UTPSocket::ok() const
     return ptr && ptr->connectionState() != ConnectionState::CLOSED;
 }
 
-int UTPSocket::recv(bt::Uint8 *buf, int max_len)
+int UTPSocket::recv(QSpan<std::byte> buf)
 {
     const Connection::Ptr ptr = conn.toStrongRef();
     if (!ptr || ptr->connectionState() == ConnectionState::CLOSED) {
@@ -143,7 +143,7 @@ int UTPSocket::recv(bt::Uint8 *buf, int max_len)
         if (ptr->bytesAvailable() == 0) {
             if (blocking) {
                 if (ptr->waitForData()) {
-                    return ptr->recv(buf, max_len);
+                    return ptr->recv(reinterpret_cast<bt::Uint8 *>(buf.data()), buf.size());
                 } else {
                     return 0; // connection should be closed now
                 }
@@ -151,7 +151,7 @@ int UTPSocket::recv(bt::Uint8 *buf, int max_len)
                 return -1; // No data ready and not blocking so return -1
             }
         } else {
-            return ptr->recv(buf, max_len);
+            return ptr->recv(reinterpret_cast<bt::Uint8 *>(buf.data()), buf.size());
         }
     } catch (Connection::TransmissionError &err) {
         close();

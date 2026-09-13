@@ -4,6 +4,8 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <cstddef>
+
 #include <QObject>
 #include <QTest>
 #include <QTimer>
@@ -81,9 +83,9 @@ private:
             int ret = a->send(test);
             QCOMPARE(ret, (int)strlen(test));
 
-            char tmp[20];
+            std::byte tmp[20];
             memset(tmp, 0, 20);
-            ret = b->recv((bt::Uint8 *)tmp, 20);
+            ret = b->recv(tmp);
             QCOMPARE(ret, 4);
             QCOMPARE(memcmp(tmp, test, ret), 0);
             std::swap(a, b);
@@ -94,8 +96,8 @@ private:
     {
         outgoing->setBlocking(true);
         incoming->close();
-        bt::Uint8 tmp[20];
-        const int ret = outgoing->recv(tmp, 20);
+        std::byte tmp[20];
+        const int ret = outgoing->recv(tmp);
         QCOMPARE(ret, 0);
     }
 

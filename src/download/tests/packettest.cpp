@@ -5,6 +5,7 @@
  */
 
 #include <array>
+#include <cstddef>
 #include <cstring>
 #include <vector>
 
@@ -221,7 +222,7 @@ private Q_SLOTS:
 
         // Expected size is message len (4) + msg type (1) + extension id (1) + message size = 6 + message size
         const auto total_data_size = 6 + message.size();
-        std::vector<bt::Uint8> reader_data(total_data_size, 0);
+        std::vector<std::byte> reader_data(total_data_size);
         auto expected_num_sends = total_data_size / max_bytes_to_send;
         if (total_data_size % max_bytes_to_send != 0) {
             ++expected_num_sends;
@@ -231,8 +232,12 @@ private Q_SLOTS:
         auto num_bytes_sent = 0;
         while (!packet.isSent() && num_sends < expected_num_sends) {
             QCOMPARE_LE(packet.send(writer_socket.get(), max_bytes_to_send), max_bytes_to_send);
+            auto data_to_send = QSpan{reader_data}.subspan(num_bytes_sent);
+            if (data_to_send.size() > max_bytes_to_send) {
+                data_to_send = data_to_send.first(max_bytes_to_send);
+            }
 
-            const auto bytes_received = reader_socket->recv(reinterpret_cast<bt::Uint8 *>(reader_data.data()) + num_bytes_sent, max_bytes_to_send);
+            const auto bytes_received = reader_socket->recv(data_to_send);
 
             QCOMPARE_LE(bytes_received, max_bytes_to_send);
             num_bytes_sent += bytes_received;
@@ -244,8 +249,8 @@ private Q_SLOTS:
 
         QCOMPARE(num_sends, expected_num_sends);
         QCOMPARE(bt::ReadUint32(reader_data, 0), 2 + message.size());
-        QCOMPARE(reader_data[4], bt::PeerMessageType::EXTENDED);
-        QCOMPARE(reader_data[5], extension_id);
+        QCOMPARE(bt::ReadUint8(reader_data, 4), bt::PeerMessageType::EXTENDED);
+        QCOMPARE(bt::ReadUint8(reader_data, 5), extension_id);
         QCOMPARE(QByteArrayView{reader_data}.sliced(6), message);
     }
 };

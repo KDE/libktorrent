@@ -5,6 +5,7 @@
  */
 
 #include <chrono>
+#include <cstddef>
 #include <vector>
 
 #include <QObject>
@@ -264,8 +265,8 @@ private Q_SLOTS:
         QThread::sleep(100ms);
 
         QCOMPARE(socket_pair->reader->bytesAvailable(), test_extension_packet.size());
-        std::vector<bt::Uint8> receive_packet(test_extension_packet.size());
-        socket_pair->reader->recv(receive_packet.data(), receive_packet.size());
+        std::vector<std::byte> receive_packet(test_extension_packet.size());
+        socket_pair->reader->recv(receive_packet);
 
         QVERIFY(test_extension_packet.verifyBuffer(receive_packet));
     }
@@ -302,15 +303,15 @@ private Q_SLOTS:
             packet_socket.addPacket(test_extension_packet.toPacket());
         }
 
-        std::vector<bt::Uint8> read_buffer(std::max(test_extension_packet.size(), test_piece_packet.size()));
+        std::vector<std::byte> read_buffer(std::max(test_extension_packet.size(), test_piece_packet.size()));
         // Expect 3 control, 1 data, 3 control, 1 data, 3 control, 1 data
         for (size_t i = 0; i < 3; ++i) {
             for (size_t j = 0; j < 3; ++j) {
                 QCOMPARE(packet_socket.write(test_extension_packet.size(), bt::Now()), test_extension_packet.size());
                 QCOMPARE(packet_socket.dataBytesUploaded(), 0);
 
-                std::fill(read_buffer.begin(), read_buffer.end(), 0);
-                QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_extension_packet.size());
+                std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+                QCOMPARE(socket_pair->reader->recv(read_buffer), test_extension_packet.size());
                 QVERIFY(test_extension_packet.verifyBuffer(read_buffer));
             }
 
@@ -319,8 +320,8 @@ private Q_SLOTS:
             QCOMPARE(packet_socket.write(test_piece_packet.size(), bt::Now()), test_piece_packet.size());
             QCOMPARE(packet_socket.dataBytesUploaded(), test_piece_packet.size());
 
-            std::fill(read_buffer.begin(), read_buffer.end(), 0);
-            QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_piece_packet.size());
+            std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+            QCOMPARE(socket_pair->reader->recv(read_buffer), test_piece_packet.size());
             QVERIFY(test_piece_packet.verifyBuffer(read_buffer));
         }
 
@@ -331,8 +332,8 @@ private Q_SLOTS:
         QCOMPARE(packet_socket.write(test_extension_packet.size(), bt::Now()), test_extension_packet.size());
         QCOMPARE(packet_socket.dataBytesUploaded(), 0);
 
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
-        QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_extension_packet.size());
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+        QCOMPARE(socket_pair->reader->recv(read_buffer), test_extension_packet.size());
         QVERIFY(test_extension_packet.verifyBuffer(read_buffer));
 
         QCOMPARE(packet_socket.write(test_piece_packet.size(), bt::Now()), test_piece_packet.size());
@@ -341,8 +342,8 @@ private Q_SLOTS:
         QCOMPARE(packet_socket.numPendingPieceUploads(), 6);
         QCOMPARE(packet_socket.numPendingPieceUploadBytes(), 6 * test_piece_packet.size());
 
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
-        QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_piece_packet.size());
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+        QCOMPARE(socket_pair->reader->recv(read_buffer), test_piece_packet.size());
         QVERIFY(test_piece_packet.verifyBuffer(read_buffer));
 
         // Check that the next control packet is prioritised
@@ -358,15 +359,15 @@ private Q_SLOTS:
         QCOMPARE(packet_socket.numPendingPieceUploads(), 5);
         QCOMPARE(packet_socket.numPendingPieceUploadBytes(), 5 * test_piece_packet.size());
 
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
-        QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_piece_packet.size());
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+        QCOMPARE(socket_pair->reader->recv(read_buffer), test_piece_packet.size());
         QVERIFY(test_piece_packet.verifyBuffer(read_buffer));
 
         QCOMPARE(packet_socket.write(test_extension_packet.size(), bt::Now()), test_extension_packet.size());
         QCOMPARE(packet_socket.dataBytesUploaded(), 0);
 
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
-        QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_extension_packet.size());
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+        QCOMPARE(socket_pair->reader->recv(read_buffer), test_extension_packet.size());
         QVERIFY(test_extension_packet.verifyBuffer(read_buffer));
 
         // Remaining piece packets should flush out
@@ -376,8 +377,8 @@ private Q_SLOTS:
             QCOMPARE(packet_socket.numPendingPieceUploads(), 4 - i);
             QCOMPARE(packet_socket.numPendingPieceUploadBytes(), (4 - i) * test_piece_packet.size());
 
-            std::fill(read_buffer.begin(), read_buffer.end(), 0);
-            QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_piece_packet.size());
+            std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+            QCOMPARE(socket_pair->reader->recv(read_buffer), test_piece_packet.size());
             QVERIFY(test_piece_packet.verifyBuffer(read_buffer));
         }
 
@@ -394,8 +395,8 @@ private Q_SLOTS:
             QCOMPARE(packet_socket.write(test_extension_packet.size(), bt::Now()), test_extension_packet.size());
             QCOMPARE(packet_socket.dataBytesUploaded(), 0);
 
-            std::fill(read_buffer.begin(), read_buffer.end(), 0);
-            QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_extension_packet.size());
+            std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+            QCOMPARE(socket_pair->reader->recv(read_buffer), test_extension_packet.size());
             QVERIFY(test_extension_packet.verifyBuffer(read_buffer));
         }
         QVERIFY(!packet_socket.bytesReadyToWrite());
@@ -432,7 +433,7 @@ private Q_SLOTS:
         packet_socket.addPacket(test_piece_packet2.toPacket());
         packet_socket.addPacket(test_piece_packet1.toPacket());
 
-        std::vector<bt::Uint8> read_buffer(test_piece_packet1.size());
+        std::vector<std::byte> read_buffer(test_piece_packet1.size());
         QCOMPARE(packet_socket.write(5, bt::Now()), 5);
 
         QCOMPARE(packet_socket.numPendingPieceUploads(), 4);
@@ -448,8 +449,8 @@ private Q_SLOTS:
         QCOMPARE(packet_socket.numPendingPieceUploadBytes(), 0);
         QCOMPARE(packet_socket.dataBytesUploaded(), test_piece_packet1.size());
 
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
-        QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_piece_packet1.size());
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+        QCOMPARE(socket_pair->reader->recv(read_buffer), test_piece_packet1.size());
         QVERIFY(test_piece_packet1.verifyBuffer(read_buffer));
 
         const RequestPacket test_reject_piece1_packet{
@@ -470,28 +471,28 @@ private Q_SLOTS:
 
         QCOMPARE(packet_socket.write(test_reject_piece2_packet.size(), bt::Now()), test_reject_piece2_packet.size());
         QCOMPARE(packet_socket.dataBytesUploaded(), 0);
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
-        QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_reject_piece2_packet.size());
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+        QCOMPARE(socket_pair->reader->recv(read_buffer), test_reject_piece2_packet.size());
         QVERIFY(test_reject_piece2_packet.verifyBuffer(read_buffer));
 
         // Check the second reject is sent too
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
         QVERIFY(packet_socket.bytesReadyToWrite());
 
         QCOMPARE(packet_socket.write(test_reject_piece2_packet.size(), bt::Now()), test_reject_piece2_packet.size());
         QCOMPARE(packet_socket.dataBytesUploaded(), 0);
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
-        QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_reject_piece2_packet.size());
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+        QCOMPARE(socket_pair->reader->recv(read_buffer), test_reject_piece2_packet.size());
         QVERIFY(test_reject_piece2_packet.verifyBuffer(read_buffer));
         QVERIFY(packet_socket.bytesReadyToWrite());
 
         // Check the third reject is sent too
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
 
         QCOMPARE(packet_socket.write(test_reject_piece1_packet.size(), bt::Now()), test_reject_piece1_packet.size());
         QCOMPARE(packet_socket.dataBytesUploaded(), 0);
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
-        QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_reject_piece1_packet.size());
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+        QCOMPARE(socket_pair->reader->recv(read_buffer), test_reject_piece1_packet.size());
         QVERIFY(test_reject_piece1_packet.verifyBuffer(read_buffer));
         QVERIFY(!packet_socket.bytesReadyToWrite());
     }
@@ -527,7 +528,7 @@ private Q_SLOTS:
         packet_socket.addPacket(test_piece_packet2.toPacket());
         packet_socket.addPacket(test_piece_packet1.toPacket());
 
-        std::vector<bt::Uint8> read_buffer(test_piece_packet1.size());
+        std::vector<std::byte> read_buffer(test_piece_packet1.size());
         QCOMPARE(packet_socket.write(5, bt::Now()), 5);
 
         QCOMPARE(packet_socket.numPendingPieceUploads(), 4);
@@ -562,8 +563,8 @@ private Q_SLOTS:
         QCOMPARE(packet_socket.numPendingPieceUploadBytes(), 0);
         QCOMPARE(packet_socket.dataBytesUploaded(), test_piece_packet1.size());
 
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
-        QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_piece_packet1.size());
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+        QCOMPARE(socket_pair->reader->recv(read_buffer), test_piece_packet1.size());
         QVERIFY(test_piece_packet1.verifyBuffer(read_buffer));
 
         const RequestPacket test_reject_piece2_packet{
@@ -577,17 +578,17 @@ private Q_SLOTS:
 
         QCOMPARE(packet_socket.write(test_reject_piece2_packet.size(), bt::Now()), test_reject_piece2_packet.size());
         QCOMPARE(packet_socket.dataBytesUploaded(), 0);
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
-        QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_reject_piece2_packet.size());
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
+        QCOMPARE(socket_pair->reader->recv(read_buffer), test_reject_piece2_packet.size());
         QVERIFY(test_reject_piece2_packet.verifyBuffer(read_buffer));
 
         // Check the second reject is sent too
-        std::fill(read_buffer.begin(), read_buffer.end(), 0);
+        std::fill(read_buffer.begin(), read_buffer.end(), std::byte{});
         QVERIFY(packet_socket.bytesReadyToWrite());
 
         QCOMPARE(packet_socket.write(test_reject_piece2_packet.size(), bt::Now()), test_reject_piece2_packet.size());
         QCOMPARE(packet_socket.dataBytesUploaded(), 0);
-        QCOMPARE(socket_pair->reader->recv(read_buffer.data(), read_buffer.size()), test_reject_piece2_packet.size());
+        QCOMPARE(socket_pair->reader->recv(read_buffer), test_reject_piece2_packet.size());
         QVERIFY(test_reject_piece2_packet.verifyBuffer(read_buffer));
         QVERIFY(!packet_socket.bytesReadyToWrite());
     }

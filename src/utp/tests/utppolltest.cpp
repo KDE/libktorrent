@@ -153,8 +153,8 @@ private:
             QCOMPARE_GT(poller.poll(1000), 0);
             for (int i = 0; i < NUM_SOCKETS; i++) {
                 if (!bs.get(i) && incoming[i]->ready(&poller, net::Poll::Mode::INPUT)) {
-                    bt::Uint8 tmp[20];
-                    QCOMPARE(incoming[i]->recv(tmp, 20), (int)strlen(test));
+                    std::byte tmp[20];
+                    QCOMPARE(incoming[i]->recv(tmp), (int)strlen(test));
                     QCOMPARE(memcmp(tmp, test, strlen(test)), 0);
                     bs.set(i, true);
                 }

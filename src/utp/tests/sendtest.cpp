@@ -5,6 +5,7 @@
 */
 
 #include <array>
+#include <cstddef>
 #include <vector>
 
 #include <QObject>
@@ -90,9 +91,8 @@ private:
         int ret = outgoing->send(test);
         QCOMPARE(ret, (int)strlen(test));
 
-        char tmp[20];
-        memset(tmp, 0, 20);
-        ret = incoming->recv((bt::Uint8 *)tmp, 20);
+        std::byte tmp[20]{};
+        ret = incoming->recv(tmp);
         QCOMPARE(ret, 4);
         QCOMPARE(memcmp(tmp, test, ret), 0);
     }
@@ -103,8 +103,8 @@ private:
         constexpr std::array<bt::Uint8, 1000> sdata{0xFF};
         outgoing->send(sdata);
 
-        std::vector<bt::Uint8> rdata(1000);
-        const int ret = incoming->recv(rdata.data(), rdata.size());
+        std::vector<std::byte> rdata(1000);
+        const int ret = incoming->recv(rdata);
         QCOMPARE(ret, rdata.size());
         QCOMPARE(memcmp(sdata.data(), rdata.data(), ret), 0);
     }
@@ -117,14 +117,14 @@ private:
         outgoing->send(test);
         incoming->send(test);
 
-        char tmp[20];
+        std::byte tmp[20];
         memset(tmp, 0, 20);
-        int ret = incoming->recv((bt::Uint8 *)tmp, 20);
+        int ret = incoming->recv(tmp);
         QCOMPARE(ret, 4);
         QCOMPARE(memcmp(tmp, test, ret), 0);
 
         memset(tmp, 0, 20);
-        ret = outgoing->recv((bt::Uint8 *)tmp, 20);
+        ret = outgoing->recv(tmp);
         QCOMPARE(ret, 4);
         QCOMPARE(memcmp(tmp, test, ret), 0);
     }
@@ -137,14 +137,14 @@ private:
         outgoing->send(test);
         outgoing->send(test);
 
-        char tmp[20];
+        std::byte tmp[20];
         memset(tmp, 0, 20);
-        int ret = incoming->recv((bt::Uint8 *)tmp, 20);
+        int ret = incoming->recv(tmp);
         QVERIFY(ret == 4 || ret == 8);
         QCOMPARE(memcmp(tmp, test, 4), 0);
         if (ret != 8) {
             memset(tmp, 0, 20);
-            ret = incoming->recv((bt::Uint8 *)tmp, 20);
+            ret = incoming->recv(tmp);
             QCOMPARE(ret, 4);
             QCOMPARE(memcmp(tmp, test, ret), 0);
         } else {

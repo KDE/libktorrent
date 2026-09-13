@@ -7,7 +7,10 @@
 #ifndef NET_SOCKETDEVICE_H
 #define NET_SOCKETDEVICE_H
 
+#include <cstddef>
+
 #include <QByteArrayView>
+#include <QSpan>
 
 #include <ktorrent_export.h>
 #include <net/address.h>
@@ -57,7 +60,7 @@ public:
     [[nodiscard]] virtual int fd() const = 0;
     [[nodiscard]] virtual bool ok() const = 0;
     virtual int send(QByteArrayView buf) = 0;
-    virtual int recv(bt::Uint8 *buf, int max_len) = 0;
+    virtual int recv(QSpan<std::byte>) = 0;
     virtual void close() = 0;
     virtual void setBlocking(bool on) = 0;
     [[nodiscard]] virtual bt::Uint32 bytesAvailable() const = 0;
