@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-07 00:44+0000\n"
+"POT-Creation-Date: 2026-09-13 00:45+0000\n"
 "PO-Revision-Date: 2013-04-09 17:20+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: Dutch <kde-i18n-nl@kde.org>\n"
@@ -78,8 +78,8 @@ msgstr "Kan bestand %1 niet openen: %2"
 msgid "Failed to create %1: %2"
 msgstr "Niet in staat %1 aan te maken: %2"
 
-#: src/diskio/cachefile.cpp:85 src/util/fileops.cpp:339
-#: src/util/fileops.cpp:401
+#: src/diskio/cachefile.cpp:85 src/util/fileops.cpp:333
+#: src/util/fileops.cpp:395
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Kan %1 niet openen: %2"
@@ -497,37 +497,37 @@ msgstr "Kan %1 niet verplaatsen naar %2: %3"
 msgid "Cannot copy %1 to %2: %3"
 msgstr "Kan %1 niet kopiëren naar %2: %3"
 
-#: src/util/fileops.cpp:260
+#: src/util/fileops.cpp:254
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Kan %1 niet verwijderen: %2"
 
-#: src/util/fileops.cpp:278
+#: src/util/fileops.cpp:272
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Kan %1 niet aanmaken: %2"
 
-#: src/util/fileops.cpp:296
+#: src/util/fileops.cpp:290
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Kan de bestandsgrootte van %1 niet berekenen: %2"
 
-#: src/util/fileops.cpp:313
+#: src/util/fileops.cpp:307
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Kan de bestandsgrootte niet berekenen: %1"
 
-#: src/util/fileops.cpp:363 src/util/fileops.cpp:367 src/util/fileops.cpp:390
+#: src/util/fileops.cpp:357 src/util/fileops.cpp:361 src/util/fileops.cpp:384
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Kan geen gegevens toevoegen aan bestand: %1"
 
-#: src/util/fileops.cpp:420
+#: src/util/fileops.cpp:414
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Kan niet zoeken in bestand: %1"
 
-#: src/util/fileops.cpp:678
+#: src/util/fileops.cpp:672
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Niet in staat bestand %1 te openen: %2"
@@ -544,32 +544,32 @@ msgid_plural "%1 days "
 msgstr[0] "1 dag "
 msgstr[1] "%1 dagen "
 
-#: src/util/logsystemmanager.cpp:19
+#: src/util/logsystemmanager.cpp:18
 #, kde-format
 msgid "General"
 msgstr "Algemeen"
 
-#: src/util/logsystemmanager.cpp:20
+#: src/util/logsystemmanager.cpp:19
 #, kde-format
 msgid "Connections"
 msgstr "Verbindingen"
 
-#: src/util/logsystemmanager.cpp:21
+#: src/util/logsystemmanager.cpp:20
 #, kde-format
 msgid "Tracker"
 msgstr "Tracker"
 
-#: src/util/logsystemmanager.cpp:22
+#: src/util/logsystemmanager.cpp:21
 #, kde-format
 msgid "DHT"
 msgstr "DHT"
 
-#: src/util/logsystemmanager.cpp:23
+#: src/util/logsystemmanager.cpp:22
 #, kde-format
 msgid "Disk Input/Output"
 msgstr "Schijf Invoer/Uitvoer"
 
-#: src/util/logsystemmanager.cpp:24
+#: src/util/logsystemmanager.cpp:23
 #, kde-format
 msgid "µTP"
 msgstr "µTP"
