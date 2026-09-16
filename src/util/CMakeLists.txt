@@ -36,6 +36,6 @@ else()
 set(util_HDR ${util_HDR}
     signalcatcher.h
     )
-endif(NOT WIN32)
+endif()
 
 install(FILES ${util_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/util COMPONENT Devel)
