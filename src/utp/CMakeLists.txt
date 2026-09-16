@@ -13,6 +13,11 @@ set(utp_HDR
 )
 
 install(FILES ${utp_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/utp COMPONENT Devel)
+
+if(HAVE_INSTALLED_LIBRARY_CHECK)
+    ecm_installed_library_check_include_strings(KTorrent6 HEADERS ${utp_HDR} PREFIX utp)
+endif()
+
 if(BUILD_TESTING)
     add_subdirectory(tests)
 endif()

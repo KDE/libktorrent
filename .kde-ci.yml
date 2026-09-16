@@ -14,3 +14,4 @@ Dependencies:
 Options:
  require-passing-tests-on: ['Linux']
  enable-lsan: true
+ run-installed-library-check-on: ['@all']

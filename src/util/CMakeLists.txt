@@ -39,3 +39,7 @@ set(util_HDR ${util_HDR}
 endif()
 
 install(FILES ${util_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/util COMPONENT Devel)
+
+if(HAVE_INSTALLED_LIBRARY_CHECK)
+    ecm_installed_library_check_include_strings(KTorrent6 HEADERS ${util_HDR} PREFIX util)
+endif()

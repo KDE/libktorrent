@@ -32,6 +32,10 @@ set(dht_HDR
 
 install(FILES ${dht_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/dht COMPONENT Devel)
 
+if(HAVE_INSTALLED_LIBRARY_CHECK)
+    ecm_installed_library_check_include_strings(KTorrent6 HEADERS ${dht_HDR} PREFIX dht)
+endif()
+
 if(BUILD_TESTING)
     add_subdirectory(tests)
 endif()

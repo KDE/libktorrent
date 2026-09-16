@@ -25,3 +25,7 @@ set(net_HDR
 )
 
 install(FILES ${net_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/net COMPONENT Devel)
+
+if(HAVE_INSTALLED_LIBRARY_CHECK)
+    ecm_installed_library_check_include_strings(KTorrent6 HEADERS ${net_HDR} PREFIX net)
+endif()

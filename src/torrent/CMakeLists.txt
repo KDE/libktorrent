@@ -19,6 +19,10 @@ set(torrent_HDR
 
 install(FILES ${torrent_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/torrent COMPONENT Devel)
 
+if(HAVE_INSTALLED_LIBRARY_CHECK)
+    ecm_installed_library_check_include_strings(KTorrent6 HEADERS ${torrent_HDR} PREFIX torrent)
+endif()
+
 if(BUILD_TESTING)
     add_subdirectory(tests)
 endif()

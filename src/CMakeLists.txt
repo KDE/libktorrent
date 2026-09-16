@@ -301,6 +301,28 @@ install(FILES ${interfaces_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorren
 install(FILES ${migrate_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent/migrate COMPONENT Devel)
 install(FILES ${ktorrent_HDR} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/libktorrent COMPONENT Devel)
 
+if(HAVE_INSTALLED_LIBRARY_CHECK)
+    ecm_add_installed_library_check(KTorrent6
+        PACKAGE_NAME "KTorrent6"
+        NO_PACKAGE_TARGET_NAMESPACE
+    )
+
+    ecm_installed_library_check_include_strings(KTorrent6 HEADERS ${bcodec_HDR} PREFIX bcodec)
+    ecm_installed_library_check_include_strings(KTorrent6 HEADERS ${interfaces_HDR} PREFIX interfaces)
+    ecm_installed_library_check_include_strings(KTorrent6 HEADERS ${migrate_HDR} PREFIX migrate)
+
+    if (USE_OPENSSL)
+        ecm_installed_library_check_compile_definition(KTorrent6 NAME LIBKTORRENT_USE_OPENSSL VALUE 1)
+    else()
+        ecm_installed_library_check_compile_definition(KTorrent6 NAME LIBKTORRENT_USE_OPENSSL UNDEFINED)
+    endif()
+    if (USE_LIBGCRYPT)
+        ecm_installed_library_check_compile_definition(KTorrent6 NAME LIBKTORRENT_USE_LIBGCRYPT VALUE 1)
+    else()
+        ecm_installed_library_check_compile_definition(KTorrent6 NAME LIBKTORRENT_USE_LIBGCRYPT UNDEFINED)
+    endif()
+endif()
+
 add_subdirectory(torrent)
 add_subdirectory(datachecker)
 add_subdirectory(download)
