@@ -45,14 +45,14 @@ private Q_SLOTS:
         QCOMPARE_GE(pipe.readerSocket(), 0);
         QCOMPARE_GE(pipe.writerSocket(), 0);
         QCOMPARE(p.add(pipe.readerSocket(), Poll::Mode::INPUT), 0);
-        char test[] = "TEST";
-        QCOMPARE(pipe.write((const bt::Uint8 *)test, 4), 4);
+        constexpr QByteArrayView test = "TEST";
+        QCOMPARE(pipe.write(test), 4);
         QCOMPARE(p.poll(), 1);
         QVERIFY(p.ready(0, net::Poll::Mode::INPUT));
 
-        bt::Uint8 tmp[20];
-        QCOMPARE(pipe.read(tmp, 20), 4);
-        QCOMPARE(memcmp(tmp, test, 4), 0);
+        std::array<bt::Uint8, 20> tmp;
+        QCOMPARE(pipe.read(tmp.data(), tmp.size()), 4);
+        QCOMPARE(QByteArrayView{tmp}.first(test.size()), test);
     }
 
     void testOutput()
@@ -74,8 +74,8 @@ private Q_SLOTS:
         QCOMPARE_GE(pipe.readerSocket(), 0);
         QCOMPARE_GE(pipe.writerSocket(), 0);
 
-        char test[] = "TEST";
-        QCOMPARE(pipe.write((const bt::Uint8 *)test, 4), 4);
+        constexpr QByteArrayView test = "TEST";
+        QCOMPARE(pipe.write(test), 4);
 
         for (int i = 0; i < 10; i++) {
             QCOMPARE(p.add(pipe.readerSocket(), Poll::Mode::INPUT), 0);
@@ -84,9 +84,9 @@ private Q_SLOTS:
             p.reset();
         }
 
-        bt::Uint8 tmp[20];
-        QCOMPARE(pipe.read(tmp, 20), 4);
-        QCOMPARE(memcmp(tmp, test, 4), 0);
+        std::array<bt::Uint8, 20> tmp{};
+        QCOMPARE(pipe.read(tmp.data(), tmp.size()), 4);
+        QCOMPARE(QByteArrayView{tmp}.first(test.size()), test);
         QCOMPARE(p.poll(100), 0);
     }
 

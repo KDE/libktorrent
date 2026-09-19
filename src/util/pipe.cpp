@@ -106,12 +106,12 @@ int Pipe::read(Uint8 *buffer, int max_len)
 #endif
 }
 
-int Pipe::write(const bt::Uint8 *data, int len)
+int Pipe::write(QByteArrayView data)
 {
 #ifndef Q_OS_WIN
-    return ::write(writer, data, len);
+    return ::write(writer, data.data(), static_cast<size_t>(data.size()));
 #else
-    return ::send(writer, (char *)data, len, 0);
+    return ::send(writer, data.data(), static_cast<int>(data.size()), 0);
 #endif
 }
 

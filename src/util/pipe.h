@@ -7,6 +7,8 @@
 #ifndef BT_PIPE_H
 #define BT_PIPE_H
 
+#include <QByteArrayView>
+
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
@@ -37,7 +39,7 @@ public:
     }
 
     //! Write data to the write end of the pipe
-    int write(const Uint8 *data, int len);
+    int write(QByteArrayView data);
 
     //! Read data from the read end of the pipe
     int read(Uint8 *buffer, int max_len);

@@ -27,8 +27,8 @@ void WakeUpPipe::wakeUp()
         return;
     }
 
-    char data[] = "d";
-    if (pipe.write((const bt::Uint8 *)data, 1) != 1) {
+    constexpr QByteArrayView data = "d";
+    if (pipe.write(data) != 1) {
         Out(SYS_GEN | LOG_DEBUG) << "WakeUpPipe: wake up failed " << endl;
     } else {
         woken_up = true;
