@@ -273,19 +273,19 @@ void UDPTracker::sendAnnounce()
     const Int32 num_want = ev != STOPPED ? 100 : 0;
 
     std::array<std::byte, 98> buf;
-    WriteInt64(buf.data(), 0, connection_id);
-    WriteInt32(buf.data(), 8, UDPTrackerSocket::ANNOUNCE);
-    WriteInt32(buf.data(), 12, transaction_id);
+    WriteInt64(buf, 0, connection_id);
+    WriteInt32(buf, 8, UDPTrackerSocket::ANNOUNCE);
+    WriteInt32(buf, 12, transaction_id);
     memcpy(buf.data() + 16, info_hash.getData(), 20);
     memcpy(buf.data() + 36, peer_id.data(), 20);
-    WriteInt64(buf.data(), 56, bytesDownloaded());
-    WriteInt64(buf.data(), 64, bytes_left);
-    WriteInt64(buf.data(), 72, bytesUploaded());
-    WriteInt32(buf.data(), 80, ev);
-    WriteUint32(buf.data(), 84, ip_addr);
-    WriteUint32(buf.data(), 88, key);
-    WriteInt32(buf.data(), 92, num_want);
-    WriteUint16(buf.data(), 96, port);
+    WriteInt64(buf, 56, bytesDownloaded());
+    WriteInt64(buf, 64, bytes_left);
+    WriteInt64(buf, 72, bytesUploaded());
+    WriteInt32(buf, 80, ev);
+    WriteUint32(buf, 84, ip_addr);
+    WriteUint32(buf, 88, key);
+    WriteInt32(buf, 92, num_want);
+    WriteUint16(buf, 96, port);
 
     socket->sendAnnounce(transaction_id, buf, address);
 }
@@ -304,9 +304,9 @@ void UDPTracker::sendScrape()
     const SHA1Hash &info_hash = tds->infoHash();
 
     std::array<std::byte, 36> buf;
-    WriteInt64(buf.data(), 0, connection_id);
-    WriteInt32(buf.data(), 8, UDPTrackerSocket::SCRAPE);
-    WriteInt32(buf.data(), 12, scrape_transaction_id);
+    WriteInt64(buf, 0, connection_id);
+    WriteInt32(buf, 8, UDPTrackerSocket::SCRAPE);
+    WriteInt32(buf, 12, scrape_transaction_id);
     memcpy(buf.data() + 16, info_hash.getData(), 20);
 
     socket->sendScrape(scrape_transaction_id, buf, address);

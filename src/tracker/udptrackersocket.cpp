@@ -134,9 +134,9 @@ void UDPTrackerSocket::sendConnect(Int32 tid, const net::Address &addr)
     const Int64 cid = 0x41727101980LL;
     std::array<std::byte, 16> buf;
 
-    WriteInt64(buf.data(), 0, cid);
-    WriteInt32(buf.data(), 8, CONNECT);
-    WriteInt32(buf.data(), 12, tid);
+    WriteInt64(buf, 0, cid);
+    WriteInt32(buf, 8, CONNECT);
+    WriteInt32(buf, 12, tid);
 
     d->send(buf, addr);
     d->transactions.insert(tid, CONNECT);

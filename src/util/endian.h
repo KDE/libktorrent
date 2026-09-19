@@ -7,13 +7,65 @@
 #ifndef BTENDIAN_H
 #define BTENDIAN_H
 
+#include <cstddef>
+#include <type_traits>
+
 #include <QByteArrayView>
+#include <QSpan>
 #include <QtEndian>
 
 #include "constants.h"
 
 namespace bt
 {
+template<typename T>
+    requires(std::is_integral_v<T>)
+inline void WriteIntegral(QSpan<std::byte> buf, Uint64 off, T value)
+{
+    buf = buf.subspan(off, sizeof(T));
+    return qToBigEndian<T>(value, buf.data());
+}
+
+inline void WriteUint64(QSpan<std::byte> buf, Uint64 off, Uint64 value)
+{
+    WriteIntegral<Uint64>(buf, off, value);
+}
+
+inline void WriteUint32(QSpan<std::byte> buf, Uint64 off, Uint32 value)
+{
+    WriteIntegral<Uint32>(buf, off, value);
+}
+
+inline void WriteUint16(QSpan<std::byte> buf, Uint64 off, Uint16 value)
+{
+    WriteIntegral<Uint16>(buf, off, value);
+}
+
+inline void WriteUint8(QSpan<std::byte> buf, Uint64 off, Uint8 value)
+{
+    WriteIntegral<Uint8>(buf, off, value);
+}
+
+inline void WriteInt64(QSpan<std::byte> buf, Uint64 off, Int64 value)
+{
+    WriteIntegral<Int64>(buf, off, value);
+}
+
+inline void WriteInt32(QSpan<std::byte> buf, Uint64 off, Int32 value)
+{
+    WriteIntegral<Int32>(buf, off, value);
+}
+
+inline void WriteInt16(QSpan<std::byte> buf, Uint64 off, Int16 value)
+{
+    WriteIntegral<Int16>(buf, off, value);
+}
+
+inline void WriteInt8(QSpan<std::byte> buf, Uint64 off, Int8 value)
+{
+    WriteIntegral<Int8>(buf, off, value);
+}
+
 template<typename Byte>
     requires(sizeof(Byte) == 1)
 inline void WriteUint64(Byte *buf, Uint32 off, Uint64 val)

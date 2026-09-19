@@ -160,8 +160,8 @@ void EncryptedServerAuthenticate::processVC()
     } else {
         crypto_select = 0x0000001;
     }
-    WriteUint32(tmp.data(), 8, crypto_select);
-    WriteUint16(tmp.data(), 12, 0); // no pad D
+    WriteUint32(tmp, 8, crypto_select);
+    WriteUint16(tmp, 12, 0); // no pad D
 
     sock->sendData(our_rc4->encrypt(tmp));
 
