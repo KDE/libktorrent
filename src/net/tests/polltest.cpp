@@ -50,8 +50,8 @@ private Q_SLOTS:
         QCOMPARE(p.poll(), 1);
         QVERIFY(p.ready(0, net::Poll::Mode::INPUT));
 
-        std::array<bt::Uint8, 20> tmp;
-        QCOMPARE(pipe.read(tmp.data(), tmp.size()), 4);
+        std::array<std::byte, 20> tmp;
+        QCOMPARE(pipe.read(tmp), 4);
         QCOMPARE(QByteArrayView{tmp}.first(test.size()), test);
     }
 
@@ -84,8 +84,8 @@ private Q_SLOTS:
             p.reset();
         }
 
-        std::array<bt::Uint8, 20> tmp{};
-        QCOMPARE(pipe.read(tmp.data(), tmp.size()), 4);
+        std::array<std::byte, 20> tmp{};
+        QCOMPARE(pipe.read(tmp), 4);
         QCOMPARE(QByteArrayView{tmp}.first(test.size()), test);
         QCOMPARE(p.poll(100), 0);
     }

@@ -7,7 +7,10 @@
 #ifndef BT_PIPE_H
 #define BT_PIPE_H
 
+#include <cstddef>
+
 #include <QByteArrayView>
+#include <QSpan>
 
 #include <ktorrent_export.h>
 #include <util/constants.h>
@@ -42,7 +45,7 @@ public:
     int write(QByteArrayView data);
 
     //! Read data from the read end of the pipe
-    int read(Uint8 *buffer, int max_len);
+    int read(QSpan<std::byte> buffer);
 
 protected:
     int reader;

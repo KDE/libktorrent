@@ -38,8 +38,8 @@ void WakeUpPipe::wakeUp()
 void WakeUpPipe::handleData()
 {
     const QMutexLocker lock(&mutex);
-    bt::Uint8 buf[20];
-    const int ret = pipe.read(buf, 20);
+    std::byte buf[20];
+    const int ret = pipe.read(buf);
     if (ret < 0) {
         Out(SYS_GEN | LOG_DEBUG) << "WakeUpPipe: read failed " << endl;
     }

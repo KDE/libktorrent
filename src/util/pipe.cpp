@@ -97,12 +97,12 @@ Pipe::~Pipe()
 #endif
 }
 
-int Pipe::read(Uint8 *buffer, int max_len)
+int Pipe::read(QSpan<std::byte> buffer)
 {
 #ifndef Q_OS_WIN
-    return ::read(reader, buffer, max_len);
+    return ::read(reader, buffer.data(), static_cast<size_t>(buffer.size()));
 #else
-    return ::recv(reader, (char *)buffer, max_len, 0);
+    return ::recv(reader, reinterpret_cast<char *>(buffer.data()), static_cast<int>(buffer.size()), 0);
 #endif
 }
 
