@@ -1,3 +1,12 @@
+Changes in 26.12:
+- Lots of modernization with enum class, QByteArrayView, QSpan, std::byte, and removed some manual memory management.
+
+Changes in 26.08.1:
+- Improved the memory management of the HTTP tracker to a fix a minor memory leak reported by ASAN. The leak was due to in-flight HTTP GET job continuing not being stopped properly when the HTTP tracker was destroyed. This is not a major issue as the job would have eventually completed and destroyed itself anyway.
+
+Changes in 26.08:
+- Fixed an incorrect calculation of number of peers for the ANNOUNCE response from a UDP tracker. This meant we were reading past the end of a buffer and attempting to connect to non-existant peers.
+
 Changes in 26.04.1:
 - Fixed a bug where we would try to connect with TCP even if the only use uTP setting was enabled.
 
@@ -88,7 +97,7 @@ Changes in 1.3.2:
 
 Changes in 1.3.1:
 - Add workaround for broken handling of btrfs subvolumes by solid (306825)
-- Fix crash when preallocating diskspace when a file is enabled during the download of a torrent (307178) 
+- Fix crash when preallocating diskspace when a file is enabled during the download of a torrent (307178)
 - Make sure stats get updated properly during data check (308707)
 - Bind peer sockets to preferred interface for outbound connections
 - Fix bug causing UDP connections not to get established on FreeBSD because FIONREAD returns the size of the data and the peer address (Review: 108076)
@@ -158,7 +167,7 @@ Changes in 1.1.2:
 
 Changes in 1.1.1:
 - Fix deadlock in utp::OutputQueue when packet sending fails
-- Fix bug causing scrape not to be done after first announce 
+- Fix bug causing scrape not to be done after first announce
 - Fix crash in DHT code caused by invalid addresses (269657)
 - Fix crash in DHT code caused by unsynchronized access to a QSet (270127)
 - Fix bug causing running time to be wrong when pausing torrents (271521)
