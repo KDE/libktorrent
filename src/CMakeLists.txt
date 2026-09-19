@@ -220,7 +220,7 @@ target_sources(KTorrent6 PRIVATE
 if(WIN32)
 # Compile stuff for windows
     target_sources(KTorrent6 PRIVATE util/win32.cpp)
-endif(WIN32)
+endif()
 
 
 # ki18n_wrap_ui(KTorrent6 ${libktorrent_UI})
@@ -253,10 +253,10 @@ endif()
 
 if(WIN32)
 target_link_libraries(KTorrent6 PUBLIC ws2_32)
-endif(WIN32)
+endif()
 if(HAIKU)
 target_link_libraries(KTorrent6 PUBLIC network)
-endif(HAIKU)
+endif()
 target_include_directories(KTorrent6 INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR}/libktorrent>")
 target_include_directories(KTorrent6 PUBLIC "$<BUILD_INTERFACE:;${LIBKTORRENT_BINARY_DIR}>") # for config and export headers
 
