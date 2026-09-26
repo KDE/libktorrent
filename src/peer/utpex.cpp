@@ -11,6 +11,7 @@
 #include <bcodec/bencoder.h>
 #include <bcodec/bnode.h>
 #include <net/address.h>
+#include <util/array.h>
 #include <util/functions.h>
 #include <util/log.h>
 
@@ -163,27 +164,22 @@ void UTPex::encode(BEncoder &enc, const std::map<Uint32, net::Address> &ps, int 
         return;
     }
 
-    Uint8 *buf = nullptr;
+    Array<std::byte> buf;
     if (ip_version == 4) {
-        buf = new Uint8[ps.size() * 6];
+        buf = Array<std::byte>(ps.size() * 6);
     } else if (ip_version == 6) {
-        buf = new Uint8[ps.size() * 18];
+        buf = Array<std::byte>(ps.size() * 18);
     }
 
     Uint32 size = 0;
-    const auto compact_width = ip_version == 4 ? 6 : 18;
-    auto tmp = buf;
-
     for (const auto &[id, addr] : ps) {
         if (addr.ipVersion() != ip_version) {
             continue;
         }
-        size += addr.writeCompact(tmp);
-        tmp += compact_width;
+        size += addr.writeCompact(QSpan{buf}.subspan(size));
     }
 
-    enc.write(QByteArrayView{buf, size});
-    delete[] buf;
+    enc.write(QByteArrayView{buf}.first(size));
 }
 
 void UTPex::encodeFlags(BEncoder &enc, const std::map<Uint32, Uint8> &flags)

@@ -15,8 +15,6 @@ namespace dht
 void PackBucketEntry(const KBucketEntry &e, QByteArray &ba, Uint32 off)
 {
     const net::Address &addr = e.getAddress();
-    Uint8 *data = (Uint8 *)ba.data();
-    Uint8 *ptr = data + off;
 
     // first check size
     if (addr.ipVersion() == 4) {
@@ -29,9 +27,10 @@ void PackBucketEntry(const KBucketEntry &e, QByteArray &ba, Uint32 off)
         }
     }
 
+    auto buf = as_writable_bytes(QSpan{ba}).subspan(off);
     // copy ID, IP address and port into the buffer
-    memcpy(ptr, e.getID().getData(), 20);
-    addr.writeCompact(ptr + 20);
+    memcpy(buf.data(), e.getID().getData(), 20);
+    addr.writeCompact(buf.subspan(20));
 }
 
 KBucketEntry UnpackBucketEntry(QByteArrayView ba, int ip_version)

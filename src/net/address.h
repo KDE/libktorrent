@@ -6,7 +6,11 @@
 #ifndef NETADDRESS_H
 #define NETADDRESS_H
 
+#include <cstddef>
+
 #include <QHostAddress>
+#include <QSpan>
+
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
@@ -104,7 +108,7 @@ public:
      *
      * The buffer must be at least 6 bytes long for an IPv4 address or 18 bytes long for an IPv6 address.
      */
-    bt::Uint32 writeCompact(bt::Uint8 *buf) const;
+    bt::Uint32 writeCompact(QSpan<std::byte> buf) const;
 
 private:
     bt::Uint16 port_number;

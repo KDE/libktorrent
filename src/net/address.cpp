@@ -192,17 +192,19 @@ Address Address::convertIPv4Mapped() const
     return net::Address(*this);
 }
 
-Uint32 Address::writeCompact(Uint8 *buf) const
+Uint32 Address::writeCompact(QSpan<std::byte> buf) const
 {
     if (ipVersion() == 4) {
+        buf = buf.first(6);
         WriteUint32(buf, 0, toIPv4Address());
         WriteUint16(buf, 4, port_number);
-        return 6;
+        return buf.size();
     } else {
+        buf = buf.first(18);
         const auto ipv6 = toIPv6Address();
-        memcpy(buf, ipv6.c, 16);
+        memcpy(buf.data(), ipv6.c, 16);
         WriteUint16(buf, 16, port_number);
-        return 18;
+        return buf.size();
     }
 }
 }

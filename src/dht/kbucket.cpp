@@ -273,12 +273,12 @@ void KBucket::save(bt::BEncoder &enc)
         enc.write("id", e.getID());
         enc.write("address");
         if (e.getAddress().ipVersion() == 4) {
-            std::array<Uint8, 6> tmp;
-            e.getAddress().writeCompact(tmp.data());
+            std::array<std::byte, 6> tmp;
+            e.getAddress().writeCompact(tmp);
             enc.write(tmp);
         } else {
-            std::array<Uint8, 18> tmp;
-            e.getAddress().writeCompact(tmp.data());
+            std::array<std::byte, 18> tmp;
+            e.getAddress().writeCompact(tmp);
             enc.write(tmp);
         }
 

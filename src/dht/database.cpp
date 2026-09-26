@@ -52,7 +52,7 @@ DBItem &DBItem::operator=(const DBItem &it)
 
 Uint32 DBItem::pack(Uint8 *buf) const
 {
-    return addr.writeCompact(buf);
+    return addr.writeCompact(as_writable_bytes(QSpan{buf, 18}));
 }
 
 ///////////////////////////////////////////////
@@ -124,24 +124,24 @@ void Database::expire(bt::TimeStamp now)
 QByteArray Database::genToken(const net::Address &addr)
 {
     if (addr.ipVersion() == 4) {
-        std::array<Uint8, 14> tdata;
+        std::array<std::byte, 14> tdata;
         const TimeStamp now = bt::CurrentTime();
         // generate a hash of the ip port and the current time
         // should prevent anybody from crapping things up
-        addr.writeCompact(tdata.data());
-        bt::WriteUint64(tdata.data(), 6, now);
+        addr.writeCompact(tdata);
+        bt::WriteUint64(tdata, 6, now);
 
         const QByteArray token = SHA1Hash::generate(tdata).toByteArray();
         // keep track of the token, tokens will expire after a while
         tokens.insert(token, now);
         return token;
     } else {
-        std::array<Uint8, 26> tdata;
+        std::array<std::byte, 26> tdata;
         const TimeStamp now = bt::CurrentTime();
         // generate a hash of the ip port and the current time
         // should prevent anybody from crapping things up
-        addr.writeCompact(tdata.data());
-        bt::WriteUint64(tdata.data(), 18, now);
+        addr.writeCompact(tdata);
+        bt::WriteUint64(tdata, 18, now);
 
         const QByteArray token = SHA1Hash::generate(tdata).toByteArray();
         // keep track of the token, tokens will expire after a while
@@ -162,9 +162,9 @@ bool Database::checkToken(const QByteArray &token, const net::Address &addr)
     const TimeStamp ts = tokens[token];
 
     if (addr.ipVersion() == 4) {
-        std::array<Uint8, 14> tdata;
-        addr.writeCompact(tdata.data());
-        bt::WriteUint64(tdata.data(), 6, ts);
+        std::array<std::byte, 14> tdata;
+        addr.writeCompact(tdata);
+        bt::WriteUint64(tdata, 6, ts);
         const QByteArray ct = SHA1Hash::generate(tdata).toByteArray();
 
         // compare the generated token to the one received
@@ -173,9 +173,9 @@ bool Database::checkToken(const QByteArray &token, const net::Address &addr)
             return false;
         }
     } else {
-        std::array<Uint8, 26> tdata;
-        addr.writeCompact(tdata.data());
-        bt::WriteUint64(tdata.data(), 18, ts);
+        std::array<std::byte, 26> tdata;
+        addr.writeCompact(tdata);
+        bt::WriteUint64(tdata, 18, ts);
 
         const QByteArray ct = SHA1Hash::generate(tdata).toByteArray();
         // compare the generated token to the one received
