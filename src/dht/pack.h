@@ -6,6 +6,10 @@
 #ifndef DHTPACK_H
 #define DHTPACK_H
 
+#include <cstddef>
+
+#include <QSpan>
+
 #include "kbucket.h"
 
 namespace dht
@@ -14,10 +18,10 @@ namespace dht
  * Pack a KBucketEntry into a byte array.
  * If the array is not large enough, an error will be thrown
  * \param e The entry
- * \param ba The byte array
+ * \param buf The byte array
  * \param off The offset into the array
  */
-void PackBucketEntry(const KBucketEntry &e, QByteArray &ba, bt::Uint32 off);
+void PackBucketEntry(const KBucketEntry &e, QSpan<std::byte> buf, bt::Uint32 off);
 
 /*!
  * Unpack a KBucketEntry from a byte array.

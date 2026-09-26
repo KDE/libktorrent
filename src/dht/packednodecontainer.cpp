@@ -15,7 +15,7 @@ PackedNodeContainer::~PackedNodeContainer()
 {
 }
 
-void PackedNodeContainer::addNode(const QByteArray &a)
+void PackedNodeContainer::addNode(QByteArrayView a)
 {
     if (a.size() == 26) {
         nodes.append(a);

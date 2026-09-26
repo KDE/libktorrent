@@ -50,9 +50,9 @@ DBItem &DBItem::operator=(const DBItem &it)
     return *this;
 }
 
-Uint32 DBItem::pack(Uint8 *buf) const
+Uint32 DBItem::pack(QSpan<std::byte> buf) const
 {
-    return addr.writeCompact(as_writable_bytes(QSpan{buf, 18}));
+    return addr.writeCompact(buf);
 }
 
 ///////////////////////////////////////////////

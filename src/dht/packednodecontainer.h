@@ -8,6 +8,7 @@
 #define DHT_PACKEDNODECONTAINER_H
 
 #include <QByteArray>
+#include <QByteArrayView>
 #include <QList>
 
 namespace dht
@@ -23,7 +24,7 @@ public:
     virtual ~PackedNodeContainer();
 
     //! Add a single node to the nodes or nodes2 parameter depending on it's size
-    void addNode(const QByteArray &a);
+    void addNode(QByteArrayView a);
 
     //! Get the nodes parameter
     [[nodiscard]] const QByteArray &getNodes() const

@@ -12,22 +12,22 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace dht
 {
-void PackBucketEntry(const KBucketEntry &e, QByteArray &ba, Uint32 off)
+void PackBucketEntry(const KBucketEntry &e, QSpan<std::byte> buf, Uint32 off)
 {
     const net::Address &addr = e.getAddress();
 
     // first check size
     if (addr.ipVersion() == 4) {
-        if ((int)off + 26 > ba.size()) {
+        if ((int)off + 26 > buf.size()) {
             throw bt::Error(u"Not enough room in buffer"_s);
         }
     } else {
-        if ((int)off + 38 > ba.size()) {
+        if ((int)off + 38 > buf.size()) {
             throw bt::Error(u"Not enough room in buffer"_s);
         }
     }
+    buf = buf.subspan(off);
 
-    auto buf = as_writable_bytes(QSpan{ba}).subspan(off);
     // copy ID, IP address and port into the buffer
     memcpy(buf.data(), e.getID().getData(), 20);
     addr.writeCompact(buf.subspan(20));

@@ -55,11 +55,11 @@ void KClosestNodesSearch::pack(PackedNodeContainer *cnt)
     while (i != emap.end()) {
         const KBucketEntry &e = i->second;
         if (e.getAddress().ipVersion() == 4) {
-            QByteArray d(26, 0);
+            std::array<std::byte, 26> d{};
             PackBucketEntry(i->second, d, 0);
             cnt->addNode(d);
         } else {
-            QByteArray d(38, 0);
+            std::array<std::byte, 38> d{};
             PackBucketEntry(i->second, d, 0);
             cnt->addNode(d);
         }

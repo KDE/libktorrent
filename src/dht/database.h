@@ -6,9 +6,13 @@
 #ifndef DHTDATABASE_H
 #define DHTDATABASE_H
 
-#include "key.h"
+#include <cstddef>
+
 #include <QList>
 #include <QMap>
+#include <QSpan>
+
+#include "key.h"
 #include <net/address.h>
 #include <util/array.h>
 #include <util/constants.h>
@@ -47,7 +51,7 @@ public:
      * \param buf The buffer
      * \return The number of bytes used
      */
-    bt::Uint32 pack(bt::Uint8 *buf) const;
+    bt::Uint32 pack(QSpan<std::byte> buf) const;
 
     DBItem &operator=(const DBItem &item);
 
