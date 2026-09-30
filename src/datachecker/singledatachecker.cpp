@@ -48,17 +48,18 @@ void SingleDataChecker::check(const QString &path, const Torrent &tor, const QSt
     // initialize the bitset
     result = BitSet(num_chunks);
     // loop over all chunks
-    Array<Uint8> buf(chunk_size);
+    Array<std::byte> buf(chunk_size);
     TimeStamp last_emitted = bt::Now();
     for (Uint32 i = from; i <= to && !need_to_stop; i++) {
         if (!fptr.eof()) {
             // read the chunk
             const Uint32 size = i == num_chunks - 1 ? tor.getLastChunkSize() : tor.getChunkSize();
+            const auto chunk = QSpan{buf}.first(size);
 
             fptr.seek(File::SeekPos::BEGIN, (Int64)i * tor.getChunkSize());
-            fptr.read(buf.data(), size);
+            fptr.read(chunk);
             // generate and test hash
-            const SHA1Hash h = SHA1Hash::generate(QByteArrayView{buf}.first(size));
+            const SHA1Hash h = SHA1Hash::generate(chunk);
             const bool ok = (h == tor.getHash(i));
             result.set(i, ok);
             if (ok && current_status.get(i)) {

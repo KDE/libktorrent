@@ -227,9 +227,9 @@ bool TorrentCreator::calcHashSingle()
     }
 
     const Uint32 s = cur_chunk != num_chunks - 1 ? chunk_size : last_size;
-    Array<Uint8> buf(s);
+    Array<std::byte> buf(s);
     fptr.seek(File::SeekPos::BEGIN, (Int64)cur_chunk * chunk_size);
-    fptr.read(buf.data(), buf.size());
+    fptr.read(buf);
     const SHA1Hash h = SHA1Hash::generate(buf);
     hashes.append(h);
     cur_chunk++;
@@ -240,7 +240,7 @@ bool TorrentCreator::calcHashMulti()
 {
     const Uint32 s = cur_chunk != num_chunks - 1 ? chunk_size : last_size;
     // first find the file(s) the chunk lies in
-    Array<Uint8> buf(s);
+    Array<std::byte> buf(s);
     QList<TorrentFile> file_list;
     int i = 0;
     while (i < files.size()) {
@@ -282,7 +282,7 @@ bool TorrentCreator::calcHashMulti()
 
         // read part of data
         fptr.seek(File::SeekPos::BEGIN, (Int64)off);
-        fptr.read(buf.data() + read, to_read);
+        fptr.read(QSpan{buf}.subspan(read, to_read));
         read += to_read;
     }
 

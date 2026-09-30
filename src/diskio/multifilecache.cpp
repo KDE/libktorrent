@@ -668,17 +668,17 @@ void MultiFileCache::saveFirstAndLastChunk(TorrentFile *tf, const QString &src_f
 
     const Uint32 cs = (tf->getFirstChunk() == tor.getNumChunks() - 1) ? tor.getLastChunkSize() : tor.getChunkSize();
 
-    Uint8 *tmp = new Uint8[tor.getChunkSize()];
+    std::byte *tmp = new std::byte[tor.getChunkSize()];
     try {
         const QSpan first_chunk{tmp, static_cast<qsizetype>(cs - tf->getFirstChunkOffset())};
-        fptr.read(first_chunk.data(), first_chunk.size());
+        fptr.read(first_chunk);
         out.writeFirstChunk(first_chunk, 0);
 
         if (tf->getFirstChunk() != tf->getLastChunk()) {
             const auto last_chunk = QSpan{tmp, static_cast<qsizetype>(tf->getLastChunkSize())};
             const Uint64 off = FileOffset(tf->getLastChunk(), *tf, tor.getChunkSize());
             fptr.seek(File::SeekPos::BEGIN, off);
-            fptr.read(last_chunk.data(), last_chunk.size());
+            fptr.read(last_chunk);
             out.writeLastChunk(last_chunk, 0);
         }
         delete[] tmp;

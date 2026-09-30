@@ -60,8 +60,8 @@ public:
             return r;
         }
 
-        Uint8 data[20];
-        if (fptr.read(data, 20) != 20) {
+        std::array<std::byte, 20> data;
+        if (fptr.read(data) != data.size()) {
             const dht::Key r = dht::Key::random();
             saveKey(r, key_file);
             new_key = true;

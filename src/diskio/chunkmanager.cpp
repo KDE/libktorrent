@@ -463,7 +463,8 @@ void ChunkManager::Private::loadPriorityInfo()
     }
 
     Array<Uint32> buf(num);
-    if (fptr.read(buf.data(), sizeof(Uint32) * num) != sizeof(Uint32) * num) {
+    const auto buf_view_bytes = as_writable_bytes(QSpan{buf});
+    if (fptr.read(buf_view_bytes) != buf_view_bytes.size()) {
         Out(SYS_DIO | LOG_IMPORTANT) << "Warning : error reading chunk_info file" << endl;
         loadFileInfo();
         return;

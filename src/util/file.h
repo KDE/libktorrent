@@ -6,9 +6,11 @@
 #ifndef BTFILE_H
 #define BTFILE_H
 
+#include <cstddef>
 #include <cstdio>
 
 #include <QByteArrayView>
+#include <QSpan>
 #include <QString>
 
 #include "constants.h"
@@ -96,6 +98,17 @@ public:
      * \return The number of bytes read
      */
     Uint32 read(void *buf, Uint32 size);
+
+    /*!
+     * Read a bunch of data. If anything goes wrong
+     * an Error will be thrown.
+     * \param buf The buffer to store the data
+     * \return The number of bytes read
+     */
+    Uint32 read(QSpan<std::byte> buf)
+    {
+        return read(buf.data(), buf.size());
+    }
 
     /*!
      * \enum SeekPos
