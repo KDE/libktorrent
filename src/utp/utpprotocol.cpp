@@ -41,10 +41,10 @@ void Header::read(QByteArrayView data)
     ack_nr = bt::ReadUint16(data, 18);
 }
 
-void Header::write(bt::Uint8 *data) const
+void Header::write(QSpan<std::byte> data) const
 {
-    data[0] = ((type << 4) & 0xF0) | (version & 0x0F);
-    data[1] = extension;
+    bt::WriteUint8(data, 0, ((type << 4) & 0xF0) | (version & 0x0F));
+    bt::WriteUint8(data, 1, extension);
     bt::WriteUint16(data, 2, connection_id);
     bt::WriteUint32(data, 4, timestamp_microseconds);
     bt::WriteUint32(data, 8, timestamp_difference_microseconds);

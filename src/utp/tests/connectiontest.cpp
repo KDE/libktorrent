@@ -56,7 +56,7 @@ public:
         hdr.wnd_size = 6666;
         hdr.seq_nr = seq_nr;
         hdr.ack_nr = ack_nr;
-        hdr.write(packet->data());
+        hdr.write(as_writable_bytes(QSpan{*packet}));
         return packet;
     }
 

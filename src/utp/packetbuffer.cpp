@@ -48,7 +48,7 @@ bool PacketBuffer::setHeader(const Header &hdr, bt::Uint32 extension_length)
         header = buffer->data();
     }
 
-    hdr.write(header);
+    hdr.write(as_writable_bytes(QSpan{header, Header::size()}));
     extension = header + Header::size();
     if (payload) {
         size = (buffer->data() + MAX_SIZE) - header;

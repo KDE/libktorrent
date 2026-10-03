@@ -7,8 +7,12 @@
 #ifndef UTP_UTPPROTOCOL_H
 #define UTP_UTPPROTOCOL_H
 
+#include <cstddef>
+
+#include <QSpan>
 #include <QString>
 #include <QtGlobal>
+
 #include <ktorrent_export.h>
 #include <util/constants.h>
 
@@ -47,7 +51,7 @@ struct KTORRENT_EXPORT Header {
     bt::Uint16 ack_nr;
 
     void read(QByteArrayView data);
-    void write(bt::Uint8 *data) const;
+    void write(QSpan<std::byte> data) const;
     static bt::Uint32 size();
 };
 
