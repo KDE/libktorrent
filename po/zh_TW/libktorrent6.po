@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-13 00:45+0000\n"
+"POT-Creation-Date: 2026-10-04 00:46+0000\n"
 "PO-Revision-Date: 2024-06-02 18:51+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -130,7 +130,7 @@ msgstr "寫入檔案 %1 失敗：%2"
 msgid "Cannot preallocate diskspace: %1"
 msgstr "無法預留磁碟空間：%1"
 
-#: src/diskio/chunkmanager.cpp:871 src/diskio/chunkmanager.cpp:895
+#: src/diskio/chunkmanager.cpp:872 src/diskio/chunkmanager.cpp:896
 #, kde-format
 msgid "Cannot open index file %1: %2"
 msgstr "無法開啟索引檔 %1：%2"
