@@ -517,7 +517,7 @@ int Connection::recv(Uint8 *buf, Uint32 max_len)
         return -1;
     }
 
-    const bt::Uint32 ret = local_wnd->read(buf, max_len);
+    const bt::Uint32 ret = local_wnd->read(as_writable_bytes(QSpan{buf, max_len}));
     // Update the window if there is room again
     if (stats.last_window_size_transmitted < 2000 && local_wnd->availableSpace() > 2000) {
         sendState();

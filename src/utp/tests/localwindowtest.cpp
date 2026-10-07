@@ -53,7 +53,7 @@ private Q_SLOTS:
     {
         Out(SYS_UTP | LOG_DEBUG) << "testLocalWindow" << endl;
         bt::BufferPool pool;
-        bt::Uint8 wdata[1000];
+        std::byte wdata[1000];
         memset(wdata, 0, 1000);
 
         utp::Header hdr;
@@ -73,7 +73,7 @@ private Q_SLOTS:
         QCOMPARE(wnd.currentWindow(), 600);
 
         // read 300 from it
-        QCOMPARE(wnd.read(wdata, 300), 300);
+        QCOMPARE(wnd.read(QSpan{wdata}.first(300)), 300);
         QCOMPARE(wnd.availableSpace(), 700);
         QCOMPARE(wnd.currentWindow(), 300);
     }
@@ -82,7 +82,7 @@ private Q_SLOTS:
     {
         Out(SYS_UTP | LOG_DEBUG) << "testPacketLoss" << endl;
         bt::BufferPool pool;
-        bt::Uint8 wdata[1000];
+        std::byte wdata[1000];
 
         utp::Header hdr;
         utp::LocalWindow wnd(1000);
@@ -102,7 +102,7 @@ private Q_SLOTS:
         QCOMPARE(wnd.bytesAvailable(), 500);
 
         // Try to read all of it, but we should only get back 500
-        QCOMPARE(wnd.read(wdata, 600), 500);
+        QCOMPARE(wnd.read(QSpan{wdata}.first(600)), 500);
         QCOMPARE(wnd.availableSpace(), 900);
         QCOMPARE(wnd.currentWindow(), 100);
         QCOMPARE(wnd.bytesAvailable(), 0);
@@ -269,7 +269,7 @@ private Q_SLOTS:
     {
         Out(SYS_UTP | LOG_DEBUG) << "testSeqNrWrapAround" << endl;
         bt::BufferPool pool;
-        bt::Uint8 wdata[1000];
+        std::byte wdata[1000];
         memset(wdata, 0, 1000);
 
         utp::Header hdr;
@@ -289,7 +289,7 @@ private Q_SLOTS:
         QCOMPARE(wnd.currentWindow(), 600);
 
         // read 300 from it
-        QCOMPARE(wnd.read(wdata, 300), 300);
+        QCOMPARE(wnd.read(QSpan{wdata}.first(300)), 300);
         QCOMPARE(wnd.availableSpace(), 700);
         QCOMPARE(wnd.currentWindow(), 300);
     }

@@ -30,14 +30,14 @@ WindowPacket::~WindowPacket()
 {
 }
 
-bt::Uint32 WindowPacket::read(bt::Uint8 *dst, bt::Uint32 max_len)
+bt::Uint32 WindowPacket::read(QSpan<std::byte> buf)
 {
-    const bt::Uint32 to_read = qMin(packet->size() - bytes_read, max_len);
+    const bt::Uint32 to_read = qMin(packet->size() - bytes_read, static_cast<Uint32>(buf.size()));
     if (to_read == 0) {
         return 0;
     }
 
-    memcpy(dst, packet->data() + bytes_read, to_read);
+    memcpy(buf.data(), packet->data() + bytes_read, to_read);
     bytes_read += to_read;
     return to_read;
 }
@@ -87,13 +87,13 @@ void LocalWindow::setLastSeqNr(bt::Uint16 lsn)
     first_seq_nr = lsn;
 }
 
-bt::Uint32 LocalWindow::read(bt::Uint8 *data, bt::Uint32 max_len)
+bt::Uint32 LocalWindow::read(QSpan<std::byte> buf)
 {
     bt::Uint16 off = SeqNrDiff(incoming_packets.front().seq_nr, first_seq_nr);
     bt::Uint32 written = 0;
-    while (off < incoming_packets.size() && incoming_packets[off].packet && SeqNrCmpSE(incoming_packets[off].seq_nr, last_seq_nr) && written < max_len) {
+    while (off < incoming_packets.size() && incoming_packets[off].packet && SeqNrCmpSE(incoming_packets[off].seq_nr, last_seq_nr) && written < buf.size()) {
         WindowPacket &pkt = incoming_packets[off];
-        const bt::Uint32 ret = pkt.read(data + written, max_len - written);
+        const bt::Uint32 ret = pkt.read(buf.subspan(written));
         written += ret;
         window_space += ret;
         bytes_available -= ret;

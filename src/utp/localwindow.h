@@ -7,11 +7,15 @@
 #ifndef UTP_LOCALWINDOW_H
 #define UTP_LOCALWINDOW_H
 
-#include "packetbuffer.h"
+#include <cstddef>
+#include <vector>
+
 #include <QSharedPointer>
+#include <QSpan>
+
+#include "packetbuffer.h"
 #include <ktorrent_export.h>
 #include <util/constants.h>
-#include <vector>
 
 namespace utp
 {
@@ -35,7 +39,7 @@ struct WindowPacket {
     WindowPacket(WindowPacket &&other) = default;
     WindowPacket &operator=(WindowPacket &&other) = default;
 
-    bt::Uint32 read(bt::Uint8 *dst, bt::Uint32 max_len);
+    bt::Uint32 read(QSpan<std::byte> buf);
     [[nodiscard]] bool fullyRead() const;
     void set(std::unique_ptr<bt::Buffer> packet, bt::Uint32 data_off);
 
@@ -97,7 +101,7 @@ public:
     }
 
     //! Read from the local window
-    bt::Uint32 read(bt::Uint8 *data, bt::Uint32 max_len);
+    bt::Uint32 read(QSpan<std::byte> buf);
 
     //! Is there something to read ?
     [[nodiscard]] bool isReadable() const
