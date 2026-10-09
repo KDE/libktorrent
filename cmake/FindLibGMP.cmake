@@ -72,7 +72,6 @@ endif()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(LibGMP
-    FOUND_VAR LibGMP_FOUND
     REQUIRED_VARS LibGMP_INCLUDE_DIRS LibGMP_LIBRARIES
     VERSION_VAR LibGMP_VERSION
 )
