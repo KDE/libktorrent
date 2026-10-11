@@ -4,6 +4,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <cstddef>
+#include <vector>
+
 #include <QObject>
 #include <QRandomGenerator>
 #include <QTest>
@@ -169,8 +172,8 @@ private:
         while (received_data.count(TEST_DATA) < PACKETS_TO_SEND) {
             const bt::Uint32 ba = incoming->bytesAvailable();
             if (ba > 0) {
-                QByteArray data(ba, 0);
-                const int ret = incoming->recv((bt::Uint8 *)data.data(), ba);
+                std::vector<std::byte> data(ba);
+                const int ret = incoming->recv(data);
                 if (ret > 0) {
                     received_data.append(QLatin1StringView(data));
                     received += ret;

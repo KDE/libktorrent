@@ -143,7 +143,7 @@ int UTPSocket::recv(QSpan<std::byte> buf)
         if (ptr->bytesAvailable() == 0) {
             if (blocking) {
                 if (ptr->waitForData()) {
-                    return ptr->recv(reinterpret_cast<bt::Uint8 *>(buf.data()), buf.size());
+                    return ptr->recv(buf);
                 } else {
                     return 0; // connection should be closed now
                 }
@@ -151,7 +151,7 @@ int UTPSocket::recv(QSpan<std::byte> buf)
                 return -1; // No data ready and not blocking so return -1
             }
         } else {
-            return ptr->recv(reinterpret_cast<bt::Uint8 *>(buf.data()), buf.size());
+            return ptr->recv(buf);
         }
     } catch (Connection::TransmissionError &err) {
         close();

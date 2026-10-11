@@ -4,6 +4,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <cstddef>
+#include <vector>
+
 #include <QFile>
 #include <QObject>
 #include <QTest>
@@ -203,10 +206,9 @@ private Q_SLOTS:
             const bt::Uint32 ba = incoming->bytesAvailable();
             if (ba > 0) {
                 // failures = 0;
-                QByteArray data(ba, 0);
-                const int to_read = ba; //;qMin<bt::Uint32>(1024,ba);
-                const int ret = incoming->recv((bt::Uint8 *)data.data(), to_read);
-                QCOMPARE(ret, to_read);
+                std::vector<std::byte> data(ba);
+                const int ret = incoming->recv(data);
+                QCOMPARE(ret, data.size());
                 if (ret > 0) {
                     hgen.update(data);
                     received += ret;

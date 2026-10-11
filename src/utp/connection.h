@@ -7,12 +7,16 @@
 #ifndef UTP_CONNECTION_H
 #define UTP_CONNECTION_H
 
+#include <cstddef>
+
 #include <QBasicTimer>
 #include <QByteArrayView>
 #include <QMutex>
 #include <QPair>
 #include <QSharedPointer>
+#include <QSpan>
 #include <QWaitCondition>
+
 #include <ktorrent_export.h>
 #include <net/address.h>
 #include <util/circularbuffer.h>
@@ -133,7 +137,7 @@ public:
     int send(QByteArrayView data);
 
     //! Read available data from local window, returns the amount of bytes read
-    int recv(bt::Uint8 *buf, bt::Uint32 max_len);
+    int recv(QSpan<std::byte> buf);
 
     //! Get the connection state
     ConnectionState connectionState() const

@@ -4,6 +4,8 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <cstddef>
+
 #include <QObject>
 #include <QTest>
 #include <QTimer>
@@ -75,9 +77,8 @@ private:
         outgoing->send(test);
         incoming->setBlocking(true);
         if (incoming->waitForData()) {
-            bt::Uint8 tmp[100];
-            memset(tmp, 0, 100);
-            int ret = incoming->recv(tmp, 100);
+            std::byte tmp[100]{};
+            int ret = incoming->recv(tmp);
             QCOMPARE(ret, (int)strlen(test));
             QCOMPARE(memcmp(tmp, test, strlen(test)), 0);
 
@@ -87,7 +88,7 @@ private:
             }
 
             // connection should be closed now
-            ret = incoming->recv(tmp, 100);
+            ret = incoming->recv(tmp);
             QCOMPARE(incoming->connectionState(), ConnectionState::CLOSED);
             QCOMPARE(ret, -1);
         } else {
