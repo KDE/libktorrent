@@ -75,17 +75,17 @@ bt::Uint32 PacketBuffer::fillData(bt::CircularBuffer &cbuf, bt::Uint32 to_read)
     return to_read;
 }
 
-bt::Uint32 PacketBuffer::fillData(const bt::Uint8 *data, bt::Uint32 data_size)
+bt::Uint32 PacketBuffer::fillData(QByteArrayView data)
 {
-    if (data_size > MAX_SIZE) {
-        data_size = MAX_SIZE;
+    if (data.size() > MAX_SIZE) {
+        data = data.first(MAX_SIZE);
     }
 
-    payload = (buffer->data() + MAX_SIZE) - data_size;
-    memcpy(payload, data, data_size);
+    payload = (buffer->data() + MAX_SIZE) - data.size();
+    memcpy(payload, data.data(), data.size());
     header = extension = payload;
-    size = data_size;
-    return data_size;
+    size = data.size();
+    return data.size();
 }
 
 void PacketBuffer::fillDummyData(bt::Uint32 amount)

@@ -7,6 +7,7 @@
 #ifndef UTP_PACKETBUFFER_H_
 #define UTP_PACKETBUFFER_H_
 
+#include <QByteArrayView>
 #include <QSharedPointer>
 #include <ktorrent_export.h>
 #include <util/bufferpool.h>
@@ -63,10 +64,9 @@ public:
     /*!
      * Fill with data from a buffer.
      * \param data The data to copy from
-     * \param data_size The data size
      * \return The amount used as payload
      **/
-    bt::Uint32 fillData(const bt::Uint8 *data, bt::Uint32 data_size);
+    bt::Uint32 fillData(QByteArrayView data);
 
     /*!
      * For testing purpoes fill with dummy data.

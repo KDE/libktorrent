@@ -4,6 +4,8 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <array>
+
 #include <QTest>
 
 #include <util/circularbuffer.h>
@@ -75,14 +77,13 @@ private Q_SLOTS:
 
     void testData()
     {
-        bt::Uint8 tmp[200];
-        memset(tmp, 0xFF, 200);
+        constexpr std::array<bt::Uint8, 200> tmp{0xFF};
 
         utp::PacketBuffer pbuf;
-        pbuf.fillData(tmp, 200);
-        QCOMPARE(pbuf.bufferSize(), 200);
-        QCOMPARE(pbuf.payloadSize(), 200);
-        QCOMPARE(memcmp(pbuf.data(), tmp, 200), 0);
+        pbuf.fillData(tmp);
+        QCOMPARE(pbuf.bufferSize(), tmp.size());
+        QCOMPARE(pbuf.payloadSize(), tmp.size());
+        QCOMPARE(memcmp(pbuf.data(), tmp.data(), tmp.size()), 0);
     }
 };
 
