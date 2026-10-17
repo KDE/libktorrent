@@ -81,7 +81,7 @@ void AuthenticateBase::onReadyRead()
         return;
     }
 
-    if (!sock || finished || ba < 48) {
+    if (!sock || finished) {
         return;
     }
 
