@@ -86,25 +86,16 @@ void AuthenticateBase::onReadyRead()
     }
 
     // first see if we already have some bytes from the handshake
-    if (bytes_of_handshake_received == 0) {
-        if (ba < 68) {
-            // read partial
-            sock->readData(handshake, ba);
-            bytes_of_handshake_received += ba;
-            if (ba >= 27 && handshake[27] & 0x01) {
-                ext_support |= bt::DHT_SUPPORT;
-            }
+    if (bytes_of_handshake_received != 68) {
+        // read remaining part
+        const Uint32 to_read = 68 - bytes_of_handshake_received;
+        bytes_of_handshake_received += sock->readData(handshake + bytes_of_handshake_received, to_read);
+
+        if (bytes_of_handshake_received != 68) {
             // tell subclasses of a partial handshake
             handshakeReceived(false);
             return;
-        } else {
-            // read full handshake
-            sock->readData(handshake, 68);
         }
-    } else {
-        // read remaining part
-        const Uint32 to_read = 68 - bytes_of_handshake_received;
-        sock->readData(handshake + bytes_of_handshake_received, to_read);
     }
 
     if (handshake[0] != 19) {
