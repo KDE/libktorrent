@@ -155,7 +155,7 @@ Uint32 EncryptedPacketSocket::readData(Uint8 *buf, Uint32 len)
         enc->decrypt(buf, ret + ret2);
     }
 
-    return ret;
+    return ret + ret2;
 }
 
 Uint32 EncryptedPacketSocket::bytesAvailable() const
