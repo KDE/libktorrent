@@ -90,6 +90,9 @@ void SingleFileCache::changeOutputPath(const QString &outputpath)
     output_file = outputpath;
     datadir = output_file.left(output_file.lastIndexOf(bt::DirSeparator()));
     saveFileMap();
+
+    mount_points = {MountPoint(datadir)};
+    saveMountPoints(mount_points);
 }
 
 Job *SingleFileCache::moveDataFiles(const QString &ndir)
