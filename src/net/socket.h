@@ -6,8 +6,12 @@
 #ifndef NETSOCKET_H
 #define NETSOCKET_H
 
-#include "address.h"
+#include <cstddef>
+
 #include <QSharedPointer>
+#include <QSpan>
+
+#include "address.h"
 #include <ktorrent_export.h>
 #include <net/socketdevice.h>
 
@@ -59,7 +63,7 @@ public:
     int accept(Address &a);
 
     int sendTo(QByteArrayView buf, const Address &addr);
-    int recvFrom(bt::Uint8 *buf, int max_size, Address &addr);
+    int recvFrom(QSpan<std::byte> buf, Address &addr);
 
     [[nodiscard]] bool isIPv4() const
     {

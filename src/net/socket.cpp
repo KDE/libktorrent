@@ -322,14 +322,14 @@ int Socket::sendTo(QByteArrayView buf, const Address &a)
     return ret;
 }
 
-int Socket::recvFrom(bt::Uint8 *buf, int max_len, Address &a)
+int Socket::recvFrom(QSpan<std::byte> buf, Address &a)
 {
     struct sockaddr_storage ss;
     socklen_t slen = sizeof(ss);
 #ifndef Q_OS_WIN
-    const int ret = ::recvfrom(m_fd, buf, max_len, 0, (struct sockaddr *)&ss, &slen);
+    const int ret = ::recvfrom(m_fd, buf.data(), static_cast<size_t>(buf.size()), 0, (struct sockaddr *)&ss, &slen);
 #else
-    const int ret = ::recvfrom(m_fd, (char *)buf, max_len, 0, (struct sockaddr *)&ss, &slen);
+    const int ret = ::recvfrom(m_fd, reinterpret_cast<char *>(buf.data()), static_cast<int>(buf.size()), 0, (struct sockaddr *)&ss, &slen);
 #endif
     if (ret < 0) {
         const int err = errno;
