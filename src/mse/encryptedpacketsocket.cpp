@@ -131,9 +131,6 @@ Uint32 EncryptedPacketSocket::readData(Uint8 *buf, Uint32 len)
             reinserted_data = nullptr;
             reinserted_data_size = reinserted_data_read = 0;
             ret2 = tr;
-            if (enc) {
-                enc->decrypt(buf, tr);
-            }
         } else {
             tr = len;
             memcpy(buf, reinserted_data + reinserted_data_read, tr);
