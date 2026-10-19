@@ -6,6 +6,10 @@
 #ifndef BTCHUNK_H
 #define BTCHUNK_H
 
+#include <cstddef>
+
+#include <QSpan>
+
 #include <diskio/piecedata.h>
 #include <ktorrent_export.h>
 #include <util/constants.h>
@@ -46,10 +50,9 @@ public:
     /*!
      * Read a piece from the chunk
      * \param off The offset of the chunk
-     * \param len The length of the chunk
-     * \param data The data, should be big enough to hold len bytes
+     * \param buf The buffer to read into
      */
-    bool readPiece(Uint32 off, Uint32 len, Uint8 *data);
+    bool readPiece(Uint32 off, QSpan<std::byte> buf);
 
     /*!
      * Get a pointer to the data of a piece.

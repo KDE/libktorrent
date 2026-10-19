@@ -419,7 +419,7 @@ qint64 TorrentFileStream::Private::readCurrentChunk(char *data, qint64 maxlen)
     // Out(SYS_GEN|LOG_DEBUG) << "readCurrentChunk r " << allowed << endl;
 
     // Copy data
-    current_chunk_data->read((bt::Uint8 *)data, allowed, current_chunk_offset);
+    current_chunk_data->read(as_writable_bytes(QSpan{data, allowed}), current_chunk_offset);
 
     // Update internal state
     current_byte_offset += allowed;

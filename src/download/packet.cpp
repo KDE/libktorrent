@@ -70,7 +70,7 @@ Packet Packet::create(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch)
     Packet pkt(size, PIECE);
     WriteUint32(pkt.getData(), 5, index);
     WriteUint32(pkt.getData(), 9, begin);
-    ch->readPiece(begin, len, pkt.getData() + 13);
+    ch->readPiece(begin, as_writable_bytes(QSpan{pkt.getData(), pkt.getDataLength()}).subspan(13, len));
     return pkt;
 }
 

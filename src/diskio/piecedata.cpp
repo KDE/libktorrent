@@ -63,16 +63,16 @@ Uint32 PieceData::write(QByteArrayView buf, Uint32 off)
     return buf.size();
 }
 
-Uint32 PieceData::read(Uint8 *buf, Uint32 to_read, Uint32 off)
+Uint32 PieceData::read(QSpan<std::byte> buf, Uint32 off)
 {
-    if (off + to_read > len || !ptr) {
+    if (off + buf.size() > len || !ptr) {
         return 0;
     }
 
     WithBusErrorProtection(BusOperation::Read, [&] {
-        memcpy(buf, ptr + off, to_read);
+        memcpy(buf.data(), ptr + off, buf.size());
     });
-    return to_read;
+    return buf.size();
 }
 
 Uint32 PieceData::writeToFile(File &file, Uint32 size, Uint32 off)

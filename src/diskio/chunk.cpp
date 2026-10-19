@@ -24,11 +24,11 @@ Chunk::~Chunk()
 {
 }
 
-bool Chunk::readPiece(Uint32 off, Uint32 len, Uint8 *data)
+bool Chunk::readPiece(Uint32 off, QSpan<std::byte> buf)
 {
-    PieceData::Ptr d = cache->loadPiece(this, off, len);
+    PieceData::Ptr d = cache->loadPiece(this, off, buf.size());
     if (d && d->ok()) {
-        return d->read(data, len) == len;
+        return d->read(buf) == buf.size();
     } else {
         return false;
     }

@@ -7,8 +7,11 @@
 #ifndef BTPIECEDATA_H
 #define BTPIECEDATA_H
 
+#include <cstddef>
+
 #include <QByteArrayView>
 #include <QSharedDataPointer>
+#include <QSpan>
 
 #include <diskio/cachefile.h>
 #include <ktorrent_export.h>
@@ -98,12 +101,11 @@ public:
         Read data from the PieceData. This function should always be used
         for reading from a PieceData object, as it protects against bus errors.
         \param buf The buffer to read into
-        \param to_read Amount of bytes to read
         \param off Offset in the PieceData to start reading from
         \return The number of bytes read
         \throw BusError When reading results in a SIGBUS
      */
-    Uint32 read(Uint8 *buf, Uint32 to_read, Uint32 off = 0);
+    Uint32 read(QSpan<std::byte> buf, Uint32 off = 0);
 
     /*!
         Save PieceData to a File. This function protects against bus errors.
