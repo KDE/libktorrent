@@ -209,6 +209,9 @@ void MultiFileCache::changeOutputPath(const QString &outputpath)
         }
     }
     saveFileMap();
+
+    mount_points = {MountPoint(datadir)};
+    saveMountPoints(mount_points);
 }
 
 Job *MultiFileCache::moveDataFiles(const QString &ndir)
