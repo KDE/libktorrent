@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-04 02:44+0000\n"
+"POT-Creation-Date: 2026-10-20 03:13+0000\n"
 "PO-Revision-Date: 2015-01-05 02:08+0200\n"
 "Last-Translator: Lasse Liehu <lasse.liehu@gmail.com>\n"
 "Language-Team: Finnish <lokalisointi@lists.coss.fi>\n"
@@ -61,8 +61,8 @@ msgid "Checking Data"
 msgstr "Tarkistetaan dataa"
 
 #: src/datachecker/multidatachecker.cpp:202
-#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:664
-#: src/diskio/multifilecache.cpp:700 src/torrent/torrentcreator.cpp:111
+#: src/datachecker/singledatachecker.cpp:38 src/diskio/multifilecache.cpp:667
+#: src/diskio/multifilecache.cpp:703 src/torrent/torrentcreator.cpp:111
 #: src/torrent/torrentcreator.cpp:227 src/torrent/torrentcreator.cpp:260
 #, kde-format
 msgid "Cannot open file %1: %2"
