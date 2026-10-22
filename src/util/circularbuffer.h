@@ -14,6 +14,7 @@
 #include <QSpan>
 
 #include <ktorrent_export.h>
+#include <util/array.h>
 #include <util/constants.h>
 
 namespace bt
@@ -26,7 +27,13 @@ class KTORRENT_EXPORT CircularBuffer
 {
 public:
     CircularBuffer(bt::Uint32 cap = 64 * 1024);
-    ~CircularBuffer();
+    ~CircularBuffer() = default;
+
+    CircularBuffer(const CircularBuffer &other) = delete;
+    CircularBuffer &operator=(const CircularBuffer &other) = delete;
+
+    CircularBuffer(CircularBuffer &&other) = delete;
+    CircularBuffer &operator=(CircularBuffer &&other) = delete;
 
     /*!
         Read up to max_len bytes from the buffer and store it in data
@@ -49,7 +56,7 @@ public:
     //! Is the buffer full
     [[nodiscard]] bool full() const
     {
-        return buf_size == buf_capacity;
+        return buf_size == capacity();
     }
 
     //! How much of the buffer is used
@@ -61,13 +68,13 @@ public:
     //! How much capacity is available
     [[nodiscard]] bt::Uint32 capacity() const
     {
-        return buf_capacity;
+        return data.size();
     }
 
     //! Get the available space
     [[nodiscard]] bt::Uint32 available() const
     {
-        return buf_capacity - buf_size;
+        return capacity() - buf_size;
     }
 
 private:
@@ -76,8 +83,7 @@ private:
     QByteArrayView secondRange();
 
 private:
-    bt::Uint8 *data;
-    bt::Uint32 buf_capacity;
+    Array<std::byte> data;
     bt::Uint32 start;
     bt::Uint32 buf_size;
 };

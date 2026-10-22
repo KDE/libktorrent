@@ -12,17 +12,10 @@
 namespace bt
 {
 CircularBuffer::CircularBuffer(Uint32 cap)
-    : data(nullptr)
-    , buf_capacity(cap)
+    : data(cap)
     , start(0)
     , buf_size(0)
 {
-    data = new Uint8[cap];
-}
-
-CircularBuffer::~CircularBuffer()
-{
-    delete[] data;
 }
 
 bt::Uint32 CircularBuffer::read(QSpan<std::byte> buf)
@@ -42,7 +35,7 @@ bt::Uint32 CircularBuffer::read(QSpan<std::byte> buf)
         memcpy(buf.data() + r1.size(), r2.data(), to_read - r1.size());
     }
 
-    start = (start + to_read) % buf_capacity;
+    start = (start + to_read) % capacity();
     buf_size -= to_read;
     // Out(SYS_GEN|LOG_DEBUG) << "CircularBuffer::read 1 " << size() << " " << capacity() << endl;
     // Out(SYS_GEN|LOG_DEBUG) << "CircularBuffer::read 2 " << start << " " << to_read << endl;
@@ -55,16 +48,16 @@ bt::Uint32 CircularBuffer::write(QByteArrayView buf)
         return 0;
     }
 
-    const bt::Uint32 free_space = buf_capacity - buf_size;
+    const bt::Uint32 free_space = capacity() - buf_size;
     const bt::Uint32 to_write = free_space < buf.size() ? free_space : buf.size();
 
-    const bt::Uint32 write_pos = (start + buf_size) % buf_capacity;
-    if (write_pos + to_write > buf_capacity) {
-        const bt::Uint32 w = (buf_capacity - write_pos);
-        memcpy(data + write_pos, buf.data(), w);
-        memcpy(data, buf.data() + w, to_write - w);
+    const bt::Uint32 write_pos = (start + buf_size) % capacity();
+    if (write_pos + to_write > capacity()) {
+        const bt::Uint32 w = (capacity() - write_pos);
+        memcpy(data.data() + write_pos, buf.data(), w);
+        memcpy(data.data(), buf.data() + w, to_write - w);
     } else {
-        memcpy(data + write_pos, buf.data(), to_write);
+        memcpy(data.data() + write_pos, buf.data(), to_write);
     }
 
     buf_size += to_write;
@@ -75,17 +68,17 @@ bt::Uint32 CircularBuffer::write(QByteArrayView buf)
 
 QByteArrayView CircularBuffer::firstRange()
 {
-    if (start + buf_size > buf_capacity) {
-        return QByteArrayView{data, capacity()}.sliced(start);
+    if (start + buf_size > capacity()) {
+        return QByteArrayView{data}.sliced(start);
     } else {
-        return QByteArrayView{data, capacity()}.sliced(start, buf_size);
+        return QByteArrayView{data}.sliced(start, buf_size);
     }
 }
 
 QByteArrayView CircularBuffer::secondRange()
 {
-    if (start + buf_size > buf_capacity) {
-        return QByteArrayView{data, capacity()}.first(buf_size - (capacity() - start));
+    if (start + buf_size > capacity()) {
+        return QByteArrayView{data}.first(buf_size - (capacity() - start));
     } else {
         return QByteArrayView{};
     }
