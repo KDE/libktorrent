@@ -25,13 +25,11 @@ namespace bt
 {
 MultiDataChecker::MultiDataChecker(bt::Uint32 from, bt::Uint32 to)
     : DataChecker(from, to)
-    , buf(nullptr)
 {
 }
 
 MultiDataChecker::~MultiDataChecker()
 {
-    delete[] buf;
 }
 
 void MultiDataChecker::check(const QString &path, const Torrent &tor, const QString &dnddir, const BitSet &current_status)
@@ -59,7 +57,7 @@ void MultiDataChecker::check(const QString &path, const Torrent &tor, const QStr
 
     const Uint64 chunk_size = tor.getChunkSize();
     Uint32 cur_chunk = 0;
-    buf = new Uint8[chunk_size];
+    Array<std::byte> buf(chunk_size);
 
     TimeStamp last_emitted = bt::Now();
     for (cur_chunk = from; cur_chunk <= to && !need_to_stop; cur_chunk++) {
@@ -67,7 +65,8 @@ void MultiDataChecker::check(const QString &path, const Torrent &tor, const QStr
         if (cs == 0) {
             cs = chunk_size;
         }
-        if (!loadChunk(cur_chunk, cs, tor)) {
+        const auto chunk = QSpan{buf}.first(cs);
+        if (!loadChunk(cur_chunk, chunk, tor)) {
             // Out(SYS_GEN|LOG_DEBUG) << "Failed to load chunk " << cur_chunk << endl;
             if (current_status.get(cur_chunk)) {
                 failed++;
@@ -77,7 +76,7 @@ void MultiDataChecker::check(const QString &path, const Torrent &tor, const QStr
             continue;
         }
 
-        const bool ok = (SHA1Hash::generate(QByteArrayView{buf, cs}) == tor.getHash(cur_chunk));
+        const bool ok = (SHA1Hash::generate(chunk) == tor.getHash(cur_chunk));
         result.set(cur_chunk, ok);
         if (ok && current_status.get(cur_chunk)) {
             downloaded++;
@@ -100,7 +99,7 @@ void MultiDataChecker::check(const QString &path, const Torrent &tor, const QStr
     Q_EMIT status(failed, found, downloaded, not_downloaded);
 }
 
-bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
+bool MultiDataChecker::loadChunk(Uint32 ci, QSpan<std::byte> chunk, const Torrent &tor)
 {
     Torrent::FileIndexList tflist;
     tor.calcChunkPos(ci, tflist);
@@ -117,7 +116,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
                 return false;
             }
 
-            return fptr->read(buf, cs) == cs;
+            return fptr->read(chunk) == chunk.size();
         }
         return false;
     }
@@ -139,11 +138,11 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
         if (i == 0) {
             to_read = f.getLastChunkSize();
         } else if (i == tflist.count() - 1) {
-            to_read = cs - read;
+            to_read = chunk.size() - read;
         } else {
             to_read = f.getSize();
         }
-        const auto read_buf = as_writable_bytes(QSpan{buf, cs}).subspan(read, to_read);
+        const auto read_buf = chunk.subspan(read, to_read);
 
         // read part of data
         if (f.doNotDownload()) {
@@ -177,7 +176,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
                     return false;
                 }
 
-                if (fptr->read(read_buf) != to_read) {
+                if (fptr->read(read_buf) != read_buf.size()) {
                     return false;
                 }
             } catch (bt::Error &err) {
