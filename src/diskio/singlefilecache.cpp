@@ -164,8 +164,9 @@ PieceData::Ptr SingleFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
     cp = createPiece(c, off, length, true);
     if (cp && !cp->mapped()) {
         // read data from file if piece isn't mapped
+        const auto piece_data = as_writable_bytes(QSpan{cp->data(), length});
         const Uint64 piece_off = c->getIndex() * tor.getChunkSize() + off;
-        fd->read(cp->data(), length, piece_off);
+        fd->read(piece_data, piece_off);
     }
 
     return cp;

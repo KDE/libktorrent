@@ -459,6 +459,7 @@ PieceData::Ptr MultiFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
     }
 
     // Now we need to load it
+    const auto piece_data = as_writable_bytes(QSpan{piece->data(), piece->length()});
     Torrent::FileIndexList tflist;
     tor.calcChunkPos(c->getIndex(), tflist);
 
@@ -468,12 +469,11 @@ PieceData::Ptr MultiFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
         const CacheFile::Ptr fd = files[tflist[0]];
         const Uint64 piece_off = FileOffset(c, f, tor.getChunkSize()) + off;
 
-        fd->read(piece->data(), length, piece_off);
+        fd->read(piece_data.first(length), piece_off);
         return piece;
     }
 
     // multiple files
-    Uint8 *data = piece->data();
     Uint32 chunk_off = 0; // number of bytes passed of the chunk
     Uint32 piece_off = 0; // how many bytes read to the piece
     for (int i = 0; i < tflist.count(); i++) {
@@ -511,20 +511,20 @@ PieceData::Ptr MultiFileCache::loadPiece(Chunk *c, Uint32 off, Uint32 length)
         Uint32 read_length = 0; // how many bytes to read
         calculateOffsetAndLength(off, length, file_off, chunk_off, cdata, read_offset, read_length);
 
-        Uint8 *ptr = data + piece_off; // location to write to
+        const auto read_buf = piece_data.subspan(piece_off, read_length); // location to write to
         piece_off += read_length;
 
         if (fd) {
-            fd->read(ptr, read_length, read_offset);
+            fd->read(read_buf, read_offset);
         } else if (dfd) {
             Uint32 ret = 0;
             if (i == 0) {
-                ret = dfd->readLastChunk(ptr, read_offset - file_off, read_length);
+                ret = dfd->readLastChunk(read_buf, read_offset - file_off);
             } else {
-                ret = dfd->readFirstChunk(ptr, read_offset, read_length);
+                ret = dfd->readFirstChunk(read_buf, read_offset);
             }
 
-            if (ret > 0 && ret != read_length) {
+            if (ret > 0 && ret != read_buf.size()) {
                 Out(SYS_DIO | LOG_DEBUG) << "Warning : MultiFileCache::loadPiece ret != to_read" << endl;
             }
         }
@@ -708,7 +708,7 @@ void MultiFileCache::recreateFile(TorrentFile *tf, const QString &dnd_file, cons
     }
 
     const Uint32 ts = cs - tf->getFirstChunkOffset() > tf->getLastChunkSize() ? cs - tf->getFirstChunkOffset() : tf->getLastChunkSize();
-    Uint8 *tmp = new Uint8[ts];
+    auto *tmp = new std::byte[ts];
 
     try {
         Uint32 to_read = cs - tf->getFirstChunkOffset();
@@ -716,15 +716,17 @@ void MultiFileCache::recreateFile(TorrentFile *tf, const QString &dnd_file, cons
             to_read = tf->getSize();
         }
 
-        to_read = dnd.readFirstChunk(tmp, 0, to_read);
+        const auto first_chunk = QSpan{tmp, ts}.first(to_read);
+        to_read = dnd.readFirstChunk(first_chunk, 0);
         if (to_read > 0) {
             fptr.write(tmp, to_read);
         }
 
         if (tf->getFirstChunk() != tf->getLastChunk()) {
+            const auto last_chunk = QSpan{tmp, ts}.first(tf->getLastChunkSize());
             const Uint64 off = FileOffset(tf->getLastChunk(), *tf, tor.getChunkSize());
             fptr.seek(File::SeekPos::BEGIN, off);
-            to_read = dnd.readLastChunk(tmp, 0, tf->getLastChunkSize());
+            to_read = dnd.readLastChunk(last_chunk, 0);
             if (to_read > 0) {
                 fptr.write(tmp, to_read);
             }

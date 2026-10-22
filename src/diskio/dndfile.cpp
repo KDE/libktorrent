@@ -80,7 +80,7 @@ void DNDFile::create()
     fptr.close();
 }
 
-Uint32 DNDFile::readFirstChunk(Uint8 *buf, Uint32 off, Uint32 size)
+Uint32 DNDFile::readFirstChunk(QSpan<std::byte> buf, Uint32 off)
 {
     File fptr;
     if (!fptr.open(path, u"rb"_s)) {
@@ -93,10 +93,10 @@ Uint32 DNDFile::readFirstChunk(Uint8 *buf, Uint32 off, Uint32 size)
         return 0;
     }
 
-    return fptr.read(buf, size);
+    return fptr.read(buf);
 }
 
-Uint32 DNDFile::readLastChunk(Uint8 *buf, Uint32 off, Uint32 size)
+Uint32 DNDFile::readLastChunk(QSpan<std::byte> buf, Uint32 off)
 {
     File fptr;
     if (!fptr.open(path, u"rb"_s)) {
@@ -109,7 +109,7 @@ Uint32 DNDFile::readLastChunk(Uint8 *buf, Uint32 off, Uint32 size)
         return 0;
     }
 
-    return fptr.read(buf, size);
+    return fptr.read(buf);
 }
 
 void DNDFile::writeFirstChunk(QByteArrayView buf, Uint32 off)

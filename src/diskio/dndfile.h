@@ -6,7 +6,10 @@
 #ifndef BTDNDFILE_H
 #define BTDNDFILE_H
 
+#include <cstddef>
+
 #include <QByteArrayView>
+#include <QSpan>
 #include <QString>
 #include <QtClassHelperMacros>
 #include <util/constants.h>
@@ -43,17 +46,15 @@ public:
      * Read the (partial)first chunk into a buffer.
      * \param buf The buffer
      * \param off Offset off chunk
-     * \param size How many bytes to read of the first chunk
      */
-    Uint32 readFirstChunk(Uint8 *buf, Uint32 off, Uint32 size);
+    Uint32 readFirstChunk(QSpan<std::byte> buf, Uint32 off);
 
     /*!
      * Read the (partial)last chunk into a buffer.
      * \param buf The buffer
      * \param off Offset off chunk
-     * \param size How many bytes to read of the last chunk
      */
-    Uint32 readLastChunk(Uint8 *buf, Uint32 off, Uint32 size);
+    Uint32 readLastChunk(QSpan<std::byte> buf, Uint32 off);
 
     /*!
      * Write the partial first chunk.

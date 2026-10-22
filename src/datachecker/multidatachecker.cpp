@@ -143,6 +143,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
         } else {
             to_read = f.getSize();
         }
+        const auto read_buf = as_writable_bytes(QSpan{buf, cs}).subspan(read, to_read);
 
         // read part of data
         if (f.doNotDownload()) {
@@ -156,9 +157,9 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
                 Uint32 ret = 0;
                 DNDFile dfd(dnd_file, &f, tor.getChunkSize());
                 if (i == 0) {
-                    ret = dfd.readLastChunk(buf + read, 0, to_read);
+                    ret = dfd.readLastChunk(read_buf, 0);
                 } else {
-                    ret = dfd.readFirstChunk(buf + read, 0, to_read);
+                    ret = dfd.readFirstChunk(read_buf, 0);
                 }
 
                 if (ret > 0 && ret != to_read) {
@@ -176,7 +177,7 @@ bool MultiDataChecker::loadChunk(Uint32 ci, Uint32 cs, const Torrent &tor)
                     return false;
                 }
 
-                if (fptr->read(buf + read, to_read) != to_read) {
+                if (fptr->read(read_buf) != to_read) {
                     return false;
                 }
             } catch (bt::Error &err) {

@@ -6,11 +6,15 @@
 #ifndef BTCACHEFILE_H
 #define BTCACHEFILE_H
 
+#include <cstddef>
+
 #include <QByteArrayView>
 #include <QFile>
 #include <QHash>
 #include <QRecursiveMutex>
 #include <QSharedPointer>
+#include <QSpan>
+
 #include <util/constants.h>
 
 namespace bt
@@ -105,10 +109,9 @@ public:
     /*!
      * Read from the file.
      * \param buf Buffer to store data
-     * \param size Size to read
      * \param off Offset to read from in file
      */
-    void read(Uint8 *buf, Uint32 size, Uint64 off);
+    void read(QSpan<std::byte> buf, Uint64 off);
 
     /*!
      * Write to the file.

@@ -301,7 +301,7 @@ void CacheFile::close()
     fptr.close();
 }
 
-void CacheFile::read(Uint8 *buf, Uint32 size, Uint64 off)
+void CacheFile::read(QSpan<std::byte> buf, Uint64 off)
 {
     const QMutexLocker lock(&mutex);
     bool close_again = false;
@@ -323,7 +323,7 @@ void CacheFile::read(Uint8 *buf, Uint32 size, Uint64 off)
     }
 
     Uint32 sz = 0;
-    if ((sz = fptr.read((char *)buf, size)) != size) {
+    if ((sz = fptr.read(reinterpret_cast<char *>(buf.data()), buf.size())) != buf.size()) {
         if (close_again) {
             closeTemporary();
         }
