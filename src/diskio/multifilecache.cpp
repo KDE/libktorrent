@@ -6,6 +6,7 @@
 #include "multifilecache.h"
 
 #include <cerrno>
+#include <cstddef>
 
 #include <KLocalizedString>
 
@@ -16,6 +17,7 @@
 #include <QStringList>
 #include <QTextStream>
 
+#include <util/array.h>
 #include <util/error.h>
 #include <util/file.h>
 #include <util/fileops.h>
@@ -671,23 +673,18 @@ void MultiFileCache::saveFirstAndLastChunk(TorrentFile *tf, const QString &src_f
 
     const Uint32 cs = (tf->getFirstChunk() == tor.getNumChunks() - 1) ? tor.getLastChunkSize() : tor.getChunkSize();
 
-    std::byte *tmp = new std::byte[tor.getChunkSize()];
-    try {
-        const QSpan first_chunk{tmp, static_cast<qsizetype>(cs - tf->getFirstChunkOffset())};
-        fptr.read(first_chunk);
-        out.writeFirstChunk(first_chunk, 0);
+    Array<std::byte> tmp(tor.getChunkSize());
 
-        if (tf->getFirstChunk() != tf->getLastChunk()) {
-            const auto last_chunk = QSpan{tmp, static_cast<qsizetype>(tf->getLastChunkSize())};
-            const Uint64 off = FileOffset(tf->getLastChunk(), *tf, tor.getChunkSize());
-            fptr.seek(File::SeekPos::BEGIN, off);
-            fptr.read(last_chunk);
-            out.writeLastChunk(last_chunk, 0);
-        }
-        delete[] tmp;
-    } catch (...) {
-        delete[] tmp;
-        throw;
+    const auto first_chunk = QSpan{tmp}.first(static_cast<qsizetype>(cs - tf->getFirstChunkOffset()));
+    fptr.read(first_chunk);
+    out.writeFirstChunk(first_chunk, 0);
+
+    if (tf->getFirstChunk() != tf->getLastChunk()) {
+        const auto last_chunk = QSpan{tmp}.first(static_cast<qsizetype>(tf->getLastChunkSize()));
+        const Uint64 off = FileOffset(tf->getLastChunk(), *tf, tor.getChunkSize());
+        fptr.seek(File::SeekPos::BEGIN, off);
+        fptr.read(last_chunk);
+        out.writeLastChunk(last_chunk, 0);
     }
 }
 
@@ -708,34 +705,27 @@ void MultiFileCache::recreateFile(TorrentFile *tf, const QString &dnd_file, cons
     }
 
     const Uint32 ts = cs - tf->getFirstChunkOffset() > tf->getLastChunkSize() ? cs - tf->getFirstChunkOffset() : tf->getLastChunkSize();
-    auto *tmp = new std::byte[ts];
+    Array<std::byte> tmp{ts};
 
-    try {
-        Uint32 to_read = cs - tf->getFirstChunkOffset();
-        if (to_read > tf->getSize()) { // check for files which are smaller then a chunk
-            to_read = tf->getSize();
-        }
+    Uint32 to_read = cs - tf->getFirstChunkOffset();
+    if (to_read > tf->getSize()) { // check for files which are smaller then a chunk
+        to_read = tf->getSize();
+    }
+    const auto first_chunk = QSpan{tmp}.first(to_read);
 
-        const auto first_chunk = QSpan{tmp, ts}.first(to_read);
-        to_read = dnd.readFirstChunk(first_chunk, 0);
+    to_read = dnd.readFirstChunk(first_chunk, 0);
+    if (to_read > 0) {
+        fptr.write(first_chunk.first(to_read));
+    }
+
+    if (tf->getFirstChunk() != tf->getLastChunk()) {
+        const auto last_chunk = QSpan{tmp}.first(tf->getLastChunkSize());
+        const Uint64 off = FileOffset(tf->getLastChunk(), *tf, tor.getChunkSize());
+        fptr.seek(File::SeekPos::BEGIN, off);
+        to_read = dnd.readLastChunk(last_chunk, 0);
         if (to_read > 0) {
-            fptr.write(tmp, to_read);
+            fptr.write(last_chunk.first(to_read));
         }
-
-        if (tf->getFirstChunk() != tf->getLastChunk()) {
-            const auto last_chunk = QSpan{tmp, ts}.first(tf->getLastChunkSize());
-            const Uint64 off = FileOffset(tf->getLastChunk(), *tf, tor.getChunkSize());
-            fptr.seek(File::SeekPos::BEGIN, off);
-            to_read = dnd.readLastChunk(last_chunk, 0);
-            if (to_read > 0) {
-                fptr.write(tmp, to_read);
-            }
-        }
-        delete[] tmp;
-
-    } catch (...) {
-        delete[] tmp;
-        throw;
     }
 }
 
