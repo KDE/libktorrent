@@ -30,7 +30,9 @@ public:
     ExitOperation();
     ~ExitOperation() override;
 
-    //! whether or not we can do a deleteLater on the job after it has finished.
+    /*!
+     * whether or not we can do a deleteLater on the job after it has finished.
+     */
     [[nodiscard]] virtual bool deleteAllowed() const
     {
         return true;

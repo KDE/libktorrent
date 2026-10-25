@@ -54,10 +54,14 @@ public:
      */
     bt::Uint32 readData(bt::Uint8 *buf, bt::Uint32 len);
 
-    //! Get the number of bytes available to read.
+    /*!
+     * Get the number of bytes available to read.
+     */
     bt::Uint32 bytesAvailable() const;
 
-    //! Are we using encryption
+    /*!
+     * Are we using encryption.
+     */
     bool encrypted() const
     {
         return enc != nullptr;
@@ -70,28 +74,44 @@ public:
      */
     void initCrypt(const bt::SHA1Hash &dkey, const bt::SHA1Hash &ekey);
 
-    //! Set the encryptor
+    /*!
+     * Set the encryptor.
+     */
     void setRC4Encryptor(std::unique_ptr<RC4Encryptor> enc);
 
-    //! Disables encryption. All data will be sent over as plain text.
+    /*!
+     * Disables encryption. All data will be sent over as plain text.
+     */
     void disableCrypt();
 
-    //! Close the socket
+    /*!
+     * Close the socket.
+     */
     void close();
 
-    //! Connect the socket to a remote host
+    /*!
+     * Connect the socket to a remote host.
+     */
     bool connectTo(const QString &ip, bt::Uint16 port);
 
-    //! Connect the socket to a remote host
+    /*!
+     * Connect the socket to a remote host.
+     */
     bool connectTo(const net::Address &addr);
 
-    //! Get the IP address of the remote peer
+    /*!
+     * Get the IP address of the remote peer.
+     */
     QString getRemoteIPAddress() const;
 
-    //! Get the port of the remote peer
+    /*!
+     * Get the port of the remote peer.
+     */
     bt::Uint16 getRemotePort() const;
 
-    //! Get the full address
+    /*!
+     * Get the full address.
+     */
     net::Address getRemoteAddress() const;
 
     /*!
@@ -101,19 +121,29 @@ public:
      */
     void reinsert(QByteArrayView buf);
 
-    //! see if the socket is still OK
+    /*!
+     * see if the socket is still OK.
+     */
     bool ok() const;
 
-    //! Start monitoring of this socket by the monitor thread
+    /*!
+     * Start monitoring of this socket by the monitor thread.
+     */
     void startMonitoring(net::SocketReader *rdr);
 
-    //! Stop monitoring this socket
+    /*!
+     * Stop monitoring this socket.
+     */
     void stopMonitoring();
 
-    //! Is this socket connecting to a remote host
+    /*!
+     * Is this socket connecting to a remote host.
+     */
     bool connecting() const;
 
-    //! See if a connect was successful
+    /*!
+     * See if a connect was successful.
+     */
     bool connectSuccessful() const;
 
     /*!

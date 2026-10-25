@@ -26,9 +26,13 @@ class AnnounceTask;
  * \brief Statistics about the DHT.
  */
 struct Stats {
-    //! number of peers in the routing table
+    /*!
+     * number of peers in the routing table.
+     */
     bt::Uint32 num_peers;
-    //! Number of running tasks
+    /*!
+     * Number of running tasks.
+     */
     bt::Uint32 num_tasks;
 };
 
@@ -87,13 +91,17 @@ public:
         return running;
     }
 
-    //! Get the DHT port
+    /*!
+     * Get the DHT port.
+     */
     [[nodiscard]] bt::Uint16 getPort() const
     {
         return port;
     }
 
-    //! Get statistics about the DHT
+    /*!
+     * Get statistics about the DHT.
+     */
     [[nodiscard]] const dht::Stats &getStats() const
     {
         return stats;

@@ -56,7 +56,9 @@ public:
      */
     std::unique_ptr<BDictNode> decodeDict();
 
-    //! Get the current position in the data
+    /*!
+     * Get the current position in the data.
+     */
     [[nodiscard]] Uint32 position() const
     {
         return pos;

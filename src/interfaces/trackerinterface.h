@@ -47,34 +47,46 @@ public:
     TrackerInterface(const QUrl &url);
     virtual ~TrackerInterface();
 
-    //! See if a start request succeeded
+    /*!
+     * See if a start request succeeded.
+     */
     [[nodiscard]] bool isStarted() const
     {
         return started;
     }
 
-    //! get the tracker url
+    /*!
+     * get the tracker url.
+     */
     [[nodiscard]] QUrl trackerURL() const
     {
         return url;
     }
 
-    //! Get the tracker status
+    /*!
+     * Get the tracker status.
+     */
     [[nodiscard]] TrackerStatus trackerStatus() const
     {
         return status;
     }
 
-    //! Get a string of the current tracker status
+    /*!
+     * Get a string of the current tracker status.
+     */
     [[nodiscard]] QString trackerStatusString() const;
 
-    //! Is tracker timed out
+    /*!
+     * Is tracker timed out.
+     */
     [[nodiscard]] bool timeOut() const
     {
         return time_out;
     }
 
-    //! Is there any warnings
+    /*!
+     * Is there any warnings.
+     */
     [[nodiscard]] bool hasWarning() const
     {
         return !warning.isEmpty();
@@ -89,46 +101,62 @@ public:
         return interval;
     }
 
-    //! Set the interval
+    /*!
+     * Set the interval.
+     */
     void setInterval(Uint32 i)
     {
         interval = i;
     }
 
-    //! Get the number of seeders
+    /*!
+     * Get the number of seeders.
+     */
     [[nodiscard]] int getNumSeeders() const
     {
         return seeders;
     }
 
-    //! Get the number of leechers
+    /*!
+     * Get the number of leechers.
+     */
     [[nodiscard]] int getNumLeechers() const
     {
         return leechers;
     }
 
-    //! Get the number of times the torrent was downloaded
+    /*!
+     * Get the number of times the torrent was downloaded.
+     */
     [[nodiscard]] int getTotalTimesDownloaded() const
     {
         return total_downloaded;
     }
 
-    //! Enable or disable the tracker
+    /*!
+     * Enable or disable the tracker.
+     */
     void setEnabled(bool on)
     {
         enabled = on;
     }
 
-    //! Is the tracker enabled
+    /*!
+     * Is the tracker enabled.
+     */
     [[nodiscard]] bool isEnabled() const
     {
         return enabled;
     }
 
-    //! Get the time in seconds to the next tracker update
+    /*!
+     * Get the time in seconds to the next tracker update.
+     */
     [[nodiscard]] Uint32 timeToNextUpdate() const;
 
-    //! Reset the tracker
+    /*!
+     * Reset the tracker.
+     */
     virtual void reset();
 
 protected:

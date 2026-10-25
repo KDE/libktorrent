@@ -71,55 +71,83 @@ public:
 
     ~Peer() override;
 
-    //! Get the peer's unique ID.
+    /*!
+     * Get the peer's unique ID.
+     */
     Uint32 getID() const
     {
         return id;
     }
 
-    //! Get the IP address of the Peer.
+    /*!
+     * Get the IP address of the Peer.
+     */
     QString getIPAddresss() const;
 
-    //! Get the port of the Peer
+    /*!
+     * Get the port of the Peer.
+     */
     Uint16 getPort() const;
 
-    //! Get the address of the peer
+    /*!
+     * Get the address of the peer.
+     */
     net::Address getAddress() const;
 
-    //! See if the peer is stalled.
+    /*!
+     * See if the peer is stalled.
+     */
     bool isStalled() const;
 
-    //! Are we being snubbed by the Peer
+    /*!
+     * Are we being snubbed by the Peer.
+     */
     bool isSnubbed() const;
 
-    //! Get the upload rate in bytes per sec
+    /*!
+     * Get the upload rate in bytes per sec.
+     */
     Uint32 getUploadRate() const;
 
-    //! Get the download rate in bytes per sec
+    /*!
+     * Get the download rate in bytes per sec.
+     */
     Uint32 getDownloadRate() const;
 
-    //! Update the up- and down- speed and handle incoming packets
+    /*!
+     * Update the up- and down- speed and handle incoming packets.
+     */
     void update();
 
-    //! Pause the peer connection
+    /*!
+     * Pause the peer connection.
+     */
     void pause();
 
-    //! Unpause the peer connection
+    /*!
+     * Unpause the peer connection.
+     */
     void unpause();
 
-    //! Get the PeerDownloader.
+    /*!
+     * Get the PeerDownloader.
+     */
     PeerDownloader *getPeerDownloader() const
     {
         return downloader;
     }
 
-    //! Get the PeerUploader.
+    /*!
+     * Get the PeerUploader.
+     */
     PeerUploader *getPeerUploader() const
     {
         return uploader;
     }
 
-    //! Get the PeerManager
+    /*!
+     * Get the PeerManager.
+     */
     PeerManager *getPeerManager()
     {
         return pman;
@@ -140,7 +168,9 @@ public:
      */
     Uint32 readData(Uint8 *buf, Uint32 len);
 
-    //! Get the number of bytes available to read.
+    /*!
+     * Get the number of bytes available to read.
+     */
     Uint32 bytesAvailable() const;
 
     /*!
@@ -153,10 +183,14 @@ public:
      */
     void kill() override;
 
-    //! Get the time in milliseconds since the last time a piece was received.
+    /*!
+     * Get the time in milliseconds since the last time a piece was received.
+     */
     Uint32 getTimeSinceLastPiece() const;
 
-    //! Get the time the peer connection was established.
+    /*!
+     * Get the time the peer connection was established.
+     */
     const QTime &getConnectTime() const
     {
         return connect_time;
@@ -167,12 +201,16 @@ public:
      */
     float percentAvailable() const;
 
-    //! Set the ACA score
+    /*!
+     * Set the ACA score.
+     */
     void setACAScore(double s);
 
     bt::Uint32 averageDownloadSpeed() const override;
 
-    //! Choke the peer
+    /*!
+     * Choke the peer.
+     */
     void choke();
 
     /*!
@@ -185,7 +223,9 @@ public:
      */
     void emitPex(QByteArrayView data, int ip_version);
 
-    //! Disable or enable pex
+    /*!
+     * Disable or enable pex.
+     */
     void setPexEnabled(bool on);
 
     /*!
@@ -193,7 +233,9 @@ public:
      */
     void emitMetadataDownloaded(const QByteArray &data);
 
-    //! Send an extended protocol handshake
+    /*!
+     * Send an extended protocol handshake.
+     */
     void sendExtProtHandshake(Uint16 port, Uint32 metadata_size, bool partial_seed);
 
     /*!
@@ -203,10 +245,14 @@ public:
      */
     void setGroupIDs(Uint32 up_gid, Uint32 down_gid);
 
-    //! Enable or disable hostname resolving
+    /*!
+     * Enable or disable hostname resolving.
+     */
     static void setResolveHostnames(bool on);
 
-    //! Check if the peer has wanted chunks
+    /*!
+     * Check if the peer has wanted chunks.
+     */
     bool hasWantedChunks(const BitSet &wanted_chunks) const;
 
     /*!
@@ -287,10 +333,14 @@ public:
      */
     void sendPort(Uint16 port);
 
-    //! Send a have all message
+    /*!
+     * Send a have all message.
+     */
     void sendHaveAll();
 
-    //! Send a have none message
+    /*!
+     * Send a have none message.
+     */
     void sendHaveNone();
 
     /*!
@@ -299,7 +349,9 @@ public:
      */
     void sendSuggestPiece(Uint32 index);
 
-    //! Send an extended protocol message
+    /*!
+     * Send an extended protocol message.
+     */
     void sendExtProtMsg(Uint8 id, QByteArrayView data);
 
     /*!

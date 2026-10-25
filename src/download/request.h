@@ -67,25 +67,33 @@ public:
     {
     }
 
-    //! Get the index of the chunk
+    /*!
+     * Get the index of the chunk.
+     */
     [[nodiscard]] Uint32 getIndex() const
     {
         return index;
     }
 
-    //! Get the offset into the chunk
+    /*!
+     * Get the offset into the chunk.
+     */
     [[nodiscard]] Uint32 getOffset() const
     {
         return off;
     }
 
-    //! Get the length of a the piece
+    /*!
+     * Get the length of a the piece.
+     */
     [[nodiscard]] Uint32 getLength() const
     {
         return len;
     }
 
-    //! Get the sending Peer
+    /*!
+     * Get the sending Peer.
+     */
     [[nodiscard]] PieceDownloader *getPieceDownloader() const
     {
         return pd;

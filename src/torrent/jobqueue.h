@@ -25,19 +25,29 @@ public:
     JobQueue(TorrentControl *parent);
     ~JobQueue() override;
 
-    //! Are there running jobs
+    /*!
+     * Are there running jobs.
+     */
     [[nodiscard]] bool runningJobs() const;
 
-    //! Start the next job
+    /*!
+     * Start the next job.
+     */
     void startNextJob();
 
-    //! Enqueue a job
+    /*!
+     * Enqueue a job.
+     */
     void enqueue(Job *job);
 
-    //! Get the current job
+    /*!
+     * Get the current job.
+     */
     Job *currentJob();
 
-    //! Kill all jobs
+    /*!
+     * Kill all jobs.
+     */
     void killAll();
 
 private:

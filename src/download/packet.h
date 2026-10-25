@@ -52,7 +52,9 @@ public:
     static Packet create(Uint32 index, Uint32 begin, Uint32 len, Chunk *ch);
     static Packet create(Uint8 ext_id, QByteArrayView ext_data); // extension protocol packet
 
-    //! Get the packet type
+    /*!
+     * Get the packet type.
+     */
     Uint8 getType() const
     {
         return type;
@@ -71,7 +73,9 @@ public:
         return data.size();
     }
 
-    //! Is the packet sent ?
+    /*!
+     * Is the packet sent ?
+     */
     Uint32 isSent() const
     {
         return written == data.size();
@@ -83,7 +87,9 @@ public:
      */
     std::optional<Packet> makeRejectOfPiece() const;
 
-    //! Are we sending this packet ?
+    /*!
+     * Are we sending this packet ?
+     */
     bool sending() const
     {
         return written > 0;

@@ -197,7 +197,9 @@ public:
     PacketParser(QByteArrayView packet);
     ~PacketParser();
 
-    //! Parses the packet, returns false on error
+    /*!
+     * Parses the packet, returns false on error.
+     */
     bool parse();
 
     [[nodiscard]] const Header *header() const
@@ -223,7 +225,9 @@ private:
     bt::Uint32 data_size;
 };
 
-//! <= for sequence numbers (taking into account wrapping around)
+/*!
+ * <= for sequence numbers (taking into account wrapping around).
+ */
 inline bool SeqNrCmpSE(bt::Uint16 a, bt::Uint16 b)
 {
     if (qAbs(b - a) < 32768) {
@@ -233,7 +237,9 @@ inline bool SeqNrCmpSE(bt::Uint16 a, bt::Uint16 b)
     }
 }
 
-//! < for sequence numbers (taking into account wrapping around)
+/*!
+ * < for sequence numbers (taking into account wrapping around).
+ */
 inline bool SeqNrCmpS(bt::Uint16 a, bt::Uint16 b)
 {
     if (qAbs(b - a) < 32768) {
@@ -243,7 +249,9 @@ inline bool SeqNrCmpS(bt::Uint16 a, bt::Uint16 b)
     }
 }
 
-//! Calculates difference between two sequence numbers (taking into account wrapping around)
+/*!
+ * Calculates difference between two sequence numbers (taking into account wrapping around).
+ */
 inline bt::Uint16 SeqNrDiff(bt::Uint16 a, bt::Uint16 b)
 {
     if (qAbs(b - a) < 32768) {

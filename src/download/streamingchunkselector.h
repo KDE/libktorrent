@@ -33,7 +33,9 @@ public:
     void reinsert(bt::Uint32 chunk) override;
     bool selectRange(bt::Uint32 &from, bt::Uint32 &to, bt::Uint32 max_len) override;
 
-    //! Get the critical window size in chunks
+    /*!
+     * Get the critical window size in chunks.
+     */
     [[nodiscard]] Uint32 criticialWindowSize() const
     {
         return critical_window_size;
@@ -47,7 +49,9 @@ public:
      */
     void setSequentialRange(bt::Uint32 from, bt::Uint32 to);
 
-    //! Set the cursor location
+    /*!
+     * Set the cursor location.
+     */
     void setCursor(bt::Uint32 chunk);
 
 private:

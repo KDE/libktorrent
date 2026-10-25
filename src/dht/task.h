@@ -55,10 +55,14 @@ public:
      */
     void start();
 
-    //! Decrements the outstanding_reqs
+    /*!
+     * Decrements the outstanding_reqs.
+     */
     void onResponse(RPCCall *c, RPCMsg *rsp) override;
 
-    //! Decrements the outstanding_reqs
+    /*!
+     * Decrements the outstanding_reqs.
+     */
     void onTimeout(RPCCall *c) override;
 
     /*!
@@ -87,19 +91,25 @@ public:
      */
     bool rpcCall(std::unique_ptr<RPCMsg> req);
 
-    //! See if we can do a request
+    /*!
+     * See if we can do a request.
+     */
     [[nodiscard]] bool canDoRequest() const
     {
         return outstanding_reqs < MAX_CONCURRENT_REQS;
     }
 
-    //! Is the task finished
+    /*!
+     * Is the task finished.
+     */
     [[nodiscard]] bool isFinished() const
     {
         return task_finished;
     }
 
-    //! Get the number of outstanding requests
+    /*!
+     * Get the number of outstanding requests.
+     */
     [[nodiscard]] bt::Uint32 getNumOutstandingRequests() const
     {
         return outstanding_reqs;
@@ -115,7 +125,9 @@ public:
      */
     void emitDataReady();
 
-    //! Kills the task
+    /*!
+     * Kills the task.
+     */
     void kill();
 
     /*!

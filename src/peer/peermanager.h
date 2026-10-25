@@ -60,7 +60,9 @@ public:
     PeerManager(Torrent &tor);
     ~PeerManager() override;
 
-    //! Get the connection limits
+    /*!
+     * Get the connection limits.
+     */
     static ConnectionLimit &connectionLimits();
 
     /*!
@@ -122,25 +124,39 @@ public:
      */
     void killStalePeers();
 
-    //! Get the number of connected peers
+    /*!
+     * Get the number of connected peers.
+     */
     [[nodiscard]] Uint32 getNumConnectedPeers() const;
 
-    //! Get the number of connected seeders
+    /*!
+     * Get the number of connected seeders.
+     */
     [[nodiscard]] Uint32 getNumConnectedSeeders() const;
 
-    //! Get the number of connected leechers
+    /*!
+     * Get the number of connected leechers.
+     */
     [[nodiscard]] Uint32 getNumConnectedLeechers() const;
 
-    //! Get the number of pending peers we are attempting to connect to
+    /*!
+     * Get the number of pending peers we are attempting to connect to.
+     */
     [[nodiscard]] Uint32 getNumPending() const;
 
-    //! Is the peer manager started
+    /*!
+     * Is the peer manager started.
+     */
     [[nodiscard]] bool isStarted() const;
 
-    //! Get the Torrent
+    /*!
+     * Get the Torrent.
+     */
     [[nodiscard]] const Torrent &getTorrent() const;
 
-    //! Get the combined upload rate of all peers in bytes per sec
+    /*!
+     * Get the combined upload rate of all peers in bytes per sec.
+     */
     [[nodiscard]] Uint32 uploadRate() const;
 
     /*!
@@ -171,13 +187,19 @@ public:
      */
     void killUninterested();
 
-    //! Get a BitSet of all available chunks
+    /*!
+     * Get a BitSet of all available chunks.
+     */
     [[nodiscard]] const BitSet &getAvailableChunksBitSet() const;
 
-    //! Get the chunk counter.
+    /*!
+     * Get the chunk counter.
+     */
     ChunkCounter &getChunkCounter();
 
-    //! Are we connected to a Peer given it's PeerID ?
+    /*!
+     * Are we connected to a Peer given it's PeerID ?
+     */
     bool connectedTo(const PeerID &peer_id);
 
     /*!
@@ -210,56 +232,90 @@ public:
         {
         }
 
-        //! Called for each Peer
+        /*!
+         * Called for each Peer.
+         */
         virtual void visit(const Peer *p) = 0;
     };
 
-    //! Visit all peers
+    /*!
+     * Visit all peers.
+     */
     void visit(PeerVisitor &visitor);
 
-    //! Is PEX enabled
+    /*!
+     * Is PEX enabled.
+     */
     [[nodiscard]] bool isPexEnabled() const;
 
-    //! Enable or disable PEX
+    /*!
+     * Enable or disable PEX.
+     */
     void setPexEnabled(bool on);
 
-    //! Set the group IDs of each peer
+    /*!
+     * Set the group IDs of each peer.
+     */
     void setGroupIDs(Uint32 up, Uint32 down);
 
-    //! Have message received by a peer
+    /*!
+     * Have message received by a peer.
+     */
     void have(Peer *p, Uint32 index);
 
-    //! Bitset received by a peer
+    /*!
+     * Bitset received by a peer.
+     */
     void bitSetReceived(Peer *p, const BitSet &bs);
 
-    //! Rerun the choker
+    /*!
+     * Rerun the choker.
+     */
     void rerunChoker();
 
-    //! Does the choker need to run again
+    /*!
+     * Does the choker need to run again.
+     */
     [[nodiscard]] bool chokerNeedsToRun() const;
 
-    //! A PEX message was received
+    /*!
+     * A PEX message was received.
+     */
     void pex(QByteArrayView arr, int ip_version);
 
-    //! A port packet was received
+    /*!
+     * A port packet was received.
+     */
     void portPacketReceived(const QString &ip, Uint16 port);
 
-    //! A Piece was received
+    /*!
+     * A Piece was received.
+     */
     void pieceReceived(const Piece &p);
 
-    //! Set the piece handler
+    /*!
+     * Set the piece handler.
+     */
     void setPieceHandler(PieceHandler *ph);
 
-    //! Enable or disable super seeding
+    /*!
+     * Enable or disable super seeding.
+     */
     void setSuperSeeding(bool on, const BitSet &chunks);
 
-    //! Send a have message to all peers
+    /*!
+     * Send a have message to all peers.
+     */
     void sendHave(Uint32 index);
 
-    //! Set if we are a partial seed or not
+    /*!
+     * Set if we are a partial seed or not.
+     */
     void setPartialSeed(bool partial_seed);
 
-    //! Are we a partial seed
+    /*!
+     * Are we a partial seed.
+     */
     [[nodiscard]] bool isPartialSeed() const;
 
 public Q_SLOTS:

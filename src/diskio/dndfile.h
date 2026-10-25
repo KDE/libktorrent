@@ -34,7 +34,9 @@ public:
 
     Q_DISABLE_COPY_MOVE(DNDFile);
 
-    //! Change the path of the file
+    /*!
+     * Change the path of the file.
+     */
     void changePath(const QString &npath);
 
     /*!

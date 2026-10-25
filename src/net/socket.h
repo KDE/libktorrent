@@ -74,7 +74,9 @@ public:
         return m_ip_version == 6;
     }
 
-    //! Take the filedescriptor from the socket
+    /*!
+     * Take the filedescriptor from the socket.
+     */
     int take();
 
     using Ptr = QSharedPointer<Socket>;

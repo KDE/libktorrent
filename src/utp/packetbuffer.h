@@ -47,7 +47,9 @@ public:
      **/
     bool setHeader(const Header &hdr, bt::Uint32 extension_length);
 
-    //! Get a pointer to the extension data
+    /*!
+     * Get a pointer to the extension data.
+     */
     bt::Uint8 *extensionData()
     {
         return extension;
@@ -79,25 +81,33 @@ public:
      **/
     static void clearPool();
 
-    //! Get the data pointer
+    /*!
+     * Get the data pointer.
+     */
     [[nodiscard]] const bt::Uint8 *data() const
     {
         return header;
     }
 
-    //! Get the buffer size
+    /*!
+     * Get the buffer size.
+     */
     [[nodiscard]] bt::Uint32 bufferSize() const
     {
         return size;
     }
 
-    //! Get the size of the payload
+    /*!
+     * Get the size of the payload.
+     */
     [[nodiscard]] bt::Uint32 payloadSize() const
     {
         return payload ? (buffer->data() + MAX_SIZE) - payload : 0;
     }
 
-    //! Get the amount of headroom (room in front of payload)
+    /*!
+     * Get the amount of headroom (room in front of payload).
+     */
     [[nodiscard]] bt::Uint32 headRoom() const
     {
         return payload ? payload - buffer->data() : MAX_SIZE;

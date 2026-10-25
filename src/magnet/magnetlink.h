@@ -36,49 +36,67 @@ public:
     MagnetLink(const QString &mlink);
     ~MagnetLink();
 
-    //! Assignment operator
+    /*!
+     * Assignment operator.
+     */
     MagnetLink &operator=(const MagnetLink &mlink);
 
-    //! Equality operator
+    /*!
+     * Equality operator.
+     */
     bool operator==(const MagnetLink &mlink) const;
 
-    //! Is this a valid magnet link
+    /*!
+     * Is this a valid magnet link.
+     */
     [[nodiscard]] bool isValid() const
     {
         return !magnet_string.isEmpty();
     }
 
-    //! Convert it to a string
+    /*!
+     * Convert it to a string.
+     */
     [[nodiscard]] QString toString() const
     {
         return magnet_string;
     }
 
-    //! Get the display name (can be empty)
+    /*!
+     * Get the display name (can be empty).
+     */
     [[nodiscard]] QString displayName() const
     {
         return name;
     }
 
-    //! Get the path of addressed file(s) inside the torrent
+    /*!
+     * Get the path of addressed file(s) inside the torrent.
+     */
     [[nodiscard]] QString subPath() const
     {
         return path;
     }
 
-    //! Get the torrent URL (can be empty)
+    /*!
+     * Get the torrent URL (can be empty).
+     */
     [[nodiscard]] QString torrent() const
     {
         return torrent_url;
     }
 
-    //! Get all possible trackers (can be empty)
+    /*!
+     * Get all possible trackers (can be empty).
+     */
     [[nodiscard]] QList<QUrl> trackers() const
     {
         return tracker_urls;
     }
 
-    //! Get the info hash
+    /*!
+     * Get the info hash.
+     */
     [[nodiscard]] const SHA1Hash &infoHash() const
     {
         return info_hash;

@@ -31,10 +31,14 @@ public:
     PeerConnector(const net::Address &addr, bool local, PeerManager *pman, std::unique_ptr<ConnectionLimit::Token> token);
     ~PeerConnector() override;
 
-    //! Called when an authentication attempt is finished
+    /*!
+     * Called when an authentication attempt is finished.
+     */
     void authenticationFinished(bt::Authenticate *auth, bool ok);
 
-    //! Start connecting
+    /*!
+     * Start connecting.
+     */
     void start();
 
     /*!
@@ -45,7 +49,9 @@ public:
     using Ptr = QSharedPointer<PeerConnector>;
     using WPtr = QWeakPointer<PeerConnector>;
 
-    //! Set a weak pointer to this object
+    /*!
+     * Set a weak pointer to this object.
+     */
     void setWeakPointer(WPtr ptr);
 
 private:

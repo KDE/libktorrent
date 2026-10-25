@@ -23,37 +23,51 @@ public:
     WebSeedInterface(const QUrl &url, bool user);
     virtual ~WebSeedInterface();
 
-    //! Disable or enable the webseed
+    /*!
+     * Disable or enable the webseed.
+     */
     virtual void setEnabled(bool on);
 
-    //! Whether or not the webseed is enabled
+    /*!
+     * Whether or not the webseed is enabled.
+     */
     [[nodiscard]] bool isEnabled() const
     {
         return enabled;
     }
 
-    //! Get the URL of the webseed
+    /*!
+     * Get the URL of the webseed.
+     */
     [[nodiscard]] const QUrl &getUrl() const
     {
         return url;
     }
 
-    //! Get how much data was downloaded
+    /*!
+     * Get how much data was downloaded.
+     */
     [[nodiscard]] Uint64 getTotalDownloaded() const
     {
         return total_downloaded;
     }
 
-    //! Get the present status in string form
+    /*!
+     * Get the present status in string form.
+     */
     [[nodiscard]] QString getStatus() const
     {
         return status;
     }
 
-    //! Get the current download rate in bytes per sec
+    /*!
+     * Get the current download rate in bytes per sec.
+     */
     [[nodiscard]] virtual Uint32 getDownloadRate() const = 0;
 
-    //! Whether or not this webseed was user created
+    /*!
+     * Whether or not this webseed was user created.
+     */
     [[nodiscard]] bool isUserCreated() const
     {
         return user;

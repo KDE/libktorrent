@@ -41,7 +41,9 @@ public:
      */
     void release();
 
-    //! Get the number of times this PeerDownloader was grabbed.
+    /*!
+     * Get the number of times this PeerDownloader was grabbed.
+     */
     [[nodiscard]] int getNumGrabbed() const
     {
         return grabbed;
@@ -97,13 +99,17 @@ public:
      */
     [[nodiscard]] virtual bool canDownloadChunk() const = 0;
 
-    //! See if this PieceDownloader has nearly finished a chunk
+    /*!
+     * See if this PieceDownloader has nearly finished a chunk.
+     */
     [[nodiscard]] bool isNearlyDone() const
     {
         return getNumGrabbed() == 1 && nearly_done;
     }
 
-    //! Set the nearly done status of the PeerDownloader
+    /*!
+     * Set the nearly done status of the PeerDownloader.
+     */
     void setNearlyDone(bool nd)
     {
         nearly_done = nd;

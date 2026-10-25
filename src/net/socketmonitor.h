@@ -31,33 +31,47 @@ class KTORRENT_EXPORT SocketMonitor
 public:
     ~SocketMonitor();
 
-    //! Add a new socket, will start the threads if necessary
+    /*!
+     * Add a new socket, will start the threads if necessary.
+     */
     void add(TrafficShapedSocket *sock);
 
-    //! Remove a socket, will stop threads if no more sockets are left
+    /*!
+     * Remove a socket, will stop threads if no more sockets are left.
+     */
     void remove(TrafficShapedSocket *sock);
 
     using Itr = std::list<TrafficShapedSocket *>::iterator;
 
-    //! Get the begin of the list of sockets
+    /*!
+     * Get the begin of the list of sockets.
+     */
     Itr begin()
     {
         return sockets.begin();
     }
 
-    //! Get the end of the list of sockets
+    /*!
+     * Get the end of the list of sockets.
+     */
     Itr end()
     {
         return sockets.end();
     }
 
-    //! lock the monitor
+    /*!
+     * lock the monitor.
+     */
     void lock();
 
-    //! unlock the monitor
+    /*!
+     * unlock the monitor.
+     */
     void unlock();
 
-    //! Tell upload thread a packet is ready
+    /*!
+     * Tell upload thread a packet is ready.
+     */
     void signalPacketReady();
 
     /*!

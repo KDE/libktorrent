@@ -34,10 +34,14 @@ public:
     RPCServer(DHT *dh_table, bt::Uint16 port, QObject *parent = nullptr);
     ~RPCServer() override;
 
-    //! Start the server
+    /*!
+     * Start the server.
+     */
     void start();
 
-    //! Stop the server
+    /*!
+     * Stop the server.
+     */
     void stop();
 
     /*!
@@ -61,7 +65,9 @@ public:
      */
     void ping(const dht::Key &our_id, const net::Address &addr);
 
-    //! Get the number of active calls
+    /*!
+     * Get the number of active calls.
+     */
     [[nodiscard]] bt::Uint32 getNumActiveRPCCalls() const;
 
 private Q_SLOTS:

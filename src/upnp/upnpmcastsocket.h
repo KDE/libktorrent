@@ -34,19 +34,29 @@ public:
     UPnPMCastSocket(bool verbose = false);
     ~UPnPMCastSocket() override;
 
-    //! Get the number of routers discovered
+    /*!
+     * Get the number of routers discovered.
+     */
     [[nodiscard]] Uint32 getNumDevicesDiscovered() const;
 
-    //! Find a router using it's server name
+    /*!
+     * Find a router using it's server name.
+     */
     UPnPRouter *findDevice(const QString &name);
 
-    //! Save all routers to a file (for convenience at startup)
+    /*!
+     * Save all routers to a file (for convenience at startup).
+     */
     void saveRouters(const QString &file);
 
-    //! Load all routers from a file
+    /*!
+     * Load all routers from a file.
+     */
     void loadRouters(const QString &file);
 
-    //! Set verbose mode
+    /*!
+     * Set verbose mode.
+     */
     void setVerbose(bool v);
 
 public:

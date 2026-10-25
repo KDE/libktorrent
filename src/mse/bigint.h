@@ -62,13 +62,19 @@ public:
      */
     static BigInt powerMod(const BigInt &x, const BigInt &e, const BigInt &d);
 
-    //! Make a random BigInt
+    /*!
+     * Make a random BigInt.
+     */
     static BigInt random();
 
-    //! Export the bigint ot a buffer
+    /*!
+     * Export the bigint ot a buffer.
+     */
     bt::Uint32 toBuffer(bt::Uint8 *buf, bt::Uint32 max_size) const;
 
-    //! Make a BigInt out of a buffer
+    /*!
+     * Make a BigInt out of a buffer.
+     */
     static BigInt fromBuffer(QByteArrayView buf);
 
 private:

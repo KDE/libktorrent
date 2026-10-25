@@ -42,7 +42,9 @@ public:
     bt::Uint32 write(bt::Uint32 max, bt::TimeStamp now) override;
     bool bytesReadyToWrite() const override;
 
-    //! Get the number of data bytes uploaded
+    /*!
+     * Get the number of data bytes uploaded.
+     */
     bt::Uint32 dataBytesUploaded();
 
     /*!
@@ -59,10 +61,14 @@ public:
      */
     void doNotSendPiece(const bt::Request &req, bool reject);
 
-    //! Get the number of pending piece uploads
+    /*!
+     * Get the number of pending piece uploads.
+     */
     bt::Uint32 numPendingPieceUploads() const;
 
-    //! Get the number of pending piece upload bytes (including message headers)
+    /*!
+     * Get the number of pending piece upload bytes (including message headers).
+     */
     bt::Uint32 numPendingPieceUploadBytes() const;
 
 protected:

@@ -97,25 +97,39 @@ public:
     UPnPRouter(const QString &server, const QUrl &location, bool verbose = false);
     ~UPnPRouter() override;
 
-    //! Disable or enable verbose logging
+    /*!
+     * Disable or enable verbose logging.
+     */
     void setVerbose(bool v);
 
-    //! Get the name  of the server
+    /*!
+     * Get the name  of the server.
+     */
     [[nodiscard]] QString getServer() const;
 
-    //! Get the location of it's xml description
+    /*!
+     * Get the location of it's xml description.
+     */
     [[nodiscard]] QUrl getLocation() const;
 
-    //! Get the device description
+    /*!
+     * Get the device description.
+     */
     UPnPDeviceDescription &getDescription();
 
-    //! Get the device description (const version)
+    /*!
+     * Get the device description (const version).
+     */
     [[nodiscard]] const UPnPDeviceDescription &getDescription() const;
 
-    //! Get the current error (null string if there is none)
+    /*!
+     * Get the current error (null string if there is none).
+     */
     [[nodiscard]] QString getError() const;
 
-    //! Get the router's external IP
+    /*!
+     * Get the router's external IP.
+     */
     [[nodiscard]] QString getExternalIP() const;
 
     /*!

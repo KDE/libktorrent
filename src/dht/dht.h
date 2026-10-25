@@ -89,10 +89,14 @@ public:
      */
     NodeLookup *findNode(const dht::Key &id);
 
-    //! Do a findNode for our node id
+    /*!
+     * Do a findNode for our node id.
+     */
     NodeLookup *findOwnNode();
 
-    //! See if it is possible to start a task
+    /*!
+     * See if it is possible to start a task.
+     */
     [[nodiscard]] bool canStartTask() const;
 
     void start(const QString &table, const QString &key_file, bt::Uint16 port) override;
@@ -101,7 +105,9 @@ public:
 
     QMap<QString, int> getClosestGoodNodes(int maxNodes) override;
 
-    //! Bootstrap from well-known nodes
+    /*!
+     * Bootstrap from well-known nodes.
+     */
     void bootstrap();
 
 private Q_SLOTS:

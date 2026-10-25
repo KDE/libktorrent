@@ -47,7 +47,9 @@ public:
      */
     Key(const bt::Uint8 *d);
 
-    //! Destructor.
+    /*!
+     * Destructor.
+     */
     ~Key() override;
 
     /*!
@@ -56,10 +58,14 @@ public:
      */
     static Key random();
 
-    //! Get the minimum key (all zeros)
+    /*!
+     * Get the minimum key (all zeros).
+     */
     static Key min();
 
-    //! Get the maximum key (all FF)
+    /*!
+     * Get the maximum key (all FF).
+     */
     static Key max();
 
     /*!

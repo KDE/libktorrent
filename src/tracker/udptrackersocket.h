@@ -110,7 +110,9 @@ public:
      */
     static void setPort(Uint16 p);
 
-    //! Get the port in use.
+    /*!
+     * Get the port in use.
+     */
     static Uint16 getPort();
 
 Q_SIGNALS:

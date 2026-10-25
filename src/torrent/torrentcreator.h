@@ -70,7 +70,9 @@ public:
                    bool decentralized);
     ~TorrentCreator() override;
 
-    //! Get the number of chunks
+    /*!
+     * Get the number of chunks.
+     */
     [[nodiscard]] Uint32 getNumChunks() const
     {
         return num_chunks;
@@ -100,7 +102,9 @@ public:
      */
     std::unique_ptr<TorrentControl> makeTC(const QString &data_dir);
 
-    //! Stop the thread
+    /*!
+     * Stop the thread.
+     */
     void stop()
     {
         stopped = true;

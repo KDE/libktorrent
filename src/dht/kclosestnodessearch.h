@@ -58,13 +58,17 @@ public:
         return emap.end();
     }
 
-    //! Get the target key of the search3
+    /*!
+     * Get the target key of the search3.
+     */
     [[nodiscard]] const dht::Key &getSearchTarget() const
     {
         return key;
     }
 
-    //! Get the number of entries.
+    /*!
+     * Get the number of entries.
+     */
     [[nodiscard]] bt::Uint32 getNumEntries() const
     {
         return emap.size();

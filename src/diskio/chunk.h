@@ -70,7 +70,9 @@ public:
      */
     void savePiece(PieceData::Ptr piece);
 
-    //! Get the chunks status.
+    /*!
+     * Get the chunks status.
+     */
     [[nodiscard]] Status getStatus() const
     {
         return status;
@@ -85,49 +87,65 @@ public:
         status = s;
     }
 
-    //! Get the chunk's index
+    /*!
+     * Get the chunk's index.
+     */
     [[nodiscard]] Uint32 getIndex() const
     {
         return index;
     }
 
-    //! Get the chunk's size
+    /*!
+     * Get the chunk's size.
+     */
     [[nodiscard]] Uint32 getSize() const
     {
         return size;
     }
 
-    //! get chunk priority
+    /*!
+     * get chunk priority.
+     */
     [[nodiscard]] Priority getPriority() const
     {
         return priority;
     }
 
-    //! set chunk priority
+    /*!
+     * set chunk priority.
+     */
     void setPriority(Priority newpriority = NORMAL_PRIORITY)
     {
         priority = newpriority;
     }
 
-    //! Is chunk part of a multimedia preview
+    /*!
+     * Is chunk part of a multimedia preview.
+     */
     [[nodiscard]] bool isPreview() const
     {
         return priority == FIRST_PREVIEW_PRIORITY || priority == NORMAL_PREVIEW_PRIORITY || priority == LAST_PREVIEW_PRIORITY;
     }
 
-    //! Is chunk excluded
+    /*!
+     * Is chunk excluded.
+     */
     [[nodiscard]] bool isExcluded() const
     {
         return priority == EXCLUDED;
     }
 
-    //! Is this a seed only chunk
+    /*!
+     * Is this a seed only chunk.
+     */
     [[nodiscard]] bool isExcludedForDownloading() const
     {
         return priority == ONLY_SEED_PRIORITY;
     }
 
-    //! In/Exclude chunk
+    /*!
+     * In/Exclude chunk.
+     */
     void setExclude(bool yes)
     {
         priority = yes ? EXCLUDED : NORMAL_PRIORITY;

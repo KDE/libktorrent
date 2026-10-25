@@ -37,25 +37,35 @@ public:
      */
     void handlePacket(QByteArrayView packet) override;
 
-    //! Do we need to update PEX (should happen every minute)
+    /*!
+     * Do we need to update PEX (should happen every minute).
+     */
     [[nodiscard]] bool needsUpdate() const override;
 
-    //! Send a new PEX packet to the Peer
+    /*!
+     * Send a new PEX packet to the Peer.
+     */
     void update() override;
 
-    //! Change the ID used in the extended packets
+    /*!
+     * Change the ID used in the extended packets.
+     */
     void changeID(Uint32 nid)
     {
         id = nid;
     }
 
-    //! Globally disable or enabled PEX
+    /*!
+     * Globally disable or enabled PEX.
+     */
     static void setEnabled(bool on)
     {
         pex_enabled = on;
     }
 
-    //! Is PEX enabled globally
+    /*!
+     * Is PEX enabled globally.
+     */
     static bool isEnabled()
     {
         return pex_enabled;

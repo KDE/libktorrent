@@ -152,10 +152,14 @@ KTORRENT_EXPORT bool XfsPreallocate(const QString &path, Uint64 size);
  */
 KTORRENT_EXPORT void SeekFile(int fd, Int64 off, int whence);
 
-//! Calculate the number of bytes free on the filesystem path is located
+/*!
+ * Calculate the number of bytes free on the filesystem path is located.
+ */
 KTORRENT_EXPORT bool FreeDiskSpace(const QString &path, Uint64 &bytes_free);
 
-//! Check if a filename is too long
+/*!
+ * Check if a filename is too long.
+ */
 KTORRENT_EXPORT bool FileNameTooLong(const QString &path);
 
 /*!
@@ -166,19 +170,29 @@ KTORRENT_EXPORT bool FileNameTooLong(const QString &path);
  */
 KTORRENT_EXPORT QString ShortenFileName(const QString &path, int extra_number = -1);
 
-//! Calculate the amount of space a file is taking up (this is not the filesize!)
+/*!
+ * Calculate the amount of space a file is taking up (this is not the filesize!).
+ */
 KTORRENT_EXPORT Uint64 DiskUsage(const QString &filename);
 
-//! Calculate the amount of space a file is taking up (this is not the filesize!)
+/*!
+ * Calculate the amount of space a file is taking up (this is not the filesize!).
+ */
 KTORRENT_EXPORT Uint64 DiskUsage(int fd);
 
-//! Get the mount point of a path
+/*!
+ * Get the mount point of a path.
+ */
 KTORRENT_EXPORT QString MountPoint(const QString &path);
 
-//! Is there something mounted on a mount point
+/*!
+ * Is there something mounted on a mount point.
+ */
 KTORRENT_EXPORT bool IsMounted(const QString &mount_point);
 
-//! Load a file into a QByteArray
+/*!
+ * Load a file into a QByteArray.
+ */
 KTORRENT_EXPORT QByteArray LoadFile(const QString &path);
 }
 

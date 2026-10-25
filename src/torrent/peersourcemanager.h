@@ -65,11 +65,17 @@ public:
     void completed() override;
     void manualUpdate() override;
 
-    //! Adds DHT as PeerSource for this torrent
+    /*!
+     * Adds DHT as PeerSource for this torrent.
+     */
     void addDHT();
-    //! Removes DHT from PeerSourceManager for this torrent.
+    /*!
+     * Removes DHT from PeerSourceManager for this torrent.
+     */
     void removeDHT();
-    //! Checks if DHT is enabled
+    /*!
+     * Checks if DHT is enabled.
+     */
     bool dhtStarted();
 };
 

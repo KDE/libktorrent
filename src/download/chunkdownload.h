@@ -100,40 +100,58 @@ public:
 
     ~ChunkDownload() override;
 
-    //! Get the chunk
+    /*!
+     * Get the chunk.
+     */
     Chunk *getChunk()
     {
         return chunk;
     }
 
-    //! Get the total number of pieces
+    /*!
+     * Get the total number of pieces.
+     */
     [[nodiscard]] Uint32 getTotalPieces() const
     {
         return num;
     }
 
-    //! Get the number of pieces downloaded
+    /*!
+     * Get the number of pieces downloaded.
+     */
     [[nodiscard]] Uint32 getPiecesDownloaded() const
     {
         return num_downloaded;
     }
 
-    //! Get the number of bytes downloaded.
+    /*!
+     * Get the number of bytes downloaded.
+     */
     [[nodiscard]] Uint32 bytesDownloaded() const;
 
-    //! Get the index of the chunk
+    /*!
+     * Get the index of the chunk.
+     */
     [[nodiscard]] Uint32 getChunkIndex() const;
 
-    //! Get the PeerID of the current peer
+    /*!
+     * Get the PeerID of the current peer.
+     */
     [[nodiscard]] QString getPieceDownloaderName() const;
 
-    //! Get the download speed
+    /*!
+     * Get the download speed.
+     */
     [[nodiscard]] Uint32 getDownloadSpeed() const;
 
-    //! Get download stats
+    /*!
+     * Get download stats.
+     */
     void getStats(Stats &s) override;
 
-    //! See if a chunkdownload is idle (i.e. has no downloaders)
+    /*!
+     * See if a chunkdownload is idle (i.e. has no downloaders).
+     */
     [[nodiscard]] bool isIdle() const
     {
         return pdown.count() == 0;
@@ -192,34 +210,48 @@ public:
      */
     PieceDownloader *getOnlyDownloader();
 
-    //! See if a PieceDownloader is assigned to this chunk
+    /*!
+     * See if a PieceDownloader is assigned to this chunk.
+     */
     bool containsPeer(PieceDownloader *pd)
     {
         return pdown.contains(pd);
     }
 
-    //! See if the download is choked (i.e. all downloaders are choked)
+    /*!
+     * See if the download is choked (i.e. all downloaders are choked).
+     */
     [[nodiscard]] bool isChoked() const;
 
-    //! Release all PD's and clear the requested chunks
+    /*!
+     * Release all PD's and clear the requested chunks.
+     */
     void releaseAllPDs();
 
-    //! Send requests to peers
+    /*!
+     * Send requests to peers.
+     */
     void update();
 
-    //! See if this CD hasn't been active in the last update
+    /*!
+     * See if this CD hasn't been active in the last update.
+     */
     [[nodiscard]] bool needsToBeUpdated() const
     {
         return timer.getElapsedSinceUpdate() > 60 * 1000;
     }
 
-    //! Get the SHA1 hash of the downloaded chunk
+    /*!
+     * Get the SHA1 hash of the downloaded chunk.
+     */
     [[nodiscard]] SHA1Hash getHash() const
     {
         return hash_gen.get();
     }
 
-    //! Get the number of downloaders
+    /*!
+     * Get the number of downloaders.
+     */
     [[nodiscard]] Uint32 getNumDownloaders() const
     {
         return pdown.count();

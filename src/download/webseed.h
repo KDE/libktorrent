@@ -36,10 +36,14 @@ public:
     WebSeed(const QUrl &url, bool user, const Torrent &tor, ChunkManager &cman);
     ~WebSeed() override;
 
-    //! Is this webseed busy ?
+    /*!
+     * Is this webseed busy ?
+     */
     [[nodiscard]] bool busy() const;
 
-    //! Check if a chunk lies in the current range we are downloading
+    /*!
+     * Check if a chunk lies in the current range we are downloading.
+     */
     [[nodiscard]] bool inCurrentRange(Uint32 chunk) const
     {
         return chunk >= first_chunk && chunk <= last_chunk;
@@ -77,7 +81,9 @@ public:
      */
     void cancel();
 
-    //! Get the current download rate
+    /*!
+     * Get the current download rate.
+     */
     [[nodiscard]] Uint32 getDownloadRate() const override;
 
     /*!
@@ -101,7 +107,9 @@ public:
      */
     static void setProxyEnabled(bool on);
 
-    //! Get the current webseed download
+    /*!
+     * Get the current webseed download.
+     */
     WebSeedChunkDownload *currentChunkDownload()
     {
         return current;
@@ -109,10 +117,14 @@ public:
 
     void setEnabled(bool on) override;
 
-    //! Disable the webseed
+    /*!
+     * Disable the webseed.
+     */
     void disable(const QString &reason);
 
-    //! Get the number of failed attempts
+    /*!
+     * Get the number of failed attempts.
+     */
     [[nodiscard]] Uint32 failedAttempts() const
     {
         return num_failures;

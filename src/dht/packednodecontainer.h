@@ -23,16 +23,22 @@ public:
     PackedNodeContainer();
     virtual ~PackedNodeContainer();
 
-    //! Add a single node to the nodes or nodes2 parameter depending on it's size
+    /*!
+     * Add a single node to the nodes or nodes2 parameter depending on it's size.
+     */
     void addNode(QByteArrayView a);
 
-    //! Get the nodes parameter
+    /*!
+     * Get the nodes parameter.
+     */
     [[nodiscard]] const QByteArray &getNodes() const
     {
         return nodes;
     }
 
-    //! Get the nodes6 parameter
+    /*!
+     * Get the nodes6 parameter.
+     */
     [[nodiscard]] const QByteArray &getNodes6() const
     {
         return nodes6;

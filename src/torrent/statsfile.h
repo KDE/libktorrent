@@ -37,7 +37,9 @@ public:
 
     void write(const QString &key, const QString &value);
 
-    //! Sync with disk
+    /*!
+     * Sync with disk.
+     */
     void sync();
 
     /*!

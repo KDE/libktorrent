@@ -24,22 +24,30 @@ public:
     DownloadThread(SocketMonitor *sm);
     ~DownloadThread() override;
 
-    //! Wake up the download thread
+    /*!
+     * Wake up the download thread.
+     */
     void wakeUp();
 
-    //! Set the download cap
+    /*!
+     * Set the download cap.
+     */
     static void setCap(bt::Uint32 cap)
     {
         dcap = cap;
     }
 
-    //! Get the download cap
+    /*!
+     * Get the download cap.
+     */
     static bt::Uint32 cap()
     {
         return dcap;
     }
 
-    //! Set the sleep time when using download caps
+    /*!
+     * Set the sleep time when using download caps.
+     */
     static void setSleepTime(bt::Uint32 stime);
 
 private:

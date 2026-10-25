@@ -29,22 +29,32 @@ public:
     PeerProtocolExtension(bt::Uint32 id, Peer *peer);
     virtual ~PeerProtocolExtension();
 
-    //! Virtual update function does nothing, needs to be overridden if update
+    /*!
+     * Virtual update function does nothing, needs to be overridden if update.
+     */
     virtual void update();
 
-    //! Does this needs to be update
+    /*!
+     * Does this needs to be update.
+     */
     [[nodiscard]] virtual bool needsUpdate() const
     {
         return false;
     }
 
-    //! Handle a packet
+    /*!
+     * Handle a packet.
+     */
     virtual void handlePacket(QByteArrayView packet) = 0;
 
-    //! Send an extension protocol packet
+    /*!
+     * Send an extension protocol packet.
+     */
     void sendPacket(QByteArrayView data);
 
-    //! Change the ID
+    /*!
+     * Change the ID.
+     */
     void changeID(Uint32 id);
 
 protected:

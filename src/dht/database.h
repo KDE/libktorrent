@@ -20,7 +20,9 @@
 
 namespace dht
 {
-//! Each item may only exist for 30 minutes
+/*!
+ * Each item may only exist for 30 minutes.
+ */
 const bt::Uint32 MAX_ITEM_AGE = 30 * 60 * 1000;
 
 /*!
@@ -37,10 +39,14 @@ public:
     DBItem(const DBItem &item);
     ~DBItem();
 
-    //! See if the item is expired
+    /*!
+     * See if the item is expired.
+     */
     [[nodiscard]] bool expired(bt::TimeStamp now) const;
 
-    //! Get the address of an item
+    /*!
+     * Get the address of an item.
+     */
     [[nodiscard]] const net::Address &getAddress() const
     {
         return addr;
@@ -117,10 +123,14 @@ public:
      */
     bool checkToken(const QByteArray &token, const net::Address &addr);
 
-    //! Test whether or not the DB contains a key
+    /*!
+     * Test whether or not the DB contains a key.
+     */
     [[nodiscard]] bool contains(const dht::Key &key) const;
 
-    //! Insert an empty item (only if it isn't already in the DB)
+    /*!
+     * Insert an empty item (only if it isn't already in the DB).
+     */
     void insert(const dht::Key &key);
 
 private:

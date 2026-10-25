@@ -75,20 +75,30 @@ public:
     TimeEstimator(TorrentControl *tc);
     ~TimeEstimator();
 
-    //! Returns ETA for m_tc torrent.
+    /*!
+     * Returns ETA for m_tc torrent.
+     */
     int estimate();
 
 private:
-    //! global average speed algorithm
+    /*!
+     * global average speed algorithm.
+     */
     int estimateGASA();
 
-    //! window of X algorithm
+    /*!
+     * window of X algorithm.
+     */
     int estimateWINX();
 
-    //! moving average algorithm
+    /*!
+     * moving average algorithm.
+     */
     int estimateMAVG();
 
-    //! ktorrent default algorithm - combination of the following according to our tests
+    /*!
+     * ktorrent default algorithm - combination of the following according to our tests.
+     */
     int estimateKT();
 
     [[nodiscard]] Uint32 sample() const;

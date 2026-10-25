@@ -12,7 +12,9 @@
 #include <net/socketdevice.h>
 #include <util/constants.h>
 
-//! Generate a random size between min_size and max_size
+/*!
+ * Generate a random size between min_size and max_size.
+ */
 bt::Uint64 RandomSize(bt::Uint64 min_size, bt::Uint64 max_size);
 
 struct SocketPair {

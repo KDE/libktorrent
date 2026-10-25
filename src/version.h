@@ -78,13 +78,21 @@ KTORRENT_EXPORT QString PeerIDPrefix();
  */
 KTORRENT_EXPORT QString GetVersionString();
 
-//! Major version number of the ktorrent library
+/*!
+ * Major version number of the ktorrent library.
+ */
 const Uint32 MAJOR = LIBKTORRENT_VERSION_MAJOR;
-//! Minor version number of the ktorrent library
+/*!
+ * Minor version number of the ktorrent library.
+ */
 const Uint32 MINOR = LIBKTORRENT_VERSION_MINOR;
-//! Version type of the ktorrent library
+/*!
+ * Version type of the ktorrent library.
+ */
 const VersionType VERSION_TYPE = NORMAL;
-//! Release version number of the ktorrent library (only for normal releases)
+/*!
+ * Release version number of the ktorrent library (only for normal releases).
+ */
 const Uint32 RELEASE = LIBKTORRENT_VERSION_PATCH;
 }
 

@@ -59,7 +59,9 @@ public:
     TorrentControl();
     ~TorrentControl() override;
 
-    //! Get the Torrent.
+    /*!
+     * Get the Torrent.
+     */
     [[nodiscard]] const Torrent &getTorrent() const
     {
         return *tor;
@@ -76,13 +78,17 @@ public:
      */
     void init(QueueManagerInterface *qman, QByteArrayView data, const QString &tmpdir, const QString &datadir);
 
-    //! Tell the TorrentControl obj to preallocate diskspace in the next update
+    /*!
+     * Tell the TorrentControl obj to preallocate diskspace in the next update.
+     */
     void setPreallocateDiskSpace(bool pa)
     {
         prealloc = pa;
     }
 
-    //! Test if the torrent has existing files, only works the first time a torrent is loaded
+    /*!
+     * Test if the torrent has existing files, only works the first time a torrent is loaded.
+     */
     [[nodiscard]] bool hasExistingFiles() const;
 
     [[nodiscard]] const BitSet &downloadedChunksBitSet() const override;
@@ -178,10 +184,14 @@ public:
     }
     void setSuperSeeding(bool on) override;
 
-    //! Create all the necessary files
+    /*!
+     * Create all the necessary files.
+     */
     void createFiles();
 
-    //! Get the PeerManager
+    /*!
+     * Get the PeerManager.
+     */
     [[nodiscard]] const PeerManager *getPeerMgr() const;
 
     /*!
@@ -190,10 +200,14 @@ public:
      */
     void setChunkSelectorFactory(ChunkSelectorFactoryInterface *csfi);
 
-    //! Set a custom Cache factory
+    /*!
+     * Set a custom Cache factory.
+     */
     void setCacheFactory(std::unique_ptr<CacheFactory> cf);
 
-    //! Get time in msec since the last Stats file save on disk
+    /*!
+     * Get time in msec since the last Stats file save on disk.
+     */
     TimeStamp getStatsSyncElapsedTime()
     {
         return stats_save_timer.getElapsedSinceUpdate();
@@ -263,7 +277,9 @@ public:
     }
 
 protected:
-    //! Called when a data check is finished by DataCheckerJob
+    /*!
+     * Called when a data check is finished by DataCheckerJob.
+     */
     void afterDataCheck(DataCheckerJob *job, const BitSet &result);
     void beforeDataCheck();
     void preallocFinished(const QString &error, bool completed);
@@ -275,7 +291,9 @@ private:
     void onPeerRemoved(Peer *p);
     void doChoking();
     void onIOError(const QString &msg);
-    //! Update the stats of the torrent.
+    /*!
+     * Update the stats of the torrent.
+     */
     void updateStats();
     void corrupted(Uint32 chunk);
     void moveDataFilesFinished(KJob *j);

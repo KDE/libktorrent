@@ -64,61 +64,85 @@ public:
     LocalWindow(LocalWindow &&) = delete;
     LocalWindow &operator=(LocalWindow &&) = delete;
 
-    //! Get back the available space
+    /*!
+     * Get back the available space.
+     */
     [[nodiscard]] bt::Uint32 availableSpace() const
     {
         return window_space;
     }
 
-    //! Get back how large the window is
+    /*!
+     * Get back how large the window is.
+     */
     [[nodiscard]] bt::Uint32 currentWindow() const
     {
         return capacity - window_space;
     }
 
-    //! Get the window capacity
+    /*!
+     * Get the window capacity.
+     */
     [[nodiscard]] bt::Uint32 windowCapacity() const
     {
         return capacity;
     }
 
-    //! A packet was received
+    /*!
+     * A packet was received.
+     */
     bool packetReceived(const Header *hdr, std::unique_ptr<bt::Buffer> packet, bt::Uint32 data_off);
 
-    //! Set the last sequence number
+    /*!
+     * Set the last sequence number.
+     */
     void setLastSeqNr(bt::Uint16 lsn);
 
-    //! Get the last sequence number we can safely ack
+    /*!
+     * Get the last sequence number we can safely ack.
+     */
     [[nodiscard]] bt::Uint16 lastSeqNr() const
     {
         return last_seq_nr;
     }
 
-    //! Is the window empty
+    /*!
+     * Is the window empty.
+     */
     [[nodiscard]] bool isEmpty() const
     {
         return incoming_packets.empty();
     }
 
-    //! Read from the local window
+    /*!
+     * Read from the local window.
+     */
     bt::Uint32 read(QSpan<std::byte> buf);
 
-    //! Is there something to read ?
+    /*!
+     * Is there something to read ?
+     */
     [[nodiscard]] bool isReadable() const
     {
         return bytes_available > 0;
     }
 
-    //! The amount of bytes available
+    /*!
+     * The amount of bytes available.
+     */
     [[nodiscard]] bt::Uint32 bytesAvailable() const
     {
         return bytes_available;
     }
 
-    //! Get the number of selective ack bits needed when sending a packet
+    /*!
+     * Get the number of selective ack bits needed when sending a packet.
+     */
     [[nodiscard]] bt::Uint32 selectiveAckBits() const;
 
-    //! Fill a SelectiveAck structure
+    /*!
+     * Fill a SelectiveAck structure.
+     */
     void fillSelectiveAck(SelectiveAck *sack);
 
 private:

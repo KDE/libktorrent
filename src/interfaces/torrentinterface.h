@@ -126,13 +126,17 @@ public:
     TorrentInterface();
     ~TorrentInterface() override;
 
-    //! Set the URL which the torrent was loaded from
+    /*!
+     * Set the URL which the torrent was loaded from.
+     */
     void setLoadUrl(const QUrl &u)
     {
         url = u;
     }
 
-    //! Get the URL which the torrent was loaded from
+    /*!
+     * Get the URL which the torrent was loaded from.
+     */
     [[nodiscard]] QUrl loadUrl() const
     {
         return url;
@@ -176,7 +180,9 @@ public:
      */
     virtual void scrapeTracker() = 0;
 
-    //! Get the torrent's statistics
+    /*!
+     * Get the torrent's statistics.
+     */
     [[nodiscard]] const TorrentStats &getStats() const
     {
         return stats;
@@ -189,7 +195,9 @@ public:
      **/
     [[nodiscard]] virtual bool readyForPreview() const = 0;
 
-    //! See if this is a single file torrent and a multimedia files
+    /*!
+     * See if this is a single file torrent and a multimedia files.
+     */
     [[nodiscard]] virtual bool isMultimedia() const = 0;
 
     /*!
@@ -198,7 +206,9 @@ public:
      */
     [[nodiscard]] virtual QString getTorDir() const = 0;
 
-    //! Get the data directory of this torrent
+    /*!
+     * Get the data directory of this torrent.
+     */
     [[nodiscard]] virtual QString getDataDir() const = 0;
 
     /*!
@@ -279,10 +289,14 @@ public:
      */
     [[nodiscard]] virtual const bt::BitSet &onlySeedChunksBitSet() const = 0;
 
-    //! Set the monitor
+    /*!
+     * Set the monitor.
+     */
     virtual void setMonitor(MonitorInterface *tmo) = 0;
 
-    //! Get the number of files in a multifile torrent (0 if we do not have a multifile torrent)
+    /*!
+     * Get the number of files in a multifile torrent (0 if we do not have a multifile torrent).
+     */
     [[nodiscard]] virtual Uint32 getNumFiles() const = 0;
 
     /*!
@@ -317,37 +331,59 @@ public:
     */
     virtual TorrentFileStream::Ptr createTorrentFileStream(bt::Uint32 index, bool streaming_mode, QObject *parent) = 0;
 
-    //! Get a pointer to TrackersList object
+    /*!
+     * Get a pointer to TrackersList object.
+     */
     virtual TrackersList *getTrackersList() = 0;
 
-    //! Get a pointer to TrackersList object
+    /*!
+     * Get a pointer to TrackersList object.
+     */
     [[nodiscard]] virtual const TrackersList *getTrackersList() const = 0;
 
-    //! Get the torrent queue number. Zero if not in queue
+    /*!
+     * Get the torrent queue number. Zero if not in queue.
+     */
     [[nodiscard]] virtual int getPriority() const = 0;
 
-    //! Set the torrent queue number.
+    /*!
+     * Set the torrent queue number.
+     */
     virtual void setPriority(int p) = 0;
 
-    //! Set the max share ratio
+    /*!
+     * Set the max share ratio.
+     */
     virtual void setMaxShareRatio(float ratio) = 0;
 
-    //! Get the max share ratio
+    /*!
+     * Get the max share ratio.
+     */
     [[nodiscard]] virtual float getMaxShareRatio() const = 0;
 
-    //! Set the max seed time in hours (0 is no limit)
+    /*!
+     * Set the max seed time in hours (0 is no limit).
+     */
     virtual void setMaxSeedTime(float hours) = 0;
 
-    //! Get the max seed time
+    /*!
+     * Get the max seed time.
+     */
     [[nodiscard]] virtual float getMaxSeedTime() const = 0;
 
-    //! Get the comments
+    /*!
+     * Get the comments.
+     */
     [[nodiscard]] virtual QString getComments() const = 0;
 
-    //! Update the status
+    /*!
+     * Update the status.
+     */
     virtual void updateStatus() = 0;
 
-    //! Is manual announce allowed?
+    /*!
+     * Is manual announce allowed?
+     */
     virtual bool announceAllowed() = 0;
 
     /*!
@@ -388,10 +424,14 @@ public:
      */
     virtual void dndMissingFiles() = 0;
 
-    //! Get the number of initial DHT nodes
+    /*!
+     * Get the number of initial DHT nodes.
+     */
     [[nodiscard]] virtual Uint32 getNumDHTNodes() const = 0;
 
-    //! Get a DHT node
+    /*!
+     * Get a DHT node.
+     */
     [[nodiscard]] virtual const DHTNode &getDHTNode(Uint32 i) const = 0;
 
     /*! Delete the data files of the torrent,
@@ -399,16 +439,24 @@ public:
      */
     virtual void deleteDataFiles() = 0;
 
-    //! Checks if a seeding torrent has reached its maximum share ratio
+    /*!
+     * Checks if a seeding torrent has reached its maximum share ratio.
+     */
     virtual bool overMaxRatio() = 0;
 
-    //! Checks if a seeding torrent has reached it's max seed timery / will be ret
+    /*!
+     * Checks if a seeding torrent has reached it's max seed timery / will be ret.
+     */
     virtual bool overMaxSeedTime() = 0;
 
-    //! Handle an error
+    /*!
+     * Handle an error.
+     */
     virtual void handleError(const QString &err) = 0;
 
-    //! Get the info_hash.
+    /*!
+     * Get the info_hash.
+     */
     [[nodiscard]] virtual const bt::SHA1Hash &getInfoHash() const = 0;
 
     /*!
@@ -423,70 +471,108 @@ public:
      */
     virtual void removePeerSource(PeerSource *ps) = 0;
 
-    //! Is a feature enabled
+    /*!
+     * Is a feature enabled.
+     */
     virtual bool isFeatureEnabled(TorrentFeature tf) = 0;
 
-    //! Disable or enable a feature
+    /*!
+     * Disable or enable a feature.
+     */
     virtual void setFeatureEnabled(TorrentFeature tf, bool on) = 0;
 
-    //! Get our PeerID
+    /*!
+     * Get our PeerID.
+     */
     [[nodiscard]] virtual const bt::PeerID &getOwnPeerID() const = 0;
 
-    //! Set the traffic limits for this torrent
+    /*!
+     * Set the traffic limits for this torrent.
+     */
     virtual void setTrafficLimits(Uint32 up, Uint32 down) = 0;
 
-    //! Get the traffic limits
+    /*!
+     * Get the traffic limits.
+     */
     virtual void getTrafficLimits(Uint32 &up, Uint32 &down) = 0;
 
-    //! Set the assured speeds
+    /*!
+     * Set the assured speeds.
+     */
     virtual void setAssuredSpeeds(Uint32 up, Uint32 down) = 0;
 
-    //! Get the assured speeds
+    /*!
+     * Get the assured speeds.
+     */
     virtual void getAssuredSpeeds(Uint32 &up, Uint32 &down) = 0;
 
-    //! Check if there is enough diskspace available for this torrent
+    /*!
+     * Check if there is enough diskspace available for this torrent.
+     */
     virtual bool checkDiskSpace(bool emit_sig = true) = 0;
 
-    //! Get the number of webseeds
+    /*!
+     * Get the number of webseeds.
+     */
     [[nodiscard]] virtual Uint32 getNumWebSeeds() const = 0;
 
-    //! Get a webseed (returns 0 if index is invalid)
+    /*!
+     * Get a webseed (returns 0 if index is invalid).
+     */
     [[nodiscard]] virtual const WebSeedInterface *getWebSeed(Uint32 i) const = 0;
 
-    //! Get a webseed (returns 0 if index is invalid)
+    /*!
+     * Get a webseed (returns 0 if index is invalid).
+     */
     virtual WebSeedInterface *getWebSeed(Uint32 i) = 0;
 
-    //! Add a webseed (return false, if there is already a webseed with the same url)
+    /*!
+     * Add a webseed (return false, if there is already a webseed with the same url).
+     */
     virtual bool addWebSeed(const QUrl &url) = 0;
 
-    //! Remove a webseed (only user created ones can be removed)
+    /*!
+     * Remove a webseed (only user created ones can be removed).
+     */
     virtual bool removeWebSeed(const QUrl &url) = 0;
 
-    //! Mark all existing files as downloaded (
+    /*!
+     * Mark all existing files as downloaded (.
+     */
     virtual void markExistingFilesAsDownloaded() = 0;
 
-    //! Set the user modified file or toplevel directory name
+    /*!
+     * Set the user modified file or toplevel directory name.
+     */
     virtual void setUserModifiedFileName(const QString &n)
     {
         user_modified_name = n;
     }
 
-    //! Gets the user modified file or toplevel directory name
+    /*!
+     * Gets the user modified file or toplevel directory name.
+     */
     [[nodiscard]] QString getUserModifiedFileName() const
     {
         return user_modified_name.isEmpty() ? stats.torrent_name : user_modified_name;
     }
 
-    //! Set the displayed name
+    /*!
+     * Set the displayed name.
+     */
     virtual void setDisplayName(const QString &n) = 0;
 
-    //! Gets the displayed name
+    /*!
+     * Gets the displayed name.
+     */
     [[nodiscard]] QString getDisplayName() const
     {
         return display_name.isEmpty() ? stats.torrent_name : display_name;
     }
 
-    //! Set whether the QM can start a torrent.
+    /*!
+     * Set whether the QM can start a torrent.
+     */
     virtual void setAllowedToStart(bool on) = 0;
 
     /*!
@@ -503,13 +589,19 @@ public:
      */
     virtual void setQueued(bool queued) = 0;
 
-    //! Get the JobQueue of the torrent
+    /*!
+     * Get the JobQueue of the torrent.
+     */
     [[nodiscard]] virtual const JobQueue *getJobQueue() const = 0;
 
-    //! Set the ChunkSelector to use (nullptr resets to the default ChunkSelector)
+    /*!
+     * Set the ChunkSelector to use (nullptr resets to the default ChunkSelector).
+     */
     virtual void setChunkSelector(std::unique_ptr<ChunkSelectorInterface> csel) = 0;
 
-    //! After some network down time, the network is back up
+    /*!
+     * After some network down time, the network is back up.
+     */
     virtual void networkUp() = 0;
 
     /*!

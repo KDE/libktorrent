@@ -24,7 +24,9 @@ public:
     KTCLI(int argc, char **argv);
     ~KTCLI() override;
 
-    //! Start downloading
+    /*!
+     * Start downloading.
+     */
     bool start();
 
 private:

@@ -81,7 +81,9 @@ public:
      */
     void open(const QString &path, Uint64 size);
 
-    //! Change the path of the file
+    /*!
+     * Change the path of the file.
+     */
     void changePath(const QString &npath);
 
     /*!
@@ -125,7 +127,9 @@ public:
      */
     void preallocate(PreallocationThread *prealloc);
 
-    //! Get the number of bytes this cache file is taking up
+    /*!
+     * Get the number of bytes this cache file is taking up.
+     */
     Uint64 diskUsage();
 
     using Ptr = QSharedPointer<CacheFile>;

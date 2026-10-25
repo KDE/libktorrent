@@ -76,55 +76,79 @@ public:
      */
     void setGroupIDs(Uint32 up, Uint32 down);
 
-    //! Get the number of webseeds
+    /*!
+     * Get the number of webseeds.
+     */
     [[nodiscard]] Uint32 getNumWebSeeds() const
     {
         return webseeds.count();
     }
 
-    //! Get a webseed
+    /*!
+     * Get a webseed.
+     */
     [[nodiscard]] const WebSeed *getWebSeed(Uint32 i) const
     {
         return i < (Uint32)webseeds.count() ? webseeds[i] : nullptr;
     }
 
-    //! Get a webseed
+    /*!
+     * Get a webseed.
+     */
     WebSeed *getWebSeed(Uint32 i)
     {
         return i < (Uint32)webseeds.count() ? webseeds[i] : nullptr;
     }
 
-    //! Add a webseed
+    /*!
+     * Add a webseed.
+     */
     WebSeed *addWebSeed(const QUrl &url);
 
-    //! Remove a webseed
+    /*!
+     * Remove a webseed.
+     */
     bool removeWebSeed(const QUrl &url);
 
-    //! Remove all webseeds
+    /*!
+     * Remove all webseeds.
+     */
     void removeAllWebSeeds();
 
-    //! Save the user created webseeds
+    /*!
+     * Save the user created webseeds.
+     */
     void saveWebSeeds(const QString &file);
 
-    //! Add the user created webseeds
+    /*!
+     * Add the user created webseeds.
+     */
     void loadWebSeeds(const QString &file);
 
-    //! Get the number of bytes we have downloaded
+    /*!
+     * Get the number of bytes we have downloaded.
+     */
     [[nodiscard]] Uint64 bytesDownloaded() const
     {
         return bytes_downloaded + curr_chunks_downloaded;
     }
 
-    //! Get the current dowload rate
+    /*!
+     * Get the current dowload rate.
+     */
     [[nodiscard]] Uint32 downloadRate() const;
 
-    //! Get the number of chunks we are dowloading
+    /*!
+     * Get the number of chunks we are dowloading.
+     */
     [[nodiscard]] Uint32 numActiveDownloads() const
     {
         return current_chunks.count() + active_webseed_downloads;
     }
 
-    //! See if the download is finished.
+    /*!
+     * See if the download is finished.
+     */
     [[nodiscard]] bool isFinished() const;
 
     /*!
@@ -181,7 +205,9 @@ public:
      */
     [[nodiscard]] Uint32 numDownloadersForChunk(Uint32 chunk) const;
 
-    //! Are we in endgame mode
+    /*!
+     * Are we in endgame mode.
+     */
     [[nodiscard]] bool endgameMode() const;
 
     /*!
@@ -209,7 +235,9 @@ public:
      */
     void corrupted(Uint32 chunk);
 
-    //! Set the ChunkSelector to use (nullptr resets to the default ChunkSelector)
+    /*!
+     * Set the ChunkSelector to use (nullptr resets to the default ChunkSelector).
+     */
     void setChunkSelector(std::unique_ptr<ChunkSelectorInterface> csel);
 
     /*!
@@ -224,7 +252,9 @@ public:
      */
     void removePieceDownloader(PieceDownloader *peer);
 
-    //! Enable or disable the use of webseeds
+    /*!
+     * Enable or disable the use of webseeds.
+     */
     static void setUseWebSeeds(bool on);
 public Q_SLOTS:
     /*!

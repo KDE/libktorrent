@@ -44,14 +44,18 @@ public:
         return peer_id;
     }
 
-    //! See if the authentication is successful
+    /*!
+     * See if the authentication is successful.
+     */
     [[nodiscard]] bool isSuccessful() const
     {
         return success;
     }
 
 public Q_SLOTS:
-    //! Stop the authentication
+    /*!
+     * Stop the authentication.
+     */
     void stop();
 
 protected Q_SLOTS:

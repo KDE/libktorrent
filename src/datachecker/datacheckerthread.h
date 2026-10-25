@@ -37,19 +37,25 @@ public:
 
     void run() override;
 
-    //! Get the data checker
+    /*!
+     * Get the data checker.
+     */
     DataChecker *getDataChecker()
     {
         return dc.get();
     }
 
-    //! Are we still running
+    /*!
+     * Are we still running.
+     */
     [[nodiscard]] bool isRunning() const
     {
         return running;
     }
 
-    //! Get the error (if any occurred)
+    /*!
+     * Get the error (if any occurred).
+     */
     [[nodiscard]] QString getError() const
     {
         return error;

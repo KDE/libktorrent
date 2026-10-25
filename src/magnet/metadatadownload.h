@@ -27,7 +27,9 @@ public:
     MetadataDownload(UTMetaData *ext, Uint32 size);
     ~MetadataDownload();
 
-    //! A reject of a piece was received
+    /*!
+     * A reject of a piece was received.
+     */
     void reject(Uint32 piece);
 
     /*!
@@ -36,7 +38,9 @@ public:
     */
     bool data(Uint32 piece, QByteArrayView piece_data);
 
-    //! Get the result
+    /*!
+     * Get the result.
+     */
     [[nodiscard]] const QByteArray &result() const
     {
         return metadata;

@@ -23,13 +23,19 @@ public:
     DecompressThread(const QString &file, const QString &dest_file);
     ~DecompressThread() override;
 
-    //! Run the decompression thread
+    /*!
+     * Run the decompression thread.
+     */
     void run() override;
 
-    //! Cancel the thread, things should be cleaned up properly
+    /*!
+     * Cancel the thread, things should be cleaned up properly.
+     */
     void cancel();
 
-    //! Get the error which happened (0 means no error)
+    /*!
+     * Get the error which happened (0 means no error).
+     */
     [[nodiscard]] int error() const
     {
         return err;

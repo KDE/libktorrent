@@ -57,13 +57,17 @@ public:
      */
     static Address fromCompactIPv6(QByteArrayView ba);
 
-    //! Get the port number
+    /*!
+     * Get the port number.
+     */
     [[nodiscard]] bt::Uint16 port() const
     {
         return port_number;
     }
 
-    //! Set the port number
+    /*!
+     * Set the port number.
+     */
     void setPort(bt::Uint16 p)
     {
         port_number = p;
@@ -79,28 +83,42 @@ public:
      */
     void toSocketAddress(struct sockaddr_storage *ss, int &length, bool as_ipv6 = false) const;
 
-    //! Return the IP protocol version (4 or 6)
+    /*!
+     * Return the IP protocol version (4 or 6).
+     */
     [[nodiscard]] int ipVersion() const
     {
         return protocol() == QAbstractSocket::IPv4Protocol ? 4 : 6;
     }
 
-    //! Equality operator
+    /*!
+     * Equality operator.
+     */
     bool operator==(const net::Address &other) const;
 
-    //! Less then operator for putting net::Address in a map
+    /*!
+     * Less then operator for putting net::Address in a map.
+     */
     bool operator<(const net::Address &other) const;
 
-    //! Assignment operator
+    /*!
+     * Assignment operator.
+     */
     Address &operator=(const net::Address &other);
 
-    //! Assignment operator
+    /*!
+     * Assignment operator.
+     */
     Address &operator=(const struct sockaddr_storage &ss);
 
-    //! Is this a IPv4 mapped address into the IPv6 address space
+    /*!
+     * Is this a IPv4 mapped address into the IPv6 address space.
+     */
     [[nodiscard]] bool isIPv4Mapped() const;
 
-    //! Convert an IPv4 mapped IPv6 address to an IPv4 address
+    /*!
+     * Convert an IPv4 mapped IPv6 address to an IPv4 address.
+     */
     [[nodiscard]] Address convertIPv4Mapped() const;
 
     /*!

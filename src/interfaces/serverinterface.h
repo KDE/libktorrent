@@ -35,13 +35,17 @@ public:
      */
     virtual bool changePort(Uint16 port) = 0;
 
-    //! Set the port to use
+    /*!
+     * Set the port to use.
+     */
     static void setPort(Uint16 p)
     {
         port = p;
     }
 
-    //! Get the port in use
+    /*!
+     * Get the port in use.
+     */
     static Uint16 getPort()
     {
         return port;

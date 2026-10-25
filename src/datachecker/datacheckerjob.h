@@ -30,25 +30,33 @@ public:
         return CHECKING_DATA;
     }
 
-    //! Is this an automatic import
+    /*!
+     * Is this an automatic import.
+     */
     [[nodiscard]] bool isAutoImport() const
     {
         return auto_import;
     }
 
-    //! Was the job stopped
+    /*!
+     * Was the job stopped.
+     */
     [[nodiscard]] bool isStopped() const
     {
         return killed;
     }
 
-    //! Get the first chunk the datacheck was started from
+    /*!
+     * Get the first chunk the datacheck was started from.
+     */
     [[nodiscard]] bt::Uint32 firstChunk() const
     {
         return from;
     }
 
-    //! Get the last chunk of the datacheck
+    /*!
+     * Get the last chunk of the datacheck.
+     */
     [[nodiscard]] bt::Uint32 lastChunk() const
     {
         return to;

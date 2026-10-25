@@ -24,13 +24,17 @@ public:
     KIOAnnounceJob(const QUrl &url, const KIO::MetaData &md);
     ~KIOAnnounceJob() override;
 
-    //! Get the announce url
+    /*!
+     * Get the announce url.
+     */
     [[nodiscard]] QUrl announceUrl() const
     {
         return url;
     }
 
-    //! Get the reply data
+    /*!
+     * Get the reply data.
+     */
     [[nodiscard]] const QByteArray &replyData() const
     {
         return reply_data;

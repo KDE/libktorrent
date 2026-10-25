@@ -175,10 +175,14 @@ public:
      */
     void setFilter(unsigned int filter);
 
-    //! Lock the mutex of the log, should be called in Out()
+    /*!
+     * Lock the mutex of the log, should be called in Out().
+     */
     void lock();
 
-    //! Called by the auto log rotate job when it has finished
+    /*!
+     * Called by the auto log rotate job when it has finished.
+     */
     void logRotateDone();
 };
 
@@ -194,10 +198,14 @@ KTORRENT_EXPORT Log &Out(unsigned int arg = 0x00);
  * */
 KTORRENT_EXPORT void InitLog(const QString &file, bool rotate_logs = false, bool handle_qt_messages = true, bool to_stdout = false);
 
-//! Add a monitor to the global log
+/*!
+ * Add a monitor to the global log.
+ */
 KTORRENT_EXPORT void AddLogMonitor(LogMonitorInterface *m);
 
-//! Remove a monitor from the global log
+/*!
+ * Remove a monitor from the global log.
+ */
 KTORRENT_EXPORT void RemoveLogMonitor(LogMonitorInterface *m);
 }
 

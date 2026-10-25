@@ -33,13 +33,17 @@ public:
      */
     void addTask(Task *task);
 
-    //! Get the number of running tasks
+    /*!
+     * Get the number of running tasks.
+     */
     [[nodiscard]] bt::Uint32 getNumTasks() const
     {
         return num_active;
     }
 
-    //! Get the number of queued tasks
+    /*!
+     * Get the number of queued tasks.
+     */
     [[nodiscard]] bt::Uint32 getNumQueuedTasks() const
     {
         return queued.count();

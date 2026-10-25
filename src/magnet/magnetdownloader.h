@@ -43,13 +43,19 @@ public:
     */
     void update();
 
-    //! Is the magnet download running
+    /*!
+     * Is the magnet download running.
+     */
     bool running() const;
 
-    //! How many peers are we connected to
+    /*!
+     * How many peers are we connected to.
+     */
     Uint32 numPeers() const;
 
-    //! Get the MagnetLink
+    /*!
+     * Get the MagnetLink.
+     */
     const MagnetLink &magnetLink() const
     {
         return mlink;

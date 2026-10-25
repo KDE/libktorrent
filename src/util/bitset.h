@@ -60,7 +60,9 @@ public:
      */
     ~BitSet() = default;
 
-    //! See if the BitSet is null
+    /*!
+     * See if the BitSet is null.
+     */
     [[nodiscard]] bool isNull() const
     {
         return num_bits == 0;
@@ -79,7 +81,9 @@ public:
      */
     void set(Uint32 i, bool on);
 
-    //! Set all bits on or off
+    /*!
+     * Set all bits on or off.
+     */
     void setAll(bool on);
 
     [[nodiscard]] Uint32 getNumBytes() const
@@ -99,7 +103,9 @@ public:
         return data.data();
     }
 
-    //! Get the number of on bits
+    /*!
+     * Get the number of on bits.
+     */
     [[nodiscard]] Uint32 numOnBits() const
     {
         return num_on;
@@ -161,7 +167,9 @@ public:
      */
     BitSet operator-(const BitSet &bs) const;
 
-    //! Check if all bit are set to 1
+    /*!
+     * Check if all bit are set to 1.
+     */
     [[nodiscard]] bool allOn() const;
 
     /*!

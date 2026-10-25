@@ -50,11 +50,15 @@ public:
     */
     void run();
 
-    //! Shutdown the worker thread
+    /*!
+     * Shutdown the worker thread.
+     */
     static void shutdown();
 
 Q_SIGNALS:
-    //! Emitted when the resolution is complete
+    /*!
+     * Emitted when the resolution is complete.
+     */
     void resolved(const QString &host);
 
 private:
@@ -73,13 +77,19 @@ public:
     ReverseResolverThread();
     ~ReverseResolverThread() override;
 
-    //! Add a ReverseResolver to the todo list
+    /*!
+     * Add a ReverseResolver to the todo list.
+     */
     void add(ReverseResolver *rr);
 
-    //! Run the thread
+    /*!
+     * Run the thread.
+     */
     void run() override;
 
-    //! Stop the thread
+    /*!
+     * Stop the thread.
+     */
     void stop();
 
 private:

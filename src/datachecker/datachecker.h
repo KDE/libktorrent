@@ -50,7 +50,9 @@ public:
         return result;
     }
 
-    //! Stop an ongoing check
+    /*!
+     * Stop an ongoing check.
+     */
     void stop()
     {
         need_to_stop = true;

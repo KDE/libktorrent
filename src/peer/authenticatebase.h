@@ -35,46 +35,62 @@ public:
     AuthenticateBase(std::unique_ptr<mse::EncryptedPacketSocket> s);
     ~AuthenticateBase() override;
 
-    //! Set whether this is a local peer
+    /*!
+     * Set whether this is a local peer.
+     */
     void setLocal(bool loc)
     {
         local = loc;
     }
 
-    //! Is this a local peer
+    /*!
+     * Is this a local peer.
+     */
     [[nodiscard]] bool isLocal() const
     {
         return local;
     }
 
-    //! See if the authentication is finished
+    /*!
+     * See if the authentication is finished.
+     */
     [[nodiscard]] bool isFinished() const
     {
         return finished;
     }
 
-    //! Flags indicating which extensions are supported
+    /*!
+     * Flags indicating which extensions are supported.
+     */
     [[nodiscard]] Uint32 supportedExtensions() const
     {
         return ext_support;
     }
 
-    //! Take the socket, only if authentication has finished
+    /*!
+     * Take the socket, only if authentication has finished.
+     */
     std::unique_ptr<mse::EncryptedPacketSocket> takeSocket()
     {
         return finished ? std::move(sock) : nullptr;
     }
 
-    //! get the socket
+    /*!
+     * get the socket.
+     */
     [[nodiscard]] mse::EncryptedPacketSocket *getSocket() const
     {
         return sock.get();
     }
 
-    //! We can read from the socket
+    /*!
+     * We can read from the socket.
+     */
     virtual void onReadyRead();
 
-    //! We can write to the socket (used to detect a successful connection)
+    /*!
+     * We can write to the socket (used to detect a successful connection).
+     */
     virtual void onReadyWrite();
 
 protected:

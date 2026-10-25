@@ -30,16 +30,22 @@ public:
     Resource(ResourceManager *rman, const QString &group);
     virtual ~Resource();
 
-    //! Get the name of the group the resource is part of
+    /*!
+     * Get the name of the group the resource is part of.
+     */
     [[nodiscard]] QString groupName() const
     {
         return group;
     }
 
-    //! Called when the resource has been acquired
+    /*!
+     * Called when the resource has been acquired.
+     */
     virtual void acquired() = 0;
 
-    //! Release the Resource
+    /*!
+     * Release the Resource.
+     */
     void release();
 
     using Set = QSet<Resource *>;

@@ -31,7 +31,9 @@ public:
     DummyTorrentCreator();
     ~DummyTorrentCreator();
 
-    //! Set the tracker URL's (by default http://localhost:5000/announce is used)
+    /*!
+     * Set the tracker URL's (by default http://localhost:5000/announce is used).
+     */
     void setTrackers(const QStringList &urls)
     {
         trackers = urls;
@@ -51,13 +53,19 @@ public:
     */
     bool createMultiFileTorrent(const QMap<QString, bt::Uint64> &files, const QString &name);
 
-    //! Get the full path of the torrent file
+    /*!
+     * Get the full path of the torrent file.
+     */
     [[nodiscard]] QString torrentPath() const;
 
-    //! Get the full path of the single data file or toplevel directory (in case of multifile torrents)
+    /*!
+     * Get the full path of the single data file or toplevel directory (in case of multifile torrents).
+     */
     [[nodiscard]] QString dataPath() const;
 
-    //! Get the temp path used
+    /*!
+     * Get the temp path used.
+     */
     [[nodiscard]] QString tempPath() const
     {
         return tmpdir.path();

@@ -23,13 +23,19 @@ public:
     CompressThread(const QString &file);
     ~CompressThread() override;
 
-    //! Run the compression thread
+    /*!
+     * Run the compression thread.
+     */
     void run() override;
 
-    //! Cancel the thread, things should be cleaned up properly
+    /*!
+     * Cancel the thread, things should be cleaned up properly.
+     */
     void cancel();
 
-    //! Get the error which happened (0 means no error)
+    /*!
+     * Get the error which happened (0 means no error).
+     */
     [[nodiscard]] int error() const
     {
         return err;

@@ -100,85 +100,127 @@ public:
     Connection(bt::Uint16 recv_connection_id, Type type, const net::Address &remote, Transmitter *transmitter);
     ~Connection() override;
 
-    //! Turn on or off blocking mode
+    /*!
+     * Turn on or off blocking mode.
+     */
     void setBlocking(bool on)
     {
         blocking = on;
     }
 
-    //! Dump connection stats
+    /*!
+     * Dump connection stats.
+     */
     void dumpStats();
 
-    //! Start connecting (Type::OUTGOING only)
+    /*!
+     * Start connecting (Type::OUTGOING only).
+     */
     void startConnecting();
 
-    //! Get the connection stats
+    /*!
+     * Get the connection stats.
+     */
     const Stats &connectionStats() const
     {
         return stats;
     }
 
-    //! Handle a single packet
+    /*!
+     * Handle a single packet.
+     */
     ConnectionState handlePacket(const PacketParser &parser, std::unique_ptr<bt::Buffer> packet);
 
-    //! Get the remote address
+    /*!
+     * Get the remote address.
+     */
     const net::Address &remoteAddress() const
     {
         return stats.remote;
     }
 
-    //! Get the receive connection id
+    /*!
+     * Get the receive connection id.
+     */
     bt::Uint16 receiveConnectionID() const
     {
         return stats.recv_connection_id;
     }
 
-    //! Send some data, returns the amount of bytes sent (or -1 on error)
+    /*!
+     * Send some data, returns the amount of bytes sent (or -1 on error).
+     */
     int send(QByteArrayView data);
 
-    //! Read available data from local window, returns the amount of bytes read
+    /*!
+     * Read available data from local window, returns the amount of bytes read.
+     */
     int recv(QSpan<std::byte> buf);
 
-    //! Get the connection state
+    /*!
+     * Get the connection state.
+     */
     ConnectionState connectionState() const
     {
         return stats.state;
     }
 
-    //! Get the type of connection
+    /*!
+     * Get the type of connection.
+     */
     Type connectionType() const
     {
         return stats.type;
     }
 
-    //! Get the number of bytes available
+    /*!
+     * Get the number of bytes available.
+     */
     bt::Uint32 bytesAvailable() const;
 
-    //! Can we write to this socket
+    /*!
+     * Can we write to this socket.
+     */
     bool isWriteable() const;
 
-    //! Wait until the connectTo call fails or succeeds
+    /*!
+     * Wait until the connectTo call fails or succeeds.
+     */
     bool waitUntilConnected();
 
-    //! Wait until there is data ready or the socket is closed or a timeout occurs
+    /*!
+     * Wait until there is data ready or the socket is closed or a timeout occurs.
+     */
     bool waitForData(bt::Uint32 timeout = 0);
 
-    //! Close the socket
+    /*!
+     * Close the socket.
+     */
     void close();
 
-    //! Reset the connection
+    /*!
+     * Reset the connection.
+     */
     void reset();
 
-    //! Update the RTT time
+    /*!
+     * Update the RTT time.
+     */
     void updateRTT(const Header *hdr, bt::Uint32 packet_rtt, bt::Uint32 packet_size) override;
 
-    //! Retransmit a packet
+    /*!
+     * Retransmit a packet.
+     */
     void retransmit(PacketBuffer &packet, bt::Uint16 p_seq_nr) override;
 
-    //! Is all data sent
+    /*!
+     * Is all data sent.
+     */
     bool allDataSent() const;
 
-    //! Get the current timeout
+    /*!
+     * Get the current timeout.
+     */
     bt::Uint32 currentTimeout() const override
     {
         return stats.timeout;
@@ -187,13 +229,17 @@ public:
     using Ptr = QSharedPointer<Connection>;
     using WPtr = QWeakPointer<Connection>;
 
-    //! Set a weak pointer to self
+    /*!
+     * Set a weak pointer to self.
+     */
     void setWeakPointer(WPtr ptr)
     {
         self = ptr;
     }
 
-    //! Check if we haven't hit a timeout yet
+    /*!
+     * Check if we haven't hit a timeout yet.
+     */
     void checkTimeout(const TimeValue &now);
 
 private:
@@ -240,13 +286,19 @@ class KTORRENT_EXPORT Transmitter
 public:
     virtual ~Transmitter();
 
-    //! Send a packet of a connection
+    /*!
+     * Send a packet of a connection.
+     */
     virtual bool sendTo(Connection::Ptr conn, const PacketBuffer &packet) = 0;
 
-    //! Connection has become readable, writeable or both
+    /*!
+     * Connection has become readable, writeable or both.
+     */
     virtual void stateChanged(Connection::Ptr conn, bool readable, bool writeable) = 0;
 
-    //! Called when the connection is closed
+    /*!
+     * Called when the connection is closed.
+     */
     virtual void closed(Connection::Ptr conn) = 0;
 };
 

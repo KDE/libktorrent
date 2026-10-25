@@ -51,7 +51,9 @@ public:
      */
     virtual void saveFileMap() = 0;
 
-    //! Get the datadir
+    /*!
+     * Get the datadir.
+     */
     [[nodiscard]] QString getDataDir() const
     {
         return datadir;
@@ -131,7 +133,9 @@ public:
      */
     virtual void open() = 0;
 
-    //! Does nothing, can be overridden to be alerted of download status changes of a TorrentFile
+    /*!
+     * Does nothing, can be overridden to be alerted of download status changes of a TorrentFile.
+     */
     virtual void downloadStatusChanged(TorrentFile *, bool) { };
 
     /*!
@@ -140,7 +144,9 @@ public:
      */
     virtual void preparePreallocation(PreallocationThread *prealloc) = 0;
 
-    //! See if the download has existing files
+    /*!
+     * See if the download has existing files.
+     */
     [[nodiscard]] bool hasExistingFiles() const
     {
         return preexisting_files;
@@ -242,7 +248,9 @@ public:
      **/
     void loadMountPoints();
 
-    //! Is the storage mounted ?
+    /*!
+     * Is the storage mounted ?
+     */
     bool isStorageMounted(QStringList &missing);
 
 protected:
@@ -259,9 +267,13 @@ protected:
     bool preexisting_files;
     Uint32 mmap_failures;
 
-    //! Information about a piece data object
+    /*!
+     * Information about a piece data object.
+     */
     struct PieceDataInfo {
-        //! Ordering predicate by key
+        /*!
+         * Ordering predicate by key.
+         */
         struct OrderByKey {
             using is_transparent = void;
 
@@ -279,9 +291,13 @@ protected:
             }
         };
 
-        //! Pointer to the piece data object
+        /*!
+         * Pointer to the piece data object.
+         */
         PieceData::Ptr piece_data;
-        //! Lookup key that is comprised from the piece data offset and length
+        /*!
+         * Lookup key that is comprised from the piece data offset and length.
+         */
         Uint64 key;
 
         PieceDataInfo()
@@ -301,7 +317,9 @@ protected:
         {
         }
 
-        //! Creates a key value from piece offset and length
+        /*!
+         * Creates a key value from piece offset and length.
+         */
         static Uint64 makeKey(Uint32 off, Uint32 len) noexcept
         {
             return (static_cast<Uint64>(off) << 32u) | static_cast<Uint64>(len);

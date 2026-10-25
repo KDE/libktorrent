@@ -33,19 +33,25 @@ public:
     HttpConnection();
     ~HttpConnection() override;
 
-    //! Get the last http response code
+    /*!
+     * Get the last http response code.
+     */
     int responseCode() const
     {
         return response_code;
     }
 
-    //! Is this connection redirected
+    /*!
+     * Is this connection redirected.
+     */
     bool isRedirected() const
     {
         return redirected;
     }
 
-    //! Get the redirected url
+    /*!
+     * Get the redirected url.
+     */
     QUrl redirectedUrl() const
     {
         return redirected_url;
@@ -71,16 +77,24 @@ public:
      */
     void connectToProxy(const QString &proxy, Uint16 proxy_port);
 
-    //! Check if the connection is OK
+    /*!
+     * Check if the connection is OK.
+     */
     bool ok() const;
 
-    //! See if we are connected
+    /*!
+     * See if we are connected.
+     */
     bool connected() const;
 
-    //! Has the connection been closed
+    /*!
+     * Has the connection been closed.
+     */
     bool closed() const;
 
-    //! Ready to do another request
+    /*!
+     * Ready to do another request.
+     */
     bool ready() const;
 
     /*!
@@ -104,10 +118,14 @@ public:
      */
     bool getData(QByteArray &data);
 
-    //! Get the current download rate
+    /*!
+     * Get the current download rate.
+     */
     int getDownloadRate() const;
 
-    //! Get the status string
+    /*!
+     * Get the status string.
+     */
     const QString getStatusString() const;
 
 private:

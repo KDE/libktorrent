@@ -27,10 +27,14 @@ public:
     WakeUpPipe();
     ~WakeUpPipe() override;
 
-    //! Wake up the other socket
+    /*!
+     * Wake up the other socket.
+     */
     void wakeUp();
 
-    //! Read all the dummy data
+    /*!
+     * Read all the dummy data.
+     */
     void handleData() override;
 
     int fd() const override
@@ -40,7 +44,9 @@ public:
 
     void reset() override;
 
-    //! Have we been woken up
+    /*!
+     * Have we been woken up.
+     */
     bool wokenUp() const
     {
         return woken_up;

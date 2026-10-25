@@ -54,21 +54,29 @@ public:
     ChunkManager(Torrent &tor, const QString &tmpdir, const QString &datadir, bool custom_output_name, CacheFactory *fac);
     ~ChunkManager() override;
 
-    //! Get the torrent
+    /*!
+     * Get the torrent.
+     */
     [[nodiscard]] const Torrent &getTorrent() const
     {
         return tor;
     }
 
-    //! Get the data dir
+    /*!
+     * Get the data dir.
+     */
     [[nodiscard]] QString getDataDir() const;
 
-    //! Get the actual output path
+    /*!
+     * Get the actual output path.
+     */
     [[nodiscard]] QString getOutputPath() const;
 
     void changeOutputPath(const QString &output_path);
 
-    //! Remove obsolete chunks
+    /*!
+     * Remove obsolete chunks.
+     */
     void checkMemoryUsage();
 
     /*!
@@ -229,13 +237,17 @@ public:
         return only_seed_chunks;
     }
 
-    //! Get the number of chunks into the file.
+    /*!
+     * Get the number of chunks into the file.
+     */
     [[nodiscard]] Uint32 getNumChunks() const
     {
         return tor.getNumChunks();
     }
 
-    //! Print memory usage to log file
+    /*!
+     * Print memory usage to log file.
+     */
     void debugPrintMemUsage();
 
     /*!
@@ -277,40 +289,64 @@ public:
      */
     void dataChecked(const BitSet &ok_chunks, Uint32 from, Uint32 to);
 
-    //! Test if the torrent has existing files, only works the first time a torrent is loaded
+    /*!
+     * Test if the torrent has existing files, only works the first time a torrent is loaded.
+     */
     [[nodiscard]] bool hasExistingFiles() const;
 
-    //! Mark all existing files as downloaded
+    /*!
+     * Mark all existing files as downloaded.
+     */
     void markExistingFilesAsDownloaded();
 
-    //! Recreates missing files
+    /*!
+     * Recreates missing files.
+     */
     void recreateMissingFiles();
 
-    //! Set missing files as do not download
+    /*!
+     * Set missing files as do not download.
+     */
     void dndMissingFiles();
 
-    //! Delete all data files
+    /*!
+     * Delete all data files.
+     */
     Job *deleteDataFiles();
 
-    //! Are all not deselected chunks downloaded.
+    /*!
+     * Are all not deselected chunks downloaded.
+     */
     [[nodiscard]] bool completed() const;
 
-    //! Set the preview sizes for audio and video files
+    /*!
+     * Set the preview sizes for audio and video files.
+     */
     static void setPreviewSizes(Uint32 audio, Uint32 video);
 
-    //! Get the current disk usage of all the files in this torrent
+    /*!
+     * Get the current disk usage of all the files in this torrent.
+     */
     Uint64 diskUsage();
 
-    //! Get the size in chunks of the preview range of a file of the torrent
+    /*!
+     * Get the size in chunks of the preview range of a file of the torrent.
+     */
     [[nodiscard]] Uint32 previewChunkRangeSize(const TorrentFile &tf) const;
 
-    //! Get the size in chunks of the preview range for a single file torrent
+    /*!
+     * Get the size in chunks of the preview range for a single file torrent.
+     */
     [[nodiscard]] Uint32 previewChunkRangeSize() const;
 
-    //! The download priority of a file has changed
+    /*!
+     * The download priority of a file has changed.
+     */
     void downloadPriorityChanged(TorrentFile *tf, Priority newpriority, Priority oldpriority);
 
-    //! Is the storage mounted ?
+    /*!
+     * Is the storage mounted ?
+     */
     bool isStorageMounted(QStringList &missing);
 
     void saveFileMap();

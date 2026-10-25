@@ -62,7 +62,9 @@ public:
      */
     void reset();
 
-    //! Get the number of chunks there are
+    /*!
+     * Get the number of chunks there are.
+     */
     [[nodiscard]] Uint32 getNumChunks() const
     {
         return cnt.size();

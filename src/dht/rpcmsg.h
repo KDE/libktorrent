@@ -118,55 +118,73 @@ public:
      **/
     virtual void parse(bt::BDictNode *dict);
 
-    //! Set the origin (i.e. where the message came from)
+    /*!
+     * Set the origin (i.e. where the message came from).
+     */
     void setOrigin(const net::Address &o)
     {
         origin = o;
     }
 
-    //! Get the origin
+    /*!
+     * Get the origin.
+     */
     [[nodiscard]] const net::Address &getOrigin() const
     {
         return origin;
     }
 
-    //! Set the origin (i.e. where the message came from)
+    /*!
+     * Set the origin (i.e. where the message came from).
+     */
     void setDestination(const net::Address &o)
     {
         origin = o;
     }
 
-    //! Get the origin
+    /*!
+     * Get the origin.
+     */
     [[nodiscard]] const net::Address &getDestination() const
     {
         return origin;
     }
 
-    //! Get the MTID
+    /*!
+     * Get the MTID.
+     */
     [[nodiscard]] const QByteArray &getMTID() const
     {
         return mtid;
     }
 
-    //! Set the MTID
+    /*!
+     * Set the MTID.
+     */
     void setMTID(const QByteArray &m)
     {
         mtid = m;
     }
 
-    //! Get the id of the sender
+    /*!
+     * Get the id of the sender.
+     */
     [[nodiscard]] const Key &getID() const
     {
         return id;
     }
 
-    //! Get the type of the message
+    /*!
+     * Get the type of the message.
+     */
     [[nodiscard]] Type getType() const
     {
         return type;
     }
 
-    //! Get the message it's method
+    /*!
+     * Get the message it's method.
+     */
     [[nodiscard]] Method getMethod() const
     {
         return method;

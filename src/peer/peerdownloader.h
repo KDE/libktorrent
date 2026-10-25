@@ -39,10 +39,14 @@ struct TimeStampedRequest {
      */
     TimeStampedRequest(const TimeStampedRequest &t);
 
-    //! Destructor
+    /*!
+     * Destructor.
+     */
     ~TimeStampedRequest();
 
-    //! Smaller then operator, uses timestamps to compare
+    /*!
+     * Smaller then operator, uses timestamps to compare.
+     */
     bool operator<(const TimeStampedRequest &t) const
     {
         return time_stamp < t.time_stamp;
@@ -94,17 +98,25 @@ public:
     PeerDownloader(Peer *peer, Uint32 chunk_size);
     ~PeerDownloader() override;
 
-    //! See if we can add a request to the wait_queue
+    /*!
+     * See if we can add a request to the wait_queue.
+     */
     [[nodiscard]] bool canAddRequest() const override;
     [[nodiscard]] bool canDownloadChunk() const override;
 
-    //! Get the number of active requests
+    /*!
+     * Get the number of active requests.
+     */
     [[nodiscard]] Uint32 getNumRequests() const;
 
-    //! Is the Peer choked.
+    /*!
+     * Is the Peer choked.
+     */
     [[nodiscard]] bool isChoked() const override;
 
-    //! Is NULL (is the Peer set)
+    /*!
+     * Is NULL (is the Peer set).
+     */
     [[nodiscard]] bool isNull() const
     {
         return peer == nullptr;
@@ -116,7 +128,9 @@ public:
      */
     [[nodiscard]] bool hasChunk(Uint32 idx) const override;
 
-    //! Get the Peer
+    /*!
+     * Get the Peer.
+     */
     [[nodiscard]] const Peer *getPeer() const
     {
         return peer;
@@ -127,7 +141,9 @@ public:
      */
     void checkTimeouts() override;
 
-    //! Get the maximum number of chunk downloads
+    /*!
+     * Get the maximum number of chunk downloads.
+     */
     [[nodiscard]] Uint32 getMaxChunkDownloads() const;
 
     /*!

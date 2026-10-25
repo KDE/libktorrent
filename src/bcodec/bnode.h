@@ -61,7 +61,9 @@ public:
     BNode(Type type, QByteArrayView data = QByteArrayView());
     virtual ~BNode();
 
-    //! Get the type of node
+    /*!
+     * Get the type of node.
+     */
     [[nodiscard]] Type getType() const
     {
         return type;
@@ -75,13 +77,17 @@ public:
         this->data = data;
     }
 
-    //! Get the bencoded data for this node.
+    /*!
+     * Get the bencoded data for this node.
+     */
     [[nodiscard]] QByteArrayView getBytes() const
     {
         return data;
     }
 
-    //! Print some debugging info
+    /*!
+     * Print some debugging info.
+     */
     virtual void printDebugInfo() = 0;
 
 private:
@@ -136,7 +142,9 @@ public:
 
     Q_DISABLE_COPY(BDictNode)
 
-    //! Get a list of keys
+    /*!
+     * Get a list of keys.
+     */
     [[nodiscard]] QList<QByteArray> keys() const;
 
     /*!
@@ -174,13 +182,19 @@ public:
      */
     BValueNode *getValue(QByteArrayView key);
 
-    //! Same as getValue, except directly returns an int, if something goes wrong, an error will be thrown
+    /*!
+     * Same as getValue, except directly returns an int, if something goes wrong, an error will be thrown.
+     */
     int getInt(QByteArrayView key);
 
-    //! Same as getValue, except directly returns a qint64, if something goes wrong, an error will be thrown
+    /*!
+     * Same as getValue, except directly returns a qint64, if something goes wrong, an error will be thrown.
+     */
     qint64 getInt64(QByteArrayView key);
 
-    //! Same as getValue, except directly returns a QString, if something goes wrong, an error will be thrown
+    /*!
+     * Same as getValue, except directly returns a QString, if something goes wrong, an error will be thrown.
+     */
     QString getString(QByteArrayView key);
 
     /*!
@@ -221,7 +235,9 @@ public:
 
     void printDebugInfo() override;
 
-    //! Get the number of nodes in the list.
+    /*!
+     * Get the number of nodes in the list.
+     */
     [[nodiscard]] Uint32 getNumChildren() const
     {
         return children.size();
@@ -261,13 +277,19 @@ public:
      */
     BValueNode *getValue(Uint32 idx);
 
-    //! Same as getValue, except directly returns an int, if something goes wrong, an error will be thrown
+    /*!
+     * Same as getValue, except directly returns an int, if something goes wrong, an error will be thrown.
+     */
     int getInt(Uint32 idx);
 
-    //! Same as getValue, except directly returns a qint64, if something goes wrong, an error will be thrown
+    /*!
+     * Same as getValue, except directly returns a qint64, if something goes wrong, an error will be thrown.
+     */
     qint64 getInt64(Uint32 idx);
 
-    //! Same as getValue, except directly returns a QString, if something goes wrong, an error will be thrown
+    /*!
+     * Same as getValue, except directly returns a QString, if something goes wrong, an error will be thrown.
+     */
     QString getString(Uint32 idx);
 
     /**

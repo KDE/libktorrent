@@ -27,7 +27,9 @@ public:
     void encode(QByteArray &arr) const override;
     void parse(bt::BDictNode *dict) override;
 
-    //! Get the error message
+    /*!
+     * Get the error message.
+     */
     [[nodiscard]] const QString &message() const
     {
         return msg;

@@ -29,22 +29,30 @@ public:
     Pipe();
     ~Pipe();
 
-    //! Get the reader socket
+    /*!
+     * Get the reader socket.
+     */
     [[nodiscard]] int readerSocket() const
     {
         return reader;
     }
 
-    //! Get the writer socket
+    /*!
+     * Get the writer socket.
+     */
     [[nodiscard]] int writerSocket() const
     {
         return writer;
     }
 
-    //! Write data to the write end of the pipe
+    /*!
+     * Write data to the write end of the pipe.
+     */
     int write(QByteArrayView data);
 
-    //! Read data from the read end of the pipe
+    /*!
+     * Read data from the read end of the pipe.
+     */
     int read(QSpan<std::byte> buffer);
 
 protected:

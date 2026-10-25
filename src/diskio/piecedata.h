@@ -36,52 +36,70 @@ public:
     PieceData(Chunk *chunk, Uint32 off, Uint32 len, Uint8 *ptr, CacheFile::Ptr cache_file, bool read_only);
     ~PieceData() override;
 
-    //! Unload the piece
+    /*!
+     * Unload the piece.
+     */
     void unload();
 
-    //! Is it a mapped into memory
+    /*!
+     * Is it a mapped into memory.
+     */
     bool mapped() const
     {
         return cache_file != nullptr;
     }
 
-    //! Is this writeable
+    /*!
+     * Is this writeable.
+     */
     bool writeable() const
     {
         return !read_only;
     }
 
-    //! Get the offset of the piece in the chunk
+    /*!
+     * Get the offset of the piece in the chunk.
+     */
     Uint32 offset() const
     {
         return off;
     }
 
-    //! Get the length of the piece
+    /*!
+     * Get the length of the piece.
+     */
     Uint32 length() const
     {
         return len;
     }
 
-    //! Get a pointer to the data
+    /*!
+     * Get a pointer to the data.
+     */
     Uint8 *data()
     {
         return ptr;
     }
 
-    //! Check if the data pointer is OK
+    /*!
+     * Check if the data pointer is OK.
+     */
     bool ok() const
     {
         return ptr != nullptr;
     }
 
-    //! Set the data pointer
+    /*!
+     * Set the data pointer.
+     */
     void setData(Uint8 *p)
     {
         ptr = p;
     }
 
-    //! Get the parent chunk of the piece
+    /*!
+     * Get the parent chunk of the piece.
+     */
     Chunk *parentChunk()
     {
         return chunk;
@@ -143,7 +161,9 @@ public:
 
     using Ptr = QExplicitlySharedDataPointer<PieceData>;
 
-    //! Is the piece in use by somebody else then the cache
+    /*!
+     * Is the piece in use by somebody else then the cache.
+     */
     bool inUse() const
     {
         return ref > 1;

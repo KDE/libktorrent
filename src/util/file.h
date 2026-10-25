@@ -138,13 +138,19 @@ public:
      */
     Uint64 seek(SeekPos from, Int64 num);
 
-    //! Check to see if we are at the end of the file.
+    /*!
+     * Check to see if we are at the end of the file.
+     */
     [[nodiscard]] bool eof() const;
 
-    //! Get the current position in the file.
+    /*!
+     * Get the current position in the file.
+     */
     [[nodiscard]] Uint64 tell() const;
 
-    //! Get the error string.
+    /*!
+     * Get the error string.
+     */
     [[nodiscard]] QString errorString() const;
 };
 

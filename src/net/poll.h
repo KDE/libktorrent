@@ -35,13 +35,19 @@ public:
     {
     }
 
-    //! Get the filedescriptor to poll
+    /*!
+     * Get the filedescriptor to poll.
+     */
     [[nodiscard]] virtual int fd() const = 0;
 
-    //! Handle data
+    /*!
+     * Handle data.
+     */
     virtual void handleData() = 0;
 
-    //! Reset the client called after poll finishes
+    /*!
+     * Reset the client called after poll finishes.
+     */
     virtual void reset() = 0;
 
     using Ptr = QSharedPointer<PollClient>;
@@ -73,19 +79,29 @@ public:
         OUTPUT,
     };
 
-    //! Add a file descriptor to the poll (returns the index of it)
+    /*!
+     * Add a file descriptor to the poll (returns the index of it).
+     */
     int add(int fd, Mode mode);
 
-    //! Add a poll client
+    /*!
+     * Add a poll client.
+     */
     int add(PollClient::Ptr pc);
 
-    //! Poll all sockets
+    /*!
+     * Poll all sockets.
+     */
     int poll(int timeout = -1);
 
-    //! Check if a socket at an index is read
+    /*!
+     * Check if a socket at an index is read.
+     */
     [[nodiscard]] bool ready(int index, Mode mode) const;
 
-    //! Reset the poll
+    /*!
+     * Reset the poll.
+     */
     void reset();
 
 private:

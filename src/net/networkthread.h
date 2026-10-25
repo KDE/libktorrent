@@ -81,13 +81,17 @@ public:
      */
     virtual bool doGroup(SocketGroup *g, bt::Uint32 &allowance, bt::TimeStamp now) = 0;
 
-    //! Stop before the next update
+    /*!
+     * Stop before the next update.
+     */
     void stop()
     {
         running = false;
     }
 
-    //! Is the thread running
+    /*!
+     * Is the thread running.
+     */
     [[nodiscard]] bool isRunning() const
     {
         return running;

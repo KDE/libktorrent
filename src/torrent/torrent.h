@@ -107,49 +107,65 @@ public:
 
     void debugPrintInfo();
 
-    //! Return the comments in the torrent
+    /*!
+     * Return the comments in the torrent.
+     */
     QString getComments() const
     {
         return comments;
     }
 
-    //! Get the number of chunks.
+    /*!
+     * Get the number of chunks.
+     */
     Uint32 getNumChunks() const
     {
         return hash_pieces.size();
     }
 
-    //! Get the size of a chunk.
+    /*!
+     * Get the size of a chunk.
+     */
     Uint64 getChunkSize() const
     {
         return chunk_size;
     }
 
-    //! Get the size of the last chunk
+    /*!
+     * Get the size of the last chunk.
+     */
     Uint64 getLastChunkSize() const
     {
         return last_chunk_size;
     }
 
-    //! Get the info_hash.
+    /*!
+     * Get the info_hash.
+     */
     const SHA1Hash &getInfoHash() const
     {
         return info_hash;
     }
 
-    //! Get our peer_id.
+    /*!
+     * Get our peer_id.
+     */
     const PeerID &getPeerID() const
     {
         return peer_id;
     }
 
-    //! Get the file size in number of bytes.
+    /*!
+     * Get the file size in number of bytes.
+     */
     Uint64 getTotalSize() const
     {
         return total_size;
     }
 
-    //! Get the suggested name.
+    /*!
+     * Get the suggested name.
+     */
     QString getNameSuggestion() const
     {
         return name_suggestion;
@@ -164,7 +180,9 @@ public:
      */
     bool verifyHash(const SHA1Hash &h, Uint32 index);
 
-    //! Get the number of tracker URL's
+    /*!
+     * Get the number of tracker URL's.
+     */
     unsigned int getNumTrackerURLs() const;
 
     /*!
@@ -175,14 +193,20 @@ public:
      */
     const SHA1Hash &getHash(Uint32 idx) const;
 
-    //! See if we have a multi file torrent.
+    /*!
+     * See if we have a multi file torrent.
+     */
     bool isMultiFile() const
     {
         return files.count() > 0;
     }
 
-    //! Get the number of files in a multi file torrent.
-    //! If we have a single file torrent, this will return 0.
+    /*!
+     * Get the number of files in a multi file torrent.
+     */
+    /*!
+     * If we have a single file torrent, this will return 0.
+     */
     Uint32 getNumFiles() const
     {
         return files.count();
@@ -227,31 +251,41 @@ public:
      **/
     bool isMultimedia() const;
 
-    //! See if the torrent is private
+    /*!
+     * See if the torrent is private.
+     */
     bool isPrivate() const
     {
         return priv_torrent;
     }
 
-    //! Is the torrent loaded
+    /*!
+     * Is the torrent loaded.
+     */
     bool isLoaded() const
     {
         return loaded;
     }
 
-    //! Gets a pointer to AnnounceList
+    /*!
+     * Gets a pointer to AnnounceList.
+     */
     const TrackerTier *getTrackerList() const
     {
         return trackers.get();
     }
 
-    //! Get the number of initial DHT nodes
+    /*!
+     * Get the number of initial DHT nodes.
+     */
     Uint32 getNumDHTNodes() const
     {
         return nodes.count();
     }
 
-    //! Get a DHT node
+    /*!
+     * Get a DHT node.
+     */
     const DHTNode &getDHTNode(Uint32 i)
     {
         return nodes[i];
@@ -278,13 +312,17 @@ public:
         return web_seeds;
     }
 
-    //! Set the monitor
+    /*!
+     * Set the monitor.
+     */
     void setMonitor(MonitorInterface *m)
     {
         tmon = m;
     }
 
-    //! Get the metadata
+    /*!
+     * Get the metadata.
+     */
     const QByteArray &getMetaData() const
     {
         return metadata;

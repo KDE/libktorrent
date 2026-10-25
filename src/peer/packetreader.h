@@ -55,7 +55,9 @@ public:
      */
     void update(PeerInterface &peer);
 
-    //! Did an error occur
+    /*!
+     * Did an error occur.
+     */
     [[nodiscard]] bool ok() const
     {
         return !error;

@@ -51,19 +51,25 @@ public:
     TrafficShapedSocket(bool tcp, int ip_version);
     virtual ~TrafficShapedSocket();
 
-    //! Get the SocketDevice
+    /*!
+     * Get the SocketDevice.
+     */
     SocketDevice *socketDevice()
     {
         return sock.get();
     }
 
-    //! Get the SocketDevice (const vesion)
+    /*!
+     * Get the SocketDevice (const vesion).
+     */
     const SocketDevice *socketDevice() const
     {
         return sock.get();
     }
 
-    //! Set the reader
+    /*!
+     * Set the reader.
+     */
     void setReader(SocketReader *r)
     {
         rdr = r;
@@ -85,16 +91,24 @@ public:
      */
     virtual bt::Uint32 write(bt::Uint32 max, bt::TimeStamp now) = 0;
 
-    //! See if the socket has something ready to write
+    /*!
+     * See if the socket has something ready to write.
+     */
     virtual bool bytesReadyToWrite() const = 0;
 
-    //! Get the current download rate
+    /*!
+     * Get the current download rate.
+     */
     int getDownloadRate() const;
 
-    //! Get the current download rate
+    /*!
+     * Get the current download rate.
+     */
     int getUploadRate() const;
 
-    //! Update up and down speed
+    /*!
+     * Update up and down speed.
+     */
     void updateSpeeds(bt::TimeStamp now);
 
     /*!
@@ -104,13 +118,17 @@ public:
      */
     void setGroupID(bt::Uint32 gid, bool upload);
 
-    //! Get the download group ID
+    /*!
+     * Get the download group ID.
+     */
     bt::Uint32 downloadGroupID() const
     {
         return down_gid;
     }
 
-    //! Get the upload group ID
+    /*!
+     * Get the upload group ID.
+     */
     bt::Uint32 uploadGroupID() const
     {
         return up_gid;

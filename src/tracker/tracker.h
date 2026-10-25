@@ -55,7 +55,9 @@ public:
      */
     static void setCustomIP(const QString &str);
 
-    //! get the tracker url
+    /*!
+     * get the tracker url.
+     */
     [[nodiscard]] QUrl trackerURL() const
     {
         return url;
@@ -79,29 +81,43 @@ public:
      */
     virtual void scrape() = 0;
 
-    //! Get the trackers tier
+    /*!
+     * Get the trackers tier.
+     */
     [[nodiscard]] int getTier() const
     {
         return tier;
     }
 
-    //! Get the custom ip to use, null if none is set
+    /*!
+     * Get the custom ip to use, null if none is set.
+     */
     static QString getCustomIP();
 
-    //! Handle a failure
+    /*!
+     * Handle a failure.
+     */
     void handleFailure();
 
 protected:
-    //! Reset the tracker stats
+    /*!
+     * Reset the tracker stats.
+     */
     void resetTrackerStats();
 
-    //! Calculates the bytes downloaded to send with the request
+    /*!
+     * Calculates the bytes downloaded to send with the request.
+     */
     [[nodiscard]] Uint64 bytesDownloaded() const;
 
-    //! Calculates the bytes uploaded to send with the request
+    /*!
+     * Calculates the bytes uploaded to send with the request.
+     */
     [[nodiscard]] Uint64 bytesUploaded() const;
 
-    //! Emit the failure signal, and set the error
+    /*!
+     * Emit the failure signal, and set the error.
+     */
     void failed(const QString &err);
 
 public:

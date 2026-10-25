@@ -35,7 +35,9 @@ public:
     BusError(bool write_operation);
     ~BusError() override;
 
-    //! Whether or not the SIGBUS was triggered by a write operation
+    /*!
+     * Whether or not the SIGBUS was triggered by a write operation.
+     */
     bool write_operation;
 };
 
@@ -81,7 +83,9 @@ private:
     static void signalHandler(int sig, siginfo_t *siginfo, void *ptr);
 
 Q_SIGNALS:
-    //! Emitted when a
+    /*!
+     * Emitted when a.
+     */
     void triggered();
 
 private:

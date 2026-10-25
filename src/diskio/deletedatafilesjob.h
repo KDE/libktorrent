@@ -42,10 +42,14 @@ public:
      */
     void addEmptyDirectoryCheck(const QString &fpath);
 
-    //! Start the job
+    /*!
+     * Start the job.
+     */
     void start() override;
 
-    //! Kill the job
+    /*!
+     * Kill the job.
+     */
     void kill(bool quietly) override;
 
 private Q_SLOTS:

@@ -26,7 +26,9 @@ public:
     ConnectionLimit();
     ~ConnectionLimit();
 
-    //! Get the total number of connections currently in use
+    /*!
+     * Get the total number of connections currently in use.
+     */
     [[nodiscard]] bt::Uint32 totalConnections() const
     {
         return global_total;
@@ -50,7 +52,9 @@ public:
         Token(ConnectionLimit &limit, const bt::SHA1Hash &hash);
         ~Token();
 
-        //! Get the info hash
+        /*!
+         * Get the info hash.
+         */
         [[nodiscard]] const bt::SHA1Hash &infoHash() const
         {
             return hash;

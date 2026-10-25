@@ -28,7 +28,9 @@ public:
     Job(bool stop_torrent, TorrentControl *tc);
     ~Job() override;
 
-    //! Do we need to stop the torrent when the job is running
+    /*!
+     * Do we need to stop the torrent when the job is running.
+     */
     [[nodiscard]] bool stopTorrent() const
     {
         return stop_torrent;
@@ -37,26 +39,36 @@ public:
     void start() override;
     virtual void kill(bool quietly = true);
 
-    //! Return the status of the torrent during the job (default implementation returns INVALID_STATUS)
+    /*!
+     * Return the status of the torrent during the job (default implementation returns INVALID_STATUS).
+     */
     [[nodiscard]] virtual TorrentStatus torrentStatus() const;
 
-    //! Get the torrent associated with this job
+    /*!
+     * Get the torrent associated with this job.
+     */
     TorrentControl *torrent()
     {
         return tc;
     }
 
-    //! Set the torrent associated with this job
+    /*!
+     * Set the torrent associated with this job.
+     */
     void setTorrent(TorrentControl *t)
     {
         tc = t;
     }
 
-    //! Set the job tracker
+    /*!
+     * Set the job tracker.
+     */
     static void setJobTracker(KJobTrackerInterface *trk);
 
 protected:
-    //! Register the job with the tracker
+    /*!
+     * Register the job with the tracker.
+     */
     void registerWithTracker();
 
 private:

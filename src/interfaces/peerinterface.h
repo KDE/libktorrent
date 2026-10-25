@@ -37,67 +37,123 @@ public:
      * \brief Information about the peer.
      */
     struct Stats {
-        //! IP address of peer (dotted notation)
+        /*!
+         * IP address of peer (dotted notation).
+         */
         QString ip_address;
-        //! Host name of the peer
+        /*!
+         * Host name of the peer.
+         */
         QString hostname;
-        //! The client (Azureus, BitComet, ...)
+        /*!
+         * The client (Azureus, BitComet, ...).
+         */
         QString client;
-        //! Download rate (bytes/s)
+        /*!
+         * Download rate (bytes/s).
+         */
         bt::Uint32 download_rate;
-        //! Upload rate (bytes/s)
+        /*!
+         * Upload rate (bytes/s).
+         */
         bt::Uint32 upload_rate;
-        //! Choked or not
+        /*!
+         * Choked or not.
+         */
         bool choked;
-        //! Snubbed or not (i.e. we haven't received a piece for a minute)
+        /*!
+         * Snubbed or not (i.e. we haven't received a piece for a minute).
+         */
         bool snubbed;
-        //! Percentage of file which the peer has
+        /*!
+         * Percentage of file which the peer has.
+         */
         float perc_of_file;
-        //! Does this peer support DHT
+        /*!
+         * Does this peer support DHT.
+         */
         bool dht_support;
-        //! Amount of data uploaded
+        /*!
+         * Amount of data uploaded.
+         */
         bt::Uint64 bytes_uploaded;
-        //! Amount of data downloaded
+        /*!
+         * Amount of data downloaded.
+         */
         bt::Uint64 bytes_downloaded;
-        //! Advanced choke algorithm score
+        /*!
+         * Advanced choke algorithm score.
+         */
         double aca_score;
-        //! Flag to indicate if this peer has an upload slot
+        /*!
+         * Flag to indicate if this peer has an upload slot.
+         */
         bool has_upload_slot;
-        //! Is the peer interested
+        /*!
+         * Is the peer interested.
+         */
         bool interested;
-        //! Am I interested in the peer
+        /*!
+         * Am I interested in the peer.
+         */
         bool am_interested;
-        //! Whether or not this connection is encrypted
+        /*!
+         * Whether or not this connection is encrypted.
+         */
         bool encrypted;
-        //! Number of upload requests queued
+        /*!
+         * Number of upload requests queued.
+         */
         bt::Uint32 num_up_requests;
-        //! Number of outstanding download requests queued
+        /*!
+         * Number of outstanding download requests queued.
+         */
         bt::Uint32 num_down_requests;
-        //! Supports the fast extensions
+        /*!
+         * Supports the fast extensions.
+         */
         bool fast_extensions;
-        //! Is this a peer on the local network
+        /*!
+         * Is this a peer on the local network.
+         */
         bool local;
-        //! Whether or not the peer supports the extension protocol
+        /*!
+         * Whether or not the peer supports the extension protocol.
+         */
         bool extension_protocol;
-        //! Max number of outstanding requests (reqq in extended protocol handshake)
+        /*!
+         * Max number of outstanding requests (reqq in extended protocol handshake).
+         */
         bt::Uint32 max_request_queue;
-        //! Time the peer choked us
+        /*!
+         * Time the peer choked us.
+         */
         TimeStamp time_choked;
-        //! Time the peer unchoked us
+        /*!
+         * Time the peer unchoked us.
+         */
         TimeStamp time_unchoked;
-        //! The transport protocol used by the peer
+        /*!
+         * The transport protocol used by the peer.
+         */
         bt::TransportProtocol transport_protocol;
-        //! Is this a partial seed
+        /*!
+         * Is this a partial seed.
+         */
         bool partial_seed;
 
-        //! Get the address of the peer (hostname if it is valid, IP otherwise)
+        /*!
+         * Get the address of the peer (hostname if it is valid, IP otherwise).
+         */
         [[nodiscard]] QString address() const
         {
             return hostname.isEmpty() ? ip_address : hostname;
         }
     };
 
-    //! Get the Peer's statistics
+    /*!
+     * Get the Peer's statistics.
+     */
     const Stats &getStats() const
     {
         return stats;
@@ -108,7 +164,9 @@ public:
     */
     virtual void kill() = 0;
 
-    //! See if the peer has been killed.
+    /*!
+     * See if the peer has been killed.
+     */
     bool isKilled() const
     {
         return killed;
@@ -119,70 +177,94 @@ public:
      */
     virtual bt::Uint32 averageDownloadSpeed() const = 0;
 
-    //! Get the Peer's BitSet
+    /*!
+     * Get the Peer's BitSet.
+     */
     const BitSet &getBitSet() const
     {
         return pieces;
     }
 
-    //! Get the Peer's ID
+    /*!
+     * Get the Peer's ID.
+     */
     const PeerID &getPeerID() const
     {
         return peer_id;
     }
 
-    //! Is the Peer choked
+    /*!
+     * Is the Peer choked.
+     */
     bool isChoked() const
     {
         return stats.choked;
     }
 
-    //! Is the Peer interested
+    /*!
+     * Is the Peer interested.
+     */
     bool isInterested() const
     {
         return stats.interested;
     }
 
-    //! Are we interested in the Peer
+    /*!
+     * Are we interested in the Peer.
+     */
     bool areWeInterested() const
     {
         return stats.am_interested;
     }
 
-    //! Are we choked for the Peer
+    /*!
+     * Are we choked for the Peer.
+     */
     bool areWeChoked() const
     {
         return !stats.has_upload_slot || paused;
     }
 
-    //! See if the peer supports DHT
+    /*!
+     * See if the peer supports DHT.
+     */
     bool isDHTSupported() const
     {
         return stats.dht_support;
     }
 
-    //! Get the time when this Peer choked us
+    /*!
+     * Get the time when this Peer choked us.
+     */
     TimeStamp getChokeTime() const
     {
         return stats.time_choked;
     }
 
-    //! Get the time when this Peer unchoked us
+    /*!
+     * Get the time when this Peer unchoked us.
+     */
     TimeStamp getUnchokeTime() const
     {
         return stats.time_unchoked;
     }
 
-    //! See if the peer is a seeder.
+    /*!
+     * See if the peer is a seeder.
+     */
     bool isSeeder() const
     {
         return pieces.allOn();
     }
 
-    //! Peer is allowed to download chunk (used for superseeding)
+    /*!
+     * Peer is allowed to download chunk (used for superseeding).
+     */
     virtual void chunkAllowed(bt::Uint32 chunk) = 0;
 
-    //! Handle a received packet
+    /*!
+     * Handle a received packet.
+     */
     virtual void handlePacket(QByteArrayView packet) = 0;
 
 protected:

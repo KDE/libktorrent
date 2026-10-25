@@ -45,10 +45,14 @@ public:
     [[nodiscard]] bool noTrackersReachable() const override;
     [[nodiscard]] TrackersStatusInfo getTrackersStatusInfo() const override;
 
-    //! Get the number of seeders
+    /*!
+     * Get the number of seeders.
+     */
     [[nodiscard]] Uint32 getNumSeeders() const;
 
-    //! Get the number of leechers
+    /*!
+     * Get the number of leechers.
+     */
     [[nodiscard]] Uint32 getNumLeechers() const;
 
     /*!

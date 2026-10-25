@@ -33,13 +33,17 @@ public:
     AddressResolver(const QString &host, bt::Uint16 port, QObject *parent, const char *slot);
     ~AddressResolver() override;
 
-    //! Did the resolver succeed ?
+    /*!
+     * Did the resolver succeed ?
+     */
     [[nodiscard]] bool succeeded() const
     {
         return successful;
     }
 
-    //! Get the resulting address
+    /*!
+     * Get the resulting address.
+     */
     [[nodiscard]] const net::Address &address() const
     {
         return result;

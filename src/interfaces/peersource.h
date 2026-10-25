@@ -83,7 +83,9 @@ Q_SIGNALS:
     void peersReady(bt::PeerSource *ps);
 
 private:
-    //! List to keep the potential peers in.
+    /*!
+     * List to keep the potential peers in.
+     */
     QList<QPair<net::Address, bool>> peers;
 };
 

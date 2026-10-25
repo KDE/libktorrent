@@ -85,7 +85,9 @@ public:
         return m_data.get();
     }
 
-    //! Get the number of elements in the array
+    /*!
+     * Get the number of elements in the array.
+     */
     [[nodiscard]] Uint32 size() const
     {
         return m_num;

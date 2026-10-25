@@ -23,7 +23,9 @@ public:
     {
     }
 
-    //! Return the method associated with an mtid
+    /*!
+     * Return the method associated with an mtid.
+     */
     virtual Method findMethod(const QByteArray &mtid) = 0;
 };
 

@@ -31,13 +31,17 @@ public:
     SocketGroup(bt::Uint32 limit, bt::Uint32 assured_rate);
     ~SocketGroup();
 
-    //! Clear the lists of sockets
+    /*!
+     * Clear the lists of sockets.
+     */
     void clear()
     {
         sockets.clear();
     }
 
-    //! Add a socket for processing
+    /*!
+     * Add a socket for processing.
+     */
     void add(TrafficShapedSocket *s)
     {
         sockets.push_back(s);
@@ -77,7 +81,9 @@ public:
         assured_rate = as;
     }
 
-    //! Get the number of sockets
+    /*!
+     * Get the number of sockets.
+     */
     [[nodiscard]] bt::Uint32 numSockets() const
     {
         return sockets.size();

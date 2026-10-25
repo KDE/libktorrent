@@ -34,16 +34,22 @@ public:
     Uploader(ChunkManager &cman, PeerManager &pman);
     ~Uploader() override;
 
-    //! Get the number of bytes uploaded.
+    /*!
+     * Get the number of bytes uploaded.
+     */
     [[nodiscard]] Uint64 bytesUploaded() const
     {
         return uploaded;
     }
 
-    //! Get the upload rate of all Peers combined.
+    /*!
+     * Get the upload rate of all Peers combined.
+     */
     [[nodiscard]] Uint32 uploadRate() const;
 
-    //! Set the number of bytes which have been uploaded.
+    /*!
+     * Set the number of bytes which have been uploaded.
+     */
     void setBytesUploaded(Uint64 b)
     {
         uploaded = b;
