@@ -155,7 +155,7 @@ void EncryptedAuthenticate::handleCryptoSelect()
     }
 
     // now decrypt the first 14 bytes
-    our_rc4->decrypt(buf + vc_off, 14);
+    our_rc4->decrypt(as_writable_bytes(QSpan{buf}).subspan(vc_off, 14));
     // check the VC
     for (Uint32 i = vc_off; i < vc_off + 8; i++) {
         if (buf[i]) {
@@ -186,7 +186,7 @@ void EncryptedAuthenticate::handleCryptoSelect()
 void EncryptedAuthenticate::handlePadD()
 {
     // decrypt the padding
-    our_rc4->decrypt(buf + (vc_off + 14), pad_D_len);
+    our_rc4->decrypt(as_writable_bytes(QSpan{buf}).subspan(vc_off + 14, pad_D_len));
 
     if (crypto_select & 0x00000001) { // plain_text selected
         our_rc4.reset();

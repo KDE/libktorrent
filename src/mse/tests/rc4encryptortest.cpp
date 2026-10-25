@@ -56,7 +56,7 @@ private Q_SLOTS:
 
                 memcpy(tmp, data, 1024);
                 a.encryptReplace(as_writable_bytes(QSpan{data}));
-                b.decrypt(reinterpret_cast<bt::Uint8 *>(data), 1024);
+                b.decrypt(as_writable_bytes(QSpan{data}));
                 QCOMPARE(memcmp(tmp, data, 1024), 0);
             }
         } catch (bt::Error &err) {

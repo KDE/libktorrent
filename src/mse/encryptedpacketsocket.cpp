@@ -76,11 +76,12 @@ void EncryptedPacketSocket::startMonitoring(net::SocketReader *rdr)
     SocketMonitor::instance().add(this);
     monitored = true;
     if (reinserted_data) {
+        const auto read_data = as_writable_bytes(QSpan{reinserted_data, reinserted_data_size}).subspan(reinserted_data_read);
         if (enc) {
-            enc->decrypt(reinserted_data + reinserted_data_read, reinserted_data_size - reinserted_data_read);
+            enc->decrypt(read_data);
         }
 
-        rdr->onDataReady(QByteArrayView{reinserted_data, reinserted_data_size}.sliced(reinserted_data_read));
+        rdr->onDataReady(read_data);
         delete[] reinserted_data;
         reinserted_data = nullptr;
         reinserted_data_size = 0;
@@ -120,23 +121,24 @@ Uint32 EncryptedPacketSocket::sendData(QByteArrayView data)
     }
 }
 
-Uint32 EncryptedPacketSocket::readData(Uint8 *buf, Uint32 len)
+Uint32 EncryptedPacketSocket::readData(Uint8 *buf_ptr, Uint32 len)
 {
+    const auto buf = as_writable_bytes(QSpan{buf_ptr, len});
     Uint32 ret2 = 0;
     if (reinserted_data) {
         Uint32 tr = reinserted_data_size - reinserted_data_read;
-        if (tr < len) {
-            memcpy(buf, reinserted_data + reinserted_data_read, tr);
+        if (tr < buf.size()) {
+            memcpy(buf.data(), reinserted_data + reinserted_data_read, tr);
             delete[] reinserted_data;
             reinserted_data = nullptr;
             reinserted_data_size = reinserted_data_read = 0;
             ret2 = tr;
         } else {
-            tr = len;
-            memcpy(buf, reinserted_data + reinserted_data_read, tr);
+            tr = buf.size();
+            memcpy(buf.data(), reinserted_data + reinserted_data_read, tr);
             reinserted_data_read += tr;
             if (enc) {
-                enc->decrypt(buf, tr);
+                enc->decrypt(buf.first(tr));
             }
             return tr;
         }
@@ -146,13 +148,13 @@ Uint32 EncryptedPacketSocket::readData(Uint8 *buf, Uint32 len)
         return ret2;
     }
 
-    int ret = sock->recv(as_writable_bytes(QSpan{buf, len}).subspan(ret2));
+    int ret = sock->recv(buf.subspan(ret2));
     if (ret < 0) {
         ret = 0;
     }
 
     if (ret + ret2 > 0 && enc) {
-        enc->decrypt(buf, ret + ret2);
+        enc->decrypt(buf.first(ret + ret2));
     }
 
     return ret + ret2;
@@ -267,7 +269,7 @@ void EncryptedPacketSocket::preProcess(Uint8 *data, Uint32 size)
 void EncryptedPacketSocket::postProcess(Uint8 *data, Uint32 size)
 {
     if (enc) {
-        enc->decrypt(data, size);
+        enc->decrypt(as_writable_bytes(QSpan{data, size}));
     }
 }
 

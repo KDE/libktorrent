@@ -71,15 +71,15 @@ RC4Encryptor::RC4Encryptor(const bt::SHA1Hash &dk, const bt::SHA1Hash &ek)
 
 RC4Encryptor::~RC4Encryptor() = default;
 
-void RC4Encryptor::decrypt(Uint8 *data, Uint32 len)
+void RC4Encryptor::decrypt(QSpan<std::byte> data)
 {
+    auto data_uint8 = QSpan{reinterpret_cast<Uint8 *>(data.data()), data.size()};
     int out_len = 0;
-    while (len > static_cast<unsigned int>(INT_MAX)) {
-        EVP_DecryptUpdate(dec.get(), data, &out_len, data, INT_MAX);
-        data += INT_MAX;
-        len -= INT_MAX;
+    while (data_uint8.size() > static_cast<unsigned int>(INT_MAX)) {
+        EVP_DecryptUpdate(dec.get(), data_uint8.data(), &out_len, data_uint8.data(), INT_MAX);
+        data_uint8 = data_uint8.subspan(INT_MAX);
     }
-    EVP_DecryptUpdate(dec.get(), data, &out_len, data, static_cast<int>(len));
+    EVP_DecryptUpdate(dec.get(), data_uint8.data(), &out_len, data_uint8.data(), static_cast<int>(data_uint8.size()));
 }
 
 QByteArrayView RC4Encryptor::encrypt(QByteArrayView data)
@@ -125,9 +125,9 @@ RC4Encryptor::~RC4Encryptor()
     gcry_cipher_close(dec);
 }
 
-void RC4Encryptor::decrypt(Uint8 *data, Uint32 len)
+void RC4Encryptor::decrypt(QSpan<std::byte> data)
 {
-    gcry_cipher_decrypt(dec, data, len, data, len);
+    gcry_cipher_decrypt(dec, data.data(), data.size(), data.data(), data.size());
 }
 
 QByteArrayView RC4Encryptor::encrypt(QByteArrayView data)

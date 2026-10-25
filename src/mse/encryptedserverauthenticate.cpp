@@ -132,7 +132,7 @@ void EncryptedServerAuthenticate::processVC()
 
     const Uint32 off = req1_off + 40;
     // now decrypt the vc and crypto_provide and the length of pad_C
-    our_rc4->decrypt(buf + off, 14);
+    our_rc4->decrypt(as_writable_bytes(QSpan{buf}).subspan(off, 14));
 
     // check the VC
     for (Uint32 i = 0; i < 8; i++) {
@@ -185,7 +185,7 @@ void EncryptedServerAuthenticate::handlePadC()
 
     // we have decrypted everything up to pad_C_len
     const Uint32 off = req1_off + 54;
-    our_rc4->decrypt(buf + off, pad_C_len + 2);
+    our_rc4->decrypt(as_writable_bytes(QSpan{buf}).subspan(off, pad_C_len + 2));
     ia_len = bt::ReadUint16(buf, off + pad_C_len);
     if (buf_size < off + ia_len) {
         // we do not have the IA, so wait for it

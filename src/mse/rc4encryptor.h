@@ -41,9 +41,8 @@ public:
     /*!
      * Decrypt some data, decryption happens in place (original data gets overwritten)
      * \param data The data
-     * \param len Size of the data
      */
-    void decrypt(bt::Uint8 *data, bt::Uint32 len);
+    void decrypt(QSpan<std::byte> data);
 
     /*!
      * Encrypt the data. Encryption happens into the static buffer.
