@@ -260,7 +260,7 @@ void EncryptedPacketSocket::setRemoteAddress(const net::Address &addr)
 void EncryptedPacketSocket::preProcess(Uint8 *data, Uint32 size)
 {
     if (enc) {
-        enc->encryptReplace(data, size);
+        enc->encryptReplace(as_writable_bytes(QSpan{data, size}));
     }
 }
 

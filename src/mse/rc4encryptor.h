@@ -6,6 +6,7 @@
 #ifndef MSERC4ENCRYPTOR_H
 #define MSERC4ENCRYPTOR_H
 
+#include <cstddef>
 #if defined(LIBKTORRENT_USE_OPENSSL)
 #include <memory>
 #include <openssl/types.h>
@@ -14,6 +15,7 @@
 #endif
 
 #include <QByteArrayView>
+#include <QSpan>
 
 #include <ktorrent_export.h>
 #include <util/constants.h>
@@ -57,9 +59,8 @@ public:
      * Encrypt data, encryption will happen in the same buffer. So data will
      * be changed replaced by its encrypted version.
      * \param data The data to encrypt
-     * \param len The length of the data
      */
-    void encryptReplace(bt::Uint8 *data, bt::Uint32 len);
+    void encryptReplace(QSpan<std::byte> data);
 
 private:
 #if defined(LIBKTORRENT_USE_OPENSSL)

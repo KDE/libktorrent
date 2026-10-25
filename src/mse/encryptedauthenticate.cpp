@@ -126,14 +126,14 @@ void EncryptedAuthenticate::handleYB()
 
 void EncryptedAuthenticate::findVC()
 {
-    Uint8 vc[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    std::byte vc[8]{};
 
     RC4Encryptor rc4(enc, dec);
-    rc4.encryptReplace(vc, 8);
+    rc4.encryptReplace(vc);
 
     const Uint32 max_i = buf_size - 8;
     for (Uint32 i = 96; i < max_i; i++) {
-        if (vc[0] == buf[i] && memcmp(buf + i, vc, 8) == 0) {
+        if (vc[0] == std::byte{buf[i]} && memcmp(buf + i, vc, 8) == 0) {
             state = State::FOUND_VC;
             vc_off = i;
             handleCryptoSelect();

@@ -94,15 +94,15 @@ QByteArrayView RC4Encryptor::encrypt(QByteArrayView data)
     return QByteArrayView{rc4_enc_buffer, data.size()};
 }
 
-void RC4Encryptor::encryptReplace(Uint8 *data, Uint32 len)
+void RC4Encryptor::encryptReplace(QSpan<std::byte> data)
 {
+    auto data_uint8 = QSpan{reinterpret_cast<Uint8 *>(data.data()), data.size()};
     int out_len = 0;
-    while (len > static_cast<unsigned int>(INT_MAX)) {
-        EVP_EncryptUpdate(enc.get(), data, &out_len, data, INT_MAX);
-        data += INT_MAX;
-        len -= INT_MAX;
+    while (data_uint8.size() > static_cast<unsigned int>(INT_MAX)) {
+        EVP_EncryptUpdate(enc.get(), data_uint8.data(), &out_len, data_uint8.data(), INT_MAX);
+        data_uint8 = data_uint8.subspan(INT_MAX);
     }
-    EVP_EncryptUpdate(enc.get(), data, &out_len, data, static_cast<int>(len));
+    EVP_EncryptUpdate(enc.get(), data_uint8.data(), &out_len, data_uint8.data(), static_cast<int>(data_uint8.size()));
 }
 
 #elif defined(LIBKTORRENT_USE_LIBGCRYPT)
@@ -139,9 +139,9 @@ QByteArrayView RC4Encryptor::encrypt(QByteArrayView data)
     return QByteArrayView{rc4_enc_buffer, data.size()};
 }
 
-void RC4Encryptor::encryptReplace(Uint8 *data, Uint32 len)
+void RC4Encryptor::encryptReplace(QSpan<std::byte> data)
 {
-    gcry_cipher_encrypt(enc, data, len, data, len);
+    gcry_cipher_encrypt(enc, data.data(), data.size(), data.data(), data.size());
 }
 
 #endif
