@@ -98,8 +98,6 @@ public:
      */
     ChunkDownload(Chunk *chunk);
 
-    ~ChunkDownload() override;
-
     /*!
      * Get the chunk.
      */
@@ -278,7 +276,7 @@ private:
     QList<PieceDownloader *> pdown;
     PtrMap<PieceDownloader *, DownloadStatus> dstatus;
     QSet<PieceDownloader *> piece_providers;
-    PieceData::Ptr *piece_data;
+    QList<PieceData::Ptr> piece_data;
     SHA1HashGen hash_gen;
     Uint32 num_pieces_in_hash = 0;
 

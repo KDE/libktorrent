@@ -69,16 +69,11 @@ ChunkDownload::ChunkDownload(Chunk *chunk)
 
     pieces = BitSet(num);
     pieces.clear();
-    piece_data = new PieceData::Ptr[num]; // array of pointers to the piece data
+    piece_data.resize(num); // array of pointers to the piece data
 
     dstatus.setAutoDelete(true);
 
     hash_gen.start();
-}
-
-ChunkDownload::~ChunkDownload()
-{
-    delete[] piece_data;
 }
 
 bool ChunkDownload::piece(const Piece &p, bool &ok)
