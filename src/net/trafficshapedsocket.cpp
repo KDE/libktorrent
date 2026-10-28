@@ -115,14 +115,16 @@ Uint32 TrafficShapedSocket::read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now
             tr = max_bytes_to_read - br;
         }
 
-        const int ret = sock->recv(as_writable_bytes(QSpan{input_buffer}).first(tr));
+        const auto read_buf = as_writable_bytes(QSpan{input_buffer}).first(tr);
+        const int ret = sock->recv(read_buf);
         if (ret > 0) {
             mutex.lock();
             down_speed->onData(ret, now);
             mutex.unlock();
             if (rdr) {
-                postProcess(input_buffer, ret);
-                rdr->onDataReady(QByteArrayView{input_buffer, ret});
+                const auto read_data = read_buf.first(ret);
+                postProcess(read_data);
+                rdr->onDataReady(read_data);
             }
             br += ret;
             ba -= ret;
@@ -136,9 +138,8 @@ Uint32 TrafficShapedSocket::read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now
     return br;
 }
 
-void TrafficShapedSocket::postProcess(Uint8 *data, Uint32 size)
+void TrafficShapedSocket::postProcess(QSpan<std::byte> data)
 {
     Q_UNUSED(data);
-    Q_UNUSED(size);
 }
 }

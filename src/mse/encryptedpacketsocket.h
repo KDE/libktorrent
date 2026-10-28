@@ -164,7 +164,7 @@ public:
 
 private:
     void preProcess(bt::Uint8 *data, bt::Uint32 size) override;
-    void postProcess(bt::Uint8 *data, bt::Uint32 size) override;
+    void postProcess(QSpan<std::byte> data) override;
 
 private:
     std::unique_ptr<RC4Encryptor> enc;

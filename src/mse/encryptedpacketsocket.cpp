@@ -266,10 +266,10 @@ void EncryptedPacketSocket::preProcess(Uint8 *data, Uint32 size)
     }
 }
 
-void EncryptedPacketSocket::postProcess(Uint8 *data, Uint32 size)
+void EncryptedPacketSocket::postProcess(QSpan<std::byte> data)
 {
     if (enc) {
-        enc->decrypt(as_writable_bytes(QSpan{data, size}));
+        enc->decrypt(data);
     }
 }
 

@@ -7,8 +7,11 @@
 #ifndef NET_TRAFFICSHAPEDSOCKET_H
 #define NET_TRAFFICSHAPEDSOCKET_H
 
+#include <cstddef>
+
 #include <QByteArrayView>
 #include <QRecursiveMutex>
+#include <QSpan>
 
 #include <net/socketdevice.h>
 #include <util/constants.h>
@@ -138,9 +141,8 @@ protected:
     /*!
      * Post process received data. Default implementation does nothing.
      * \param data The data
-     * \param size The size of the data
      **/
-    virtual void postProcess(bt::Uint8 *data, bt::Uint32 size);
+    virtual void postProcess(QSpan<std::byte> data);
 
 protected:
     SocketReader *rdr;
