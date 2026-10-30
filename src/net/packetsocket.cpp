@@ -69,7 +69,7 @@ void PacketSocket::selectPacket()
     }
 
     if (curr_packet) {
-        preProcess(curr_packet->getData(), curr_packet->getDataLength());
+        preProcess(as_writable_bytes(QSpan{curr_packet->getData(), curr_packet->getDataLength()}));
     }
 }
 
@@ -137,10 +137,9 @@ bool PacketSocket::bytesReadyToWrite() const
     return !data_packets.empty() || !control_packets.empty() || curr_packet;
 }
 
-void PacketSocket::preProcess(Uint8 *data, Uint32 size)
+void PacketSocket::preProcess(QSpan<std::byte> data)
 {
     Q_UNUSED(data);
-    Q_UNUSED(size);
 }
 
 Uint32 PacketSocket::dataBytesUploaded()

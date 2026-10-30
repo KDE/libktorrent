@@ -6,10 +6,12 @@
 #ifndef NETBUFFEREDSOCKET_H
 #define NETBUFFEREDSOCKET_H
 
+#include <cstddef>
 #include <deque>
 #include <optional>
 
 #include <QMutex>
+#include <QSpan>
 
 #include <download/packet.h>
 #include <download/request.h>
@@ -75,9 +77,8 @@ protected:
     /*!
      * Preprocess the packet data, before it is sent. Default implementation does nothing.
      * \param data The packet data
-     * \param size The size of the data
      **/
-    virtual void preProcess(bt::Uint8 *data, bt::Uint32 size);
+    virtual void preProcess(QSpan<std::byte> data);
 
 private:
     void selectPacket();

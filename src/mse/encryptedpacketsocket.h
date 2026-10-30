@@ -163,7 +163,7 @@ public:
     void setRemoteAddress(const net::Address &addr);
 
 private:
-    void preProcess(bt::Uint8 *data, bt::Uint32 size) override;
+    void preProcess(QSpan<std::byte> data) override;
     void postProcess(QSpan<std::byte> data) override;
 
 private:

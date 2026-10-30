@@ -259,10 +259,10 @@ void EncryptedPacketSocket::setRemoteAddress(const net::Address &addr)
     sock->setRemoteAddress(addr);
 }
 
-void EncryptedPacketSocket::preProcess(Uint8 *data, Uint32 size)
+void EncryptedPacketSocket::preProcess(QSpan<std::byte> data)
 {
     if (enc) {
-        enc->encryptReplace(as_writable_bytes(QSpan{data, size}));
+        enc->encryptReplace(data);
     }
 }
 
