@@ -189,7 +189,7 @@ void UTPex::encodeFlags(BEncoder &enc, const std::map<Uint32, Uint8> &flags)
         return;
     }
 
-    Uint8 *buf = new Uint8[flags.size()];
+    Array<Uint8> buf(flags.size());
     Uint32 idx = 0;
 
     std::map<Uint32, Uint8>::const_iterator i = flags.begin();
@@ -198,7 +198,6 @@ void UTPex::encodeFlags(BEncoder &enc, const std::map<Uint32, Uint8> &flags)
         ++i;
     }
 
-    enc.write(QByteArrayView{buf, static_cast<qsizetype>(flags.size())});
-    delete[] buf;
+    enc.write(QByteArrayView{buf});
 }
 }
