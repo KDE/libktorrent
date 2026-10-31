@@ -154,21 +154,6 @@ public:
     }
 
     /*!
-     * Send a chunk of data.
-     * \param data The data
-     * \return Number of bytes written
-     */
-    Uint32 sendData(QByteArrayView data);
-
-    /*!
-     * Reads data from the peer.
-     * \param buf The buffer to store the data
-     * \param len The maximum number of bytes to read
-     * \return The number of bytes read
-     */
-    Uint32 readData(Uint8 *buf, Uint32 len);
-
-    /*!
      * Get the number of bytes available to read.
      */
     Uint32 bytesAvailable() const;
