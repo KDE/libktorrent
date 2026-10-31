@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:49+0000\n"
+"POT-Creation-Date: 2026-10-31 00:51+0000\n"
 "PO-Revision-Date: 2024-12-14 13:33+0530\n"
 "Last-Translator: Kali <EMAIL@ADDRESS>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -179,7 +179,7 @@ msgstr "%1: %2 उद्घाटयितुं असफलम्"
 msgid "Unable to write to a piece mapped read only"
 msgstr "केवलं पठनीयं नक्शाङ्कितं खण्डं लिखितुं असमर्थः"
 
-#: src/download/chunkdownload.cpp:355
+#: src/download/chunkdownload.cpp:350
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"

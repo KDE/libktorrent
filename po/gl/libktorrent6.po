@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:49+0000\n"
+"POT-Creation-Date: 2026-10-31 00:51+0000\n"
 "PO-Revision-Date: 2025-01-19 12:20+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -191,7 +191,7 @@ msgstr "Non foi posíbel abrir %1: %2"
 msgid "Unable to write to a piece mapped read only"
 msgstr "Non é posíbel escribir nunha peza asociada como de só lectura"
 
-#: src/download/chunkdownload.cpp:355
+#: src/download/chunkdownload.cpp:350
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"

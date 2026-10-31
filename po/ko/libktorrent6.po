@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:49+0000\n"
+"POT-Creation-Date: 2026-10-31 00:51+0000\n"
 "PO-Revision-Date: 2020-04-04 15:11+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -181,7 +181,7 @@ msgstr "%1을(를) 열 수 없음: %2"
 msgid "Unable to write to a piece mapped read only"
 msgstr "읽기 전용으로 매핑된 조각에 기록할 수 없음"
 
-#: src/download/chunkdownload.cpp:355
+#: src/download/chunkdownload.cpp:350
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"

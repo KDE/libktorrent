@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:49+0000\n"
+"POT-Creation-Date: 2026-10-31 00:51+0000\n"
 "PO-Revision-Date: 2012-07-04 08:47+0700\n"
 "Last-Translator: Sophea <sophea@khmeros.info>\n"
 "Language-Team: Khmer <>\n"
@@ -184,7 +184,7 @@ msgstr "បរាជ័យ​ក្នុង​ការ​បើក %1 ៖ %2"
 msgid "Unable to write to a piece mapped read only"
 msgstr "មិន​អាច​សរសេរ​ទៅ​កាន់​ផ្នែក​ដែល​ផ្គូផ្គង​បានតែ​អាន​ឡើយ​"
 
-#: src/download/chunkdownload.cpp:355
+#: src/download/chunkdownload.cpp:350
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"

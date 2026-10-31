@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent6\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:49+0000\n"
+"POT-Creation-Date: 2026-10-31 00:51+0000\n"
 "PO-Revision-Date: 2013-04-04 06:04+0200\n"
 "Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -186,7 +186,7 @@ msgstr "%1 lässt sich nicht öffnen: %2"
 msgid "Unable to write to a piece mapped read only"
 msgstr "Es kann nicht in schreibgeschützte Bereiche geschrieben werden"
 
-#: src/download/chunkdownload.cpp:355
+#: src/download/chunkdownload.cpp:350
 #, kde-format
 msgid "1 peer"
 msgid_plural "%1 peers"
