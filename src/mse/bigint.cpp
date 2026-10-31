@@ -21,10 +21,10 @@ BigInt::BigInt(Uint32 num_bits)
     mpz_init2(val, num_bits);
 }
 
-BigInt::BigInt(const QString &value)
+BigInt::BigInt(QLatin1StringView value)
 {
     mpz_init2(val, (value.length() - 2) * 4);
-    mpz_set_str(val, value.toLatin1().constData(), 0);
+    mpz_set_str(val, value.constData(), 0);
 }
 
 BigInt::BigInt(const BigInt &bi)

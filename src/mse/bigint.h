@@ -6,6 +6,7 @@
 #ifndef MSEBIGINT_H
 #define MSEBIGINT_H
 
+#include <QLatin1StringView>
 #include <QString>
 #include <cstdio>
 #include <gmp.h>
@@ -34,12 +35,12 @@ public:
     /*!
      * Create a big integer of a string. The string must be
      * a hexadecimal representation of an integer. For example :
-     * 12AFFE123488BBBE123
+     * 0x12AFFE123488BBBE123
      *
      * Letters can be upper or lower case. Invalid chars will create an invalid number.
      * \param value The hexadecimal representation of the number
      */
-    BigInt(const QString &value);
+    BigInt(QLatin1StringView value);
 
     /*!
      * Copy constructor.
