@@ -249,7 +249,7 @@ void EncryptedAuthenticate::onReadyRead()
             ba = (vc_off + 14 + pad_D_len) - buf_size;
         }
         // read data
-        buf_size += sock->readData(buf + buf_size, ba);
+        buf_size += sock->readData(as_writable_bytes(QSpan{buf}).subspan(buf_size, ba));
     }
 
     switch (state) {

@@ -89,7 +89,7 @@ void AuthenticateBase::onReadyRead()
     if (bytes_of_handshake_received != 68) {
         // read remaining part
         const Uint32 to_read = 68 - bytes_of_handshake_received;
-        bytes_of_handshake_received += sock->readData(handshake + bytes_of_handshake_received, to_read);
+        bytes_of_handshake_received += sock->readData(as_writable_bytes(QSpan{handshake}).subspan(bytes_of_handshake_received, to_read));
 
         if (bytes_of_handshake_received != 68) {
             // tell subclasses of a partial handshake

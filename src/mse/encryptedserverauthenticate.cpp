@@ -245,6 +245,8 @@ void EncryptedServerAuthenticate::onReadyRead()
         ba = MAX_SEA_BUF_SIZE - buf_size;
     }
 
+    const auto read_buf = as_writable_bytes(QSpan{buf}).subspan(buf_size, ba);
+
     switch (state) {
     case State::WAITING_FOR_YA:
         if (ba <= 68 && ServerInterface::unencryptedConnectionsAllowed()) {
@@ -270,7 +272,7 @@ void EncryptedServerAuthenticate::onReadyRead()
             state = State::NON_ENCRYPTED_HANDSHAKE;
             ServerAuthenticate::onReadyRead();
         } else {
-            buf_size += sock->readData(buf + buf_size, ba);
+            buf_size += sock->readData(read_buf);
             if (buf_size >= 96) {
                 handleYA();
             }
@@ -281,7 +283,7 @@ void EncryptedServerAuthenticate::onReadyRead()
             ba = MAX_SEA_BUF_SIZE - buf_size;
         }
 
-        buf_size += sock->readData(buf + buf_size, ba);
+        buf_size += sock->readData(read_buf);
         findReq1();
         break;
     case State::FOUND_REQ1:
@@ -289,7 +291,7 @@ void EncryptedServerAuthenticate::onReadyRead()
             ba = MAX_SEA_BUF_SIZE - buf_size;
         }
 
-        buf_size += sock->readData(buf + buf_size, ba);
+        buf_size += sock->readData(read_buf);
         calculateSKey();
         break;
     case State::FOUND_INFO_HASH:
@@ -297,7 +299,7 @@ void EncryptedServerAuthenticate::onReadyRead()
             ba = MAX_SEA_BUF_SIZE - buf_size;
         }
 
-        buf_size += sock->readData(buf + buf_size, ba);
+        buf_size += sock->readData(read_buf);
         processVC();
         break;
     case State::WAIT_FOR_PAD_C:
@@ -305,7 +307,7 @@ void EncryptedServerAuthenticate::onReadyRead()
             ba = MAX_SEA_BUF_SIZE - buf_size;
         }
 
-        buf_size += sock->readData(buf + buf_size, ba);
+        buf_size += sock->readData(read_buf);
         handlePadC();
         break;
     case State::WAIT_FOR_IA:
@@ -313,7 +315,7 @@ void EncryptedServerAuthenticate::onReadyRead()
             ba = MAX_SEA_BUF_SIZE - buf_size;
         }
 
-        buf_size += sock->readData(buf + buf_size, ba);
+        buf_size += sock->readData(read_buf);
         handleIA();
         break;
     case State::NON_ENCRYPTED_HANDSHAKE:

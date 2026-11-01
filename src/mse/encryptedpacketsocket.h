@@ -49,10 +49,9 @@ public:
     /*!
      * Reads data from the peer.
      * \param buf The buffer to store the data
-     * \param len The maximum number of bytes to read
      * \return The number of bytes read
      */
-    bt::Uint32 readData(bt::Uint8 *buf, bt::Uint32 len);
+    bt::Uint32 readData(QSpan<std::byte> buf);
 
     /*!
      * Get the number of bytes available to read.

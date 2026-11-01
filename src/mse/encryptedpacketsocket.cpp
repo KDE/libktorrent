@@ -121,9 +121,8 @@ Uint32 EncryptedPacketSocket::sendData(QByteArrayView data)
     }
 }
 
-Uint32 EncryptedPacketSocket::readData(Uint8 *buf_ptr, Uint32 len)
+Uint32 EncryptedPacketSocket::readData(QSpan<std::byte> buf)
 {
-    const auto buf = as_writable_bytes(QSpan{buf_ptr, len});
     Uint32 ret2 = 0;
     if (reinserted_data) {
         Uint32 tr = reinserted_data_size - reinserted_data_read;
@@ -144,7 +143,7 @@ Uint32 EncryptedPacketSocket::readData(Uint8 *buf_ptr, Uint32 len)
         }
     }
 
-    if (len == ret2) {
+    if (buf.size() == ret2) {
         return ret2;
     }
 

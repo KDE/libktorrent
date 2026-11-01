@@ -164,7 +164,7 @@ Socks::State Socks::sendAuthRequest()
 Socks::State Socks::handleAuthReply()
 {
     socks5::AuthReply reply;
-    if (sock->readData((Uint8 *)&reply, sizeof(socks5::AuthReply)) != sizeof(socks5::AuthReply)) {
+    if (sock->readData(as_writable_bytes(QSpan{&reply, 1})) != sizeof(socks5::AuthReply)) {
         // Out(SYS_CON|LOG_DEBUG) << "sock->readData socks5::AuthReply size not ok" << endl;
         state = State::FAILED;
         return state;
@@ -211,14 +211,14 @@ void Socks::sendUsernamePassword()
 Socks::State Socks::handleUsernamePasswordReply()
 {
     //  Out(SYS_CON|LOG_DEBUG) << "Socks: handleUsernamePasswordReply " << endl;
-    Uint8 reply[2];
-    if (sock->readData(reply, 2) != 2) {
+    std::byte reply[2];
+    if (sock->readData(reply) != 2) {
         // Out(SYS_CON|LOG_DEBUG) << "sock->readData UPWReply size not ok" << endl;
         state = State::FAILED;
         return state;
     }
 
-    if (reply[0] != 1 || reply[1] != 0) {
+    if (reply[0] != std::byte{1} || reply[1] != std::byte{0}) {
         Out(SYS_CON | LOG_IMPORTANT) << "Socks: Wrong username or password !" << endl;
         state = State::FAILED;
         return state;
@@ -257,7 +257,7 @@ Socks::State Socks::handleConnectReply()
     if (version == 4) {
         // Out(SYS_CON|LOG_DEBUG) << "SOCKSV4 handleConnectReply" << endl;
         socks4::ConnectReply reply;
-        if (sock->readData((Uint8 *)&reply, sizeof(socks4::ConnectReply)) != sizeof(socks4::ConnectReply)) {
+        if (sock->readData(as_writable_bytes(QSpan{&reply, 1})) != sizeof(socks4::ConnectReply)) {
             //  Out(SYS_CON|LOG_DEBUG) << "sock->readData socks4::ConnectReply size not ok" << endl;
             state = State::FAILED;
             return state;
@@ -275,7 +275,7 @@ Socks::State Socks::handleConnectReply()
     }
 
     socks5::ConnectReply reply;
-    if (sock->readData((Uint8 *)&reply, sizeof(socks5::ConnectReply)) != sizeof(socks5::ConnectReply)) {
+    if (sock->readData(as_writable_bytes(QSpan{&reply, 1})) != sizeof(socks5::ConnectReply)) {
         // Out(SYS_CON|LOG_DEBUG) << "sock->readData socks5::ConnectReply size not ok" << endl;
         state = State::FAILED;
         return state;
@@ -289,8 +289,8 @@ Socks::State Socks::handleConnectReply()
 
     Uint32 ba = sock->bytesAvailable();
     if (reply.address_type == socks5::AddressType::ADDR_IPV4) {
-        Uint8 addr[6]; // IP and port
-        if (ba < 6 || sock->readData(addr, 6) != 6) {
+        std::byte addr[6]; // IP and port
+        if (ba < 6 || sock->readData(addr) != 6) {
             // Out(SYS_CON|LOG_DEBUG) << "Failed to read IPv4 address : " << endl;
             state = State::FAILED;
             return state;
@@ -300,9 +300,9 @@ Socks::State Socks::handleConnectReply()
             return state;
         }
     } else if (reply.address_type == socks5::AddressType::ADDR_IPV6) {
-        Uint8 addr[18]; // IP and port
-        if (ba < 18 || sock->readData(addr, 6) != 6) {
-            // Out(SYS_CON|LOG_DEBUG) << "Failed to read IPv4 address : " << endl;
+        std::byte addr[18]; // IP and port
+        if (ba < 18 || sock->readData(addr) != 18) {
+            // Out(SYS_CON|LOG_DEBUG) << "Failed to read IPv6 address : " << endl;
             state = State::FAILED;
             return state;
         } else {
@@ -311,15 +311,15 @@ Socks::State Socks::handleConnectReply()
             return state;
         }
     } else if (reply.address_type == socks5::AddressType::ADDR_DOMAIN) {
-        Uint8 len = 0;
-        if (ba == 0 || sock->readData(&len, 1) != 1) {
+        Uint8 len{};
+        if (ba == 0 || sock->readData(as_writable_bytes(QSpan{&len, 1})) != 1) {
             // Out(SYS_CON|LOG_DEBUG) << "Failed to read domain name length " << endl;
             state = State::FAILED;
             return state;
         }
         ba = sock->bytesAvailable();
-        Uint8 tmp[256];
-        if (ba < len || sock->readData(tmp, len) != len) {
+        std::byte tmp[256];
+        if (ba < len || sock->readData(QSpan{tmp}.first(len)) != len) {
             // Out(SYS_CON|LOG_DEBUG) << "Failed to read domain name" << endl;
             state = State::FAILED;
             return state;
