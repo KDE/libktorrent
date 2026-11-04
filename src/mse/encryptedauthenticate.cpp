@@ -48,8 +48,8 @@ EncryptedAuthenticate::~EncryptedAuthenticate()
 void EncryptedAuthenticate::connected()
 {
     // we are connected so send ya and some padding
-    std::array<Uint8, 96 + 512> tmp;
-    ya.toBuffer(tmp.data(), 96);
+    std::array<std::byte, 96 + 512> tmp;
+    ya.toBuffer(QSpan{tmp}.first(96));
     sock->sendData(QByteArrayView{tmp}.chopped(QRandomGenerator::global()->bounded(512)));
     state = State::SENT_YA;
 }
@@ -79,13 +79,13 @@ void EncryptedAuthenticate::handleYB()
 
     state = State::GOT_YB;
     // now we must send line 3
-    Uint8 tmp_buf[120]; // temporary buffer
+    std::byte tmp_buf[120]; // temporary buffer
     const QByteArrayView tmp_buf_view{tmp_buf, 120};
     bt::SHA1Hash h1, h2; // temporary hash
 
     // generate and send the first hash
     memcpy(tmp_buf, "req1", 4);
-    s.toBuffer(tmp_buf + 4, 96);
+    s.toBuffer(QSpan{tmp_buf}.subspan(4, 96));
     h1 = SHA1Hash::generate(tmp_buf_view.first(100));
     sock->sendData(h1);
 
@@ -95,7 +95,7 @@ void EncryptedAuthenticate::handleYB()
     h1 = SHA1Hash::generate(tmp_buf_view.first(24));
 
     memcpy(tmp_buf, "req3", 4);
-    s.toBuffer(tmp_buf + 4, 96);
+    s.toBuffer(QSpan{tmp_buf}.subspan(4, 96));
     h2 = SHA1Hash::generate(tmp_buf_view.first(100));
     sock->sendData(h1 ^ h2);
 
@@ -110,14 +110,14 @@ void EncryptedAuthenticate::handleYB()
     // now we must send ENCRYPT(VC, crypto_provide, len(PadC), PadC, len(IA))
     memset(tmp_buf, 0, 16); // VC are 8 0x00's
     if (bt::ServerInterface::unencryptedConnectionsAllowed()) {
-        tmp_buf[11] = 0x03; // we support both plain text and rc4
+        WriteUint8(tmp_buf, 11, 0x03); // we support both plain text and rc4
     } else {
-        tmp_buf[11] = 0x02;
+        WriteUint8(tmp_buf, 11, 0x02);
     }
     WriteUint16(tmp_buf, 12, 0x0000); // no padC
     WriteUint16(tmp_buf, 14, 68); // length of IA, which will be the bittorrent handshake
     // send IA which is the handshake
-    makeHandshake(tmp_buf + 16, info_hash, our_peer_id);
+    makeHandshake(reinterpret_cast<Uint8 *>(tmp_buf) + 16, info_hash, our_peer_id);
     sock->sendData(our_rc4->encrypt(QByteArrayView{tmp_buf, 84}));
 
     // search for the encrypted VC in the data

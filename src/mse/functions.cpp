@@ -9,6 +9,7 @@
 #include <array>
 
 #include "bigint.h"
+#include <util/endian.h>
 #include <util/log.h>
 #include <util/sha1hash.h>
 
@@ -42,22 +43,22 @@ BigInt DHSecret(const BigInt &our_priv, const BigInt &peer_pub)
 
 bt::SHA1Hash EncryptionKey(bool a, const BigInt &s, const bt::SHA1Hash &skey)
 {
-    std::array<Uint8, 120> buf;
+    std::array<std::byte, 120> buf;
     memcpy(buf.data(), "key", 3);
-    buf[3] = (Uint8)(a ? 'A' : 'B');
-    s.toBuffer(buf.data() + 4, 96);
+    WriteInt8(buf, 3, a ? 'A' : 'B');
+    s.toBuffer(QSpan{buf}.subspan(4, 96));
     memcpy(buf.data() + 100, skey.getData(), 20);
     return bt::SHA1Hash::generate(buf);
 }
 
 void DumpBigInt(const QString &name, const BigInt &bi)
 {
-    static Uint8 buf[512];
-    const Uint32 nb = bi.toBuffer(buf, 512);
+    static std::byte buf[96];
+    const Uint32 nb = bi.toBuffer(buf);
     bt::Log &lg = Out(SYS_GEN | LOG_DEBUG);
     lg << name << " (" << nb << ") = ";
     for (Uint32 i = 0; i < nb; i++) {
-        lg << u"0x%1 "_s.arg(buf[i], 0, 16);
+        lg << u"0x%1 "_s.arg(static_cast<Uint8>(buf[i]), 0, 16);
     }
     lg << endl;
 }

@@ -39,8 +39,8 @@ EncryptedServerAuthenticate::~EncryptedServerAuthenticate()
 
 void EncryptedServerAuthenticate::sendYB()
 {
-    std::array<Uint8, 96 + 512> tmp;
-    yb.toBuffer(tmp.data(), 96);
+    std::array<std::byte, 96 + 512> tmp;
+    yb.toBuffer(QSpan{tmp}.first(96));
     //  DumpBigInt("Xb",xb);
     //  DumpBigInt("Yb",yb);
     sock->sendData(QByteArrayView{tmp}.chopped(QRandomGenerator::global()->bounded(512)));
@@ -68,9 +68,9 @@ void EncryptedServerAuthenticate::findReq1()
     }
 
     //  Out() << "Find Req1" << endl;
-    std::array<Uint8, 100> tmp;
+    std::array<std::byte, 100> tmp;
     memcpy(tmp.data(), "req1", 4);
-    s.toBuffer(tmp.data() + 4, 96);
+    s.toBuffer(QSpan{tmp}.subspan(4, 96));
     const SHA1Hash req1 = SHA1Hash::generate(tmp);
     for (Uint32 i = 96; i < buf_size - 20; i++) {
         if (buf[i] == req1.getData()[0] && memcmp(buf + i, req1.getData(), 20) == 0) {
@@ -95,9 +95,9 @@ void EncryptedServerAuthenticate::calculateSKey()
         return;
     }
 
-    std::array<Uint8, 100> tmp;
+    std::array<std::byte, 100> tmp;
     memcpy(tmp.data(), "req3", 4);
-    s.toBuffer(tmp.data() + 4, 96);
+    s.toBuffer(QSpan{tmp}.subspan(4, 96));
     const SHA1Hash r3 = SHA1Hash::generate(tmp);
     const SHA1Hash r(buf + req1_off + 20);
 

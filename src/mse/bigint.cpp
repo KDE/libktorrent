@@ -60,10 +60,10 @@ BigInt BigInt::random()
     return BigInt::fromBuffer(as_bytes(QSpan{tmp}));
 }
 
-Uint32 BigInt::toBuffer(Uint8 *buf, Uint32 /*max_size*/) const
+Uint32 BigInt::toBuffer(QSpan<std::byte> buf) const
 {
     size_t foo{};
-    mpz_export(buf, &foo, 1, 1, 1, 0, val);
+    mpz_export(buf.data(), &foo, 1, 1, 1, 0, val);
     return foo;
 }
 

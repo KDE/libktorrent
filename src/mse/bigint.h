@@ -6,9 +6,12 @@
 #ifndef MSEBIGINT_H
 #define MSEBIGINT_H
 
-#include <QLatin1StringView>
-#include <QString>
+#include <cstddef>
 #include <cstdio>
+
+#include <QLatin1StringView>
+#include <QSpan>
+
 #include <gmp.h>
 #include <util/constants.h>
 
@@ -71,7 +74,7 @@ public:
     /*!
      * Export the bigint ot a buffer.
      */
-    bt::Uint32 toBuffer(bt::Uint8 *buf, bt::Uint32 max_size) const;
+    bt::Uint32 toBuffer(QSpan<std::byte> buf) const;
 
     /*!
      * Make a BigInt out of a buffer.
