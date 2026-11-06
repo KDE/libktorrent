@@ -141,6 +141,10 @@ void Torrent::loadInfo(BDictNode *dict)
     }
 
     chunk_size = dict->getInt64("piece length");
+    if (chunk_size == 0) {
+        throw Error(i18n("Corrupted torrent."));
+    }
+
     BListNode *files = dict->getList("files");
     if (files) {
         loadFiles(files);
