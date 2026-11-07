@@ -6,7 +6,9 @@
 #ifndef MSESTREAMSOCKET_H
 #define MSESTREAMSOCKET_H
 
+#include <QByteArray>
 #include <QByteArrayView>
+#include <QtTypes>
 
 #include <ktorrent_export.h>
 #include <net/packetsocket.h>
@@ -114,11 +116,13 @@ public:
     net::Address getRemoteAddress() const;
 
     /*!
-     * Reinsert data, this is needed when we read to much during the crypto handshake.
+     * Reinsert data, this is needed when we read too much during the crypto handshake.
      * This data will be the first to read out. The data will be copied to a temporary buffer
      * which will be destroyed when the reinserted data has been read.
+     *
+     * This function should only be called once, after the crypto handshake is complete.
      */
-    void reinsert(QByteArrayView buf);
+    void setReinstertedData(QByteArrayView buf);
 
     /*!
      * see if the socket is still OK.
@@ -167,9 +171,8 @@ private:
 
 private:
     std::unique_ptr<RC4Encryptor> enc;
-    bt::Uint8 *reinserted_data;
-    bt::Uint32 reinserted_data_size;
-    bt::Uint32 reinserted_data_read;
+    QByteArray m_reinserted_data;
+    qsizetype m_reinserted_data_read = 0;
     bool monitored;
 
     static bt::Uint8 tos;

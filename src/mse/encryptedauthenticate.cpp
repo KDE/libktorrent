@@ -202,7 +202,7 @@ void EncryptedAuthenticate::handlePadD()
     // if we have read more then the crypto handshake, reinsert it
     if (buf_size > vc_off + 14 + pad_D_len) {
         const Uint32 off = vc_off + 14 + pad_D_len;
-        sock->reinsert(QByteArrayView{buf, buf_size}.sliced(off));
+        sock->setReinstertedData(QByteArrayView{buf, buf_size}.sliced(off));
         Authenticate::onReadyRead();
     }
 }

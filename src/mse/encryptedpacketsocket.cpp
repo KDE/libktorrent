@@ -34,9 +34,6 @@ EncryptedPacketSocket::EncryptedPacketSocket(int ip_version)
 {
     sock->setBlocking(false);
     sock->setTOS(tos);
-    reinserted_data = nullptr;
-    reinserted_data_size = 0;
-    reinserted_data_read = 0;
 }
 
 EncryptedPacketSocket::EncryptedPacketSocket(int fd, int ip_version)
@@ -45,9 +42,6 @@ EncryptedPacketSocket::EncryptedPacketSocket(int fd, int ip_version)
 {
     sock->setBlocking(false);
     sock->setTOS(tos);
-    reinserted_data = nullptr;
-    reinserted_data_size = 0;
-    reinserted_data_read = 0;
 }
 
 EncryptedPacketSocket::EncryptedPacketSocket(std::unique_ptr<net::SocketDevice> sd)
@@ -56,9 +50,6 @@ EncryptedPacketSocket::EncryptedPacketSocket(std::unique_ptr<net::SocketDevice> 
 {
     sock->setBlocking(false);
     sock->setTOS(tos);
-    reinserted_data = nullptr;
-    reinserted_data_size = 0;
-    reinserted_data_read = 0;
 }
 
 EncryptedPacketSocket::~EncryptedPacketSocket()
@@ -66,8 +57,6 @@ EncryptedPacketSocket::~EncryptedPacketSocket()
     if (monitored) {
         stopMonitoring();
     }
-
-    delete[] reinserted_data;
 }
 
 void EncryptedPacketSocket::startMonitoring(net::SocketReader *rdr)
@@ -75,16 +64,14 @@ void EncryptedPacketSocket::startMonitoring(net::SocketReader *rdr)
     setReader(rdr);
     SocketMonitor::instance().add(this);
     monitored = true;
-    if (reinserted_data) {
-        const auto read_data = as_writable_bytes(QSpan{reinserted_data, reinserted_data_size}).subspan(reinserted_data_read);
+    if (!m_reinserted_data.isEmpty()) {
+        const auto read_data = as_writable_bytes(QSpan{m_reinserted_data}).subspan(m_reinserted_data_read);
         if (enc) {
             enc->decrypt(read_data);
         }
 
         rdr->onDataReady(read_data);
-        delete[] reinserted_data;
-        reinserted_data = nullptr;
-        reinserted_data_size = 0;
+        m_reinserted_data.clear();
     }
 }
 
@@ -124,18 +111,18 @@ Uint32 EncryptedPacketSocket::sendData(QByteArrayView data)
 Uint32 EncryptedPacketSocket::readData(QSpan<std::byte> buf)
 {
     Uint32 ret2 = 0;
-    if (reinserted_data) {
-        Uint32 tr = reinserted_data_size - reinserted_data_read;
+    if (!m_reinserted_data.isEmpty()) {
+        Uint32 tr = m_reinserted_data.size() - m_reinserted_data_read;
         if (tr < buf.size()) {
-            memcpy(buf.data(), reinserted_data + reinserted_data_read, tr);
-            delete[] reinserted_data;
-            reinserted_data = nullptr;
-            reinserted_data_size = reinserted_data_read = 0;
+            const auto read_buf = QByteArrayView{m_reinserted_data}.sliced(m_reinserted_data_read, tr);
+            memcpy(buf.data(), read_buf.data(), read_buf.size());
+            m_reinserted_data.clear();
             ret2 = tr;
         } else {
             tr = buf.size();
-            memcpy(buf.data(), reinserted_data + reinserted_data_read, tr);
-            reinserted_data_read += tr;
+            const auto read_buf = QByteArrayView{m_reinserted_data}.sliced(m_reinserted_data_read, tr);
+            memcpy(buf.data(), read_buf.data(), read_buf.size());
+            m_reinserted_data_read += tr;
             if (enc) {
                 enc->decrypt(buf.first(tr));
             }
@@ -162,8 +149,8 @@ Uint32 EncryptedPacketSocket::readData(QSpan<std::byte> buf)
 Uint32 EncryptedPacketSocket::bytesAvailable() const
 {
     const Uint32 ba = sock->bytesAvailable();
-    if (reinserted_data_size - reinserted_data_read > 0) {
-        return ba + (reinserted_data_size - reinserted_data_read);
+    if (m_reinserted_data.size() > m_reinserted_data_read) {
+        return ba + (m_reinserted_data.size() - m_reinserted_data_read);
     } else {
         return ba;
     }
@@ -228,19 +215,14 @@ void EncryptedPacketSocket::setRC4Encryptor(std::unique_ptr<RC4Encryptor> e)
     enc = std::move(e);
 }
 
-void EncryptedPacketSocket::reinsert(QByteArrayView buf)
+void EncryptedPacketSocket::setReinstertedData(QByteArrayView buf)
 {
+    Q_ASSERT(m_reinserted_data.isEmpty());
+    Q_ASSERT(m_reinserted_data_read == 0);
+    Q_ASSERT(!buf.isEmpty());
     //      Out() << "Reinsert : " << size << endl;
-    Uint32 off = 0;
-    if (reinserted_data) {
-        off = reinserted_data_size;
-        reinserted_data = (Uint8 *)realloc(reinserted_data, reinserted_data_size + buf.size());
-        reinserted_data_size += buf.size();
-    } else {
-        reinserted_data = new Uint8[buf.size()];
-        reinserted_data_size = buf.size();
-    }
-    memcpy(reinserted_data + off, buf.data(), buf.size());
+    m_reinserted_data = buf.toByteArray();
+    m_reinserted_data_read = 0;
 }
 
 bool EncryptedPacketSocket::connecting() const
