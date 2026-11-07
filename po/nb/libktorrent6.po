@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-31 00:51+0000\n"
+"POT-Creation-Date: 2026-11-07 00:57+0000\n"
 "PO-Revision-Date: 2013-09-18 13:04+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@nuug.no>\n"
@@ -296,9 +296,10 @@ msgid "Unknown client"
 msgstr "Ukjent klient"
 
 #: src/torrent/torrent.cpp:94 src/torrent/torrent.cpp:140
-#: src/torrent/torrent.cpp:171 src/torrent/torrent.cpp:178
-#: src/torrent/torrent.cpp:186 src/torrent/torrent.cpp:191
-#: src/torrent/torrent.cpp:215 src/torrent/torrent.cpp:284
+#: src/torrent/torrent.cpp:145 src/torrent/torrent.cpp:175
+#: src/torrent/torrent.cpp:182 src/torrent/torrent.cpp:190
+#: src/torrent/torrent.cpp:195 src/torrent/torrent.cpp:219
+#: src/torrent/torrent.cpp:288
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Ødelagt torrent."
