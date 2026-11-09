@@ -6,6 +6,9 @@
 
 #include "trafficshapedsocket.h"
 
+#include <array>
+#include <cstddef>
+
 #include "socket.h"
 #include "speed.h"
 #include <QStringList>
@@ -93,7 +96,7 @@ void TrafficShapedSocket::updateSpeeds(bt::TimeStamp now)
     mutex.unlock();
 }
 
-static bt::Uint8 input_buffer[OUTPUT_BUFFER_SIZE];
+static std::array<std::byte, OUTPUT_BUFFER_SIZE> input_buffer;
 
 Uint32 TrafficShapedSocket::read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now)
 {
@@ -115,7 +118,7 @@ Uint32 TrafficShapedSocket::read(bt::Uint32 max_bytes_to_read, bt::TimeStamp now
             tr = max_bytes_to_read - br;
         }
 
-        const auto read_buf = as_writable_bytes(QSpan{input_buffer}).first(tr);
+        const auto read_buf = QSpan{input_buffer}.first(tr);
         const int ret = sock->recv(read_buf);
         if (ret > 0) {
             mutex.lock();
