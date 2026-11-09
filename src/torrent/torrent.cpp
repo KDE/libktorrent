@@ -245,6 +245,7 @@ void Torrent::loadTrackerURL(const QString &s)
 void Torrent::loadHash(BDictNode *dict)
 {
     const auto hash_string = dict->getByteArrayView("pieces");
+    hash_pieces.reserve(hash_string.size() / 20);
     for (int i = 0; i < hash_string.size(); i += 20) {
         const SHA1Hash hash(hash_string.sliced(i, 20));
         hash_pieces.append(hash);
