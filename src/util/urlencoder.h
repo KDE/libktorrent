@@ -7,6 +7,7 @@
 #define BTURLENCODER_H
 
 #include "constants.h"
+#include <QByteArrayView>
 #include <QString>
 
 namespace bt
@@ -21,7 +22,7 @@ namespace bt
 class URLEncoder
 {
 public:
-    static QString encode(const char *buf, Uint32 size);
+    static QString encode(QByteArrayView buf);
 };
 
 }

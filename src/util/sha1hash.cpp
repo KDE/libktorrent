@@ -8,6 +8,7 @@
 #include "sha1hashgen.h"
 #include "urlencoder.h"
 #include <QHash>
+#include <QSpan>
 #include <algorithm>
 #include <array>
 #include <cstdio>
@@ -116,7 +117,7 @@ QByteArray SHA1Hash::toByteArray() const
 
 QString SHA1Hash::toURLString() const
 {
-    return URLEncoder::encode((const char *)hash, 20);
+    return URLEncoder::encode(as_bytes(QSpan{hash}));
 }
 
 Log &operator<<(Log &out, const SHA1Hash &h)
