@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-07 00:57+0000\n"
+"POT-Creation-Date: 2026-11-10 00:57+0000\n"
 "PO-Revision-Date: 2020-04-04 15:11+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -298,7 +298,7 @@ msgstr "알 수 없는 클라이언트"
 #: src/torrent/torrent.cpp:145 src/torrent/torrent.cpp:175
 #: src/torrent/torrent.cpp:182 src/torrent/torrent.cpp:190
 #: src/torrent/torrent.cpp:195 src/torrent/torrent.cpp:219
-#: src/torrent/torrent.cpp:288
+#: src/torrent/torrent.cpp:289
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "토렌트가 잘못되었습니다."

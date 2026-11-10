@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent6\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-07 00:57+0000\n"
+"POT-Creation-Date: 2026-11-10 00:57+0000\n"
 "PO-Revision-Date: 2013-04-04 06:04+0200\n"
 "Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -305,7 +305,7 @@ msgstr "Unbekannter Client"
 #: src/torrent/torrent.cpp:145 src/torrent/torrent.cpp:175
 #: src/torrent/torrent.cpp:182 src/torrent/torrent.cpp:190
 #: src/torrent/torrent.cpp:195 src/torrent/torrent.cpp:219
-#: src/torrent/torrent.cpp:288
+#: src/torrent/torrent.cpp:289
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "Die Torrent-Datei ist beschädigt."

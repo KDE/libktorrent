@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-07 00:57+0000\n"
+"POT-Creation-Date: 2026-11-10 00:57+0000\n"
 "PO-Revision-Date: 2008-09-23 17:28+0300\n"
 "Last-Translator: Erdal Ronahi <erdal.ronahi@nospam.gmail.com>\n"
 "Language-Team: Kurdish <kde-i18n-doc@lists.kde.org>\n"
@@ -319,7 +319,7 @@ msgstr ""
 #: src/torrent/torrent.cpp:145 src/torrent/torrent.cpp:175
 #: src/torrent/torrent.cpp:182 src/torrent/torrent.cpp:190
 #: src/torrent/torrent.cpp:195 src/torrent/torrent.cpp:219
-#: src/torrent/torrent.cpp:288
+#: src/torrent/torrent.cpp:289
 #, fuzzy, kde-format
 #| msgid "Corrupted torrent!"
 msgid "Corrupted torrent."

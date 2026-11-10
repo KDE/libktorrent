@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-07 00:57+0000\n"
+"POT-Creation-Date: 2026-11-10 00:57+0000\n"
 "PO-Revision-Date: 2013-04-03 10:32+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -300,7 +300,7 @@ msgstr "Cliente desconhecido"
 #: src/torrent/torrent.cpp:145 src/torrent/torrent.cpp:175
 #: src/torrent/torrent.cpp:182 src/torrent/torrent.cpp:190
 #: src/torrent/torrent.cpp:195 src/torrent/torrent.cpp:219
-#: src/torrent/torrent.cpp:288
+#: src/torrent/torrent.cpp:289
 #, kde-format
 msgid "Corrupted torrent."
 msgstr "A torrente está corrompida."
