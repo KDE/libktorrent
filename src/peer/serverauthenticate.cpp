@@ -42,7 +42,6 @@ void ServerAuthenticate::onFinish(bool success)
 
 void ServerAuthenticate::handshakeReceived(bool full)
 {
-    const Uint8 *hs = handshake;
     const AccessManager &aman = AccessManager::instance();
 
     if (!aman.allowed(sock->getRemoteAddress())) {
@@ -52,7 +51,7 @@ void ServerAuthenticate::handshakeReceived(bool full)
     }
 
     // try to find a PeerManager which has the right info hash
-    const SHA1Hash rh(hs + 28);
+    const SHA1Hash rh(QByteArrayView{handshake}.sliced(28, 20));
     PeerManager *pman = ServerInterface::findPeerManager(rh);
     if (!pman) {
         onFinish(false);
@@ -63,7 +62,7 @@ void ServerAuthenticate::handshakeReceived(bool full)
         // check if we aren't connecting to ourself
         char tmp[21];
         tmp[20] = '\0';
-        memcpy(tmp, hs + 48, 20);
+        memcpy(tmp, handshake.data() + 48, 20);
         const PeerID peer_id = PeerID(tmp);
         if (pman->getTorrent().getPeerID() == peer_id) {
             Out(SYS_CON | LOG_NOTICE) << "Lets not connect to our self" << endl;

@@ -139,14 +139,13 @@ void Authenticate::onFinish(bool success)
 
 void Authenticate::handshakeReceived(bool full)
 {
-    const Uint8 *hs = handshake;
     if (!AccessManager::instance().allowed(addr)) {
         Out(SYS_CON | LOG_DEBUG) << "The IP address " << addr.toString() << " is blocked " << endl;
         onFinish(false);
         return;
     }
 
-    const SHA1Hash rh(hs + 28);
+    const SHA1Hash rh(QByteArray{handshake}.slice(28, 20));
     if (rh != info_hash) {
         Out(SYS_CON | LOG_DEBUG) << "Wrong info_hash : " << rh.toString() << endl;
         onFinish(false);
@@ -156,7 +155,7 @@ void Authenticate::handshakeReceived(bool full)
     if (full) {
         char tmp[21];
         tmp[20] = '\0';
-        memcpy(tmp, hs + 48, 20);
+        memcpy(tmp, handshake.data() + 48, 20);
         peer_id = PeerID(tmp);
 
         if (our_peer_id == peer_id) {

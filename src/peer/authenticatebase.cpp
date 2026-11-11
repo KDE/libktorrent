@@ -11,6 +11,7 @@
 #include <mse/encryptedpacketsocket.h>
 #include <peer/peerid.h>
 #include <torrent/globals.h>
+#include <util/endian.h>
 #include <util/log.h>
 #include <util/sha1hash.h>
 
@@ -23,7 +24,7 @@ AuthenticateBase::AuthenticateBase()
     connect(&timer, &QTimer::timeout, this, &AuthenticateBase::onTimeout);
     timer.setSingleShot(true);
     timer.start(5000);
-    memset(handshake, 0x00, 68);
+    memset(handshake.data(), 0x00, 68);
     bytes_of_handshake_received = 0;
     ext_support = 0;
 }
@@ -36,7 +37,7 @@ AuthenticateBase::AuthenticateBase(std::unique_ptr<mse::EncryptedPacketSocket> s
     connect(&timer, &QTimer::timeout, this, &AuthenticateBase::onTimeout);
     timer.setSingleShot(true);
     timer.start(5000);
-    memset(handshake, 0x00, 68);
+    memset(handshake.data(), 0x00, 68);
     bytes_of_handshake_received = 0;
     ext_support = 0;
 }
@@ -89,7 +90,7 @@ void AuthenticateBase::onReadyRead()
     if (bytes_of_handshake_received != 68) {
         // read remaining part
         const Uint32 to_read = 68 - bytes_of_handshake_received;
-        bytes_of_handshake_received += sock->readData(as_writable_bytes(QSpan{handshake}).subspan(bytes_of_handshake_received, to_read));
+        bytes_of_handshake_received += sock->readData(QSpan{handshake}.subspan(bytes_of_handshake_received, to_read));
 
         if (bytes_of_handshake_received != 68) {
             // tell subclasses of a partial handshake
@@ -98,26 +99,26 @@ void AuthenticateBase::onReadyRead()
         }
     }
 
-    if (handshake[0] != 19) {
+    if (ReadUint8(handshake, 0) != 19) {
         onFinish(false);
         return;
     }
 
     const char *pstr = "BitTorrent protocol";
-    if (memcmp(pstr, handshake + 1, 19) != 0) {
+    if (memcmp(pstr, handshake.data() + 1, 19) != 0) {
         onFinish(false);
         return;
     }
 
-    if (Globals::instance().getDHT().isRunning() && (handshake[27] & 0x01)) {
+    if (Globals::instance().getDHT().isRunning() && (ReadUint8(handshake, 27) & 0x01)) {
         ext_support |= bt::DHT_SUPPORT;
     }
 
-    if (handshake[27] & 0x04) {
+    if (ReadUint8(handshake, 27) & 0x04) {
         ext_support |= bt::FAST_EXT_SUPPORT;
     }
 
-    if (handshake[25] & 0x10) {
+    if (ReadUint8(handshake, 25) & 0x10) {
         ext_support |= bt::EXT_PROT_SUPPORT;
     }
 

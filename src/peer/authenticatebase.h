@@ -11,6 +11,8 @@
 #include <mse/encryptedpacketsocket.h>
 #include <util/constants.h>
 
+#include <array>
+#include <cstddef>
 #include <memory>
 
 namespace bt
@@ -128,7 +130,7 @@ protected:
     std::unique_ptr<mse::EncryptedPacketSocket> sock;
     QTimer timer;
     bool finished;
-    Uint8 handshake[68];
+    std::array<std::byte, 68> handshake;
     Uint32 bytes_of_handshake_received;
     Uint32 ext_support;
     bool local;
