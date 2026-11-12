@@ -126,8 +126,8 @@ void DataCheckerJob::progress(quint32 num, quint32 total)
 
 void DataCheckerJob::status(quint32 num_failed, quint32 num_found, quint32 num_downloaded, quint32 num_not_downloaded)
 {
-    const QPair<QString, QString> field1 = qMakePair(QString::number(num_failed), QString::number(num_found));
-    const QPair<QString, QString> field2 = qMakePair(QString::number(num_downloaded), QString::number(num_not_downloaded));
+    const std::pair<QString, QString> field1 = std::make_pair(QString::number(num_failed), QString::number(num_found));
+    const std::pair<QString, QString> field2 = std::make_pair(QString::number(num_downloaded), QString::number(num_not_downloaded));
     Q_EMIT description(this, i18n("Checking Data"), field1, field2);
 }
 }

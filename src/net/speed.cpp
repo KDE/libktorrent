@@ -26,7 +26,7 @@ Speed::~Speed()
 
 void Speed::onData(Uint32 b, bt::TimeStamp ts)
 {
-    dlrate.push_back(qMakePair(b, ts));
+    dlrate.push_back(std::make_pair(b, ts));
     bytes += b;
 }
 
@@ -34,7 +34,7 @@ void Speed::update(bt::TimeStamp now)
 {
     auto i = dlrate.begin();
     while (i != dlrate.end()) {
-        const QPair<Uint32, TimeStamp> &p = *i;
+        const std::pair<Uint32, TimeStamp> &p = *i;
         if (now - p.second > SPEED_INTERVAL || now < p.second) {
             if (bytes >= p.first) { // make sure we don't wrap around
                 bytes -= p.first; // subtract bytes

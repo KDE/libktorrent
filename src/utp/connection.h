@@ -12,7 +12,6 @@
 #include <QBasicTimer>
 #include <QByteArrayView>
 #include <QMutex>
-#include <QPair>
 #include <QSharedPointer>
 #include <QSpan>
 #include <QWaitCondition>

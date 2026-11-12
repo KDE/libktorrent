@@ -11,6 +11,7 @@
 #include <ktorrent_export.h>
 #include <net/address.h>
 #include <util/constants.h>
+#include <utility>
 
 namespace bt
 {
@@ -86,7 +87,7 @@ private:
     /*!
      * List to keep the potential peers in.
      */
-    QList<QPair<net::Address, bool>> peers;
+    QList<std::pair<net::Address, bool>> peers;
 };
 
 }

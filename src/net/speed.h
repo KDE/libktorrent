@@ -6,8 +6,9 @@
 #ifndef NETSPEED_H
 #define NETSPEED_H
 
-#include <QPair>
 #include <deque>
+#include <utility>
+
 #include <util/constants.h>
 
 namespace net
@@ -22,7 +23,7 @@ class Speed
 {
     QAtomicInt rate;
     bt::Uint32 bytes;
-    std::deque<QPair<bt::Uint32, bt::TimeStamp>> dlrate;
+    std::deque<std::pair<bt::Uint32, bt::TimeStamp>> dlrate;
 
 public:
     Speed();

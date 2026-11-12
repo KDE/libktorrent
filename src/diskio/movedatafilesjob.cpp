@@ -117,8 +117,8 @@ void MoveDataFilesJob::start()
     if (!active_job) {
         Q_EMIT description(this,
                            i18n("Waiting for other move jobs to finish"),
-                           qMakePair(i18nc("The source of a file operation", "Source"), active_src),
-                           qMakePair(i18nc("The destination of a file operation", "Destination"), active_dst));
+                           std::make_pair(i18nc("The source of a file operation", "Source"), active_src),
+                           std::make_pair(i18nc("The destination of a file operation", "Destination"), active_dst));
         emitSpeed(0);
     }
 }
@@ -153,8 +153,8 @@ void MoveDataFilesJob::startMoving()
 
     Q_EMIT description(this,
                        i18nc("@title job", "Moving"),
-                       qMakePair(i18nc("The source of a file operation", "Source"), active_src),
-                       qMakePair(i18nc("The destination of a file operation", "Destination"), active_dst));
+                       std::make_pair(i18nc("The source of a file operation", "Source"), active_src),
+                       std::make_pair(i18nc("The destination of a file operation", "Destination"), active_dst));
     addSubjob(active_job);
 }
 

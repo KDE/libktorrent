@@ -29,7 +29,7 @@ void PeerSource::aboutToBeDestroyed()
 
 void PeerSource::addPeer(const net::Address &addr, bool local)
 {
-    peers.append(qMakePair(addr, local));
+    peers.append(std::make_pair(addr, local));
 }
 
 bool PeerSource::takePeer(net::Address &addr, bool &local)
