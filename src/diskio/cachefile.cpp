@@ -417,17 +417,7 @@ void CacheFile::preallocate(PreallocationThread *prealloc)
     }
 
     try {
-        bool res = false; // NOLINT(misc-const-correctness)
-
-#ifdef HAVE_XFS_XFS_H
-        if (Cache::preallocateFully()) {
-            res = XfsPreallocate(fd, max_size);
-        }
-#endif
-
-        if (!res) {
-            bt::TruncateFile(fd, max_size, !Cache::preallocateFully());
-        }
+        bt::TruncateFile(fd, max_size, !Cache::preallocateFully());
     } catch (bt::Error &e) {
         const int err = errno;
         throw Error(i18n("Cannot preallocate diskspace: %1", QString::fromUtf8(strerror(err))));

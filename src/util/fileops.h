@@ -130,19 +130,6 @@ KTORRENT_EXPORT void TruncateFile(int fd, Uint64 size, bool quick);
  */
 KTORRENT_EXPORT void TruncateFile(const QString &path, Uint64 size);
 
-#ifdef HAVE_XFS_XFS_H
-/*!
- * Special truncate for XFS file systems.
- */
-KTORRENT_EXPORT bool XfsPreallocate(int fd, Uint64 size);
-
-/*!
- * Special truncate for XFS file systems.
- */
-KTORRENT_EXPORT bool XfsPreallocate(const QString &path, Uint64 size);
-
-#endif
-
 /*!
  * Seek in a file, wrapper around lseek
  * \param fd The file descriptor

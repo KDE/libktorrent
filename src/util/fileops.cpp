@@ -53,23 +53,6 @@
 #define PATH_MAX 4096
 #endif
 
-#ifdef HAVE_XFS_XFS_H
-
-#if !defined(HAVE___S64) || !defined(HAVE___U64)
-#include <cstdint>
-#endif
-
-#ifndef HAVE___U64
-typedef uint64_t __u64;
-#endif
-
-#ifndef HAVE___S64
-typedef int64_t __s64;
-#endif
-
-#include <xfs/xfs.h>
-#endif
-
 #ifndef O_LARGEFILE
 #define O_LARGEFILE 0
 #endif
@@ -310,36 +293,6 @@ Uint64 FileSize(int fd)
     return (Uint64)sb.st_size;
 }
 
-#ifdef HAVE_XFS_XFS_H
-
-bool XfsPreallocate(int fd, Uint64 size)
-{
-    if (!platform_test_xfs_fd(fd)) {
-        return false;
-    }
-
-    xfs_flock64_t allocopt;
-    allocopt.l_whence = 0;
-    allocopt.l_start = 0;
-    allocopt.l_len = size;
-
-    return (!static_cast<bool>(xfsctl(0, fd, XFS_IOC_RESVSP64, &allocopt)));
-}
-
-bool XfsPreallocate(const QString &path, Uint64 size)
-{
-    int fd = ::open(QFile::encodeName(path).constData(), O_RDWR | O_LARGEFILE);
-    if (fd < 0) {
-        throw Error(i18n("Cannot open %1: %2", path, QString::fromUtf8(strerror(errno))));
-    }
-
-    bool ret = XfsPreallocate(fd, size);
-    close(fd);
-    return ret;
-}
-
-#endif
-
 void TruncateFile(int fd, Uint64 size, bool quick)
 {
     if (FileSize(fd) == size) {
@@ -361,20 +314,36 @@ void TruncateFile(int fd, Uint64 size, bool quick)
             throw Error(i18n("Cannot expand file: %1", QString::fromUtf8(strerror(errno))));
         }
 #else
+        bool allocated = false;
+#ifdef Q_OS_LINUX
+        // Prefer fallocate, it is natively supported by file systems such as XFS
+        // NOTE: fallocate returns -1 and sets errno
+        if (fallocate(fd, 0, 0, size) == 0) {
+            allocated = true;
+        } else {
+            bt::Out(SYS_DIO | LOG_DEBUG) << "Failed to allocate with fallocate: " << QString::fromUtf8(strerror(errno)) << bt::endl;
+        }
+#endif
         // NOTE: posix_fallocate returns an error code and does not set errno
 #ifdef HAVE_POSIX_FALLOCATE64
-        if (const auto error_code = posix_fallocate64(fd, 0, size); error_code != 0)
-#elif HAVE_POSIX_FALLOCATE
-        if (const auto error_code = posix_fallocate(fd, 0, size); error_code != 0)
-#else
-        constexpr auto error_code = 0;
-#endif
-        {
-            if (error_code != 0) {
-                // Only possible if we tried to use posix_fallocate and got an error
-                bt::Out(SYS_DIO | LOG_DEBUG) << "Failed to allocate with posix_fallocate: " << QString::fromUtf8(strerror(error_code))
-                                             << "; attempting to use ftruncate instead" << bt::endl;
+        if (!allocated) {
+            if (const auto error_code = posix_fallocate64(fd, 0, size); error_code == 0) {
+                allocated = true;
+            } else {
+                bt::Out(SYS_DIO | LOG_DEBUG) << "Failed to allocate with posix_fallocate: " << QString::fromUtf8(strerror(error_code)) << bt::endl;
             }
+        }
+#elif HAVE_POSIX_FALLOCATE
+        if (!allocated) {
+            if (const auto error_code = posix_fallocate(fd, 0, size); error_code == 0) {
+                allocated = true;
+            } else {
+                bt::Out(SYS_DIO | LOG_DEBUG) << "Failed to allocate with posix_fallocate: " << QString::fromUtf8(strerror(error_code)) << bt::endl;
+            }
+        }
+#endif
+
+        if (!allocated) {
 #if HAVE_FTRUNCATE64
             if (ftruncate64(fd, size) == -1)
 #else
