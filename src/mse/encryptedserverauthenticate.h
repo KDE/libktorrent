@@ -6,11 +6,13 @@
 #ifndef MSEENCRYPTEDSERVERAUTHENTICATE_H
 #define MSEENCRYPTEDSERVERAUTHENTICATE_H
 
+#include <array>
+#include <cstddef>
+#include <memory>
+
 #include "bigint.h"
 #include <peer/serverauthenticate.h>
 #include <util/sha1hash.h>
-
-#include <memory>
 
 namespace mse
 {
@@ -54,7 +56,7 @@ private:
     BigInt xb, yb, s, ya;
     bt::SHA1Hash skey, info_hash;
     State state;
-    bt::Uint8 buf[MAX_SEA_BUF_SIZE];
+    std::array<std::byte, MAX_SEA_BUF_SIZE> buf;
     bt::Uint32 buf_size;
     bt::Uint32 req1_off;
     bt::Uint32 crypto_provide, crypto_select;

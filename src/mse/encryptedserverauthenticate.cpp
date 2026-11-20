@@ -51,7 +51,7 @@ void EncryptedServerAuthenticate::handleYA()
 {
     sendYB();
 
-    ya = BigInt::fromBuffer(QByteArrayView{buf, 96});
+    ya = BigInt::fromBuffer(QByteArrayView{buf}.first(96));
     //  DumpBigInt("Ya",ya);
     // now calculate secret
     s = mse::DHSecret(xb, ya);
@@ -73,7 +73,7 @@ void EncryptedServerAuthenticate::findReq1()
     s.toBuffer(QSpan{tmp}.subspan(4, 96));
     const SHA1Hash req1 = SHA1Hash::generate(tmp);
     for (Uint32 i = 96; i < buf_size - 20; i++) {
-        if (buf[i] == req1.getData()[0] && memcmp(buf + i, req1.getData(), 20) == 0) {
+        if (buf[i] == std::byte{req1.getData()[0]} && (QByteArrayView{buf}.sliced(i, 20) == req1)) {
             state = State::FOUND_REQ1;
             req1_off = i;
             calculateSKey();
@@ -99,7 +99,7 @@ void EncryptedServerAuthenticate::calculateSKey()
     memcpy(tmp.data(), "req3", 4);
     s.toBuffer(QSpan{tmp}.subspan(4, 96));
     const SHA1Hash r3 = SHA1Hash::generate(tmp);
-    const SHA1Hash r(buf + req1_off + 20);
+    const SHA1Hash r(QByteArrayView{buf}.sliced(req1_off + 20));
 
     // r = HASH('req2', SKEY) xor HASH('req3', S)
     const SHA1Hash r2 = r ^ r3; // now calculate HASH('req2', SKEY)
@@ -132,11 +132,11 @@ void EncryptedServerAuthenticate::processVC()
 
     const Uint32 off = req1_off + 40;
     // now decrypt the vc and crypto_provide and the length of pad_C
-    our_rc4->decrypt(as_writable_bytes(QSpan{buf}).subspan(off, 14));
+    our_rc4->decrypt(QSpan{buf}.subspan(off, 14));
 
     // check the VC
     for (Uint32 i = 0; i < 8; i++) {
-        if (buf[off + i]) {
+        if (buf[off + i] != std::byte{0}) {
             //      Out(SYS_CON|LOG_DEBUG) << "Illegal VC" << endl;
             onFinish(false);
             return;
@@ -185,7 +185,7 @@ void EncryptedServerAuthenticate::handlePadC()
 
     // we have decrypted everything up to pad_C_len
     const Uint32 off = req1_off + 54;
-    our_rc4->decrypt(as_writable_bytes(QSpan{buf}).subspan(off, pad_C_len + 2));
+    our_rc4->decrypt(QSpan{buf}.subspan(off, pad_C_len + 2));
     ia_len = bt::ReadUint16(buf, off + pad_C_len);
     if (buf_size < off + ia_len) {
         // we do not have the IA, so wait for it
@@ -207,7 +207,7 @@ void EncryptedServerAuthenticate::handleIA()
     if (ia_len > 0) {
         const Uint32 off = req1_off + 54 + pad_C_len + 2;
         // reinsert everything so that the normal authentication can handle it
-        sock->setReinstertedData(QByteArrayView{buf, buf_size}.sliced(off));
+        sock->setReinstertedData(QByteArrayView{buf}.first(buf_size).sliced(off));
     }
 
     const bool allow_unenc = ServerInterface::unencryptedConnectionsAllowed();
@@ -245,7 +245,7 @@ void EncryptedServerAuthenticate::onReadyRead()
         ba = MAX_SEA_BUF_SIZE - buf_size;
     }
 
-    const auto read_buf = as_writable_bytes(QSpan{buf}).subspan(buf_size, ba);
+    const auto read_buf = QSpan{buf}.subspan(buf_size, ba);
 
     switch (state) {
     case State::WAITING_FOR_YA:
