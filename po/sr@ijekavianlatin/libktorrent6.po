@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libktorrent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:57+0000\n"
+"POT-Creation-Date: 2026-11-21 01:11+0000\n"
 "PO-Revision-Date: 2013-04-05 17:54+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -77,8 +77,7 @@ msgstr "Ne mogu da otvorim fajl %1: %2"
 msgid "Failed to create %1: %2"
 msgstr "Ne mogu da napravim %1: %2"
 
-#: src/diskio/cachefile.cpp:85 src/util/fileops.cpp:333
-#: src/util/fileops.cpp:395
+#: src/diskio/cachefile.cpp:85 src/util/fileops.cpp:364
 #, kde-format
 msgid "Cannot open %1: %2"
 msgstr "Ne mogu da otvorim %1: %2"
@@ -126,7 +125,7 @@ msgstr "Greška pri čitanju iz %1"
 msgid "Failed to write to file %1: %2"
 msgstr "Ne mogu da pišem u %1: %2"
 
-#: src/diskio/cachefile.cpp:433
+#: src/diskio/cachefile.cpp:423
 #, kde-format
 msgid "Cannot preallocate diskspace: %1"
 msgstr "Ne mogu da rezervišem prostor na disku: %1"
@@ -480,57 +479,57 @@ msgstr "Ne mogu da pišem u %1: %2"
 msgid "Cannot read from %1"
 msgstr "Ne mogu da čitam iz %1"
 
-#: src/util/fileops.cpp:100
+#: src/util/fileops.cpp:83
 #, kde-format
 msgid "Cannot create directory %1"
 msgstr "Ne mogu da napravim fasciklu %1"
 
-#: src/util/fileops.cpp:167
+#: src/util/fileops.cpp:150
 #, kde-format
 msgid "Cannot symlink %1 to %2: %3"
 msgstr "Ne mogu da simbolički povežem %1 na %2: %3"
 
-#: src/util/fileops.cpp:180
+#: src/util/fileops.cpp:163
 #, kde-format
 msgid "Cannot move %1 to %2: %3"
 msgstr "Ne mogu da premjestim %1 u %2: %3"
 
-#: src/util/fileops.cpp:192 src/util/fileops.cpp:204
+#: src/util/fileops.cpp:175 src/util/fileops.cpp:187
 #, kde-format
 msgid "Cannot copy %1 to %2: %3"
 msgstr "Ne mogu da kopiram %1 u %2: %3"
 
-#: src/util/fileops.cpp:254
+#: src/util/fileops.cpp:237
 #, kde-format
 msgid "Cannot delete %1: %2"
 msgstr "Ne mogu da obrišem %1: %2"
 
-#: src/util/fileops.cpp:272
+#: src/util/fileops.cpp:255
 #, kde-format
 msgid "Cannot create %1: %2"
 msgstr "Ne mogu da napravim %1: %2"
 
-#: src/util/fileops.cpp:290
+#: src/util/fileops.cpp:273
 #, kde-format
 msgid "Cannot calculate the filesize of %1: %2"
 msgstr "Ne mogu da proračunam veličinu za %1: %2"
 
-#: src/util/fileops.cpp:307
+#: src/util/fileops.cpp:290
 #, kde-format
 msgid "Cannot calculate the filesize: %1"
 msgstr "Ne mogu da proračunam veličinu: %1"
 
-#: src/util/fileops.cpp:357 src/util/fileops.cpp:361 src/util/fileops.cpp:384
+#: src/util/fileops.cpp:310 src/util/fileops.cpp:314 src/util/fileops.cpp:353
 #, kde-format
 msgid "Cannot expand file: %1"
 msgstr "Ne mogu da raširim fajl: %1"
 
-#: src/util/fileops.cpp:414
+#: src/util/fileops.cpp:383
 #, kde-format
 msgid "Cannot seek in file: %1"
 msgstr "Ne mogu da premotavam u fajlu: %1"
 
-#: src/util/fileops.cpp:672
+#: src/util/fileops.cpp:641
 #, kde-format
 msgid "Unable to open file %1: %2"
 msgstr "Ne mogu da otvorim fajl %1: %2"
