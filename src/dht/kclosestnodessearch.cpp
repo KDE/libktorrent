@@ -49,8 +49,6 @@ void KClosestNodesSearch::tryInsert(const KBucketEntry &e)
 
 void KClosestNodesSearch::pack(PackedNodeContainer *cnt)
 {
-    Uint32 j = 0;
-
     KNSitr i = emap.begin();
     while (i != emap.end()) {
         const KBucketEntry &e = i->second;
@@ -63,7 +61,6 @@ void KClosestNodesSearch::pack(PackedNodeContainer *cnt)
             PackBucketEntry(i->second, d, 0);
             cnt->addNode(d);
         }
-        j++;
         ++i;
     }
 }
